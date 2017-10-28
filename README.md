@@ -7,8 +7,11 @@ Official implementation of the ZSC system
 
 Update:
 
+ZSC token part: based on ERC20 protocol
+
 2017.09.05: upload multisigtoken.sol, multisigwallet.sol and token.sol
 
-2017.10.28: upload ZeusShieldCoin_Token_Sale_Code_Review_1.1.pd
+
+ZSC platform part:
 
 2017.10.28: upload the initial version of zscDatabase.sol
