@@ -59,7 +59,7 @@ contract ZSCEntity {
     uint    _ethValue = 0;
     uint    _zscValue = 0;
 
-    modifier onlyOwner(address msger)  {
+    modifier isOwner(address msger)  {
         if (msger != _owner) throw;
         _;
     }
@@ -82,68 +82,52 @@ contract ZSCEntity {
         }
     }
 
-    function name() 
+    function enName() 
         public
-        onlyOwner(msg.sender)
+        isOwner(msg.sender)
         constant 
         returns (string) 
     {   
-        if (isOwner(msg.sender))
-            return _name;
-        } else {
-            return 'NULL';
-        }
+        return _name;
     }
 
-    function type() 
+    function enType() 
         public
-        onlyOwner(msg.sender)
+        isOwner(msg.sender)
         constant 
-        returns (unit) 
+        returns (uint) 
     {   
-        if (isOwner(msg.sender)) {
-            return _type;
-        } else {
-            return 0;
-        }
+        return _type;
     }
 
-    function id() 
+    function enId() 
         public
-        onlyOwner(msg.sender)
+        isOwner(msg.sender)
         constant 
-        returns (unit) 
+        returns (uint) 
     {   
-        if (isOwner(msg.sender)) {
-            return _id;
-        } else {
-            return 0;
-        }
+        return _id;
     }
 
-    function activated() 
+    function enStatus() 
         public
-        onlyOwner(msg.sender)
+        isOwner(msg.sender)
         constant 
         returns (bool) 
     {   
-        if (isOwner(msg.sender)) {
-            return _activated;
-        } else {
-            return false;
-        }
+        return _activated;
     }
 
     function setType(uint type_) 
         public
-        onlyOwner(msg.sender)
+        isOwner(msg.sender)
     { 
         _type = type_;
     }
     
     function setStatus(bool status_) 
         public
-        onlyOwner(msg.sender)
+        isOwner(msg.sender)
     {   
         _activated = status_; 
     }
@@ -151,16 +135,16 @@ contract ZSCEntity {
 
 contract ZSCUser is ZSCEntity, SafeMath {
     // Constructor
-    function ZSCUser() 
+    function ZSCUser(string name_, uint id_) 
         public
-        ZSCEntity(msg.sender)
+        ZSCEntity(name_, id_)
     {
     }
 }
 
 contract ZSCContract is ZSCEntity {
-    mapping(address => unit) _providers;
-    mapping(address => unit) _receivers;
+    mapping(address => uint) _providers;
+    mapping(address => uint) _receivers;
     uint _totalPercentage; //range (0, 10000)
 
     modifier percentageRange(uint value_)  {
@@ -168,22 +152,22 @@ contract ZSCContract is ZSCEntity {
         _;
     }
     // Constructor
-    function ZSCContract() 
+    function ZSCContract(string name_, uint id_) 
         public
-        ZSCEntity(msg.sender)
+        ZSCEntity(name_, id_)
     {
     }
 
-    function addProvider(address usr_, unit percentage_) 
+    function addProvider(address usr_, uint percentage_) 
         public
-        percentageRange
+        percentageRange(percentage_)
     {
         _providers[usr_] = percentage_;
     }
 
-    function addReceiver(address usr_, unit percentage_) 
+    function addReceiver(address usr_, uint percentage_) 
         public
-        percentageRange
+        percentageRange(percentage_)
     {
         _receivers[usr_] = percentage_;
     }
@@ -209,7 +193,7 @@ contract ZSCDatabaseUser is owned, SafeMath {
         uint id = _nos + _startIndex;
 
         ZSCUser user = new ZSCUser(name_, id);
-        _users[_nos] = address(user);
+        _users[_nos] = user;
         _exist[name_] = id;
         _nos++;
     }
@@ -217,13 +201,13 @@ contract ZSCDatabaseUser is owned, SafeMath {
     function userId(string name_)
         internal
         constant
-        return (uint)
+        returns (uint)
     {
         if (_exist[name_] == 0) throw;
         return (_exist[name_] - _startIndex);
     }
 
-    function modifyUserById(uint id_, unit type_, bool status_) 
+    function modifyUserById(uint id_, uint type_, bool status_) 
         public
         onlyOwner
     {
@@ -235,11 +219,11 @@ contract ZSCDatabaseUser is owned, SafeMath {
         user.setStatus(status_);
     }
 
-    function modifyUserByName(string name_, unit type_, bool status_) 
+    function modifyUserByName(string name_, uint type_, bool status_) 
         public
         onlyOwner
     {
-        modifyUserById(userIdByName(name_), type_, status_);
+        modifyUserById(userId(name_), type_, status_);
     }
 
     function getUserById(uint id_) 
@@ -260,6 +244,6 @@ contract ZSCDatabaseUser is owned, SafeMath {
         constant
         returns (address)
     {
-        return getUserById(userIdByName(name_));
+        return getUserById(userId(name_));
     }
 }
