@@ -55,12 +55,12 @@ contract ZSCEntity {
     uint    _id = 0;
     uint    _type = 0;
     bool    _activated = false;
-    address _owner = 0;
+    address _creator = 0;
     uint    _ethValue = 0;
     uint    _zscValue = 0;
 
-    modifier isOwner(address msger)  {
-        if (msger != _owner) throw;
+    modifier isCreator(address msger)  {
+        if (msger != _creator) throw;
         _;
     }
 
@@ -69,7 +69,7 @@ contract ZSCEntity {
     {
         _name = name_;
         _id   = id_;
-        _owner = msg.sender;
+        _creator = msg.sender;
     }
 
     // This unnamed function is called whenever someone tries to send ether to it 
@@ -82,36 +82,36 @@ contract ZSCEntity {
         }
     }
 
-    function enName() 
+    function getName() 
         public
-        isOwner(msg.sender)
+        isCreator(msg.sender)
         constant 
         returns (string) 
     {   
         return _name;
     }
 
-    function enType() 
+    function getType() 
         public
-        isOwner(msg.sender)
+        isCreator(msg.sender)
         constant 
         returns (uint) 
     {   
         return _type;
     }
 
-    function enId() 
+    function getId() 
         public
-        isOwner(msg.sender)
+        isCreator(msg.sender)
         constant 
         returns (uint) 
     {   
         return _id;
     }
 
-    function enStatus() 
+    function getStatus() 
         public
-        isOwner(msg.sender)
+        isCreator(msg.sender)
         constant 
         returns (bool) 
     {   
@@ -120,14 +120,14 @@ contract ZSCEntity {
 
     function setType(uint type_) 
         public
-        isOwner(msg.sender)
+        isCreator(msg.sender)
     { 
         _type = type_;
     }
     
     function setStatus(bool status_) 
         public
-        isOwner(msg.sender)
+        isCreator(msg.sender)
     {   
         _activated = status_; 
     }
@@ -308,3 +308,5 @@ contract ZSCDatabaseUsers is owned, SafeMath {
         return getUserById(userId(name_));
     }
 }
+
+
