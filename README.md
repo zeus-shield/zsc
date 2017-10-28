@@ -6,7 +6,8 @@ Official solidity implementation of the ZSC system
 
 ## Update
 
-### ZSC token part: based on ERC20 protocol
+### ZSC token part
+Based on ERC20 protocol
 
 2017.09.05: upload multisigtoken.sol, multisigwallet.sol and token.sol
 
