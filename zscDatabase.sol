@@ -173,14 +173,75 @@ contract ZSCContract is ZSCEntity {
     }
 }
 
-contract ZSCDatabaseUser is owned, SafeMath {
+contract ZSCDatabaseRoot is owned {
+    mapping (address => bool) _isAdmin;
+    address[] _admins;
+
+    event AdminAddition(address indexed admin_);
+    event AdminRemoval(address indexed admin_);
+
+    modifier adminDoesNotExist(address admin_) {
+        if (_isAdmin[admin_])
+            throw;
+        _;
+    }
+
+    modifier adminExists(address admin_) {
+        if (!_isAdmin[admin_])
+            throw;
+        _;
+    }
+
+    modifier notNull(address _address) {
+        if (_address == 0)
+            throw;
+        _;
+    }
+
+    // Constructor
+    function ZSCDatabaseRoot() 
+        public
+    {
+    }
+
+    function addAdmin(address admin_)
+        public
+        onlyOwner
+        adminDoesNotExist(admin_)
+        notNull(admin_)
+    {
+        _isAdmin[admin_] = true;
+        _admins.push(admin_);
+        AdminAddition(admin_);
+    }
+
+    function removeOwner(address admin_)
+        public
+        onlyOwner
+        adminExists(admin_)
+    {
+        _isAdmin[admin_] = false;
+        for (uint i=0; i<_admins.length - 1; i++)
+            if (_admins[i] == admin_) {
+                _admins[i] = _admins[_admins.length - 1];
+                break;
+            }
+        _admins.length -= 1;
+        AdminRemoval(admin_);
+    }
+
+}
+
+
+contract ZSCDatabaseUsers is owned, SafeMath {
     uint _startIndex = 10000;
     uint _nos = 0;
     ZSCUser[] _users;
-    mapping (string => uint) _exist;
+
+    mapping(string => uint) _exist;
 
     // Constructor
-    function ZSCDatabaseUser() 
+    function ZSCDatabaseUsers() 
         public
     {
     }
