@@ -1,8 +1,7 @@
 # zsc
 Zeusshield (ZSC) system: AI&P2P Insurance Market Platform
 
-Official solidity implementation of the ZSC system
-
+Official implementation of the ZSC system
 
 ---------------
 
