@@ -15,5 +15,9 @@ Based on ERC20 protocol
 
 2017.10.28: upload the initial version of zscDatabase.sol
 
-2017.12.18: upload the plat_math.js, plat_string.js, plat_vector3d.js, db_entity.js, db_agreement.js
+2017.12.18: upload the plat_math.js v0.01
+2017.12.18: upload the plat_string.js v0.01
+2017.12.18: upload the plat_vector3d.js v0.01
+2017.12.18: upload the db_entity.js v0.01
+2017.12.18: upload the db_agreement.js v0.01
 
