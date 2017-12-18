@@ -49,6 +49,7 @@ library DBAgreement {
                 _agreement.providers_[i] = _agreement.providers_[_agreement.providers_.length - 1];
                 _agreement.providers_eth_[i] = _agreement.providers_eth_[_agreement.providers_eth_.length - 1];
                 _agreement.providers_zsc_[i] = _agreement.providers_zsc_[_agreement.providers_zsc_.length - 1];
+                break;
             }
         }
         _agreement.providers_.length -= 1;
@@ -73,6 +74,7 @@ library DBAgreement {
                 _agreement.receivers_[i] = _agreement.receivers_[_agreement.receivers_.length - 1];
                 _agreement.receivers_eth_[i] = _agreement.receivers_eth_[_agreement.receivers_eth_.length - 1];
                 _agreement.receivers_zsc_[i] = _agreement.receivers_zsc_[_agreement.receivers_zsc_.length - 1];
+                break;
             }
         }
         _agreement.receivers_.length -= 1;
