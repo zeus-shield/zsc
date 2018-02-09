@@ -143,7 +143,7 @@ library DBReceiver {
     //////////////////////////////////
     //////////////////////////////////
 
-    function addOrderedAgreement(Receiver storage _receiver, uint _agreementID) public returns (bool) {
+    function addAgreement(Receiver storage _receiver, uint _agreementID) public returns (bool) {
         if (_receiver.agreementExist_[_agreementID] == 0) 
             return false;
 
