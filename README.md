@@ -13,15 +13,11 @@ Based on ERC20 protocol
 ## 2. ZSC platform part:
 ### 2.1. Framework
 
----db_database
-
----db_receiver
-
----db_provider
-
----db_item
-
----db_agreement
+---db_database---
+|---db_receiver
+|---db_provider
+|---db_item
+|---db_agreement
 
 ### 2.2. Code update
 
