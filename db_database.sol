@@ -35,10 +35,9 @@ contract DBDatabase {
         DBReceiver.Receiver storage en;
         DBReceiver.setName(en, _name);
         DBReceiver.setID(en, id);
+        DBReceiver.initOrigin(en);
         receivers_.push(en);
     }
-
-    
-
 }
+
 
