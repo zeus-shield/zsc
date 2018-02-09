@@ -18,4 +18,4 @@ Based on ERC20 protocol
 
 2017.12.18: upload five files: plat_math.sol v0.01; plat_string.sol v0.01; plat_vector3d.sol v0.01; db_entity.sol v0.01; db_agreement.sol v0.01
 
-2018.02.09: upload two files: db_receiver.sol v0.03; db_database.sol v0.02
+2018.02.09: upload two files: db_receiver.sol v0.03; db_database.sol v0.02 test_basic_funcs.js 0.01
