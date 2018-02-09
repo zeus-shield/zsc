@@ -153,5 +153,14 @@ library DBReceiver {
 
         return true;
     }
+
+    function setAgreementStatus(Receiver storage _receiver, uint _agreementID, AgreementStatus _status) public returns (bool) {
+        if (_receiver.agreementExist_[_agreementID] == 0) 
+            return false;
+
+        _receiver.agreementStatus_[_agreementID] = _agreementID;
+
+        return true;
+    }
 }
 
