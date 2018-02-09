@@ -22,6 +22,8 @@ library DBReceiver {
         mapping(string => string) parameters_;
         mapping(string => uint) parameterExist_;
 
+        mapping(string => string) removedParameters_;
+
         mapping(uint => uint) agreementExist_;
         mapping(uint => AgreementStatus) agreementStatus_; 
     }
@@ -66,6 +68,15 @@ library DBReceiver {
             return false;
 
         _receiver.parameterExist_[_parameter] = 1;
+        return true;
+    }
+
+    function removeParameter(Receiver storage _receiver, string _parameter) public returns (bool) {
+        if (_receiver.parameterExist_[_parameter] != 0) {
+            _receiver.parameterExist_[_parameter] = 0;
+            _receiver.removedParameters_[_parameter] = _receiver.parameters_[_parameter];
+        }
+        return true;
     }
 
     function setParameter(Receiver storage _receiver, string _parameter, string _value) public returns (bool) {
@@ -73,6 +84,7 @@ library DBReceiver {
             return false;
 
         _receiver.parameters_[_parameter] = _value;
+        return true;
     }
 
     function getParameter(Receiver storage _receiver, string _parameter) public constant returns (string) {
@@ -105,3 +117,4 @@ library DBReceiver {
         return true;
     }
 }
+
