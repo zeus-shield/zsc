@@ -6,12 +6,15 @@ Copyright (c) 2018 ZSC Dev, Zeusshield Blockchain Technology Development Co., Lt
 
 pragma solidity ^0.4.18;
 import "./db_receiver.sol";
+import "./db_provider.sol";
 
 contract DBDatabase {
     address public manager_;
     DBReceiver.Receiver[] receivers_;
-    
+    DBProvider.Provider[] providers_;
+
     mapping(string => uint) receiver_exist_;
+    mapping(string => uint) provider_exist_;
 
     modifier onlyManager {
         if (msg.sender != manager_) revert();
@@ -38,6 +41,16 @@ contract DBDatabase {
         DBReceiver.initOrigin(en);
         receivers_.push(en);
     }
+
+    function insertProvider(string _name) public onlyManager {
+        if (provider_exist_[_name] == 0) revert();
+        uint id = providers_.length;
+        provider_exist_[_name] = id;
+
+        DBProvider.Provider storage en;
+        DBProvider.setName(en, _name);
+        DBProvider.setID(en, id);
+        DBProvider.initOrigin(en);
+        providers_.push(en);
+    }
 }
-
-
