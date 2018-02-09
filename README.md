@@ -13,11 +13,24 @@ Based on ERC20 protocol
 2017.09.05: add multisigtoken.sol, multisigwallet.sol and token.sol
 
 ### ZSC platform part:
-               |
                
-               |
-               
----db_database-
+-------------------------
+
+--------Framework--------
+
+-------------------------
+
+---db_database
+
+---db_receiver
+
+---db_provider
+
+---db_item
+
+---db_agreement
+
+-------------------------
 
 2017.10.28: add the initial version of zscDatabase.sol
 
