@@ -14,11 +14,7 @@ Based on ERC20 protocol
 
 ### ZSC platform part:
                
--------------------------
-
 --------Framework--------
-
--------------------------
 
 ---db_database
 
