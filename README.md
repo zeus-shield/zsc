@@ -5,15 +5,13 @@ Official solidity implementation for the core part of the ZSC system.
 
 Implementation of the website based interfance not included here.
 
-## Update
-
-### ZSC token part
+## 1. ZSC token part
 Based on ERC20 protocol
 
 2017.09.05: add multisigtoken.sol, multisigwallet.sol and token.sol
 
-### ZSC platform part:
-#### Framework--------
+## 2. ZSC platform part:
+### 2.1. Framework
 
 ---db_database
 
@@ -25,7 +23,7 @@ Based on ERC20 protocol
 
 ---db_agreement
 
--------------------------
+### 2.2. Code update
 
 2017.10.28: add the initial version of zscDatabase.sol
 
