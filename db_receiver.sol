@@ -17,15 +17,11 @@ library DBReceiver {
         uint    ethTotal_;
         uint    zscTotal_;
         uint    zscSuspend_;
-        string  userFamilyName_;
-        string  userFirstName_;
-        string  userNationality_;
-        string  userPhone_;
-        uint    userGender_;
-        string  userBirthday_;
-        string  userIdentification_;
-        string  userResidentialAddress_;
         uint[]  agreements_;
+
+        mapping(string => string) parameters_;
+        mapping(string => uint) parameterExist_;
+
         mapping(uint => uint) agreementExist_;
         mapping(uint => AgreementStatus) agreementStatus_; 
     }
@@ -54,91 +50,37 @@ library DBReceiver {
 
     //////////////////////////////////
 
-
-    function setUserFamilyName(Receiver storage _receiver, string _familyName) public {
-        _receiver.userFamilyName_ = _familyName;
+    function initOrigin(Receiver storage _receiver) public {
+        addParameter(_receiver, "userFamilyName");
+        addParameter(_receiver, "userFirstName");
+        addParameter(_receiver, "userNationality");
+        addParameter(_receiver, "userPhone");
+        addParameter(_receiver, "userGender");
+        addParameter(_receiver, "userBirthday");
+        addParameter(_receiver, "userIdentification");
+        addParameter(_receiver, "userResidentialAddress");
     }
 
-   function setUserFirstName(Receiver storage _receiver, string _firstName) public {
-        _receiver.userFirstName_ = _firstName;
+    function addParameter(Receiver storage _receiver, string _parameter) public returns (bool) {
+        if (_receiver.parameterExist_[_parameter] != 0) 
+            return false;
+
+        _receiver.parameterExist_[_parameter] = 1;
     }
 
-    function setUserNationality(Receiver storage _receiver, string _nationality) public {
-        _receiver.userNationality_ = _nationality;
+    function setParameter(Receiver storage _receiver, string _parameter, string _value) public returns (bool) {
+        if (_receiver.parameterExist_[_parameter] == 0)
+            return false;
+
+        _receiver.parameters_[_parameter] = _value;
     }
 
-    function setUserPhone(Receiver storage _receiver, string _phone) public {
-        _receiver.userPhone_ = _phone;
+    function getParameter(Receiver storage _receiver, string _parameter) public constant returns (string) {
+        if (_receiver.parameterExist_[_parameter] == 0) revert();
+
+        return _receiver.parameters_[_parameter];
     }
 
-    function setUserBirthday(Receiver storage _receiver, string _birthDay) public {
-        _receiver.userBirthday_ = _birthDay;
-    }
-
-    function setUserIdentification(Receiver storage _receiver, string _identification) public {
-        _receiver.userIdentification_ = _identification;
-    }
-
-    function setUserResidentialAddress(Receiver storage _receiver, string _residentialAddress) public {
-        _receiver.userResidentialAddress_ = _residentialAddress;
-    }
-
-    //////////////////////////////////
-    //////////////////////////////////
-    //////////////////////////////////
-
-    function getName(Receiver storage _receiver) public constant returns (string) {
-        return _receiver.name_;
-    }
-
-    function getID(Receiver storage _receiver) public constant returns (uint) {
-        return _receiver.id_;
-    }
-
-    function getEthValue(Receiver storage _receiver) public constant returns (uint) {
-        return _receiver.ethTotal_;
-    }
-
-    function getZscValue(Receiver storage _receiver) public constant returns (uint) {
-        return _receiver.zscTotal_;
-    }
-
-    function getActivated(Receiver storage _receiver) public constant returns (bool) {
-        return _receiver.activated_;
-    } 
-
-    //////////////////////////////////
-    function getUserFamilyName(Receiver storage _receiver) public constant returns (string) {
-        return _receiver.userFamilyName_;
-    } 
-
-    function getUserFirstName(Receiver storage _receiver) public constant returns (string) {
-        return _receiver.userFirstName_;
-    }
-
-    function getUserNationality(Receiver storage _receiver) public constant returns (string) {
-        return _receiver.userNationality_;
-    }
-
-    function getUserPhone(Receiver storage _receiver) public constant returns (string) {
-        return _receiver.userPhone_;
-    }
-
-    function getUserGender(Receiver storage _receiver) public constant returns (uint) {
-        return _receiver.userGender_;
-    }
-
-    function getUserBirthday(Receiver storage _receiver) public constant returns (string) {
-        return _receiver.userBirthday_;
-    }
-
-    function getUserIdentification(Receiver storage _receiver) public constant returns (string) {
-        return _receiver.userIdentification_;
-    }
-
-    function getUserResidentialAddress(Receiver storage _receiver) public constant returns (string) {
-        return _receiver.userResidentialAddress_;
-    }
 
     //////////////////////////////////
     //////////////////////////////////
@@ -158,9 +100,8 @@ library DBReceiver {
         if (_receiver.agreementExist_[_agreementID] == 0) 
             return false;
 
-        _receiver.agreementStatus_[_agreementID] = _agreementID;
+        _receiver.agreementStatus_[_agreementID] = _status;
 
         return true;
     }
 }
-
