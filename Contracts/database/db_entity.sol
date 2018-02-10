@@ -31,7 +31,6 @@ library DBEntity {
         _entity.activated_ = _activated;
     }
 
-
     //////////////////////////////////
     function getName(Entity storage _entity) public constant returns (string) {
         return _entity.name_;
@@ -50,7 +49,6 @@ library DBEntity {
         if (_entity.currencyStatus_[_currency] != 0) {
            return false;
         }
-
         _entity.currencies_[_currency] = 0;
         _entity.currencyStatus_[_currency] = 1;
         return true;
@@ -62,7 +60,6 @@ library DBEntity {
         }
 
         uint val = _entity.currencies_[_currency];
-
         _entity.currencies_[_currency] = PlatMath.add(val, _value);
         return true;
     }
@@ -73,11 +70,9 @@ library DBEntity {
         }
         
         uint val = _entity.currencies_[_currency];
-
         if (PlatMath.less(val, _value)) {
             return false;
         }
-
         _entity.currencies_[_currency] = PlatMath.sub(val, _value);
         return true;
     }
@@ -121,5 +116,4 @@ library DBEntity {
         }
         return _entity.parameters_[_parameter];
     }
-
 }
