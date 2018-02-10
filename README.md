@@ -5,15 +5,15 @@ Official solidity implementation for the core part of the ZSC system.
 
 Implementation of the website based interfance not included here.
 
-## 1. Codes structure
+## 1. Coding structure
 
 ### 1.1 Contracts: the solidity-based coding here
 
-#### 1.1.1 token: zsc token contract
+#### token: zsc token contract
 
-#### 1.1.2 database: construct the decentralized databased
+#### database: construct the decentralized databased
 
-#### 1.1.3 plat: basic functions
+#### plat: basic functions
 
 ### 1.2 Test: testing codes here
 
