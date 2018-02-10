@@ -5,7 +5,7 @@ Official solidity implementation for the core part of the ZSC system.
 
 Implementation of the website based interfance not included here.
 
-## 1. Project structure
+## 1. Codes structure
 
 ### 1.1 Contracts: the solidity-based coding here
 
