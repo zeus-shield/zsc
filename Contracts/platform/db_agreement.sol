@@ -27,20 +27,12 @@ library DBAgreement {
         mapping(uint => AgreementStatus) agreementStatus_;
     }
 
-    function setName(Agreement storage _agreement, string _name) public {
-        _agreement.name_ = _name;
-    }
-
-    function setID(Agreement storage _agreement, uint _id) public {
-        _agreement.id_ = _id;
-    }
-
-    function setType(Agreement storage _agreement, ContractType _type) public {
-        _agreement.type_ = _type;
-    }
-
-    function setActivated(Agreement storage _agreement, bool _activated) public {
-        _agreement.activated_ = _activated;
+    function initAgreement(DBItem storage _agreement) public {
+        DBEntity.insertParameter(_agreement.entity_, "startDate");
+        DBEntity.insertParameter(_agreement.entity_, "endDate");
+        DBEntity.insertParameter(_agreement.entity_, "signDate");
+        DBEntity.insertParameter(_agreement.entity_, "insuredAmount");
+        DBEntity.insertParameter(_agreement.entity_, "paymentAmount");
     }
 
     function addProvider(Agreement storage _agreement, uint _provider_index, uint _ethValue, uint _zscValue)  public {
