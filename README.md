@@ -9,9 +9,9 @@ Implementation of the website based interfance not included here.
 
 ### 1.1 Contracts: the solidity-based coding here
 
-#### 1.1.1 database: construct the decentralized databased especially for insurance system
+#### 1.1.1 platform: construct the decentralized databased especially for insurance system
 
-#### 1.1.2 plat: based functions used for the system
+#### 1.1.2 token: zsc token contract
 
 ### 1.2 Test: testing codes here
 
