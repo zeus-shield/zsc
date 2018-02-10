@@ -8,6 +8,7 @@ pragma solidity ^0.4.17;
 
 library DBAgreement {
     enum ContractType {UNDEFINED, ETH, ZSC}
+    enum AgreementStatus { UNDEFINED, ONGOING, CANCLED, PAID, NOTPAID}
 
     struct Agreement {
         ContractType    type_;
@@ -20,6 +21,10 @@ library DBAgreement {
         uint[]  receivers_zsc_;
         uint[]  providers_eth_;
         uint[]  providers_zsc_;
+        uint[]  agreements_;
+
+        mapping(uint => uint) agreementExist_;
+        mapping(uint => AgreementStatus) agreementStatus_;
     }
 
     function setName(Agreement storage _agreement, string _name) public {
@@ -86,5 +91,28 @@ library DBAgreement {
         _agreement.receivers_.length -= 1;
         _agreement.receivers_eth_.length -= 1;
         _agreement.receivers_zsc_.length -= 1;
+    }
+
+
+    //////////////////////////////////
+
+    function addAgreement(Entity storage _entity, uint _agreementID) public returns (bool) {
+        if (_entity.agreementExist_[_agreementID] == 0)
+            return false;
+
+        _entity.agreementExist_[_agreementID] = 1;
+        _entity.agreementStatus_[_agreementID] = AgreementStatus.ONGOING;
+        _entity.agreements_.push(_agreementID);
+
+        return true;
+    }
+
+    function setAgreementStatus(Entity storage _entity, uint _agreementID, AgreementStatus _status) public returns (bool) {
+        if (_entity.agreementExist_[_agreementID] == 0)
+            return false;
+
+        _entity.agreementStatus_[_agreementID] = _status;
+
+        return true;
     }
 }

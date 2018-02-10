@@ -1,29 +1,22 @@
-
-
 /*
-Copyright (c) 2017 Yong Yao, Zeusshield Blockchain Technology Development Co., Ltd
+Copyright (c) 2018, ZSC Dev Team
 2017-12-18: v0.01
 */
 
 pragma solidity ^0.4.17;
+import "./plat_math.sol";
 
 library DBEntity {
-    enum AgreementStatus { UNDEFINED, ONGOING, CANCLED, PAID, NOTPAID}
     struct Entity {
         string  name_ ;
         uint    id_ ;
         bool    activated_;
-        uint    ethTotal_;
-        uint    zscTotal_;
-        uint    zscSuspend_;
-        uint[]  agreements_;
+
+        mapping(string => uint) currencies_;
+        mapping(string => uint) currencyStatus_; // 0: not-exist; 1: ok; 2: suspended
 
         mapping(string => string) parameters_;
-        mapping(string => uint) parameterExist_;
-        mapping(string => string) removedParameters_;
-
-        mapping(uint => uint) agreementExist_;
-        mapping(uint => AgreementStatus) agreementStatus_;
+        mapping(string => uint)   parameterExist_;
     }
 
     function setName(Entity storage _entity, string _name) public {
@@ -34,46 +27,8 @@ library DBEntity {
         _entity.id_ = _id;
     }
 
-    function setEthValue(Entity storage _entity, uint _eth) public {
-        _entity.ethTotal_ = _eth;
-    }
-
-    function setZscValue(Entity storage _entity, uint _zsc) public {
-        _entity.zscTotal_ = _zsc;
-    }
-
     function setActivated(Entity storage _entity, bool _activated) public {
         _entity.activated_ = _activated;
-    }
-
-    function addParameter(Entity storage _entity, string _parameter) public returns (bool) {
-        if (_entity.parameterExist_[_parameter] != 0)
-            return false;
-
-        _entity.parameterExist_[_parameter] = 1;
-        return true;
-    }
-
-    function removeParameter(Entity storage _entity, string _parameter) public returns (bool) {
-        if (_entity.parameterExist_[_parameter] != 0) {
-            _entity.parameterExist_[_parameter] = 0;
-            _entity.removedParameters_[_parameter] = _entity.parameters_[_parameter];
-        }
-        return true;
-    }
-
-    function setParameter(Entity storage _entity, string _parameter, string _value) public returns (bool) {
-        if (_entity.parameterExist_[_parameter] == 0)
-            return false;
-
-        _entity.parameters_[_parameter] = _value;
-        return true;
-    }
-
-    function getParameter(Entity storage _entity, string _parameter) public constant returns (string) {
-        if (_entity.parameterExist_[_parameter] == 0) revert();
-
-        return _entity.parameters_[_parameter];
     }
 
 
@@ -86,37 +41,85 @@ library DBEntity {
         return _entity.id_;
     }
 
-    function getEthValue(Entity storage _entity) public constant returns (uint) {
-        return _entity.ethTotal_;
-    }
-
-    function getZscValue(Entity storage _entity) public constant returns (uint) {
-        return _entity.zscTotal_;
-    }
-
     function getActivated(Entity storage _entity) public constant returns (bool) {
         return _entity.activated_;
     }
 
     //////////////////////////////////
+    function insertCurrency(Entity storage _entity, string _currency) public returns (bool) {
+        if (_entity.currencyStatus_[_currency] != 0) {
+           return false;
+        }
 
-    function addAgreement(Entity storage _entity, uint _agreementID) public returns (bool) {
-        if (_entity.agreementExist_[_agreementID] == 0)
-            return false;
-
-        _entity.agreementExist_[_agreementID] = 1;
-        _entity.agreementStatus_[_agreementID] = AgreementStatus.ONGOING;
-        _entity.agreements_.push(_agreementID);
-
+        _entity.currencies_[_currency] = 0;
+        _entity.currencyStatus_[_currency] = 1;
         return true;
     }
 
-    function setAgreementStatus(Entity storage _entity, uint _agreementID, AgreementStatus _status) public returns (bool) {
-        if (_entity.agreementExist_[_agreementID] == 0)
+    function increaseCurrency(Entity storage _entity, string _currency, uint _value) public returns (bool) {
+        if (_entity.currencyStatus_[_currency] != 1) {
             return false;
+        }
 
-        _entity.agreementStatus_[_agreementID] = _status;
+        uint val = _entity.currencies_[_currency];
 
+        _entity.currencies_[_currency] = PlatMath.add(val, _value);
         return true;
     }
+
+    function decreaseCurrency(Entity storage _entity, string _currency, uint _value) public returns (bool) {
+        if (_entity.currencyStatus_[_currency] != 1) {
+            return false;
+        }
+        
+        uint val = _entity.currencies_[_currency];
+
+        if (PlatMath.less(val, _value)) {
+            return false;
+        }
+
+        _entity.currencies_[_currency] = PlatMath.sub(val, _value);
+        return true;
+    }
+
+    function getCurrency(Entity storage _entity, string _currency) public constant returns (uint) {
+        if (_entity.currencyStatus_[_currency] == 0) {
+            return 0;
+        }
+        
+        return _entity.currencies_[_currency];
+    }
+
+    //////////////////////////////////
+    function insertParameter(Entity storage _entity, string _parameter) public returns (bool) {
+        if (_entity.parameterExist_[_parameter] != 0) {
+            return false;
+        }
+        _entity.parameterExist_[_parameter] = 1;
+        return true;
+    }
+
+    function removeParameter(Entity storage _entity, string _parameter) public returns (bool) {
+        if (_entity.parameterExist_[_parameter] == 0) {
+            return false;
+        }
+        _entity.parameterExist_[_parameter] = 0;
+        return true;
+    }
+
+    function setParameter(Entity storage _entity, string _parameter, string _value) public returns (bool) {
+        if (_entity.parameterExist_[_parameter] == 0) {
+            return false;
+        }
+        _entity.parameters_[_parameter] = _value;
+        return true;
+    }
+
+    function getParameter(Entity storage _entity, string _parameter) public constant returns (string) {
+        if (_entity.parameterExist_[_parameter] == 0) {
+           revert();
+        }
+        return _entity.parameters_[_parameter];
+    }
+
 }

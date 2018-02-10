@@ -1,11 +1,27 @@
 /*
-Copyright (c) 2017 Yong Yao, Zeusshield Blockchain Technology Development Co., Ltd
+Copyright (c) 2018, ZSC Dev Team
 2017-12-18: v0.01
 */
 
 pragma solidity ^0.4.17;
 
 library PlatMath {
+
+    function greater(uint a, uint b) internal pure returns (bool) {
+        if (a > b) return true;
+        return false;
+    }
+
+    function less(uint a, uint b) internal pure returns (bool) {
+        if (a < b) return true;
+        return false;
+    }
+
+    function equal(uint a, uint b) internal pure returns (bool) {
+        if (a == b) return true;
+        return false;
+    }
+
     function mul(uint a, uint b) internal pure returns (uint) {
         uint c = a * b;
         assertErr(a == 0 || c / a == b);

@@ -15,13 +15,13 @@ library DBReceiver {
     }
 
     function initReceiver(Receiver storage _receiver) public {
-        DBEntity.addParameter(_receiver.entity_, "userFamilyName");
-        DBEntity.addParameter(_receiver.entity_, "userFirstName");
-        DBEntity.addParameter(_receiver.entity_, "userNationality");
-        DBEntity.addParameter(_receiver.entity_, "userPhone");
-        DBEntity.addParameter(_receiver.entity_, "userGender");
-        DBEntity.addParameter(_receiver.entity_, "userBirthday");
-        DBEntity.addParameter(_receiver.entity_, "userIdentification");
-        DBEntity.addParameter(_receiver.entity_, "userResidentialAddress");
+        DBEntity.insertParameter(_receiver.entity_, "userFamilyName");
+        DBEntity.insertParameter(_receiver.entity_, "userFirstName");
+        DBEntity.insertParameter(_receiver.entity_, "userNationality");
+        DBEntity.insertParameter(_receiver.entity_, "userPhone");
+        DBEntity.insertParameter(_receiver.entity_, "userGender");
+        DBEntity.insertParameter(_receiver.entity_, "userBirthday");
+        DBEntity.insertParameter(_receiver.entity_, "userIdentification");
+        DBEntity.insertParameter(_receiver.entity_, "userResidentialAddress");
     }
 }
