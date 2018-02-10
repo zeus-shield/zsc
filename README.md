@@ -11,7 +11,7 @@ Implementation of the website based interfance not included here.
 
 #### 1.1.1 token: zsc token contract
 
-#### 1.1.2 database: construct the decentralized databased especially for insurance system
+#### 1.1.2 database: construct the decentralized databased
 
 #### 1.1.3 plat: basic functions
 
