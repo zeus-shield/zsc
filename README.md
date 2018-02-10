@@ -19,9 +19,8 @@ Implementation of the website based interfance not included here.
 
 ## 2. ZSC token part
 
-
 ## 3. ZSC platform part:
-### 2.1. Framework Components
+### 3.1. Framework Components
 
 ---Solidity Libraries---
 
@@ -36,7 +35,7 @@ db_entity --> |--- db_item
               |--- db_template
 
 
-### 2.2. Code update
+### 3.2. Code update
 
 2017.09.05: add multisigtoken.sol, multisigwallet.sol and token.sol
 
@@ -50,3 +49,4 @@ db_entity --> |--- db_item
 
 2018.02.10: add one new file: db_itme.sol, start re-constructing db_entity and related framwork components.
 
+2018.02.11: add one new file: db_template.sol
