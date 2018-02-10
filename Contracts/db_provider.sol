@@ -7,12 +7,13 @@ Copyright (c) 2018 ZSC Dev, Zeusshield Blockchain Technology Development Co., Lt
 
 pragma solidity ^0.4.18;
 import "./db_entity.sol";
+import "./db_template.sol";
 
 library DBProvider {
     struct Provider {
         DBEntity.Entity entity_;
-        uint[]  templates_;
-        mapping(uint => uint) templateExist_;
+        DBTemplate.Template[]  templates_;
+        mapping(string => uint) templateExist_;
     }
 
     function initOrigin(Provider storage _provider) public {
@@ -33,12 +34,12 @@ library DBProvider {
         DBEntity.insertParameter(_provider.entity_, "claimPhone");
     }
 
-    function addTemplate(Provider storage _provider, uint _templateID) public returns (bool) {
-        if (_provider.templateExist_[_templateID] == 0)
+    function addTemplate(Provider storage _provider, DBTemplate.Template storage _template, string _name) public returns (bool) {
+        if (_provider.templateExist_[_name] != 0)
             return false;
 
-        _provider.templateExist_[_templateID] = 1;
-        _provider.templates_.push(_templateID);
+        _provider.templateExist_[_name] = 1;
+        _provider.templates_.push(_template);
 
         return true;
     }
