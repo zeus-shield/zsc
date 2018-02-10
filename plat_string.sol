@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2017 Yong Yao, Zeusshield Blockchain Technology Development Co., Ltd
+Copyright (c) 2018, ZSC Dev Team
 2017-12-18: v0.01
 */
 

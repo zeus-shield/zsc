@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2018 ZSC Dev, Zeusshield Blockchain Technology Development Co., Ltd
+Copyright (c) 2018 ZSC Dev Team
 2017-12-18: v0.01
 2018-02-07: v0.02
 */
@@ -49,9 +49,9 @@ contract DBDatabase {
 
         DBProvider.Provider storage en;
         DBEntity.setName(en.entity_, _name);
-        //DBProvider.setName(DBEntity.Entity(en), _name);
-        //DBProvider.setID(en, id);
-        //DBProvider.initOrigin(en);
+        DBEntity.setName(en.entity_, _name);
+        DBEntity.setID(en.entity_, id);
+        DBProvider.initOrigin(en);
         providers_.push(en);
     }
 }

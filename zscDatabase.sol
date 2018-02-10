@@ -1,3 +1,7 @@
+/*
+Copyright (c) 2018, ZSC Dev Team
+2017-12-18: v0.01
+*/
 pragma solidity ^0.4.11;
 
 contract owned {
@@ -18,40 +22,40 @@ contract owned {
 }
 
 contract SafeMath {
-    function safeMul(uint a, uint b) 
-        internal 
-        returns (uint) 
+    function safeMul(uint a, uint b)
+        internal
+        returns (uint)
     {
         uint c = a * b;
         assert(a == 0 || c / a == b);
         return c;
     }
 
-    function safeSub(uint a, uint b) 
-        internal returns (uint) 
+    function safeSub(uint a, uint b)
+        internal returns (uint)
     {
         assert(b <= a);
         return a - b;
     }
 
-    function safeAdd(uint a, uint b) 
-        internal 
-        returns (uint) 
+    function safeAdd(uint a, uint b)
+        internal
+        returns (uint)
     {
         uint c = a + b;
         assert(c>=a && c>=b);
         return c;
     }
 
-    function assert(bool assertion) 
-        internal 
+    function assert(bool assertion)
+        internal
     {
         if (!assertion) throw;
     }
 }
 
 contract ZSCEntity {
-    string  _name = 'NULL';  
+    string  _name = 'NULL';
     uint    _id = 0;
     uint    _type = 0;
     bool    _activated = false;
@@ -65,15 +69,15 @@ contract ZSCEntity {
     }
 
     // Constructor
-    function ZSCEntity(string name_, uint id_) 
+    function ZSCEntity(string name_, uint id_)
     {
         _name = name_;
         _id   = id_;
         _creator = msg.sender;
     }
 
-    // This unnamed function is called whenever someone tries to send ether to it 
-    function() 
+    // This unnamed function is called whenever someone tries to send ether to it
+    function()
        payable
     {
         if (msg.value > 0) {
@@ -82,60 +86,60 @@ contract ZSCEntity {
         }
     }
 
-    function getName() 
+    function getName()
         public
         isCreator(msg.sender)
-        constant 
-        returns (string) 
-    {   
+        constant
+        returns (string)
+    {
         return _name;
     }
 
-    function getType() 
+    function getType()
         public
         isCreator(msg.sender)
-        constant 
-        returns (uint) 
-    {   
+        constant
+        returns (uint)
+    {
         return _type;
     }
 
-    function getId() 
+    function getId()
         public
         isCreator(msg.sender)
-        constant 
-        returns (uint) 
-    {   
+        constant
+        returns (uint)
+    {
         return _id;
     }
 
-    function getStatus() 
+    function getStatus()
         public
         isCreator(msg.sender)
-        constant 
-        returns (bool) 
-    {   
+        constant
+        returns (bool)
+    {
         return _activated;
     }
 
-    function setType(uint type_) 
+    function setType(uint type_)
         public
         isCreator(msg.sender)
-    { 
+    {
         _type = type_;
     }
-    
-    function setStatus(bool status_) 
+
+    function setStatus(bool status_)
         public
         isCreator(msg.sender)
-    {   
-        _activated = status_; 
+    {
+        _activated = status_;
     }
 }
 
 contract ZSCUser is ZSCEntity, SafeMath {
     // Constructor
-    function ZSCUser(string name_, uint id_) 
+    function ZSCUser(string name_, uint id_)
         public
         ZSCEntity(name_, id_)
     {
@@ -152,20 +156,20 @@ contract ZSCContract is ZSCEntity {
         _;
     }
     // Constructor
-    function ZSCContract(string name_, uint id_) 
+    function ZSCContract(string name_, uint id_)
         public
         ZSCEntity(name_, id_)
     {
     }
 
-    function addProvider(address usr_, uint percentage_) 
+    function addProvider(address usr_, uint percentage_)
         public
         percentageRange(percentage_)
     {
         _providers[usr_] = percentage_;
     }
 
-    function addReceiver(address usr_, uint percentage_) 
+    function addReceiver(address usr_, uint percentage_)
         public
         percentageRange(percentage_)
     {
@@ -199,7 +203,7 @@ contract ZSCDatabaseRoot is owned {
     }
 
     // Constructor
-    function ZSCDatabaseRoot() 
+    function ZSCDatabaseRoot()
         public
     {
     }
@@ -241,12 +245,12 @@ contract ZSCDatabaseUsers is owned, SafeMath {
     mapping(string => uint) _exist;
 
     // Constructor
-    function ZSCDatabaseUsers() 
+    function ZSCDatabaseUsers()
         public
     {
     }
 
-    function insertUser(string name_) 
+    function insertUser(string name_)
         public
         onlyOwner
     {
@@ -268,7 +272,7 @@ contract ZSCDatabaseUsers is owned, SafeMath {
         return (_exist[name_] - _startIndex);
     }
 
-    function modifyUserById(uint id_, uint type_, bool status_) 
+    function modifyUserById(uint id_, uint type_, bool status_)
         public
         onlyOwner
     {
@@ -280,14 +284,14 @@ contract ZSCDatabaseUsers is owned, SafeMath {
         user.setStatus(status_);
     }
 
-    function modifyUserByName(string name_, uint type_, bool status_) 
+    function modifyUserByName(string name_, uint type_, bool status_)
         public
         onlyOwner
     {
         modifyUserById(userId(name_), type_, status_);
     }
 
-    function getUserById(uint id_) 
+    function getUserById(uint id_)
         public
         onlyOwner
         constant
@@ -299,7 +303,7 @@ contract ZSCDatabaseUsers is owned, SafeMath {
         return _users[index];
     }
 
-    function getUserByName(string name_) 
+    function getUserByName(string name_)
         public
         onlyOwner
         constant
@@ -308,5 +312,3 @@ contract ZSCDatabaseUsers is owned, SafeMath {
         return getUserById(userId(name_));
     }
 }
-
-

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2017 ZSC Dev, Zeusshield Blockchain Technology Development Co., Ltd
+Copyright (c) 2018, ZSC Dev Team
 2017-12-18: v0.01
 2018-02-08: v0.01
 */
@@ -11,7 +11,7 @@ library DBAgreement {
 
     struct Agreement {
         ContractType    type_;
-        string  name_ ;  
+        string  name_ ;
         uint    id_ ;
         bool    activated_;
         uint[]  receivers_;
@@ -36,7 +36,7 @@ library DBAgreement {
 
     function setActivated(Agreement storage _agreement, bool _activated) public {
         _agreement.activated_ = _activated;
-    } 
+    }
 
     function addProvider(Agreement storage _agreement, uint _provider_index, uint _ethValue, uint _zscValue)  public {
         for (uint i = 0; i < _agreement.providers_.length; ++i) {
@@ -88,4 +88,3 @@ library DBAgreement {
         _agreement.receivers_zsc_.length -= 1;
     }
 }
-
