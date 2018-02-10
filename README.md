@@ -9,9 +9,11 @@ Implementation of the website based interfance not included here.
 
 ### 1.1 Contracts: the solidity-based coding here
 
-#### 1.1.1 platform: construct the decentralized databased especially for insurance system
+#### 1.1.1 token: zsc token contract
 
-#### 1.1.2 token: zsc token contract
+#### 1.1.2 database: construct the decentralized databased especially for insurance system
+
+#### 1.1.3 plat: basic functions
 
 ### 1.2 Test: testing codes here
 
@@ -27,9 +29,9 @@ Based on ERC20 protocol
 
               |--- db_receiver
 
-db_entity --> |--- db_provider
+              |--- db_provider
 
-              |--- db_item
+db_entity --> |--- db_item
 
               |--- db_agreement
 
@@ -47,3 +49,4 @@ db_entity --> |--- db_provider
 2018.02.10: add one new file: db_provider.sol 0.02
 
 2018.02.10: add one new file: db_itme.sol, start re-constructing db_entity and related framwork components.
+
