@@ -9,7 +9,7 @@ Implementation of the website based interfance not included here.
 
 ### 1.1 Contracts: the solidity-based coding here
 
-#### token: zsc token contract
+#### token: zsc token contract, Based on ERC20 protocol
 
 #### database: construct the decentralized databased
 
@@ -17,12 +17,10 @@ Implementation of the website based interfance not included here.
 
 ### 1.2 Test: testing codes here
 
-## 1. ZSC token part
-Based on ERC20 protocol
+## 2. ZSC token part
 
-2017.09.05: add multisigtoken.sol, multisigwallet.sol and token.sol
 
-## 2. ZSC platform part:
+## 3. ZSC platform part:
 ### 2.1. Framework Components
 
 ---Solidity Libraries---
@@ -39,6 +37,8 @@ db_entity --> |--- db_item
 
 
 ### 2.2. Code update
+
+2017.09.05: add multisigtoken.sol, multisigwallet.sol and token.sol
 
 2017.10.28: add the initial version of zscDatabase.sol
 
