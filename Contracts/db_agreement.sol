@@ -15,13 +15,9 @@ library DBAgreement {
         string  name_ ;
         uint    id_ ;
         bool    activated_;
-        uint[]  receivers_;
-        uint[]  providers_;
-        uint[]  receivers_eth_;
-        uint[]  receivers_zsc_;
-        uint[]  providers_eth_;
-        uint[]  providers_zsc_;
-        uint[]  agreements_;
+        uint[]  receiverIDs_;
+        uint[]  providerIDs_;
+        uint[]  templateIDs_;
 
         mapping(uint => uint) agreementExist_;
         mapping(uint => AgreementStatus) agreementStatus_;
@@ -36,53 +32,53 @@ library DBAgreement {
     }
 
     function addProvider(Agreement storage _agreement, uint _provider_index, uint _ethValue, uint _zscValue)  public {
-        for (uint i = 0; i < _agreement.providers_.length; ++i) {
-           if (_agreement.providers_[i] == _provider_index) {
+        for (uint i = 0; i < _agreement.providerIDs_.length; ++i) {
+           if (_agreement.providerIDs_[i] == _provider_index) {
                 revert();
             }
         }
-        _agreement.providers_.push(_provider_index);
-        _agreement.providers_eth_.push(_ethValue);
-        _agreement.providers_zsc_.push(_zscValue);
+        _agreement.providerIDs_.push(_provider_index);
+        _agreement.providerIDs_eth_.push(_ethValue);
+        _agreement.providerIDs_zsc_.push(_zscValue);
     }
 
     function removeProvider(Agreement storage _agreement, uint _provider_index)  public {
-        for (uint i = 0; i < _agreement.providers_.length; ++i) {
-           if (_agreement.providers_[i] == _provider_index) {
-                _agreement.providers_[i] = _agreement.providers_[_agreement.providers_.length - 1];
-                _agreement.providers_eth_[i] = _agreement.providers_eth_[_agreement.providers_eth_.length - 1];
-                _agreement.providers_zsc_[i] = _agreement.providers_zsc_[_agreement.providers_zsc_.length - 1];
+        for (uint i = 0; i < _agreement.providerIDs_.length; ++i) {
+           if (_agreement.providerIDs_[i] == _provider_index) {
+                _agreement.providerIDs_[i] = _agreement.providerIDs_[_agreement.providerIDs_.length - 1];
+                _agreement.providerIDs_eth_[i] = _agreement.providerIDs_eth_[_agreement.providerIDs_eth_.length - 1];
+                _agreement.providerIDs_zsc_[i] = _agreement.providerIDs_zsc_[_agreement.providerIDs_zsc_.length - 1];
                 break;
             }
         }
-        _agreement.providers_.length -= 1;
-        _agreement.providers_eth_.length -= 1;
-        _agreement.providers_zsc_.length -= 1;
+        _agreement.providerIDs_.length -= 1;
+        _agreement.providerIDs_eth_.length -= 1;
+        _agreement.providerIDs_zsc_.length -= 1;
     }
 
     function addReceiver(Agreement storage _agreement, uint _receiver_index, uint _ethValue, uint _zscValue)  public {
-        for (uint i = 0; i < _agreement.providers_.length; ++i) {
-           if (_agreement.providers_[i] == _receiver_index) {
+        for (uint i = 0; i < _agreement.providerIDs_.length; ++i) {
+           if (_agreement.providerIDs_[i] == _receiver_index) {
                 revert();
             }
         }
-        _agreement.receivers_.push(_receiver_index);
-        _agreement.receivers_eth_.push(_ethValue);
-        _agreement.receivers_zsc_.push(_zscValue);
+        _agreement.receiverIDs_.push(_receiver_index);
+        _agreement.receiverIDs_eth_.push(_ethValue);
+        _agreement.receiverIDs_zsc_.push(_zscValue);
     }
 
     function removeReceiver(Agreement storage _agreement, uint _receiver_index)  public {
-        for (uint i = 0; i < _agreement.receivers_.length; ++i) {
-           if (_agreement.receivers_[i] == _receiver_index) {
-                _agreement.receivers_[i] = _agreement.receivers_[_agreement.receivers_.length - 1];
-                _agreement.receivers_eth_[i] = _agreement.receivers_eth_[_agreement.receivers_eth_.length - 1];
-                _agreement.receivers_zsc_[i] = _agreement.receivers_zsc_[_agreement.receivers_zsc_.length - 1];
+        for (uint i = 0; i < _agreement.receiverIDs_.length; ++i) {
+           if (_agreement.receiverIDs_[i] == _receiver_index) {
+                _agreement.receiverIDs_[i] = _agreement.receiverIDs_[_agreement.receiverIDs_.length - 1];
+                _agreement.receiverIDs_eth_[i] = _agreement.receiverIDs_eth_[_agreement.receiverIDs_eth_.length - 1];
+                _agreement.receiverIDs_zsc_[i] = _agreement.receiverIDs_zsc_[_agreement.receiverIDs_zsc_.length - 1];
                 break;
             }
         }
-        _agreement.receivers_.length -= 1;
-        _agreement.receivers_eth_.length -= 1;
-        _agreement.receivers_zsc_.length -= 1;
+        _agreement.receiverIDs_.length -= 1;
+        _agreement.receiverIDs_eth_.length -= 1;
+        _agreement.receiverIDs_zsc_.length -= 1;
     }
 
 
@@ -94,7 +90,7 @@ library DBAgreement {
 
         _entity.agreementExist_[_agreementID] = 1;
         _entity.agreementStatus_[_agreementID] = AgreementStatus.ONGOING;
-        _entity.agreements_.push(_agreementID);
+        _entity.templateIDs_.push(_agreementID);
 
         return true;
     }
