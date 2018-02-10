@@ -36,9 +36,9 @@ contract DBDatabase {
         receiver_exist_[_name] = id;
 
         DBReceiver.Receiver storage en;
-        DBReceiver.setName(en, _name);
-        DBReceiver.setID(en, id);
-        DBReceiver.initOrigin(en);
+        DBEntity.setName(en.entity_, _name);
+        DBEntity.setID(en.entity_, id);
+        DBReceiver.initReceiver(en);
         receivers_.push(en);
     }
 
@@ -48,9 +48,10 @@ contract DBDatabase {
         provider_exist_[_name] = id;
 
         DBProvider.Provider storage en;
-        DBProvider.setName(en, _name);
-        DBProvider.setID(en, id);
-        DBProvider.initOrigin(en);
+        DBEntity.setName(en.entity_, _name);
+        //DBProvider.setName(DBEntity.Entity(en), _name);
+        //DBProvider.setID(en, id);
+        //DBProvider.initOrigin(en);
         providers_.push(en);
     }
 }
