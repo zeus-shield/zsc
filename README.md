@@ -11,17 +11,20 @@ Based on ERC20 protocol
 2017.09.05: add multisigtoken.sol, multisigwallet.sol and token.sol
 
 ## 2. ZSC platform part:
-### 2.1. Framework
+### 2.1. Framework Components
 
----db_database---
+---Solidity Libraries---
 
----db_receiver
+              |--- db_receiver
 
----db_provider
+db_entity --> |--- db_provider
 
----db_item
+              |--- db_item
 
----db_agreement
+              |--- db_agreement
+
+              |--- db_template
+
 
 ### 2.2. Code update
 
@@ -32,3 +35,5 @@ Based on ERC20 protocol
 2018.02.09: add three new files: db_receiver.sol v0.03; db_database.sol v0.02; test_basic_funcs.js 0.01
 
 2018.02.10: add one new file: db_provider.sol 0.02
+
+2018.02.10: add one new file: db_itme.sol, start re-constructing db_entity and related framwork components.
