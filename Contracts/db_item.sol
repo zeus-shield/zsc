@@ -4,13 +4,14 @@ Copyright (c) 2018, ZSC Dev Team
 */
 
 pragma solidity ^0.4.17;
+import "./db_entity.sol";
 
 library DBItem {
     struct Item {
         DBEntity.Entity entity_;
     }
 
-    function initItem(DBItem storage _item) public {
+    function initItem(Item storage _item) public {
         DBEntity.insertParameter(_item.entity_, "assurerType");
         DBEntity.insertParameter(_item.entity_, "assurerName");
         DBEntity.insertParameter(_item.entity_, "principalFirstName");
