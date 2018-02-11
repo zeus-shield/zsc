@@ -24,15 +24,19 @@ Implementation of the website based interfance not included here.
 
 ---Solidity Libraries---
 
-              |--- db_receiver
+|<-- db_entity 
 
-              |--- db_provider
+|--- db_receiver
 
-db_entity --> |--- db_item
+|--- db_provider
 
-              |--- db_agreement
+|--- db_item
 
-              |--- db_template
+|--- db_agreement
+
+|--- db_template
+
+|--- db_idmanager
 
 
 ### 3.2. Code update
@@ -49,4 +53,5 @@ db_entity --> |--- db_item
 
 2018.02.10: add one new file: db_itme.sol, start re-constructing db_entity and related framwork components.
 
-2018.02.11: add one new file: db_template.sol
+2018.02.11: add two new file: db_template.sol 0.01; db_idmanager.sol 0.01
+
