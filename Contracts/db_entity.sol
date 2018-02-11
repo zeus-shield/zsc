@@ -1,119 +1,114 @@
 /*
 Copyright (c) 2018, ZSC Dev Team
 2017-12-18: v0.01
+2018-02-11: v0.01
 */
 
 pragma solidity ^0.4.17;
 import "./plat_math.sol";
+import "./object.sol";
 
-library DBEntity {
-    struct Entity {
-        string  name_ ;
-        uint    id_ ;
-        bool    activated_;
+contract DBEntity is Object {
+    uint    id_ ;
+    bool    activated_;
 
-        mapping(string => uint) currencies_;
-        mapping(string => uint) currencyStatus_; // 0: not-exist; 1: ok; 2: suspended
+    mapping(string => uint) currencies_;
+    mapping(string => uint) currencyStatus_; // 0: not-exist; 1: ok; 2: suspended
 
-        mapping(string => string) parameters_;
-        mapping(string => uint)   parameterExist_;
+    mapping(string => string) parameters_;
+    mapping(string => uint)   parameterExist_;
+
+    // Constructor
+    function DBEntity(string _name) public Object(_name) {
     }
 
-    function setName(Entity storage _entity, string _name) public {
-        _entity.name_ = _name;
+    function setID(uint _id) public onlyOwner {
+        id_ = _id;
     }
 
-    function setID(Entity storage _entity, uint _id) public {
-        _entity.id_ = _id;
-    }
-
-    function setActivated(Entity storage _entity, bool _activated) public {
-        _entity.activated_ = _activated;
-    }
-
-    //////////////////////////////////
-    function getName(Entity storage _entity) public constant returns (string) {
-        return _entity.name_;
-    }
-
-    function getID(Entity storage _entity) public constant returns (uint) {
-        return _entity.id_;
-    }
-
-    function getActivated(Entity storage _entity) public constant returns (bool) {
-        return _entity.activated_;
+    function setActivated(bool _activated) public onlyOwner {
+        activated_ = _activated;
     }
 
     //////////////////////////////////
-    function insertCurrency(Entity storage _entity, string _currency) public returns (bool) {
-        if (_entity.currencyStatus_[_currency] != 0) {
+    function getID() public onlyOwner constant returns (uint) {
+        return id_;
+    }
+
+    function getActivated() public onlyOwner constant returns (bool) {
+        return activated_;
+    }
+
+    //////////////////////////////////
+    function insertCurrency(string _currency) public onlyOwner returns (bool) {
+        if (currencyStatus_[_currency] != 0) {
            return false;
         }
-        _entity.currencies_[_currency] = 0;
-        _entity.currencyStatus_[_currency] = 1;
+        currencies_[_currency] = 0;
+        currencyStatus_[_currency] = 1;
         return true;
     }
 
-    function increaseCurrency(Entity storage _entity, string _currency, uint _value) public returns (bool) {
-        if (_entity.currencyStatus_[_currency] != 1) {
+    function increaseCurrency(string _currency, uint _value) public onlyOwner returns (bool) {
+        if (currencyStatus_[_currency] != 1) {
             return false;
         }
 
-        uint val = _entity.currencies_[_currency];
-        _entity.currencies_[_currency] = PlatMath.add(val, _value);
+        uint val = currencies_[_currency];
+        currencies_[_currency] = PlatMath.add(val, _value);
         return true;
     }
 
-    function decreaseCurrency(Entity storage _entity, string _currency, uint _value) public returns (bool) {
-        if (_entity.currencyStatus_[_currency] != 1) {
+    function decreaseCurrency(string _currency, uint _value) public onlyOwner returns (bool) {
+        if (currencyStatus_[_currency] != 1) {
             return false;
         }
         
-        uint val = _entity.currencies_[_currency];
+        uint val = currencies_[_currency];
         if (PlatMath.less(val, _value)) {
             return false;
         }
-        _entity.currencies_[_currency] = PlatMath.sub(val, _value);
+        currencies_[_currency] = PlatMath.sub(val, _value);
         return true;
     }
 
-    function getCurrency(Entity storage _entity, string _currency) public constant returns (uint) {
-        if (_entity.currencyStatus_[_currency] == 0) {
+    function getCurrency(string _currency) public onlyOwner constant returns (uint) {
+        if (currencyStatus_[_currency] == 0) {
             return 0;
         }
         
-        return _entity.currencies_[_currency];
+        return currencies_[_currency];
     }
 
     //////////////////////////////////
-    function insertParameter(Entity storage _entity, string _parameter) public returns (bool) {
-        if (_entity.parameterExist_[_parameter] != 0) {
+    function insertParameter(string _parameter) public onlyOwner returns (bool) {
+        if (parameterExist_[_parameter] != 0) {
             return false;
         }
-        _entity.parameterExist_[_parameter] = 1;
+        parameterExist_[_parameter] = 1;
         return true;
     }
 
-    function removeParameter(Entity storage _entity, string _parameter) public returns (bool) {
-        if (_entity.parameterExist_[_parameter] == 0) {
+    function removeParameter(string _parameter) public onlyOwner returns (bool) {
+        if (parameterExist_[_parameter] == 0) {
             return false;
         }
-        _entity.parameterExist_[_parameter] = 0;
+        parameterExist_[_parameter] = 0;
         return true;
     }
 
-    function setParameter(Entity storage _entity, string _parameter, string _value) public returns (bool) {
-        if (_entity.parameterExist_[_parameter] == 0) {
+    function setParameter(string _parameter, string _value) public onlyOwner returns (bool) {
+        if (parameterExist_[_parameter] == 0) {
             return false;
         }
-        _entity.parameters_[_parameter] = _value;
+        parameters_[_parameter] = _value;
         return true;
     }
 
-    function getParameter(Entity storage _entity, string _parameter) public constant returns (string) {
-        if (_entity.parameterExist_[_parameter] == 0) {
+    function getParameter(string _parameter) public onlyOwner constant returns (string) {
+        if (parameterExist_[_parameter] == 0) {
            revert();
         }
-        return _entity.parameters_[_parameter];
+        return parameters_[_parameter];
     }
 }
