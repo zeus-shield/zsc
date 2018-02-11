@@ -20,6 +20,11 @@ contract DBEntity is Object {
 
     // Constructor
     function DBEntity(string _name) public Object(_name) {
+        initParameters();
+    }
+
+    function initParameters() internal {
+        insertParameter("test");
     }
 
     function setID(uint _id) public onlyOwner {

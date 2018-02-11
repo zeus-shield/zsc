@@ -8,12 +8,12 @@ pragma solidity ^0.4.18;
 contract Owned {
     address public owner;
 
-    function Owned() {
+    function Owned() public {
         owner = msg.sender;
     }
 
     modifier onlyOwner {
-        if (msg.sender != owner) throw;
+        if (msg.sender != owner) revert();
         _;
     }
 
@@ -35,7 +35,7 @@ contract Object is Owned {
         revert();
     }
 
-    function() public name() public onlyOwner constant returns (string) {
+    function name() public  onlyOwner constant returns (string) {
         return name_;
     }
 }

@@ -4,20 +4,22 @@ Copyright (c) 2018, ZSC Dev Team
 */
 
 pragma solidity ^0.4.18;
-import "./db_entity.sol";
+import "./Object.sol";
 
-library DBIDManager {
-    struct IDManager {
-        uint[]  IDs_;
-        mapping(uint => uint) IDExist_;
+contract DBIDManager is Object{
+    uint[]  IDs_;
+    mapping(uint => uint) IDExist_;
+    
+    // Constructor
+    function DBItem(string _name) public Object(_name) {
     }
     
-    function addID(IDManager storage _idmanager, uint _id) public returns (bool) {
-        if (_idmanager.IDExist_[_id] != 0)
+    function addID(uint _id) public onlyOwner returns (bool) {
+        if (IDExist_[_id] != 0)
             return false;
 
-        _idmanager.IDExist_[_id] = 1;
-        _idmanager.IDs_.push(_id);
+        IDExist_[_id] = 1;
+        IDs_.push(_id);
 
         return true;
     }

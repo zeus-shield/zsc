@@ -6,31 +6,32 @@ Copyright (c) 2018, ZSC Dev Team
 pragma solidity ^0.4.17;
 import "./db_entity.sol";
 
-library DBItem {
-    struct Item {
-        DBEntity.Entity entity_;
-        uint providerID_;
-    }
-
-    function setProviderID(Item storage _item, uint _providerID) public {
-        _item.providerID_= _providerID;
+contract DBItem is DBEntity {
+    uint providerID_;
+    
+    // Constructor
+    function DBItem(string _name) public DBEntity(_name) {
     }
     
-    function initItem(Item storage _item) public {
-        DBEntity.insertParameter(_item.entity_, "assurerType");
-        DBEntity.insertParameter(_item.entity_, "assurerName");
-        DBEntity.insertParameter(_item.entity_, "principalFirstName");
-        DBEntity.insertParameter(_item.entity_, "principalLastName");
-        DBEntity.insertParameter(_item.entity_, "principalIdentific");
-        DBEntity.insertParameter(_item.entity_, "principalPhone");
-        DBEntity.insertParameter(_item.entity_, "principalEmail");
-        DBEntity.insertParameter(_item.entity_, "principalNationality");
-        DBEntity.insertParameter(_item.entity_, "companyName");
-        DBEntity.insertParameter(_item.entity_, "companyId");
-        DBEntity.insertParameter(_item.entity_, "companyNationality");
-        DBEntity.insertParameter(_item.entity_, "companyPhone");
-        DBEntity.insertParameter(_item.entity_, "companyEmail");
-        DBEntity.insertParameter(_item.entity_, "claimEmail");
-        DBEntity.insertParameter(_item.entity_, "claimPhone");
+    function initParameters() internal pure {
+        insertParameter("assurerType");
+        insertParameter("assurerName");
+        insertParameter("principalFirstName");
+        insertParameter("principalLastName");
+        insertParameter("principalIdentific");
+        insertParameter("principalPhone");
+        insertParameter("principalEmail");
+        insertParameter("principalNationality");
+        insertParameter("companyName");
+        insertParameter("companyId");
+        insertParameter("companyNationality");
+        insertParameter("companyPhone");
+        insertParameter("companyEmail");
+        insertParameter("claimEmail");
+        insertParameter("claimPhone");
+    }
+
+    function setProviderID(uint _providerID) public onlyOwner {
+        providerID_= _providerID;
     }
 }

@@ -7,13 +7,10 @@ pragma solidity ^0.4.18;
 import "./db_entity.sol";
 import "./db_item.sol";
 
-library DBTemplate {
-    struct Template {
-        DBEntity.Entity entity_;
-        DBItem.Item[]  items_;
-        mapping(string => uint) itemExist_;
-    }
-
+library DBTemplate is DBEntity {
+    DBItem[]  items_;
+    mapping(string => uint) itemExist_;
+    
     function initTemplate(Template storage _template) public {
         DBEntity.insertParameter(_template.entity_, "temp");
     }
