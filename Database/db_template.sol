@@ -11,7 +11,7 @@ import "./db_idmanager.sol";
 contract DBTemplate is DBEntity {
     DBIDManager itemIDs_;
     
-    function DBTemplate(string _name) public DBEntity(_name) {
+    function DBTemplate(bytes32 _name) public DBEntity(_name) {
     }
 
     function addItem(uint _id) public returns (bool) {

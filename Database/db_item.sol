@@ -10,7 +10,7 @@ contract DBItem is DBEntity {
     uint templateID_;
     
     // Constructor
-    function DBItem(string _name) public DBEntity(_name) {
+    function DBItem(bytes32 _name) public DBEntity(_name) {
     }
     
     function initParameters() internal {

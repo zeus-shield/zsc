@@ -11,12 +11,12 @@ contract owned {
         owner = msg.sender;
     }
 
-    modifier only_delegate {
+    modifier onlyOwner {
         if (msg.sender != owner) throw;
         _;
     }
 
-    function transferOwnership(address newOwner) only_delegate {
+    function transferOwnership(address newOwner) onlyOwner {
         owner = newOwner;
     }
 }
@@ -210,7 +210,7 @@ contract ZSCDatabaseRoot is owned {
 
     function addAdmin(address admin_)
         public
-        only_delegate
+        onlyOwner
         adminDoesNotExist(admin_)
         notNull(admin_)
     {
@@ -221,7 +221,7 @@ contract ZSCDatabaseRoot is owned {
 
     function removeOwner(address admin_)
         public
-        only_delegate
+        onlyOwner
         adminExists(admin_)
     {
         _isAdmin[admin_] = false;
@@ -252,7 +252,7 @@ contract ZSCDatabaseUsers is owned, SafeMath {
 
     function insertUser(string name_)
         public
-        only_delegate
+        onlyOwner
     {
         if (_exist[name_] == 0) throw;
         uint id = _nos + _startIndex;
@@ -274,7 +274,7 @@ contract ZSCDatabaseUsers is owned, SafeMath {
 
     function modifyUserById(uint id_, uint type_, bool status_)
         public
-        only_delegate
+        onlyOwner
     {
         uint index = id_ - _startIndex;
         if (index >= _nos) throw;
@@ -286,14 +286,14 @@ contract ZSCDatabaseUsers is owned, SafeMath {
 
     function modifyUserByName(string name_, uint type_, bool status_)
         public
-        only_delegate
+        onlyOwner
     {
         modifyUserById(userId(name_), type_, status_);
     }
 
     function getUserById(uint id_)
         public
-        only_delegate
+        onlyOwner
         constant
         returns (address)
     {
@@ -305,7 +305,7 @@ contract ZSCDatabaseUsers is owned, SafeMath {
 
     function getUserByName(string name_)
         public
-        only_delegate
+        onlyOwner
         constant
         returns (address)
     {

@@ -24,7 +24,7 @@ contract DBProvider is DBEntity {
     //DBIDManager agreementIDs_;
 
     // Constructor
-    function DBProvider(string _name) public DBEntity(_name) {
+    function DBProvider(bytes32 _name) public DBEntity(_name) {
         initParameters();
     }
 
@@ -46,7 +46,7 @@ contract DBProvider is DBEntity {
         addParameter("claimPhone");
     }
 
-    function DBCreateItem(string _name) public returns(DBEntity) {
+    function DBCreateItem(bytes32 _name) public returns(DBEntity) {
         DBItem item = new DBItem(_name);
         return DBEntity(item);
     }

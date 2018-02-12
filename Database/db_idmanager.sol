@@ -8,24 +8,24 @@ import "./object.sol";
 
 contract DBIDManager is Object {
     uint[]  IDs_;
-    mapping(uint => uint) IDExist_;
+    mapping(uint => bool) IDExist_;
     
     // Constructor
     function DBIDManager() public Object("null") {
     }
         
     function addID(uint _id) public only_delegate returns (bool) {
-        if (IDExist_[_id] != 0)
+        if (IDExist_[_id] == true)
             return false;
 
-        IDExist_[_id] = 1;
+        IDExist_[_id] = true;
         IDs_.push(_id);
 
         return true;
     }
 
     function removeID(uint _id) public only_delegate returns (bool) {
-        if (IDExist_[_id] == 0)
+        if (IDExist_[_id] == false)
             return false;
 
         for (uint i = 0; i < IDs_.length; ++i) {
@@ -34,7 +34,9 @@ contract DBIDManager is Object {
                 break;
             }
         }
+
         IDs_.length -= 1;
+        delete IDs_[_id]; 
         return true;
     }
 }

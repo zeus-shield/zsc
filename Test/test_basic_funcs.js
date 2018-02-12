@@ -132,7 +132,7 @@ function peerGet() {
     return admin.peers.forEach( function(e) {
         console.log("admin.addPeer('enode://" + 
         e.id + "@" + 
-        e.network.remoteAddress.substring(0, e.network.remoteAddress.indexOf(':')) + 
+        e.network.remoteAddress.subbytes32(0, e.network.remoteAddress.indexOf(':')) + 
         ":30303');");
     }) 
 }

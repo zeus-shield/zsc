@@ -22,6 +22,11 @@ contract Owned {
     }
 }
 
+
+/**
+* The Delegated contract allows a set of delegate accounts
+* to perform special tasks such as admin tasks to the contract
+**/       
 contract Delegated is Owned {
     mapping (address => bool) delegates_;
     
@@ -51,10 +56,10 @@ contract Delegated is Owned {
 }
 
 contract Object is Delegated {
-    string  name_ ;
+    bytes32  name_ ;
 
     // Constructor
-    function Object(string _name) public {
+    function Object(bytes32 _name) public {
         name_ = _name;
     }
 
@@ -63,7 +68,7 @@ contract Object is Delegated {
         revert();
     }
 
-    function name() public only_delegate constant returns (string) {
+    function name() public only_delegate pure returns (bytes32) {
         return name_;
     }
 

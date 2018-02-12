@@ -13,7 +13,7 @@ contract DBNode is Object {
     DBNode[] children_;
 
     // Constructor
-    function DBNode(string _name) public Object(_name) {
+    function DBNode(bytes32 _name) public Object(_name) {
     }
 
     function setParent(DBNode _parent) public only_delegate {
@@ -23,11 +23,10 @@ contract DBNode is Object {
     }
 
     function getParent() public only_delegate constant returns(DBNode) {
-        return parent_;/**
-         * The Delegated contract allows a set of delegate accounts
-         * to perform special tasks such as admin tasks to the contract
-         */
-        
+        return parent_; 
+    }
+
+    function addChild(DBNode _node) public only_delegate {
         
     }
     

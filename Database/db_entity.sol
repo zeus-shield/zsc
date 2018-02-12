@@ -12,14 +12,14 @@ contract DBEntity is DBNode {
     uint    id_ ;
     bool    activated_;
 
-    mapping(string => uint) currencies_;
-    mapping(string => uint) currencyStatus_; // 0: not-exist; 1: ok; 2: suspended
+    mapping(bytes32 => uint) currencies_;
+    mapping(bytes32 => uint) currencyStatus_; // 0: not-exist; 1: ok; 2: suspended
 
-    mapping(string => string) parameters_;
-    mapping(string => uint)   parameterExist_;
+    mapping(bytes32 => bytes32) parameters_;
+    mapping(bytes32 => uint)   parameterExist_;
 
     // Constructor
-    function DBEntity(string _name) public DBNode(_name) {
+    function DBEntity(bytes32 _name) public DBNode(_name) {
         initParameters();
     }
 
@@ -46,7 +46,7 @@ contract DBEntity is DBNode {
     }
 
     //////////////////////////////////
-    function addCurrency(string _currency) public only_delegate returns (bool) {
+    function addCurrency(bytes32 _currency) public only_delegate returns (bool) {
         if (currencyStatus_[_currency] != 0) {
            return false;
         }
@@ -55,7 +55,7 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function increaseCurrency(string _currency, uint _value) public only_delegate returns (bool) {
+    function increaseCurrency(bytes32 _currency, uint _value) public only_delegate returns (bool) {
         if (currencyStatus_[_currency] != 1) {
             return false;
         }
@@ -65,7 +65,7 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function decreaseCurrency(string _currency, uint _value) public only_delegate returns (bool) {
+    function decreaseCurrency(bytes32 _currency, uint _value) public only_delegate returns (bool) {
         if (currencyStatus_[_currency] != 1) {
             return false;
         }
@@ -78,7 +78,7 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function getCurrency(string _currency) public only_delegate constant returns (uint) {
+    function getCurrency(bytes32 _currency) public only_delegate constant returns (uint) {
         if (currencyStatus_[_currency] == 0) {
             return 0;
         }
@@ -87,7 +87,7 @@ contract DBEntity is DBNode {
     }
 
     //////////////////////////////////
-    function addParameter(string _parameter) public only_delegate returns (bool) {
+    function addParameter(bytes32 _parameter) public only_delegate returns (bool) {
         if (parameterExist_[_parameter] != 0) {
             return false;
         }
@@ -95,7 +95,7 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function removeParameter(string _parameter) public only_delegate returns (bool) {
+    function removeParameter(bytes32 _parameter) public only_delegate returns (bool) {
         if (parameterExist_[_parameter] == 0) {
             return false;
         }
@@ -103,7 +103,7 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function setParameter(string _parameter, string _value) public only_delegate returns (bool) {
+    function setParameter(bytes32 _parameter, bytes32 _value) public only_delegate returns (bool) {
         if (parameterExist_[_parameter] == 0) {
             return false;
         }
@@ -111,7 +111,7 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function getParameter(string _parameter) public only_delegate constant returns (string) {
+    function getParameter(bytes32 _parameter) public only_delegate constant returns (bytes32) {
         if (parameterExist_[_parameter] == 0) {
            revert();
         }
