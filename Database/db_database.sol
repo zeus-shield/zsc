@@ -25,8 +25,8 @@ contract DBDatabase is Object {
     }
 
 
-    function _createNode(DBNode _node) public only_delegate returns (bool) {
-        bytes32 memory str = bytes32(_node.name());
+    function _addNode(DBNode _node) public only_delegate returns (bool) {
+        bytes32 str = _node.name();
         if (nodeMap_[str] != DBNode(0)) {
             return false;
         } 

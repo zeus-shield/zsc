@@ -68,7 +68,7 @@ contract Object is Delegated {
         revert();
     }
 
-    function name() public only_delegate pure returns (bytes32) {
+    function name() public only_delegate constant returns (bytes32) {
         return name_;
     }
 

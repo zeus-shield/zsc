@@ -6,14 +6,24 @@ Copyright (c) 2018, ZSC Dev Team
 pragma solidity ^0.4.18;
 import "./plat_math.sol";
 import "./object.sol";
+import "./db_database.sol";
 
 
 contract DBNode is Object {
+    DBDatabase database_ = DBDatabase(0);
     DBNode parent_ = DBNode(0);
     DBNode[] children_;
 
     // Constructor
     function DBNode(bytes32 _name) public Object(_name) {
+    }
+
+    function setDatabase(DBDatabase _database) public only_delegate {
+        database_ = _database;
+    }
+
+    function getDatabase() internal constant returns (DBDatabase) {
+        return database_;
     }
 
     function setParent(DBNode _parent) public only_delegate {
@@ -27,7 +37,9 @@ contract DBNode is Object {
     }
 
     function addChild(DBNode _node) public only_delegate {
-        
+        _node.setDatabase(getDatabase());
+        getDatabase()._addNode(_node);
+        children_.push(_node);
     }
     
 }
