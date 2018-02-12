@@ -7,17 +7,19 @@ Copyright (c) 2018 ZSC Dev, Zeusshield Blockchain Technology Development Co., Lt
 
 pragma solidity ^0.4.18;
 import "./db_entity.sol";
-
+import "./db_template.sol";
+//import "./db_idmanager.sol";
 /*
 import "./db_item.sol";
-import "./db_template.sol";
+
 import "./db_agreement.sol";
-import "./db_idmanager.sol";
+
 */
 
 contract DBProvider is DBEntity {
-    //DBIDManager itemIDs_;
     //DBIDManager templateIDs_;
+
+    //DBIDManager itemIDs_;
     //DBIDManager agreementIDs_;
 
     // Constructor

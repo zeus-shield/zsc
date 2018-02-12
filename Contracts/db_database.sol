@@ -7,6 +7,8 @@ pragma solidity ^0.4.18;
 import "./object.sol";
 import "./db_receiver.sol";
 import "./db_provider.sol";
+import "./db_idmanager.sol";
+
 
 contract DBDatabase is Object {
     DBReceiver[] receivers_;

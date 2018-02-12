@@ -4,15 +4,20 @@ Copyright (c) 2018, ZSC Dev Team
 */
 
 pragma solidity ^0.4.18;
-import "./Object.sol";
+import "./object.sol";
 
-contract DBIDManager is Object{
+
+contract ObjectT { function getName() public constant returns (string); }
+
+
+contract DBIDManager is Object {
     uint[]  IDs_;
     mapping(uint => uint) IDExist_;
     
     // Constructor
-    function DBItem(string _name) public Object(_name) {
+    function DBIDManager(string _name) public Object(_name) {
     }
+    
     
     function addID(uint _id) public onlyOwner returns (bool) {
         if (IDExist_[_id] != 0)

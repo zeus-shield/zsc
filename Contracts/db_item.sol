@@ -13,7 +13,7 @@ contract DBItem is DBEntity {
     function DBItem(string _name) public DBEntity(_name) {
     }
     
-    function initParameters() internal pure {
+    function initParameters() internal {
         insertParameter("assurerType");
         insertParameter("assurerName");
         insertParameter("principalFirstName");

@@ -35,7 +35,8 @@ contract Object is Owned {
         revert();
     }
 
-    function name() public  onlyOwner constant returns (string) {
+    function name() public onlyOwner constant returns (string) {
         return name_;
     }
+
 }
