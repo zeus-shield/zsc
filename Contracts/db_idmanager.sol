@@ -14,7 +14,7 @@ contract DBIDManager is Object {
     function DBIDManager() public Object("null") {
     }
         
-    function addID(uint _id) public onlyOwner returns (bool) {
+    function addID(uint _id) public only_delegate returns (bool) {
         if (IDExist_[_id] != 0)
             return false;
 
@@ -24,7 +24,7 @@ contract DBIDManager is Object {
         return true;
     }
 
-    function removeID(uint _id) public onlyOwner returns (bool) {
+    function removeID(uint _id) public only_delegate returns (bool) {
         if (IDExist_[_id] == 0)
             return false;
 

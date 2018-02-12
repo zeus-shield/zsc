@@ -20,7 +20,7 @@ contract DBDatabase is Object {
     function DBDatabase(string _name) public Object(_name) {
     }
 
-    function insertReceiver(string _name) public onlyOwner {
+    function insertReceiver(string _name) public only_delegate {
         if (receiver_exist_[_name] == 0) revert();
         uint id = receivers_.length;
         receiver_exist_[_name] = id;
@@ -30,7 +30,7 @@ contract DBDatabase is Object {
         receivers_.push(en);
     }
 
-    function insertProvider(string _name) public onlyOwner {
+    function insertProvider(string _name) public only_delegate {
         if (provider_exist_[_name] == 0) revert();
         uint id = providers_.length;
         provider_exist_[_name] = id;

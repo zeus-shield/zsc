@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2018 ZSC Dev, Zeusshield Blockchain Technology Development Co., Ltd
+Copyright (c) 2018 ZSC Dev.
 2018-02-07: v0.01
 2018-02-09: v0.02
 2018-02-10: v0.03

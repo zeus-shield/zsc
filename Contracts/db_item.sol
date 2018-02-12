@@ -17,11 +17,11 @@ contract DBItem is DBEntity {
         addParameter("assurerType");
     }
 
-    function setTemplateID(uint _templateID) public onlyOwner {
+    function setTemplateID(uint _templateID) public only_delegate {
         templateID_= _templateID;
     }
 
-    function getTemplateID() public onlyOwner constant returns (uint) {
+    function getTemplateID() public only_delegate constant returns (uint) {
         return templateID_;
     }
 

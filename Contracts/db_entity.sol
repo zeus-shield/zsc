@@ -6,9 +6,9 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.17;
 import "./plat_math.sol";
-import "./object.sol";
+import "./db_node.sol";
 
-contract DBEntity is Object {
+contract DBEntity is DBNode {
     uint    id_ ;
     bool    activated_;
 
@@ -19,7 +19,7 @@ contract DBEntity is Object {
     mapping(string => uint)   parameterExist_;
 
     // Constructor
-    function DBEntity(string _name) public Object(_name) {
+    function DBEntity(string _name) public DBNode(_name) {
         initParameters();
     }
 
@@ -27,25 +27,26 @@ contract DBEntity is Object {
         addParameter("test");
     }
 
-    function setID(uint _id) public onlyOwner {
+    //////////////////////////////////
+    function setID(uint _id) public only_delegate {
         id_ = _id;
     }
 
-    function setActivated(bool _activated) public onlyOwner {
+    function setActivated(bool _activated) public only_delegate {
         activated_ = _activated;
     }
 
     //////////////////////////////////
-    function getID() public onlyOwner constant returns (uint) {
+    function getID() public only_delegate constant returns (uint) {
         return id_;
     }
 
-    function getActivated() public onlyOwner constant returns (bool) {
+    function getActivated() public only_delegate constant returns (bool) {
         return activated_;
     }
 
     //////////////////////////////////
-    function addCurrency(string _currency) public onlyOwner returns (bool) {
+    function addCurrency(string _currency) public only_delegate returns (bool) {
         if (currencyStatus_[_currency] != 0) {
            return false;
         }
@@ -54,7 +55,7 @@ contract DBEntity is Object {
         return true;
     }
 
-    function increaseCurrency(string _currency, uint _value) public onlyOwner returns (bool) {
+    function increaseCurrency(string _currency, uint _value) public only_delegate returns (bool) {
         if (currencyStatus_[_currency] != 1) {
             return false;
         }
@@ -64,7 +65,7 @@ contract DBEntity is Object {
         return true;
     }
 
-    function decreaseCurrency(string _currency, uint _value) public onlyOwner returns (bool) {
+    function decreaseCurrency(string _currency, uint _value) public only_delegate returns (bool) {
         if (currencyStatus_[_currency] != 1) {
             return false;
         }
@@ -77,7 +78,7 @@ contract DBEntity is Object {
         return true;
     }
 
-    function getCurrency(string _currency) public onlyOwner constant returns (uint) {
+    function getCurrency(string _currency) public only_delegate constant returns (uint) {
         if (currencyStatus_[_currency] == 0) {
             return 0;
         }
@@ -86,7 +87,7 @@ contract DBEntity is Object {
     }
 
     //////////////////////////////////
-    function addParameter(string _parameter) public onlyOwner returns (bool) {
+    function addParameter(string _parameter) public only_delegate returns (bool) {
         if (parameterExist_[_parameter] != 0) {
             return false;
         }
@@ -94,7 +95,7 @@ contract DBEntity is Object {
         return true;
     }
 
-    function removeParameter(string _parameter) public onlyOwner returns (bool) {
+    function removeParameter(string _parameter) public only_delegate returns (bool) {
         if (parameterExist_[_parameter] == 0) {
             return false;
         }
@@ -102,7 +103,7 @@ contract DBEntity is Object {
         return true;
     }
 
-    function setParameter(string _parameter, string _value) public onlyOwner returns (bool) {
+    function setParameter(string _parameter, string _value) public only_delegate returns (bool) {
         if (parameterExist_[_parameter] == 0) {
             return false;
         }
@@ -110,10 +111,13 @@ contract DBEntity is Object {
         return true;
     }
 
-    function getParameter(string _parameter) public onlyOwner constant returns (string) {
+    function getParameter(string _parameter) public only_delegate constant returns (string) {
         if (parameterExist_[_parameter] == 0) {
            revert();
         }
         return parameters_[_parameter];
     }
+
+
+
 }
