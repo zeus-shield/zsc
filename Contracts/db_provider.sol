@@ -7,10 +7,11 @@ Copyright (c) 2018 ZSC Dev, Zeusshield Blockchain Technology Development Co., Lt
 
 pragma solidity ^0.4.18;
 import "./db_entity.sol";
-import "./db_template.sol";
+import "./db_item.sol";
+
 //import "./db_idmanager.sol";
 /*
-import "./db_item.sol";
+
 
 import "./db_agreement.sol";
 
@@ -44,6 +45,12 @@ contract DBProvider is DBEntity {
         addParameter("claimEmail");
         addParameter("claimPhone");
     }
+
+    function DBCreateItem(string _name) public returns(DBEntity) {
+        DBItem item = new DBItem(_name);
+        return DBEntity(item);
+    }
+    
 
     /*
     function addTemplate(Provider storage _provider, uint _templateID) public returns (bool) {
