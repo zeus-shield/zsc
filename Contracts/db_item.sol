@@ -7,31 +7,21 @@ pragma solidity ^0.4.17;
 import "./db_entity.sol";
 
 contract DBItem is DBEntity {
-    uint providerID_;
+    uint creatorID_;
     
     // Constructor
     function DBItem(string _name) public DBEntity(_name) {
     }
     
     function initParameters() internal {
-        insertParameter("assurerType");
-        insertParameter("assurerName");
-        insertParameter("principalFirstName");
-        insertParameter("principalLastName");
-        insertParameter("principalIdentific");
-        insertParameter("principalPhone");
-        insertParameter("principalEmail");
-        insertParameter("principalNationality");
-        insertParameter("companyName");
-        insertParameter("companyId");
-        insertParameter("companyNationality");
-        insertParameter("companyPhone");
-        insertParameter("companyEmail");
-        insertParameter("claimEmail");
-        insertParameter("claimPhone");
+        addParameter("assurerType");
     }
 
-    function setProviderID(uint _providerID) public onlyOwner {
-        providerID_= _providerID;
+    function setCreatorID(uint _creatorID) public onlyOwner {
+        creatorID_= _creatorID;
+    }
+
+    function getCreatorID() public onlyOwner constant returns (uint) {
+        return creatorID_;
     }
 }

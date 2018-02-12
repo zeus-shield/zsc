@@ -6,40 +6,38 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.17;
 import "./db_entity.sol";
+import "./db_idmanager.sol";
 
-library DBAgreement {
+contract DBAgreement is DBEntity {
     enum AgreementStatus { UNDEFINED, ONGOING, CANCLED, PAID, NOTPAID}
+    DBIDManager receiverIDs_;
+    DBIDManager providerIDs_;
+    DBIDManager templateIDs_;
 
-    struct Agreement {
-        DBEntity.Entity entity_;
+    AgreementStatus agreementStatus_;
 
-        uint[]  receiverIDs_;
-        uint[]  providerIDs_;
-        uint[]  templateIDs_;
-
-        uint[]  providerIDs_zsc_;
-        uint[]  receiverIDs_eth_;
-
-
-        mapping(uint => uint) agreementExist_;
-        mapping(uint => AgreementStatus) agreementStatus_;
+    // Constructor
+    function DBAgreement(string _name) public Object(_name) {
     }
 
-    function initAgreement(Agreement storage _agreement) public {
-        DBEntity.insertParameter(_agreement.entity_, "startDate");
-        DBEntity.insertParameter(_agreement.entity_, "endDate");
-        DBEntity.insertParameter(_agreement.entity_, "signDate");
-        DBEntity.insertParameter(_agreement.entity_, "insuredAmount");
-        DBEntity.insertParameter(_agreement.entity_, "paymentAmount");
+    function initParameters() internal {
+        addParameter("startDate");
+        addParameter("endDate");
+        addParameter("signDate");
+        addParameter("insuredAmount");
+        addParameter("paymentAmount");
     }
 
-    function addProvider(Agreement storage _agreement, uint _provider_index)  public {
-        for (uint i = 0; i < _agreement.providerIDs_.length; ++i) {
-           if (_agreement.providerIDs_[i] == _provider_index) {
-                revert();
-            }
-        }
-        _agreement.providerIDs_.push(_provider_index);
+    function addProvider(uint _id) public returns (bool) {
+        return providerIDs_.addID(_id);
+    }
+
+    function addReceiver(uint _id) public returns (bool) {
+        return receiverIDs_.addID(_id);
+    }
+
+    function addTemplate(uint _id) public returns (bool) {
+        return receiverIDs_.addID(_id);
     }
 
     function removeProvider(Agreement storage _agreement, uint _provider_index)  public {

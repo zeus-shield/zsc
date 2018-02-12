@@ -16,13 +16,13 @@ contract DBReceiver is DBEntity {
     }
 
     function initParameters() internal {
-        insertParameter("userFamilyName");
-        insertParameter("userFirstName");
-        insertParameter("userNationality");
-        insertParameter("userPhone");
-        insertParameter("userGender");
-        insertParameter("userBirthday");
-        insertParameter("userIdentification");
-        insertParameter("userResidentialAddress");
+        addParameter("userFamilyName");
+        addParameter("userFirstName");
+        addParameter("userNationality");
+        addParameter("userPhone");
+        addParameter("userGender");
+        addParameter("userBirthday");
+        addParameter("userIdentification");
+        addParameter("userResidentialAddress");
     }
 }

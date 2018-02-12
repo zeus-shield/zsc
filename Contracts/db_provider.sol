@@ -28,21 +28,21 @@ contract DBProvider is DBEntity {
     }
 
     function initParameters() internal {
-        insertParameter("assurerType");
-        insertParameter("assurerName");
-        insertParameter("principalFirstName");
-        insertParameter("principalLastName");
-        insertParameter("principalIdentific");
-        insertParameter("principalPhone");
-        insertParameter("principalEmail");
-        insertParameter("principalNationality");
-        insertParameter("companyName");
-        insertParameter("companyId");
-        insertParameter("companyNationality");
-        insertParameter("companyPhone");
-        insertParameter("companyEmail");
-        insertParameter("claimEmail");
-        insertParameter("claimPhone");
+        addParameter("assurerType");
+        addParameter("assurerName");
+        addParameter("principalFirstName");
+        addParameter("principalLastName");
+        addParameter("principalIdentific");
+        addParameter("principalPhone");
+        addParameter("principalEmail");
+        addParameter("principalNationality");
+        addParameter("companyName");
+        addParameter("companyId");
+        addParameter("companyNationality");
+        addParameter("companyPhone");
+        addParameter("companyEmail");
+        addParameter("claimEmail");
+        addParameter("claimPhone");
     }
 
     /*

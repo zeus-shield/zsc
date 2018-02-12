@@ -6,19 +6,14 @@ Copyright (c) 2018, ZSC Dev Team
 pragma solidity ^0.4.18;
 import "./object.sol";
 
-
-contract ObjectT { function getName() public constant returns (string); }
-
-
 contract DBIDManager is Object {
     uint[]  IDs_;
     mapping(uint => uint) IDExist_;
     
     // Constructor
-    function DBIDManager(string _name) public Object(_name) {
+    function DBIDManager() public Object("null") {
     }
-    
-    
+        
     function addID(uint _id) public onlyOwner returns (bool) {
         if (IDExist_[_id] != 0)
             return false;
@@ -26,6 +21,20 @@ contract DBIDManager is Object {
         IDExist_[_id] = 1;
         IDs_.push(_id);
 
+        return true;
+    }
+
+    function removeID(uint _id) public onlyOwner returns (bool) {
+        if (IDExist_[_id] == 0)
+            return false;
+
+        for (uint i = 0; i < IDs_.length; ++i) {
+           if (IDs_[i] == _id) {
+                IDs_[i] = IDs_[IDs_.length - 1];
+                break;
+            }
+        }
+        IDs_.length -= 1;
         return true;
     }
 }

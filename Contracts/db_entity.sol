@@ -24,7 +24,7 @@ contract DBEntity is Object {
     }
 
     function initParameters() internal {
-        insertParameter("test");
+        addParameter("test");
     }
 
     function setID(uint _id) public onlyOwner {
@@ -45,7 +45,7 @@ contract DBEntity is Object {
     }
 
     //////////////////////////////////
-    function insertCurrency(string _currency) public onlyOwner returns (bool) {
+    function addCurrency(string _currency) public onlyOwner returns (bool) {
         if (currencyStatus_[_currency] != 0) {
            return false;
         }
@@ -86,7 +86,7 @@ contract DBEntity is Object {
     }
 
     //////////////////////////////////
-    function insertParameter(string _parameter) public onlyOwner returns (bool) {
+    function addParameter(string _parameter) public onlyOwner returns (bool) {
         if (parameterExist_[_parameter] != 0) {
             return false;
         }

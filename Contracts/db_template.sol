@@ -14,9 +14,7 @@ contract DBTemplate is DBEntity {
     function DBTemplate(string _name) public DBEntity(_name) {
     }
 
-    function insertItem(uint _id) public returns (bool) {
-        itemIDs_.addID(_id);
-        _id++;
-        return true;
+    function addItem(uint _id) public returns (bool) {
+        return itemIDs_.addID(_id);
     }
 }

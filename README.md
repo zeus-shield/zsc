@@ -22,9 +22,9 @@ Implementation of the website based interfance not included here.
 ## 3. ZSC platform part:
 ### 3.1. Framework Components
 
----Solidity Libraries---
+|-- objct 
 
-|<-- db_entity 
+|-- db_entity 
 
 |--- db_receiver
 
