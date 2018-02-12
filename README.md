@@ -55,3 +55,5 @@ Implementation of the website based interfance not included here.
 
 2018.02.11: add three new file: object.sol 0.01; db_template.sol 0.01; db_idmanager.sol 0.01
 
+2018.02.12: add a new file: db_node.sol 0.01
+
