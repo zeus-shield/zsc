@@ -12,17 +12,45 @@ contract Owned {
         owner = msg.sender;
     }
 
-    modifier onlyOwner {
+    modifier only_owner {
         if (msg.sender != owner) revert();
         _;
     }
 
-    function transferOwnership(address newOwner) public onlyOwner {
+    function transferOwnership(address newOwner) public only_owner {
         owner = newOwner;
     }
 }
 
-contract Object is Owned {
+contract Delegated is Owned {
+    mapping (address => bool) delegates_;
+    
+    modifier only_delegate { 
+        require (msg.sender == owner || delegates_[msg.sender]);
+        _; 
+    }
+
+    event DelegateChanged(address _delegate, bool _state);
+    
+    function setDelegate(address _address, bool _state) public only_owner { 
+        if (_state) {
+            delegates_[_address] = true;
+        } else { 
+            delete delegates_[_address];
+        }
+        DelegateChanged(_address, _state);
+    }
+
+    function isDelegate(address _account) public constant returns (bool)  {
+        if (delegates_[_account] == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+contract Object is Delegated {
     string  name_ ;
 
     // Constructor
@@ -35,8 +63,13 @@ contract Object is Owned {
         revert();
     }
 
-    function name() public onlyOwner constant returns (string) {
+    function name() public only_delegate constant returns (string) {
         return name_;
     }
 
 }
+
+
+/*
+
+*/
