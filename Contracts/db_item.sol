@@ -7,7 +7,7 @@ pragma solidity ^0.4.17;
 import "./db_entity.sol";
 
 contract DBItem is DBEntity {
-    uint creatorID_;
+    uint templateID_;
     
     // Constructor
     function DBItem(string _name) public DBEntity(_name) {
@@ -17,11 +17,13 @@ contract DBItem is DBEntity {
         addParameter("assurerType");
     }
 
-    function setCreatorID(uint _creatorID) public onlyOwner {
-        creatorID_= _creatorID;
+    function setTemplateID(uint _templateID) public onlyOwner {
+        templateID_= _templateID;
     }
 
-    function getCreatorID() public onlyOwner constant returns (uint) {
-        return creatorID_;
+    function getTemplateID() public onlyOwner constant returns (uint) {
+        return templateID_;
     }
+
+    
 }
