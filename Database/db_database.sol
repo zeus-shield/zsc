@@ -13,7 +13,7 @@ import "./db_idmanager.sol";
 
 contract DBDatabase is Object {
     DBNode[] nodes_;
-    mapping(bytes32 => address) nodeMap_;
+    mapping(address => bool) nodeExist_;
 
     DBReceiver[] receivers_;
     DBProvider[] providers_;
@@ -22,22 +22,44 @@ contract DBDatabase is Object {
     mapping(bytes32 => uint) provider_exist_;
 
     function DBDatabase(bytes32 _name) public Object(_name) {
+        createRootNode();
+    }
+    
+    function createRootNode() internal only_delegate {
+        bytes32 rootName = "zsc_root_node";
+        DBNode nd = new DBNode(rootName);
+        nd.setDatabase(this);
+        nodes_.push(nd);
+        nodeExist_[address(nd)] = true;
     }
 
-    function _addNode(DBDatabase _database, DBNode _node) public returns (bool) {
-        require(_database == this);
-        require(nodeMap_[_node.getParent().name()] == msg.sender);
-
-        bytes32 str = _node.name();
-        address adr = address(_node);
-        if (nodeMap_[str] != 0) {
-            return false;
-        } 
-
-        nodes_.push(_node);
-        nodeMap_[str] = adr;
+    function _addNode(address _node) public returns (bool) {
+        require(nodeExist_[_node] == true);
+        nodes_.push(DBNode(_node));
         return true;
     }
+
+    function _destroyNode(address _node) public returns (bool) {
+        require(this == msg.sender || nodeExist_[msg.sender] == true);
+
+        for (uint i = 0; i < nodes_.length; ++i) {
+            if (address(nodes_[i]) == _node) {
+                address parent = nodes_[i].getParent();
+                if (parent != 0) {
+                    DBNode(parent).removeChild(nodes_[i].name());
+                    nodes_[i].removeAndDestroyAllChildren();
+                }
+                nodes_[i] = nodes_[nodes_.length - 1];
+                break;
+            }
+            delete nodes_[nodes_.length - 1];
+            nodes_.length --;
+            nodeExist_[_node] = false;
+        }
+        return true;
+    }
+
+    
 
     function insertReceiver(bytes32 _name) public only_delegate {
         if (receiver_exist_[_name] == 0) revert();
