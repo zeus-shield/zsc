@@ -13,7 +13,7 @@ import "./db_idmanager.sol";
 
 contract DBDatabase is Object {
     DBNode[] nodes_;
-    mapping(bytes32 => DBNode) nodeMap_;
+    mapping(bytes32 => address) nodeMap_;
 
     DBReceiver[] receivers_;
     DBProvider[] providers_;
@@ -24,15 +24,18 @@ contract DBDatabase is Object {
     function DBDatabase(bytes32 _name) public Object(_name) {
     }
 
+    function _addNode(DBDatabase _database, DBNode _node) public returns (bool) {
+        require(_database == this);
+        require(nodeMap_[_node.getParent().name()] == msg.sender);
 
-    function _addNode(DBNode _node) public only_delegate returns (bool) {
         bytes32 str = _node.name();
-        if (nodeMap_[str] != DBNode(0)) {
+        address adr = address(_node);
+        if (nodeMap_[str] != 0) {
             return false;
         } 
 
         nodes_.push(_node);
-        nodeMap_[str] = _node;
+        nodeMap_[str] = adr;
         return true;
     }
 

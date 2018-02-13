@@ -37,8 +37,11 @@ contract DBNode is Object {
     }
 
     function addChild(DBNode _node) public only_delegate {
-        _node.setDatabase(getDatabase());
-        getDatabase()._addNode(_node);
+        require(database_ != DBDatabase(0));
+        _node.setParent(this);
+        _node.setDatabase(database_);
+        _node.setDelegate(address(database_), true);
+        database_._addNode(database_, _node);
         children_.push(_node);
     }
     
