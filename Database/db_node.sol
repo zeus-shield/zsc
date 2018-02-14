@@ -23,6 +23,10 @@ contract DBNode is Object {
         database_ = _database;
     }
 
+    function numChildren() public only_delegate constant returns(uint) {
+        return children_.length;
+    }
+    
     function setParent(address _parent) public only_delegate {
         if (parent_ == address(0)) {
             parent_ = _parent;
@@ -36,6 +40,13 @@ contract DBNode is Object {
         return parent_; 
     }
 
+    function removeFromParent() public only_delegate {
+        if (parent_ != address(0)) {
+            DBNode(parent_).removeChild(name());
+        }
+        parent_ = address(0);
+    }
+
     function addChild(address _node) public only_delegate returns (address) {
         DBNode(_node).setParent(this);
         DBNode(_node).setDatabase(database_);
@@ -45,6 +56,11 @@ contract DBNode is Object {
         childMap_[DBNode(_node).name()] = _node;
         return _node;
     }
+
+    function getChild(bytes32 _name) public only_delegate constant returns(address) {
+        return childMap_[_name];
+    }
+    
 
     function removeChild(bytes32 _name) public only_delegate returns (address) {
         if (childMap_[_name] == 0) {
@@ -61,6 +77,8 @@ contract DBNode is Object {
         }
         children_.length --;
         delete childMap_[_name];
+
+        DBNode(nd).setDelegate(parent_, false);
         return nd;
     }
 
