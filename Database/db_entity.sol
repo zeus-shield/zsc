@@ -16,7 +16,7 @@ contract DBEntity is DBNode {
     mapping(bytes32 => uint) currencyStatus_; // 0: not-exist; 1: ok; 2: suspended
 
     mapping(bytes32 => bytes32) parameters_;
-    mapping(bytes32 => uint)   parameterExist_;
+    mapping(bytes32 => bool)   parameterExist_;
 
     // Constructor
     function DBEntity(bytes32 _name) public DBNode(_name) {
@@ -88,23 +88,24 @@ contract DBEntity is DBNode {
 
     //////////////////////////////////
     function addParameter(bytes32 _parameter) public only_delegate returns (bool) {
-        if (parameterExist_[_parameter] != 0) {
+        if (parameterExist_[_parameter] == true) {
             return false;
         }
-        parameterExist_[_parameter] = 1;
+        parameterExist_[_parameter] = true;
         return true;
     }
 
     function removeParameter(bytes32 _parameter) public only_delegate returns (bool) {
-        if (parameterExist_[_parameter] == 0) {
+        if (parameterExist_[_parameter] == false) {
             return false;
         }
-        parameterExist_[_parameter] = 0;
+        delete parameters_[_parameter];
+        delete parameterExist_[_parameter];
         return true;
     }
 
     function setParameter(bytes32 _parameter, bytes32 _value) public only_delegate returns (bool) {
-        if (parameterExist_[_parameter] == 0) {
+        if (parameterExist_[_parameter] == false) {
             return false;
         }
         parameters_[_parameter] = _value;
@@ -112,12 +113,7 @@ contract DBEntity is DBNode {
     }
 
     function getParameter(bytes32 _parameter) public only_delegate constant returns (bytes32) {
-        if (parameterExist_[_parameter] == 0) {
-           revert();
-        }
+        require (parameterExist_[_parameter] == true);
         return parameters_[_parameter];
     }
-
-
-
 }
