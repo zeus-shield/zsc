@@ -9,11 +9,11 @@ import "./object.sol";
 contract DBIDManager is Object {
     uint[]  IDs_;
     mapping(uint => bool) IDExist_;
-    
+
     // Constructor
     function DBIDManager() public Object("null") {
     }
-        
+
     function addID(uint _id) public only_delegate returns (bool) {
         if (IDExist_[_id] == true)
             return false;
@@ -36,7 +36,7 @@ contract DBIDManager is Object {
         }
 
         IDs_.length -= 1;
-        delete IDs_[_id]; 
+        delete IDs_[_id];
         return true;
     }
 }
