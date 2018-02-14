@@ -12,6 +12,7 @@ import "./db_idmanager.sol";
 
 
 contract DBDatabase is Object {
+    DBNode rooteNode_;
     DBNode[] nodes_;
     mapping(address => bool) nodeExist_;
 
@@ -26,11 +27,14 @@ contract DBDatabase is Object {
     }
     
     function createRootNode() internal only_delegate {
-        bytes32 rootName = "zsc_root_node";
-        DBNode nd = new DBNode(rootName);
-        nd.setDatabase(this);
-        nodes_.push(nd);
-        nodeExist_[address(nd)] = true;
+        rooteNode_ = new DBNode("zsc_root_node");
+        rooteNode_.setDatabase(this);
+        nodes_.push(rooteNode_);
+        nodeExist_[address(rooteNode_)] = true;
+    }
+
+    function getRootNode() public only_delegate constant returns (address) {
+        return address(rooteNode_);
     }
 
     function _addNode(address _node) public returns (bool) {

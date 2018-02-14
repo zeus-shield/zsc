@@ -6,24 +6,17 @@ Copyright (c) 2018, ZSC Dev Team
 pragma solidity ^0.4.17;
 import "./db_entity.sol";
 
-contract DBItem is DBEntity {
-    uint templateID_;
-    
+contract DBItem is DBEntity {   
     // Constructor
     function DBItem(bytes32 _name) public DBEntity(_name) {
     }
     
     function initParameters() internal {
-        addParameter("assurerType");
+        addParameter("DBItem");
     }
 
-    function setTemplateID(uint _templateID) public only_delegate {
-        templateID_= _templateID;
+    function getTemplate() public only_delegate constant returns (address) {
+        return getParent();
     }
-
-    function getTemplateID() public only_delegate constant returns (uint) {
-        return templateID_;
-    }
-
     
 }
