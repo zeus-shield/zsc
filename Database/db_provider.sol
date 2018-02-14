@@ -8,6 +8,7 @@ Copyright (c) 2018 ZSC Dev.
 pragma solidity ^0.4.18;
 import "./db_entity.sol";
 import "./db_item.sol";
+import "./db_template.sol";
 
 //import "./db_idmanager.sol";
 /*
@@ -45,12 +46,12 @@ contract DBProvider is DBEntity {
         addParameter("claimEmail");
         addParameter("claimPhone");
     }
-
-    function DBCreateItem(bytes32 _name) public returns(DBEntity) {
-        DBItem item = new DBItem(_name);
-        return DBEntity(item);
-    }
     
+    function createTemplate(bytes32 _name) public returns(address) {
+        DBTemplate temp = new DBTemplate(_name);
+        return addChild(address(temp));
+    }
+
 
     /*
     function addTemplate(Provider storage _provider, uint _templateID) public returns (bool) {

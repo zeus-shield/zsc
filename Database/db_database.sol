@@ -12,44 +12,50 @@ import "./db_idmanager.sol";
 
 
 contract DBDatabase is Object {
-    DBNode rooteNode_;
+    DBNode rootNode_;
     DBNode[] nodes_;
-    mapping(address => bool) nodeExist_;
-
-    DBReceiver[] receivers_;
-    DBProvider[] providers_;
-
-    mapping(bytes32 => uint) receiver_exist_;
-    mapping(bytes32 => uint) provider_exist_;
+    mapping(bytes32 => address) nodeAddress_;
 
     function DBDatabase(bytes32 _name) public Object(_name) {
         createRootNode();
     }
     
     function createRootNode() internal only_delegate {
-        rooteNode_ = new DBNode("zsc_root_node");
-        rooteNode_.setDatabase(this);
-        nodes_.push(rooteNode_);
-        nodeExist_[address(rooteNode_)] = true;
+        rootNode_ = new DBNode("zsc_root_node");
+        rootNode_.setDatabase(this);
+        nodes_.push(rootNode_);
+        nodeAddress_["zsc_root_node"] = address(rootNode_);
+
+        DBNode provider = new DBNode("provider");
+        rootNode_.addChild(address(provider));
+        nodeAddress_["provider"] = address(provider);
+
+        DBNode receiver = new DBNode("receiver");
+        rootNode_.addChild(address(receiver));
+        nodeAddress_["receiver"] = address(receiver);
+    }
+
+    function nodeAddress(bytes32 _name) public only_delegate constant returns (address) {
+        return nodeAddress_[_name];
     }
 
     function getRootNode() public only_delegate constant returns (address) {
-        return address(rooteNode_);
+        return address(rootNode_);
     }
 
-    function _addNode(address _node) public returns (bool) {
-        require(nodeExist_[_node] == true);
+    function _addNode(address _node) public only_delegate returns (bool) {
+        setDelegate(_node, true);
         nodes_.push(DBNode(_node));
+        nodeAddress_[DBNode(_node).name()] = _node;
         return true;
     }
 
-    function _destroyNode(address _node) public returns (bool) {
-        require(this == msg.sender || nodeExist_[msg.sender] == true);
-
+    function _destroyNode(address _node) public only_delegate returns (bool) {
         for (uint i = 0; i < nodes_.length; ++i) {
             if (address(nodes_[i]) == _node) {
                 address parent = nodes_[i].getParent();
                 if (parent != 0) {
+
                     DBNode(parent).removeChild(nodes_[i].name());
                     nodes_[i].removeAndDestroyAllChildren();
                 }
@@ -58,30 +64,22 @@ contract DBDatabase is Object {
             }
             delete nodes_[nodes_.length - 1];
             nodes_.length --;
-            nodeExist_[_node] = false;
+            
+            delete nodeAddress_[DBNode(_node).name()];
+            setDelegate(_node, false);
+
+            delete _node;
         }
         return true;
     }
 
-    
+    function createReceiver(bytes32 _name) public only_delegate returns (address) {
+        require(nodeAddress(_name) != 0); 
 
-    function insertReceiver(bytes32 _name) public only_delegate {
-        if (receiver_exist_[_name] == 0) revert();
-        uint id = receivers_.length;
-        receiver_exist_[_name] = id;
+        DBNode root = DBNode(rootNode_.getChild("provider"));
 
-        DBReceiver en = new DBReceiver(_name);
-        en.setID(id);
-        receivers_.push(en);
-    }
-
-    function insertProvider(bytes32 _name) public only_delegate {
-        if (provider_exist_[_name] == 0) revert();
-        uint id = providers_.length;
-        provider_exist_[_name] = id;
-
-        DBProvider en = new DBProvider(_name);
-        en.setID(id);
-        providers_.push(en);
+        DBProvider nd = new DBProvider(_name);
+        root.addChild(address(nd));
+        nodeAddress_[_name] = address(nd);
     }
 }

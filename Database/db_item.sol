@@ -12,11 +12,7 @@ contract DBItem is DBEntity {
     }
     
     function initParameters() internal {
-        addParameter("DBItem");
-    }
-
-    function getTemplate() public only_delegate constant returns (address) {
-        return getParent();
+        addParameter("description");
     }
     
 }
