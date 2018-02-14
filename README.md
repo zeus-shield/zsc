@@ -39,7 +39,7 @@ Implementation of the website based interfance not included here.
 |--- db_idmanager
 
 
-### 3.2. .sol update
+### 3.2. .sol update log
 
 2017.09.05: add multisigtoken.sol, multisigwallet.sol and token.sol
 
@@ -56,4 +56,6 @@ Implementation of the website based interfance not included here.
 2018.02.11: add three new file: object.sol 0.01; db_template.sol 0.01; db_idmanager.sol 0.01
 
 2018.02.12: add a new file: db_node.sol 0.01
+
+2018.02.13-14: re-design the topology among different db modules
 
