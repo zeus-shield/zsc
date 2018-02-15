@@ -6,8 +6,6 @@ pragma solidity ^0.4.18;
 
 import "./object.sol";
 import "./db_node.sol";
-import "./db_receiver.sol";
-import "./db_provider.sol";
 import "./db_idmanager.sol";
 
 
@@ -22,17 +20,16 @@ contract DBDatabase is Object {
     
     function createRootNode() internal only_delegate {
         rootNode_ = new DBNode("zsc_root_node");
+        rootNode_.setDelegate(owner, true);
         rootNode_.setDatabase(this);
         nodes_.push(rootNode_);
         nodeAddress_["zsc_root_node"] = address(rootNode_);
 
         DBNode provider = new DBNode("provider");
-        rootNode_.addChild(address(provider));
-        nodeAddress_["provider"] = address(provider);
-
         DBNode receiver = new DBNode("receiver");
+
+        rootNode_.addChild(address(provider));
         rootNode_.addChild(address(receiver));
-        nodeAddress_["receiver"] = address(receiver);
     }
 
     function nodeAddress(bytes32 _name) public only_delegate constant returns (address) {
@@ -44,7 +41,9 @@ contract DBDatabase is Object {
     }
 
     function _addNode(address _node) public only_delegate returns (bool) {
-        setDelegate(_node, true);
+        DBNode(_node).setDelegate(owner, true);
+        DBNode(_node).setDelegate(this, true);
+
         nodes_.push(DBNode(_node));
         nodeAddress_[DBNode(_node).name()] = _node;
         return true;
@@ -71,22 +70,5 @@ contract DBDatabase is Object {
             delete _node;
         }
         return true;
-    }
-
-    function createReceiver(bytes32 _name) public only_delegate returns (address) {
-        require(nodeAddress(_name) != 0); 
-        DBProvider nd = new DBProvider(_name);
-        DBNode(rootNode_.getChild("receiver")).addChild(address(nd));
-        nodeAddress_[_name] = address(nd);
-        return address(nd);
-    }
-
-
-    function createProvider(bytes32 _name) public only_delegate returns (address) {
-        require(nodeAddress(_name) != 0); 
-        DBProvider nd = new DBProvider(_name);
-        DBNode(rootNode_.getChild("provider")).addChild(address(nd));
-        nodeAddress_[_name] = address(nd);
-        return address(nd);
     }
 }
