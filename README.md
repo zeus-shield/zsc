@@ -59,3 +59,4 @@ Implementation of the website based interfance not included here.
 
 2018.02.13-14: re-design the topology among different db modules
 
+2018.02.15: add a new file: app_basic.sol 0.01
