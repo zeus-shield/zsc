@@ -17,29 +17,33 @@ Implementation of the website based interfance not included here.
 
 ### 1.2 Test: testing codes here
 
-## 2. ZSC token part
+## 2. ZSC platform part:
 
-## 3. ZSC platform part:
-### 3.1. Framework Components
+### 2.1 Framework Components
 
-|-- objct 
+|- objct 
 
-|-- db_entity 
+|--- db_node 
 
-|--- db_receiver
+|----- db_entity 
 
-|--- db_provider
+|------- db_item
 
-|--- db_item
+|------- db_receiver
 
-|--- db_agreement
+|------- db_provider
 
-|--- db_template
+|------- db_template
 
-|--- db_idmanager
+|------- db_agreement
 
+|------- db_idmanager
 
-### 3.2. .sol update log
+|------- db_database
+
+|--------- app_basic
+
+### 2.2 .sol update log
 
 2017.09.05: add multisigtoken.sol, multisigwallet.sol and token.sol
 
