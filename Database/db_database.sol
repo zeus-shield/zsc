@@ -32,12 +32,12 @@ contract DBDatabase is Object {
         rootNode_.addChild(address(receiver));
     }
 
-    function nodeAddress(bytes32 _name) public only_delegate constant returns (address) {
-        return nodeAddress_[_name];
-    }
-
     function getRootNode() public only_delegate constant returns (address) {
         return address(rootNode_);
+    }
+
+    function getNode(bytes32 _name) public only_delegate constant returns (address) {
+        return nodeAddress_[_name];
     }
 
     function _addNode(address _node) public only_delegate returns (bool) {
