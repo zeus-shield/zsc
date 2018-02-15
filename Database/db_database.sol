@@ -42,7 +42,6 @@ contract DBDatabase is Object {
 
     function _addNode(address _node) public only_delegate returns (bool) {
         DBNode(_node).setDelegate(owner, true);
-        DBNode(_node).setDelegate(this, true);
 
         nodes_.push(DBNode(_node));
         nodeAddress_[DBNode(_node).name()] = _node;

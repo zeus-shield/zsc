@@ -50,7 +50,10 @@ contract DBNode is Object {
     function addChild(address _node) public only_delegate returns (address) {
         DBNode(_node).setParent(this);
         DBNode(_node).setDatabase(database_);
+
+        DBDatabase(database_).setDelegate(_node, true);
         DBDatabase(database_)._addNode(_node);
+        
         children_.push(_node);
         childMap_[DBNode(_node).name()] = _node;
         return _node;
