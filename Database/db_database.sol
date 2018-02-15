@@ -75,11 +75,18 @@ contract DBDatabase is Object {
 
     function createReceiver(bytes32 _name) public only_delegate returns (address) {
         require(nodeAddress(_name) != 0); 
-
-        DBNode root = DBNode(rootNode_.getChild("provider"));
-
         DBProvider nd = new DBProvider(_name);
-        root.addChild(address(nd));
+        DBNode(rootNode_.getChild("receiver")).addChild(address(nd));
         nodeAddress_[_name] = address(nd);
+        return address(nd);
+    }
+
+
+    function createProvider(bytes32 _name) public only_delegate returns (address) {
+        require(nodeAddress(_name) != 0); 
+        DBProvider nd = new DBProvider(_name);
+        DBNode(rootNode_.getChild("provider")).addChild(address(nd));
+        nodeAddress_[_name] = address(nd);
+        return address(nd);
     }
 }
