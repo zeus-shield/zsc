@@ -28,49 +28,30 @@ contract DBAgreement is DBEntity {
         addParameter("paymentAmount");
     }
 
-    function addProvider(uint _id) public returns (bool) {
-        return providerIDs_.addID(_id);
-    }
-
-    function addReceiver(uint _id) public returns (bool) {
-        return receiverIDs_.addID(_id);
-    }
-
-    function addTemplate(uint _id) public returns (bool) {
-        return receiverIDs_.addID(_id);
-    }
-
-    function removeProvider(Agreement storage _agreement, uint _provider_index)  public {
-        for (uint i = 0; i < _agreement.providerIDs_.length; ++i) {
-           if (_agreement.providerIDs_[i] == _provider_index) {
-                _agreement.providerIDs_[i] = _agreement.providerIDs_[_agreement.providerIDs_.length - 1];
-                break;
-            }
+    function setProvider(address _id, bool _status) public returns (bool) {
+        if (_status == true) {
+            return providerIDs_.addID(_id);
+        } else {
+            return providerIDs_.removeID(_id);
         }
-        _agreement.providerIDs_.length -= 1;
     }
 
-    function addReceiver(Agreement storage _agreement, uint _receiver_index)  public {
-        for (uint i = 0; i < _agreement.providerIDs_.length; ++i) {
-           if (_agreement.providerIDs_[i] == _receiver_index) {
-                revert();
-            }
+    function setReceiver(address _id, bool _status) public returns (bool) {
+        if (_status == true) {
+            return providerIDs_.addID(_id);
+        } else {
+            return providerIDs_.removeID(_id);
         }
-        _agreement.receiverIDs_.push(_receiver_index);
     }
 
-    function removeReceiver(Agreement storage _agreement, uint _receiver_index)  public {
-        for (uint i = 0; i < _agreement.receiverIDs_.length; ++i) {
-           if (_agreement.receiverIDs_[i] == _receiver_index) {
-                _agreement.receiverIDs_[i] = _agreement.receiverIDs_[_agreement.receiverIDs_.length - 1];
-                break;
-            }
+    function setTemplate(address _id, bool _status) public returns (bool) {
+        if (_status == true) {
+            //current version only allows single template for each agreement
+            require(templateIDs_.numIDs() < 1);
+            return templateIDs_.addID(_id);
+        } else {
+            return template.removeID(_id);
         }
-        _agreement.receiverIDs_.length -= 1;
     }
-
-
-    //////////////////////////////////
-
-    
+   
 }
