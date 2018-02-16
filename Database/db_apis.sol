@@ -55,14 +55,18 @@ contract DBApis is DBDatabase {
         return true;
     }
 
-    function setNodeParameterValue(bytes32 _nodeName, bytes32 _parameter, string _value) public only_delegate returns (bool) {
+    function setNodeParameterValue(bytes32 _nodeName, bytes32 _parameter, bytes32 _value) public only_delegate returns (bool) {
         address nd = getNode(_nodeName);
 
         if (nd == 0) {
             return false;
         }
-
         return DBEntity(nd).setParameter(_parameter, _value);
+    } 
 
+    function getNodeParameterValue(bytes32 _nodeName, bytes32 _parameter) public only_delegate constant returns (bytes32) {
+        address nd = getNode(_nodeName);
+        require(nd != 0);
+        return DBEntity(nd).getParameter(_parameter);
     } 
 }
