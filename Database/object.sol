@@ -5,6 +5,10 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.18;
 
+import "./plat_string.sol";
+
+
+
 contract Owned {
     address public owner;
 
@@ -55,7 +59,12 @@ contract Delegated is Owned {
     }
 }
 
+contract LogRecorder { 
+                    function recordLog(bytes32 _log) public; 
+                    function recordLog(string _log) public; }
+
 contract Object is Delegated {
+    address logFile_;
     bytes32  name_ ;
 
     // Constructor
@@ -72,6 +81,17 @@ contract Object is Delegated {
         return name_;
     }
 
+    function setLogRecorder(address _adr) public only_owner {
+        logFile_ = _adr;
+    }
+
+    function writeLog(bytes32 str) internal {
+        LogRecorder(logFile_).recordLog(str);
+    }
+
+    function writeLog(string str) internal {
+        LogRecorder(logFile_).recordLog(str);
+    }
 }
 
 
