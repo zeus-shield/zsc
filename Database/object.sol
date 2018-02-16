@@ -32,7 +32,7 @@ contract Owned {
 * to perform special tasks such as admin tasks to the contract
 **/       
 contract Delegated is Owned {
-    mapping (address => bool) delegates_;
+    mapping (address => bool) public delegates_;
     
     modifier only_delegate { 
         require (msg.sender == owner || delegates_[msg.sender]);
