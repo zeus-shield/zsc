@@ -7,14 +7,18 @@ pragma solidity ^0.4.18;
 import "./object.sol";
 
 contract DBIDManager is Object {
-    uint[]  IDs_;
-    mapping(uint => bool) IDExist_;
+    address[]  IDs_;
+    mapping(address => bool) IDExist_;
 
     // Constructor
     function DBIDManager() public Object("null") {
     }
 
-    function addID(uint _id) public only_delegate returns (bool) {
+    function numIDs() public only_delegate constant returns (uint) {
+        return IDs_.length;
+    }
+
+    function addID(address _id) public only_delegate returns (bool) {
         if (IDExist_[_id] == true)
             return false;
 
@@ -24,19 +28,19 @@ contract DBIDManager is Object {
         return true;
     }
 
-    function removeID(uint _id) public only_delegate returns (bool) {
+    function removeID(address _id) public only_delegate returns (bool) {
         if (IDExist_[_id] == false)
             return false;
 
         for (uint i = 0; i < IDs_.length; ++i) {
            if (IDs_[i] == _id) {
+                IDExist_[_id] = false;
                 IDs_[i] = IDs_[IDs_.length - 1];
                 break;
             }
         }
 
         IDs_.length -= 1;
-        delete IDs_[_id];
         return true;
     }
 }
