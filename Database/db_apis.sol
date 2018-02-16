@@ -11,8 +11,8 @@ import "./db_provider.sol";
 import "./db_database.sol";
 
 
-contract APPBasic is DBDatabase {
-    function APPBasic(bytes32 _name) public DBDatabase(_name) {
+contract DBApis is DBDatabase {
+    function DBApis(bytes32 _name) public DBDatabase(_name) {
     }
     
     function createReceiver(bytes32 _name) public only_delegate returns (bool) {
