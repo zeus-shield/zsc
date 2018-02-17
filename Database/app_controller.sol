@@ -17,9 +17,28 @@ contract AppController is Object {
 
     DBApis apiController_;
 
+    struct ParameterValue {    
+        mapping (bytes32 => string) values_;
+    }
+    
+    mapping (bytes32 => ParameterValue) nodeParameters_;
+    
+
     function AppController(bytes32 _name) public Object(_name) {
         apiController_ = new DBApis("zsc_db");
     }
+
+    function setNodeParameter(bytes32 _nodeName, bytes32 _parameter, string _value) public only_delegate returns (bool) {
+        if (apiController_.setNodeParameterValue(_nodeName, _parameter, "temp")) {
+            nodeParameters_[_nodeName].values_[_parameter] = _value;
+            return true;
+        }
+        return false;
+    } 
+
+    function getNodeParameter(bytes32 _nodeName, bytes32 _parameter) public only_delegate constant returns (string) {
+        return nodeParameters_[_nodeName].values_[_parameter];
+    } 
 
     function psushRequestInfo(string _info) public only_delegate {
     	requestInfo_ = _info;
