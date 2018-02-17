@@ -21,8 +21,8 @@ contract DBNode is Object {
 
     function setDatabase(address _database) public only_delegate {
         database_ = _database;
-        DBDatabase(database_).setDelegate(_node, true);
-        DBDatabase(database_)._addNode(_node);
+        DBDatabase(database_).setDelegate(this, true);
+        DBDatabase(database_)._addNode(this);
     }
 
     function numChildren() public only_delegate constant returns(uint) {
