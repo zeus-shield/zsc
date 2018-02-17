@@ -35,23 +35,24 @@ library PlatString {
         return append(_a, _b, "", "", "");
     }
 
-    function substring(string _str, uint _startpos) internal pure returns (string) {
+    function substring(string _str, uint _startpos, uint _endpos) internal pure returns (string) {
         bytes memory str = bytes(_str);
-        string memory sub = new string(str.length - _startpos);
+        require(_startpos <= _endpos && _endpos < str.length);
+        string memory sub = new string(_endpos - _startpos);
         bytes memory substr = bytes(sub);
 
         uint k = 0;
-        for (uint i = _startpos; i < str.length; ++i) { 
+        for (uint i = _startpos; i < _endpos; ++i) { 
             substr[k] = str[i];
             ++k;
         }
         return string(substr);
     }
 
-    function findbyte(string _str, bytes1 _c) internal pure returns (bool, uint) {
+    function findbyte(string _str, bytes1 _c, uint _startpos) internal pure returns (bool, uint) {
         bytes memory str = bytes(_str);
 
-        for (uint i = 0; i < str.length; ++i) { 
+        for (uint i = _startpos; i < str.length; ++i) { 
             if (str[i] == _c) {
                 return (true, i);
             }
@@ -64,6 +65,20 @@ library PlatString {
         bytes memory str = bytes(_str);
 
         return str.length;
+    }
+
+    function tobytes32(string _str, uint _offset) internal pure returns (bytes32) {
+        bytes32 out;
+        bytes memory str = bytes(_str);
+        uint len = str.length;
+
+        if (len  > 32 ) len = 32;
+
+        for (uint i = 0; i < len; ++i) {
+            out |= bytes32(str[_offset + i] & 0xFF) >> (i * 8);
+        }
+
+        return out;
     }
 
     //function getIntFromBuff(string str, du32 offset);
