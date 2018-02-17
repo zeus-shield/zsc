@@ -35,6 +35,37 @@ library PlatString {
         return append(_a, _b, "", "", "");
     }
 
+    function substring(string _str, uint _startpos) internal pure returns (string) {
+        bytes memory str = bytes(_str);
+        string memory sub = new string(str.length - _startpos);
+        bytes memory substr = bytes(sub);
+
+        uint k = 0;
+        for (uint i = _startpos; i < str.length; ++i) { 
+            substr[k] = str[i];
+            ++k;
+        }
+        return string(substr);
+    }
+
+    function findbyte(string _str, bytes1 _c) internal pure returns (bool, uint) {
+        bytes memory str = bytes(_str);
+
+        for (uint i = 0; i < str.length; ++i) { 
+            if (str[i] == _c) {
+                return (true, i);
+            }
+        }
+
+        return (false, 0);
+    }
+
+    function length(string _str) internal pure returns (uint) {
+        bytes memory str = bytes(_str);
+
+        return str.length;
+    }
+
     //function getIntFromBuff(string str, du32 offset);
 
     function getstringFromBuff(string src, uint len, uint offset) internal pure returns (string) {
