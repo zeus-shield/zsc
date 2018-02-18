@@ -17,7 +17,7 @@ contract DBAgreement is DBEntity {
     AgreementStatus agreementStatus_;
 
     // Constructor
-    function DBAgreement(bytes32 _name) public Object(_name) {
+    function DBAgreement(bytes32 _name) public DBEntity(_name) {
     }
 
     function initParameters() internal {
@@ -50,7 +50,7 @@ contract DBAgreement is DBEntity {
             require(templateIDs_.numIDs() < 1);
             return templateIDs_.addID(_id);
         } else {
-            return template.removeID(_id);
+            return templateIDs_.removeID(_id);
         }
     }
    
