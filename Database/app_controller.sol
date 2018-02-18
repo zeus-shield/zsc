@@ -11,27 +11,40 @@ import "./plat_string.sol";
 
 
 contract AppController is Object {
-	enum InfoType {UNDEFINED, INFO_INT, INFO_BYTE32, INFO_STRING}
 
 	string public testResult = "";
 	string requestInfo_;
 
     DBApis apiController_;
 
-    struct ParameterValue {    
-        mapping (bytes32 => string) values_;
-    }
-    
+    struct ParameterValue {mapping (bytes32 => string) values_; }
     mapping (bytes32 => ParameterValue) nodeParameters_;
-    
+    mapping (string => string) requestInfos_;
 
     function AppController(bytes32 _name) public Object(_name) {
         apiController_ = new DBApis("zsc_db");
     }
 
-    function setNodeParameter(bytes32 _nodeName, bytes32 _parameter, string _value) internal only_delegate returns (bool) {
-        if (apiController_.setNodeParameterValue(_nodeName, _parameter, "temp")) {
-            nodeParameters_[_nodeName].values_[_parameter] = _value;
+    function createNode(string _object, string _name, string _extra) public only_delegate returns (bool) {
+        bytes32 name = PlatString.tobytes32(_name);
+        bytes32 extra = PlatString.tobytes32(_extra);
+
+        if (PlatString.equalto(_object, "provider")) {
+            return apiController_.createProvider(name);
+        } else if (PlatString.equalto(_object, "receiver")) {
+            return apiController_.createReceiver(name);
+        } else if (PlatString.equalto(_object, "template")) {
+            apiController_.createTemplate(name, extra);
+        }
+        return true;
+    }
+
+    function setNodeParameter(string _nodeName, string _parameter, string _value) internal only_delegate returns (bool) {
+        bytes32 name = PlatString.tobytes32(_nodeName);
+        bytes32 parameter = PlatString.tobytes32(_parameter);
+
+        if (apiController_.setNodeParameterValue(name, parameter, "temp")) {
+            nodeParameters_[name].values_[parameter] = _value;
             return true;
         }
         return false;
@@ -44,13 +57,22 @@ contract AppController is Object {
         return nodeParameters_[_nodeName].values_[_parameter];
     } 
 
-    function psushRequestInfo(string _info) public only_delegate returns (bool) {
+    /* examples
+    _info = "{<operation><create>} {<object><provider>} {<node><provi-x>} "
+    _info = "{<operation><set>} {<object><provider>} {<node><provi-x>} {<parameter><username>} {<value><zsc>} "
+    */
+    function pushRequestInfo(string _info) public only_delegate returns (bool) {
     	requestInfo_ = _info;
         
         bool ret1;
         bool ret2;
         uint start = 0;
         uint end;
+
+        string memory infoType;
+        string memory infoValue;
+        bool ret;
+
 
         while(true) {
             (ret1, start) = PlatString.findbyte(_info, bytes1("{"), start);
@@ -59,33 +81,59 @@ contract AppController is Object {
                 break;
             }
             string memory singelInfo = PlatString.substring(_info, start + 1, end - 1);
-
-            if (parserSingleRequest(singelInfo) == false) {
+            (ret, infoType, infoValue) = parserSingleInfo(singelInfo);
+            if (ret == false) {
                 return false;
             }
+            requestInfos_[infoType] = infoValue;
             start = end;
         }
+
+        conductRequest();
         return true;
     }
 
-    function parserSingleRequest(string _info) internal returns (bool) {
+    function parserSingleInfo(string _info) internal pure returns (bool, string, string) {
         bool ret1;
         bool ret2;
         uint start = 0;
         uint end;
-        string[3] memory substr;
+        string[2] memory substr;
        
-        for (uint i = 0; i < 3; ++i) {
+        for (uint i = 0; i < 2; ++i) {
             (ret1, start) = PlatString.findbyte(_info, bytes1("<"), start);
             (ret2, end) = PlatString.findbyte(_info, bytes1(">"), start);
             if (ret1 == false || ret2 == false) {
-                return false;
+                return (false, "", "");
             }
             substr[i] = PlatString.substring(_info, start + 1, end - 1);
             start = end;
         }
-
-        setNodeParameter(PlatString.toBytes32(substr[0], 0), PlatString.toBytes32(substr[1], 0), substr[2]);
-        return true;
+        return (true, substr[0], substr[1]);
     }
+
+    function conductRequest() internal returns (bool) {
+        bool ret = false;
+        string memory operation = (requestInfos_["operation"]);
+        string memory object    = (requestInfos_["object"]);
+        string memory node      = (requestInfos_["node"]);
+        string memory parameter = (requestInfos_["parameter"]);
+        string memory value     = (requestInfos_["value"]);
+        string memory extra     = (requestInfos_["extra"]);
+
+        if (PlatString.equalto(operation, "set")) {
+            ret = setNodeParameter(node, parameter, value);
+        } else if (PlatString.equalto(operation, "create"))  {
+            createNode(object, node, extra);            
+        } else if (PlatString.equalto(operation, "remove"))  {
+            
+        } else {
+            return (false);
+        }
+
+        return (ret);
+    }
+
+
+
 }
