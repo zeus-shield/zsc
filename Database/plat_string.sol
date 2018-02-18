@@ -81,6 +81,32 @@ library PlatString {
         return out;
     }
 
+    function tobytes32(string _str) internal pure returns (bytes32) {
+        bytes32 out;
+        bytes memory str = bytes(_str);
+        uint len = str.length;
+
+        if (len  > 32 ) len = 32;
+
+        for (uint i = 0; i < len; ++i) {
+            out |= bytes32(str[i] & 0xFF) >> (i * 8);
+        }
+
+        return out;
+    }
+
+    function equalto(string _a, string _b) internal pure returns (bool) {
+        bytes memory _aa = bytes(_a);
+        bytes memory _bb = bytes(_b);
+
+        if (_aa.length != _bb.length) return false;
+
+        for (uint i = 0; i < _aa.length; ++i) { 
+            if (_aa[i] != _bb[i]) return false;
+        }
+        return true;
+    }
+
     //function getIntFromBuff(string str, du32 offset);
 
     function getstringFromBuff(string src, uint len, uint offset) internal pure returns (string) {
