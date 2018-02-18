@@ -27,9 +27,11 @@ contract DBDatabase is Object {
 
         DBNode provider = new DBNode("provider");
         DBNode receiver = new DBNode("receiver");
+        DBNode agreement = new DBNode("agreement");
 
         rootNode_.addChild(address(provider));
         rootNode_.addChild(address(receiver));
+        rootNode_.addChild(address(agreement));
     }
 
     function getRootNode() public only_delegate constant returns (address) {
