@@ -8,6 +8,7 @@ import "./db_item.sol";
 import "./db_template.sol";
 import "./db_receiver.sol";
 import "./db_provider.sol";
+import "./db_agreement.sol";
 import "./db_database.sol";
 
 
@@ -32,6 +33,16 @@ contract DBApis is DBDatabase {
 
         DBProvider nd = new DBProvider(_name);
         DBNode(rootNode_.getChild("provider")).addChild(address(nd));
+        return true;
+    }
+
+    function createAgreement(bytes32 _name) public only_delegate returns (bool) {
+        if (getNode(_name) != 0) {
+            return false;
+        }
+
+        DBAgreement nd = new DBAgreement(_name);
+        DBNode(rootNode_.getChild("agreement")).addChild(address(nd));
         return true;
     }
 
