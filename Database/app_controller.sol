@@ -7,6 +7,7 @@ pragma solidity ^0.4.18;
 import "./plat_json.sol";
 import "./object.sol";
 import "./db_apis.sol";
+import "./plat_string.sol";
 
 
 contract AppController is Object {
@@ -28,7 +29,7 @@ contract AppController is Object {
         apiController_ = new DBApis("zsc_db");
     }
 
-    function setNodeParameter(bytes32 _nodeName, bytes32 _parameter, string _value) public only_delegate returns (bool) {
+    function setNodeParameter(bytes32 _nodeName, bytes32 _parameter, string _value) internal only_delegate returns (bool) {
         if (apiController_.setNodeParameterValue(_nodeName, _parameter, "temp")) {
             nodeParameters_[_nodeName].values_[_parameter] = _value;
             return true;
@@ -36,25 +37,55 @@ contract AppController is Object {
         return false;
     } 
 
-    function getNodeParameter(bytes32 _nodeName, bytes32 _parameter) public only_delegate constant returns (string) {
+    function getNodeParameter(bytes32 _nodeName, bytes32 _parameter) internal only_delegate constant returns (string) {
+        if (apiController_.getNodeParameterValue(_nodeName, _parameter) != "temp") {
+            return "null";
+        }
         return nodeParameters_[_nodeName].values_[_parameter];
     } 
 
-    function psushRequestInfo(string _info) public only_delegate {
+    function psushRequestInfo(string _info) public only_delegate returns (bool) {
     	requestInfo_ = _info;
+        
+        bool ret1;
+        bool ret2;
+        uint start = 0;
+        uint end;
+
+        while(true) {
+            (ret1, start) = PlatString.findbyte(_info, bytes1("{"), start);
+            (ret2, end) = PlatString.findbyte(_info, bytes1("{"), start);
+            if (ret1 == false || ret2 == false) {
+                break;
+            }
+            string memory singelInfo = PlatString.substring(_info, start + 1, end - 1);
+
+            if (parserSingleRequest(singelInfo) == false) {
+                return false;
+            }
+            start = end;
+        }
+        return true;
     }
-    
-    function parserElements(string info, uint maxNos, uint index) internal only_delegate {
-        string memory json = info; //'{"texture":"value", "id":"sss"}, {"texture":"aaa", "id":"ddd"}'
-        PlatJson.Token[] memory temp;
 
-        uint returnValue;
-        uint actualNum;
+    function parserSingleRequest(string _info) internal returns (bool) {
+        bool ret1;
+        bool ret2;
+        uint start = 0;
+        uint end;
+        string[3] memory substr;
+       
+        for (uint i = 0; i < 3; ++i) {
+            (ret1, start) = PlatString.findbyte(_info, bytes1("<"), start);
+            (ret2, end) = PlatString.findbyte(_info, bytes1(">"), start);
+            if (ret1 == false || ret2 == false) {
+                return false;
+            }
+            substr[i] = PlatString.substring(_info, start + 1, end - 1);
+            start = end;
+        }
 
-        (returnValue, temp, actualNum) = PlatJson.parse(json, maxNos);
-
-        PlatJson.Token memory t = temp[index];
-        testResult = PlatJson.getBytes(json, t.start, t.end);
+        setNodeParameter(PlatString.toBytes32(substr[0], 0), PlatString.toBytes32(substr[1], 0), substr[2]);
+        return true;
     }
-
 }
