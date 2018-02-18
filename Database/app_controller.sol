@@ -29,15 +29,20 @@ contract AppController is Object {
         bytes32 name = PlatString.tobytes32(_name);
         bytes32 extra = PlatString.tobytes32(_extra);
 
-        if (PlatString.equalto(_object, "provider")) {
+        if (PlatString.equalto(_object, "agreement")) {
+            return apiController_.createAgreement(name);
+        } else if (PlatString.equalto(_object, "provider")) {
             return apiController_.createProvider(name);
         } else if (PlatString.equalto(_object, "receiver")) {
             return apiController_.createReceiver(name);
         } else if (PlatString.equalto(_object, "template")) {
             apiController_.createTemplate(name, extra);
+        } else if (PlatString.equalto(_object, "item")) {
+            apiController_.createItem(name, extra);
         }
         return true;
     }
+
 
     function setNodeParameter(string _nodeName, string _parameter, string _value) internal only_delegate returns (bool) {
         bytes32 name = PlatString.tobytes32(_nodeName);
@@ -59,7 +64,7 @@ contract AppController is Object {
 
     /* examples
     _info = "{<operation><create>} {<object><provider>} {<node><provi-x>} "
-    _info = "{<operation><set>} {<object><provider>} {<node><provi-x>} {<parameter><username>} {<value><zsc>} "
+    _info = "{<operation><set>} {<object><provider>} {<node><provi-x>} {<parameter><username>} {<value><zsc>} {<extra> <vaaaa>} "
     */
     function pushRequestInfo(string _info) public only_delegate returns (bool) {
     	requestInfo_ = _info;
@@ -72,7 +77,6 @@ contract AppController is Object {
         string memory infoType;
         string memory infoValue;
         bool ret;
-
 
         while(true) {
             (ret1, start) = PlatString.findbyte(_info, bytes1("{"), start);
@@ -133,7 +137,4 @@ contract AppController is Object {
 
         return (ret);
     }
-
-
-
 }
