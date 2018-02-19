@@ -28,7 +28,7 @@ contract DBAgreement is DBEntity {
         addParameter("paymentAmount");
     }
 
-    function setProvider(address _id, bool _status) public returns (bool) {
+    function setProvider(address _id, bool _status) public only_delegate returns (bool) {
         if (_status == true) {
             return providerIDs_.addID(_id);
         } else {
@@ -36,7 +36,7 @@ contract DBAgreement is DBEntity {
         }
     }
 
-    function setReceiver(address _id, bool _status) public returns (bool) {
+    function setReceiver(address _id, bool _status) public only_delegate returns (bool) {
         if (_status == true) {
             return providerIDs_.addID(_id);
         } else {
@@ -44,7 +44,7 @@ contract DBAgreement is DBEntity {
         }
     }
 
-    function setTemplate(address _id, bool _status) public returns (bool) {
+    function setTemplate(address _id, bool _status) public only_delegate returns (bool) {
         if (_status == true) {
             //current version only allows single template for each agreement
             require(templateIDs_.numIDs() < 1);
@@ -53,5 +53,10 @@ contract DBAgreement is DBEntity {
             return templateIDs_.removeID(_id);
         }
     }
-   
+
+    function getParticipantsNos() public only_delegate constant returns (uint, uint, uint) {
+        return (providerIDs_.numIDs(), receiverIDs_.numIDs(), templateIDs_.numIDs());
+    }
 }
+
+
