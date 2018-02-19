@@ -80,7 +80,7 @@ contract DBApis is DBDatabase {
         require(nd != 0);
         return DBEntity(nd).getParameter(_parameter);
     } 
-    
+
     function deleteEntireNode(bytes32 _nodeName) public only_delegate returns (bool) {
         if (getNode(_nodeName) == 0) {
             return false;
@@ -89,4 +89,33 @@ contract DBApis is DBDatabase {
         destroyNode(getNode(_nodeName));
         return true;
     }
+
+    function getCompnentsNosFromAgreement(bytes32 _agreement) public only_delegate constant returns (uint, uint, uint) {
+        if (getNode(_agreement) == 0) {
+            return (0, 0, 0);
+        }
+        return DBAgreement(getNode(_agreement)).getParticipantsNos();
+    }
+
+    function addComponetToAgreement(bytes32 _template, bytes32 _user) public only_delegate returns (bool res) {
+        address template = getNode(_template);
+        address user = getNode(_user);
+
+        if (template == address(0) || user == address(0)) {
+            return false;
+        }
+
+        bytes32 entityType = DBEntity(user).getEntityType();
+        if (PlatString.equalto(entityType, "provider")) {
+            DBAgreement(template).setProvider(user, true);
+        } else if (PlatString.equalto(entityType, "receiver")) {
+            DBAgreement(template).setReceiver(user, true);
+        } else if (PlatString.equalto(entityType, "template")) {
+            DBAgreement(template).setReceiver(user, true);
+        } else {
+            return false;
+        }
+        return true;
+    }
+    
 }
