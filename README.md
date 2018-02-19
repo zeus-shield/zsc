@@ -72,3 +72,5 @@ Implementation of the website based interfance not included here.
 
 2018.02.17-18: add the mapping among parameter (bytes32) and its value (string) in app_controller.sol. Enable the 
 operation of parsering and returning the string from/to the client 
+
+2018.02.19: add a new file: test_database.sol
