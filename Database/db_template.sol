@@ -12,6 +12,7 @@ contract DBTemplate is DBEntity {
     DBIDManager itemIDs_;
     
     function DBTemplate(bytes32 _name) public DBEntity(_name) {
+    	setEntityType("template");
     }
 
     function createItem(bytes32 _name) public returns(address) {

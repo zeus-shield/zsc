@@ -12,6 +12,7 @@ import "./db_entity.sol";
 contract DBReceiver is DBEntity {
     // Constructor
     function DBReceiver(bytes32 _name) public DBEntity(_name) {
+        setEntityType("receiver"); 
         initParameters();
     }
 

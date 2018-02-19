@@ -26,6 +26,7 @@ contract DBProvider is DBEntity {
 
     // Constructor
     function DBProvider(bytes32 _name) public DBEntity(_name) {
+        setEntityType("proiver"); 
         initParameters();
     }
 
