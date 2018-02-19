@@ -43,4 +43,9 @@ contract DBIDManager is Object {
         IDs_.length -= 1;
         return true;
     }
+
+    function getID(uint _index) public only_delegate constant returns (address) {
+        if(_index >= IDs_.length) return 0;
+        return IDs_[_index];
+    }
 }
