@@ -11,7 +11,7 @@ import "../Database/db_agreement.sol";
 import "../Database/db_database.sol";
 
 contract TestDatabase is DBDatabase {
-    function TestDatabase() {
+    function TestDatabase(bytes32 _name) public DBDatabase(_name) {
     }
 
     function createIndependentNode(bytes32 _type, bytes32 _name) public returns (bool) {
@@ -46,5 +46,15 @@ contract TestDatabase is DBDatabase {
             return false;
         }
         return true;
+    }
+
+    function deleteNode(bytes32 _name) public returns (bool) {
+        if (getNode(_name) != 0) return false;
+
+        return destroyNode(getNode(_name));
+    }
+
+    function findNodeByName(bytes32 _name) public constant returns (address) {
+        return getNode(_name);
     }
 }
