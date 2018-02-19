@@ -11,6 +11,7 @@ import "./db_node.sol";
 contract DBEntity is DBNode {
     uint    id_ ;
     bool    activated_;
+    bytes32 entityType_ = "entity";
 
     mapping(bytes32 => uint) currencies_;
     mapping(bytes32 => uint) currencyStatus_; // 0: not-exist; 1: ok; 2: suspended
@@ -21,6 +22,14 @@ contract DBEntity is DBNode {
     // Constructor
     function DBEntity(bytes32 _name) public DBNode(_name) {
         initParameters();
+    }
+
+    function setEntityType(bytes32 _type) internal only_delegate {
+        entityType_ = _type;
+    }
+
+    function getEntityType() public only_delegate constant returns (bytes32) {
+        return entityType_;
     }
 
     function initParameters() internal {
