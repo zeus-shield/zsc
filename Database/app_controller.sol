@@ -9,7 +9,6 @@ import "./object.sol";
 import "./db_apis.sol";
 import "./plat_string.sol";
 
-
 contract AppController is Object {
 
 	string public testResult = "";
@@ -24,44 +23,7 @@ contract AppController is Object {
     function AppController(bytes32 _name) public Object(_name) {
         apiController_ = new DBApis("zsc_db");
     }
-
-    function createNode(string _object, string _name, string _extra) public only_delegate returns (bool) {
-        bytes32 name = PlatString.tobytes32(_name);
-        bytes32 extra = PlatString.tobytes32(_extra);
-
-        if (PlatString.equalto(_object, "agreement")) {
-            return apiController_.createAgreement(name);
-        } else if (PlatString.equalto(_object, "provider")) {
-            return apiController_.createProvider(name);
-        } else if (PlatString.equalto(_object, "receiver")) {
-            return apiController_.createReceiver(name);
-        } else if (PlatString.equalto(_object, "template")) {
-            apiController_.createTemplate(name, extra);
-        } else if (PlatString.equalto(_object, "item")) {
-            apiController_.createItem(name, extra);
-        }
-        return true;
-    }
-
-
-    function setNodeParameter(string _nodeName, string _parameter, string _value) internal only_delegate returns (bool) {
-        bytes32 name = PlatString.tobytes32(_nodeName);
-        bytes32 parameter = PlatString.tobytes32(_parameter);
-
-        if (apiController_.setNodeParameterValue(name, parameter, "temp")) {
-            nodeParameters_[name].values_[parameter] = _value;
-            return true;
-        }
-        return false;
-    } 
-
-    function getNodeParameter(bytes32 _nodeName, bytes32 _parameter) internal only_delegate constant returns (string) {
-        if (apiController_.getNodeParameterValue(_nodeName, _parameter) != "temp") {
-            return "null";
-        }
-        return nodeParameters_[_nodeName].values_[_parameter];
-    } 
-
+    
     /* examples
     _info = "{<operation><create>} {<object><provider>} {<node><provi-x>} "
     _info = "{<operation><set>} {<object><provider>} {<node><provi-x>} {<parameter><username>} {<value><zsc>} {<extra> <vaaaa>} "
@@ -97,6 +59,9 @@ contract AppController is Object {
         return true;
     }
 
+    //////////////////////
+    //////////////////////
+    //////////////////////
     function parserSingleInfo(string _info) internal pure returns (bool, string, string) {
         bool ret1;
         bool ret2;
@@ -116,8 +81,10 @@ contract AppController is Object {
         return (true, substr[0], substr[1]);
     }
 
-    function conductRequest() internal returns (bool) {
+    function conductRequest() internal returns (bool, string) {
         bool ret = false;
+        string memory str = ""; 
+
         string memory operation = (requestInfos_["operation"]);
         string memory object    = (requestInfos_["object"]);
         string memory node      = (requestInfos_["node"]);
@@ -127,14 +94,70 @@ contract AppController is Object {
 
         if (PlatString.equalto(operation, "set")) {
             ret = setNodeParameter(node, parameter, value);
-        } else if (PlatString.equalto(operation, "create"))  {
-            createNode(object, node, extra);            
-        } else if (PlatString.equalto(operation, "remove"))  {
-            
+        } else if (PlatString.equalto(operation, "get")) {
+            (ret, str) = getNodeParameter(node, parameter);            
+        } else if (PlatString.equalto(operation, "create")) {
+            ret = createNode(object, node, extra);            
+        } else if (PlatString.equalto(operation, "remove")) {
+            ret = deleteNode(object, node);
         } else {
-            return (false);
         }
 
-        return (ret);
+        return (ret, str);
+    }
+
+    //////////////////////
+    //////////////////////
+    //////////////////////
+    function setNodeParameter(string _nodeName, string _parameter, string _value) internal only_delegate returns (bool) {
+        bytes32 name = PlatString.tobytes32(_nodeName);
+        bytes32 parameter = PlatString.tobytes32(_parameter);
+
+        if (apiController_.setNodeParameterValue(name, parameter, "temp")) {
+            nodeParameters_[name].values_[parameter] = _value;
+            return true;
+        }
+        return false;
+    } 
+
+    function getNodeParameter(string _nodeName, string _parameter) internal only_delegate constant returns (bool, string) {
+        bytes32 name = PlatString.tobytes32(_nodeName);
+        bytes32 parameter = PlatString.tobytes32(_parameter);
+
+        if (apiController_.getNodeParameterValue(name, parameter) != "temp") {
+            return (false, "");
+        }
+        return (true, nodeParameters_[name].values_[parameter]);
+    } 
+
+    function createNode(string _object, string _name, string _extra) internal only_delegate returns (bool) {
+        bytes32 name = PlatString.tobytes32(_name);
+        bytes32 extra = PlatString.tobytes32(_extra);
+
+        if (PlatString.equalto(_object, "agreement")) {
+            return apiController_.createAgreement(name);
+        } else if (PlatString.equalto(_object, "provider")) {
+            return apiController_.createProvider(name);
+        } else if (PlatString.equalto(_object, "receiver")) {
+            return apiController_.createReceiver(name);
+        } else if (PlatString.equalto(_object, "template")) {
+            apiController_.createTemplate(name, extra);
+        } else if (PlatString.equalto(_object, "item")) {
+            apiController_.createItem(name, extra);
+        }
+        return true;
+    }
+
+    function deleteNode(string _object, string _name) internal only_delegate returns (bool) {
+        bytes32 name = PlatString.tobytes32(_name);
+        if (PlatString.equalto(_object, "agreement")) {
+            return false;
+        } else if (PlatString.equalto(_object, "provider")) {
+            return false;
+        } else if (PlatString.equalto(_object, "receiver")) {
+            return false;
+        } else {
+            apiController_.deleteEntireNode(name);
+        }
     }
 }
