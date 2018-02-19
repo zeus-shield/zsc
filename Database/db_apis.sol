@@ -80,4 +80,13 @@ contract DBApis is DBDatabase {
         require(nd != 0);
         return DBEntity(nd).getParameter(_parameter);
     } 
+    
+    function deleteEntireNode(bytes32 _nodeName) public only_delegate returns (bool) {
+        if (getNode(_nodeName) == 0) {
+            return false;
+        }
+
+        destroyNode(getNode(_nodeName));
+        return true;
+    }
 }
