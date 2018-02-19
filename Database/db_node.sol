@@ -89,7 +89,7 @@ contract DBNode is Object {
         }
 
         for (uint i = 0; i < children_.length; ++i) {
-            DBDatabase(database_)._destroyNode(children_[i]);
+            DBDatabase(database_).destroyNode(children_[i]);
             delete childMap_[DBNode(children_[i]).name()];
         }
         children_.length = 0;

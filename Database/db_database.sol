@@ -50,7 +50,7 @@ contract DBDatabase is Object {
         return true;
     }
 
-    function _destroyNode(address _node) public only_delegate returns (bool) {
+    function destroyNode(address _node) public only_delegate returns (bool) {
         for (uint i = 0; i < nodes_.length; ++i) {
             if (address(nodes_[i]) == _node) {
                 address parent = nodes_[i].getParent();
