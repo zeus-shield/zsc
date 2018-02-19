@@ -107,6 +107,15 @@ library PlatString {
         return true;
     }
 
+    function equalto(bytes32 _a, bytes32 _b) internal pure returns (bool) {
+        if (_a.length != _b.length) return false;
+
+        for (uint i = 0; i < _a.length; ++i) { 
+            if (_a[i] != _b[i]) return false;
+        }
+        return true;
+    }
+
     //function getIntFromBuff(string str, du32 offset);
 
     function getstringFromBuff(string src, uint len, uint offset) internal pure returns (string) {
