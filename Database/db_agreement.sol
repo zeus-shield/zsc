@@ -32,6 +32,8 @@ contract DBAgreement is DBEntity {
 
     function setProvider(address _id, bool _status) public only_delegate returns (bool) {
         if (_status == true) {
+            //current version only allows single provider for each agreement
+            require(providerIDs_.numIDs() < 1);
             return providerIDs_.addID(_id);
         } else {
             return providerIDs_.removeID(_id);
@@ -40,9 +42,11 @@ contract DBAgreement is DBEntity {
 
     function setReceiver(address _id, bool _status) public only_delegate returns (bool) {
         if (_status == true) {
-            return providerIDs_.addID(_id);
+            //current version only allows single receiver for each agreement
+            require(receiverIDs_.numIDs() < 1);
+            return receiverIDs_.addID(_id);
         } else {
-            return providerIDs_.removeID(_id);
+            return receiverIDs_.removeID(_id);
         }
     }
 
