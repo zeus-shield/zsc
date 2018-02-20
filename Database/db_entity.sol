@@ -13,9 +13,11 @@ contract DBEntity is DBNode {
     bool    activated_;
     bytes32 entityType_ = "entity";
 
+
     mapping(bytes32 => uint) currencies_;
     mapping(bytes32 => uint) currencyStatus_; // 0: not-exist; 1: ok; 2: suspended
 
+    bytes32[] parameterNames_;
     mapping(bytes32 => bytes32) parameters_;
     mapping(bytes32 => bool)   parameterExist_;
 
@@ -100,6 +102,7 @@ contract DBEntity is DBNode {
         if (parameterExist_[_parameter] == true) {
             return false;
         }
+        parameterNames_.push(_parameter);
         parameterExist_[_parameter] = true;
         return true;
     }
@@ -108,6 +111,17 @@ contract DBEntity is DBNode {
         if (parameterExist_[_parameter] == false) {
             return false;
         }
+
+        for (uint i = 0; i < parameterNames_.length; ++i) {
+            if (parameterNames_[i] == _parameter) {
+                parameterNames_[i] = parameterNames_[parameterNames_.length - 1];
+                break;
+            }
+        }
+
+        delete parameterNames_[parameterNames_.length - 1];
+        parameterNames_.length --;
+
         delete parameters_[_parameter];
         delete parameterExist_[_parameter];
         return true;
@@ -125,4 +139,14 @@ contract DBEntity is DBNode {
         require (parameterExist_[_parameter] == true);
         return parameters_[_parameter];
     }
+
+    function numParameters() public only_delegate constant returns (uint) {
+        return parameterNames_.length;
+    }
+
+    function getParameterNameByIndex(uint _index) public only_delegate constant returns (bytes32) {
+        require(_index < parameterNames_.length);
+        return parameterNames_[_index];
+    }
+    
 }
