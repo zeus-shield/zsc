@@ -22,7 +22,7 @@ contract DBNode is Object {
     function setDatabase(address _database) public only_delegate {
         database_ = _database;
         DBDatabase(database_).setDelegate(this, true);
-        DBDatabase(database_)._addNode(this);
+        require(DBDatabase(database_)._addNode(this) == true);
     }
 
     function numChildren() public only_delegate constant returns(uint) {
@@ -59,9 +59,14 @@ contract DBNode is Object {
     }
 
     function getChild(bytes32 _name) public only_delegate constant returns(address) {
+        require(childMap_[_name] != 0);
         return childMap_[_name];
     }
     
+    function getChildByIndex(uint _index) public only_delegate constant returns(address) {
+        require(_index < children_.length);
+        return children_[_index];
+    }
 
     function removeChild(bytes32 _name) public only_delegate returns (address) {
         if (childMap_[_name] == 0) {
@@ -76,6 +81,7 @@ contract DBNode is Object {
                 break;
             }
         }
+        delete children_[children_.length - 1];
         children_.length --;
         delete childMap_[_name];
 
