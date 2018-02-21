@@ -74,3 +74,6 @@ Implementation of the website based interfance not included here.
 operation of parsering and returning the string from/to the client 
 
 2018.02.19: add two new files: test_database.sol; test_create_contract.sol
+
+2018.02.20-21: test and modification on different db modules.
+
