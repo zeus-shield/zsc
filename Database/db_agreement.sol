@@ -63,6 +63,18 @@ contract DBAgreement is DBEntity {
     function getParticipantsNos() public only_delegate constant returns (uint, uint, uint) {
         return (providerIDs_.numIDs(), receiverIDs_.numIDs(), templateIDs_.numIDs());
     }
+
+    function getProviderByIndex(uint _index) public only_delegate constant returns (address) {
+        return providerIDs_.getID(_index);
+    }
+
+    function getReceiverByIndex(uint _index) public only_delegate constant returns (address) {
+        return receiverIDs_.getID(_index);
+    }
+
+    function getTemplateByIndex(uint _index) public only_delegate constant returns (address) {
+        return templateIDs_.getID(_index);
+    }
 }
 
 
