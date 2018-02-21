@@ -47,13 +47,23 @@ contract DBApis is DBDatabase {
     }
 
     function createTemplate(bytes32 _providerName, bytes32 _templateName) public only_delegate returns (bool) {
-        require (getNode(_providerName) != 0);
+        address nd = getNode(_nodeName);
+
+        if (nd == 0) {
+            return false;
+        }
+
         DBNode(getNode(_providerName)).addTemplate(_templateName);
         return true;
     }
 
     function createItem(bytes32 _templateName, bytes32 _itemName) public only_delegate returns (bool) {
-        require (getNode(_templateName) != 0);
+        address nd = getNode(_nodeName);
+
+        if (nd == 0) {
+            return false;
+        }
+
         DBNode(getNode(_templateName)).addItem(_itemName);
         return true;
     }
@@ -69,7 +79,11 @@ contract DBApis is DBDatabase {
 
     function getNodeParameterValue(bytes32 _nodeName, bytes32 _parameter) public only_delegate constant returns (bytes32) {
         address nd = getNode(_nodeName);
-        require(nd != 0);
+
+        if (nd == 0) {
+            return false;
+        }
+
         return DBEntity(nd).getParameter(_parameter);
     } 
 
