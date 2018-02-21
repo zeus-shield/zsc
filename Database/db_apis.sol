@@ -53,12 +53,8 @@ contract DBApis is DBDatabase {
     }
 
     function createItem(bytes32 _templateName, bytes32 _itemName) public only_delegate returns (bool) {
-        if (getNode(_itemName) != 0 && getNode(_templateName) == 0) {
-            return false;
-        }
-
-        DBTemplate nd = new DBTemplate(_itemName);
-        DBNode(rootNode_.getChild(_templateName)).addChild(address(nd));
+        require (getNode(_templateName) != 0);
+        DBNode(getNode(_templateName)).addItem(_itemName);
         return true;
     }
 
