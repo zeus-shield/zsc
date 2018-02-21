@@ -14,4 +14,9 @@ contract DBTemplate is DBEntity {
     function DBTemplate(bytes32 _name) public DBEntity(_name) {
     	setEntityType("template");
     }
+
+    function addItem(bytes32 _name) public returns(address) {
+        DBItem temp = new DBItem(_name);
+        return addChild(address(temp));
+    }
 }
