@@ -55,8 +55,7 @@ contract AppController is Object {
             start = end;
         }
 
-        conductRequest();
-        return true;
+        return conductRequest();
     }
 
     //////////////////////
@@ -109,7 +108,7 @@ contract AppController is Object {
     //////////////////////
     //////////////////////
     //////////////////////
-    function setNodeParameter(string _nodeName, string _parameter, string _value) internal only_delegate returns (bool) {
+    function setNodeParameter(string _nodeName, string _parameter, string _value) public only_delegate returns (bool) {
         bytes32 name = PlatString.tobytes32(_nodeName);
         bytes32 parameter = PlatString.tobytes32(_parameter);
 
@@ -120,7 +119,7 @@ contract AppController is Object {
         return false;
     } 
 
-    function getNodeParameter(string _nodeName, string _parameter) internal only_delegate constant returns (bool, string) {
+    function getNodeParameter(string _nodeName, string _parameter) public only_delegate constant returns (bool, string) {
         bytes32 name = PlatString.tobytes32(_nodeName);
         bytes32 parameter = PlatString.tobytes32(_parameter);
 
