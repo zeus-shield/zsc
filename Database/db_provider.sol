@@ -48,7 +48,7 @@ contract DBProvider is DBEntity {
         addParameter("claimPhone");
     }
     
-    function createTemplate(bytes32 _name) public returns(address) {
+    function addTemplate(bytes32 _name) public returns(address) {
         DBTemplate temp = new DBTemplate(_name);
         return addChild(address(temp));
     }
