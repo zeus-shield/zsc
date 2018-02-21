@@ -42,14 +42,12 @@ contract DBDatabase is Object {
         return nodeAddress_[_name];
     }
 
-    function _addNode(address _node) public only_delegate returns (bool) {
-        if (nodeAddress_[DBNode(_node).name()] != 0) return false;
-        
-        DBNode(_node).setDelegate(owner, true);
+    function _addNode(address _node) public only_delegate {
+        require (nodeAddress_[DBNode(_node).name()] == 0);
 
+        DBNode(_node).setDelegate(owner, true);
         nodes_.push(DBNode(_node));
         nodeAddress_[DBNode(_node).name()] = _node;
-        return true;
     }
 
     function destroyNode(address _node) public only_delegate returns (bool) {
