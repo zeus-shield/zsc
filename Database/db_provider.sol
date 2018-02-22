@@ -47,16 +47,4 @@ contract DBProvider is DBEntity {
         addParameter("claimEmail");
         addParameter("claimPhone");
     }
-    
-    function addTemplate(bytes32 _name) public returns(address) {
-        DBTemplate temp = new DBTemplate(_name);
-        return addChild(address(temp));
-    }
-
-
-    /*
-    function addTemplate(Provider storage _provider, uint _templateID) public returns (bool) {
-        return DBIDManager.addID(_provider.templateIDs_, _templateID);
-    }
-    */
 }
