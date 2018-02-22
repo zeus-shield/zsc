@@ -60,10 +60,6 @@ contract DBAgreement is DBEntity {
         }
     }
 
-    function getParticipantsNos() public only_delegate constant returns (uint, uint, uint) {
-        return (providerIDs_.numIDs(), receiverIDs_.numIDs(), templateIDs_.numIDs());
-    }
-
     function getProviderByIndex(uint _index) public only_delegate constant returns (address) {
         return providerIDs_.getID(_index);
     }
@@ -74,6 +70,18 @@ contract DBAgreement is DBEntity {
 
     function getTemplateByIndex(uint _index) public only_delegate constant returns (address) {
         return templateIDs_.getID(_index);
+    }
+
+    function numProviders() public only_delegate constant returns (uint) {
+        return providerIDs_.numIDs();
+    }
+
+    function numReceivers() public only_delegate constant returns (uint) {
+        return receiverIDs_.numIDs();
+    }
+
+    function numTemplates() public only_delegate constant returns (uint) {
+        return templateIDs_.numIDs();
     }
 }
 
