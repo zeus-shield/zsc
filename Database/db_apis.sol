@@ -47,24 +47,22 @@ contract DBApis is DBDatabase {
     }
 
     function createTemplate(bytes32 _providerName, bytes32 _templateName) public only_delegate returns (bool) {
-        address nd = getNode(_providerName);
-
-        if (nd == 0) {
+        if (getNode(_providerName) == 0 || getNode(_templateName) != 0) {
             return false;
         }
 
-        DBProvider(getNode(_providerName)).addTemplate(_templateName);
+        DBTemplate nd = new DBTemplate(_templateName);
+        DBNode(getNode(_providerName)).addChild(address(nd));
         return true;
     }
 
     function createItem(bytes32 _templateName, bytes32 _itemName) public only_delegate returns (bool) {
-        address nd = getNode(_templateName);
-
-        if (nd == 0) {
+        if (getNode(_templateName) == 0 || getNode(_itemName) != 0) {
             return false;
         }
 
-        DBTemplate(getNode(_templateName)).addItem(_itemName);
+        DBItem nd = new DBItem(_itemName);
+        DBNode(getNode(_templateName)).addChild(address(nd));
         return true;
     }
 
