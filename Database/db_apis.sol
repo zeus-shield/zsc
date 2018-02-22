@@ -47,24 +47,24 @@ contract DBApis is DBDatabase {
     }
 
     function createTemplate(bytes32 _providerName, bytes32 _templateName) public only_delegate returns (bool) {
-        address nd = getNode(_nodeName);
+        address nd = getNode(_providerName);
 
         if (nd == 0) {
             return false;
         }
 
-        DBNode(getNode(_providerName)).addTemplate(_templateName);
+        DBProvider(getNode(_providerName)).addTemplate(_templateName);
         return true;
     }
 
     function createItem(bytes32 _templateName, bytes32 _itemName) public only_delegate returns (bool) {
-        address nd = getNode(_nodeName);
+        address nd = getNode(_templateName);
 
         if (nd == 0) {
             return false;
         }
 
-        DBNode(getNode(_templateName)).addItem(_itemName);
+        DBTemplate(getNode(_templateName)).addItem(_itemName);
         return true;
     }
 
@@ -81,7 +81,7 @@ contract DBApis is DBDatabase {
         address nd = getNode(_nodeName);
 
         if (nd == 0) {
-            return false;
+            return "temp";
         }
 
         return DBEntity(nd).getParameter(_parameter);
@@ -100,7 +100,9 @@ contract DBApis is DBDatabase {
         if (getNode(_agreement) == 0) {
             return (0, 0, 0);
         }
-        return DBAgreement(getNode(_agreement)).getParticipantsNos();
+        return (DBAgreement(getNode(_agreement)).numProviders(), 
+                DBAgreement(getNode(_agreement)).numReceivers(),
+                DBAgreement(getNode(_agreement)).numTemplates());
     }
 
     function addComponetToAgreement(bytes32 _template, bytes32 _user) public only_delegate returns (bool res) {
