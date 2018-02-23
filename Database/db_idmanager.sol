@@ -40,6 +40,7 @@ contract DBIDManager is Object {
             }
         }
 
+        delete IDs_[IDs_.length - 1];
         IDs_.length -= 1;
         return true;
     }
