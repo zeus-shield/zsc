@@ -19,15 +19,17 @@ import "./db_agreement.sol";
 */
 
 contract DBProvider is DBEntity {
-    //DBIDManager templateIDs_;
+    address templateRoot_;
 
-    //DBIDManager itemIDs_;
-    //DBIDManager agreementIDs_;
 
     // Constructor
     function DBProvider(bytes32 _name) public DBEntity(_name) {
         setEntityType("proiver"); 
         initParameters();
+
+        string memory rootName = PlatString.append(PlatString.bytes32ToString(_name), "_plt_");
+        templateRoot_ = new DBNode(PlatString.tobytes32(rootName));
+        addChild(address(templateRoot_));
     }
 
     function initParameters() internal {
@@ -46,5 +48,14 @@ contract DBProvider is DBEntity {
         addParameter("companyEmail");
         addParameter("claimEmail");
         addParameter("claimPhone");
+    }
+
+    function addTemplate(bytes32 _templateName) public only_delegate returns (address) {
+        DBTemplate nd = new DBTemplate(_templateName);
+        return addChild(address(nd));
+    }
+
+    function numTemplates() public only_delegate constant returns (uint) {
+        return DBNode(templateRoot_).numChildren();
     }
 }
