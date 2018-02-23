@@ -16,9 +16,7 @@ contract DBTemplate is DBEntity {
     function DBTemplate(bytes32 _name) public DBEntity(_name) {
     	setEntityType("template");
 
-    	string memory itemRootName = PlatString.append(PlatString.bytes32ToString(_name), "_it_");
-
-    	itemRoot_ = new DBNode(PlatString.tobytes32(itemRootName));
+    	itemRoot_ = new DBNode(PlatString.tobytes32(PlatString.append(_name, "_it_")));
         addChild(address(itemRoot_));
     }
 

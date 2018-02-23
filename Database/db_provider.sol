@@ -27,8 +27,7 @@ contract DBProvider is DBEntity {
         setEntityType("proiver"); 
         initParameters();
 
-        string memory rootName = PlatString.append(PlatString.bytes32ToString(_name), "_plt_");
-        templateRoot_ = new DBNode(PlatString.tobytes32(rootName));
+        templateRoot_ = new DBNode(PlatString.tobytes32(PlatString.append(_name, "_plt_")));
         addChild(address(templateRoot_));
     }
 
