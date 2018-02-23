@@ -35,6 +35,10 @@ library PlatString {
         return append(_a, _b, "", "", "");
     }
 
+    function append(bytes32 _a, bytes32 _b) internal pure returns (string) {
+        return append(bytes32ToString(_a), bytes32ToString(_b), "", "", "");
+    }
+
     function substring(string _str, uint _startpos, uint _endpos) internal pure returns (string) {
         bytes memory str = bytes(_str);
         require(_startpos <= _endpos && _endpos < str.length);
