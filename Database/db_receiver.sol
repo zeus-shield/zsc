@@ -7,11 +7,11 @@ Copyright (c) 2018 ZSC Dev, Zeusshield Blockchain Technology Development Co., Lt
 */
 
 pragma solidity ^0.4.18;
-import "./db_entity.sol";
+import "./db_user.sol";
 
-contract DBReceiver is DBEntity {
+contract DBReceiver is DBUser {
     // Constructor
-    function DBReceiver(bytes32 _name) public DBEntity(_name) {
+    function DBReceiver(bytes32 _name) public DBUser(_name) {
         setEntityType("receiver"); 
         initParameters();
     }
