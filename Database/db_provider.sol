@@ -1,33 +1,21 @@
 /*
 Copyright (c) 2018 ZSC Dev.
-2018-02-07: v0.01
-2018-02-09: v0.02
-2018-02-10: v0.03
 */
 
 pragma solidity ^0.4.18;
-import "./db_entity.sol";
+import "./db_user.sol";
 import "./db_item.sol";
 import "./db_template.sol";
 
-//import "./db_idmanager.sol";
-/*
-
-
-import "./db_agreement.sol";
-
-*/
-
-contract DBProvider is DBEntity {
+contract DBProvider is DBUser {
     address templateRoot_;
 
-
     // Constructor
-    function DBProvider(bytes32 _name) public DBEntity(_name) {
+    function DBProvider(bytes32 _name) public DBUser(_name) {
         setEntityType("proiver"); 
         initParameters();
 
-        templateRoot_ = new DBNode(PlatString.tobytes32(PlatString.append(_name, "_plt_")));
+        templateRoot_ = new DBNode(PlatString.tobytes32(PlatString.append(_name, "_1")));
         addChild(address(templateRoot_));
     }
 
