@@ -9,19 +9,16 @@ import "./object.sol";
 import "./db_apis.sol";
 import "./plat_string.sol";
 
-contract AppController is Object {
+contract AppController is DBApis {
 
 	string public testResult = "";
 	string requestInfo_;
-
-    DBApis apiController_;
 
     struct ParameterValue {mapping (bytes32 => string) values_; }
     mapping (bytes32 => ParameterValue) nodeParameters_;
     mapping (string => string) requestInfos_;
 
-    function AppController(bytes32 _name) public Object(_name) {
-        apiController_ = new DBApis("zsc_db");
+    function AppController(bytes32 _name) public DBApis(_name) {
     }
     
     /* examples
@@ -55,7 +52,8 @@ contract AppController is Object {
             start = end;
         }
 
-        return conductRequest();
+        conductRequest();
+        return true;
     }
 
     //////////////////////
@@ -112,7 +110,7 @@ contract AppController is Object {
         bytes32 name = PlatString.tobytes32(_nodeName);
         bytes32 parameter = PlatString.tobytes32(_parameter);
 
-        if (apiController_.setNodeParameterValue(name, parameter, "temp")) {
+        if (setNodeParameterValue(name, parameter, "temp")) {
             nodeParameters_[name].values_[parameter] = _value;
             return true;
         }
@@ -123,7 +121,7 @@ contract AppController is Object {
         bytes32 name = PlatString.tobytes32(_nodeName);
         bytes32 parameter = PlatString.tobytes32(_parameter);
 
-        if (apiController_.getNodeParameterValue(name, parameter) != "temp") {
+        if (getNodeParameterValue(name, parameter) != "temp") {
             return (false, "");
         }
         return (true, nodeParameters_[name].values_[parameter]);
@@ -134,15 +132,15 @@ contract AppController is Object {
         bytes32 extra = PlatString.tobytes32(_extra);
 
         if (PlatString.equalto(_object, "agreement")) {
-            return apiController_.createAgreement(name);
+            return createAgreement(name);
         } else if (PlatString.equalto(_object, "provider")) {
-            return apiController_.createProvider(name);
+            return createProvider(name);
         } else if (PlatString.equalto(_object, "receiver")) {
-            return apiController_.createReceiver(name);
+            return createReceiver(name);
         } else if (PlatString.equalto(_object, "template")) {
-            apiController_.createTemplate(name, extra);
+            createTemplate(name, extra);
         } else if (PlatString.equalto(_object, "item")) {
-            apiController_.createItem(name, extra);
+            createItem(name, extra);
         }
         return true;
     }
@@ -156,7 +154,7 @@ contract AppController is Object {
         } else if (PlatString.equalto(_object, "receiver")) {
             return false;
         } else {
-            apiController_.deleteEntireNode(name);
+            deleteEntireNode(name);
         }
     }
 }
