@@ -77,3 +77,5 @@ operation of parsering and returning the string from/to the client
 
 2018.02.20-21: test and modification on different db modules.
 
+2018.02.24: add a new file db_user.sol
+
