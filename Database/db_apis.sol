@@ -50,9 +50,7 @@ contract DBApis is DBDatabase {
         if (getNode(_providerName) == 0 || getNode(_templateName) != 0) {
             return false;
         }
-
-        DBTemplate nd = new DBTemplate(_templateName);
-        DBNode(getNode(_providerName)).addChild(address(nd));
+        DBProvider(getNode(_providerName)).addTemplate_templateName);
         return true;
     }
 
@@ -60,9 +58,7 @@ contract DBApis is DBDatabase {
         if (getNode(_templateName) == 0 || getNode(_itemName) != 0) {
             return false;
         }
-
-        DBItem nd = new DBItem(_itemName);
-        DBNode(getNode(_templateName)).addChild(address(nd));
+        DBTemplate(getNode(_templateName)).addItem(_itemName);
         return true;
     }
 
