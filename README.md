@@ -79,3 +79,5 @@ operation of parsering and returning the string from/to the client
 
 2018.02.24: add a new file db_user.sol
 
+2018.02.22-25: start constructing the new way of "passing string" among contracts.
+
