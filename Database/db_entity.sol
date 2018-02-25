@@ -6,6 +6,7 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.17;
 import "./plat_math.sol";
+import "./plat_string.sol";
 import "./db_node.sol";
 
 contract DBEntity is DBNode {
@@ -13,6 +14,7 @@ contract DBEntity is DBNode {
     bool    activated_;
     bytes32 entityType_ = "entity";
 
+    bytes32 temp_;
 
     mapping(bytes32 => uint) currencies_;
     mapping(bytes32 => uint) currencyStatus_; // 0: not-exist; 1: ok; 2: suspended
@@ -127,11 +129,12 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function setParameter(bytes32 _parameter, bytes32 _value) public only_delegate returns (bool) {
+    function setParameter(bytes32 _parameter, string _value) public only_delegate returns (bool) {
         if (parameterExist_[_parameter] == false) {
             return false;
         }
-        parameters_[_parameter] = _value;
+        parameters_[_parameter] = "null";
+        recordParameterValue(_parameter, _value);
         return true;
     }
 
@@ -149,4 +152,8 @@ contract DBEntity is DBNode {
         return parameterNames_[_index];
     }
     
+    function recordParameterValue(bytes32 _parameter, string _value) public only_delegate {
+        temp_ = _parameter;
+        _value = "null";
+    }
 }
