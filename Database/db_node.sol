@@ -100,7 +100,11 @@ contract DBNode is Object {
             delete childMap_[DBNode(children_[i]).name()];
         }
         children_.length = 0;
-    }    
+    }  
+
+    function recordParameterValue(bytes32 _parameter, string _value) public only_delegate {
+        DBDatabase(database_)._recordNodeParameterValue(name(), _parameter, _value);
+    }  
 }
 
 
