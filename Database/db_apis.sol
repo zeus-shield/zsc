@@ -50,7 +50,7 @@ contract DBApis is DBDatabase {
         if (getNode(_providerName) == 0 || getNode(_templateName) != 0) {
             return false;
         }
-        DBProvider(getNode(_providerName)).addTemplate_templateName);
+        DBProvider(getNode(_providerName)).addTemplate(_templateName);
         return true;
     }
 
@@ -62,7 +62,7 @@ contract DBApis is DBDatabase {
         return true;
     }
 
-    function setNodeParameterValue(bytes32 _nodeName, bytes32 _parameter, bytes32 _value) public only_delegate returns (bool) {
+    function setNodeParameterValue(bytes32 _nodeName, bytes32 _parameter, string _value) public only_delegate returns (bool) {
         address nd = getNode(_nodeName);
 
         if (nd == 0) {
