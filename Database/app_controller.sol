@@ -14,8 +14,6 @@ contract AppController is DBApis {
 	string public testResult = "";
 	string requestInfo_;
 
-    struct ParameterValue {mapping (bytes32 => string) values_; }
-    mapping (bytes32 => ParameterValue) nodeParameters_;
     mapping (string => string) requestInfos_;
 
     function AppController(bytes32 _name) public DBApis(_name) {
@@ -110,8 +108,7 @@ contract AppController is DBApis {
         bytes32 name = PlatString.tobytes32(_nodeName);
         bytes32 parameter = PlatString.tobytes32(_parameter);
 
-        if (setNodeParameterValue(name, parameter, "temp")) {
-            nodeParameters_[name].values_[parameter] = _value;
+        if (setNodeParameterValue(name, parameter, _value)) {
             return true;
         }
         return false;
@@ -124,7 +121,7 @@ contract AppController is DBApis {
         if (getNodeParameterValue(name, parameter) != "temp") {
             return (false, "");
         }
-        return (true, nodeParameters_[name].values_[parameter]);
+        return (true, "null");
     } 
 
     function createNode(string _object, string _name, string _extra) internal only_delegate returns (bool) {
