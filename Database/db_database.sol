@@ -14,6 +14,10 @@ contract DBDatabase is Object {
     DBNode[] nodes_;
     mapping(bytes32 => address) nodeAddress_;
 
+    /*added on 2018-02-25*/
+    struct NodeParameterValue {mapping (bytes32 => string) values_; }
+    mapping (bytes32 => NodeParameterValue) nodeParameters_;
+
     function DBDatabase(bytes32 _name) public Object(_name) {
         createRootNode();
     }
@@ -71,5 +75,9 @@ contract DBDatabase is Object {
             delete _node;
         }
         return true;
+    }
+
+    function _recordNodeParameterValue(bytes32 _nodeName, bytes32 _paraName, string _value) public only_delegate {
+        nodeParameters_[_nodeName].values_[_paraName] = _value;
     }
 }
