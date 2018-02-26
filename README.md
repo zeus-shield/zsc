@@ -29,9 +29,11 @@ Implementation of the website based interfance not included here.
 
 |------- db_item
 
-|------- db_receiver
+|------- db_user
 
-|------- db_provider
+|--------- db_receiver
+
+|--------- db_provider
 
 |------- db_template
 
@@ -81,3 +83,4 @@ operation of parsering and returning the string from/to the client
 
 2018.02.22-25: start constructing the new way of "passing string" among contracts.
 
+2018.02.26: add a new file plat_externalcontracts.sol
