@@ -34,13 +34,19 @@ contract Delegated is Owned {
     mapping (address => bool) public delegates_;
     
     modifier only_delegate { 
-        require (msg.sender == owner || delegates_[msg.sender]);
+        require (delegates_[msg.sender] == true);
         _; 
     }
 
     event DelegateChanged(address _delegate, bool _state);
+
+    // Constructor
+    function Delegated() public {
+        delegates_[msg.sender] = true;
+        delegates_[this] = true;
+    }
     
-    function setDelegate(address _address, bool _state) public only_owner { 
+    function setDelegate(address _address, bool _state) public only_delegate { 
         if (_state) {
             delegates_[_address] = true;
         } else { 
@@ -63,7 +69,7 @@ contract LogRecorder {
                     function recordLog(string _log) public; }
 
 contract Object is Delegated {
-    address logFile_;
+    address logFile_ = 0;
     bytes32  name_ ;
 
     // Constructor
@@ -85,11 +91,11 @@ contract Object is Delegated {
     }
 
     function writeLog(bytes32 str) internal {
-        LogRecorder(logFile_).recordLog(str);
+        if (logFile_ != 0) LogRecorder(logFile_).recordLog(str);
     }
 
     function writeLog(string str) internal {
-        LogRecorder(logFile_).recordLog(str);
+        if (logFile_ != 0) LogRecorder(logFile_).recordLog(str);
     }
 
     // ------------------------------------------------------------------------
