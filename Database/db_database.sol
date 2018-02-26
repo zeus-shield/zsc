@@ -4,10 +4,10 @@ Copyright (c) 2018 ZSC Dev Team
 
 pragma solidity ^0.4.18;
 
+import "./plat_string.sol";
 import "./object.sol";
 import "./db_node.sol";
 import "./db_idmanager.sol";
-
 
 contract DBDatabase is Object {
     DBNode rootNode_;
@@ -19,16 +19,15 @@ contract DBDatabase is Object {
     mapping (bytes32 => NodeParameterValue) nodeParameters_;
 
     function DBDatabase(bytes32 _name) public Object(_name) {
-        createRootNode();
     }
-    
-    function createRootNode() internal only_delegate {
-        rootNode_ = new DBNode("zsc_root_node");
-        rootNode_.setDelegate(owner, true);
-        rootNode_.setDatabase(this);
-        nodes_.push(rootNode_);
-        nodeAddress_["zsc_root_node"] = address(rootNode_);
 
+    function initDatabase() public only_delegate {        
+        rootNode_ = new DBNode("zsc_root_node");
+        setDelegate(address(rootNode_), true);
+        rootNode_.setDelegate(this, true);
+        rootNode_.setDelegate(address(rootNode_), true);
+        rootNode_.setDatabase(address(this));
+        return;
         DBNode provider = new DBNode("provider");
         DBNode receiver = new DBNode("receiver");
         DBNode agreement = new DBNode("agreement");
