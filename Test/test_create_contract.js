@@ -2,12 +2,10 @@
 //Copyright (c) 2018 ZSC Dev Team
 //
 
-function ContractTestDatabase(accountPass, solcompiled, contractname, parameter) {
-personal.unlockAccount(eth.accounts[0], accountPass);
-
+function ContractTestDatabase(solcompiled, contractname, parameter) {
 var databin = "0x" + solcompiled.contracts[contractname].bin;
 var greeterContract = web3.eth.contract(JSON.parse(solcompiled.contracts[contractname].abi));
-var greeter = greeterContract.new(parameter, {from:web3.eth.accounts[index], data: databin, gas: 2500000}, function(e, contract){
+var greeter = greeterContract.new(parameter, {from:web3.eth.accounts[0], data: databin, gas: 55000000}, function(e, contract){
  if(!e) {
     if(!contract.address) {
       console.log("ContractTestDatabase send: TransactionHash: " + contract.transactionHash + " waiting to be mined...");
@@ -23,6 +21,24 @@ var greeter = greeterContract.new(parameter, {from:web3.eth.accounts[index], dat
 return greeter;
 }
 
+function ContractAppController(solcompiled, contractname, parameter) {
+var databin = "0x" + solcompiled.contracts[contractname].bin;
+var greeterContract = web3.eth.contract(JSON.parse(solcompiled.contracts[contractname].abi));
+var greeter = greeterContract.new(parameter, {from:web3.eth.accounts[0], data: databin, gas: 991000000}, function(e, contract){
+ if(!e) {
+    if(!contract.address) {
+      console.log("ContractAppController send: TransactionHash: " + contract.transactionHash + " waiting to be mined...");
+    } else {
+      console.log("ContractAppController mined! Address: " + contract.address);
+      console.log(contract);
+    }
+  } else {
+    console.log("ContractAppController: Error!!");
+    console.log(e);
+  }
+})
+return greeter;
+}
 
 
 
