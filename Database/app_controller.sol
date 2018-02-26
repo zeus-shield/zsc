@@ -88,9 +88,9 @@ contract AppController is DBApis {
         string memory extra     = (requestInfos_["extra"]);
 
         if (PlatString.equalto(operation, "set")) {
-            ret = setNodeParameter(node, parameter, value);
+            ret = setNodeParameterValue(node, parameter, value);
         } else if (PlatString.equalto(operation, "get")) {
-            (ret, str) = getNodeParameter(node, parameter);            
+            str = getNodeParameterValue(node, parameter);            
         } else if (PlatString.equalto(operation, "create")) {
             ret = createNode(object, node, extra);            
         } else if (PlatString.equalto(operation, "remove")) {
@@ -101,49 +101,22 @@ contract AppController is DBApis {
         return (ret, str);
     }
 
-    //////////////////////
-    //////////////////////
-    //////////////////////
-    function setNodeParameter(string _nodeName, string _parameter, string _value) public only_delegate returns (bool) {
-        bytes32 name = PlatString.tobytes32(_nodeName);
-        bytes32 parameter = PlatString.tobytes32(_parameter);
-
-        if (setNodeParameterValue(name, parameter, _value)) {
-            return true;
-        }
-        return false;
-    } 
-
-    function getNodeParameter(string _nodeName, string _parameter) public only_delegate constant returns (bool, string) {
-        bytes32 name = PlatString.tobytes32(_nodeName);
-        bytes32 parameter = PlatString.tobytes32(_parameter);
-
-        if (getNodeParameterValue(name, parameter) != "temp") {
-            return (false, "");
-        }
-        return (true, "null");
-    } 
-
     function createNode(string _object, string _name, string _extra) internal only_delegate returns (bool) {
-        bytes32 name = PlatString.tobytes32(_name);
-        bytes32 extra = PlatString.tobytes32(_extra);
-
         if (PlatString.equalto(_object, "agreement")) {
-            return createAgreement(name);
+            return createAgreement(_name);
         } else if (PlatString.equalto(_object, "provider")) {
-            return createProvider(name);
+            return createProvider(_name);
         } else if (PlatString.equalto(_object, "receiver")) {
-            return createReceiver(name);
+            return createReceiver(_name);
         } else if (PlatString.equalto(_object, "template")) {
-            createTemplate(name, extra);
+            createTemplate(_name, _extra);
         } else if (PlatString.equalto(_object, "item")) {
-            createItem(name, extra);
+            createItem(_name, _extra);
         }
         return true;
     }
 
     function deleteNode(string _object, string _name) internal only_delegate returns (bool) {
-        bytes32 name = PlatString.tobytes32(_name);
         if (PlatString.equalto(_object, "agreement")) {
             return false;
         } else if (PlatString.equalto(_object, "provider")) {
@@ -151,7 +124,7 @@ contract AppController is DBApis {
         } else if (PlatString.equalto(_object, "receiver")) {
             return false;
         } else {
-            deleteEntireNode(name);
+            deleteEntireNode(_name);
         }
     }
 }
