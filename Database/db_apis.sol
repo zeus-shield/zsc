@@ -4,6 +4,7 @@ Copyright (c) 2018 ZSC Dev Team
 
 pragma solidity ^0.4.18;
 
+import "./plat_string.sol";
 import "./db_item.sol";
 import "./db_template.sol";
 import "./db_receiver.sol";
@@ -26,6 +27,11 @@ contract DBApis is DBDatabase {
         return true;
     }
 
+    function createReceiver(string _name) public only_delegate returns (bool) {
+        bytes32 name = PlatString.tobytes32(_name);
+        return createReceiver(name);
+    }
+
     function createProvider(bytes32 _name) public only_delegate returns (bool) {
         if (getNode(_name) != 0) {
             return false;
@@ -34,6 +40,11 @@ contract DBApis is DBDatabase {
         DBProvider nd = new DBProvider(_name);
         DBNode(rootNode_.getChild("provider")).addChild(address(nd));
         return true;
+    }
+
+    function createProvider(string _name) public only_delegate returns (bool) {
+        bytes32 name = PlatString.tobytes32(_name);
+        return createProvider(name);
     }
 
     function createAgreement(bytes32 _name) public only_delegate returns (bool) {
@@ -46,6 +57,11 @@ contract DBApis is DBDatabase {
         return true;
     }
 
+    function createAgreement(string _name) public only_delegate returns (bool) {
+        bytes32 name = PlatString.tobytes32(_name);
+        return createAgreement(name);
+    }
+
     function createTemplate(bytes32 _providerName, bytes32 _templateName) public only_delegate returns (bool) {
         if (getNode(_providerName) == 0 || getNode(_templateName) != 0) {
             return false;
@@ -54,12 +70,24 @@ contract DBApis is DBDatabase {
         return true;
     }
 
+    function createTemplate(string _providerName, string _templateName) public only_delegate returns (bool) {
+        bytes32 proiver = PlatString.tobytes32(_providerName);
+        bytes32 template = PlatString.tobytes32(_templateName);
+        return createTemplate(proiver, template);
+    }
+
     function createItem(bytes32 _templateName, bytes32 _itemName) public only_delegate returns (bool) {
         if (getNode(_templateName) == 0 || getNode(_itemName) != 0) {
             return false;
         }
         DBTemplate(getNode(_templateName)).addItem(_itemName);
         return true;
+    }
+
+    function createItem(string _templateName, string _itemName) public only_delegate returns (bool) {
+        bytes32 template = PlatString.tobytes32(_templateName);
+        bytes32 item = PlatString.tobytes32(_itemName);
+        return createItem(template, item);
     }
 
     function setNodeParameterValue(bytes32 _nodeName, bytes32 _parameter, string _value) public only_delegate returns (bool) {
@@ -71,14 +99,20 @@ contract DBApis is DBDatabase {
         return DBEntity(nd).setParameter(_parameter, _value);
     } 
 
-    function getNodeParameterValue(bytes32 _nodeName, bytes32 _parameter) public only_delegate constant returns (bytes32) {
-        address nd = getNode(_nodeName);
+    function setNodeParameterValue(string _nodeName, string _parameter, string _value) public only_delegate returns (bool) {
+        bytes32 node = PlatString.tobytes32(_nodeName);
+        bytes32 parameter = PlatString.tobytes32(_parameter);
+        return setNodeParameterValue(node, parameter, _value);
+    } 
 
-        if (nd == 0) {
-            return "temp";
-        }
+    function getNodeParameterValue(bytes32 _nodeName, bytes32 _parameter) public only_delegate constant returns (string) {
+        return _getNodeParameterValue(_nodeName, _parameter);
+    }
 
-        return DBEntity(nd).getParameter(_parameter);
+    function getNodeParameterValue(string _nodeName, string _parameter) public only_delegate constant returns (string) {
+        bytes32 node = PlatString.tobytes32(_nodeName);
+        bytes32 parameter = PlatString.tobytes32(_parameter);
+        return getNodeParameterValue(node, parameter);
     } 
 
     function deleteEntireNode(bytes32 _nodeName) public only_delegate returns (bool) {
@@ -90,6 +124,11 @@ contract DBApis is DBDatabase {
         return true;
     }
 
+    function deleteEntireNode(string _nodeName) public only_delegate returns (bool) {
+        bytes32 name = PlatString.tobytes32(_nodeName);
+        return deleteEntireNode(name);
+    }
+
     function getCompnentsNosFromAgreement(bytes32 _agreement) public only_delegate constant returns (uint, uint, uint) {
         if (getNode(_agreement) == 0) {
             return (0, 0, 0);
@@ -97,6 +136,11 @@ contract DBApis is DBDatabase {
         return (DBAgreement(getNode(_agreement)).numProviders(), 
                 DBAgreement(getNode(_agreement)).numReceivers(),
                 DBAgreement(getNode(_agreement)).numTemplates());
+    }
+
+    function getCompnentsNosFromAgreement(string _agreement) public only_delegate constant returns (uint, uint, uint) {
+        bytes32 agreement = PlatString.tobytes32(_agreement);
+        return getCompnentsNosFromAgreement(agreement);
     }
 
     function addComponetToAgreement(bytes32 _template, bytes32 _user) public only_delegate returns (bool res) {
@@ -118,6 +162,12 @@ contract DBApis is DBDatabase {
             return false;
         }
         return true;
+    }
+
+    function addComponetToAgreement(string _template, string _user) public only_delegate returns (bool res) {
+        bytes32 template = PlatString.tobytes32(_template);
+        bytes32 user = PlatString.tobytes32(_user);
+        return addComponetToAgreement(template, user);
     }
     
 }
