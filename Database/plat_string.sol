@@ -155,4 +155,13 @@ library PlatString {
         }
         return string(bytesStringTrimmed);
     }
+
+    function isEmpty(string str) internal pure returns (bool) {
+        bytes memory temp = bytes(str); // Uses memory
+        if (temp.length == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
