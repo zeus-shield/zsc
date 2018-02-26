@@ -1,11 +1,10 @@
 /*
 Copyright (c) 2018 ZSC Dev.
-2018-02-07: v0.01
-2018-02-09: v0.02
-2018-02-10: v0.03
 */
 
 pragma solidity ^0.4.18;
+
+import "./plat_externalcontracts.sol";
 import "./db_entity.sol";
 import "./db_item.sol";
 import "./db_template.sol";
@@ -63,5 +62,17 @@ contract DBUser is DBEntity {
         } else {
             return false;
         }
+    }
+
+    function executeERC20Transaction(address _tokenAdr, address _dest, uint _value, bytes32 _data) public only_delegate returns (bool) {
+        if (ERC20Interface(_tokenAdr).transfer(_dest, _value)) {
+            PaymentHistory memory pay;
+            pay.addr_ = _dest;
+            pay.name_ = "ERC20";
+            pay.data_ = _data;
+            pay.amount_ =  _value;
+            pay.isInput_ = false;
+            payments_.push(pay);
+        } 
     }
 }
