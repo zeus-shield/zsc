@@ -27,13 +27,17 @@ contract DBDatabase is Object {
         rootNode_.setDelegate(this, true);
         rootNode_.setDelegate(address(rootNode_), true);
         rootNode_.setDatabase(address(this));
-        return;
-        DBNode provider = new DBNode("provider");
-        DBNode receiver = new DBNode("receiver");
-        DBNode agreement = new DBNode("agreement");
 
+        DBNode provider = new DBNode("provider");
+        provider.setDelegate(address(rootNode_), true);
         rootNode_.addChild(address(provider));
+
+        DBNode receiver = new DBNode("receiver");
+        receiver.setDelegate(address(rootNode_), true);
         rootNode_.addChild(address(receiver));
+
+        DBNode agreement = new DBNode("agreement");
+        agreement.setDelegate(address(rootNode_), true);
         rootNode_.addChild(address(agreement));
     }
 
