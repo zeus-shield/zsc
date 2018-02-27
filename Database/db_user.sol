@@ -26,11 +26,6 @@ contract DBUser is DBEntity {
 
     // Constructor
     function DBUser(bytes32 _name) public DBEntity(_name) {
-        setEntityType("user"); 
-        initParameters();
-    }
-
-    function initParameters() internal {
     }
 
     function() public payable {
