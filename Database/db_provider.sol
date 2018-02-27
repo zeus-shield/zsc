@@ -3,6 +3,7 @@ Copyright (c) 2018 ZSC Dev.
 */
 
 pragma solidity ^0.4.18;
+
 import "./db_user.sol";
 import "./db_item.sol";
 import "./db_template.sol";
@@ -12,11 +13,9 @@ contract DBProvider is DBUser {
 
     // Constructor
     function DBProvider(bytes32 _name) public DBUser(_name) {
+        templateRoot_ = address(0);
         setEntityType("proiver"); 
         initParameters();
-
-        templateRoot_ = new DBNode(PlatString.tobytes32(PlatString.append(_name, "_1")));
-        addChild(address(templateRoot_));
     }
 
     function initParameters() internal {
@@ -38,8 +37,12 @@ contract DBProvider is DBUser {
     }
 
     function addTemplate(bytes32 _templateName) public only_delegate returns (address) {
+        if (templateRoot_ == address(0)) {
+            templateRoot_ = addSubRootNode();
+        }
         DBTemplate nd = new DBTemplate(_templateName);
-        return addChild(address(nd));
+        nd.setDelegate(templateRoot_, true);
+        return DBNode(templateRoot_).addChild(address(nd));
     }
 
     function numTemplates() public only_delegate constant returns (uint) {
