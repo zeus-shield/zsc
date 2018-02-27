@@ -16,14 +16,27 @@ import "./db_database.sol";
 contract DBApis is DBDatabase {
     function DBApis(bytes32 _name) public DBDatabase(_name) {
     }
-    
+
+    function getProviderRoot() internal only_delegate constant returns (address) {
+        return getNode("provider");
+    }
+
+    function getReceiverRoot() internal only_delegate constant returns (address) {
+        return getNode("receiver");
+    }
+
+    function getAgreementRoot() internal only_delegate constant returns (address) {
+        return getNode("agreement");
+    }
+
     function createReceiver(bytes32 _name) public only_delegate returns (bool) {
         if (getNode(_name) != 0) {
             return false;
         }
 
-        DBProvider nd = new DBProvider(_name);
-        DBNode(rootNode_.getChild("receiver")).addChild(address(nd));
+        DBReceiver nd = new DBReceiver(_name);
+        nd.setDelegate(getReceiverRoot(), true);
+        DBNode(getReceiverRoot()).addChild(address(nd));
         return true;
     }
 
@@ -38,10 +51,11 @@ contract DBApis is DBDatabase {
         }
 
         DBProvider nd = new DBProvider(_name);
-        DBNode(rootNode_.getChild("provider")).addChild(address(nd));
-        return true;
+        //nd.setDelegate(getProviderRoot(), true);
+        //DBNode(getProviderRoot()).addChild(address(nd));
+        return (address(nd) == 0);
     }
-
+/*
     function createProvider(string _name) public only_delegate returns (bool) {
         bytes32 name = PlatString.tobytes32(_name);
         return createProvider(name);
@@ -53,7 +67,8 @@ contract DBApis is DBDatabase {
         }
 
         DBAgreement nd = new DBAgreement(_name);
-        DBNode(rootNode_.getChild("agreement")).addChild(address(nd));
+        nd.setDelegate(getAgreementRoot(), true);
+        DBNode(getAgreementRoot()).addChild(address(nd));
         return true;
     }
 
@@ -61,6 +76,8 @@ contract DBApis is DBDatabase {
         bytes32 name = PlatString.tobytes32(_name);
         return createAgreement(name);
     }
+*/
+
 
     function createTemplate(bytes32 _providerName, bytes32 _templateName) public only_delegate returns (bool) {
         if (getNode(_providerName) == 0 || getNode(_templateName) != 0) {
@@ -169,5 +186,5 @@ contract DBApis is DBDatabase {
         bytes32 user = PlatString.tobytes32(_user);
         return addComponetToAgreement(template, user);
     }
-    
+
 }
