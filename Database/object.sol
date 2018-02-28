@@ -34,7 +34,7 @@ contract Delegated is Owned {
     mapping (address => bool) public delegates_;
     
     modifier only_delegate { 
-        require (delegates_[msg.sender] == true);
+        require (delegates_[msg.sender] || msg.sender == owner);
         _; 
     }
 
