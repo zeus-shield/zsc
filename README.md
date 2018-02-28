@@ -49,8 +49,7 @@ Implementation of the website based interfance not included here.
 2018.02.13-14: re-design the topology among different db modules
 2018.02.15: add a new file: app_basic.sol 0.01
 2018.02.16: change the name app_basic.sol to db_apis.sol; add a new file: app_controller.sol 0.01
-2018.02.17-18: add the mapping among parameter (bytes32) and its value (string) in app_controller.sol. Enable the 
-operation of parsering and returning the string from/to the client 
+2018.02.17-18: add the mapping among parameter (bytes32) and its value (string) in app_controller.sol. Enable the operation of parsering and returning the string from/to the client 
 2018.02.19: add two new files: test_database.sol; test_create_contract.sol
 2018.02.20-21: test and modification on different db modules.
 2018.02.24: add a new file db_user.sol

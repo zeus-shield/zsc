@@ -24,7 +24,7 @@ return greeter;
 function ContractTestApis(solcompiled, contractname, parameter) {
   var databin = "0x" + solcompiled.contracts[contractname].bin;
   var greeterContract = web3.eth.contract(JSON.parse(solcompiled.contracts[contractname].abi));
-  var greeter = greeterContract.new(parameter, {from:web3.eth.accounts[0], data: databin, gas: 9050000}, function(e, contract){
+  var greeter = greeterContract.new(parameter, {from:web3.eth.accounts[0], data: databin, gas: 90050000}, function(e, contract){
     if(!e) {
       if(!contract.address) {
         console.log("ContractTestApis send: TransactionHash: " + contract.transactionHash + " waiting to be mined...");
