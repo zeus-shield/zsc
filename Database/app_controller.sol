@@ -90,7 +90,9 @@ contract AppController is DBApis {
         if (PlatString.equalto(operation, "set")) {
             ret = setNodeParameterValue(node, parameter, value);
         } else if (PlatString.equalto(operation, "get")) {
-            str = getNodeParameterValue(node, parameter);            
+            str = getNodeParameterValue(node, parameter);  
+        } else if (PlatString.equalto(operation, "add")) {
+            ret = addComponetToAgreement(node, extra);          
         } else if (PlatString.equalto(operation, "create")) {
             ret = createNode(object, node, extra);            
         } else if (PlatString.equalto(operation, "remove")) {
