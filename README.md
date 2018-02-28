@@ -21,32 +21,31 @@ Implementation of the website based interfance not included here.
 
 ### 2.1 Framework Components
 
-|- objct 
+|-- objct 
 
-|--- db_node 
+    |-- db_node 
 
-|----- db_entity 
+        |-- db_entity 
 
-|------- db_item
+            |-- db_user
 
-|------- db_user
+               |-- db_receiver
 
-|--------- db_receiver
+               |-- db_provider
 
-|--------- db_provider
+        |-- db_item
 
-|------- db_template
+        |-- db_template
 
-|------- db_agreement
+        |-- db_agreement
 
-|------- db_database
+    |-- db_idmanager
 
-|--------- db_apis
+    |-- db_database
 
-|--- db_idmanager
+        |--- db_apis
 
-|--- app_controller
-
+            |--- app_controller
 
 ### 2.2 .sol update log
 
