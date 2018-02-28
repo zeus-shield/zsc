@@ -43,7 +43,6 @@ contract Delegated is Owned {
     // Constructor
     function Delegated() public {
         delegates_[msg.sender] = true;
-        delegates_[this] = true;
     }
     
     function setDelegate(address _address, bool _state) public only_delegate { 
