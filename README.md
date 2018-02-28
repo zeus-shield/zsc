@@ -20,32 +20,21 @@ Implementation of the website based interfance not included here.
 ## 2. ZSC platform part:
 
 ### 2.1 Framework Components
-
+```bash
 |-- objct 
-
     |-- db_node 
-
         |-- db_entity 
-
             |-- db_user
-
                |-- db_receiver
-
                |-- db_provider
-
         |-- db_item
-
         |-- db_template
-
         |-- db_agreement
-
     |-- db_idmanager
-
     |-- db_database
-
         |--- db_apis
-
             |--- app_controller
+```
 
 ### 2.2 .sol update log
 
