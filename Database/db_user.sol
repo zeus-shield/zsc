@@ -54,6 +54,7 @@ contract DBUser is DBEntity {
             pay.isInput_ = false;
             payments_.push(pay);
             totalEth_ -= _value;
+            return true;
         } else {
             return false;
         }
@@ -68,6 +69,9 @@ contract DBUser is DBEntity {
             pay.amount_ =  _value;
             pay.isInput_ = false;
             payments_.push(pay);
-        } 
+            return true;
+        } else {
+            return false;
+        }
     }
 }
