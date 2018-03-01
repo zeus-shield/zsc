@@ -4,6 +4,7 @@ Copyright (c) 2018 ZSC Dev Team
 
 pragma solidity ^0.4.18;
 
+import "./plat_string.sol";
 import "./object.sol";
 import "./db_node.sol";
 
@@ -37,6 +38,10 @@ contract DBDatabase is Object {
 
     function createNode(bytes32 _name) public only_delegate returns (address) {
         temp_ = _name;
+    }
+
+    function createNode(string _name) public only_delegate returns (address) {
+        return createNode(PlatString.tobytes32(_name));
     }
 
     function getNode(bytes32 _name) public only_delegate constant returns (address) {
