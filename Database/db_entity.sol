@@ -28,6 +28,15 @@ contract DBEntity is DBNode {
         initParameters();
     }
 
+    //////////////////////////////////
+    function addSubRootNode() internal only_delegate returns (address) {
+        DBNode nd = new DBNode(PlatString.tobytes32(PlatString.append(name(), "_1")));
+        nd.setDelegate(this, true);
+        addChild(address(nd));
+        temp_ = "test";
+        return address(0);
+    }
+
     function setEntityType(bytes32 _type) internal only_delegate {
         entityType_ = _type;
     }
@@ -151,7 +160,7 @@ contract DBEntity is DBNode {
         require(_index < parameterNames_.length);
         return parameterNames_[_index];
     }
-    
+
     function recordParameterValue(bytes32 _parameter, string _value) public only_delegate {
         temp_ = _parameter;
         _value = "null";
