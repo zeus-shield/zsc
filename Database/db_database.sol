@@ -10,8 +10,8 @@ import "./db_node.sol";
 
 contract DBDatabase is Object {
     bytes32 temp_;
-    address rootNode_ = 0;
-    DBNode[] nodes_;
+    address public rootNode_ = 0;
+    DBNode[] public nodes_;
     mapping(bytes32 => address) nodeAddress_;
 
     /*added on 2018-02-25*/
@@ -21,17 +21,13 @@ contract DBDatabase is Object {
     function DBDatabase(bytes32 _name) public Object(_name) {
     }
 
-    function createRootNode() internal { 
-        rootNode_ = new DBNode(name());
-        setDelegate(rootNode_, true);
-        DBNode(rootNode_).setDelegate(this, true);
-        DBNode(rootNode_).setDelegate(address(rootNode_), true);
-        DBNode(rootNode_).setDatabase(address(this));
-    }
-
     function getRootNode() public only_delegate returns (address) {
-        if (rootNode_ == 0) {
-            createRootNode();
+        if (rootNode_ == address(0)) {
+            rootNode_ = new DBNode(name());
+            setDelegate(rootNode_, true);
+            DBNode(rootNode_).setDelegate(this, true);
+            DBNode(rootNode_).setDelegate(address(rootNode_), true);
+            DBNode(rootNode_).setDatabase(address(this));
         }
         return rootNode_;
     }
