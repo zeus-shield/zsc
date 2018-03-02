@@ -40,10 +40,6 @@ contract DBDatabase is Object {
         temp_ = _name;
     }
 
-    function createNode(string _name) public only_delegate returns (address) {
-        return createNode(PlatString.tobytes32(_name));
-    }
-
     function getNode(bytes32 _name) public only_delegate constant returns (address) {
         return nodeAddress_[_name];
     }
