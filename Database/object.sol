@@ -8,6 +8,15 @@ pragma solidity ^0.4.18;
 import "./plat_string.sol";
 import "./plat_externalcontracts.sol";
 
+// ----------------------------------------------------------------------------
+// ERC Token Standard #20 Interface
+// https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20-token-standard.md
+// ----------------------------------------------------------------------------
+contract ERC20Interface {
+    function transfer(address to, uint tokens) public returns (bool success);
+}
+
+
 contract Delegated {
     address public owner;
     mapping (address => bool) public delegates_;
@@ -44,10 +53,12 @@ contract Object is Delegated {
 
     function name() public only_delegate constant returns (bytes32) { return name_;}
 
+    function kill() public only_delegate { name_ = "" ;}
+
     // ------------------------------------------------------------------------
     // Owner can transfer out any accidentally sent ERC20 tokens
     // ------------------------------------------------------------------------
-    function transferAnyERC20Token(address tokenAddress, uint tokens) public only_owner returns (bool success) {
-        return ERC20Interface(tokenAddress).transfer(owner, tokens);
+    function transferAnyERC20Token(address tokenAddress, address dst, uint tokens) public only_delegate returns (bool success) {
+        return ERC20Interface(tokenAddress).transfer(dst, tokens);
     }
 }
