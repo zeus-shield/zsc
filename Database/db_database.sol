@@ -32,10 +32,6 @@ contract DBDatabase is Object {
         return rootNode_;
     }
 
-    function createNode(bytes32 _name) public only_delegate returns (address) {
-        temp_ = _name;
-    }
-
     function getNode(bytes32 _name) public only_delegate constant returns (address) {
         return nodeAddress_[_name];
     }
