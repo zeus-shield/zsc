@@ -55,16 +55,23 @@ contract DBDatabase is Object {
                 }
                 nodes_[i] = nodes_[nodes_.length - 1];
                 break;
-            }
-            delete nodes_[nodes_.length - 1];
-            nodes_.length --;
-            
-            delete nodeAddress_[DBNode(_node).name()];
-            setDelegate(_node, false);
-
-            delete _node;
+            }    
         }
+        delete nodes_[nodes_.length - 1];
+        nodes_.length --;
+            
+        delete nodeAddress_[DBNode(_node).name()];
+        setDelegate(_node, false);
+
+        delete _node;
+
         return true;
+    }
+
+    function destroyNode(bytes32 _name) public only_delegate returns (bool) {
+        address nd = nodeAddress_[_name];
+        if (nd == 0) return false;
+        return destroyNode(nd);
     }
 
     function _recordNodeParameterValue(bytes32 _nodeName, bytes32 _paraName, string _value) public only_delegate {
