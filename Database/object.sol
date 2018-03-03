@@ -5,9 +5,6 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.18;
 
-import "./plat_string.sol";
-import "./plat_externalcontracts.sol";
-
 // ----------------------------------------------------------------------------
 // ERC Token Standard #20 Interface
 // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20-token-standard.md
@@ -22,7 +19,7 @@ contract Delegated {
     mapping (address => bool) public delegates_;
 
     modifier only_owner {require (msg.sender != owner); _;}
-    modifier only_delegate {require (delegates_[msg.sender] || msg.sender == owner); _; }
+    modifier only_delegate {require (delegates_[msg.sender] || msg.sender == owner || msg.sender == this); _; }
 
     function Delegated() public {
         owner = msg.sender;
