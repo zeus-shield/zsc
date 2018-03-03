@@ -4,12 +4,7 @@ Copyright (c) 2018 ZSC Dev.
 
 pragma solidity ^0.4.18;
 
-import "./plat_externalcontracts.sol";
 import "./db_entity.sol";
-import "./db_item.sol";
-import "./db_template.sol";
-import "./db_idmanager.sol";
-
 
 contract DBUser is DBEntity {
     struct PaymentHistory {
@@ -20,7 +15,6 @@ contract DBUser is DBEntity {
         bool isInput_;
     }
     
-    DBIDManager agreementIDs_;
     PaymentHistory[] payments_;
     uint totalEth_;
 
@@ -41,6 +35,7 @@ contract DBUser is DBEntity {
             totalEth_ += msg.value;
         }
     }
+
 
     function executeEtherTransaction(address _dest, uint _value, bytes32 _data) public only_delegate returns (bool) {
         require(totalEth_ < _value);
