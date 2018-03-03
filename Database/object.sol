@@ -19,7 +19,7 @@ contract Delegated {
     mapping (address => bool) public delegates_;
 
     modifier only_owner {require (msg.sender != owner); _;}
-    modifier only_delegate {require (delegates_[msg.sender] || msg.sender == owner || msg.sender == this); _; }
+    modifier only_delegate {require (delegates_[msg.sender] || msg.sender == owner || this == msg.sender); _; }
 
     function Delegated() public {
         owner = msg.sender;
@@ -55,7 +55,7 @@ contract Object is Delegated {
     // ------------------------------------------------------------------------
     // Owner can transfer out any accidentally sent ERC20 tokens
     // ------------------------------------------------------------------------
-    function transferAnyERC20Token(address tokenAddress, address dst, uint tokens) public only_delegate returns (bool success) {
-        return ERC20Interface(tokenAddress).transfer(dst, tokens);
+    function transferAnyERC20Token(address tokenAddress, uint tokens) public only_delegate returns (bool success) {
+        return ERC20Interface(tokenAddress).transfer(owner, tokens);
     }
 }
