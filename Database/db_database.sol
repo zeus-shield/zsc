@@ -78,12 +78,4 @@ contract DBDatabase is Object {
         if (nd == 0) return false;
         return destroyNode(nd);
     }
-
-    function _recordNodeParameterValue(bytes32 _nodeName, bytes32 _paraName, string _value) public only_delegate {
-        nodeParameters_[_nodeName].values_[_paraName] = _value;
-    }
-
-    function _getNodeParameterValue(bytes32 _nodeName, bytes32 _paraName) public only_delegate constant returns (string) {
-        return nodeParameters_[_nodeName].values_[_paraName];
-    }
 }
