@@ -16,9 +16,6 @@ contract DBEntity is DBNode {
 
     bytes32 temp_;
 
-    mapping(bytes32 => uint) currencies_;
-    mapping(bytes32 => uint) currencyStatus_; // 0: not-exist; 1: ok; 2: suspended
-
     bytes32[] parameterNames_;
     mapping(bytes32 => bytes32) parameters_;
     mapping(bytes32 => bool)   parameterExist_;
@@ -58,48 +55,6 @@ contract DBEntity is DBNode {
         return activated_;
     }
 
-    //////////////////////////////////
-    function addCurrency(bytes32 _currency) public only_delegate returns (bool) {
-        if (currencyStatus_[_currency] != 0) {
-           return false;
-        }
-        currencies_[_currency] = 0;
-        currencyStatus_[_currency] = 1;
-        return true;
-    }
-
-    function increaseCurrency(bytes32 _currency, uint _value) public only_delegate returns (bool) {
-        if (currencyStatus_[_currency] != 1) {
-            return false;
-        }
-
-        uint val = currencies_[_currency];
-        currencies_[_currency] = PlatMath.add(val, _value);
-        return true;
-    }
-
-    function decreaseCurrency(bytes32 _currency, uint _value) public only_delegate returns (bool) {
-        if (currencyStatus_[_currency] != 1) {
-            return false;
-        }
-        
-        uint val = currencies_[_currency];
-        if (PlatMath.less(val, _value)) {
-            return false;
-        }
-        currencies_[_currency] = PlatMath.sub(val, _value);
-        return true;
-    }
-
-    function getCurrency(bytes32 _currency) public only_delegate constant returns (uint) {
-        if (currencyStatus_[_currency] == 0) {
-            return 0;
-        }
-        
-        return currencies_[_currency];
-    }
-
-    //////////////////////////////////
     function addParameter(bytes32 _parameter) public only_delegate returns (bool) {
         if (parameterExist_[_parameter] == true) {
             return false;
