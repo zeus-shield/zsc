@@ -9,7 +9,6 @@ contract DBReceiver is DBUser {
     // Constructor
     function DBReceiver(bytes32 _name) public DBUser(_name) {
         setEntityType("receiver"); 
-        initParameters();
     }
 
     function initParameters() internal {

@@ -19,7 +19,6 @@ contract DBAgreement is DBEntity {
     // Constructor
     function DBAgreement(bytes32 _name) public DBEntity(_name) {
         setEntityType("agreement");
-        initParameters();
     }
 
     function initParameters() internal {

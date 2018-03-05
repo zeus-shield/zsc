@@ -13,7 +13,6 @@ contract DBProvider is DBUser {
     // Constructor
     function DBProvider(bytes32 _name) public DBUser(_name) {
         setEntityType("proiver"); 
-        initParameters();
     }
     function initParameters() internal {
         addParameter("assurerType");
