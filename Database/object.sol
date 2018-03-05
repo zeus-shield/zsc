@@ -41,6 +41,7 @@ contract Delegated {
 
 contract Object is Delegated {
     bytes32  name_ ;
+    string public test_log_;
 
     // Constructor
     function Object(bytes32 _name) public { name_ = _name; }
@@ -57,5 +58,9 @@ contract Object is Delegated {
     // ------------------------------------------------------------------------
     function transferAnyERC20Token(address tokenAddress, uint tokens) public only_delegate returns (bool success) {
         return ERC20Interface(tokenAddress).transfer(owner, tokens);
+    }
+
+    function setLog(string _log) internal {
+        test_log_ = _log;
     }
 }
