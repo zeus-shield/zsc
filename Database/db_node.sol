@@ -6,8 +6,15 @@ Copyright (c) 2018, ZSC Dev Team
 pragma solidity ^0.4.18;
 import "./plat_math.sol";
 import "./object.sol";
-import "./db_database.sol";
 
+contract CallbackDatabase is Object {
+    function getRootNode() public only_delegate returns (address);
+    function getNode(bytes32 _name) public only_delegate constant returns (address);
+    function destroyNode(address _node) public only_delegate returns (bool);
+    function _addNode(address _node) only_delegate public ;
+    function _recordNodeParameterValue(bytes32 _nodeName, bytes32 _paraName, string _value) only_delegate public ;
+    function _getNodeParameterValue(bytes32 _nodeName, bytes32 _paraName) public only_delegate constant returns (string);
+}
 
 contract DBNode is Object {
     address database_ = address(0);
@@ -21,7 +28,7 @@ contract DBNode is Object {
 
     function setDatabase(address _database) public only_delegate {
         database_ = _database;
-        DBDatabase(database_)._addNode(this);
+        CallbackDatabase(database_)._addNode(this);
     }
 
     function numChildren() public only_delegate constant returns(uint) {
@@ -52,7 +59,7 @@ contract DBNode is Object {
         if (_node == 0) return 0;
         DBNode(_node).setParent(this);
 
-        DBDatabase(database_).setDelegate(_node, true);
+        CallbackDatabase(database_).setDelegate(_node, true);
         DBNode(_node).setDatabase(database_);
         
         children_.push(_node);
@@ -97,14 +104,14 @@ contract DBNode is Object {
         }
 
         for (uint i = 0; i < children_.length; ++i) {
-            DBDatabase(database_).destroyNode(children_[i]);
+            CallbackDatabase(database_).destroyNode(children_[i]);
             delete childMap_[DBNode(children_[i]).name()];
         }
         children_.length = 0;
     }  
 
     function recordParameterValue(bytes32 _parameter, string _value) public only_delegate {
-        DBDatabase(database_)._recordNodeParameterValue(name(), _parameter, _value);
+        CallbackDatabase(database_)._recordNodeParameterValue(name(), _parameter, _value);
     }  
 }
 
