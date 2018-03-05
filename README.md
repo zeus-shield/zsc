@@ -56,4 +56,6 @@ Implementation of the website based interfance not included here.
 2018.02.22-25: start constructing the new way of "passing string" among contracts.
 2018.02.26: add a new file plat_externalcontracts.sol
 2018.02.27-03.01: re-construct the system as the currrent size of entire compiled bin (single) file is over 70KB, which leades to oversized error when deploying to the ethereum platform
+2018.03.02-03.04: testing on db_database and db_node.
+2018.03.05: add a new file factory_basic.sol
 ```
