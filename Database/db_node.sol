@@ -109,10 +109,6 @@ contract DBNode is Object {
         }
         children_.length = 0;
     }  
-
-    function recordParameterValue(bytes32 _parameter, string _value) public only_delegate {
-        CallbackDatabase(database_)._recordNodeParameterValue(name(), _parameter, _value);
-    }  
 }
 
 
