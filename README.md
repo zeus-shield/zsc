@@ -30,10 +30,15 @@ Implementation of the website based interfance not included here.
         |-- db_item
         |-- db_template
         |-- db_agreement
+    
     |-- db_idmanager
+    
     |-- db_database
-        |--- db_apis
-            |--- app_controller
+    
+    |-- factory_basic
+
+    |-- db_apis
+        |-- app_controller
 ```
 
 ### 2.2 .sol update log
