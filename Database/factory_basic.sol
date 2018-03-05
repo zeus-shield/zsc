@@ -18,6 +18,8 @@ contract FactoryBasic is Object {
     bytes32 temp_nm_;
     bytes32 temp_adr_;
 
+    function createNode(bytes32 _name) public only_delegate returns (address);
+
     function FactoryBasic(bytes32 _name, address _db) public Object(_name) {
         require(_db != address(0));
         db_ = _db;
