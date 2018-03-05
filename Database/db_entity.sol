@@ -25,16 +25,14 @@ contract DBEntity is DBNode {
         initParameters();
     }
 
+    function initParameters() internal;
+    
     function setEntityType(bytes32 _type) internal only_delegate {
         entityType_ = _type;
     }
 
     function getEntityType() public only_delegate constant returns (bytes32) {
         return entityType_;
-    }
-
-    function initParameters() internal {
-        addParameter("test");
     }
 
     //////////////////////////////////
