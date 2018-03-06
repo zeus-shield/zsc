@@ -10,6 +10,7 @@ import "./db_node.sol";
 
 contract DBDatabase is Object {
     bytes32 temp_;
+    address dbFactoryAdr_;
     address public rootNode_ = 0;
     address[] public nodes_;
     mapping(bytes32 => address) nodeAddress_;
@@ -23,6 +24,7 @@ contract DBDatabase is Object {
 
     function initDatabase(address _factory) public only_delegate () {
         if (rootNode_ == 0) {
+            dbFactoryAdr_ = _factory;
             setDelegate(_factory, true);
 
             rootNode_ = new DBNode(name());
@@ -48,13 +50,17 @@ contract DBDatabase is Object {
 
     function _addNode(address _node) public only_delegate {
         require (nodeAddress_[DBNode(_node).name()] == 0);
+
         DBNode(_node).setDelegate(owner, true);
-        DBNode(_node).setDelegate(_factory, true);
+        DBNode(_node).setDelegate(dbFactoryAdr_, true);
+
         nodes_.push(_node);
         nodeAddress_[DBNode(_node).name()] = _node;
 
         //for testing purpose; 2018-03-06
-        setLog(PlatString.bytes32ToString(DBNode(_node).name()));
+        addLog("[added new node: ");
+        addLog(PlatString.bytes32ToString(DBNode(_node).name()));
+        addLog("]");
     }
 
     function destroyNode(address _node) public only_delegate returns (bool) {
