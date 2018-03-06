@@ -13,14 +13,14 @@ contract ZSCDatabase is Object {
     function destroyNode(address _node) public only_delegate returns (bool);
 }
 
-contract FactoryBasic is Object {
+contract DBFactory is Object {
     address db_;
     bytes32 temp_nm_;
     bytes32 temp_adr_;
 
     function createNode(bytes32 _name) public only_delegate returns (address);
 
-    function FactoryBasic(bytes32 _name, address _db) public Object(_name) {
+    function DBFactory(bytes32 _name, address _db) public Object(_name) {
         require(_db != address(0));
         db_ = _db;
     }
