@@ -41,6 +41,11 @@ contract DBDatabase is Object {
         return nodeAddress_[_name];
     }
 
+    //for testing purpose
+    function getNodeObject(bytes32 _name) public only_delegate constant returns (DBNode) {
+        return DBNode(nodeAddress_[_name]);
+    }
+
     function _addNode(address _node) public only_delegate {
         require (nodeAddress_[DBNode(_node).name()] == 0);
 
