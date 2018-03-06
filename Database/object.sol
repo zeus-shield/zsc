@@ -61,7 +61,7 @@ contract Object is Delegated {
         return ERC20Interface(tokenAddress).transfer(owner, tokens);
     }
 
-    function addLog(string _log) internal {
+    function addLog(string _log) public only_delegate {
         print_log_ = PlatString.append(print_log_, _log);
     } 
 }

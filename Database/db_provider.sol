@@ -30,6 +30,7 @@ contract DBProvider is DBUser {
         addParameter("companyEmail");
         addParameter("claimEmail");
         addParameter("claimPhone");
+
+        Object(getDatabase()).addLog("[DBProvider: initParameters()]");
     }
-  
 }
