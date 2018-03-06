@@ -15,17 +15,15 @@ contract ZSCDatabase is Object {
 
 contract DBFactory is Object {
     address db_;
-    bytes32 temp_nm_;
-    bytes32 temp_adr_;
-
-    function createNode(bytes32 _name) public only_delegate returns (address);
 
     function DBFactory(bytes32 _name, address _db) public Object(_name) {
         require(_db != address(0));
         db_ = _db;
     }
 
-    function getDB() public only_delegate constant returns (address) { return db_;}
+    function createNode(bytes32 _name) public only_delegate returns (address);
+
+    function getBindedDB() public only_delegate constant returns (address) { return db_;}
 
     function getNode(bytes32 _name) public only_delegate constant returns (address) {
         if (_name == "root") return ZSCDatabase(db_).getRootNode();
