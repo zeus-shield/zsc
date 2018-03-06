@@ -49,6 +49,7 @@ contract DBDatabase is Object {
     function _addNode(address _node) public only_delegate {
         require (nodeAddress_[DBNode(_node).name()] == 0);
         DBNode(_node).setDelegate(owner, true);
+        DBNode(_node).setDelegate(_factory, true);
         nodes_.push(_node);
         nodeAddress_[DBNode(_node).name()] = _node;
 
@@ -58,10 +59,10 @@ contract DBDatabase is Object {
 
     function destroyNode(address _node) public only_delegate returns (bool) {
         for (uint i = 0; i < nodes_.length; ++i) {
-            if (address(nodes_[i]) == _node) {
+            if (nodes_[i] == _node) {
                 address parent = DBNode(nodes_[i]).getParent();
                 if (parent != 0) {
-                    DBNode(parent).removeChild( DBNode(nodes_[i]).name());
+                    DBNode(parent).removeChild(DBNode(nodes_[i]).name());
                     DBNode(nodes_[i]).removeAndDestroyAllChildren();
                 }
                 nodes_[i] = nodes_[nodes_.length - 1];
