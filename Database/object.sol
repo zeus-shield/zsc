@@ -5,6 +5,8 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.18;
 
+import "./plat_string.sol";
+
 // ----------------------------------------------------------------------------
 // ERC Token Standard #20 Interface
 // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20-token-standard.md
@@ -12,7 +14,6 @@ pragma solidity ^0.4.18;
 contract ERC20Interface {
     function transfer(address to, uint tokens) public returns (bool success);
 }
-
 
 contract Delegated {
     address public owner;
@@ -41,7 +42,7 @@ contract Delegated {
 
 contract Object is Delegated {
     bytes32  name_ ;
-    string public test_log_;
+    string public print_log_;
 
     // Constructor
     function Object(bytes32 _name) public { name_ = _name; }
@@ -60,7 +61,7 @@ contract Object is Delegated {
         return ERC20Interface(tokenAddress).transfer(owner, tokens);
     }
 
-    function setLog(string _log) internal {
-        test_log_ = _log;
-    }
+    function addLog(string _log) internal {
+        print_log_ = PlatString.append(print_log_, _log);
+    } 
 }
