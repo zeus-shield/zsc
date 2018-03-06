@@ -31,6 +31,10 @@ contract DBNode is Object {
         CallbackDatabase(database_)._addNode(this);
     }
 
+    function getDatabase() public only_delegate constant returns (address) {
+        return database_;
+    }
+
     function numChildren() public only_delegate constant returns(uint) {
         return children_.length;
     }
@@ -60,8 +64,9 @@ contract DBNode is Object {
         DBNode(_node).setParent(this);
 
         CallbackDatabase(database_).setDelegate(_node, true);
+        DBNode(_node).setDelegate(database_, true);
         DBNode(_node).setDatabase(database_);
-        
+
         children_.push(_node);
         childMap_[DBNode(_node).name()] = _node;
         return _node;
