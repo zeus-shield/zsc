@@ -31,10 +31,6 @@ contract DBDatabase is Object {
         }
     }
     
-    function getRootNode() public only_delegate constant returns (address) {
-        return rootNode_;
-    }
-
     function getNode(bytes32 _name) public only_delegate constant returns (address) {
         return nodeAddress_[_name];
     }
@@ -46,8 +42,6 @@ contract DBDatabase is Object {
 
     function _addNode(address _node) public only_delegate {
         require (nodeAddress_[DBNode(_node).name()] == 0);
-
-        DBNode(_node).setDelegate(owner, true);
 
         nodes_.push(_node);
         nodeAddress_[DBNode(_node).name()] = _node;
