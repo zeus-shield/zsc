@@ -26,8 +26,7 @@ contract DBFactory is Object {
     function getBindedDB() public only_delegate constant returns (address) { return db_;}
 
     function getNode(bytes32 _name) public only_delegate constant returns (address) {
-        if (_name == "root") return ZSCDatabase(db_).getRootNode();
-        else return ZSCDatabase(db_).getNode(_name);
+        return ZSCDatabase(db_).getNode(_name);
     }
 
     function delegateNode(address _adr) internal {
