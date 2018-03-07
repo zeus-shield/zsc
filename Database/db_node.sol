@@ -8,12 +8,8 @@ import "./plat_math.sol";
 import "./object.sol";
 
 contract CallbackDatabase is Object {
-    function getRootNode() public only_delegate returns (address);
-    function getNode(bytes32 _name) public only_delegate constant returns (address);
     function destroyNode(address _node) public only_delegate returns (bool);
     function _addNode(address _node) only_delegate public ;
-    function _recordNodeParameterValue(bytes32 _nodeName, bytes32 _paraName, string _value) only_delegate public ;
-    function _getNodeParameterValue(bytes32 _nodeName, bytes32 _paraName) public only_delegate constant returns (string);
 }
 
 contract DBNode is Object {
@@ -38,6 +34,10 @@ contract DBNode is Object {
 
     function getDatabase() public only_delegate constant returns (address) {
         return database_;
+    }
+
+    function getFactory() public only_delegate constant returns (address) {
+        return factory_;
     }
 
     function numChildren() public only_delegate constant returns(uint) {
