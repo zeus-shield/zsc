@@ -17,8 +17,10 @@ contract CallbackDatabase is Object {
 }
 
 contract DBNode is Object {
+    address factory_;
     address database_ = address(0);
     address parent_ = address(0);
+
     address[] children_;
     mapping(bytes32 => address) childMap_;
 
@@ -26,8 +28,11 @@ contract DBNode is Object {
     function DBNode(bytes32 _name) public Object(_name) {
     }
 
-    function setDatabase(address _database) public only_delegate {
+    function setFactoryAndDatabase(address _factory, address _database) public only_delegate {
         database_ = _database;
+        factory_ = _factory;
+        setDelegate(database_, true);
+        setDelegate(factory_, true);
         CallbackDatabase(database_)._addNode(this);
     }
 
@@ -64,8 +69,7 @@ contract DBNode is Object {
         DBNode(_node).setParent(this);
 
         CallbackDatabase(database_).setDelegate(_node, true);
-        DBNode(_node).setDelegate(database_, true);
-        DBNode(_node).setDatabase(database_);
+        DBNode(_node).setFactoryAndDatabase(factory_, database_);
 
         children_.push(_node);
         childMap_[DBNode(_node).name()] = _node;
