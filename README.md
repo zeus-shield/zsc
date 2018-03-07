@@ -63,4 +63,6 @@ Implementation of the website based interfance not included here.
 2018.02.27-03.01: re-construct the system as the currrent size of entire compiled bin (single) file is over 70KB, which leades to oversized error when deploying to the ethereum platform
 2018.03.02-03.04: testing on db_database and db_node.
 2018.03.05: add a new file factory_basic.sol
+2018.03.06: working on testing the db_database and db_node;
+2018.03.07: creating db_node by integrating with db_database is ok by now
 ```
