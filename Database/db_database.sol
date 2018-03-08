@@ -26,7 +26,7 @@ contract DBDatabase is Object {
             for (uint i=0; i<_factories.length; i++) {
                 setDelegate(_factories[i], true);
             }
-            rootNode_ = new DBNode("root");
+            rootNode_ = new DBNode(name());
             setDelegate(rootNode_, true);
             DBNode(rootNode_).setFactoryAndDatabase(_factories, this);
         }
