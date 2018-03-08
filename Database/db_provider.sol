@@ -31,6 +31,6 @@ contract DBProvider is DBUser {
         addParameter("claimEmail");
         addParameter("claimPhone");
 
-        //Object(getDatabase()).addLog("[DBProvider: initParameters()]");
+        //Object(owner).addLog("[DBProvider: initParameters()]");
     }
 }
