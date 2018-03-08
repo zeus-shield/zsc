@@ -7,7 +7,6 @@ pragma solidity ^0.4.18;
 import "./object.sol";
 
 contract ZSCDatabase is Object { 
-    function getRootNode() public only_delegate constant returns (address);
     function getNode(bytes32 _name) public only_delegate constant returns (address);
     function destroyNode(bytes32 _name) public only_delegate returns (bool);
     function destroyNode(address _node) public only_delegate returns (bool);
@@ -22,7 +21,6 @@ contract ZSCDBNode is Object {
     function addParameter(bytes32 _parameter) public only_delegate returns (bool);
     function removeParameter(bytes32 _parameter) public only_delegate returns (bool);
     function setParameter(bytes32 _parameter, string _value) public only_delegate returns (bool);
-    function getParameter(bytes32 _parameter) public only_delegate constant returns (bytes32);
     function numParameters() public only_delegate constant returns (uint);
     function getParameterNameByIndex(uint _index) public only_delegate constant returns (bytes32);
 }
@@ -46,7 +44,7 @@ contract DBFactory is Object {
         if (_database != 0) bindedDB_ = _database;
     }
 
-    function createNode(bytes32 _name) public only_delegate returns (address);
+    function createNode(bytes32 _name) internal returns (address);
 
     function getBindedDB() public only_delegate constant returns (address) { return bindedDB_;}
 
@@ -55,4 +53,22 @@ contract DBFactory is Object {
     function getNode(bytes32 _name) public only_delegate constant returns (address) {
         return ZSCDatabase(bindedDB_).getNode(_name);
     }
+
+    function operateNode(bytes32 _operation, bytes32 _node) public only_delegate returns (address) {
+        if (_operation == "create") { 
+            return createNode(_node);
+        }
+    }
+
+    function operateParameter(bytes32 _operation, bytes32 _node, bytes32 _parameter, string _value) public only_delegate returns (bool) {
+        bool tag = true;
+        if (_operation == "set") {
+            tag = ZSCDBNode(ZSCDatabase(bindedDB_).getNode(_node)).setParameter(_parameter, _value);
+        } else if (_operation == "get") {
+            //Solidity-0.4.18 does not support the return string among different contracts 
+            tag = false;
+        }
+        return tag;
+    }
+    
 }
