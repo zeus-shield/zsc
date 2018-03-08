@@ -8,7 +8,7 @@ import "./plat_string.sol";
 import "./object.sol";
 
 contract DBFactory is Object { 
-    function createNode(bytes32 _name) public only_delegate returns (address);
+    function operateNode(bytes32 _operation, bytes32 _node) public only_delegate returns (address);
     function getBindedDB() public only_delegate constant returns (address);
     function getNode(bytes32 _name) public only_delegate constant returns (address);
 }
@@ -32,6 +32,6 @@ contract DBApis is Object {
 
     function createProvider(bytes32 _name) public only_delegate returns (address) {
         if (factories_["provider"] == 0) return 0;
-        return DBFactory(factories_["provider"]).createNode(_name);
+        return DBFactory(factories_["provider"]).operateNode("create", _name);
     }
 }
