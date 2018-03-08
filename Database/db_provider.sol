@@ -10,6 +10,7 @@ import "./db_user.sol";
 //import "./db_template.sol";
 
 contract DBProvider is DBUser {
+
     // Constructor
     function DBProvider(bytes32 _name) public DBUser(_name) {
         setEntityType("proiver"); 
@@ -32,5 +33,11 @@ contract DBProvider is DBUser {
         addParameter("claimPhone");
 
         //Object(owner).addLog("[DBProvider: initParameters()]");
+    }
+
+    function recordParameterValue(bytes32 _parameter, string _value) public only_delegate {
+        //2018-03-08
+        //temporarily implemented a virtual function for future use
+        if (PlatString.equalto(_parameter, PlatString.tobytes32(_value))) return;
     }
 }
