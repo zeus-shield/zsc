@@ -18,7 +18,6 @@ contract DBEntity is DBNode {
 
     bytes32[] parameterNames_;
     mapping(bytes32 => bytes32) parameters_;
-    mapping(bytes32 => bool)   parameterExist_;
 
     // Constructor
     function DBEntity(bytes32 _name) public DBNode(_name) {
@@ -26,6 +25,7 @@ contract DBEntity is DBNode {
     }
 
     function initParameters() internal;
+    function recordParameterValue(bytes32 _parameter, string _value) only_delegate public ;
     
     function setEntityType(bytes32 _type) internal only_delegate {
         entityType_ = _type;
@@ -54,16 +54,15 @@ contract DBEntity is DBNode {
     }
 
     function addParameter(bytes32 _parameter) public only_delegate returns (bool) {
-        if (parameterExist_[_parameter] == true) {
+        if (parameters_[_parameter][0] != 0) {
             return false;
         }
         parameterNames_.push(_parameter);
-        parameterExist_[_parameter] = true;
         return true;
     }
 
     function removeParameter(bytes32 _parameter) public only_delegate returns (bool) {
-        if (parameterExist_[_parameter] == false) {
+        if (parameters_[_parameter][0] == 0) {
             return false;
         }
 
@@ -78,12 +77,11 @@ contract DBEntity is DBNode {
         parameterNames_.length --;
 
         delete parameters_[_parameter];
-        delete parameterExist_[_parameter];
         return true;
     }
 
     function setParameter(bytes32 _parameter, string _value) public only_delegate returns (bool) {
-        if (parameterExist_[_parameter] == false) {
+        if (parameters_[_parameter][0] == 0) {
             return false;
         }
         parameters_[_parameter] = "null";
@@ -92,7 +90,7 @@ contract DBEntity is DBNode {
     }
 
     function getParameter(bytes32 _parameter) public only_delegate constant returns (bytes32) {
-        require (parameterExist_[_parameter] == true);
+        require (parameters_[_parameter][0] != 0);
         return parameters_[_parameter];
     }
 
@@ -103,10 +101,5 @@ contract DBEntity is DBNode {
     function getParameterNameByIndex(uint _index) public only_delegate constant returns (bytes32) {
         require(_index < parameterNames_.length);
         return parameterNames_[_index];
-    }
-
-    function recordParameterValue(bytes32 _parameter, string _value) public only_delegate {
-        temp_ = _parameter;
-        _value = "null";
     }
 }
