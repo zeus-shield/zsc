@@ -24,7 +24,7 @@ contract DBEntity is DBNode {
     }
 
     function initParameters() internal;
-    function recordParameterValue(bytes32 _parameter, string _value) only_delegate public ;
+    //function recordParameterValue(bytes32 _parameter, string _value) only_delegate public ;
     
     function setEntityType(bytes32 _type) internal only_delegate {
         entityType_ = _type;
@@ -84,7 +84,7 @@ contract DBEntity is DBNode {
             return false;
         }
         parameters_[_parameter] = _value;
-        recordParameterValue(_parameter, _value);
+        //recordParameterValue(_parameter, _value);
         return true;
     }
 
