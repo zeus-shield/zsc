@@ -5,7 +5,6 @@ Copyright (c) 2018, ZSC Dev Team
 */
 
 pragma solidity ^0.4.17;
-import "./plat_math.sol";
 import "./plat_string.sol";
 import "./db_node.sol";
 
@@ -17,7 +16,7 @@ contract DBEntity is DBNode {
     bytes32 temp_;
 
     bytes32[] parameterNames_;
-    mapping(bytes32 => bytes32) parameters_;
+    mapping(bytes32 => string) parameters_;
 
     // Constructor
     function DBEntity(bytes32 _name) public DBNode(_name) {
@@ -54,7 +53,7 @@ contract DBEntity is DBNode {
     }
 
     function addParameter(bytes32 _parameter) public only_delegate returns (bool) {
-        if (parameters_[_parameter][0] != 0) {
+        if (PlatString.length(parameters_[_parameter]) != 0) {
             return false;
         }
         parameterNames_.push(_parameter);
@@ -62,7 +61,7 @@ contract DBEntity is DBNode {
     }
 
     function removeParameter(bytes32 _parameter) public only_delegate returns (bool) {
-        if (parameters_[_parameter][0] == 0) {
+        if (PlatString.length(parameters_[_parameter]) == 0) {
             return false;
         }
 
@@ -81,16 +80,16 @@ contract DBEntity is DBNode {
     }
 
     function setParameter(bytes32 _parameter, string _value) public only_delegate returns (bool) {
-        if (parameters_[_parameter][0] == 0) {
+        if (PlatString.length(parameters_[_parameter]) == 0) {
             return false;
         }
-        parameters_[_parameter] = "null";
+        parameters_[_parameter] = _value;
         recordParameterValue(_parameter, _value);
         return true;
     }
 
-    function getParameter(bytes32 _parameter) public only_delegate constant returns (bytes32) {
-        require (parameters_[_parameter][0] != 0);
+    function getParameter(bytes32 _parameter) public only_delegate constant returns (string) {
+        require (PlatString.length(parameters_[_parameter]) != 0);
         return parameters_[_parameter];
     }
 
