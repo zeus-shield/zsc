@@ -30,6 +30,7 @@ contract Delegated {
     function transferOwnership(address newOwner) public only_owner {owner = newOwner;}       
 
     function setDelegate(address _address, bool _state) public only_delegate { 
+        require(_address != 0);
         if (_state) delegates_[_address] = true;
         else delete delegates_[_address];
     }
