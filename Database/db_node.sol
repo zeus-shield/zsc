@@ -20,24 +20,26 @@ contract DBNode is Object {
     address[] children_;
     mapping(bytes32 => address) childMap_;
 
+    address[] factories_;
+
     // Constructor
     function DBNode(bytes32 _name) public Object(_name) {
     }
-
-    function setFactoryAndDatabase(address _factory, address _database) public only_delegate {
+    
+    function setFactoryAndDatabase(address[] _factory, address _database) public only_delegate {
         database_ = _database;
-        factory_ = _factory;
+        factories_ = _factory;
         setDelegate(database_, true);
-        setDelegate(factory_, true);
+
+        for (uint i=0; i<factories_.length; i++) {
+            setDelegate(factories_[i], true);
+        }
+
         CallbackDatabase(database_)._addNode(this);
     }
 
     function getDatabase() public only_delegate constant returns (address) {
         return database_;
-    }
-
-    function getFactory() public only_delegate constant returns (address) {
-        return factory_;
     }
 
     function numChildren() public only_delegate constant returns(uint) {
@@ -69,7 +71,7 @@ contract DBNode is Object {
         DBNode(_node).setParent(this);
 
         CallbackDatabase(database_).setDelegate(_node, true);
-        DBNode(_node).setFactoryAndDatabase(factory_, database_);
+        DBNode(_node).setFactoryAndDatabase(factories_, database_);
 
         children_.push(_node);
         childMap_[DBNode(_node).name()] = _node;
