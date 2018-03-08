@@ -13,6 +13,20 @@ contract ZSCDatabase is Object {
     function destroyNode(address _node) public only_delegate returns (bool);
 }
 
+contract ZSCDBNode is Object {
+    function getEntityType() public only_delegate constant returns (bytes32);
+    function setID(uint _id) only_delegate  public; 
+    function setActivated(bool _activated) only_delegate public;
+    function getID() public only_delegate constant returns (uint);
+    function getActivated() public only_delegate constant returns (bool);
+    function addParameter(bytes32 _parameter) public only_delegate returns (bool);
+    function removeParameter(bytes32 _parameter) public only_delegate returns (bool);
+    function setParameter(bytes32 _parameter, string _value) public only_delegate returns (bool);
+    function getParameter(bytes32 _parameter) public only_delegate constant returns (bytes32);
+    function numParameters() public only_delegate constant returns (uint);
+    function getParameterNameByIndex(uint _index) public only_delegate constant returns (bytes32);
+}
+
 contract DBFactory is Object {
     address bindedDB_;
     address apiController_;
