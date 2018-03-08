@@ -21,13 +21,14 @@ contract DBDatabase is Object {
     function DBDatabase(bytes32 _name) public Object(_name) {
     }
 
-    function initDatabase(address _factory) public only_delegate () {
+    function initDatabase(address[] _factories) public only_delegate () {
         if (rootNode_ == 0) {
-            setDelegate(_factory, true);
-
+            for (uint i=0; i<_factories.length; i++) {
+                setDelegate(_factories[i], true);
+            }
             rootNode_ = new DBNode("root");
             setDelegate(rootNode_, true);
-            DBNode(rootNode_).setFactoryAndDatabase(_factory, this);
+            DBNode(rootNode_).setFactoryAndDatabase(_factories, this);
         }
     }
     
