@@ -20,7 +20,8 @@ contract DBFactory is Object {
     }
 
     function createNode(bytes32 _name) internal returns (address);
-    
+    function setupFactoryRoot() internal;
+
     function getBindedDB() public only_delegate constant returns (address) { return bindedDB_;}
 
     function getBindedApiController() public only_delegate constant returns (address) { return apiController_;}
@@ -39,6 +40,7 @@ contract DBFactory is Object {
             apiController_ = _callbackApiController;
             setDelegate(_callbackApiController, true);
         }
+        setupFactoryRoot();
     }
 
     function operateNode(bytes32 _operation, bytes32 _node) public only_delegate returns (address) {
