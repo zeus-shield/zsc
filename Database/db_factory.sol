@@ -14,22 +14,31 @@ contract ZSCDatabase is Object {
 }
 
 contract DBFactory is Object {
-    address db_;
+    address bindedDB_;
+    address apiController_;
 
-    function DBFactory(bytes32 _name, address _db) public Object(_name) {
-        require(_db != address(0));
-        db_ = _db;
+    function DBFactory(bytes32 _name) public Object(_name) {
+    }
+
+    function initFactory(address _callbackApiController, address _database) public only_delegate  {
+        if (_callbackApiController != 0) {
+            if (apiController_ != 0) {
+                setDelegate(apiController_, false);
+            }
+            apiController_ = _callbackApiController;
+            setDelegate(_callbackApiController, true);
+        }
+
+        if (_database != 0) bindedDB_ = _database;
     }
 
     function createNode(bytes32 _name) public only_delegate returns (address);
 
-    function getBindedDB() public only_delegate constant returns (address) { return db_;}
+    function getBindedDB() public only_delegate constant returns (address) { return bindedDB_;}
+
+    function getBindedApiController() public only_delegate constant returns (address) { return apiController_;}
 
     function getNode(bytes32 _name) public only_delegate constant returns (address) {
-        return ZSCDatabase(db_).getNode(_name);
-    }
-
-    function delegateNode(address _adr) internal {
-        ZSCDatabase(db_).setDelegate(_adr, true);
+        return ZSCDatabase(bindedDB_).getNode(_name);
     }
 }
