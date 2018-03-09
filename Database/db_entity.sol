@@ -9,7 +9,7 @@ import "./plat_string.sol";
 import "./db_node.sol";
 
 contract StrRecorder {
-    function record(bytes32 _parameter, string _value) public; 
+    function recordString(bytes32 _node, bytes32 _parameter, string _value) public; 
 }
 
 
@@ -90,7 +90,7 @@ contract DBEntity is DBNode {
         }
         parameters_[_parameter] = _value;
         //recordParameterValue(_parameter, _value);
-        StrRecorder(_recorder).record(_parameter, _value);
+        StrRecorder(_recorder).recordString(name(), _parameter, _value);
         return true;
     }
 
