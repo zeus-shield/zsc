@@ -9,7 +9,7 @@ import "./plat_string.sol";
 import "./db_node.sol";
 
 contract StrRecorder {
-    function recordString(bytes32 _node, bytes32 _parameter, string _value) public; 
+    function _recordString(bytes32 _node, bytes32 _parameter, string _value) public; 
 }
 
 

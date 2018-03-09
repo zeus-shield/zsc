@@ -25,6 +25,11 @@ contract DBApis is Object {
     function DBApis(bytes32 _name) public Object(_name) {
     }
 
+    function _recordString(bytes32 _node, bytes32 _parameter, string _value) public {
+        require(nodes_[_node] != 0);
+        nodeParameters_[_node].value_[_parameter] = _value;
+    } 
+
     function addFactory(bytes32 _name, address _adr) public only_delegate returns (bool) {
         if (factories_[_name] != 0) return false;
         factories_[_name] = _adr;
