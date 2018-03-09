@@ -90,7 +90,7 @@ contract DBEntity is DBNode {
         }
         parameters_[_parameter] = _value;
         //recordParameterValue(_parameter, _value);
-        StrRecorder(_recorder).recordString(name(), _parameter, _value);
+        StrRecorder(_recorder)._recordString(name(), _parameter, _value);
         return true;
     }
 
