@@ -52,8 +52,11 @@ contract DBFactory is Object {
     function operateParameter(bytes32 _operation, bytes32 _node, bytes32 _parameter, string _value) public only_delegate returns (bool) {
         bool tag = true;
         if (_operation == "set") {
-            tag = DBEntity(ZSCDatabase(bindedDB_).getNode(_node)).setParameter(_parameter, _value);
-        } else if (_operation == "get") {
+            tag = DBEntity(ZSCDatabase(bindedDB_).getNode(_node)).setParameter(_parameter, _value, apiController_);
+        } else if (_operation == "add") {
+            //Solidity-0.4.18 does not support the return string among different contracts 
+            tag = DBEntity(ZSCDatabase(bindedDB_).getNode(_node)).addParameter(_parameter);
+        }else if (_operation == "get") {
             //Solidity-0.4.18 does not support the return string among different contracts 
             tag = false;
         }
