@@ -50,4 +50,17 @@ contract DBApis is Object {
         }
         return adr;
     }
+
+    function operateNodeParameter(bytes32 _factory, bytes32 _operation, bytes32 _node, bytes32 _parameter, string _value) internal returns (bool) {
+        if (factories_[_factory] == 0) return false;
+        return DBFactory(factories_[_factory]).operateParameter(_operation, _node, _parameter, _value);
+    }
+
+    function addProviderParameter(bytes32 _node, bytes32 _parameter) public only_delegate returns (bool) {
+        return operateNodeParameter("provider", "add", _node, _parameter, "");
+    }
+
+    function setProviderParameter(bytes32 _node, bytes32 _parameter, string _value) public only_delegate returns (bool) {
+        return operateNodeParameter("provider", "set", _node, _parameter, _value);
+    }
 }
