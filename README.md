@@ -35,7 +35,7 @@ Implementation of the website based interfance not included here.
     
     |-- db_database
     
-    |-- factory_basic
+    |-- db_factory
 
     |-- db_apis
         |-- app_controller
@@ -65,4 +65,6 @@ Implementation of the website based interfance not included here.
 2018.03.05: add a new file factory_basic.sol
 2018.03.06: working on testing the db_database and db_node;
 2018.03.07: creating db_node by integrating with db_database is ok by now
+2018.03.08: chnage factory_basic.sol to db_factory.sol
+2018.03.09-10: creating a DBProvider node and setting node's parameters by DBApis are ok
 ```
