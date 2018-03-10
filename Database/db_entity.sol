@@ -8,12 +8,8 @@ pragma solidity ^0.4.17;
 import "./plat_string.sol";
 import "./db_node.sol";
 
-contract StrRecorder {
-    function _recordString(bytes32 _node, bytes32 _parameter, string _value) public; 
-}
-
-
 contract DBEntity is DBNode {
+    address test_;
     uint    id_ ;
     bool    activated_;
     bytes32 entityType_ = "entity";
@@ -21,7 +17,7 @@ contract DBEntity is DBNode {
     bytes32 temp_;
 
     bytes32[] parameterNames_;
-    mapping(bytes32 => string) parameters_;
+    mapping(bytes32 => bytes32) parameters_;
 
     // Constructor
     function DBEntity(bytes32 _name) public DBNode(_name) {
@@ -58,17 +54,13 @@ contract DBEntity is DBNode {
     }
 
     function addParameter(bytes32 _parameter) public only_delegate returns (bool) {
-        if (PlatString.length(parameters_[_parameter]) != 0) {
-            return false;
-        }
+        //if (parameters_[_parameter][0] != 0) return false;
         parameterNames_.push(_parameter);
         return true;
     }
 
     function removeParameter(bytes32 _parameter) public only_delegate returns (bool) {
-        if (PlatString.length(parameters_[_parameter]) == 0) {
-            return false;
-        }
+        if (parameters_[_parameter][0] == 0) return false;
 
         for (uint i = 0; i < parameterNames_.length; ++i) {
             if (parameterNames_[i] == _parameter) {
@@ -84,18 +76,14 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function setParameter(bytes32 _parameter, string _value, address _recorder) public only_delegate returns (bool) {
-        if (PlatString.length(parameters_[_parameter]) == 0) {
-            return false;
-        }
+    function setParameter(bytes32 _parameter, bytes32 _value) public only_delegate returns (bool) {
+        //if (parameters_[_parameter][0] == 0) return false;
         parameters_[_parameter] = _value;
-        //recordParameterValue(_parameter, _value);
-        StrRecorder(_recorder)._recordString(name(), _parameter, _value);
         return true;
     }
 
-    function getParameter(bytes32 _parameter) public only_delegate constant returns (string) {
-        require (PlatString.length(parameters_[_parameter]) != 0);
+    function getParameter(bytes32 _parameter) public only_delegate constant returns (bytes32) {
+        //require(parameters_[_parameter][0] != 0);
         return parameters_[_parameter];
     }
 
