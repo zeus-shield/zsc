@@ -19,12 +19,14 @@ contract DBFactory is Object {
     function DBFactory(bytes32 _name) public Object(_name) {
     }
 
-    function createNode(bytes32 _name) internal returns (address);
+    function getBindedApiController() public only_delegate constant returns (address) { return apiController_;}
+
     function setupFactoryRoot() internal;
+
+    function createNode(bytes32 _name) public returns (address);
 
     function getBindedDB() public only_delegate constant returns (address) { return bindedDB_;}
 
-    function getBindedApiController() public only_delegate constant returns (address) { return apiController_;}
 
     function getNode(bytes32 _name) public only_delegate constant returns (address) {
         return ZSCDatabase(bindedDB_).getNode(_name);
@@ -43,24 +45,16 @@ contract DBFactory is Object {
         setupFactoryRoot();
     }
 
-    function operateNode(bytes32 _operation, bytes32 _node) public only_delegate returns (address) {
-        if (_operation == "create") { 
-            return createNode(_node);
-        }
-    }
-
-    function operateParameter(bytes32 _operation, bytes32 _node, bytes32 _parameter, string _value) public only_delegate returns (bool) {
-        bool tag = true;
-        if (_operation == "set") {
-            tag = DBEntity(ZSCDatabase(bindedDB_).getNode(_node)).setParameter(_parameter, _value, apiController_);
-        } else if (_operation == "add") {
-            //Solidity-0.4.18 does not support the return string among different contracts 
-            tag = DBEntity(ZSCDatabase(bindedDB_).getNode(_node)).addParameter(_parameter);
-        }else if (_operation == "get") {
-            //Solidity-0.4.18 does not support the return string among different contracts 
-            tag = false;
-        }
-        return tag;
+    function addNodeParameter(bytes32 _node, bytes32 _parameter) public only_delegate returns (bool) {
+        return DBEntity(ZSCDatabase(bindedDB_).getNode(_node)).addParameter(_parameter);
     }
     
+    function getNodeParameter(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (bytes32) {
+        return DBEntity(ZSCDatabase(bindedDB_).getNode(_node)).getParameter(_parameter);
+    }
+
+    function setNodeParameter(bytes32 _node, bytes32 _parameter, bytes32 _value) public only_delegate returns (bool) {
+        addLog("[DBFactory: setNodeParameter]");
+        return DBEntity(ZSCDatabase(bindedDB_).getNode(_node)).setParameter(_parameter, _value);
+    }
 }
