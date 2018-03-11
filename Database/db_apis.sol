@@ -17,8 +17,14 @@ contract DBFactory is Object {
 }
 
 contract DBApis is Object {
+    struct UserInfo {
+        address id_; 
+        bytes32 type_; 
+        uint status_; //1: registered; 2: active; 3: suspended;
+    }
+    
     mapping(bytes32 => address) factories_;
-    mapping(bytes32 => address) nodes_;
+    mapping(bytes32 => UserInfo) public users_;
 
     function DBApis(bytes32 _name) public Object(_name) {
     }
