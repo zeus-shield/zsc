@@ -16,7 +16,7 @@ contract DBFactory is Object {
     function setNodeParameter(bytes32 _node, bytes32 _parameter, bytes32 _value) public only_delegate returns (bool);
 }
 
-contract DBApis is Object {
+contract ControlBase is Object {
     struct UserInfo {
         address id_; 
         bytes32 type_; 
@@ -26,7 +26,7 @@ contract DBApis is Object {
     mapping(bytes32 => address) factories_;
     mapping(bytes32 => UserInfo) public users_;
 
-    function DBApis(bytes32 _name) public Object(_name) {
+    function ControlBase(bytes32 _name) public Object(_name) {
     }
 
     function addFactory(bytes32 _name, address _adr) public only_delegate returns (bool) {
