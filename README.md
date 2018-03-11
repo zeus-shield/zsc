@@ -61,10 +61,11 @@ Implementation of the website based interfance not included here.
 2018.02.22-25: start constructing the new way of "passing string" among contracts.
 2018.02.26: add a new file plat_externalcontracts.sol
 2018.02.27-03.01: re-construct the system as the currrent size of entire compiled bin (single) file is over 70KB, which leades to oversized error when deploying to the ethereum platform
-2018.03.02-03.04: testing on db_database and db_node.
+2018.03.02-03.04: testing on db_database and db_node.f
 2018.03.05: add a new file factory_basic.sol
 2018.03.06: working on testing the db_database and db_node;
 2018.03.07: creating db_node by integrating with db_database is ok by now
 2018.03.08: chnage factory_basic.sol to db_factory.sol
 2018.03.09-10: creating a DBProvider node and setting node's parameters by DBApis are ok
+2018.03.11: change file names: db_factory.sol->factory_base.sol, db_apis.sol->control_apis.sol
 ```
