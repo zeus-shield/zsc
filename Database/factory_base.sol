@@ -12,11 +12,11 @@ contract ZSCDatabase is Object {
     function destroyNode(address _node) public only_delegate returns (bool);
 }
 
-contract DBFactory is Object {
+contract FactoryBase is Object {
     address private bindedDB_;
     address private apiController_;
 
-    function DBFactory(bytes32 _name) public Object(_name) {
+    function FactoryBase(bytes32 _name) public Object(_name) {
     }
 
     function getBindedApiController() public only_delegate constant returns (address) { return apiController_;}
