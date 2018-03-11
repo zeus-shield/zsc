@@ -19,7 +19,7 @@ contract Delegated {
     address public owner;
     mapping (address => bool) public delegates_;
 
-    modifier only_owner {require (msg.sender != owner); _;}
+    modifier only_owner {require (msg.sender == owner); _;}
     modifier only_delegate {require (delegates_[msg.sender] || msg.sender == owner || this == msg.sender); _; }
 
     function Delegated() public {
