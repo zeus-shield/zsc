@@ -18,6 +18,10 @@ contract DBEntity is DBNode {
 
     bytes32[] parameterNames_;
     mapping(bytes32 => bytes32) parameters_;
+    mapping(bytes32 => bool) parameterExist_;
+
+    modifier parameter_exist(bytes32 _name) {require(parameterExist_[_name] == true); _;}
+    modifier parameter_notexist(bytes32 _name) {require(parameterExist_[_name] == false); _;}
 
     // Constructor
     function DBEntity(bytes32 _name) public DBNode(_name) {
@@ -53,15 +57,13 @@ contract DBEntity is DBNode {
         return activated_;
     }
 
-    function addParameter(bytes32 _parameter) public only_delegate returns (bool) {
-        //if (parameters_[_parameter][0] != 0) return false;
+    function addParameter(bytes32 _parameter) public only_delegate parameter_notexist(_parameter) returns (bool) {
         parameterNames_.push(_parameter);
+        parameterExist_[_parameter] = true;
         return true;
     }
 
-    function removeParameter(bytes32 _parameter) public only_delegate returns (bool) {
-        if (parameters_[_parameter][0] == 0) return false;
-
+    function removeParameter(bytes32 _parameter) public only_delegate parameter_exist(_parameter) returns (bool) {
         for (uint i = 0; i < parameterNames_.length; ++i) {
             if (parameterNames_[i] == _parameter) {
                 parameterNames_[i] = parameterNames_[parameterNames_.length - 1];
@@ -73,17 +75,16 @@ contract DBEntity is DBNode {
         parameterNames_.length --;
 
         delete parameters_[_parameter];
+        delete parameterExist_[_parameter];
         return true;
     }
 
-    function setParameter(bytes32 _parameter, bytes32 _value) public only_delegate returns (bool) {
-        //if (parameters_[_parameter][0] == 0) return false;
+    function setParameter(bytes32 _parameter, bytes32 _value) public only_delegate parameter_exist(_parameter) returns (bool) {
         parameters_[_parameter] = _value;
         return true;
     }
 
     function getParameter(bytes32 _parameter) public only_delegate constant returns (bytes32) {
-        //require(parameters_[_parameter][0] != 0);
         return parameters_[_parameter];
     }
 
