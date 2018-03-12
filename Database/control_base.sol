@@ -26,17 +26,21 @@ contract ControlBase is Object, ControlInfo {
     function ControlBase(bytes32 _name) public Object(_name) {
     }
 
-    function addFactory(bytes32 _name, address _adr) public only_owner factroy_notexist(_name) returns (bool) {
+    function addFactory(bytes32 _name, address _adr) internal factroy_notexist(_name) {
+        require(_adr != 0);
         factories_[_name] = _adr;
-        return true;
     }
 
-    function getDatabase(bytes32 _factory) internal factroy_exist(_factory) constant returns (address) {
-        return DBFactory(factories_[_factory]).getBindedDB();
+    function getFactory(bytes32 _name) internal factroy_exist(_name) constant returns (DBFactory) {
+        return DBFactory(factories_[_name]);
     }
 
-    function createFactoryNode(bytes32 _type, bytes32 _name) public only_delegate factroy_exist(_type) returns (address) {
-        return DBFactory(factories_[_type]).createNode(_name);
+    function getDatabase(bytes32 _factory) internal constant returns (address) {
+        return getFactory(_factory).getBindedDB();
+    }
+
+    function createFactoryNode(bytes32 _factory, bytes32 _name) internal factroy_exist(_factory) returns (address) {
+        return getFactory(_factory).createNode(_name);
     }
    
     function createProvider(bytes32 _name) public only_delegate returns (address) {
