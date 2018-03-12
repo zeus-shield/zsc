@@ -20,8 +20,8 @@ contract DBFactory is Object {
 contract ControlBase is Object, ControlInfo {   
     mapping(bytes32 => address) private factories_;
 
-    modifier factroy_exist(_name) {require (factories_[_name] != 0); _;}
-    modifier factroy_notexist(_name) {require (factories_[_name] == 0); _;}
+    modifier factroy_exist(bytes32 _name) {require(factories_[_name] != 0); _;}
+    modifier factroy_notexist(bytes32 _name) {require(factories_[_name] == 0); _;}
 
     function ControlBase(bytes32 _name) public Object(_name) {
     }
@@ -31,12 +31,11 @@ contract ControlBase is Object, ControlInfo {
         return true;
     }
 
-    function getDatabase(bytes32 _factory) internal factroy_exist(_name) constant returns (address) {
-        return DBFactory(factories_[_name]).getBindedDB();
+    function getDatabase(bytes32 _factory) internal factroy_exist(_factory) constant returns (address) {
+        return DBFactory(factories_[_factory]).getBindedDB();
     }
 
     function createFactoryNode(bytes32 _type, bytes32 _name) public only_delegate factroy_exist(_type) returns (address) {
-        require(factories_[_type] = 0);
         return DBFactory(factories_[_type]).createNode(_name);
     }
    
