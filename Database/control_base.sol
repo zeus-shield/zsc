@@ -6,6 +6,7 @@ pragma solidity ^0.4.18;
 
 import "./plat_string.sol";
 import "./object.sol";
+import "./control_info.sol";
 
 contract DBFactory is Object { 
     function getBindedDB() public only_delegate constant returns (address);
@@ -16,32 +17,31 @@ contract DBFactory is Object {
     function setNodeParameter(bytes32 _node, bytes32 _parameter, bytes32 _value) public only_delegate returns (bool);
 }
 
-contract ControlBase is Object {
-    struct UserInfo {
-        address id_; 
-        bytes32 type_; 
-        uint status_; //1: registered; 2: active; 3: suspended;
-    }
-    
-    mapping(bytes32 => address) factories_;
-    mapping(bytes32 => UserInfo) public users_;
+contract ControlBase is Object, ControlInfo {   
+    mapping(bytes32 => address) private factories_;
+
+    modifier factroy_exist(_name) {require (factories_[_name] != 0); _;}
+    modifier factroy_notexist(_name) {require (factories_[_name] == 0); _;}
 
     function ControlBase(bytes32 _name) public Object(_name) {
     }
 
-    function addFactory(bytes32 _name, address _adr) public only_delegate returns (bool) {
-        if (factories_[_name] != 0) return false;
+    function addFactory(bytes32 _name, address _adr) public only_owner factroy_notexist(_name) returns (bool) {
         factories_[_name] = _adr;
         return true;
     }
 
-    function getDatabase(bytes32 _name) internal only_delegate constant returns (address) {
-        if (factories_[_name] == 0) return 0;
+    function getDatabase(bytes32 _factory) internal factroy_exist(_name) constant returns (address) {
         return DBFactory(factories_[_name]).getBindedDB();
     }
 
+    function createFactoryNode(bytes32 _type, bytes32 _name) public only_delegate factroy_exist(_type) returns (address) {
+        require(factories_[_type] = 0);
+        return DBFactory(factories_[_type]).createNode(_name);
+    }
+   
     function createProvider(bytes32 _name) public only_delegate returns (address) {
-        return DBFactory(factories_["provider"]).createNode(_name);
+        return createFactoryNode("provider", _name);
     }
 
     function addProviderParameter(bytes32 _node, bytes32 _parameter) public only_delegate returns (bool) {
