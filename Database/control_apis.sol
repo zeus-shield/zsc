@@ -24,9 +24,31 @@ contract ControlApis is ControlBase {
         getFactory("provider");
     }
 
-    /// @dev creat a provider node
-    /// @param _name The name of the provider to be added
-    function createProviderNode(bytes32 _name) public returns (address) {
-        return createFactoryNode("provider", _name);
+    /// @dev Creat a provider node
+    /// @param _node The name of the added provider
+    function createProviderNode(bytes32 _node) public only_delegate returns (address) {
+        return createFactoryNode("provider", _node);
+    }
+
+    /// @dev add a paramter to a provider node
+    /// @param _node The name of the existing provider
+    /// @param _parameter The name of the added parameter
+    function addProviderParameter(bytes32 _node, bytes32 _parameter) public only_delegate returns (bool) {
+        return operateNodeParameter("provider", "add", _node, _parameter, "");
+    }
+
+    /// @dev Set the value to a paramter of a provider node
+    /// @param _node The name of the existing provider
+    /// @param _parameter The name of the existing parameter
+    /// @param _value The parameter value
+    function setProviderParameter(bytes32 _node, bytes32 _parameter, bytes32 _value) public only_delegate returns (bool) {
+        return operateNodeParameter("provider", "set", _node, _parameter, _value);
+    }
+
+    /// @dev Get the value to a paramter of a provider node
+    /// @param _node The name of the existing provider
+    /// @param _parameter The name of the existing parameter
+    function getProviderParameter(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (bytes32) {
+        return getNodeParameter("provider", _node, _parameter);
     }
 }
