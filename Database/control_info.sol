@@ -23,6 +23,7 @@ contract ControlInfo {
     mapping(bytes32 => ParameterInfo) private parameters_;
 
     modifier node_exist(bytes32 _name) {require(parameters_[_name].tag_ == true); _;}
+    modifier node_notexist(bytes32 _name) {require(parameters_[_name].tag_ == false); _;}
     modifier user_notregistered(bytes32 _name) {require(users_[_name].id_ == 0); _;}
 
     function ControlInfo() public {
@@ -32,15 +33,15 @@ contract ControlInfo {
         parameters_[_node].value_[_parameter] = _value;
     }
 
-    function registerUser(NodeType _type, bytes32 _name) public user_notregistered(_name) {
+    function applyRegistration(NodeType _type, bytes32 _name) public user_notregistered(_name) {
         require(users_[_name].id_ != 0);
         users_[_name].id_ = msg.sender;
         users_[_name].type_ = _type;
         users_[_name].status_ = 1;
     }
 
-    function addParameterEmptyInfo(bytes32 _node, bytes32 _parameter) internal {
+    function prepareNodeRecorder(bytes32 _node) internal node_notexist(_node) {
         parameters_[_node].tag_ = true;
-        parameters_[_node].value_[_parameter] = "";
+        users_[_node].status_ = 3;
     }
 }
