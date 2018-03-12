@@ -22,6 +22,7 @@ Implementation of the website based interfance not included here.
 ### 2.1 Framework Components
 ```bash
 |-- objct 
+    |-- db_idmanager
     |-- db_node 
         |-- db_entity 
             |-- db_user
@@ -30,15 +31,10 @@ Implementation of the website based interfance not included here.
         |-- db_item
         |-- db_template
         |-- db_agreement
-    
-    |-- db_idmanager
-    
     |-- db_database
-    
-    |-- db_factory
-
-    |-- db_apis
-        |-- app_controller
+    |-- factory_base
+    |-- control_base
+        |-- control_apis
 ```
 
 ### 2.2 .sol update log
@@ -68,4 +64,5 @@ Implementation of the website based interfance not included here.
 2018.03.08: chnage factory_basic.sol to db_factory.sol
 2018.03.09-10: creating a DBProvider node and setting node's parameters by DBApis are ok
 2018.03.11: change file names: db_factory.sol->factory_base.sol, db_apis.sol->control_apis.sol
+2018.03.12: add two files: control_info.sol and control_apis.sol
 ```
