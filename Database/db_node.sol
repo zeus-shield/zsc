@@ -25,6 +25,11 @@ contract DBNode is Object {
     // Constructor
     function DBNode(bytes32 _name) public Object(_name) {
     }
+
+    function kill() public only_delegate { 
+        removeAndDestroyAllChildren(); 
+        super.kill();
+    }
     
     function setFactoryAndDatabase(address[] _factory, address _database) public only_delegate {
         database_ = _database;
