@@ -15,19 +15,32 @@ contract ERC20Interface {
     function transfer(address to, uint tokens) public returns (bool success);
 }
 
-contract Delegated {
-    address public owner;
+contract Owned {
+    address owner;
+    modifier only_owner {require (msg.sender == owner); _;}
+
+    function Owned() public {owner = msg.sender;}
+
+    function transferOwnership(address newOwner) public only_owner {owner = newOwner;}       
+}
+
+contract LogRecorder {
+    string public print_log_;
+    function addLog(string _log) public {
+        print_log_ = PlatString.append(print_log_, _log);
+    }
+}
+
+contract Delegated is Owned{
     mapping (address => bool) public delegates_;
 
-    modifier only_owner {require (msg.sender == owner); _;}
     modifier only_delegate {require (delegates_[msg.sender] || msg.sender == owner || this == msg.sender); _; }
 
     function Delegated() public {
-        owner = msg.sender;
         delegates_[msg.sender] = true;
     }
 
-    function transferOwnership(address newOwner) public only_owner {owner = newOwner;}       
+    function kill() public {if (msg.sender == owner) selfdestruct(owner); }
 
     function setDelegate(address _address, bool _state) public only_delegate { 
         require(_address != 0);
@@ -44,16 +57,17 @@ contract Delegated {
 contract Object is Delegated {
     bytes32  name_ ;
     string public print_log_;
+    address logRecorder_ = 0;
 
     // Constructor
     function Object(bytes32 _name) public { name_ = _name; }
+
+    function kill() public only_delegate { selfdestruct(owner); }
 
     // This unnamed function is called whenever someone tries to send ether to it
     function() public payable { revert(); }
 
     function name() public only_delegate constant returns (bytes32) { return name_;}
-
-    function kill() public only_delegate { name_ = "" ;}
 
     // ------------------------------------------------------------------------
     // Owner can transfer out any accidentally sent ERC20 tokens
@@ -64,5 +78,10 @@ contract Object is Delegated {
 
     function addLog(string _log) public only_delegate {
         print_log_ = PlatString.append(print_log_, _log);
+        if (logRecorder_ != 0) LogRecorder(logRecorder_).addLog(_log);
     } 
+
+    function setLogRecorder(address _adr) public only_delegate {
+        logRecorder_ = _adr;
+    }
 }
