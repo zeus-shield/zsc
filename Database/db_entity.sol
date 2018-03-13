@@ -9,7 +9,7 @@ import "./plat_string.sol";
 import "./db_node.sol";
 
 contract infoRecorder {
-    function _recordString(bytes32 _nodeName, bytes32 _parameter, bytes32 _value) public;
+    function _recordString(bytes32 _nodeName, bytes32 _parameter, string _value) public;
 }
 
 contract DBEntity is DBNode {
@@ -21,7 +21,7 @@ contract DBEntity is DBNode {
     bytes32 temp_;
 
     bytes32[] parameterNames_;
-    mapping(bytes32 => bytes32) parameters_;
+    mapping(bytes32 => string) parameters_;
     mapping(bytes32 => bool) parameterExist_;
 
     modifier parameter_exist(bytes32 _name) {require(parameterExist_[_name] == true); _;}
@@ -83,13 +83,13 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function setParameter(bytes32 _parameter, bytes32 _value, address _strRecorder) public only_delegate parameter_exist(_parameter) returns (bool) {
+    function setParameter(bytes32 _parameter, string _value, address _strRecorder) public only_delegate parameter_exist(_parameter) returns (bool) {
         parameters_[_parameter] = _value;
         infoRecorder(_strRecorder)._recordString(name(), _parameter, _value);
         return true;
     }
 
-    function getParameter(bytes32 _parameter) public only_delegate constant returns (bytes32) {
+    function getParameter(bytes32 _parameter) public only_delegate constant returns (string) {
         return parameters_[_parameter];
     }
 
