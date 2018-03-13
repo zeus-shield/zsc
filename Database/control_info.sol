@@ -8,11 +8,11 @@ import "./plat_string.sol";
 import "./object.sol";
 
 contract ControlInfo is Object {
-    enum NodeType {PROVIDER, RECEIVER, TEMPLATE, AGREEMENT}
+    enum ManagementType {REGISTERD, SUSPEND, ACTIVE}
     struct UserInfo {
         address id_; 
-        NodeType type_; 
-        uint status_; //1: registered; 2: suspended; 3: active; 
+        bytes32 type_; 
+        ManagementType status_; //1: registered; 2: suspended; 3: active; 
     }
 
     struct ParameterInfo {
@@ -35,15 +35,20 @@ contract ControlInfo is Object {
         parameters_[_nodeName].value_[_parameter] = _value;
     }
 
-    function applyRegistration(NodeType _type, bytes32 _name) public user_notregistered(_name) {
-        users_[_name].id_ = msg.sender;
-        users_[_name].type_ = _type;
-        users_[_name].status_ = 1;
+    /* For the use in future version */
+    function manageUser(ManagementType _management, bytes32 _name, bytes32 _type) internal user_notregistered(_name) {
+        if (_management == ManagementType.REGISTERD) {
+            users_[_name].id_ = msg.sender;
+            users_[_name].type_ = _type;
+            users_[_name].status_ = _management;
+        } else {
+
+        }
     }
 
     function prepareNodeRecorder(bytes32 _nodeName, address _nodeAdr) internal node_notexist(_nodeName) {
         parameters_[_nodeName].nodeAdr_ = _nodeAdr;
-        users_[_nodeName].status_ = 3;
+        users_[_nodeName].status_ = ManagementType.ACTIVE;
     }
 
     function getParameterValue(bytes32 _node, bytes32 _parameter) internal constant returns (string) {
