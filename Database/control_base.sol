@@ -14,7 +14,7 @@ contract DBFactory is Object {
     function getNode(bytes32 _name) public only_delegate constant returns (address);
     function addNodeParameter(bytes32 _node, bytes32 _parameter) public only_delegate returns (bool);
     function getNodeParameter(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (bytes32);
-    function setNodeParameter(bytes32 _node, bytes32 _parameter, bytes32 _value) public only_delegate returns (bool);
+    function setNodeParameter(bytes32 _node, bytes32 _parameter, bytes32 _value, address _strRecorder) public only_delegate returns (bool);
 }
 
 contract ControlBase is Object, ControlInfo {   
@@ -40,22 +40,22 @@ contract ControlBase is Object, ControlInfo {
     }
 
     function createFactoryNode(bytes32 _factory, bytes32 _name) internal factroy_exist(_factory) returns (address) {
-        return getFactory(_factory).createNode(_name);
-    }
-   
-    function createProvider(bytes32 _name) public only_delegate returns (address) {
-        return createFactoryNode("provider", _name);
-    }
-
-    function addProviderParameter(bytes32 _node, bytes32 _parameter) public only_delegate returns (bool) {
-        return DBFactory(factories_["provider"]).addNodeParameter(_node, _parameter);
+        address adr = getFactory(_factory).createNode(_name);
+        if (adr != 0) {
+            prepareNodeRecorder(_name, adr);
+        }
+        return adr;
     }
 
-    function setProviderParameter(bytes32 _node, bytes32 _parameter, bytes32 _value) public only_delegate returns (bool) {
-        return DBFactory(factories_["provider"]).setNodeParameter(_node, _parameter, _value);
+    function operateNodeParameter(bytes32 _factory, bytes32 _operation, bytes32 _node, bytes32 _parameter, bytes32 _value) internal only_delegate returns (bool) {
+        if (_operation == "add") {
+            return getFactory(_factory).addNodeParameter(_node, _parameter);
+        } else if (_operation == "set") {
+            return getFactory(_factory).setNodeParameter(_node, _parameter, _value, this);
+        }        
     }
 
-    function getProviderParameter(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (bytes32) {
-        return DBFactory(factories_["provider"]).getNodeParameter(_node, _parameter);
+    function getNodeParameter(bytes32 _factory, bytes32 _node, bytes32 _parameter) internal only_delegate constant returns (bytes32) {
+        return getFactory(_factory).getNodeParameter(_node, _parameter);
     }
 }
