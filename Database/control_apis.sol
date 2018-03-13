@@ -41,14 +41,14 @@ contract ControlApis is ControlBase {
     /// @param _node The name of the existing provider
     /// @param _parameter The name of the existing parameter
     /// @param _value The parameter value
-    function setProviderParameter(bytes32 _node, bytes32 _parameter, bytes32 _value) public only_delegate returns (bool) {
+    function setProviderParameter(bytes32 _node, bytes32 _parameter, string _value) public only_delegate returns (bool) {
         return operateNodeParameter("provider", "set", _node, _parameter, _value);
     }
 
     /// @dev Get the value to a paramter of a provider node
     /// @param _node The name of the existing provider
     /// @param _parameter The name of the existing parameter
-    function getProviderParameter(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (bytes32) {
-        return getNodeParameter("provider", _node, _parameter);
+    function getProviderParameter(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (string) {
+        return getParameterValue(_node, _parameter);
     }
 }
