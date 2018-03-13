@@ -16,7 +16,7 @@ contract ControlInfo is Object {
     }
 
     struct ParameterInfo {
-        mapping (bytes32 => bytes32) value_;
+        mapping (bytes32 => string) value_;
         address nodeAdr_;
     }
     
@@ -30,7 +30,7 @@ contract ControlInfo is Object {
     function ControlInfo() public {
     }
  
-    function _recordString(bytes32 _nodeName, bytes32 _parameter, bytes32 _value) public {
+    function _recordString(bytes32 _nodeName, bytes32 _parameter, string _value) public {
         //require(msg.sender == parameters_[_nodeName].nodeAdr_);
         parameters_[_nodeName].value_[_parameter] = _value;
     }
@@ -46,7 +46,11 @@ contract ControlInfo is Object {
         users_[_nodeName].status_ = 3;
     }
 
-    function testGetParameterValue(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (bytes32) {
+    function getParameterValue(bytes32 _node, bytes32 _parameter) internal constant returns (string) {
+        return parameters_[_node].value_[_parameter];
+    }
+
+    function testGetParameterValue(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (string) {
         return parameters_[_node].value_[_parameter];
     }
 }
