@@ -49,11 +49,13 @@ contract FactoryBase is Object {
         return DBEntity(ZSCDatabase(bindedDB_).getNode(_node)).addParameter(_parameter);
     }
     
-    function getNodeParameter(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (bytes32) {
+    /*
+    function getNodeParameter(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (string) {
         return DBEntity(ZSCDatabase(bindedDB_).getNode(_node)).getParameter(_parameter);
     }
+    */
 
-    function setNodeParameter(bytes32 _node, bytes32 _parameter, bytes32 _value, address _strRecorder) public only_delegate returns (bool) {
+    function setNodeParameter(bytes32 _node, bytes32 _parameter, string _value, address _strRecorder) public only_delegate returns (bool) {
         addLog("[DBFactory: setNodeParameter]");
         return DBEntity(ZSCDatabase(bindedDB_).getNode(_node)).setParameter(_parameter, _value, _strRecorder);
     }
