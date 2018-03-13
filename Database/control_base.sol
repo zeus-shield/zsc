@@ -13,8 +13,10 @@ contract DBFactory is Object {
     function createNode(bytes32 _name) public returns (address);
     function getNode(bytes32 _name) public only_delegate constant returns (address);
     function addNodeParameter(bytes32 _node, bytes32 _parameter) public only_delegate returns (bool);
-    function getNodeParameter(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (bytes32);
-    function setNodeParameter(bytes32 _node, bytes32 _parameter, bytes32 _value, address _strRecorder) public only_delegate returns (bool);
+    /*
+    function getNodeParameter(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (string);
+    */
+    function setNodeParameter(bytes32 _node, bytes32 _parameter, string _value, address _strRecorder) public only_delegate returns (bool);
 }
 
 contract ControlBase is Object, ControlInfo {   
@@ -47,7 +49,7 @@ contract ControlBase is Object, ControlInfo {
         return adr;
     }
 
-    function operateNodeParameter(bytes32 _factory, bytes32 _operation, bytes32 _node, bytes32 _parameter, bytes32 _value) internal only_delegate returns (bool) {
+    function operateNodeParameter(bytes32 _factory, bytes32 _operation, bytes32 _node, bytes32 _parameter, string _value) internal only_delegate returns (bool) {
         if (_operation == "add") {
             return getFactory(_factory).addNodeParameter(_node, _parameter);
         } else if (_operation == "set") {
@@ -55,7 +57,9 @@ contract ControlBase is Object, ControlInfo {
         }        
     }
 
-    function getNodeParameter(bytes32 _factory, bytes32 _node, bytes32 _parameter) internal only_delegate constant returns (bytes32) {
+    /*
+    function getNodeParameter(bytes32 _factory, bytes32 _node, bytes32 _parameter) internal only_delegate constant returns (string) {
         return getFactory(_factory).getNodeParameter(_node, _parameter);
     }
+    */
 }
