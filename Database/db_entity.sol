@@ -8,6 +8,10 @@ pragma solidity ^0.4.17;
 import "./plat_string.sol";
 import "./db_node.sol";
 
+contract infoRecorder {
+    function _recordString(bytes32 _nodeName, bytes32 _parameter, bytes32 _value) public;
+}
+
 contract DBEntity is DBNode {
     address test_;
     uint    id_ ;
@@ -79,8 +83,9 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function setParameter(bytes32 _parameter, bytes32 _value) public only_delegate parameter_exist(_parameter) returns (bool) {
+    function setParameter(bytes32 _parameter, bytes32 _value, address _strRecorder) public only_delegate parameter_exist(_parameter) returns (bool) {
         parameters_[_parameter] = _value;
+        infoRecorder(_strRecorder)._recordString(name(), _parameter, _value);
         return true;
     }
 
