@@ -51,11 +51,7 @@ contract ControlInfo is Object {
         users_[_nodeName].status_ = ManagementType.ACTIVE;
     }
 
-    function getParameterValue(bytes32 _node, bytes32 _parameter) internal constant returns (string) {
-        return parameters_[_node].value_[_parameter];
-    }
-
-    function testGetParameterValue(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (string) {
+    function getControlBaseParameterValue(bytes32 _node, bytes32 _parameter) internal constant returns (string) {
         return parameters_[_node].value_[_parameter];
     }
 }
