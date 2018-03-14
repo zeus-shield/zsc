@@ -62,7 +62,8 @@ Implementation of the website based interfance not included here.
 2018.03.06: working on testing the db_database and db_node;
 2018.03.07: creating db_node by integrating with db_database is ok by now
 2018.03.08: chnage factory_basic.sol to db_factory.sol
-2018.03.09-10: creating a DBProvider node and setting node's parameters by DBApis are ok
+2018.03.09-10: creating a DBProvider node and setting node parameters by DBApis are ok
 2018.03.11: change file names: db_factory.sol->factory_base.sol, db_apis.sol->control_apis.sol
 2018.03.12: add two files: control_info.sol and control_apis.sol
+2018.03.13-14: work on testing zsc APIs with using Ethereum JS-APIs
 ```
