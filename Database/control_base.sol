@@ -17,6 +17,7 @@ contract DBFactory is Object {
     function getNodeParameter(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (string);
     */
     function setNodeParameter(bytes32 _node, bytes32 _parameter, string _value, address _strRecorder) public only_delegate returns (bool);
+    function numNodeParameters(bytes32 _node) public only_delegate constant returns (uint);
 }
 
 contract ControlBase is Object, ControlInfo {   
