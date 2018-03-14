@@ -31,6 +31,8 @@ contract ControlBase is Object, ControlInfo {
     function addFactory(bytes32 _name, address _adr) internal factroy_notexist(_name) {
         require(_adr != 0);
         factories_[_name] = _adr;
+        addLog("Added factory: ", 1, 0);
+        addLog(PlatString.bytes32ToString(_name), 0, 1);
     }
 
     function getFactory(bytes32 _name) internal factroy_exist(_name) constant returns (DBFactory) {
@@ -56,7 +58,6 @@ contract ControlBase is Object, ControlInfo {
             return getFactory(_factory).setNodeParameter(_node, _parameter, _value, this);
         }        
     }
-
     /*
     function getNodeParameter(bytes32 _factory, bytes32 _node, bytes32 _parameter) internal only_delegate constant returns (string) {
         return getFactory(_factory).getNodeParameter(_node, _parameter);
