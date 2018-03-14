@@ -16,8 +16,7 @@ contract FactoryBase is Object {
     address private bindedDB_;
     address private apiController_;
 
-    function FactoryBase(bytes32 _name) public Object(_name) {
-    }
+    function FactoryBase(bytes32 _name) public Object(_name) {}
 
     function getBindedApiController() public only_delegate constant returns (address) { return apiController_;}
 
@@ -56,7 +55,14 @@ contract FactoryBase is Object {
     */
 
     function setNodeParameter(bytes32 _node, bytes32 _parameter, string _value, address _strRecorder) public only_delegate returns (bool) {
-        addLog("[DBFactory: setNodeParameter]");
+        string memory str = "DBFactory: setNodeParameter - ";
+        str = PlatString.append(str, PlatString.bytes32ToString(_parameter), " : " , _value);
+        addLog("DBFactory: setNodeParameter - ", 1, 0);
+        addLog(str, 1, 1);
         return DBEntity(ZSCDatabase(bindedDB_).getNode(_node)).setParameter(_parameter, _value, _strRecorder);
+    }
+
+    function numNodeParameters(bytes32 _node) public only_delegate constant returns (uint) {
+        return DBEntity(ZSCDatabase(bindedDB_).getNode(_node)).numParameters();
     }
 }
