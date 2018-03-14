@@ -55,12 +55,15 @@ contract Delegated is Owned{
 }
 
 contract Object is Delegated {
-    bytes32  name_ ;
-    string public print_log_;
-    address logRecorder_ = 0;
+    bytes32 private name_ ;
+    string  private print_log_;
+    address private logRecorder_ = 0;
 
     // Constructor
-    function Object(bytes32 _name) public { name_ = _name; }
+    function Object(bytes32 _name) public { 
+        name_ = _name; 
+        print_log_ = "!Created: ";
+    }
 
     function kill() public only_delegate { selfdestruct(owner); }
 
@@ -76,9 +79,18 @@ contract Object is Delegated {
         return ERC20Interface(tokenAddress).transfer(owner, tokens);
     }
 
-    function addLog(string _log) public only_delegate {
-        print_log_ = PlatString.append(print_log_, _log);
-        if (logRecorder_ != 0) LogRecorder(logRecorder_).addLog(_log);
+    function addLog(string _log, uint _prefix, uint _suffix) public only_delegate {
+        string memory str = "";
+        if (_prefix == 1) str = " [";
+        str = PlatString.append(str, _log);
+        if (_suffix == 1) str = PlatString.append(str, "]");
+        print_log_ = PlatString.append(print_log_, str);
+
+        if (logRecorder_ != 0) LogRecorder(logRecorder_).addLog(str);
+    } 
+
+    function printLog() public only_delegate constant returns (string) {
+        return print_log_;
     } 
 
     function setLogRecorder(address _adr) public only_delegate {
