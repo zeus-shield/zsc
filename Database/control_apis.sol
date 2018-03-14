@@ -49,6 +49,15 @@ contract ControlApis is ControlBase {
     /// @param _node The name of the existing provider
     /// @param _parameter The name of the existing parameter
     function getProviderParameter(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (string) {
-        return getParameterValue(_node, _parameter);
+        return getControlBaseParameterValue(_node, _parameter);
     }
+
+    /// @dev Get the number of paramters of a node
+    /// @param _node The name of the existing node
+    /// @param _parameter The name of the existing parameter
+    function numNodeParameters(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (string) {
+        return  getFactory("provider").numNodeParameters(_node);
+    }
+
+    
 }
