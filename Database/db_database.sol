@@ -47,10 +47,9 @@ contract DBDatabase is Object {
         nodes_.push(_node);
         nodeAddress_[DBNode(_node).name()] = _node;
 
-        //for testing purpose; 2018-03-06
-        addLog("[added new node: ");
-        addLog(PlatString.bytes32ToString(DBNode(_node).name()));
-        addLog("]");
+        //for testing purpose; 2018-03-06, 2018-03-14
+        addLog("added new node: ", 1, 0);
+        addLog(PlatString.bytes32ToString(DBNode(_node).name()), 0, 1);
     }
 
     function destroyNode(address _node) public only_delegate returns (bool) {
