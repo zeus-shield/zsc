@@ -27,9 +27,9 @@ contract ControlInfo is Object {
     modifier node_notexist(bytes32 _name) {require(parameters_[_name].nodeAdr_ == 0); _;}
     modifier user_notregistered(bytes32 _name) {require(users_[_name].id_ == 0); _;}
 
-    function ControlInfo() public {
-    }
- 
+    function ControlInfo() public {}
+    function checkAllowedUser(bytes32 _node) internal constant returns (bool);
+
     function _recordString(bytes32 _nodeName, bytes32 _parameter, string _value) public {
         //require(msg.sender == parameters_[_nodeName].nodeAdr_);
         parameters_[_nodeName].value_[_parameter] = _value;
@@ -54,4 +54,5 @@ contract ControlInfo is Object {
     function getControlBaseParameterValue(bytes32 _node, bytes32 _parameter) internal constant returns (string) {
         return parameters_[_node].value_[_parameter];
     }
+
 }
