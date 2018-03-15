@@ -17,7 +17,7 @@ contract ERC20Interface {
 
 contract Owned {
     address owner;
-    modifier only_owner {require (msg.sender == owner); _;}
+    modifier only_owner {require(msg.sender == owner); _;}
 
     function Owned() public {owner = msg.sender;}
 
@@ -34,7 +34,7 @@ contract LogRecorder {
 contract Delegated is Owned{
     mapping (address => bool) public delegates_;
 
-    modifier only_delegate {require (delegates_[msg.sender] || msg.sender == owner || this == msg.sender); _; }
+    modifier only_delegate {require(delegates_[msg.sender] || msg.sender == owner || this == msg.sender); _; }
 
     function Delegated() public {
         delegates_[msg.sender] = true;
@@ -62,7 +62,7 @@ contract Object is Delegated {
     // Constructor
     function Object(bytes32 _name) public { 
         name_ = _name; 
-        print_log_ = "!Created: ";
+        print_log_ = "Object created \n";
     }
 
     function kill() public only_delegate { selfdestruct(owner); }
@@ -83,7 +83,7 @@ contract Object is Delegated {
         string memory str = "";
         if (_prefix == 1) str = " [";
         str = PlatString.append(str, _log);
-        if (_suffix == 1) str = PlatString.append(str, "]");
+        if (_suffix == 1) str = PlatString.append(str, "]\n");
         print_log_ = PlatString.append(print_log_, str);
 
         if (logRecorder_ != 0) LogRecorder(logRecorder_).addLog(str);
