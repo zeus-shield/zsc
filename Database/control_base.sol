@@ -18,6 +18,7 @@ contract DBFactory is Object {
     */
     function setNodeParameter(bytes32 _node, bytes32 _parameter, string _value, address _strRecorder) public only_delegate returns (bool);
     function numNodeParameters(bytes32 _node) public only_delegate constant returns (uint);
+    function getNodeParameterNameByIndex(bytes32 _node, uint _index) public only_delegate constant returns (bytes32);
 }
 
 contract ControlBase is Object, ControlInfo {   
@@ -52,16 +53,33 @@ contract ControlBase is Object, ControlInfo {
         return adr;
     }
 
-    function operateNodeParameter(bytes32 _factory, bytes32 _operation, bytes32 _node, bytes32 _parameter, string _value) internal only_delegate returns (bool) {
+    function operateNodeParameter(bytes32 _factory, bytes32 _operation, bytes32 _node, bytes32 _parameter, string _value) 
+                                 internal returns (bool) {
         if (_operation == "add") {
             return getFactory(_factory).addNodeParameter(_node, _parameter);
         } else if (_operation == "set") {
             return getFactory(_factory).setNodeParameter(_node, _parameter, _value, this);
         }        
     }
-    /*
-    function getNodeParameter(bytes32 _factory, bytes32 _node, bytes32 _parameter) internal only_delegate constant returns (string) {
-        return getFactory(_factory).getNodeParameter(_node, _parameter);
+
+    function duplicateNode(bytes32 _factorySrc, bytes32 _nodeSrc, bytes32 _factoryDst, bytes32 _nodeDst) 
+                          internal factroy_exist(_factorySrc) factroy_exist(_factoryDst) returns (bool) {
+        address nodeSrc = getFactory(_factorySrc).getNode(_nodeSrc);
+        address nodeDst = getFactory(_factoryDst).getNode(_nodeDst);
+
+        if (nodeSrc == address(0)) return false;
+        if (nodeDst == address(0)) return false;
+        
+        bytes32 tempPara;
+        string memory tempValue; 
+
+        uint paraNos = getFactory(_factorySrc).numNodeParameters(_nodeSrc);
+        for (uint i = 0; i < paraNos; ++i) {
+            tempPara = getFactory(_factorySrc).getNodeParameterNameByIndex(_nodeSrc, i);
+            tempValue = getControlBaseParameterValue(_nodeSrc, tempPara);
+
+            getFactory(_factoryDst).addNodeParameter(_nodeDst, tempPara);
+            getFactory(_factoryDst).setNodeParameter(_nodeDst, tempPara, tempValue, this);
+        }
     }
-    */
 }
