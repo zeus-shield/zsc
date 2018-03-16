@@ -65,5 +65,6 @@ Implementation of the website based interfance not included here.
 2018.03.09-10: creating a DBProvider node and setting node parameters by DBApis are ok
 2018.03.11: change file names: db_factory.sol->factory_base.sol, db_apis.sol->control_apis.sol
 2018.03.12: add two files: control_info.sol and control_apis.sol
-2018.03.13-14: work on testing zsc APIs with using Ethereum JS-APIs
+2018.03.13-15: work on testing zsc APIs with using Ethereum JS-APIs; to be continued...
+2018.03.16: add a file: log_recorder.sol
 ```
