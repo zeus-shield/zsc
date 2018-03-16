@@ -21,20 +21,29 @@ Implementation of the website based interfance not included here.
 
 ### 2.1 Framework Components
 ```bash
-|-- objct 
-    |-- db_idmanager
-    |-- db_node 
-        |-- db_entity 
-            |-- db_user
-               |-- db_receiver
-               |-- db_provider
-        |-- db_item
-        |-- db_template
-        |-- db_agreement
-    |-- db_database
-    |-- factory_base
-    |-- control_base
-        |-- control_apis
+|-- owned
+    |-- delegated
+        |-- log_recorder
+        |-- objct 
+            |-- db_idmanager
+            |-- db_node 
+                |-- db_entity 
+                    |-- db_user
+                       |-- db_receiver
+                       |-- db_provider
+                |-- db_item
+                |-- db_template
+                |-- db_agreement
+            |-- db_database
+            |-- factory_base
+                |-- factory_pro
+                |-- factory_rec
+                |-- factory_tmp
+                |-- factory_agr
+            |-- control_base
+              |-control_info
+                |-- control_apis
+                    |-- control_apis_adv 
 ```
 
 ### 2.2 .sol update log
