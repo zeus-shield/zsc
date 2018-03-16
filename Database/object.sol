@@ -70,7 +70,11 @@ contract Object is Delegated {
     // This unnamed function is called whenever someone tries to send ether to it
     function() public payable { revert(); }
 
+
     function name() public only_delegate constant returns (bytes32) { return name_;}
+
+
+    function setLogRecorder(address _adr) public only_delegate {logRecorder_ = _adr;}
 
     // ------------------------------------------------------------------------
     // Owner can transfer out any accidentally sent ERC20 tokens
@@ -84,16 +88,20 @@ contract Object is Delegated {
         if (_prefix == 1) str = " [";
         str = PlatString.append(str, _log);
         if (_suffix == 1) str = PlatString.append(str, "]\n");
-        print_log_ = PlatString.append(print_log_, str);
 
-        if (logRecorder_ != 0) LogRecorder(logRecorder_).addLog(str);
+        if (logRecorder_ == 0) {
+            print_log_ = PlatString.append(print_log_, str);
+        } else {
+            if (logRecorder_ != 0) LogRecorder(logRecorder_).addLog(str);
+        }
     } 
 
     function printLog() public only_delegate constant returns (string) {
-        return print_log_;
+        if (logRecorder_ == 0) {
+            return print_log_;
+        } else {
+            return LogRecorder(logRecorder_).printLog();
+        }
     } 
 
-    function setLogRecorder(address _adr) public only_delegate {
-        logRecorder_ = _adr;
-    }
 }
