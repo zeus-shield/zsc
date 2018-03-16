@@ -55,14 +55,22 @@ contract FactoryBase is Object {
     */
 
     function setNodeParameter(bytes32 _node, bytes32 _parameter, string _value, address _strRecorder) public only_delegate returns (bool) {
-        string memory str = "DBFactory: setNodeParameter - ";
+        string memory str = "FactoryBase: setNodeParameter - ";
+        str = PlatString.append(str, PlatString.bytes32ToString(_node), " : " );
         str = PlatString.append(str, PlatString.bytes32ToString(_parameter), " : " , _value);
-        addLog("DBFactory: setNodeParameter - ", 1, 0);
         addLog(str, 1, 1);
         return DBEntity(ZSCDatabase(bindedDB_).getNode(_node)).setParameter(_parameter, _value, _strRecorder);
     }
 
     function numNodeParameters(bytes32 _node) public only_delegate constant returns (uint) {
-        return DBEntity(ZSCDatabase(bindedDB_).getNode(_node)).numParameters();
+        address node = SCDatabase(bindedDB_).getNode(_node);
+        if (node == 0) {
+            return 0;
+        } 
+        return DBEntity(node).numParameters();
+    }
+
+    function getNodeParameterNameByIndex(bytes32 _node, uint _index) public only_delegate constant returns (bytes32) {
+        return DBEntity(ZSCDatabase(bindedDB_).getNode(_node)).getParameterNameByIndex(_index);
     }
 }
