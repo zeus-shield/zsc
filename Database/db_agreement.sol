@@ -29,7 +29,7 @@ contract DBAgreement is DBEntity {
         addParameter("paymentAmount");
     }
 
-    function setProvider(address _id, bool _status) public only_delegate returns (bool) {
+    function setProvider(address _id, bool _status) internal returns (bool) {
         if (_status == true) {
             //current version only allows single provider for each agreement
             require(providerIDs_.numIDs() < 1);
@@ -39,7 +39,7 @@ contract DBAgreement is DBEntity {
         }
     }
 
-    function setReceiver(address _id, bool _status) public only_delegate returns (bool) {
+    function setReceiver(address _id, bool _status) internal returns (bool) {
         if (_status == true) {
             //current version only allows single receiver for each agreement
             require(receiverIDs_.numIDs() < 1);
@@ -82,6 +82,27 @@ contract DBAgreement is DBEntity {
     function numTemplates() public only_delegate constant returns (uint) {
         return templateIDs_.numIDs();
     }
-}
+    
+
+    function bindSlice(bytes32 _type, address _adr) public only_delegate returns (bool) {
+        if (_type == "provider") {
+            return setProvider(_adr, true);
+        } else if (_type == "receiver") {
+            return setReceiver(_adr, true);
+        } else {
+            revert();
+        }
+    }
+
+    function unbindSlice(bytes32 _type, address _adr) public only_delegate returns (bool) {
+        if (_type == "provider") {
+            return setProvider(_adr, false);
+        } else if (_type == "receiver") {
+            return setReceiver(_adr, false);
+        } else {
+            revert();
+        }
+    }
+ }
 
 
