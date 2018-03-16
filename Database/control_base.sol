@@ -53,8 +53,7 @@ contract ControlBase is Object, ControlInfo {
         return adr;
     }
 
-    function operateNodeParameter(bytes32 _factory, bytes32 _operation, bytes32 _node, bytes32 _parameter, string _value) 
-                                 internal returns (bool) {
+    function operateNodeParameter(bytes32 _factory, bytes32 _operation, bytes32 _node, bytes32 _parameter, string _value) internal returns (bool) {
         if (_operation == "add") {
             return getFactory(_factory).addNodeParameter(_node, _parameter);
         } else if (_operation == "set") {
@@ -62,8 +61,7 @@ contract ControlBase is Object, ControlInfo {
         }        
     }
 
-    function duplicateNode(bytes32 _factorySrc, bytes32 _nodeSrc, bytes32 _factoryDst, bytes32 _nodeDst) 
-                          internal factroy_exist(_factorySrc) factroy_exist(_factoryDst) returns (bool) {
+    function duplicateNode(bytes32 _factorySrc, bytes32 _nodeSrc, bytes32 _factoryDst, bytes32 _nodeDst) internal factroy_exist(_factorySrc) factroy_exist(_factoryDst) returns (bool) {
         address nodeSrc = getFactory(_factorySrc).getNode(_nodeSrc);
         address nodeDst = getFactory(_factoryDst).getNode(_nodeDst);
 
@@ -81,5 +79,6 @@ contract ControlBase is Object, ControlInfo {
             getFactory(_factoryDst).addNodeParameter(_nodeDst, tempPara);
             getFactory(_factoryDst).setNodeParameter(_nodeDst, tempPara, tempValue, this);
         }
+        return true;
     }
 }
