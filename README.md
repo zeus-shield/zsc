@@ -29,21 +29,16 @@ Implementation of the website based interfance not included here.
             |-- db_node 
                 |-- db_entity 
                     |-- db_user
-                       |-- db_receiver
-                       |-- db_provider
+                        |-- db_receiver
+                        |-- db_provider
                 |-- db_item
                 |-- db_template
                 |-- db_agreement
             |-- db_database
             |-- factory_base
-                |-- factory_pro
-                |-- factory_rec
-                |-- factory_tmp
-                |-- factory_agr
             |-- control_base
               |-control_info
                 |-- control_apis
-                    |-- control_apis_adv 
 ```
 
 ### 2.2 .sol update log
