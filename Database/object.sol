@@ -18,17 +18,8 @@ contract ERC20Interface {
 contract Owned {
     address owner;
     modifier only_owner {require(msg.sender == owner); _;}
-
     function Owned() public {owner = msg.sender;}
-
     function transferOwnership(address newOwner) public only_owner {owner = newOwner;}       
-}
-
-contract LogRecorder {
-    string public print_log_;
-    function addLog(string _log) public {
-        print_log_ = PlatString.append(print_log_, _log);
-    }
 }
 
 contract Delegated is Owned{
@@ -52,6 +43,11 @@ contract Delegated is Owned{
         if (delegates_[_account] == true) return true;
         else return false;
     }
+}
+
+contract LogRecorder is Delegated {
+    function addLog(string _log) only_delegate public;
+    function printLog() public only_delegate constant returns (string);
 }
 
 contract Object is Delegated {
@@ -97,11 +93,7 @@ contract Object is Delegated {
     } 
 
     function printLog() public only_delegate constant returns (string) {
-        if (logRecorder_ == 0) {
-            return print_log_;
-        } else {
-            return LogRecorder(logRecorder_).printLog();
-        }
+        return print_log_;
     } 
 
 }
