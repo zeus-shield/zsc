@@ -13,21 +13,28 @@ contract DBFactory is Object {
     function createNode(bytes32 _name) public returns (address);
     function getNode(bytes32 _name) public only_delegate constant returns (address);
     function addNodeParameter(bytes32 _node, bytes32 _parameter) public only_delegate returns (bool);
-    /*
     function getNodeParameter(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (string);
-    */
     function setNodeParameter(bytes32 _node, bytes32 _parameter, string _value, address _strRecorder) public only_delegate returns (bool);
     function numNodeParameters(bytes32 _node) public only_delegate constant returns (uint);
     function getNodeParameterNameByIndex(bytes32 _node, uint _index) public only_delegate constant returns (bytes32);
 }
 
 contract ControlBase is Object, ControlInfo {   
+    mapping(uint => bytes32) private factoryTypes_;
     mapping(bytes32 => address) private factories_;
 
     modifier factroy_exist(bytes32 _name) {require(factories_[_name] != 0); _;}
     modifier factroy_notexist(bytes32 _name) {require(factories_[_name] == 0); _;}
 
     function ControlBase(bytes32 _name) public Object(_name) {
+        factoryTypes_[1] = "provider";
+        factoryTypes_[2] = "receiver";
+        factoryTypes_[3] = "template";
+        factoryTypes_[4] = "agreement";
+    }
+
+    function factoryType(uint _type) internal constant returns (bytes32) {
+        return factoryTypes_[_type];
     }
 
     function addFactory(bytes32 _name, address _adr) internal factroy_notexist(_name) {
