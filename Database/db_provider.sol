@@ -10,11 +10,13 @@ import "./db_user.sol";
 //import "./db_template.sol";
 
 contract DBProvider is DBUser {
+    address private templates_ = 0;
 
     // Constructor
     function DBProvider(bytes32 _name) public DBUser(_name) {
         setEntityType("proiver"); 
     }
+
     function initParameters() internal {
         addParameter("assurerType");
         addParameter("assurerName");
@@ -31,15 +33,18 @@ contract DBProvider is DBUser {
         addParameter("companyEmail");
         addParameter("claimEmail");
         addParameter("claimPhone");
-
-        //Object(owner).addLog("[DBProvider: initParameters()]");
     }
 
-/*
-    function recordParameterValue(bytes32 _parameter, string _value) public only_delegate {
-        //2018-03-08
-        //temporarily implemented a virtual function for future use
-        if (PlatString.equalto(_parameter, PlatString.tobytes32(_value))) return;
+    function addTemplate(address _adr) public only_delegate {
+        if (templates_ == 0) {
+            templates_ =  CallbackDatabase(getDatabase())._createIDManager();
+        } 
+        CallbackDBIDManager(templates_).addID(_adr);
     }
-*/
+
+    function numTemplates() public only_delegate constant returns (uint) {
+        return CallbackDBIDManager(templates_).numIDs();
+    }
+    
+
 }
