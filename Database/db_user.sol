@@ -6,7 +6,17 @@ pragma solidity ^0.4.18;
 
 import "./db_entity.sol";
 
+
+contract CallbackDBIDManager is Object {
+    function numIDs() public only_delegate constant returns (uint);
+    function addID(address _id) public only_delegate returns (bool);
+    function removeID(address _id) public only_delegate returns (bool);
+    function getID(uint _index) public only_delegate constant returns (address);
+}
+
 contract DBUser is DBEntity {
+    address private agreements_ = 0;
+
     struct PaymentHistory {
         address addr_;
         bytes32 name_;
@@ -35,7 +45,6 @@ contract DBUser is DBEntity {
             totalEth_ += msg.value;
         }
     }
-
 
     function executeEtherTransaction(address _dest, uint _value, bytes32 _data) public only_delegate returns (bool) {
         require(totalEth_ < _value);
@@ -68,5 +77,16 @@ contract DBUser is DBEntity {
         } else {
             return false;
         }
+    }
+
+    function addAgreement(address _adr) public only_delegate {
+        if (agreements_ == 0) {
+            agreements_ =  CallbackDatabase(getDatabase())._createIDManager();
+        } 
+        CallbackDBIDManager(agreements_).addID(_adr);
+    }
+
+    function numAgreements() public only_delegate constant returns (uint) {
+        return CallbackDBIDManager(agreements_).numIDs();
     }
 }
