@@ -7,6 +7,7 @@ pragma solidity ^0.4.18;
 import "./plat_string.sol";
 import "./object.sol";
 import "./db_node.sol";
+import "./db_idmanager.sol";
 
 contract DBDatabase is Object {
     bytes32 temp_;
@@ -36,9 +37,11 @@ contract DBDatabase is Object {
         return nodeAddress_[_name];
     }
 
-    //for testing purpose
-    function getNodeObject(bytes32 _name) public only_delegate constant returns (DBNode) {
-        return DBNode(nodeAddress_[_name]);
+    function _createIDManager() public only_delegate returns (address) {
+        DBIDManager idmanager = new DBIDManager();
+        idmanager.setDelegate(this, true);
+        idmanager.setDelegate(msg.sender, true);
+        return idmanager;
     }
 
     function _addNode(address _node) public only_delegate {
