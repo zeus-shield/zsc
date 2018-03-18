@@ -13,7 +13,7 @@ contract CallbackDatabase is Object {
 }
 
 contract DBNode is Object {
-    address factory_;
+    address private bindedFactory_;
     address database_ = address(0);
     address parent_ = address(0);
 
@@ -31,16 +31,24 @@ contract DBNode is Object {
         super.kill();
     }
     
-    function setFactoryAndDatabase(address[] _factory, address _database) public only_delegate {
+    function setFactoryAndDatabase(address[] _factories, address _bindedFactroy, address _database) public only_delegate {
         database_ = _database;
-        factories_ = _factory;
+        factories_ = _factories;
         setDelegate(database_, true);
 
         for (uint i=0; i<factories_.length; i++) {
             setDelegate(factories_[i], true);
         }
 
+        bindedFactory_ = _bindedFactroy;
+        if (bindedFactory_ != address(0))
+            setDelegate(bindedFactory_, true);
+
         CallbackDatabase(database_)._addNode(this);
+    }
+
+    function getBindedFactory() internal constant returns (address) {
+        return bindedFactory_;
     }
 
     function getDatabase() public only_delegate constant returns (address) {
@@ -76,7 +84,7 @@ contract DBNode is Object {
         DBNode(_node).setParent(this);
 
         CallbackDatabase(database_).setDelegate(_node, true);
-        DBNode(_node).setFactoryAndDatabase(factories_, database_);
+        DBNode(_node).setFactoryAndDatabase(factories_, bindedFactory_, database_);
 
         children_.push(_node);
         childMap_[DBNode(_node).name()] = _node;
