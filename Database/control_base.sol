@@ -52,11 +52,21 @@ contract ControlBase is Object, ControlInfo {
         return getFactory(_factory).getBindedDB();
     }
 
-    function createFactoryNode(bytes32 _factory, bytes32 _name) internal factroy_exist(_factory) returns (address) {
-        address adr = getFactory(_factory).createNode(_name);
-        if (adr != 0) {
-            prepareNodeRecorder(_name, adr);
+    function createFactoryNode(bytes32 _factory, bytes32 _user, bytes32 _element) internal factroy_exist(_factory) returns (address) {
+        address adr = 0;
+        if (_factory == "provider" || _factory == "receiver") {
+            adr = getFactory(_factory).createNode(_user);
+        } else {
+            if (_factory == "template") {
+                adr = getFactory(_factory).createNode(_element);
+                //address userNode = getFactory("factory").getNode(_user);
+            }
         }
+
+        if (adr != 0) {
+            prepareNodeRecorder(_user, adr);
+        }
+
         return adr;
     }
 
