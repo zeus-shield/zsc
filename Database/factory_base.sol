@@ -63,7 +63,7 @@ contract FactoryBase is Object {
     }
 
     function numNodeParameters(bytes32 _node) public only_delegate constant returns (uint) {
-        address node = SCDatabase(bindedDB_).getNode(_node);
+        address node = ZSCDatabase(bindedDB_).getNode(_node);
         if (node == 0) {
             return 0;
         } 
