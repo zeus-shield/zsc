@@ -10,6 +10,7 @@ import "./object.sol";
 contract CallbackDatabase is Object {
     function destroyNode(address _node) public only_delegate returns (bool);
     function _addNode(address _node) only_delegate public ;
+    function _createIDManager() only_delegate public returns (address);
 }
 
 contract DBNode is Object {
