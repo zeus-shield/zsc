@@ -18,28 +18,33 @@ contract ControlApis is ControlBase {
         addFactory(factoryType(_type), _adr);
     }
 
-    /// @dev Check the provider wheather or not existing
-    /// @param _node The name of the node to be checked
+    /// @dev Check the element wheather or not existing
+    /// @param _factroyType The type of the factory for checking the element
+    /// @param _node The name of the element to be checked
     function doesElementExist(uint _factroyType, bytes32 _node) public only_delegate constant returns (bool) {
         return (getFactory(factoryType(_factroyType)).getNode(_node) != 0);
     }
 
-    /// @dev Creat a provider node
-    /// @param _node The name of the added provider
-    function createElement(uint _factroyType, bytes32 _node) public only_delegate returns (address) {
-        return createFactoryNode(factoryType(_factroyType), _node);
+    /// @dev Creat a user element
+    /// @param _factroyType The type of the factory for creating the element
+    /// @param _user The name of the user
+    /// @param _node The name of the element belonging to the user
+    function createElement(uint _factroyType, bytes32 _user, bytes32 _node) public only_delegate returns (address) {
+        return createFactoryNode(factoryType(_factroyType), _user, _node);
     }
 
-    /// @dev add a paramter to a provider node
-    /// @param _node The name of the existing provider
+    /// @dev add a paramter to an element
+    /// @param _factroyType The type of the factory for adding the element
+    /// @param _node The name of the existing element
     /// @param _parameter The name of the added parameter
     function addElementParameter(uint _factroyType, bytes32 _node, bytes32 _parameter) public only_delegate returns (bool) {
         require(checkAllowedUser(_node));
         return operateNodeParameter(factoryType(_factroyType), "add", _node, _parameter, "");
     }
 
-    /// @dev Set the value to a paramter of a provider 
-    /// @param _node The name of the existing provider
+    /// @dev Set the value to a paramter of an element 
+    /// @param _factroyType The type of the factory for setting the element
+    /// @param _node The name of the element
     /// @param _parameter The name of the existing parameter
     /// @param _value The parameter value
     function setElementParameter(uint _factroyType, bytes32 _node, bytes32 _parameter, string _value) public only_delegate returns (bool) {
@@ -48,21 +53,24 @@ contract ControlApis is ControlBase {
     }
 
     /// @dev Get the value to a paramter of a node
-    /// @param _node The name of the provider
+    /// @param _node The name of the element
     /// @param _parameter The name of the existing parameter
     function getElementParameter(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (string) {
         require(checkAllowedUser(_node));
         return getControlBaseParameterValue(_node, _parameter);
     }
 
-    /// @dev Get the number of paramters of a provider
-    /// @param _node The name of the existing provider
+    /// @dev Get the number of paramters of an element
+    /// @param _factroyType The type of the factory for checking the element
+    /// @param _node The name of the existing element
     function numElementParameters(uint _factroyType, bytes32 _node) public only_delegate constant returns (uint) {
         return  getFactory(factoryType(_factroyType)).numNodeParameters(_node);
     }
 
-    /// @dev Get the number of paramters of a provider
-    /// @param _node The name of the existing provider
+    /// @dev Get the number of paramters of an element
+    /// @param _factroyType The type of the factory for checking the element
+    /// @param _node The name of the existing element
+    /// @param _index The index of the parameter
     /* Example:
         var num = numNodeParameters("test");
         if (num > 0) {
