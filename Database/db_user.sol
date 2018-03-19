@@ -17,83 +17,59 @@ contract CallbackDBIDManager is Object {
 contract DBUser is DBEntity {
     address private agreements_ = 0;
 
-    struct PaymentHistory {
-        address addr_;
-        bytes32 name_;
-        bytes32 data_;
-        uint amount_;
+    struct Payment {
+        address sender_;
+        address receiver_;
+        uint256 amount_;
         bool isInput_;
+        bytes data_;
+    }
+
+    struct PaymentHistory {
+        uint times_;
+        uint256 total_;
+        mapping(uint => Payment) payments_;
     }
     
-    PaymentHistory[] payments_;
-    uint totalEth_;
+    PaymentHistory ethPayments_;
+    PaymentHistory ERC20Payments_;
 
     // Constructor
     function DBUser(bytes32 _name) public DBEntity(_name) {
+        ethPayments_.times_ = 0;
+        ethPayments_.total_ = 0;
+        ERC20Payments_.times_ = 0;
+        ERC20Payments_.total_ = 0;
     } 
 
-    function initParameters() internal {
-        addParameter("Address");
-        addParameter("TestETH");
-        addParameter("TestZSC");
-    }
-
-    function setStrRecorder(address _adr) public only_delegate {
-        super.setStrRecorder(_adr);
-        super.setParameter("Address", "testing"); //PlatString.bytes32ToString(bytes32(address(this))));
-    }
-
-    function setParameter(bytes32 _parameter, string _value) public only_delegate parameter_exist(_parameter) returns (bool) {
-        if (_parameter == "TestETH" || _parameter == "TestZSC" || _parameter == "Address") {
-            return true;
-        } else {
-            return super.setParameter(_parameter, _value);
-        }
-    }
-
     function() public payable {
-        if (msg.value < 1 ether / 100) {
+        if (msg.value < (1 ether) / 100) {
             revert();
         } else {
-            PaymentHistory memory pay;
-            pay.addr_ = msg.sender;
-            pay.name_ = "ether";
-            pay.amount_ =  msg.value;
-            pay.isInput_ = true;
-            payments_.push(pay);
-            totalEth_ += msg.value;
-
-            super.setParameter("TestETH", PlatString.bytes32ToString(bytes32(totalEth_)));
+            uint index = ethPayments_.times_++;
+            ethPayments_.total_ += msg.value;
+            ethPayments_.payments_[index] = Payment(msg.sender, this, msg.value, true, msg.data);
         }
     }
 
-    function executeEtherTransaction(address _dest, uint _value, bytes32 _data) public only_delegate returns (bool) {
-        require(totalEth_ < _value);
+    function executeEtherTransaction(address _dest, uint256 _value, bytes _data) public only_delegate returns (bool) {
+        require(ethPayments_.total_ >= _value);
 
         if (_dest.call.value(_value)(_data)) {
-            PaymentHistory memory pay;
-            pay.addr_ = _dest;
-            pay.name_ = "ether";
-            pay.data_ = _data;
-            pay.amount_ =  _value;
-            pay.isInput_ = false;
-            payments_.push(pay);
-            totalEth_ -= _value;
+            uint index = ethPayments_.times_++;
+            ethPayments_.total_ -= _value;
+            ethPayments_.payments_[index] = Payment(this, msg.sender, _value, false, _data);
             return true;
         } else {
             return false;
         }
     }
 
-    function executeERC20Transaction(address _tokenAdr, address _dest, uint _value, bytes32 _data) public only_delegate returns (bool) {
+    function executeERC20Transaction(address _tokenAdr, address _dest, uint _value, bytes _data) public only_delegate returns (bool) {
         if (ERC20Interface(_tokenAdr).transfer(_dest, _value)) {
-            PaymentHistory memory pay;
-            pay.addr_ = _dest;
-            pay.name_ = "ERC20";
-            pay.data_ = _data;
-            pay.amount_ =  _value;
-            pay.isInput_ = false;
-            payments_.push(pay);
+            uint index = ERC20Payments_.times_++;
+            ERC20Payments_.total_ -= _value;
+            ERC20Payments_.payments_[index] = Payment(this, msg.sender, _value,false, _data);
             return true;
         } else {
             return false;
