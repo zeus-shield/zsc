@@ -30,25 +30,6 @@ contract DBUser is DBEntity {
 
     // Constructor
     function DBUser(bytes32 _name) public DBEntity(_name) {
-    } 
-
-    function initParameters() internal {
-        addParameter("Address");
-        addParameter("TestETH");
-        addParameter("TestZSC");
-    }
-
-    function setStrRecorder(address _adr) public only_delegate {
-        super.setStrRecorder(_adr);
-        super.setParameter("Address", "testing"); //PlatString.bytes32ToString(bytes32(address(this))));
-    }
-
-    function setParameter(bytes32 _parameter, string _value) public only_delegate parameter_exist(_parameter) returns (bool) {
-        if (_parameter == "TestETH" || _parameter == "TestZSC" || _parameter == "Address") {
-            return true;
-        } else {
-            return super.setParameter(_parameter, _value);
-        }
     }
 
     function() public payable {
@@ -62,8 +43,6 @@ contract DBUser is DBEntity {
             pay.isInput_ = true;
             payments_.push(pay);
             totalEth_ += msg.value;
-
-            super.setParameter("TestETH", PlatString.bytes32ToString(bytes32(totalEth_)));
         }
     }
 
