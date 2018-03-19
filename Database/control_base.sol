@@ -10,7 +10,7 @@ import "./control_info.sol";
 
 contract DBFactory is Object { 
     function getBindedDB() public only_delegate constant returns (address);
-    function createNode(bytes32 _name) public returns (address);
+    function createNode(bytes32 _user, bytes32 _node) public returns (address);
     function getNode(bytes32 _name) public only_delegate constant returns (address);
     function addNodeParameter(bytes32 _node, bytes32 _parameter) public only_delegate returns (bool);
     function getNodeParameter(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (string);
@@ -52,13 +52,13 @@ contract ControlBase is Object, ControlInfo {
         return getFactory(_factory).getBindedDB();
     }
 
-    function createFactoryNode(bytes32 _factory, bytes32 _user, bytes32 _element) internal factroy_exist(_factory) returns (address) {
+    function createFactoryNode(bytes32 _factory, bytes32 _user, bytes32 _node) internal factroy_exist(_factory) returns (address) {
         address adr = 0;
         if (_factory == "provider" || _factory == "receiver") {
-            adr = getFactory(_factory).createNode(_user);
+            adr = getFactory(_factory).createNode(_user, _node);
         } else {
             if (_factory == "template") {
-                adr = getFactory(_factory).createNode(_element);
+                adr = getFactory(_factory).createNode(_user, _node);
                 //address userNode = getFactory("factory").getNode(_user);
             }
         }
