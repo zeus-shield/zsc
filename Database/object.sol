@@ -31,7 +31,7 @@ contract Delegated is Owned{
         delegates_[msg.sender] = true;
     }
 
-    function kill() public {if (msg.sender == owner) selfdestruct(owner); }
+    function kill() public only_delegate {selfdestruct(owner); }
 
     function setDelegate(address _address, bool _state) public only_delegate { 
         require(_address != 0);
@@ -61,7 +61,7 @@ contract Object is Delegated {
         print_log_ = "Object created \n";
     }
 
-    function kill() public only_delegate { selfdestruct(owner); }
+    function kill() public only_delegate { /* do cleanup here */ super.kill(); }
 
     // This unnamed function is called whenever someone tries to send ether to it
     function() public payable { revert(); }
