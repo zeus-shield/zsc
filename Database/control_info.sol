@@ -48,7 +48,6 @@ contract ControlInfo is Object {
 
     function prepareNodeRecorder(bytes32 _nodeName, address _nodeAdr) internal node_notexist(_nodeName) {
         parameters_[_nodeName].nodeAdr_ = _nodeAdr;
-        users_[_nodeName].status_ = ManagementType.ACTIVE;
     }
 
     function getControlBaseParameterValue(bytes32 _node, bytes32 _parameter) internal constant returns (string) {
