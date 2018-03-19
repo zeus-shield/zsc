@@ -71,4 +71,5 @@ Implementation of the website based interfance not included here.
 2018.03.12: add two files: control_info.sol and control_apis.sol
 2018.03.13-15: work on testing zsc APIs with using Ethereum JS-APIs; to be continued...
 2018.03.16: add a file: log_recorder.sol
+2018.03.17-19: work on developing ZSC ControlApis based javascript apis used for web-client; work on dev. db_template;
 ```
