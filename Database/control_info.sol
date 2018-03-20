@@ -50,8 +50,12 @@ contract ControlInfo is Object {
         parameters_[_nodeName].nodeAdr_ = _nodeAdr;
     }
 
-    function getControlBaseParameterValue(bytes32 _node, bytes32 _parameter) internal constant returns (string) {
+    function getControlInfoNodeAddress(bytes32 _nodeName)internal constant returns (address)  {
+        return parameters_[_nodeName].nodeAdr_;
+    }
+    
+    function getControlInfoParameterValue(bytes32 _node, bytes32 _parameter) internal constant returns (string) {
         return parameters_[_node].value_[_parameter];
     }
-
 }
+
