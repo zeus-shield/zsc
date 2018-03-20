@@ -16,7 +16,7 @@ contract CallbackDatabase is Object {
 contract DBNode is Object {
     address private database_ = address(0);
     address private parent_ = address(0);
-    address private strRecorder_ = address(0);
+    address private controller_ = address(0);
 
     address[] children_;
     mapping(bytes32 => address) childMap_;
@@ -31,27 +31,36 @@ contract DBNode is Object {
         removeAndDestroyAllChildren(); 
         super.kill();
     }
+
+    function getBlance(bytes32 _name, address _adr) public only_delegate constant returns (uint256) {
+        if (_name == "ether") {
+            return this.balance;
+        } else {
+            return ERC20Interface(_adr).balanceOf(this);
+        }
+    }
     
-    function setFactoryAndDatabase(address[] _factories, address _database, address _strRecorder) public only_delegate {
+    function setFactoryAndDatabase(address[] _factories, address _database, address _contoller) public only_delegate {
         database_ = _database;
         factories_ = _factories;
-        strRecorder_ = _strRecorder;
+        setController(_contoller);
 
         setDelegate(database_, true);
-
         for (uint i=0; i<factories_.length; i++) {
             setDelegate(factories_[i], true);
         }
-
         CallbackDatabase(database_)._addNode(this);
     }
 
-    function setStrRecorder(address _adr) public only_delegate {
-        strRecorder_ = _adr;
+    function setController(address _adr) public only_delegate {
+        if (_adr != address(0)) {
+            controller_ = _adr;
+            setDelegate(controller_, true);
+        }
     }
     
-    function getStrRecorder() internal constant returns (address) {
-        return strRecorder_;
+    function getController() internal constant returns (address) {
+        return controller_;
     }
     
 
@@ -88,7 +97,7 @@ contract DBNode is Object {
         DBNode(_node).setParent(this);
 
         CallbackDatabase(database_).setDelegate(_node, true);
-        DBNode(_node).setFactoryAndDatabase(factories_, database_, strRecorder_);
+        DBNode(_node).setFactoryAndDatabase(factories_, database_, controller_);
 
         children_.push(_node);
         childMap_[DBNode(_node).name()] = _node;
