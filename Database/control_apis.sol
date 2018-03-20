@@ -22,7 +22,7 @@ contract ControlApis is ControlBase {
     /// @param _factroyType The type of the factory for checking the element
     /// @param _node The name of the element to be checked
     function doesElementExist(uint _factroyType, bytes32 _node) public only_delegate constant returns (bool) {
-        return (getFactory(factoryType(_factroyType)).getNode(_node) != 0);
+        return (getDBNode(factoryType(_factroyType), _node) != DBNode(0));
     }
 
     /// @dev Creat a user element
@@ -57,14 +57,29 @@ contract ControlApis is ControlBase {
     /// @param _parameter The name of the existing parameter
     function getElementParameter(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (string) {
         require(checkAllowedUser(_node));
-        return getControlBaseParameterValue(_node, _parameter);
+        return getControlInfoParameterValue(_node, _parameter);
+    }
+
+    /// @dev Get the value to a paramter of a node
+    /// @param _factroyType The type of the factory for checking the element
+    /// @param _node The name of the element
+    function getElementAddress(uint _factroyType, bytes32 _node) public only_delegate constant returns (address) {
+        require(checkAllowedUser(_node));
+        return address(getDBNode(factoryType(_factroyType), _node));
+    }
+
+    /// @dev Get the value to a paramter of a node
+    /// @param _factroyType The type of the factory for checking the element
+    /// @param _node The name of the element
+    function getElementEthBalance(uint _factroyType, bytes32 _node) public only_delegate constant returns (uint256) {
+        return getDBNode(factoryType(_factroyType), _node).getBlance("ether", 0);
     }
 
     /// @dev Get the number of paramters of an element
     /// @param _factroyType The type of the factory for checking the element
     /// @param _node The name of the existing element
     function numElementParameters(uint _factroyType, bytes32 _node) public only_delegate constant returns (uint) {
-        return  getFactory(factoryType(_factroyType)).numNodeParameters(_node);
+        return  getDBNode(factoryType(_factroyType), _node).numParameters();
     }
 
     /// @dev Get the number of paramters of an element
@@ -78,6 +93,10 @@ contract ControlApis is ControlBase {
         }
     */
     function getElementParameterNameByIndex(uint _factroyType, bytes32 _node, uint _index) public only_delegate constant returns (bytes32) {
-        return  getFactory(factoryType(_factroyType)).getNodeParameterNameByIndex(_node, _index);
+        return  getDBNode(factoryType(_factroyType), _node).getParameterNameByIndex(_index);
+    }
+
+    function withDraw(uint _factroyType, bytes32 _node, address _dest, uint256 _value) public only_delegate returns (bool) {
+        return  getDBNode(factoryType(_factroyType), _node).executeEtherTransaction(_dest, _value, "null");
     }
 }
