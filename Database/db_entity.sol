@@ -24,16 +24,12 @@ contract DBEntity is DBNode {
     mapping(bytes32 => string) parameters_;
     mapping(bytes32 => bool) parameterExist_;
 
-    modifier parameter_exist(bytes32 _name) {require(parameterExist_[_name] == true); _;}
-    modifier parameter_notexist(bytes32 _name) {require(parameterExist_[_name] == false); _;}
-
     // Constructor
     function DBEntity(bytes32 _name) public DBNode(_name) {
         initParameters();
     }
 
     function initParameters() internal;
-    //function recordParameterValue(bytes32 _parameter, string _value) only_delegate public ;
     
     function setEntityType(bytes32 _type) internal only_delegate {
         entityType_ = _type;
@@ -43,31 +39,25 @@ contract DBEntity is DBNode {
         return entityType_;
     }
 
-    //////////////////////////////////
-    function setID(uint _id) public only_delegate {
-        id_ = _id;
-    }
-
     function setActivated(bool _activated) public only_delegate {
         activated_ = _activated;
-    }
-
-    //////////////////////////////////
-    function getID() public only_delegate constant returns (uint) {
-        return id_;
     }
 
     function getActivated() public only_delegate constant returns (bool) {
         return activated_;
     }
 
-    function addParameter(bytes32 _parameter) public only_delegate parameter_notexist(_parameter) returns (bool) {
+    function addParameter(bytes32 _parameter) public only_delegate returns (bool) {
+        require(parameterExist_[_parameter] == false);
+
         parameterNames_.push(_parameter);
         parameterExist_[_parameter] = true;
         return true;
     }
 
-    function removeParameter(bytes32 _parameter) public only_delegate parameter_exist(_parameter) returns (bool) {
+    function removeParameter(bytes32 _parameter) public only_delegate returns (bool) {
+        require(parameterExist_[_parameter] == true);
+
         for (uint i = 0; i < parameterNames_.length; ++i) {
             if (parameterNames_[i] == _parameter) {
                 parameterNames_[i] = parameterNames_[parameterNames_.length - 1];
@@ -83,9 +73,11 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function setParameter(bytes32 _parameter, string _value) public only_delegate parameter_exist(_parameter) returns (bool) {
+    function setParameter(bytes32 _parameter, string _value) public only_delegate returns (bool) {
+        require(parameterExist_[_parameter] == true);
+
         parameters_[_parameter] = _value;
-        infoRecorder(getStrRecorder())._recordString(name(), _parameter, _value);
+        infoRecorder(getController())._recordString(name(), _parameter, _value);
         return true;
     }
 
