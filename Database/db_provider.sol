@@ -18,7 +18,6 @@ contract DBProvider is DBUser {
     }
 
     function initParameters() internal {
-        super.initParameters();
         addParameter("assurerType");
         addParameter("assurerName");
         addParameter("principalFirstName");
