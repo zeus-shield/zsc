@@ -5,6 +5,8 @@ Official solidity implementation for the core part of the ZSC system.
 
 Implementation of the website based interfance not included here.
 
+[ZSC Wiki](https://github.com/zeus-shield/zsc)
+
 ## 1. Coding structure
 
 ### 1.1 Contracts: the solidity-based coding here
