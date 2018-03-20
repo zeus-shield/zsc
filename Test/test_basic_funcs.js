@@ -3,6 +3,8 @@ Copyright (c) 2017 ZSC Dev
 2018-02-08: v0.01
 */
 
+var g_ControlApisAdr;
+
 function MyToken(abi, address) {
     var mytoken = eth.contract(abi).at(address);
     return mytoken
@@ -101,18 +103,16 @@ function MineTime() {
 }
 
 
-function TransactionSendByAddress(pass, sender, recver, eth_num) {
+function TransactionSendByAddress(sender, recver, eth_num) {
     var amount = web3.toWei(eth_num, "ether");
-    personal.unlockAccount(sender, pass);
-    eth.sendTransaction({from:sender, to:recver, value: amount, gas:80000});
+    eth.sendTransaction({from:sender, to:recver, value: amount, gas:8000000});
 }
 
-function TransactionSend(pass, sender_index, recve_index, eth_num) {
+function TransactionSend(sender_index, recve_index, eth_num) {
     var sender = eth.accounts[sender_index];
     var receiver = eth.accounts[recve_index];
     var amount = web3.toWei(eth_num, "ether");
-    personal.unlockAccount(sender, pass);
-    eth.sendTransaction({from:sender, to:receiver, value: amount, gas:80000});
+    eth.sendTransaction({from:sender, to:receiver, value: amount, gas:8000000});
 }
 
 
