@@ -65,7 +65,7 @@ contract DBUser is DBEntity {
         }
     }
 
-    function executeERC20Transaction(address _tokenAdr, address _dest, uint _value, bytes _data) public only_delegate returns (bool) {
+    function executeERC20Transaction(address _tokenAdr, address _dest, uint256 _value, bytes _data) public only_delegate returns (bool) {
         if (ERC20Interface(_tokenAdr).transfer(_dest, _value)) {
             uint index = ERC20Payments_.times_++;
             ERC20Payments_.total_ -= _value;
