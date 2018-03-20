@@ -29,7 +29,7 @@ contract DBDatabase is Object {
             }
             rootNode_ = new DBNode(name());
             setDelegate(rootNode_, true);
-            DBNode(rootNode_).setFactoryAndDatabase(_factories, this);
+            DBNode(rootNode_).setFactoryAndDatabase(_factories, this, 0x0);
         }
     }
     
@@ -55,7 +55,6 @@ contract DBDatabase is Object {
         string memory nodeName = PlatString.bytes32ToString(DBNode(_node).name());
         str = PlatString.append(str, nodeName);
         addLog(str, 1, 1);
-        //addLog(PlatString.bytes32ToString(DBNode(_node).name()), 0, 1);
     }
 
     function destroyNode(address _node) public only_delegate returns (bool) {
