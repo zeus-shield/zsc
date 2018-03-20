@@ -11,20 +11,39 @@ import "./control_info.sol";
 contract DBFactory is Object { 
     function getBindedDB() public only_delegate constant returns (address);
     function createNode(bytes32 _user, bytes32 _node) public returns (address);
+}
+
+contract DBDatabase is Object { 
     function getNode(bytes32 _name) public only_delegate constant returns (address);
-    function addNodeParameter(bytes32 _node, bytes32 _parameter) public only_delegate returns (bool);
-    function getNodeParameter(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (string);
-    function setNodeParameter(bytes32 _node, bytes32 _parameter, string _value, address _strRecorder) public only_delegate returns (bool);
-    function numNodeParameters(bytes32 _node) public only_delegate constant returns (uint);
-    function getNodeParameterNameByIndex(bytes32 _node, uint _index) public only_delegate constant returns (bytes32);
+}
+
+contract DBNode is Object {
+    function getBlance(bytes32 _name, address _adr) public only_delegate constant returns (uint256);
+
+    function setActivated(bool _activated) only_delegate public;
+    function getActivated() public only_delegate constant returns (bool);
+
+    function addParameter(bytes32 _parameter) public only_delegate returns (bool);
+    function removeParameter(bytes32 _parameter) public only_delegate returns (bool);
+    function setParameter(bytes32 _parameter, string _value) public only_delegate returns (bool);
+    function numParameters() public only_delegate constant returns (uint);
+    function getParameterNameByIndex(uint _index) public only_delegate constant returns (bytes32);
+
+    function executeEtherTransaction(address _dest, uint256 _value, bytes _data) public only_delegate returns (bool);
+    function executeERC20Transaction(address _tokenAdr, address _dest, uint256 _value, bytes _data) public only_delegate returns (bool);
+
+    function addAgreement(address _adr) only_delegate public;
+    function numAgreements() public only_delegate constant returns (uint);
 }
 
 contract ControlBase is Object, ControlInfo {   
     mapping(uint => bytes32) private factoryTypes_;
     mapping(bytes32 => address) private factories_;
+    mapping(bytes32 => address) private bindedDBs_;
 
     modifier factroy_exist(bytes32 _name) {require(factories_[_name] != 0); _;}
     modifier factroy_notexist(bytes32 _name) {require(factories_[_name] == 0); _;}
+    modifier db_exist(bytes32 _name) {require(bindedDBs_[_name] != 0); _;}
 
     function ControlBase(bytes32 _name) public Object(_name) {
         factoryTypes_[1] = "provider";
@@ -40,47 +59,61 @@ contract ControlBase is Object, ControlInfo {
     function addFactory(bytes32 _name, address _adr) internal factroy_notexist(_name) {
         require(_adr != 0);
         factories_[_name] = _adr;
+        bindedDBs_[_name] = DBFactory(_adr).getBindedDB();
+
         addLog("Added factory: ", 1, 0);
         addLog(PlatString.bytes32ToString(_name), 0, 1);
     }
 
-    function getFactory(bytes32 _name) internal factroy_exist(_name) constant returns (DBFactory) {
+    function getDBFactory(bytes32 _name) internal factroy_exist(_name) constant returns (DBFactory) {
         return DBFactory(factories_[_name]);
     }
 
-    function getDatabase(bytes32 _factory) internal constant returns (address) {
-        return getFactory(_factory).getBindedDB();
+    function getDBDatabase(bytes32 _name) internal db_exist(_name) constant returns (DBDatabase) { 
+        return DBDatabase(bindedDBs_[_name]);
     }
 
-    function createFactoryNode(bytes32 _factory, bytes32 _user, bytes32 _node) internal factroy_exist(_factory) returns (address) {
+    function getDBNode(bytes32 _db, bytes32 _node) internal constant returns (DBNode) {
+        address nd = getDBDatabase(_db).getNode(_node);
+        require (nd != 0);        
+        return DBNode(nd);
+    }
+
+    function createFactoryNode(bytes32 _factory, bytes32 _user, bytes32 _node) internal returns (address) {
         address adr = 0;
         if (_factory == "provider" || _factory == "receiver") {
-            adr = getFactory(_factory).createNode(_user, _node);
+            adr = getDBFactory(_factory).createNode(_user, _node);
         } else {
             if (_factory == "template") {
-                adr = getFactory(_factory).createNode(_user, _node);
+                adr = getDBFactory(_factory).createNode(_user, _node);
                 //address userNode = getFactory("factory").getNode(_user);
             }
         }
-
         if (adr != 0) {
             prepareNodeRecorder(_user, adr);
         }
-
         return adr;
     }
 
-    function operateNodeParameter(bytes32 _factory, bytes32 _operation, bytes32 _node, bytes32 _parameter, string _value) internal returns (bool) {
+    function operateNodeParameter(bytes32 _db, bytes32 _operation, bytes32 _node, bytes32 _parameter, string _value) internal returns (bool) {
+        bool ret;
+        string memory str = ""; 
+        str = PlatString.append(str, PlatString.bytes32ToString(_node), " : " );
+        str = PlatString.append(str, PlatString.bytes32ToString(_parameter), " : " , _value);
         if (_operation == "add") {
-            return getFactory(_factory).addNodeParameter(_node, _parameter);
+            str = PlatString.append("addNodeParameter - ", str);
+            ret = getDBNode(_db, _node).addParameter(_parameter);
         } else if (_operation == "set") {
-            return getFactory(_factory).setNodeParameter(_node, _parameter, _value, this);
+            str = PlatString.append("setNodeParameter - ", str);
+            ret = getDBNode(_db, _node).setParameter(_parameter, _value);
         }        
+        addLog(str, 1, 1);
+        return ret;
     }
 
     function duplicateNode(bytes32 _factorySrc, bytes32 _nodeSrc, bytes32 _factoryDst, bytes32 _nodeDst) internal factroy_exist(_factorySrc) factroy_exist(_factoryDst) returns (bool) {
-        address nodeSrc = getFactory(_factorySrc).getNode(_nodeSrc);
-        address nodeDst = getFactory(_factoryDst).getNode(_nodeDst);
+        address nodeSrc = address(getDBNode(_factorySrc, _nodeSrc));
+        address nodeDst = address(getDBNode(_factoryDst, _nodeDst));
 
         if (nodeSrc == address(0)) return false;
         if (nodeDst == address(0)) return false;
@@ -88,13 +121,13 @@ contract ControlBase is Object, ControlInfo {
         bytes32 tempPara;
         string memory tempValue; 
 
-        uint paraNos = getFactory(_factorySrc).numNodeParameters(_nodeSrc);
+        uint paraNos = DBNode(nodeSrc).numParameters();
         for (uint i = 0; i < paraNos; ++i) {
-            tempPara = getFactory(_factorySrc).getNodeParameterNameByIndex(_nodeSrc, i);
-            tempValue = getControlBaseParameterValue(_nodeSrc, tempPara);
+            tempPara = DBNode(nodeSrc).getParameterNameByIndex(i);
+            tempValue = getControlInfoParameterValue(_nodeSrc, tempPara);
 
-            getFactory(_factoryDst).addNodeParameter(_nodeDst, tempPara);
-            getFactory(_factoryDst).setNodeParameter(_nodeDst, tempPara, tempValue, this);
+            DBNode(nodeDst).addParameter(tempPara);
+            DBNode(nodeDst).setParameter(tempPara, tempValue);
         }
         return true;
     }
