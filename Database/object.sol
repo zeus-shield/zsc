@@ -89,7 +89,7 @@ contract Object is Delegated {
         if (logRecorder_ == 0) {
             print_log_ = PlatString.append(print_log_, str);
         } else {
-            if (logRecorder_ != 0) LogRecorder(logRecorder_).addLog(str);
+            LogRecorder(logRecorder_).addLog(str);
         }
     } 
 
