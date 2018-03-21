@@ -29,7 +29,8 @@ contract ControlApis is ControlBase {
     /// @param _factroyType The type of the factory for creating the element
     /// @param _user The name of the user
     /// @param _node The name of the element belonging to the user
-    function createElement(uint _factroyType, bytes32 _user, bytes32 _node) public only_delegate returns (address) {
+    function createElement(uint _factroyType, bytes32 _user, bytes32 _node) public returns (address) {
+        require(checkAllowedUser(_node));
         return createFactoryNode(factoryType(_factroyType), _user, _node);
     }
 
@@ -96,7 +97,16 @@ contract ControlApis is ControlBase {
         return  getDBNode(factoryType(_factroyType), _node).getParameterNameByIndex(_index);
     }
 
-    function withDraw(uint _factroyType, bytes32 _node, address _dest, uint256 _value) public only_delegate returns (bool) {
+    function elementwithDrawEth(uint _factroyType, bytes32 _node, address _dest, uint256 _value) public only_delegate returns (bool) {
         return  getDBNode(factoryType(_factroyType), _node).executeEtherTransaction(_dest, _value, "null");
+    }
+
+    function numProviderTemplates(bytes32 _node) public only_delegate constant returns (uint) {
+        return getDBNode(factoryType(1), _node).numTemplates();
+    }
+
+    function numProviderTemplateNameByIndex(bytes32 _node, uint _index) public only_delegate constant returns (bytes32) {
+        address tmp = getDBNode(factoryType(1), _node).getTemplateByIndex(_index);
+        return Object(tmp).name();
     }
 }
