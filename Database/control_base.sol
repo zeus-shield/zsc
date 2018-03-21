@@ -32,8 +32,13 @@ contract DBNode is Object {
     function executeEtherTransaction(address _dest, uint256 _value, bytes _data) public only_delegate returns (bool);
     function executeERC20Transaction(address _tokenAdr, address _dest, uint256 _value, bytes _data) public only_delegate returns (bool);
 
+    function addTemplate(address _adr) only_delegate public;
+    function numTemplates() public only_delegate constant returns (uint);
+    function getTemplateByIndex(uint index) public only_delegate constant returns (address);
+
     function addAgreement(address _adr) only_delegate public;
     function numAgreements() public only_delegate constant returns (uint);
+    function getAgreementByIndex(uint index) public only_delegate constant returns (address);
 }
 
 contract ControlBase is Object, ControlInfo {   
