@@ -53,7 +53,7 @@ contract DBUser is DBEntity {
     }
 
     function executeEtherTransaction(address _dest, uint256 _value, bytes _data) public only_delegate returns (bool) {
-        require(ethPayments_.total_ >= _value);
+        require(ethPayments_.total_ >= _value && _dest != address(this));
 
         if (_dest.call.value(_value)(_data)) {
             uint index = ethPayments_.times_++;
@@ -66,6 +66,7 @@ contract DBUser is DBEntity {
     }
 
     function executeERC20Transaction(address _tokenAdr, address _dest, uint256 _value, bytes _data) public only_delegate returns (bool) {
+        require(_dest != address(this));
         if (ERC20Interface(_tokenAdr).transfer(_dest, _value)) {
             uint index = ERC20Payments_.times_++;
             ERC20Payments_.total_ -= _value;
