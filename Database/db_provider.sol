@@ -46,5 +46,7 @@ contract DBProvider is DBUser {
         return CallbackDBIDManager(templates_).numIDs();
     }
     
-
+    function getTemplateByIndex(uint index) public only_delegate constant returns (address) {
+        return CallbackDBIDManager(templates_).getID(index);
+    }
 }
