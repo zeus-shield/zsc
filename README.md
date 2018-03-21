@@ -1,11 +1,10 @@
 # ZSC
-Zeusshield (ZSC) system: AI&P2P Insurance Market Platform
+Zeusshield (ZSC) system: AI&P2P Insurance Market Platform [(ZSC Wiki)](https://github.com/zeus-shield/zsc/wiki)
 
 Official solidity implementation for the core part of the ZSC system.
 
 Implementation of the website based interfance not included here.
 
-[ZSC Wiki](https://github.com/zeus-shield/zsc/wiki)
 
 ## 1. Coding structure
 
