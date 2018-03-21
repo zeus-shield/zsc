@@ -32,6 +32,11 @@ contract DBDatabase is Object {
             DBNode(rootNode_).setFactoryAndDatabase(_factories, this, 0x0);
         }
     }
+
+    function kill() public only_delegate { 
+        destroyNode(rootNode_);
+        super.kill();
+    }
     
     function getNode(bytes32 _name) public only_delegate constant returns (address) {
         return nodeAddress_[_name];
@@ -39,7 +44,6 @@ contract DBDatabase is Object {
 
     function _createIDManager() public only_delegate returns (address) {
         DBIDManager idmanager = new DBIDManager();
-        idmanager.setDelegate(this, true);
         idmanager.setDelegate(msg.sender, true);
         return idmanager;
     }
