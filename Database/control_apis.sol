@@ -17,28 +17,27 @@ contract ControlApis is ControlBase {
     function addFactory(uint _type, address _adr) public only_owner {
         addFactory(factoryType(_type), _adr);
     }
-
-    /// @dev Check the element wheather or not existing
-    /// @param _factroyType The type of the factory for checking the element
-    /// @param _node The name of the element to be checked
-    function doesElementExist(uint _factroyType, bytes32 _node) public only_delegate constant returns (bool) {
-        return (getDBNode(factoryType(_factroyType), _node) != DBNode(0));
-    }
-
     /// @dev Creat a user element
     /// @param _factroyType The type of the factory for creating the element
     /// @param _user The name of the user
     /// @param _node The name of the element belonging to the user
     function createElement(uint _factroyType, bytes32 _user, bytes32 _node) public returns (address) {
         require(checkAllowedUser(_node));
-        return createFactoryNode(factoryType(_factroyType), _user, _node);
+        return createFactoryNode(factoryType(_factroyType), _user, _node, msg.sender);
+    }
+
+    /// @dev Check the element wheather or not existing
+    /// @param _factroyType The type of the factory for checking the element
+    /// @param _node The name of the element to be checked
+    function doesElementExist(uint _factroyType, bytes32 _node) public only_registered(_node) constant returns (bool) {
+        return (getDBNode(factoryType(_factroyType), _node) != DBNode(0));
     }
 
     /// @dev add a paramter to an element
     /// @param _factroyType The type of the factory for adding the element
     /// @param _node The name of the existing element
     /// @param _parameter The name of the added parameter
-    function addElementParameter(uint _factroyType, bytes32 _node, bytes32 _parameter) public only_delegate returns (bool) {
+    function addElementParameter(uint _factroyType, bytes32 _node, bytes32 _parameter) public only_registered(_node) returns (bool) {
         require(checkAllowedUser(_node));
         return operateNodeParameter(factoryType(_factroyType), "add", _node, _parameter, "");
     }
@@ -48,7 +47,7 @@ contract ControlApis is ControlBase {
     /// @param _node The name of the element
     /// @param _parameter The name of the existing parameter
     /// @param _value The parameter value
-    function setElementParameter(uint _factroyType, bytes32 _node, bytes32 _parameter, string _value) public only_delegate returns (bool) {
+    function setElementParameter(uint _factroyType, bytes32 _node, bytes32 _parameter, string _value) public only_registered(_node) returns (bool) {
         require(checkAllowedUser(_node));
         return operateNodeParameter(factoryType(_factroyType), "set", _node, _parameter, _value);
     }
@@ -56,7 +55,7 @@ contract ControlApis is ControlBase {
     /// @dev Get the value to a paramter of a node
     /// @param _node The name of the element
     /// @param _parameter The name of the existing parameter
-    function getElementParameter(bytes32 _node, bytes32 _parameter) public only_delegate constant returns (string) {
+    function getElementParameter(bytes32 _node, bytes32 _parameter) public only_registered(_node) constant returns (string) {
         require(checkAllowedUser(_node));
         return getControlInfoParameterValue(_node, _parameter);
     }
@@ -64,7 +63,7 @@ contract ControlApis is ControlBase {
     /// @dev Get the value to a paramter of a node
     /// @param _factroyType The type of the factory for checking the element
     /// @param _node The name of the element
-    function getElementAddress(uint _factroyType, bytes32 _node) public only_delegate constant returns (address) {
+    function getElementAddress(uint _factroyType, bytes32 _node) public only_registered(_node) constant returns (address) {
         require(checkAllowedUser(_node));
         return address(getDBNode(factoryType(_factroyType), _node));
     }
@@ -72,14 +71,14 @@ contract ControlApis is ControlBase {
     /// @dev Get the value to a paramter of a node
     /// @param _factroyType The type of the factory for checking the element
     /// @param _node The name of the element
-    function getElementEthBalance(uint _factroyType, bytes32 _node) public only_delegate constant returns (uint256) {
+    function getElementEthBalance(uint _factroyType, bytes32 _node) public only_registered(_node) constant returns (uint256) {
         return getDBNode(factoryType(_factroyType), _node).getBlance("ether", 0);
     }
 
     /// @dev Get the number of paramters of an element
     /// @param _factroyType The type of the factory for checking the element
     /// @param _node The name of the existing element
-    function numElementParameters(uint _factroyType, bytes32 _node) public only_delegate constant returns (uint) {
+    function numElementParameters(uint _factroyType, bytes32 _node) public only_registered(_node) constant returns (uint) {
         return  getDBNode(factoryType(_factroyType), _node).numParameters();
     }
 
@@ -93,19 +92,19 @@ contract ControlApis is ControlBase {
             var para = getNodeParameterNameByIndex("test", 0);
         }
     */
-    function getElementParameterNameByIndex(uint _factroyType, bytes32 _node, uint _index) public only_delegate constant returns (bytes32) {
+    function getElementParameterNameByIndex(uint _factroyType, bytes32 _node, uint _index) public only_registered(_node) constant returns (bytes32) {
         return  getDBNode(factoryType(_factroyType), _node).getParameterNameByIndex(_index);
     }
 
-    function elementwithDrawEth(uint _factroyType, bytes32 _node, address _dest, uint256 _value) public only_delegate returns (bool) {
+    function elementwithDrawEth(uint _factroyType, bytes32 _node, address _dest, uint256 _value) public only_registered(_node) returns (bool) {
         return  getDBNode(factoryType(_factroyType), _node).executeEtherTransaction(_dest, _value, "null");
     }
 
-    function numProviderTemplates(bytes32 _node) public only_delegate constant returns (uint) {
+    function numProviderTemplates(bytes32 _node) public only_registered(_node) constant returns (uint) {
         return getDBNode(factoryType(1), _node).numTemplates();
     }
 
-    function numProviderTemplateNameByIndex(bytes32 _node, uint _index) public only_delegate constant returns (bytes32) {
+    function getProviderTemplateNameByIndex(bytes32 _node, uint _index) public only_registered(_node) constant returns (bytes32) {
         address tmp = getDBNode(factoryType(1), _node).getTemplateByIndex(_index);
         return Object(tmp).name();
     }
