@@ -84,7 +84,7 @@ contract ControlBase is Object, ControlInfo {
         return DBNode(nd);
     }
 
-    function createFactoryNode(bytes32 _factory, bytes32 _user, bytes32 _node) internal returns (address) {
+    function createFactoryNode(bytes32 _factory, bytes32 _user, bytes32 _node, address _sender) internal returns (address) {
         address adr = 0;
         if (_factory == "provider" || _factory == "receiver") {
             adr = getDBFactory(_factory).createNode(_user, _node);
@@ -95,7 +95,7 @@ contract ControlBase is Object, ControlInfo {
             }
         }
         if (adr != 0) {
-            prepareNodeRecorder(_user, adr);
+            prepareNodeRecorder(_user, adr, _sender);
         }
         return adr;
     }
