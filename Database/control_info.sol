@@ -18,6 +18,7 @@ contract ControlInfo is Object {
     struct ParameterInfo {
         mapping (bytes32 => string) value_;
         address nodeAdr_;
+        address userId_;
     }
     
     mapping(bytes32 => UserInfo) private users_;
@@ -26,6 +27,9 @@ contract ControlInfo is Object {
     //modifier node_exist(bytes32 _name) {require(parameters_[_name].tag_ == true); _;}
     modifier node_notexist(bytes32 _name) {require(parameters_[_name].nodeAdr_ == 0); _;}
     modifier user_notregistered(bytes32 _name) {require(users_[_name].id_ == 0); _;}
+
+    modifier only_registered(bytes32 _node) {require(msg.sender == parameters_[_node].userId_ ); _;}
+
 
     function ControlInfo() public {}
     function checkAllowedUser(bytes32 _node) internal constant returns (bool);
@@ -46,8 +50,9 @@ contract ControlInfo is Object {
         }
     }
 
-    function prepareNodeRecorder(bytes32 _nodeName, address _nodeAdr) internal node_notexist(_nodeName) {
+    function prepareNodeRecorder(bytes32 _nodeName, address _nodeAdr, address _userId) internal node_notexist(_nodeName) {
         parameters_[_nodeName].nodeAdr_ = _nodeAdr;
+        parameters_[_nodeName].userId_ = _userId;
     }
 
     function getControlInfoNodeAddress(bytes32 _nodeName)internal constant returns (address)  {
