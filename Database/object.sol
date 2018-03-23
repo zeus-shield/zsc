@@ -62,8 +62,6 @@ contract Object is Delegated {
         print_log_ = "Object created \n";
     }
 
-    function kill() public only_delegate { /* do cleanup here */ super.kill(); }
-
     // This unnamed function is called whenever someone tries to send ether to it
     function() public payable { revert(); }
 
