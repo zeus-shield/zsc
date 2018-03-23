@@ -8,27 +8,27 @@ import "./db_entity.sol";
 //import "./db_item.sol";
 
 contract DBTemplate is DBEntity {
-    address itemRoot_;
+    address private provider_ = 0;
     
     function DBTemplate(bytes32 _name) public DBEntity(_name) {
     	setEntityType("template");
-        itemRoot_ = address(0);
     }
 
-/*
-    function addItem(bytes32 _name) public only_delegate returns(address) {
-        if (itemRoot_ == address(0)) {
-            itemRoot_ = new DBNode(PlatString.tobytes32(PlatString.append(name(), "_1")));
-            DBNode(itemRoot_).setDelegate(this, true);
-            addChild(itemRoot_);
-        }
-        address nd = new DBNode(_name);
-        DBNode(nd).setDelegate(itemRoot_, true);
-        return DBNode(itemRoot_).addChild(nd);
+    function initParameters() internal {
+        addParameter("Automatic");
+        addParameter("Duration");
+        addParameter("Price (TestETH)");
+        addParameter("Price (TestZSC)");
+        addParameter("RefundPercentage");
     }
 
-    function numItems() public only_delegate constant returns (uint) {
-    	return DBNode(itemRoot_).numChildren();
+    function bindProvider(address _adr) public only_delegate {
+        if (templates_ == 0) {
+            templates_ =  _adr;
+        } 
     }
-    */
+
+    function getBindedProvider() public only_delegate constant returns (address) {
+        return provider_;
+    }
 }
