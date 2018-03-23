@@ -13,20 +13,28 @@ contract DBDatabase is Object {
 contract FactoryBase is Object {
     address private bindedDB_;
     address private apiController_;
+    address[] private factoryNodes_;
 
     function FactoryBase(bytes32 _name) public Object(_name) {}
 
     function setupFactoryRoot() internal;
 
-    function getNode(bytes32 _name) internal only_delegate constant returns (address) {
-        return DBDatabase(bindedDB_).getNode(_name);
-    }
+    function createNode(bytes32 _node) public returns (address);
 
-    function createNode(bytes32 _user, bytes32 _node) public returns (address);
+    function getNode(bytes32 _name) internal only_delegate constant returns (address) { return DBDatabase(bindedDB_).getNode(_name);}
 
     function getBindedApiController() public only_delegate constant returns (address) { return apiController_;}
 
     function getBindedDB() public only_delegate constant returns (address) { return bindedDB_;}
+
+    function registerFactoryNode( address _adr) internal { factoryNodes_.push(_adr); }
+
+    function numfactoryNodes() public only_delegate constant returns(uint) { return factoryNodes_.length; }
+    
+    function getFactoryNodeByIndex(uint index) public only_delegate constant returns(address) { 
+        require(index < factoryNodes_.length);
+        return factoryNodes_[index]; 
+    }
 
     function initFactory(address _controller, address _database) public only_delegate  {
         if (_database != 0) {
