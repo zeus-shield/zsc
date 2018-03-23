@@ -31,8 +31,8 @@ contract DBUser is DBEntity {
         mapping(uint => Payment) payments_;
     }
     
-    PaymentHistory ethPayments_;
-    PaymentHistory ERC20Payments_;
+    PaymentHistory private ethPayments_;
+    PaymentHistory private ERC20Payments_;
 
     // Constructor
     function DBUser(bytes32 _name) public DBEntity(_name) {
@@ -81,6 +81,7 @@ contract DBUser is DBEntity {
         if (agreements_ == 0) {
             agreements_ =  CallbackDatabase(getDatabase())._createIDManager();
         } 
+        require(agreements_ != 0);
         CallbackDBIDManager(agreements_).addID(_adr);
     }
 

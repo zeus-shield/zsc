@@ -39,6 +39,7 @@ contract DBProvider is DBUser {
         if (templates_ == 0) {
             templates_ =  CallbackDatabase(getDatabase())._createIDManager();
         } 
+        require(templates_ != 0);
         CallbackDBIDManager(templates_).addID(_adr);
     }
 
