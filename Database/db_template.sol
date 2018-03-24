@@ -1,17 +1,16 @@
 /*
 Copyright (c) 2018, ZSC Dev Team, Eric Yao
-2018-02-10: v0.01
 */
 
 pragma solidity ^0.4.18;
 import "./db_entity.sol";
-//import "./db_item.sol";
 
 contract DBTemplate is DBEntity {
-    address private provider_ = 0;
+    mapping(address => bool) private userExist_;
+    address[] private users_;
     
     function DBTemplate(bytes32 _name) public DBEntity(_name) {
-    	setEntityType("template");
+        setEntityType("template");
     }
 
     function initParameters() internal {
@@ -22,13 +21,16 @@ contract DBTemplate is DBEntity {
         addParameter("RefundPercentage");
     }
 
-    function bindProvider(address _adr) public only_delegate {
-        if (templates_ == 0) {
-            templates_ =  _adr;
-        } 
+    function bindUser(address _adr) public only_delegate {
+        userExist_[_adr] = true;
+        users_.push(_adr);
     }
 
-    function getBindedProvider() public only_delegate constant returns (address) {
-        return provider_;
+    function numBindedUsers() public only_delegate constant returns (uint) {
+        return users_.length;
+    }
+
+    function getBindedUserByIndex(uint _index) public only_delegate return (address) {
+        return users_[_index];
     }
 }
