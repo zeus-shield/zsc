@@ -15,8 +15,6 @@ contract CallbackDBIDManager is Object {
 }
 
 contract DBUser is DBEntity {
-    address private agreements_ = 0;
-
     struct Payment {
         address sender_;
         address receiver_;
@@ -75,17 +73,5 @@ contract DBUser is DBEntity {
         } else {
             return false;
         }
-    }
-
-    function addAgreement(address _adr) public only_delegate {
-        if (agreements_ == 0) {
-            agreements_ =  CallbackDatabase(getDatabase())._createIDManager();
-        } 
-        require(agreements_ != 0);
-        CallbackDBIDManager(agreements_).addID(_adr);
-    }
-
-    function numAgreements() public only_delegate constant returns (uint) {
-        return CallbackDBIDManager(agreements_).numIDs();
     }
 }

@@ -34,20 +34,4 @@ contract DBProvider is DBUser {
         addParameter("claimEmail");
         addParameter("claimPhone");
     }
-
-    function addTemplate(address _adr) public only_delegate {
-        if (templates_ == 0) {
-            templates_ =  CallbackDatabase(getDatabase())._createIDManager();
-        } 
-        require(templates_ != 0);
-        CallbackDBIDManager(templates_).addID(_adr);
-    }
-
-    function numTemplates() public only_delegate constant returns (uint) {
-        return CallbackDBIDManager(templates_).numIDs();
-    }
-    
-    function getTemplateByIndex(uint index) public only_delegate constant returns (address) {
-        return CallbackDBIDManager(templates_).getID(index);
-    }
 }

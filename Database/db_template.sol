@@ -20,17 +20,4 @@ contract DBTemplate is DBEntity {
         addParameter("Price (TestZSC)");
         addParameter("RefundPercentage");
     }
-
-    function bindUser(address _adr) public only_delegate {
-        userExist_[_adr] = true;
-        users_.push(_adr);
-    }
-
-    function numBindedUsers() public only_delegate constant returns (uint) {
-        return users_.length;
-    }
-
-    function getBindedUserByIndex(uint _index) public only_delegate return (address) {
-        return users_[_index];
-    }
 }
