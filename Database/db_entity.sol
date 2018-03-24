@@ -24,6 +24,8 @@ contract DBEntity is DBNode {
     mapping(bytes32 => string) parameters_;
     mapping(bytes32 => bool) parameterExist_;
 
+    address private idManager_;
+
     // Constructor
     function DBEntity(bytes32 _name) public DBNode(_name) {
         initParameters();
@@ -92,5 +94,21 @@ contract DBEntity is DBNode {
     function getParameterNameByIndex(uint _index) public only_delegate constant returns (bytes32) {
         require(_index < parameterNames_.length);
         return parameterNames_[_index];
+    }
+
+    function bindEntity(address _id) public only_delegate {
+        if (idManager_ == 0) {
+            idManager_ =  CallbackDatabase(getDatabase())._createIDManager();
+        }
+        require(idManager_ != 0);
+        CallbackDBIDManager(idManager_).addID(_adr);
+    }
+
+    function numBindedEntities() public only_delegate constant returns (uint) {
+        return CallbackDBIDManager(idManager_).numIDs();
+    }
+    
+    function getBindedEntityByIndex(uint index) public only_delegate constant returns (address) {
+        return CallbackDBIDManager(idManager_).getID(index);
     }
 }
