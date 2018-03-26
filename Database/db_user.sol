@@ -6,14 +6,6 @@ pragma solidity ^0.4.18;
 
 import "./db_entity.sol";
 
-
-contract CallbackDBIDManager is Object {
-    function numIDs() public only_delegate constant returns (uint);
-    function addID(address _id) public only_delegate returns (bool);
-    function removeID(address _id) public only_delegate returns (bool);
-    function getID(uint _index) public only_delegate constant returns (address);
-}
-
 contract DBUser is DBEntity {
     struct Payment {
         address sender_;

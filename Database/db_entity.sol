@@ -12,6 +12,13 @@ contract infoRecorder {
     function _recordString(bytes32 _nodeName, bytes32 _parameter, string _value) public;
 }
 
+contract CallbackDBIDManager is Object {
+    function numIDs() public only_delegate constant returns (uint);
+    function addID(address _id) public only_delegate returns (bool);
+    function removeID(address _id) public only_delegate returns (bool);
+    function getID(uint _index) public only_delegate constant returns (address);
+}
+
 contract DBEntity is DBNode {
     address test_;
     uint    id_ ;
@@ -96,7 +103,7 @@ contract DBEntity is DBNode {
         return parameterNames_[_index];
     }
 
-    function bindEntity(address _id) public only_delegate {
+    function bindEntity(address _adr) public only_delegate {
         if (idManager_ == 0) {
             idManager_ =  CallbackDatabase(getDatabase())._createIDManager();
         }
