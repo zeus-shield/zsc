@@ -8,28 +8,33 @@ import "./plat_string.sol";
 import "./object.sol";
 
 contract ControlInfo is Object {
+    /*
     enum ManagementType {REGISTERD, SUSPEND, ACTIVE}
     struct UserInfo {
         address id_; 
         bytes32 type_; 
         ManagementType status_; //1: registered; 2: suspended; 3: active; 
     }
+    */
 
     struct ParameterInfo {
         mapping (bytes32 => string) value_;
+        mapping (address => bool) bindedEntities_;
         address nodeAdr_;
-        address userId_;
+        address userId_; // ETH wallet address
     }
     
-    mapping(bytes32 => UserInfo) private users_;
+    //mapping(bytes32 => UserInfo) private users_;
     mapping(bytes32 => ParameterInfo) private parameters_;
 
-    //modifier node_exist(bytes32 _name) {require(parameters_[_name].tag_ == true); _;}
+    modifier node_exist(bytes32 _name) {require(parameters_[_name].nodeAdr_ != 0); _;}
     modifier node_notexist(bytes32 _name) {require(parameters_[_name].nodeAdr_ == 0); _;}
-    modifier user_notregistered(bytes32 _name) {require(users_[_name].id_ == 0); _;}
+    //modifier user_notregistered(bytes32 _name) {require(users_[_name].id_ == 0); _;}
 
-    modifier only_registered(bytes32 _node) {require(msg.sender == parameters_[_node].userId_ ); _;}
-
+    modifier only_registered(bytes32 _node) {
+        require(msg.sender == parameters_[_node].userId_ || parameters_[_node].bindedEntities_[msg.sender] == true); 
+        _;
+    }
 
     function ControlInfo() public {}
     function checkAllowedUser(bytes32 _node) internal constant returns (bool);
@@ -40,6 +45,7 @@ contract ControlInfo is Object {
     }
 
     /* For the use in future version */
+    /*
     function manageUser(ManagementType _management, bytes32 _name, bytes32 _type) internal user_notregistered(_name) {
         if (_management == ManagementType.REGISTERD) {
             users_[_name].id_ = msg.sender;
@@ -49,10 +55,15 @@ contract ControlInfo is Object {
 
         }
     }
+    */
 
-    function prepareNodeRecorder(bytes32 _nodeName, address _nodeAdr, address _userId) internal node_notexist(_nodeName) {
+    function registerNodeRecorder(bytes32 _nodeName, address _nodeAdr, address _userId) internal node_notexist(_nodeName) {
         parameters_[_nodeName].nodeAdr_ = _nodeAdr;
         parameters_[_nodeName].userId_ = _userId;
+    }
+
+    function registerBindedEntity(bytes32 _nodeName, address _entity) internal node_exist(_nodeName) {
+        parameters_[_nodeName].bindedEntities_[_entity] = true;
     }
 
     function getControlInfoNodeAddress(bytes32 _nodeName)internal constant returns (address)  {
