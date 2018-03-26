@@ -22,13 +22,13 @@ contract LogRecorder is Delegated {
         listeners_[_adr] = true;
     }
 
-    function addLog(string _log) public only_delegate {
+    function addLog(string _log) public only_listener(msg.sender) {
         uint index = print_log_[msg.sender].nos_;
         print_log_[msg.sender].nos_++;
-        print_log_[msg.sender].logs[index] = _log;
+        print_log_[msg.sender].logs_[index] = _log;
     }
 
-    function printLog(address _adr, uint _index) public only_delegate only_listener(_adr) constant returns (string) {
+    function printLog(address _adr, uint _index) public only_delegate() constant returns (string) {
         return print_log_[_adr].logs_[_index];
     } 
 }
