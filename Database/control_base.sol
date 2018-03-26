@@ -18,6 +18,7 @@ contract DBDatabase is Object {
 }
 
 contract DBNode is Object {
+    function getEntityType() public only_delegate constant returns (bytes32);
     function getBlance(bytes32 _name, address _adr) public only_delegate constant returns (uint256);
 
     function setActivated(bool _activated) only_delegate public;
@@ -32,13 +33,9 @@ contract DBNode is Object {
     function executeEtherTransaction(address _dest, uint256 _value, bytes _data) public only_delegate returns (bool);
     function executeERC20Transaction(address _tokenAdr, address _dest, uint256 _value, bytes _data) public only_delegate returns (bool);
 
-    function addTemplate(address _adr) only_delegate public;
-    function numTemplates() public only_delegate constant returns (uint);
-    function getTemplateByIndex(uint index) public only_delegate constant returns (address);
-
-    function addAgreement(address _adr) only_delegate public;
-    function numAgreements() public only_delegate constant returns (uint);
-    function getAgreementByIndex(uint index) public only_delegate constant returns (address);
+    function bindEntity(address _adr) only_delegate public;
+    function numBindedEntities() public only_delegate constant returns (uint);
+    function getBindedEntityAddressByIndex(uint index) public only_delegate constant returns (address);
 }
 
 contract ControlBase is Object, ControlInfo {   
@@ -57,9 +54,10 @@ contract ControlBase is Object, ControlInfo {
         factoryTypes_[4] = "agreement";
     }
 
-    function factoryType(uint _type) internal constant returns (bytes32) {
-        return factoryTypes_[_type];
-    }
+    function numBindedElements(bytes32 _factoryType, bytes32 _node, bytes32 _elementType) internal constant returns (uint);
+    function getBindedElementAddressByIndex(bytes32 _factoryType, bytes32 _node, bytes32 _elementType, uint _index) internal constant returns (address);
+
+    function factoryType(uint _type) internal constant returns (bytes32) { return factoryTypes_[_type]; }
 
     function addFactory(bytes32 _name, address _adr) internal factroy_notexist(_name) {
         require(_adr != 0);
@@ -78,8 +76,12 @@ contract ControlBase is Object, ControlInfo {
         return DBDatabase(bindedDBs_[_name]);
     }
 
+    function getDBNodeAddress(bytes32 _db, bytes32 _node) internal constant returns (address) {
+        return getDBDatabase(_db).getNode(_node);
+    }
+
     function getDBNode(bytes32 _db, bytes32 _node) internal constant returns (DBNode) {
-        address nd = getDBDatabase(_db).getNode(_node);
+        address nd = getDBNodeAddress(_db, _node);
         require (nd != 0);        
         return DBNode(nd);
     }
@@ -91,11 +93,10 @@ contract ControlBase is Object, ControlInfo {
         } else {
             if (_factory == "template") {
                 adr = getDBFactory(_factory).createNode(_node);
-                //address userNode = getFactory("factory").getNode(_user);
             }
         }
         if (adr != 0) {
-            prepareNodeRecorder(_user, adr, _sender);
+            registerNodeRecorder(_user, adr, _sender);
         }
         return adr;
     }
@@ -136,4 +137,5 @@ contract ControlBase is Object, ControlInfo {
         }
         return true;
     }
+
 }
