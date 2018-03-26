@@ -21,9 +21,9 @@ contract ControlApis is ControlBase {
     /// @param _factroyType The type of the factory for creating the element
     /// @param _user The name of the user
     /// @param _node The name of the element belonging to the user
-    function createElement(uint _factroyType, bytes32 _user, bytes32 _node, address _userId) public only_delegate returns (address) {
+    function createElement(uint _factroyType, bytes32 _user, bytes32 _node) public returns (address) {
         require(checkAllowedUser(_node));
-        return createFactoryNode(factoryType(_factroyType), _user, _node, _userId);
+        return createFactoryNode(factoryType(_factroyType), _user, _node, msg.sender);
     }
 
     /// @dev Check the element wheather or not existing
@@ -38,7 +38,6 @@ contract ControlApis is ControlBase {
     /// @param _node The name of the existing element
     /// @param _parameter The name of the added parameter
     function addElementParameter(uint _factroyType, bytes32 _node, bytes32 _parameter) public only_registered(_node) returns (bool) {
-        require(checkAllowedUser(_node));
         return operateNodeParameter(factoryType(_factroyType), "add", _node, _parameter, "");
     }
 
@@ -48,7 +47,6 @@ contract ControlApis is ControlBase {
     /// @param _parameter The name of the existing parameter
     /// @param _value The parameter value
     function setElementParameter(uint _factroyType, bytes32 _node, bytes32 _parameter, string _value) public only_registered(_node) returns (bool) {
-        require(checkAllowedUser(_node));
         return operateNodeParameter(factoryType(_factroyType), "set", _node, _parameter, _value);
     }
 
@@ -56,7 +54,6 @@ contract ControlApis is ControlBase {
     /// @param _node The name of the element
     /// @param _parameter The name of the existing parameter
     function getElementParameter(bytes32 _node, bytes32 _parameter) public only_registered(_node) constant returns (string) {
-        require(checkAllowedUser(_node));
         return getControlInfoParameterValue(_node, _parameter);
     }
 
@@ -64,7 +61,6 @@ contract ControlApis is ControlBase {
     /// @param _factroyType The type of the factory for checking the element
     /// @param _node The name of the element
     function getElementAddress(uint _factroyType, bytes32 _node) public only_registered(_node) constant returns (address) {
-        require(checkAllowedUser(_node));
         return address(getDBNode(factoryType(_factroyType), _node));
     }
 
@@ -96,16 +92,25 @@ contract ControlApis is ControlBase {
         return  getDBNode(factoryType(_factroyType), _node).getParameterNameByIndex(_index);
     }
 
-    function elementwithDrawEth(uint _factroyType, bytes32 _node, address _dest, uint256 _value) public only_registered(_node) returns (bool) {
-        return  getDBNode(factoryType(_factroyType), _node).executeEtherTransaction(_dest, _value, "null");
+    /// @dev Transfer ETH from a user element to the destination address
+    /// @param _factroyType The type of the factory for checking the element
+    /// @param _node The name of the existing element
+    /// @param _dest The destination address
+    /// @param _amount The amount of ETH to be transferred
+    function elementTransferEth(uint _factroyType, bytes32 _node, address _dest, uint256 _amount) public only_registered(_node) returns (bool) {
+        return  getDBNode(factoryType(_factroyType), _node).executeEtherTransaction(_dest, _amount, "null");
     }
 
+    /// @dev Get the number of templates created by a particular element
+    /// @param _node The name of the existing element
     function numProviderTemplates(bytes32 _node) public only_registered(_node) constant returns (uint) {
         return getDBNode(factoryType(1), _node).numTemplates();
     }
 
+    /// @dev Get the address of a template of a particular element
+    /// @param _node The name of the existing element
+    /// @param _index The index of the template
     function getProviderTemplateNameByIndex(bytes32 _node, uint _index) public only_registered(_node) constant returns (bytes32) {
-        address tmp = getDBNode(factoryType(1), _node).getTemplateByIndex(_index);
-        return Object(tmp).name();
+        return Object(getDBNode(factoryType(1), _node).getTemplateByIndex(_index)).name();
     }
 }
