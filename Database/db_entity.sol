@@ -115,7 +115,7 @@ contract DBEntity is DBNode {
         return CallbackDBIDManager(idManager_).numIDs();
     }
     
-    function getBindedEntityByIndex(uint index) public only_delegate constant returns (address) {
+    function getBindedEntityAddressByIndex(uint index) public only_delegate constant returns (address) {
         return CallbackDBIDManager(idManager_).getID(index);
     }
 }
