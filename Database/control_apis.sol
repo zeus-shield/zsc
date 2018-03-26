@@ -101,16 +101,19 @@ contract ControlApis is ControlBase {
         return  getDBNode(factoryType(_factroyType), _node).executeEtherTransaction(_dest, _amount, "null");
     }
 
+
+
     /// @dev Get the number of templates created by a particular element
     /// @param _node The name of the existing element
-    function numProviderTemplates(bytes32 _node) public only_registered(_node) constant returns (uint) {
-        return getDBNode(factoryType(1), _node).numTemplates();
+    function numBindedElements(uint _factroyType, bytes32 _node, uint _elementType) public only_registered(_node) constant returns (uint) {
+        return numBindedElements(factoryType(_factroyType), _node, factoryType(_elementType));
     }
 
     /// @dev Get the address of a template of a particular element
     /// @param _node The name of the existing element
     /// @param _index The index of the template
-    function getProviderTemplateNameByIndex(bytes32 _node, uint _index) public only_registered(_node) constant returns (bytes32) {
-        return Object(getDBNode(factoryType(1), _node).getTemplateByIndex(_index)).name();
+    function getBindedElementNameByIndex(uint _factroyType, bytes32 _node, uint _elementType, uint _index) public only_registered(_node) constant returns (bytes32) {
+        
+        return Object(getBindedElementAddressByIndex(factoryType(_factroyType), _node, factoryType(_elementType), _index)).name();
     }
 }
