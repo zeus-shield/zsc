@@ -46,13 +46,13 @@ contract Delegated is Owned{
     }
 }
 
-contract LogRecorder is Delegated {
+contract Recorder is Delegated {
     function addLog(string _log, uint _prefix, uint _suffix) only_delegate public;
 }
 
 contract Object is Delegated {
     bytes32 private name_ ;
-    address private logRecorder_ = 0;
+    address internal logRecorder_ = 0;
 
     // Constructor
     function Object(bytes32 _name) public { name_ = _name;}
@@ -66,7 +66,7 @@ contract Object is Delegated {
     function setLogRecorder(address _adr) public only_delegate {logRecorder_ = _adr;}
 
     function addLog(string _log, uint _prefix, uint _suffix) public only_delegate {
-        LogRecorder(logRecorder_).addLog(_log, _prefix, _suffix);
+        Recorder(logRecorder_).addLog(_log, _prefix, _suffix);
     }
 
     // ------------------------------------------------------------------------
