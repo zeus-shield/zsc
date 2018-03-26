@@ -47,52 +47,32 @@ contract Delegated is Owned{
 }
 
 contract LogRecorder is Delegated {
-    function addLog(string _log) only_delegate public;
-    function printLog() public only_delegate constant returns (string);
+    function addLog(string _log, uint _prefix, uint _suffix) only_delegate public;
 }
 
 contract Object is Delegated {
     bytes32 private name_ ;
-    string  private print_log_;
     address private logRecorder_ = 0;
 
     // Constructor
-    function Object(bytes32 _name) public { 
-        name_ = _name; 
-        print_log_ = "Object created \n";
-    }
+    function Object(bytes32 _name) public { name_ = _name;}
 
     // This unnamed function is called whenever someone tries to send ether to it
     function() public payable { revert(); }
-
 
     function name() public only_delegate constant returns (bytes32) { return name_;}
 
 
     function setLogRecorder(address _adr) public only_delegate {logRecorder_ = _adr;}
 
+    function addLog(string _log, uint _prefix, uint _suffix) public only_delegate {
+        LogRecorder(logRecorder_).addLog(_log, _prefix, _suffix);
+    }
+
     // ------------------------------------------------------------------------
     // Owner can transfer out any accidentally sent ERC20 tokens
     // ------------------------------------------------------------------------
     function transferAnyERC20Token(address tokenAddress, uint tokens) public only_delegate returns (bool success) {
         return ERC20Interface(tokenAddress).transfer(owner, tokens);
-    }
-
-    function addLog(string _log, uint _prefix, uint _suffix) public only_delegate {
-        string memory str = "";
-        if (_prefix == 1) str = " [";
-        str = PlatString.append(str, _log);
-        if (_suffix == 1) str = PlatString.append(str, "]\n");
-
-        if (logRecorder_ == 0) {
-            print_log_ = PlatString.append(print_log_, str);
-        } else {
-            LogRecorder(logRecorder_).addLog(str);
-        }
-    } 
-
-    function printLog() public only_delegate constant returns (string) {
-        return print_log_;
-    } 
-
+    }    
 }
