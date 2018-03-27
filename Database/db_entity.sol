@@ -111,11 +111,32 @@ contract DBEntity is DBNode {
         CallbackDBIDManager(idManager_).addID(_adr);
     }
 
-    function numBindedEntities() public only_delegate constant returns (uint) {
-        return CallbackDBIDManager(idManager_).numIDs();
+    function numBindedEntities(bytes32 _type) public only_delegate constant returns (uint) {
+        uint totalNos = CallbackDBIDManager(idManager_).numIDs();
+        uint typeNos = 0;
+        address en = 0;
+        for (uint i = 0; i < totalNos; ++i) {
+            en = CallbackDBIDManager(idManager_).getID(i);
+            if (DBEntity(en).getEntityType() == _type) {
+                typeNos++;
+            }
+        }
+        return typeNos;
     }
     
-    function getBindedEntityAddressByIndex(uint index) public only_delegate constant returns (address) {
-        return CallbackDBIDManager(idManager_).getID(index);
+    function getBindedEntityNameByIndex(bytes32 _type, uint _index) public only_delegate constant returns (bytes32) {
+        uint totalNos = CallbackDBIDManager(idManager_).numIDs();
+        uint typeNos = 0;
+        address en = 0;
+        for (uint i = 0; i < totalNos; ++i) {
+            en = CallbackDBIDManager(idManager_).getID(i);
+            if (DBEntity(en).getEntityType() == _type) {
+                if (typeNos == _index)
+                   return DBEntity(en).name();
+                typeNos++;
+            }
+        }
+        return "null";
     }
+
 }
