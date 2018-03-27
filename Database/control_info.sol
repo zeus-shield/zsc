@@ -57,7 +57,7 @@ contract ControlInfo is Object {
     }
     */
 
-    function registerNodeRecorder(bytes32 _nodeName, address _nodeAdr, address _userId) internal node_notexist(_nodeName) {
+    function registerEntityRecorder(bytes32 _nodeName, address _nodeAdr, address _userId) internal node_notexist(_nodeName) {
         parameters_[_nodeName].nodeAdr_ = _nodeAdr;
         parameters_[_nodeName].userId_ = _userId;
     }
