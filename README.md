@@ -74,4 +74,6 @@ Implementation of the website based interfance not included here.
 2018.03.16: add a file: log_recorder.sol
 2018.03.17-19: work on developing ZSC ControlApis based javascript apis used for web-client; work on dev. db_template;
 2018.03.20-22: be compatible with Metamask now
+2018.03.23-26: work on integrating web3.js apis, Metamask and zsc apis via web
+2018.03.27: start developing the functionality of creating customized insurance template
 ```
