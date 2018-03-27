@@ -19,9 +19,9 @@ contract ControlInfo is Object {
 
     struct ParameterInfo {
         mapping (bytes32 => string) value_;
-        mapping (address => bool) bindedEntities_;
+        mapping (address => bool) holders_;
         address nodeAdr_;
-        address userId_; // ETH wallet address
+        address creator_; // ETH wallet address
     }
     
     //mapping(bytes32 => UserInfo) private users_;
@@ -32,7 +32,7 @@ contract ControlInfo is Object {
     //modifier user_notregistered(bytes32 _name) {require(users_[_name].id_ == 0); _;}
 
     modifier only_registered(bytes32 _node) {
-        require(msg.sender == parameters_[_node].userId_ || parameters_[_node].bindedEntities_[msg.sender] == true); 
+        require(msg.sender == parameters_[_node].creator_ || parameters_[_node].holders_[msg.sender] == true); 
         _;
     }
 
@@ -57,13 +57,13 @@ contract ControlInfo is Object {
     }
     */
 
-    function registerEntityRecorder(bytes32 _nodeName, address _nodeAdr, address _userId) internal node_notexist(_nodeName) {
+    function registerEntityRecorder(bytes32 _nodeName, address _nodeAdr, address _creator) internal node_notexist(_nodeName) {
         parameters_[_nodeName].nodeAdr_ = _nodeAdr;
-        parameters_[_nodeName].userId_ = _userId;
+        parameters_[_nodeName].creator_ = _creator;
     }
 
-    function registerBindedEntity(bytes32 _nodeName, address _entity) internal node_exist(_nodeName) {
-        parameters_[_nodeName].bindedEntities_[_entity] = true;
+    function registerHolder(bytes32 _nodeName, address _holder) internal node_exist(_nodeName) {
+        parameters_[_nodeName].holders_[_holder] = true;
     }
 
     function getControlInfoNodeAddress(bytes32 _nodeName)internal constant returns (address)  {
