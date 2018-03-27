@@ -15,6 +15,8 @@ contract DBFactory is Object {
 
 contract DBDatabase is Object { 
     function getNode(bytes32 _name) public only_delegate constant returns (address);
+    function numNodes() public only_delegate constant returns (uint);
+    function getNodeNameByIndex(uint _index) public only_delegate constant returns (bytes32);
 }
 
 contract DBNode is Object {
@@ -53,7 +55,7 @@ contract ControlBase is Object, ControlInfo {
         factoryTypes_[3] = "template";
         factoryTypes_[4] = "agreement";
     }
-    
+
     function mapType(uint _type) internal constant returns (bytes32) { return factoryTypes_[_type]; }
 
     function addFactory(bytes32 _name, address _adr) internal factroy_notexist(_name) {
@@ -90,7 +92,11 @@ contract ControlBase is Object, ControlInfo {
         if (_factory == "provider" || _factory == "receiver") {
             registerEntityRecorder(_user, adr, _sender);
         } else {
-            registerBindedEntity(_node, adr);
+            registerEntityRecorder(_node, adr, _sender);
+        }
+        
+        if (_factory == "template") {
+            registerHolder(_node, _sender);
         }
         return adr;
     }
