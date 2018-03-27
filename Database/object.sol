@@ -47,7 +47,7 @@ contract Delegated is Owned{
 }
 
 contract Recorder is Delegated {
-    function addLog(string _log, uint _prefix, uint _suffix) only_delegate public;
+    function addLog(string _log, bool _newLine) only_delegate public;
 }
 
 contract Object is Delegated {
@@ -65,8 +65,8 @@ contract Object is Delegated {
 
     function setLogRecorder(address _adr) public only_delegate {logRecorder_ = _adr;}
 
-    function addLog(string _log, uint _prefix, uint _suffix) public only_delegate {
-        Recorder(logRecorder_).addLog(_log, _prefix, _suffix);
+    function addLog(string _log, bool _newLine) public only_delegate {
+        Recorder(logRecorder_).addLog(_log, _newLine);
     }
 
     // ------------------------------------------------------------------------
