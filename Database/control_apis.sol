@@ -17,6 +17,7 @@ contract ControlApis is ControlBase {
     function addFactory(uint _type, address _adr) public only_owner {
         addFactory(mapType(_type), _adr);
     }
+
     /// @dev Creat a user element
     /// @param _factroyType The type of the factory for creating the element
     /// @param _user The name of the user
@@ -25,6 +26,20 @@ contract ControlApis is ControlBase {
         require(checkAllowedUser(_node));
         return createFactoryNode(mapType(_factroyType), _user, _node, msg.sender);
     }
+
+    /// @dev Get the number of elements of a database
+    /// @param _factroyType The type of the factory binded with the database
+    function numElements(uint _factroyType) public only_delegate constant returns (uint) { 
+        return DBDatabase(getDBDatabase(mapType(_factroyType))).numNodes(); 
+    }
+    
+    /// @dev Get the number of elements of a database
+    /// @param _factroyType The type of the factory binded with the database
+    /// @param _index The index of the element in the database
+    function getElementNameByIndex(uint _factroyType, uint _index) public only_delegate constant returns (bytes32) { 
+        return DBDatabase(getDBDatabase(mapType(_factroyType))).getNodeNameByIndex(_index);
+    }
+
 
     /// @dev Check the element wheather or not existing
     /// @param _factroyType The type of the factory for checking the element
@@ -104,13 +119,17 @@ contract ControlApis is ControlBase {
 
 
     /// @dev Get the number of templates created by a particular element
+    /// @param _factroyType The type of the factory for checking the element
     /// @param _node The name of the existing element
+    /// @param _elementType The type of the element
     function numBindedElements(uint _factroyType, bytes32 _node, uint _elementType) public only_registered(_node) constant returns (uint) {
         return getDBNode(mapType(_factroyType), _node).numBindedEntities(mapType(_elementType));
     }
 
-    /// @dev Get the address of a template of a particular element
+    /// @dev Get the name of a template of a particular element
+    /// @param _factroyType The type of the factory for checking the element
     /// @param _node The name of the existing element
+    /// @param _elementType The type of the element
     /// @param _index The index of the template
     function getBindedElementNameByIndex(uint _factroyType, bytes32 _node, uint _elementType, uint _index) public only_registered(_node) constant returns (bytes32) {
         return getDBNode(mapType(_factroyType), _node).getBindedEntityNameByIndex(mapType(_elementType), _index);
