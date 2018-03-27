@@ -64,8 +64,8 @@ contract ControlBase is Object, ControlInfo {
         factories_[_name] = _adr;
         bindedDBs_[_name] = DBFactory(_adr).getBindedDB();
 
-        addLog("Added factory: ", 1, 0);
-        addLog(PlatString.bytes32ToString(_name), 0, 1);
+        addLog("Added factory: ", true);
+        addLog(PlatString.bytes32ToString(_name), false);
     }
 
     function getDBFactory(bytes32 _name) internal factroy_exist(_name) constant returns (DBFactory) {
@@ -113,7 +113,7 @@ contract ControlBase is Object, ControlInfo {
             str = PlatString.append("setNodeParameter - ", str);
             ret = getDBNode(_db, _node).setParameter(_parameter, _value);
         }        
-        addLog(str, 1, 1);
+        addLog(str, true);
         return ret;
     }
 

@@ -58,7 +58,7 @@ contract DBDatabase is Object {
         string memory str = "DBDatabase: _addNode() - ";
         string memory nodeName = PlatString.bytes32ToString(DBNode(_node).name());
         str = PlatString.append(str, nodeName);
-        addLog(str, 1, 1);
+        addLog(str, true);
     }
 
     function destroyNode(address _node) public only_delegate returns (bool) {
