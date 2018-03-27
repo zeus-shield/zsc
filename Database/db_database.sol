@@ -10,10 +10,10 @@ import "./db_node.sol";
 import "./db_idmanager.sol";
 
 contract DBDatabase is Object {
-    bytes32 temp_;
-    address public rootNode_ = 0;
-    address[] public nodes_;
-    mapping(bytes32 => address) nodeAddress_;
+    bytes32 private temp_;
+    address private rootNode_ = 0;
+    address[] private nodes_;
+    mapping(bytes32 => address) private nodeAddress_;
 
     /*added on 2018-02-25*/
     struct NodeParameterValue {mapping (bytes32 => string) values_; }
@@ -38,8 +38,13 @@ contract DBDatabase is Object {
         super.kill();
     }
     
-    function getNode(bytes32 _name) public only_delegate constant returns (address) {
-        return nodeAddress_[_name];
+    function getNode(bytes32 _name) public only_delegate constant returns (address) { return nodeAddress_[_name]; }
+
+    function numNodes() public only_delegate constant returns (uint) { return nodes_.length; }
+
+    function getNodeNameByIndex(uint _index) public only_delegate constant returns (bytes32) { 
+        if (_index >= nodes_.length) return "null";
+        return Object(nodes_[_index]).name(); 
     }
 
     function _createIDManager() public only_delegate returns (address) {
