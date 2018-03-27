@@ -34,8 +34,8 @@ contract DBNode is Object {
     function executeERC20Transaction(address _tokenAdr, address _dest, uint256 _value, bytes _data) public only_delegate returns (bool);
 
     function bindEntity(address _adr) only_delegate public;
-    function numBindedEntities() public only_delegate constant returns (uint);
-    function getBindedEntityAddressByIndex(uint index) public only_delegate constant returns (address);
+    function numBindedEntities(bytes32 _type) public only_delegate constant returns (uint);
+    function getBindedEntityNameByIndex(bytes32 _type, uint _index) public only_delegate constant returns (bytes32);
 }
 
 contract ControlBase is Object, ControlInfo {   
@@ -53,11 +53,8 @@ contract ControlBase is Object, ControlInfo {
         factoryTypes_[3] = "template";
         factoryTypes_[4] = "agreement";
     }
-
-    function numBindedElements(bytes32 _factoryType, bytes32 _node, bytes32 _elementType) internal constant returns (uint);
-    function getBindedElementAddressByIndex(bytes32 _factoryType, bytes32 _node, bytes32 _elementType, uint _index) internal constant returns (address);
-
-    function factoryType(uint _type) internal constant returns (bytes32) { return factoryTypes_[_type]; }
+    
+    function mapType(uint _type) internal constant returns (bytes32) { return factoryTypes_[_type]; }
 
     function addFactory(bytes32 _name, address _adr) internal factroy_notexist(_name) {
         require(_adr != 0);
@@ -87,16 +84,13 @@ contract ControlBase is Object, ControlInfo {
     }
 
     function createFactoryNode(bytes32 _factory, bytes32 _user, bytes32 _node, address _sender) internal returns (address) {
-        address adr = 0;
+        address adr = getDBFactory(_factory).createNode(_node);
+        require (adr != 0);
+        
         if (_factory == "provider" || _factory == "receiver") {
-            adr = getDBFactory(_factory).createNode(_node);
+            registerEntityRecorder(_user, adr, _sender);
         } else {
-            if (_factory == "template") {
-                adr = getDBFactory(_factory).createNode(_node);
-            }
-        }
-        if (adr != 0) {
-            registerNodeRecorder(_user, adr, _sender);
+            registerBindedEntity(_node, adr);
         }
         return adr;
     }
