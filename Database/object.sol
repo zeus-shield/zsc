@@ -66,7 +66,7 @@ contract Object is Delegated {
     function setLogRecorder(address _adr) public only_delegate {logRecorder_ = _adr;}
 
     function addLog(string _log, bool _newLine) public only_delegate {
-        Recorder(logRecorder_).addLog(_log, _newLine);
+        if (logRecorder_ != 0) Recorder(logRecorder_).addLog(_log, _newLine);
     }
 
     // ------------------------------------------------------------------------
