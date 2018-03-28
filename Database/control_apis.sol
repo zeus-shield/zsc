@@ -15,7 +15,13 @@ contract ControlApis is ControlBase {
     /// @dev Add the database factory of managing the provider nodes
     /// @param _adr The address of the database factory
     function addFactory(uint _type, address _adr) public only_owner {
-        addFactory(mapType(_type), _adr);
+        addFactoryAdr(mapType(_type), _adr);
+    }
+
+    /// @dev Add the database factory of managing the provider nodes
+    /// @param _adr The address of the database factory
+    function setDatabase(address _adr) public only_owner {
+        setDatabaseAdr(_adr);
     }
 
     /// @dev Creat a user element
@@ -29,51 +35,51 @@ contract ControlApis is ControlBase {
     }
 
     /// @dev Creat a user element
-    /// @param _factroyType The type of the factory for creating the element
     /// @param _adr The address of the existing element
-    function getElementNameByAddress(uint _factroyType, address _adr) public only_delegate constant returns (bytes32) {
-        require(_adr != 0);
-        return getDBNodeName(mapType(_factroyType), _adr);
+    function getElementNameByAddress(address _adr) public only_delegate constant returns (bytes32) {
+        require (getDBDatabase().checkeNodeByAddress(_adr));
+        return Object(_adr).name();
     }
 
-
+    /// @dev Creat a user element
+    function getElementType(bytes32 _node) public only_delegate constant returns (bytes32) {
+        DBNode nd = getDBNode( _node);
+        require(nd != DBNode(0));
+        return nd.getNodeType();
+    }
 
     /// @dev Get the number of elements of a database
-    /// @param _factroyType The type of the factory binded with the database
-    function numElements(uint _factroyType) public only_delegate constant returns (uint) { 
-        return DBDatabase(getDBDatabase(mapType(_factroyType))).numNodes(); 
+    function numElements() public only_delegate constant returns (uint) { 
+        return getDBDatabase().numNodes(); 
     }
     
-    /// @dev Get the number of elements of a database
-    /// @param _factroyType The type of the factory binded with the database
+    /// @dev Get the number of elements of the database
     /// @param _index The index of the element in the database
-    function getElementNameByIndex(uint _factroyType, uint _index) public only_delegate constant returns (bytes32) { 
-        return DBDatabase(getDBDatabase(mapType(_factroyType))).getNodeNameByIndex(_index);
+    function getElementNameByIndex(uint _index) public only_delegate constant returns (bytes32) { 
+        address nd = getDBDatabase().getNodeByIndex(_index);
+        require(nd != address(0));
+        return Object(nd).name();
     }
 
-
     /// @dev Check the element wheather or not existing
-    /// @param _factroyType The type of the factory for checking the element
     /// @param _node The name of the element to be checked
-    function doesElementExist(uint _factroyType, bytes32 _node) public only_registered(_node) constant returns (bool) {
-        return (getDBNode(mapType(_factroyType), _node) != DBNode(0));
+    function doesElementExist(bytes32 _node) public only_registered(_node) constant returns (bool) {
+        return (getDBNode(_node) != DBNode(0));
     }
 
     /// @dev add a paramter to an element
-    /// @param _factroyType The type of the factory for adding the element
     /// @param _node The name of the existing element
     /// @param _parameter The name of the added parameter
-    function addElementParameter(uint _factroyType, bytes32 _node, bytes32 _parameter) public only_registered(_node) returns (bool) {
-        return operateNodeParameter(mapType(_factroyType), "add", _node, _parameter, "");
+    function addElementParameter(bytes32 _node, bytes32 _parameter) public only_registered(_node) returns (bool) {
+        return operateNodeParameter("add", _node, _parameter, "");
     }
 
     /// @dev Set the value to a paramter of an element 
-    /// @param _factroyType The type of the factory for setting the element
     /// @param _node The name of the element
     /// @param _parameter The name of the existing parameter
     /// @param _value The parameter value
-    function setElementParameter(uint _factroyType, bytes32 _node, bytes32 _parameter, string _value) public only_registered(_node) returns (bool) {
-        return operateNodeParameter(mapType(_factroyType), "set", _node, _parameter, _value);
+    function setElementParameter(bytes32 _node, bytes32 _parameter, string _value) public only_registered(_node) returns (bool) {
+        return operateNodeParameter("set", _node, _parameter, _value);
     }
 
     /// @dev Get the value to a paramter of a node
@@ -84,28 +90,24 @@ contract ControlApis is ControlBase {
     }
 
     /// @dev Get the value to a paramter of a node
-    /// @param _factroyType The type of the factory for checking the element
     /// @param _node The name of the element
-    function getElementAddress(uint _factroyType, bytes32 _node) public only_registered(_node) constant returns (address) {
-        return address(getDBNode(mapType(_factroyType), _node));
+    function getElementAddress(bytes32 _node) public only_registered(_node) constant returns (address) {
+        return address(getDBNode(_node));
     }
 
     /// @dev Get the value to a paramter of a node
-    /// @param _factroyType The type of the factory for checking the element
     /// @param _node The name of the element
-    function getElementEthBalance(uint _factroyType, bytes32 _node) public only_registered(_node) constant returns (uint256) {
-        return getDBNode(mapType(_factroyType), _node).getBlance("ether", 0);
+    function getElementEthBalance(bytes32 _node) public only_registered(_node) constant returns (uint256) {
+        return getDBNode(_node).getBlance("ether", 0);
     }
 
     /// @dev Get the number of paramters of an element
-    /// @param _factroyType The type of the factory for checking the element
     /// @param _node The name of the existing element
-    function numElementParameters(uint _factroyType, bytes32 _node) public only_registered(_node) constant returns (uint) {
-        return  getDBNode(mapType(_factroyType), _node).numParameters();
+    function numElementParameters(bytes32 _node) public only_registered(_node) constant returns (uint) {
+        return  getDBNode(_node).numParameters();
     }
 
     /// @dev Get the number of paramters of an element
-    /// @param _factroyType The type of the factory for checking the element
     /// @param _node The name of the existing element
     /// @param _index The index of the parameter
     /* Example:
@@ -114,35 +116,32 @@ contract ControlApis is ControlBase {
             var para = getNodeParameterNameByIndex("test", 0);
         }
     */
-    function getElementParameterNameByIndex(uint _factroyType, bytes32 _node, uint _index) public only_registered(_node) constant returns (bytes32) {
-        return  getDBNode(mapType(_factroyType), _node).getParameterNameByIndex(_index);
+    function getElementParameterNameByIndex(bytes32 _node, uint _index) public only_registered(_node) constant returns (bytes32) {
+        return  getDBNode(_node).getParameterNameByIndex(_index);
     }
 
     /// @dev Transfer ETH from a user element to the destination address
-    /// @param _factroyType The type of the factory for checking the element
     /// @param _node The name of the existing element
     /// @param _dest The destination address
     /// @param _amount The amount of ETH to be transferred
-    function elementTransferEth(uint _factroyType, bytes32 _node, address _dest, uint256 _amount) public only_registered(_node) returns (bool) {
-        return  getDBNode(mapType(_factroyType), _node).executeEtherTransaction(_dest, _amount, "null");
+    function elementTransferEth(bytes32 _node, address _dest, uint256 _amount) public only_registered(_node) returns (bool) {
+        return  getDBNode(_node).executeEtherTransaction(_dest, _amount, "null");
     }
 
 
 
     /// @dev Get the number of templates created by a particular element
-    /// @param _factroyType The type of the factory for checking the element
     /// @param _node The name of the existing element
     /// @param _elementType The type of the element
-    function numBindedElements(uint _factroyType, bytes32 _node, uint _elementType) public only_registered(_node) constant returns (uint) {
-        return getDBNode(mapType(_factroyType), _node).numBindedEntities(mapType(_elementType));
+    function numBindedElements(bytes32 _node, uint _elementType) public only_registered(_node) constant returns (uint) {
+        return getDBNode(_node).numBindedEntities(mapType(_elementType));
     }
 
     /// @dev Get the name of a template of a particular element
-    /// @param _factroyType The type of the factory for checking the element
     /// @param _node The name of the existing element
     /// @param _elementType The type of the element
     /// @param _index The index of the template
-    function getBindedElementNameByIndex(uint _factroyType, bytes32 _node, uint _elementType, uint _index) public only_registered(_node) constant returns (bytes32) {
-        return getDBNode(mapType(_factroyType), _node).getBindedEntityNameByIndex(mapType(_elementType), _index);
+    function getBindedElementNameByIndex(bytes32 _node, uint _elementType, uint _index) public only_registered(_node) constant returns (bytes32) {
+        return getDBNode(_node).getBindedEntityNameByIndex(mapType(_elementType), _index);
     }
 }
