@@ -56,20 +56,13 @@ contract DBNode is Object {
     function setFactoryAndDatabase(address[] _factories, address _database, address _contoller) public only_delegate {
         database_ = _database;
         factories_ = _factories;
-        setController(_contoller);
+        controller_ = _contoller;
 
         setDelegate(database_, true);
         for (uint i=0; i<factories_.length; i++) {
             setDelegate(factories_[i], true);
         }
         CallbackDatabase(database_)._addNode(this);
-    }
-
-    function setController(address _adr) public only_delegate {
-        if (_adr != address(0)) {
-            controller_ = _adr;
-            setDelegate(controller_, true);
-        }
     }
     
     function getController() internal constant returns (address) {
