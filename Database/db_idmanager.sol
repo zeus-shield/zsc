@@ -14,11 +14,11 @@ contract DBIDManager is Object {
     function DBIDManager() public Object("null") {
     }
 
-    function numIDs() public only_delegate constant returns (uint) {
+    function numIds() public only_delegate constant returns (uint) {
         return IDs_.length;
     }
 
-    function addID(address _id) public only_delegate returns (bool) {
+    function addId(address _id) public only_delegate returns (bool) {
         if (IDExist_[_id] == true)
             return false;
 
@@ -28,7 +28,7 @@ contract DBIDManager is Object {
         return true;
     }
 
-    function removeID(address _id) public only_delegate returns (bool) {
+    function removeId(address _id) public only_delegate returns (bool) {
         if (IDExist_[_id] == false)
             return false;
 
@@ -45,7 +45,7 @@ contract DBIDManager is Object {
         return true;
     }
 
-    function getID(uint _index) public only_delegate constant returns (address) {
+    function getId(uint _index) public only_delegate constant returns (address) {
         if(_index >= IDs_.length) return 0;
         return IDs_[_index];
     }
