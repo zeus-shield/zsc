@@ -14,7 +14,7 @@ contract DBDatabase is Object {
     address private rootNode_ = 0;
     address[] private nodes_;
     mapping(bytes32 => address) private nodeAddress_;
-    mapping(address => bytes32) private nodeNames_;
+    mapping(address => bool) private nodeExists_;
 
     /*added on 2018-02-25*/
     struct NodeParameterValue {mapping (bytes32 => string) values_; }
@@ -23,14 +23,15 @@ contract DBDatabase is Object {
     function DBDatabase(bytes32 _name) public Object(_name) {
     }
 
-    function initDatabase(address[] _factories) public only_delegate () {
+    function initDatabase(address[] _factories, address _controller) public only_delegate () {
         if (rootNode_ == 0) {
             for (uint i=0; i<_factories.length; i++) {
                 setDelegate(_factories[i], true);
             }
             rootNode_ = new DBNode(name());
             setDelegate(rootNode_, true);
-            DBNode(rootNode_).setFactoryAndDatabase(_factories, this, 0x0);
+            setDelegate(_controller, true);
+            DBNode(rootNode_).setFactoryAndDatabase(_factories, this, _controller);
         }
     }
 
@@ -41,13 +42,13 @@ contract DBDatabase is Object {
     
     function getNode(bytes32 _name) public only_delegate constant returns (address) { return nodeAddress_[_name]; }
 
-    function getNodeNameByAddress(address _adr) public only_delegate constant returns (bytes32) { return nodeNames_[_adr]; }
+    function checkeNodeByAddress(address _adr) public only_delegate constant returns (bool) { return nodeExists_[_adr]; }
 
     function numNodes() public only_delegate constant returns (uint) { return nodes_.length; }
 
-    function getNodeNameByIndex(uint _index) public only_delegate constant returns (bytes32) { 
-        if (_index >= nodes_.length) return "null";
-        return Object(nodes_[_index]).name(); 
+    function getNodeByIndex(uint _index) public only_delegate constant returns (address) { 
+        if (_index >= nodes_.length) return 0;
+        return nodes_[_index]; 
     }
 
     function _addNode(address _node) public only_delegate {
@@ -56,7 +57,7 @@ contract DBDatabase is Object {
 
         nodes_.push(_node);
         nodeAddress_[ndName] = _node;
-        nodeNames_[_node] = ndName;
+        nodeExists_[_node] = true;
 
         //for testing purpose; 2018-03-06, 2018-03-14
         string memory str = "DBDatabase: _addNode() - ";
@@ -120,7 +121,7 @@ contract DBDatabase is Object {
         nodes_.length --;
             
         delete nodeAddress_[DBNode(_node).name()];
-        delete nodeNames_[_node];
+        delete nodeExists_[_node];
         setDelegate(_node, false);
 
         delete _node;
