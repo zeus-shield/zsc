@@ -12,19 +12,10 @@ contract infoRecorder {
     function _recordString(bytes32 _nodeName, bytes32 _parameter, string _value) public;
 }
 
-contract CallbackDBIDManager is Object {
-    function numIDs() public only_delegate constant returns (uint);
-    function addID(address _id) public only_delegate returns (bool);
-    function removeID(address _id) public only_delegate returns (bool);
-    function getID(uint _index) public only_delegate constant returns (address);
-}
-
 contract DBEntity is DBNode {
     address test_;
     uint    id_ ;
     bool    activated_;
-    bytes32 entityType_ = "entity";
-
     bytes32 temp_;
 
     bytes32[] parameterNames_;
@@ -36,17 +27,11 @@ contract DBEntity is DBNode {
     // Constructor
     function DBEntity(bytes32 _name) public DBNode(_name) {
         initParameters();
+        idManager_ = 0;
     }
 
     function initParameters() internal;
-    
-    function setEntityType(bytes32 _type) internal only_delegate {
-        entityType_ = _type;
-    }
 
-    function getEntityType() public only_delegate constant returns (bytes32) {
-        return entityType_;
-    }
 
     function setActivated(bool _activated) public only_delegate {
         activated_ = _activated;
@@ -104,39 +89,15 @@ contract DBEntity is DBNode {
     }
 
     function bindEntity(address _adr) public only_delegate {
-        if (idManager_ == 0) {
-            idManager_ =  CallbackDatabase(getDatabase())._createIDManager();
-        }
-        require(idManager_ != 0);
-        CallbackDBIDManager(idManager_).addID(_adr);
+        idManager_ = getDatabase()._bindId(idManager_, _adr);
     }
 
     function numBindedEntities(bytes32 _type) public only_delegate constant returns (uint) {
-        uint totalNos = CallbackDBIDManager(idManager_).numIDs();
-        uint typeNos = 0;
-        address en = 0;
-        for (uint i = 0; i < totalNos; ++i) {
-            en = CallbackDBIDManager(idManager_).getID(i);
-            if (DBEntity(en).getEntityType() == _type) {
-                typeNos++;
-            }
-        }
-        return typeNos;
+        return getDatabase()._numBindedIds(idManager_, _type);
     }
     
     function getBindedEntityNameByIndex(bytes32 _type, uint _index) public only_delegate constant returns (bytes32) {
-        uint totalNos = CallbackDBIDManager(idManager_).numIDs();
-        uint typeNos = 0;
-        address en = 0;
-        for (uint i = 0; i < totalNos; ++i) {
-            en = CallbackDBIDManager(idManager_).getID(i);
-            if (DBEntity(en).getEntityType() == _type) {
-                if (typeNos == _index)
-                   return DBEntity(en).name();
-                typeNos++;
-            }
-        }
-        return "null";
+        return getDatabase()._getBindedIdNameByIndex(idManager_, _type, _index);
     }
 
 }
