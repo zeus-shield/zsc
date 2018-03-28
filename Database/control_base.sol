@@ -15,6 +15,7 @@ contract DBFactory is Object {
 
 contract DBDatabase is Object { 
     function getNode(bytes32 _name) public only_delegate constant returns (address);
+    function getNodeNameByAddress(address _adr) public only_delegate constant returns (bytes32);
     function numNodes() public only_delegate constant returns (uint);
     function getNodeNameByIndex(uint _index) public only_delegate constant returns (bytes32);
 }
@@ -79,24 +80,31 @@ contract ControlBase is Object, ControlInfo {
         return getDBDatabase(_db).getNode(_node);
     }
 
+    function getDBNodeName(bytes32 _db, address _adr) internal constant returns (bytes32) {
+        return getDBDatabase(_db).getNodeNameByAddress(_adr);
+    }
+
     function getDBNode(bytes32 _db, bytes32 _node) internal constant returns (DBNode) {
         address nd = getDBNodeAddress(_db, _node);
         require (nd != 0);        
         return DBNode(nd);
     }
 
-    function createFactoryNode(bytes32 _factory, bytes32 _user, bytes32 _node, address _sender) internal returns (address) {
-        address adr = getDBFactory(_factory).createNode(_node);
-        require (adr != 0);
-        
+    function createFactoryNode(bytes32 _factory, bytes32 _user, bytes32 _node, bytes32 extra, address _sender) internal returns (address) {
+        address adr;
         if (_factory == "provider" || _factory == "receiver") {
+            adr = getDBFactory(_factory).createNode(_node);
             registerEntityRecorder(_user, adr, _sender);
-        } else {
+        } else if (_factory == "template" || _factory == "agreement" ) {
+            adr = getDBFactory(_factory).createNode(_node);
             registerEntityRecorder(_node, adr, _sender);
         }
         
         if (_factory == "template") {
             registerHolder(_node, _sender);
+        } else if (_factory == "agreement") {
+            registerHolder(_node, _sender);
+            duplicateNode("template", extra, "agreement", _node);
         }
         return adr;
     }
