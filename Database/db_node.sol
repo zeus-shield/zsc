@@ -11,12 +11,17 @@ contract CallbackDatabase is Object {
     function destroyNode(address _node) public only_delegate returns (bool);
     function _addNode(address _node) only_delegate public ;
     function _createIDManager() only_delegate public returns (address);
+    function _bindId(address _idManager, address _id) public only_delegate returns (address);
+    function _numBindedIds(address _idManager, bytes32 _type) public only_delegate constant returns (uint);    
+    function _getBindedIdNameByIndex(address _idManager, bytes32 _type, uint _index) public only_delegate constant returns (bytes32);
 }
 
 contract DBNode is Object {
     address private database_ = address(0);
     address private parent_ = address(0);
     address private controller_ = address(0);
+    bytes32 private nodeType_ = "node";
+
 
     address[] children_;
     mapping(bytes32 => address) childMap_;
@@ -30,6 +35,14 @@ contract DBNode is Object {
     function kill() public only_delegate { 
         removeAndDestroyAllChildren(); 
         super.kill();
+    }
+
+    function setNodeType(bytes32 _type) internal only_delegate {
+        nodeType_ = _type;
+    }
+
+    function getNodeType() public only_delegate constant returns (bytes32) {
+        return nodeType_;
     }
 
     function getBlance(bytes32 _name, address _adr) public only_delegate constant returns (uint256) {
@@ -64,8 +77,8 @@ contract DBNode is Object {
     }
     
 
-    function getDatabase() public only_delegate constant returns (address) {
-        return database_;
+    function getDatabase() public only_delegate constant returns (CallbackDatabase) {
+        return CallbackDatabase(database_);
     }
 
     function numChildren() public only_delegate constant returns(uint) {
