@@ -19,7 +19,6 @@ contract DBEntity is DBNode {
     bytes32 temp_;
 
     bytes32[] parameterNames_;
-    mapping(bytes32 => string) parameters_;
     mapping(bytes32 => bool) parameterExist_;
 
     address private idManager_;
@@ -62,7 +61,6 @@ contract DBEntity is DBNode {
         delete parameterNames_[parameterNames_.length - 1];
         parameterNames_.length --;
 
-        delete parameters_[_parameter];
         delete parameterExist_[_parameter];
         return true;
     }
@@ -70,13 +68,8 @@ contract DBEntity is DBNode {
     function setParameter(bytes32 _parameter, string _value) public only_delegate returns (bool) {
         require(parameterExist_[_parameter] == true);
 
-        parameters_[_parameter] = _value;
         infoRecorder(getController())._recordString(name(), _parameter, _value);
         return true;
-    }
-
-    function getParameter(bytes32 _parameter) public only_delegate constant returns (string) {
-        return parameters_[_parameter];
     }
 
     function numParameters() public only_delegate constant returns (uint) {
