@@ -8,7 +8,7 @@ import "./db_user.sol";
 contract DBReceiver is DBUser {
     // Constructor
     function DBReceiver(bytes32 _name) public DBUser(_name) {
-        setEntityType("receiver"); 
+        setNodeType("receiver"); 
     }
 
     function initParameters() internal {

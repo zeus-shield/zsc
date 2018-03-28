@@ -10,7 +10,7 @@ contract DBTemplate is DBEntity {
     address[] private users_;
     
     function DBTemplate(bytes32 _name) public DBEntity(_name) {
-        setEntityType("template");
+        setNodeType("template");
     }
 
     function initParameters() internal {
