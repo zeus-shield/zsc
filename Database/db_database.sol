@@ -47,12 +47,6 @@ contract DBDatabase is Object {
         return Object(nodes_[_index]).name(); 
     }
 
-    function _createIDManager() public only_delegate returns (address) {
-        DBIDManager idmanager = new DBIDManager();
-        idmanager.setDelegate(msg.sender, true);
-        return idmanager;
-    }
-
     function _addNode(address _node) public only_delegate {
         require (nodeAddress_[DBNode(_node).name()] == 0);
 
@@ -64,6 +58,45 @@ contract DBDatabase is Object {
         string memory nodeName = PlatString.bytes32ToString(DBNode(_node).name());
         str = PlatString.append(str, nodeName);
         addLog(str, true);
+    }
+
+    function _bindId(address _idManager, address _id) public only_delegate returns (address) {
+        if (_idManager == 0) {
+            DBIDManager idmanager = new DBIDManager();
+            idmanager.addId(_id);
+            return address(idmanager);
+        } else {
+            DBIDManager(_idManager).addId(_id);
+            return _idManager;
+        }
+    }
+
+    function _numBindedIds(address _idManager, bytes32 _type) public only_delegate constant returns (uint) {
+        uint totalNos = DBIDManager(_idManager).numIds();
+        uint typeNos = 0;
+        address nd = 0;
+        for (uint i = 0; i < totalNos; ++i) {
+            nd = DBIDManager(_idManager).getId(i);
+            if (DBNode(nd).getNodeType() == _type) {
+                typeNos++;
+            }
+        }
+        return typeNos;
+    }
+    
+    function _getBindedIdNameByIndex(address _idManager, bytes32 _type, uint _index) public only_delegate constant returns (bytes32) {
+        uint totalNos = DBIDManager(_idManager).numIds();
+        uint typeNos = 0;
+        address en = 0;
+        for (uint i = 0; i < totalNos; ++i) {
+            en = DBIDManager(_idManager).getId(i);
+            if (DBNode(en).getNodeType() == _type) {
+                if (typeNos == _index)
+                   return DBNode(en).name();
+                typeNos++;
+            }
+        }
+        return "null";
     }
 
     function destroyNode(address _node) public only_delegate returns (bool) {
