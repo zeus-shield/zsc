@@ -14,6 +14,7 @@ contract DBDatabase is Object {
     address private rootNode_ = 0;
     address[] private nodes_;
     mapping(bytes32 => address) private nodeAddress_;
+    mapping(address => bytes32) private nodeNames_;
 
     /*added on 2018-02-25*/
     struct NodeParameterValue {mapping (bytes32 => string) values_; }
@@ -40,6 +41,8 @@ contract DBDatabase is Object {
     
     function getNode(bytes32 _name) public only_delegate constant returns (address) { return nodeAddress_[_name]; }
 
+    function getNodeNameByAddress(address _adr) public only_delegate constant returns (bytes32) { return nodeNames_[_adr]; }
+
     function numNodes() public only_delegate constant returns (uint) { return nodes_.length; }
 
     function getNodeNameByIndex(uint _index) public only_delegate constant returns (bytes32) { 
@@ -48,10 +51,12 @@ contract DBDatabase is Object {
     }
 
     function _addNode(address _node) public only_delegate {
-        require (nodeAddress_[DBNode(_node).name()] == 0);
+        bytes32 ndName = DBNode(_node).name();
+        require (nodeAddress_[ndName] == 0);
 
         nodes_.push(_node);
-        nodeAddress_[DBNode(_node).name()] = _node;
+        nodeAddress_[ndName] = _node;
+        nodeNames_[_node] = ndName;
 
         //for testing purpose; 2018-03-06, 2018-03-14
         string memory str = "DBDatabase: _addNode() - ";
@@ -115,16 +120,11 @@ contract DBDatabase is Object {
         nodes_.length --;
             
         delete nodeAddress_[DBNode(_node).name()];
+        delete nodeNames_[_node];
         setDelegate(_node, false);
 
         delete _node;
 
         return true;
-    }
-
-    function destroyNode(bytes32 _name) public only_delegate returns (bool) {
-        address nd = nodeAddress_[_name];
-        if (nd == 0) return false;
-        return destroyNode(nd);
     }
 }
