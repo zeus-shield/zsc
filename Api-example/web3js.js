@@ -1,3 +1,6 @@
+/*
+Copyright (c) 2018 ZSC Dev Team
+*/
  
 function setupWeb3js(tag) {
         // Checking if Web3 has been injected by the browser (Mist/MetaMask)
