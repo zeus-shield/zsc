@@ -42,7 +42,8 @@ function uF_keepOnline(user, hr, adr, func){
 }
 
 function uF_doesNodeExist(node, func){
-    var myControlApi = uf_getControlApi();
+    var myContract = web3.eth.contract(bF_getControlApisAbi());
+    var myControlApi = myContract.at(bF_getControlApisAdr());
     myControlApi.doesElementExist(node,
         function(error, ret){ 
             if(!error) func(ret);  
@@ -109,6 +110,17 @@ function uF_setElementParameter(nodeId, logID) {
         });
     }
 } 
+
+
+function uF_numElementParameters(node, func){
+    var myControlApi = uf_getControlApi();
+    myControlApi.numElementParameters(1, node, {from: uf_getEthAccount()},
+         function(error, num){ 
+            if(!error) func(num.toString(10));  
+            else console.log("error: " + error);
+         });
+}
+
 
 
 
