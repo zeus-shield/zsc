@@ -1,0 +1,52 @@
+<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../web3.js/dist/web3.js"></script>
+<script type="text/javascript" src="./web3js.js"></script>
+<script type="text/javascript" src="./userFunctions.js"></script>
+<script type="text/javascript" src="./zscapis.js"></script>
+</head>
+<body>
+    <div class="col-lg-12">
+        <i>This page expects geth with JSON-RPC running at port 8545</i>
+        <div class="page-header">
+            <font size="5" color="blue" >Test ZSC system in the testing envrioment</font>
+        </div>
+        <div class="col-lg-6">
+            <text>Login ZSC blockchain system</text>
+            <div class="well">
+                <div>
+                    <input type="text" id="username"></input>       
+                </div>       
+                <div>
+                    <input type="password" id="password" ></input>
+                </div>
+                <div>
+                    <button type="button" onClick="checkUser('username', 'password')">Enter</button>
+                </div>                 
+
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+    var web3 = setupWeb3js(false);
+
+    function checkUser(user, pass){
+        var temUser = document.getElementById(user).value; 
+        var temPassword = document.getElementById(pass).value; 
+        
+        uF_login(temUser, temPassword, function(ret) {
+            if(ret != 0x0 && ret != undefined) {
+                //window.location.href="zscTestMain.html?username="+ temUser + "&hr="+ret;
+            } else { 
+                alert("User name or password wrong!!");
+            }
+        });
+    }
+</script>
+</body>
+</html>
