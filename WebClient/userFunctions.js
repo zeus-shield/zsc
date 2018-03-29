@@ -5,25 +5,35 @@ Copyright (c) 2018 ZSC Dev Team
 var uF_parameters = [];
 var uF_parameterValue = [];
 var uF_eth_account;
-var uF_controlApisAdvAdr = "";
-var uF_controlApisAdvAbi = "";
 
+var uF_controlApisAdvAbiLogin = [{"constant":true,"inputs":[{"name":"_user","type":"bytes32"},{"name":"_hexx","type":"bytes32"}],"name":"getFullAbi","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"bytes32"},{"name":"_pass","type":"bytes32"}],"name":"tryLogin","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}];
 
-function uf_getControlApi(controlApiAdr) {
-    var myContract = web3.eth.contract(uF_controlApisAdvAbi);
-    return myContract.at(uF_controlApisAdvAdr);
-}
-
-function uF_login(user, pass, func){
-    var myControlApi = uf_getControlApi();
-    myControlApi.tryLogin(user, pass, function(error, ret) {
-        if(!error) func(ret);
-        else console.log("error: " + error);
+function uF_getFullAbi(user, hex, adr, func){
+    var myContract = web3.eth.contract(uF_controlApisAdvAbiLogin);
+    var myControlApi = myContract.at(adr);
+    myControlApi.getFullAbi(user, pass, function(error, fullAbi) {
+        if(!error) { 
+            bf_configureClient(user, hex, adr, fullAbi)
+            func(hexx);
+        } else {
+            console.log("error: " + error);
+        }
     } );
 }
 
-function uF_keepOnline(user, hr, func){
-    var myControlApi = uf_getControlApi();
+function uF_login(user, pass, adr, func){
+    var myContract = web3.eth.contract(uF_controlApisAdvAbiLogin);
+    var myControlApi = myContract.at(adr);
+    myControlApi.tryLogin(user, pass, function(error, hexx) {
+        if(!error) {
+            if (hexx == 0x0) func(hexx);
+            else uF_getFullAbi(user, hex, adr, func);
+        } else console.log("error: " + error);
+    } );
+}
+
+function uF_keepOnline(user, hr, adr, func){
+    var myControlApi = uf_getControlApi(adr);
     var ret;
     myControlApi.keepOnline(user, hr, function(error, ret) {
         if(!error) func(ret);
@@ -99,6 +109,7 @@ function uF_setElementParameter(nodeId, logID) {
         });
     }
 } 
+
 
 
 
