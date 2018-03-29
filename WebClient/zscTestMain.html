@@ -47,8 +47,10 @@
 
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
+    loadHeader();
+    loadCotent();
 
-    function loadHtml() {
+    function loadHeader() {
         // Now you can start your app & access web3 freely:        
         var rett = uF_getUrlRequest("CreateProvider");
         if (rett == false){
@@ -65,6 +67,19 @@
             }); 
         }
     }
+
+    function loadCotent() {
+        var userName = uF_getUsername();
+        var userHr = uF_getUsernameHr();
+ 
+        uF_doesNodeExist(userName, function(ret){
+            if (ret == false) {
+                uF_loadButtonForEnablingElement("ButtonForCreatingElement");
+            } else {
+            }
+        });  
+    }
+ 
 </script>
 </body>
 </html>
