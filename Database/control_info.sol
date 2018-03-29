@@ -8,15 +8,13 @@ import "./plat_string.sol";
 import "./object.sol";
 
 contract ControlInfo is Object {
-    /*
     enum ManagementType {REGISTERD, SUSPEND, ACTIVE}
     struct UserInfo {
-        address id_; 
+        bool tag_;
+        bytes32 name_; 
         bytes32 type_; 
-        ManagementType status_; //1: registered; 2: suspended; 3: active; 
     }
-    */
-
+    
     struct ParameterInfo {
         mapping (bytes32 => string) value_;
         mapping (address => bool) holders_;
@@ -24,12 +22,8 @@ contract ControlInfo is Object {
         address creator_; // ETH wallet address
     }
     
-    //mapping(bytes32 => UserInfo) private users_;
+    mapping(address => UserInfo) private users_;
     mapping(bytes32 => ParameterInfo) private parameters_;
-
-    modifier node_exist(bytes32 _name) {require(parameters_[_name].nodeAdr_ != 0); _;}
-    modifier node_notexist(bytes32 _name) {require(parameters_[_name].nodeAdr_ == 0); _;}
-    //modifier user_notregistered(bytes32 _name) {require(users_[_name].id_ == 0); _;}
 
     modifier only_registered(bytes32 _node) {
         require(msg.sender == parameters_[_node].creator_ || parameters_[_node].holders_[msg.sender] == true); 
@@ -57,13 +51,28 @@ contract ControlInfo is Object {
     }
     */
 
-    function registerEntityRecorder(bytes32 _nodeName, address _nodeAdr, address _creator) internal node_notexist(_nodeName) {
-        require (_nodeAdr != 0);
+    function checkUserExist(address _adr) internal constant returns (bool) { 
+        return users_[_adr].tag_; 
+    }
+
+    function checkNodeExist(bytes32 _name) internal constant returns (bool) { 
+        return (parameters_[_name].nodeAdr_ != 0); 
+    }
+
+    function registerUser(bytes32 _type, bytes32 _userName, address _creator) internal {
+        users_[_creator].tag_ = true;
+        users_[_creator].name_ = _userName;
+        users_[_creator].type_ = _type;
+    }
+
+    function registerNode(bytes32 _nodeName, address _nodeAdr, address _creator) internal {
+        require(!checkNodeExist(_nodeName));        
         parameters_[_nodeName].nodeAdr_ = _nodeAdr;
         parameters_[_nodeName].creator_ = _creator;
     }
 
-    function registerHolder(bytes32 _nodeName, address _holder) internal node_exist(_nodeName) {
+    function registerHolder(bytes32 _nodeName, address _holder) internal {
+        require(checkNodeExist(_nodeName));        
         parameters_[_nodeName].holders_[_holder] = true;
     }
 
