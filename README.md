@@ -76,5 +76,6 @@ Implementation of the website based interfance not included here.
 2018.03.20-22: be compatible with Metamask now
 2018.03.23-26: work on integrating web3.js apis, Metamask and zsc apis via web
 2018.03.27: start developing the functionality of creating customized insurance template
-2018.03.28: added two files web3js.js and userFunctions.js for showing examples of how to use web3js and zsc apis as well as Metamask at the web-client side
+2018.03.28: add two files web3js.js and userFunctions.js for showing examples of how to use web3js and zsc apis as well as Metamask at the web-client side
+2018.03.29: add three files htmlFormat.js, zscTestLogin.html and zscTestMain.html
 ```
