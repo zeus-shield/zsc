@@ -7,94 +7,28 @@ var uF_parameterValue = [];
 var uF_eth_account;
 var uF_controlApisAdvAdr = "";
 var uF_controlApisAdvAbi = "";
-var uF_userName ;
-var uF_userNameHr ;
 
-function uF_showHashResult(elementID, hash) {
-    web3.eth.getTransactionReceipt(hash, 
-    function(error, result){ 
-        if(!error) {
-            var show;
-            if (result == null) {
-                show =  "(pending)" + hash ;
-                uF_showHashResult(elementID, hash);
-            } else {
-                if (result.status == 0) {
-                    show = "(failure)" + hash;
-                } else {
-                    show = "(succeeded)" + hash ;
-                }
-            }
-            document.getElementById(elementID).innerText = show;
-        } else {
-            console.log("error: " + error);
-        }
-    });
-}
-function uf_getEthAccount() {
-    //console.log(web3.eth.accounts[0])
-    var account = web3.eth.accounts[0];
-    //if (account == undefined) alert("Need to login in MetaMask!!");
-    return account;
-}
-
-function uf_getGasPrice(limit) {
-    return limit * 1000000000; //limits * gwei
-}
-
-function uf_getGasLimit(limit) {
-    return limit * 1000 * 1000; //limits * 1 million
-}
 
 function uf_getControlApi(controlApiAdr) {
     var myContract = web3.eth.contract(uF_controlApisAdvAbi);
     return myContract.at(uF_controlApisAdvAdr);
 }
 
-function uF_creatProvider(nodeId, logID) {
+function uF_login(user, pass, func){
     var myControlApi = uf_getControlApi();
-    var nodeName = document.getElementById(nodeId).innerText;
-    myControlApi.createElement(1, nodeName, nodeName, 
-        {from: uf_getEthAccount(), gasPrice: uf_getGasPrice(), gas : uf_getGasLimit(55000)}, 
-        function(error, result){ 
-            if(!error) registerTransactionShow(logID, result);
-            else console.log("error: " + error);
-        });
-}  
-
-function uF_parserUrlRequest(nodeId) {    
-    var urlinfo=window.location.href; 
-
-    var found1 = urlinfo.indexOf("?");
-    var found2 = urlinfo.indexOf("=");
-
-    if (found1 == -1 || found2 == -1) return false;
-
-    var len=urlinfo.length;
-    var offset=urlinfo.indexOf("?");
-    var newsidinfo=urlinfo.substr(offset,len)
-    var newsids = newsidinfo.split("&");
-
-    var userInfo = newsids[0];
-    var hrInfo = newsids[1];
-
-    var user = userInfo.split("=")[1];
-    var hr = hrInfo.split("=")[1];
-
-    uF_userName = user;
-    uF_userNameHr = hr;
-
-    return true;
-}  
-
-
-function uF_getUsername() {    
-    return uF_userName;
+    myControlApi.tryLogin(user, pass, function(error, ret) {
+        if(!error) func(ret);
+        else console.log("error: " + error);
+    } );
 }
 
-
-function uF_getUsernameHr() {    
-    return uF_userNameHr;
+function uF_keepOnline(user, hr, func){
+    var myControlApi = uf_getControlApi();
+    var ret;
+    myControlApi.keepOnline(user, hr, function(error, ret) {
+        if(!error) func(ret);
+        else console.log("error: " + error);
+    } );
 }
 
 function uF_doesNodeExist(node, func){
@@ -105,6 +39,17 @@ function uF_doesNodeExist(node, func){
             else  console.log("error: " + error);
         });
 }
+
+function uF_creatElement(nodeId, logID) {
+    var myControlApi = uf_getControlApi();
+    var nodeName = document.getElementById(nodeId).innerText;
+    myControlApi.createElement(1, nodeName, nodeName, 
+        {from: uf_getEthAccount(), gasPrice: uf_getGasPrice(), gas : uf_getGasLimit(55000)}, 
+        function(error, result){ 
+            if(!error) registerTransactionShow(logID, result);
+            else console.log("error: " + error);
+        });
+}  
 
 function uF_getSingleParameter(node, index, func){  
     var myControlApi = uf_getControlApi();
@@ -126,7 +71,6 @@ function uF_loadElementParameterValues(node, num, func) {
         });
     } 
 } 
-
 
 function uF_setElementParameter(nodeId, logID) {
     var myControlApi = uf_getControlApi();
