@@ -97,6 +97,15 @@ function uF_getUsernameHr() {
     return uF_userNameHr;
 }
 
+function uF_doesNodeExist(node, func){
+    var myControlApi = uf_getControlApi();
+    myControlApi.doesElementExist(node,
+        function(error, ret){ 
+            if(!error) func(ret);  
+            else  console.log("error: " + error);
+        });
+}
+
 function uF_getSingleParameter(node, index, func){  
     var myControlApi = uf_getControlApi();
     myControlApi.getElementParameter(node, uF_parameters[index], {from: uf_getEthAccount()},
