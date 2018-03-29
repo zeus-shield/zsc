@@ -87,16 +87,16 @@ contract ControlBase is Object, ControlInfo {
         return DBNode(getDBDatabase().getNode(_node));
     }
 
-    function createFactoryNode(bytes32 _factory, bytes32 _user, bytes32 _node, bytes32 extra, address _sender) internal returns (address) {
-        address adr;
+    function createFactoryNode(bytes32 _factory, bytes32 _node, bytes32 extra, address _sender) internal returns (address) {
         if (_factory == "provider" || _factory == "receiver") {
-            adr = getDBFactory(_factory).createNode(_node);
-            registerEntityRecorder(_user, adr, _sender);
-        } else if (_factory == "template" || _factory == "agreement" ) {
-            adr = getDBFactory(_factory).createNode(_node);
-            registerEntityRecorder(_node, adr, _sender);
-        }
+            registerUser(_factory, _node, _sender);
+        } 
+        require(checkUserExist(_sender));          
         
+        address adr = getDBFactory(_factory).createNode(_node);
+        require(adr != 0);
+        registerNode(_node, adr, _sender);
+
         if (_factory == "template") {
             registerHolder(_node, _sender);
         } else if (_factory == "agreement") {
