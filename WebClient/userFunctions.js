@@ -6,15 +6,43 @@ var uF_parameters = [];
 var uF_parameterValue = [];
 var uF_eth_account;
 
+
+var uF_userName ;
+var uF_userNameHr ;
+var uF_controlApisAdr;
+
+var uF_controlApisAdvFullAbi;
 var uF_controlApisAdvAbiLogin = [{"constant":true,"inputs":[{"name":"_user","type":"bytes32"},{"name":"_hexx","type":"bytes32"}],"name":"getFullAbi","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"bytes32"},{"name":"_pass","type":"bytes32"}],"name":"tryLogin","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}];
+
+
+
+function uF_getUsername() {    
+    return uF_userName;
+}
+
+function uF_getUsernameHr() {    
+    return uF_userNameHr;
+}
+
+function uF_getControlApisAdr() {    
+    return uF_controlApisAdr;
+}
+
+function uF_getControlApisAbi() {    
+    return JSON.parse(uF_controlApisAdvFullAbi);
+}
+
 
 function uF_getFullAbi(user, hex, adr, func){
     var myContract = web3.eth.contract(uF_controlApisAdvAbiLogin);
     var myControlApi = myContract.at(adr);
-    myControlApi.getFullAbi(user, pass, function(error, fullAbi) {
+    myControlApi.getFullAbi(user, hex, function(error, fullAbi) {
         if(!error) { 
-            bf_configureClient(user, hex, adr, fullAbi)
-            func(hexx);
+            uF_controlApisAdvFullAbi = fullAbi;
+            uF_userName = user;
+            uF_userNameHr = hex;
+            uF_controlApisAdr = adr;
+            func(true);
         } else {
             console.log("error: " + error);
         }
@@ -24,10 +52,13 @@ function uF_getFullAbi(user, hex, adr, func){
 function uF_login(user, pass, adr, func){
     var myContract = web3.eth.contract(uF_controlApisAdvAbiLogin);
     var myControlApi = myContract.at(adr);
+
     myControlApi.tryLogin(user, pass, function(error, hexx) {
         if(!error) {
-            if (hexx == 0x0) func(hexx);
-            else uF_getFullAbi(user, hex, adr, func);
+            if (hexx == 0x0) func(false);
+            else {
+                uF_getFullAbi(user, hexx, adr, func);
+            }
         } else console.log("error: " + error);
     } );
 }
@@ -41,9 +72,10 @@ function uF_keepOnline(user, hr, adr, func){
     } );
 }
 
-function uF_doesNodeExist(node, func){
-    var myContract = web3.eth.contract(bF_getControlApisAbi());
-    var myControlApi = myContract.at(bF_getControlApisAdr());
+function uF_doesNodeExist(func){
+    var node = uF_getUsername();
+    var myContract = web3.eth.contract(uF_getControlApisAbi());
+    var myControlApi = myContract.at(uF_getControlApisAdr());
     myControlApi.doesElementExist(node,
         function(error, ret){ 
             if(!error) func(ret);  
@@ -51,31 +83,35 @@ function uF_doesNodeExist(node, func){
         });
 }
 
-function uF_creatElement(nodeId, logID) {
-    var myControlApi = uf_getControlApi();
-    var nodeName = document.getElementById(nodeId).innerText;
-    myControlApi.createElement(1, nodeName, nodeName, 
-        {from: uf_getEthAccount(), gasPrice: uf_getGasPrice(), gas : uf_getGasLimit(55000)}, 
+function uF_creatElement(logID) {
+    var node = uF_getUsername();
+    var myContract = web3.eth.contract(uF_getControlApisAbi());
+    var myControlApi = myContract.at(uF_getControlApisAdr());
+
+    myControlApi.createElement(1, node,
+        {from: uF_getEthAccount(), gasPrice: uf_getGasPrice(), gas : uf_getGasLimit(55000)}, 
         function(error, result){ 
-            if(!error) registerTransactionShow(logID, result);
+            if(!error) uF_showHashResult(logID, result);
             else console.log("error: " + error);
         });
 }  
 
-function uF_getSingleParameter(node, index, func){  
-    var myControlApi = uf_getControlApi();
-    myControlApi.getElementParameter(node, uF_parameters[index], {from: uf_getEthAccount()},
-         function(error, value){ 
-            if(!error) { 
-                func(index, value);
-            }  
+function uF_getSingleParameter(index, func){ 
+    var node = uF_getUsername();
+    var myContract = web3.eth.contract(uF_getControlApisAbi());
+    var myControlApi = myContract.at(uF_getControlApisAdr());
+
+    myControlApi.getElementParameter(node, uF_parameters[index], 
+        {from: uF_getEthAccount()},
+        function(error, value){ 
+            if(!error) func(index, value);
             else  console.log("error: " + error);
         });
 }
 
-function uF_loadElementParameterValues(node, num, func) {
+function uF_loadElementParameterValues(num, func) {
     for (var i = 0; i < num; ++i) {
-        uF_getSingleParameter(node, i, function(index, value) {
+        uF_getSingleParameter(i, function(index, value) {
             uF_parameterValue[index] = value;
             if (index == num - 1)
                 func(index);
@@ -83,10 +119,11 @@ function uF_loadElementParameterValues(node, num, func) {
     } 
 } 
 
-function uF_setElementParameter(nodeId, logID) {
-    var myControlApi = uf_getControlApi();
-    var nodeName = document.getElementById(nodeId).innerText;
-    var hr = document.getElementById(nodeId + "Hr").innerText;
+function uF_setElementParameter(logID) {
+    var node = uF_getUsername();
+    var hr = uF_getUsernameHr();
+    var myContract = web3.eth.contract(uF_getControlApisAbi());
+    var myControlApi = myContract.at(uF_getControlApisAdr());
 
     var info = "";
     var count = 0;
@@ -102,19 +139,22 @@ function uF_setElementParameter(nodeId, logID) {
     }
 
     if (count > 0) {
-        myControlApi.setElementMultipleParameters(1, nodeName, hr, info,  
-           {from: uf_getEthAccount(), gasPrice: uf_getGasPrice(1), gas : uf_getGasLimit(55000)}, 
-           function(error, result){ 
-            if(!error) uF_showHashResult(logID, result);
-            else console.log("error: " + error);
+        myControlApi.setElementMultipleParameters(nodeName, hr, info,  
+            {from: uF_getEthAccount(), gasPrice: uF_getGasPrice(1), gas : uf_getGasLimit(55000)}, 
+            function(error, result){ 
+                if(!error) uF_showHashResult(logID, result);
+                else console.log("error: " + error);
         });
     }
 } 
 
 
-function uF_numElementParameters(node, func){
-    var myControlApi = uf_getControlApi();
-    myControlApi.numElementParameters(1, node, {from: uf_getEthAccount()},
+function uF_numElementParameters(func){
+    var node = uF_getUsername();
+    var myContract = web3.eth.contract(uF_getControlApisAbi());
+    var myControlApi = myContract.at(uF_getControlApisAdr());
+
+    myControlApi.numElementParameters(node, {from: uF_getEthAccount()},
          function(error, num){ 
             if(!error) func(num.toString(10));  
             else console.log("error: " + error);
