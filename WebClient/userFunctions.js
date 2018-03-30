@@ -11,6 +11,9 @@ var uF_userName ;
 var uF_userNameHr ;
 var uF_controlApisAdr;
 
+var uF_userEthBalance;
+var uF_userNodeAddress;
+
 var uF_controlApisAdvFullAbi;
 var uF_controlApisAdvAbiLogin = [{"constant":true,"inputs":[{"name":"_user","type":"bytes32"},{"name":"_hexx","type":"bytes32"}],"name":"getFullAbi","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"bytes32"},{"name":"_pass","type":"bytes32"}],"name":"tryLogin","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}];
 
@@ -22,6 +25,14 @@ function uF_getUsername() {
 
 function uF_getUsernameHr() {    
     return uF_userNameHr;
+}
+
+function uF_getUserEthBalance() {    
+    return uF_userEthBalance;
+}
+
+function uF_getUserNodeAddress() {    
+    return uF_userNodeAddress;
 }
 
 function uF_getControlApisAdr() {    
@@ -162,6 +173,22 @@ function uF_numElementParameters(func){
 }
 
 
+function uF_loadEthBalance() {
+    var node = uF_getUsername();
+    var myContract = web3.eth.contract(uF_getControlApisAbi());
+    var myControlApi = myContract.at(uF_getControlApisAdr());
+
+    myControlApi.getElementEthBalance(node, function(error, balance){ 
+        if(!error) {
+            uF_ethBalance = balance;  
+            uf_getControlApi().getElementAddress(1, nodeName, function(error, address){ 
+                if(!error) { uF_userNodeAddress = address; func(); }
+                else console.log("error: " + error);
+            });
+        }
+    });
+
+}
 
 
 
