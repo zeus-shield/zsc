@@ -41,21 +41,45 @@ function hF_loadPageHeader(elementId) {
     document.getElementById(elementId).innerHTML = text;  
 }
 
-/*tag: 
-1: listProfile
-2: listTemplate
-3: listAgreement
+/*tag:
+logon, wallet, profile, templates, agreements
 */
 function hF_loadPageBody(elementId, tag) {
     switch(tag) {
-        case 0: 
+        case "logon": 
+            hF_loadWelcome(elementId); 
+            break;
+        case "wallet": 
+            hF_loadWallet(elementId);
+            break;
     }
 } 
 
-function hF_loadWelcom(elementId) {
+function hF_loadWelcome(elementId) {
     var text = ''
     text += '<div class="well">'
     text += '   <text>Welcome to the ZSC testing platform</text>'
     text += '</div>'
     document.getElementById(elementId).innerHTML = text; 
 }
+
+
+function hF_loadWallet(elementId) {
+    var functionInput = "uF_withdrawEth('DestAddress', 'EthAmount', 'TransferEthHash')";
+    var text ="";
+    text += '<div class="well">';
+    text += '   <text>' + "TestETH: " + web3.fromWei(balance) + ': </text><br>'
+    text += '   <text>' + "Address: " + address + ': </text><br><br>'
+
+    text += '   <text>Destination Address</text>  <input id="DestAddress"></input> <br>'
+    text += '   <text>Eth Amount</text> <input id="EthAmount"></input> <br><br>'   
+    text += '   <button type="button" onClick="' + functionInput + '">Transfer ETH</button>'
+    text += '   <text id="TransferEthHash"></text>'
+    text += '</div>'
+
+    document.getElementById(elementId).innerHTML = text;  
+}
+
+
+
+
