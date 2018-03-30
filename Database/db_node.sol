@@ -8,6 +8,7 @@ import "./plat_math.sol";
 import "./object.sol";
 
 contract CallbackDatabase is Object {
+    function getNode(bytes32 _name) public only_delegate constant returns (address);
     function destroyNode(address _node) public only_delegate returns (bool);
     function _addNode(address _node) only_delegate public ;
     function _createIDManager() only_delegate public returns (address);
@@ -121,9 +122,7 @@ contract DBNode is Object {
     }
 
     function removeChild(bytes32 _name) public only_delegate returns (address) {
-        if (childMap_[_name] == 0) {
-            return 0;
-        }
+        require(childMap_[_name] != 0)
 
         address nd;
         for (uint i = 0; i < children_.length; ++i) {
