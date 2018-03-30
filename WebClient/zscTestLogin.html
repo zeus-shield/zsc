@@ -19,16 +19,9 @@
         var user = document.getElementById(userId).value; 
         var pass = document.getElementById(passId).value; 
         
-        console.log(adrId + ": " + adr)
-        console.log(userId + ": " + user)
-        console.log(passId + ": " + pass)
-
         uF_login(user, pass, adr, function(ret) {
-            if(ret == true) {
-                loadPageBody("logon");
-            } else { 
-                alert("User name or password wrong!!");
-            }
+            if(ret) loadPageBody(0);
+            else alert("User name or password wrongttt!!");
         });
     }
 
@@ -41,13 +34,13 @@
     function loadPageBody(tag) {
         document.getElementById("PageBody").innerHTML = "";  
         hF_loadPageHeader("PageHeader");
-        uF_doesNodeExist(function(ret) {
-            if (ret == false) {
-                hF_loadButtonForEnablingElement("PageBody");
-            } else {
-                hF_loadPageBody("PageBody", tag)
-            }
-        });  
+
+        if (tag == 0) {
+            uF_doesNodeExist(function(ret) {
+                if (!ret) hF_loadButtonForEnablingElement("PageBody");
+                else hF_loadPageBody("PageBody", tag)
+            });  
+        }
     }
 
 </script>
