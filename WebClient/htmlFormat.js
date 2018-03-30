@@ -2,18 +2,18 @@
 Copyright (c) 2018 ZSC Dev Team
 */
 
-function hF_loadLoginDiv(elementId) {
-    var functionInput = "checkUser('controlApisAdvAdr', 'userName', 'password')";
+function hF_loadLogin(elementId) {
+    var funcLoad = "checkUser('controlApisAdvAdr', 'userName', 'password')";
     var text = ''
     text += '<div class="well">'
     text += '   <text>Login ZSC system</text><br><br>'
     text += '   <text>ZSC platform address </text> <br>'
-    text += '   <input type="text" id="controlApisAdvAdr"></input> <br> <br>'
+    text += '   <input type="text" id="controlApisAdvAdr" value="0xabcd"></input> <br> <br>'
     text += '   <text>User Name </text> <br>' 
-    text += '   <input type="text" id="userName"></input> <br>' 
+    text += '   <input type="text" id="userName" value="test"></input> <br>' 
     text += '   <text>Password</text> <br> '
-    text += '   <input type="password" id="password" ></input> <br> <br> '
-    text += '   <button type="button" onClick="' + functionInput + '">Enter</button>'
+    text += '   <input type="password" id="password" value="test"></input> <br> <br> '
+    text += '   <button type="button" onClick="' + funcLoad + '">Enter</button>'
     text += '</div>'
     document.getElementById(elementId).innerHTML = text;  
 }
@@ -27,3 +27,26 @@ function hF_loadButtonForEnablingElement(elementId) {
     text += '</div>'
     document.getElementById(elementId).innerHTML = text;  
 }
+
+
+function hF_loadPageHeader(elementId) {
+    var funcPrefix = "loadPageBody(";
+    var funcSuffix = ")";
+    var text = ''
+    text += '<div class="well">'
+    text += '   <button type="button" onClick="' + funcPrefix + 1 + funcSuffix + '">List Profile</button>'
+    text += '   <button type="button" onClick="' + funcPrefix + 2 + funcSuffix + '">List Template</button>'
+    text += '   <button type="button" onClick="' + funcPrefix + 3 + funcSuffix + '">List Agreement</button>'
+    text += '</div>'
+    document.getElementById(elementId).innerHTML = text;  
+}
+
+
+/*tag: 
+1: listProfile
+2: listTemplate
+3: listAgreement
+*/
+function hF_loadPageBody(elementId, tag) {
+    console.log(tag)
+} 
