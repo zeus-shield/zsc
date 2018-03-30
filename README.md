@@ -1,9 +1,9 @@
 # ZSC
 Zeusshield (ZSC) system: AI&P2P Insurance Market Platform [(ZSC Wiki)](https://github.com/zeus-shield/zsc/wiki)
 
-Official solidity implementation for the core part of the ZSC system.
+Official implementation for the solidity-based core part of the ZSC system, and the js-based web-client.
 
-Implementation of the website based interfance not included here.
+Implementation of web-server not included here.
 
 
 ## 1. Coding structure
@@ -78,4 +78,5 @@ Implementation of the website based interfance not included here.
 2018.03.27: start developing the functionality of creating customized insurance template
 2018.03.28: add two files web3js.js and userFunctions.js for showing examples of how to use web3js and zsc apis as well as Metamask at the web-client side
 2018.03.29: add three files htmlFormat.js, zscTestLogin.html and zscTestMain.html
+2018.03.30: change file name app_control.sol -> app_proxy.sol; add file basicFunctions.sol
 ```
