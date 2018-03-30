@@ -11,7 +11,7 @@
 <script type="text/javascript" src="./basicFunctions.js"></script>
 <script type="text/javascript" src="./htmlFormat.js"></script>
 <script type="text/javascript">
-    var pageContent = ["logon", "enableElement", "showProfile", "listTemplate", "modifyTemplate", "visitAgreement", "listAgreement", "showAgreement"]
+
     var web3 = setupWeb3js(false);
 
     function checkUser(adrId, userId, passId){
@@ -24,7 +24,7 @@
         console.log(passId + ": " + pass)
 
         uF_login(user, pass, adr, function(ret) {
-            if(ret != 0x0 && ret != undefined) {
+            if(ret == true) {
                 loadPageBody("logon");
             } else { 
                 alert("User name or password wrong!!");
@@ -35,19 +35,17 @@
     function loadLogin() {
         document.getElementById("PageHeader").innerHTML = "";  
         document.getElementById("PageBody").innerHTML = "";  
-        hF_loadLoginDiv("PageBody");
+        hF_loadLogin("PageBody");
     }
 
-    function loadPageHead() {
-        hF_loadLogin("PageHeader");
-    }
-    
     function loadPageBody(tag) {
         document.getElementById("PageBody").innerHTML = "";  
-        uF_doesNodeExist(function(ret){
+        hF_loadPageHeader("PageHeader");
+        uF_doesNodeExist(function(ret) {
             if (ret == false) {
-                hF_loadButtonForEnablingElement("ButtonForCreatingElement");
+                hF_loadButtonForEnablingElement("PageBody");
             } else {
+                hF_loadPageBody("PageBody", tag)
             }
         });  
     }
