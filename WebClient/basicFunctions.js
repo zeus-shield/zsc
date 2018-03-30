@@ -2,47 +2,20 @@
 Copyright (c) 2018 ZSC Dev Team
 */
 
-var bF_userName ;
-var bF_userNameHr ;
-var bF_controlApisAdr;
-var bF_controlApisAbi;
 
-function bf_getEthAccount() {
+function bF_getEthAccount() {
     //console.log(web3.eth.accounts[0])
     var account = web3.eth.accounts[0];
     //if (account == undefined) alert("Need to login in MetaMask!!");
     return account;
 }
 
-function bf_getGasPrice(limit) {
+function bF_getGasPrice(limit) {
     return limit * 1000000000; //limits * gwei
 }
 
-function bf_getGasLimit(limit) {
+function bF_getGasLimit(limit) {
     return limit * 1000 * 1000; //limits * 1 million
-}
-
-function bf_configureClient(user, hr, adr, abi) {
-    bF_userName = user;
-    bF_userNameHr = hr;
-    bF_controlApisAdr = adr;
-    bF_controlApisAbi = abi;
-}
-
-function bF_getUsername() {    
-    return uF_userName;
-}
-
-function bF_getUsernameHr() {    
-    return uF_userNameHr;
-}
-
-function bF_getControlApisAdr() {    
-    return bF_controlApisAdr;
-}
-
-function bF_getControlApisAbi() {    
-    return bF_controlApisAbi;
 }
 
 
