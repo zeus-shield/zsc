@@ -7,7 +7,7 @@ import "./db_user.sol";
 import "./db_idmanager.sol";
 
 contract DBAgreement is DBUser {
-    uint private status_; // 0: UNDEFINED; 1: ONGOING; 2: PAID; 3: NOTPAID
+    uint private status_; // 0: READY; 1: PUBLISHED; 2: PAID; 3: NOTPAID
     struct AgreementKeyInfo {
         uint startTime_;
         uint endTime_;
@@ -24,6 +24,7 @@ contract DBAgreement is DBUser {
     }
 
     function initParameters() internal {
+        addParameter("status");
         addParameter("startTime");
         addParameter("endTime");
         addParameter("signedTime");
@@ -32,6 +33,25 @@ contract DBAgreement is DBUser {
     }
 
     function setParameter(bytes32 _parameter, string _value) public only_delegate returns (bool) {
+        return false;
+        super.setParameter(_parameter, _value);
+    }
+
+    function addParameter(bytes32 _parameter, string _value) public only_delegate returns (bool) {
+        return false;
+        super.addParameter(_parameter, _value);
+    }
+
+    function setAgreementStatus(bytes32 _tag) public only_delegate returns (bool) {
+        if (status_ > 1) return false;
+
+        if (status_ == 0 && _tag == "PUBLISHED") {
+            status_ = 1;
+            return super.setParameter("status",  _tag);
+        } else if (status_ == 1 && _tag == "READY") {
+            status_ = 0;
+            return super.setParameter("status",  _tag);
+        }
         return false;
     }
 
