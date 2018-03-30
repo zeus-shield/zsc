@@ -20,10 +20,14 @@
         var pass = document.getElementById(passId).value; 
         
         uF_login(user, pass, adr, function(ret) {
-            if(ret) loadPageBody(0);
+            if(ret) loadPageBody("logon");
             else alert("User name or password wrongttt!!");
         });
     }
+
+    /*tag:
+    logon, wallet, profile, templates, agreements
+    */
 
     function loadLogin() {
         document.getElementById("PageHeader").innerHTML = "";  
@@ -35,11 +39,17 @@
         document.getElementById("PageBody").innerHTML = "";  
         hF_loadPageHeader("PageHeader");
 
-        if (tag == 0) {
+        if (tag == "logon") {
             uF_doesNodeExist(function(ret) {
                 if (!ret) hF_loadButtonForEnablingElement("PageBody");
                 else hF_loadPageBody("PageBody", tag)
             });  
+        } else {
+            if (tag == "wallet") {
+                uF_loadEthBalance(function() {
+                    hF_loadPageBody("PageBody", tag);
+                });
+            }
         }
     }
 
