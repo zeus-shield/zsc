@@ -28,7 +28,6 @@
     /*tag:
     logon, wallet, profile, templates, agreements
     */
-
     function loadLogin() {
         document.getElementById("PageHeader").innerHTML = "";  
         document.getElementById("PageBody").innerHTML = "";  
@@ -53,6 +52,9 @@
                 uF_loadElementParameters(function() {
                     hF_loadPageBody("PageBody", tag);
                 });
+            } else if (tag == "templates") {
+                uF_loadBindedEntities(tag, function() {
+                }
             }
         }
     }

@@ -247,14 +247,14 @@ function uF_transferEth(destAddressID, amountID, logID){
 }
 
 ///////////////////////////
-function uF_loadBindedEntities(node, type, func) {
+function uF_loadBindedEntities(type, func) {
     var node = uF_getUsername();
     var myContract = web3.eth.contract(uF_getControlApisAbi());
     var myControlApi = myContract.at(uF_getControlApisAdr());
 
-    uF_numElementParameters(node, type, function(num) {
+    uF_numBindedEntities(node, type, function(num) {
         for (var i = 0; i < num; ++i) {
-            myControlApi.getBindedElementNameByIndex(node, type, i, function(index, value) {
+            myControlApi.getBindedElementNameByIndex(type, i, function(index, value) {
                 uF_parameterValue[index] = value;
                 if (index == num - 1)
                     func(index);
@@ -263,7 +263,7 @@ function uF_loadBindedEntities(node, type, func) {
     });
 }
 
-function uF_numBindedEntities(controlApi, type, func){
+function uF_numBindedEntities(type, func){
     var node = uF_getUsername();
     var myContract = web3.eth.contract(uF_getControlApisAbi());
     var myControlApi = myContract.at(uF_getControlApisAdr());
