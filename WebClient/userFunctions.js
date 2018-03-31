@@ -112,28 +112,6 @@ function uF_creatElement(logID) {
         });
 }  
 
-function uF_getSingleParameter(index, func){ 
-    var node = uF_getUsername();
-    var myContract = web3.eth.contract(uF_getControlApisAbi());
-    var myControlApi = myContract.at(uF_getControlApisAdr());
-
-    myControlApi.getElementParameter(node, uF_parameters[index], 
-        {from: uF_getEthAccount()},
-        function(error, value){ 
-            if(!error) func(index, value);
-            else  console.log("error: " + error);
-        });
-}
-
-function uF_loadElementParameterValues(num, func) {
-    for (var i = 0; i < num; ++i) {
-        uF_getSingleParameter(i, function(index, value) {
-            uF_parameterValue[index] = value;
-            if (index == num - 1)
-                func(index);
-        });
-    } 
-} 
 
 function uF_setElementParameter(logID) {
     var node = uF_getUsername();
@@ -184,27 +162,13 @@ function uF_loadEthBalance() {
 
 
 ///////////////////////////
-function uF_loadElementParameters() {
+function uF_loadElementParameters(func) {
     uF_numElementParameters(function(num) {
         uF_loadElementParameterNames(num, function(sum) {
             uF_loadElementParameterValues(sum, function(index){
                 if (index == sum - 1) {
-                    var text = '<div class="well">';
-                    for (var i = 0; i < uF_parameters.length; ++i) {
-                        text += '<div>'
-                        text +=      '<text>' + uF_parameters[i] + ': </text>'
-                        text +=      '<input type="text" id="' + uF_parameters[i] + '"></input>'
-                        text += '</div>'
-                    }
-                    text += '</div>'
-                    document.getElementById(elementId).innerHTML = text;  
-                    for (var i = 0; i < uF_parameters.length; ++i) {
-                      document.getElementById(uF_parameters[i]).value = uF_parameterValue[i];
-                   }
+                    func();
                 }
-                //for (var i = 0; i < uF_parameters.length; ++i) {
-                //    document.getElementById(uF_parameters[i]).value = uF_parameterValue[i];
-                //}
             });
         }); 
     });
@@ -224,11 +188,50 @@ function uF_numElementParameters(func){
 
 
 function uF_loadElementParameterNames(num, func) {
-
+    for (var i = 0; i < num; ++i) {
+        uF_getElementParameterNameByIndex(node, i, function(index, para) {
+            uF_parameters[index] = para;
+            if (index == num - 1) {
+                func(num);
+            }
+        });
+    } 
 } 
 
 function uF_getElementParameterNameByIndex(index, func) {
+    for (var i = 0; i < num; ++i) {
+        uF_getSingleParameter(node, i, function(index, value) {
+            uF_parameterValue[index] = value;
+            if (index == num - 1)
+                func(index);
+        });
+    } 
+} 
 
+
+function uF_loadElementParameterValues(num, func) {
+    for (var i = 0; i < num; ++i) {
+        uF_getSingleParameter(i, function(index, value) {
+            uF_parameterValue[index] = value;
+            if (index == num - 1)
+                func(index);
+        });
+    } 
+} 
+
+
+function uF_getSingleParameter(index, func){ 
+    var node = uF_getUsername();
+    var myContract = web3.eth.contract(uF_getControlApisAbi());
+    var myControlApi = myContract.at(uF_getControlApisAdr());
+
+    myControlApi.getElementParameter(node, uF_parameters[index], 
+        {from: uF_getEthAccount()},
+        function(error, value){ 
+            if(!error) func(index, value);
+            else  console.log("error: " + error);
+        });
+}
 
 ///////////////////////////
 
