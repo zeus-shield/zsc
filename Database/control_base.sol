@@ -39,8 +39,7 @@ contract DBNode is Object {
     function numBindedEntities(bytes32 _type) public only_delegate constant returns (uint);
     function getBindedEntityNameByIndex(bytes32 _type, uint _index) public only_delegate constant returns (bytes32);
 
-    function setAgreementStatus(uint _status) only_delegate public;
-    function getAgreementStatus() public only_delegate constant returns (uint);
+    function setAgreementStatus(bytes32 _tag) public only_delegate returns (bool);
 }
 
 contract ControlBase is Object, ControlInfo {   
@@ -102,7 +101,7 @@ contract ControlBase is Object, ControlInfo {
         } else if (_factory == "agreement") {
             registerHolder(_node, _sender);
             duplicateNode(extra,  _node);
-            DBNode(adr).setAgreementStatus(1);
+            DBNode(adr).setAgreementStatus("READY");
         }
         return adr;
     }
@@ -143,5 +142,4 @@ contract ControlBase is Object, ControlInfo {
         }
         return true;
     }
-
 }
