@@ -112,7 +112,6 @@ function uF_creatElement(logID) {
         });
 }  
 
-
 function uF_setElementParameter(logID) {
     var node = uF_getUsername();
     var hr = uF_getUsernameHr();
@@ -142,7 +141,6 @@ function uF_setElementParameter(logID) {
     }
 } 
 
-
 function uF_loadEthBalance() {
     var node = uF_getUsername();
     var myContract = web3.eth.contract(uF_getControlApisAbi());
@@ -159,7 +157,6 @@ function uF_loadEthBalance() {
     });
 
 }
-
 
 ///////////////////////////
 function uF_loadElementParameters(func) {
@@ -186,7 +183,6 @@ function uF_numElementParameters(func){
          });
 }
 
-
 function uF_loadElementParameterNames(num, func) {
     for (var i = 0; i < num; ++i) {
         uF_getElementParameterNameByIndex(node, i, function(index, para) {
@@ -208,7 +204,6 @@ function uF_getElementParameterNameByIndex(index, func) {
     } 
 } 
 
-
 function uF_loadElementParameterValues(num, func) {
     for (var i = 0; i < num; ++i) {
         uF_getSingleParameter(i, function(index, value) {
@@ -218,7 +213,6 @@ function uF_loadElementParameterValues(num, func) {
         });
     } 
 } 
-
 
 function uF_getSingleParameter(index, func){ 
     var node = uF_getUsername();
@@ -235,4 +229,21 @@ function uF_getSingleParameter(index, func){
 
 ///////////////////////////
 
+function uF_transferEth(destAddressID, amountID, logID){  
+    var node = uF_getUsername();
+    var myContract = web3.eth.contract(uF_getControlApisAbi());
+    var myControlApi = myContract.at(uF_getControlApisAdr());
+
+    var destAddress = document.getElementById(destAddressID).value;
+    var amount = document.getElementById(amountID).value;
+
+    if (destAddress != 0 && amount > 0) {
+        uf_getControlApi().elementwithDrawEth(1, nodeName, destAddress, web3.toWei(amount, 'ether') , 
+            {from: uf_getEthAccount(), gasPrice: uf_getGasPrice(1), gas : uf_getGasLimit(55000)}, 
+            function(error, result){ 
+            if(!error) uF_showHashResult(logID, result);
+            else console.log("error: " + error);
+        });
+    }
+}
 
