@@ -172,4 +172,34 @@ library PlatString {
             return false;
         }
     }
+
+    function stringToUint(string s) internal pure returns (uint) {
+        bytes memory b = bytes(s);
+        uint i;
+        uint result = 0;
+        for (i = 0; i < b.length; i++) {
+            uint c = uint(b[i]);
+            if (c >= 48 && c <= 57) {
+                result = result * 10 + (c - 48);
+            }
+        }
+        return result;
+    }
+
+    function uintToString(uint v) internal pure returns (string) {
+        uint maxlength = 100;
+        bytes memory reversed = new bytes(maxlength);
+        uint i = 0;
+        while (v != 0) {
+            uint remainder = v % 10;
+            v = v / 10;
+            reversed[i++] = byte(48 + remainder);
+        }
+        bytes memory s = new bytes(i + 1);
+        for (uint j = 0; j <= i; j++) {
+            s[j] = reversed[i - j];
+        }
+        return string(s);
+    }
+
 }
