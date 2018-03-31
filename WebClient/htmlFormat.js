@@ -46,47 +46,47 @@ function hF_loadPageHeader(elementId) {
 logon, wallet, profile, templates, agreements
 */
 function hF_loadPageBody(elementId, tag) {
+    var text;
     switch(tag) {
         case "logon": 
-            hF_loadWelcome(elementId); 
+            text = hF_loadWelcome(); 
             break;
         case "wallet": 
-            hF_loadWallet(elementId);
+            text = hF_loadWallet();
             break;
         case "profile": 
-            hF_loadParameters(elementId, "user");
+            text = hF_loadParameters(, "user");
             break;
     }
+    document.getElementById(elementId).innerHTML = text; 
 } 
 
 ////////////////////////////////////
 
-function hF_loadWelcome(elementId) {
+function hF_loadWelcome() {
     var text = ''
     text += '<div class="well">'
     text += '   <text>Welcome to the ZSC testing platform</text>'
     text += '</div>'
-    document.getElementById(elementId).innerHTML = text; 
+    return text;
 }
 
 
-function hF_loadWallet(elementId) {
+function hF_loadWallet() {
     var functionInput = "uF_withdrawEth('DestAddress', 'EthAmount', 'TransferEthHash')";
     var text ="";
     text += '<div class="well">';
     text += '   <text>' + "TestETH: " + web3.fromWei(balance) + ': </text><br>'
     text += '   <text>' + "Address: " + address + ': </text><br><br>'
-
     text += '   <text>Destination Address</text>  <input id="DestAddress"></input> <br>'
     text += '   <text>Eth Amount</text> <input id="EthAmount"></input> <br><br>'   
     text += '   <button type="button" onClick="' + functionInput + '">Transfer ETH</button>'
     text += '   <text id="TransferEthHash"></text>'
     text += '</div>'
-
-    document.getElementById(elementId).innerHTML = text;  
+    return text;
 }
 
-function hF_loadParameters(elementId, type) {
+function hF_loadParameters(type) {
     var functionInput = "uF_withdrawEth('DestAddress', 'EthAmount', 'TransferEthHash')";
     var parameterNos = uF_numParameters(type);
    
@@ -98,6 +98,7 @@ function hF_loadParameters(elementId, type) {
         text += '   <input type="text" id="' + uF_getParameterValue(type, i) + '"></input>'
     }
     text += '</div>'
+    return text;
 }
 
 
