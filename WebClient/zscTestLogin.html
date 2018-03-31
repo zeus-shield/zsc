@@ -49,6 +49,10 @@
                 uF_loadEthBalance(function() {
                     hF_loadPageBody("PageBody", tag);
                 });
+            } else if (tag == "profile") {
+                uF_loadElementParameters(function() {
+                    hF_loadPageBody("PageBody", tag);
+                });
             }
         }
     }
