@@ -34,9 +34,10 @@ function hF_loadPageHeader(elementId) {
     var funcSuffix = ")";
     var text = ''
     text += '<div class="well">'
-    text += '   <button type="button" onClick="' + funcPrefix + 1 + funcSuffix + '">List Profile</button>'
-    text += '   <button type="button" onClick="' + funcPrefix + 2 + funcSuffix + '">List Template</button>'
-    text += '   <button type="button" onClick="' + funcPrefix + 3 + funcSuffix + '">List Agreement</button>'
+    text += '   <button type="button" onClick="' + funcPrefix + "'wallet'" + funcSuffix + '">Wallate</button>'
+    text += '   <button type="button" onClick="' + funcPrefix + "'profile'" + funcSuffix + '">Profile</button>'
+    text += '   <button type="button" onClick="' + funcPrefix + "'templates'" + funcSuffix + '">Templates</button>'
+    text += '   <button type="button" onClick="' + funcPrefix + "'agreements'" + funcSuffix + '">Agreements</button>'
     text += '</div>'
     document.getElementById(elementId).innerHTML = text;  
 }
@@ -52,8 +53,13 @@ function hF_loadPageBody(elementId, tag) {
         case "wallet": 
             hF_loadWallet(elementId);
             break;
+        case "profile": 
+            hF_loadParameters(elementId, "user");
+            break;
     }
 } 
+
+////////////////////////////////////
 
 function hF_loadWelcome(elementId) {
     var text = ''
@@ -78,6 +84,20 @@ function hF_loadWallet(elementId) {
     text += '</div>'
 
     document.getElementById(elementId).innerHTML = text;  
+}
+
+function hF_loadParameters(elementId, type) {
+    var functionInput = "uF_withdrawEth('DestAddress', 'EthAmount', 'TransferEthHash')";
+    var parameterNos = uF_numParameters(type);
+   
+    var text ="";
+    text += '<div class="well">';
+   
+    for (var i = 0; i < parameterNos; ++i) {
+        text += '   <text>' + uF_getParameterName(type, i) + ': </text>'
+        text += '   <input type="text" id="' + uF_getParameterValue(type, i) + '"></input>'
+    }
+    text += '</div>'
 }
 
 
