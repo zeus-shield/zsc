@@ -7,6 +7,8 @@ var uF_UserParameterValues = [];
 var uF_Entityparameters = [];
 var uF_EntityparameterValues = [];
 
+var uF_BindedEntities = [];
+
 var uF_eth_account;
 
 
@@ -19,8 +21,6 @@ var uF_userNodeAddress;
 
 var uF_controlApisAdvFullAbi;
 var uF_controlApisAdvAbiLogin = [{"constant":true,"inputs":[{"name":"_user","type":"bytes32"},{"name":"_hexx","type":"bytes32"}],"name":"getFullAbi","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"bytes32"},{"name":"_pass","type":"bytes32"}],"name":"tryLogin","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}];
-
-
 
 function uF_getUsername() { return uF_userName; }
 
@@ -228,7 +228,6 @@ function uF_getSingleParameter(index, func){
 }
 
 ///////////////////////////
-
 function uF_transferEth(destAddressID, amountID, logID){  
     var node = uF_getUsername();
     var myContract = web3.eth.contract(uF_getControlApisAbi());
@@ -245,5 +244,34 @@ function uF_transferEth(destAddressID, amountID, logID){
             else console.log("error: " + error);
         });
     }
+}
+
+///////////////////////////
+function uF_loadBindedEntities(node, type, func) {
+    var node = uF_getUsername();
+    var myContract = web3.eth.contract(uF_getControlApisAbi());
+    var myControlApi = myContract.at(uF_getControlApisAdr());
+
+    uF_numElementParameters(node, type, function(num) {
+        for (var i = 0; i < num; ++i) {
+            myControlApi.getBindedElementNameByIndex(node, type, i, function(index, value) {
+                uF_parameterValue[index] = value;
+                if (index == num - 1)
+                    func(index);
+            });
+        } 
+    });
+}
+
+function uF_numBindedEntities(controlApi, type, func){
+    var node = uF_getUsername();
+    var myContract = web3.eth.contract(uF_getControlApisAbi());
+    var myControlApi = myContract.at(uF_getControlApisAdr());
+
+    myControlApi.numBindedElements(node, type, {from: uF_getEthAccount()},
+        function(error, num){ 
+            if(!error) func(num.toString(10));  
+            else console.log("error: " + error);
+        });
 }
 
