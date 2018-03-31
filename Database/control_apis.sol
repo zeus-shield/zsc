@@ -40,7 +40,7 @@ contract ControlApis is ControlBase {
         return Object(_adr).name();
     }
 
-    /// @dev Creat a user element
+    /// @dev Get the type of an element
     function getElementType(bytes32 _node) public only_delegate constant returns (bytes32) {
         DBNode nd = getDBNode( _node);
         require(nd != DBNode(0));
@@ -127,20 +127,27 @@ contract ControlApis is ControlBase {
         return  getDBNode(_node).executeEtherTransaction(_dest, _amount, "null");
     }
 
-
-
-    /// @dev Get the number of templates created by a particular element
+    /// @dev Get the number of element binded to the node
     /// @param _node The name of the existing element
     /// @param _elementType The type of the element
     function numBindedElements(bytes32 _node, uint _elementType) public only_registered(_node) constant returns (uint) {
         return getDBNode(_node).numBindedEntities(mapType(_elementType));
     }
 
-    /// @dev Get the name of a template of a particular element
+    /// @dev Get the name of the element binded to the node
     /// @param _node The name of the existing element
     /// @param _elementType The type of the element
     /// @param _index The index of the template
     function getBindedElementNameByIndex(bytes32 _node, uint _elementType, uint _index) public only_registered(_node) constant returns (bytes32) {
         return getDBNode(_node).getBindedEntityNameByIndex(mapType(_elementType), _index);
+    }
+
+    function publishInsurance(bytes32 _node, bool _tag) public only_registered(_node) returns (bool) {
+        if (_tag) return getDBNode(_node).setAgreementStatus("PUBLISHED");
+        else return getDBNode(_node).setAgreementStatus("READY");
+    }
+
+    function buyInsurance(bytes32 _user, bytes32 _node, uint _amount) public only_registered(_user) returns (bool) {
+        return getDBNode(_user).executeEtherTransaction(address(getDBNode(_node)), _amount, "null");
     }
 }
