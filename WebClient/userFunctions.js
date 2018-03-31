@@ -2,8 +2,11 @@
 Copyright (c) 2018 ZSC Dev Team
 */
 
-var uF_parameters = [];
-var uF_parameterValue = [];
+var uF_UserParameters = [];
+var uF_UserParameterValues = [];
+var uF_Entityparameters = [];
+var uF_EntityparameterValues = [];
+
 var uF_eth_account;
 
 
@@ -19,30 +22,32 @@ var uF_controlApisAdvAbiLogin = [{"constant":true,"inputs":[{"name":"_user","typ
 
 
 
-function uF_getUsername() {    
-    return uF_userName;
+function uF_getUsername() { return uF_userName; }
+
+function uF_getUsernameHr() { return uF_userNameHr; }
+
+function uF_getUserEthBalance() {  return uF_userEthBalance;}
+
+function uF_getUserNodeAddress() { return uF_userNodeAddress;}
+
+function uF_getControlApisAdr() { return uF_controlApisAdr;}
+
+function uF_getControlApisAbi() { return JSON.parse(uF_controlApisAdvFullAbi);}
+
+function uf_numParameters(type) { 
+    if (type == "user") return uF_UserParameters.length;
+    else return uF_BindedEntityparameters.length;
 }
 
-function uF_getUsernameHr() {    
-    return uF_userNameHr;
+function uf_getParameterName(type, index) { 
+    if (type == "user") return uF_UserParameters[index];
+    else return uF_BindedEntityparameters[index];
 }
 
-function uF_getUserEthBalance() {    
-    return uF_userEthBalance;
+function uf_getParameterValue(type, index) { 
+    if (type == "user") return uF_UserParameterValues[index];
+    else return uF_EntityparameterValues[index];
 }
-
-function uF_getUserNodeAddress() {    
-    return uF_userNodeAddress;
-}
-
-function uF_getControlApisAdr() {    
-    return uF_controlApisAdr;
-}
-
-function uF_getControlApisAbi() {    
-    return JSON.parse(uF_controlApisAdvFullAbi);
-}
-
 
 function uF_getFullAbi(user, hex, adr, func){
     var myContract = web3.eth.contract(uF_controlApisAdvAbiLogin);
@@ -160,19 +165,6 @@ function uF_setElementParameter(logID) {
 } 
 
 
-function uF_numElementParameters(func){
-    var node = uF_getUsername();
-    var myContract = web3.eth.contract(uF_getControlApisAbi());
-    var myControlApi = myContract.at(uF_getControlApisAdr());
-
-    myControlApi.numElementParameters(node, {from: uF_getEthAccount()},
-         function(error, num){ 
-            if(!error) func(num.toString(10));  
-            else console.log("error: " + error);
-         });
-}
-
-
 function uF_loadEthBalance() {
     var node = uF_getUsername();
     var myContract = web3.eth.contract(uF_getControlApisAbi());
@@ -190,5 +182,54 @@ function uF_loadEthBalance() {
 
 }
 
+
+///////////////////////////
+function uF_loadElementParameters() {
+    uF_numElementParameters(function(num) {
+        uF_loadElementParameterNames(num, function(sum) {
+            uF_loadElementParameterValues(sum, function(index){
+                if (index == sum - 1) {
+                    var text = '<div class="well">';
+                    for (var i = 0; i < uF_parameters.length; ++i) {
+                        text += '<div>'
+                        text +=      '<text>' + uF_parameters[i] + ': </text>'
+                        text +=      '<input type="text" id="' + uF_parameters[i] + '"></input>'
+                        text += '</div>'
+                    }
+                    text += '</div>'
+                    document.getElementById(elementId).innerHTML = text;  
+                    for (var i = 0; i < uF_parameters.length; ++i) {
+                      document.getElementById(uF_parameters[i]).value = uF_parameterValue[i];
+                   }
+                }
+                //for (var i = 0; i < uF_parameters.length; ++i) {
+                //    document.getElementById(uF_parameters[i]).value = uF_parameterValue[i];
+                //}
+            });
+        }); 
+    });
+}
+
+function uF_numElementParameters(func){
+    var node = uF_getUsername();
+    var myContract = web3.eth.contract(uF_getControlApisAbi());
+    var myControlApi = myContract.at(uF_getControlApisAdr());
+
+    myControlApi.numElementParameters(node, {from: uF_getEthAccount()},
+         function(error, num){ 
+            if(!error) func(num.toString(10));  
+            else console.log("error: " + error);
+         });
+}
+
+
+function uF_loadElementParameterNames(num, func) {
+
+} 
+
+function uF_getElementParameterNameByIndex(index, func) {
+
+
+///////////////////////////
 
 
