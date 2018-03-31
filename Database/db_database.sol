@@ -60,7 +60,7 @@ contract DBDatabase is Object {
         nodeExists_[_node] = true;
 
         //for testing purpose; 2018-03-06, 2018-03-14
-        string memory str = "DBDatabase: _addNode() - ";
+        string memory str = "_addNode() - ";
         string memory nodeName = PlatString.bytes32ToString(DBNode(_node).name());
         str = PlatString.append(str, nodeName);
         addLog(str, true);

@@ -23,7 +23,6 @@ contract DBNode is Object {
     address private controller_ = address(0);
     bytes32 private nodeType_ = "node";
 
-
     address[] children_;
     mapping(bytes32 => address) childMap_;
 
@@ -122,7 +121,7 @@ contract DBNode is Object {
     }
 
     function removeChild(bytes32 _name) public only_delegate returns (address) {
-        require(childMap_[_name] != 0)
+        require(childMap_[_name] != 0);
 
         address nd;
         for (uint i = 0; i < children_.length; ++i) {
