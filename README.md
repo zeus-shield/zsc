@@ -28,6 +28,8 @@ Implementation of web-server not included here.
         |-- objct 
             |-- adm_base
             |-- app_proxy
+            |-- simulation_base
+            
             |-- db_database
             |-- db_idmanager
             |-- db_node 
@@ -81,5 +83,5 @@ Implementation of web-server not included here.
 2018.03.28: add two files web3js.js and userFunctions.js for showing examples of how to use web3js and zsc apis as well as Metamask at the web-client side
 2018.03.29: add three files htmlFormat.js, zscTestLogin.html and zscTestMain.html
 2018.03.30: change file name app_control.sol -> app_proxy.sol; add file basicFunctions.sol
-2018.03.31: add a new file adm_base.sol
+2018.03.31: add two new file adm_base.sol and simulation_base.sol
 ```
