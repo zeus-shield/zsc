@@ -4,9 +4,9 @@ Copyright (c) 2018 ZSC Dev Team
 
 pragma solidity ^0.4.18;
 
-import "./object.sol";
+import "./db_node.sol";
 
-contract SimulatorBase is Object {
+contract DBSimulator is DBNode {
     struct SimultionRun {
         bool started_;
         bool running_ ;
@@ -20,11 +20,13 @@ contract SimulatorBase is Object {
     }
     mapping(bytes32 => SimultionRun) private simulationRuns_;
 
-    address private database_;
-    address private controlApis_;
     uint private randSeed = 0;
 
-    function SimulatorBase() public Object("zsc_simulation") {}
+    function DBSimulator(bytes32 _name) public DBNode(_name) {
+    }
+
+    function initParameters() internal {
+    }
 
     // Generates a random number
     // Original file at 
@@ -35,15 +37,6 @@ contract SimulatorBase is Object {
         uint randValue = uint(sha3(block.blockhash(block.number-1), randSeed ))%(_max - _min);
 
         return (randValue + _min);
-    }
-
-    function initSimulation(address _controller, address _database) public only_delegate  {
-        require(_controller != 0 && _database != 0);
-        database_ = _database;
-        controlApis_ = _controller;
-
-        setDelegate(_controller, true);
-        setDelegate(_database, true);
     }
 
     function addSimulationRun(bytes32 _name, bytes32 _provider, bytes32 _receiver, bytes32 _agreement, uint _duration) public only_delegate {
