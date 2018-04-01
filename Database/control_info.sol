@@ -57,8 +57,12 @@ contract ControlInfo is Object {
     }
     */
 
-    function checkUserExist(address _adr) internal constant returns (bool) { 
-        return users_[_adr].tag_; 
+    function getSenderNameByAddress(address _adr) internal constant returns (bytes32) { 
+        if (users_[_adr].tag_) {
+            return users_[_adr].name_;
+        } else {
+            return 0x0;
+        }
     }
 
     function checkNodeExist(bytes32 _name) internal constant returns (bool) { 
