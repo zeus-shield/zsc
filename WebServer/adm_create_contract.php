@@ -1,10 +1,22 @@
 
+<?php include("adm_header.php"); ?>
+
 <html>
 <head>
+
+<script type="text/javascript">
+    var web3 = setupWeb3js(false);
+    function gotoConfigureLogRecordere() {
+        window.location.href="adm_configure_logrecorder.php";
+    }
+</script>
 </head>
 <body>
+    <?php echo includeHeader();?>
 
     <div class="page-header"> <font size="5" color="blue" >Setup ZSC system in the testing envrioment</font></div>
+
+    <?php echo includAllAdrs();?>
 
     <text>Step - 0: Create log_recorder</text>
     <div class="well">
