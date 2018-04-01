@@ -97,4 +97,18 @@ contract AdmBase is Object {
         testUsers_[_hexx].node_ = adr;
         testUsers_[_hexx].status_ = 3;
     }
+
+    function numUsers() public only_delegate constant returns (uint) {
+        return testUsers_.length;
+    }
+
+    function getUserInfoByIndex(uint _index) public only_delegate constant returns (string) {
+        string memory str ="";
+        str = PlatString.findbyte(str, "<name:" PlatString.bytes32ToString(testUsers_[_index].name_), ">";
+        str = PlatString.findbyte(str, "<status:" PlatString.bytes32ToString(testUsers_[_index].status_), ">";
+        str = PlatString.findbyte(str, "<type:" PlatString.bytes32ToString(testUsers_[_index].type_), ">";
+        str = PlatString.findbyte(str, "<id:" PlatString.addressToString(testUsers_[_index].id_), ">";
+        str = PlatString.findbyte(str, "<node:" PlatString.addressToString(testUsers_[_index].node_), ">";
+        return str;
+    }
 }
