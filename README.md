@@ -1,38 +1,40 @@
 # ZSC
-Zeusshield (ZSC) system: AI&P2P Insurance Market Platform [(ZSC Wiki)](https://github.com/zeus-shield/zsc/wiki)
+Zeusshield (ZSC) system: AI&P2P Insurance Market Platform [(ZSC Wiki)](https://github.com/zeus-shield/zsc/wiki), [(ZSC APIs)](https://github.com/zeus-shield/zsc/wiki#zscapireference) 
 
 Official implementation for the solidity-based core part of the ZSC system, and the js-based web-client.
 
 Implementation of web-server not included here.
 
 
-## 1. Coding structure
+## Project structure
+```bash
+|-- Database:  
+    |--solidity based implementation
 
-### 1.1 Contracts: the solidity-based coding here
+|-- Token:     
+    |-- zsc token contract based on ERC20 protocol
 
-#### token: zsc token contract, Based on ERC20 protocol
+|-- WebClient
+    |--web3.js and javascript based implementation
+    |--compatible with Metamask 
 
-#### database: construct the decentralized databased
+|-- WebServer
+    |--web3.js, javascript and php based implementation
+    |--compatible with Metamask 
+```
 
-#### plat: basic functions
-
-### 1.2 Test: testing codes here
-
-## 2. ZSC platform part:
-
-### 2.1 Framework Components
+## Contract inherentation
 ```bash
 |-- owned
     |-- delegated
         |-- log_recorder
         |-- objct 
             |-- adm_base
-            |-- app_proxy
-            |-- simulation_base
-            
+            |-- app_proxy            
             |-- db_database
             |-- db_idmanager
             |-- db_node 
+                |-- db_simulator
                 |-- db_entity 
                     |-- db_user
                         |-- db_receiver
@@ -46,7 +48,7 @@ Implementation of web-server not included here.
                 |-- control_apis
 ```
 
-### 2.2 .sol update log
+## .sol update log
 ```bash
 2017.09.05: add multisigtoken.sol, multisigwallet.sol and token.sol
 2017.10.28: add the initial version of zscDatabase.sol
@@ -84,4 +86,5 @@ Implementation of web-server not included here.
 2018.03.29: add three files htmlFormat.js, zscTestLogin.html and zscTestMain.html
 2018.03.30: change file name app_control.sol -> app_proxy.sol; add file basicFunctions.sol
 2018.03.31: add two new file adm_base.sol and simulation_base.sol
+2018.04.01: change the module simulation_base to db_simulator; add two new files adm_create_contract.php and adm_header.php
 ```

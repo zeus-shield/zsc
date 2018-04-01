@@ -87,7 +87,7 @@ contract ControlApis is ControlBase {
         return operateNodeParameter("set", _node, _parameter, _value);
     }
 
-    /// @dev Get the value of a paramter of a element
+    /// @dev Get the value of a paramter of an element
     /// @param _node The name of the element
     /// @param _parameter The name of the existing parameter
     function getElementParameter(bytes32 _node, bytes32 _parameter) public only_registered(_node) constant returns (string) {
@@ -151,7 +151,7 @@ contract ControlApis is ControlBase {
     /// @dev Announce an insurance agreement by a provider
     /// @param _agreement The agreement name
     /// @param _tag The announcement status
-    function announceInsurance(bytes32 _agreement, bool _tag) public only_registered(_node) returns (bool) {
+    function announceInsurance(bytes32 _agreement, bool _tag) public only_registered(_agreement) returns (bool) {
         if (_tag) return getDBNode(_agreement).setAgreementStatus("PUBLISHED");
         else return getDBNode(_agreement).setAgreementStatus("READY");
     }
