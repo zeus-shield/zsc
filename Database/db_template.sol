@@ -20,4 +20,15 @@ contract DBTemplate is DBEntity {
         addParameter("Price (TestZSC)");
         addParameter("RefundPercentage");
     }
+
+    function setParameter(bytes32 _parameter, string _value) public only_delegate returns (bool) {
+        if (numBindedEntities("agreement") > 0) return false; 
+        return super.setParameter(_parameter, _value);
+    }
+
+    function addParameter(bytes32 _parameter, string _value) public only_delegate returns (bool) {
+        if (numBindedEntities("agreement") > 0) return false; 
+        return super.addParameter(_parameter, _value);
+    }
+
 }
