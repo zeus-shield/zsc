@@ -8,10 +8,12 @@ import "./object.sol";
 
 contract SimulatorBase is Object {
     struct SimultionRun {
+        bool started_;
         bool running_ ;
-        bool autoReward_;    //1: provider; 2: receiver 
-        uint duration_; // in secons
-        uint256 probability_;   //from 0 to 1000
+        bool autoReward_;  
+        uint startTime_;
+        uint endTime_; // in secons
+        uint probability_;   //from 0 to 1000
         bytes32 provider_ ;
         bytes32 receiver_;
         bytes32 agreement_;
@@ -20,20 +22,19 @@ contract SimulatorBase is Object {
 
     address private database_;
     address private controlApis_;
+    uint private randSeed = 0;
 
     function SimulatorBase() public Object("zsc_simulation") {}
 
     // Generates a random number
     // Original file at 
-    // https://gist.github.com/anonymous/06a86a039f01dc15fd14
-    function randGen(uint min, uint max) internal constant returns (uint256){
-        uint256 lastBlockNumber = block.number - 1;
-        uint256 hashVal = uint256(block.blockhash(lastBlockNumber));
-        
-        // This turns the input data into a 100-sided die
-        // by dividing by ceil(2 ^ 256 / 100).
-        uint256 FACTOR = 1157920892373161954235709850086879078532699846656405640394575840079131296399;
-        return uint256(uint256(hashVal) / FACTOR) + 1;
+    // https://gist.github.com/alexvandesande/259b4ffb581493ec0a1c
+    function randGen(uint _min, uint _max) internal constant returns (uint256){
+        require(_max > _min);
+        randSeed++;
+        uint randValue = uint(sha3(block.blockhash(block.number-1), randSeed ))%(_max - _min);
+
+        return (randValue + _min);
     }
 
     function initSimulation(address _controller, address _database) public only_delegate  {
@@ -46,6 +47,23 @@ contract SimulatorBase is Object {
     }
 
     function addSimulationRun(bytes32 _name, bytes32 _provider, bytes32 _receiver, bytes32 _agreement, uint _duration) public only_delegate {
-        simulationRuns_[_name] = SimultionRun(true, true,_duration, ranGen(70, 100), _provider, _receiver, _agreement);
+        require(!simulationRuns_[_name].started_);
+        uint current = now; 
+        simulationRuns_[_name] = SimultionRun(true, true, true, current, current + _duration, ranGen(70, 100), _provider, _receiver, _agreement);
+    }
+
+    function checkSimulationRun(bytes32 _name) public only_delegate constant returns (bool) {
+        require(simulationRuns_[_name].started_);
+
+        if (simulationRuns_[_name].running_ == true) {
+            if (now > simulationRuns_[_name].endTime_) {
+                simulationRuns_[_name].running_ = true;
+                uint rand = randGen(0, 100);
+                if (rand > simulationRuns_[_name].probability_) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
