@@ -3,11 +3,12 @@
 
 <html>
 <head>
+<?php echo includeScriptFiles();?>
 
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
-    function gotoConfigureLogRecordere() {
-        window.location.href="adm_configure_logrecorder.php";
+    function gotoConfigureLogRecorder() {
+        window.location.href="adm_configure_logrecorder.php" + cC_getUrlSuffixForControlPage();
     }
 </script>
 </head>
@@ -47,7 +48,7 @@
         <text id="ControlApisAdvLog"></text>
     </div>
     <div class="well">
-        <button type="button" onClick="gotoConfigureLogRecordere()">Next: configure log recorder</button>
+        <button type="button" onClick="gotoConfigureLogRecorder()">Next: configure log recorder</button>
     </div>
 
 </body>
