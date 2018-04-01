@@ -3,11 +3,13 @@ pragma solidity ^0.4.18;
 contract owned {
     address public owner;
 
-    function owned() { owner = msg.sender; }
+    function owned() public { owner = msg.sender; }
 
     modifier only_owner { if (msg.sender != owner) revert(); _; }
 
-    function transferOwnership(address newOwner) only_owner { owner = newOwner;  }
+    function transferOwnership(address newOwner) public only_owner { owner = newOwner;  }
+
+    function kill() public only_owner {selfdestruct(owner); }
 }
 
 // ----------------------------------------------------------------------------------------------
@@ -44,7 +46,7 @@ contract ERC20Interface {
     event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 }
 
-/// @title ZSCTest Token (BEE)
+/// @title ZSCTest Token (ZSCTest)
 contract ZSCTestToken is owned, ERC20Interface {
     // Public variables of the token
     string public constant standard = 'ERC20';
@@ -67,6 +69,9 @@ contract ZSCTestToken is owned, ERC20Interface {
 
     // Constructor
     function ZSCTestToken() {
+        // Only for testing purpose
+        totalTokens = 1000 * 1000 * 1000 * 10**18;
+        balances[msg.sender] = totalTokens;
     }
 
     // This unnamed function is called whenever someone tries to send ether to it 
