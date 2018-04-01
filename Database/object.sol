@@ -26,7 +26,8 @@ contract Owned {
 contract Delegated is Owned{
     mapping (address => bool) public delegates_;
 
-    modifier only_delegate {require(delegates_[msg.sender] || msg.sender == owner || this == msg.sender); _; }
+    //modifier only_delegate {require(delegates_[msg.sender] || msg.sender == owner || this == msg.sender); _; }
+    modifier only_delegate {require(isDelegate(msg.sender)); _; }
 
     function Delegated() public {
         delegates_[msg.sender] = true;
@@ -41,7 +42,7 @@ contract Delegated is Owned{
     }
 
     function isDelegate(address _account) public constant returns (bool)  {
-        if (delegates_[_account] == true) return true;
+        if (delegates_[_account] == true || msg.sender == _account || this == _account ) return true;
         else return false;
     }
 }
