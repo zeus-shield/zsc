@@ -43,6 +43,13 @@ contract DBNode is Object {
 }
 
 contract ControlBase is Object, ControlInfo {   
+    struct TokenAwarder {
+        address adr_;
+        bytes32 name_;
+        bytes32 symbol_;
+        uint decimals_;
+    }
+    mapping(bytes32 => TokenAwarder) private tokenAwarders_;
     mapping(uint => bytes32) private factoryTypes_;
     mapping(bytes32 => address) private factories_;
     address private bindedDB_;
@@ -142,4 +149,15 @@ contract ControlBase is Object, ControlInfo {
         }
         return true;
     }
+
+    function registerTokenAwarder(address _token, bytes32 _name, bytes32 _symbol, uint _decimals) public only_delegate returns (bool) {
+        if (tokenAwarders_[_name].adr_ != 0) return false;
+        
+        tokenAwarders_[_name].adr_ = _token;
+        tokenAwarders_[_name].name_ = _name;
+        tokenAwarders_[_name].symbol_ = _symbol;
+        tokenAwarders_[_name].decimals_ = _decimals;
+        return true;
+    }
+
 }
