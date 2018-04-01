@@ -27,13 +27,11 @@ contract ControlApis is ControlBase {
     /// @dev Creat a user element
     /// @param _factroyType The type of the factory for creating the element
     /// @param _node The name of the element belonging to the user
-    /// @param extra The extra informatio
-    function createElement(uint _factroyType, bytes32 _node, bytes32 extraInfo, bytes32 extraAdr) public returns (address) {
-        require(checkAllowedUser(_node));
+    function createElement(uint _factroyType, bytes32 _node, bytes32 extraInfo, address extraAdr) public only_registered(_node) returns (address) {
+        //require(checkAllowedUser(_node));
         address adr = extraAdr;
         if (adr == 0) adr = msg.sender;
-
-        return createFactoryNode(mapType(_factroyType), _node, extra, adr);
+        return createFactoryNode(mapType(_factroyType), _node, extraInfo, adr);
     }
 
     /// @dev Creat a user element

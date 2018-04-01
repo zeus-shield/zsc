@@ -25,13 +25,19 @@ contract ControlInfo is Object {
     mapping(address => UserInfo) private users_;
     mapping(bytes32 => ParameterInfo) private parameters_;
 
+    
     modifier only_registered(bytes32 _node) {
-        require(msg.sender == parameters_[_node].creator_ || parameters_[_node].holders_[msg.sender] == true); 
+        require(onlyRegisteredOrDelegated(_node, msg.sender)); 
         _;
     }
 
     function ControlInfo() public {}
+    
     function checkAllowedUser(bytes32 _node) internal constant returns (bool);
+
+    function onlyRegisteredOrDelegated(bytes32 _node, address sender) internal constant returns (bool) {
+        return (sender == parameters_[_node].creator_ || parameters_[_node].holders_[sender] == true || isDelegate(sender)); 
+    }
 
     function _recordString(bytes32 _nodeName, bytes32 _parameter, string _value) public {
         //require(msg.sender == parameters_[_nodeName].nodeAdr_);
