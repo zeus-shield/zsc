@@ -1,9 +1,7 @@
 # ZSC
 Zeusshield (ZSC) system: AI&P2P Insurance Market Platform [(ZSC Wiki)](https://github.com/zeus-shield/zsc/wiki), [(ZSC APIs)](https://github.com/zeus-shield/zsc/wiki#zscapireference) 
 
-Official implementation for the solidity-based core part of the ZSC system, and the js-based web-client.
-
-Implementation of web-server not included here.
+Official implementation for the solidity-based core part of the ZSC system, as well as the js-based web-client and js/php based web-adm.
 
 
 ## Project structure
@@ -23,7 +21,7 @@ Implementation of web-server not included here.
     |--compatible with Metamask 
 ```
 
-## Contract inherentation
+## Contract inheritance
 ```bash
 |-- owned
     |-- delegated
