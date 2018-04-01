@@ -27,13 +27,17 @@ contract AdmBase is Object {
     mapping(bytes32 => uint) private userIndex_;
     mapping(bytes32 => address) private systemAdrs_;
 
+    address private zscTestTokenAddress_;
+
     modifier only_added(bytes32 _hexx) { require(testUsers_[_hexx].status_ == 1); _; }
     
     function AdmBase() public Object("zsc_adm") {}
 
     function toHexx(bytes32 _value) internal returns (bytes32);
 
-    function setControlApisFullAbi(string _fullAbi) public only_owner { fullAib_ = _fullAbi; }
+    function setZSCTestTokenAddress(address _adr) public only_delegate { zscTestTokenAddress_ = _adr; }
+
+    function setControlApisFullAbi(string _fullAbi) public only_delegate { fullAib_ = _fullAbi; }
 
     function getControlApisFullAbi( bytes32 _hexx) public constant returns (string) { return fullAib_; }
 
@@ -84,7 +88,7 @@ contract AdmBase is Object {
         applyForUser(_hexx, "receiver", msg.sender);       
     }
 
-    function approveUser(bytes32 _name) public only_delegate {
+    function approveUser(bytes32 _name, uint _ZSCTAmount) public only_delegate {
         bytes32 hexx = toHexx(_name);
         require (testUsers_[hexx].status_ == 2);
 
@@ -96,6 +100,8 @@ contract AdmBase is Object {
 
         testUsers_[_hexx].node_ = adr;
         testUsers_[_hexx].status_ = 3;
+
+        return transferAnyERC20Token(zscTestTokenAddress_, _ZSCTAmount);
     }
 
     function numUsers() public only_delegate constant returns (uint) {
@@ -111,4 +117,5 @@ contract AdmBase is Object {
         str = PlatString.findbyte(str, "<node:" PlatString.addressToString(testUsers_[_index].node_), ">";
         return str;
     }
+
 }
