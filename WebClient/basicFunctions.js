@@ -26,7 +26,7 @@ function bF_showHashResult(elementID, hash) {
             var show;
             if (result == null) {
                 show =  "(pending)" + hash ;
-                uF_showHashResult(elementID, hash);
+                bF_showHashResult(elementID, hash);
             } else {
                 if (result.status == 0) {
                     show = "(failure)" + hash;
