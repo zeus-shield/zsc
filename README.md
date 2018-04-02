@@ -7,18 +7,20 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 ## Project structure
 ```bash
 |-- Database:  
-    |--Core part of zsc system; Solidity based implementation
+    |-- Core part of zsc system
+    |-- Solidity based implementation
 
 |-- Token:     
-    |-- zsc token contract based on ERC20 protocol
+    |-- zsc token contract
+    |-- Based on ERC20 protocol
 
 |-- WebClient
-    |--web3.js and javascript based implementation
-    |--compatible with Metamask 
+    |-- web3.js and javascript based implementation
+    |-- Compatible with Metamask 
 
 |-- WebAdm
-    |--web3.js, javascript and php based implementation
-    |--compatible with Metamask 
+    |-- web3.js, javascript and php based implementation
+    |-- Compatible with Metamask 
 ```
 
 ## Contract inheritance
@@ -85,4 +87,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.03.30: change file name app_control.sol -> app_proxy.sol; add file basicFunctions.sol
 2018.03.31: add two new file adm_base.sol and simulation_base.sol
 2018.04.01: change the module name from simulation_base to db_simulator; add two new files adm_create_contract.php and adm_header.php
+2018.04.02: added files adm_control_apis_adv.php, adm_configure_logrecorder.php, zscUser.js and zscElement.js
 ```
