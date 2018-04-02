@@ -53,31 +53,51 @@ zscElement.prototype.loadEthBalance = function(func) {
     });
 }
 
-zscElement.prototype.loadParameterNamesAndvalues = function {
-    this.parameNos = 0;
-    this.activeTid(0, loadParameterNames, 1000);
-    this.numParameters();
-    this.loadParameterNames();
+zscElement.prototype.loadParameterNamesAndvalues = function(func) {
+    this.numParameters(function() {
+        this.loadParameterNames(function() {
+            this.loadParameterValues(function(index){
+                if (index == this.parameNos - 1) {
+                    func();
+                }
+            });
+        }); 
+    });
 }
 
-zscElement.prototype.numParameters = function() {
+zscElement.prototype.numParameters = function(func) {
     var myControlApi = this.getContractApi();
     myControlApi.numElementParameters(this.name, {from: uF_getEthAccount()},
          function(error, num){ 
             if(!error) { 
                 this.parameNos = num.toString(10); 
+                func();
             } else {
                 console.log("error: " + error);
             }
          });
 }
 
-zscElement.prototype.loadParameterNames = function() {
-    if (this.parameNos == 0) return;
-    this.deactiveTid(0);
-
+zscElement.prototype.loadParameterNames = function(func) {
     for (var i = 0; i < this.parameNos; ++i) {
+        loadParameterNameByIndex(i, function(index, para) {
+            uF_parameters[index] = para;
+            if (index == this.parameNos - 1) {
+                func();
+            }
+        });
     } 
+} 
+
+zscElement.prototype.loadParameterNameByIndex = function(index, func) {
+    var myControlApi = this.getContractApi();
+    myControlApi.getElementParameterNameByIndex(this.name, index, {from: uf_getEthAccount()},
+        function(error, para){ 
+            if(!error) {
+                var ret = web3.toUtf8(para);
+                func(index, ret);  
+            } else console.log("error: " + error);
+        });
 }
 
 
