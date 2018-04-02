@@ -5,6 +5,33 @@ function getModuleArray() {
     return array("LogRecorder", "DBDatabase", "FactoryPro", "ControlApisAdv");
 }
 
+function getLogedModuleNameArrayInString() {
+    return "['DBDatabase', 'FactoryPro', 'ControlApisAdv']";
+}
+
+function writeContent($file, $text) {
+    echo $file;
+    $myfile = fopen($file, "wr") or die("Unable to open file!");
+    fwrite($myfile, $text);
+    fclose($myfile);
+}
+
+function readContent($file) {
+    $myfile = fopen($file, "r");
+    $text = fread($myfile,filesize($file));
+    fclose($myfile);
+    return $text;
+}
+
+function writeModuleAddress($name, $adr) {
+    writeContent('./adrs/'.$name.'.txt', $adr);
+}
+
+function readModuleAddress($name) {
+    return readContent('./adrs/'.$name.'.txt');
+}
+
+
 function getUrlSuffixForAdrs() {
     $system_modules = getModuleArray();
     $num = count($system_modules);
