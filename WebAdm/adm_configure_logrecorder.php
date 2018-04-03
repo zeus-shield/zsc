@@ -2,6 +2,25 @@
 
 <?php include("adm_header.php"); ?>
 
+<?php
+$urlSuffixTag = false;
+function storSystemModuleAdrs() {
+    $system_modules = getModuleArray();
+    $num = count($system_modules);
+    
+    for($x = 0; $x < $num; $x++) {
+        $module = $system_modules[$x];
+        $adr = $_GET[$module];
+
+        if(!empty($adr)){
+            $urlSuffixTag = true;
+            writeModuleAddress($module, $adr);
+        }
+    }
+}
+storSystemModuleAdrs();
+?>
+
 <html>
 <head>
 <?php echo includeScriptFiles(); ?>
@@ -13,8 +32,17 @@
         if (module == "DBDatabase") adr = "<?php echo readModuleAddress('DBDatabase')?>";
         else if (module == "FactoryPro") adr = "<?php echo readModuleAddress('FactoryPro')?>";
         else if (module == "ControlApisAdv") adr = "<?php echo readModuleAddress('ControlApisAdv')?>";
-        //function for register listener to log recorder
+        sF_registerListenerToLogRecorder("<?php echo readModuleAddress('LogRecorder')?>",  adr, module, elementId);
     }
+
+    function setLogRecorderToListener(module, elementId) {
+        var adr;
+        if (module == "DBDatabase") adr = "<?php echo readModuleAddress('DBDatabase')?>";
+        else if (module == "FactoryPro") adr = "<?php echo readModuleAddress('FactoryPro')?>";
+        else if (module == "ControlApisAdv") adr = "<?php echo readModuleAddress('ControlApisAdv')?>";
+        sF_setLogRecorderToListener("<?php echo readModuleAddress('LogRecorder')?>",  adr, module, elementId);
+    }
+    
 </script>
 </head>
 <body>
