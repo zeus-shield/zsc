@@ -12,6 +12,12 @@ contract ControlApis is ControlBase {
     function ControlApis(bytes32 _name) public ControlBase(_name) {
     }
 
+    /// @dev Set the zsc adm address
+    /// @param _adr The address of the zsc adm 
+    function setAdm(address _adr) public only_owner {
+        setAdmAdr(_adr);
+    }
+
     /// @dev Add the database factory of managing the elements
     /// @param _type The type of the database factory
     /// @param _adr The address of the database factory
