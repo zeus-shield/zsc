@@ -44,3 +44,25 @@ function sF_setLogRecorderToListener(logRecorderAdr, listener,listenerName, hash
         else console.log("error: " + error);
     });
 }  
+
+
+function sF_initSystemModule(module, adrs, hashID) {
+    var DBDatabaseAdr = adrs[0];
+    var FactoryProAdr = adrs[1];
+    var ControlApisAdr = adrs[2];
+    if (module == "DBDatabase") sF_initDatabase(DBDatabaseAdr, FactoryProAdr, ControlApisAdr, hashID);
+    else if (module == "FactoryPro") sF_initFactoryPro(DBDatabaseAdr, FactoryProAdr, ControlApisAdr, hashID);
+    else if (module == "ControlApisAdv") sF_addFactory(DBDatabaseAdr, FactoryProAdr, ControlApisAdr, hashID);
+}
+
+
+function sF_initDatabase(DBDatabaseAdr, FactoryProAdr, ControlApisAdr, hashID) {
+    var myContract = web3.eth.contract(getContractAbi("DBDatabase"));
+    var myDatabase = myContract.at(DBDatabaseAdr);
+    myDatabase.initDatabase([FactoryProAdr], ControlApisAdr, {from:web3.eth.accounts[0], gas: 9000000},
+    function(error, result){ 
+        if(!error) sF_showHashResult(hashID, result);
+        else console.log("error: " + error);
+    });
+}  
+
