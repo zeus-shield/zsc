@@ -2,7 +2,7 @@
 <?php
 
 class zscModule { 
-    public $moduleArray = array("LogRecorder", "DBDatabase", "FactoryPro", "ControlApisAdv");   
+    public $moduleArray = array("LogRecorder", "AdmAdv", "DBDatabase", "FactoryPro", "FactoryTmp", "FactoryAgr", "ControlApisAdv");   
     
     function getModuleArray() { 
         return $moduleArray; 
@@ -11,11 +11,11 @@ class zscModule {
 
 
 function getModuleArray() {
-    return array("LogRecorder", "DBDatabase", "FactoryPro", "ControlApisAdv");
+    return array("LogRecorder", "AdmAdv", "DBDatabase", "FactoryPro", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
 }
 
 function getLogedModuleNameArrayInString() {
-    return "['DBDatabase', 'FactoryPro', 'ControlApisAdv']";
+    return "['AdmAdv', 'DBDatabase', 'FactoryPro', 'FactoryTmp', 'FactoryAgr', 'ControlApisAdv']";
 }
 
 function readContent($file) {
@@ -42,14 +42,15 @@ function writeModuleAddress($name, $adr) {
 }
 
 function getLogedModuleAddressArrayInString() {
-    $text = "['";
-    $text.= readModuleAddress("DBDatabase");
-    $text.= "', '";
-    $text.= readModuleAddress("FactoryPro");
-    $text.= "', '";
-    $text.= readModuleAddress("ControlApisAdv");
-    $text.= "']";
+    $logedModules = getModuleArray();
+    $num = count($logedModules);
 
+    $text = "";
+
+    for($x = 0; $x < $num; $x++) {
+        $name = $logedModules[$x];
+        $text .= "['".readModuleAddress($name);
+    }
     return $text;
 }
 
@@ -78,14 +79,27 @@ function getUrlSuffixForAdrs() {
 }
 
 function includAllAdrs() {
-$text='
+    $text='<div class="well">';
+    $system_modules = getModuleArray();
+    $num = count($system_modules);
+
+    for($x = 0; $x < $num; $x++) {
+        $name = $system_modules[$x];
+        $text .= '<text id = "'.$name.'">'..$name.': '.readModuleAddress($name).'</text> <br>';
+    }    
+    $text='</div>';
+    return $text;
+/*
 <div class="well">
     <text id = "LogRecorderAdr">LogRecorder address: '.readModuleAddress("LogRecorder").'</text> <br>                   
+    <text id = "AdvAdm">AdvAdm address: '.readModuleAddress('AdvAdm').'</text> <br>                   
     <text id = "DBDatabaseAdr">DBDatabase address: '.readModuleAddress('DBDatabase').'</text> <br>                   
     <text id = "FactoryProAdr">FactoryPro address: '.readModuleAddress('FactoryPro').'</text> <br>               
+    <text id = "FactoryProAdr">FactoryTmp address: '.readModuleAddress('FactoryTmp').'</text> <br>               
+    <text id = "FactoryProAdr">FactoryAgr address: '.readModuleAddress('FactoryAgr').'</text> <br>               
     <text id = "ControlApisAdvAdr">ControlApis address:'.readModuleAddress('ControlApisAdv').'</text>               
 </div>';
-return $text;
+*/
 }
 
 function includeHeader() {
@@ -115,7 +129,6 @@ function includeScriptFiles() {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../WebClient/web3.js/dist/web3.js"></script>
     <script type="text/javascript" src="../WebClient/web3js.js"></script>
-    <script type="text/javascript" src="./js/basicApis.js"></script>
     <script type="text/javascript" src="./js/createContract.js"></script>
     <script type="text/javascript" src="./js/setupFunctions.js"></script>
     <script type="text/javascript" src="./js/solc/compiled_database.js"></script>
