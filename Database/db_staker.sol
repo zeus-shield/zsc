@@ -6,7 +6,7 @@ Copyright (c) 2018, ZSC Dev Team
 pragma solidity ^0.4.18;
 import "./db_user.sol";
 
-contract DBStaker is DBEntity {
+contract DBStaker is DBUser {
     address private templates_ = 0;
 
     // Constructor

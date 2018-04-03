@@ -39,9 +39,11 @@ Official implementation for the solidity-based core part of the ZSC system, as w
                     |-- db_user
                         |-- db_receiver
                         |-- db_provider
+                        |-- db_staker
                 |-- db_item
                 |-- db_template
                 |-- db_agreement
+                |-- wallet_base
             |-- factory_base
             |-- control_base
               |-control_info
@@ -88,4 +90,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.03.31: add two new file adm_base.sol and simulation_base.sol
 2018.04.01: change the module name from simulation_base to db_simulator; add two new files adm_create_contract.php and adm_header.php
 2018.04.02: added files adm_control_apis_adv.php, adm_configure_logrecorder.php, zscUser.js and zscElement.js
+2018.04.01-03: added files adm_show_log.php, db_staker.sol, wallet_base.sol, WebAdm/js/setupFunctions.js, WebAdm/js/createContract.js
 ```
