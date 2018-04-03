@@ -111,7 +111,7 @@ function includeHeader() {
         <td align="center"><a href="adm_creat_contract.php">Create contract</a></td>
         <td align="center"><a href="adm_configure_logrecorder.php">Configure LogRecorder</a></td>
         <td align="center"><a href="adm_control_apis_adv.php">Control system</a></td>
-        <td align="center"><a href="adm_users.php">Users</a></td>
+        <td align="center"><a href="adm_manage_users.php">Users</a></td>
         <td align="center"><a href="adm_templates.php">Templats</a></td>
         <td align="center"><a href="adm_agreements.php">Templats</a></td>
       </tr>
