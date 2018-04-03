@@ -14,6 +14,15 @@ $urlSuffixTag = false;
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
     
+    function initSystemModule(module) {
+        var adrs = <?php echo getLogedModuleAddressArrayInString()?>;
+        sF_initSystemModule(module, adrs, module + "Hash");
+    }
+
+    function setControlApisAdvAbi(elementId) {
+        var adr = "<?php echo readModuleAddress('ControlApisAdv')?>";
+        sF_setControlAbisAdvAbi(adr, elementId);
+    }
     
 </script>
 </head>
@@ -38,7 +47,6 @@ $urlSuffixTag = false;
         <text id="ControlApisAdvAbi"> </text> 
 
 </div>
-
 </body>
 </html>
 
