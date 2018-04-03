@@ -4,7 +4,7 @@
 
 <?php
 $urlSuffixTag = false;
-function storSystemModuleAdrs() {
+function recordSystemModuleAdrs() {
     $system_modules = getModuleArray();
     $num = count($system_modules);
     
@@ -18,7 +18,7 @@ function storSystemModuleAdrs() {
         }
     }
 }
-storSystemModuleAdrs();
+recordSystemModuleAdrs();
 ?>
 
 <html>
@@ -42,7 +42,7 @@ storSystemModuleAdrs();
         else if (module == "ControlApisAdv") adr = "<?php echo readModuleAddress('ControlApisAdv')?>";
         sF_setLogRecorderToListener("<?php echo readModuleAddress('LogRecorder')?>",  adr, module, elementId);
     }
-    
+
 </script>
 </head>
 <body>
