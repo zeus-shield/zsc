@@ -27,20 +27,23 @@ recordSystemModuleAdrs();
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
     
-    function registerToLogRecorder(module, elementId) {
+    function getModuleAdr(module) {
         var adr;
-        if (module == "DBDatabase") adr = "<?php echo readModuleAddress('DBDatabase')?>";
+        if (module == "AdmAdv") adr = "<?php echo readModuleAddress('AdmAdv')?>";        
+        else if (module == "DBDatabase") adr = "<?php echo readModuleAddress('DBDatabase')?>";
         else if (module == "FactoryPro") adr = "<?php echo readModuleAddress('FactoryPro')?>";
+        else if (module == "FactoryTmp") adr = "<?php echo readModuleAddress('FactoryTmp')?>";
+        else if (module == "FactoryAgr") adr = "<?php echo readModuleAddress('FactoryAgr')?>";
         else if (module == "ControlApisAdv") adr = "<?php echo readModuleAddress('ControlApisAdv')?>";
-        sF_registerListenerToLogRecorder("<?php echo readModuleAddress('LogRecorder')?>",  adr, module, elementId);
+        return adr;
+    }
+
+    function registerToLogRecorder(module, elementId) {
+        sF_registerListenerToLogRecorder("<?php echo readModuleAddress('LogRecorder')?>",  getModuleAdr(module), module, elementId);
     }
 
     function setLogRecorderToListener(module, elementId) {
-        var adr;
-        if (module == "DBDatabase") adr = "<?php echo readModuleAddress('DBDatabase')?>";
-        else if (module == "FactoryPro") adr = "<?php echo readModuleAddress('FactoryPro')?>";
-        else if (module == "ControlApisAdv") adr = "<?php echo readModuleAddress('ControlApisAdv')?>";
-        sF_setLogRecorderToListener("<?php echo readModuleAddress('LogRecorder')?>",  adr, module, elementId);
+       sF_setLogRecorderToListener("<?php echo readModuleAddress('LogRecorder')?>",  getModuleAdr(module), module, elementId);
     }
 
 </script>
@@ -58,15 +61,46 @@ recordSystemModuleAdrs();
     <?php echo includAllAdrs();?>
     
     <div class="well">
-            <button id="CreateDatabase" type="button" onClick="registerToLogRecorder('DBDatabase','RegisterDBDatabaseHash')">Register DBDatabase</button> 
+            <button type="button" onClick="registerToLogRecorder('AdmAdv','RegisterAdmAdvHash')">Register AdmAdv</button> 
+            <text id="RegisterAdmAdvHash"></text>
+            <br> <br>
+            <button type="button" onClick="registerToLogRecorder('DBDatabase','RegisterDBDatabaseHash')">Register DBDatabase</button> 
             <text id="RegisterDBDatabaseHash"></text>
             <br> <br>
-            <button id="CreateDatabase" type="button" onClick="registerToLogRecorder('FactoryPro','RegisterFactoryProHash')">Register FactoryPro</button> 
+            <button type="button" onClick="registerToLogRecorder('FactoryPro','RegisterFactoryProHash')">Register FactoryPro</button> 
             <text id="RegisterFactoryProHash"></text>
             <br> <br>
-            <button id="CreateDatabase" type="button" onClick="registerToLogRecorder('ControlApisAdv','RegisterControlApisAdvHash')">Register ControlApisAdv</button> 
+            <button type="button" onClick="registerToLogRecorder('FactoryPro','RegisterFactoryTmpHash')">Register FactoryTmp</button> 
+            <text id="RegisterFactoryTmpHash"></text>
+            <br> <br>
+            <button type="button" onClick="registerToLogRecorder('FactoryPro','RegisterFactoryAgrHash')">Register FactoryPro</button> 
+            <text id="RegisterFactoryAgrHash"></text>
+            <br> <br>
+            <button type="button" onClick="registerToLogRecorder('ControlApisAdv','RegisterControlApisAdvHash')">Register ControlApisAdv</button> 
             <text id="RegisterControlApisAdvHash"></text>
     </div>
+
+
+    <div class="well">
+            <button type="button" onClick="setLogRecorderToListener('AdmAdv','SetLogAdmAdvHash')">Set Loger to DBDatabase</button> 
+            <text id="SetLogAdmAdvHash"></text>
+            <br> <br>
+            <button type="button" onClick="setLogRecorderToListener('DBDatabase','SetLogDBDatabaseHash')">Set Loger to DBDatabase</button> 
+            <text id="SetLogDBDatabaseHash"></text>
+            <br> <br>
+            <button type="button" onClick="setLogRecorderToListener('FactoryPro','SetLogFactoryProHash')">Set Loger to FactoryPro</button> 
+            <text id="SetLogFactoryProHash"></text>
+            <br> <br>
+            <button type="button" onClick="setLogRecorderToListener('FactoryTmp','SetLogFactoryTmpHash')">Set Loger to FactoryTmp</button> 
+            <text id="SetLogFactoryTmpHash"></text>
+            <br> <br>
+            <button type="button" onClick="setLogRecorderToListener('FactoryAgr','SetLogFactoryAgrHash')">Set Loger to FactoryAgr</button> 
+            <text id="SetLogFactoryAgrHash"></text>
+            <br> <br>
+            <button type="button" onClick="setLogRecorderToListener('ControlApisAdv','SetLogControlApisAdvHash')">Set Loger to ControlApisAdv</button> 
+            <text id="SetLogControlApisAdvHash"></text>
+    </div>
+
 </body>
 </html>
 
