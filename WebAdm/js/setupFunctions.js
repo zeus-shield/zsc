@@ -49,7 +49,7 @@ function sF_setLogRecorderToListener(logRecorderAdr, listener,listenerName, hash
 }  
 
 
-function sF_initSystemModule(module, adrs, hashID) {
+function sF_initSystemModule(module, extra, adrs, hashID) {
     var AdmAdv = adrs[0];
     var DBDatabaseAdr = adrs[1];
     var FactoryProAdr = adrs[2];
@@ -57,11 +57,28 @@ function sF_initSystemModule(module, adrs, hashID) {
     var FactoryAgrAdr = adrs[4];
     var ControlApisAdr = adrs[5];
 
-    if (module == "DBDatabase") sF_initDatabase(AdmAdv, DBDatabaseAdr, FactoryProAdr, FactoryTmpAdr, FactoryAgrAdr, ControlApisAdr, hashID);
-    else if (module == "FactoryPro") sF_initFactory(module, FactoryProAdr, DBDatabaseAdr, ControlApisAdr, hashID);
-    else if (module == "FactoryTmp") sF_initFactory(module, FactoryTmpAdr, DBDatabaseAdr, ControlApisAdr, hashID);
-    else if (module == "FactoryAgr") sF_initFactory(module, FactoryAgrAdr, DBDatabaseAdr, ControlApisAdr, hashID);
-    else if (module == "ControlApisAdv") sF_addFactory(DBDatabaseAdr, FactoryProAdr, ControlApisAdr, hashID);
+    if (module == "AdmAdv") {
+
+    } else if (module == "DBDatabase") {
+        sF_initDatabase(DBDatabaseAdr, FactoryProAdr, FactoryTmpAdr, FactoryAgrAdr, ControlApisAdr, hashID);
+    } else if (module == "ControlApisAdv") {
+        if (extra == 0) {
+            sF_setDatabaseAdr(DBDatabaseAdr, ControlApisAdr, hashID);
+        } else {
+            var factoryAdr;
+            if (extra == 1) factoryAdr = FactoryProAdr;
+            else if (extra == 2) factoryAdr = FactoryTmpAdr;
+            else if (extra == 3) factoryAdr = FactoryAgrAdr;
+            sF_addFactory(extra, factoryAdr, ControlApisAdr, hashID + extra);
+        }
+    } else {
+        var factoryAdr;
+        if (module == "FactoryPro") factoryAdr = FactoryProAdr;
+        else if (module == "FactoryTmp") factoryAdr = FactoryTmpAdr;
+        else if (module == "FactoryAgr") factoryAdr = FactoryAgrAdr;
+
+        sF_initFactory(factoryAdr, DBDatabaseAdr, ControlApisAdr, hashID + module);
+    }
 }
 
 
@@ -76,7 +93,7 @@ function sF_initDatabase(DBDatabaseAdr, FactoryProAdr, FactoryTmpAdr, FactoryAgr
 }  
 
 
-function sF_initFactory(factoryName, FactoryAdr, DBDatabaseAdr, ControlApisAdr, hashID) {
+function sF_initFactory(FactoryAdr, DBDatabaseAdr, ControlApisAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("FactoryPro"));
     var myFactoryPro= myContract.at(FactoryAdr);
     myFactoryPro.initFactory(ControlApisAdr, DBDatabaseAdr, {from: web3.eth.accounts[0], gas: 9000000},
@@ -90,6 +107,16 @@ function sF_setDatabaseAdr(DBDatabaseAdr, ControlApisAdr, hashID) {
     var myContract = web3.eth.contract(getContractAbi("ControlApisAdv"));
     var myControlApi= myContract.at(ControlApisAdr);
     myControlApi.setDatabaseAdr(DBDatabaseAdr, {from: web3.eth.accounts[0], gas: 9000000},
+    function(error, result){ 
+        if(!error) sF_showHashResult(hashID, result);
+        else console.log("error: " + error);
+    });
+}  
+
+function sF_addFactory(factoryType, FactoryAdr, ControlApisAdr, hashID) {
+    var myContract = web3.eth.contract(getContractAbi("ControlApisAdv"));
+    var myControlApi= myContract.at(ControlApisAdr);
+    myControlApi.addFactory(factoryType, FactoryAdr, {from: web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
         if(!error) sF_showHashResult(hashID, result);
         else console.log("error: " + error);
