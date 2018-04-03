@@ -53,6 +53,7 @@ contract ControlBase is Object, ControlInfo {
     mapping(uint => bytes32) private factoryTypes_;
     mapping(bytes32 => address) private factories_;
     address private bindedDB_;
+    address private bindedAdm_;
 
     modifier factroy_exist(bytes32 _name) {require(factories_[_name] != 0); _;}
     modifier factroy_notexist(bytes32 _name) {require(factories_[_name] == 0); _;}
@@ -66,7 +67,16 @@ contract ControlBase is Object, ControlInfo {
 
     function mapType(uint _type) internal constant returns (bytes32) { return factoryTypes_[_type]; }
 
-    function setDatabaseAdr(address _db) internal only_delegate {
+    function setAdmAdr(address _adm) internal {
+        require (_adm != 0);      
+        bindedAdm_ = _adm;
+        setDelegat(bindedAdm_, true);
+
+        addLog("setAdmAdr: ", true);
+        addLog(PlatString.bytes32ToString(Object(_db).name()), false);
+    }
+
+    function setDatabaseAdr(address _db) internal {
         bindedDB_ = _db;
 
         addLog("Added database: ", true);
@@ -98,7 +108,7 @@ contract ControlBase is Object, ControlInfo {
             registerUser(_factory, _nodeName, _sender);
         } 
 
-        bytes32 userName = mapSenderNameAddress(_sender);
+        bytes32 userName = getSenderNameByAddress(_sender);
         require(userName != 0x0);          
         
         address adr = getDBFactory(_factory).createNode(_nodeName);
