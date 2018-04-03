@@ -50,7 +50,7 @@ function sF_setLogRecorderToListener(logRecorderAdr, listener,listenerName, hash
 
 
 function sF_initSystemModule(module, extra, adrs, hashID) {
-    var AdmAdv = adrs[0];
+    var AdmAdvAdr = adrs[0];
     var DBDatabaseAdr = adrs[1];
     var FactoryProAdr = adrs[2];
     var FactoryTmpAdr = adrs[3];
@@ -62,9 +62,11 @@ function sF_initSystemModule(module, extra, adrs, hashID) {
     } else if (module == "DBDatabase") {
         sF_initDatabase(DBDatabaseAdr, FactoryProAdr, FactoryTmpAdr, FactoryAgrAdr, ControlApisAdr, hashID);
     } else if (module == "ControlApisAdv") {
-        if (extra == 0) {
+        if (extra == 4) {
             sF_setDatabaseAdr(DBDatabaseAdr, ControlApisAdr, hashID);
-        } else {
+        } else if (extra == 5) {
+            sF_setAdm(AdmAdvAdr, ControlApisAdr, hashID);
+        }else {
             var factoryAdr;
             if (extra == 1) factoryAdr = FactoryProAdr;
             else if (extra == 2) factoryAdr = FactoryTmpAdr;
@@ -103,8 +105,18 @@ function sF_initFactory(FactoryAdr, DBDatabaseAdr, ControlApisAdr, hashID) {
     });
 }  
 
+function sF_setAdm(AdmAdvAdr, ControlApisAdr, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
+    var myControlApi= myContract.at(ControlApisAdr);
+    myControlApi.setAdm(AdmAdvAdr, {from: web3.eth.accounts[0], gas: 9000000},
+    function(error, result){ 
+        if(!error) sF_showHashResult(hashID, result);
+        else console.log("error: " + error);
+    });
+} 
+
 function sF_setDatabaseAdr(DBDatabaseAdr, ControlApisAdr, hashID) {
-    var myContract = web3.eth.contract(getContractAbi("ControlApisAdv"));
+    var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
     var myControlApi= myContract.at(ControlApisAdr);
     myControlApi.setDatabaseAdr(DBDatabaseAdr, {from: web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
@@ -114,7 +126,7 @@ function sF_setDatabaseAdr(DBDatabaseAdr, ControlApisAdr, hashID) {
 }  
 
 function sF_addFactory(factoryType, FactoryAdr, ControlApisAdr, hashID) {
-    var myContract = web3.eth.contract(getContractAbi("ControlApisAdv"));
+    var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
     var myControlApi= myContract.at(ControlApisAdr);
     myControlApi.addFactory(factoryType, FactoryAdr, {from: web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
@@ -124,11 +136,33 @@ function sF_addFactory(factoryType, FactoryAdr, ControlApisAdr, hashID) {
 }  
 
 
+    function setAdm(address _adr) public only_owner {
+
+
+
 ////////////////
 var sF_logerModuleAdr;
 
 function sF_changeLogerModule(adr) {
     sF_logerModuleAdr = adr;
 }
+
+
+
+////////////////////////////////////////////
+
+function sF_setControlAbisAdvAbi(ControlApisAdr,  hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
+    var myControlApi= myContract.at(ControlApisAdr);
+    var account = web3.eth.accounts[0];
+    var data = getContractAbiString('ControlApisAdv');
+
+    myControlApi.setFullAbi(data, {from: account, gas: 5000000},
+    function(error, result){ 
+        if(!error) sF_showHashResult(hashID, result);
+        else console.log("error: " + error);
+    });
+}  
+
 
 
