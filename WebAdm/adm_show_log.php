@@ -8,9 +8,6 @@
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
     
-    function changeLogerModule(name) {
-    }
-     
 </script>
 </head>
 <body>
@@ -23,12 +20,15 @@
 
 <text>Log:</text>
 <div class="well">
-    <button type="button" onClick="<?php echo "changeLogerModule('".readModuleAddress("DBDatabase")."')"?>">DBDatabase</button> 
-    <button type="button" onClick="<?php echo "changeLogerModule('".readModuleAddress("FactoryPro")."')"?>">FactoryPro</button> 
-    <button type="button" onClick="<?php echo "changeLogerModule('".readModuleAddress("ControlApisAdv")."')"?>">ControlApisAdv</button>  <br>
+    <button type="button" onClick="<?php echo "sF_changeLogerModule('".readModuleAddress("DBDatabase")."')"?>">DBDatabase</button> 
+    <button type="button" onClick="<?php echo "sF_changeLogerModule('".readModuleAddress("FactoryPro")."')"?>">FactoryPro</button> 
+    <button type="button" onClick="<?php echo "sF_changeLogerModule('".readModuleAddress("ControlApisAdv")."')"?>">ControlApisAdv</button>  <br>
     <text id = "SystemLog">Log:</text> <br>
 </div>
-
+<script type="text/javascript">
+    var adrs = <?php echo getLogedModuleAddressArrayInString()?>;
+    sF_initSystemModule("SystemLog", adrs, module + "Hash");
+</script>      
 </body>
 </html>
 

@@ -66,3 +66,11 @@ function sF_initDatabase(DBDatabaseAdr, FactoryProAdr, ControlApisAdr, hashID) {
     });
 }  
 
+////////////////
+var sF_logerModuleAdr;
+
+function sF_changeLogerModule(adr) {
+    sF_logerModuleAdr = adr;
+}
+
+
