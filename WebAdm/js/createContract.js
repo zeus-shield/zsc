@@ -3,28 +3,36 @@ Copyright (c) 2018 ZSC Dev Team
 */
 
 function cC_getContractFullName(contractName) {
-    if (contractName == 'LogRecorder') {
+    if (contractName == 'AdmAdv') {
+        return "./zsc/adm_adv.sol:AdmAdv";
+    } else if (contractName == 'LogRecorder') {
         return "./zsc/db/Database/log_recorder.sol:LogRecorder";
     } else if (contractName == 'DBDatabase') {
         return "./zsc/db/Database/db_database.sol:DBDatabase";
     } else if (contractName == 'FactoryPro') {
         return "./zsc/factory_pro.sol:FactoryPro";
+    } else if (contractName == 'FactoryTmp') {
+        return "./zsc/factory_tmp.sol:FactoryTmp";
+    } else if (contractName == 'FactoryAgr') {
+        return "./zsc/factory_agr.sol:FactoryAgr";
     } else if (contractName == 'ControlApis') {
-        return "./zsc/db/Database/control_apis.sol:ControlApis";
-    } else if (contractName == 'ControlApisAdv') {
         return "./zsc/control_apis_adv.sol:ControlApisAdv";
     }
 }
 
 function cC_getCompiledFile(contractName) {
-    if (contractName == 'LogRecorder') {
+    if (name == "AdmAdv") {
+        return g_AdmAdvAdr;
+    } else if (contractName == 'LogRecorder') {
         return compiledLogRecorder;
     } else if (contractName == 'DBDatabase') {
         return compiledDatabase;
     } else if (contractName == 'FactoryPro') {
         return compiledFactoryPro;
-    } else if (contractName == 'ControlApis') {
-        return compiledApis;
+    } else if (contractName == 'FactoryPro') {
+        return compiledFactoryTmp;
+    } else if (contractName == 'FactoryPro') {
+        return compiledFactoryAgr;
     } else if (contractName == 'ControlApisAdv') {
         return compiledApis;
     }
