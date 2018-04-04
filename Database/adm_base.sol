@@ -6,13 +6,8 @@ pragma solidity ^0.4.18;
 
 import "./object.sol";
 
-contract AbisForTesting {
-    function tryLogin(bytes32 _user, bytes32 _pass) public constant returns (bytes32); 
-    function getFullAbi(bytes32 _user, bytes32 _hexx) public constant returns (string);
-}
-
 contract ControlApis is Object {
-    function createElement(uint _factroyType, bytes32 _node, bytes32 extraInfo, bytes32 extraAdr) public returns (address);
+    function createElement(uint _factroyType, bytes32 _node, bytes32 extraInfo, address extraAdr) public returns (address);
 }
 
 contract AdmBase is Object {
@@ -28,18 +23,21 @@ contract AdmBase is Object {
     mapping(bytes32 => address) private systemAdrs_;
 
     address private zscTestTokenAddress_;
+    string private controlApisFullAib_;
 
-    modifier only_added(bytes32 _hexx) { require(testUsers_[_hexx].status_ == 1); _; }
+    modifier only_added(bytes32 _hexx) { require(testUsers_[userIndex_[_hexx]].status_ == 1); _;}
     
     function AdmBase() public Object("zsc_adm") {}
 
-    function toHexx(bytes32 _value) internal returns (bytes32);
+    function toHexx(bytes32 _value) internal constant returns (bytes32);
+
+    function getUserIndex(bytes32 _hexx) internal constant returns (uint) { return userIndex_[_hexx]; }
 
     function setZSCTestTokenAddress(address _adr) public only_delegate { zscTestTokenAddress_ = _adr; }
 
-    function setControlApisFullAbi(string _fullAbi) public only_delegate { fullAib_ = _fullAbi; }
+    function setControlApisFullAbi(string _fullAbi) public only_delegate { controlApisFullAib_ = _fullAbi; }
 
-    function getControlApisFullAbi( bytes32 _hexx) public constant returns (string) { return fullAib_; }
+    function getControlApisFullAbi() public constant returns (string) { return controlApisFullAib_; }
 
     function setAdrs(address _controlApis,
                      address _dbDatabase,
@@ -65,7 +63,7 @@ contract AdmBase is Object {
     
     function addUser(bytes32 _user) public only_owner {
         var ret = toHexx(_user);
-        require(testUsers_[ret].status_ ==0);
+        require(testUsers_[userIndex_[ret]].status_ ==0);
 
         userIndex_[ret] = testUsers_.length;
         testUsers_.push(TestUserInfo(_user, "added", 0, 0x0, 0x0));
@@ -75,9 +73,10 @@ contract AdmBase is Object {
     }
 
     function applyForUser(bytes32 _hexx, bytes32 _type, address _id) internal {
-        testUsers_[_hexx].status_ = 2;
-        testUsers_[_hexx].type_ = _type;
-        testUsers_[_hexx].id_ = _id;
+        uint index = getUserIndex(_hexx);
+        testUsers_[index].status_ = "applied";
+        testUsers_[index].type_ = _type;
+        testUsers_[index].id_ = _id;
     }
 
     function applyForProvider(bytes32 _hexx) public only_added(_hexx) returns (bool) {
@@ -88,20 +87,24 @@ contract AdmBase is Object {
         applyForUser(_hexx, "receiver", msg.sender);       
     }
 
-    function approveUser(bytes32 _name, uint _ZSCTAmount) public only_delegate {
+    function approveUser(bytes32 _name) public only_delegate {
         bytes32 hexx = toHexx(_name);
-        require (testUsers_[hexx].status_ == 2);
+        uint index = getUserIndex(hexx);
+        require (testUsers_[index].status_ == "applied");
 
-        uint userType = testUsers_[hexx].type_; 
-        require(userType == 1 || userType == 2);
+        bytes32 userType = testUsers_[index].type_; 
+        require(userType == "provider" || userType == "receiver");
 
-        address adr = ControlApis(systemAdrs_["controlApis"]).createElement(userType, testUsers_[_hexx].name_, testUsers_[_hexx].id_);
+        uint typeInt;
+        if (userType == "provider") typeInt = 1;
+        else if (userType == "provider") typeInt = 2;
+        
+        address adr = ControlApis(systemAdrs_["controlApis"]).createElement(typeInt, testUsers_[index].name_, "", testUsers_[index].id_);
         require (adr != 0x0);
 
-        testUsers_[_hexx].node_ = adr;
-        testUsers_[_hexx].status_ = 3;
-
-        return transferAnyERC20Token(zscTestTokenAddress_, _ZSCTAmount);
+        testUsers_[index].node_ = adr;
+        testUsers_[index].status_ = "approved";
+        ///transferAnyERC20Token(zscTestTokenAddress_, _ZSCTAmount);
     }
 
     function numUsers() public only_delegate constant returns (uint) {
@@ -111,11 +114,11 @@ contract AdmBase is Object {
     function getUserInfoByIndex(uint _index) public only_delegate constant returns (string) {
         require(_index < testUsers_.length);
         string memory str ="";
-        str = PlatString.append(str, "<name:" PlatString.bytes32ToString(testUsers_[_index].name_), ">";
-        str = PlatString.append(str, "<status:" PlatString.bytes32ToString(testUsers_[_index].status_), ">";
-        str = PlatString.append(str, "<type:" PlatString.bytes32ToString(testUsers_[_index].type_), ">";
-        str = PlatString.append(str, "<id:" PlatString.addressToString(testUsers_[_index].id_), ">";
-        str = PlatString.append(str, "<node:" PlatString.addressToString(testUsers_[_index].node_), ">";
+        str = PlatString.append(str, "<name:",   PlatString.bytes32ToString(testUsers_[_index].name_),   ">");
+        str = PlatString.append(str, "<status:", PlatString.bytes32ToString(testUsers_[_index].status_), ">");
+        str = PlatString.append(str, "<type:",   PlatString.bytes32ToString(testUsers_[_index].type_),   ">");
+        str = PlatString.append(str, "<id:",     PlatString.addressToString(testUsers_[_index].id_),     ">");
+        str = PlatString.append(str, "<node:",   PlatString.addressToString(testUsers_[_index].node_),   ">");
         return str;
     }
 
