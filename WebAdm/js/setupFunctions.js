@@ -142,9 +142,43 @@ function sF_addFactory(factoryType, FactoryAdr, ControlApisAdr, hashID) {
 
 ////////////////
 var sF_logerModuleAdr;
+var sF_logMap = new Map();
+var sF_logIndexMap = new Map();
 
 function sF_changeLogerModule(adr) {
     sF_logerModuleAdr = adr;
+}
+
+function sF_refreshGetLog(logRecorderAdr, adr, elementID) {
+    var myContract = web3.eth.contract(cC_getContractAbi("LogRecorder"));
+    var myLogRecorder = myContract.at(logRecorderAdr);
+    var account = web3.eth.accounts[0];
+
+    var text = sF_logMap.get(adr);
+    var index = sF_logIndexMap.get(adr);
+
+    myLogRecorder.printLog(adr, index,
+    function(error, result){ 
+        if(!error) {
+            if (result != "null") {
+                //console.log(result);
+                sF_logMap.set(adr, text + result + "\n");
+                index++;
+                sF_logIndexMap.set(adr, index);
+            }
+            document.getElementById(elementID).innerText = sF_logMap.get(sc_logerModuleAdr);
+        }
+        else console.log("error: " + error);
+    });
+}
+
+function sF_initSystemLog(logRecorderAdr, adrs, elementID, initialModuleIndex) {
+    sc_logerModuleAdr = adrs[initialModuleIndex];
+    for (var i = 0; i < adrs.length; ++i) {
+        sF_logMap.set(adrs[i], "");
+        sF_logIndexMap.set(adrs[i], 0);
+        window.setInterval("sF_refreshGetLog('" + logRecorderAdr + "', '" + adrs[i] + "', '" + elementID + "')", 2000);
+    }
 }
 
 ////////////////////////////////////////////
