@@ -131,12 +131,29 @@ function includeScriptFiles() {
     <script type="text/javascript" src="../WebClient/web3js.js"></script>
     <script type="text/javascript" src="./js/createContract.js"></script>
     <script type="text/javascript" src="./js/setupFunctions.js"></script>
-    <script type="text/javascript" src="./js/solc/compiled_database.js"></script>
-    <script type="text/javascript" src="./js/solc/compiled_factory_pro.js"></script>
-    <script type="text/javascript" src="./js/solc/compiled_apis.js"></script>
-    <script type="text/javascript" src="./js/solc/compiled_loger.js"></script>';
+    <script type="text/javascript" src="./js/compiled_database.js"></script>
+    <script type="text/javascript" src="./js/compiled_factory_pro.js"></script>
+    <script type="text/javascript" src="./js/compiled_apis.js"></script>
+    <script type="text/javascript" src="./js/compiled_loger.js"></script>';
     return $text;
 }
 
+function includeCreateContractHtml() {
+    $modules = getModuleArray();
+    $num = count($modules);
+
+    $text = "";
+    for($x = 0; $x < $num; $x++) {
+        $name = $modules[$x];
+        $text  = '<text>Step - '.$x.': Create '.$name.'</text>';
+        $text .= '<div class="well">';
+        $text .= '   <text> Name: </text>';
+        $text .= '   <input type="text" id="'.$name.'Name" value = "zsc_'.$name.'loger"></input>';
+        $text .= '   <button type="button" onClick="cC_setupContract(\''.$name.', '.$name.'Name\')">Create</button> <br>';
+        $text .= '   <text id="'.$name.'Log"></text> <br>';
+        $text .= '</div>';
+    }
+    return $text;
+}
 ?>
 
