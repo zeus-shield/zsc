@@ -5,7 +5,8 @@ Copyright (c) 2018, ZSC Dev Team
 ?>
 
 <?php
-class ZscHtmlModule {
+
+class ZscHtmlModules {
     
     function getHeader() {
     }

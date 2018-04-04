@@ -6,7 +6,7 @@ pragma solidity ^0.4.18;
 
 import "./db_node.sol";
 
-contract DBSimulator is DBNode {
+contract SimulatBase is DBNode {
     struct SimultionRun {
         bool started_;
         bool running_ ;
@@ -22,7 +22,7 @@ contract DBSimulator is DBNode {
 
     uint private randSeed = 0;
 
-    function DBSimulator(bytes32 _name) public DBNode(_name) {
+    function SimulatBase(bytes32 _name) public DBNode(_name) {
     }
 
     function initParameters() internal {

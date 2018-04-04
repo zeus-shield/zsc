@@ -34,7 +34,9 @@ Official implementation for the solidity-based core part of the ZSC system, as w
             |-- db_database
             |-- db_idmanager
             |-- db_node 
-                |-- db_simulator
+                |-- wallet_base
+                |-- pos_base
+                |-- simulator_base
                 |-- db_entity 
                     |-- db_user
                         |-- db_receiver
@@ -43,7 +45,6 @@ Official implementation for the solidity-based core part of the ZSC system, as w
                 |-- db_item
                 |-- db_template
                 |-- db_agreement
-                |-- wallet_base
             |-- factory_base
             |-- control_base
               |-control_info
@@ -89,6 +90,7 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.03.30: change file name app_control.sol -> app_proxy.sol; add file basicFunctions.sol
 2018.03.31: add two new file adm_base.sol and simulation_base.sol
 2018.04.01: change the module name from simulation_base to db_simulator; add two new files adm_create_contract.php and adm_header.php
-2018.04.02: added files adm_control_apis_adv.php, adm_configure_logrecorder.php, zscUser.js and zscElement.js
-2018.04.01-03: added files adm_show_log.php, db_staker.sol, wallet_base.sol, WebAdm/js/setupFunctions.js, WebAdm/js/createContract.js
+2018.04.02: add files adm_control_apis_adv.php, adm_configure_logrecorder.php, zscUser.js and zscElement.js
+2018.04.01-03: add five files adm_show_log.php, db_staker.sol, wallet_base.sol, WebAdm/js/setupFunctions.js, WebAdm/js/createContract.js
+2018.04.04: add two files zsc_html_modules.php, zsc_system_modules.php; change file name db_simulator.sol -> simulator_base.sol
 ```

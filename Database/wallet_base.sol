@@ -4,9 +4,9 @@ Copyright (c) 2018 ZSC Dev.
 
 pragma solidity ^0.4.18;
 
-import "./db_entity.sol";
+import "./db_node.sol";
 
-contract WalletBase is DBEntity {
+contract WalletBase is DBNode {
     struct Payment {
         uint time_;
         bytes32 txhash_;
@@ -26,7 +26,7 @@ contract WalletBase is DBEntity {
     PaymentHistory private paymentHistory_;
 
     // Constructor
-    function WalletBase(bytes32 _name) public DBEntity(_name) {
+    function WalletBase(bytes32 _name) public DBNode(_name) {
     } 
 
 }
