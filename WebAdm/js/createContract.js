@@ -51,6 +51,14 @@ function cC_getContractBin(contractName) {
     return "0x" + solcompiled.contracts[contractFullName].bin;
 }
 
+function cC_getContractAbiString(contractName) {
+    var solcompiled = getCompiledFile(contractName);
+    var contractFullName = getContractFullNme(contractName);
+    var abi =  solcompiled.contracts[contractFullName].abi
+    return abi;
+}
+
+
 function cC_showCreatingResult(type, elementID, text) {
     if (type == "text") {
         document.getElementById(elementID).innerText = text;

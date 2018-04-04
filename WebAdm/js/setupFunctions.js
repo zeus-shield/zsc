@@ -62,15 +62,15 @@ function sF_initSystemModule(module, extra, adrs, hashID) {
     } else if (module == "DBDatabase") {
         sF_initDatabase(DBDatabaseAdr, FactoryProAdr, FactoryTmpAdr, FactoryAgrAdr, ControlApisAdr, hashID);
     } else if (module == "ControlApisAdv") {
-        if (extra == 4) {
+        if (extra == "DBDatabase") {
             sF_setDatabaseAdr(DBDatabaseAdr, ControlApisAdr, hashID);
-        } else if (extra == 5) {
+        } else if (extra == "AdmAdv") {
             sF_setAdm(AdmAdvAdr, ControlApisAdr, hashID);
         }else {
             var factoryAdr;
-            if (extra == 1) factoryAdr = FactoryProAdr;
-            else if (extra == 2) factoryAdr = FactoryTmpAdr;
-            else if (extra == 3) factoryAdr = FactoryAgrAdr;
+            if (extra == "FactoryPro") factoryAdr = FactoryProAdr;
+            else if (extra == "FactoryTmp") factoryAdr = FactoryTmpAdr;
+            else if (extra == "FactoryAgr") factoryAdr = FactoryAgrAdr;
             sF_addFactory(extra, factoryAdr, ControlApisAdr, hashID + extra);
         }
     } else {
@@ -147,15 +147,12 @@ function sF_changeLogerModule(adr) {
     sF_logerModuleAdr = adr;
 }
 
-
-
 ////////////////////////////////////////////
-
 function sF_setControlAbisAdvAbi(ControlApisAdr,  hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
     var myControlApi= myContract.at(ControlApisAdr);
     var account = web3.eth.accounts[0];
-    var data = getContractAbiString('ControlApisAdv');
+    var data = cC_getContractAbiString('ControlApisAdv');
 
     myControlApi.setFullAbi(data, {from: account, gas: 5000000},
     function(error, result){ 
