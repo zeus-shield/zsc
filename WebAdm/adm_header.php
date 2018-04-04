@@ -193,4 +193,4 @@ function includeSetLogRecorderHtml($func) {
     return $text;
 }
 
-
+?>

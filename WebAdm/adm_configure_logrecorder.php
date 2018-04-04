@@ -66,7 +66,7 @@ recordSystemModuleAdrs();
     echo includeSetLogRecorderHtml('setLogRecorderToListener');
 
     echo '<div class="well">
-        <button type="button" onClick="window.location.href='./adm_control_apis_adv.php'">Next: go to control page</button>
+        <button type="button" onClick="window.location.href=\'./adm_control_apis_adv.php\'">Next: go to control page</button>
     </div>';
 ?>
 </body>
