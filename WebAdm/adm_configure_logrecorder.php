@@ -58,54 +58,17 @@ recordSystemModuleAdrs();
 </script>
 </head>
 <body>
-<?php echo includeHeader();?>
-    <div class="page-header"> <font size="5" color="blue" >Setup ZSC system in the testing envrioment</font></div>
-    <?php echo includAllAdrs();?>
+<?php echo includeHeader();
+    echo '<div class="page-header"> <font size="5" color="blue" >Setup ZSC system in the testing envrioment</font></div>';
+
+    echo includeRegisterLogRecorderHtml('registerToLogRecorder');
     
-    <div class="well">
-        <button type="button" onClick="registerToLogRecorder('AdmAdv','RegisterAdmAdvHash')">Register AdmAdv</button> 
-        <text id="RegisterAdmAdvHash"></text>
-        <br> <br>
-        <button type="button" onClick="registerToLogRecorder('DBDatabase','RegisterDBDatabaseHash')">Register DBDatabase</button> 
-        <text id="RegisterDBDatabaseHash"></text>
-        <br> <br>
-        <button type="button" onClick="registerToLogRecorder('FactoryPro','RegisterFactoryProHash')">Register FactoryPro</button> 
-        <text id="RegisterFactoryProHash"></text>
-        <br> <br>
-        <button type="button" onClick="registerToLogRecorder('FactoryPro','RegisterFactoryTmpHash')">Register FactoryTmp</button> 
-        <text id="RegisterFactoryTmpHash"></text>
-        <br> <br>
-        <button type="button" onClick="registerToLogRecorder('FactoryPro','RegisterFactoryAgrHash')">Register FactoryPro</button> 
-        <text id="RegisterFactoryAgrHash"></text>
-        <br> <br>
-        <button type="button" onClick="registerToLogRecorder('ControlApisAdv','RegisterControlApisAdvHash')">Register ControlApisAdv</button> 
-        <text id="RegisterControlApisAdvHash"></text>
-    </div>
+    echo includeSetLogRecorderHtml('setLogRecorderToListener');
 
-
-    <div class="well">
-        <button type="button" onClick="setLogRecorderToListener('AdmAdv','SetLogAdmAdvHash')">Set Loger to DBDatabase</button> 
-        <text id="SetLogAdmAdvHash"></text>
-        <br> <br>
-        <button type="button" onClick="setLogRecorderToListener('DBDatabase','SetLogDBDatabaseHash')">Set Loger to DBDatabase</button> 
-        <text id="SetLogDBDatabaseHash"></text>
-        <br> <br>
-        <button type="button" onClick="setLogRecorderToListener('FactoryPro','SetLogFactoryProHash')">Set Loger to FactoryPro</button> 
-        <text id="SetLogFactoryProHash"></text>
-        <br> <br>
-        <button type="button" onClick="setLogRecorderToListener('FactoryTmp','SetLogFactoryTmpHash')">Set Loger to FactoryTmp</button> 
-        <text id="SetLogFactoryTmpHash"></text>
-        <br> <br>
-        <button type="button" onClick="setLogRecorderToListener('FactoryAgr','SetLogFactoryAgrHash')">Set Loger to FactoryAgr</button> 
-        <text id="SetLogFactoryAgrHash"></text>
-        <br> <br>
-        <button type="button" onClick="setLogRecorderToListener('ControlApisAdv','SetLogControlApisAdvHash')">Set Loger to ControlApisAdv</button> 
-        <text id="SetLogControlApisAdvHash"></text>
-    </div>
-    <div class="well">
+    echo '<div class="well">
         <button type="button" onClick="window.location.href='./adm_control_apis_adv.php'">Next: go to control page</button>
-    </div>
-
+    </div>';
+?>
 </body>
 </html>
 
