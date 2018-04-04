@@ -7,7 +7,7 @@ pragma solidity ^0.4.18;
 import "./db_entity.sol";
 
 contract WalletBase is DBEntity {
-    struct Transaction {
+    struct Payment {
         uint time_;
         bytes32 txhash_;
         address sender_;
@@ -17,13 +17,13 @@ contract WalletBase is DBEntity {
         bytes data_;
     }
 
-    struct TransactionHistory {
+    struct PaymentHistory {
         uint nos_;
         uint256 total_;
-        mapping(uint => Transaction) transactions_;
+        mapping(uint => Payment) payments_;
     }
     
-    TransactionHistory private transactionHistory_;
+    PaymentHistory private paymentHistory_;
 
     // Constructor
     function WalletBase(bytes32 _name) public DBEntity(_name) {
