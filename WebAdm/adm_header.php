@@ -14,6 +14,10 @@ function getModuleArray() {
     return array("LogRecorder", "AdmAdv", "DBDatabase", "FactoryPro", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
 }
 
+function getLogedModuleArray() {
+    return array("AdmAdv", "DBDatabase", "FactoryPro", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
+}
+
 function getLogedModuleNameArrayInString() {
     return "['AdmAdv', 'DBDatabase', 'FactoryPro', 'FactoryTmp', 'FactoryAgr', 'ControlApisAdv']";
 }
@@ -149,11 +153,48 @@ function includeCreateContractHtml($func) {
         $text .= '<div class="well">';
         $text .= '   <text> Name: </text>';
         $text .= '   <input type="text" id="'.$name.'Name" value = "zsc_'.$name.'loger"></input>';
-        $text .= '   <button type="button" onClick="'.$func.'(\''.$name.', '.$name.'Name\')">Create</button> <br>';
+        $text .= '   <button type="button" onClick="'.$func.'(\''.$name.'\',\'$name.'Name\')">Create</button> <br>';
         $text .= '   <text id="'.$name.'Log"></text> <br>';
         $text .= '</div>';
     }
     return $text;
 }
+
+function includeRegisterLogRecorderHtml($func) {
+    $logedModules = getLogedModuleArray();
+    $num = count($logedModules);
+
+    $text = '<div class="well">';
+
+    for($x = 0; $x < $num; $x++) {
+        $name = $logedModules[$x];
+        //<button type="button" onClick="registerToLogRecorder('AdmAdv','RegisterAdmAdvHash')">Register AdmAdv</button> 
+        $text .= '<button type="button" onClick="'.$func.'(\''.$name.'\',\'Register'.$name.'Hash\')">Register '.$name.'</button>';
+        //<text id="SetLogAdmAdvHash"></text><br> <br>
+        $text .= '<text id="Register'.$name.'Hash"></text> <br> <br>';
+    }
+
+    $text .= '</div>';
+
+    return $text;
+}
+
+function includeSetLogRecorderHtml($func) {
+    $logedModules = getLogedModuleArray();
+    $num = count($logedModules);
+
+    $text = '<div class="well">';
+
+    for($x = 0; $x < $num; $x++) {
+        $name = $logedModules[$x];
+        //<button type="button" onClick="setLogRecorderToListener('AdmAdv','SetLogAdmAdvHash')">Set Loger to DBDatabase</button> 
+        $text .= '<button type="button" onClick="'.$func.'(\''.$name.'\',\'SetLog'.$name.'Hash\')">SetLog '.$name.'</button>';
+        //<text id="SetLogAdmAdvHash"></text><br> <br>
+        $text .= '<text id="SetLog'.$name.'Hash"></text> <br> <br>';
+    }
+
+    $text .= '</div>';
+
+    return $text;
 ?>
 
