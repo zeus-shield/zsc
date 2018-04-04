@@ -138,7 +138,7 @@ function includeScriptFiles() {
     return $text;
 }
 
-function includeCreateContractHtml() {
+function includeCreateContractHtml($func) {
     $modules = getModuleArray();
     $num = count($modules);
 
@@ -149,7 +149,7 @@ function includeCreateContractHtml() {
         $text .= '<div class="well">';
         $text .= '   <text> Name: </text>';
         $text .= '   <input type="text" id="'.$name.'Name" value = "zsc_'.$name.'loger"></input>';
-        $text .= '   <button type="button" onClick="cC_setupContract(\''.$name.', '.$name.'Name\')">Create</button> <br>';
+        $text .= '   <button type="button" onClick="'.$func.'(\''.$name.', '.$name.'Name\')">Create</button> <br>';
         $text .= '   <text id="'.$name.'Log"></text> <br>';
         $text .= '</div>';
     }
