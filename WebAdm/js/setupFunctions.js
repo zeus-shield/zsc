@@ -48,7 +48,6 @@ function sF_setLogRecorderToListener(logRecorderAdr, listener,listenerName, hash
     });
 }  
 
-
 function sF_initSystemModule(module, extra, adrs, hashID) {
     var AdmAdvAdr = adrs[0];
     var DBDatabaseAdr = adrs[1];
@@ -135,11 +134,6 @@ function sF_addFactory(factoryType, FactoryAdr, ControlApisAdr, hashID) {
     });
 }  
 
-
-    function setAdm(address _adr) public only_owner {
-
-
-
 ////////////////
 var sF_logerModuleAdr;
 var sF_logMap = new Map();
@@ -195,5 +189,23 @@ function sF_setControlAbisAdvAbi(ControlApisAdr,  hashID) {
     });
 }  
 
+////////////////////////////////////////////
+function sF_addUser(ControlApisAdr,  usernameID, hashID) {
+    var userName = document.getElementById(usernameID).value; 
+
+    var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
+    var myControlApi= myContract.at(ControlApisAdr);
+    var account = web3.eth.accounts[0];
+
+    console.log(ControlApisAdr);
+    console.log(userName);
+    console.log(userPass);
+
+    myControlApi.addUser(userName, {from: account, gas: 9000000},
+    function(error, result){ 
+        if(!error) sF_showHashResult(hashID, result);
+        else console.log("error: " + error);
+    });
+}  
 
 
