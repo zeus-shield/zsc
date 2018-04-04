@@ -1,15 +1,10 @@
+<?php
+/*
+Copyright (c) 2018, ZSC Dev Team
+*/
+?>
 
 <?php
-
-class zscModule { 
-    public $moduleArray = array("LogRecorder", "AdmAdv", "DBDatabase", "FactoryPro", "FactoryTmp", "FactoryAgr", "ControlApisAdv");   
-    
-    function getModuleArray() { 
-        return $moduleArray; 
-    } 
-} 
-
-
 function getModuleArray() {
     return array("LogRecorder", "AdmAdv", "DBDatabase", "FactoryPro", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
 }
@@ -146,10 +141,10 @@ function includeCreateContractHtml($func) {
     $modules = getModuleArray();
     $num = count($modules);
 
-    $text = "";
+    $text = '';
     for($x = 0; $x < $num; $x++) {
         $name = $modules[$x];
-        $text  = '<text>Step - '.$x.': Create '.$name.'</text>';
+        $text .= '<text>Step - '.$x.': Create '.$name.'</text>';
         $text .= '<div class="well">';
         $text .= '   <text> Name: </text>';
         $text .= '   <input type="text" id="'.$name.'Name" value = "zsc_'.$name.'loger"></input>';
@@ -196,5 +191,6 @@ function includeSetLogRecorderHtml($func) {
     $text .= '</div>';
 
     return $text;
-?>
+}
+
 
