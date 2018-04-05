@@ -6,10 +6,10 @@ Copyright (c) 2018, ZSC Dev Team
 
 <?php
 
-include("zsc_base.php");
+include("zsc_system_modules.php");
 
-class ZscHtmlModules extends ZscBase {
-    public function getHeader() {
+class ZscHtmlModules extends ZscSystemModules {
+    public function loadHeader() {
         $databaseAdr = "dddd";
         $text='<br><br>
         <div align="center">
@@ -27,7 +27,7 @@ class ZscHtmlModules extends ZscBase {
         return $text;
     }
     
-    public function getScriptFiles() {
+    public function loadScriptFiles() {
         $text = '
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -44,6 +44,18 @@ class ZscHtmlModules extends ZscBase {
         <script type="text/javascript" src="./js/compiled_loger.js"></script>';
         return $text;
     }
+    
+    function loadAllAdrs() {
+    $text='
+    <div class="well">
+        <text id = "LogRecorderAdr">LogRecorder address: '.readModuleAddress("LogRecorder").'</text> <br>                   
+        <text id = "DBDatabaseAdr">DBDatabase address: '.readModuleAddress('DBDatabase').'</text> <br>                   
+        <text id = "FactoryProAdr">FactoryPro address: '.readModuleAddress('FactoryPro').'</text> <br>               
+        <text id = "ControlApisAdvAdr">ControlApis address:'.readModuleAddress('ControlApisAdv').'</text>               
+    </div>';
+    return $text;
+    }
+
     
     public function loadCreateContract($func) {
         $modules = getModuleArray();
@@ -63,7 +75,7 @@ class ZscHtmlModules extends ZscBase {
          return $text;
     }
     
-    public function includeRegisterLogRecorderHtml($func) {
+    public function loadRegisterLogRecorderHtml($func) {
         $logedModules = getLogedModuleArray();
         $num = count($logedModules);
     
@@ -82,7 +94,7 @@ class ZscHtmlModules extends ZscBase {
         return $text;
     }
 
-    public function includeSetLogRecorderHtml($func) {
+    public function loadSetLogRecorderHtml($func) {
         $logedModules = getLogedModuleArray();
         $num = count($logedModules);
     

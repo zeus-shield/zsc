@@ -7,12 +7,7 @@ Copyright (c) 2018, ZSC Dev Team
 <?php
 include("zsc_base.php");
 
-class ZscSystemModules extends ZscBase { 
-    private $moduleArray = array("LogRecorder", "AdmAdv", "DBDatabase", "FactoryPro", "FactoryTmp", "FactoryAgr", "ControlApisAdv");   
-    private $logedModuleArray =  array("AdmAdv", "DBDatabase", "FactoryPro", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
-    private $logedModuleNameArrayInString =  "['AdmAdv', 'DBDatabase', 'FactoryPro', 'FactoryTmp', 'FactoryAgr', 'ControlApisAdv']";
-
-    
+class ZscSystemModules extends ZscBase {    
     public function readModuleAddress($name) {
         return readContent('./adrs/'.$name.'.txt');
     }
