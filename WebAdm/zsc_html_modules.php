@@ -6,7 +6,9 @@ Copyright (c) 2018, ZSC Dev Team
 
 <?php
 
-class ZscHtmlModules {
+include("zsc_base.php");
+
+class ZscHtmlModules extends ZscBase {
     public function getHeader() {
         $databaseAdr = "dddd";
         $text='<br><br>
