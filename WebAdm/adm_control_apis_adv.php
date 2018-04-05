@@ -1,12 +1,14 @@
-
-
-<?php include("adm_header.php"); ?>
-
-<?php
-$urlSuffixTag = false;
-
+<?php 
+/*
+Copyright (c) 2018 ZSC Dev Team
+*/
 ?>
 
+
+<?php
+include("adm_header.php");
+$htmlModules= new ZscHtmlModules();
+?>
 
 <html>
 <head>
@@ -15,18 +17,19 @@ $urlSuffixTag = false;
     var web3 = setupWeb3js(false);
     
     function initSystemModule(module, extraInfo, elementId) {
-        var adrs = <?php echo getLogedModuleAddressArrayInString()?>;
+        var adrs = <?php echo $htmlModules->getLogedModuleAddressArrayInString()?>;
         sF_initSystemModule(module, extraInfo, adrs, elementId);
     }
 
     function setControlApisAdvAbi(elementId) {
-        var adr = "<?php echo readModuleAddress('ControlApisAdv')?>";
+        var adr = "<?php echo $htmlModules->readModuleAddress('ControlApisAdv')?>";
         sF_setControlAbisAdvAbi(adr, elementId);
     }
     
 </script>
 </head>
 <body>
+<?php echo $htmlModules->loadScriptFiles(); ?>
 
 <div class="well">
         <<text>Step - 0 </text>
