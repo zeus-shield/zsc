@@ -31,6 +31,17 @@ ZSCElement.prototype.numBindedElements = function() { return this.binedElements.
 
 ZSCElement.prototype.getBindedElementName = function() { return this.binedElements[index]; }
 
+
+
+ZSCElement.prototype.doesElementExisit = function(func) {
+    this.myControlApi.doesElementExist(this.name,
+        function(error, ret){ 
+            if(!error) func(ret);  
+            else  console.log("error: " + error);
+        });
+}
+
+
 ZSCElement.prototype.loadEthBalance = function(func) {
     this.myControlApi.getElementEthBalance(this.name, function(error, balance){ 
         if(!error) {
