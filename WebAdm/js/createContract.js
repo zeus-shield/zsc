@@ -2,6 +2,9 @@
 Copyright (c) 2018 ZSC Dev Team
 */
 
+var cC_ModuleName = [];
+var cC_ModuleAdr = [];
+
 function cC_getContractFullName(contractName) {
     if (contractName == 'AdmAdv') {
         return "./zsc/adm_adv.sol:AdmAdv";
@@ -104,5 +107,16 @@ function cC_createContract(contractName, parameter) {
 function cC_setupContract(contractName, param) {
     cC_createContract(contractName, document.getElementById(param).value);
 }  
+
+
+function cC_getUrlSuffixForControlPage() {
+    var text = "?";
+    for (var i = 0; i < cC_ModuleName.length; ++i) {
+        text += cC_ModuleName[i] + "=";
+        text += cC_ModuleAdr[i] + "&";
+    }
+    return text;
+}
+
 
 
