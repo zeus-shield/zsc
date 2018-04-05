@@ -51,6 +51,20 @@ Official implementation for the solidity-based core part of the ZSC system, as w
                 |-- control_apis
 ```
 
+## WebClient inheritance
+```bash
+|-- zsc_base
+    |-- zsc_system_modules
+        |-- zsc_html_modules
+```
+
+## WebServer inheritance
+```bash
+|-- zsc_html
+|-- zsc_user
+|-- zsc_element
+```
+
 ## .sol update log
 ```bash
 2017.09.05: add multisigtoken.sol, multisigwallet.sol and token.sol
@@ -93,4 +107,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.04.02: add files adm_control_apis_adv.php, adm_configure_logrecorder.php, zscUser.js and zscElement.js
 2018.04.01-03: add five files adm_show_log.php, db_staker.sol, wallet_base.sol, WebAdm/js/setupFunctions.js, WebAdm/js/createContract.js
 2018.04.04: add two files zsc_html_modules.php, zsc_system_modules.php; change file name db_simulator.sol -> simulator_base.sol
+2018.04.05: add file WebAdm/zsc_base.php, WebClient/zscHtml.js
 ```
