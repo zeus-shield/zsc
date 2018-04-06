@@ -8,9 +8,11 @@
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
    
+    var userManager = new ZscUserManagement("<?php echo readModuleAddress('AdmAdv')?>", cC_getContractAbi('AdmAdv'));
+
     function addUser(usernameId, elementId) {
         var adr = "<?php echo readModuleAddress('ControlApisAdv')?>";
-        sF_addUser(adr, usernameId, elementId);
+        userManager.addUser(usernameId, elementId);
     }
 
 </script>
