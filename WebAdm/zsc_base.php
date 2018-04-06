@@ -17,7 +17,7 @@ class ZscBase {
         $text = '';
         $myfile = fopen($file, "r");
         if ($myfile == FALSE) {
-            $tex = 'null';
+            $tex = '';
         } else { 
             $text = fread($myfile,filesize($file));
             fclose($myfile);
@@ -26,9 +26,6 @@ class ZscBase {
     }
 
     public function writeContent($file, $text) {
-                print_r($file);
-                print_r($text);
-
         $myfile = fopen($file, "wr") or die("Unable to open file!");
         fwrite($myfile, $text);
         fclose($myfile);

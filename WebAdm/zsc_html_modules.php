@@ -22,7 +22,7 @@ class ZscHtmlModules extends ZscSystemModules {
         <div align="center">
         <table align="center" style="width:400px;min-height:30px">
            <tr>
-            <td align="center"><a href="adm_creat_contract.php">Create contract</a></td>
+            <td align="center"><a href="adm_create_contract.php">Create contract</a></td>
             <td align="center"><a href="adm_configure_logrecorder.php">Configure LogRecorder</a></td>
             <td align="center"><a href="adm_control_apis_adv.php">Control system</a></td>
             <td align="center"><a href="adm_manage_users.php">Users</a></td>
@@ -56,9 +56,12 @@ class ZscHtmlModules extends ZscSystemModules {
     public function loadAllAdrs() {
     $text='
     <div class="well">
-        <text id = "LogRecorderAdr">LogRecorder address: '.parent::readModuleAddress("LogRecorder").'</text> <br>                   
+        <text id = "LogRecorderAdr">LogRecorder address: '.parent::readModuleAddress("LogRecorder").'</text> <br>   
+        <text id = "AdmAdvAdr">LogRecorder address: '.parent::readModuleAddress("LogRecorder").'</text> <br>                                   
         <text id = "DBDatabaseAdr">DBDatabase address: '.parent::readModuleAddress('DBDatabase').'</text> <br>                   
         <text id = "FactoryProAdr">FactoryPro address: '.parent::readModuleAddress('FactoryPro').'</text> <br>               
+        <text id = "FactoryTmpAdr">FactoryTmpAdr address: '.parent::readModuleAddress('FactoryTmp').'</text> <br>               
+        <text id = "FactoryAgrAdr">FactoryAgrAdr address: '.parent::readModuleAddress('FactoryAgr').'</text> <br>               
         <text id = "ControlApisAdvAdr">ControlApis address:'.parent::readModuleAddress('ControlApisAdv').'</text>               
     </div>';
     return $text;
@@ -84,7 +87,7 @@ class ZscHtmlModules extends ZscSystemModules {
     }
     
     public function loadRegisterLogRecorderHtml($func) {
-        $logedModules = getLogedModuleArray();
+        $logedModules = ZscBase::getLogedModuleArray();
         $num = count($logedModules);
     
         $text = '<div class="well">';
@@ -103,7 +106,7 @@ class ZscHtmlModules extends ZscSystemModules {
     }
 
     public function loadSetLogRecorderHtml($func) {
-        $logedModules = getLogedModuleArray();
+        $logedModules = ZscBase::getLogedModuleArray();
         $num = count($logedModules);
     
         $text = '<div class="well">';

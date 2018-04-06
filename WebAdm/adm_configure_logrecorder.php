@@ -12,8 +12,8 @@ $urlSuffixTag = false;
 
 $htmlModules= new ZscHtmlModules();
 
-function recordSystemModuleAdrs() {
-    $system_modules = $htmlModules->getModuleArray();
+function recordSystemModuleAdrs($modules) {
+    $system_modules = $modules->getModuleArray();
     $num = count($system_modules);
     
     for($x = 0; $x < $num; $x++) {
@@ -22,11 +22,11 @@ function recordSystemModuleAdrs() {
 
         if(!empty($adr)){
             $urlSuffixTag = true;
-            $htmlModules->writeModuleAddress($module, $adr);
+            $modules->writeModuleAddress($module, $adr);
         }
     }
 }
-recordSystemModuleAdrs();
+recordSystemModuleAdrs($htmlModules);
 ?>
 
 <html>
