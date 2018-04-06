@@ -10,7 +10,7 @@ Copyright (c) 2018 ZSC Dev Team
 <?php 
     include("adm_header.php"); 
     $htmlModules= new ZscHtmlModules();
-    echo htmlModules->loadScriptFiles();
+    echo $htmlModules->loadScriptFiles();
 ?>
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
@@ -22,12 +22,12 @@ Copyright (c) 2018 ZSC Dev Team
 <body>
 
 <?php 
-    echo htmlModules->loadHeader();
+    echo $htmlModules->loadHeader();
 
     echo '<div class="page-header"> <font size="5" color="blue" >Setup ZSC system in the testing envrioment</font></div>';
 
-    echo htmlModules->loadAllAdrs();
-    echo htmlModules->loadCreateContractHtml('cC_setupContract');
+    echo $htmlModules->loadAllAdrs();
+    echo $htmlModules->loadCreateContract('cC_setupContract');
     echo '<div class="well">
             <button type="button" onClick="gotoConfigureLogRecorder()">Next: configure log recorder</button>
          </div>';
