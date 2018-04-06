@@ -7,33 +7,43 @@ Copyright (c) 2018, ZSC Dev Team
 <?php
 
 class ZscBase {
-    private $moduleArray = array("LogRecorder", "AdmAdv", "DBDatabase", "FactoryPro", "FactoryTmp", "FactoryAgr", "ControlApisAdv");   
-    private $logedModuleArray =  array("AdmAdv", "DBDatabase", "FactoryPro", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
-    private $logedModuleNameArrayInString =  "['AdmAdv', 'DBDatabase', 'FactoryPro', 'FactoryTmp', 'FactoryAgr', 'ControlApisAdv']";
+    public function __construct() { 
+    }
 
-    private function readContent($file) {
+    public function __destruct() {
+    }
+
+    public function readContent($file) {
+        $text = '';
         $myfile = fopen($file, "r");
-        $text = fread($myfile,filesize($file));
-        fclose($myfile);
+        if ($myfile == FALSE) {
+            $tex = 'null';
+        } else { 
+            $text = fread($myfile,filesize($file));
+            fclose($myfile);
+        }
         return $text;
     }
 
-    private function writeContent($file, $text) {
+    public function writeContent($file, $text) {
+                print_r($file);
+                print_r($text);
+
         $myfile = fopen($file, "wr") or die("Unable to open file!");
         fwrite($myfile, $text);
         fclose($myfile);
     }
 
     public function getModuleArray() { 
-        return $moduleArray; 
+        return array("LogRecorder", "AdmAdv", "DBDatabase", "FactoryPro", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
     } 
 
     public function getLogedModuleArray() {
-        return $logedModuleArray;
+        return array("AdmAdv", "DBDatabase", "FactoryPro", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
     }
     
     public function getLogedModuleNameArrayInString() {
-        return $logedModuleNameArrayInString;
+        return "['AdmAdv', 'DBDatabase', 'FactoryPro', 'FactoryTmp', 'FactoryAgr', 'ControlApisAdv']";
     }
 }
 ?>

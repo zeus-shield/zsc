@@ -7,6 +7,5 @@ Copyright (c) 2018, ZSC Dev Team
 <?php
 
 include("zsc_html_modules.php");
-include("zsc_system_modules.php"); 
 
 ?>
