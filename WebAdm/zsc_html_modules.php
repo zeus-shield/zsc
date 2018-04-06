@@ -9,6 +9,13 @@ Copyright (c) 2018, ZSC Dev Team
 include("zsc_system_modules.php");
 
 class ZscHtmlModules extends ZscSystemModules {
+    public function __construct(){
+        parent::__construct();
+    }
+
+    public  function __destruct() {
+    }
+
     public function loadHeader() {
         $databaseAdr = "dddd";
         $text='<br><br>
@@ -45,34 +52,34 @@ class ZscHtmlModules extends ZscSystemModules {
         return $text;
     }
     
-    function loadAllAdrs() {
+    public function loadAllAdrs() {
     $text='
     <div class="well">
-        <text id = "LogRecorderAdr">LogRecorder address: '.readModuleAddress("LogRecorder").'</text> <br>                   
-        <text id = "DBDatabaseAdr">DBDatabase address: '.readModuleAddress('DBDatabase').'</text> <br>                   
-        <text id = "FactoryProAdr">FactoryPro address: '.readModuleAddress('FactoryPro').'</text> <br>               
-        <text id = "ControlApisAdvAdr">ControlApis address:'.readModuleAddress('ControlApisAdv').'</text>               
+        <text id = "LogRecorderAdr">LogRecorder address: '.parent::readModuleAddress("LogRecorder").'</text> <br>                   
+        <text id = "DBDatabaseAdr">DBDatabase address: '.parent::readModuleAddress('DBDatabase').'</text> <br>                   
+        <text id = "FactoryProAdr">FactoryPro address: '.parent::readModuleAddress('FactoryPro').'</text> <br>               
+        <text id = "ControlApisAdvAdr">ControlApis address:'.parent::readModuleAddress('ControlApisAdv').'</text>               
     </div>';
     return $text;
     }
 
     
     public function loadCreateContract($func) {
-        $modules = getModuleArray();
+        $modules = ZscBase::getModuleArray();
         $num = count($modules);
-      
+
         $text = '';
         for($x = 0; $x < $num; $x++) {
             $name = $modules[$x];
             $text .= '<text>Step - '.$x.': Create '.$name.'</text>';
             $text .= '<div class="well">';
             $text .= '   <text> Name: </text>';
-            $text .= '   <input type="text" id="'.$name.'Name" value = "zsc_'.$name.'loger"></input>';
-            $text .= '   <button type="button" onClick="'.$func.'(\''.$name.'\',\'$name.'Name\')">Create</button> <br>';
+            $text .= '   <input type="text" id="'.$name.'Name" value = "zsc_'.$name.'"></input>';
+            $text .= '   <button type="button" onClick="'.$func.'(\''.$name.'\',\''.$name.'Log\')">Create</button> <br>';
             $text .= '   <text id="'.$name.'Log"></text> <br>';
             $text .= '</div>';
         }
-         return $text;
+        return $text;
     }
     
     public function loadRegisterLogRecorderHtml($func) {
