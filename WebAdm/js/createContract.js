@@ -24,8 +24,8 @@ function cC_getContractFullName(contractName) {
 }
 
 function cC_getCompiledFile(contractName) {
-    if (name == "AdmAdv") {
-        return g_AdmAdvAdr;
+    if (contractName == "AdmAdv") {
+        return compiledAdmAdv;
     } else if (contractName == 'LogRecorder') {
         return compiledLogRecorder;
     } else if (contractName == 'DBDatabase') {
@@ -51,7 +51,8 @@ function cC_getContractAbi(contractName) {
 function cC_getContractBin(contractName) {
     var solcompiled = cC_getCompiledFile(contractName);
     var contractFullName = cC_getContractFullName(contractName);
-    return "0x" + solcompiled.contracts[contractFullName].bin;
+    var bin = "0x" + solcompiled.contracts[contractFullName].bin;
+    return bin;
 }
 
 function cC_getContractAbiString(contractName) {
@@ -81,7 +82,6 @@ function cC_createContract(contractName, parameter) {
     var databin = cC_getContractBin(contractName);
     var greeterContract = web3.eth.contract(cC_getContractAbi(contractName)); 
     var account = web3.eth.accounts[0];
-    console.log(account);
     var greeter = greeterContract.new(parameter, {account, data: databin, gas: 7500000}, function(e, contract){
         if(!e) {
             if(!contract.address) {
@@ -104,8 +104,8 @@ function cC_createContract(contractName, parameter) {
     })
 }
  
-function cC_setupContract(contractName, param) {
-    cC_createContract(contractName, document.getElementById(param).value);
+function cC_setupContract(contractName, paramId) {
+cC_createContract(contractName, document.getElementById(paramId).value);
 }  
 
 

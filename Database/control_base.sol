@@ -70,10 +70,10 @@ contract ControlBase is Object, ControlInfo {
     function setAdmAdr(address _adm) internal {
         require (_adm != 0);      
         bindedAdm_ = _adm;
-        setDelegat(bindedAdm_, true);
+        setDelegate(bindedAdm_, true);
 
         addLog("setAdmAdr: ", true);
-        addLog(PlatString.bytes32ToString(Object(_db).name()), false);
+        //addLog(PlatString.bytes32ToString(Object(_adm).name()), false);
     }
 
     function setDatabaseAdr(address _db) internal {

@@ -48,6 +48,7 @@ class ZscHtmlModules extends ZscSystemModules {
         <script type="text/javascript" src="./js/compiled_database.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_pro.js"></script>
         <script type="text/javascript" src="./js/compiled_apis.js"></script>
+        <script type="text/javascript" src="./js/compiled_admadv.js"></script>
         <script type="text/javascript" src="./js/compiled_loger.js"></script>';
         return $text;
     }
@@ -75,7 +76,7 @@ class ZscHtmlModules extends ZscSystemModules {
             $text .= '<div class="well">';
             $text .= '   <text> Name: </text>';
             $text .= '   <input type="text" id="'.$name.'Name" value = "zsc_'.$name.'"></input>';
-            $text .= '   <button type="button" onClick="'.$func.'(\''.$name.'\',\''.$name.'Log\')">Create</button> <br>';
+            $text .= '   <button type="button" onClick="'.$func.'(\''.$name.'\',\''.$name.'Name\')">Create</button> <br>';
             $text .= '   <text id="'.$name.'Log"></text> <br>';
             $text .= '</div>';
         }

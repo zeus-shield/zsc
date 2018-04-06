@@ -27,7 +27,7 @@ contract AdmBase is Object {
 
     modifier only_added(bytes32 _hexx) { require(testUsers_[userIndex_[_hexx]].status_ == 1); _;}
     
-    function AdmBase() public Object("zsc_adm") {}
+    function AdmBase(bytes32 _name) public Object(_name) {}
 
     function toHexx(bytes32 _value) internal constant returns (bytes32);
 
