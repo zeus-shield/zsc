@@ -18,7 +18,7 @@ function cC_getContractFullName(contractName) {
         return "./zsc/factory_tmp.sol:FactoryTmp";
     } else if (contractName == 'FactoryAgr') {
         return "./zsc/factory_agr.sol:FactoryAgr";
-    } else if (contractName == 'ControlApis') {
+    } else if (contractName == 'ControlApisAdv') {
         return "./zsc/control_apis_adv.sol:ControlApisAdv";
     }
 }
@@ -37,7 +37,7 @@ function cC_getCompiledFile(contractName) {
     } else if (contractName == 'FactoryPro') {
         return compiledFactoryAgr;
     } else if (contractName == 'ControlApisAdv') {
-        return compiledApis;
+        return compiledApisAdv;
     }
 }
 

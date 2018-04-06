@@ -47,8 +47,8 @@ class ZscHtmlModules extends ZscSystemModules {
         <script type="text/javascript" src="./js/setupFunctions.js"></script>
         <script type="text/javascript" src="./js/compiled_database.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_pro.js"></script>
-        <script type="text/javascript" src="./js/compiled_apis.js"></script>
-        <script type="text/javascript" src="./js/compiled_admadv.js"></script>
+        <script type="text/javascript" src="./js/compiled_apis_adv.js"></script>
+        <script type="text/javascript" src="./js/compiled_adm_adv.js"></script>
         <script type="text/javascript" src="./js/compiled_loger.js"></script>';
         return $text;
     }

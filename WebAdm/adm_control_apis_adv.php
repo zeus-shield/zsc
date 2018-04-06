@@ -7,12 +7,12 @@ Copyright (c) 2018 ZSC Dev Team
 
 <?php
 include("adm_header.php");
-$htmlModules= new ZscHtmlModules();
+$htmlModules = new ZscHtmlModules();
 ?>
 
 <html>
 <head>
-<?php echo includeScriptFiles(); ?>
+<?php echo $htmlModules->loadScriptFiles(); ?>
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
     
@@ -25,14 +25,17 @@ $htmlModules= new ZscHtmlModules();
         var adr = "<?php echo $htmlModules->readModuleAddress('ControlApisAdv')?>";
         sF_setControlAbisAdvAbi(adr, elementId);
     }
-    
 </script>
 </head>
 <body>
-<?php echo $htmlModules->loadScriptFiles(); ?>
+<?php 
+    echo $htmlModules->loadHeader(); 
+    echo '<div class="page-header"> <font size="5" color="blue" >Setup ZSC system in the testing envrioment</font></div>';
+    echo $htmlModules->loadAllAdrs();
+?>
 
 <div class="well">
-        <<text>Step - 0 </text>
+        <text>Step - 0 </text>
         <button type="button" onClick="setControlApisAdvAbi('ControlApisAdvAbiHash', '0')">Set ControlApisAdv Abi</button> <br>
         <text id="ControlApisAdvAbiHash"></text> <br>
         <text id="ControlApisAdvAbi"> </text> <br>
