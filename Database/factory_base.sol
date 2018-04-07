@@ -18,7 +18,7 @@ contract FactoryBase is Object {
 
     function setupFactoryRoot() internal;
 
-    function createNode(bytes32 _node) public returns (address);
+    function createNode(bytes32 _nodeName, bytes32 _parentName, address _creator) public returns (address);
 
     function getBindedApiController() public only_delegate constant returns (address) { return apiController_;}
 

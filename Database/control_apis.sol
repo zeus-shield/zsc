@@ -19,10 +19,10 @@ contract ControlApis is ControlBase {
     }
 
     /// @dev Add the database factory of managing the elements
-    /// @param _type The type of the database factory
+    /// @param _typeInUint The type of the database factory
     /// @param _adr The address of the database factory
-    function addFactory(uint _type, address _adr) public only_owner {
-        addFactoryAdr(mapType(_type), _adr);
+    function addElementFactory(uint _typeInUint, address _adr) public only_owner {
+        addFactoryAdr(mapType(_typeInUint), _adr);
     }
 
     /// @dev Set the database address
@@ -38,15 +38,17 @@ contract ControlApis is ControlBase {
     }
 
     /// @dev Creat an element
-    /// @param _factroyType The type of the factory for creating the element
+    /// @param _typeInUint The type of the factory for creating the element
     /// @param _node The name of the element belonging to the user
     /// @param _extraInfo The extra information
     /// @param _extraAdr The extra address
-    function createElement(uint _factroyType, bytes32 _node, bytes32 _extraInfo, address _extraAdr) public only_registered(_node) returns (address) {
+    function createElement(uint _typeInUint, bytes32 _node, bytes32 _extraInfo, address _extraAdr) public only_registered(_node) returns (address) {
         //require(checkAllowedUser(_node));
-        address adr = _extraAdr;
-        if (adr == 0) adr = msg.sender;
-        return createFactoryNode(mapType(_factroyType), _node, _extraInfo, adr);
+        address creatorAdr = _extraAdr;
+        if (creatorAdr == 0) {
+            creatorAdr = msg.sender;
+        }
+        return createFactoryNode(mapType(_typeInUint), _node, _extraInfo, creatorAdr);
     }
 
     /// @dev Get the element by its address
