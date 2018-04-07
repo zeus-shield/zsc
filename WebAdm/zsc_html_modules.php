@@ -55,17 +55,28 @@ class ZscHtmlModules extends ZscSystemModules {
     }
     
     public function loadAllAdrs() {
-    $text='
-    <div class="well">
-        <text id = "LogRecorderAdr">LogRecorder address: '.parent::readModuleAddress("LogRecorder").'</text> <br>   
-        <text id = "AdmAdvAdr">LogRecorder address: '.parent::readModuleAddress("LogRecorder").'</text> <br>                                   
-        <text id = "DBDatabaseAdr">DBDatabase address: '.parent::readModuleAddress('DBDatabase').'</text> <br>                   
-        <text id = "FactoryProAdr">FactoryPro address: '.parent::readModuleAddress('FactoryPro').'</text> <br>               
-        <text id = "FactoryTmpAdr">FactoryTmpAdr address: '.parent::readModuleAddress('FactoryTmp').'</text> <br>               
-        <text id = "FactoryAgrAdr">FactoryAgrAdr address: '.parent::readModuleAddress('FactoryAgr').'</text> <br>               
-        <text id = "ControlApisAdvAdr">ControlApis address:'.parent::readModuleAddress('ControlApisAdv').'</text>               
-    </div>';
-    return $text;
+        $modules = ZscBase::getModuleArray();
+        $num = count($modules);
+
+        $text  = '<div class="well">';
+        for ($x = 0; $x < $num; $x++) {
+            $name = $modules[$x];
+            $text .=    '<text id = "'.$name.'Adr">'.$name.' address: '.parent::readModuleAddress($name).'</text> <br>';
+        }
+        $text .= '</div>';
+
+        /*
+        $text = '<div class="well">
+            <text id = "LogRecorderAdr">LogRecorder address: '.parent::readModuleAddress("LogRecorder").'</text> <br>   
+            <text id = "AdmAdvAdr">LogRecorder address: '.parent::readModuleAddress("LogRecorder").'</text> <br>                                   
+            <text id = "DBDatabaseAdr">DBDatabase address: '.parent::readModuleAddress('DBDatabase').'</text> <br>                   
+            <text id = "FactoryProAdr">FactoryPro address: '.parent::readModuleAddress('FactoryPro').'</text> <br>               
+            <text id = "FactoryTmpAdr">FactoryTmpAdr address: '.parent::readModuleAddress('FactoryTmp').'</text> <br>               
+            <text id = "FactoryAgrAdr">FactoryAgrAdr address: '.parent::readModuleAddress('FactoryAgr').'</text> <br>               
+            <text id = "ControlApisAdvAdr">ControlApis address:'.parent::readModuleAddress('ControlApisAdv').'</text>               
+        </div>';
+        */
+        return $text;
     }
 
     
@@ -124,6 +135,41 @@ class ZscHtmlModules extends ZscSystemModules {
     
         return $text;
     }
-}
 
+    public function loadInitModules($func) {
+        $modules = array("AdmAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv");
+        $extraInfo = array("null",       "null",        "null",       "null",       "null",       "null",   "DBDatabase",         "AdmAdv",     "FactoryPro",     "FactoryRec",       "FactoryTmp", "FactoryAgr");
+
+        $num = count($modules);
+    
+        $text = '';
+    
+
+        for($x = 0; $x < $num; $x++) {
+            $name = $modules[$x];
+            $extra = $extraInfo[$x];
+            $hashId = $name.'Hash'.$x;
+            $action = '';
+            $object = '';
+            if ($extra == "null") {
+                $action = "Init ";
+                $object = $name;
+            } else {
+                $action = "Set ";
+                $object = $extra;
+            }
+            /*
+            <text>Step - 1 </text>
+            <button type="button" onClick="initSystemModule('DBDatabase', 'null','DBDatabaseHash')">Init DBDatabase</button> 
+            <text id="DBDatabaseHash"></text><br>
+            */
+            $text .= '<text>Step - '.($x+1).' </text>';
+            $text .= '<button type="button" onClick="'.initSystemModule.'(\''.$name.'\', \''.$extra.'\',\''.$hashId.'\')">'.$action.$object.'</button>';
+            $text .= '<text id="'.$hashId.'"></text><br><br>';
+        }
+    
+        return $text;
+    }
+}
 ?>
+
