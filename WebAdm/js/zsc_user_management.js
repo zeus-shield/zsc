@@ -29,7 +29,7 @@ ZscUserMangement.prototype.loadUsers = function(func) {
     });
 }
 
-ZSCElement.prototype.numUsers = function(func) {
+ZscUserMangement.prototype.numUsers = function(func) {
     this.myControlApi.numUsers(
         {from: this.account},
         function(error, num){ 
@@ -42,7 +42,7 @@ ZSCElement.prototype.numUsers = function(func) {
          });
 }
 
-ZSCElement.prototype.loadUserInfos = function(func) {
+ZscUserMangement.prototype.loadUserInfos = function(func) {
     for (var i = 0; i < this.userNos; ++i) {
         loadUserNameByIndex(i, function(index, para) {
                 this.userInfo[index] = para;
@@ -53,7 +53,7 @@ ZSCElement.prototype.loadUserInfos = function(func) {
     } 
 } 
 
-ZSCElement.prototype.loadUserInfoByIndex = function(index, func) {
+ZscUserMangement.prototype.loadUserInfoByIndex = function(index, func) {
     this.myControlApi.getUserInfoByIndex(index, 
         {from: this.account},
         function(error, para){ 
@@ -65,5 +65,20 @@ ZSCElement.prototype.loadUserInfoByIndex = function(index, func) {
             }
         });
 }
+
+ZscUserMangement.prototype.loadUserManagement = function(funcName, elementId) {
+    var funcPrefix = funcName + "(";
+    var funcSuffix = ")";
+    var text = '<table align="center" style="width:800px;min-height:30px">'
+    text += '<tr>>'
+    text += '   <text></button>'
+    text += '   <button type="button" onClick="' + funcPrefix + "'profile'" + funcSuffix + '">Profile</button>'
+    text += '   <button type="button" onClick="' + funcPrefix + "'templates'" + funcSuffix + '">Templates</button>'
+    text += '   <button type="button" onClick="' + funcPrefix + "'agreements'" + funcSuffix + '">Agreements</button>'
+    text += '</div>'
+    this.setHtmlContent(elementId, text);  
+}
+
+
 
 
