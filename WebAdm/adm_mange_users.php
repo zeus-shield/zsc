@@ -11,7 +11,6 @@
     var userManager = new ZscUserManagement("<?php echo readModuleAddress('AdmAdv')?>", cC_getContractAbi('AdmAdv'));
 
     function addUser(usernameId, elementId) {
-        var adr = "<?php echo readModuleAddress('ControlApisAdv')?>";
         userManager.addUser(usernameId, elementId);
     }
 

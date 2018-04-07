@@ -40,6 +40,7 @@ recordSystemModuleAdrs($htmlModules);
         if (module == "AdmAdv") adr = "<?php echo $htmlModules->readModuleAddress('AdmAdv')?>";        
         else if (module == "DBDatabase") adr = "<?php echo $htmlModules->readModuleAddress('DBDatabase')?>";
         else if (module == "FactoryPro") adr = "<?php echo $htmlModules->readModuleAddress('FactoryPro')?>";
+        else if (module == "FactoryRec") adr = "<?php echo $htmlModules->readModuleAddress('FactoryRec')?>";
         else if (module == "FactoryTmp") adr = "<?php echo $htmlModules->readModuleAddress('FactoryTmp')?>";
         else if (module == "FactoryAgr") adr = "<?php echo $htmlModules->readModuleAddress('FactoryAgr')?>";
         else if (module == "ControlApisAdv") adr = "<?php echo $htmlModules->readModuleAddress('ControlApisAdv')?>";
