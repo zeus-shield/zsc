@@ -14,7 +14,7 @@ contract infoRecorder {
 
 contract DBEntity is DBNode {
     address test_;
-    uint    id_ ;
+    address ethWalletId_ ;
     bool    activated_;
     bytes32 temp_;
 
@@ -31,7 +31,14 @@ contract DBEntity is DBNode {
 
     function initParameters() internal;
 
+    function setId(address _ethWalletiId) public only_delegate {
+        ethWalletId_ = _ethWalletiId;
+    }
 
+    function getId() public only_delegate constant returns (address) {
+        return ethWalletId_;
+    }
+    
     function setActivated(bool _activated) public only_delegate {
         activated_ = _activated;
     }
