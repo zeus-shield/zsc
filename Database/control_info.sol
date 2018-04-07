@@ -57,23 +57,26 @@ contract ControlInfo is Object {
     }
     */
 
+    /*
     function getSenderNameByAddress(address _adr) internal constant returns (bytes32) { 
         if (users_[_adr].tag_) {
             return users_[_adr].name_;
         } else {
             return 0x0;
         }
-    }
+    }*/
+
 
     function checkNodeExist(bytes32 _name) internal constant returns (bool) { 
         return (parameters_[_name].nodeAdr_ != 0); 
     }
 
+    /*
     function registerUser(bytes32 _type, bytes32 _userName, address _creator) internal {
         users_[_creator].tag_ = true;
         users_[_creator].name_ = _userName;
         users_[_creator].type_ = _type;
-    }
+    }*/
 
     function registerNode(bytes32 _nodeName, address _nodeAdr, address _creator) internal {
         require(!checkNodeExist(_nodeName));        
@@ -81,10 +84,11 @@ contract ControlInfo is Object {
         parameters_[_nodeName].creator_ = _creator;
     }
 
+    /*
     function registerHolder(bytes32 _nodeName, address _holder) internal {
         require(checkNodeExist(_nodeName));        
         parameters_[_nodeName].holders_[_holder] = true;
-    }
+    }*/
 
     function getControlInfoNodeAddress(bytes32 _nodeName)internal constant returns (address)  {
         return parameters_[_nodeName].nodeAdr_;

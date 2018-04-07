@@ -9,7 +9,7 @@ import "./object.sol";
 import "./control_info.sol";
 
 contract DBFactory is Object { 
-    function createNode(bytes32 _node) public returns (address);
+    function createNode(bytes32 _nodeName, bytes32 _parentName, address _creator) public returns (address);
 }
 
 contract DBDatabase is Object { 
@@ -20,6 +20,7 @@ contract DBDatabase is Object {
 }
 
 contract DBNode is Object {
+    function getId() public only_delegate returns (address);
     function getNodeType() public only_delegate constant returns (bytes32);
     function getBlance(bytes32 _name, address _adr) public only_delegate constant returns (uint256);
 
@@ -103,8 +104,25 @@ contract ControlBase is Object, ControlInfo {
         return DBNode(getDBDatabase().getNode(_node));
     }
 
-    function createFactoryNode(bytes32 _factory, bytes32 _nodeName, bytes32 extra, address _sender) internal returns (address) {
-        if (_factory == "provider" || _factory == "receiver") {
+    function createFactoryNode(bytes32 _type, bytes32 _nodeName, bytes32 _extra, address _creator) internal returns (address) {
+        address adr;
+        bytes32 parentName = "null";
+
+        if (_type == "template" || _type == "agreement") {
+            parentName = _extra;
+        }
+
+        getDBFactory(_type).createNode(_nodeName, parentName, _creator);
+        require(adr != 0);
+        registerNode(_nodeName, adr, _creator);
+
+        if (_type == "agreement") {
+            duplicateNode(_extra,  _nodeName);
+            DBNode(adr).setAgreementStatus("READY");
+        }
+        return adr;
+        /*
+        if (_factory == "provider" || _factory == "receiver" || _factory == "staker") {
             registerUser(_factory, _nodeName, _sender);
         } 
 
@@ -124,7 +142,10 @@ contract ControlBase is Object, ControlInfo {
             getDBNode(extra).bindEntity(adr);
             DBNode(adr).setAgreementStatus("READY");
         }
+
+        DBNode(adr).setId(_sender);
         return adr;
+        */
     }
 
     function operateNodeParameter(bytes32 _operation, bytes32 _node, bytes32 _parameter, string _value) internal returns (bool) {
