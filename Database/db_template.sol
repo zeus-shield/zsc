@@ -22,13 +22,17 @@ contract DBTemplate is DBEntity {
     }
 
     function setParameter(bytes32 _parameter, string _value) public only_delegate returns (bool) {
-        if (numBindedEntities("agreement") > 0) return false; 
+        if (numChildren() > 0) return false; 
         return super.setParameter(_parameter, _value);
     }
 
     function addParameter(bytes32 _parameter, string _value) public only_delegate returns (bool) {
-        if (numBindedEntities("agreement") > 0) return false; 
+        if (numChildren() > 0) return false; 
         return super.addParameter(_parameter, _value);
     }
 
+    function removeParameter(bytes32 _parameter) public only_delegate returns (bool) {
+        if (numChildren() > 0) return false; 
+        return super.removeParameter(_parameter);
+    }
 }

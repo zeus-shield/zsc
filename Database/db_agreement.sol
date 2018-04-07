@@ -47,6 +47,12 @@ contract DBAgreement is DBUser {
         return super.addParameter(_parameter, _value);
     }
 
+    function removeParameter(bytes32 _parameter) public only_delegate returns (bool) {
+        if (status_ > 0 )
+            return false; 
+        return super.removeParameter(_parameter);
+    }
+
     function setAgreementStatus(bytes32 _tag) public only_delegate returns (bool) {
         if (status_ > 2) return false;
 
