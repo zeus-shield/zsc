@@ -10,7 +10,7 @@ import "./object.sol";
 contract PosBase is Object {
     enum TransactionStatus {NULL, PENDING, FAILED, SUCCEED}
     
-    struct Transaction {
+    struct Block {
         TransactionStatus status_;
         uint createdTime_;
         uint finishedTime_;
@@ -23,9 +23,9 @@ contract PosBase is Object {
         bytes data_;
     }
 
-    struct TransactionHistory {
+    struct BlockHistory {
         uint nos_;
-        mapping(uint => Transaction) transactions_;
+        mapping(uint => Block) blocks_;
     }
     
     struct ZscStaker {
@@ -33,23 +33,33 @@ contract PosBase is Object {
         address nodeAddress_;
         address ethAddress_;
         uint stakePoint_;
+        uint rewardedZsc_;
+        uint dividenDuration_;
+        uint dividenTimes_;
         mapping(uint => uint) zscAmounts_;
     }
 
     struct ZscStakerPool {        
         uint nos_;
+        uint totalGasUsed_;
+        uint settledBlocks_;
+        uint dividenDuration_;
+        uint dividenTimes_;
         mapping(address => bool) stakerExists_;
         mapping(address => uint) stakerIndex_;
         mapping(uint => ZscStaker) stakers_;
     }
 
-    TransactionHistory private transactionHistory_;
+    BlockHistory private blockHistory_;
     ZscStakerPool private zscStakerPool_;
 
     address zscToken_;
 
     // Constructor
     function PosBase(bytes32 _name) public Object(_name) {
+        zscStakerPool_.nos_ = 0;
+        zscStakerPool_.settledBlocks_ = 0;
+        zscStakerPool_.totalGasUsed_ = 0;
     } 
 
     function setZscTokenAddress(address _adr) public only_delegate {
@@ -80,5 +90,4 @@ contract PosBase is Object {
         delete zscStakerPool_.stakerIndex_[_ethAddress];
         delete zscStakerPool_.stakers_[index];
     }
-
 }
