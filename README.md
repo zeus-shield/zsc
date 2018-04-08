@@ -9,15 +9,12 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 |-- Database:  
     |-- Core part of zsc system
     |-- Solidity based implementation
-
 |-- Token:     
     |-- zsc token contract
     |-- Based on ERC20 protocol
-
 |-- WebClient
     |-- web3.js and javascript based implementation
     |-- Compatible with Metamask 
-
 |-- WebAdm
     |-- web3.js, javascript and php based implementation
     |-- Compatible with Metamask 

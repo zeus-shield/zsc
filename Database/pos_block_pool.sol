@@ -84,7 +84,7 @@ contract PosBlockPool is Object {
         return lastPendingBlockIndex_; 
     }
 
-    function getBlockNos() internal constant returns (uint) { 
+    function numBlock() internal constant returns (uint) { 
         return blockPool_.nosBlocks_ ; 
     }
 

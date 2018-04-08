@@ -114,11 +114,11 @@ contract AdmBase is Object {
     function getUserInfoByIndex(uint _index) public only_delegate constant returns (string) {
         require(_index < testUsers_.length);
         string memory str ="";
-        str = PlatString.append(str, "<name:",   PlatString.bytes32ToString(testUsers_[_index].name_),   ">");
-        str = PlatString.append(str, "<status:", PlatString.bytes32ToString(testUsers_[_index].status_), ">");
-        str = PlatString.append(str, "<type:",   PlatString.bytes32ToString(testUsers_[_index].type_),   ">");
-        str = PlatString.append(str, "<id:",     PlatString.addressToString(testUsers_[_index].id_),     ">");
-        str = PlatString.append(str, "<node:",   PlatString.addressToString(testUsers_[_index].node_),   ">");
+        str = PlatString.append(str, "info?name=", PlatString.bytes32ToString(testUsers_[_index].name_),   "&");
+        str = PlatString.append(str, "status=",    PlatString.bytes32ToString(testUsers_[_index].status_), "&");
+        str = PlatString.append(str, "type=",      PlatString.bytes32ToString(testUsers_[_index].type_),   "&");
+        str = PlatString.append(str, "id=",        PlatString.addressToString(testUsers_[_index].id_),     "&");
+        str = PlatString.append(str, "node=",      PlatString.addressToString(testUsers_[_index].node_),   "&");
         return str;
     }
 
