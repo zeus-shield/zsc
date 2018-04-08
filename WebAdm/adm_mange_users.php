@@ -18,10 +18,15 @@ echo $htmlModules->loadScriptFiles();
     var userManager = new ZscUserManagement("<?php echo readModuleAddress('AdmAdv')?>", cC_getContractAbi('AdmAdv'));
 
     function addUser(usernameId, elementId) {
-        userManager.addUser(usernameId, elementId);
+        userManager.addUser(usernameId, elementId, function() {
+        	window.location.reload(true);
+        });
     }
 
-    function showUser(usernameId, elementId) {
+    function approve(userName, elementId) {
+        userManager.aproveUser(username, elementId, function() {
+        	window.location.reload(true);
+        });    
     }
 
 </script>
@@ -40,12 +45,11 @@ echo $htmlModules->loadScriptFiles();
         <text id="AddUserHash"></text>
     </div>
 
-    <div class="well" id="UserManagement"> /div>
+    <div class="well" id="UserManagement"> </div>
 <script type="text/javascript">
 	userManager.loadUsers(function(){
-		userManager.loadUserManagementHtml(showUser, "UserManagement");
+		userManager.loadUserManagementHtml(approve, "UserManagement");
 	});
-
 </script>
 
 </body>
