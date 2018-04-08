@@ -29,13 +29,14 @@ Official implementation for the solidity-based core part of the ZSC system, as w
     |-- delegated
         |-- log_recorder
         |-- objct 
+            |-- pos_block_pool, pos_staker_group
+                |-- pos_base
             |-- adm_base
             |-- app_proxy            
             |-- db_database
             |-- db_idmanager
             |-- db_node 
                 |-- wallet_base
-                |-- pos_base
                 |-- simulator_base
                 |-- db_entity 
                     |-- db_user
@@ -46,23 +47,23 @@ Official implementation for the solidity-based core part of the ZSC system, as w
                 |-- db_template
                 |-- db_agreement
             |-- factory_base
-            |-- control_base
-              |-control_info
+            |-- control_base, control_info
                 |-- control_apis
-```
-
-## WebClient inheritance
-```bash
-|-- zsc_base
-    |-- zsc_system_modules
-        |-- zsc_html_modules
 ```
 
 ## WebServer inheritance
 ```bash
-|-- zsc_html
-|-- zsc_user
-|-- zsc_element
+|-- zsc_base (php)
+    |-- zsc_system_modules (php)
+        |-- zsc_html_modules (php)
+|-- zsc_user_management (js)
+```
+
+## WebClient inheritance
+```bash
+|-- zsc_html (js)
+|-- zsc_user (js)
+|-- zsc_element (js)
 ```
 
 ## .sol update log
@@ -108,4 +109,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.04.01-03: add five files adm_show_log.php, db_staker.sol, wallet_base.sol, WebAdm/js/setupFunctions.js, WebAdm/js/createContract.js
 2018.04.04: add two files zsc_html_modules.php, zsc_system_modules.php; change file name db_simulator.sol -> simulator_base.sol
 2018.04.05: add file WebAdm/zsc_base.php, WebClient/zscHtml.js
+2018.04.06-08: add WebAdm/js/zsc_user_management.js, file pos_block_pool.sol and pos_user_group.sol
 ```
