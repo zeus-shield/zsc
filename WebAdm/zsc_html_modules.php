@@ -137,8 +137,8 @@ class ZscHtmlModules extends ZscSystemModules {
     }
 
     public function loadInitModules($func) {
-        $modules = array("AdmAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv");
-        $extraInfo = array("null",       "null",        "null",       "null",       "null",       "null",   "DBDatabase",         "AdmAdv",     "FactoryPro",     "FactoryRec",       "FactoryTmp", "FactoryAgr");
+        $modules = array("AdmAdv", "PosAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv");
+        $extraInfo = array("null",  "null",      "null",        "null",       "null",       "null",       "null",   "DBDatabase",         "AdmAdv",     "FactoryPro",     "FactoryRec",       "FactoryTmp", "FactoryAgr");
 
         $num = count($modules);
     
