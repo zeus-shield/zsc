@@ -16,8 +16,11 @@ contract PosBase is Object {
 
     // Constructor
     function PosBase(bytes32 _name) public Object(_name) {
-        
     } 
+
+    function initDatabase(address _controller) public only_delegate () {
+        setDelegate(_controller, true);
+    }
 
     function minePendingBlocks() public constant only_delegate {
         uint lastPendingBlockIndex = getLastPendingBlockIndex();
