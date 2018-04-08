@@ -14,11 +14,34 @@ function ZscUserMangement(adr, abi) {
     this.myControlApi = web3.eth.contract(abi).at(adr);
 }
 
+ZscUserMangement.prototype.showHashResult = function(elementID, hash, func){
+    web3.eth.getTransactionReceipt(hash, 
+    function(error, result){ 
+        if(!error) {
+            var show;
+            if (result == null) {
+                show =  "(pending)" + hash ;
+                this.howHashResult(elementID, hash, func);
+            } else {
+                if (result.status == 0) {
+                    show = "(failure)" + hash;
+                } else {
+                    show = "(succeeded)" + hash ;
+                    func();
+                }
+            }
+            document.getElementById(elementID).innerText = show;
+        } else {
+            console.log("error: " + error);
+        }
+    });
+} 
+
 ZscUserMangement.prototype.addUser = function(userNameId, hashId, func){
     var userName = document.getElementById(userNameId).value; 
     this.myControlApi.addUser(userName, {from: this.account, gas: 9000000},
     function(error, result){ 
-        if(!error) sF_showHashResult(hashId, result);
+        if(!error) this.howHashResult(hashId, result, func)
         else console.log("error: " + error);
     });
 }  
@@ -86,8 +109,8 @@ ZscUserMangement.prototype.parserUserInfo = function(info) {
 }
 
 ZscUserMangement.prototype.loadUserManagementHtml = function(funcName, elementId) {
-    var funcPrefix = funcName + "('"; 
-    var funcSuffix = "')'";
+    var funcPrefix = funcName + '('; 
+    var funcSuffix = ')"';
 
     var text = '<table align="center" style="width:800px;min-height:30px">'
     text += '<tr>'
@@ -95,15 +118,25 @@ ZscUserMangement.prototype.loadUserManagementHtml = function(funcName, elementId
     text += '</tr><tr>'
 
     for (var i = 0; i < this.userNos; ++i) {
+        var name = this.userName[i];
+        var hashId = this.userName[i] + "Hash"
         text += '   <td><text>' + this.userName[i]    + '</text></td>'
         text += '   <td><text>' + this.userStatus[i]  + '</text></td>'
         text += '   <td><text>' + this.userType[i]    + '</text></td>'
         text += '   <td><text>' + this.userId[i]      + '</text></td>'
         text += '   <td><text>' + this.userNodeAdr[i] + '</text></td>'
-        text += '   <button type="button" onClick="' + funcPrefix + this.userName[i] + funcSuffix + '">Show</button>'
+        text += '   <td><button type="button" onClick="' + funcPrefix + "'" + name + "', '" + hashId + "'" + funcSuffix + '">Show</button></td>'
+        text += '   <td><text id="'+ hashId + '"></text></td>'
     }
     text += '</tr>'
     document.getElementById(elementId).innerHTML = text;  
 }
 
+ZscUserMangement.prototype.approveUser = function(userName, func) {
+    this.myControlApi.addUser(userName, {from: this.account, gas: 9000000},
+    function(error, result){ 
+        if(!error) this.howHashResult(hashId, result, func)
+        else console.log("error: " + error);
+    });
+}
 
