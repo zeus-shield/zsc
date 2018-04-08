@@ -55,6 +55,7 @@ contract ControlBase is Object, ControlInfo {
     mapping(bytes32 => address) private factories_;
     address private bindedDB_;
     address private bindedAdm_;
+    address private bindedPos;
 
     modifier factroy_exist(bytes32 _name) {require(factories_[_name] != 0); _;}
     modifier factroy_notexist(bytes32 _name) {require(factories_[_name] == 0); _;}
@@ -72,6 +73,15 @@ contract ControlBase is Object, ControlInfo {
         require (_adm != 0);      
         bindedAdm_ = _adm;
         setDelegate(bindedAdm_, true);
+
+        addLog("setAdmAdr: ", true);
+        //addLog(PlatString.bytes32ToString(Object(_adm).name()), false);
+    }
+
+    function setPosAdr(address _pos) internal {
+        require (_pos != 0);      
+        bindedPos = _pos;
+        setDelegate(bindedPos, true);
 
         addLog("setAdmAdr: ", true);
         //addLog(PlatString.bytes32ToString(Object(_adm).name()), false);
