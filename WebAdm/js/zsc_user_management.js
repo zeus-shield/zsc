@@ -4,7 +4,11 @@ Copyright (c) 2018 ZSC Dev Team
 function ZscUserMangement(adr, abi) {
     this.admAdvAdr = admAdr;
     this.admAdvAbi = abi;
-    this.userInfo = [];
+    this.userName = [];
+    this.userStatus = [];
+    this.userType = [];
+    this.userId = [];
+    this.userNodeAdr = [];
     this.userNos = 0;
     this.account = web3.eth.accounts[0];
     this.myControlApi = web3.eth.contract(abi).at(adr);
@@ -44,8 +48,8 @@ ZscUserMangement.prototype.numUsers = function(func) {
 
 ZscUserMangement.prototype.loadUserInfos = function(func) {
     for (var i = 0; i < this.userNos; ++i) {
-        loadUserNameByIndex(i, function(index, para) {
-                this.userInfo[index] = para;
+        loadUserNameByIndex(i, function(index, userInfo) {
+                this.parserUserInfo(userInfo);
                 if (index == this.userNos - 1) {
                     func();
                  }
@@ -66,19 +70,40 @@ ZscUserMangement.prototype.loadUserInfoByIndex = function(index, func) {
         });
 }
 
-ZscUserMangement.prototype.loadUserManagement = function(funcName, elementId) {
-    var funcPrefix = funcName + "(";
-    var funcSuffix = ")";
-    var text = '<table align="center" style="width:800px;min-height:30px">'
-    text += '<tr>>'
-    text += '   <text></button>'
-    text += '   <button type="button" onClick="' + funcPrefix + "'profile'" + funcSuffix + '">Profile</button>'
-    text += '   <button type="button" onClick="' + funcPrefix + "'templates'" + funcSuffix + '">Templates</button>'
-    text += '   <button type="button" onClick="' + funcPrefix + "'agreements'" + funcSuffix + '">Agreements</button>'
-    text += '</div>'
-    this.setHtmlContent(elementId, text);  
+ZscUserMangement.prototype.parserUserInfo = function(info) {
+    var len        = urlininfofo.length;
+    var offset     = info.indexOf("?");
+    var newsidinfo = info.substr(offset,len)
+    var newsids    = newsidinfo.split("&");
+    var index      = this.userNos;
+
+    this.userName[index]    = newsids[0];
+    this.userStatus[index]  = newsids[1];
+    this.userType[index]  = newsids[2];
+    this.userId[index]      = newsids[3];
+    this.userNodeAdr[index] = newsids[4];
+    this.userNos++;
 }
 
+ZscUserMangement.prototype.loadUserManagementHtml = function(funcName, elementId) {
+    var funcPrefix = funcName + "('"; 
+    var funcSuffix = "')'";
 
+    var text = '<table align="center" style="width:800px;min-height:30px">'
+    text += '<tr>'
+    text += '   <td><text>user name</text></td>  <td><text>user type</text></td>  <td><text>user status</text></td>  <td><text>user id</text></td> <td><text>user zsc wallet</text></td>'
+    text += '</tr><tr>'
+
+    for (var i = 0; i < this.userNos; ++i) {
+        text += '   <td><text>' + this.userName[i]    + '</text></td>'
+        text += '   <td><text>' + this.userStatus[i]  + '</text></td>'
+        text += '   <td><text>' + this.userType[i]    + '</text></td>'
+        text += '   <td><text>' + this.userId[i]      + '</text></td>'
+        text += '   <td><text>' + this.userNodeAdr[i] + '</text></td>'
+        text += '   <button type="button" onClick="' + funcPrefix + this.userName[i] + funcSuffix + '">Show</button>'
+    }
+    text += '</tr>'
+    document.getElementById(elementId).innerHTML = text;  
+}
 
 
