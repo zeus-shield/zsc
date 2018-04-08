@@ -8,6 +8,8 @@ var cC_ModuleAdr = [];
 function cC_getContractFullName(contractName) {
     if (contractName == 'AdmAdv') {
         return "./zsc/adm_adv.sol:AdmAdv";
+    } else if (contractName == 'PosAdv') {
+        return "./zsc/pos_adv.sol:PosAdv";
     } else if (contractName == 'LogRecorder') {
         return "./zsc/db/Database/log_recorder.sol:LogRecorder";
     } else if (contractName == 'DBDatabase') {
@@ -28,6 +30,8 @@ function cC_getCompiledFile(contractName) {
         return compiledAdmAdv;
     } else if (contractName == 'LogRecorder') {
         return compiledLogRecorder;
+    } else if (contractName == 'PosAdv') {
+        return compiledPosAdv;
     } else if (contractName == 'DBDatabase') {
         return compiledDatabase;
     } else if (contractName == 'FactoryPro') {

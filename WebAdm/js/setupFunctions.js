@@ -59,6 +59,8 @@ function sF_initSystemModule(module, extra, adrs, hashID) {
 
     if (module == "AdmAdv") {
 
+    } else if (module == "PosAdv") {
+
     } else if (module == "DBDatabase") {
         sF_initDatabase(DBDatabaseAdr, FactoryProAdr, FactoryRecAdr, FactoryTmpAdr, FactoryAgrAdr, ControlApisAdr, hashID);
     } else if (module == "ControlApisAdv") {
