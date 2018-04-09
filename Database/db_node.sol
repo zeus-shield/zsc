@@ -21,6 +21,7 @@ contract DBNode is Object {
     address private database_ = address(0);
     address private parent_ = address(0);
     address private controller_ = address(0);
+    address private posAdv_ = address(0);
     bytes32 private nodeType_ = "node";
 
     address[] children_;
@@ -53,10 +54,11 @@ contract DBNode is Object {
         }
     }
     
-    function setFactoryAndDatabase(address[] _factories, address _database, address _contoller) public only_delegate {
+    function setDelegatedModules(address _database, address _contoller,address _posAdv, address[] _factories) public only_delegate {
         database_ = _database;
         factories_ = _factories;
         controller_ = _contoller;
+        posAdv_ = _posAdv;
 
         setDelegate(database_, true);
         for (uint i=0; i<factories_.length; i++) {
@@ -103,7 +105,7 @@ contract DBNode is Object {
         DBNode(_node).setParent(this);
 
         CallbackDatabase(database_).setDelegate(_node, true);
-        DBNode(_node).setFactoryAndDatabase(factories_, database_, controller_);
+        DBNode(_node).setDelegatedModules(database_, controller_, posAdv_, factories_);
 
         children_.push(_node);
         childMap_[DBNode(_node).name()] = _node;

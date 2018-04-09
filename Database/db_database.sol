@@ -32,7 +32,7 @@ contract DBDatabase is Object {
             setDelegate(rootNode_, true);
             setDelegate(_controller, true);
             setDelegate(_posAdv, true);
-            DBNode(rootNode_).setFactoryAndDatabase(_factories, this, _controller);
+            DBNode(rootNode_).setDelegatedModules(this, _controller, _posAdv, _factories);
         }
     }
 
