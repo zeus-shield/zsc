@@ -7,15 +7,18 @@ pragma solidity ^0.4.18;
 import "./db_user.sol";
 
 contract DBStaker is DBUser {
-    address private templates_ = 0;
+	uint private constant DAY_IN_SECONDS_BY_100 = 864;
     uint private spRemaining_;
     uint private spForReward_;
     uint private divendendDuration_;
-    uint private rewardUnitAsZsc_;
+    uint private lastStoreTime_;
+    uint private lastRewardTime_;
 
     // Constructor
     function DBStaker(bytes32 _name) public DBUser(_name) {
         setNodeType("staker"); 
+        lastStoreTime_ = now;
+        lastRewardTime_ = lastStoreTime_;
     }
 
     function initParameters() internal {
@@ -37,27 +40,36 @@ contract DBStaker is DBUser {
         return false; 
     }
 
-    function storeStakePoint(uint _amount) public only_delegate {
-        spRemaining_ += _amount;
-        zscStakerGroup_.spRemaining_ += _amount;
+    function claimStakePoint() public only_delegate {
+    	uint currentTime = now;
+    	uint ratio = (currentTime - lastStoreTime_)/DAY_IN_SECONDS_BY_100;
+    	uint spAmount = ratio * ERC20Interface(getERC20TokenAddress()).balancOf(address(this)) / 100;
+    	lastStoreTime_ = currentTime;
+
+        spRemaining_ += spAmount;
     }
 
     function useStakePoint(uint _amount) public only_delegate returns (uint) {
         if (spRemaining_ > _amount) {
             spRemaining_ -= _amount;
+            spForReward_ += _amount;
             return 0;
         } else {
             uint delta = _amount - spRemaining_;
+            spForReward_ += spRemaining_;
             spRemaining_ = 0;
             return delta;
         }
     }
 
     function claimReward() public only_delegate returns (uint) {
-    	uint zscAmount = spForReward_ * rewardUnitAsZsc_;
-    	spForReward_ = 0;
-    	return zscAmount;
+    	if ((now - lastRewardTime_) > divendendDuration_) {
+    		uint reward = (spForReward_ / 100) / 365;
+    		spForReward_ = 0;
+    		return reward;
+    	} else {
+    		return 0;
+    	}
     }
-
 }
 
