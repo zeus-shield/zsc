@@ -23,6 +23,7 @@ contract DBUser is DBEntity {
     
     PaymentHistory private ethPayments_;
     PaymentHistory private ERC20Payments_;
+    address private tokenAddress_;
 
     // Constructor
     function DBUser(bytes32 _name) public DBEntity(_name) {
@@ -66,4 +67,13 @@ contract DBUser is DBEntity {
             return false;
         }
     }
+
+    function setERC20TokenAddress(address _tokenAdr) public only_delegate {
+        tokenAddress_ = _tokenAdr;
+    }
+
+    function getERC20TokenAddress() public only_delegate constant returns (address) {
+        return tokenAddress_;
+    }
 }
+
