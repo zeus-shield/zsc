@@ -35,6 +35,8 @@ contract DBNode is Object {
 
     function executeEtherTransaction(address _dest, uint256 _value, bytes _data) public only_delegate returns (bool);
     function executeERC20Transaction(address _tokenAdr, address _dest, uint256 _value, bytes _data) public only_delegate returns (bool);
+    function setERC20TokenAddress(address _tokenAdr) only_delegate public;
+    function getERC20TokenAddress() public only_delegate constant returns (address);
 
     function bindEntity(address _adr) only_delegate public;
     function numBindedEntities(bytes32 _type) public only_delegate constant returns (uint);
@@ -55,7 +57,8 @@ contract ControlBase is Object, ControlInfo {
     mapping(bytes32 => address) private factories_;
     address private bindedDB_;
     address private bindedAdm_;
-    address private bindedPos;
+    address private bindedPos_;
+    address private zscTokenAddress_;
 
     modifier factroy_exist(bytes32 _name) {require(factories_[_name] != 0); _;}
     modifier factroy_notexist(bytes32 _name) {require(factories_[_name] == 0); _;}
@@ -78,9 +81,10 @@ contract ControlBase is Object, ControlInfo {
         //addLog(PlatString.bytes32ToString(Object(_adm).name()), false);
     }
 
-    function setPosAdr(address _pos) internal {
+    function setPosAdr(address _pos, address _zscToken) internal {
         require (_pos != 0);      
-        bindedPos = _pos;
+        bindedPos_ = _pos;
+        zscTokenAddress_ = _zscToken;
         setDelegate(bindedPos, true);
 
         addLog("setAdmAdr: ", true);
@@ -122,11 +126,13 @@ contract ControlBase is Object, ControlInfo {
             parentName = _extra;
         }
 
-        getDBFactory(_type).createNode(_nodeName, parentName, _creator);
+        adr = getDBFactory(_type).createNode(_nodeName, parentName, _creator);
         require(adr != 0);
         registerNode(_nodeName, adr, _creator);
 
-        if (_type == "agreement") {
+        if (_type == "staker") {
+            DBNode(adr).setERC20TokenAddress(zscTokenAddress_);
+        } else if (_type == "agreement") {
             duplicateNode(_extra,  _nodeName);
             DBNode(adr).setAgreementStatus("READY");
         }
