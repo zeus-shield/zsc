@@ -7,6 +7,16 @@ pragma solidity ^0.4.18;
 import "./db_user.sol";
 
 contract DBStaker is DBUser {
+	struct SPInfo {
+		uint time_;
+		uint amount_;
+	}
+
+	struct RewardInfo {
+		uint time_;
+		uint amount_;
+	}
+
 	uint private constant DAY_IN_SECONDS_BY_100 = 864;
     uint private spRemaining_;
     uint private spForReward_;
@@ -70,6 +80,10 @@ contract DBStaker is DBUser {
     	} else {
     		return 0;
     	}
+    }
+
+    function getRemainingSP() public only_delegate constant returns (uint) {
+    	return spRemaining_;
     }
 }
 
