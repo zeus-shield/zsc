@@ -8,12 +8,7 @@ import "./pos_block_pool.sol";
 import "./pob_staker_group.sol";
 
 //Proof of Stake for ZSC system
-contract PosBase is Object {
-    struct MiningInfo {
-        uint lastMinedBlock_;
-    }
-    MiningInfo private miningInfo_;
-
+contract PosBase is PosStakerGroup, PosBlockPool {
     // Constructor
     function PosBase(bytes32 _name) public Object(_name) {
     } 
@@ -36,7 +31,7 @@ contract PosBase is Object {
             }
 
             for (uint j = 0; j < stakerNos; ++j) {
-                useStakerSPByIndex(j, 1);
+                useStakerSPByIndex(j, 10);
             }
             setBlockMinedByIndex(i);
         }
