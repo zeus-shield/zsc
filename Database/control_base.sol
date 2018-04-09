@@ -45,6 +45,11 @@ contract DBNode is Object {
     function setAgreementStatus(bytes32 _tag) public only_delegate returns (bool);
 }
 
+contract PosManager is Object {
+    function registerStaker(address _nodeAddress) only_delegate public;
+    function removeStaker(address _nodeAddress) only_delegate public;
+}
+
 contract ControlBase is Object, ControlInfo {   
     struct TokenAwarder {
         address adr_;
@@ -85,7 +90,7 @@ contract ControlBase is Object, ControlInfo {
         require (_pos != 0);      
         bindedPos_ = _pos;
         zscTokenAddress_ = _zscToken;
-        setDelegate(bindedPos, true);
+        setDelegate(bindedPos_, true);
 
         addLog("setAdmAdr: ", true);
         //addLog(PlatString.bytes32ToString(Object(_adm).name()), false);
@@ -132,36 +137,12 @@ contract ControlBase is Object, ControlInfo {
 
         if (_type == "staker") {
             DBNode(adr).setERC20TokenAddress(zscTokenAddress_);
+            PosManager(bindedPos_).registerStaker(adr);
         } else if (_type == "agreement") {
             duplicateNode(_extra,  _nodeName);
             DBNode(adr).setAgreementStatus("READY");
         }
         return adr;
-        /*
-        if (_factory == "provider" || _factory == "receiver" || _factory == "staker") {
-            registerUser(_factory, _nodeName, _sender);
-        } 
-
-        bytes32 userName = getSenderNameByAddress(_sender);
-        require(userName != 0x0);          
-        
-        address adr = getDBFactory(_factory).createNode(_nodeName);
-        require(adr != 0);
-        registerNode(_nodeName, adr, _sender);
-
-        if (_factory == "template") {
-            registerHolder(_nodeName, _sender);
-            getDBNode(userName).bindEntity(adr);
-        } else if (_factory == "agreement") {
-            registerHolder(_nodeName, _sender);
-            duplicateNode(extra,  _nodeName);
-            getDBNode(extra).bindEntity(adr);
-            DBNode(adr).setAgreementStatus("READY");
-        }
-
-        DBNode(adr).setId(_sender);
-        return adr;
-        */
     }
 
     function operateNodeParameter(bytes32 _operation, bytes32 _node, bytes32 _parameter, string _value) internal returns (bool) {
