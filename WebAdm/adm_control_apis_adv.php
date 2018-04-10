@@ -18,7 +18,8 @@ $htmlModules = new ZscHtmlModules();
     
     function initSystemModule(module, extraInfo, elementId) {
         var adrs = <?php echo $htmlModules->getLogedModuleAddressArrayInString()?>;
-        sF_initSystemModule(module, extraInfo, adrs, elementId);
+        var zscTokenAddress = "<?php echo $htmlModules->readModuleAddress('zscTokenAddress')?>";
+        sF_initSystemModule(module, extraInfo, adrs, zscTokenAddress, elementId);
     }
 
     function setControlApisAdvAbi(elementId) {
