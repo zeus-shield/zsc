@@ -42,11 +42,23 @@ ZSCHtml.prototype.loadButtonForEnablingElement = function(funcName, elementId) {
     text += '    <button type="button" onClick="' + functionInput + '">Enable as staker</button>'
     text += '    <text id="AppleForStakerHash"></text>'
     text += '</div>'
-
     
     this.setHtmlContent(elementId, text);  
 }
 
+ZSCHtml.prototype.loadWaitingApproval = function(funcName, elementId) {
+    var func;
+    var hashLogId;
+    var text = '<text>Enable the user in ZSC blockchain system</text>'
+
+    functionInput = funcName + "()";
+    text += '<div class="well">'
+    text += '    <text value="Applied as' + this.type + '></text>'
+    text += '    <button type="button" onClick="' + functionInput + '">Refresh</button>'
+    text += '</div>'
+    
+    this.setHtmlContent(elementId, text);  
+}
 
 ZSCHtml.prototype.loadPageHeader = function(funcName, elementId) {
     var funcPrefix = funcName + "(";
