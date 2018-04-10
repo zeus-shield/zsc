@@ -27,28 +27,33 @@ contract Delegated is Owned{
     mapping (address => bool) public delegates_;
 
     //modifier only_delegate {require(delegates_[msg.sender] || msg.sender == owner || this == msg.sender); _; }
-    modifier only_delegate {require(isDelegate(msg.sender)); _; }
-
-    function Delegated() public {
-        delegates_[msg.sender] = true;
+    modifier only_delegate(uint _priority) {
+        require(isDelegate(msg.sender, _priority)); 
+        _; 
     }
 
-    function kill() public only_delegate {selfdestruct(owner); }
+    function Delegated() public {
+        delegates_[msg.sender] = 1;
+    }
 
-    function setDelegate(address _address, bool _state) public only_delegate { 
+    function kill() public only_delegate(1) {selfdestruct(owner); }
+
+    function setDelegate(address _address, uint _priority) public only_delegate(1) { 
         require(_address != 0);
-        if (_state) delegates_[_address] = true;
+        if (_priority > 0) delegates_[_address] = _priority;
         else delete delegates_[_address];
     }
 
-    function isDelegate(address _account) public constant returns (bool)  {
-        if (delegates_[_account] == true || msg.sender == _account || this == _account ) return true;
-        else return false;
+    function isDelegate(address _account, uint _priority) public constant returns (bool)  {
+        if (delegates_[_account] == 0) return false;
+        if (this == _account) return true;
+        if (delegates_[_account] <= _priority ) return true;
+        return false;
     }
 }
 
 contract Recorder is Delegated {
-    function addLog(string _log, bool _newLine) only_delegate public;
+    function addLog(string _log, bool _newLine) only_delegate(1) public;
 }
 
 contract Object is Delegated {
@@ -61,19 +66,19 @@ contract Object is Delegated {
     // This unnamed function is called whenever someone tries to send ether to it
     function() public payable { revert(); }
 
-    function name() public only_delegate constant returns (bytes32) { return name_;}
+    function name() public only_delegate(1) constant returns (bytes32) { return name_;}
 
 
-    function setLogRecorder(address _adr) public only_delegate {logRecorder_ = _adr;}
+    function setLogRecorder(address _adr) public only_delegate(1) {logRecorder_ = _adr;}
 
-    function addLog(string _log, bool _newLine) public only_delegate {
+    function addLog(string _log, bool _newLine) public only_delegate(1) {
         if (logRecorder_ != 0) Recorder(logRecorder_).addLog(_log, _newLine);
     }
 
     // ------------------------------------------------------------------------
     // Owner can transfer out any accidentally sent ERC20 tokens
     // ------------------------------------------------------------------------
-    function transferAnyERC20Token(address tokenAddress, uint tokens) public only_delegate returns (bool success) {
+    function transferAnyERC20Token(address tokenAddress, uint tokens) public only_delegate(1) returns (bool success) {
         return ERC20Interface(tokenAddress).transfer(owner, tokens);
     }    
 }
