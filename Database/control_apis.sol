@@ -53,27 +53,27 @@ contract ControlApis is ControlBase {
 
     /// @dev Get the element by its address
     /// @param _adr The address of the existing element
-    function getElementNameByAddress(address _adr) public only_delegate constant returns (bytes32) {
+    function getElementNameByAddress(address _adr) public only_delegate(1) constant returns (bytes32) {
         require (getDBDatabase().checkeNodeByAddress(_adr));
         return Object(_adr).name();
     }
 
     /// @dev Get the type of an element
     /// @param _node The name of the element belonging to the user
-    function getElementType(bytes32 _node) public only_delegate constant returns (bytes32) {
+    function getElementType(bytes32 _node) public only_delegate(1) constant returns (bytes32) {
         DBNode nd = getDBNode( _node);
         require(nd != DBNode(0));
         return nd.getNodeType();
     }
 
     /// @dev Get the number of elements of the database
-    function numElements() public only_delegate constant returns (uint) { 
+    function numElements() public only_delegate(1) constant returns (uint) { 
         return getDBDatabase().numNodes(); 
     }
     
     /// @dev Get the element name by the index
     /// @param _index The index of the element in the database
-    function getElementNameByIndex(uint _index) public only_delegate constant returns (bytes32) { 
+    function getElementNameByIndex(uint _index) public only_delegate(1) constant returns (bytes32) { 
         address nd = getDBDatabase().getNodeByIndex(_index);
         require(nd != address(0));
         return Object(nd).name();

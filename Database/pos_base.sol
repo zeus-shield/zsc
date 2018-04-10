@@ -13,11 +13,11 @@ contract PosBase is PosStakerGroup, PosBlockPool {
     function PosBase(bytes32 _name) public Object(_name) {
     } 
 
-    function initDatabase(address _controller) public only_delegate () {
+    function initDatabase(address _controller) public only_delegate(1) () {
         setDelegate(_controller, true);
     }
 
-    function minePendingBlocks() public constant only_delegate {
+    function minePendingBlocks() public constant only_delegate(1) {
         uint lastPendingBlockIndex = getLastPendingBlockIndex();
         uint unminedGas = getUnminedGas();
 

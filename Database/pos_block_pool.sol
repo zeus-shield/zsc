@@ -50,7 +50,7 @@ contract PosBlockPool is Object {
         blockPool_.nosBlocks_ = 1;
     } 
     
-    function setBlockUnitLimit(uint _limit /*in terms of gas usage*/) public only_delegate {
+    function setBlockUnitLimit(uint _limit /*in terms of gas usage*/) public only_delegate(1) {
         blockUnitLimit_ = _limit;
         resetCurrentBlock();
     }
@@ -62,7 +62,7 @@ contract PosBlockPool is Object {
         ucurrentBlock_.currentSize_ = 0;
     }
 
-    function registerTransaction(bytes32 _tx, bytes32 _sender, bytes32 _receiver, uint _gasUsage) public constant only_delegate {
+    function registerTransaction(bytes32 _tx, bytes32 _sender, bytes32 _receiver, uint _gasUsage) public constant only_delegate(1) {
         uint currentSize = currentBlock_.currentBlock_ + _gasUsage;
         uint index;
         if (currentSize > blockUnitLimit_) {

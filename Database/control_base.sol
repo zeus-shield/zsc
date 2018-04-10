@@ -13,41 +13,41 @@ contract DBFactory is Object {
 }
 
 contract DBDatabase is Object { 
-    function getNode(bytes32 _name) public only_delegate constant returns (address);
-    function checkeNodeByAddress(address _adr) public only_delegate constant returns (bool);
-    function numNodes() public only_delegate constant returns (uint);
-    function getNodeByIndex(uint _index) public only_delegate constant returns (address);
+    function getNode(bytes32 _name) public only_delegate(1) constant returns (address);
+    function checkeNodeByAddress(address _adr) public only_delegate(1) constant returns (bool);
+    function numNodes() public only_delegate(1) constant returns (uint);
+    function getNodeByIndex(uint _index) public only_delegate(1) constant returns (address);
 }
 
 contract DBNode is Object {
-    function getId() public only_delegate returns (address);
-    function getNodeType() public only_delegate constant returns (bytes32);
-    function getBlance(bytes32 _name, address _adr) public only_delegate constant returns (uint256);
+    function getId() public only_delegate(1) returns (address);
+    function getNodeType() public only_delegate(1) constant returns (bytes32);
+    function getBlance(bytes32 _name, address _adr) public only_delegate(1) constant returns (uint256);
 
-    function setActivated(bool _activated) only_delegate public;
-    function getActivated() public only_delegate constant returns (bool);
+    function setActivated(bool _activated) only_delegate(1) public;
+    function getActivated() public only_delegate(1) constant returns (bool);
 
-    function addParameter(bytes32 _parameter) public only_delegate returns (bool);
-    function removeParameter(bytes32 _parameter) public only_delegate returns (bool);
-    function setParameter(bytes32 _parameter, string _value) public only_delegate returns (bool);
-    function numParameters() public only_delegate constant returns (uint);
-    function getParameterNameByIndex(uint _index) public only_delegate constant returns (bytes32);
+    function addParameter(bytes32 _parameter) public only_delegate(1) returns (bool);
+    function removeParameter(bytes32 _parameter) public only_delegate(1) returns (bool);
+    function setParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool);
+    function numParameters() public only_delegate(1) constant returns (uint);
+    function getParameterNameByIndex(uint _index) public only_delegate(1) constant returns (bytes32);
 
-    function executeEtherTransaction(address _dest, uint256 _value, bytes _data) public only_delegate returns (bool);
-    function executeERC20Transaction(address _tokenAdr, address _dest, uint256 _value, bytes _data) public only_delegate returns (bool);
-    function setERC20TokenAddress(address _tokenAdr) only_delegate public;
-    function getERC20TokenAddress() public only_delegate constant returns (address);
+    function executeEtherTransaction(address _dest, uint256 _value, bytes _data) public only_delegate(1) returns (bool);
+    function executeERC20Transaction(address _tokenAdr, address _dest, uint256 _value, bytes _data) public only_delegate(1) returns (bool);
+    function setERC20TokenAddress(address _tokenAdr) only_delegate(1) public;
+    function getERC20TokenAddress() public only_delegate(1) constant returns (address);
 
-    function bindEntity(address _adr) only_delegate public;
-    function numBindedEntities(bytes32 _type) public only_delegate constant returns (uint);
-    function getBindedEntityNameByIndex(bytes32 _type, uint _index) public only_delegate constant returns (bytes32);
+    function bindEntity(address _adr) only_delegate(1) public;
+    function numBindedEntities(bytes32 _type) public only_delegate(1) constant returns (uint);
+    function getBindedEntityNameByIndex(bytes32 _type, uint _index) public only_delegate(1) constant returns (bytes32);
 
-    function setAgreementStatus(bytes32 _tag) public only_delegate returns (bool);
+    function setAgreementStatus(bytes32 _tag) public only_delegate(1) returns (bool);
 }
 
 contract PosManager is Object {
-    function registerStaker(address _nodeAddress) only_delegate public;
-    function removeStaker(address _nodeAddress) only_delegate public;
+    function registerStaker(address _nodeAddress) only_delegate(1) public;
+    function removeStaker(address _nodeAddress) only_delegate(1) public;
 }
 
 contract ControlBase is Object, ControlInfo {   
@@ -182,7 +182,7 @@ contract ControlBase is Object, ControlInfo {
         return true;
     }
 
-    function registerTokenAwarder(address _token, bytes32 _name, bytes32 _symbol, uint _decimals) public only_delegate returns (bool) {
+    function registerTokenAwarder(address _token, bytes32 _name, bytes32 _symbol, uint _decimals) public only_delegate(1) returns (bool) {
         if (tokenAwarders_[_name].adr_ != 0) return false;
         
         tokenAwarders_[_name].adr_ = _token;

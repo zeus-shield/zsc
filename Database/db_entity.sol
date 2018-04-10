@@ -31,23 +31,23 @@ contract DBEntity is DBNode {
 
     function initParameters() internal;
 
-    function setId(address _ethWalletiId) public only_delegate {
+    function setId(address _ethWalletiId) public only_delegate(1) {
         ethWalletId_ = _ethWalletiId;
     }
 
-    function getId() public only_delegate constant returns (address) {
+    function getId() public only_delegate(1) constant returns (address) {
         return ethWalletId_;
     }
     
-    function setActivated(bool _activated) public only_delegate {
+    function setActivated(bool _activated) public only_delegate(1) {
         activated_ = _activated;
     }
 
-    function getActivated() public only_delegate constant returns (bool) {
+    function getActivated() public only_delegate(1) constant returns (bool) {
         return activated_;
     }
 
-    function addParameter(bytes32 _parameter) public only_delegate returns (bool) {
+    function addParameter(bytes32 _parameter) public only_delegate(1) returns (bool) {
         require(parameterExist_[_parameter] == false);
 
         parameterNames_.push(_parameter);
@@ -55,7 +55,7 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function removeParameter(bytes32 _parameter) public only_delegate returns (bool) {
+    function removeParameter(bytes32 _parameter) public only_delegate(1) returns (bool) {
         require(parameterExist_[_parameter] == true);
 
         for (uint i = 0; i < parameterNames_.length; ++i) {
@@ -72,31 +72,31 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function setParameter(bytes32 _parameter, string _value) public only_delegate returns (bool) {
+    function setParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool) {
         require(parameterExist_[_parameter] == true);
 
         infoRecorder(getController())._recordString(name(), _parameter, _value);
         return true;
     }
 
-    function numParameters() public only_delegate constant returns (uint) {
+    function numParameters() public only_delegate(1) constant returns (uint) {
         return parameterNames_.length;
     }
 
-    function getParameterNameByIndex(uint _index) public only_delegate constant returns (bytes32) {
+    function getParameterNameByIndex(uint _index) public only_delegate(1) constant returns (bytes32) {
         require(_index < parameterNames_.length);
         return parameterNames_[_index];
     }
 
-    function bindEntity(address _adr) public only_delegate {
+    function bindEntity(address _adr) public only_delegate(1) {
         idManager_ = getDatabase()._bindId(idManager_, _adr);
     }
 
-    function numBindedEntities(bytes32 _type) public only_delegate constant returns (uint) {
+    function numBindedEntities(bytes32 _type) public only_delegate(1) constant returns (uint) {
         return getDatabase()._numBindedIds(idManager_, _type);
     }
     
-    function getBindedEntityNameByIndex(bytes32 _type, uint _index) public only_delegate constant returns (bytes32) {
+    function getBindedEntityNameByIndex(bytes32 _type, uint _index) public only_delegate(1) constant returns (bytes32) {
         return getDatabase()._getBindedIdNameByIndex(idManager_, _type, _index);
     }
 

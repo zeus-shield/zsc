@@ -20,7 +20,7 @@ contract LogRecorder is Delegated {
     function LogRecorder() public Delegated() {}
 
     
-    function registerListener(address _adr, bytes32 _name) public only_delegate {
+    function registerListener(address _adr, bytes32 _name) public only_delegate(1) {
         listeners_[_adr] = true;
         print_log_[_adr].name_ = _name;
         print_log_[_adr].nos_ = 1;

@@ -39,13 +39,13 @@ contract SimulatBase is DBNode {
         return (randValue + _min);
     }
 
-    function addSimulationRun(bytes32 _name, bytes32 _provider, bytes32 _receiver, bytes32 _agreement, uint _duration) public only_delegate {
+    function addSimulationRun(bytes32 _name, bytes32 _provider, bytes32 _receiver, bytes32 _agreement, uint _duration) public only_delegate(1) {
         require(!simulationRuns_[_name].started_);
         uint current = now; 
         simulationRuns_[_name] = SimultionRun(true, true, true, current, current + _duration, ranGen(70, 100), _provider, _receiver, _agreement);
     }
 
-    function checkSimulationRun(bytes32 _name) public only_delegate constant returns (bool) {
+    function checkSimulationRun(bytes32 _name) public only_delegate(1) constant returns (bool) {
         require(simulationRuns_[_name].started_);
 
         if (simulationRuns_[_name].running_ == true) {

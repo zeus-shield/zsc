@@ -8,13 +8,13 @@ import "./plat_math.sol";
 import "./object.sol";
 
 contract CallbackDatabase is Object {
-    function getNode(bytes32 _name) public only_delegate constant returns (address);
-    function destroyNode(address _node) public only_delegate returns (bool);
-    function _addNode(address _node) only_delegate public ;
-    function _createIDManager() only_delegate public returns (address);
-    function _bindId(address _idManager, address _id) public only_delegate returns (address);
-    function _numBindedIds(address _idManager, bytes32 _type) public only_delegate constant returns (uint);    
-    function _getBindedIdNameByIndex(address _idManager, bytes32 _type, uint _index) public only_delegate constant returns (bytes32);
+    function getNode(bytes32 _name) public only_delegate(1) constant returns (address);
+    function destroyNode(address _node) public only_delegate(1) returns (bool);
+    function _addNode(address _node) only_delegate(1) public ;
+    function _createIDManager() only_delegate(1) public returns (address);
+    function _bindId(address _idManager, address _id) public only_delegate(1) returns (address);
+    function _numBindedIds(address _idManager, bytes32 _type) public only_delegate(1) constant returns (uint);    
+    function _getBindedIdNameByIndex(address _idManager, bytes32 _type, uint _index) public only_delegate(1) constant returns (bytes32);
 }
 
 contract DBNode is Object {
@@ -33,20 +33,20 @@ contract DBNode is Object {
     function DBNode(bytes32 _name) public Object(_name) {
     }
 
-    function kill() public only_delegate { 
+    function kill() public only_delegate(1) { 
         removeAndDestroyAllChildren(); 
         super.kill();
     }
 
-    function setNodeType(bytes32 _type) internal only_delegate {
+    function setNodeType(bytes32 _type) internal only_delegate(1) {
         nodeType_ = _type;
     }
 
-    function getNodeType() public only_delegate constant returns (bytes32) {
+    function getNodeType() public only_delegate(1) constant returns (bytes32) {
         return nodeType_;
     }
 
-    function getBlance(bytes32 _name, address _adr) public only_delegate constant returns (uint256) {
+    function getBlance(bytes32 _name, address _adr) public only_delegate(1) constant returns (uint256) {
         if (_name == "ether") {
             return this.balance;
         } else {
@@ -54,7 +54,7 @@ contract DBNode is Object {
         }
     }
     
-    function setDelegatedModules(address _database, address _contoller,address _posAdv, address[] _factories) public only_delegate {
+    function setDelegatedModules(address _database, address _contoller,address _posAdv, address[] _factories) public only_delegate(1) {
         database_ = _database;
         factories_ = _factories;
         controller_ = _contoller;
@@ -72,15 +72,15 @@ contract DBNode is Object {
     }
     
 
-    function getDatabase() public only_delegate constant returns (CallbackDatabase) {
+    function getDatabase() public only_delegate(1) constant returns (CallbackDatabase) {
         return CallbackDatabase(database_);
     }
 
-    function numChildren() public only_delegate constant returns(uint) {
+    function numChildren() public only_delegate(1) constant returns(uint) {
         return children_.length;
     }
     
-    function setParent(address _parent) public only_delegate {
+    function setParent(address _parent) public only_delegate(1) {
         if (parent_ == address(0)) {
             parent_ = _parent;
             if (parent_ != address(0)) {
@@ -89,18 +89,18 @@ contract DBNode is Object {
         }
     }
 
-    function getParent() public only_delegate constant returns(address) {
+    function getParent() public only_delegate(1) constant returns(address) {
         return parent_; 
     }
 
-    function removeFromParent() public only_delegate {
+    function removeFromParent() public only_delegate(1) {
         if (parent_ != address(0)) {
             DBNode(parent_).removeChild(name());
         }
         parent_ = address(0);
     }
 
-    function addChild(address _node) public only_delegate returns (address) {
+    function addChild(address _node) public only_delegate(1) returns (address) {
         if (_node == 0) return 0;
         DBNode(_node).setParent(this);
 
@@ -112,17 +112,17 @@ contract DBNode is Object {
         return _node;
     }
 
-    function getChild(bytes32 _name) public only_delegate constant returns(address) {
+    function getChild(bytes32 _name) public only_delegate(1) constant returns(address) {
         require(childMap_[_name] != 0);
         return childMap_[_name];
     }
     
-    function getChildByIndex(uint _index) public only_delegate constant returns(address) {
+    function getChildByIndex(uint _index) public only_delegate(1) constant returns(address) {
         require(_index < children_.length);
         return children_[_index];
     }
 
-    function removeChild(bytes32 _name) public only_delegate returns (address) {
+    function removeChild(bytes32 _name) public only_delegate(1) returns (address) {
         require(childMap_[_name] != 0);
 
         address nd;
@@ -141,7 +141,7 @@ contract DBNode is Object {
         return nd;
     }
 
-    function removeAndDestroyAllChildren() public only_delegate {
+    function removeAndDestroyAllChildren() public only_delegate(1) {
         if (children_.length == 0) {
             return;
         }

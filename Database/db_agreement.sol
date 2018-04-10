@@ -27,7 +27,7 @@ contract DBAgreement is DBUser {
         addParameter("paymentAmount");
     }
 
-    function setParameter(bytes32 _parameter, string _value) public only_delegate returns (bool) {
+    function setParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool) {
         if (status_ > 0 )
             return false;  
 
@@ -41,19 +41,19 @@ contract DBAgreement is DBUser {
         return super.setParameter(_parameter, _value);
     }
 
-    function addParameter(bytes32 _parameter, string _value) public only_delegate returns (bool) {
+    function addParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool) {
         if (status_ > 0 )
             return false;  
         return super.addParameter(_parameter, _value);
     }
 
-    function removeParameter(bytes32 _parameter) public only_delegate returns (bool) {
+    function removeParameter(bytes32 _parameter) public only_delegate(1) returns (bool) {
         if (status_ > 0 )
             return false; 
         return super.removeParameter(_parameter);
     }
 
-    function setAgreementStatus(bytes32 _tag) public only_delegate returns (bool) {
+    function setAgreementStatus(bytes32 _tag) public only_delegate(1) returns (bool) {
         if (status_ > 2) return false;
 
         if(status_ == 0 && _tag == "READY") status_ = 1;
@@ -92,12 +92,12 @@ contract DBAgreement is DBUser {
         return false;
     }
 
-    function executeEtherTransaction(address _dest, uint256 _value, bytes _data) public only_delegate returns (bool) {
+    function executeEtherTransaction(address _dest, uint256 _value, bytes _data) public only_delegate(1) returns (bool) {
         /*to be added here with extra functionalities later: 2018.03.29*/
         return super.executeEtherTransaction(_dest, _value, _data);
     }
 
-    function executeERC20Transaction(address _tokenAdr, address _dest, uint256 _value, bytes _data) public only_delegate returns (bool) {
+    function executeERC20Transaction(address _tokenAdr, address _dest, uint256 _value, bytes _data) public only_delegate(1) returns (bool) {
         /*to be added here with extra functionalities later: 2018.03.29*/
         return super.executeERC20Transaction(_tokenAdr, _dest, _value, _data);
     }

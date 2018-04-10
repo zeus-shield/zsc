@@ -7,7 +7,7 @@ pragma solidity ^0.4.18;
 import "./db_entity.sol";
 
 contract DBDatabase is Object { 
-    function getNode(bytes32 _name) public only_delegate constant returns (address);
+    function getNode(bytes32 _name) public only_delegate(1) constant returns (address);
 }
 
 contract FactoryBase is Object {
@@ -20,11 +20,11 @@ contract FactoryBase is Object {
 
     function createNode(bytes32 _nodeName, bytes32 _parentName, address _creator) public returns (address);
 
-    function getBindedApiController() public only_delegate constant returns (address) { return apiController_;}
+    function getBindedApiController() public only_delegate(1) constant returns (address) { return apiController_;}
 
-    function getBindedDB() public only_delegate constant returns (address) { return bindedDB_;}
+    function getBindedDB() public only_delegate(1) constant returns (address) { return bindedDB_;}
     
-    function initFactory(address _controller, address _database) public only_delegate  {
+    function initFactory(address _controller, address _database) public only_delegate(1)  {
         require(_database != 0);
         bindedDB_ = _database;
 

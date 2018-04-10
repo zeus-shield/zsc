@@ -7,9 +7,9 @@ pragma solidity ^0.4.18;
 import "./object.sol";
 
 contract DBStaker {
-    function useStakePoint(uint _amount) public only_delegate returns (uint);
-    function claimReward() public only_delegate returns (uint);
-    function getRemainingSP() public only_delegate constant returns (uint);
+    function useStakePoint(uint _amount) public only_delegate(1) returns (uint);
+    function claimReward() public only_delegate(1) returns (uint);
+    function getRemainingSP() public only_delegate(1) constant returns (uint);
 }
 
 contract PosStakerGroup is Object {
@@ -34,7 +34,7 @@ contract PosStakerGroup is Object {
         zscStakerGroup_.stakers_[0] = address(0);
     } 
 
-    function setZscTokenAddress(address _adr) public only_delegate {
+    function setZscTokenAddress(address _adr) public only_delegate(1) {
         zscToken_ = _adr;
     }
 
@@ -42,7 +42,7 @@ contract PosStakerGroup is Object {
         return zscStakerGroup_.nos_;
     }
     
-    function registerStaker(address _nodeAddress) public only_delegate {
+    function registerStaker(address _nodeAddress) public only_delegate(1) {
         require(_nodeAddress != 0 && zscStakerGroup_.stakerIndex_[_nodeAddress] == 0);
         uint index = zscStakerGroup_.nos_;
         zscStakerGroup_.stakerIndex_[_nodeAddress] = index;
@@ -50,7 +50,7 @@ contract PosStakerGroup is Object {
         zscStakerGroup_.nos_++;
     }
 
-    function removeStaker(address _nodeAddress) public only_delegate  {
+    function removeStaker(address _nodeAddress) public only_delegate(1)  {
         require(zscStakerGroup_.stakerExists_[_nodeAddress]);
         uint index = zscStakerGroup_.stakerIndex_[_nodeAddress];
         address lastAddress = zscStakerGroup_.stakers_[zscStakerGroup_.nos_ - 1];
@@ -66,7 +66,7 @@ contract PosStakerGroup is Object {
         return DBStaker(zscStakerGroup_.stakers_[_index]).useStakePoint(_amount);
     }
 
-    function getTotalRemainingSP() public only_delegate constant returns (uint) {
+    function getTotalRemainingSP() public only_delegate(1) constant returns (uint) {
         uint total = 0;
 
         for (uint i = 1; i < zscStakerGroup_.nos_; ++i) {

@@ -23,7 +23,7 @@ contract DBDatabase is Object {
     function DBDatabase(bytes32 _name) public Object(_name) {
     }
 
-    function initDatabase(address[] _factories, address _controller, address _posAdv) public only_delegate () {
+    function initDatabase(address[] _factories, address _controller, address _posAdv) public only_delegate(1) () {
         if (rootNode_ == 0) {
             for (uint i=0; i<_factories.length; i++) {
                 setDelegate(_factories[i], true);
@@ -36,23 +36,23 @@ contract DBDatabase is Object {
         }
     }
 
-    function kill() public only_delegate { 
+    function kill() public only_delegate(1) { 
         destroyNode(rootNode_);
         super.kill();
     }
     
-    function getNode(bytes32 _name) public only_delegate constant returns (address) { return nodeAddress_[_name]; }
+    function getNode(bytes32 _name) public only_delegate(1) constant returns (address) { return nodeAddress_[_name]; }
 
-    function checkeNodeByAddress(address _adr) public only_delegate constant returns (bool) { return nodeExists_[_adr]; }
+    function checkeNodeByAddress(address _adr) public only_delegate(1) constant returns (bool) { return nodeExists_[_adr]; }
 
-    function numNodes() public only_delegate constant returns (uint) { return nodes_.length; }
+    function numNodes() public only_delegate(1) constant returns (uint) { return nodes_.length; }
 
-    function getNodeByIndex(uint _index) public only_delegate constant returns (address) { 
+    function getNodeByIndex(uint _index) public only_delegate(1) constant returns (address) { 
         if (_index >= nodes_.length) return 0;
         return nodes_[_index]; 
     }
 
-    function _addNode(address _node) public only_delegate {
+    function _addNode(address _node) public only_delegate(1) {
         bytes32 ndName = DBNode(_node).name();
         require (nodeAddress_[ndName] == 0);
 
@@ -67,7 +67,7 @@ contract DBDatabase is Object {
         addLog(str, true);
     }
 
-    function _bindId(address _idManager, address _id) public only_delegate returns (address) {
+    function _bindId(address _idManager, address _id) public only_delegate(1) returns (address) {
         if (_idManager == 0) {
             DBIDManager idmanager = new DBIDManager();
             idmanager.addId(_id);
@@ -78,7 +78,7 @@ contract DBDatabase is Object {
         }
     }
 
-    function _numBindedIds(address _idManager, bytes32 _type) public only_delegate constant returns (uint) {
+    function _numBindedIds(address _idManager, bytes32 _type) public only_delegate(1) constant returns (uint) {
         uint totalNos = DBIDManager(_idManager).numIds();
         uint typeNos = 0;
         address nd = 0;
@@ -91,7 +91,7 @@ contract DBDatabase is Object {
         return typeNos;
     }
     
-    function _getBindedIdNameByIndex(address _idManager, bytes32 _type, uint _index) public only_delegate constant returns (bytes32) {
+    function _getBindedIdNameByIndex(address _idManager, bytes32 _type, uint _index) public only_delegate(1) constant returns (bytes32) {
         uint totalNos = DBIDManager(_idManager).numIds();
         uint typeNos = 0;
         address en = 0;
@@ -106,7 +106,7 @@ contract DBDatabase is Object {
         return "null";
     }
 
-    function destroyNode(address _node) public only_delegate returns (bool) {
+    function destroyNode(address _node) public only_delegate(1) returns (bool) {
         for (uint i = 0; i < nodes_.length; ++i) {
             if (nodes_[i] == _node) {
                 address parent = DBNode(nodes_[i]).getParent();

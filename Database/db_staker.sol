@@ -36,21 +36,21 @@ contract DBStaker is DBUser {
     	addParameter("Reward Ratio");
     }
 
-    function setParameter(bytes32 _parameter, string _value) public only_delegate returns (bool) {
+    function setParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool) {
         if (_parameter != "Divended Duration") 
             return false;  
         return super.setParameter(_parameter, _value);
     }
 
-    function addParameter(bytes32 _parameter, string _value) public only_delegate returns (bool) {
+    function addParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool) {
         return false;
     }
 
-    function removeParameter(bytes32 _parameter) public only_delegate returns (bool) {
+    function removeParameter(bytes32 _parameter) public only_delegate(1) returns (bool) {
         return false; 
     }
 
-    function claimStakePoint() public only_delegate {
+    function claimStakePoint() public only_delegate(1) {
     	uint currentTime = now;
     	uint ratio = (currentTime - lastStoreTime_)/DAY_IN_SECONDS_BY_100;
     	uint spAmount = ratio * ERC20Interface(getERC20TokenAddress()).balancOf(address(this)) / 100;
@@ -59,7 +59,7 @@ contract DBStaker is DBUser {
         spRemaining_ += spAmount;
     }
 
-    function useStakePoint(uint _amount) public only_delegate returns (uint) {
+    function useStakePoint(uint _amount) public only_delegate(1) returns (uint) {
         if (spRemaining_ > _amount) {
             spRemaining_ -= _amount;
             spForReward_ += _amount;
@@ -72,7 +72,7 @@ contract DBStaker is DBUser {
         }
     }
 
-    function claimReward() public only_delegate returns (uint) {
+    function claimReward() public only_delegate(1) returns (uint) {
     	if ((now - lastRewardTime_) > divendendDuration_) {
     		uint reward = (spForReward_ / 100) / 365;
     		spForReward_ = 0;
@@ -82,7 +82,7 @@ contract DBStaker is DBUser {
     	}
     }
 
-    function getRemainingSP() public only_delegate constant returns (uint) {
+    function getRemainingSP() public only_delegate(1) constant returns (uint) {
     	return spRemaining_;
     }
 }
