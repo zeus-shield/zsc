@@ -18,20 +18,20 @@ function bF_getGasLimit(limit) {
     return limit * 1000 * 1000; //limits * 1 million
 }
 
-
-function bF_showHashResult(elementID, hash) {
+function bF_showHashResult(elementID, hash, func) {
     web3.eth.getTransactionReceipt(hash, 
     function(error, result){ 
         if(!error) {
             var show;
             if (result == null) {
                 show =  "(pending)" + hash ;
-                bF_showHashResult(elementID, hash);
+                bF_showHashResult(elementID, hash, func);
             } else {
                 if (result.status == 0) {
                     show = "(failure)" + hash;
                 } else {
                     show = "(succeeded)" + hash ;
+                    func();
                 }
             }
             document.getElementById(elementID).innerText = show;
