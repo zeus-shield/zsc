@@ -17,7 +17,6 @@ contract ControlInfo is Object {
     
     struct ParameterInfo {
         mapping (bytes32 => string) value_;
-        mapping (address => bool) holders_;
         address nodeAdr_;
         address creator_; // ETH wallet address
     }
@@ -36,59 +35,23 @@ contract ControlInfo is Object {
     function checkAllowedUser(bytes32 _node) internal constant returns (bool);
 
     function onlyRegisteredOrDelegated(bytes32 _node, address sender) internal constant returns (bool) {
-        return (sender == parameters_[_node].creator_ || parameters_[_node].holders_[sender] == true || isDelegate(sender)); 
+        return (sender == parameters_[_node].creator_ || isDelegate(sender)); 
     }
 
     function _recordString(bytes32 _nodeName, bytes32 _parameter, string _value) public {
-        //require(msg.sender == parameters_[_nodeName].nodeAdr_);
+        require(msg.sender == parameters_[_nodeName].nodeAdr_);
         parameters_[_nodeName].value_[_parameter] = _value;
     }
-
-    /* For the use in future version */
-    /*
-    function manageUser(ManagementType _management, bytes32 _name, bytes32 _type) internal user_notregistered(_name) {
-        if (_management == ManagementType.REGISTERD) {
-            users_[_name].id_ = msg.sender;
-            users_[_name].type_ = _type;
-            users_[_name].status_ = _management;
-        } else {
-
-        }
-    }
-    */
-
-    /*
-    function getSenderNameByAddress(address _adr) internal constant returns (bytes32) { 
-        if (users_[_adr].tag_) {
-            return users_[_adr].name_;
-        } else {
-            return 0x0;
-        }
-    }*/
-
 
     function checkNodeExist(bytes32 _name) internal constant returns (bool) { 
         return (parameters_[_name].nodeAdr_ != 0); 
     }
-
-    /*
-    function registerUser(bytes32 _type, bytes32 _userName, address _creator) internal {
-        users_[_creator].tag_ = true;
-        users_[_creator].name_ = _userName;
-        users_[_creator].type_ = _type;
-    }*/
 
     function registerNode(bytes32 _nodeName, address _nodeAdr, address _creator) internal {
         require(!checkNodeExist(_nodeName));        
         parameters_[_nodeName].nodeAdr_ = _nodeAdr;
         parameters_[_nodeName].creator_ = _creator;
     }
-
-    /*
-    function registerHolder(bytes32 _nodeName, address _holder) internal {
-        require(checkNodeExist(_nodeName));        
-        parameters_[_nodeName].holders_[_holder] = true;
-    }*/
 
     function getControlInfoNodeAddress(bytes32 _nodeName)internal constant returns (address)  {
         return parameters_[_nodeName].nodeAdr_;
