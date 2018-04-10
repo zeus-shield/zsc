@@ -72,19 +72,11 @@ contract AdmBase is Object {
         addLog(PlatString.bytes32ToString(_user), false);
     }
 
-    function applyForUser(bytes32 _hexx, bytes32 _type, address _id) internal {
+    function applyForUser(bytes32 _hexx, bytes32 _type) internal {
         uint index = getUserIndex(_hexx);
         testUsers_[index].status_ = "applied";
         testUsers_[index].type_ = _type;
-        testUsers_[index].id_ = _id;
-    }
-
-    function applyForProvider(bytes32 _hexx) public only_added(_hexx) returns (bool) {
-        applyForUser(_hexx, "provider", msg.sender);       
-    }
-
-    function applyForReceiver(bytes32 _hexx) public only_added(_hexx) returns (bool) {
-        applyForUser(_hexx, "receiver", msg.sender);       
+        testUsers_[index].id_ = msg.sender;
     }
 
     function approveUser(bytes32 _name) public only_delegate {
@@ -122,4 +114,20 @@ contract AdmBase is Object {
         return str;
     }
 
+
+    function tryLogin(bytes32 _user) public constant returns (bytes32) {
+        bytes32 hexx = toHexx(_user);
+        if (testUsers_[userIndex_[hexx]].status_ == 0) {
+            return 0x0;
+        } else {
+            return hexx;
+        }
+    }
+
+    function keepOnline(bytes32 _user, bytes32 _hexx) public constant returns (bool) {
+        if (testUsers_[userIndex_[_hexx]].name_ == _user)
+            return true;
+        else 
+            return false;
+    }
 }
