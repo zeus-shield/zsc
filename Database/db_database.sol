@@ -26,12 +26,12 @@ contract DBDatabase is Object {
     function initDatabase(address[] _factories, address _controller, address _posAdv) public only_delegate(1) () {
         if (rootNode_ == 0) {
             for (uint i=0; i<_factories.length; i++) {
-                setDelegate(_factories[i], true);
+                setDelegate(_factories[i], 1);
             }
             rootNode_ = new DBNode(name());
-            setDelegate(rootNode_, true);
-            setDelegate(_controller, true);
-            setDelegate(_posAdv, true);
+            setDelegate(rootNode_, 1);
+            setDelegate(_controller, 1);
+            setDelegate(_posAdv, 1);
             DBNode(rootNode_).setDelegatedModules(this, _controller, _posAdv, _factories);
         }
     }
@@ -123,7 +123,7 @@ contract DBDatabase is Object {
             
         delete nodeAddress_[DBNode(_node).name()];
         delete nodeExists_[_node];
-        setDelegate(_node, false);
+        setDelegate(_node, 0);
 
         delete _node;
 

@@ -60,9 +60,9 @@ contract DBNode is Object {
         controller_ = _contoller;
         posAdv_ = _posAdv;
 
-        setDelegate(database_, true);
+        setDelegate(database_, 1);
         for (uint i=0; i<factories_.length; i++) {
-            setDelegate(factories_[i], true);
+            setDelegate(factories_[i], 1);
         }
         CallbackDatabase(database_)._addNode(this);
     }
@@ -84,7 +84,7 @@ contract DBNode is Object {
         if (parent_ == address(0)) {
             parent_ = _parent;
             if (parent_ != address(0)) {
-               setDelegate(parent_, true);
+               setDelegate(parent_, 1);
             }
         }
     }
@@ -104,7 +104,7 @@ contract DBNode is Object {
         if (_node == 0) return 0;
         DBNode(_node).setParent(this);
 
-        CallbackDatabase(database_).setDelegate(_node, true);
+        CallbackDatabase(database_).setDelegate(_node, 1);
         DBNode(_node).setDelegatedModules(database_, controller_, posAdv_, factories_);
 
         children_.push(_node);
@@ -137,7 +137,7 @@ contract DBNode is Object {
         children_.length --;
         delete childMap_[_name];
 
-        DBNode(nd).setDelegate(parent_, false);
+        DBNode(nd).setDelegate(parent_, 1);
         return nd;
     }
 

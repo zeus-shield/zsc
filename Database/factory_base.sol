@@ -30,12 +30,12 @@ contract FactoryBase is Object {
 
         if (_controller != 0 && _controller != apiController_) {
             if (apiController_ != 0) {
-                setDelegate(apiController_, false);
+                setDelegate(apiController_, 0);
             }
             apiController_ = _controller;
-            setDelegate(_controller, true);
+            setDelegate(_controller, 1);
 
-            DBDatabase(bindedDB_).setDelegate(apiController_, true);
+            DBDatabase(bindedDB_).setDelegate(apiController_, 1);
         }
         setupFactoryRoot();
     }

@@ -14,7 +14,7 @@ contract PosBase is PosStakerGroup, PosBlockPool {
     } 
 
     function initDatabase(address _controller) public only_delegate(1) () {
-        setDelegate(_controller, true);
+        setDelegate(_controller, 1);
     }
 
     function minePendingBlocks() public constant only_delegate(1) {
