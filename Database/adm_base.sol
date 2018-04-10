@@ -72,7 +72,7 @@ contract AdmBase is Object {
         addLog(PlatString.bytes32ToString(_user), false);
     }
 
-    function applyForUser(bytes32 _hexx, bytes32 _type) internal {
+    function applyForUser(bytes32 _hexx, bytes32 _type) public only_added(_hexx)  {
         uint index = getUserIndex(_hexx);
         testUsers_[index].status_ = "applied";
         testUsers_[index].type_ = _type;
@@ -129,5 +129,9 @@ contract AdmBase is Object {
             return true;
         else 
             return false;
+    }
+
+    function getUserStatus(bytes32 _hexx) public returns (uint) {
+        return testUsers_[userIndex_[hexx]].status_;
     }
 }
