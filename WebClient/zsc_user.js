@@ -82,8 +82,8 @@ ZSCUser.prototype.getUserStatusFromAdm = function(func){
     myControlApi.getUserStatus(this.userNameHr,
         function(error, ret) {
             if(!error) { 
-                this.userStatus = ret;
-                func(ret);
+                this.userStatus = toUtf8(ret);
+                func(this.userStatus);
             } else { 
                 console.log("error: " + error);
              }
@@ -97,8 +97,8 @@ ZSCUser.prototype.getUserTypeFromAdm = function(func){
     myControlApi.getUserType(this.userNameHr,
         function(error, ret) {
             if(!error) { 
-                this.userType = ret;
-                func(ret);
+                this.userType = toUtf8(ret);
+                func(this.userType);
             } else { 
                 console.log("error: " + error);
              }
