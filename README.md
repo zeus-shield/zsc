@@ -23,7 +23,7 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 ## Contract inheritance
 ```bash
 |-- owned
-    |-- delegated
+    |-- delegated 
         |-- log_recorder
         |-- objct 
             |-- pos_block_pool, pos_staker_group
@@ -107,4 +107,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.04.04: add two files zsc_html_modules.php, zsc_system_modules.php; change file name db_simulator.sol -> simulator_base.sol
 2018.04.05: add file WebAdm/zsc_base.php, WebClient/zscHtml.js
 2018.04.06-08: add WebAdm/js/zsc_user_management.js, file pos_block_pool.sol and pos_user_group.sol
+2018.04.09-10: chang key modifer only_delegat in order to be able to assign different priorities to different kinds of contract objects
 ```
