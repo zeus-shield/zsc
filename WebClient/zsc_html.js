@@ -4,13 +4,21 @@ Copyright (c) 2018 ZSC Dev Team
 
 //class zscElement
 function ZSCHtml() {
+    this.pageHeaderId;
+    this.pageBodyId;
 }
 
-ZSCHtml.prototype.setHtmlContent(elementId, text) {
+
+ZSCHtml.prototype.setHtmlCotentIds = function(hearderId, bodyId) {
+    this.pageBodyId = bodyId;
+    this.pageHeaderId = hearderId;
+}
+
+ZSCHtml.prototype.setHtmlContent = function(elementId, text) {
     document.getElementById(elementId).innerHTML = text;  
 }
 
-ZSCHtml.prototype.loadLogin = function(funcName, elementId) {
+ZSCHtml.prototype.loadLogin = function(funcName) {
     var funcLoad = funcName + "('AdmAdvAdr', 'userName')";
     var text = ''
     text += '<div class="well">'
@@ -21,15 +29,13 @@ ZSCHtml.prototype.loadLogin = function(funcName, elementId) {
     text += '   <input type="text" id="userName" value="test"></input> <br>' 
     text += '   <button type="button" onClick="' + funcLoad + '">Enter</button>'
     text += '</div>'
-    this.setHtmlContent(elementId, text);  
+    this.setHtmlContent(this.pageBodyId, text);  
 }
 
-ZSCHtml.prototype.loadButtonForEnablingElement = function(funcName, elementId) {
-    var func;
-    var hashLogId;
+ZSCHtml.prototype.loadButtonForEnablingElement = function(funcName) {
     var text = '<text>Enable the user in ZSC blockchain system</text>'
 
-    functionInput = funcName + "('provider', 'AppleForProviderHash')";
+    var functionInput = funcName + "('provider', 'AppleForProviderHash')";
     text += '<div class="well">'
     text += '    <button type="button" onClick="' + functionInput + '">Enable as provider</button>'
     text += '    <text id="AppleForProviderHash"></text><br><br>'
@@ -43,10 +49,10 @@ ZSCHtml.prototype.loadButtonForEnablingElement = function(funcName, elementId) {
     text += '    <text id="AppleForStakerHash"></text>'
     text += '</div>'
     
-    this.setHtmlContent(elementId, text);  
+    this.setHtmlContent(this.pageBodyId, text);  
 }
 
-ZSCHtml.prototype.loadWaitingApproval = function(funcName, elementId) {
+ZSCHtml.prototype.loadWaitingApproval = function(funcName) {
     var func;
     var hashLogId;
     var text = '<text>Enable the user in ZSC blockchain system</text>'
@@ -57,10 +63,10 @@ ZSCHtml.prototype.loadWaitingApproval = function(funcName, elementId) {
     text += '    <button type="button" onClick="' + functionInput + '">Refresh</button>'
     text += '</div>'
     
-    this.setHtmlContent(elementId, text);  
+    this.setHtmlContent(this.pageBodyId, text);  
 }
 
-ZSCHtml.prototype.loadPageHeader = function(funcName, elementId) {
+ZSCHtml.prototype.loadPageHeader = function(funcName) {
     var funcPrefix = funcName + "(";
     var funcSuffix = ")";
     var text = ''
@@ -70,7 +76,7 @@ ZSCHtml.prototype.loadPageHeader = function(funcName, elementId) {
     text += '   <button type="button" onClick="' + funcPrefix + "'templates'" + funcSuffix + '">Templates</button>'
     text += '   <button type="button" onClick="' + funcPrefix + "'agreements'" + funcSuffix + '">Agreements</button>'
     text += '</div>'
-    this.setHtmlContent(elementId, text);  
+    this.setHtmlContent(this.hearderId, text);  
 }
 
 
