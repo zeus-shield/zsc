@@ -48,7 +48,7 @@ function sF_setLogRecorderToListener(logRecorderAdr, listener,listenerName, hash
     });
 }  
 
-function sF_initSystemModule(module, extra, adrs, hashID) {
+function sF_initSystemModule(module, extra, adrs, zscTokenAdr, hashID) {
     var AdmAdvAdr = adrs[0];
     var PosAdvAdr = adrs[1];
     var DBDatabaseAdr = adrs[2];
@@ -69,7 +69,9 @@ function sF_initSystemModule(module, extra, adrs, hashID) {
             sF_setDatabaseAdr(DBDatabaseAdr, ControlApisAdr, hashID);
         } else if (extra == "AdmAdv") {
             sF_setAdm(AdmAdvAdr, ControlApisAdr, hashID);
-        }else {
+        } else if (extra == "PosAdv") {
+            sF_setPos(PosAdvAdr, zscTokenAdr, ControlApisAdr, hashID);
+        } else {
             var factoryAdr;
             if (extra == "FactoryPro") factoryAdr = FactoryProAdr;
             else if (extra == "FactoryRec") factoryAdr = FactoryRecAdr;
@@ -124,6 +126,16 @@ function sF_setAdm(AdmAdvAdr, ControlApisAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
     var myControlApi= myContract.at(ControlApisAdr);
     myControlApi.setAdm(AdmAdvAdr, {from: web3.eth.accounts[0], gas: 9000000},
+    function(error, result){ 
+        if(!error) sF_showHashResult(hashID, result);
+        else console.log("error: " + error);
+    });
+} 
+
+function sF_setPos(PosAdvAdr, zscTokenAddress,  ControlApisAdr, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
+    var myControlApi= myContract.at(ControlApisAdr);
+    myControlApi.setAdm(PosAdvAdr, zscTokenAddress, {from: web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
         if(!error) sF_showHashResult(hashID, result);
         else console.log("error: " + error);
