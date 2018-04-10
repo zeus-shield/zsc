@@ -24,7 +24,8 @@
     function loadLogin() {
         document.getElementById("PageHeader").innerHTML = "";  
         document.getElementById("PageBody").innerHTML = "";  
-        zscHtml.loadLogin("checkUser", "PageBody");
+        zscHtml.setHtmlCotentIds( "PageBody", "PageHeader");
+        zscHtml.loadLogin("checkUser");
     }
 
     function checkUser(adrId, userId, passId){
@@ -33,7 +34,7 @@
         var pass = document.getElementById(passId).value; 
         
         uF_login(user, pass, adr, function(ret) {
-            if(ret) loadPageBody("logon");
+            if(ret) loadPageBody("welecome");
             else alert("User name or password wrongttt!!");
         });
     }
@@ -50,14 +51,14 @@
 
     function loadPageBody(tag) {
         document.getElementById("PageBody").innerHTML = "";  
-        zscHtml.loadPageHeader("PageHeader");
+        zscHtml.loadPageHeader();
 
         if (tag == "logon") {
             zscElement.getUserStatusFromAdm(function(status) {
                 if (status == 0) {
                     //Should not happen 
                 } else if (ret == "added") {
-                    zscHtml.loadButtonForEnablingElement("applyForUser", "PageBody");
+                    zscHtml.loadButtonForEnablingElement("applyForUser");
                 } else if (ret == "applied") {
                     loadPageBody(tobeApproved);
                 } else if (ret == "approved") {
@@ -65,7 +66,7 @@
                 }
             });  
         } else if (tag == "applied") {
-            zscHtml.loadWaitingApproval("reFresh", zscUser.getUserType(), "PageBody");
+            zscHtml.loadWaitingApproval("reFresh", zscUser.getUserType());
         } else {
             if (tag == "wallet") {
                 uF_loadEthBalance(function() {
