@@ -71,12 +71,40 @@ ZSCHtml.prototype.loadPageHeader = function(funcName) {
     var funcSuffix = ")";
     var text = ''
     text += '<div class="well">'
+    text += '   <button type="button" onClick="' + funcPrefix + "'welecome'" + funcSuffix + '">Wallate</button>'
+    text += '   <button type="button" onClick="' + funcPrefix + "'apply'" + funcSuffix + '">Wallate</button>'
     text += '   <button type="button" onClick="' + funcPrefix + "'wallet'" + funcSuffix + '">Wallate</button>'
     text += '   <button type="button" onClick="' + funcPrefix + "'profile'" + funcSuffix + '">Profile</button>'
     text += '   <button type="button" onClick="' + funcPrefix + "'templates'" + funcSuffix + '">Templates</button>'
     text += '   <button type="button" onClick="' + funcPrefix + "'agreements'" + funcSuffix + '">Agreements</button>'
     text += '</div>'
     this.setHtmlContent(this.hearderId, text);  
+}
+
+
+//////////
+ZSCHtml.prototype.loadPageBody = function(tag) {
+    var text;
+    switch(tag) {
+        case "welecom": 
+            text = hF_loadWelcome(); 
+            break;
+        case "wallet": 
+            text = hF_loadWallet();
+            break;
+        case "profile": 
+            text = hF_loadParameters(, "user");
+            break;
+    }
+    document.getElementById(this.pageBodyId).innerHTML = text; 
+} 
+
+ZSCHtml.prototype.loadWelcome = function() {
+    var text = ''
+    text += '<div class="well">'
+    text += '   <text>Welcome to the ZSC testing platform</text>'
+    text += '</div>'
+    return text; 
 }
 
 
