@@ -79,6 +79,13 @@ class ZscHtmlModules extends ZscSystemModules {
         return $text;
     }
 
+    public function loadZscTokenAddress($func) {
+        $text = '';
+        $text .= '<text>Fill in ZSC token address </text>';
+        $text .= '<input type="text" id="zscTokenAddress"></input>'
+        $text .= '<button type="button" onClick="'.$func.'(\'zscTokenAddress\')">Confirm</button> <br>';
+        return $text;
+    }
     
     public function loadCreateContract($func) {
         $modules = ZscBase::getModuleArray();
@@ -137,8 +144,8 @@ class ZscHtmlModules extends ZscSystemModules {
     }
 
     public function loadInitModules($func) {
-        $modules = array("AdmAdv", "PosAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv");
-        $extraInfo = array("null",  "null",      "null",        "null",       "null",       "null",       "null",   "DBDatabase",         "AdmAdv",     "FactoryPro",     "FactoryRec",       "FactoryTmp", "FactoryAgr");
+        $modules = array("AdmAdv", "PosAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv");
+        $extraInfo = array("null",  "null",      "null",        "null",       "null",       "null",       "null",   "DBDatabase",         "AdmAdv",     "PosAdv",     "FactoryPro",     "FactoryRec",       "FactoryTmp", "FactoryAgr");
 
         $num = count($modules);
     
