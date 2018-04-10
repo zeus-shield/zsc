@@ -57,4 +57,14 @@ ZSCUser.prototype.keepOnline = function(func){
     } );
 }
 
+ZSCUser.prototype.applyForUser = function(type, func){
+    var myContract = web3.eth.contract(this.getLoginAbi());
+    var myControlApi = myContract.at(this.admAdr);
+
+    myControlApi.applyForUser(this.userNameHr, type, function(error, ret) {
+        if(!error) func(ret);
+        else console.log("error: " + error);
+    } );
+}
+
 
