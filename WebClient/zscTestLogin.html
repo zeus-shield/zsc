@@ -14,6 +14,23 @@
 
     var web3 = setupWeb3js(false);
 
+    var zscHtml = new ZSCHtml();
+    var zscUser = new ZSCUser();
+    var zscElement = new ZSCElement();
+
+    /*tag:
+    logon, wallet, profile, templates, agreements
+    */
+    function loadLogin() {
+        document.getElementById("PageHeader").innerHTML = "";  
+        document.getElementById("PageBody").innerHTML = "";  
+        zscHtml.loadLogin("checkUser", "PageBody");
+    }
+
+    function applyForUser(type, hashLogId) {
+        zscUser.applyForUser(type, hashLogId);
+    }
+
     function checkUser(adrId, userId, passId){
         var adr = document.getElementById(adrId).value; 
         var user = document.getElementById(userId).value; 
@@ -25,22 +42,14 @@
         });
     }
 
-    /*tag:
-    logon, wallet, profile, templates, agreements
-    */
-    function loadLogin() {
-        document.getElementById("PageHeader").innerHTML = "";  
-        document.getElementById("PageBody").innerHTML = "";  
-        hF_loadLogin("PageBody");
-    }
-
     function loadPageBody(tag) {
         document.getElementById("PageBody").innerHTML = "";  
-        hF_loadPageHeader("PageHeader");
+        zscHtml.loadPageHeader("PageHeader");
 
         if (tag == "logon") {
-            uF_doesNodeExist(function(ret) {
-                if (!ret) hF_loadButtonForEnablingElement("PageBody");
+            zscElement.getUserStatus(function(ret) {
+                if (ret == 0) {}
+                else if (ret == 1) zscHtml.loadButtonForEnablingElement("applyForUser", "PageBody");
                 else hF_loadPageBody("PageBody", tag)
             });  
         } else {
