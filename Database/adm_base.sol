@@ -14,7 +14,7 @@ contract AdmBase is Object {
     struct TestUserInfo {
         bytes32 name_ ;
         bytes32 status_ ; //0: not exist; 1: added; 2: applied; 3: approved
-        bytes32 type_;    //1: provider; 2: receiver 
+        bytes32 type_;    //1: provider; 2: receiver; 3: staker
         address id_   ;
         address node_ ;
     }
@@ -131,7 +131,11 @@ contract AdmBase is Object {
             return false;
     }
 
-    function getUserStatus(bytes32 _hexx) public returns (uint) {
+    function getUserStatus(bytes32 _hexx) public returns (bytes32) {
         return testUsers_[userIndex_[hexx]].status_;
+    }
+
+    function getUserType(bytes32 _hexx) public returns (bytes32) {
+        return testUsers_[userIndex_[hexx]].type_;
     }
 }
