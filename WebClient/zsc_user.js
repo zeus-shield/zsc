@@ -57,14 +57,30 @@ ZSCUser.prototype.keepOnline = function(func){
     } );
 }
 
-ZSCUser.prototype.applyForUser = function(type, func){
+ZSCUser.prototype.applyForUser = function(type, hashLogId, func){
     var myContract = web3.eth.contract(this.getLoginAbi());
     var myControlApi = myContract.at(this.admAdr);
 
     myControlApi.applyForUser(this.userNameHr, type, function(error, ret) {
-        if(!error) func(ret);
-        else console.log("error: " + error);
+        if(!error) { 
+            bF_showHashResult(ret, hashLogId);
+        } else { 
+            console.log("error: " + error);
+        }
     } );
 }
 
+ZSCUser.prototype.getUserStatus = function(func){
+    var myContract = web3.eth.contract(this.getLoginAbi());
+    var myControlApi = myContract.at(this.admAdr);
+
+    myControlApi.getUserStatus(this.userNameHr,
+        function(error, ret) {
+            if(!error) { 
+                func(ret);
+            } else { 
+            console.log("error: " + error);
+             }
+        } );
+}
 
