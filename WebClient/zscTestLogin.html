@@ -27,10 +27,6 @@
         zscHtml.loadLogin("checkUser", "PageBody");
     }
 
-    function applyForUser(type, hashLogId) {
-        zscUser.applyForUser(type, hashLogId);
-    }
-
     function checkUser(adrId, userId, passId){
         var adr = document.getElementById(adrId).value; 
         var user = document.getElementById(userId).value; 
@@ -42,16 +38,34 @@
         });
     }
 
+    function applyForUser(type, hashLogId) {
+        zscUser.applyForUser(type, hashLogId, function() {
+            loadPageBody("applied");
+        });
+    }
+
+    function reFresh() {
+        loadPageBody("logon");
+    }
+
     function loadPageBody(tag) {
         document.getElementById("PageBody").innerHTML = "";  
         zscHtml.loadPageHeader("PageHeader");
 
         if (tag == "logon") {
-            zscElement.getUserStatus(function(ret) {
-                if (ret == 0) {}
-                else if (ret == 1) zscHtml.loadButtonForEnablingElement("applyForUser", "PageBody");
-                else hF_loadPageBody("PageBody", tag)
+            zscElement.getUserStatusFromAdm(function(status) {
+                if (status == 0) {
+                    //Should not happen 
+                } else if (ret == "added") {
+                    zscHtml.loadButtonForEnablingElement("applyForUser", "PageBody");
+                } else if (ret == "applied") {
+                    loadPageBody(tobeApproved);
+                } else if (ret == "approved") {
+                    loadPageBody("approved");
+                }
             });  
+        } else if (tag == "applied") {
+            zscHtml.loadWaitingApproval("reFresh", zscUser.getUserType(), "PageBody");
         } else {
             if (tag == "wallet") {
                 uF_loadEthBalance(function() {
