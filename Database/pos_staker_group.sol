@@ -13,25 +13,21 @@ contract DBStaker {
 }
 
 contract PosStakerGroup is Object {
-    struct ZscStakerGroup {        
-        uint nos_;
-        uint spUsed_;
-        uint spRemaining_;
-        mapping(address => uint) stakerIndex_;
-        mapping(uint => address) stakers_;
-    }
-
-    ZscStakerGroup zscStakerGroup_;
+    uint private nos_;
+    uint private spUsed_;
+    uint private spRemaining_;
+    mapping(address => uint) private stakerIndex_;
+    mapping(uint => address) private stakers_;
 
     address zscToken_;
 
     // Constructor
     function PosStakerGroup() {
-        zscStakerGroup_.nos_ = 0;
-        zscStakerGroup_.spUsed_ = 0;
-        zscStakerGroup_.spRemaining_ = 0;
-        zscStakerGroup_.stakerIndex_[address(0)] = 0;
-        zscStakerGroup_.stakers_[0] = address(0);
+        nos_ = 0;
+        spUsed_ = 0;
+        spRemaining_ = 0;
+        stakerIndex_[address(0)] = 0;
+        stakers_[0] = address(0);
     } 
 
     function setZscTokenAddress(address _adr) public only_delegate(1) {
@@ -39,38 +35,38 @@ contract PosStakerGroup is Object {
     }
 
     function numStakers() internal constant returns (uint) {
-        return zscStakerGroup_.nos_;
+        return nos_;
     }
     
     function registerStaker(address _nodeAddress) public only_delegate(1) {
-        require(_nodeAddress != 0 && zscStakerGroup_.stakerIndex_[_nodeAddress] == 0);
-        uint index = zscStakerGroup_.nos_;
-        zscStakerGroup_.stakerIndex_[_nodeAddress] = index;
-        zscStakerGroup_.stakers_[index] = _nodeAddress;
-        zscStakerGroup_.nos_++;
+        require(_nodeAddress != 0 && stakerIndex_[_nodeAddress] == 0);
+        uint index = nos_;
+        stakerIndex_[_nodeAddress] = index;
+        stakers_[index] = _nodeAddress;
+        nos_++;
     }
 
     function removeStaker(address _nodeAddress) public only_delegate(1)  {
-        require(zscStakerGroup_.stakerExists_[_nodeAddress]);
-        uint index = zscStakerGroup_.stakerIndex_[_nodeAddress];
-        address lastAddress = zscStakerGroup_.stakers_[zscStakerGroup_.nos_ - 1];
+        require(stakerExists_[_nodeAddress]);
+        uint index = stakerIndex_[_nodeAddress];
+        address lastAddress = stakers_[nos_ - 1];
 
-        zscStakerGroup_.stakers_[index] = lastAddress;
+        stakers_[index] = lastAddress;
 
-        delete zscStakerGroup_.stakerIndex_[_nodeAddress];
-        delete zscStakerGroup_.stakers_[zscStakerGroup_.nos_ - 1];
-        zscStakerGroup_.nos_--;
+        delete stakerIndex_[_nodeAddress];
+        delete stakers_[nos_ - 1];
+        nos_--;
     }
 
     function useStakerSPByIndex(uint _index, uint _amount) internal returns (uint) {
-        return DBStaker(zscStakerGroup_.stakers_[_index]).useStakePoint(_amount);
+        return DBStaker(stakers_[_index]).useStakePoint(_amount);
     }
 
     function getTotalRemainingSP() public only_delegate(1) constant returns (uint) {
         uint total = 0;
 
-        for (uint i = 1; i < zscStakerGroup_.nos_; ++i) {
-            total += DBStaker(zscStakerGroup_.stakers_[i]).getRemainingSP();
+        for (uint i = 1; i < nos_; ++i) {
+            total += DBStaker(stakers_[i]).getRemainingSP();
         }
         return total;
     } 
