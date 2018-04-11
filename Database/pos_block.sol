@@ -4,9 +4,9 @@ Copyright (c) 2018 ZSC Dev.
 
 pragma solidity ^0.4.18;
 
-import "./db_node.sol";
+import "./object.sol";
 
-contract DBBlock is DBNode {
+contract PosBlock is Object {
     struct TxHash {
         address sender_;
         address receiver_;
@@ -15,19 +15,19 @@ contract DBBlock is DBNode {
     }
     
     bool minedStatus_;
-    uint blockLimit_;
+    uint sizeLimit_;
     uint nosTransaction_;
     uint currentSize_;
     uint txNos_;
     mapping(uint => TxHash) txHashs_;
     mapping(bytes32 => uint) txIndice_;
 
-    function DBBlock() public DBNode(_name) {
+    function PosBlock() public Object("null") {
     }
-
+    
     function registerTransaction(bytes32 _tx, bytes32 _sender, bytes32 _receiver, uint _gasUsage) public constant only_delegate(1) returns (bool) {
         if (minedStatus_) return false;
-        
+
         uint size = currentSize_ + _gasUsage;
         if (size < blockUnitLimit_) {
             txIndice_[_tx] = txNos_;
@@ -45,7 +45,7 @@ contract DBBlock is DBNode {
     }
     
     function getBlockLimit() public only_delegate(1) constant return (uint) {
-        return blockLimit_;
+        return sizeLimit_;
     }
 
     function getTxNos() public only_delegate(1) constant return (uint) {
@@ -62,6 +62,5 @@ contract DBBlock is DBNode {
         return (txHashs_[_index].sender_, txHashs_[_index].receiver_, txHashs_[_index].gasUsage_, txHashs_[_index].reigsterTime_);
     }
     
-  
 }
 
