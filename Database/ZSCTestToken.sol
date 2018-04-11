@@ -49,29 +49,25 @@ contract ERC20Interface {
 /// @title ZSCTest Token (ZSCTest)
 contract ZSCTestToken is owned, ERC20Interface {
     // Public variables of the token
-    string public constant standard = 'ERC20';
-    string public constant name = 'ZSCTest Token';  
-    string public constant symbol = 'ZSCTest';
-    uint8  public constant decimals = 18;
-    uint public registrationTime = 0;
-    bool public registered = false;
+    string private constant standard_ = 'ERC20';
+    uint8  private constant decimals_ = 18;
+    string private name_ = 'ZSCTest Token';  
+    string private symbol_ = 'ZSCTest';
+    uint256 totalTokens_ = 0; 
 
-    uint256 public totalMigrated = 0;
-    address public migrationAgent = 0;
-
-    uint256 totalTokens = 0; 
-
-    // This creates an array with all balances 
-    mapping (address => uint256) balances;
+    // This creates an array with all balances_ 
+    mapping (address => uint256) balances_;
 
     // Owner of account approves the transfer of an amount to another account
-    mapping(address => mapping (address => uint256)) allowed;
+    mapping(address => mapping (address => uint256)) allowed_;
 
     // Constructor
-    function ZSCTestToken() {
+    function ZSCTestToken(_name, _symbol) {
         // Only for testing purpose
-        totalTokens = 1000 * 1000 * 1000 * 10**18;
-        balances[msg.sender] = totalTokens;
+        totalTokens_ = 1000 * 1000 * 1000 * 10**18;
+        balances_[msg.sender] = totalTokens_;
+        name_ = _name;
+        symbol_ = _symbol;
     }
 
     // This unnamed function is called whenever someone tries to send ether to it 
@@ -80,24 +76,23 @@ contract ZSCTestToken is owned, ERC20Interface {
     }
 
     function totalSupply() public constant returns (uint256) {
-        return totalTokens;
+        return totalTokens_;
     }
 
     // What is the balance of a particular account?
     function balanceOf(address _owner) public constant returns (uint256) {
-        return balances[_owner];
+        return balances_[_owner];
     }
 
     // Transfer the balance from owner's account to another account
     function transfer(address _to, uint256 _amount) public returns (bool success) {
-        if (!registered) return false;
         if (_amount <= 0) return false;
 
-        if (balances[msg.sender] >= _amount
-            && balances[_to] + _amount > balances[_to]) {
+        if (balances_[msg.sender] >= _amount
+            && balances_[_to] + _amount > balances_[_to]) {
 
-            balances[msg.sender] -= _amount;
-            balances[_to] += _amount;
+            balances_[msg.sender] -= _amount;
+            balances_[_to] += _amount;
             Transfer(msg.sender, _to, _amount);
             return true;
         } else {
@@ -112,16 +107,15 @@ contract ZSCTestToken is owned, ERC20Interface {
     // deliberately authorized the sender of the message via some mechanism; we propose
     // these standardized APIs for approval:
     function transferFrom(address _from, address _to, uint256 _amount) public returns (bool success) {
-        if (!registered) return false;
         if (_amount <= 0) return false;
 
-        if (balances[_from] >= _amount
-            && allowed[_from][msg.sender] >= _amount
-            && balances[_to] + _amount > balances[_to]) {
+        if (balances_[_from] >= _amount
+            && allowed_[_from][msg.sender] >= _amount
+            && balances_[_to] + _amount > balances_[_to]) {
 
-            balances[_from] -= _amount;
-            allowed[_from][msg.sender] -= _amount;
-            balances[_to] += _amount;
+            balances_[_from] -= _amount;
+            allowed_[_from][msg.sender] -= _amount;
+            balances_[_to] += _amount;
             Transfer(_from, _to, _amount);
             return true;
         } else {
@@ -133,20 +127,20 @@ contract ZSCTestToken is owned, ERC20Interface {
     // If this function is called again it overwrites the current allowance with _value.     
     function approve(address _spender, uint256 _amount) public returns (bool success) {
         if (!registered) return false;
-        allowed[msg.sender][_spender] = _amount;
+        allowed_[msg.sender][_spender] = _amount;
         Approval(msg.sender, _spender, _amount);
         return true;
     }
  
     function allowance(address _owner, address _spender) public constant returns (uint256 remaining) {
-        return allowed[_owner][_spender];
+        return allowed_[_owner][_spender];
     }
 
 
     // ------------------------------------------------------------------------
     // Owner can transfer out any accidentally sent ERC20 tokens
     // ------------------------------------------------------------------------
-    function transferAnyERC20Token(address tokenAddress, uint tokens) public only_owner returns (bool) {
-        return ERC20Interface(tokenAddress).transfer(owner, tokens);
+    function transferAnyERC20Token(address _tokenAddress, uint _tokens) public only_owner returns (bool) {
+        return ERC20Interface(_tokenAddress).transfer(owner, _tokens);
     }  
 }
