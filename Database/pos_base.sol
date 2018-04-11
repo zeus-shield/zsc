@@ -9,31 +9,50 @@ import "./pob_staker_group.sol";
 
 //Proof of Stake for ZSC system
 contract PosBase is PosStakerGroup, PosBlockPool {
+    uint private constant YEAR_IN_SECONDS = 86400 * 365;
+    uint private constant HALF_YEAR_IN_SECONDS = 86400 * 365 / 2;
+    uint private constant QUATER_YEAR_IN_SECONDS = 86400 * 365 / 4;
+
     // Constructor
     function PosBase(bytes32 _name) public Object(_name) {
     } 
 
-    function initDatabase(address _controller) public only_delegate(1) () {
+    function initPos(address _controller) public only_delegate(1) () {
         setDelegate(_controller, 1);
+        createPool("year", YEAR_IN_SECONDS, 10);
+        createPool("half year", YEAR_IN_SECONDS, 4);
+        createPool("three months", YEAR_IN_SECONDS, 2);
     }
 
-    function minePendingBlocks() public constant only_delegate(1) {
+    function minePendingBlocks(uint _poolIndex) public constant only_delegate(1) {
         uint lastPendingBlockIndex = getLastPendingBlockIndex();
-        uint unminedGas = getUnminedGas();
-
-        if (lastPendingBlockIndex == 0 || unminedGas == 0) return;
-
-        uint blockNos = numBlock();
+        uint blockNos = numBlocks(_poolIndex);
         uint stakerNos = numStakers();
-        for (uint i = lastPendingBlockIndex; i < blockNos; ++i) {
-            if (getBlockSizeByIndex(_index) > getTotalRemainingSP()) {
+        uint blockSize;
+        uint remainingSP;
+        bool minedTag;
+
+        for (uint i = lastPendingBlockIndex; i < blockNos - 1; ++i) {
+            remainingSP = getTotalRemainingSP();
+            blockSize = getBlockByIndex(_poolIndex, i);
+            if (blockSize > remainingSP) {
                 break;
             }
 
-            for (uint j = 0; j < stakerNos; ++j) {
-                useStakerSPByIndex(j, 10);
+            minedTag = false;
+            while (true) {
+                for (uint j = getNextStakerForUseSP(); j < stakerNos; ++j) {
+                    blockSize = blockSize - 1 + useStakerSPByIndex(j, 1);
+                    if (blockSize == 0) {
+                        setNextStakerForUseSP(i);
+                        setBlockMinedByIndex(_poolIndex, i);
+                        minedTag = true;
+                    }
+                }
+                if (minedTag) {
+                    break;
+                }
             }
-            setBlockMinedByIndex(i);
         }
     }
 
