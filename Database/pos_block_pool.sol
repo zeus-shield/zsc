@@ -25,6 +25,7 @@ contract PosBlockPool is Object {
 
     // Constructor
     function BlockPool() {
+        blockSizeLimit_ = 1024 * 1024 * 2;
     } 
 
     function createBlock() internal returns (address);
@@ -37,31 +38,41 @@ contract PosBlockPool is Object {
         pools_[poolNos_].minedGasUsage_ = 0;
         pools_[poolNos_].remaingGasUsage_ = 0;
     }
+    function getBlockByIndex(uint _poolIndex, uint _blockIndex) private returns (address) {
+        require(_poolIndex < poolNos_);
+        require(_blockIndex < pools_[_poolIndex].blocks_);
+        
+        return pools_[_poolIndex].blocks_[_blockIndex];
+    }
 
-    function adjustBlockSize(uint _sizeLimit /*in terms of gas usage*/) internal {
-        poolNos_ = 0;
+    function registerNewBlock(uint _poolIndex) private returns (address) {
+        uint blockIndex = pools_[_poolIndex].blockNos_;
+        address adr = createBlock();
+
+        require(adr != address(0));
+
+        pools_[_poolIndex].blocks_[blockIndex] = adr;
+        pools_[_poolIndex].blocks_ ++;
+        return adr;
+    }
+
+    function adjustBlockSizeLImit(uint _sizeLimit /*in terms of gas usage*/) internal {
         blockSizeLimit_ = _sizeLimit;
     }
 
-    function registerNewBlock(uint _poolIndex) internal returns (bool) {
-        uint blockIndex = pools_[_poolIndex].blockNos_;
-        address adr = createBlock();
-
-        pools_[_poolIndex].blocks_[blockIndex] = adr;
-        pools_[_poolIndex].blocks_ ++;
+    function getBlockSizeLimit() internal constant returns (uint) {
+        return blockSizeLimit_;
     }
-
-    function registerNewBlock(uint _poolIndex) internal returns (bool) {
-        uint blockIndex = pools_[_poolIndex].blockNos_;
-        address adr = createBlock();
-
-        pools_[_poolIndex].blocks_[blockIndex] = adr;
-        pools_[_poolIndex].blocks_ ++;
-    }
-
-    function registerNewTx(uint _poolIndex, uint _blockIndex, bytes32 _tx, bytes32 _sender, bytes32 _receiver, uint _gasUsage) internal returns (bool) {
+    
+    function registerNewTx(uint _poolIndex, bytes32 _tx, bytes32 _sender, bytes32 _receiver, uint _gasUsage) internal returns (bool) {
         pools_[_poolIndex].remaingGasUsage_ += _gasUsage;
-        return PosBlock(pools_[_poolIndex].blocks_[_blockIndex]).registerTx(bytes32 _tx, bytes32 _sender, bytes32 _receiver, uint _gasUsage);
+        uint blockIndex = pools_[_poolIndex].blockNos_ - 1;
+        bool ret = PosBlock(getBlockByIndex(_poolIndex, blockIndex)).registerTx(bytes32 _tx, bytes32 _sender, bytes32 _receiver, uint _gasUsage);
+        if (ret == false) {
+            address adr = registerNewBlock(_poolIndex);
+            PosBlock(adr).registerTx(bytes32 _tx, bytes32 _sender, bytes32 _receiver, uint _gasUsage)
+        }
+        return ;
     }
 
     function getLastPendingBlockIndex() internal constant returns (uint) { 
