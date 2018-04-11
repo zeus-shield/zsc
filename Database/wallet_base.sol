@@ -33,6 +33,20 @@ contract WalletBase is DBNode {
         isEthAccount_ = false;
     }
 
+    function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (bool);
+
+    function setAsEthAccount() internal {
+        isEthAccount_ = true;
+    }
+
+    function checkBeforeSent(address _dst, uint _amount) internal returns (bool) {
+        if (inputHistory_.total_ >= _amount && _dst != address(this)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     function recordInput(address _sender, bytes32 _tx, uint _amount, bytes _data) internal {
         uint index = inputHistory_.nos_;
         inputHistory_.nos_++;

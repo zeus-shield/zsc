@@ -22,6 +22,8 @@ contract WalletErc20 is WalletBase {
     }
 
     function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (bool) {
+        require(checkBeforeSent);
+    
         if (ERC20Interface(_erc20TokenAdr).transfer(_dest, _value)) {
             recordOut(address(this), _dest, _amount, _data);
             return true;
