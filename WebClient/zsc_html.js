@@ -83,17 +83,17 @@ ZSCHtml.prototype.loadPageHeader = function(funcName) {
 
 
 //////////
-ZSCHtml.prototype.loadPageBody = function(tag) {
+ZSCHtml.prototype.loadPageBody = function(tag, funcName) {
     var text;
     switch(tag) {
         case "welecom": 
-            text = hF_loadWelcome(); 
+            text = this.loadWelcome(); 
             break;
         case "wallet": 
-            text = hF_loadWallet();
+            text = this.loadWallet(funcName);
             break;
         case "profile": 
-            text = hF_loadParameters(, "user");
+            text = this.loadParameters("user");
             break;
     }
     document.getElementById(this.pageBodyId).innerHTML = text; 
@@ -105,6 +105,25 @@ ZSCHtml.prototype.loadWelcome = function() {
     text += '   <text>Welcome to the ZSC testing platform</text>'
     text += '</div>'
     return text; 
+}
+
+ZSCHtml.prototype.loadWallet = function(funcName)  {
+    var functionInput = funcName + "('DestAddress', 'EthAmount', 'TransferEthHash')";
+    var text ="";
+    text += '<div class="well">';
+    text += '   <text>' + "TestETH: " + web3.fromWei(balance) + ': </text><br>'
+    text += '   <text>' + "Address: " + address + ': </text><br><br>'
+    text += '   <text>Destination Address</text>  <input id="DestAddress"></input> <br>'
+    text += '   <text>Eth Amount</text> <input id="EthAmount"></input> <br><br>'   
+    text += '   <button type="button" onClick="' + functionInput + '">Transfer ETH</button>'
+    text += '   <text id="TransferEthHash"></text>'
+    text += '</div>'
+    return text;
+}
+
+function loadParameters(type) {
+    var text ="";
+    return text;
 }
 
 
