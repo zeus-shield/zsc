@@ -34,47 +34,52 @@
         var pass = document.getElementById(passId).value; 
         
         uF_login(user, pass, adr, function(ret) {
-            if(ret) loadPageBody("welecome");
+            if(ret) loadHtmlPageBody("welecome");
             else alert("User name or password wrongttt!!");
         });
     }
 
     function applyForUser(type, hashLogId) {
         zscUser.applyForUser(type, hashLogId, function() {
-            loadPageBody("applied");
-        });
+            loadHtmlPageBody("applied");
+        }); 
     }
 
     function reFresh() {
-        loadPageBody("logon");
+        loadHtmlPageBody("logon");
     }
 
-    function loadPageBody(tag) {
+    function transferEthTo(destAddressID, amountID, logID) {
+        zscElement.transferEth(destAddressID, amountID, logID);
+    }
+    function loadHtmlPageBody(tag) {
         document.getElementById("PageBody").innerHTML = "";  
         zscHtml.loadPageHeader();
 
-        if (tag == "logon") {
+        if (tag == "welecome") {
+            zscElement.loadPageBody("welecome", "null");
+        } if (tag == "apply") {
             zscElement.getUserStatusFromAdm(function(status) {
                 if (status == 0) {
                     //Should not happen 
                 } else if (ret == "added") {
                     zscHtml.loadButtonForEnablingElement("applyForUser");
                 } else if (ret == "applied") {
-                    loadPageBody(tobeApproved);
+                    loadHtmlPageBody("applied");
                 } else if (ret == "approved") {
-                    loadPageBody("approved");
+                    loadHtmlPageBody("approved");
                 }
             });  
         } else if (tag == "applied") {
             zscHtml.loadWaitingApproval("reFresh", zscUser.getUserType());
         } else {
             if (tag == "wallet") {
-                uF_loadEthBalance(function() {
-                    hF_loadPageBody("PageBody", tag);
+                zscElement.loadEthBalance(function() {
+                    zscElement.loadPageBody(tag, "transferEthTo");
                 });
             } else if (tag == "profile") {
                 uF_loadElementParameters(function() {
-                    hF_loadPageBody("PageBody", tag);
+                    zscElement.loadPageBody(tag, "null");
                 });
             } else if (tag == "templates") {
                 uF_loadBindedEntities(tag, function() {
