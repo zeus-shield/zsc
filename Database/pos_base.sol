@@ -24,35 +24,34 @@ contract PosBase is PosStakerGroup, PosBlockPool {
         createPool("three months", YEAR_IN_SECONDS, 2);
     }
 
-    function minePendingBlocks(uint _poolIndex) public constant only_delegate(1) {
-        uint lastPendingBlockIndex = getLastPendingBlockIndex();
-        uint blockNos = numBlocks(_poolIndex);
+    function mineSingleBlock(uint _poolIndex, uint _blockIndex) private {
         uint stakerNos = numStakers();
-        uint blockSize;
-        uint remainingSP;
-        bool minedTag;
+        uint blockSize = getBlockByIndex(_poolIndex, _blockIndex);
+        bool minedTag = false;
+        while (true) {
+            for (uint i = getNextStakerForUseSP(); i < stakerNos; ++j) {
+                blockSize = blockSize - 1 + useStakerSPByIndex(i, 1);
+                if (blockSize == 0) {
+                    setNextStakerForUseSP(i);
+                    setBlockMinedByIndex(_poolIndex, _blockIndex);
+                    minedTag = true;
+                }
+            }
+            if (minedTag) {
+                break;
+            }
+        }
+    }
 
-        for (uint i = lastPendingBlockIndex; i < blockNos - 1; ++i) {
-            remainingSP = getTotalRemainingSP();
-            blockSize = getBlockByIndex(_poolIndex, i);
-            if (blockSize > remainingSP) {
+    function minePendingBlocks(uint _poolIndex) public constant only_delegate(1) {
+        uint blockNos = numBlocks(_poolIndex);
+
+        for (uint i = getLastPendingBlockIndex(); i < blockNos - 1; ++i) {
+            if (getBlockByIndex(_poolIndex, i) > getTotalRemainingSP()) {
                 break;
             }
 
-            minedTag = false;
-            while (true) {
-                for (uint j = getNextStakerForUseSP(); j < stakerNos; ++j) {
-                    blockSize = blockSize - 1 + useStakerSPByIndex(j, 1);
-                    if (blockSize == 0) {
-                        setNextStakerForUseSP(i);
-                        setBlockMinedByIndex(_poolIndex, i);
-                        minedTag = true;
-                    }
-                }
-                if (minedTag) {
-                    break;
-                }
-            }
+            mineSingleBlock(_poolIndex, i);
         }
     }
 
