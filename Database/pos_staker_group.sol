@@ -13,9 +13,10 @@ contract DBStaker {
 }
 
 contract PosStakerGroup is Object {
-    uint private nos_;
+    uint private stakerNos_;
     uint private spUsed_;
     uint private spRemaining_;
+    uint private nextStakerForUseSP_;
     mapping(address => uint) private stakerIndex_;
     mapping(uint => address) private stakers_;
 
@@ -23,7 +24,7 @@ contract PosStakerGroup is Object {
 
     // Constructor
     function PosStakerGroup() {
-        nos_ = 0;
+        stakerNos_ = 0;
         spUsed_ = 0;
         spRemaining_ = 0;
         stakerIndex_[address(0)] = 0;
@@ -35,27 +36,27 @@ contract PosStakerGroup is Object {
     }
 
     function numStakers() internal constant returns (uint) {
-        return nos_;
+        return stakerNos_;
     }
     
     function registerStaker(address _nodeAddress) public only_delegate(1) {
         require(_nodeAddress != 0 && stakerIndex_[_nodeAddress] == 0);
-        uint index = nos_;
+        uint index = stakerNos_;
         stakerIndex_[_nodeAddress] = index;
         stakers_[index] = _nodeAddress;
-        nos_++;
+        stakerNos_++;
     }
 
     function removeStaker(address _nodeAddress) public only_delegate(1)  {
         require(stakerExists_[_nodeAddress]);
         uint index = stakerIndex_[_nodeAddress];
-        address lastAddress = stakers_[nos_ - 1];
+        address lastAddress = stakers_[stakerNos_ - 1];
 
         stakers_[index] = lastAddress;
 
         delete stakerIndex_[_nodeAddress];
-        delete stakers_[nos_ - 1];
-        nos_--;
+        delete stakers_[stakerNos_ - 1];
+        stakerNos_--;
     }
 
     function useStakerSPByIndex(uint _index, uint _amount) internal returns (uint) {
@@ -65,9 +66,20 @@ contract PosStakerGroup is Object {
     function getTotalRemainingSP() public only_delegate(1) constant returns (uint) {
         uint total = 0;
 
-        for (uint i = 1; i < nos_; ++i) {
+        for (uint i = 1; i < stakerNos_; ++i) {
             total += DBStaker(stakers_[i]).getRemainingSP();
         }
         return total;
     } 
+
+    function setNextStakerForUseSP(uint _index) internal {
+        nextStakerForUseSP_ = _index;
+        if (nextStakerForUseSP_ == stakerNos_) {
+            nextStakerForUseSP_ = 0;
+        }
+    }
+
+    function getNextStakerForUseSP() internal constant returns (uint) {
+        return nextStakerForUseSP_;
+    }
 }
