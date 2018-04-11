@@ -8,6 +8,7 @@ import "./object.sol";
 
 contract PosBlock is Object {
     struct TxHash {
+        bool sentIn_;
         address sender_;
         address receiver_;
         uint gasUsage_;
@@ -49,15 +50,19 @@ contract PosBlock is Object {
     function setMined() public only_delegate(1) {
         minedStatus_ = true;
     }
+
+    function doesMined() public only_delegate(1) constant returns (bool) {
+        return minedStatus_;
+    }
     
-    function registerTx(bytes32 _tx, bytes32 _sender, bytes32 _receiver, uint _gasUsage) public constant only_delegate(1) returns (bool) {
+    function registerTx(book _sentIn, bytes32 _tx, bytes32 _sender, bytes32 _receiver, uint _gasUsage) public constant only_delegate(1) returns (bool) {
         if (minedStatus_) return false;
 
         uint size = currentSize_ + _gasUsage;
         if (size < blockUnitLimit_) {
             txExists_[_tx] = true;
             txIndice_[_tx] = txNos_;
-            txHashs_[txNos_] = TxHash(_sender, _receiver, _gasUsage, now);
+            txHashs_[txNos_] = TxHash(_sentIn, _sender, _receiver, _gasUsage, now);
             txNos_++;
             return true;
         } else {
@@ -85,12 +90,13 @@ contract PosBlock is Object {
         return sizeLimit_;
     }
 
-    function getTxNos() public only_delegate(1) constant return (uint) {
+    function numTx() public only_delegate(1) constant return (uint) {
         return txNos_;
     }
 
     function getCurrentSize public only_delegate(1) constant return (uint) {
         return currentSize_
     }
+
 }
 
