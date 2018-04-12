@@ -23,6 +23,7 @@ contract DBNode is Object {
     address private controller_ = address(0);
     address private posAdv_ = address(0);
     bytes32 private nodeType_ = "node";
+    address private ethWalletId_ ;
 
     address[] children_;
     mapping(bytes32 => address) childMap_;
@@ -44,6 +45,14 @@ contract DBNode is Object {
 
     function getNodeType() public only_delegate(1) constant returns (bytes32) {
         return nodeType_;
+    }
+
+    function setId(address _ethWalletiId) public only_delegate(1) {
+        ethWalletId_ = _ethWalletiId;
+    }
+
+    function getId() public only_delegate(1) constant returns (address) {
+        return ethWalletId_;
     }
 
     function getBlance(bytes32 _name, address _adr) public only_delegate(1) constant returns (uint256) {
