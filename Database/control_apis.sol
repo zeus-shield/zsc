@@ -18,6 +18,11 @@ contract ControlApis is ControlBase {
         setAdmAdr(_adr);
     }
 
+    function setWalletManger(address _adr) public only_owner {
+        setWalletMangerAdr(_adr);
+    }
+
+
     /// @dev Add the database factory of managing the elements
     /// @param _typeInUint The type of the database factory
     /// @param _adr The address of the database factory
@@ -78,7 +83,6 @@ contract ControlApis is ControlBase {
         require(nd != address(0));
         return Object(nd).name();
     }
-
 
     /// @dev Add a paramter to an element
     /// @param _node The name of the existing element
@@ -171,4 +175,21 @@ contract ControlApis is ControlBase {
     function buyInsuranceWithEth(bytes32 _user, bytes32 _agreement, uint _amount) public only_registered(_user) returns (bool) {
         return getDBNode(_user).executeEtherTransaction(address(getDBNode(_agreement)), _amount, "null");
     }
+
+    function enableWallet(uint _typeInUint/*5: eth; 6: erc20*/, bytes32 _user, bytes32 _tokeSymbol, address _extraAdr) public only_registered(_user) returns (bool) {
+        address creatorAdr = _extraAdr;
+        if (creatorAdr == 0) {
+            creatorAdr = msg.sender;
+        }
+        return enableWallet(mapType(_typeInUint), _user, _tokeSymbol, creatorAdr);
+    }
+
+    function registerErc20Token(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool) {
+        return manageErc20TokenContract(true, _name, _symbol, _decimals, _tokenAdr);
+    }
+
+    function removeErc20Token(bytes32 _symbol) public only_delegate(1) returns (bool) {
+        return manageErc20TokenContract(false, 0, 0, 0, 0);
+    }
+
 }
