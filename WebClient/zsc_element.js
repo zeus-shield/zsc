@@ -10,7 +10,6 @@ function ZSCElement(nm, abi, adr) {
     this.nodeAddress = 0;
     this.parameterNames = [];
     this.parameterValues = [];
-    this.binedElements = [];
     this.myControlApi = web3.eth.contract(abi).at(adr);
 }
 ZSCElement.prototype.getName = function() { return this.name;}
@@ -27,11 +26,7 @@ ZSCElement.prototype.getParameterName = function(index) { return this.parameterN
 
 ZSCElement.prototype.getParameterValue = function(index) { return this.parameterValues[index]; }
 
-ZSCElement.prototype.numBindedElements = function() { return this.binedElements.length; }
-
-ZSCElement.prototype.getBindedElementName = function() { return this.binedElements[index]; }
-
-
+ZSCElement.prototype.getParameterNos = function(index) { return this.parameNos; }
 
 ZSCElement.prototype.doesElementExisit = function(func) {
     this.myControlApi.doesElementExist(this.name,
@@ -40,7 +35,6 @@ ZSCElement.prototype.doesElementExisit = function(func) {
             else  console.log("error: " + error);
         });
 }
-
 
 ZSCElement.prototype.loadEthBalance = function(func) {
     this.myControlApi.getElementEthBalance(this.name, function(error, balance){ 
@@ -131,7 +125,7 @@ ZSCElement.prototype.loadParameterValueByIndex = function(index, func){
 }
 
 
-ZSCElement.prototype.transferEth = function(destAddressID, amountID, logID){  
+ZSCElement.prototype.transferEth = function(destAddressID, amountID, logID) {  
     var destAddress = document.getElementById(destAddressID).value;
     var amount = document.getElementById(amountID).value;
 
@@ -139,11 +133,37 @@ ZSCElement.prototype.transferEth = function(destAddressID, amountID, logID){
         this.myControlApi.elementwithDrawEth(this.name, destAddress, web3.toWei(amount, 'ether') , 
             {from: bF_getEthAccount(), gasPrice: bF_getGasPrice(1), gas : bF_getGasLimit(55000)}, 
             function(error, result){ 
-            if(!error) bF_showHashResult(logID, result);
+            if(!error) bF_showHashResult(logID, result, function(){});
             else console.log("error: " + error);
         });
     }
 }
 
+
+ZSCElement.prototype.setElementParameter = function(logID, hr) {
+    var myControlApi =  this.myControlApi;
+
+    var info = "";
+    var count = 0;
+
+    for (var i = 0; i < uF_parameters.length; ++i) {
+        var value = document.getElementById(this.parameterNames[i]).value;
+        if (value != this.parameterValues[i]) {
+            count ++;
+            this.parameterValues[i] = value;
+
+            info += "{<" + this.parameterNames[i] + ">" + "<" + value + ">}";
+        }
+    }
+
+    if (count > 0) {
+        myControlApi.setElementMultipleParameters(hr, info,  
+            {from: bF_getEthAccount(), gasPrice: bF_getGasPrice(1), gas : bF_getGasLimit(55000)}, 
+            function(error, result){ 
+                if(!error) bF_showHashResult(logID, result, function(){});
+                else console.log("error: " + error);
+        });
+    }
+} 
 
 
