@@ -50,6 +50,11 @@ contract PosManager is Object {
     function removeStaker(address _nodeAddress) only_delegate(1) public;
 }
 
+contract WalletManager is Object {
+    function addErc20Token(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate returns (bool);
+    function removeErc20Token(bytes32 _symbol) public only_delegate returns (bool);
+}
+
 contract ControlBase is Object, ControlInfo {   
     struct TokenAwarder {
         address adr_;
@@ -63,6 +68,7 @@ contract ControlBase is Object, ControlInfo {
     address private bindedDB_;
     address private bindedAdm_;
     address private bindedPos_;
+    address private bindedWalletManager_;
     address private zscTokenAddress_;
 
     modifier factroy_exist(bytes32 _name) {require(factories_[_name] != 0); _;}
@@ -94,8 +100,16 @@ contract ControlBase is Object, ControlInfo {
         zscTokenAddress_ = _zscToken;
         setDelegate(bindedPos_, 1);
 
-        addLog("setAdmAdr: ", true);
+        addLog("set Adm: ", true);
         //addLog(PlatString.bytes32ToString(Object(_adm).name()), false);
+    }
+
+    function setWalletMangerAdr(address _managerAdr) internal {
+        require (_managerAdr != 0);      
+        bindedWalletManager_ = _managerAdr;
+        setDelegate(bindedWalletManager_, 1);
+
+        addLog("set WalletManger: ", true);
     }
 
     function setDatabaseAdr(address _db) internal {
@@ -205,4 +219,11 @@ contract ControlBase is Object, ControlInfo {
         return true;
     }
 
+    function manageErc20TokenContract(bool _doesAdd, bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) internal returns (bool) {
+        if (_doesRegisterd) {
+            return WalletManger(bindedWalletManager_).addErc20Token(_name, _symbol, _decimals, _tokenAdr);
+        } else {
+            return WalletManger(bindedWalletManager_).removeErc20Token(_symbol);
+        }
+    }
 }
