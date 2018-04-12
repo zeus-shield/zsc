@@ -26,6 +26,7 @@ Official implementation for the solidity-based core part of the ZSC system, as w
     |-- delegated 
         |-- log_recorder
         |-- objct 
+            |-- wallet_manager
             |-- pos_block
             |-- pos_block_pool, pos_staker_group
                 |-- pos_base
@@ -112,4 +113,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.04.06-08: add three WebAdm/js/zsc_user_management.js, pos_block_pool.sol and pos_user_group.sol
 2018.04.09-10: chang the key modifer only_delegat in order to support assigning different priorities to different kinds of contract objects
 2018.04.11: add three files pos_block.sol, wallet_eth.sol, wallet_erc20.sol
+2018.04.12: add file wallet_manager.sol
 ```
