@@ -49,7 +49,7 @@ ZSCHtml.prototype.loadWaitingApproval = function(funcName) {
 
 
 //////////
-ZSCHtml.prototype.loadPageBody = function(tag, funcName) {
+ZSCHtml.prototype.loadPageBody = function(tag, funcName, extra) {
     var text;
     switch(tag) {
         case "login": 
@@ -65,7 +65,7 @@ ZSCHtml.prototype.loadPageBody = function(tag, funcName) {
             text = this.loadWallet(funcName);
             break;
         case "profile": 
-            text = this.loadParameters("user");
+            text = this.loadParameters(funcName, extra);
             break;
     }
     document.getElementById(this.pageBodyId).innerHTML = text; 
@@ -127,8 +127,22 @@ ZSCHtml.prototype.loadWallet = function(funcName)  {
     return text;
 }
 
-function loadParameters(type) {
+function loadParameters(funcName, extra) {
+    var functionInput = funcName + "('SubmitChangesHash')";
+    var elementObj = extra;
+    var parameterNos = elementObj.getParameterNos();
+   
     var text ="";
+    text += '<div class="well">';
+   
+    for (var i = 0; i < parameterNos; ++i) {
+        text += '   <text>' + elementObj.getParameterName(i) + ': </text>'
+        text += '   <input type="text" id="' + elementObj.getParameterValue(i) + '"></input>'
+    }
+    text += '</div>'
+    text += '   <button type="button" onClick="' + functionInput + '">Submit Changes</button>'
+    text += '   <text id="SubmitChangesHash"></text>'
+    text += '</div>'
     return text;
 }
 
