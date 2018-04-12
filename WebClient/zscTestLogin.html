@@ -25,7 +25,7 @@
         document.getElementById("PageHeader").innerHTML = "";  
         document.getElementById("PageBody").innerHTML = "";  
         zscHtml.setHtmlCotentIds( "PageBody", "PageHeader");
-        zscHtml.loadPageBody("login", "checkUser");
+        zscHtml.loadPageBody("login", "checkUser", "null");
     }
 
     function checkUser(adrId, userId, passId){
@@ -56,6 +56,10 @@
         zscElement.transferEth(destAddress, amount, logId);
     }
 
+    function submitProfileChanges(logID) {
+        zscElement.setElementParameter(logID, zscUser.getUserNameHr());
+    }
+
 </script>
 </head>
 <body>
@@ -72,7 +76,7 @@
         zscHtml.loadPageHeader();
 
         if (tag == "welecome") {
-            zscHtml.loadPageBody("welecome", "loadHtmlPageBody");
+            zscHtml.loadPageBody("welecome", "loadHtmlPageBody", "null");
         } else if (tag == "apply") {
             zscElement.getUserStatusFromAdm(function(status) {
                 if (status == 0) {
@@ -90,11 +94,11 @@
         } else {
             if (tag == "wallet") {
                 zscElement.loadEthBalance(function() {
-                    zscHtml.loadPageBody(tag, "transferEthTo");
+                    zscHtml.loadPageBody(tag, "transferEthTo", "null");
                 });
             } else if (tag == "profile") {
-                uF_loadElementParameters(function() {
-                    zscElement.loadPageBody(tag, "null");
+                zscElement.loadParameterNamesAndvalues(function() {
+                    zscHtml.loadPageBody(tag, "submitProfileChanges", zscElement);
                 });
             } else if (tag == "templates") {
                 uF_loadBindedEntities(tag, function() {
