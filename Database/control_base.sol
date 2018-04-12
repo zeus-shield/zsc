@@ -9,7 +9,7 @@ import "./object.sol";
 import "./control_info.sol";
 
 contract DBFactory is Object { 
-    function createNode(bytes32 _nodeName, bytes32 _parentName, address _creator) public returns (address);
+    function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
 }
 
 contract DBDatabase is Object { 
@@ -43,6 +43,8 @@ contract DBNode is Object {
     function getBindedEntityNameByIndex(bytes32 _type, uint _index) public only_delegate(1) constant returns (bytes32);
 
     function setAgreementStatus(bytes32 _tag) public only_delegate(1) returns (bool);
+    function configureHandlers() public only_delegate(1) returns (bool);
+    function getHandler(bytes32 _type) public only_delegate(1) returns (address);
 }
 
 contract PosManager is Object {
@@ -141,9 +143,9 @@ contract ControlBase is Object, ControlInfo {
     
     function enableWallet(bytes32 _type, bytes32 _user, bytes32 _tokeSymbol, address _creator) internal returns (address) {
         address adr;
-        bytes32 parentName = "null";
+        address parentNode = getDBNode(_user).getHandler("wallet");
 
-        adr = getDBFactory(_type).createNode(_tokeSymbol, _user, _creator);
+        adr = getDBFactory(_type).createNode(_tokeSymbol, parentNode, _creator);
         require(adr != 0);
         registerNode(DBNode(adr).name(), adr, _creator);
 
@@ -152,15 +154,19 @@ contract ControlBase is Object, ControlInfo {
 
     function createFactoryNode(bytes32 _type, bytes32 _nodeName, bytes32 _extra, address _creator) internal returns (address) {
         address adr;
-        bytes32 parentName = "null";
+        address parentNode = address(0);
 
         if (_type == "template" || _type == "agreement") {
-            parentName = _extra;
+            parentNode = getDBNode(_extra).getHandler(_type);
         }
 
-        adr = getDBFactory(_type).createNode(_nodeName, parentName, _creator);
+        adr = getDBFactory(_type).createNode(_nodeName, parentNode, _creator);
         require(adr != 0);
         registerNode(_nodeName, adr, _creator);
+
+        if (_type == "provider" || _type == "receiver" || _type == "staker") {
+            DBNode(adr).configureHandles();
+        }
 
         if (_type == "staker") {
             DBNode(adr).setERC20TokenAddress(zscTokenAddress_);
