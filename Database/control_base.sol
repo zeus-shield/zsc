@@ -73,6 +73,8 @@ contract ControlBase is Object, ControlInfo {
         factoryTypes_[2] = "receiver";
         factoryTypes_[3] = "template";
         factoryTypes_[4] = "agreement";
+        factoryTypes_[5] = "wallet-eth";
+        factoryTypes_[6] = "wallet-erc20";
     }
 
     function mapType(uint _type) internal constant returns (bytes32) { return factoryTypes_[_type]; }
@@ -121,6 +123,17 @@ contract ControlBase is Object, ControlInfo {
 
     function getDBNode(bytes32 _node) internal constant returns (DBNode) {      
         return DBNode(getDBDatabase().getNode(_node));
+    }
+    
+    function enableWallet(bytes32 _type, bytes32 _user, bytes32 _tokeSymbol, address _creator) internal returns (address) {
+        address adr;
+        bytes32 parentName = "null";
+
+        adr = getDBFactory(_type).createNode(_tokeSymbol, _user, _creator);
+        require(adr != 0);
+        registerNode(DBNode(adr).name(), adr, _creator);
+
+        return adr;
     }
 
     function createFactoryNode(bytes32 _type, bytes32 _nodeName, bytes32 _extra, address _creator) internal returns (address) {
