@@ -32,15 +32,15 @@ class ZscBase {
     }
 
     public function getModuleArray() { 
-        return array("LogRecorder", "AdmAdv", "PosAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
+        return array("LogRecorder", "AdmAdv", "PosAdv", "WalletManager", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
     } 
 
     public function getLogedModuleArray() {
-        return array("AdmAdv", "PosAdv",  "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
+        return array("AdmAdv", "PosAdv", "WalletManager", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
     }
     
     public function getLogedModuleNameArrayInString() {
-        return "['AdmAdv', 'PosAdv', 'DBDatabase', 'FactoryPro', 'FactoryTmp', 'FactoryRec', 'FactoryAgr', 'ControlApisAdv']";
+        return "['AdmAdv', 'PosAdv', 'WalletManager', 'DBDatabase', 'FactoryPro', 'FactoryTmp', 'FactoryRec', 'FactoryAgr', 'ControlApisAdv']";
     }
 }
 ?>

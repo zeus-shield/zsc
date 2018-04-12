@@ -50,6 +50,7 @@ class ZscHtmlModules extends ZscSystemModules {
         <script type="text/javascript" src="./js/compiled_factory_pro.js"></script>
         <script type="text/javascript" src="./js/compiled_apis_adv.js"></script>
         <script type="text/javascript" src="./js/compiled_adm_adv.js"></script>
+        <script type="text/javascript" src="./js/compiled_wallet_manager.js"></script>
         <script type="text/javascript" src="./js/compiled_loger.js"></script>';
         return $text;
     }
@@ -144,8 +145,8 @@ class ZscHtmlModules extends ZscSystemModules {
     }
 
     public function loadInitModules($func) {
-        $modules = array("AdmAdv", "PosAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv");
-        $extraInfo = array("null",  "null",      "null",        "null",       "null",       "null",       "null",   "DBDatabase",         "AdmAdv",     "PosAdv",     "FactoryPro",     "FactoryRec",       "FactoryTmp", "FactoryAgr");
+        $modules = array("AdmAdv", "PosAdv", "WalletManager", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv"); 
+        $extraInfo = array("null",  "null",  "null",         "null",        "null",       "null",       "null",       "null",      "WalletManager",    "DBDatabase",     "AdmAdv",            "PosAdv",        "FactoryPro",     "FactoryRec",       "FactoryTmp",   "FactoryAgr");
 
         $num = count($modules);
     

@@ -12,6 +12,8 @@ function cC_getContractFullName(contractName) {
         return "./zsc/pos_adv.sol:PosAdv";
     } else if (contractName == 'LogRecorder') {
         return "./zsc/db/Database/log_recorder.sol:LogRecorder";
+    } else if (contractName == 'WalletManager') {
+        return "./zsc/db/Database/wallet_manager.sol:WalletManager";
     } else if (contractName == 'DBDatabase') {
         return "./zsc/db/Database/db_database.sol:DBDatabase";
     } else if (contractName == 'FactoryPro') {
@@ -32,6 +34,8 @@ function cC_getCompiledFile(contractName) {
         return compiledLogRecorder;
     } else if (contractName == 'PosAdv') {
         return compiledPosAdv;
+    } else if (contractName == 'WalletManager') {
+        return compiledWalletManager;
     } else if (contractName == 'DBDatabase') {
         return compiledDatabase;
     } else if (contractName == 'FactoryPro') {
