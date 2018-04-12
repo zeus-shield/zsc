@@ -7,9 +7,7 @@ pragma solidity ^0.4.18;
 import "./db_entity.sol";
 
 contract DBUser is DBEntity {
-    address private walletHandle_ = 0;
-    address private templateHandle_ = 0;
-    address private agreementHandle_ = 0;
+    mapping(bytes32 => address) private handlers_;
 
     // Constructor
     function DBUser(bytes32 _name) public DBEntity(_name) {
@@ -27,11 +25,14 @@ contract DBUser is DBEntity {
         return nd;
     }
 
-    function configureHandles() public only_delegate(1) returns (bool) {
-        require (walletHandle_ == 0 && templateHandle_ == 0 && agreementHandle_ == 0);
-        walletHandle_ = configureSingleHandle("-wallet");
-        templateHandle_ = configureSingleHandle("-tmp");
-        agreementHandle_ = configureSingleHandle("-agree");
+    function configureHandlers() public only_delegate(1) returns (bool) {
+        handlers_["wallet"] = configureSingleHandle("-wallet");
+        handlers_["template"] = configureSingleHandle("-tmp");
+        handlers_["agreement"] = configureSingleHandle("-agree");
+    }
+
+    function getHandler(bytes32 _type) public only_delegate(1) returns (address) {
+        return handlers_[_type];
     }
 }
 
