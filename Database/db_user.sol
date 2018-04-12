@@ -7,73 +7,31 @@ pragma solidity ^0.4.18;
 import "./db_entity.sol";
 
 contract DBUser is DBEntity {
-    struct Payment {
-        address sender_;
-        address receiver_;
-        uint256 amount_;
-        bool isInput_;
-        bytes data_;
-    }
-
-    struct PaymentHistory {
-        uint times_;
-        uint256 total_;
-        mapping(uint => Payment) payments_;
-    }
-    
-    PaymentHistory private ethPayments_;
-    PaymentHistory private ERC20Payments_;
-    address private tokenAddress_;
+    address private walletHandle_ = 0;
+    address private templateHandle_ = 0;
+    address private agreementHandle_ = 0;
 
     // Constructor
     function DBUser(bytes32 _name) public DBEntity(_name) {
-        ethPayments_.times_ = 0;
-        ethPayments_.total_ = 0;
-        ERC20Payments_.times_ = 0;
-        ERC20Payments_.total_ = 0;
     } 
 
-    function() public payable {
-        if (msg.value < (1 ether) / 100) {
-            revert();
-        } else {
-            uint index = ethPayments_.times_++;
-            ethPayments_.total_ += msg.value;
-            ethPayments_.payments_[index] = Payment(msg.sender, this, msg.value, true, msg.data);
-        }
+    function configureSingleHandle(bytes32 _nameSuffix) private returns (address) {
+        string memory str = PlatString.append(name(), _nameSuffix);
+        address nd = new DBNode(PlatString.tobytes32(str));
+        require(nd != 0);
+
+        DBNode(nd).setDelegate(address(this), 1);
+        DBNode(nd).setId(getId());
+        addChild(nd);
+
+        return nd;
     }
 
-    function executeEtherTransaction(address _dest, uint256 _value, bytes _data) public only_delegate(1) returns (bool) {
-        require(ethPayments_.total_ >= _value && _dest != address(this));
-
-        if (_dest.call.value(_value)(_data)) {
-            uint index = ethPayments_.times_++;
-            ethPayments_.total_ -= _value;
-            ethPayments_.payments_[index] = Payment(this, msg.sender, _value, false, _data);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    function executeERC20Transaction(address _tokenAdr, address _dest, uint256 _value, bytes _data) public only_delegate(1) returns (bool) {
-        require(_dest != address(this));
-        if (ERC20Interface(_tokenAdr).transfer(_dest, _value)) {
-            uint index = ERC20Payments_.times_++;
-            ERC20Payments_.total_ -= _value;
-            ERC20Payments_.payments_[index] = Payment(this, msg.sender, _value,false, _data);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    function setERC20TokenAddress(address _tokenAdr) public only_delegate(1) {
-        tokenAddress_ = _tokenAdr;
-    }
-
-    function getERC20TokenAddress() public only_delegate(1) constant returns (address) {
-        return tokenAddress_;
+    function configureHandles() public only_delegate(1) returns (bool) {
+        require (walletHandle_ == 0 && templateHandle_ == 0 && agreementHandle_ == 0);
+        walletHandle_ = configureSingleHandle("-wallet");
+        templateHandle_ = configureSingleHandle("-tmp");
+        agreementHandle_ = configureSingleHandle("-agree");
     }
 }
 
