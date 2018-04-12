@@ -51,22 +51,25 @@ function sF_setLogRecorderToListener(logRecorderAdr, listener,listenerName, hash
 function sF_initSystemModule(module, extra, adrs, zscTokenAdr, hashID) {
     var AdmAdvAdr = adrs[0];
     var PosAdvAdr = adrs[1];
-    var DBDatabaseAdr = adrs[2];
-    var FactoryProAdr = adrs[3];
-    var FactoryRecAdr = adrs[4];
-    var FactoryTmpAdr = adrs[5];
-    var FactoryAgrAdr = adrs[6];
-    var ControlApisAdr = adrs[7];
+    var WalletManagerAdr = adrs[2];
+    var DBDatabaseAdr = adrs[3];
+    var FactoryProAdr = adrs[4];
+    var FactoryRecAdr = adrs[5];
+    var FactoryTmpAdr = adrs[6];
+    var FactoryAgrAdr = adrs[7];
+    var ControlApisAdr = adrs[8];
 
     if (module == "AdmAdv") {
 
     } else if (module == "PosAdv") {
         sF_initPosAdv(PosAdvAdr, ControlApisAdr, hashID);
     } else if (module == "DBDatabase") {
-        sF_initDatabase(DBDatabaseAdr, FactoryProAdr, FactoryRecAdr, FactoryTmpAdr, FactoryAgrAdr, ControlApisAdr, hashID);
+        sF_initDatabase(DBDatabaseAdr, [FactoryProAdr, FactoryRecAdr, FactoryTmpAdr, FactoryAgrAdr], ControlApisAdr, hashID);
     } else if (module == "ControlApisAdv") {
         if (extra == "DBDatabase") {
             sF_setDatabaseAdr(DBDatabaseAdr, ControlApisAdr, hashID);
+        } else if (extra == "WalletManager") {
+            sF_setWalletManager(WalletManagerAdr, ControlApisAdr, hashID);
         } else if (extra == "AdmAdv") {
             sF_setAdm(AdmAdvAdr, ControlApisAdr, hashID);
         } else if (extra == "PosAdv") {
@@ -101,10 +104,10 @@ function sF_initPosAdv(PosAdvAdr, ControlApisAdr, hashID) {
 }
 
 
-function sF_initDatabase(DBDatabaseAdr, FactoryProAdr, FactoryRecAdr,  FactoryTmpAdr, FactoryAgrAdr, ControlApisAdr, hashID) {
+function sF_initDatabase(DBDatabaseAdr, Factoroies, ControlApisAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("DBDatabase"));
     var myDatabase = myContract.at(DBDatabaseAdr);
-    myDatabase.initDatabase([FactoryProAdr,FactoryRecAdr, FactoryTmpAdr, FactoryAgrAdr], ControlApisAdr, {from:web3.eth.accounts[0], gas: 9000000},
+    myDatabase.initDatabase(Factoroies, ControlApisAdr, {from:web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
         if(!error) sF_showHashResult(hashID, result);
         else console.log("error: " + error);
@@ -126,6 +129,16 @@ function sF_setAdm(AdmAdvAdr, ControlApisAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
     var myControlApi= myContract.at(ControlApisAdr);
     myControlApi.setAdm(AdmAdvAdr, {from: web3.eth.accounts[0], gas: 9000000},
+    function(error, result){ 
+        if(!error) sF_showHashResult(hashID, result);
+        else console.log("error: " + error);
+    });
+} 
+
+function sF_setWalletManager(WalletManagerAdr, ControlApisAdr, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
+    var myControlApi= myContract.at(ControlApisAdr);
+    myControlApi.setWalletManger(WalletManagerAdr, {from: web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
         if(!error) sF_showHashResult(hashID, result);
         else console.log("error: " + error);
