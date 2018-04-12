@@ -10,6 +10,7 @@ contract WalletEth is WalletBase {
 
     // Constructor
     function WalletEth(bytes32 _name) public WalletBase(_name) {
+        setNodeType("wallet-eth"); 
         setAsEthAccount();
     }
 
@@ -24,7 +25,7 @@ contract WalletEth is WalletBase {
 
     function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (bool) {
         require(checkBeforeSent(_dest, _amount));        
-        
+
         if (_dest.call.value(_value)(_data)) {
             recordOut(address(this), _dest, _amount, _data);
             return true;

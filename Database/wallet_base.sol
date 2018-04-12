@@ -29,7 +29,6 @@ contract WalletBase is DBNode {
 
     // Constructor
     function WalletBase(bytes32 _name) public DBNode(_name) {
-        setNodeType("wallet"); 
         isEthAccount_ = false;
     }
 

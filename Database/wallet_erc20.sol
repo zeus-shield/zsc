@@ -11,6 +11,7 @@ contract WalletErc20 is WalletBase {
 
     // Constructor
     function WalletErc20(bytes32 _name) public WalletBase(_name) {
+        setNodeType("wallet-erc20"); 
     }
 
     function() public payable {        
@@ -22,7 +23,7 @@ contract WalletErc20 is WalletBase {
     }
 
     function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (bool) {
-        require(checkBeforeSent);
+        require(checkBeforeSent(_dest, _amount));
     
         if (ERC20Interface(_erc20TokenAdr).transfer(_dest, _value)) {
             recordOut(address(this), _dest, _amount, _data);
