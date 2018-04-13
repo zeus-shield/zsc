@@ -35,6 +35,10 @@ library PlatString {
         return append(_a, _b, "", "", "");
     }
 
+    function append(bytes32 _a, bytes32 _b, bytes32 _c) internal pure returns (string) {
+        return append(bytes32ToString(_a), bytes32ToString(_b), bytes32ToString(_c), "", "");
+    }
+
     function append(bytes32 _a, bytes32 _b) internal pure returns (string) {
         return append(bytes32ToString(_a), bytes32ToString(_b), "", "", "");
     }

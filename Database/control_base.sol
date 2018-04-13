@@ -144,8 +144,15 @@ contract ControlBase is Object, ControlInfo {
     function enableWallet(bytes32 _type, bytes32 _user, bytes32 _tokeSymbol, address _creator) internal returns (address) {
         address adr;
         address parentNode = getDBNode(_user).getHandler("wallet");
+        string memory temp;
 
-        adr = getDBFactory(_type).createNode(_tokeSymbol, parentNode, _creator);
+        if (_tokeSymbol == "eth") {
+            temp = PlatString.append(_user, "-eth");
+        } else {
+            temp = PlatString.append(_user, "-", _tokeSymbol);
+        }
+
+        adr = getDBFactory(_type).createNode(PlatString.tobytes32(temp), parentNode, _creator);
         require(adr != 0);
         registerNode(DBNode(adr).name(), adr, _creator);
 
@@ -166,6 +173,7 @@ contract ControlBase is Object, ControlInfo {
 
         if (_type == "provider" || _type == "receiver" || _type == "staker") {
             DBNode(adr).configureHandlers();
+            enableWallet("wallet-eth", _nodeName, "eth", _creator);
         }
 
         if (_type == "staker") {
