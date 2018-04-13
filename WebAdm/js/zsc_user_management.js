@@ -1,7 +1,7 @@
 /*
 Copyright (c) 2018 ZSC Dev Team
 */
-function ZscUserMangement(adr, abi) {
+function ZSCUserMangement(adr, abi) {
     this.admAdvAdr = admAdr;
     this.admAdvAbi = abi;
     this.userName = [];
@@ -14,7 +14,7 @@ function ZscUserMangement(adr, abi) {
     this.myControlApi = web3.eth.contract(abi).at(adr);
 }
 
-ZscUserMangement.prototype.showHashResult = function(elementID, hash, func){
+ZSCUserMangement.prototype.showHashResult = function(elementID, hash, func){
     web3.eth.getTransactionReceipt(hash, 
     function(error, result){ 
         if(!error) {
@@ -37,7 +37,7 @@ ZscUserMangement.prototype.showHashResult = function(elementID, hash, func){
     });
 } 
 
-ZscUserMangement.prototype.addUser = function(userNameId, hashId, func){
+ZSCUserMangement.prototype.addUser = function(userNameId, hashId, func){
     var userName = document.getElementById(userNameId).value; 
     this.myControlApi.addUser(userName, {from: this.account, gas: 9000000},
     function(error, result){ 
@@ -46,7 +46,7 @@ ZscUserMangement.prototype.addUser = function(userNameId, hashId, func){
     });
 }  
 
-ZscUserMangement.prototype.loadUsers = function(func) {
+ZSCUserMangement.prototype.loadUsers = function(func) {
     this.numUsers(function() {
         this.loadUserInfos(function(index){
             if (index == this.parameNos - 1) {
@@ -56,7 +56,7 @@ ZscUserMangement.prototype.loadUsers = function(func) {
     });
 }
 
-ZscUserMangement.prototype.numUsers = function(func) {
+ZSCUserMangement.prototype.numUsers = function(func) {
     this.myControlApi.numUsers(
         {from: this.account},
         function(error, num){ 
@@ -69,7 +69,7 @@ ZscUserMangement.prototype.numUsers = function(func) {
          });
 }
 
-ZscUserMangement.prototype.loadUserInfos = function(func) {
+ZSCUserMangement.prototype.loadUserInfos = function(func) {
     for (var i = 0; i < this.userNos; ++i) {
         loadUserNameByIndex(i, function(index, userInfo) {
                 this.parserUserInfo(userInfo);
@@ -80,7 +80,7 @@ ZscUserMangement.prototype.loadUserInfos = function(func) {
     } 
 } 
 
-ZscUserMangement.prototype.loadUserInfoByIndex = function(index, func) {
+ZSCUserMangement.prototype.loadUserInfoByIndex = function(index, func) {
     this.myControlApi.getUserInfoByIndex(index, 
         {from: this.account},
         function(error, para){ 
@@ -93,7 +93,7 @@ ZscUserMangement.prototype.loadUserInfoByIndex = function(index, func) {
         });
 }
 
-ZscUserMangement.prototype.parserUserInfo = function(info) {
+ZSCUserMangement.prototype.parserUserInfo = function(info) {
     var len        = urlininfofo.length;
     var offset     = info.indexOf("?");
     var newsidinfo = info.substr(offset,len)
@@ -108,7 +108,7 @@ ZscUserMangement.prototype.parserUserInfo = function(info) {
     this.userNos++;
 }
 
-ZscUserMangement.prototype.loadUserManagementHtml = function(funcName, elementId) {
+ZSCUserMangement.prototype.loadUserManagementHtml = function(funcName, elementId) {
     var funcPrefix = funcName + '('; 
     var funcSuffix = ')"';
 
@@ -132,8 +132,16 @@ ZscUserMangement.prototype.loadUserManagementHtml = function(funcName, elementId
     document.getElementById(elementId).innerHTML = text;  
 }
 
-ZscUserMangement.prototype.approveUser = function(userName, func) {
+ZSCUserMangement.prototype.approveUser = function(userName, func) {
     this.myControlApi.addUser(userName, {from: this.account, gas: 9000000},
+    function(error, result){ 
+        if(!error) this.howHashResult(hashId, result, func)
+        else console.log("error: " + error);
+    });
+}
+
+ZSCUserMangement.prototype.lockUser = function(userName, func) {
+    this.myControlApi.lockUser(userName, {from: this.account, gas: 9000000},
     function(error, result){ 
         if(!error) this.howHashResult(hashId, result, func)
         else console.log("error: " + error);
