@@ -124,18 +124,18 @@ contract AdmBase is Object {
         }
     }
 
-    function keepOnline(bytes32 _user, bytes32 _hexx) public constant returns (bool) {
+    function keepOnline(bytes32 _user, bytes32 _hexx) public only_added(_hexx) constant returns (bool) {
         if (testUsers_[userIndex_[_hexx]].name_ == _user)
             return true;
         else 
             return false;
     }
 
-    function getUserStatus(bytes32 _hexx) public returns (bytes32) {
-        return testUsers_[userIndex_[hexx]].status_;
+    function getUserStatus(bytes32 _hexx) public only_added(_hexx) constant returns (bytes32) {
+        return testUsers_[userIndex_[_hexx]].status_;
     }
 
-    function getUserType(bytes32 _hexx) public returns (bytes32) {
-        return testUsers_[userIndex_[hexx]].type_;
+    function getUserType(bytes32 _hexx) public only_added(_hexx) constant returns (bytes32) {
+        return testUsers_[userIndex_[_hexx]].type_;
     }
 }

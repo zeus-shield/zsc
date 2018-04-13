@@ -53,8 +53,8 @@ contract PosManager is Object {
 }
 
 contract WalletManager is Object {
-    function addErc20Token(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate returns (bool);
-    function removeErc20Token(bytes32 _symbol) public only_delegate returns (bool);
+    function addErc20Token(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool);
+    function removeErc20Token(bytes32 _symbol) public only_delegate(1) returns (bool);
 }
 
 contract ControlBase is Object, ControlInfo {   
@@ -165,7 +165,7 @@ contract ControlBase is Object, ControlInfo {
         registerNode(_nodeName, adr, _creator);
 
         if (_type == "provider" || _type == "receiver" || _type == "staker") {
-            DBNode(adr).configureHandles();
+            DBNode(adr).configureHandlers();
         }
 
         if (_type == "staker") {
@@ -226,10 +226,10 @@ contract ControlBase is Object, ControlInfo {
     }
 
     function manageErc20TokenContract(bool _doesAdd, bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) internal returns (bool) {
-        if (_doesRegisterd) {
-            return WalletManger(bindedWalletManager_).addErc20Token(_name, _symbol, _decimals, _tokenAdr);
+        if (_doesAdd) {
+            return WalletManager(bindedWalletManager_).addErc20Token(_name, _symbol, _decimals, _tokenAdr);
         } else {
-            return WalletManger(bindedWalletManager_).removeErc20Token(_symbol);
+            return WalletManager(bindedWalletManager_).removeErc20Token(_symbol);
         }
     }
 }
