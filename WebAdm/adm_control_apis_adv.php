@@ -14,12 +14,16 @@ $htmlModules = new ZscHtmlModules();
 <head>
 <?php echo $htmlModules->loadScriptFiles(); ?>
 <script type="text/javascript">
+    var recorderAdr = "<?php echo $htmlModules->readModuleAddress('LogRecorder')?>";
+    var zscTokenAddress = "<?php echo $htmlModules->readModuleAddress('zscTokenAddress')?>";
+    var logedModuleAdrs = <?php echo $htmlModules->getLogedModuleAddressArrayInString()?>;
+
     var web3 = setupWeb3js(false);
-    
+    var zscSetup = new ZSCSetup(recorderAdr, zscTokenAddress, logedModuleAdrs);
+
     function initSystemModule(module, extraInfo, elementId) {
-        var adrs = <?php echo $htmlModules->getLogedModuleAddressArrayInString()?>;
         var zscTokenAddress = "<?php echo $htmlModules->readModuleAddress('zscTokenAddress')?>";
-        sF_initSystemModule(module, extraInfo, adrs, zscTokenAddress, elementId);
+        zscSetup.initSystemModule(module, extraInfo, elementId);
     }
 
     function setControlApisAdvAbi(elementId) {
