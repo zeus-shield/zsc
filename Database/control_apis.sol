@@ -56,6 +56,14 @@ contract ControlApis is ControlBase {
         return createFactoryNode(mapType(_typeInUint), _node, _extraInfo, creatorAdr);
     }
 
+    function enableWallet(uint _typeInUint/*5: eth; 6: erc20*/, bytes32 _user, bytes32 _tokeSymbol, address _extraAdr) public only_registered(_user) returns (address) {
+        address creatorAdr = _extraAdr;
+        if (creatorAdr == 0) {
+            creatorAdr = msg.sender;
+        }
+        return enableWallet(mapType(_typeInUint), _user, _tokeSymbol, creatorAdr);
+    }
+
     /// @dev Get the element by its address
     /// @param _adr The address of the existing element
     function getElementNameByAddress(address _adr) public only_delegate(1) constant returns (bytes32) {
@@ -176,20 +184,12 @@ contract ControlApis is ControlBase {
         return getDBNode(_user).executeEtherTransaction(address(getDBNode(_agreement)), _amount, "null");
     }
 
-    function enableWallet(uint _typeInUint/*5: eth; 6: erc20*/, bytes32 _user, bytes32 _tokeSymbol, address _extraAdr) public only_registered(_user) returns (bool) {
-        address creatorAdr = _extraAdr;
-        if (creatorAdr == 0) {
-            creatorAdr = msg.sender;
-        }
-        return enableWallet(mapType(_typeInUint), _user, _tokeSymbol, creatorAdr);
-    }
-
     function registerErc20Token(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool) {
         return manageErc20TokenContract(true, _name, _symbol, _decimals, _tokenAdr);
     }
 
     function removeErc20Token(bytes32 _symbol) public only_delegate(1) returns (bool) {
-        return manageErc20TokenContract(false, 0, 0, 0, 0);
+        return manageErc20TokenContract(false, 0, _symbol, 0, 0);
     }
 
 }
