@@ -24,9 +24,17 @@ contract PosBlock is Object {
     mapping(bytes32 => uint) txIndice_;
     mapping(bytes32 => bool) txExists_;
 
+    address previousBlock_;
+    address nextBlock_;
+    uint blockSizeLimit_;
+
     function PosBlock() public Object("null") {
     }
- 
+
+    function setBlockSizeLimit(uint _limit) public only_delegate(1) {
+        blockSizeLimit_ = _limit;
+    }
+
     function setPreviousBlock(address _previous) public only_delegate(1) {
         if (previousBlock_ != address(0)) {
             previousBlock_ = _previous;
@@ -39,11 +47,11 @@ contract PosBlock is Object {
         }
     }
 
-    function getPreviousBlock() public only_delegate(1) returns (uint) {
+    function getPreviousBlock() public only_delegate(1) constant returns (address) {
         return previousBlock_;
     }
 
-    function getNextBlock() public only_delegate(1) returns (uint) {
+    function getNextBlock() public only_delegate(1) constant returns (address) {
         return nextBlock_;
     }
     
@@ -55,11 +63,11 @@ contract PosBlock is Object {
         return minedStatus_;
     }
     
-    function registerTx(book _sentIn, bytes32 _tx, bytes32 _sender, bytes32 _receiver, uint _gasUsage) public constant only_delegate(1) returns (bool) {
+    function registerTx(bool _sentIn, bytes32 _tx, address _sender, address _receiver, uint _gasUsage) public only_delegate(1) returns (bool) {
         if (minedStatus_) return false;
 
         uint size = currentSize_ + _gasUsage;
-        if (size < blockUnitLimit_) {
+        if (size < blockSizeLimit_) {
             txExists_[_tx] = true;
             txIndice_[_tx] = txNos_;
             txHashs_[txNos_] = TxHash(_sentIn, _sender, _receiver, _gasUsage, now);
@@ -77,8 +85,8 @@ contract PosBlock is Object {
         return (txHashs_[_index].sender_, txHashs_[_index].receiver_, txHashs_[_index].gasUsage_, txHashs_[_index].reigsterTime_);
     }
 
-    function getTxByHash(bytes32 _hash) public only_delegate(1) constant returns (address, address, uint, uint) {
-        require(txExists_[_hash]);
+    function getTxByHash(bytes32 _tx) public only_delegate(1) constant returns (address, address, uint, uint) {
+        require(txExists_[_tx]);
         return getTxByIndex(txIndice_[_tx]);
     }
 
@@ -86,16 +94,16 @@ contract PosBlock is Object {
         return minedStatus_;
     }
     
-    function getBlockLimit() public only_delegate(1) constant return (uint) {
+    function getBlockLimit() public only_delegate(1) constant returns (uint) {
         return sizeLimit_;
     }
 
-    function numTx() public only_delegate(1) constant return (uint) {
+    function numTx() public only_delegate(1) constant returns (uint) {
         return txNos_;
     }
 
-    function getCurrentSize public only_delegate(1) constant return (uint) {
-        return currentSize_
+    function getCurrentSize() public only_delegate(1) constant returns (uint) {
+        return currentSize_;
     }
 
 }
