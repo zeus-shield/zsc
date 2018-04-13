@@ -30,10 +30,26 @@ contract WalletManager is Object {
     mapping(bytes32 => uint) private holderIndices_;
     mapping(bytes32 => bool) private holderExists_;
 
+    address private bindedDB_;
+    address private apiController_;
+
     // Constructor
     function WalletManager() public Object("zsc_wallet_manager") {
         tokenNos_ = 0;
     } 
+
+    function initWalletManager(address _controller, address _database) public only_delegate(1)  {
+        require(_database != 0);
+        bindedDB_ = _database;
+
+        if (_controller != 0 && _controller != apiController_) {
+            if (apiController_ != 0) {
+                setDelegate(apiController_, 0);
+            }
+            apiController_ = _controller;
+            setDelegate(_controller, 1);
+        }
+    }
 
     function addErc20Token(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate returns (bool) {
         if (erc20TokenExists_[_symbol]) return false;

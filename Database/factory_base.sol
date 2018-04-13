@@ -34,8 +34,6 @@ contract FactoryBase is Object {
             }
             apiController_ = _controller;
             setDelegate(_controller, 1);
-
-            DBDatabase(bindedDB_).setDelegate(apiController_, 1);
         }
         setupFactoryRoot();
     }
