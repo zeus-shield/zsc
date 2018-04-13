@@ -5,13 +5,14 @@ Copyright (c) 2018 ZSC Dev.
 pragma solidity ^0.4.18;
 
 import "./pos_block.sol";
-import "./db_block.sol"
 
 contract PosBlockPool is Object {
     struct BlockPool {
-        uint blockNos_;
+        uint nos_;
         uint minedGasUsage_;
         uint remaingGasUsage_;
+        uint rewardRate_;
+        uint dividendDuration_;
         mapping(uint => address) blocks_;
     }
 
@@ -24,7 +25,7 @@ contract PosBlockPool is Object {
     uint blockSizeLimit_;
 
     // Constructor
-    function BlockPool() {
+    function PosBlockPool() public Object("zsc_pos_block_pool") {
         blockSizeLimit_ = 1024 * 1024 * 2;
     } 
 
@@ -34,25 +35,29 @@ contract PosBlockPool is Object {
         require(poolExists_[_name]);
 
         poolIndice_[_name] = poolNos_;
-        pools_[poolNos_].blockNos_ = 0;
+        pools_[poolNos_].nos_ = 0;
         pools_[poolNos_].minedGasUsage_ = 0;
         pools_[poolNos_].remaingGasUsage_ = 0;
+        pools_[poolNos_].dividendDuration_ = _dividendDuration;
+        pools_[poolNos_].rewardRate_ = _rewardRate;
     }
-    function getBlockByIndex(uint _poolIndex, uint _blockIndex) private returns (address) {
+
+    function getBlockByIndex(uint _poolIndex, uint _blockIndex) internal constant returns (address) {
         require(_poolIndex < poolNos_);
-        require(_blockIndex < pools_[_poolIndex].blocks_);
+        require(_blockIndex < pools_[_poolIndex].nos_);
         
         return pools_[_poolIndex].blocks_[_blockIndex];
+        return 0;
     }
 
     function registerNewBlock(uint _poolIndex) private returns (address) {
-        uint blockIndex = pools_[_poolIndex].blockNos_;
+        uint blockIndex = pools_[_poolIndex].nos_;
         address adr = createBlock();
 
         require(adr != address(0));
 
         pools_[_poolIndex].blocks_[blockIndex] = adr;
-        pools_[_poolIndex].blocks_ ++;
+        pools_[_poolIndex].nos_++;
         return adr;
     }
 
@@ -64,23 +69,25 @@ contract PosBlockPool is Object {
         return blockSizeLimit_;
     }
     
-    function registerNewTx(uint _poolIndex, bytes32 _tx, bytes32 _sender, bytes32 _receiver, uint _gasUsage) internal returns (bool) {
+    function registerNewTx(bool _input, uint _poolIndex, bytes32 _tx, address _sender, address _receiver, uint _gasUsage) internal returns (bool) {
         pools_[_poolIndex].remaingGasUsage_ += _gasUsage;
-        uint blockIndex = pools_[_poolIndex].blockNos_ - 1;
-        bool ret = PosBlock(getBlockByIndex(_poolIndex, blockIndex)).registerTx(bytes32 _tx, bytes32 _sender, bytes32 _receiver, uint _gasUsage);
+        uint blockIndex = pools_[_poolIndex].nos_ - 1;
+        address myBlock = getBlockByIndex(_poolIndex, blockIndex);
+        bool ret = PosBlock(myBlock).registerTx(_input, _tx, _sender, _receiver, _gasUsage);
         if (ret == false) {
             address adr = registerNewBlock(_poolIndex);
-            PosBlock(adr).registerTx(bytes32 _tx, bytes32 _sender, bytes32 _receiver, uint _gasUsage)
+            PosBlock(adr).registerTx(_input, _tx, _sender, _receiver, _gasUsage);
         }
-        return ;
+        return true;
     }
 
-    function getLastPendingBlockIndex() internal constant returns (uint) { 
-        if (pools_ == 0) return 0;
+    function getLastPendingBlockIndex(uint _poolIndex) internal constant returns (uint) { 
+        if (pools_[_poolIndex].nos_ == 0) return 0;
+        address myBlock;
 
         for (uint i = poolNos_ - 1; i >= 0; --i) {
-            address block = pools_[i].
-            if (PosBlock(pools_[i]).doesMined() == true) {
+            myBlock = pools_[_poolIndex].blocks_[i];
+            if (PosBlock(myBlock).doesMined()) {
                 return (i + 1);
             }
         }
@@ -88,10 +95,14 @@ contract PosBlockPool is Object {
     }
 
     function numBlocks(uint _poolIndex) internal constant returns (uint) { 
-        return pools_[_poolIndex].blockNos_; 
+        return pools_[_poolIndex].nos_; 
     }
     
-    function getBlockSizeByIndex(uint _poolIndex, uint _blockIndex) internal constant returns (address) {
+    function getBlockSizeByIndex(uint _poolIndex, uint _blockIndex) internal constant returns (uint) {
         return PosBlock(pools_[_poolIndex].blocks_[_blockIndex]).getCurrentSize();
+    }
+
+    function setBlockMinedByIndex(uint _poolIndex, uint _blockIndex) internal {
+        PosBlock(pools_[_poolIndex].blocks_[_blockIndex]).setMined();
     }
 }
