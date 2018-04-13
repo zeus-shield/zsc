@@ -66,7 +66,7 @@ ZSCSetup.prototype.initSystemModule = function(module, extra, hashID) {
     if (module == "AdmAdv") {
     } else if (module == "PosAdv") {
         sF_initPosAdv(module, hashID);
-    } else if (module == "DBDatabase") {
+    } else if (module == "WalletManager") {
         sF_initWalletManager(module, hashID);
     } else if (module == "DBDatabase") {
         sF_initDatabase(module, hashID);
@@ -107,5 +107,31 @@ ZSCSetup.prototype.initPosAdv = function(abiName, hashID) {
         else console.log("error: " + error);
     });
 }
+
+
+function sF_initWalletManager(abiName, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi(abiName));
+    var myPosAdv = myContract.at(this.WalletManagerAdr);
+    myPosAdv.initPos(this.ControlApisAdr, this.DBDatabaseAdr, {from:web3.eth.accounts[0], gas: 9000000},
+    function(error, result){ 
+        if(!error) sF_showHashResult(hashID, result);
+        else console.log("error: " + error);
+    });
+}
+
+
+function sF_initDatabase(abiName, hashID) {
+    var factories = [this.FactoryProAdr, this.FactoryRecAdr, this.FactoryTmpAdr, this.FactoryAgrAdr];
+    var myContract = web3.eth.contract(cC_getContractAbi(abiName));
+    var myDatabase = myContract.at(DBDatabaseAdr);
+
+    //ddress _controller, address _posAdv, address _walletManager, address[] _factories
+    myDatabase.initDatabase(this.ControlApisAdr, this.PosAdvAdr, this.WalletManagerAdr, factories, {from:web3.eth.accounts[0], gas: 9000000},
+    function(error, result){ 
+        if(!error) sF_showHashResult(hashID, result);
+        else console.log("error: " + error);
+    });
+}  
+
 
 
