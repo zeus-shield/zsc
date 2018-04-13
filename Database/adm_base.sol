@@ -13,7 +13,7 @@ contract ControlApis is Object {
 contract AdmBase is Object {
     struct TestUserInfo {
         bytes32 name_ ;
-        bytes32 status_ ; //0: not exist; 1: added; 2: applied; 3: approved
+        bytes32 status_ ; //0: not exist; 1: added; 2: applied; 3: approved;  4: locked
         bytes32 type_;    //1: provider; 2: receiver; 3: staker
         address id_   ;
         address node_ ;
@@ -97,6 +97,10 @@ contract AdmBase is Object {
         testUsers_[index].node_ = adr;
         testUsers_[index].status_ = "approved";
         ///transferAnyERC20Token(zscTestTokenAddress_, _ZSCTAmount);
+    }
+
+    function lockUser(bytes32 _name) public only_delegate(1) {
+        testUsers_[index].status_ = "locked";
     }
 
     function numUsers() public only_delegate(1) constant returns (uint) {
