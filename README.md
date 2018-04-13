@@ -1,8 +1,11 @@
 # ZSC
-Zeusshield (ZSC) system: AI&P2P Insurance Market Platform [(ZSC Wiki)](https://github.com/zeus-shield/zsc/wiki), [(ZSC APIs)](https://github.com/zeus-shield/zsc/wiki#zscapireference) 
+[ZSC Wiki](https://github.com/zeus-shield/zsc/wiki)
+
+[ZSC APIs](https://github.com/zeus-shield/zsc/wiki#zscapireference) 
+
+Zeusshield (ZSC) system: AI&P2P Insurance Market Platform 
 
 Official implementation for the solidity-based core part of the ZSC system, as well as the js-based web-client and js/php based web-adm.
-
 
 ## Project structure
 ```bash
@@ -52,12 +55,13 @@ Official implementation for the solidity-based core part of the ZSC system, as w
                 |-- control_apis
 ```
 
-## WebServer inheritance
+## WebAdm inheritance
 ```bash
 |-- zsc_base (php)
     |-- zsc_system_modules (php)
         |-- zsc_html_modules (php)
 |-- zsc_user_management (js)
+|-- zsc_setup (js)
 ```
 
 ## WebClient inheritance
@@ -113,5 +117,6 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.04.06-08: add three WebAdm/js/zsc_user_management.js, pos_block_pool.sol and pos_user_group.sol
 2018.04.09-10: chang the key modifer only_delegat in order to support assigning different priorities to different kinds of contract objects
 2018.04.11: add three files pos_block.sol, wallet_eth.sol, wallet_erc20.sol
-2018.04.12: add file wallet_manager.sol
+2018.04.12: add file Database/wallet_manager.sol
+2018.04.13: add file WebAdm/zsc_setup.js
 ```
