@@ -64,6 +64,8 @@ function sF_initSystemModule(module, extra, adrs, zscTokenAdr, hashID) {
     } else if (module == "PosAdv") {
         sF_initPosAdv(PosAdvAdr, ControlApisAdr, hashID);
     } else if (module == "DBDatabase") {
+        sF_initWalletManager(DBDatabaseAdr, ControlApisAdr, WalletManagerAdr, hashID);
+    } else if (module == "DBDatabase") {
         sF_initDatabase(DBDatabaseAdr, [FactoryProAdr, FactoryRecAdr, FactoryTmpAdr, FactoryAgrAdr], ControlApisAdr, hashID);
     } else if (module == "ControlApisAdv") {
         if (extra == "DBDatabase") {
@@ -97,6 +99,16 @@ function sF_initPosAdv(PosAdvAdr, ControlApisAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("PosAdv"));
     var myPosAdv = myContract.at(PosAdvAdr);
     myPosAdv.initPos(ControlApisAdr, {from:web3.eth.accounts[0], gas: 9000000},
+    function(error, result){ 
+        if(!error) sF_showHashResult(hashID, result);
+        else console.log("error: " + error);
+    });
+}
+
+function sF_initWalletManager(DBDatabaseAdr, ControlApisAdr, WalletManagerAdr, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi("WalletManager"));
+    var myPosAdv = myContract.at(WalletManagerAdr);
+    myPosAdv.initPos(ControlApisAdr, DBDatabaseAdr, {from:web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
         if(!error) sF_showHashResult(hashID, result);
         else console.log("error: " + error);
