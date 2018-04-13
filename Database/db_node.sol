@@ -22,6 +22,8 @@ contract DBNode is Object {
     address private parent_ = address(0);
     address private controller_ = address(0);
     address private posAdv_ = address(0);
+    address private walletManager_ = address(0);
+
     bytes32 private nodeType_ = "node";
     address private ethWalletId_ ;
 
@@ -63,11 +65,12 @@ contract DBNode is Object {
         }
     }
     
-    function setDelegatedModules(address _database, address _contoller,address _posAdv, address[] _factories) public only_delegate(1) {
+    function setDelegatedModules(address _database, address _contoller, address _posAdv, address _walletManager, address[] _factories) public only_delegate(1) {
         database_ = _database;
         factories_ = _factories;
         controller_ = _contoller;
         posAdv_ = _posAdv;
+        walletManager_ = _walletManager;
 
         setDelegate(database_, 1);
         for (uint i=0; i<factories_.length; i++) {
@@ -114,7 +117,7 @@ contract DBNode is Object {
         DBNode(_node).setParent(this);
 
         CallbackDatabase(database_).setDelegate(_node, 1);
-        DBNode(_node).setDelegatedModules(database_, controller_, posAdv_, factories_);
+        DBNode(_node).setDelegatedModules(database_, controller_, posAdv_, walletManager_, factories_);
 
         children_.push(_node);
         childMap_[DBNode(_node).name()] = _node;
