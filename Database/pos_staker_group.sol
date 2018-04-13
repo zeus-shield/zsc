@@ -6,7 +6,7 @@ pragma solidity ^0.4.18;
 
 import "./object.sol";
 
-contract DBStaker {
+contract DBStaker is Object {
     function useStakePoint(uint _amount) public only_delegate(1) returns (uint);
     function claimReward() public only_delegate(1) returns (uint);
     function getRemainingSP() public only_delegate(1) constant returns (uint);
@@ -23,7 +23,7 @@ contract PosStakerGroup is Object {
     address zscToken_;
 
     // Constructor
-    function PosStakerGroup() {
+    function PosStakerGroup() public Object("zsc_block_pool") {
         stakerNos_ = 0;
         spUsed_ = 0;
         spRemaining_ = 0;
@@ -48,7 +48,7 @@ contract PosStakerGroup is Object {
     }
 
     function removeStaker(address _nodeAddress) public only_delegate(1)  {
-        require(stakerExists_[_nodeAddress]);
+        require(stakerIndex_[_nodeAddress] != 0);
         uint index = stakerIndex_[_nodeAddress];
         address lastAddress = stakers_[stakerNos_ - 1];
 
@@ -63,7 +63,7 @@ contract PosStakerGroup is Object {
         return DBStaker(stakers_[_index]).useStakePoint(_amount);
     }
 
-    function getTotalRemainingSP() public only_delegate(1) constant returns (uint) {
+    function getTotalRemainingSP() internal only_delegate(1) constant returns (uint) {
         uint total = 0;
 
         for (uint i = 1; i < stakerNos_; ++i) {

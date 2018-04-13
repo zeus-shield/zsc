@@ -5,7 +5,7 @@ Copyright (c) 2018 ZSC Dev.
 pragma solidity ^0.4.18;
 
 import "./pos_block_pool.sol";
-import "./pob_staker_group.sol";
+import "./pos_staker_group.sol";
 
 //Proof of Stake for ZSC system
 contract PosBase is PosStakerGroup, PosBlockPool {
@@ -17,7 +17,7 @@ contract PosBase is PosStakerGroup, PosBlockPool {
     function PosBase(bytes32 _name) public Object(_name) {
     } 
 
-    function initPos(address _controller) public only_delegate(1) () {
+    function initPos(address _controller) public only_delegate(1) {
         setDelegate(_controller, 1);
         createPool("year", YEAR_IN_SECONDS, 10);
         createPool("half year", YEAR_IN_SECONDS, 4);
@@ -26,10 +26,10 @@ contract PosBase is PosStakerGroup, PosBlockPool {
 
     function mineSingleBlock(uint _poolIndex, uint _blockIndex) private {
         uint stakerNos = numStakers();
-        uint blockSize = getBlockByIndex(_poolIndex, _blockIndex);
+        uint blockSize = getBlockSizeByIndex(_poolIndex, _blockIndex);
         bool minedTag = false;
         while (true) {
-            for (uint i = getNextStakerForUseSP(); i < stakerNos; ++j) {
+            for (uint i = getNextStakerForUseSP(); i < stakerNos; ++i) {
                 blockSize = blockSize - 1 + useStakerSPByIndex(i, 1);
                 if (blockSize == 0) {
                     setNextStakerForUseSP(i);
@@ -43,11 +43,11 @@ contract PosBase is PosStakerGroup, PosBlockPool {
         }
     }
 
-    function minePendingBlocks(uint _poolIndex) public constant only_delegate(1) {
+    function minePendingBlocks(uint _poolIndex) public only_delegate(1) {
         uint blockNos = numBlocks(_poolIndex);
 
-        for (uint i = getLastPendingBlockIndex(); i < blockNos - 1; ++i) {
-            if (getBlockByIndex(_poolIndex, i) > getTotalRemainingSP()) {
+        for (uint i = getLastPendingBlockIndex(_poolIndex); i < blockNos - 1; ++i) {
+            if (getBlockSizeByIndex(_poolIndex, i) > getTotalRemainingSP()) {
                 break;
             }
 
