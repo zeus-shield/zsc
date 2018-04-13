@@ -32,15 +32,24 @@ class ZscBase {
     }
 
     public function getModuleArray() { 
-        return array("LogRecorder", "AdmAdv", "PosAdv", "WalletManager", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
+        return array("LogRecorder", "DBDatabase",  "AdmAdv", "PosAdv", "WalletManager", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
     } 
 
     public function getLogedModuleArray() {
-        return array("AdmAdv", "PosAdv", "WalletManager", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
+        return array("AdmAdv", "DBDatabase", "PosAdv", "WalletManager", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
     }
     
     public function getLogedModuleNameArrayInString() {
-        return "['AdmAdv', 'PosAdv', 'WalletManager', 'DBDatabase', 'FactoryPro', 'FactoryTmp', 'FactoryRec', 'FactoryAgr', 'ControlApisAdv']";
+        return "['DBDatabase', 'AdmAdv', 'PosAdv', 'WalletManager', 'FactoryPro', 'FactoryTmp', 'FactoryRec', 'FactoryAgr', 'ControlApisAdv']";
+    }
+
+    public function getInitedModuleArray() {
+        return array("DBDatabase", "AdmAdv", "PosAdv", "WalletManager", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv"); 
+    }
+
+    public function getInitedModuleParaArray() {
+        return array("null",       "null",    "null",         "null",        "null",       "null",       "null",       "null",  "WalletManager",  "DBDatabase",     "AdmAdv",       "PosAdv",        "FactoryPro",       "FactoryRec",       "FactoryTmp",   "FactoryAgr");   
     }
 }
+
 ?>

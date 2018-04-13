@@ -145,8 +145,8 @@ class ZscHtmlModules extends ZscSystemModules {
     }
 
     public function loadInitModules($func) {
-        $modules = array("AdmAdv", "PosAdv", "WalletManager", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv"); 
-        $extraInfo = array("null",  "null",  "null",         "null",        "null",       "null",       "null",       "null",      "WalletManager",    "DBDatabase",     "AdmAdv",            "PosAdv",        "FactoryPro",     "FactoryRec",       "FactoryTmp",   "FactoryAgr");
+        $modules = ZscBase::getInitedModuleArray(); 
+        $paras = ZscBase::getInitedModuleParaArray();
 
         $num = count($modules);
     
@@ -155,7 +155,7 @@ class ZscHtmlModules extends ZscSystemModules {
 
         for($x = 0; $x < $num; $x++) {
             $name = $modules[$x];
-            $extra = $extraInfo[$x];
+            $para = $paras[$x];
             $hashId = $name.'Hash'.$x;
             $action = '';
             $object = '';
@@ -172,7 +172,7 @@ class ZscHtmlModules extends ZscSystemModules {
             <text id="DBDatabaseHash"></text><br>
             */
             $text .= '<text>Step - '.($x+1).' </text>';
-            $text .= '<button type="button" onClick="'.initSystemModule.'(\''.$name.'\', \''.$extra.'\',\''.$hashId.'\')">'.$action.$object.'</button>';
+            $text .= '<button type="button" onClick="'.initSystemModule.'(\''.$name.'\', \''.$para.'\',\''.$hashId.'\')">'.$action.$object.'</button>';
             $text .= '<text id="'.$hashId.'"></text><br><br>';
         }
     
