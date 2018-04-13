@@ -65,27 +65,27 @@ ZSCSetup.prototype.setLogRecorderToListener(listener,listenerName, hashID) {
 ZSCSetup.prototype.initSystemModule = function(module, extra, hashID) {
     if (module == "AdmAdv") {
     } else if (module == "PosAdv") {
-        sF_initPosAdv(module, hashID);
+        this.initPosAdv(module, hashID);
     } else if (module == "WalletManager") {
-        sF_initWalletManager(module, hashID);
+        this.initWalletManager(module, hashID);
     } else if (module == "DBDatabase") {
-        sF_initDatabase(module, hashID);
+        this.initDatabase(module, hashID);
     } else if (module == "ControlApisAdv") {
         if (extra == "DBDatabase") {
-            sF_setDatabaseAdr(module, hashID);
+            this.setDatabaseAdr(module, hashID);
         } else if (extra == "WalletManager") {
-            sF_setWalletManager(module, hashID);
+            this.setWalletManager(module, hashID);
         } else if (extra == "AdmAdv") {
-            sF_setAdm(module, hashID);
+            this.setAdm(module, hashID);
         } else if (extra == "PosAdv") {
-            sF_setPos(module, hashID);
+            this.setPos(module, hashID);
         } else {
             var factoryAdr;
             if (extra == "FactoryPro") factoryAdr = FactoryProAdr;
             else if (extra == "FactoryRec") factoryAdr = FactoryRecAdr;
             else if (extra == "FactoryTmp") factoryAdr = FactoryTmpAdr;
             else if (extra == "FactoryAgr") factoryAdr = FactoryAgrAdr;
-            sF_addFactory("ControlApisAdv", extra, factoryAdr, hashID + extra);
+            this.addFactory("ControlApisAdv", extra, factoryAdr, hashID + extra);
         }
     } else {
         var factoryAdr;
@@ -94,7 +94,7 @@ ZSCSetup.prototype.initSystemModule = function(module, extra, hashID) {
         else if (module == "FactoryTmp") factoryAdr = FactoryTmpAdr;
         else if (module == "FactoryAgr") factoryAdr = FactoryAgrAdr;
 
-        sF_initFactory(module, factoryAdr, hashID + module);
+        this.initFactory(module, factoryAdr, hashID + module);
     }
 }
 
@@ -103,24 +103,22 @@ ZSCSetup.prototype.initPosAdv = function(abiName, hashID) {
     var myPosAdv = myContract.at(this.PosAdvAdr);
     myPosAdv.initPos(this.ControlApisAdvAdr, {from:web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
-        if(!error) sF_showHashResult(hashID, result);
+        if(!error) this.showHashResult(hashID, result);
         else console.log("error: " + error);
     });
 }
 
-
-function sF_initWalletManager(abiName, hashID) {
+ZSCSetup.prototype.initWalletManager = function(abiName, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var myPosAdv = myContract.at(this.WalletManagerAdr);
     myPosAdv.initPos(this.ControlApisAdr, this.DBDatabaseAdr, {from:web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
-        if(!error) sF_showHashResult(hashID, result);
+        if(!error) this.showHashResult(hashID, result);
         else console.log("error: " + error);
     });
 }
 
-
-function sF_initDatabase(abiName, hashID) {
+ZSCSetup.prototype.initDatabase = function(abiName, hashID) {
     var factories = [this.FactoryProAdr, this.FactoryRecAdr, this.FactoryTmpAdr, this.FactoryAgrAdr];
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var myDatabase = myContract.at(DBDatabaseAdr);
@@ -128,10 +126,19 @@ function sF_initDatabase(abiName, hashID) {
     //ddress _controller, address _posAdv, address _walletManager, address[] _factories
     myDatabase.initDatabase(this.ControlApisAdr, this.PosAdvAdr, this.WalletManagerAdr, factories, {from:web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
-        if(!error) sF_showHashResult(hashID, result);
+        if(!error) this.showHashResult(hashID, result);
         else console.log("error: " + error);
     });
 }  
 
+ZSCSetup.prototype.initFactory = function(FactoryModule, FactoryAdr， hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi(FactoryModule));
+    var myFactory= myContract.at(FactoryAdr);
+    myFactory.initFactory(this.ControlApisAdr, this.DBDatabaseAdr, {from: web3.eth.accounts[0], gas: 9000000},
+    function(error, result){ 
+        if(!error) this.showHashResult(hashID, result);
+        else console.log("error: " + error);
+    });
+}  
 
 
