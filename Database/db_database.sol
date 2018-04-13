@@ -23,7 +23,7 @@ contract DBDatabase is Object {
     function DBDatabase(bytes32 _name) public Object(_name) {
     }
 
-    function initDatabase(address[] _factories, address _controller, address _posAdv) public only_delegate(1) () {
+    function initDatabase(address[] _factories, address _controller, address _posAdv) public only_delegate(1) {
         if (rootNode_ == 0) {
             for (uint i=0; i<_factories.length; i++) {
                 setDelegate(_factories[i], 1);

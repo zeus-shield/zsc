@@ -24,7 +24,7 @@ contract Owned {
 }
 
 contract Delegated is Owned{
-    mapping (address => bool) public delegates_;
+    mapping (address => uint) public delegates_;
 
     //modifier only_delegate {require(delegates_[msg.sender] || msg.sender == owner || this == msg.sender); _; }
     modifier only_delegate(uint _priority) {

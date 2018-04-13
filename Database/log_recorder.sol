@@ -38,7 +38,7 @@ contract LogRecorder is Delegated {
     }
 
     function printLog(address _adr, uint _index) public only_listener(_adr) constant returns (string) {
-        if (isDelegate(msg.sender) == false || _index >= print_log_[_adr].nos_ ) 
+        if (isDelegate(msg.sender, 1) == false || _index >= print_log_[_adr].nos_ ) 
             return "null";
 
         string memory str = PlatString.bytes32ToString(print_log_[_adr].name_);

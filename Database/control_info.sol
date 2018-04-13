@@ -34,8 +34,8 @@ contract ControlInfo is Object {
     
     function checkAllowedUser(bytes32 _node) internal constant returns (bool);
 
-    function onlyRegisteredOrDelegated(bytes32 _node, address sender) internal constant returns (bool) {
-        return (sender == parameters_[_node].creator_ || isDelegate(sender)); 
+    function onlyRegisteredOrDelegated(bytes32 _node, address _sender) internal constant returns (bool) {
+        return (_sender == parameters_[_node].creator_ || isDelegate(_sender, 1)); 
     }
 
     function _recordString(bytes32 _nodeName, bytes32 _parameter, string _value) public {

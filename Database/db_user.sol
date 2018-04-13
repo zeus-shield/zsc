@@ -31,7 +31,7 @@ contract DBUser is DBEntity {
         handlers_["agreement"] = configureSingleHandle("-agree");
     }
 
-    function getHandler(bytes32 _type) public only_delegate(1) returns (address) {
+    function getHandler(bytes32 _type) public only_delegate(1) constant returns (address) {
         return handlers_[_type];
     }
 }
