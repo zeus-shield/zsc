@@ -57,8 +57,8 @@ contract DBNode is Object {
         return ethWalletId_;
     }
 
-    function getBlance(address _adr) public only_delegate(1) constant returns (uint256) {
-        if (_adr != 0) return 0;
+    function getBlance(bool _locked) public only_delegate(1) constant returns (uint256) {
+        if(_locked) return 0;
         return 0;
     }
     

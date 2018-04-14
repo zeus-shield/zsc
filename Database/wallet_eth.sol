@@ -22,10 +22,13 @@ contract WalletEth is WalletBase {
         }
     }
 
-    function getBlance(address _adr) public only_delegate(1) constant returns (uint256) {
-        return this.balance;
+    function getBlance((bool _locked)) public only_delegate(1) constant returns (uint256) {
+        if (_locked) { 
+            return super.getBlance(true);
+        } else {
+            return this.balance;
+        }
     }
-
 
     function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (bool) {
         require(checkBeforeSent(_dest, _amount));        

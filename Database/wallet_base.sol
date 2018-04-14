@@ -93,4 +93,9 @@ contract WalletBase is DBNode {
 
         lockedValue_ += _amount;
     }
+
+    function getBlance((bool _locked)) public only_delegate(1) constant returns (uint256) {
+        if (_locked) return lockedValue_;
+        else return totalValue_;
+    }
 }
