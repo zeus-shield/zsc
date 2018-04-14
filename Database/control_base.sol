@@ -36,7 +36,6 @@ contract DBNode is Object {
     function executeEtherTransaction(address _dest, uint256 _value, bytes _data) public only_delegate(1) returns (bool);
     function executeERC20Transaction(address _tokenAdr, address _dest, uint256 _value, bytes _data) public only_delegate(1) returns (bool);
     function setERC20TokenAddress(address _tokenAdr) only_delegate(1) public;
-    function getERC20TokenAddress() public only_delegate(1) constant returns (address);
 
     function bindEntity(address _adr) only_delegate(1) public;
     function numBindedEntities(bytes32 _type) public only_delegate(1) constant returns (uint);
@@ -54,6 +53,7 @@ contract PosManager is Object {
 
 contract WalletManager is Object {
     function addErc20Token(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool);
+    function getErc20TokenAddress(bytes32 _symbol) public only_delegate(1) returns (address);
     function removeErc20Token(bytes32 _symbol) public only_delegate(1) returns (bool);
 }
 
@@ -106,12 +106,12 @@ contract ControlBase is Object, ControlInfo {
         //addLog(PlatString.bytes32ToString(Object(_adm).name()), false);
     }
 
-    function setWalletMangerAdr(address _managerAdr) internal {
+    function setWalletManagerAdr(address _managerAdr) internal {
         require (_managerAdr != 0);      
         bindedWalletManager_ = _managerAdr;
         setDelegate(bindedWalletManager_, 1);
 
-        addLog("set WalletManger: ", true);
+        addLog("set WalletManager: ", true);
     }
 
     function setDatabaseAdr(address _db) internal {
@@ -142,19 +142,27 @@ contract ControlBase is Object, ControlInfo {
     }
     
     function enableWallet(bytes32 _type, bytes32 _user, bytes32 _tokeSymbol, address _creator) internal returns (address) {
-        address adr;
+        if (getDBNode(_user).getNodeType() == "staker" && _tokeSymbol != "ZSC") return address(0);
+
         address parentNode = getDBNode(_user).getHandler("wallet");
+        address erc20Address = 0; 
         string memory temp;
 
         if (_tokeSymbol == "eth") {
             temp = PlatString.append(_user, "-eth");
         } else {
             temp = PlatString.append(_user, "-", _tokeSymbol);
+            erc20Address = WalletManager(bindedWalletManager_).getErc20TokenAddress(_tokeSymbol);
         }
 
+        address adr;
         adr = getDBFactory(_type).createNode(PlatString.tobytes32(temp), parentNode, _creator);
         require(adr != 0);
         registerNode(DBNode(adr).name(), adr, _creator);
+
+        if (erc20Address != 0) {
+            DBNode(adr).setERC20TokenAddress(erc20Address);
+        }
 
         return adr;
     }
@@ -173,11 +181,14 @@ contract ControlBase is Object, ControlInfo {
 
         if (_type == "provider" || _type == "receiver" || _type == "staker") {
             DBNode(adr).configureHandlers();
-            enableWallet("wallet-eth", _nodeName, "eth", _creator);
+            if (_type == "staker") {
+                enableWallet("wallet-erc20", _nodeName, "ZSC", _creator);
+            } else {
+                enableWallet("wallet-eth", _nodeName, "ETH", _creator);
+            }
         }
 
         if (_type == "staker") {
-            DBNode(adr).setERC20TokenAddress(zscTokenAddress_);
             PosManager(bindedPos_).registerStaker(adr);
         } else if (_type == "agreement") {
             duplicateNode(_extra,  _nodeName);
