@@ -1,6 +1,7 @@
 /*
 Copyright (c) 2018 ZSC Dev Team
 */
+
 function ZSCSetup(logRecorderAdr, zscTokenAdr, adrs) {
     this.RecorderAdr = logRecorderAdr;
     this.AdmAdvAdr = adrs[0];
@@ -137,6 +138,47 @@ ZSCSetup.prototype.initFactory = function(FactoryModule, FactoryAdr， hashID) {
     myFactory.initFactory(this.ControlApisAdr, this.DBDatabaseAdr, {from: web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
         if(!error) this.showHashResult(hashID, result);
+        else console.log("error: " + error);
+    });
+}  
+
+
+ZSCSetup.prototype.setAdm(abiName, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi(abiName));
+    var myControlApi= myContract.at(this.ControlApisAdr);
+    myControlApi.setAdm(this.AdmAdvAdr, {from: web3.eth.accounts[0], gas: 9000000},
+    function(error, result){ 
+        if(!error) sF_showHashResult(hashID, result);
+        else console.log("error: " + error);
+    });
+} 
+
+ZSCSetup.prototype.setWalletManager(abiName, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi(abiName));
+    var myControlApi= myContract.at(this.ControlApisAdr);
+    myControlApi.setWalletManager(this.WalletManagerAdr, {from: web3.eth.accounts[0], gas: 9000000},
+    function(error, result){ 
+        if(!error) sF_showHashResult(hashID, result);
+        else console.log("error: " + error);
+    });
+} 
+
+ZSCSetup.prototype.setPos(abiName, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi(abiName));
+    var myControlApi= myContract.at(this.ControlApisAdr);
+    myControlApi.setAdm(this.PosAdvAdr, this.zscTokenAddress, {from: web3.eth.accounts[0], gas: 9000000},
+    function(error, result){ 
+        if(!error) sF_showHashResult(hashID, result);
+        else console.log("error: " + error);
+    });
+} 
+
+ZSCSetup.prototype.setDatabaseAdr(abiName, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi(abiName));
+    var myControlApi= myContract.at(this.ControlApisAdr);
+    myControlApi.setDatabaseAdr(this.DBDatabaseAdr, {from: web3.eth.accounts[0], gas: 9000000},
+    function(error, result){ 
+        if(!error) sF_showHashResult(hashID, result);
         else console.log("error: " + error);
     });
 }  
