@@ -57,12 +57,9 @@ contract DBNode is Object {
         return ethWalletId_;
     }
 
-    function getBlance(bytes32 _name, address _adr) public only_delegate(1) constant returns (uint256) {
-        if (_name == "ether") {
-            return this.balance;
-        } else {
-            return ERC20Interface(_adr).balanceOf(this);
-        }
+    function getBlance(address _adr) public only_delegate(1) constant returns (uint256) {
+        if (_adr != 0) return 0;
+        return 0;
     }
     
     function setDelegatedModules(address _database, address _contoller, address _posAdv, address _walletManager, address[] _factories) public only_delegate(1) {

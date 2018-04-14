@@ -22,6 +22,10 @@ contract WalletErc20 is WalletBase {
         _erc20TokenAdr = _tokenAdr;
     }
 
+    function getBlance() public only_delegate(1) constant returns (uint256) {
+        return ERC20Interface(_erc20TokenAdr).balanceOf(address(this));
+    }
+
     function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (bool) {
         require(checkBeforeSent(_dest, _amount));
     
