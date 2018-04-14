@@ -122,12 +122,12 @@ contract ControlApis is ControlBase {
 
     /// @dev Get the eth balance of the element
     /// @param _node The name of the element
-    function getElementBalance(bytes32 _node, bytes32 _symbol) public only_registered(_node) constant returns (uint256) {
+    function getElementBalance(bytes32 _node, bytes32 _symbol, bool _locked) public only_registered(_node) constant returns (uint256) {
         string memory str = PlatString.append(_node, "-", _symbol);
         bytes32 walletName = PlatString.tobytes32(str);
         require(getDBNode(walletName) != DBNode(0));
 
-        return getDBNode(walletName).getBlance();
+        return getDBNode(walletName).getBlance(_locked);
     }
 
     /// @dev Get the number of paramters of an element

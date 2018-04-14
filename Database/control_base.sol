@@ -22,7 +22,7 @@ contract DBDatabase is Object {
 contract DBNode is Object {
     function getId() public only_delegate(1) returns (address);
     function getNodeType() public only_delegate(1) constant returns (bytes32);
-    function getBlance() public only_delegate(1) constant returns (uint256);
+    function getBlance(bool _locked) public only_delegate(1) constant returns (uint256);
 
     function setActivated(bool _activated) only_delegate(1) public;
     function getActivated() public only_delegate(1) constant returns (bool);
