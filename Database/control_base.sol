@@ -22,7 +22,7 @@ contract DBDatabase is Object {
 contract DBNode is Object {
     function getId() public only_delegate(1) returns (address);
     function getNodeType() public only_delegate(1) constant returns (bytes32);
-    function getBlance(bytes32 _name, address _adr) public only_delegate(1) constant returns (uint256);
+    function getBlance() public only_delegate(1) constant returns (uint256);
 
     function setActivated(bool _activated) only_delegate(1) public;
     function getActivated() public only_delegate(1) constant returns (bool);
@@ -43,7 +43,7 @@ contract DBNode is Object {
 
     function setAgreementStatus(bytes32 _tag) public only_delegate(1) returns (bool);
     function configureHandlers() public only_delegate(1) returns (bool);
-    function getHandler(bytes32 _type) public only_delegate(1) returns (address);
+    function getHandler(bytes32 _type) public only_delegate(1) constant returns (address);
 }
 
 contract PosManager is Object {
@@ -53,7 +53,7 @@ contract PosManager is Object {
 
 contract WalletManager is Object {
     function addErc20Token(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool);
-    function getErc20TokenAddress(bytes32 _symbol) public only_delegate(1) returns (address);
+    function getErc20TokenAddress(bytes32 _symbol) public only_delegate(1) constant returns (address);
     function removeErc20Token(bytes32 _symbol) public only_delegate(1) returns (bool);
 }
 
@@ -148,8 +148,8 @@ contract ControlBase is Object, ControlInfo {
         address erc20Address = 0; 
         string memory temp;
 
-        if (_tokeSymbol == "eth") {
-            temp = PlatString.append(_user, "-eth");
+        if (_tokeSymbol == "ETH") {
+            temp = PlatString.append(_user, "-ETH");
         } else {
             temp = PlatString.append(_user, "-", _tokeSymbol);
             erc20Address = WalletManager(bindedWalletManager_).getErc20TokenAddress(_tokeSymbol);

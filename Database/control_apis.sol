@@ -122,8 +122,12 @@ contract ControlApis is ControlBase {
 
     /// @dev Get the eth balance of the element
     /// @param _node The name of the element
-    function getElementEthBalance(bytes32 _node) public only_registered(_node) constant returns (uint256) {
-        return getDBNode(_node).getBlance("ether", 0);
+    function getElementBalance(bytes32 _node, bytes32 _symbol) public only_registered(_node) constant returns (uint256) {
+        string memory str = PlatString.append(_node, "-", _symbol);
+        bytes32 walletName = PlatString.tobytes32(str);
+        require(getDBNode(walletName) != DBNode(0));
+
+        return getDBNode(walletName).getBlance();
     }
 
     /// @dev Get the number of paramters of an element
@@ -149,8 +153,12 @@ contract ControlApis is ControlBase {
     /// @param _node The name of the existing element
     /// @param _dest The destination address
     /// @param _amount The amount of ETH to be transferred
-    function elementTransferEth(bytes32 _node, address _dest, uint256 _amount) public only_registered(_node) returns (bool) {
-        return  getDBNode(_node).executeEtherTransaction(_dest, _amount, "null");
+    function elementTransferValue(bytes32 _node, bytes32 _symbol, address _dest, uint256 _amount) public only_registered(_node) returns (bool) {
+        string memory str = PlatString.append(_node, "-", _symbol);
+        bytes32 walletName = PlatString.tobytes32(str);
+        require(getDBNode(walletName) != DBNode(0));
+
+        return  getDBNode(walletName).executeEtherTransaction(_dest, _amount, "null");
     }
 
     /// @dev Get the number of element binded to the node
