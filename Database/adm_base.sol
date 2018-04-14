@@ -100,6 +100,8 @@ contract AdmBase is Object {
     }
 
     function lockUser(bytes32 _name) public only_delegate(1) {
+        bytes32 hexx = toHexx(_name);
+        uint index = getUserIndex(hexx);
         testUsers_[index].status_ = "locked";
     }
 

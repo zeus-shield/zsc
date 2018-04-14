@@ -19,7 +19,7 @@ contract ControlApis is ControlBase {
     }
 
     function setWalletManger(address _adr) public only_owner {
-        setWalletMangerAdr(_adr);
+        setWalletManagerAdr(_adr);
     }
 
 

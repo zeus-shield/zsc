@@ -60,6 +60,13 @@ contract WalletManager is Object {
         return true;
     }
 
+    function getErc20TokenAddress(bytes32 _symbol) public only_delegate(1) constant returns (address) {
+        require(erc20TokenExists_[_symbol]);
+        
+        uint index = erc20TokenIndice_[_symbol];
+        return erc20Tokens_[index].tokenAdr_;
+    }
+
     function removeErc20Token(bytes32 _symbol) public only_delegate(1) returns (bool) {
         if (!erc20TokenExists_[_symbol]) return false;
         
