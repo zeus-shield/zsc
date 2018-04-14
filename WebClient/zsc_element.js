@@ -14,10 +14,6 @@ function ZSCElement(nm, abi, adr) {
 }
 ZSCElement.prototype.getName = function() { return this.name;}
 
-ZSCElement.prototype.activeTid = function(index, func, time) { this.tid[index] = setInterval(func, time);}
-
-ZSCElement.prototype.deactiveTid = function(index) { clearInterval(this.tid[index]);}
-
 ZSCElement.prototype.getEthBalance = function() { return this.ethBalance;}
 
 ZSCElement.prototype.getAddress = function() { return this.nodeAddress;}
