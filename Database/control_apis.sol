@@ -199,4 +199,12 @@ contract ControlApis is ControlBase {
         getWalletManager().getTokenSymbolByIndex(_index);
     }
 
+    function getUserWalletAddress(bytes32 _user, bytes32 _tokenSymbol) public only_delegate(1) constant returns (address) {
+        DBNode nd = getDBNode( _user);
+        require(nd != DBNode(0));
+
+        string memory temp = PlatString.append(_user, "-", _tokenSymbol);
+        address(getDBNode(PlatString.tobytes32(temp)));
+    }
+
 }
