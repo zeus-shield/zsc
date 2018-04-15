@@ -32,23 +32,23 @@ class ZscBase {
     }
 
     public function getModuleArray() { 
-        return array("LogRecorder", "DBDatabase",  "AdmAdv", "PosAdv", "WalletManager", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
+        return array("LogRecorder", "DBDatabase",  "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
     } 
 
     public function getLogedModuleArray() {
-        return array("AdmAdv", "DBDatabase", "PosAdv", "WalletManager", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
+        return array("AdmAdv", "DBDatabase", "PosAdv", "WalletManager", "SimulatorManager", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
     }
     
     public function getLogedModuleNameArrayInString() {
-        return "['DBDatabase', 'AdmAdv', 'PosAdv', 'WalletManager', 'FactoryPro', 'FactoryTmp', 'FactoryRec', 'FactoryAgr', 'ControlApisAdv']";
+        return "['DBDatabase', 'AdmAdv', 'PosAdv', 'WalletManager', 'SimulatorManager', 'FactoryPro', 'FactoryTmp', 'FactoryRec', 'FactoryAgr', 'ControlApisAdv']";
     }
 
     public function getInitedModuleArray() {
-        return array("DBDatabase", "AdmAdv", "PosAdv", "WalletManager", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv"); 
+        return array("DBDatabase", "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager",  "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv"); 
     }
 
     public function getInitedModuleParaArray() {
-        return array("null",       "null",    "null",         "null",        "null",       "null",       "null",       "null",  "FactoryPro",     "FactoryRec",       "FactoryTmp",   "FactoryAgr" ,  "SystemModules");   
+        return array("null",       "null",    "null",         "null",   "null",               "null",       "null",       "null",       "null",       "FactoryPro",     "FactoryRec",       "FactoryTmp",   "FactoryAgr" ,  "SystemModules");   
     }
 }
 
