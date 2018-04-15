@@ -13,9 +13,9 @@ contract SimulatorBase is DBNode {
     uint startTime_;
     uint endTime_; // in secons
     uint probability_;   //from 0 to 1000
-    bytes32 agreement_ ;
-    bytes32 provider_ ;
-    bytes32 receiver_;
+    address agreement_ ;
+    address provider_ ;
+    address receiver_;
     
     uint private randSeed = 0;
 
@@ -26,7 +26,7 @@ contract SimulatorBase is DBNode {
     function initParameters() internal {
     }
 
-    function startSimulation(bool _autoReward, bytes32 _agreement, bytes32 _provider, bytes32 _receiver, uint _duration) public only_delegate(1) {
+    function startSimulation(bool _autoReward, address _agreement, address _provider, address _receiver, uint _duration) public only_delegate(1) {
         running_ = true;
         autoReward_ = _autoReward;
  
@@ -57,4 +57,9 @@ contract SimulatorBase is DBNode {
     function getSimulationReceiver(bytes32 _agreement) public only_delegate(1) constant returns (bytes32) {
         return agreement_;
     }
+
+    function getAddressInfo() public only_delegate(1) constant returns (address, address, address) {
+        return (agreement_, provider_, receiver_);
+    }
+    
 }
