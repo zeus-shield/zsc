@@ -33,15 +33,14 @@ contract DBNode is Object {
     function numParameters() public only_delegate(1) constant returns (uint);
     function getParameterNameByIndex(uint _index) public only_delegate(1) constant returns (bytes32);
 
-    function executeEtherTransaction(address _dest, uint256 _value, bytes _data) public only_delegate(1) returns (bool);
-    function executeERC20Transaction(address _tokenAdr, address _dest, uint256 _value, bytes _data) public only_delegate(1) returns (bool);
+    function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (bool);
     function setERC20TokenAddress(address _tokenAdr) only_delegate(1) public;
 
     function bindEntity(address _adr) only_delegate(1) public;
     function numBindedEntities(bytes32 _type) public only_delegate(1) constant returns (uint);
     function getBindedEntityNameByIndex(bytes32 _type, uint _index) public only_delegate(1) constant returns (bytes32);
 
-    function setAgreementStatus(bytes32 _tag) public only_delegate(1) returns (bool);
+    function setAgreementStatus(bytes32 _tag, bytes32 receiver) public only_delegate(1) returns (bool);
     function configureHandlers() public only_delegate(1) returns (bool);
     function getHandler(bytes32 _type) public only_delegate(1) constant returns (address);
 }
@@ -169,7 +168,7 @@ contract ControlBase is Object, ControlInfo {
             PosManager(bindedPos_).registerStaker(adr);
         } else if (_type == "agreement") {
             duplicateNode(_extra,  _nodeName);
-            DBNode(adr).setAgreementStatus("READY");
+            DBNode(adr).setAgreementStatus("READY", "null");
         }
         return adr;
     }
