@@ -14,6 +14,8 @@ function cC_getContractFullName(contractName) {
         return "./zsc/db/Database/log_recorder.sol:LogRecorder";
     } else if (contractName == 'WalletManager') {
         return "./zsc/db/Database/wallet_manager.sol:WalletManager";
+    } else if (contractName == 'SimulatroManager') {
+        return "./zsc/db/Database/simulator_manager.sol:SimulatorManager";
     } else if (contractName == 'DBDatabase') {
         return "./zsc/db/Database/db_database.sol:DBDatabase";
     } else if (contractName == 'FactoryPro') {
@@ -24,7 +26,7 @@ function cC_getContractFullName(contractName) {
         return "./zsc/factory_agr.sol:FactoryAgr";
     } else if (contractName == 'ControlApisAdv') {
         return "./zsc/control_apis_adv.sol:ControlApisAdv";
-    }
+    } 
 }
 
 function cC_getCompiledFile(contractName) {
@@ -36,6 +38,8 @@ function cC_getCompiledFile(contractName) {
         return compiledPosAdv;
     } else if (contractName == 'WalletManager') {
         return compiledWalletManager;
+    } else if (contractName == 'SimulatorManager') {
+        return compiledSimulatorManager;
     } else if (contractName == 'DBDatabase') {
         return compiledDatabase;
     } else if (contractName == 'FactoryPro') {
