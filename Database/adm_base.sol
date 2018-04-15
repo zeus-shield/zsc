@@ -7,7 +7,8 @@ pragma solidity ^0.4.18;
 import "./object.sol";
 
 contract ControlApis is Object {
-    function createElement(uint _factroyType, bytes32 _node, bytes32 extraInfo, address extraAdr) public returns (address);
+    function createElement(uint _factroyType, bytes32 _node, bytes32 _extraInfo, address _extraAdr) public returns (address);
+    function enableWallet(uint _factroyType, bytes32 _user, bytes32 _tokeSymbol, address _extraAdr) public returns (address);
 }
 
 contract AdmBase is Object {
@@ -30,6 +31,8 @@ contract AdmBase is Object {
     function AdmBase(bytes32 _name) public Object(_name) {}
 
     function toHexx(bytes32 _value) internal constant returns (bytes32);
+
+    function approveWallet(address _controlApisAdr, bytes32 _userType, bytes32 _userName, address _creator) internal;
 
     function getUserIndex(bytes32 _hexx) internal constant returns (uint) { return userIndex_[_hexx]; }
 
@@ -85,17 +88,20 @@ contract AdmBase is Object {
         require (testUsers_[index].status_ == "applied");
 
         bytes32 userType = testUsers_[index].type_; 
-        require(userType == "provider" || userType == "receiver");
+        require(userType == "provider" || userType == "receiver" || userType == "staker");
 
-        uint typeInt;
-        if (userType == "provider") typeInt = 1;
-        else if (userType == "provider") typeInt = 2;
+        uint typeUint;
+        if (userType == "provider") typeUint = 1;
+        else if (userType == "provider") typeUint = 2;
+        else if (userType == "staker") typeUint = 3;
         
-        address adr = ControlApis(systemAdrs_["controlApis"]).createElement(typeInt, testUsers_[index].name_, "", testUsers_[index].id_);
+        address adr = ControlApis(systemAdrs_["controlApis"]).createElement(typeUint, testUsers_[index].name_, "", testUsers_[index].id_);
         require (adr != 0x0);
 
         testUsers_[index].node_ = adr;
         testUsers_[index].status_ = "approved";
+
+        approveWallet(systemAdrs_["controlApis"], userType, _name, testUsers_[index].id_);
         ///transferAnyERC20Token(zscTestTokenAddress_, _ZSCTAmount);
     }
 
@@ -119,7 +125,6 @@ contract AdmBase is Object {
         str = PlatString.append(str, "node=",      PlatString.addressToString(testUsers_[_index].node_),   "&");
         return str;
     }
-
 
     function tryLogin(bytes32 _user) public constant returns (bytes32) {
         bytes32 hexx = toHexx(_user);
