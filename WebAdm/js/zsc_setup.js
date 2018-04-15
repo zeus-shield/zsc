@@ -72,14 +72,8 @@ ZSCSetup.prototype.initSystemModule = function(module, extra, hashID) {
     } else if (module == "DBDatabase") {
         this.initDatabase(module, hashID);
     } else if (module == "ControlApisAdv") {
-        if (extra == "DBDatabase") {
-            this.setDatabaseAdr(module, hashID);
-        } else if (extra == "WalletManager") {
-            this.setWalletManager(module, hashID);
-        } else if (extra == "AdmAdv") {
-            this.setAdm(module, hashID);
-        } else if (extra == "PosAdv") {
-            this.setPos(module, hashID);
+        if (extra == "SystemModules") {
+            this.setSystemModules(module, hashID);
         } else {
             var factoryAdr;
             if (extra == "FactoryPro") factoryAdr = FactoryProAdr;
@@ -143,40 +137,25 @@ ZSCSetup.prototype.initFactory = function(FactoryModule, FactoryAdr， hashID) {
 }  
 
 
-ZSCSetup.prototype.setAdm(abiName, hashID) {
+ZSCSetup.prototype.setSystemModules = function(abiName, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var myControlApi= myContract.at(this.ControlApisAdr);
-    myControlApi.setAdm(this.AdmAdvAdr, {from: web3.eth.accounts[0], gas: 9000000},
+
+    //setSystemModules(address _adm, address _db, address _managerAdr, address _pos, address _zscToken)
+    myControlApi.setSystemModules(this.AdmAdvAdr, this.DBDatabaseAdr, this.WalletManagerAdr, this.PosAdvAdr, this.zscTokenAdr,
+    {from: web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
         if(!error) sF_showHashResult(hashID, result);
         else console.log("error: " + error);
     });
 } 
 
-ZSCSetup.prototype.setWalletManager(abiName, hashID) {
-    var myContract = web3.eth.contract(cC_getContractAbi(abiName));
-    var myControlApi= myContract.at(this.ControlApisAdr);
-    myControlApi.setWalletManager(this.WalletManagerAdr, {from: web3.eth.accounts[0], gas: 9000000},
-    function(error, result){ 
-        if(!error) sF_showHashResult(hashID, result);
-        else console.log("error: " + error);
-    });
-} 
 
-ZSCSetup.prototype.setPos(abiName, hashID) {
-    var myContract = web3.eth.contract(cC_getContractAbi(abiName));
-    var myControlApi= myContract.at(this.ControlApisAdr);
-    myControlApi.setAdm(this.PosAdvAdr, this.zscTokenAddress, {from: web3.eth.accounts[0], gas: 9000000},
-    function(error, result){ 
-        if(!error) sF_showHashResult(hashID, result);
-        else console.log("error: " + error);
-    });
-} 
 
-ZSCSetup.prototype.setDatabaseAdr(abiName, hashID) {
+ZSCSetup.prototype.addFactory = function(abiName, factoryType, FactoryAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var myControlApi= myContract.at(this.ControlApisAdr);
-    myControlApi.setDatabaseAdr(this.DBDatabaseAdr, {from: web3.eth.accounts[0], gas: 9000000},
+    myControlApi.addFactory(factoryType, FactoryAdr, {from: web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
         if(!error) sF_showHashResult(hashID, result);
         else console.log("error: " + error);
