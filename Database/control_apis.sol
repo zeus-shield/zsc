@@ -13,27 +13,17 @@ contract ControlApis is ControlBase {
     }
 
     /// @dev Set the zsc adm address
-    /// @param _adr The address of the zsc adm 
-    function setAdm(address _adr) public only_owner {
-        setAdmAdr(_adr);
+    /// @param _adm The address of the zsc adm 
+    /// @param _db The address of the database 
+    function setSystemModules(address _adm, address _db, address _managerAdr, address _pos, address _zscToken) public only_owner {
+        setSystemModules(_adm, _db, _managerAdr, _pos, _zscToken);
     }
-
-    function setWalletManger(address _adr) public only_owner {
-        setWalletManagerAdr(_adr);
-    }
-
 
     /// @dev Add the database factory of managing the elements
     /// @param _typeInUint The type of the database factory
     /// @param _adr The address of the database factory
     function addElementFactory(uint _typeInUint, address _adr) public only_owner {
         addFactoryAdr(mapType(_typeInUint), _adr);
-    }
-
-    /// @dev Set the database address
-    /// @param _adr The address of the database 
-    function setDatabase(address _adr) public only_owner {
-        setDatabaseAdr(_adr);
     }
 
     /// @dev Check the element wheather or not existing
@@ -198,6 +188,14 @@ contract ControlApis is ControlBase {
 
     function removeErc20Token(bytes32 _symbol) public only_delegate(1) returns (bool) {
         return manageErc20TokenContract(false, 0, _symbol, 0, 0);
+    }
+
+    function numRegisteredErc20Tokens() public only_delegate(1) constant returns (uint) {
+        getWalletManager().numTokenSymbols();
+    }
+
+    function getErc20TokenSymbolByIndex(uint _index) public only_delegate(1) constant returns (uint) {
+        getWalletManager().getTokenSymbolByIndex(_index);
     }
 
 }
