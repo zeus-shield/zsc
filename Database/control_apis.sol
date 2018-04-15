@@ -37,8 +37,8 @@ contract ControlApis is ControlBase {
     /// @param _node The name of the element belonging to the user
     /// @param _extraInfo The extra information
     /// @param _extraAdr The extra address
-    function createElement(uint _typeInUint, bytes32 _node, bytes32 _extraInfo, address _extraAdr) public only_registered(_node) returns (address) {
-        //require(checkAllowedUser(_node));
+    function createElement(uint _typeInUint, bytes32 _node, bytes32 _extraInfo, address _extraAdr) public returns (address) {
+        require(onlyRegisteredOrDelegated(_node, msg.sender));
         address creatorAdr = _extraAdr;
         if (creatorAdr == 0) {
             creatorAdr = msg.sender;
@@ -46,7 +46,8 @@ contract ControlApis is ControlBase {
         return createFactoryNode(mapType(_typeInUint), _node, _extraInfo, creatorAdr);
     }
 
-    function enableWallet(uint _typeInUint/*5: eth; 6: erc20*/, bytes32 _user, bytes32 _tokeSymbol, address _extraAdr) public only_registered(_user) returns (address) {
+    function enableElementWallet(uint _typeInUint/*5: eth; 6: erc20*/, bytes32 _user, bytes32 _tokeSymbol, address _extraAdr) public returns (address) {
+        require(onlyRegisteredOrDelegated(_user, msg.sender));
         address creatorAdr = _extraAdr;
         if (creatorAdr == 0) {
             creatorAdr = msg.sender;
