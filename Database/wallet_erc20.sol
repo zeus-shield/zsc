@@ -14,15 +14,11 @@ contract WalletErc20 is WalletBase {
         setNodeType("wallet-erc20"); 
     }
 
-    function() public payable {        
-        revert();
-    }
-
     function setERC20TokenAddress(address _tokenAdr) public only_delegate(1) {
         _erc20TokenAdr = _tokenAdr;
     }
 
-    function getBlance((bool _locked)) public only_delegate(1) constant returns (uint256) {
+    function getBlance(bool _locked) public only_delegate(1) constant returns (uint256) {
         if (_locked) { 
             return super.getBlance(true);
         } else {

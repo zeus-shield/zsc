@@ -33,7 +33,7 @@ contract WalletBase is DBNode {
     struct LockHistory {
         uint nos_;
         uint256 total_;
-        mapping(uint => LockInfo) locks_;;
+        mapping(uint => LockInfo) locks_;
     }
 
     PaymentHistory private inputHistory_;
@@ -94,7 +94,7 @@ contract WalletBase is DBNode {
         lockedValue_ += _amount;
     }
 
-    function getBlance((bool _locked)) public only_delegate(1) constant returns (uint256) {
+    function getBlance(bool _locked) public only_delegate(1) constant returns (uint256) {
         if (_locked) return lockedValue_;
         else return totalValue_;
     }
