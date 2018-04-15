@@ -36,7 +36,7 @@ class ZscBase {
     } 
 
     public function getLogedModuleArray() {
-        return array("AdmAdv", "DBDatabase", "PosAdv", "WalletManager", "SimulatorManager", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
+        return array("DBDatabase", "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv");
     }
     
     public function getLogedModuleNameArrayInString() {

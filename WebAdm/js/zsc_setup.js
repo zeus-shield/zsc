@@ -4,15 +4,16 @@ Copyright (c) 2018 ZSC Dev Team
 
 function ZSCSetup(logRecorderAdr, zscTokenAdr, adrs) {
     this.RecorderAdr = logRecorderAdr;
-    this.AdmAdvAdr = adrs[0];
-    this.PosAdvAdr = adrs[1];
-    this.WalletManagerAdr = adrs[2];
-    this.DBDatabaseAdr = adrs[3];
-    this.FactoryProAdr = adrs[4];
-    this.FactoryRecAdr = adrs[5];
-    this.FactoryTmpAdr = adrs[6];
-    this.FactoryAgrAdr = adrs[7];
-    this.ControlApisAdvAdr = adrs[8];
+    this.DBDatabaseAdr = adrs[0];
+    this.AdmAdvAdr = adrs[1];
+    this.PosAdvAdr = adrs[2];
+    this.WalletManagerAdr = adrs[3];
+    this.SimulatorManagerAdr = adrs[4];
+    this.FactoryProAdr = adrs[5];
+    this.FactoryRecAdr = adrs[6];
+    this.FactoryTmpAdr = adrs[7];
+    this.FactoryAgrAdr = adrs[8];
+    this.ControlApisAdvAdr = adrs[9];
     this.zscTokenAdr = zscTokenAdr;
     this.account = web3.eth.accounts[0];
 }
@@ -69,6 +70,8 @@ ZSCSetup.prototype.initSystemModule = function(module, extra, hashID) {
         this.initPosAdv(module, hashID);
     } else if (module == "WalletManager") {
         this.initWalletManager(module, hashID);
+    } else if (module == "SimulatorManager") {
+        this.initSimulatorManager(module, hashID);
     } else if (module == "DBDatabase") {
         this.initDatabase(module, hashID);
     } else if (module == "ControlApisAdv") {
@@ -113,6 +116,16 @@ ZSCSetup.prototype.initWalletManager = function(abiName, hashID) {
     });
 }
 
+ZSCSetup.prototype.initSimulatorManager = function(abiName, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi(abiName));
+    var myPosAdv = myContract.at(this.SimulatorManagerAdr);
+    myPosAdv.initPos(this.ControlApisAdr, this.DBDatabaseAdr, {from:web3.eth.accounts[0], gas: 9000000},
+    function(error, result){ 
+        if(!error) this.showHashResult(hashID, result);
+        else console.log("error: " + error);
+    });
+}
+
 ZSCSetup.prototype.initDatabase = function(abiName, hashID) {
     var factories = [this.FactoryProAdr, this.FactoryRecAdr, this.FactoryTmpAdr, this.FactoryAgrAdr];
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
@@ -140,8 +153,8 @@ ZSCSetup.prototype.setSystemModules = function(abiName, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var myControlApi= myContract.at(this.ControlApisAdr);
 
-    //setSystemModules(address _adm, address _db, address _managerAdr, address _pos, address _zscToken)
-    myControlApi.setSystemModules(this.AdmAdvAdr, this.DBDatabaseAdr, this.WalletManagerAdr, this.PosAdvAdr, this.zscTokenAdr,
+    //setSystemModules(address _adm, address _db, address _walletGM, address _simulatorGM, address _pos, address _zscToken)
+    myControlApi.setSystemModules(this.AdmAdvAdr, this.DBDatabaseAdr, this.WalletManagerAdr, this.SimulatorManagerAdr, this.PosAdvAdr, this.zscTokenAdr,
     {from: web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
         if(!error) this.showHashResult(hashID, result);
