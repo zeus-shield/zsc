@@ -14,19 +14,14 @@ Copyright (c) 2018 ZSC Dev Team
 ?>
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
+    
     function gotoConfigureLogRecorder() {
-        window.location.href="adm_configure_logrecorder.php" + cC_getUrlSuffixForControlPage();
+        var href = "adm_configure_logrecorder.php";
+        href    += cC_getUrlSuffixForControlPage();
+        href    += "zscTokenAddress=" + document.getElementById("CreateContractHtml").value;
+        window.location.href = href;
     }
 
-    function setZscTokenAddress(elementId) {
-        if (document.getElementById(elementId).value != undefined) {
-            var text = "<php? echo $htmlModules->loadCreateContract('cC_setupContract'); ?>";
-            text += '<div class="well">';
-            text += '<button type="button" onClick="gotoConfigureLogRecorder()">Next: configure log recorder</button>';
-            text += '</div>';
-            document.setHtmlContent("CreateContractHtml", text); 
-        }
-    }
 </script>
 </head>
 <body>
@@ -37,10 +32,16 @@ Copyright (c) 2018 ZSC Dev Team
     echo '<div class="page-header"> <font size="5" color="blue" >Setup ZSC system in the testing envrioment</font></div>';
     echo $htmlModules->loadAllAdrs();
 
-    echo $htmlModules->loadZscTokenAddress("setZscTokenAddress");
-?>
+    echo '<text>Fill in ZSC token address </text> 
+         <div class="well">
+            <input type="text" id="zscTokenAddress"></input>
+        </div><br>';
 
-    <div class="well" id="CreateContractHtml"></div>
+    echo $htmlModules->loadCreateContract('cC_setupContract');
+?>
+    <div class="well">
+        <button type="button" onClick="gotoConfigureLogRecorder()">Next: configure log recorder</button>
+    </div>
 
 </body>
 </html>
