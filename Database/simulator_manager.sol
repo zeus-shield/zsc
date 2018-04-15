@@ -9,15 +9,16 @@ import "./object.sol";
 contract contract SimulatorBase is Object {
     function doesStarted() public only_delegate(1) constant returns (bool);
     function doesFinished() public only_delegate(1) constant returns (bool);
-    function getSimulationProvider(bytes32 _agreement) public only_delegate(1) constant returns (bytes32);
-    function getSimulationReceiver(bytes32 _agreement) public only_delegate(1) constant returns (bytes32);
-    function getSimulationReceiver(bytes32 _agreement) public only_delegate(1) constant returns (bytes32);
+    function getSimulationProvider(bytes32 _name) public only_delegate(1) constant returns (bytes32);
+    function getSimulationReceiver(bytes32 _name) public only_delegate(1) constant returns (bytes32);
+    function getSimulationReceiver(bytes32 _name) public only_delegate(1) constant returns (bytes32);
 }
 
 contract SimulatorManager is Object {
     struct SimultionRun {
         bool exists_;
         bool rewarded_;
+        bool adr_;
         bool probablity_;
     }
     mapping(bytes32 => SimultionRun) private simulationRuns_;
@@ -41,9 +42,27 @@ contract SimulatorManager is Object {
         return (randValue + _min);
     }
 
-    function addSimulationRun(bytes32 _name, uint _proLevel /*1 : 100*/) public only_delegate(1) {
+    function addSimulationRun(bytes32 _name, bytes32 _adr,  uint _proLevel /*1 : 100*/) public only_delegate(1) {
         require(!simulationRuns_[_agreement].exists_);
 
-        simulationRuns_[_name] = SimultionRun(true, false, ranGen(_proLevel, 100));
+        simulationRuns_[_name] = SimultionRun(true, false, _adr, ranGen(_proLevel, 100));
     }
+
+    function checkSimulationRun(bytes32 _name) public only_delegate(1) constant returns (bool) {
+        require(simulationRuns_[_name].exists_);
+        address adr = simulationRuns_[_name].adr_;
+
+        if (simulationRuns_[_name].rewarded_ == false) {
+            if (SimulatorBase(adr).doesStarted()) {
+                if (SimulatorBase(adr).doesFinished()) {
+                    uint rand = randGen(0, 100);
+                    if (rand < simulationRuns_[_name].probability_) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 }
