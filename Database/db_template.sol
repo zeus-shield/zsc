@@ -7,10 +7,11 @@ import "./db_entity.sol";
 
 contract DBTemplate is DBEntity {
     mapping(address => bool) private fundamentalParass_;
-    address[] private users_;
+    bool private addedProvider_;
     
     function DBTemplate(bytes32 _name) public DBEntity(_name) {
         setNodeType("template");
+        addedProvider_ = false;
     }
 
     function initParameters() internal {
@@ -20,6 +21,7 @@ contract DBTemplate is DBEntity {
         addParameter("price");
         addParameter("fefund (%)");
         addParameter("duration");
+        addParameter("provider");
 
         fundamentalParass_["automatic"]    = true;
         fundamentalParass_["duration"]     = true;
@@ -27,10 +29,14 @@ contract DBTemplate is DBEntity {
         fundamentalParass_["price"]        = true;
         fundamentalParass_["fefund (%)"]   = true;
         fundamentalParass_["duration"]     = true;
+        fundamentalParass_["provider"]     = true;
     }
 
     function setParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool) {
         if (numChildren() > 0) return false; 
+        if (addedProvider_ == false) {
+            addedProvider_ = name();
+        }
         return super.setParameter(_parameter, _value);
     }
 
