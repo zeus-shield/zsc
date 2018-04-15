@@ -15,15 +15,15 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 |-- Token:     
     |-- zsc token contract
     |-- Based on ERC20 protocol
-|-- WebClient
-    |-- web3.js and javascript based implementation
-    |-- Compatible with Metamask 
 |-- WebAdm
     |-- web3.js, javascript and php based implementation
     |-- Compatible with Metamask 
+|-- WebClient
+    |-- web3.js and javascript based implementation
+    |-- Compatible with Metamask 
 ```
 
-## Contract inheritance
+## Smart contract inheritance
 ```bash
 |-- owned
     |-- delegated 
@@ -53,22 +53,27 @@ Official implementation for the solidity-based core part of the ZSC system, as w
             |-- factory_base
             |-- control_base, control_info
                 |-- control_apis
+
+|--plat_string
 ```
 
-## WebAdm inheritance
+## WebAdm
 ```bash
-|-- zsc_base (php)
-    |-- zsc_system_modules (php)
-        |-- zsc_html_modules (php)
-|-- zsc_user_management (js)
-|-- zsc_setup (js)
+|--php
+    |-- zsc_base
+        |-- zsc_system_modules
+            |-- zsc_html_modules
+|--js
+    |-- zsc_user_management
+    |-- zsc_setup
 ```
 
-## WebClient inheritance
+## WebClient
 ```bash
-|-- zsc_html (js)
-|-- zsc_user (js)
-|-- zsc_element (js)
+|--js
+    |-- zsc_html 
+    |-- zsc_user
+    |-- zsc_element
 ```
 
 ## .sol update log
@@ -119,4 +124,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.04.11: add three files pos_block.sol, wallet_eth.sol, wallet_erc20.sol
 2018.04.12: add file Database/wallet_manager.sol
 2018.04.13: add file WebAdm/zsc_setup.js
+2018.04.14-15: adjust inter-connection among different modules
 ```
