@@ -80,14 +80,6 @@ class ZscHtmlModules extends ZscSystemModules {
         return $text;
     }
 
-    public function loadZscTokenAddress($func) {
-        $text = '';
-        $text .= '<text>Fill in ZSC token address </text>';
-        $text .= '<input type="text" id="zscTokenAddress"></input>'
-        $text .= '<button type="button" onClick="'.$func.'(\'zscTokenAddress\')">Confirm</button> <br>';
-        return $text;
-    }
-    
     public function loadCreateContract($func) {
         $modules = ZscBase::getModuleArray();
         $num = count($modules);
@@ -159,12 +151,12 @@ class ZscHtmlModules extends ZscSystemModules {
             $hashId = $name.'Hash'.$x;
             $action = '';
             $object = '';
-            if ($extra == "null") {
+            if ($para == "null") {
                 $action = "Init ";
                 $object = $name;
             } else {
                 $action = "Set ";
-                $object = $extra;
+                $object = $para;
             }
             /*
             <text>Step - 1 </text>
@@ -175,6 +167,14 @@ class ZscHtmlModules extends ZscSystemModules {
             $text .= '<button type="button" onClick="'.initSystemModule.'(\''.$name.'\', \''.$para.'\',\''.$hashId.'\')">'.$action.$object.'</button>';
             $text .= '<text id="'.$hashId.'"></text><br><br>';
         }
+    
+        return $text;
+    }
+
+    public function loadWalletManager($names, $symbols, $address) {
+        $text = '<div class="well">';    
+        
+        $text .= '</div>';
     
         return $text;
     }
