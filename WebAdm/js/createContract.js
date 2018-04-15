@@ -20,6 +20,8 @@ function cC_getContractFullName(contractName) {
         return "./zsc/db/Database/db_database.sol:DBDatabase";
     } else if (contractName == 'FactoryPro') {
         return "./zsc/factory_pro.sol:FactoryPro";
+    } else if (contractName == 'FactoryRec') {
+        return "./zsc/factory_pro.sol:FactoryRec";
     } else if (contractName == 'FactoryTmp') {
         return "./zsc/factory_tmp.sol:FactoryTmp";
     } else if (contractName == 'FactoryAgr') {
@@ -44,9 +46,11 @@ function cC_getCompiledFile(contractName) {
         return compiledDatabase;
     } else if (contractName == 'FactoryPro') {
         return compiledFactoryPro;
-    } else if (contractName == 'FactoryPro') {
+    } else if (contractName == 'FactoryRec') {
+        return compiledFactoryRec;
+    } else if (contractName == 'FactoryTmp') {
         return compiledFactoryTmp;
-    } else if (contractName == 'FactoryPro') {
+    } else if (contractName == 'FactoryAgr') {
         return compiledFactoryAgr;
     } else if (contractName == 'ControlApisAdv') {
         return compiledApisAdv;
@@ -89,8 +93,9 @@ function cC_showCreatingResult(type, elementID, text) {
     }
 }
 
-function cC_createContract(contractName, parameter) {
+function cC_setupContract(contractName, paramId) {
     var logResult = "";
+    var parameter = document.getElementById(paramId).value
     var databin = cC_getContractBin(contractName);
     var greeterContract = web3.eth.contract(cC_getContractAbi(contractName)); 
     var account = web3.eth.accounts[0];
@@ -115,11 +120,6 @@ function cC_createContract(contractName, parameter) {
         }
     })
 }
- 
-function cC_setupContract(contractName, paramId) {
-cC_createContract(contractName, document.getElementById(paramId).value);
-}  
-
 
 function cC_getUrlSuffixForControlPage() {
     var text = "?";
