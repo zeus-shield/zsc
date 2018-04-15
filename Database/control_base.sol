@@ -60,13 +60,6 @@ contract WalletManager is Object {
 }
 
 contract ControlBase is Object, ControlInfo {   
-    struct TokenAwarder {
-        address adr_;
-        bytes32 name_;
-        bytes32 symbol_;
-        uint decimals_;
-    }
-    mapping(bytes32 => TokenAwarder) private tokenAwarders_;
     mapping(uint => bytes32) private factoryTypes_;
     mapping(bytes32 => address) private factories_;
     address private bindedDB_;
@@ -74,9 +67,6 @@ contract ControlBase is Object, ControlInfo {
     address private bindedPos_;
     address private bindedWalletManager_;
     address private zscTokenAddress_;
-
-    modifier factroy_exist(bytes32 _name) {require(factories_[_name] != 0); _;}
-    modifier factroy_notexist(bytes32 _name) {require(factories_[_name] == 0); _;}
 
     function ControlBase(bytes32 _name) public Object(_name) {
         factoryTypes_[1] = "provider";
@@ -95,11 +85,9 @@ contract ControlBase is Object, ControlInfo {
         bindedAdm_ = _adm;
         setDelegate(bindedAdm_, 1);
 
-
         bindedPos_ = _pos;
         zscTokenAddress_ = _zscToken;
         setDelegate(bindedPos_, 1);
-
 
         bindedWalletManager_ = _managerAdr;
         setDelegate(bindedWalletManager_, 1);
@@ -108,15 +96,16 @@ contract ControlBase is Object, ControlInfo {
         addLog("setSystemModules ", true);
     }
 
-    function addFactoryAdr(bytes32 _name, address _adr) internal factroy_notexist(_name) {
-        require(_adr != 0);
+    function addFactoryAdr(bytes32 _name, address _adr) internal {
+        require(_adr != 0 && factories_[_name] == 0);
         factories_[_name] = _adr;
 
         addLog("Added factory: ", true);
         addLog(PlatString.bytes32ToString(_name), false);
     }
 
-    function getDBFactory(bytes32 _name) internal factroy_exist(_name) constant returns (DBFactory) {
+    function getDBFactory(bytes32 _name) internal constant returns (DBFactory) {
+        require(factories_[_name] != 0);
         return DBFactory(factories_[_name]);
     }
 
@@ -133,6 +122,8 @@ contract ControlBase is Object, ControlInfo {
     }
     
     function enableWallet(bytes32 _type, bytes32 _user, bytes32 _tokeSymbol, address _creator) internal returns (address) {
+        require(getDBNode(_user) != DBNode(0));
+        
         if (getDBNode(_user).getNodeType() == "staker" && _tokeSymbol != "ZSC") return address(0);
 
         address parentNode = getDBNode(_user).getHandler("wallet");
@@ -172,11 +163,6 @@ contract ControlBase is Object, ControlInfo {
 
         if (_type == "provider" || _type == "receiver" || _type == "staker") {
             DBNode(adr).configureHandlers();
-            if (_type == "staker") {
-                enableWallet("wallet-erc20", _nodeName, "ZSC", _creator);
-            } else {
-                enableWallet("wallet-eth", _nodeName, "ETH", _creator);
-            }
         }
 
         if (_type == "staker") {
@@ -222,16 +208,6 @@ contract ControlBase is Object, ControlInfo {
             DBNode(nodeDst).addParameter(tempPara);
             DBNode(nodeDst).setParameter(tempPara, tempValue);
         }
-        return true;
-    }
-
-    function registerTokenAwarder(address _token, bytes32 _name, bytes32 _symbol, uint _decimals) public only_delegate(1) returns (bool) {
-        if (tokenAwarders_[_name].adr_ != 0) return false;
-        
-        tokenAwarders_[_name].adr_ = _token;
-        tokenAwarders_[_name].name_ = _name;
-        tokenAwarders_[_name].symbol_ = _symbol;
-        tokenAwarders_[_name].decimals_ = _decimals;
         return true;
     }
 
