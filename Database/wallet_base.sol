@@ -32,23 +32,26 @@ contract WalletBase is DBNode {
 
     struct LockHistory {
         uint nos_;
-        uint256 total_;
         mapping(uint => LockInfo) locks_;
     }
 
     PaymentHistory private inputHistory_;
     PaymentHistory private outHistory_;
-    LockHistory private lockHistory_;
+    
+    uint private lockedNos_;
+    uint private lockedValue_;
+    mapping(uint => LockInfo) privatelockHistory_;
+    mapping(address => uint) private lockIndice_;
 
     bool private isEthAccount_;
     uint private totalValue_;
-    uint private lockedValue_;
 
     // Constructor
     function WalletBase(bytes32 _name) public DBNode(_name) {
         isEthAccount_ = false;
         totalValue_ = 0;
         lockedValue_ = 0;
+        lockedNos_ = 0;
     }
 
     function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (bool);
@@ -81,21 +84,45 @@ contract WalletBase is DBNode {
         outHistory_.payments_[index] = Payment(now, _tx, _sender, this, _amount, _data);
     }
 
-    function lockValue(uint _amount, uint _duration, address _agreementAdr) public only_delegate(1) returns (bool) {
+    function lockValue(uint _amount, uint _duration, address _agreementAdr) private returns (bool) {
         if (totalValue_ - lockedValue_ < _amount) {
             return false;
         }
 
-        uint index = lockHistory_.nos_;
-        lockHistory_.nos_++;
-        lockHistory_.total_ += _amount;
-        lockHistory_.locks_[index] = LockInfo(true, _amount, now, _duration, _agreementAdr);
-
+        uint index = lockedNos_;
+        lockedNos__++;
+        lockHistory_[index] = LockInfo(true, _amount, now, _duration, _agreementAdr);
+        lockIndice_[_agreementAdr] = index;
         lockedValue_ += _amount;
+        return true;
+    }
+
+    function unlockValue(address _agreementAdr) private returns (bool) {
+        uint index = lockIndice_[_agreementAdr];
+        require(lockedValue_ >= lockHistory_[index].amount_);
+        lockedValue_ -= lockHistory_[index].amount_;
+        lockHistory_[index].locked_ = false;
+        return true;
+    }
+
+    function setLockValue(bool _tag, uint _amount, uint _duration, address _agreementAdr) public only_delegate(1) returns (bool) {
+        if (_tag) {
+            return lockValue(_amount, _duration, _agreementAdr);
+        } esle {
+            return unlockValue( _agreementAdr);
+        }
     }
 
     function getBlance(bool _locked) public only_delegate(1) constant returns (uint256) {
         if (_locked) return lockedValue_;
         else return totalValue_;
+    }
+
+    function getLockBalanceInfoByIndex(uint _index) public only_delegate(1) constant returns (uint, uint, uint, address) {
+        require(_index < lockHistory_.nos_)
+        return (lockHistory_.locks_[index].amount_, 
+                lockHistory_.locks_[index].time_, 
+                lockHistory_.locks_[index].duration_, 
+                lockHistory_.locks_[index].agreementAdr_);
     }
 }
