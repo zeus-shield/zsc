@@ -6,12 +6,12 @@ pragma solidity ^0.4.17;
 import "./db_user.sol";
 import "./db_idmanager.sol";
 
-contract DBAgreement is DBUser {
+contract DBAgreement is DBNode {
     uint private status_; // 0: CREATED; 1: READY; 2: PUBLISHED; 3: PAID; 4: NOTPAID
-    uint private priceETH_;
-    uint private priceZSC_;
     uint private startTime_;
     uint private duration_;
+    bytes32 private walletSymbol_;
+    uint private amount_;
 
     // Constructor
     function DBAgreement(bytes32 _name) public DBUser(_name) {
@@ -20,6 +20,7 @@ contract DBAgreement is DBUser {
     }
 
     function initParameters() internal {
+        addParameter("duration");
         addParameter("status");
         addParameter("startTime");
         addParameter("endTime");
@@ -31,11 +32,7 @@ contract DBAgreement is DBUser {
         if (status_ > 0 )
             return false;  
 
-        if (_parameter == "Price (TestETH)") {
-            priceETH_ = PlatString.stringToUint(_value);
-        } else if (_parameter == "Price (TestZSC)") {
-            priceZSC_ = PlatString.stringToUint(_value);
-        } else if (_parameter == "Duration") {
+        if (_parameter == "duration") {
             duration_ = PlatString.stringToUint(_value);
         }
         return super.setParameter(_parameter, _value);
@@ -63,25 +60,17 @@ contract DBAgreement is DBUser {
        
         return super.setParameter("status",  _tag);
     }
+    
+    function startInsurance(bytes32 _walletSymbol, uint _price) public only_delegate(1) {
+        walletSymbol_ = _walletSymbol;
+        price_ = _price;
+        status_ = 3;
+        startTime_ = now;
+        endTime_ = startTime_ + duration_;
 
-    function() public payable {
-        bytes32 senderName = msg.data;
-        
-        bool ret1 = checkSenderType("provider", senderName);
-        bool ret2 = checkSenderType("receiver", senderName);
-        
-        require(ret1 || ret2);
-
-        if (ret2 == true) {
-            status_ = 3;
-            executeEtherTransaction(getNode(getBindedEntityNameByIndex("provider", 0)), msg.value, "");
-            startTime_ = now;
-            endTime_ = startTime_ + duration_;
-
-            super.setParameter("status", "PAID");
-            super.setParameter("startTime", PlatString.uintToString(startTime_));
-            super.setParameter("endTime", PlatString.uintToString(endTime_));
-        }
+        super.setParameter("status", "PAID");
+        super.setParameter("startTime", PlatString.uintToString(startTime_));
+        super.setParameter("endTime", PlatString.uintToString(endTime_));
     }
 
     function checkSenderType(bytes32 _type, bytes32 _sender) internal {
@@ -91,17 +80,6 @@ contract DBAgreement is DBUser {
         }        
         return false;
     }
-
-    function executeEtherTransaction(address _dest, uint256 _value, bytes _data) public only_delegate(1) returns (bool) {
-        /*to be added here with extra functionalities later: 2018.03.29*/
-        return super.executeEtherTransaction(_dest, _value, _data);
-    }
-
-    function executeERC20Transaction(address _tokenAdr, address _dest, uint256 _value, bytes _data) public only_delegate(1) returns (bool) {
-        /*to be added here with extra functionalities later: 2018.03.29*/
-        return super.executeERC20Transaction(_tokenAdr, _dest, _value, _data);
-    }
- }
  }
 
 
