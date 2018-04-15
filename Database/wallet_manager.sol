@@ -51,7 +51,7 @@ contract WalletManager is Object {
         }
     }
 
-    function addErc20Token(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool) {
+    function addToken(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool) {
         if (erc20TokenExists_[_symbol]) return false;
 
         erc20TokenIndice_[_symbol] = tokenNos_;
@@ -60,14 +60,14 @@ contract WalletManager is Object {
         return true;
     }
 
-    function getErc20TokenAddress(bytes32 _symbol) public only_delegate(1) constant returns (address) {
+    function getTokenAddress(bytes32 _symbol) public only_delegate(1) constant returns (address) {
         require(erc20TokenExists_[_symbol]);
         
         uint index = erc20TokenIndice_[_symbol];
         return erc20Tokens_[index].tokenAdr_;
     }
 
-    function removeErc20Token(bytes32 _symbol) public only_delegate(1) returns (bool) {
+    function removeToken(bytes32 _symbol) public only_delegate(1) returns (bool) {
         if (!erc20TokenExists_[_symbol]) return false;
         
         uint index = erc20TokenIndice_[_symbol];
@@ -86,11 +86,20 @@ contract WalletManager is Object {
         tokenHoders_[holderNos_].adr_ = _nodeAddress;
     }
 
-    function enableErc20TokenByHolder(bytes32 _nodeName, bytes32 _tokenSymbol) public only_delegate(1) returns (bool) {
+    function enableTokenByHolder(bytes32 _nodeName, bytes32 _tokenSymbol) public only_delegate(1) returns (bool) {
         require(erc20TokenExists_[_tokenSymbol] && holderExists_[_nodeName]);
 
         uint tokenIndex = erc20TokenIndice_[_tokenSymbol];
         uint holderIndex = holderIndices_[_nodeName];
-        tokenHoders_[holderIndex].enabledTokens_[tokenIndex] =true;   
+        tokenHoders_[holderIndex].enabledTokens_[tokenIndex] = true;   
+    }
+
+    function numTokenSymbols() public only_delegate(1) constant returns (uint) {
+        return tokenNos_;
+    }
+    
+    function getTokenSymbolByIndex(uint _index) public only_delegate(1) constant returns (address) {
+        require(_index < tokenNos_);
+        erc20Tokens_[_index].tokenAdr_;
     }
 }
