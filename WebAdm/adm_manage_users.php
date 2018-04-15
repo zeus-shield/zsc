@@ -14,8 +14,10 @@ echo $htmlModules->loadScriptFiles();
 ?>
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
+
+    var AdmAdvAdr = "<?php echo $htmlModules->readModuleAddress('AdmAdv')?>";
    
-    var userManager = new ZscUserManagement("<?php echo readModuleAddress('AdmAdv')?>", cC_getContractAbi('AdmAdv'));
+    var userManager = new ZscUserManagement(AdmAdvAdr, cC_getContractAbi('AdmAdv'));
 
     function addUser(usernameId, elementId) {
         userManager.addUser(usernameId, elementId, function() {
@@ -46,12 +48,15 @@ echo $htmlModules->loadScriptFiles();
     </div>
 
     <div class="well" id="UserManagement"> </div>
+
 <script type="text/javascript">
 	userManager.loadUsers(function(){
-		userManager.loadUserManagementHtml(approve, "UserManagement");
+		userManager.loadUserManagementHtml("approve", "UserManagement");
 	});
 </script>
 
 </body>
 </html>
 
+adm_manage_users
+adm_mange_users
