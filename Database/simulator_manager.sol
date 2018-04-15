@@ -12,6 +12,7 @@ contract contract SimulatorBase is Object {
     function getSimulationProvider(bytes32 _name) public only_delegate(1) constant returns (bytes32);
     function getSimulationReceiver(bytes32 _name) public only_delegate(1) constant returns (bytes32);
     function getSimulationReceiver(bytes32 _name) public only_delegate(1) constant returns (bytes32);
+    function getAddressInfo() public only_delegate(1) constant returns (address, address, address);
 }
 
 contract SimulatorManager is Object {
@@ -24,12 +25,29 @@ contract SimulatorManager is Object {
     mapping(bytes32 => SimultionRun) private simulationRuns_;
 
     uint private randSeed = 0;
+    address private bindedDB_;
+    address private apiController_;
+
 
     function SimulatorBase(bytes32 _name) public DBNode(_name) {
     }
 
     function initParameters() internal {
     }
+
+    function initSimulatorManager(address _controller, address _database) public only_delegate(1)  {
+        require(_database != 0);
+        bindedDB_ = _database;
+
+        if (_controller != 0 && _controller != apiController_) {
+            if (apiController_ != 0) {
+                setDelegate(apiController_, 0);
+            }
+            apiController_ = _controller;
+            setDelegate(_controller, 1);
+        }
+    }
+
 
     // Generates a random number
     // Original file at 
@@ -64,5 +82,13 @@ contract SimulatorManager is Object {
         }
         return false;
     }
-
+ 
+    function conductReward(bytes32 _name) {
+        require(simulationRuns_[_name].exists_);
+        address simulator = simulationRuns_[_name].adr_;
+        address agreement;
+        address provider
+        address receiver 
+        (agreement, provider, receiver) = SimulatorBase(adr).getAddressInfo();
+    }
 }
