@@ -149,7 +149,7 @@ contract ControlApis is ControlBase {
         bytes32 walletName = PlatString.tobytes32(str);
         require(getDBNode(walletName) != DBNode(0));
 
-        return  getDBNode(walletName).executeEtherTransaction(_dest, _amount, "null");
+        return  getDBNode(walletName).executeTransaction(_dest, _amount, "null");
     }
 
     /// @dev Get the number of element binded to the node
@@ -171,16 +171,15 @@ contract ControlApis is ControlBase {
     /// @param _agreement The agreement name
     /// @param _tag The announcement status
     function announceInsurance(bytes32 _agreement, bool _tag) public only_registered(_agreement) returns (bool) {
-        if (_tag) return getDBNode(_agreement).setAgreementStatus("PUBLISHED");
-        else return getDBNode(_agreement).setAgreementStatus("READY");
+        if (_tag) return getDBNode(_agreement).setAgreementStatus("PUBLISHED", "null");
+        else return getDBNode(_agreement).setAgreementStatus("READY", "null");
     }
 
     /// @dev Buy an insurance agreement with Eth from a provider
     /// @param _user The receiver name
     /// @param _agreement The agreement name
-    /// @param _amount The eth amount
-    function buyInsuranceWithEth(bytes32 _user, bytes32 _agreement, uint _amount) public only_registered(_user) returns (bool) {
-        return getDBNode(_user).executeEtherTransaction(address(getDBNode(_agreement)), _amount, "null");
+    function purchaseInsurance(bytes32 _user, bytes32 _agreement) public only_registered(_user) returns (bool) {
+        return getDBNode(_agreement).setAgreementStatus("PUBLISHED", _user);
     }
 
     function registerErc20Token(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool) {
