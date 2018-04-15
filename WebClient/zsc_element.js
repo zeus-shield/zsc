@@ -32,22 +32,6 @@ ZSCElement.prototype.doesElementExisit = function(func) {
         });
 }
 
-ZSCElement.prototype.loadEthBalance = function(func) {
-    this.myControlApi.getElementEthBalance(this.name, function(error, balance){ 
-        if(!error) {
-            this.ethBalance = balance;  
-            myControlApi.getElementAddress(this.name, function(error, address){ 
-                if(!error) { 
-                    this.nodeAddress = address; 
-                    func(); 
-                } else {
-                    console.log("error: " + error);
-                }
-            });
-        }
-    });
-}
-
 ZSCElement.prototype.loadParameterNamesAndvalues = function(func) {
     this.numParameters(function() {
         this.loadParameterNames(function() {
