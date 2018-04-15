@@ -15,8 +15,8 @@ contract ControlApis is ControlBase {
     /// @dev Set the zsc adm address
     /// @param _adm The address of the zsc adm 
     /// @param _db The address of the database 
-    function setSystemModules(address _adm, address _db, address _managerAdr, address _pos, address _zscToken) public only_owner {
-        setSystemModules(_adm, _db, _managerAdr, _pos, _zscToken);
+    function setSystemModules(address _adm, address _db, address _walletGM, address _simulatorGM, address _pos, address _zscToken) public only_owner {
+        setSystemModuleAdrs(_adm, _db, _walletGM, _simulatorGM, _pos, _zscToken);
     }
 
     /// @dev Add the database factory of managing the elements

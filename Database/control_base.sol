@@ -64,7 +64,8 @@ contract ControlBase is Object, ControlInfo {
     address private bindedDB_;
     address private bindedAdm_;
     address private bindedPos_;
-    address private bindedWalletManager_;
+    address private walletGM_;
+    address private simulatorGM_;
     address private zscTokenAddress_;
 
     function ControlBase(bytes32 _name) public Object(_name) {
@@ -78,8 +79,8 @@ contract ControlBase is Object, ControlInfo {
 
     function mapType(uint _type) internal constant returns (bytes32) { return factoryTypes_[_type]; }
     
-    function setSystemModuleAdrs(address _adm, address _db, address _managerAdr, address _pos, address _zscToken) internal {
-        require (_adm != 0 && _db != 0 && _managerAdr != 0 && _pos != 0 && _zscToken != 0);     
+    function setSystemModuleAdrs(address _adm, address _db, address _walletGM, address _simulatorGM, address _pos, address _zscToken) internal {
+        require (_adm != 0 && _db != 0 && _walletGM != 0 && _pos != 0 && _zscToken != 0);     
 
         bindedAdm_ = _adm;
         setDelegate(bindedAdm_, 1);
@@ -88,8 +89,11 @@ contract ControlBase is Object, ControlInfo {
         zscTokenAddress_ = _zscToken;
         setDelegate(bindedPos_, 1);
 
-        bindedWalletManager_ = _managerAdr;
-        setDelegate(bindedWalletManager_, 1);
+        walletGM_ = _walletGM;
+        setDelegate(walletGM_, 1);
+
+        simulatorGM_ = _simulatorGM;
+        setDelegate(simulatorGM_, 1);
 
         bindedDB_ = _db;
         addLog("setSystemModules ", true);
@@ -113,7 +117,7 @@ contract ControlBase is Object, ControlInfo {
     }
 
     function getWalletManager() internal constant returns (WalletManager) {      
-        return WalletManager(bindedWalletManager_);
+        return WalletManager(walletGM_);
     }
 
     function getDBNode(bytes32 _node) internal constant returns (DBNode) {      
@@ -133,7 +137,7 @@ contract ControlBase is Object, ControlInfo {
             temp = PlatString.append(_user, "-ETH");
         } else {
             temp = PlatString.append(_user, "-", _tokeSymbol);
-            erc20Address = WalletManager(bindedWalletManager_).getErc20TokenAddress(_tokeSymbol);
+            erc20Address = WalletManager(walletGM_).getErc20TokenAddress(_tokeSymbol);
         }
 
         address adr;
@@ -212,9 +216,9 @@ contract ControlBase is Object, ControlInfo {
 
     function manageErc20TokenContract(bool _doesAdd, bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) internal returns (bool) {
         if (_doesAdd) {
-            return WalletManager(bindedWalletManager_).addErc20Token(_name, _symbol, _decimals, _tokenAdr);
+            return WalletManager(walletGM_).addErc20Token(_name, _symbol, _decimals, _tokenAdr);
         } else {
-            return WalletManager(bindedWalletManager_).removeErc20Token(_symbol);
+            return WalletManager(walletGM_).removeErc20Token(_symbol);
         }
     }
 }
