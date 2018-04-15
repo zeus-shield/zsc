@@ -55,6 +55,8 @@ contract WalletManager is Object {
     function addErc20Token(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool);
     function getErc20TokenAddress(bytes32 _symbol) public only_delegate(1) constant returns (address);
     function removeErc20Token(bytes32 _symbol) public only_delegate(1) returns (bool);
+    function numTokenSymbols() public only_delegate(1) constant returns (uint);
+    function getTokenSymbolByIndex(uint _index) public only_delegate(1) constant returns (address);
 }
 
 contract ControlBase is Object, ControlInfo {   
@@ -86,39 +88,24 @@ contract ControlBase is Object, ControlInfo {
     }
 
     function mapType(uint _type) internal constant returns (bytes32) { return factoryTypes_[_type]; }
+    
+    function setSystemModuleAdrs(address _adm, address _db, address _managerAdr, address _pos, address _zscToken) internal {
+        require (_adm != 0 && _db != 0 && _managerAdr != 0 && _pos != 0 && _zscToken != 0);     
 
-    function setAdmAdr(address _adm) internal {
-        require (_adm != 0);      
         bindedAdm_ = _adm;
         setDelegate(bindedAdm_, 1);
 
-        addLog("setAdmAdr: ", true);
-        //addLog(PlatString.bytes32ToString(Object(_adm).name()), false);
-    }
 
-    function setPosAdr(address _pos, address _zscToken) internal {
-        require (_pos != 0);      
         bindedPos_ = _pos;
         zscTokenAddress_ = _zscToken;
         setDelegate(bindedPos_, 1);
 
-        addLog("set Adm: ", true);
-        //addLog(PlatString.bytes32ToString(Object(_adm).name()), false);
-    }
 
-    function setWalletManagerAdr(address _managerAdr) internal {
-        require (_managerAdr != 0);      
         bindedWalletManager_ = _managerAdr;
         setDelegate(bindedWalletManager_, 1);
 
-        addLog("set WalletManager: ", true);
-    }
-
-    function setDatabaseAdr(address _db) internal {
         bindedDB_ = _db;
-
-        addLog("Added database: ", true);
-        addLog(PlatString.bytes32ToString(Object(_db).name()), false);
+        addLog("setSystemModules ", true);
     }
 
     function addFactoryAdr(bytes32 _name, address _adr) internal factroy_notexist(_name) {
@@ -135,6 +122,10 @@ contract ControlBase is Object, ControlInfo {
 
     function getDBDatabase() internal constant returns (DBDatabase) { 
         return DBDatabase(bindedDB_);
+    }
+
+    function getWalletManager() internal constant returns (WalletManager) {      
+        return WalletManager(bindedWalletManager_);
     }
 
     function getDBNode(bytes32 _node) internal constant returns (DBNode) {      
