@@ -44,11 +44,11 @@ class ZscBase {
     }
 
     public function getInitedModuleArray() {
-        return array("DBDatabase", "AdmAdv", "PosAdv", "WalletManager", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv"); 
+        return array("DBDatabase", "AdmAdv", "PosAdv", "WalletManager", "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv"); 
     }
 
     public function getInitedModuleParaArray() {
-        return array("null",       "null",    "null",         "null",        "null",       "null",       "null",       "null",  "WalletManager",  "DBDatabase",     "AdmAdv",       "PosAdv",        "FactoryPro",       "FactoryRec",       "FactoryTmp",   "FactoryAgr");   
+        return array("null",       "null",    "null",         "null",        "null",       "null",       "null",       "null",  "FactoryPro",     "FactoryRec",       "FactoryTmp",   "FactoryAgr" ,  "SystemModules");   
     }
 }
 
