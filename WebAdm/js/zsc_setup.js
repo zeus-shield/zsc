@@ -51,7 +51,7 @@ ZSCSetup.prototype.registerListenerToLogRecorder = function(listener, listenerNa
     });
 }  
 
-ZSCSetup.prototype.setLogRecorderToListener(listener,listenerName, hashID) {
+ZSCSetup.prototype.setLogRecorderToListener = function(listener,listenerName, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(listenerName));
     var myListener = myContract.at(listener);
     var account = web3.eth.accounts[0];
@@ -136,7 +136,6 @@ ZSCSetup.prototype.initFactory = function(FactoryModule, FactoryAdr， hashID) {
     });
 }  
 
-
 ZSCSetup.prototype.setSystemModules = function(abiName, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var myControlApi= myContract.at(this.ControlApisAdr);
@@ -145,21 +144,18 @@ ZSCSetup.prototype.setSystemModules = function(abiName, hashID) {
     myControlApi.setSystemModules(this.AdmAdvAdr, this.DBDatabaseAdr, this.WalletManagerAdr, this.PosAdvAdr, this.zscTokenAdr,
     {from: web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
-        if(!error) sF_showHashResult(hashID, result);
+        if(!error) this.showHashResult(hashID, result);
         else console.log("error: " + error);
     });
 } 
-
-
 
 ZSCSetup.prototype.addFactory = function(abiName, factoryType, FactoryAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var myControlApi= myContract.at(this.ControlApisAdr);
     myControlApi.addFactory(factoryType, FactoryAdr, {from: web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
-        if(!error) sF_showHashResult(hashID, result);
+        if(!error) this.showHashResult(hashID, result);
         else console.log("error: " + error);
     });
-}  
-
+}
 
