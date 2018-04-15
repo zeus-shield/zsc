@@ -32,8 +32,6 @@ contract AdmBase is Object {
 
     function toHexx(bytes32 _value) internal constant returns (bytes32);
 
-    function approveWallet(address _controlApisAdr, bytes32 _userType, bytes32 _userName, address _creator) internal;
-
     function getUserIndex(bytes32 _hexx) internal constant returns (uint) { return userIndex_[_hexx]; }
 
     function setZSCTestTokenAddress(address _adr) public only_delegate(1) { zscTestTokenAddress_ = _adr; }
@@ -149,4 +147,15 @@ contract AdmBase is Object {
     function getUserType(bytes32 _hexx) public only_added(_hexx) constant returns (bytes32) {
         return testUsers_[userIndex_[_hexx]].type_;
     }
+
+    function approveWallet(address _controlApisAdr, bytes32 _userType, bytes32 _userName, address _creator) internal {
+        if (_userType == "provider" || _userType == "receiver") {
+            ControlApis(_controlApisAdr).enableWallet(4 /* wallet-eth */, _userName, "ETH", _creator);
+        } else if (_userType == "staker") {
+            ControlApis(_controlApisAdr).enableWallet(5 /* wallet-erc20 */, _userName, "ZSC", _creator);
+        } else {
+
+        }
+    }
+
 }
