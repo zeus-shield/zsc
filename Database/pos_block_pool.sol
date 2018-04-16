@@ -29,8 +29,6 @@ contract PosBlockPool is Object {
         blockSizeLimit_ = 1024 * 1024 * 2;
     } 
 
-    function createBlock() internal returns (address);
-
     function createPool(bytes32 _name, uint _dividendDuration, uint _rewardRate /* x / 1000: x = 0, 1, 2, ..., 1000) */) public only_delegate(1) {
         require(poolExists_[_name]);
 
@@ -52,7 +50,7 @@ contract PosBlockPool is Object {
 
     function registerNewBlock(uint _poolIndex) private returns (address) {
         uint blockIndex = pools_[_poolIndex].nos_;
-        address adr = createBlock();
+        address adr = new PosBlock();
 
         require(adr != address(0));
 
