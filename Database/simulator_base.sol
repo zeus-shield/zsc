@@ -4,14 +4,11 @@ Copyright (c) 2018 ZSC Dev Team
 
 pragma solidity ^0.4.18;
 
-import "./db_node.sol";
+import "./object.sol";
 
-contract SimulatorBase is DBNode {
+contract SimulatorBase is Object {
     bool started_;
     bool running_ ;
-    bool autoReward_;  
-    uint startTime_;
-    uint endTime_; // in secons
     uint probability_;   //from 0 to 1000
     address agreement_ ;
     address provider_ ;
@@ -19,23 +16,26 @@ contract SimulatorBase is DBNode {
     
     uint private randSeed = 0;
 
-    function SimulatorBase(bytes32 _name) public DBNode(_name) {
+    function SimulatorBase(bytes32 _name) public Object(_name) {
         running_ = false;
     }
 
-    function initParameters() internal {
+    // Generates a random number
+    // Original file at 
+    // https://gist.github.com/alexvandesande/259b4ffb581493ec0a1c
+    function randGen(uint _min, uint _max, uint _seed) private constant returns (uint){
+        require(_max > _min);
+        uint randValue = uint(keccak256(block.blockhash(block.number-1), _seed ))%(_max - _min);
+
+        return (randValue + _min);
     }
 
-    function startSimulation(bool _autoReward, address _agreement, address _provider, address _receiver, uint _duration) public only_delegate(1) {
+    function startSimulation(uint _probLevel, address _agreement, address _provider, address _receiver) public only_delegate(1) {
         running_ = true;
-        autoReward_ = _autoReward;
- 
-        startTime_   = now; 
-        endTime_     = startTime_ + _duration;
-        probability_ = ranGen(70, 100);
+        probability_ = randGen(_probLevel, 100, now);
         agreement_   = _agreement;
         provider_    = _provider;
-        receiver_    = _receiver
+        receiver_    = _receiver;
     }
 
     function doesStarted() public only_delegate(1) constant returns (bool) { 
@@ -46,16 +46,12 @@ contract SimulatorBase is DBNode {
         return (!running_);
     } 
 
-    function getSimulationProvider(bytes32 _agreement) public only_delegate(1) constant returns (bytes32) {
-        return provider_;
-    }
-
-    function getSimulationReceiver(bytes32 _agreement) public only_delegate(1) constant returns (bytes32) {
-        return receiver_;
-    }
-
-    function getSimulationReceiver(bytes32 _agreement) public only_delegate(1) constant returns (bytes32) {
-        return agreement_;
+    function needReward() public only_delegate(1) constant returns (bool) {
+        uint rand = randGen(0, 100, now);
+        if (rand < probability_) {
+            return true;
+        }
+        return false;
     }
 
     function getAddressInfo() public only_delegate(1) constant returns (address, address, address) {
