@@ -45,12 +45,22 @@ class ZscHtmlModules extends ZscSystemModules {
         <script type="text/javascript" src="../WebClient/web3js.js"></script>
         <script type="text/javascript" src="./js/createContract.js"></script>
         <script type="text/javascript" src="./js/setupFunctions.js"></script>
+        <script type="text/javascript" src="./js/zsc_js_base.js"></script>
+        <script type="text/javascript" src="./js/zsc_printlog.js"></script>
         <script type="text/javascript" src="./js/zsc_user_management.js"></script>
+        <script type="text/javascript" src="./js/zsc_wallet_managerment.js"></script>
         <script type="text/javascript" src="./js/compiled_database.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_pro.js"></script>
+        <script type="text/javascript" src="./js/compiled_factory_rec.js"></script>
+        <script type="text/javascript" src="./js/compiled_factory_tmp.js"></script>
+        <script type="text/javascript" src="./js/compiled_factory_agr.js"></script>
+        <script type="text/javascript" src="./js/compiled_factory_wallet_eth.js"></script>
+        <script type="text/javascript" src="./js/compiled_factory_wallet_erc20.js"></script>
         <script type="text/javascript" src="./js/compiled_apis_adv.js"></script>
         <script type="text/javascript" src="./js/compiled_adm_adv.js"></script>
         <script type="text/javascript" src="./js/compiled_wallet_manager.js"></script>
+        <script type="text/javascript" src="./js/compiled_simulator_manager.js"></script>
+        <script type="text/javascript" src="./js/compiled_pos.js"></script>
         <script type="text/javascript" src="./js/compiled_loger.js"></script>';
         return $text;
     }
@@ -144,7 +154,6 @@ class ZscHtmlModules extends ZscSystemModules {
     
         $text = '';
     
-
         for($x = 0; $x < $num; $x++) {
             $name = $modules[$x];
             $para = $paras[$x];
