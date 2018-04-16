@@ -22,10 +22,16 @@ function cC_getContractFullName(contractName) {
         return "./zsc/factory_pro.sol:FactoryPro";
     } else if (contractName == 'FactoryRec') {
         return "./zsc/factory_pro.sol:FactoryRec";
+    } else if (contractName == 'FactoryStaker') {
+        return "./zsc/factory_staker.sol:FactoryStaker";
     } else if (contractName == 'FactoryTmp') {
         return "./zsc/factory_tmp.sol:FactoryTmp";
     } else if (contractName == 'FactoryAgr') {
         return "./zsc/factory_agr.sol:FactoryAgr";
+    } else if (contractName == 'FactoryWalletEth') {
+        return "./zsc/factory_wallet_eth.sol:FactoryWalletEth";
+    } else if (contractName == 'FactoryWalletErc20') {
+        return "./zsc/factory_wallet_erc20.sol:FactoryWalletErc20";
     } else if (contractName == 'ControlApisAdv') {
         return "./zsc/control_apis_adv.sol:ControlApisAdv";
     } 
@@ -48,10 +54,16 @@ function cC_getCompiledFile(contractName) {
         return compiledFactoryPro;
     } else if (contractName == 'FactoryRec') {
         return compiledFactoryRec;
+    } else if (contractName == 'FactoryStaker') {
+        return compiledFactoryStaker;
     } else if (contractName == 'FactoryTmp') {
         return compiledFactoryTmp;
     } else if (contractName == 'FactoryAgr') {
         return compiledFactoryAgr;
+    } else if (contractName == 'FactoryWalletEth') {
+        return compiledFactoryWalletEth;
+    } else if (contractName == 'FactoryWalletErc20') {
+        return compiledFactoryWalletErc20;
     } else if (contractName == 'ControlApisAdv') {
         return compiledApisAdv;
     }
