@@ -18,27 +18,7 @@ function ZSCSetup(logRecorderAdr, zscTokenAdr, adrs) {
     this.account = web3.eth.accounts[0];
 }
 
-ZSCSetup.prototype.showHashResult = function(elementID, hash){
-    web3.eth.getTransactionReceipt(hash, 
-    function(error, result){ 
-        if(!error) {
-            var show;
-            if (result == null) {
-                show =  "(pending)" + hash ;
-                this.howHashResult(elementID, hash, func);
-            } else {
-                if (result.status == 0) {
-                    show = "(failure)" + hash;
-                } else {
-                    show = "(succeeded)" + hash ;
-                }
-            }
-            document.getElementById(elementID).innerText = show;
-        } else {
-            console.log("error: " + error);
-        }
-    });
-} 
+ZSCSetup.prototype = new ZSCJsBase();
 
 ZSCSetup.prototype.registerListenerToLogRecorder = function(listener, listenerName, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("LogRecorder"));
