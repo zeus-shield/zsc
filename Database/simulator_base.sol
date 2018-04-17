@@ -10,6 +10,7 @@ contract SimulatorBase is Object {
     bool started_;
     bool running_ ;
     uint probability_;   //from 0 to 1000
+    bytes32 tokeSymbol_;
     address agreement_ ;
     address provider_ ;
     address receiver_;
@@ -30,12 +31,13 @@ contract SimulatorBase is Object {
         return (randValue + _min);
     }
 
-    function startSimulation(uint _probLevel, address _agreement, address _provider, address _receiver) public only_delegate(1) {
+    function startSimulation(uint _probLevel, bytes32 _tokeSymbol, address _agreement, address _provider, address _receiver) public only_delegate(1) {
         running_ = true;
         probability_ = randGen(_probLevel, 100, now);
         agreement_   = _agreement;
         provider_    = _provider;
         receiver_    = _receiver;
+        tokeSymbol_  = _tokeSymbol;
     }
 
     function doesStarted() public only_delegate(1) constant returns (bool) { 
@@ -54,8 +56,8 @@ contract SimulatorBase is Object {
         return false;
     }
 
-    function getAddressInfo() public only_delegate(1) constant returns (address, address, address) {
-        return (agreement_, provider_, receiver_);
+    function getAddressInfo() public only_delegate(1) constant returns (bytes32, address, address, address) {
+        return (tokeSymbol_, agreement_, provider_, receiver_);
     }
     
 }
