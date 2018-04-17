@@ -16,11 +16,11 @@ ZSCWalletMangement.prototype = new ZSCJsBase();
 
 ZSCUserMangement.prototype.addToken = function(tokenName, tokenSymbol,decimals, tokenAddress, hashId, func){
     this.myControlApi.registerErc20Token(tokenName, tokenSymbol,decimals, tokenAddress,
-        , {from: this.account, gas: 9000000},
-    function(error, result){ 
-        if(!error) this.howHashResult(hashId, result, func)
-        else console.log("error: " + error);
-    });
+        {from: this.account, gas: 9000000},
+        function(error, result){ 
+            if(!error) this.howHashResult(hashId, result, func);
+            else console.log("error: " + error);
+        });
 }  
 
 ZSCUserMangement.prototype.loadWalletManagementHtml = function(funcName, elementId) {
@@ -44,3 +44,47 @@ ZSCUserMangement.prototype.loadWalletManagementHtml = function(funcName, element
     document.getElementById(elementId).innerHTML = text;  
 }
 
+ZSCUserMangement.prototype.loadErcTokenInfo = function(func) {
+    this.numErcTokens(function() {
+        for (var i = 0; i < this.tokenNos; ++i) {
+            this.loadErcTokenInfoByIndex(i, function(index){
+                if (index == this.tokenNos - 1) {
+                    func();
+                }
+            });
+        }
+    });
+}
+
+ZSCUserMangement.prototype.numErcTokens = function(func) {
+    this.myControlApi.numRegisteredErc20Tokens("null",
+        {from: this.account, gas: 9000000},
+        function(error, result){ 
+            if(!error) {
+                this.tokenNos = result;
+                func();
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
+
+ZSCUserMangement.prototype.loadErcTokenInfoByIndex = function(index, func) {
+    this.myControlApi.getErc20TokenInfoByIndex(i,
+        {from: this.account, gas: 9000000},
+        function(error, result){ 
+            if(!error) {
+                this.parserTokenInfo(result, index);
+                func(index);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
+
+ZSCUserMangement.prototype.parserTokenInfoByIndex = function(str, index) {
+}
+
+
+
+    
