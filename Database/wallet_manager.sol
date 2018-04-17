@@ -98,8 +98,11 @@ contract WalletManager is Object {
         return tokenNos_;
     }
     
-    function getTokenSymbolByIndex(uint _index) public only_delegate(1) constant returns (address) {
+    function getTokenInfoByIndex(uint _index) public only_delegate(1) constant returns (bytes32, bytes32, uint, address) {
         require(_index < tokenNos_);
-        erc20Tokens_[_index].tokenAdr_;
+        return (erc20Tokens_[_index].name_, 
+                erc20Tokens_[_index].symbol_,
+                erc20Tokens_[_index].decimals_,
+                erc20Tokens_[_index].tokenAdr_);
     }
 }
