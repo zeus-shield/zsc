@@ -194,8 +194,8 @@ contract ControlApis is ControlBase {
         getWalletManager().numTokenSymbols();
     }
 
-    function getErc20TokenSymbolByIndex(bytes32 _enName, uint _index) public only_registered(_enName) constant returns (uint) {
-        getWalletManager().getTokenSymbolByIndex(_index);
+    function getErc20TokenInfoByIndex(bytes32 _enName, uint _index) public only_registered(_enName) constant returns (string) {
+        return prepareErc20TokenInfoByIndex(_index);
     }
 
     function getUserWalletAddress(bytes32 _enName, bytes32 _tokenSymbol) public only_registered(_enName) constant returns (address) {
