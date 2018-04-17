@@ -125,4 +125,13 @@ contract WalletBase is DBNode {
                 lockHistory_.locks_[index].duration_, 
                 lockHistory_.locks_[index].agreementAdr_);
     }
+
+    function doesBalanceLocked(address _agreementAdr) public only_delegate(1) constant returns (bool) {
+        return lockHistory_.locks_[lockIndice_(_agreementAdr)].locked;
+    } 
+
+    function getLockBalanceInfoByAgreement(address _agreementAdr) public only_delegate(1) constant returns (uint, uint, uint, address) {
+        uint i = lockIndice_(_agreementAdr);
+        return getLockBalanceInfoByIndex(i);
+    }
 }
