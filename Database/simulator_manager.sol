@@ -7,7 +7,13 @@ pragma solidity ^0.4.18;
 import "./simulator_base.sol";
 
 contract WalletBase is Object {
+    function getLockBalanceInfoByAgreement(address _agreementAdr) public only_delegate(1) constant returns (uint, uint, uint, address);
+    function setLockValue(bool _tag, uint _amount, uint _duration, address _agreementAdr) public only_delegate(1) returns (bool);
+    function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (bool);
+}
 
+contract DBDatabase is Object { 
+    function getNode(bytes32 _name) public only_delegate(1) constant returns (address);
 }
 
 contract SimulatorManager is Object {
@@ -15,7 +21,7 @@ contract SimulatorManager is Object {
     mapping(uint => address) private simulationRuns_;
     mapping(bytes32 => uint) private simulationIndices_;
     mapping(bytes32 => bool) private simulationExist_;
-    mapping(bytes32 => bool) private rewarded_;
+    mapping(address => bool) private rewarded_;
 
     address private bindedDB_;
     address private apiController_;
@@ -39,20 +45,20 @@ contract SimulatorManager is Object {
     }
     
     /*_proLev: 1 : 100*/
-    function addSimulationRun(bytes32 _name, uint _proLevel, address _agreement, address _provider, address _receiver) public only_delegate(1) {
-        require(simulationExist_[_name] == address(0));
+    function addSimulationRun(bytes32 _name, uint _proLevel, bytes32 _tokenSymbol, address _agreement, address _provider, address _receiver) public only_delegate(1) {
+        require(!simulationExist_[_name]);
 
         address adr = new SimulatorBase(_name);
-        SimulatorBase(adr).startSimulation(_proLevel, _agreement, _provider, _receiver);
-        simulationExist_[_name] = bool;
+        SimulatorBase(adr).startSimulation(_proLevel, _tokenSymbol, _agreement, _provider, _receiver);
+        simulationExist_[_name] = true;
         simulationIndices_[_name] = simulationNos_;
         simulationRuns_[simulationNos_] = adr;
         simulationNos_++;
-        rewarded_[_name] = false;
+        rewarded_[adr] = false;
     }
 
     function checkSimulationRun(bytes32 _name) public only_delegate(1) constant returns (bool) {
-        require(simulationExist_[_name] != address(0));
+        require(simulationExist_[_name]);
         return checkSimulationRunByIndex(simulationIndices_[_name]);
     }
 
@@ -61,7 +67,7 @@ contract SimulatorManager is Object {
 
         address adr = simulationRuns_[_index];
 
-        if (rewarded_[_name] == false) {
+        if (rewarded_[adr] == false) {
             if (SimulatorBase(adr).doesStarted()) {
                 if (SimulatorBase(adr).doesFinished()) {
                     return SimulatorBase(adr).needReward();   
@@ -70,29 +76,52 @@ contract SimulatorManager is Object {
         }
         return false;
     }
- 
-    function conductReward(bytes32 _name) public only_delegate(1) constant returns (bool) {
-        require(simulationExist_[_name] != address(0));
-        return conductRewardByIndex(simulationIndices_[_name]);
-    }
 
-    function conductRewardByIndex(uint _index) internal constant returns (bool) {
+    function getRewardWalletInfoByIndex(uint _index) private constant returns (address, address, address) {
         require(_index < simulationNos_);
 
         address sim = simulationRuns_[_index];
         address agreement;
         address provider;
         address receiver;
-        (agreement, provider, receiver) = SimulatorBase(sim).getAddressInfo();
+        bytes32 symbol;
+        (symbol, agreement, provider, receiver) = SimulatorBase(sim).getAddressInfo();
+
+        string memory strPro = PlatString.append(Object(provider).name(), "-", symbol);
+        string memory strRec = PlatString.append(Object(receiver).name(), "-", symbol);
+        address proWalletAdr = DBDatabase(bindedDB_).getNode(PlatString.tobytes32(strPro));
+        address recWalletAdr = DBDatabase(bindedDB_).getNode(PlatString.tobytes32(strRec));
+        require(proWalletAdr != address(0) && recWalletAdr != address(0));
+
+        return (agreement, proWalletAdr, recWalletAdr);
+    }
+
+    function conductReward(address _agreementAdr, address _proWalletAdr, address _recWalletAdr) private returns (bool) {
+        uint amount;
+        uint time;
+        uint duration;
+        address agreement;
+        (amount, time, duration, agreement) = WalletBase(_proWalletAdr).getLockBalanceInfoByAgreement(_agreementAdr);
+
+        WalletBase(_proWalletAdr).setLockValue(false, amount, duration, agreement);
+        if (WalletBase(_proWalletAdr).executeTransaction(_recWalletAdr, amount, "reward") == false) {
+            WalletBase(_proWalletAdr).setLockValue(true, amount, duration, agreement);
+            return false;
+        }
         return true;
     }
 
-    function runSimulation() returns(bool res) internal {
+    function runSimulation() internal returns(bool)  {
+        address agreementAdr;
+        address proWalletAdr;
+        address recWalletAdr;
         for (uint i = 0; i < simulationNos_; ++i) {
             if (checkSimulationRunByIndex(i)) {
-                conductReward(i);
+                (agreementAdr, proWalletAdr, recWalletAdr) = getRewardWalletInfoByIndex(i);
+                conductReward(agreementAdr, proWalletAdr, recWalletAdr);
             }
         }
+        return true;
     }
     
 }
