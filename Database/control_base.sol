@@ -55,7 +55,7 @@ contract WalletManager is Object {
     function getErc20TokenAddress(bytes32 _symbol) public only_delegate(1) constant returns (address);
     function removeErc20Token(bytes32 _symbol) public only_delegate(1) returns (bool);
     function numTokenSymbols() public only_delegate(1) constant returns (uint);
-    function getTokenSymbolByIndex(uint _index) public only_delegate(1) constant returns (address);
+    function getTokenInfoByIndex(uint _index) public only_delegate(1) constant returns (bytes32, bytes32, uint, address);
 }
 
 contract ControlBase is Object, ControlInfo {   
@@ -220,5 +220,21 @@ contract ControlBase is Object, ControlInfo {
         } else {
             return WalletManager(walletGM_).removeErc20Token(_symbol);
         }
+    }
+
+    function prepareErc20TokenInfoByIndex(uint _index) internal constant returns (string) {
+        bytes32 tokenName;
+        bytes32 tokenSymbol;
+        uint tokenDecimals;
+        address tokenAdr;
+        (tokenName, tokenSymbol, tokenDecimals, tokenAdr) =  WalletManager(walletGM_).getTokenInfoByIndex(_index);
+
+        string memory str ="";
+        str = PlatString.append(str, "info?name=", PlatString.bytes32ToString(tokenName),   "&");
+        str = PlatString.append(str, "symbol=",    PlatString.bytes32ToString(tokenSymbol), "&");
+        str = PlatString.append(str, "decimals=",  PlatString.uintToString(tokenDecimals),  "&");
+        str = PlatString.append(str, "adr=",       PlatString.addressToString(tokenAdr),    "&");
+        return str;
+
     }
 }
