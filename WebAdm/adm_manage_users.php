@@ -17,7 +17,7 @@ echo $htmlModules->loadScriptFiles();
 
     var AdmAdvAdr = "<?php echo $htmlModules->readModuleAddress('AdmAdv')?>";
    
-    var userManager = new ZscUserManagement(AdmAdvAdr, cC_getContractAbi('AdmAdv'));
+    var userManager = new ZSCUserMangement(AdmAdvAdr, cC_getContractAbi('AdmAdv'));
 
     function addUser(usernameId, elementId) {
         userManager.addUser(usernameId, elementId, function() {
@@ -57,6 +57,3 @@ echo $htmlModules->loadScriptFiles();
 
 </body>
 </html>
-
-adm_manage_users
-adm_mange_users
