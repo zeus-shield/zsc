@@ -46,7 +46,32 @@ ZSCWallet.prototype.loadEthBalance = function(func, locked) {
     });
 }
 
-ZSCWallet.prototype.loadTokenBalance = function(func, index, locked) {
+ZSCWallet.prototype.loadErcTokenWallets = function(func) {
+    this.numTokenWallets(function() {
+        for (var i = 0; i < this.tokenNos; ++i) {
+            this.loadTokenBalance(i, false, function(index){
+                if (index == this.tokenNos - 1) {
+                    func();
+                }
+            });
+        }
+    });
+}
+
+ZSCWallet.prototype.numTokenWallets = function(func) {
+    this.myControlApi.numRegisteredErc20Tokens("null",
+        {from: this.account, gas: 9000000},
+        function(error, result){ 
+            if(!error) {
+                this.tokenNos = result;
+                func();
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
+
+ZSCWallet.prototype.loadTokenBalance = function(index, locked, func) {
 	var symbol = this.tokenSymbol[index];
     this.myControlApi.getElementBalance(this.name, symbol, locked,
     	function(error, balance){ 
@@ -68,15 +93,4 @@ ZSCWallet.prototype.loadTokenBalance = function(func, index, locked) {
     });
 }
 
-ZSCWallet.prototype.numTokenWallets = function(func) {
-    this.myControlApi.numRegisteredErc20Tokens(this.name, 
-        {from: bF_getEthAccount()},
-        function(error, num){ 
-            if(!error) { 
-                this.parameNos = num.toString(10); 
-                func();
-            } else {
-                console.log("error: " + error);
-            }
-         });
-}
+
