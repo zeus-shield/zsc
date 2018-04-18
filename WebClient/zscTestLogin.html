@@ -15,8 +15,9 @@
     var web3 = setupWeb3js(false);
 
     var zscHtml = new ZSCHtml();
-    var zscUser = new ZSCUser();
-    var zscElement = new ZSCElement();
+    var zscUser;
+    var zscElement;
+    var zscWalletGM;
 
     /*tag:
     logon, wallet, profile, templates, agreements
@@ -29,13 +30,21 @@
     }
 
     function checkUser(adrId, userId, passId){
-        var adr = document.getElementById(adrId).value; 
+        var admAdr = document.getElementById(adrId).value; 
         var user = document.getElementById(userId).value; 
         var pass = document.getElementById(passId).value; 
-        
+
+        zscUser = new ZSCUser(admAdr);
         zscUser.tryLogin(user, pass, function(ret) {
-            if(ret) loadHtmlPageBody("welecome");
-            else alert("User name or password wrong!!");
+            if(ret) {
+                var fullAbi = zscUser.getControlApisFullAbi();
+                var controlApisAdvAdr = zscUser.getControlApisAdr();
+                zscElement  = new ZSCElement(fullAbi, controlApisAdvAdr);
+                zscWalletGM = new ZSCWallet(zscUser.getUserName, fullAbi, controlApisAdvAdr);
+                loadHtmlPageBody("welecome");
+            } else {
+                alert("User name or password wrong!!");
+            }
         });
     }
 
@@ -50,6 +59,14 @@
     }
 
     function transferEthTo(destAddressId, amountId, logId) {
+        var adr = document.getElementById(destAddressId).value; 
+        var amount = document.getElementById(amountId).value; 
+
+        zscElement.setElementName(zscUser.getUserName);
+        zscElement.transferEth(destAddress, "ETH", amount, logId);
+    }
+
+    function showErc20Tokens(destAddressId, amountId, logId) {
         var adr = document.getElementById(destAddressId).value; 
         var amount = document.getElementById(amountId).value; 
 
@@ -78,7 +95,7 @@
         if (tag == "welecome") {
             zscHtml.loadPageBody("welecome", "loadHtmlPageBody", "null");
         } else if (tag == "apply") {
-            zscElement.getUserStatusFromAdm(function(status) {
+            zscUser.getUserStatusFromAdm(function(status) {
                 if (status == 0) {
                     //Should not happen 
                 } else if (ret == "added") {
@@ -92,8 +109,12 @@
         } else if (tag == "applied") {
             zscHtml.loadWaitingApproval("reFresh", zscUser.getUserType());
         } else {
-            if (tag == "wallet") {
-                zscElement.loadEthBalance(function() {
+            if (tag == "wallet-eth") {
+                zscWalletGM.loadEthBalance(function() {
+                    zscHtml.loadPageBody(tag, "transferEthTo", "null");
+                });
+            } else if (tag == "wallet-erc20") {
+                zscWalletGM.loadErcTokenWallets(function() {
                     zscHtml.loadPageBody(tag, "transferEthTo", "null");
                 });
             } else if (tag == "profile") {
