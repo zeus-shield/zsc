@@ -4,8 +4,8 @@ Copyright (c) 2018 ZSC Dev Team
 
 function ZSCWalletMangement(adr, abi) {
     this.tokenNos = 0;
-    this.tokenSymbols = [];
     this.tokenNames = [];
+    this.tokenSymbols = [];
     this.tokenDecimals = [];
     this.tokenAdrs = [];
     this.account = web3.eth.accounts[0];
@@ -14,16 +14,21 @@ function ZSCWalletMangement(adr, abi) {
 
 ZSCWalletMangement.prototype = new ZSCJsBase();
 
-ZSCUserMangement.prototype.addToken = function(tokenName, tokenSymbol,decimals, tokenAddress, hashId, func){
-    this.myControlApi.registerErc20Token(tokenName, tokenSymbol,decimals, tokenAddress,
+ZSCUserMangement.prototype.addTokenContractInfo = function(nameId, symbolId, decimalsId, adrId, hashId, func) {
+    var tokenName    =  document.getElementById(nameId).value;
+    var tokenSymbol  =  document.getElementById(symbolId).value;
+    var decimals     =  document.getElementById(decimalsId).value;
+    var tokenAddress =  document.getElementById(adrId).value;
+
+    this.myControlApi.registerErc20Token(tokenName, tokenSymbol, decimals, tokenAddress,
         {from: this.account, gas: 9000000},
         function(error, result){ 
-            if(!error) this.howHashResult(hashId, result, func);
+            if(!error) this.showHashResult(hashId, result, func);
             else console.log("error: " + error);
         });
 }  
 
-ZSCUserMangement.prototype.loadWalletManagementHtml = function(funcName, elementId) {
+ZSCUserMangement.prototype.loadWalletManagementHtml = function(elementId) {
     var funcPrefix = funcName + '('; 
     var funcSuffix = ')"';
 
@@ -44,7 +49,7 @@ ZSCUserMangement.prototype.loadWalletManagementHtml = function(funcName, element
     document.getElementById(elementId).innerHTML = text;  
 }
 
-ZSCUserMangement.prototype.loadErcTokenInfo = function(func) {
+ZSCUserMangement.prototype.loadErcTokenContracts = function(func) {
     this.numErcTokens(function() {
         for (var i = 0; i < this.tokenNos; ++i) {
             this.loadErcTokenInfoByIndex(i, function(index){
@@ -74,7 +79,7 @@ ZSCUserMangement.prototype.loadErcTokenInfoByIndex = function(index, func) {
         {from: this.account, gas: 9000000},
         function(error, result){ 
             if(!error) {
-                this.parserTokenInfo(result, index);
+                this.parserTokenInfoByIndex(result, index);
                 func(index);
             } else {
                 console.log("error: " + error);
@@ -82,7 +87,32 @@ ZSCUserMangement.prototype.loadErcTokenInfoByIndex = function(index, func) {
         });
 }
 
-ZSCUserMangement.prototype.parserTokenInfoByIndex = function(str, index) {
+
+/*
+"info?name=", "symbol=", "decimals=", "adr=",     
+*/
+ZSCUserMangement.prototype.parserTokenInfoByIndex = function(urlinfo, index) {
+    var found1 = urlinfo.indexOf("?");
+    var found2 = urlinfo.indexOf("=");
+
+    if (found1 == -1 || found2 == -1) return false;
+
+    var len = urlinfo.length;
+    var offset = urlinfo.indexOf("?");
+    var newsidinfo = urlinfo.substr(offset,len)
+    var newsids = newsidinfo.split("&");
+
+    var namInfo      = newsids[0];
+    var symbolInfo   = newsids[1];
+    var decimalsInfo = newsids[2];
+    var addressInfo  = newsids[3];
+
+    this.tokenNames[index]    = namInfo.split("=")[1];
+    this.tokenSymbols[index]  = symbolInfo.split("=")[1];
+    this.tokenDecimals[index] = decimalsInfo.split("=")[1];
+    this.tokenAdrs[index]     = addressInfo.split("=")[1];
+
+    return true;
 }
 
 
