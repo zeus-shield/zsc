@@ -130,4 +130,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.04.13: add file WebAdm/js/zsc_setup.js
 2018.04.14-15: adjust inter-connection among different modules
 2018.04.16: add files WebAdm/js/zsc_js_base.js, WebAdm/js/zsc_printlog.js, WebAdm/js/zsc_wallet_management.js, Database/simulator_manager.sol
+2018.04.17-18: add file WebAdm/adm_manage_token_contracts.php
 ```
