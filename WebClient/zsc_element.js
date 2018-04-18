@@ -3,16 +3,19 @@ Copyright (c) 2018 ZSC Dev Team
 */
 
 //class zscElement
-function ZSCElement(nm, abi, adr) {
-    this.name = nm;
+function ZSCElement(controlApisAdvAbi, controlApisAdvAdr) {
+    this.name;
     this.parameNos = 0;
     this.ethBalance = 0;
     this.nodeAddress = 0;
     this.parameterNames = [];
     this.parameterValues = [];
-    this.myControlApi = web3.eth.contract(abi).at(adr);
+    this.myControlApi = web3.eth.contract(controlApisAdvAbi).at(controlApisAdvAdr);
 }
-ZSCElement.prototype.getName = function() { return this.name;}
+
+ZSCElement.prototype.setElementName = function(nm) {this.name = nm;}
+
+ZSCElement.prototype.getElementName = function() { return this.name;}
 
 ZSCElement.prototype.getEthBalance = function() { return this.ethBalance;}
 
