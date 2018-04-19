@@ -61,6 +61,13 @@ contract WalletManager is Object {
     function getTokenInfoByIndex(uint _index) public only_delegate(1) constant returns (bytes32, bytes32, uint, address);
 }
 
+contract SimulatorManager is Object {
+    function addSimulationRun(uint _proLevel, uint _price, bytes32 _tokenSymbol, address _agreement, address _provider, address _receiver) public only_delegate(1) returns (bytes32);
+    function checkSimulationRun(bytes32 _name) public only_delegate(1) constant returns (bool);
+    function conductReward(address _agreementAdr, address _proWalletAdr, address _recWalletAdr) private returns (bool);
+    function runSimulation() public only_delegate(1) returns(bool);
+}
+
 contract ControlBase is Object, ControlInfo {   
     mapping(uint => bytes32) private factoryTypes_;
     mapping(bytes32 => address) private factories_;
@@ -81,6 +88,17 @@ contract ControlBase is Object, ControlInfo {
     }
 
     function mapType(uint _type) internal constant returns (bytes32) { return factoryTypes_[_type]; }
+
+    function formatWalletName(bytes32 _userName, bytes32 _tokenSymbol) private constant returns (bytes32) {
+        string memory str;
+        bytes32 temp;
+        if (_tokeSymbol == "ETH") {
+            str = PlatString.append(_userName, "-ETH");
+        } else {
+            str = PlatString.append(_userName, "-", _tokeSymbol);
+        }
+        temp = PlatString.tobytes32(str);
+    }
     
     function setSystemModuleAdrs(address _adm, address _db, address _walletGM, address _simulatorGM, address _pos, address _zscToken) internal {
         require (_adm != 0 && _db != 0 && _walletGM != 0 && _pos != 0 && _zscToken != 0);     
@@ -123,6 +141,11 @@ contract ControlBase is Object, ControlInfo {
         return WalletManager(walletGM_);
     }
 
+
+    function getSimulatorManager() internal constant returns (SimulatorManager) {      
+        return SimulatorManager(simulatorGM_);
+    }
+
     function getDBNode(bytes32 _node) internal constant returns (DBNode) {      
         return DBNode(getDBDatabase().getNode(_node));
     }
@@ -134,17 +157,17 @@ contract ControlBase is Object, ControlInfo {
 
         address parentNode = getDBNode(_user).getHandler("wallet");
         address erc20Address = 0; 
-        string memory temp;
+        bytes32 temp;
 
-        if (_tokeSymbol == "ETH") {
-            temp = PlatString.append(_user, "-ETH");
-        } else {
-            temp = PlatString.append(_user, "-", _tokeSymbol);
+        temp = formatWalletName(_user, _tokeSymbol);
+
+        if (_tokeSymbol != "ETH") {
             erc20Address = WalletManager(walletGM_).getErc20TokenAddress(_tokeSymbol);
+            require(erc20Address != 0);
         }
 
         address adr;
-        adr = getDBFactory(_type).createNode(PlatString.tobytes32(temp), parentNode, _creator);
+        adr = getDBFactory(_type).createNode(temp, parentNode, _creator);
         require(adr != 0);
         registerNode(DBNode(adr).name(), adr, _creator);
 
@@ -239,5 +262,22 @@ contract ControlBase is Object, ControlInfo {
         str = PlatString.append(str, "adr=",       PlatString.addressToString(tokenAdr),    "&");
         return str;
 
+    }
+
+    function conductPurchase(bytes32 _enName, bytes32 _agrName) internal constant returns (bool) {
+        address agrAdr = address(getDBNode( _agrName));
+        bytes32 tokenSymbol = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "walletSymbol"));
+        bytes32 proName = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "provider"));
+        bytes32 price = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "price"));
+
+        address proAdr = address(getDBNode(proName));
+        address recAdr = address(getDBNode(_enName));
+
+        bytes32 runName = getSimulatorManager().addSimulationRun(70, price, tokenSymbol, agrAdr, proAdr, recAdr);
+
+        if (runName == "null") return false;
+
+        getDBNode(_agrName).setAgreementStatus("PAID", _enName);
+        return true;
     }
 }
