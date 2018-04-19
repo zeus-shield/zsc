@@ -6,7 +6,7 @@ pragma solidity ^0.4.17;
 import "./db_entity.sol";
 
 contract DBAgreement is DBEntity {
-    uint private status_; // 0: CREATED; 1: READY; 2: PUBLISHED; 3: PAID; 4: NOTPAID
+    bytes32 private status_ = "CREATE"; // 0: CREATED; 1: READY; 2: PUBLISHED; 3: PAID;
     uint private startTime_;
     uint private duration_;
     uint private price_;
@@ -27,46 +27,53 @@ contract DBAgreement is DBEntity {
     }
 
     function setParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool) {
-        if (status_ > 0)
-            return false;  
-
-        if (_parameter == "duration") {
-            duration = PlatString.stringToUint(_value);
-        } else if (_parameter == "walletSymbol") {
-            walletSymbol_ = PlatString.tobytes32(_value);
-        } else if (_parameter == "price") {
-            price_ = PlatString.stringToUint(_value);
-        } else if (_parameter == "fefund (%)") {
-            refundPercentage_ = PlatString.stringToUint(_value);
-        } else if (_parameter == "provider") {
-            return false;
-        } else if (_parameter == "receiver") {
+        if (status_ == "CREATED" || status_ == "READY") {
+            if (_parameter == "duration") {
+                duration = PlatString.stringToUint(_value);
+            } else if (_parameter == "walletSymbol") {
+                walletSymbol_ = PlatString.tobytes32(_value);
+            } else if (_parameter == "price") {
+                price_ = PlatString.stringToUint(_value);
+            } else if (_parameter == "fefund (%)") {
+                refundPercentage_ = PlatString.stringToUint(_value);
+            } else if (_parameter == "provider") {
+                return false;
+            } else if (_parameter == "receiver") {
+                return false;
+            }
+            return super.setParameter(_parameter, _value);
+        } else {
             return false;
         }
-        return super.setParameter(_parameter, _value);
     }
 
     function addParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool) {
-        if (status_ > 0)  
-            return false;  
-        return super.addParameter(_parameter, _value);
+        if (status_ == "CREATED") {
+            return super.addParameter(_parameter, _value);
+        } else {
+            return false;
+        }
     }
 
     function removeParameter(bytes32 _parameter) public only_delegate(1) returns (bool) {
-        if (status_ > 0 )
-            return false; 
-        return super.removeParameter(_parameter);
+        if (status_ == "CREATED") {
+            return super.removeParameter(_parameter);
+        } else {
+            return false;
+        }
     }
 
     function setAgreementStatus(bytes32 _tag, bytes32 _receiver) public only_delegate(1) returns (bool) {
-        if (status_ > 2) return false;
+        if (status_ == "PAID") return false;
 
-        if(status_ == 0 && _tag == "READY") {
-            status_ = 1;
-        } else if (status_ == 1 && _tag == "PUBLISHED") {
-            status_ = 2;
-        } else if (status_ == 2 && _tag == "READY") {
-            status_ = 3;
+        if(status_ == "CREATED" && _tag == "READY") {
+            super.setParameter("status", "READY");
+            status_ = "READY";
+        } else if (status_ == "READY" && _tag == "PUBLISHED") {
+            super.setParameter("status", "PUBLISHED");
+            status_ = "PUBLISHED";
+        } else if (status_ == "PUBLISHED" && _tag == "PAID") {
+            status_ = "PAID";
             startTime_ = now;
             endTime_ = startTime_ + duration_;
     
