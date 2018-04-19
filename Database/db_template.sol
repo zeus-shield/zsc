@@ -34,8 +34,12 @@ contract DBTemplate is DBEntity {
 
     function setParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool) {
         if (numChildren() > 0) return false; 
+
+        if (_parameter = "provider") return false;
+        
         if (addedProvider_ == false) {
-            addedProvider_ = name();
+            addedProvider_ = true;
+            super.setParameter("provider", name());
         }
         return super.setParameter(_parameter, _value);
     }
