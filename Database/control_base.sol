@@ -43,6 +43,9 @@ contract DBNode is Object {
     function setAgreementStatus(bytes32 _tag, bytes32 receiver) public only_delegate(1) returns (bool);
     function configureHandlers() public only_delegate(1) returns (bool);
     function getHandler(bytes32 _type) public only_delegate(1) constant returns (address);
+
+    function numChildren() public only_delegate(1) constant returns(uint);
+    function getChildByIndex(uint _index) public only_delegate(1) constant returns(address);
 }
 
 contract PosManager is Object {
