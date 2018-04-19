@@ -177,7 +177,7 @@ contract ControlApis is ControlBase {
     /// @param _enName The receiver name
     /// @param _agrName The agreement name
     function purchaseAgreement(bytes32 _enName, bytes32 _agrName) public only_registered(_enName) returns (bool) {
-        return getDBNode(_agrName).setAgreementStatus("PUBLISHED", _enName);
+        return conductPurchase(_enName, _agrName); 
     }
 
     function numTemplates(bytes32 _userName) public only_registered(_userName) constant returns (uint) {
@@ -190,7 +190,7 @@ contract ControlApis is ControlBase {
         return Object(adr).name();
     }
 
-    function numAgreement(bytes32 _userName) public only_registered(_userName) constant returns (uint) {
+    function numAgreements(bytes32 _userName) public only_registered(_userName) constant returns (uint) {
         address adr = getDBNode(_userName).getHandler("agreement");
         return DBNode(adr).numChildren();
     }
