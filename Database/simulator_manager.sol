@@ -7,6 +7,7 @@ pragma solidity ^0.4.18;
 import "./simulator_base.sol";
 
 contract WalletBase is Object {
+    function getBlance(bool _locked) public only_delegate(1) constant returns (uint256);
     function getLockBalanceInfoByAgreement(address _agreementAdr) public only_delegate(1) constant returns (uint, uint, uint, address);
     function setLockValue(bool _tag, uint _amount, uint _duration, address _agreementAdr) public only_delegate(1) returns (bool);
     function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (bool);
@@ -26,7 +27,6 @@ contract SimulatorManager is Object {
     address private bindedDB_;
     address private apiController_;
 
-
     function SimulatorManager(bytes32 _name) public Object(_name) {
         simulationNos_ = 0;
     }
@@ -43,18 +43,34 @@ contract SimulatorManager is Object {
             setDelegate(_controller, 1);
         }
     }
-    
-    /*_proLev: 1 : 100*/
-    function addSimulationRun(bytes32 _name, uint _proLevel, bytes32 _tokenSymbol, address _agreement, address _provider, address _receiver) public only_delegate(1) {
-        require(!simulationExist_[_name]);
 
-        address adr = new SimulatorBase(_name);
+    function formatSimulationName() private constant returns (bytes32) {
+        string memory str = PlatString.uintToString(1000 + simulationNos_);
+        return PlatString.tobytes32(str);
+    }
+    
+    function checkPayable(uint _price, bytes32 _tokenSymbol, address _buyer) {
+        string memory strRec = PlatString.append(Object(_buyer).name(), "-", _tokenSymbol);
+        address recWalletAdr = DBDatabase(bindedDB_).getNode(PlatString.tobytes32(strRec));
+        uint freeBalance = WalletBase(recWalletAdr).getBlance(false) - WalletBase(recWalletAdr).getBlance(true);
+        return (freeBalance >= _price);
+    }
+
+    /*_proLev: 1 : 100*/
+    function addSimulationRun(uint _proLevel, uint _price, bytes32 _tokenSymbol, address _agreement, address _provider, address _receiver) public only_delegate(1) returns (bytes32) {
+        bytes32 runName = formatSimulationName();
+        require(!simulationExist_[runName]);
+
+        if (!checkPayable(_price, _tokenSymbol, _receiver)) return "null";
+
+        address adr = new SimulatorBase(runName);
         SimulatorBase(adr).startSimulation(_proLevel, _tokenSymbol, _agreement, _provider, _receiver);
-        simulationExist_[_name] = true;
-        simulationIndices_[_name] = simulationNos_;
+        simulationExist_[runName] = true;
+        simulationIndices_[runName] = simulationNos_;
         simulationRuns_[simulationNos_] = adr;
         simulationNos_++;
         rewarded_[adr] = false;
+        return runName;
     }
 
     function checkSimulationRun(bytes32 _name) public only_delegate(1) constant returns (bool) {
@@ -111,7 +127,7 @@ contract SimulatorManager is Object {
         return true;
     }
 
-    function runSimulation() internal returns(bool)  {
+    function runSimulation() public only_delegate(1) returns (bool) {
         address agreementAdr;
         address proWalletAdr;
         address recWalletAdr;
