@@ -160,29 +160,47 @@ contract ControlApis is ControlBase {
     }
 
     /// @dev Get the name of the element binded to the element by index
-    /// @param _enName The name of the existing element
+    /// @param _userName The name of the element holder
     /// @param _enType The type of the element
     /// @param _index The index of the template
-    function getBindedElementNameByIndex(bytes32 _enName, uint _enType, uint _index) public only_registered(_enName) constant returns (bytes32) {
-        return getDBNode(_enName).getBindedEntityNameByIndex(mapType(_enType), _index);
+    function getBindedElementNameByIndex(bytes32 _userName, bytes32 _eleName, uint _enType, uint _index) public only_registered(_userName) constant returns (bytes32) {
+        return getDBNode(_eleName).getBindedEntityNameByIndex(mapType(_enType), _index);
     }
 
     /// @dev Announce an insurance agreement by a provider
-    /// @param _agreement The agreement name
-    /// @param _tag The announcement status
-    function announceInsurance(bytes32 _agreement, bool _tag) public only_registered(_agreement) returns (bool) {
-        if (_tag) return getDBNode(_agreement).setAgreementStatus("PUBLISHED", "null");
-        else return getDBNode(_agreement).setAgreementStatus("READY", "null");
+    /// @param _agrName The agreement name
+    function publishAgreement(bytes32 _userName, bytes32 _agrName) public only_registered(_userName) returns (bool) {
+        return getDBNode(_agrName).setAgreementStatus("PUBLISHED", "null");
     }
 
     /// @dev Buy an insurance agreement with Eth from a provider
     /// @param _enName The receiver name
-    /// @param _agreement The agreement name
-    function purchaseInsurance(bytes32 _enName, bytes32 _agreement) public only_registered(_enName) returns (bool) {
-        return getDBNode(_agreement).setAgreementStatus("PUBLISHED", _enName);
+    /// @param _agrName The agreement name
+    function purchaseAgreement(bytes32 _enName, bytes32 _agrName) public only_registered(_enName) returns (bool) {
+        return getDBNode(_agrName).setAgreementStatus("PUBLISHED", _enName);
     }
 
-    function registerErc20Token(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool) {
+    function numTemplates(bytes32 _userName) public only_registered(_userName) constant returns (uint) {
+        address adr = getDBNode(_userName).getHandler("template");
+        return DBNode(adr).numChildren();
+    }
+
+    function getTemplateNameByIndex(bytes32 _userName, uint _index) public only_registered(_userName) constant returns (bytes32) {
+        address adr = getDBNode(_userName).getChildByIndex(_index);
+        return Object(adr).name();
+    }
+
+    function numAgreement(bytes32 _userName) public only_registered(_userName) constant returns (uint) {
+        address adr = getDBNode(_userName).getHandler("agreement");
+        return DBNode(adr).numChildren();
+    }
+
+    function getAgreementNameByIndex(bytes32 _userName, uint _index) public only_registered(_userName) constant returns (bytes32) {
+        address adr = getDBNode(_userName).getChildByIndex(_index);
+        return Object(adr).name();
+    }
+
+    function registerErc20Token(bytes32 _symbol, bytes32 _name, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool) {
         return manageErc20TokenContract(true, _name, _symbol, _decimals, _tokenAdr);
     }
 
