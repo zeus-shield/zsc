@@ -57,8 +57,9 @@ contract WalletManager is Object {
     function addErc20Token(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool);
     function getErc20TokenAddress(bytes32 _symbol) public only_delegate(1) constant returns (address);
     function removeErc20Token(bytes32 _symbol) public only_delegate(1) returns (bool);
+    function getTokenInfoByIndex(uint _index) public only_delegate(1) constant returns (bytes32, bytes32, bytes32, uint, address);
+    function enableTokenByHolder(bytes32 _tokenSymbol, bytes32 _nodeName, address _nodeAddress) public only_delegate(1) returns (bool);
     function numTokenSymbols() public only_delegate(1) constant returns (uint);
-    function getTokenInfoByIndex(uint _index) public only_delegate(1) constant returns (bytes32, bytes32, uint, address);
 }
 
 contract SimulatorManager is Object {
@@ -167,16 +168,14 @@ contract ControlBase is Object, ControlInfo {
             require(erc20Address != 0);
         }
 
-        address adr;
-        adr = getDBFactory(_type).createNode(temp, parentNode, _creator);
-        require(adr != 0);
-        registerNode(DBNode(adr).name(), adr, _creator);
+        address walletAdr = getDBFactory(_type).createNode(temp, parentNode, _creator);
+        require(walletAdr != 0);
+        registerNode(DBNode(walletAdr).name(), walletAdr, _creator);
 
-        if (erc20Address != 0) {
-            DBNode(adr).setERC20TokenAddress(erc20Address);
-        }
+        DBNode(walletAdr).setERC20TokenAddress(erc20Address);
+        WalletManager(walletGM_).enableTokenByHolder(_tokeSymbol, DBNode(walletAdr).name(), walletAdr);
 
-        return adr;
+        return walletAdr;
     }
 
     function createFactoryNode(bytes32 _type, bytes32 _nodeName, bytes32 _extra, address _creator) internal returns (address) {
@@ -251,13 +250,15 @@ contract ControlBase is Object, ControlInfo {
 
     function prepareErc20TokenInfoByIndex(uint _index) internal constant returns (string) {
         bytes32 tokenName;
+        bytes32 status;
         bytes32 tokenSymbol;
         uint tokenDecimals;
         address tokenAdr;
-        (tokenName, tokenSymbol, tokenDecimals, tokenAdr) =  WalletManager(walletGM_).getTokenInfoByIndex(_index);
+        (tokenName, status, tokenSymbol, tokenDecimals, tokenAdr) =  WalletManager(walletGM_).getTokenInfoByIndex(_index);
 
         string memory str ="";
         str = PlatString.append(str, "info?name=", PlatString.bytes32ToString(tokenName),   "&");
+        str = PlatString.append(str, "status=",    PlatString.bytes32ToString(status),      "&");
         str = PlatString.append(str, "symbol=",    PlatString.bytes32ToString(tokenSymbol), "&");
         str = PlatString.append(str, "decimals=",  PlatString.uintToString(tokenDecimals),  "&");
         str = PlatString.append(str, "adr=",       PlatString.addressToString(tokenAdr),    "&");
