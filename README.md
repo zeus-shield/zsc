@@ -78,6 +78,7 @@ Official implementation for the solidity-based core part of the ZSC system, as w
     |-- zsc_html 
     |-- zsc_user
     |-- zsc_element
+    |-- zsc_wallet
 ```
 
 ## .sol update log
@@ -131,4 +132,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.04.14-15: adjust inter-connection among different modules
 2018.04.16: add files WebAdm/js/zsc_js_base.js, WebAdm/js/zsc_printlog.js, WebAdm/js/zsc_wallet_management.js, Database/simulator_manager.sol
 2018.04.17-18: add file WebAdm/adm_manage_token_contracts.php
+2018.04.19-20: add file WebClient/zsc_html.js and WebClient/zsc_wallet.js;updated solidity based core modules with focus on Agreement and Wallet, 
 ```
