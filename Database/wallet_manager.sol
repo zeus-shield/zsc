@@ -9,8 +9,9 @@ import "./object.sol";
 contract WalletManager is Object {
     struct Erc20Token {
         bytes32 name_;  
+        bytes32 status_;
         bytes32 symbol_ ;
-        uint  decimals_;
+        uint    decimals_;
         address tokenAdr_;
     }
 
@@ -55,16 +56,9 @@ contract WalletManager is Object {
         if (erc20TokenExists_[_symbol]) return false;
 
         erc20TokenIndice_[_symbol] = tokenNos_;
-        erc20Tokens_[tokenNos_] = Erc20Token(_name, _symbol, _decimals, _tokenAdr);
+        erc20Tokens_[tokenNos_] = Erc20Token("true", _name, _symbol, _decimals, _tokenAdr);
         tokenNos_++;
         return true;
-    }
-
-    function getTokenAddress(bytes32 _symbol) public only_delegate(1) constant returns (address) {
-        require(erc20TokenExists_[_symbol]);
-        
-        uint index = erc20TokenIndice_[_symbol];
-        return erc20Tokens_[index].tokenAdr_;
     }
 
     function removeToken(bytes32 _symbol) public only_delegate(1) returns (bool) {
@@ -77,20 +71,31 @@ contract WalletManager is Object {
         tokenNos_--;
     }
 
-    function addTokenHolder(bytes32 _nodeName, address _nodeAddress) public only_delegate(1) returns (bool) {
-        if (holderExists_[_nodeName]) return false;
+    function disableToken(bytes32 _symbol) public only_delegate(1) returns (bool) {
+        if (!erc20TokenExists_[_symbol]) return false;
+        
+        uint index = erc20TokenIndice_[_symbol];
+        erc20Tokens_[index].status_ = "false";
+    }
+
+    function getTokenAddress(bytes32 _symbol) public only_delegate(1) constant returns (address) {
+        require(erc20TokenExists_[_symbol]);
+        
+        uint index = erc20TokenIndice_[_symbol];
+        return erc20Tokens_[index].tokenAdr_;
+    }
+
+    function enableTokenByHolder(bytes32 _tokenSymbol, bytes32 _nodeName, address _nodeAddress) public only_delegate(1) returns (bool) {
+        require(erc20TokenExists_[_tokenSymbol]);
+        require(!holderExists_[_nodeName]);
+
+        uint tokenIndex = erc20TokenIndice_[_tokenSymbol];
+        uint holderIndex = holderIndices_[_nodeName];
 
         holderExists_[_nodeName] = true;
         holderIndices_[_nodeName] = holderNos_;
         tokenHoders_[holderNos_].name_ = _nodeName;
         tokenHoders_[holderNos_].adr_ = _nodeAddress;
-    }
-
-    function enableTokenByHolder(bytes32 _nodeName, bytes32 _tokenSymbol) public only_delegate(1) returns (bool) {
-        require(erc20TokenExists_[_tokenSymbol] && holderExists_[_nodeName]);
-
-        uint tokenIndex = erc20TokenIndice_[_tokenSymbol];
-        uint holderIndex = holderIndices_[_nodeName];
         tokenHoders_[holderIndex].enabledTokens_[tokenIndex] = true;   
     }
 
@@ -98,9 +103,10 @@ contract WalletManager is Object {
         return tokenNos_;
     }
     
-    function getTokenInfoByIndex(uint _index) public only_delegate(1) constant returns (bytes32, bytes32, uint, address) {
+    function getTokenInfoByIndex(uint _index) public only_delegate(1) constant returns (bytes32, bytes32, bytes32, uint, address) {
         require(_index < tokenNos_);
         return (erc20Tokens_[_index].name_, 
+                erc20Tokens_[_index].status_, 
                 erc20Tokens_[_index].symbol_,
                 erc20Tokens_[_index].decimals_,
                 erc20Tokens_[_index].tokenAdr_);
