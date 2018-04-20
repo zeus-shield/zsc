@@ -52,7 +52,11 @@ contract WalletManager is Object {
         }
     }
 
-    function addToken(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool) {
+    function doesTokenContractAdded(bytes32 _symbol) public only_delegate(1) constant returns (bool) {
+        return erc20TokenExists_[_symbol];
+    }
+
+    function addTokenContract(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool) {
         if (erc20TokenExists_[_symbol]) return false;
 
         erc20TokenIndice_[_symbol] = tokenNos_;
@@ -61,7 +65,7 @@ contract WalletManager is Object {
         return true;
     }
 
-    function removeToken(bytes32 _symbol) public only_delegate(1) returns (bool) {
+    function removeTokenContract(bytes32 _symbol) public only_delegate(1) returns (bool) {
         if (!erc20TokenExists_[_symbol]) return false;
         
         uint index = erc20TokenIndice_[_symbol];
@@ -71,14 +75,14 @@ contract WalletManager is Object {
         tokenNos_--;
     }
 
-    function disableToken(bytes32 _symbol) public only_delegate(1) returns (bool) {
+    function disableTokenContract(bytes32 _symbol) public only_delegate(1) returns (bool) {
         if (!erc20TokenExists_[_symbol]) return false;
         
         uint index = erc20TokenIndice_[_symbol];
         erc20Tokens_[index].status_ = "false";
     }
 
-    function getTokenAddress(bytes32 _symbol) public only_delegate(1) constant returns (address) {
+    function getTokenContractAddress(bytes32 _symbol) public only_delegate(1) constant returns (address) {
         require(erc20TokenExists_[_symbol]);
         
         uint index = erc20TokenIndice_[_symbol];
@@ -99,7 +103,7 @@ contract WalletManager is Object {
         tokenHoders_[holderIndex].enabledTokens_[tokenIndex] = true;   
     }
 
-    function numTokenSymbols() public only_delegate(1) constant returns (uint) {
+    function numTokenContracts() public only_delegate(1) constant returns (uint) {
         return tokenNos_;
     }
     
