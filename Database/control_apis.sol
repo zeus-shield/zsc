@@ -170,14 +170,7 @@ contract ControlApis is ControlBase {
     /// @dev Announce an insurance agreement by a provider
     /// @param _agrName The agreement name
     function publishAgreement(bytes32 _userName, bytes32 _agrName) public only_registered(_userName) returns (bool) {
-        return getDBNode(_agrName).setAgreementStatus("PUBLISHED", "null");
-    }
-
-    /// @dev Buy an insurance agreement with Eth from a provider
-    /// @param _enName The receiver name
-    /// @param _agrName The agreement name
-    function purchaseAgreement(bytes32 _enName, bytes32 _agrName) public only_registered(_enName) returns (bool) {
-        return conductPurchase(_enName, _agrName); 
+        return conductPublishInsurance(_agrName, msg.sender);
     }
 
     function numTemplates(bytes32 _userName) public only_registered(_userName) constant returns (uint) {
@@ -200,6 +193,18 @@ contract ControlApis is ControlBase {
         return Object(adr).name();
     }
 
+    function deleteAgreementByIndex(bytes32 _userName, uint _index) public only_registered(_userName) returns (bool) {
+        address adr = getDBNode(_userName).getChildByIndex(_index);
+        return deleteAgreement(Object(adr).name());
+    }
+
+    /// @dev Buy an insurance agreement from a provider
+    /// @param _enName The receiver name
+    /// @param _agrName The agreement name
+    function purchaseAgreement(bytes32 _enName, bytes32 _agrName) public only_registered(_enName) returns (bool) {
+        return conductPurchaseInsurance(_enName, _agrName); 
+    }
+
     function registerErc20Token(bytes32 _symbol, bytes32 _name, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool) {
         return manageErc20TokenContract(true, _name, _symbol, _decimals, _tokenAdr);
     }
@@ -209,7 +214,7 @@ contract ControlApis is ControlBase {
     }
 
     function numRegisteredErc20Tokens(bytes32 _enName) public only_registered(_enName) constant returns (uint) {
-        getWalletManager().numTokenSymbols();
+        getWalletManager().numTokenContracts();
     }
 
     function getErc20TokenInfoByIndex(bytes32 _enName, uint _index) public only_registered(_enName) constant returns (string) {
