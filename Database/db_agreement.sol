@@ -20,27 +20,14 @@ contract DBAgreement is DBEntity {
     }
 
     function initParameters() internal {
-        addParameter("status");
-        addParameter("startTime");
-        addParameter("endTime");
-        addParameter("receiver");
+        super.addParameter("status");
+        super.addParameter("startTime");
+        super.addParameter("endTime");
+        super.addParameter("receiver");
     }
 
     function setParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool) {
-        if (status_ == "CREATED" || status_ == "READY") {
-            if (_parameter == "duration") {
-                duration = PlatString.stringToUint(_value);
-            } else if (_parameter == "walletSymbol") {
-                walletSymbol_ = PlatString.tobytes32(_value);
-            } else if (_parameter == "price") {
-                price_ = PlatString.stringToUint(_value);
-            } else if (_parameter == "fefund (%)") {
-                refundPercentage_ = PlatString.stringToUint(_value);
-            } else if (_parameter == "provider") {
-                return false;
-            } else if (_parameter == "receiver") {
-                return false;
-            }
+        if (status_ == "CREATED") {
             return super.setParameter(_parameter, _value);
         } else {
             return false;
@@ -56,11 +43,7 @@ contract DBAgreement is DBEntity {
     }
 
     function removeParameter(bytes32 _parameter) public only_delegate(1) returns (bool) {
-        if (status_ == "CREATED") {
-            return super.removeParameter(_parameter);
-        } else {
-            return false;
-        }
+        return false;
     }
 
     function setAgreementStatus(bytes32 _tag, bytes32 _receiver) public only_delegate(1) returns (bool) {
@@ -77,8 +60,7 @@ contract DBAgreement is DBEntity {
             startTime_ = now;
             endTime_ = startTime_ + duration_;
     
-            super.setParameter("receiver", _receiver);
-            super.setParameter("status", "PAID");
+            super.setParameter("receiver", PlatString.bytes32ToString(_receiver));
             super.setParameter("startTime", PlatString.uintToString(startTime_));
             super.setParameter("endTime", PlatString.uintToString(endTime_));
         } else {
