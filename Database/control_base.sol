@@ -17,6 +17,7 @@ contract DBDatabase is Object {
     function checkeNodeByAddress(address _adr) public only_delegate(1) constant returns (bool);
     function numNodes() public only_delegate(1) constant returns (uint);
     function getNodeByIndex(uint _index) public only_delegate(1) constant returns (address);
+    function destroyNode(address _node) public only_delegate(1) returns (bool);
 }
 
 contract DBNode is Object {
@@ -54,12 +55,15 @@ contract PosManager is Object {
 }
 
 contract WalletManager is Object {
-    function addErc20Token(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool);
-    function getErc20TokenAddress(bytes32 _symbol) public only_delegate(1) constant returns (address);
-    function removeErc20Token(bytes32 _symbol) public only_delegate(1) returns (bool);
-    function getTokenInfoByIndex(uint _index) public only_delegate(1) constant returns (bytes32, bytes32, bytes32, uint, address);
+    function initWalletManager(address _controller, address _database) public only_delegate(1);
+    function doesTokenContractAdded() public only_delegate(1) constant returns (bool);
+    function addTokenContract(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool);
+    function removeTokenContract(bytes32 _symbol) public only_delegate(1) returns (bool);
+    function disableTokenContract(bytes32 _symbol) public only_delegate(1) returns (bool);
+    function getTokenContractAddress(bytes32 _symbol) public only_delegate(1) constant returns (address);
     function enableTokenByHolder(bytes32 _tokenSymbol, bytes32 _nodeName, address _nodeAddress) public only_delegate(1) returns (bool);
-    function numTokenSymbols() public only_delegate(1) constant returns (uint);
+    function numTokenContracts() public only_delegate(1) constant returns (uint);
+    function getTokenInfoByIndex(uint _index) public only_delegate(1) constant returns (bytes32, bytes32, bytes32, uint, address);
 }
 
 contract SimulatorManager is Object {
@@ -164,7 +168,7 @@ contract ControlBase is Object, ControlInfo {
         temp = formatWalletName(_user, _tokeSymbol);
 
         if (_tokeSymbol != "ETH") {
-            erc20Address = WalletManager(walletGM_).getErc20TokenAddress(_tokeSymbol);
+            erc20Address = WalletManager(walletGM_).getTokenContractAddress(_tokeSymbol);
             require(erc20Address != 0);
         }
 
@@ -242,9 +246,9 @@ contract ControlBase is Object, ControlInfo {
 
     function manageErc20TokenContract(bool _doesAdd, bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) internal returns (bool) {
         if (_doesAdd) {
-            return WalletManager(walletGM_).addErc20Token(_name, _symbol, _decimals, _tokenAdr);
+            return WalletManager(walletGM_).addTokenContract(_name, _symbol, _decimals, _tokenAdr);
         } else {
-            return WalletManager(walletGM_).removeErc20Token(_symbol);
+            return WalletManager(walletGM_).removeTokenContract(_symbol);
         }
     }
 
@@ -266,7 +270,7 @@ contract ControlBase is Object, ControlInfo {
 
     }
 
-    function conductPurchase(bytes32 _enName, bytes32 _agrName) internal returns (bool) {
+    function conductPurchaseInsurance(bytes32 _enName, bytes32 _agrName) internal returns (bool) {
         address agrAdr = address(getDBNode( _agrName));
         bytes32 tokenSymbol = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "walletSymbol"));
         bytes32 proName = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "provider"));
@@ -281,5 +285,24 @@ contract ControlBase is Object, ControlInfo {
 
         getDBNode(_agrName).setAgreementStatus("PAID", _enName);
         return true;
+    }
+
+    function conductPublishInsurance(bytes32 _agrName, address _creator) internal returns (bool) {
+        bytes32 tokenSymbol = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "walletSymbol"));
+        if (tokenSymbol == "ETH") {
+            enableWallet("wallet-eth", _agrName, tokenSymbol, _creator);
+        } else {
+            if (!WalletManager(walletGM_).doesTokenContractAdded()) {
+                return false;
+            } else {
+                enableWallet("wallet-erc20", _agrName, tokenSymbol, _creator);
+            }
+        }
+        getDBNode(_agrName).setAgreementStatus("PUBLISHED", "null");
+    }
+
+    function deleteAgreement(bytes32 _agrName) internal returns (bool) {
+        address adr = address(getDBNode(_agrName));
+        return DBDatabase(bindedDB_).destroyNode(adr);
     }
 }
