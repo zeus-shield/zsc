@@ -49,7 +49,7 @@ contract SimulatorManager is Object {
         return PlatString.tobytes32(str);
     }
     
-    function checkPayable(uint _price, bytes32 _tokenSymbol, address _buyer) {
+    function checkPayable(uint _price, bytes32 _tokenSymbol, address _buyer) private constant returns (bool) {
         string memory strRec = PlatString.append(Object(_buyer).name(), "-", _tokenSymbol);
         address recWalletAdr = DBDatabase(bindedDB_).getNode(PlatString.tobytes32(strRec));
         uint freeBalance = WalletBase(recWalletAdr).getBlance(false) - WalletBase(recWalletAdr).getBlance(true);

@@ -81,21 +81,22 @@ contract ControlBase is Object, ControlInfo {
     function ControlBase(bytes32 _name) public Object(_name) {
         factoryTypes_[1] = "provider";
         factoryTypes_[2] = "receiver";
-        factoryTypes_[3] = "template";
-        factoryTypes_[4] = "agreement";
-        factoryTypes_[5] = "wallet-eth";
-        factoryTypes_[6] = "wallet-erc20";
+        factoryTypes_[3] = "staker";
+        factoryTypes_[4] = "template";
+        factoryTypes_[5] = "agreement";
+        factoryTypes_[6] = "wallet-eth";
+        factoryTypes_[7] = "wallet-erc20";
     }
 
     function mapType(uint _type) internal constant returns (bytes32) { return factoryTypes_[_type]; }
 
-    function formatWalletName(bytes32 _userName, bytes32 _tokenSymbol) private constant returns (bytes32) {
+    function formatWalletName(bytes32 _userName, bytes32 _tokenSymbol) private pure returns (bytes32) {
         string memory str;
         bytes32 temp;
-        if (_tokeSymbol == "ETH") {
+        if (_tokenSymbol == "ETH") {
             str = PlatString.append(_userName, "-ETH");
         } else {
-            str = PlatString.append(_userName, "-", _tokeSymbol);
+            str = PlatString.append(_userName, "-", _tokenSymbol);
         }
         temp = PlatString.tobytes32(str);
     }
@@ -264,11 +265,11 @@ contract ControlBase is Object, ControlInfo {
 
     }
 
-    function conductPurchase(bytes32 _enName, bytes32 _agrName) internal constant returns (bool) {
+    function conductPurchase(bytes32 _enName, bytes32 _agrName) internal returns (bool) {
         address agrAdr = address(getDBNode( _agrName));
         bytes32 tokenSymbol = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "walletSymbol"));
         bytes32 proName = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "provider"));
-        bytes32 price = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "price"));
+        uint price = PlatString.stringToUint(getControlInfoParameterValue(_agrName, "price"));
 
         address proAdr = address(getDBNode(proName));
         address recAdr = address(getDBNode(_enName));
