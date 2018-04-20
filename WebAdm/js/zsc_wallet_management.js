@@ -5,6 +5,7 @@ Copyright (c) 2018 ZSC Dev Team
 function ZSCWalletMangement(adr, abi) {
     this.tokenNos = 0;
     this.tokenNames = [];
+    this.tokenStatus = [];
     this.tokenSymbols = [];
     this.tokenDecimals = [];
     this.tokenAdrs = [];
@@ -14,7 +15,7 @@ function ZSCWalletMangement(adr, abi) {
 
 ZSCWalletMangement.prototype = new ZSCJsBase();
 
-ZSCUserMangement.prototype.addTokenContractInfo = function(nameId, symbolId, decimalsId, adrId, hashId, func) {
+ZSCWalletMangement.prototype.addTokenContractInfo = function(nameId, symbolId, decimalsId, adrId, hashId, func) {
     var tokenName    =  document.getElementById(nameId).value;
     var tokenSymbol  =  document.getElementById(symbolId).value;
     var decimals     =  document.getElementById(decimalsId).value;
@@ -28,19 +29,20 @@ ZSCUserMangement.prototype.addTokenContractInfo = function(nameId, symbolId, dec
         });
 }  
 
-ZSCUserMangement.prototype.loadWalletManagementHtml = function(elementId) {
+ZSCWalletMangement.prototype.loadWalletManagementHtml = function(elementId) {
     var funcPrefix = funcName + '('; 
     var funcSuffix = ')"';
 
     var text = '<table align="center" style="width:800px;min-height:30px">'
     text += '<tr>'
-    text += '   <td><text>Name</text></td>  <td><text>Sysmbol</text></td>  <td><text>Decimals</text></td>  <td><text>Address</text></td> '
+    text += '   <td><text>Name</text></td> <td><text>Actived</text></td>  <td><text>Sysmbol</text></td>  <td><text>Decimals</text></td>  <td><text>Address</text></td> '
     text += '</tr><tr>'
 
     for (var i = 0; i < this.userNos; ++i) {
         var name = this.userName[i];
         var hashId = this.userName[i] + "Hash"
         text += '   <td><text>' + this.tokenNames[i]    + '</text></td>'
+        text += '   <td><text>' + this.tokenStatus[i]    + '</text></td>'
         text += '   <td><text>' + this.tokenSymbols[i]  + '</text></td>'
         text += '   <td><text>' + this.tokenDecimals[i]    + '</text></td>'
         text += '   <td><text>' + this.tokenAdrs[i]      + '</text></td>'
@@ -49,7 +51,7 @@ ZSCUserMangement.prototype.loadWalletManagementHtml = function(elementId) {
     document.getElementById(elementId).innerHTML = text;  
 }
 
-ZSCUserMangement.prototype.loadErcTokenContracts = function(func) {
+ZSCWalletMangement.prototype.loadErcTokenContracts = function(func) {
     this.numErcTokens(function() {
         for (var i = 0; i < this.tokenNos; ++i) {
             this.loadErcTokenInfoByIndex(i, function(index){
@@ -61,7 +63,7 @@ ZSCUserMangement.prototype.loadErcTokenContracts = function(func) {
     });
 }
 
-ZSCUserMangement.prototype.numErcTokens = function(func) {
+ZSCWalletMangement.prototype.numErcTokens = function(func) {
     this.myControlApi.numRegisteredErc20Tokens("null",
         {from: this.account, gas: 9000000},
         function(error, result){ 
@@ -74,7 +76,7 @@ ZSCUserMangement.prototype.numErcTokens = function(func) {
         });
 }
 
-ZSCUserMangement.prototype.loadErcTokenInfoByIndex = function(index, func) {
+ZSCWalletMangement.prototype.loadErcTokenInfoByIndex = function(index, func) {
     this.myControlApi.getErc20TokenInfoByIndex(i,
         {from: this.account, gas: 9000000},
         function(error, result){ 
@@ -103,11 +105,13 @@ ZSCUserMangement.prototype.parserTokenInfoByIndex = function(urlinfo, index) {
     var newsids = newsidinfo.split("&");
 
     var namInfo      = newsids[0];
-    var symbolInfo   = newsids[1];
-    var decimalsInfo = newsids[2];
-    var addressInfo  = newsids[3];
+    var statusInfo   = newsids[1];
+    var symbolInfo   = newsids[2];
+    var decimalsInfo = newsids[3];
+    var addressInfo  = newsids[4];
 
     this.tokenNames[index]    = namInfo.split("=")[1];
+    this.tokenStatus[index]   = statusInfo.split("=")[1];
     this.tokenSymbols[index]  = symbolInfo.split("=")[1];
     this.tokenDecimals[index] = decimalsInfo.split("=")[1];
     this.tokenAdrs[index]     = addressInfo.split("=")[1];
