@@ -10,10 +10,12 @@ contract SimulatorBase is Object {
     bool started_;
     bool running_ ;
     uint probability_;   //from 0 to 1000
+    uint agrPrice_;
+    uint proLockedAmount_;
     bytes32 tokeSymbol_;
-    address agreement_ ;
-    address provider_ ;
-    address receiver_;
+    address agrWalletAdr_ ;
+    address proWalletAdr_ ;
+    address recWalletAdr_;
     
     uint private randSeed = 0;
 
@@ -31,13 +33,14 @@ contract SimulatorBase is Object {
         return (randValue + _min);
     }
 
-    function startSimulation(uint _probLevel, bytes32 _tokeSymbol, address _agreement, address _provider, address _receiver) public only_delegate(1) {
-        running_ = true;
-        probability_ = randGen(_probLevel, 100, now);
-        agreement_   = _agreement;
-        provider_    = _provider;
-        receiver_    = _receiver;
-        tokeSymbol_  = _tokeSymbol;
+    function startSimulation(uint _probLevel, uint _price, uint _lockedAmount, address _agrWallet, address _proWallet, address _recWallet) public only_delegate(1) {
+        running_         = true;
+        probability_     = randGen(_probLevel, 100, now);
+        agrPrice_        = _price;
+        proLockedAmount_ = _lockedAmount;
+        agrWalletAdr_    = _agrWallet;
+        proWalletAdr_    = _proWallet;
+        recWalletAdr_    = _recWallet;
     }
 
     function doesStarted() public only_delegate(1) constant returns (bool) { 
@@ -48,7 +51,7 @@ contract SimulatorBase is Object {
         return (!running_);
     } 
 
-    function needReward() public only_delegate(1) constant returns (bool) {
+    function needClaim() public only_delegate(1) constant returns (bool) {
         uint rand = randGen(0, 100, now);
         if (rand < probability_) {
             return true;
@@ -56,8 +59,24 @@ contract SimulatorBase is Object {
         return false;
     }
 
-    function getAddressInfo() public only_delegate(1) constant returns (bytes32, address, address, address) {
-        return (tokeSymbol_, agreement_, provider_, receiver_);
+    function getAgreementPrice() public only_delegate(1) constant returns (uint) {
+        return agrPrice_;
+    }
+
+    function getProviderLockedAmount() public only_delegate(1) constant returns (uint) {
+        return proLockedAmount_;
+    }
+
+    function getWalletAddress(bytes32 _type) public only_delegate(1) constant returns (address) {
+        if (_type == "proivder") {
+            return proWalletAdr_;
+        } else if (_type == "agreement") {
+            return agrWalletAdr_;
+        } else if (_type == "receiver") {
+            return recWalletAdr_;
+        } else {
+            return 0;
+        }
     }
     
 }
