@@ -13,7 +13,7 @@ contract WalletBase is DBNode {
         address sender_;
         address receiver_;
         uint256 amount_;
-        bytes data_;
+        bytes32 data_;
     }
 
     struct PaymentHistory {
@@ -21,43 +21,30 @@ contract WalletBase is DBNode {
         uint256 total_;
         mapping(uint => Payment) payments_;
     }
-    
-    struct LockInfo {
-        bool locked_;
-        uint amount_;
-        uint time_;
-        uint duration_;
-        address agreementAdr_;
-    }
-
-    struct LockHistory {
-        uint nos_;
-        mapping(uint => LockInfo) locks_;
-    }
 
     PaymentHistory private inputHistory_;
     PaymentHistory private outHistory_;
     
-    uint private lockedNos_;
-    uint private lockedValue_;
-    mapping(uint => LockInfo) privatelockHistory_;
-    mapping(address => uint) private lockIndice_;
-
     bool private isEthAccount_;
-    uint private totalValue_;
+    uint lokedValue_;
 
     // Constructor
     function WalletBase(bytes32 _name) public DBNode(_name) {
         isEthAccount_ = false;
-        totalValue_ = 0;
-        lockedValue_ = 0;
-        lockedNos_ = 0;
+        lokedValue_ = 0;
+        unlockedValue_= 0;
     }
 
     function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (bool);
 
     function setAsEthAccount() internal {
         isEthAccount_ = true;
+    }
+
+    function increaseValue(bool _isLocked, uint _amount) internal returns (bool) {
+        if (_isLocked) {
+            lokedValue_ += _amount;
+        } 
     }
 
     function checkBeforeSent(address _dst, uint _amount) internal returns (bool) {
@@ -68,70 +55,30 @@ contract WalletBase is DBNode {
         }
     }
 
-    function recordInput(address _sender, bytes32 _tx, uint _amount, bytes _data) internal {
+    function recordInput(address _sender, bytes32 _tx, uint _amount, bytes32 _data) internal {
         uint index = inputHistory_.nos_;
         inputHistory_.nos_++;
         inputHistory_.total_ += _amount;
-        paymentHistory_.payments_[index] = Payment(now, _tx, _sender, this, _amount, _data);
+        paymentHistory_.payments_[index] = Payment(now, _tx, _sender, address(this), _amount, _data);
+
+        if (_data == "locked") {
+            increaseValue(true, _amount);
+        } else if (_data == "unlocked") {
+            increaseValue(false, _amount);
+        }
     }
 
-    function recordOut(address _sender, bytes32 _tx, uint _amount, bytes _data) internal {
+    function recordOut(address _sender, bytes32 _tx, uint _amount, bytes32 _data) internal {
         require(inputHistory_.total_ >= _amount);
         uint index = outHistory_.nos_;
         inputHistory_.total_ -= _amount;
         outHistory_.nos_++;
         outHistory_.total_ += _amount;
-        outHistory_.payments_[index] = Payment(now, _tx, _sender, this, _amount, _data);
-    }
-
-    function lockValue(uint _amount, uint _duration, address _agreementAdr) private returns (bool) {
-        if (totalValue_ - lockedValue_ < _amount) {
-            return false;
-        }
-
-        uint index = lockedNos_;
-        lockedNos__++;
-        lockHistory_[index] = LockInfo(true, _amount, now, _duration, _agreementAdr);
-        lockIndice_[_agreementAdr] = index;
-        lockedValue_ += _amount;
-        return true;
-    }
-
-    function unlockValue(address _agreementAdr) private returns (bool) {
-        uint index = lockIndice_[_agreementAdr];
-        require(lockedValue_ >= lockHistory_[index].amount_);
-        lockedValue_ -= lockHistory_[index].amount_;
-        lockHistory_[index].locked_ = false;
-        return true;
-    }
-
-    function setLockValue(bool _tag, uint _amount, uint _duration, address _agreementAdr) public only_delegate(1) returns (bool) {
-        if (_tag) {
-            return lockValue(_amount, _duration, _agreementAdr);
-        } esle {
-            return unlockValue( _agreementAdr);
-        }
+        outHistory_.payments_[index] = Payment(now, _tx, _sender, address(this), _amount, _data);
     }
 
     function getBlance(bool _locked) public only_delegate(1) constant returns (uint256) {
         if (_locked) return lockedValue_;
-        else return totalValue_;
-    }
-
-    function getLockBalanceInfoByIndex(uint _index) public only_delegate(1) constant returns (uint, uint, uint, address) {
-        require(_index < lockHistory_.nos_)
-        return (lockHistory_.locks_[index].amount_, 
-                lockHistory_.locks_[index].time_, 
-                lockHistory_.locks_[index].duration_, 
-                lockHistory_.locks_[index].agreementAdr_);
-    }
-
-    function doesBalanceLocked(address _agreementAdr) public only_delegate(1) constant returns (bool) {
-        return lockHistory_.locks_[lockIndice_(_agreementAdr)].locked;
-    } 
-
-    function getLockBalanceInfoByAgreement(address _agreementAdr) public only_delegate(1) constant returns (uint, uint, uint, address) {
-        uint i = lockIndice_(_agreementAdr);
-        return getLockBalanceInfoByIndex(i);
+        else return PaymentHistory.total_;
     }
 }
