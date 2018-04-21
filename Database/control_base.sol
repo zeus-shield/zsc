@@ -47,6 +47,7 @@ contract DBNode is Object {
 
     function numChildren() public only_delegate(1) constant returns(uint);
     function getChildByIndex(uint _index) public only_delegate(1) constant returns(address);
+    function addChild(address _node) public only_delegate(1) returns (address);
 }
 
 contract PosManager is Object {
@@ -67,9 +68,7 @@ contract WalletManager is Object {
 }
 
 contract SimulatorManager is Object {
-    function addSimulationRun(uint _proLevel, uint _price, bytes32 _tokenSymbol, address _agreement, address _provider, address _receiver) public only_delegate(1) returns (bytes32);
-    function checkSimulationRun(bytes32 _name) public only_delegate(1) constant returns (bool);
-    function conductReward(address _agreementAdr, address _proWalletAdr, address _recWalletAdr) private returns (bool);
+    function addSimulationRun(uint _proLevel, uint _price, uint _lockedAmount, address _agrWallet, address _proWallet, address _recWallet) public only_delegate(1) returns (bytes32);
     function runSimulation() public only_delegate(1) returns(bool);
 }
 
@@ -272,14 +271,15 @@ contract ControlBase is Object, ControlInfo {
 
     function conductPurchaseAgreement(bytes32 _enName, bytes32 _agrName) internal returns (bool) {
         address agrAdr = address(getDBNode( _agrName));
-        bytes32 tokenSymbol = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "walletSymbol"));
         bytes32 proName = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "provider"));
         uint price = PlatString.stringToUint(getControlInfoParameterValue(_agrName, "price"));
+        uint lockedAmount = PlatString.stringToUint(getControlInfoParameterValue(_agrName, "lockedAmount"));
 
         address proAdr = address(getDBNode(proName));
         address recAdr = address(getDBNode(_enName));
 
-        bytes32 runName = getSimulatorManager().addSimulationRun(70, price, tokenSymbol, agrAdr, proAdr, recAdr);
+        bytes32 runName = getSimulatorManager().addSimulationRun(70, price, lockedAmount, agrAdr, proAdr, recAdr);
+        DBNode(recAdr).addChild(agrAdr);
 
         if (runName == "null") return false;
 
