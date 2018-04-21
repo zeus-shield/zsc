@@ -20,15 +20,18 @@ contract DBUser is DBEntity {
 
         DBNode(nd).setDelegate(address(this), 1);
         DBNode(nd).setId(getId());
-        addChild(nd);
+        super.addChild(nd);
 
         return nd;
     }
 
     function configureHandlers() public only_delegate(1) returns (bool) {
-        handlers_["wallet"] = configureSingleHandle("-wallet");
-        handlers_["template"] = configureSingleHandle("-tmp");
-        handlers_["agreement"] = configureSingleHandle("-agree");
+        bytes32 nodeType = getNodeType();
+        if (nodeType == "provider") {
+            handlers_["wallet"] = configureSingleHandle("-wallet");
+            handlers_["template"] = configureSingleHandle("-tmp");
+            handlers_["agreement"] = configureSingleHandle("-agree");
+        }
     }
 
     function getHandler(bytes32 _type) public only_delegate(1) constant returns (address) {
