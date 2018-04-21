@@ -18,11 +18,11 @@ contract WalletEth is WalletBase {
         if (msg.value < (1 ether) / 100) {
             revert();
         } else {
-            recordInput(msg.sender, 0, msg.value, msg.data);
+            recordInput(msg.sender, 0, msg.value, PlatString.tobytes32(msg.data));
         }
     }
 
-    function getBlance((bool _locked)) public only_delegate(1) constant returns (uint256) {
+    function getBlance(bool _locked) public only_delegate(1) constant returns (uint256) {
         if (_locked) { 
             return super.getBlance(true);
         } else {
@@ -34,7 +34,7 @@ contract WalletEth is WalletBase {
         require(checkBeforeSent(_dest, _amount));        
 
         if (_dest.call.value(_value)(_data)) {
-            recordOut(address(this), _dest, _amount, _data);
+            recordOut(address(this), _dest, _amount, PlatString.tobytes32(msg.data));
             return true;
         } else {
             return false;
