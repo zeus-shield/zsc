@@ -170,7 +170,7 @@ contract ControlApis is ControlBase {
     /// @dev Announce an insurance agreement by a provider
     /// @param _agrName The agreement name
     function publishAgreement(bytes32 _userName, bytes32 _agrName) public only_registered(_userName) returns (bool) {
-        return conductPublishInsurance(_agrName, msg.sender);
+        return conductPublishAgreement(_userName, _agrName, msg.sender);
     }
 
     function numTemplates(bytes32 _userName) public only_registered(_userName) constant returns (uint) {
@@ -202,7 +202,7 @@ contract ControlApis is ControlBase {
     /// @param _enName The receiver name
     /// @param _agrName The agreement name
     function purchaseAgreement(bytes32 _enName, bytes32 _agrName) public only_registered(_enName) returns (bool) {
-        return conductPurchaseInsurance(_enName, _agrName); 
+        return conductPurchaseAgreement(_enName, _agrName); 
     }
 
     function registerErc20Token(bytes32 _symbol, bytes32 _name, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool) {
