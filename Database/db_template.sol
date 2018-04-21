@@ -19,17 +19,19 @@ contract DBTemplate is DBEntity {
         addParameter("duration");
         addParameter("walletSymbol");
         addParameter("price");
-        addParameter("fefund (%)");
+        addParameter("refund (%)");
         addParameter("duration");
         addParameter("provider");
+        addParameter("lockedAmount") = true;
 
         fundamentalParas_["automatic"]    = true;
         fundamentalParas_["duration"]     = true;
         fundamentalParas_["walletSymbol"] = true;
         fundamentalParas_["price"]        = true;
-        fundamentalParas_["fefund (%)"]   = true;
+        fundamentalParas_["refund (%)"]   = true;
         fundamentalParas_["duration"]     = true;
         fundamentalParas_["provider"]     = true;
+        fundamentalParas_["lockedAmount"] = true;
     }
 
     function setParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool) {
