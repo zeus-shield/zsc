@@ -184,13 +184,34 @@ contract ControlApis is ControlBase {
     }
 
     function numAgreements(bytes32 _userName) public only_registered(_userName) constant returns (uint) {
-        address adr = getDBNode(_userName).getHandler("agreement");
-        return DBNode(adr).numChildren();
+        bytes32 userType = getDBNode(_userName).getNodeType();
+        address userAdr = address(getDBNode(_userName));
+        address agrAdr; 
+        
+        if (userType == "provider") {
+            agrAdr = DBNode(userAdr).getHandler("agreement");
+            return DBNode(agrAdr).numChildren();
+        } else if (userType == "receiver") {
+            return DBNode(userAdr).numChildren();
+        } else if (userType == "staker") {
+            return 0;
+        }
     }
 
     function getAgreementNameByIndex(bytes32 _userName, uint _index) public only_registered(_userName) constant returns (bytes32) {
-        address adr = getDBNode(_userName).getChildByIndex(_index);
-        return Object(adr).name();
+        bytes32 userType = getDBNode(_userName).getNodeType();
+        address userAdr = address(getDBNode(_userName));
+        address agrAdr; 
+
+        if (userType == "provider") {
+            agrAdr = getDBNode(_userName).getChildByIndex(_index);
+            return Object(agrAdr).name();
+        } else if (userType == "receiver") {
+            agrAdr = DBNode(userAdr).getChildByIndex(_index);
+            return Object(agrAdr).name();
+        } else if (userType == "staker") {
+            return "null";
+        }
     }
 
     function deleteAgreementByIndex(bytes32 _userName, uint _index) public only_registered(_userName) returns (bool) {
