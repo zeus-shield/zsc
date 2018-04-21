@@ -270,7 +270,7 @@ contract ControlBase is Object, ControlInfo {
 
     }
 
-    function conductPurchaseInsurance(bytes32 _enName, bytes32 _agrName) internal returns (bool) {
+    function conductPurchaseAgreement(bytes32 _enName, bytes32 _agrName) internal returns (bool) {
         address agrAdr = address(getDBNode( _agrName));
         bytes32 tokenSymbol = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "walletSymbol"));
         bytes32 proName = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "provider"));
@@ -287,22 +287,45 @@ contract ControlBase is Object, ControlInfo {
         return true;
     }
 
-    function conductPublishInsurance(bytes32 _agrName, address _creator) internal returns (bool) {
+    function conductPublishAgreement(bytes32 _userName, bytes32 _agrName, address _creator) internal returns (bool) {
         bytes32 tokenSymbol = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "walletSymbol"));
+        address userWallet = address(getDBNode(formatWalletName(_userName, tokenSymbol)));
+        address agrWallet; 
         if (tokenSymbol == "ETH") {
-            enableWallet("wallet-eth", _agrName, tokenSymbol, _creator);
+            agrWallet = enableWallet("wallet-eth", _agrName, tokenSymbol, _creator);
         } else {
             if (!WalletManager(walletGM_).doesTokenContractAdded()) {
                 return false;
             } else {
-                enableWallet("wallet-erc20", _agrName, tokenSymbol, _creator);
+                agrWallet = enableWallet("wallet-erc20", _agrName, tokenSymbol, _creator);
             }
         }
+
+        require(agrWallet != address(0));
+        uint lockedAmount = PlatString.stringToUint(getControlInfoParameterValue(_agrName, "lockedAmount"));
+
+        DBNode(userWallet).executeTransaction(agrWallet, lockedAmount, "");
         getDBNode(_agrName).setAgreementStatus("PUBLISHED", "null");
     }
 
     function deleteAgreement(bytes32 _agrName) internal returns (bool) {
-        address adr = address(getDBNode(_agrName));
-        return DBDatabase(bindedDB_).destroyNode(adr);
+        address agrAdr = address(getDBNode(_agrName));
+        require(agrAdr != address(0));
+
+        bytes32 status = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "status"));
+        if (status == "PAID") return false;
+
+        address agrWallet = address(getDBNode(formatWalletName(_agrName, tokenSymbol)));
+        require(agrWallet != address(0));
+
+        bytes32 tokenSymbol = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "walletSymbol"));
+        bytes32 proName     = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "provider"));
+        uint lockedAmount   = PlatString.stringToUint(getControlInfoParameterValue(_agrName, "lockedAmount"));
+
+        address userWallet = address(getDBNode(formatWalletName(proName, tokenSymbol)));
+        require(userWallet != address(0));
+
+        DBNode(userWallet).executeTransaction(userWallet, lockedAmount, "");
+        return DBDatabase(bindedDB_).destroyNode(agrAdr);
     }
 }
