@@ -30,7 +30,7 @@ contract WalletErc20 is WalletBase {
         require(checkBeforeSent(_dest, _amount));
     
         if (ERC20Interface(_erc20TokenAdr).transfer(_dest, _value)) {
-            recordOut(address(this), _dest, _amount, _data);
+            recordOut(address(this), _dest, _amount, PlatString.tobytes32(msg.data));
             return true;
         } else {
             return false;
