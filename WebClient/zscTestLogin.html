@@ -9,7 +9,10 @@
 <script type="text/javascript" src="./web3js.js"></script>
 <script type="text/javascript" src="./userFunctions.js"></script>
 <script type="text/javascript" src="./basicFunctions.js"></script>
-<script type="text/javascript" src="./htmlFormat.js"></script>
+<script type="text/javascript" src="./zsc_element.js"></script>
+<script type="text/javascript" src="./zsc_user.js"></script>
+<script type="text/javascript" src="./zsc_wallet.js"></script>
+<script type="text/javascript" src="./zsc_html.js"></script>
 <script type="text/javascript">
 
     var web3 = setupWeb3js(false);
@@ -58,13 +61,13 @@
         loadHtmlPageBody("apply");
     }
 
-    function transferValue(tag, destAddressId, amountId, logId) {
+    function transferValue(destAddressId, amountId, logId) {
         var adr = document.getElementById(destAddressId).value; 
         var amount = document.getElementById(amountId).value; 
 
         ZSCWalletGM.transferValue(destAddress, amount, logId);
 
-        loadHtmlPageBody(tag);
+        loadHtmlPageBody("wallet");
     }
 
     function showErc20Tokens(destAddressId, amountId, logId) {
@@ -91,7 +94,7 @@
 
     function loadHtmlPageBody(tag) {
         document.getElementById("PageBody").innerHTML = "";  
-        zscHtml.loadPageHeader();
+        zscHtml.loadPageHeader("loadHtmlPageBody");
 
         if (tag == "welecome") {
             zscHtml.loadPageBody("welecome", "loadHtmlPageBody", "null");
@@ -110,13 +113,9 @@
         } else if (tag == "applied") {
             zscHtml.loadWaitingApproval("reFresh", zscUser.getUserType());
         } else {
-            if (tag == "wallet-eth") {
-                zscWalletGM.loadEthBalance(function(balance) {
-                    zscHtml.loadPageBody(tag, "transferEthTo", balance);
-                });
-            } else if (tag == "wallet-erc20") {
-                zscWalletGM.loadErcTokenWallets(function() {
-                    zscHtml.loadPageBody(tag, "showErc20Tokens", "null");
+            if (tag == "wallet") {
+                zscWalletGM.loadTokenWallets(function() {
+                    zscHtml.loadPageBody(tag, "transferEthTo", ZSCWalletGM);
                 });
             } else if (tag == "profile") {
                 zscElement.loadParameterNamesAndvalues(function() {
