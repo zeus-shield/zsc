@@ -50,31 +50,22 @@ contract DBAgreement is DBEntity {
         if (status_ == "PAID") return false;
 
         if(status_ == "CREATED" && _tag == "READY") {
-            super.setParameter("status", "READY");
             status_ = "READY";
         } else if (status_ == "READY" && _tag == "PUBLISHED") {
-            super.setParameter("status", "PUBLISHED");
             status_ = "PUBLISHED";
         } else if (status_ == "PUBLISHED" && _tag == "PAID") {
             status_ = "PAID";
             startTime_ = now;
             endTime_ = startTime_ + duration_;
-    
+
             super.setParameter("receiver", PlatString.bytes32ToString(_receiver));
             super.setParameter("startTime", PlatString.uintToString(startTime_));
             super.setParameter("endTime", PlatString.uintToString(endTime_));
         } else {
             return false;
         }
-        return super.setParameter("status",  _tag);
-    }
-
-    function checkSenderType(bytes32 _type, bytes32 _sender) internal {
-        uint nos = numBindedEntities(_type);
-        for (uint i = 0; i < nos; ++i) {
-            if (_sender == getBindedEntityNameByIndex(_type, i)) return true;
-        }        
-        return false;
+        super.setParameter("status",  _tag);
+        return true;
     }
  }
 
