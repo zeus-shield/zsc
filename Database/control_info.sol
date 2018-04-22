@@ -25,8 +25,11 @@ contract ControlInfo is Object {
     function ControlInfo() public {}
     
     function checkAllowedUser(bytes32 _nodeName) internal constant returns (bool);
+    function addAllowedUsr(bytes32 _node) internal returns (bool);
 
     function onlyRegisteredOrDelegated(bytes32 _nodeName, address _sender) internal constant returns (bool) {
+        if (!checkAllowedUser(_nodeName)) return false;
+        
         return (_sender == nodeParameters_[_nodeName].creator_ || isDelegate(_sender, 1)); 
     }
 
@@ -36,7 +39,8 @@ contract ControlInfo is Object {
     }
 
     function registerNode(bytes32 _nodeName, address _nodeAdr, address _creator) internal {
-        require(!nodeExists_[_nodeName]);        
+        require(!nodeExists_[_nodeName]);   
+        addAllowedUsr(_nodeName);     
         nodeParameters_[_nodeName].nodeAdr_ = _nodeAdr;
         nodeParameters_[_nodeName].creator_ = _creator;
     }
