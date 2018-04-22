@@ -34,7 +34,8 @@ contract DBNode is Object {
     function numParameters() public only_delegate(1) constant returns (uint);
     function getParameterNameByIndex(uint _index) public only_delegate(1) constant returns (bytes32);
 
-    function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (bool);
+    function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (uint);
+    function informTransaction(address _src, address _dest, uint256 _amount) only_delegate(1) only_delegate(1) public;
     function setERC20TokenAddress(address _tokenAdr) only_delegate(1) public;
 
     function bindEntity(address _adr) only_delegate(1) public;
@@ -306,25 +307,31 @@ contract ControlBase is Object, ControlInfo {
         return str;
     }
 
-    function conductPurchaseAgreement(bytes32 _enName, bytes32 _agrName) internal returns (bool) {
-        address agrAdr = address(getDBNode( _agrName));
-        bytes32 proName = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "provider"));
-        uint price = PlatString.stringToUint(getControlInfoParameterValue(_agrName, "price"));
-        uint lockedAmount = PlatString.stringToUint(getControlInfoParameterValue(_agrName, "lockedAmount"));
+    function conductPurchaseAgreement(bytes32 _enName, bytes32 _agrName) internal returns (uint) {
+        address agrAdr      = address(getDBNode( _agrName));
+        bytes32 proName     = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "provider"));
+        uint price          = PlatString.stringToUint(getControlInfoParameterValue(_agrName, "price"));
+        uint lockedAmount   = PlatString.stringToUint(getControlInfoParameterValue(_agrName, "lockedAmount"));
+        bytes32 tokenSymbol = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "walletSymbol"));
 
         address proAdr = address(getDBNode(proName));
         address recAdr = address(getDBNode(_enName));
 
+        address recWallet = address(getDBNode(formatWalletName(_enName, tokenSymbol)));
+        address agrWallet = address(getDBNode(formatWalletName(_agrName, tokenSymbol)));
+        uint purchaseAount = DBNode(recWallet).executeTransaction(agrWallet, price, "");
+
+        if (purchaseAount == 0) return 0;
+
         bytes32 runName = getSimulatorManager().addSimulationRun(70, price, lockedAmount, agrAdr, proAdr, recAdr);
         DBNode(recAdr).addChild(agrAdr);
 
-        if (runName == "null") return false;
-
+        require(runName != "null");
         getDBNode(_agrName).setAgreementStatus("PAID", _enName);
-        return true;
+        return purchaseAount;
     }
 
-    function conductPublishAgreement(bytes32 _userName, bytes32 _agrName, address _creator) internal returns (bool) {
+    function conductPublishAgreement(bytes32 _userName, bytes32 _agrName, address _creator) internal returns (uint) {
         bytes32 tokenSymbol = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "walletSymbol"));
         address userWallet = address(getDBNode(formatWalletName(_userName, tokenSymbol)));
         address agrWallet; 
@@ -332,7 +339,7 @@ contract ControlBase is Object, ControlInfo {
             agrWallet = enableWallet("wallet-eth", _agrName, tokenSymbol, _creator);
         } else {
             if (!WalletManager(walletGM_).doesTokenContractAdded()) {
-                return false;
+                return 0;
             } else {
                 agrWallet = enableWallet("wallet-erc20", _agrName, tokenSymbol, _creator);
             }
@@ -341,8 +348,18 @@ contract ControlBase is Object, ControlInfo {
         require(agrWallet != address(0));
         uint lockedAmount = PlatString.stringToUint(getControlInfoParameterValue(_agrName, "lockedAmount"));
 
-        DBNode(userWallet).executeTransaction(agrWallet, lockedAmount, "");
+        uint amount = DBNode(userWallet).executeTransaction(agrWallet, lockedAmount, "");
         getDBNode(_agrName).setAgreementStatus("PUBLISHED", "null");
+
+        return amount;
+    }
+
+    function conductInformTransaction(bytes32 _enName, address _dest, uint256 _amount) internal only_delegate(1) returns (bool) {
+        bytes32 destName = Object(_dest).name();
+        bytes32 tokenSymbol = PlatString.tobytes32(getControlInfoParameterValue(destName, "walletSymbol"));
+        address userWallet = address(getDBNode(formatWalletName(_enName, tokenSymbol)));
+        DBNode(_dest).informTransaction(userWallet, _dest, _amount);
+        return true;
     }
 
     function deleteAgreement(bytes32 _agrName) internal returns (bool) {
