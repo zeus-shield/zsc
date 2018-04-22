@@ -61,11 +61,8 @@ ZSCHtml.prototype.loadPageBody = function(tag, funcName, extra) {
         case "apply": 
             text = this.loadButtonForEnablingElement(funcName); 
             break;
-        case "wallet-eth": 
-            text = this.loadWalletEth(funcName);
-            break;
-        case "wallet-erc20": 
-            text = this.loadWallet(tag, funcName);
+        case "wallet": 
+            text = this.loadWallet(funcName, extra);
             break;
         case "profile": 
             text = this.loadParameters(funcName, extra);
@@ -116,23 +113,40 @@ ZSCHtml.prototype.loadButtonForEnablingElement = function(funcName) {
     this.setHtmlContent(this.pageBodyId, text);  
 }
 
-ZSCHtml.prototype.loadWalletEth = function(funcName)  {
-    var functionInput = funcName + "('wallet-eth', DestAddress', 'EthAmount', 'TransferEthHash')";
+ZSCHtml.prototype.loadWallets = function(funcName, extra)  {
+    var funcPrefix = funcName + "('"; 
+    var funcSuffix = "')";
+    var walletObj = extra;
+    var symbol;
+    var adr;
+    var balance;
+    var hashId;
+
     var text ="";
     text += '<div class="well">';
-    text += '   <text>' + "TestETH: " + web3.fromWei(balance) + ': </text><br>'
-    text += '   <text>' + "Address: " + address + ': </text><br><br>'
-    text += '   <text>Destination Address</text>  <input id="DestAddress"></input> <br>'
-    text += '   <text>Eth Amount</text> <input id="EthAmount"></input> <br><br>'   
-    text += '   <button type="button" onClick="' + functionInput + '">Transfer ETH</button>'
-    text += '   <text id="TransferEthHash"></text>'
-    text += '</div>'
-    return text;
-}
+    text += '<table align="center" style="width:800px;min-height:30px">'
+    text += '<tr>'
+    text += '   <td><text>Symbol</text></td> <td><text>Balance</text></td>  <td><text>Address</text></td>  <td><text>Sent To</text></td> <td>Amount</td> <td></td> '
+    text += '</tr><tr>'
 
-ZSCHtml.prototype.loadWalletErc20 = function(funcName)  {
-    var functionInput = funcName + "('wallet-erc20', 'DestAddress', 'EthAmount', 'TransferEthHash')";
-    var text ="";
+    for (var i = 0; i < walletObj.getTokenNos(); ++i) {
+        symbol = walletObj.getTokenSymbol(i);
+        adr = walletObj.getTokenAddress(i);
+        balance = walletObj.getTokenBalance(i);
+        hashId = symbol + "Hash";
+        sentoId = symbol + "Dest";
+        amountId = symbol + "Amount";
+        text += '   <td><text>' + symbol + '</text></td>'
+        text += '   <td><text>' + balance + '</text></td>'
+        text += '   <td><text>' + adr  + '</text></td>'
+        text += '   <td><input id="' + sentoId + '"></input> <td>'   
+        text += '   <td><input id="' + amountId + '"></input> <td>'   
+        text += '   <td><button type="button" onClick="' + funcPrefix + "'" + sentoId + "', '" + amountId + "', '" + hashId + "'" + funcSuffix + '">Show</button></td>'
+        text += '   <td><text id="'+ hashId + '"></text></td>'
+    }
+    text += '</tr>'
+    text += '</div>'
+
     return text;
 }
 
