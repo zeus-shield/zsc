@@ -58,12 +58,13 @@
         loadHtmlPageBody("apply");
     }
 
-    function transferEthTo(destAddressId, amountId, logId) {
+    function transferValue(tag, destAddressId, amountId, logId) {
         var adr = document.getElementById(destAddressId).value; 
         var amount = document.getElementById(amountId).value; 
 
-        zscElement.setElementName(zscUser.getUserName);
-        zscElement.transferEth(destAddress, "ETH", amount, logId);
+        ZSCWalletGM.transferValue(destAddress, amount, logId);
+
+        loadHtmlPageBody(tag);
     }
 
     function showErc20Tokens(destAddressId, amountId, logId) {
@@ -110,12 +111,12 @@
             zscHtml.loadWaitingApproval("reFresh", zscUser.getUserType());
         } else {
             if (tag == "wallet-eth") {
-                zscWalletGM.loadEthBalance(function() {
-                    zscHtml.loadPageBody(tag, "transferEthTo", "null");
+                zscWalletGM.loadEthBalance(function(balance) {
+                    zscHtml.loadPageBody(tag, "transferEthTo", balance);
                 });
             } else if (tag == "wallet-erc20") {
                 zscWalletGM.loadErcTokenWallets(function() {
-                    zscHtml.loadPageBody(tag, "transferEthTo", "null");
+                    zscHtml.loadPageBody(tag, "showErc20Tokens", "null");
                 });
             } else if (tag == "profile") {
                 zscElement.loadParameterNamesAndvalues(function() {
