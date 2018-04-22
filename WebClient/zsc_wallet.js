@@ -9,9 +9,12 @@ function ZSCWallet(nm, abi, adr) {
     this.tokenSymbol = [];
     this.tokenAddress = [];
     this.tokenBalance = [];
+    this.tokenStatus = [];
     this.myControlApi = web3.eth.contract(abi).at(adr);
 }
 ZSCWallet.prototype.getUserName = function() {return this.userName;}
+
+ZSCWallet.prototype.getTokenStatus = function(index) { return this.tokenStatus[index];}
 
 ZSCWallet.prototype.getTokenSymbol = function(index) { return this.tokenSymbol[index];}
 
@@ -77,7 +80,6 @@ ZSCWallet.prototype.loadTokenInfoByIndex = function(index, func) {
 /*
 "info?status=", "symbol=", "adr=", "balance=",    
 */
-"info?status=", "symbol=", "adr=", "balance=",    
 ZSCWallet.prototype.parserTokenBalanceInfoByIndex = function(urlinfo, index) {
     var found1 = urlinfo.indexOf("?");
     var found2 = urlinfo.indexOf("=");
@@ -94,9 +96,10 @@ ZSCWallet.prototype.parserTokenBalanceInfoByIndex = function(urlinfo, index) {
     var adrInfo      = newsids[2];
     var balanceInfo  = newsids[3];
 
-    this.tokenSymbols[index]  = symbolInfo.split("=")[1];
-    this.tokenAdrs[index]     = adrInfo.split("=")[1];
-    this.tokenBalance         = balanceInfo.split("=")[1];
+    this.tokenStatus[index]  = statusInfo.split("=")[1];
+    this.tokenSymbols[index] = symbolInfo.split("=")[1];
+    this.tokenAdrs[index]    = adrInfo.split("=")[1];
+    this.tokenBalance        = balanceInfo.split("=")[1];
     return true;
 }
 
