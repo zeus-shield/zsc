@@ -88,12 +88,12 @@ ZSCUserMangement.prototype.parserUserInfo = function(info) {
 }
 
 ZSCUserMangement.prototype.loadUserManagementHtml = function(funcName, elementId) {
-    var funcPrefix = funcName + '('; 
-    var funcSuffix = ')"';
+    var funcPrefix = funcName + "('"; 
+    var funcSuffix = "')";
 
     var text = '<table align="center" style="width:800px;min-height:30px">'
     text += '<tr>'
-    text += '   <td><text>user name</text></td>  <td><text>user type</text></td>  <td><text>user status</text></td>  <td><text>user id</text></td> <td><text>user zsc wallet</text></td>'
+    text += '   <td><text>user name</text></td>  <td><text>user type</text></td>  <td><text>user status</text></td>  <td><text>user id</text></td> <td><text>user zsc wallet</text></td> <td></td> <td></td> '
     text += '</tr><tr>'
 
     for (var i = 0; i < this.userNos; ++i) {
