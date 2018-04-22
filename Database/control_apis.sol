@@ -144,12 +144,8 @@ contract ControlApis is ControlBase {
     /// @param _enName The name of the existing element
     /// @param _dest The destination address
     /// @param _amount The amount of ETH to be transferred
-    function elementTransferValue(bytes32 _enName, bytes32 _symbol, address _dest, uint256 _amount) public only_registered(_enName) returns (bool) {
-        string memory str = PlatString.append(_enName, "-", _symbol);
-        bytes32 walletName = PlatString.tobytes32(str);
-        require(getDBNode(walletName) != DBNode(0));
-
-        return  getDBNode(walletName).executeTransaction(_dest, _amount, "null");
+    function elementTransferValue(bytes32 _enName, address _src, address _dest, uint256 _amount) public only_registered(_enName) returns (bool) {
+        return  DBNode(_src).executeTransaction(_dest, _amount, "null");
     }
 
     /// @dev Get the number of element binded to the node
@@ -235,11 +231,15 @@ contract ControlApis is ControlBase {
     }
 
     function numRegisteredErc20Tokens(bytes32 _enName) public only_registered(_enName) constant returns (uint) {
-        getWalletManager().numTokenContracts();
+        return getWalletManager().numTokenContracts() + 1;
     }
 
-    function getErc20TokenInfoByIndex(bytes32 _enName, uint _index) public only_registered(_enName) constant returns (string) {
-        return prepareErc20TokenInfoByIndex(_index);
+    function getTokenContractInfoByIndex(uint _index) public only_delegate(1) constant returns (string) {
+        return prepareTokenContractInfoByIndex(_index);
+    }
+
+    function getTokenBalanceInfoByIndex(bytes32 _enName, uint _index) public only_registered(_enName) constant returns (string) {
+        return prepareTokenBalanceInfoByIndex(_enName, _index);
     }
 
     function getUserWalletAddress(bytes32 _enName, bytes32 _tokenSymbol) public only_registered(_enName) constant returns (address) {
