@@ -18,7 +18,7 @@ contract WalletEth is WalletBase {
         if (msg.value < (1 ether) / 100) {
             revert();
         } else {
-            recordInput(msg.sender, 0, msg.value, PlatString.tobytes32(msg.data));
+            recordInput(msg.sender, address(this), msg.value, PlatString.tobytes32(msg.data));
         }
     }
 
@@ -30,14 +30,14 @@ contract WalletEth is WalletBase {
         }
     }
 
-    function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (bool) {
+    function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (uint) {
         require(checkBeforeSent(_dest, _amount));        
 
         if (_dest.call.value(_value)(_data)) {
             recordOut(address(this), _dest, _amount, PlatString.tobytes32(msg.data));
-            return true;
+            return _amount;
         } else {
-            return false;
+            return 0;
         }
     }
 }
