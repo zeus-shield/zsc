@@ -251,13 +251,20 @@ contract ControlBase is Object, ControlInfo {
         }
     }
 
-    function prepareErc20TokenInfoByIndex(uint _index) internal constant returns (string) {
+    function prepareTokenContractInfoByIndex(uint _index) internal constant returns (string) {
+        require(_index <= WalletManager(walletGM_).numTokenContracts());
+
+        if (_index == 0) {
+            return "ETH";
+        }
+
+
         bytes32 tokenName;
         bytes32 status;
         bytes32 tokenSymbol;
         uint tokenDecimals;
         address tokenAdr;
-        (tokenName, status, tokenSymbol, tokenDecimals, tokenAdr) =  WalletManager(walletGM_).getTokenInfoByIndex(_index);
+        (tokenName, status, tokenSymbol, tokenDecimals, tokenAdr) =  WalletManager(walletGM_).getTokenInfoByIndex(_index - 1);
 
         string memory str ="";
         str = PlatString.append(str, "info?name=", PlatString.bytes32ToString(tokenName),   "&");
@@ -266,7 +273,37 @@ contract ControlBase is Object, ControlInfo {
         str = PlatString.append(str, "decimals=",  PlatString.uintToString(tokenDecimals),  "&");
         str = PlatString.append(str, "adr=",       PlatString.addressToString(tokenAdr),    "&");
         return str;
+    }
 
+    function prepareTokenBalanceInfoByIndex(bytes32 _enName, uint _index) internal constant returns (string) {
+        require(_index <= WalletManager(walletGM_).numTokenContracts());
+
+        bytes32 tokenName;
+        bytes32 status;
+        bytes32 tokenSymbol;
+        uint tokenDecimals;
+        address tokenAdr;
+        uint tokenBalance;
+        bytes32 walletName;
+
+        if (_index == 0) {
+            status = "true";
+            tokenSymbol = "ETH";
+        } else {
+            (tokenName, status, tokenSymbol, tokenDecimals, tokenAdr) =  WalletManager(walletGM_).getTokenInfoByIndex(_index);
+        }
+
+        walletName = formatWalletName(_enName, "ETH");
+
+        tokenAdr = address(getDBNode(walletName));
+        tokenBalance = getDBNode(walletName).getBlance(false);
+
+        string memory str ="";
+        str = PlatString.append(str, "info?status=", PlatString.bytes32ToString(status),      "&");
+        str = PlatString.append(str, "symbol=",      PlatString.bytes32ToString(tokenSymbol), "&");
+        str = PlatString.append(str, "adr=",         PlatString.addressToString(tokenAdr),    "&");
+        str = PlatString.append(str, "balance=",     PlatString.uintToString(tokenBalance),   "&");
+        return str;
     }
 
     function conductPurchaseAgreement(bytes32 _enName, bytes32 _agrName) internal returns (bool) {
