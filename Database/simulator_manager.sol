@@ -19,6 +19,7 @@ contract DBDatabase is Object {
 
 contract SimulatorManager is Object {
     uint private simulationNos_;
+    uint private simulationTempNos_;
     mapping(uint => address) private simulationRuns_;
     mapping(bytes32 => uint) private simulationIndices_;
     mapping(bytes32 => bool) private simulationExist_;
@@ -45,7 +46,7 @@ contract SimulatorManager is Object {
     }
 
     function formatSimulationName() private constant returns (bytes32) {
-        string memory str = PlatString.uintToString(1000 + simulationNos_);
+        string memory str = PlatString.uintToString(1000 + simulationTempNos_);
         return PlatString.tobytes32(str);
     }
 
@@ -57,9 +58,9 @@ contract SimulatorManager is Object {
         address adr = new SimulatorBase(runName);
         SimulatorBase(adr).startSimulation(_proLevel, _price, _lockedAmount, _agrWallet, _proWallet, _recWallet);
         simulationExist_[runName] = true;
-        simulationIndices_[runName] = simulationNos_;
-        simulationRuns_[simulationNos_] = adr;
-        simulationNos_++;
+        simulationIndices_[runName] = simulationTempNos_;
+        simulationRuns_[simulationTempNos_] = adr;
+        simulationTempNos_++;
         rewarded_[adr] = false;
         return runName;
     }
@@ -93,6 +94,8 @@ contract SimulatorManager is Object {
     }
 
     function runSimulation() public only_delegate(1) returns (bool) {
+        simulationNos_ = simulationTempNos_;
+        
         for (uint i = 0; i < simulationNos_; ++i) {
             if (checkSimulationRunByIndex(i)) {
                 conductClaimAndReward(i);
