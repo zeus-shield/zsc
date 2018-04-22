@@ -17,9 +17,7 @@ ZSCElement.prototype.setElementName = function(nm) {this.name = nm;}
 
 ZSCElement.prototype.getElementName = function() { return this.name;}
 
-ZSCElement.prototype.getEthBalance = function() { return this.ethBalance;}
-
-ZSCElement.prototype.getAddress = function() { return this.nodeAddress;}
+ZSCElement.prototype.getNodeAddress = function() { return this.nodeAddress;}
 
 ZSCElement.prototype.getParameterName = function(index) { return this.parameterNames[index]; }
 
@@ -105,21 +103,6 @@ ZSCElement.prototype.loadParameterValueByIndex = function(index, func){
                 console.log("error: " + error);
             }
         });
-}
-
-
-ZSCElement.prototype.transferEth = function(destAddressID, amountID, logID) {  
-    var destAddress = document.getElementById(destAddressID).value;
-    var amount = document.getElementById(amountID).value;
-
-    if (destAddress != 0 && amount > 0) {
-        this.myControlApi.elementwithDrawEth(this.name, destAddress, web3.toWei(amount, 'ether') , 
-            {from: bF_getEthAccount(), gasPrice: bF_getGasPrice(1), gas : bF_getGasLimit(55000)}, 
-            function(error, result){ 
-            if(!error) bF_showHashResult(logID, result, function(){});
-            else console.log("error: " + error);
-        });
-    }
 }
 
 
