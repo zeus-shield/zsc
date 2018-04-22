@@ -24,20 +24,36 @@ ZSCWallet.prototype.getTokenAddress = function(index) { return this.tokenAddress
 
 ZSCWallet.prototype.getTokenNos = function() { return this.tokenNos; }
 
-ZSCElement.prototype.transferValue = function(destAddressID, amountID, logID) {  
+ZSCWallet.prototype.transferValue = function(destAddressID, amountID, logID) {  
     var srcAddress = document.getElementById(destAddressID).innerText;
     var destAddress = document.getElementById(destAddressID).value;
     var amount = document.getElementById(amountID).value;
 
     if (destAddress != 0 && amount > 0) {
-        this.myControlApi.elementTransferValue(this.name, ethAddress, destAddress, web3.toWei(amount, 'ether') , 
+        this.myControlApi.elementTransferValue(this.name, srcAddress, destAddress, web3.toWei(amount, 'ether') , 
             {from: bF_getEthAccount(), gasPrice: bF_getGasPrice(1), gas : bF_getGasLimit(55000)}, 
             function(error, result){ 
-            if(!error) bF_showHashResult(logID, result, function(){});
-            else console.log("error: " + error);
+            if(!error) {
+                this.informTransfer(srcAddress, destAddress, result);
+            } else {
+                console.log("error: " + error);
+            }
         });
     }
 }
+
+ZSCWallet.prototype.informTransfer = function(srcAddress, destAddress, amount) { 
+    if (amount > 0) {
+        this.myControlApi.elementInformTransfer(this.name, srcAddress, destAddress, web3.toWei(amount, 'ether') , 
+            {from: bF_getEthAccount(), gasPrice: bF_getGasPrice(1), gas : bF_getGasLimit(55000)}, 
+            function(error, result){ 
+            if(!error) {
+            } else {
+                console.log("error: " + error);
+            }
+        });
+    }
+} 
 
 ZSCWallet.prototype.loadTokenWallets = function(func) {
     this.numTokenWallets(function() {
