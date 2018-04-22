@@ -87,9 +87,12 @@ ZSCUserMangement.prototype.parserUserInfo = function(info) {
     this.userNos++;
 }
 
-ZSCUserMangement.prototype.loadUserManagementHtml = function(funcName, elementId) {
-    var funcPrefix = funcName + "('"; 
-    var funcSuffix = "')";
+ZSCUserMangement.prototype.loadUserManagementHtml = function(approve, setStatus, elementId) {
+    var approvePrefix = approve + "('"; 
+    var approveSuffix = "')";
+
+    var setStatusPrefix = approve + "('"; 
+    var setStatusSuffix = "')";
 
     var text = '<table align="center" style="width:800px;min-height:30px">'
     text += '<tr>'
@@ -104,7 +107,9 @@ ZSCUserMangement.prototype.loadUserManagementHtml = function(funcName, elementId
         text += '   <td><text>' + this.userType[i]    + '</text></td>'
         text += '   <td><text>' + this.userId[i]      + '</text></td>'
         text += '   <td><text>' + this.userNodeAdr[i] + '</text></td>'
-        text += '   <td><button type="button" onClick="' + funcPrefix + "'" + name + "', '" + hashId + "'" + funcSuffix + '">Show</button></td>'
+        text += '   <td><button type="button" onClick="' + approvePrefix + "'" + name + "', '" + hashId + "'" + approveSuffix + '">Approve</button>'
+        text += '       <button type="button" onClick="' + setStatusPrefix + "'" + name + "', '" + ",'true'," + hashId + "'"  + setStatusSuffix + '">Active</button>'
+        text += '       <button type="button" onClick="' + setStatusPrefix + "'" + name + "', '" + ",'false',"+ hashId + "'" + setStatusSuffix + '">Deactive</button></td>'
         text += '   <td><text id="'+ hashId + '"></text></td>'
     }
     text += '</tr>'
@@ -119,8 +124,8 @@ ZSCUserMangement.prototype.approveUser = function(userName, func) {
     });
 }
 
-ZSCUserMangement.prototype.lockUser = function(userName, func) {
-    this.myControlApi.lockUser(userName, {from: this.account, gas: 9000000},
+ZSCUserMangement.prototype.setUserStatus = function(userName, status, func) {
+    this.myControlApi.setUserStatus(userName, status, {from: this.account, gas: 9000000},
     function(error, result){ 
         if(!error) this.howHashResult(hashId, result, func)
         else console.log("error: " + error);
