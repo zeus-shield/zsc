@@ -31,6 +31,12 @@ echo $htmlModules->loadScriptFiles();
         });    
     }
 
+    function setUserStatus(userName, status, elementId) {
+        userManager.setUserActiveStatus(username, status, elementId, function() {
+            window.location.reload(true);
+        });    
+    }
+
 </script>
 </head>
 <body>
@@ -51,7 +57,7 @@ echo $htmlModules->loadScriptFiles();
 
 <script type="text/javascript">
 	userManager.loadUsers(function(){
-		userManager.loadUserManagementHtml("approve", "UserManagement");
+		userManager.loadUserManagementHtml("approve", "setUserStatus", "UserManagement");
 	});
 </script>
 
