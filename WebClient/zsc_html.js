@@ -61,8 +61,11 @@ ZSCHtml.prototype.loadPageBody = function(tag, funcName, extra) {
         case "apply": 
             text = this.loadButtonForEnablingElement(funcName); 
             break;
-        case "wallet": 
-            text = this.loadWallet(funcName);
+        case "wallet-eth": 
+            text = this.loadWalletEth(funcName);
+            break;
+        case "wallet-erc20": 
+            text = this.loadWallet(tag, funcName);
             break;
         case "profile": 
             text = this.loadParameters(funcName, extra);
@@ -113,8 +116,8 @@ ZSCHtml.prototype.loadButtonForEnablingElement = function(funcName) {
     this.setHtmlContent(this.pageBodyId, text);  
 }
 
-ZSCHtml.prototype.loadWallet = function(funcName)  {
-    var functionInput = funcName + "('DestAddress', 'EthAmount', 'TransferEthHash')";
+ZSCHtml.prototype.loadWalletEth = function(funcName)  {
+    var functionInput = funcName + "('wallet-eth', DestAddress', 'EthAmount', 'TransferEthHash')";
     var text ="";
     text += '<div class="well">';
     text += '   <text>' + "TestETH: " + web3.fromWei(balance) + ': </text><br>'
@@ -124,6 +127,12 @@ ZSCHtml.prototype.loadWallet = function(funcName)  {
     text += '   <button type="button" onClick="' + functionInput + '">Transfer ETH</button>'
     text += '   <text id="TransferEthHash"></text>'
     text += '</div>'
+    return text;
+}
+
+ZSCHtml.prototype.loadWalletErc20 = function(funcName)  {
+    var functionInput = funcName + "('wallet-erc20', 'DestAddress', 'EthAmount', 'TransferEthHash')";
+    var text ="";
     return text;
 }
 
