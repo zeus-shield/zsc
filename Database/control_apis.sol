@@ -144,8 +144,12 @@ contract ControlApis is ControlBase {
     /// @param _enName The name of the existing element
     /// @param _dest The destination address
     /// @param _amount The amount of ETH to be transferred
-    function elementTransferValue(bytes32 _enName, address _src, address _dest, uint256 _amount) public only_registered(_enName) returns (bool) {
+    function elementTransferValue(bytes32 _enName, address _src, address _dest, uint256 _amount) public only_registered(_enName) returns (uint) {
         return  DBNode(_src).executeTransaction(_dest, _amount, "null");
+    }
+
+    function elementInformTransfer(bytes32 _enName, address _dest, uint256 _amount) public only_registered(_enName) returns (bool) {
+        return  conductInformTransaction(_enName, _dest, _amount);
     }
 
     /// @dev Get the number of element binded to the node
@@ -165,7 +169,7 @@ contract ControlApis is ControlBase {
 
     /// @dev Announce an insurance agreement by a provider
     /// @param _agrName The agreement name
-    function publishAgreement(bytes32 _userName, bytes32 _agrName) public only_registered(_userName) returns (bool) {
+    function publishAgreement(bytes32 _userName, bytes32 _agrName) public only_registered(_userName) returns (uint) {
         return conductPublishAgreement(_userName, _agrName, msg.sender);
     }
 
@@ -218,7 +222,7 @@ contract ControlApis is ControlBase {
     /// @dev Buy an insurance agreement from a provider
     /// @param _enName The receiver name
     /// @param _agrName The agreement name
-    function purchaseAgreement(bytes32 _enName, bytes32 _agrName) public only_registered(_enName) returns (bool) {
+    function purchaseAgreement(bytes32 _enName, bytes32 _agrName) public only_registered(_enName) returns (uint) {
         return conductPurchaseAgreement(_enName, _agrName); 
     }
 
