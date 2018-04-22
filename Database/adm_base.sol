@@ -7,8 +7,9 @@ pragma solidity ^0.4.18;
 import "./object.sol";
 
 contract ControlApis is Object {
-    function createElement(uint _factroyType, bytes32 _node, bytes32 _extraInfo, address _extraAdr) public returns (address);
-    function enableWallet(uint _factroyType, bytes32 _user, bytes32 _tokeSymbol, address _extraAdr) public returns (address);
+    function createElement(uint _typeInUint, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address);
+    function enableElementWallet(uint _typeInUint/*5: eth; 6: erc20*/, bytes32 _enName, bytes32 _tokeSymbol, address _extraAdr) public returns (address);
+    function setUserActiveStatus(bytes32 _user, bool _tag) public only_owner returns (bool);
 }
 
 contract AdmBase is Object {
@@ -92,9 +93,10 @@ contract AdmBase is Object {
         if (userType == "provider") typeUint = 1;
         else if (userType == "provider") typeUint = 2;
         else if (userType == "staker") typeUint = 3;
-        
+
         address adr = ControlApis(systemAdrs_["controlApis"]).createElement(typeUint, testUsers_[index].name_, "", testUsers_[index].id_);
         require (adr != 0x0);
+        ControlApis(systemAdrs_["controlApis"]).setUserActiveStatus(_name, true);
 
         testUsers_[index].node_ = adr;
         testUsers_[index].status_ = "approved";
@@ -103,10 +105,8 @@ contract AdmBase is Object {
         ///transferAnyERC20Token(zscTestTokenAddress_, _ZSCTAmount);
     }
 
-    function lockUser(bytes32 _name) public only_delegate(1) {
-        bytes32 hexx = toHexx(_name);
-        uint index = getUserIndex(hexx);
-        testUsers_[index].status_ = "locked";
+    function setUserStatus(bytes32 _name, bool _tag) public only_delegate(1) {
+        ControlApis(systemAdrs_["controlApis"]).setUserActiveStatus(_name, _tag);
     }
 
     function numUsers() public only_delegate(1) constant returns (uint) {
@@ -150,9 +150,9 @@ contract AdmBase is Object {
 
     function approveWallet(address _controlApisAdr, bytes32 _userType, bytes32 _userName, address _creator) internal {
         if (_userType == "provider" || _userType == "receiver") {
-            ControlApis(_controlApisAdr).enableWallet(4 /* wallet-eth */, _userName, "ETH", _creator);
+            ControlApis(_controlApisAdr).enableElementWallet(4 /* wallet-eth */, _userName, "ETH", _creator);
         } else if (_userType == "staker") {
-            ControlApis(_controlApisAdr).enableWallet(5 /* wallet-erc20 */, _userName, "ZSC", _creator);
+            ControlApis(_controlApisAdr).enableElementWallet(5 /* wallet-erc20 */, _userName, "ZSC", _creator);
         } else {
 
         }
