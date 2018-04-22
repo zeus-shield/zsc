@@ -26,14 +26,18 @@ contract WalletErc20 is WalletBase {
         }
     }
 
-    function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (bool) {
+    function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (uint) {
         require(checkBeforeSent(_dest, _amount));
     
         if (ERC20Interface(_erc20TokenAdr).transfer(_dest, _value)) {
             recordOut(address(this), _dest, _amount, PlatString.tobytes32(msg.data));
-            return true;
+            return _amount;
         } else {
-            return false;
+            return 0;
         }
+    }
+
+    function informTransaction(address _src, address _dest, uint256 _amount) only_delegate(1) only_delegate(1) public {
+        recordInput(_src, _dest, _amount, "");
     }
 }
