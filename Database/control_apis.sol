@@ -12,6 +12,8 @@ contract ControlApis is ControlBase {
     function ControlApis(bytes32 _name) public ControlBase(_name) {
     }
 
+    function setUserActiveStatus(bytes32 _user, bool _tag) public only_owner returns (bool);
+
     /// @dev Set the zsc adm address
     /// @param _adm The address of the zsc adm 
     /// @param _db The address of the database 
