@@ -54,7 +54,7 @@ ZSCWalletMangement.prototype.loadWalletManagementHtml = function(elementId) {
 ZSCWalletMangement.prototype.loadErcTokenContracts = function(func) {
     this.numErcTokens(function() {
         for (var i = 0; i < this.tokenNos; ++i) {
-            this.loadErcTokenInfoByIndex(i, function(index){
+            this.loadErcTokenContractInfoByIndex(i, function(index){
                 if (index == this.tokenNos - 1) {
                     func();
                 }
@@ -76,12 +76,12 @@ ZSCWalletMangement.prototype.numErcTokens = function(func) {
         });
 }
 
-ZSCWalletMangement.prototype.loadErcTokenInfoByIndex = function(index, func) {
-    this.myControlApi.getErc20TokenInfoByIndex(i,
+ZSCWalletMangement.prototype.loadErcTokenContractInfoByIndex = function(index, func) {
+    this.myControlApi.getTokenContractInfoByIndex(i,
         {from: this.account, gas: 9000000},
         function(error, result){ 
             if(!error) {
-                this.parserTokenInfoByIndex(result, index);
+                this.parserTokenContractInfoByIndex(result, index);
                 func(index);
             } else {
                 console.log("error: " + error);
@@ -93,7 +93,7 @@ ZSCWalletMangement.prototype.loadErcTokenInfoByIndex = function(index, func) {
 /*
 "info?name=", "symbol=", "decimals=", "adr=",     
 */
-ZSCUserMangement.prototype.parserTokenInfoByIndex = function(urlinfo, index) {
+ZSCUserMangement.prototype.parserTokenContractInfoByIndex = function(urlinfo, index) {
     var found1 = urlinfo.indexOf("?");
     var found2 = urlinfo.indexOf("=");
 
