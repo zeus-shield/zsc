@@ -25,6 +25,9 @@ ZSCUserMangement.prototype.addUser = function(userNameId, hashId, func){
     });
 }  
 
+ZSCUserMangement.prototype.setUserActiveStatus = (username, status, elementId, function() {
+
+
 ZSCUserMangement.prototype.loadUsers = function(func) {
     this.numUsers(function() {
         this.loadUserInfos(function(index){
@@ -87,22 +90,27 @@ ZSCUserMangement.prototype.parserUserInfo = function(info) {
     this.userNos++;
 }
 
-ZSCUserMangement.prototype.loadUserManagementHtml = function(approve, setStatus, elementId) {
+ZSCUserMangement.prototype.loadUserManagementHtml = function(showDetails, approve, setStatus, elementId) {
+    var showPrefix = showDetails + "('"; 
+    var showSuffix = "')";
+
     var approvePrefix = approve + "('"; 
     var approveSuffix = "')";
 
-    var setStatusPrefix = approve + "('"; 
+    var setStatusPrefix = setStatus + "('"; 
     var setStatusSuffix = "')";
 
     var text = '<table align="center" style="width:800px;min-height:30px">'
     text += '<tr>'
-    text += '   <td><text>user name</text></td>  <td><text>user type</text></td>  <td><text>user status</text></td>  <td><text>user id</text></td> <td><text>user zsc wallet</text></td> <td></td> <td></td> '
-    text += '</tr><tr>'
+    text += '   <td><text>user name</text></td>  <td><text>user type</text></td>  <td><text>user status</text></td>  <td><text>user id</text></td> <td><text>user zsc wallet</text></td> <td></td> <td>Log</td>  '
+    text += '</tr>'
 
     for (var i = 0; i < this.userNos; ++i) {
         var name = this.userName[i];
         var hashId = this.userName[i] + "Hash"
-        text += '   <td><text>' + this.userName[i]    + '</text></td>'
+        text += '</tr>';
+        text += '   <td><button type="button" onClick="' + showPrefix + "'" + name + "', '" + hashId + "'" + showSuffix + '">Approve</button>'
+        text += '   <td><text>' + names    + '</text></td>'
         text += '   <td><text>' + this.userStatus[i]  + '</text></td>'
         text += '   <td><text>' + this.userType[i]    + '</text></td>'
         text += '   <td><text>' + this.userId[i]      + '</text></td>'
@@ -111,8 +119,8 @@ ZSCUserMangement.prototype.loadUserManagementHtml = function(approve, setStatus,
         text += '       <button type="button" onClick="' + setStatusPrefix + "'" + name + "', '" + ",'true'," + hashId + "'"  + setStatusSuffix + '">Active</button>'
         text += '       <button type="button" onClick="' + setStatusPrefix + "'" + name + "', '" + ",'false',"+ hashId + "'" + setStatusSuffix + '">Deactive</button></td>'
         text += '   <td><text id="'+ hashId + '"></text></td>'
+        text += '</tr>'
     }
-    text += '</tr>'
     document.getElementById(elementId).innerHTML = text;  
 }
 
