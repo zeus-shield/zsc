@@ -26,15 +26,19 @@ echo $htmlModules->loadScriptFiles();
     }
 
     function approve(userName, elementId) {
-        userManager.aproveUser(username, elementId, function() {
+        userManager.aproveUser(userName, elementId, function() {
         	window.location.reload(true);
         });    
     }
 
     function setUserStatus(userName, status, elementId) {
-        userManager.setUserActiveStatus(username, status, elementId, function() {
+        userManager.setUserActiveStatus(userName, status, elementId, function() {
             window.location.reload(true);
         });    
+    }
+
+    function showDetails(userName, elementId) {
+        window.location.href="adm_show_userdetails.php?uername=" + userName + "&";   
     }
 
 </script>
@@ -57,7 +61,7 @@ echo $htmlModules->loadScriptFiles();
 
 <script type="text/javascript">
 	userManager.loadUsers(function(){
-		userManager.loadUserManagementHtml("approve", "setUserStatus", "UserManagement");
+		userManager.loadUserManagementHtml("showDetails", "approve", "setUserStatus", "UserManagement");
 	});
 </script>
 
