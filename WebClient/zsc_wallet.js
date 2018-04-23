@@ -68,7 +68,7 @@ ZSCWallet.prototype.loadTokenWallets = function(func) {
 }
 
 ZSCWallet.prototype.numTokenWallets = function(func) {
-    this.myControlApi.numRegisteredErc20Tokens("null",
+    this.myControlApi.numRegisteredErc20Tokens(this.userName,
         {from: this.account, gas: 9000000},
         function(error, result){ 
             if(!error) {
