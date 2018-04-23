@@ -26,8 +26,9 @@ class ZscHtmlModules extends ZscSystemModules {
             <td align="center"><a href="adm_configure_logrecorder.php">Configure LogRecorder</a></td>
             <td align="center"><a href="adm_control_apis_adv.php">Control system</a></td>
             <td align="center"><a href="adm_manage_users.php">Users</a></td>
-            <td align="center"><a href="adm_templates.php">Templats</a></td>
-            <td align="center"><a href="adm_agreements.php">Templats</a></td>
+            <td align="center"><a href="adm_show_userdetails.php">User Details</a></td>
+            <td align="center"><a href="adm_manage_token_contracts.php">Manage Tokens</a></td>
+            <td align="center"><a href="adm_show_log.php">Show Log</a></td>
           </tr>
         </table>
         </div>';
@@ -49,6 +50,7 @@ class ZscHtmlModules extends ZscSystemModules {
         <script type="text/javascript" src="./js/zsc_printlog.js"></script>
         <script type="text/javascript" src="./js/zsc_user_management.js"></script>
         <script type="text/javascript" src="./js/zsc_wallet_managerment.js"></script>
+        <script type="text/javascript" src="./js/zsc_show_user.js"></script>
         <script type="text/javascript" src="./js/compiled_database.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_pro.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_rec.js"></script>
