@@ -30,7 +30,7 @@ ZSCWallet.prototype.transferValue = function(destAddressID, amountID, logID) {
     var amount = document.getElementById(amountID).value;
 
     if (destAddress != 0 && amount > 0) {
-        this.myControlApi.elementTransferValue(this.name, srcAddress, destAddress, web3.toWei(amount, 'ether') , 
+        this.myControlApi.elementTransferValue(this.userName, srcAddress, destAddress, web3.toWei(amount, 'ether') , 
             {from: bF_getEthAccount(), gasPrice: bF_getGasPrice(1), gas : bF_getGasLimit(55000)}, 
             function(error, result){ 
             if(!error) {
@@ -44,7 +44,7 @@ ZSCWallet.prototype.transferValue = function(destAddressID, amountID, logID) {
 
 ZSCWallet.prototype.informTransfer = function(srcAddress, destAddress, amount) { 
     if (amount > 0) {
-        this.myControlApi.elementInformTransfer(this.name, srcAddress, destAddress, web3.toWei(amount, 'ether') , 
+        this.myControlApi.elementInformTransfer(this.userName, srcAddress, destAddress, web3.toWei(amount, 'ether') , 
             {from: bF_getEthAccount(), gasPrice: bF_getGasPrice(1), gas : bF_getGasLimit(55000)}, 
             function(error, result){ 
             if(!error) {
@@ -54,6 +54,18 @@ ZSCWallet.prototype.informTransfer = function(srcAddress, destAddress, amount) {
         });
     }
 } 
+
+ZSCWallet.prototype.enableWallet = function(tokenSymbol, func) {
+    this.myControlApi.enableElementWallet(this.userName, tokenSymbol, 0, 
+        {from: this.account, gas: 9000000},
+        function(error, result){ 
+            if(!error) {
+                func();
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
 
 ZSCWallet.prototype.loadTokenWallets = function(func) {
     this.numTokenWallets(function() {
