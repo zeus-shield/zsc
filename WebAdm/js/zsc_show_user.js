@@ -58,7 +58,7 @@ ZSCShowUser.prototype.numUserWallets = function(func) {
 }
 
 ZSCShowUser.prototype.loadWalletInfoByIndex = function(index, func) {
-    this.myControlApi.getTokenBalanceInfoByIndex(this.userName, i,
+    this.myControlApi.getTokenBalanceInfoByIndex(this.userName, index,
         {from: this.account, gas: 9000000},
         function(error, result){ 
             if(!error) {
@@ -88,7 +88,7 @@ ZSCShowUser.prototype.parserWalletInfoByIndex = function(urlinfo, index) {
 
     this.walletSymbols[index] = symbolInfo.split("=")[1];
     this.walletAdrs[index]    = adrInfo.split("=")[1];
-    this.walletBalance        = balanceInfo.split("=")[1];
+    this.walletBalance[index] = balanceInfo.split("=")[1];
     return true;
 }
 
