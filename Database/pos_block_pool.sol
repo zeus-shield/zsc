@@ -45,7 +45,6 @@ contract PosBlockPool is Object {
         require(_blockIndex < pools_[_poolIndex].nos_);
         
         return pools_[_poolIndex].blocks_[_blockIndex];
-        return 0;
     }
 
     function registerNewBlock(uint _poolIndex) private returns (address) {
@@ -53,6 +52,7 @@ contract PosBlockPool is Object {
         address adr = new PosBlock();
 
         require(adr != address(0));
+        PosBlock(adr).setBlockSizeLimit(blockSizeLimit_);
 
         pools_[_poolIndex].blocks_[blockIndex] = adr;
         pools_[_poolIndex].nos_++;
@@ -67,16 +67,24 @@ contract PosBlockPool is Object {
         return blockSizeLimit_;
     }
     
-    function registerNewTx(bool _input, uint _poolIndex, bytes32 _tx, address _sender, address _receiver, uint _gasUsage) internal returns (bool) {
+    function registerNewTx(bool _input, uint _poolIndex, bytes32 _tx, address _sender, address _receiver, uint _gasUsage) public only_delegate(1) {
         pools_[_poolIndex].remaingGasUsage_ += _gasUsage;
-        uint blockIndex = pools_[_poolIndex].nos_ - 1;
-        address myBlock = getBlockByIndex(_poolIndex, blockIndex);
-        bool ret = PosBlock(myBlock).registerTx(_input, _tx, _sender, _receiver, _gasUsage);
-        if (ret == false) {
-            address adr = registerNewBlock(_poolIndex);
-            PosBlock(adr).registerTx(_input, _tx, _sender, _receiver, _gasUsage);
+        uint blockIndex;
+        address myBlock;
+        if (pools_[_poolIndex].nos_ == 0) {
+            myBlock = registerNewBlock(_poolIndex);
+        } else {
+            blockIndex = pools_[_poolIndex].nos_ - 1;
+            myBlock = getBlockByIndex(_poolIndex, blockIndex);
+           
+            if (PosBlock(myBlock).checkIsFull(_gasUsage)) {
+                address adr = registerNewBlock(_poolIndex);
+                PosBlock(myBlock).setNextBlock(adr);
+                PosBlock(adr).setPreviousBlock(myBlock);
+                myBlock = adr;
+            }
         }
-        return true;
+        PosBlock(myBlock).registerTx(_input, _tx, _sender, _receiver, _gasUsage);
     }
 
     function getLastPendingBlockIndex(uint _poolIndex) internal constant returns (uint) { 
