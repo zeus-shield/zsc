@@ -21,6 +21,7 @@ contract DBDatabase is Object {
 }
 
 contract DBNode is Object {
+    function setId(address _ethWalletiId) only_delegate(1) public;
     function getId() public only_delegate(1) returns (address);
     function getNodeType() public only_delegate(1) constant returns (bytes32);
     function getBlance(bool _locked) public only_delegate(1) constant returns (uint256);
@@ -37,10 +38,6 @@ contract DBNode is Object {
     function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (uint);
     function informTransaction(address _src, address _dest, uint256 _amount) only_delegate(1) only_delegate(1) public;
     function setERC20TokenAddress(address _tokenAdr) only_delegate(1) public;
-
-    function bindEntity(address _adr) only_delegate(1) public;
-    function numBindedEntities(bytes32 _type) public only_delegate(1) constant returns (uint);
-    function getBindedEntityNameByIndex(bytes32 _type, uint _index) public only_delegate(1) constant returns (bytes32);
 
     function setAgreementStatus(bytes32 _tag, bytes32 receiver) public only_delegate(1) returns (bool);
     function configureHandlers() public only_delegate(1) returns (bool);
@@ -174,7 +171,7 @@ contract ControlBase is Object, ControlInfo {
 
         address walletAdr = getDBFactory(_type).createNode(temp, parentNode, _creator);
         require(walletAdr != 0);
-        registerNode(DBNode(walletAdr).name(), walletAdr, _creator);
+        registerNode(false, DBNode(walletAdr).name(), walletAdr, _creator);
 
         DBNode(walletAdr).setERC20TokenAddress(erc20Address);
         WalletManager(walletGM_).enableTokenByHolder(_tokeSymbol, DBNode(walletAdr).name(), walletAdr);
@@ -192,10 +189,13 @@ contract ControlBase is Object, ControlInfo {
 
         adr = getDBFactory(_type).createNode(_nodeName, parentNode, _creator);
         require(adr != 0);
-        registerNode(_nodeName, adr, _creator);
 
         if (_type == "provider" || _type == "receiver" || _type == "staker") {
             DBNode(adr).configureHandlers();
+            DBNode(adr).setId(_creator);
+            registerNode(true, _nodeName, adr, _creator);
+        } else {
+            registerNode(false, _nodeName, adr, _creator);
         }
 
         if (_type == "staker") {
