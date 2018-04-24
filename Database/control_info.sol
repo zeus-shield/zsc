@@ -18,29 +18,25 @@ contract ControlInfo is Object {
     mapping(bytes32 => bool) private nodeExists_;
     
     modifier only_registered(bytes32 _nodeName) {
-        require(onlyRegisteredOrDelegated(_nodeName, msg.sender)); 
+        require(checkAllowedUser(_nodeName, msg.sender) || isDelegate(msg.sender, 1)); 
         _;
     }
 
     function ControlInfo() public {}
     
-    function checkAllowedUser(bytes32 _nodeName) internal constant returns (bool);
-    function addAllowedUsr(bytes32 _node) internal returns (bool);
-
-    function onlyRegisteredOrDelegated(bytes32 _nodeName, address _sender) internal constant returns (bool) {
-        if (!checkAllowedUser(_nodeName)) return false;
-        
-        return (_sender == nodeParameters_[_nodeName].creator_ || isDelegate(_sender, 1)); 
-    }
+    function checkAllowedUser(bytes32 _userName, address _sender) internal constant returns (bool);
+    function addAllowedUsr(bytes32 _userName, address _creator) internal returns (bool);
 
     function _recordString(bytes32 _nodeName, bytes32 _parameter, string _value) public {
         require(msg.sender == nodeParameters_[_nodeName].nodeAdr_);
         nodeParameters_[_nodeName].value_[_parameter] = _value;
     }
 
-    function registerNode(bytes32 _nodeName, address _nodeAdr, address _creator) internal {
+    function registerNode(bool _isUser, bytes32 _nodeName, address _nodeAdr, address _creator) internal {
         require(!nodeExists_[_nodeName]);   
-        addAllowedUsr(_nodeName);     
+        if (_isUser) {
+            addAllowedUsr(_nodeName, _creator);
+        }
         nodeParameters_[_nodeName].nodeAdr_ = _nodeAdr;
         nodeParameters_[_nodeName].creator_ = _creator;
     }
