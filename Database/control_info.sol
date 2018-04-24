@@ -22,13 +22,19 @@ contract ControlInfo is Object {
         _;
     }
 
+    modifier only_matched(bytes32 _nodeName) {
+        require(nodeParameters_[_nodeName].creator_ == msg.sender || isDelegate(msg.sender, 1)); 
+        _;
+    }
+
+
     function ControlInfo() public {}
     
     function checkAllowedUser(bytes32 _userName, address _sender) internal constant returns (bool);
     function addAllowedUsr(bytes32 _userName, address _creator) internal returns (bool);
 
     function _recordString(bytes32 _nodeName, bytes32 _parameter, string _value) public {
-        require(msg.sender == nodeParameters_[_nodeName].nodeAdr_);
+        //require(msg.sender == nodeParameters_[_nodeName].nodeAdr_);
         nodeParameters_[_nodeName].value_[_parameter] = _value;
     }
 
