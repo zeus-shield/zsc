@@ -62,21 +62,25 @@ contract PosBlock is Object {
     function doesMined() public only_delegate(1) constant returns (bool) {
         return minedStatus_;
     }
+
+    function checkIsFull(uint _gasUsage) public only_delegate(1) constant returns (bool) {
+        uint size = currentSize_ + _gasUsage;
+        if (size < blockSizeLimit_) {
+            return true;
+        } else {
+            return false;
+        }
+    } 
     
     function registerTx(bool _sentIn, bytes32 _tx, address _sender, address _receiver, uint _gasUsage) public only_delegate(1) returns (bool) {
         if (minedStatus_) return false;
 
-        uint size = currentSize_ + _gasUsage;
-        if (size < blockSizeLimit_) {
-            txExists_[_tx] = true;
-            txIndice_[_tx] = txNos_;
-            txHashs_[txNos_] = TxHash(_sentIn, _sender, _receiver, _gasUsage, now);
-            txNos_++;
-            return true;
-        } else {
-            minedStatus_ = true;
-            return false;
-        }
+        txExists_[_tx] = true;
+        txIndice_[_tx] = txNos_;
+        txHashs_[txNos_] = TxHash(_sentIn, _sender, _receiver, _gasUsage, now);
+        txNos_++;
+        minedStatus_ = true;
+        return true;
     }
 
     function getTxByIndex(uint _index) public only_delegate(1) constant returns (address, address, uint, uint) {
