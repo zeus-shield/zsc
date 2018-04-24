@@ -84,7 +84,13 @@
         zscElement.setElementParameter(logID, zscUser.getUserNameHr());
     }
 
-    function showTransactions(tokenSymbol, elementId) {
+    function enableWallet(tokenSymbol) {
+        ZSCWalletGM.enableWallet(tokenSymbol, function() {
+           loadPageBody("wallet");
+        });
+    }
+
+    function showTransactions(tokenSymbol) {
         zscTransGM.setTokenSymbol(tokenSymbol);
         loadPageBody("transaction");
     }
@@ -123,7 +129,7 @@
         } else {
             if (tag == "wallet") {
                 zscWalletGM.loadTokenWallets(function() {
-                    zscHtml.loadPageBody(tag, "transferEthTo", "showTransactions", ZSCWalletGM);
+                    zscHtml.loadPageBody(tag, "transferValue", "showTransactions", ZSCWalletGM);
                 });
             } else if (tag == "profile") {
                 zscElement.loadParameterNamesAndvalues(function() {
