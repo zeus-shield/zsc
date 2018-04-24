@@ -57,7 +57,7 @@ contract ControlApis is ControlBase {
 
     /// @dev Check the element wheather or not existing
     /// @param _enName The name of the element to be checked
-    function doesElementExist(bytes32 _userName, bytes32 _enName) public only_registered(_userName) constant returns (bool) {
+    function doesElementExist(bytes32 _userName, bytes32 _enName) public only_registered(_userName) only_matched(_enName) constant returns (bool) {
         return (getDBNode(_enName) != DBNode(0));
     }
 
@@ -91,7 +91,7 @@ contract ControlApis is ControlBase {
 
     /// @dev Get the type of an element
     /// @param _enName The name of the element belonging to the user
-    function getElementType(bytes32 _userName, bytes32 _enName) public only_registered(_userName) constant returns (bytes32) {
+    function getElementType(bytes32 _userName, bytes32 _enName) public only_registered(_userName) only_matched(_enName) constant returns (bytes32) {
         DBNode nd = getDBNode( _enName);
         require(nd != DBNode(0));
         return nd.getNodeType();
@@ -101,7 +101,7 @@ contract ControlApis is ControlBase {
     /// @dev Add a paramter to an element
     /// @param _enName The name of the existing element
     /// @param _parameter The name of the added parameter
-    function addElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public only_registered(_userName) returns (bool) {
+    function addElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public only_registered(_userName) only_matched(_enName) returns (bool) {
         return operateNodeParameter("add", _enName, _parameter, "");
     }
 
@@ -109,26 +109,26 @@ contract ControlApis is ControlBase {
     /// @param _enName The name of the element
     /// @param _parameter The name of the existing parameter
     /// @param _value The parameter value
-    function setElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter, string _value) public only_registered(_userName) returns (bool) {
+    function setElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter, string _value) public only_registered(_userName) only_matched(_enName) returns (bool) {
         return operateNodeParameter("set", _enName, _parameter, _value);
     }
 
     /// @dev Get the value of a paramter of an element
     /// @param _enName The name of the element
     /// @param _parameter The name of the existing parameter
-    function getElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public only_registered(_userName) constant returns (string) {
+    function getElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public only_registered(_userName) only_matched(_enName) constant returns (string) {
         return getControlInfoParameterValue(_enName, _parameter);
     }
 
     /// @dev Get the address of the element 
     /// @param _enName The name of the element
-    function getElementAddress(bytes32 _userName, bytes32 _enName) public only_registered(_userName) constant returns (address) {
+    function getElementAddress(bytes32 _userName, bytes32 _enName) public only_registered(_userName) only_matched(_enName) constant returns (address) {
         return address(getDBNode(_enName));
     }
 
     /// @dev Get the eth balance of the element
     /// @param _enName The name of the element
-    function getElementBalance(bytes32 _userName, bytes32 _enName, bytes32 _symbol, bool _locked) public only_registered(_userName) constant returns (uint256) {
+    function getElementBalance(bytes32 _userName, bytes32 _enName, bytes32 _symbol, bool _locked) public only_registered(_userName) only_matched(_enName) constant returns (uint256) {
         string memory str = PlatString.append(_enName, "-", _symbol);
         bytes32 walletName = PlatString.tobytes32(str);
         require(getDBNode(walletName) != DBNode(0));
@@ -138,7 +138,7 @@ contract ControlApis is ControlBase {
 
     /// @dev Get the number of paramters of an element
     /// @param _enName The name of the existing element
-    function numElementParameters(bytes32 _userName, bytes32 _enName) public only_registered(_userName) constant returns (uint) {
+    function numElementParameters(bytes32 _userName, bytes32 _enName) public only_registered(_userName) only_matched(_enName) constant returns (uint) {
         return  getDBNode(_enName).numParameters();
     }
 
@@ -151,7 +151,7 @@ contract ControlApis is ControlBase {
             var para = getNodeParameterNameByIndex("test", 0);
         }
     */
-    function getElementParameterNameByIndex(bytes32 _userName, bytes32 _enName, uint _index) public only_registered(_userName) constant returns (bytes32) {
+    function getElementParameterNameByIndex(bytes32 _userName, bytes32 _enName, uint _index) public only_registered(_userName) only_matched(_enName) constant returns (bytes32) {
         return  getDBNode(_enName).getParameterNameByIndex(_index);
     }
 
@@ -162,13 +162,13 @@ contract ControlApis is ControlBase {
         return  DBNode(_src).executeTransaction(_dest, _amount, "null");
     }
 
-    function elementInformTransfer(bytes32 _userName, bytes32 _enName, address _dest, uint256 _amount) public only_registered(_userName) returns (bool) {
+    function elementInformTransfer(bytes32 _userName, bytes32 _enName, address _dest, uint256 _amount) public only_registered(_userName) only_matched(_enName) returns (bool) {
         return  conductInformTransaction(_enName, _dest, _amount);
     }
 
     /// @dev Announce an insurance agreement by a provider
     /// @param _agrName The agreement name
-    function publishAgreement(bytes32 _userName, bytes32 _agrName) public only_registered(_userName) returns (uint) {
+    function publishAgreement(bytes32 _userName, bytes32 _agrName) public only_registered(_userName) only_matched(_agrName) returns (uint) {
         return conductPublishAgreement(_userName, _agrName, msg.sender);
     }
 
