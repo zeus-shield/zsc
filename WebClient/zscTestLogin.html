@@ -13,6 +13,7 @@
 <script type="text/javascript" src="./zsc_user.js"></script>
 <script type="text/javascript" src="./zsc_wallet.js"></script>
 <script type="text/javascript" src="./zsc_html.js"></script>
+<script type="text/javascript" src="./zsc_transactions.js"></script>
 <script type="text/javascript">
 
     var web3 = setupWeb3js(false);
@@ -21,6 +22,7 @@
     var zscUser;
     var zscElement;
     var zscWalletGM;
+    var zscTransGM;
 
     /*tag:
     logon, wallet, profile, templates, agreements
@@ -29,7 +31,7 @@
         document.getElementById("PageHeader").innerHTML = "";  
         document.getElementById("PageBody").innerHTML = "";  
         zscHtml.setHtmlCotentIds( "PageBody", "PageHeader");
-        zscHtml.loadPageBody("login", "checkUser", "null");
+        zscHtml.loadPageBody("login", "checkUser", "null", "null");
     }
 
     function checkUser(adrId, userId, passId){
@@ -44,6 +46,7 @@
                 var controlApisAdvAdr = zscUser.getControlApisAdr();
                 zscElement  = new ZSCElement(fullAbi, controlApisAdvAdr);
                 zscWalletGM = new ZSCWallet(zscUser.getUserName, fullAbi, controlApisAdvAdr);
+                zscTransGM  = new ZSCTransactions(zscUser.getUserName, fullAbi, controlApisAdvAdr)
                 loadHtmlPageBody("welecome");
             } else {
                 alert("User name or password wrong!!");
@@ -81,6 +84,10 @@
         zscElement.setElementParameter(logID, zscUser.getUserNameHr());
     }
 
+    function showTransactions(tokenSymbol, elementId) {
+        zscTransGM.setTokenSymbol(tokenSymbol);
+    }
+
 </script>
 </head>
 <body>
@@ -97,7 +104,7 @@
         zscHtml.loadPageHeader("loadHtmlPageBody");
 
         if (tag == "welecome") {
-            zscHtml.loadPageBody("welecome", "loadHtmlPageBody", "null");
+            zscHtml.loadPageBody("welecome", "loadHtmlPageBody","null", "null");
         } else if (tag == "apply") {
             zscUser.getUserStatusFromAdm(function(status) {
                 if (status == 0) {
@@ -115,12 +122,14 @@
         } else {
             if (tag == "wallet") {
                 zscWalletGM.loadTokenWallets(function() {
-                    zscHtml.loadPageBody(tag, "transferEthTo", ZSCWalletGM);
+                    zscHtml.loadPageBody(tag, "transferEthTo", "showTransactions", ZSCWalletGM);
                 });
             } else if (tag == "profile") {
                 zscElement.loadParameterNamesAndvalues(function() {
-                    zscHtml.loadPageBody(tag, "submitProfileChanges", zscElement);
+                    zscHtml.loadPageBody(tag, "submitProfileChanges", "null", zscElement);
                 });
+            } else if (tag == "transactions") {
+                
             } else if (tag == "templates") {
                 uF_loadBindedEntities(tag, function() {
                 }
