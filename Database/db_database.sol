@@ -7,7 +7,6 @@ pragma solidity ^0.4.18;
 import "./plat_string.sol";
 import "./object.sol";
 import "./db_node.sol";
-import "./db_idmanager.sol";
 
 contract DBDatabase is Object {
     bytes32 private temp_;
@@ -68,46 +67,7 @@ contract DBDatabase is Object {
         str = PlatString.append(str, nodeName);
         addLog(str, true);
     }
-
-    function _bindId(address _idManager, address _id) public only_delegate(1) returns (address) {
-        if (_idManager == 0) {
-            DBIDManager idmanager = new DBIDManager();
-            idmanager.addId(_id);
-            return address(idmanager);
-        } else {
-            DBIDManager(_idManager).addId(_id);
-            return _idManager;
-        }
-    }
-
-    function _numBindedIds(address _idManager, bytes32 _type) public only_delegate(1) constant returns (uint) {
-        uint totalNos = DBIDManager(_idManager).numIds();
-        uint typeNos = 0;
-        address nd = 0;
-        for (uint i = 0; i < totalNos; ++i) {
-            nd = DBIDManager(_idManager).getId(i);
-            if (DBNode(nd).getNodeType() == _type) {
-                typeNos++;
-            }
-        }
-        return typeNos;
-    }
     
-    function _getBindedIdNameByIndex(address _idManager, bytes32 _type, uint _index) public only_delegate(1) constant returns (bytes32) {
-        uint totalNos = DBIDManager(_idManager).numIds();
-        uint typeNos = 0;
-        address en = 0;
-        for (uint i = 0; i < totalNos; ++i) {
-            en = DBIDManager(_idManager).getId(i);
-            if (DBNode(en).getNodeType() == _type) {
-                if (typeNos == _index)
-                   return DBNode(en).name();
-                typeNos++;
-            }
-        }
-        return "null";
-    }
-
     function destroyNode(address _node) public only_delegate(1) returns (bool) {
         for (uint i = 0; i < nodes_.length; ++i) {
             if (nodes_[i] == _node) {
