@@ -17,9 +17,11 @@ echo $htmlModules->loadScriptFiles();
     var ControlApisAdvAdr = "<?php echo $htmlModules->readModuleAddress('ControlApisAdv')?>";
     var userDetails = new ZSCShowUser(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
 
-    function shoUserDetails() {
+    function showUserDetails() {
         if (userDetails.parserUserName()) {
-
+            userDetails.loadUserWallets(function() {
+                userDetails.loadWalletHtml("UserDetails");
+            });
         }
     }
 
@@ -33,9 +35,11 @@ echo $htmlModules->loadScriptFiles();
 
 <?php echo $htmlModules->loadAllAdrs();?>
 
+    <div class="well" id="UserDetails"> </div>
+
 <script type="text/javascript">
     window.addEventListener('load', function() {
-        shoUserDetails();
+        showUserDetails();
     });  
 </script>   
 </body>
