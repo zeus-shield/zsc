@@ -36,6 +36,9 @@ contract ControlApis is ControlBase {
         return manageErc20TokenContract(false, 0, _symbol, 0, 0);
     }
 
+    function runSimulationTest(uint _steps) public only_delegate(1) {
+        getSimulatorManager().runSimulation(_steps);
+    }
 
     function getTokenContractInfoByIndex(uint _index) public only_delegate(1) constant returns (string) {
         return prepareTokenContractInfoByIndex(_index);
@@ -67,19 +70,31 @@ contract ControlApis is ControlBase {
     /// @param _extraInfo The extra information
     /// @param _extraAdr The extra address
     function createElement(bytes32 _userName, uint _typeInUint, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public only_registered(_userName) returns (address) {
-        address creatorAdr = _extraAdr;
-        if (creatorAdr == 0) {
+        address creatorAdr;
+        if (isDelegate(msg.sender, 1)) {
+            creatorAdr = _extraAdr;
+        } else {
             creatorAdr = msg.sender;
         }
+
         return createFactoryNode(mapType(_typeInUint), _enName, _extraInfo, creatorAdr);
     }
 
-    function enableElementWallet(bytes32 _userName, uint _typeInUint/*5: eth; 6: erc20*/, bytes32 _enName, bytes32 _tokeSymbol, address _extraAdr) public only_registered(_userName) returns (address) {
-        address creatorAdr = _extraAdr;
-        if (creatorAdr == 0) {
+    function enableElementWallet(bytes32 _userName, bytes32 _tokeSymbol, address _extraAdr) public only_registered(_userName) returns (address) {
+        address creatorAdr;
+        if (isDelegate(msg.sender, 1)) {
+            creatorAdr = _extraAdr;
+        } else {
             creatorAdr = msg.sender;
         }
-        return enableWallet(mapType(_typeInUint), _enName, _tokeSymbol, creatorAdr);
+
+        uint typeUint;
+        if (_tokeSymbol == "ETH") {
+            typeUint = 6;
+        } else {
+            typeUint = 7;
+        }
+        return enableWallet(mapType(typeUint), _userName, _tokeSymbol, creatorAdr);
     }
 
     /// @dev Get the element by its address
