@@ -23,7 +23,7 @@ contract ControlInfo is Object {
     }
 
     modifier only_matched(bytes32 _nodeName) {
-        require(nodeParameters_[_nodeName].creator_ == msg.sender || isDelegate(msg.sender, 1)); 
+        require( (nodeParameters_[_nodeName].creator_ == msg.sender) || isDelegate(msg.sender, 1)); 
         _;
     }
 
