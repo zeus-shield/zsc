@@ -69,7 +69,7 @@ contract WalletManager is Object {
 
 contract SimulatorManager is Object {
     function addSimulationRun(uint _proLevel, uint _price, uint _lockedAmount, address _agrWallet, address _proWallet, address _recWallet) public only_delegate(1) returns (bytes32);
-    function runSimulation() public only_delegate(1) returns(bool);
+    function runSimulation(uint _steps) public only_delegate(1);
 }
 
 contract ControlBase is Object, ControlInfo {   
