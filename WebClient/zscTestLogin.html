@@ -86,6 +86,7 @@
 
     function showTransactions(tokenSymbol, elementId) {
         zscTransGM.setTokenSymbol(tokenSymbol);
+        loadPageBody("transaction");
     }
 
 </script>
@@ -128,8 +129,10 @@
                 zscElement.loadParameterNamesAndvalues(function() {
                     zscHtml.loadPageBody(tag, "submitProfileChanges", "null", zscElement);
                 });
-            } else if (tag == "transactions") {
-                
+            } else if (tag == "transaction") {
+                zscTransGM.loadTransactions(function() {
+                    zscHtml.loadPageBody(tag, "null", "null", zscTransGM);
+                });
             } else if (tag == "templates") {
                 uF_loadBindedEntities(tag, function() {
                 }
