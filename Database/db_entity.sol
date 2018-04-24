@@ -8,27 +8,28 @@ pragma solidity ^0.4.17;
 import "./plat_string.sol";
 import "./db_node.sol";
 
-contract infoRecorder {
+contract ControlBase {
     function _recordString(bytes32 _nodeName, bytes32 _parameter, string _value) public;
 }
 
 contract DBEntity is DBNode {
-    bool    activated_;
-    bytes32 temp_;
+    bytes32[] private parameterNames_;
+    mapping(bytes32 => bool) private parameterExist_;
 
-    bytes32[] parameterNames_;
-    mapping(bytes32 => bool) parameterExist_;
-
-    address private idManager_;
+    bool private activated_;
 
     // Constructor
     function DBEntity(bytes32 _name) public DBNode(_name) {
         initParameters();
-        idManager_ = 0;
     }
 
     function initParameters() internal;
-    
+
+    function getBlance(bool _locked) public only_delegate(1) constant returns (uint256) {
+        if (_locked) return 0;
+        return 0;
+    }
+
     function setActivated(bool _activated) public only_delegate(1) {
         activated_ = _activated;
     }
@@ -65,7 +66,7 @@ contract DBEntity is DBNode {
     function setParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool) {
         require(parameterExist_[_parameter] == true);
 
-        infoRecorder(getController())._recordString(name(), _parameter, _value);
+        ControlBase(getController())._recordString(name(), _parameter, _value);
         return true;
     }
 
@@ -77,17 +78,4 @@ contract DBEntity is DBNode {
         require(_index < parameterNames_.length);
         return parameterNames_[_index];
     }
-
-    function bindEntity(address _adr) public only_delegate(1) {
-        idManager_ = getDatabase()._bindId(idManager_, _adr);
-    }
-
-    function numBindedEntities(bytes32 _type) public only_delegate(1) constant returns (uint) {
-        return getDatabase()._numBindedIds(idManager_, _type);
-    }
-    
-    function getBindedEntityNameByIndex(bytes32 _type, uint _index) public only_delegate(1) constant returns (bytes32) {
-        return getDatabase()._getBindedIdNameByIndex(idManager_, _type, _index);
-    }
-
 }
