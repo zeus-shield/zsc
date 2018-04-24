@@ -7,14 +7,10 @@ pragma solidity ^0.4.18;
 import "./plat_math.sol";
 import "./object.sol";
 
-contract CallbackDatabase is Object {
+contract CBDBDatabase is Object {
     function getNode(bytes32 _name) public only_delegate(1) constant returns (address);
     function destroyNode(address _node) public only_delegate(1) returns (bool);
     function _addNode(address _node) only_delegate(1) public ;
-    function _createIDManager() only_delegate(1) public returns (address);
-    function _bindId(address _idManager, address _id) public only_delegate(1) returns (address);
-    function _numBindedIds(address _idManager, bytes32 _type) public only_delegate(1) constant returns (uint);    
-    function _getBindedIdNameByIndex(address _idManager, bytes32 _type, uint _index) public only_delegate(1) constant returns (bytes32);
 }
 
 contract DBNode is Object {
@@ -27,6 +23,8 @@ contract DBNode is Object {
 
     bytes32 private nodeType_ = "node";
     address private ethWalletId_ ;
+    bool    private activated_;
+
 
     address[] children_;
     mapping(bytes32 => address) childMap_;
@@ -41,7 +39,7 @@ contract DBNode is Object {
         removeAndDestroyAllChildren(); 
         super.kill();
     }
-
+    
     function setNodeType(bytes32 _type) internal only_delegate(1) {
         nodeType_ = _type;
     }
@@ -57,11 +55,6 @@ contract DBNode is Object {
     function getId() public only_delegate(1) constant returns (address) {
         return ethWalletId_;
     }
-
-    function getBlance(bool _locked) public only_delegate(1) constant returns (uint256) {
-        if(_locked) return 0;
-        return 0;
-    }
     
     function setDelegatedModules(address _database, address _contoller, address _posAdv, address _walletGM, address _simulatorGM, address[] _factories) public only_delegate(1) {
         database_ = _database;
@@ -75,16 +68,15 @@ contract DBNode is Object {
         for (uint i=0; i<factories_.length; i++) {
             setDelegate(factories_[i], 1);
         }
-        CallbackDatabase(database_)._addNode(this);
+        CBDBDatabase(database_)._addNode(this);
     }
     
     function getController() internal constant returns (address) {
         return controller_;
     }
     
-
-    function getDatabase() public only_delegate(1) constant returns (CallbackDatabase) {
-        return CallbackDatabase(database_);
+    function getDatabase() public only_delegate(1) constant returns (CBDBDatabase) {
+        return CBDBDatabase(database_);
     }
 
     function numChildren() public only_delegate(1) constant returns(uint) {
@@ -115,7 +107,7 @@ contract DBNode is Object {
         if (_node == 0) return 0;
         DBNode(_node).setParent(this);
 
-        CallbackDatabase(database_).setDelegate(_node, 1);
+        CBDBDatabase(database_).setDelegate(_node, 1);
         DBNode(_node).setDelegatedModules(database_, controller_, posAdv_, walletGM_, simulatorGM_, factories_);
 
         children_.push(_node);
@@ -158,7 +150,7 @@ contract DBNode is Object {
         }
 
         for (uint i = 0; i < children_.length; ++i) {
-            CallbackDatabase(database_).destroyNode(children_[i]);
+            CBDBDatabase(database_).destroyNode(children_[i]);
             delete childMap_[DBNode(children_[i]).name()];
         }
         children_.length = 0;
