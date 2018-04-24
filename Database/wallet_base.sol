@@ -9,6 +9,7 @@ import "./db_node.sol";
 contract WalletBase is DBNode {
     struct Payment {
         uint time_;
+        bool isInput_;
         bytes32 txhash_;
         address sender_;
         address receiver_;
@@ -21,8 +22,7 @@ contract WalletBase is DBNode {
         mapping(uint => Payment) payments_;
     }
 
-    PaymentHistory private inputHistory_;
-    PaymentHistory private outHistory_;
+    PaymentHistory private paymentHistory_;
     
     bool private isEthAccount_;
     uint lokedValue_;
@@ -66,18 +66,18 @@ contract WalletBase is DBNode {
     }
 
     function recordInput(address _sender, bytes32 _tx, uint _amount, bytes32 _data) internal {
-        uint index = inputHistory_.nos_;
-        inputHistory_.nos_++;
-        paymentHistory_.payments_[index] = Payment(now, _tx, _sender, address(this), _amount, _data);
+        uint index = paymentHistory_.nos_;
+        paymentHistory_.nos_++;
+        paymentHistory_.payments_[index] = Payment(now, true,  _tx, _sender, address(this), _amount, _data);
 
         changeValue(true, _data == "locked", _amount);
     }
 
     function recordOut(address _sender, bytes32 _tx, uint _amount, bytes32 _data) internal {
-        require(inputHistory_.total_ >= _amount);
-        uint index = outHistory_.nos_;
-        outHistory_.nos_++;
-        outHistory_.payments_[index] = Payment(now, _tx, _sender, address(this), _amount, _data);
+        require(totalValue_ >= _amount);
+        uint index = paymentHistory_.nos_;
+        paymentHistory_.nos_++;
+        paymentHistory_.payments_[index] = Payment(now, false, _tx, _sender, address(this), _amount, _data);
 
         changeValue(false, _data == "locked", _amount);
     }
@@ -85,5 +85,20 @@ contract WalletBase is DBNode {
     function getBlance(bool _locked) public only_delegate(1) constant returns (uint256) {
         if (_locked) return lockedValue_;
         else return totalValue_;
+    }
+
+    function numTransactions() public only_delegate(1) constant returns (uint) {
+        return paymentHistory_.nos_;
+    }
+
+    function getTransactionInfoByIndex(uint _index) public only_delegate(1) constant returns (uint, bool, bytes32, uint, address, address) {
+        require(_index < paymentHistory_.nos_);
+        
+        return (paymentHistory_[_index].time_,
+                paymentHistory_[_index].isInput_,
+                paymentHistory_[_index].txhash_,
+                paymentHistory_[_index].amount_,
+                paymentHistory_[_index].sender_, 
+                paymentHistory_[_index].receiver_);
     }
 }
