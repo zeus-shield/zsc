@@ -93,15 +93,19 @@ contract SimulatorManager is Object {
         return true;
     }
 
-    function runSimulation() public only_delegate(1) returns (bool) {
-        simulationNos_ = simulationTempNos_;
-        
+    function runSingleSimulation() private {        
         for (uint i = 0; i < simulationNos_; ++i) {
             if (checkSimulationRunByIndex(i)) {
                 conductClaimAndReward(i);
             }
         }
-        return true;
     }
     
+    function runSimulation(uint _steps) public only_delegate(1) {
+        simulationNos_ = simulationTempNos_;
+        
+        for (uint i = 0; i < _steps; ++i) {
+            runSingleSimulation();
+        }
+    }
 }
