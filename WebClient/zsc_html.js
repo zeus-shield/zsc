@@ -49,7 +49,7 @@ ZSCHtml.prototype.loadWaitingApproval = function(funcName) {
 
 
 //////////
-ZSCHtml.prototype.loadPageBody = function(tag, func1, func2, para) {
+ZSCHtml.prototype.loadPageBody = function(tag, func1, func2, extra) {
     var text;
     switch(tag) {
         case "login": 
@@ -63,6 +63,9 @@ ZSCHtml.prototype.loadPageBody = function(tag, func1, func2, para) {
             break;
         case "wallet": 
             text = this.loadWallet(func1, func2, extra);
+            break;
+        case "transaction": 
+            text = this.loadTransaction(extra);
             break;
         case "profile": 
             text = this.loadParameters(func1, extra);
@@ -152,6 +155,40 @@ ZSCHtml.prototype.loadWallets = function(func1, func2, extra)  {
     }
     text += '</div>'
 
+    return text;
+}
+
+ZSCHtml.prototype.loadTransaction = function(extra)  {
+    var transObj = extra;
+    var timeMoment;
+    var inputTag;
+    var amount;
+    var sender;
+    var receiver;
+
+    var text ="";
+    text += '<div class="well">';
+    text += '<table align="center" style="width:800px;min-height:30px">'
+    text += '<tr>'
+    text += '   <td><text>Time</text></td> <td><text>Does Input</text></td>  <td><text>Amount</text></td>  <td><text>Sender</text></td> <td>Receiver</td>'
+    text += '</tr>'
+
+    for (var i = 0; i < walletObj.getTransactionNos(); ++i) {
+        timeMoment = transObj.getTimeMoment(i);
+        inputTag   = inputTag.getInputTag(i);
+        amount     = amount.getAmount(i);
+        sender     = sender.getSender(i);
+        receiver   = receiver.getReceiver(i);
+
+        text += '<tr>'
+        text += '   <td><text>' + timeMoment + '</text></td>'
+        text += '   <td><text>' + inputTag + '</text></td>'
+        text += '   <td><text>' + amount  + '</text></td>'
+        text += '   <td><text>' + sender  + '</text></td>'
+        text += '   <td><text>' + receiver  + '</text></td>'
+        text += '</tr>'
+    }
+    text += '</div>'
     return text;
 }
 
