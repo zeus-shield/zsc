@@ -239,7 +239,23 @@ contract ControlApis is ControlBase {
         require(nd != DBNode(0));
 
         string memory temp = PlatString.append(_userName, "-", _tokenSymbol);
-        address(getDBNode(PlatString.tobytes32(temp)));
+        return address(getDBNode(PlatString.tobytes32(temp)));
+    }
+
+    function numUserTransactions(bytes32 _userName, bytes32 _tokenSymbol) public only_registered(_userName) constant returns (uint) {
+        DBNode nd = getDBNode( _userName);
+        require(nd != DBNode(0));
+
+        string memory temp = PlatString.append(_userName, "-", _tokenSymbol);
+        return getDBNode(PlatString.tobytes32(temp)).numTransactions();
+    }
+
+    function getUserTransactionByIndex(bytes32 _userName, bytes32 _tokenSymbol, uint _index) public only_registered(_userName) constant returns (string) {
+        DBNode nd = getDBNode( _userName);
+        require(nd != DBNode(0));
+
+        string memory temp = PlatString.append(_userName, "-", _tokenSymbol);
+        return prepareTranasationfoByIndex(PlatString.tobytes32(temp), _index);
     }
 
 }
