@@ -49,23 +49,23 @@ ZSCHtml.prototype.loadWaitingApproval = function(funcName) {
 
 
 //////////
-ZSCHtml.prototype.loadPageBody = function(tag, funcName, extra) {
+ZSCHtml.prototype.loadPageBody = function(tag, func1, func2, para) {
     var text;
     switch(tag) {
         case "login": 
-            text = this.loadLogin(funcName); 
+            text = this.loadLogin(func1); 
             break;
         case "welecom": 
             text = this.loadWelcome(); 
             break;
         case "apply": 
-            text = this.loadButtonForEnablingElement(funcName); 
+            text = this.loadButtonForEnablingElement(func1); 
             break;
         case "wallet": 
-            text = this.loadWallet(funcName, extra);
+            text = this.loadWallet(func1, func2, extra);
             break;
         case "profile": 
-            text = this.loadParameters(funcName, extra);
+            text = this.loadParameters(func1, extra);
             break;
     }
     document.getElementById(this.pageBodyId).innerHTML = text; 
@@ -113,8 +113,8 @@ ZSCHtml.prototype.loadButtonForEnablingElement = function(funcName) {
     this.setHtmlContent(this.pageBodyId, text);  
 }
 
-ZSCHtml.prototype.loadWallets = function(funcName, extra)  {
-    var funcPrefix = funcName + "('"; 
+ZSCHtml.prototype.loadWallets = function(func1, func2, extra)  {
+    var funcPrefix = func1 + "('"; 
     var funcSuffix = "')";
     var walletObj = extra;
     var symbol;
@@ -122,12 +122,15 @@ ZSCHtml.prototype.loadWallets = function(funcName, extra)  {
     var balance;
     var hashId;
 
+    var showTransPrefix = func2 + "('";
+    var showTransSuffix = "')";
+
     var text ="";
     text += '<div class="well">';
     text += '<table align="center" style="width:800px;min-height:30px">'
     text += '<tr>'
     text += '   <td><text>Symbol</text></td> <td><text>Balance</text></td>  <td><text>Address</text></td>  <td><text>Sent To</text></td> <td>Amount</td> <td></td> '
-    text += '</tr><tr>'
+    text += '</tr>'
 
     for (var i = 0; i < walletObj.getTokenNos(); ++i) {
         symbol = walletObj.getTokenSymbol(i);
@@ -136,15 +139,17 @@ ZSCHtml.prototype.loadWallets = function(funcName, extra)  {
         hashId = symbol + "Hash";
         sentoId = symbol + "Dest";
         amountId = symbol + "Amount";
+        text += '<tr>'
         text += '   <td><text>' + symbol + '</text></td>'
         text += '   <td><text>' + balance + '</text></td>'
         text += '   <td><text>' + adr  + '</text></td>'
         text += '   <td><input id="' + sentoId + '"></input> <td>'   
         text += '   <td><input id="' + amountId + '"></input> <td>'   
-        text += '   <td><button type="button" onClick="' + funcPrefix + "'" + sentoId + "', '" + amountId + "', '" + hashId + "'" + funcSuffix + '">Show</button></td>'
+        text += '   <td><button type="button" onClick="' + funcPrefix + sentoId + "', '" + amountId + "', '" + hashId + "'" + funcSuffix + '">Show</button></td>'
+        text += '   <td><button type="button" onClick="' + showTransPrefix + symbol, "', '" + hashId + "'" + showTransSuffix + '">Show</button></td>'
         text += '   <td><text id="'+ hashId + '"></text></td>'
+        text += '</tr>'
     }
-    text += '</tr>'
     text += '</div>'
 
     return text;
