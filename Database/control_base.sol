@@ -38,6 +38,8 @@ contract DBNode is Object {
     function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (uint);
     function informTransaction(address _src, address _dest, uint256 _amount) only_delegate(1) only_delegate(1) public;
     function setERC20TokenAddress(address _tokenAdr) only_delegate(1) public;
+    function numTransactions() public only_delegate(1) constant returns (uint);
+    function getTransactionInfoByIndex(uint _index) public only_delegate(1) constant returns (uint, bool, bytes32, uint, address, address);
 
     function setAgreementStatus(bytes32 _tag, bytes32 receiver) public only_delegate(1) returns (bool);
     function configureHandlers() public only_delegate(1) returns (bool);
@@ -259,7 +261,6 @@ contract ControlBase is Object, ControlInfo {
             return "ETH";
         }
 
-
         bytes32 tokenName;
         bytes32 status;
         bytes32 tokenSymbol;
@@ -304,6 +305,32 @@ contract ControlBase is Object, ControlInfo {
         str = PlatString.append(str, "symbol=",      PlatString.bytes32ToString(tokenSymbol), "&");
         str = PlatString.append(str, "adr=",         PlatString.addressToString(tokenAdr),    "&");
         str = PlatString.append(str, "balance=",     PlatString.uintToString(tokenBalance),   "&");
+        return str;
+    }
+
+    function prepareTranasationfoByIndex(bytes32 _walletName, uint _index) internal constant returns (string) {
+        require(_index < getDBNode(_walletName).numTransactions());
+        
+        uint tranTime;
+        bool isInput;
+        bytes32 txHash;
+        uint amount;
+        address sender;
+        address receiver;
+        bytes32 inputTag;
+
+        (tranTime, isInput, txHash, amount, sender, receiver) =  getDBNode(_walletName).getTransactionInfoByIndex(_index);
+
+        if (isInput) inputTag = "true";
+        else inputTag = "false";
+
+        string memory str ="";
+        str = PlatString.append(str, "info?time=", PlatString.uintToString(tranTime),    "&");
+        str = PlatString.append(str, "input=",     PlatString.bytes32ToString(inputTag), "&");
+        str = PlatString.append(str, "tx=",        PlatString.bytes32ToString(txHash),   "&");
+        str = PlatString.append(str, "amout=",     PlatString.uintToString(amount),      "&");
+        str = PlatString.append(str, "sender=",    PlatString.addressToString(sender),   "&");
+        str = PlatString.append(str, "receiver=",  PlatString.addressToString(receiver), "&");
         return str;
     }
 
