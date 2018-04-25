@@ -4,7 +4,6 @@ Copyright (c) 2018 ZSC Dev Team
 
 pragma solidity ^0.4.18;
 
-import "./plat_string.sol";
 import "./object.sol";
 import "./control_info.sol";
 

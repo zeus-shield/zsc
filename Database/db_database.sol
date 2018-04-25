@@ -9,7 +9,6 @@ import "./object.sol";
 import "./db_node.sol";
 
 contract DBDatabase is Object {
-    bytes32 private temp_;
     address private rootNode_ = 0;
     address[] private nodes_;
     mapping(bytes32 => address) private nodeAddress_;
