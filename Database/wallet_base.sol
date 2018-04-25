@@ -5,6 +5,7 @@ Copyright (c) 2018 ZSC Dev.
 pragma solidity ^0.4.18;
 
 import "./db_node.sol";
+import "./plat_math.sol";
 
 contract WalletBase is DBNode {
     struct Payment {
@@ -44,16 +45,16 @@ contract WalletBase is DBNode {
     function changeValue(bool _doesIncrease, bool _isLocked, uint _amount) internal returns (bool) {
         if (_doesIncrease) {
             if (_isLocked) {
-                lokedValue_ += _amount;
+                lokedValue_ = SafeMath.add(lokedValue_, _amount);
             } 
-            totalValue_ += _amount;
+            totalValue_ = SafeMath.add(totalValue_, _amount);
         } else {
             if (_isLocked) {
                 require(lokedValue_ >= _amount);
-                lokedValue_ -= _amount;
+                lokedValue_= SafeMath.sub(lokedValue_, _amount);
             }
             require(totalValue_ >= _amount);
-            totalValue_ -= _amount;
+            totalValue_ SafeMath.sub(totalValue_, _amount);
         }
     }
 
