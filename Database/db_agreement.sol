@@ -56,16 +56,18 @@ contract DBAgreement is DBEntity {
         } else if (status_ == "PUBLISHED" && _tag == "PAID") {
             status_ = "PAID";
             startTime_ = now;
-            endTime_ = startTime_ + duration_;
+            endTime_ = SafeMath.add(startTime_, duration_);
 
-            super.setParameter("receiver", PlatString.bytes32ToString(_receiver));
-            super.setParameter("startTime", PlatString.uintToString(startTime_));
+            ret = super.setParameter("receiver", PlatString.bytes32ToString(_receiver));
+            require(ret);
+            ret = super.setParameter("startTime", PlatString.uintToString(startTime_));
+            require(ret);
             super.setParameter("endTime", PlatString.uintToString(endTime_));
+            ret = require(ret);
         } else {
             return false;
         }
-        super.setParameter("status",  _tag);
-        return true;
+        return super.setParameter("status",  _tag);
     }
  }
 
