@@ -5,6 +5,7 @@ Copyright (c) 2018 ZSC Dev.
 pragma solidity ^0.4.18;
 
 import "./object.sol";
+import "./plat_math.sol";
 
 contract PosBlock is Object {
     struct TxHash {
@@ -15,18 +16,18 @@ contract PosBlock is Object {
         uint reigsterTime_;
     }
     
-    bool minedStatus_;
-    uint sizeLimit_;
-    uint nosTransaction_;
-    uint currentSize_;
-    uint txNos_;
-    mapping(uint => TxHash) txHashs_;
-    mapping(bytes32 => uint) txIndice_;
-    mapping(bytes32 => bool) txExists_;
+    bool private minedStatus_;
+    uint private sizeLimit_;
+    uint private nosTransaction_;
+    uint private currentSize_;
+    uint private txNos_;
+    mapping(uint => TxHash) private txHashs_;
+    mapping(bytes32 => uint) private txIndice_;
+    mapping(bytes32 => bool) private txExists_;
 
-    address previousBlock_;
-    address nextBlock_;
-    uint blockSizeLimit_;
+    address private previousBlock_ = address(0);
+    address private nextBlock_ = address(0);
+    uint private blockSizeLimit_ = 0;
 
     function PosBlock() public Object("null") {
     }
@@ -36,15 +37,13 @@ contract PosBlock is Object {
     }
 
     function setPreviousBlock(address _previous) public only_delegate(1) {
-        if (previousBlock_ != address(0)) {
-            previousBlock_ = _previous;
-        }
+        require(previousBlock_ != address(0);
+        previousBlock_ = _previous;
     }
 
     function setNextBlock(address _next) public only_delegate(1) {
-        if (nextBlock_ != address(0)) {
-            nextBlock_ = _next;
-        }
+        require(nextBlock_ != address(0));
+        nextBlock_ = _next;
     }
 
     function getPreviousBlock() public only_delegate(1) constant returns (address) {
@@ -64,8 +63,10 @@ contract PosBlock is Object {
     }
 
     function checkIsFull(uint _gasUsage) public only_delegate(1) constant returns (bool) {
-        uint size = currentSize_ + _gasUsage;
-        if (size < blockSizeLimit_) {
+        require(blockSizeLimit_ != 0);
+
+        uint size = SafeMath.add(currentSize_, _gasUsage);
+        if (size > blockSizeLimit_) {
             return true;
         } else {
             return false;
