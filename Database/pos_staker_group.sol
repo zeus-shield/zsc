@@ -5,6 +5,7 @@ Copyright (c) 2018 ZSC Dev.
 pragma solidity ^0.4.18;
 
 import "./object.sol";
+import "./plat_math.sol";
 
 contract DBStaker is Object {
     function useStakePoint(uint _amount) public only_delegate(1) returns (uint);
@@ -20,7 +21,7 @@ contract PosStakerGroup is Object {
     mapping(address => uint) private stakerIndex_;
     mapping(uint => address) private stakers_;
 
-    address zscToken_;
+    address private zscTokenContract_;
 
     // Constructor
     function PosStakerGroup() public Object("zsc_block_pool") {
@@ -32,7 +33,7 @@ contract PosStakerGroup is Object {
     } 
 
     function setZscTokenAddress(address _adr) public only_delegate(1) {
-        zscToken_ = _adr;
+        zscTokenContract_ = _adr;
     }
 
     function numStakers() internal constant returns (uint) {
@@ -67,7 +68,7 @@ contract PosStakerGroup is Object {
         uint total = 0;
 
         for (uint i = 1; i < stakerNos_; ++i) {
-            total += DBStaker(stakers_[i]).getRemainingSP();
+            total = SafeMath.add(total, DBStaker(stakers_[i]).getRemainingSP());
         }
         return total;
     } 
