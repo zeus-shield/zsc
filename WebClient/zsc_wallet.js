@@ -55,11 +55,12 @@ ZSCWallet.prototype.informTransfer = function(srcAddress, destAddress, amount) {
     }
 } 
 
-ZSCWallet.prototype.enableWallet = function(tokenSymbol, func) {
+ZSCWallet.prototype.enableWallet = function(tokenSymbol, elementId, func) {
     this.myControlApi.enableElementWallet(this.userName, tokenSymbol, 0, 
         {from: this.account, gas: 9000000},
         function(error, result){ 
             if(!error) {
+                bF_showHashResult(elementId, result, function(){});
                 func();
             } else {
                 console.log("error: " + error);
