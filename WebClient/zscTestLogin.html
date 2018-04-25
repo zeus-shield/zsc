@@ -84,8 +84,8 @@
         zscElement.setElementParameter(logID, zscUser.getUserNameHr());
     }
 
-    function enableWallet(tokenSymbol) {
-        ZSCWalletGM.enableWallet(tokenSymbol, function() {
+    function enableWallet(tokenSymbol, elementId) {
+        ZSCWalletGM.enableWallet(tokenSymbol, elementId, function() {
            loadPageBody("wallet");
         });
     }
@@ -111,7 +111,7 @@
         zscHtml.loadPageHeader("loadHtmlPageBody");
 
         if (tag == "welecome") {
-            zscHtml.loadPageBody("welecome", "loadHtmlPageBody","null", "null");
+            zscHtml.loadPageBody("welecome", ["loadHtmlPageBody"], "null");
         } else if (tag == "apply") {
             zscUser.getUserStatusFromAdm(function(status) {
                 if (status == 0) {
@@ -129,15 +129,15 @@
         } else {
             if (tag == "wallet") {
                 zscWalletGM.loadTokenWallets(function() {
-                    zscHtml.loadPageBody(tag, "transferValue", "showTransactions", ZSCWalletGM);
+                    zscHtml.loadPageBody(tag, ["transferValue", "showTransactions", "enableWallet"], ZSCWalletGM);
                 });
             } else if (tag == "profile") {
                 zscElement.loadParameterNamesAndvalues(function() {
-                    zscHtml.loadPageBody(tag, "submitProfileChanges", "null", zscElement);
+                    zscHtml.loadPageBody(tag, ["submitProfileChanges"], zscElement);
                 });
             } else if (tag == "transaction") {
                 zscTransGM.loadTransactions(function() {
-                    zscHtml.loadPageBody(tag, "null", "null", zscTransGM);
+                    zscHtml.loadPageBody(tag, ["null"], zscTransGM);
                 });
             } else if (tag == "templates") {
                 uF_loadBindedEntities(tag, function() {
