@@ -49,26 +49,26 @@ ZSCHtml.prototype.loadWaitingApproval = function(funcName) {
 
 
 //////////
-ZSCHtml.prototype.loadPageBody = function(tag, func1, func2, extra) {
+ZSCHtml.prototype.loadPageBody = function(tag, funcs, extra) {
     var text;
     switch(tag) {
         case "login": 
-            text = this.loadLogin(func1); 
+            text = this.loadLogin(funcs[0]); 
             break;
         case "welecom": 
             text = this.loadWelcome(); 
             break;
         case "apply": 
-            text = this.loadButtonForEnablingElement(func1); 
+            text = this.loadButtonForEnablingElement(funcs[0]); 
             break;
         case "wallet": 
-            text = this.loadWallet(func1, func2, extra);
+            text = this.loadWallet(funcs[0], funcs[1], funcs[2], extra);
             break;
         case "transaction": 
             text = this.loadTransaction(extra);
             break;
         case "profile": 
-            text = this.loadParameters(func1, extra);
+            text = this.loadParameters(funcs[0], extra);
             break;
     }
     document.getElementById(this.pageBodyId).innerHTML = text; 
@@ -116,7 +116,7 @@ ZSCHtml.prototype.loadButtonForEnablingElement = function(funcName) {
     this.setHtmlContent(this.pageBodyId, text);  
 }
 
-ZSCHtml.prototype.loadWallets = function(func1, func2, extra)  {
+ZSCHtml.prototype.loadWallets = function(func1, func2, func3, extra)  {
     var funcPrefix = func1 + "('"; 
     var funcSuffix = "')";
     var walletObj = extra;
@@ -127,6 +127,9 @@ ZSCHtml.prototype.loadWallets = function(func1, func2, extra)  {
 
     var showTransPrefix = func2 + "('";
     var showTransSuffix = "')";
+
+    var enableWalletPrefix = func3 + "('";
+    var enableWalletSuffix = "')";
 
     var text ="";
     text += '<div class="well">';
@@ -145,11 +148,15 @@ ZSCHtml.prototype.loadWallets = function(func1, func2, extra)  {
         text += '<tr>'
         text += '   <td><text>' + symbol + '</text></td>'
         text += '   <td><text>' + balance + '</text></td>'
-        text += '   <td><text>' + adr  + '</text></td>'
-        text += '   <td><input id="' + sentoId + '"></input> <td>'   
-        text += '   <td><input id="' + amountId + '"></input> <td>'   
-        text += '   <td><button type="button" onClick="' + funcPrefix + sentoId + "', '" + amountId + "', '" + hashId + "'" + funcSuffix + '">Show</button></td>'
-        text += '   <td><button type="button" onClick="' + showTransPrefix + symbol, "', '" + hashId + "'" + showTransSuffix + '">Show</button></td>'
+        text += '   <td><text>' + adr  + '</text></td>'   
+        if (walletObj.getTokenStatus() == "false") {
+            text += '   <td><button type="button" onClick="' + enableWalletPrefix + symbol + "', '" + hashId + "'" + showTransSuffix + '">Enable</button></td>'
+        } else {
+            text += '   <td><input id="' + sentoId + '"></input> <td>'   
+            text += '   <td><input id="' + amountId + '"></input> <td>'
+            text += '   <td><button type="button" onClick="' + funcPrefix + sentoId + "', '" + amountId + "', '" + hashId + "'" + funcSuffix + '">Transfer</button></td>'
+            text += '   <td><button type="button" onClick="' + showTransPrefix + symbol, "', '" + hashId + "'" + showTransSuffix + '">Show</button></td>'
+        }
         text += '   <td><text id="'+ hashId + '"></text></td>'
         text += '</tr>'
     }
