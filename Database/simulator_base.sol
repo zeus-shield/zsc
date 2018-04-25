@@ -5,17 +5,18 @@ Copyright (c) 2018 ZSC Dev Team
 pragma solidity ^0.4.18;
 
 import "./object.sol";
+import "./plat_math.sol";
 
 contract SimulatorBase is Object {
-    bool started_;
-    bool running_ ;
-    uint probability_;   //from 0 to 1000
-    uint agrPrice_;
-    uint proLockedAmount_;
-    bytes32 tokeSymbol_;
-    address agrWalletAdr_ ;
-    address proWalletAdr_ ;
-    address recWalletAdr_;
+    bool private started_;
+    bool private running_ ;
+    uint private probability_;   //from 0 to 1000
+    uint private agrPrice_;
+    uint private proLockedAmount_;
+    bytes32 private tokeSymbol_;
+    address private agrWalletAdr_ ;
+    address private proWalletAdr_ ;
+    address private recWalletAdr_;
     
     uint private randSeed = 0;
 
@@ -30,10 +31,11 @@ contract SimulatorBase is Object {
         require(_max > _min);
         uint randValue = uint(keccak256(block.blockhash(block.number-1), _seed ))%(_max - _min);
 
-        return (randValue + _min);
+        return SafeMath.add(randValue, _min);
     }
 
     function startSimulation(uint _probLevel, uint _price, uint _lockedAmount, address _agrWallet, address _proWallet, address _recWallet) public only_delegate(1) {
+        require(_agrWallet != address(0), _proWallet != address(0), _recWallet != address(0), )
         running_         = true;
         probability_     = randGen(_probLevel, 100, now);
         agrPrice_        = _price;
