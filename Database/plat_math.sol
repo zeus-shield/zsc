@@ -1,92 +1,52 @@
 /*
-Copyright (c) 2018, ZSC Dev Team
-2017-12-18: v0.01
+Copyright (c) 2016 Smart Contract Solutions, Inc.
+Original: https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/contracts/math/SafeMath.sol
 */
 
-pragma solidity ^0.4.17;
+pragma solidity ^0.4.18;
 
-library PlatMath {
+/**
+ * @title SafeMath
+ * @dev Math operations with safety checks that throw on error
+ */
+library SafeMath {
 
-    function greater(uint a, uint b) internal pure returns (bool) {
-        if (a > b) return true;
-        return false;
+  /**
+  * @dev Multiplies two numbers, throws on overflow.
+  */
+  function mul(uint256 a, uint256 b) internal pure returns (uint256 c) {
+    if (a == 0) {
+      return 0;
     }
+    c = a * b;
+    assert(c / a == b);
+    return c;
+  }
 
-    function less(uint a, uint b) internal pure returns (bool) {
-        if (a < b) return true;
-        return false;
-    }
+  /**
+  * @dev Integer division of two numbers, truncating the quotient.
+  */
+  function div(uint256 a, uint256 b) internal pure returns (uint256) {
+    // assert(b > 0); // Solidity automatically throws when dividing by 0
+    // uint256 c = a / b;
+    // assert(a == b * c + a % b); // There is no case in which this doesn't hold
+    return a / b;
+  }
 
-    function equal(uint a, uint b) internal pure returns (bool) {
-        if (a == b) return true;
-        return false;
-    }
+  /**
+  * @dev Subtracts two numbers, throws on overflow (i.e. if subtrahend is greater than minuend).
+  */
+  function sub(uint256 a, uint256 b) internal pure returns (uint256) {
+    assert(b <= a);
+    return a - b;
+  }
 
-    function mul(uint a, uint b) internal pure returns (uint) {
-        uint c = a * b;
-        assertErr(a == 0 || c / a == b);
-        return c;
-    }
-
-    function div(uint a, uint b) internal pure returns (uint) {
-        assertErr(b != 0);
-        uint c = a / b;
-        return c;
-    }
-
-    function sub(uint a, uint b) internal pure returns (uint) {
-        assertErr(b <= a);
-        return a - b;
-    }
-
-    function add(uint a, uint b) internal pure returns (uint) {
-        uint c = a + b;
-        assertErr(c>=a && c>=b);
-        return c;
-    }
-
-    function sqrt(uint x) internal pure returns (uint) {
-        uint z = (x + 1) / 2;
-        uint y = x;
-        while (z < y) {
-            y = z;
-            z = (x / z + z) / 2;
-        }
-        return y;
-    }
-
-
-    function mul(int a, int b) internal pure returns (int) {
-        int c = a * b;
-        assertErr(a == 0 || c / a == b);
-        return c;
-    }
-
-    function div(int a, int b) internal pure returns (int) {
-        assertErr(b != 0);
-        int c = a / b;
-        return c;
-    }
-
-    function sub(int a, int b) internal pure returns (int) {
-        return a - b;
-    }
-
-    function add(int a, int b) internal pure returns (int) {
-        return a + b;
-    }
-
-    function sqrt(int x) internal pure returns (int) {
-        //assertErr(x > 0);
-        int z = (x + 1) / 2;
-        int y = x;
-        while (z < y) {
-            y = z;
-            z = (x / z + z) / 2;
-        }
-        return y;
-    }
-    function assertErr(bool assertion) internal pure {
-        if (!assertion) revert();
-    }
+  /**
+  * @dev Adds two numbers, throws on overflow.
+  */
+  function add(uint256 a, uint256 b) internal pure returns (uint256 c) {
+    c = a + b;
+    assert(c >= a);
+    return c;
+  }
 }
