@@ -46,7 +46,7 @@ contract SimulatorManager is Object {
     }
 
     function formatSimulationName() private constant returns (bytes32) {
-        string memory str = PlatString.uintToString(1000 + simulationTempNos_);
+        string memory str = PlatString.uintToString(SafeMath.add(1000, simulationTempNos_));
         return PlatString.tobytes32(str);
     }
 
@@ -66,6 +66,7 @@ contract SimulatorManager is Object {
     }
 
     function checkSimulationRunByIndex(uint _index) private constant returns (bool) {
+        require(_simIndex < simulationNos_);
         address sim = simulationRuns_[_index];
         if (rewarded_[sim] == false) {
             if (SimulatorBase(sim).doesStarted() && SimulatorBase(sim).doesFinished()) {
@@ -76,19 +77,20 @@ contract SimulatorManager is Object {
     }
 
     function conductClaimAndReward(uint _simIndex) private returns (bool) {
+        require(_simIndex < simulationNos_);
         address sim = simulationRuns_[_simIndex];
 
         address agrWallet = SimulatorBase(sim).getWalletAddress("agreement");
         address proWallet = SimulatorBase(sim).getWalletAddress("provider");
         address recWallet = SimulatorBase(sim).getWalletAddress("receiver");
-        uint agrPrice_ = SimulatorBase(sim).getAgreementPrice();
+        uint agrPrice_    = SimulatorBase(sim).getAgreementPrice();
         uint proLockedAmount_ = SimulatorBase(sim).getProviderLockedAmount();
 
         if (SimulatorBase(sim).needClaim()) {
             WalletBase(agrWallet).executeTransaction(proWallet, agrPrice_, "purchase fee");
             WalletBase(agrWallet).executeTransaction(recWallet, proLockedAmount_, "claimed fee");
         } else {
-            WalletBase(agrWallet).executeTransaction(proWallet, agrPrice_ + proLockedAmount_, "reward fee");
+            WalletBase(agrWallet).executeTransaction(proWallet, SafeMath.add(agrPrice_, proLockedAmount_), "reward fee");
         }
         return true;
     }
