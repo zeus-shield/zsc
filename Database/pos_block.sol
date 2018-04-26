@@ -18,7 +18,6 @@ contract PosBlock is Object {
     
     bool private minedStatus_;
     uint private sizeLimit_;
-    uint private nosTransaction_;
     uint private currentSize_;
     uint private txNos_;
     mapping(uint => TxHash) private txHashs_;
@@ -30,6 +29,9 @@ contract PosBlock is Object {
     uint private blockSizeLimit_ = 0;
 
     function PosBlock() public Object("null") {
+        currentSize_ = 0;
+        txNos_ = 0;
+        minedStatus_ = false;
     }
 
     function setBlockSizeLimit(uint _limit) public only_delegate(1) {
@@ -37,7 +39,7 @@ contract PosBlock is Object {
     }
 
     function setPreviousBlock(address _previous) public only_delegate(1) {
-        require(previousBlock_ != address(0);
+        require(previousBlock_ != address(0));
         previousBlock_ = _previous;
     }
 
