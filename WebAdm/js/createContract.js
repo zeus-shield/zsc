@@ -6,7 +6,9 @@ var cC_ModuleName = [];
 var cC_ModuleAdr = [];
 
 function cC_getContractFullName(contractName) {
-    if (contractName == 'AdmAdv') {
+    if (contractName == 'TestToken') {
+        return "./zsc/db/Database/ZSCTestToken.sol:ZSCTestToken";
+    } else if (contractName == 'AdmAdv') {
         return "./zsc/adm_adv.sol:AdmAdv";
     } else if (contractName == 'PosAdv') {
         return "./zsc/pos_adv.sol:PosAdv";
@@ -38,7 +40,9 @@ function cC_getContractFullName(contractName) {
 }
 
 function cC_getCompiledFile(contractName) {
-    if (contractName == "AdmAdv") {
+    if (contractName == 'TestToken') {
+        return compiledZSCTestToken;
+    } else if (contractName == "AdmAdv") {
         return compiledAdmAdv;
     } else if (contractName == 'LogRecorder') {
         return compiledLogRecorder;
