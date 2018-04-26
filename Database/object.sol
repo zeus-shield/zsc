@@ -6,6 +6,7 @@ Copyright (c) 2018, ZSC Dev Team
 pragma solidity ^0.4.18;
 
 import "./plat_string.sol";
+import "./plat_math.sol";
 
 // ----------------------------------------------------------------------------
 // ERC Token Standard #20 Interface
@@ -57,6 +58,8 @@ contract Recorder is Delegated {
 }
 
 contract Object is Delegated {
+    using SafeMath for uint;
+
     bytes32 private name_ ;
     address internal logRecorder_ = 0;
 

@@ -6,7 +6,6 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.17;
 import "./plat_string.sol";
-import "./plat_math.sol";
 import "./db_node.sol";
 
 contract ControlBase {
