@@ -51,6 +51,7 @@ class ZscHtmlModules extends ZscSystemModules {
         <script type="text/javascript" src="./js/zsc_user_management.js"></script>
         <script type="text/javascript" src="./js/zsc_wallet_managerment.js"></script>
         <script type="text/javascript" src="./js/zsc_show_user.js"></script>
+        <script type="text/javascript" src="./js/compiled_zsc_test_token.js"></script>
         <script type="text/javascript" src="./js/compiled_database.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_pro.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_rec.js"></script>
@@ -102,7 +103,7 @@ class ZscHtmlModules extends ZscSystemModules {
             $text .= '<text>Step - '.$x.': Create '.$name.'</text>';
             $text .= '<div class="well">';
             $text .= '   <text> Name: </text>';
-            $text .= '   <input type="text" id="'.$name.'Name" value = "zsc_'.$name.'"></input>';
+            $text .= '   <input type="text" id="'.$name.'Name" value = "test_'.$name.'"></input>';
             $text .= '   <button type="button" onClick="'.$func.'(\''.$name.'\',\''.$name.'Name\')">Create</button> <br>';
             $text .= '   <text id="'.$name.'Log"></text> <br>';
             $text .= '</div>';
