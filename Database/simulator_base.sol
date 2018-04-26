@@ -22,6 +22,7 @@ contract SimulatorBase is Object {
 
     function SimulatorBase(bytes32 _name) public Object(_name) {
         running_ = false;
+        started_ = false;
     }
 
     // Generates a random number
@@ -36,10 +37,11 @@ contract SimulatorBase is Object {
     }
 
     function startSimulation(uint _probLevel, uint _price, uint _lockedAmount, address _agrWallet, address _proWallet, address _recWallet) public only_delegate(1) {
-        require(_price != 0)
+        require(_price != 0);
         require(_probLevel > 0 && _probLevel < 100);
         require(_agrWallet != address(0) && _proWallet != address(0) &&  _recWallet != address(0));
 
+        started_         = true;
         running_         = true;
         probability_     = randGen(_probLevel, 100, now);
         agrPrice_        = _price;
@@ -49,12 +51,8 @@ contract SimulatorBase is Object {
         recWalletAdr_    = _recWallet;
     }
 
-    function doesStarted() public only_delegate(1) constant returns (bool) { 
-        return started_;
-    } 
-
     function doesFinished() public only_delegate(1) constant returns (bool) { 
-        return (!running_);
+        return (started_ && !running_);
     } 
 
     function needClaim() public only_delegate(1) constant returns (bool) {
