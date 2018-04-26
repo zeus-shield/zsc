@@ -66,10 +66,10 @@ contract SimulatorManager is Object {
     }
 
     function checkSimulationRunByIndex(uint _index) private constant returns (bool) {
-        require(_simIndex < simulationNos_);
+        require(_index < simulationNos_);
         address sim = simulationRuns_[_index];
         if (rewarded_[sim] == false) {
-            if (SimulatorBase(sim).doesStarted() && SimulatorBase(sim).doesFinished()) {
+            if (SimulatorBase(sim).doesFinished()) {
                 return true;
             }
         }
