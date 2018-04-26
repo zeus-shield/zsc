@@ -23,21 +23,21 @@ contract ERC20Interface {
     // Get the total token supply     function totalSupply() constant returns (uint256 totalSupply);
  
     // Get the account balance of another account with address _owner
-    function balanceOf(address _owner) constant returns (uint256 balance);
+    function balanceOf(address _owner) public constant returns (uint256 balance);
  
     // Send _value amount of tokens to address _to
-    function transfer(address _to, uint256 _value) returns (bool success);
+    function transfer(address _to, uint256 _value) public returns (bool success);
 
     // Send _value amount of token from address _from to address _to
-    function transferFrom(address _from, address _to, uint256 _value) returns (bool success);
+    function transferFrom(address _from, address _to, uint256 _value) public returns (bool success);
  
     // Allow _spender to withdraw from your account, multiple times, up to the _value amount.
     // If this function is called again it overwrites the current allowance with _value.
     // this function is required for some DEX functionality
-    function approve(address _spender, uint256 _value) returns (bool success); 
+    function approve(address _spender, uint256 _value) public returns (bool success); 
     
     // Returns the amount which _spender is still allowed to withdraw from _owner
-    function allowance(address _owner, address _spender) constant returns (uint256 remaining);
+    function allowance(address _owner, address _spender) public constant returns (uint256 remaining);
 
    // Triggered when tokens are transferred.
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
@@ -49,9 +49,10 @@ contract ERC20Interface {
 /// @title ZSCTest Token (ZSCTest)
 contract ZSCTestToken is owned, ERC20Interface {
     // Public variables of the token
-    string private constant standard_ = 'ERC20';
-    uint8  private constant decimals_ = 18;
-    string private name_ = 'ZSCTest Token';  
+    bytes32 private objectName_;
+    string private standard_ = 'ERC20';
+    uint  private decimals_ = 18;
+    string private tokenName_ = 'ZSCTest Token';  
     string private symbol_ = 'ZSCTest';
     uint256 totalTokens_ = 0; 
 
@@ -62,19 +63,30 @@ contract ZSCTestToken is owned, ERC20Interface {
     mapping(address => mapping (address => uint256)) allowed_;
 
     // Constructor
-    function ZSCTestToken(_name, _symbol) {
+    function ZSCTestToken(bytes32 _name) public {
         // Only for testing purpose
         totalTokens_ = 1000 * 1000 * 1000 * 10**18;
         balances_[msg.sender] = totalTokens_;
-        name_ = _name;
-        symbol_ = _symbol;
+        objectName_ = _name;
     }
 
     // This unnamed function is called whenever someone tries to send ether to it 
-    function () {
+    function () public {
         revert(); // Prevents accidental sending of ether
     }
 
+    function name() public constant returns (string) {
+        return tokenName_;
+    } 
+
+    function symbol() public constant returns (string) {
+        return symbol_;
+    }
+    
+    function decimals() public constant returns (uint) {
+        return decimals_;
+    }
+    
     function totalSupply() public constant returns (uint256) {
         return totalTokens_;
     }
@@ -126,7 +138,6 @@ contract ZSCTestToken is owned, ERC20Interface {
     // Allow _spender to withdraw from your account, multiple times, up to the _value amount.
     // If this function is called again it overwrites the current allowance with _value.     
     function approve(address _spender, uint256 _amount) public returns (bool success) {
-        if (!registered) return false;
         allowed_[msg.sender][_spender] = _amount;
         Approval(msg.sender, _spender, _amount);
         return true;
