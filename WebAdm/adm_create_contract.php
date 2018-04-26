@@ -18,7 +18,6 @@ Copyright (c) 2018 ZSC Dev Team
     function gotoConfigureLogRecorder() {
         var href = "adm_configure_logrecorder.php";
         href    += cC_getUrlSuffixForControlPage();
-        href    += "zscTokenAddress=" + document.getElementById("CreateContractHtml").value;
         window.location.href = href;
     }
 
@@ -31,11 +30,6 @@ Copyright (c) 2018 ZSC Dev Team
 
     echo '<div class="page-header"> <font size="5" color="blue" >Setup ZSC system in the testing envrioment</font></div>';
     echo $htmlModules->loadAllAdrs();
-
-    echo '<text>Fill in ZSC token address </text> 
-         <div class="well">
-            <input type="text" id="zscTokenAddress"></input>
-        </div><br>';
 
     echo $htmlModules->loadCreateContract('cC_setupContract');
 ?>
