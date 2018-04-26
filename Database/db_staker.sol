@@ -52,25 +52,25 @@ contract DBStaker is DBUser {
 
     function claimStakePoint() public only_delegate(1) {
     	uint currentTime = now;
-    	uint ratio = SafeMath.sub(currentTime, lastStoreTime_);
-        ratio = SafeMath.div(ratio, DAY_IN_SECONDS_BY_100);
+    	uint ratio = currentTime.sub(lastStoreTime_);
+        ratio = ratio.div(DAY_IN_SECONDS_BY_100);
 
     	uint spAmount = SafeMath.mul(ratio, ERC20Interface(getERC20TokenAddress()).balancOf(address(this)));
-        spAmount = SafeMath.div(spAmount, 100);
+        spAmount = spAmount.div(100);
 
     	lastStoreTime_ = currentTime;
 
-        spRemaining_ = SafeMath.add(spRemaining_, spAmount);
+        spRemaining_ = spRemaining_.add(spAmount);
     }
 
     function useStakePoint(uint _amount) public only_delegate(1) returns (uint) {
         if (spRemaining_ > _amount) {
-            spRemaining_ = SafeMath.sub(spRemaining_, _amount);
-            spForReward_ = SafeMath.add(spForReward_, _amount);
+            spRemaining_ = spRemaining_.sub(_amount);
+            spForReward_ = spForReward_.add(_amount);
             return 0;
         } else {
             uint delta = SafeMath.sub(_amount, spRemaining_);
-            spForReward_ = SafeMath.sub(spForReward_, spRemaining_);
+            spForReward_ = spForReward_.sub(spRemaining_);
             spRemaining_ = 0;
             return delta;
         }
@@ -78,7 +78,7 @@ contract DBStaker is DBUser {
 
     function claimReward() public only_delegate(1) returns (uint) {
         uint currentTime = now;
-    	if (SafeMath.sub(currentTime, lastRewardTime_) > divendendDuration_) {
+    	if (currentTime.sub(lastRewardTime_) > divendendDuration_) {
     		uint reward = (spForReward_ / 100) / 365;
     		spForReward_ = 0;
     		return reward;
