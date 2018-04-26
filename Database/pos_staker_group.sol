@@ -20,6 +20,7 @@ contract PosStakerGroup is Object {
     uint private nextStakerForUseSP_;
     mapping(address => uint) private stakerIndex_;
     mapping(uint => address) private stakers_;
+    mapping(address => bool) private stakerExists_;
 
     address private zscTokenContract_;
 
@@ -28,8 +29,6 @@ contract PosStakerGroup is Object {
         stakerNos_ = 0;
         spUsed_ = 0;
         spRemaining_ = 0;
-        stakerIndex_[address(0)] = 0;
-        stakers_[0] = address(0);
     } 
 
     function setZscTokenAddress(address _adr) public only_delegate(1) {
@@ -43,21 +42,34 @@ contract PosStakerGroup is Object {
     function registerStaker(address _nodeAddress) public only_delegate(1) {
         require(_nodeAddress != 0 && stakerIndex_[_nodeAddress] == 0);
         uint index = stakerNos_;
+
+        stakerExists_[_nodeAddress] = true;
         stakerIndex_[_nodeAddress] = index;
+
         stakers_[index] = _nodeAddress;
         stakerNos_++;
     }
 
     function removeStaker(address _nodeAddress) public only_delegate(1)  {
-        require(stakerIndex_[_nodeAddress] != 0);
+        require(stakerExists_[_nodeAddress]);
+
         uint index = stakerIndex_[_nodeAddress];
-        address lastAddress = stakers_[stakerNos_ - 1];
 
-        stakers_[index] = lastAddress;
+        if (index > 0) {
+            address lastAddress = stakers_[stakerNos_ - 1];
+    
+            stakers_[index] = lastAddress;
+    
+            delete stakerIndex_[_nodeAddress];
+            delete stakers_[stakerNos_ - 1];
 
-        delete stakerIndex_[_nodeAddress];
-        delete stakers_[stakerNos_ - 1];
-        stakerNos_--;
+            stakerNos_--;
+        } else {
+            delete stakerIndex_[_nodeAddress];
+            delete stakers_[0];
+            stakerExists_[_nodeAddress] = false;
+            stakerNos_ = 0;
+        }
     }
 
     function useStakerSPByIndex(uint _index, uint _amount) internal returns (uint) {
@@ -68,7 +80,7 @@ contract PosStakerGroup is Object {
         uint total = 0;
 
         for (uint i = 1; i < stakerNos_; ++i) {
-            total = SafeMath.add(total, DBStaker(stakers_[i]).getRemainingSP());
+            total = total.add(DBStaker(stakers_[i]).getRemainingSP());
         }
         return total;
     } 
