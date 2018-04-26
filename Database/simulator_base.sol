@@ -30,12 +30,16 @@ contract SimulatorBase is Object {
     function randGen(uint _min, uint _max, uint _seed) private constant returns (uint){
         require(_max > _min);
         uint randValue = uint(keccak256(block.blockhash(block.number-1), _seed ))%(_max - _min);
+        randValue.add(_min);
 
-        return SafeMath.add(randValue, _min);
+        return randValue;
     }
 
     function startSimulation(uint _probLevel, uint _price, uint _lockedAmount, address _agrWallet, address _proWallet, address _recWallet) public only_delegate(1) {
-        require(_agrWallet != address(0), _proWallet != address(0), _recWallet != address(0), )
+        require(_price != 0)
+        require(_probLevel > 0 && _probLevel < 100);
+        require(_agrWallet != address(0) && _proWallet != address(0) &&  _recWallet != address(0));
+
         running_         = true;
         probability_     = randGen(_probLevel, 100, now);
         agrPrice_        = _price;
@@ -77,7 +81,7 @@ contract SimulatorBase is Object {
         } else if (_type == "receiver") {
             return recWalletAdr_;
         } else {
-            return 0;
+            revert();
         }
     }
     
