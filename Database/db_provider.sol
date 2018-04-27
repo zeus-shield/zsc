@@ -1,8 +1,8 @@
 /*
-Copyright (c) 2018 ZSC Dev.
+Copyright (c) 2018, ZSC Dev Team
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 import "./plat_string.sol";
 import "./db_user.sol";
@@ -13,7 +13,7 @@ contract DBProvider is DBUser {
     address private templates_ = 0;
 
     // Constructor
-    function DBProvider(bytes32 _name) public DBUser(_name) {
+    constructor(bytes32 _name) public DBUser(_name) {
         setNodeType("proiver"); 
     }
 
