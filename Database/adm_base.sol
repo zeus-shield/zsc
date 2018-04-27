@@ -2,14 +2,14 @@
 Copyright (c) 2018 ZSC Dev Team
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 import "./object.sol";
 
 contract ControlApis is Object {
     function createElement(uint _typeInUint, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address);
     function enableElementWallet(uint _typeInUint/*5: eth; 6: erc20*/, bytes32 _enName, bytes32 _tokeSymbol, address _extraAdr) public returns (address);
-    function setUserActiveStatus(bytes32 _user, bool _tag) public only_owner returns (bool);
+    function setUserActiveStatus(bytes32 _user, bool _tag) public returns (bool);
 }
 
 contract AdmBase is Object {
@@ -27,19 +27,29 @@ contract AdmBase is Object {
     address private zscTestTokenAddress_;
     string private controlApisFullAib_;
 
-    modifier only_added(bytes32 _hexx) { require(testUsers_[userIndex_[_hexx]].status_ == 1); _;}
+    modifier only_added(bytes32 _hexx) {require(testUsers_[userIndex_[_hexx]].status_ == 1); _;}
     
-    function AdmBase(bytes32 _name) public Object(_name) {}
+    constructor(bytes32 _name) public Object(_name) {}
 
     function toHexx(bytes32 _value) internal constant returns (bytes32);
 
-    function getUserIndex(bytes32 _hexx) internal constant returns (uint) { return userIndex_[_hexx]; }
+    function getUserIndex(bytes32 _hexx) internal constant returns (uint) { 
+        return userIndex_[_hexx]; 
+    }
 
-    function setZSCTestTokenAddress(address _adr) public only_delegate(1) { zscTestTokenAddress_ = _adr; }
+    function setZSCTestTokenAddress(address _adr) public { 
+        checkDelegate(msg.sender, 1);
+        zscTestTokenAddress_ = _adr; 
+    }
 
-    function setControlApisFullAbi(string _fullAbi) public only_delegate(1) { controlApisFullAib_ = _fullAbi; }
+    function setControlApisFullAbi(string _fullAbi) public { 
+        checkDelegate(msg.sender, 1);
+        controlApisFullAib_ = _fullAbi; 
+    }
 
-    function getControlApisFullAbi() public constant returns (string) { return controlApisFullAib_; }
+    function getControlApisFullAbi() public constant returns (string) { 
+        return controlApisFullAib_; 
+    }
 
     function setAdrs(address _controlApis,
                      address _dbDatabase,
@@ -47,7 +57,9 @@ contract AdmBase is Object {
                      address _factoryRec,
                      address _factoryTmp,
                      address _factoryAgr) 
-        public only_delegate(1) {
+        public {
+        checkDelegate(msg.sender, 1);
+
         if (_controlApis != 0) systemAdrs_["ControlApis"] = _controlApis;
         if (_dbDatabase != 0)  systemAdrs_["DBDatabase"]  = _dbDatabase;
         if (_factoryPro != 0)  systemAdrs_["FactoryPro"]  = _factoryPro;
@@ -57,14 +69,16 @@ contract AdmBase is Object {
     }
 
     function getControlApisAdr() public constant returns (address){ return systemAdrs_["ControlApis"]; }
-    function getDBDatabaseAdr()  public only_delegate(1) constant returns (address){ return  systemAdrs_["DBDatabase"]; }
-    function getFactoryProAdr()  public only_delegate(1) constant returns (address) { return systemAdrs_["FactoryPro"] ; }
-    function getFactoryRecAdr()  public only_delegate(1) constant returns (address) { return systemAdrs_["FactoryRec"] ; }
-    function getFactoryTmpAdr()  public only_delegate(1) constant returns (address) { return systemAdrs_["FactoryTmp"] ; }
-    function getFactoryAgrAdr()  public only_delegate(1) constant returns (address) { return systemAdrs_["FactoryAgr"] ; }
+    function getDBDatabaseAdr()  public constant returns (address) { checkDelegate(msg.sender, 1); return systemAdrs_["DBDatabase"]; }
+    function getFactoryProAdr()  public constant returns (address) { checkDelegate(msg.sender, 1); return systemAdrs_["FactoryPro"] ; }
+    function getFactoryRecAdr()  public constant returns (address) { checkDelegate(msg.sender, 1); return systemAdrs_["FactoryRec"] ; }
+    function getFactoryTmpAdr()  public constant returns (address) { checkDelegate(msg.sender, 1); return systemAdrs_["FactoryTmp"] ; }
+    function getFactoryAgrAdr()  public constant returns (address) { checkDelegate(msg.sender, 1); return systemAdrs_["FactoryAgr"] ; }
     
-    function addUser(bytes32 _user) public only_owner {
-        var ret = toHexx(_user);
+    function addUser(bytes32 _user) public {
+        checkOwner(msg.sender);
+
+        bytes32 ret = toHexx(_user);
         require(testUsers_[userIndex_[ret]].status_ ==0);
 
         userIndex_[ret] = testUsers_.length;
@@ -81,7 +95,9 @@ contract AdmBase is Object {
         testUsers_[index].id_ = msg.sender;
     }
 
-    function approveUser(bytes32 _name) public only_delegate(1) {
+    function approveUser(bytes32 _name) public {
+        checkDelegate(msg.sender, 1);
+
         bytes32 hexx = toHexx(_name);
         uint index = getUserIndex(hexx);
         require (testUsers_[index].status_ == "applied");
@@ -105,15 +121,20 @@ contract AdmBase is Object {
         ///transferAnyERC20Token(zscTestTokenAddress_, _ZSCTAmount);
     }
 
-    function setUserStatus(bytes32 _name, bool _tag) public only_delegate(1) {
+    function setUserStatus(bytes32 _name, bool _tag) public {
+        checkDelegate(msg.sender, 1);
+
         ControlApis(systemAdrs_["controlApis"]).setUserActiveStatus(_name, _tag);
     }
 
-    function numUsers() public only_delegate(1) constant returns (uint) {
+    function numUsers() public constant returns (uint) {
+        checkDelegate(msg.sender, 1);
         return testUsers_.length;
     }
 
-    function getUserInfoByIndex(uint _index) public only_delegate(1) constant returns (string) {
+    function getUserInfoByIndex(uint _index) public constant returns (string) {
+        checkDelegate(msg.sender, 1);
+
         require(_index < testUsers_.length);
         string memory str ="";
         str = PlatString.append(str, "info?name=", PlatString.bytes32ToString(testUsers_[_index].name_),   "&");
