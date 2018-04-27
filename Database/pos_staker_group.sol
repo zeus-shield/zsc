@@ -1,8 +1,8 @@
 /*
-Copyright (c) 2018 ZSC Dev.
+Copyright (c) 2018, ZSC Dev Team
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 import "./object.sol";
 import "./plat_math.sol";
@@ -25,7 +25,7 @@ contract PosStakerGroup is Object {
     address private zscTokenContract_;
 
     // Constructor
-    function PosStakerGroup() public Object("zsc_block_pool") {
+    constructor() public Object("zsc_block_pool") {
         stakerNos_ = 0;
         spUsed_ = 0;
         spRemaining_ = 0;
