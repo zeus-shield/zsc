@@ -1,8 +1,8 @@
 /*
-Copyright (c) 2018 ZSC Dev.
+Copyright (c) 2018, ZSC Dev Team
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 import "./db_node.sol";
 import "./plat_math.sol";
@@ -30,13 +30,13 @@ contract WalletBase is DBNode {
     uint256 totalValue_;
 
     // Constructor
-    function WalletBase(bytes32 _name) public DBNode(_name) {
+    constructor(bytes32 _name) public DBNode(_name) {
         isEthAccount_ = false;
         lokedValue_ = 0;
         unlockedValue_= 0;
     }
 
-    function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (uint);
+    function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (uint);
 
     function setAsEthAccount() internal {
         isEthAccount_ = true;
@@ -83,16 +83,22 @@ contract WalletBase is DBNode {
         changeValue(false, _data == "locked", _amount);
     }
 
-    function getBlance(bool _locked) public only_delegate(1) constant returns (uint256) {
+    function getBlance(bool _locked) public constant returns (uint256) {
+        checkDelegate(msg.sender, 1);
+
         if (_locked) return lockedValue_;
         else return totalValue_;
     }
 
-    function numTransactions() public only_delegate(1) constant returns (uint) {
+    function numTransactions() public constant returns (uint) {
+        checkDelegate(msg.sender, 1);
+
         return paymentHistory_.nos_;
     }
 
-    function getTransactionInfoByIndex(uint _index) public only_delegate(1) constant returns (uint, bool, bytes32, uint, address, address) {
+    function getTransactionInfoByIndex(uint _index) public constant returns (uint, bool, bytes32, uint, address, address) {
+        checkDelegate(msg.sender, 1);
+        
         require(_index < paymentHistory_.nos_);
         
         return (paymentHistory_[_index].time_,
