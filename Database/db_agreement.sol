@@ -2,7 +2,8 @@
 Copyright (c) 2018, ZSC Dev Team
 */
 
-pragma solidity ^0.4.17;
+pragma solidity ^0.4.21;
+
 import "./db_entity.sol";
 
 contract DBAgreement is DBEntity {
@@ -14,7 +15,7 @@ contract DBAgreement is DBEntity {
     bytes32 private walletSymbol_;
 
     // Constructor
-    function DBAgreement(bytes32 _name) public DBUser(_name) {
+    constructor(bytes32 _name) public DBUser(_name) {
         setNodeType("agreement");
         status_ = 0;
     }
@@ -26,7 +27,9 @@ contract DBAgreement is DBEntity {
         super.addParameter("receiver");
     }
 
-    function setParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool) {
+    function setParameter(bytes32 _parameter, string _value) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+
         if (status_ == "CREATED") {
             return super.setParameter(_parameter, _value);
         } else {
@@ -34,7 +37,9 @@ contract DBAgreement is DBEntity {
         }
     }
 
-    function addParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool) {
+    function addParameter(bytes32 _parameter, string _value) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+
         if (status_ == "CREATED") {
             return super.addParameter(_parameter, _value);
         } else {
@@ -42,11 +47,15 @@ contract DBAgreement is DBEntity {
         }
     }
 
-    function removeParameter(bytes32 _parameter) public only_delegate(1) returns (bool) {
+    function removeParameter(bytes32 _parameter) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+
         return false;
     }
 
-    function setAgreementStatus(bytes32 _tag, bytes32 _receiver) public only_delegate(1) returns (bool) {
+    function setAgreementStatus(bytes32 _tag, bytes32 _receiver) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+
         if (status_ == "PAID") return false;
 
         if(status_ == "CREATED" && _tag == "READY") {

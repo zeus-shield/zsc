@@ -1,8 +1,8 @@
 /*
-Copyright (c) 2018 ZSC Dev.
+Copyright (c) 2018, ZSC Dev Team
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 import "./object.sol";
 import "./plat_math.sol";
@@ -28,43 +28,54 @@ contract PosBlock is Object {
     address private nextBlock_ = address(0);
     uint private blockSizeLimit_ = 0;
 
-    function PosBlock() public Object("null") {
+    constructor() public Object("null") {
         currentSize_ = 0;
         txNos_ = 0;
         minedStatus_ = false;
     }
 
-    function setBlockSizeLimit(uint _limit) public only_delegate(1) {
+    function setBlockSizeLimit(uint _limit) public {
+        checkDelegate(msg.sender, 1);
         blockSizeLimit_ = _limit;
     }
 
-    function setPreviousBlock(address _previous) public only_delegate(1) {
+    function setPreviousBlock(address _previous) public {
+        checkDelegate(msg.sender, 1);
+
         require(previousBlock_ != address(0));
         previousBlock_ = _previous;
     }
 
-    function setNextBlock(address _next) public only_delegate(1) {
+    function setNextBlock(address _next) public {
+        checkDelegate(msg.sender, 1);
+
         require(nextBlock_ != address(0));
         nextBlock_ = _next;
     }
 
-    function getPreviousBlock() public only_delegate(1) constant returns (address) {
+    function getPreviousBlock() public constant returns (address) {
+        checkDelegate(msg.sender, 1);
         return previousBlock_;
     }
 
-    function getNextBlock() public only_delegate(1) constant returns (address) {
+    function getNextBlock() public constant returns (address) {
+        checkDelegate(msg.sender, 1);
         return nextBlock_;
     }
     
-    function setMined() public only_delegate(1) {
+    function setMined() public {
+        checkDelegate(msg.sender, 1);
         minedStatus_ = true;
     }
 
-    function doesMined() public only_delegate(1) constant returns (bool) {
+    function doesMined() public constant returns (bool) {
+        checkDelegate(msg.sender, 1);
         return minedStatus_;
     }
 
-    function checkIsFull(uint _gasUsage) public only_delegate(1) constant returns (bool) {
+    function checkIsFull(uint _gasUsage) public constant returns (bool) {
+        checkDelegate(msg.sender, 1);
+
         require(blockSizeLimit_ != 0);
 
         uint size = SafeMath.add(currentSize_, _gasUsage);
@@ -75,7 +86,9 @@ contract PosBlock is Object {
         }
     } 
     
-    function registerTx(bool _sentIn, bytes32 _tx, address _sender, address _receiver, uint _gasUsage) public only_delegate(1) returns (bool) {
+    function registerTx(bool _sentIn, bytes32 _tx, address _sender, address _receiver, uint _gasUsage) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+
         if (minedStatus_) return false;
 
         txExists_[_tx] = true;
@@ -86,30 +99,38 @@ contract PosBlock is Object {
         return true;
     }
 
-    function getTxByIndex(uint _index) public only_delegate(1) constant returns (address, address, uint, uint) {
+    function getTxByIndex(uint _index) public constant returns (address, address, uint, uint) {
+        checkDelegate(msg.sender, 1);
+
         require(_index < txNos_);
         
         return (txHashs_[_index].sender_, txHashs_[_index].receiver_, txHashs_[_index].gasUsage_, txHashs_[_index].reigsterTime_);
     }
 
-    function getTxByHash(bytes32 _tx) public only_delegate(1) constant returns (address, address, uint, uint) {
+    function getTxByHash(bytes32 _tx) public constant returns (address, address, uint, uint) {
+        checkDelegate(msg.sender, 1);
+
         require(txExists_[_tx]);
         return getTxByIndex(txIndice_[_tx]);
     }
 
-    function doesBlockMined() public only_delegate(1) constant returns (bool) {
+    function doesBlockMined() public constant returns (bool) {
+        checkDelegate(msg.sender, 1);
         return minedStatus_;
     }
     
-    function getBlockLimit() public only_delegate(1) constant returns (uint) {
+    function getBlockLimit() public constant returns (uint) {
+        checkDelegate(msg.sender, 1);
         return sizeLimit_;
     }
 
-    function numTx() public only_delegate(1) constant returns (uint) {
+    function numTx() public constant returns (uint) {
+        checkDelegate(msg.sender, 1);
         return txNos_;
     }
 
-    function getCurrentSize() public only_delegate(1) constant returns (uint) {
+    function getCurrentSize() public constant returns (uint) {
+        checkDelegate(msg.sender, 1);
         return currentSize_;
     }
 
