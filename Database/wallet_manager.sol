@@ -1,8 +1,8 @@
 /*
-Copyright (c) 2018 ZSC Dev.
+Copyright (c) 2018, ZSC Dev Team
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 import "./object.sol";
 
@@ -35,11 +35,11 @@ contract WalletManager is Object {
     address private apiController_;
 
     // Constructor
-    function WalletManager() public Object("zsc_wallet_manager") {
+    constructor() public Object("zsc_wallet_manager") {
         tokenNos_ = 0;
     } 
 
-    function initWalletManager(address _controller, address _database) public only_delegate(1)  {
+    function initWalletManager(address _controller, address _database) public {
         require(_database != 0);
         bindedDB_ = _database;
 
@@ -52,11 +52,14 @@ contract WalletManager is Object {
         }
     }
 
-    function doesTokenContractAdded(bytes32 _symbol) public only_delegate(1) constant returns (bool) {
+    function doesTokenContractAdded(bytes32 _symbol) public constant returns (bool) {
+        checkDelegate(msg.sender, 1);
         return erc20TokenExists_[_symbol];
     }
 
-    function addTokenContract(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool) {
+    function addTokenContract(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+
         if (erc20TokenExists_[_symbol]) return false;
 
         erc20TokenIndice_[_symbol] = tokenNos_;
@@ -65,7 +68,9 @@ contract WalletManager is Object {
         return true;
     }
 
-    function removeTokenContract(bytes32 _symbol) public only_delegate(1) returns (bool) {
+    function removeTokenContract(bytes32 _symbol) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+
         if (!erc20TokenExists_[_symbol]) return false;
         
         uint index = erc20TokenIndice_[_symbol];
@@ -75,21 +80,27 @@ contract WalletManager is Object {
         tokenNos_--;
     }
 
-    function disableTokenContract(bytes32 _symbol) public only_delegate(1) returns (bool) {
+    function disableTokenContract(bytes32 _symbol) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+
         if (!erc20TokenExists_[_symbol]) return false;
         
         uint index = erc20TokenIndice_[_symbol];
         erc20Tokens_[index].status_ = "false";
     }
 
-    function getTokenContractAddress(bytes32 _symbol) public only_delegate(1) constant returns (address) {
+    function getTokenContractAddress(bytes32 _symbol) public constant returns (address) {
+        checkDelegate(msg.sender, 1);
+
         require(erc20TokenExists_[_symbol]);
         
         uint index = erc20TokenIndice_[_symbol];
         return erc20Tokens_[index].tokenAdr_;
     }
 
-    function enableTokenByHolder(bytes32 _tokenSymbol, bytes32 _nodeName, address _nodeAddress) public only_delegate(1) returns (bool) {
+    function enableTokenByHolder(bytes32 _tokenSymbol, bytes32 _nodeName, address _nodeAddress) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+
         require(erc20TokenExists_[_tokenSymbol]);
         require(!holderExists_[_nodeName]);
 
@@ -103,11 +114,13 @@ contract WalletManager is Object {
         tokenHoders_[holderIndex].enabledTokens_[tokenIndex] = true;   
     }
 
-    function numTokenContracts() public only_delegate(1) constant returns (uint) {
+    function numTokenContracts() public constant returns (uint) {
         return tokenNos_;
     }
     
-    function getTokenInfoByIndex(uint _index) public only_delegate(1) constant returns (bytes32, bytes32, bytes32, uint, address) {
+    function getTokenInfoByIndex(uint _index) public constant returns (bytes32, bytes32, bytes32, uint, address) {
+        checkDelegate(msg.sender, 1);
+
         require(_index < tokenNos_);
         return (erc20Tokens_[_index].name_, 
                 erc20Tokens_[_index].status_, 
