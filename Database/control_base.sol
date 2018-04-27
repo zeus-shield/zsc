@@ -2,7 +2,7 @@
 Copyright (c) 2018 ZSC Dev Team
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 import "./object.sol";
 import "./control_info.sol";
@@ -12,63 +12,63 @@ contract DBFactory is Object {
 }
 
 contract DBDatabase is Object { 
-    function getNode(bytes32 _name) public only_delegate(1) constant returns (address);
-    function checkeNodeByAddress(address _adr) public only_delegate(1) constant returns (bool);
-    function numNodes() public only_delegate(1) constant returns (uint);
-    function getNodeByIndex(uint _index) public only_delegate(1) constant returns (address);
-    function destroyNode(address _node) public only_delegate(1) returns (bool);
+    function getNode(bytes32 _name) public constant returns (address);
+    function checkeNodeByAddress(address _adr) public constant returns (bool);
+    function numNodes() public constant returns (uint);
+    function getNodeByIndex(uint _index) public constant returns (address);
+    function destroyNode(address _node) public returns (bool);
 }
 
 contract DBNode is Object {
-    function setId(address _ethWalletiId) only_delegate(1) public;
-    function getId() public only_delegate(1) returns (address);
-    function getNodeType() public only_delegate(1) constant returns (bytes32);
-    function getBlance(bool _locked) public only_delegate(1) constant returns (uint256);
+    function setId(address _ethWalletiId) public;
+    function getId() public returns (address);
+    function getNodeType() public constant returns (bytes32);
+    function getBlance(bool _locked) public constant returns (uint256);
 
-    function setActivated(bool _activated) only_delegate(1) public;
-    function getActivated() public only_delegate(1) constant returns (bool);
+    function setActivated(bool _activated) public;
+    function getActivated() public constant returns (bool);
 
-    function addParameter(bytes32 _parameter) public only_delegate(1) returns (bool);
-    function removeParameter(bytes32 _parameter) public only_delegate(1) returns (bool);
-    function setParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool);
-    function numParameters() public only_delegate(1) constant returns (uint);
-    function getParameterNameByIndex(uint _index) public only_delegate(1) constant returns (bytes32);
+    function addParameter(bytes32 _parameter) public returns (bool);
+    function removeParameter(bytes32 _parameter) public returns (bool);
+    function setParameter(bytes32 _parameter, string _value) public returns (bool);
+    function numParameters() public constant returns (uint);
+    function getParameterNameByIndex(uint _index) public constant returns (bytes32);
 
-    function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (uint);
-    function informTransaction(address _src, address _dest, uint256 _amount) only_delegate(1) only_delegate(1) public;
-    function setERC20TokenAddress(address _tokenAdr) only_delegate(1) public;
-    function numTransactions() public only_delegate(1) constant returns (uint);
-    function getTransactionInfoByIndex(uint _index) public only_delegate(1) constant returns (uint, bool, bytes32, uint, address, address);
+    function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (uint);
+    function informTransaction(address _src, address _dest, uint256 _amount) public;
+    function setERC20TokenAddress(address _tokenAdr) public;
+    function numTransactions() public constant returns (uint);
+    function getTransactionInfoByIndex(uint _index) public constant returns (uint, bool, bytes32, uint, address, address);
 
-    function setAgreementStatus(bytes32 _tag, bytes32 receiver) public only_delegate(1) returns (bool);
-    function configureHandlers() public only_delegate(1) returns (bool);
-    function getHandler(bytes32 _type) public only_delegate(1) constant returns (address);
+    function setAgreementStatus(bytes32 _tag, bytes32 receiver) public returns (bool);
+    function configureHandlers() public returns (bool);
+    function getHandler(bytes32 _type) public constant returns (address);
 
-    function numChildren() public only_delegate(1) constant returns(uint);
-    function getChildByIndex(uint _index) public only_delegate(1) constant returns(address);
-    function addChild(address _node) public only_delegate(1) returns (address);
+    function numChildren() public constant returns(uint);
+    function getChildByIndex(uint _index) public  constant returns(address);
+    function addChild(address _node) public returns (address);
 }
 
 contract PosManager is Object {
-    function registerStaker(address _nodeAddress) only_delegate(1) public;
-    function removeStaker(address _nodeAddress) only_delegate(1) public;
+    function registerStaker(address _nodeAddress) public;
+    function removeStaker(address _nodeAddress) public;
 }
 
 contract WalletManager is Object {
-    function initWalletManager(address _controller, address _database) public only_delegate(1);
-    function doesTokenContractAdded() public only_delegate(1) constant returns (bool);
-    function addTokenContract(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public only_delegate(1) returns (bool);
-    function removeTokenContract(bytes32 _symbol) public only_delegate(1) returns (bool);
-    function disableTokenContract(bytes32 _symbol) public only_delegate(1) returns (bool);
-    function getTokenContractAddress(bytes32 _symbol) public only_delegate(1) constant returns (address);
-    function enableTokenByHolder(bytes32 _tokenSymbol, bytes32 _nodeName, address _nodeAddress) public only_delegate(1) returns (bool);
-    function numTokenContracts() public only_delegate(1) constant returns (uint);
-    function getTokenInfoByIndex(uint _index) public only_delegate(1) constant returns (bytes32, bytes32, bytes32, uint, address);
+    function initWalletManager(address _controller, address _database) public;
+    function doesTokenContractAdded() public constant returns (bool);
+    function addTokenContract(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public returns (bool);
+    function removeTokenContract(bytes32 _symbol) public returns (bool);
+    function disableTokenContract(bytes32 _symbol) public returns (bool);
+    function getTokenContractAddress(bytes32 _symbol) public constant returns (address);
+    function enableTokenByHolder(bytes32 _tokenSymbol, bytes32 _nodeName, address _nodeAddress) public returns (bool);
+    function numTokenContracts() public constant returns (uint);
+    function getTokenInfoByIndex(uint _index) public constant returns (bytes32, bytes32, bytes32, uint, address);
 }
 
 contract SimulatorManager is Object {
-    function addSimulationRun(uint _proLevel, uint _price, uint _lockedAmount, address _agrWallet, address _proWallet, address _recWallet) public only_delegate(1) returns (bytes32);
-    function runSimulation(uint _steps) public only_delegate(1);
+    function addSimulationRun(uint _proLevel, uint _price, uint _lockedAmount, address _agrWallet, address _proWallet, address _recWallet) public returns (bytes32);
+    function runSimulation(uint _steps) public;
 }
 
 contract ControlBase is Object, ControlInfo {   
@@ -81,7 +81,7 @@ contract ControlBase is Object, ControlInfo {
     address private simulatorGM_;
     address private zscTokenAddress_;
 
-    function ControlBase(bytes32 _name) public Object(_name) {
+    constructor(bytes32 _name) public Object(_name) {
         factoryTypes_[1] = "provider";
         factoryTypes_[2] = "receiver";
         factoryTypes_[3] = "staker";
@@ -380,7 +380,7 @@ contract ControlBase is Object, ControlInfo {
         return amount;
     }
 
-    function conductInformTransaction(bytes32 _enName, address _dest, uint256 _amount) internal only_delegate(1) returns (bool) {
+    function conductInformTransaction(bytes32 _enName, address _dest, uint256 _amount) internal returns (bool) {
         bytes32 destName = Object(_dest).name();
         bytes32 tokenSymbol = PlatString.tobytes32(getControlInfoParameterValue(destName, "walletSymbol"));
         address userWallet = address(getDBNode(formatWalletName(_enName, tokenSymbol)));
