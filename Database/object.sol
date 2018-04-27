@@ -3,7 +3,7 @@ Copyright (c) 2018, ZSC Dev Team
 2017-12-18: v0.01
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 import "./plat_string.sol";
 import "./plat_math.sol";
@@ -17,44 +17,66 @@ contract ERC20Interface {
     function balanceOf(address _owner) public constant returns (uint256 balance);
 }
 
+contract Recorder {
+    function addLog(string _log, bool _newLine) public;
+}
+
 contract Owned {
-    address owner;
-    modifier only_owner {require(msg.sender == owner); _;}
-    function Owned() public {owner = msg.sender;}
-    function transferOwnership(address newOwner) public only_owner {owner = newOwner;}       
+    address private owner;
+
+    modifier only_owner {require(isOwner(msg.sender)); _;}
+
+    constructor() public {owner = msg.sender;}
+    
+    function isOwner(address _account) public returns (bool) { 
+        return (_account == owner); 
+    }
+    
+    function transferOwnership(address newOwner) public {
+        checkOwner(msg.sender);
+        owner = newOwner;
+    }       
+
+    function checkOwner(address _account) internal { 
+        require(isOwner(msg.sender)); 
+    }
 }
 
 contract Delegated is Owned{
     mapping (address => uint) public delegates_;
 
-    //modifier only_delegate {require(delegates_[msg.sender] || msg.sender == owner || this == msg.sender); _; }
     modifier only_delegate(uint _priority) {
         require(isDelegate(msg.sender, _priority)); 
         _; 
     }
-
-    function Delegated() public {
+    
+    constructor() public {
         delegates_[msg.sender] = 1;
     }
 
-    function kill() public only_delegate(1) {selfdestruct(owner); }
+    function kill() public {
+        checkDelegate(msg.sender, 1);
+        selfdestruct(owner); 
+    }
 
-    function setDelegate(address _address, uint _priority) public only_delegate(1) { 
+    function setDelegate(address _address, uint _priority) public {
+        require(isDelegate(msg.sender, 1)); 
         require(_address != 0);
         if (_priority > 0) delegates_[_address] = _priority;
         else delete delegates_[_address];
     }
 
     function isDelegate(address _account, uint _priority) public constant returns (bool)  {
+        if (address(this) == _account) return true;
         if (delegates_[_account] == 0) return false;
-        if (this == _account) return true;
         if (delegates_[_account] <= _priority ) return true;
         return false;
     }
-}
 
-contract Recorder is Delegated {
-    function addLog(string _log, bool _newLine) only_delegate(1) public;
+    function checkDelegate(address _address, uint _priority) internal {
+        require(isDelegate(msg.sender, 1));
+    }
+    
 }
 
 contract Object is Delegated {
@@ -64,18 +86,26 @@ contract Object is Delegated {
     address internal logRecorder_ = 0;
 
     // Constructor
-    function Object(bytes32 _name) public { name_ = _name;}
+    constructor(bytes32 _name) public { name_ = _name;}
 
     // This unnamed function is called whenever someone tries to send ether to it
     function() public payable { revert(); }
 
-    function name() public only_delegate(1) constant returns (bytes32) { return name_;}
+    function name() public constant returns (bytes32) { 
+        checkDelegate(msg.sender, 1);
+        return name_;
+    }
 
+    function setLogRecorder(address _adr) public {
+        checkDelegate(msg.sender, 1);
+        logRecorder_ = _adr;
+    }
 
-    function setLogRecorder(address _adr) public only_delegate(1) {logRecorder_ = _adr;}
-
-    function addLog(string _log, bool _newLine) public only_delegate(1) {
-        if (logRecorder_ != 0) Recorder(logRecorder_).addLog(_log, _newLine);
+    function addLog(string _log, bool _newLine) public {
+        checkDelegate(msg.sender, 1);
+        if (logRecorder_ != 0) {
+            Recorder(logRecorder_).addLog(_log, _newLine);
+        }
     }
 
     // ------------------------------------------------------------------------
