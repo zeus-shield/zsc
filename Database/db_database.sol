@@ -2,12 +2,14 @@
 Copyright (c) 2018 ZSC Dev Team
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 import "./plat_string.sol";
 import "./object.sol";
 import "./db_node.sol";
-
+    function getNode(bytes32 _name) public constant returns (address);
+    function destroyNode(address _node) public returns (bool);
+    function _addNode(address _node) public ;
 contract DBDatabase is Object {
     address private rootNode_ = 0;
     address[] private nodes_;
@@ -18,10 +20,12 @@ contract DBDatabase is Object {
     struct NodeParameterValue {mapping (bytes32 => string) values_; }
     mapping (bytes32 => NodeParameterValue) nodeParameters_;
 
-    function DBDatabase(bytes32 _name) public Object(_name) {
+    constructor(bytes32 _name) public Object(_name) {
     }
 
-    function initDatabase(address _controller, address _posAdv, address _walletGM, address _simulatorGM, address[] _factories) public only_delegate(1) {
+    function initDatabase(address _controller, address _posAdv, address _walletGM, address _simulatorGM, address[] _factories) public {
+        checkDelegate(msg.sender, 1);
+
         if (rootNode_ == 0) {
             for (uint i=0; i<_factories.length; i++) {
                 setDelegate(_factories[i], 1);
@@ -36,23 +40,37 @@ contract DBDatabase is Object {
         }
     }
 
-    function kill() public only_delegate(1) { 
+    function kill() public { 
+        checkDelegate(msg.sender, 1);
         destroyNode(rootNode_);
         super.kill();
     }
     
-    function getNode(bytes32 _name) public only_delegate(1) constant returns (address) { return nodeAddress_[_name]; }
+    function getNode(bytes32 _name) public constant returns (address) { 
+        checkDelegate(msg.sender, 1);
+        return nodeAddress_[_name]; 
+    }
 
-    function checkeNodeByAddress(address _adr) public only_delegate(1) constant returns (bool) { return nodeExists_[_adr]; }
+    function checkeNodeByAddress(address _adr) public constant returns (bool) { 
+        checkDelegate(msg.sender, 1);
+        return nodeExists_[_adr]; 
+    }
 
-    function numNodes() public only_delegate(1) constant returns (uint) { return nodes_.length; }
+    function numNodes() public constant returns (uint) { 
+        checkDelegate(msg.sender, 1);
+        return nodes_.length; 
+    }
 
-    function getNodeByIndex(uint _index) public only_delegate(1) constant returns (address) { 
+    function getNodeByIndex(uint _index) public constant returns (address) { 
+        checkDelegate(msg.sender, 1);
+
         if (_index >= nodes_.length) return 0;
         return nodes_[_index]; 
     }
 
-    function _addNode(address _node) public only_delegate(1) {
+    function _addNode(address _node) public {
+        checkDelegate(msg.sender, 1);
+
         bytes32 ndName = DBNode(_node).name();
         require (nodeAddress_[ndName] == 0);
 
@@ -67,7 +85,9 @@ contract DBDatabase is Object {
         addLog(str, true);
     }
     
-    function destroyNode(address _node) public only_delegate(1) returns (bool) {
+    function destroyNode(address _node) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+
         for (uint i = 0; i < nodes_.length; ++i) {
             if (nodes_[i] == _node) {
                 address parent = DBNode(nodes_[i]).getParent();
