@@ -1,9 +1,9 @@
 /*
 Copyright (c) 2018, ZSC Dev Team
-2018-02-11: v0.01
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
+
 import "./object.sol";
 
 contract DBIDManager is Object {
@@ -11,14 +11,17 @@ contract DBIDManager is Object {
     mapping(address => bool) IDExist_;
 
     // Constructor
-    function DBIDManager() public Object("null") {
+    constructor() public Object("null") {
     }
 
-    function numIds() public only_delegate(1) constant returns (uint) {
+    function numIds() public constant returns (uint) {
+        checkDelegate(msg.sender, 1);
         return IDs_.length;
     }
 
-    function addId(address _id) public only_delegate(1) returns (bool) {
+    function addId(address _id) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+
         if (IDExist_[_id] == true)
             return false;
 
@@ -28,7 +31,9 @@ contract DBIDManager is Object {
         return true;
     }
 
-    function removeId(address _id) public only_delegate(1) returns (bool) {
+    function removeId(address _id) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+
         if (IDExist_[_id] == false)
             return false;
 
@@ -45,7 +50,9 @@ contract DBIDManager is Object {
         return true;
     }
 
-    function getId(uint _index) public only_delegate(1) constant returns (address) {
+    function getId(uint _index) public constant returns (address) {
+        checkDelegate(msg.sender, 1);
+
         if(_index >= IDs_.length) return 0;
         return IDs_[_index];
     }
