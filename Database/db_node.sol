@@ -1,16 +1,16 @@
 /*
 Copyright (c) 2018, ZSC Dev Team
-2018-02-12: v0.01
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
+
 import "./plat_math.sol";
 import "./object.sol";
 
-contract CBDBDatabase is Object {
-    function getNode(bytes32 _name) public only_delegate(1) constant returns (address);
-    function destroyNode(address _node) public only_delegate(1) returns (bool);
-    function _addNode(address _node) only_delegate(1) public ;
+contract CBDBDatabase {
+    function getNode(bytes32 _name) public constant returns (address);
+    function destroyNode(address _node) public returns (bool);
+    function _addNode(address _node) public ;
 }
 
 contract DBNode is Object {
@@ -32,7 +32,7 @@ contract DBNode is Object {
     address[] factories_;
 
     // Constructor
-    function DBNode(bytes32 _name) public Object(_name) {
+    constructor(bytes32 _name) public Object(_name) {
     }
 
     function kill() public only_delegate(1) { 
@@ -40,23 +40,28 @@ contract DBNode is Object {
         super.kill();
     }
     
-    function setNodeType(bytes32 _type) internal only_delegate(1) {
+    function setNodeType(bytes32 _type) internal {
         nodeType_ = _type;
     }
 
-    function getNodeType() public only_delegate(1) constant returns (bytes32) {
+    function getNodeType() public constant returns (bytes32) {
+        checkDelegate(msg.sender, 1);
         return nodeType_;
     }
 
-    function setId(address _ethWalletiId) public only_delegate(1) {
+    function setId(address _ethWalletiId) public {
+        checkDelegate(msg.sender, 1);
         ethWalletId_ = _ethWalletiId;
     }
 
-    function getId() public only_delegate(1) constant returns (address) {
+    function getId() public constant returns (address) {
+        checkDelegate(msg.sender, 1);
         return ethWalletId_;
     }
     
-    function setDelegatedModules(address _database, address _contoller, address _posAdv, address _walletGM, address _simulatorGM, address[] _factories) public only_delegate(1) {
+    function setDelegatedModules(address _database, address _contoller, address _posAdv, address _walletGM, address _simulatorGM, address[] _factories) public {
+        checkDelegate(msg.sender, 1);
+
         database_ = _database;
         factories_ = _factories;
         controller_ = _contoller;
@@ -74,16 +79,14 @@ contract DBNode is Object {
     function getController() internal constant returns (address) {
         return controller_;
     }
-    
-    function getDatabase() public only_delegate(1) constant returns (CBDBDatabase) {
-        return CBDBDatabase(database_);
-    }
 
-    function numChildren() public only_delegate(1) constant returns(uint) {
+    function numChildren() public constant returns(uint) {
+        checkDelegate(msg.sender, 1);
         return children_.length;
     }
     
-    function setParent(address _parent) public only_delegate(1) {
+    function setParent(address _parent) public {
+        checkDelegate(msg.sender, 1);
         if (parent_ == address(0)) {
             parent_ = _parent;
             if (parent_ != address(0)) {
@@ -92,18 +95,22 @@ contract DBNode is Object {
         }
     }
 
-    function getParent() public only_delegate(1) constant returns(address) {
+    function getParent() public constant returns(address) {
+        checkDelegate(msg.sender, 1);
         return parent_; 
     }
 
-    function removeFromParent() public only_delegate(1) {
+    function removeFromParent() public {
+        checkDelegate(msg.sender, 1);
         if (parent_ != address(0)) {
             DBNode(parent_).removeChild(name());
         }
         parent_ = address(0);
     }
 
-    function addChild(address _node) public only_delegate(1) returns (address) {
+    function addChild(address _node) public returns (address) {
+        checkDelegate(msg.sender, 1);
+
         if (_node == 0) return 0;
         DBNode(_node).setParent(this);
 
@@ -115,17 +122,23 @@ contract DBNode is Object {
         return _node;
     }
 
-    function getChild(bytes32 _name) public only_delegate(1) constant returns(address) {
+    function getChild(bytes32 _name) public constant returns(address) {
+        checkDelegate(msg.sender, 1);
+
         require(childMap_[_name] != 0);
         return childMap_[_name];
     }
     
-    function getChildByIndex(uint _index) public only_delegate(1) constant returns(address) {
+    function getChildByIndex(uint _index) public constant returns(address) {
+        checkDelegate(msg.sender, 1);
+
         require(_index < children_.length);
         return children_[_index];
     }
 
-    function removeChild(bytes32 _name) public only_delegate(1) returns (address) {
+    function removeChild(bytes32 _name) public returns (address) {
+        checkDelegate(msg.sender, 1);
+
         require(childMap_[_name] != 0);
 
         address nd;
@@ -144,7 +157,9 @@ contract DBNode is Object {
         return nd;
     }
 
-    function removeAndDestroyAllChildren() public only_delegate(1) {
+    function removeAndDestroyAllChildren() public {
+        checkDelegate(msg.sender, 1);
+
         if (children_.length == 0) {
             return;
         }
