@@ -1,8 +1,8 @@
 /*
-Copyright (c) 2018 ZSC Dev Team
+Copyright (c) 2018, ZSC Dev Team
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 import "./simulator_base.sol";
 
@@ -28,11 +28,13 @@ contract SimulatorManager is Object {
     address private bindedDB_;
     address private apiController_;
 
-    function SimulatorManager(bytes32 _name) public Object(_name) {
+    constructor(bytes32 _name) public Object(_name) {
         simulationNos_ = 0;
     }
 
-    function initSimulatorManager(address _controller, address _database) public only_delegate(1)  {
+    function initSimulatorManager(address _controller, address _database) public {
+        checkDelegate(msg.sender, 1);
+
         require(_database != 0);
         bindedDB_ = _database;
 
@@ -51,7 +53,9 @@ contract SimulatorManager is Object {
     }
 
     /*_proLev: 1 : 100*/
-    function addSimulationRun(uint _proLevel, uint _price, uint _lockedAmount, address _agrWallet, address _proWallet, address _recWallet) public only_delegate(1) returns (bytes32) {
+    function addSimulationRun(uint _proLevel, uint _price, uint _lockedAmount, address _agrWallet, address _proWallet, address _recWallet) public returns (bytes32) {
+        checkDelegate(msg.sender, 1);
+
         bytes32 runName = formatSimulationName();
         require(!simulationExist_[runName]);
 
@@ -103,7 +107,9 @@ contract SimulatorManager is Object {
         }
     }
     
-    function runSimulation(uint _steps) public only_delegate(1) {
+    function runSimulation(uint _steps) public {
+        checkDelegate(msg.sender, 1);
+
         simulationNos_ = simulationTempNos_;
         
         for (uint i = 0; i < _steps; ++i) {
