@@ -2,17 +2,17 @@
 Copyright (c) 2018 ZSC Dev Team
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 import "./control_base.sol";
 
 contract ControlApis is ControlBase {
     /// @dev Constructor
     /// @param _name The name of the controller
-    function ControlApis(bytes32 _name) public ControlBase(_name) {
+    constructor(bytes32 _name) public ControlBase(_name) {
     }
 
-    function setUserActiveStatus(bytes32 _user, bool _tag) public only_delegate(1) returns (bool);
+    function setUserActiveStatus(bytes32 _user, bool _tag) public returns (bool);
 
     /// @dev Set the zsc adm address
     /// @param _adm The address of the zsc adm 
