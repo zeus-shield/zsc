@@ -1,10 +1,9 @@
 /*
 Copyright (c) 2018, ZSC Dev Team
-2017-12-18: v0.01
-2018-02-11: v0.01
 */
 
-pragma solidity ^0.4.17;
+pragma solidity ^0.4.21;
+
 import "./plat_string.sol";
 import "./db_node.sol";
 
@@ -19,26 +18,30 @@ contract DBEntity is DBNode {
     bool private activated_;
 
     // Constructor
-    function DBEntity(bytes32 _name) public DBNode(_name) {
+    constructor(bytes32 _name) public DBNode(_name) {
         initParameters();
     }
 
     function initParameters() internal;
 
-    function getBlance(bool _locked) public only_delegate(1) constant returns (uint256) {
+    function getBlance(bool _locked) public constant returns (uint256) {
+        checkDelegate(msg.sender, 1);
         if (_locked) return 0;
         return 0;
     }
 
-    function setActivated(bool _activated) public only_delegate(1) {
+    function setActivated(bool _activated) public {
+        checkDelegate(msg.sender, 1);
         activated_ = _activated;
     }
 
-    function getActivated() public only_delegate(1) constant returns (bool) {
+    function getActivated() public constant returns (bool) {
+        checkDelegate(msg.sender, 1);
         return activated_;
     }
 
-    function addParameter(bytes32 _parameter) public only_delegate(1) returns (bool) {
+    function addParameter(bytes32 _parameter) public returns (bool) {
+        checkDelegate(msg.sender, 1);
         require(parameterExist_[_parameter] == false);
 
         parameterNames_.push(_parameter);
@@ -46,7 +49,8 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function removeParameter(bytes32 _parameter) public only_delegate(1) returns (bool) {
+    function removeParameter(bytes32 _parameter) public returns (bool) {
+        checkDelegate(msg.sender, 1);
         require(parameterExist_[_parameter] == true);
 
         for (uint i = 0; i < parameterNames_.length; ++i) {
@@ -63,18 +67,21 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function setParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool) {
+    function setParameter(bytes32 _parameter, string _value) public returns (bool) {
+        checkDelegate(msg.sender, 1);
         require(parameterExist_[_parameter] == true);
 
         ControlBase(getController())._recordString(name(), _parameter, _value);
         return true;
     }
 
-    function numParameters() public only_delegate(1) constant returns (uint) {
+    function numParameters() public constant returns (uint) {
+        checkDelegate(msg.sender, 1);
         return parameterNames_.length;
     }
 
-    function getParameterNameByIndex(uint _index) public only_delegate(1) constant returns (bytes32) {
+    function getParameterNameByIndex(uint _index) public constant returns (bytes32) {
+        checkDelegate(msg.sender, 1);
         require(_index < parameterNames_.length);
         return parameterNames_[_index];
     }
