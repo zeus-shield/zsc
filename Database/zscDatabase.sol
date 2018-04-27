@@ -1,13 +1,13 @@
 /*
 Copyright (c) 2018, ZSC Dev Team
-2017-12-18: v0.01
 */
-pragma solidity ^0.4.11;
+
+pragma solidity ^0.4.21;
 
 contract owned {
     address public owner;
 
-    function owned() {
+    constructor() public {
         owner = msg.sender;
     }
 
@@ -16,7 +16,7 @@ contract owned {
         _;
     }
 
-    function transferOwnership(address newOwner) onlyOwner {
+    function transferOwnership(address newOwner) public onlyOwner {
         owner = newOwner;
     }
 }
@@ -69,7 +69,7 @@ contract ZSCEntity {
     }
 
     // Constructor
-    function ZSCEntity(string name_, uint id_)
+    constructor(string name_, uint id_)
     {
         _name = name_;
         _id   = id_;
