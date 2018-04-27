@@ -1,8 +1,8 @@
 /*
-Copyright (c) 2018 ZSC Dev.
+Copyright (c) 2018, ZSC Dev Team
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 import "./pos_block_pool.sol";
 import "./pos_staker_group.sol";
@@ -14,10 +14,12 @@ contract PosBase is PosStakerGroup, PosBlockPool {
     uint private constant QUATER_YEAR_IN_SECONDS = 86400 * 365 / 4;
 
     // Constructor
-    function PosBase(bytes32 _name) public Object(_name) {
+    constructor(bytes32 _name) public Object(_name) {
     } 
 
-    function initPos(address _controller) public only_delegate(1) {
+    function initPos(address _controller) public {
+        checkDelegate(msg.sender, 1);
+
         setDelegate(_controller, 1);
         createPool("year", YEAR_IN_SECONDS, 10);
         createPool("half year", YEAR_IN_SECONDS, 4);
@@ -43,7 +45,9 @@ contract PosBase is PosStakerGroup, PosBlockPool {
         }
     }
 
-    function minePendingBlocks(uint _poolIndex) public only_delegate(1) {
+    function minePendingBlocks(uint _poolIndex) public {
+        checkDelegate(msg.sender, 1);
+
         uint blockNos = numBlocks(_poolIndex);
 
         for (uint i = getLastPendingBlockIndex(_poolIndex); i < blockNos - 1; ++i) {
