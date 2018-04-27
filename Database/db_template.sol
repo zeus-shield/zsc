@@ -1,15 +1,16 @@
 /*
-Copyright (c) 2018, ZSC Dev Team, Eric Yao
+Copyright (c) 2018, ZSC Dev Team
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
+
 import "./db_entity.sol";
 
 contract DBTemplate is DBEntity {
     mapping(address => bool) private fundamentalParas_;
     bool private addedProvider_;
     
-    function DBTemplate(bytes32 _name) public DBEntity(_name) {
+    constructor(bytes32 _name) public DBEntity(_name) {
         setNodeType("template");
         addedProvider_ = false;
     }
@@ -34,7 +35,9 @@ contract DBTemplate is DBEntity {
         fundamentalParas_["lockedAmount"] = true;
     }
 
-    function setParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool) {
+    function setParameter(bytes32 _parameter, string _value) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+
         if (numChildren() > 0) return false; 
 
         if (addedProvider_ == false) {
@@ -47,12 +50,16 @@ contract DBTemplate is DBEntity {
         return super.setParameter(_parameter, _value);
     }
 
-    function addParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool) {
+    function addParameter(bytes32 _parameter, string _value) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+
         if (numChildren() > 0) return false; 
         return super.addParameter(_parameter, _value);
     }
 
-    function removeParameter(bytes32 _parameter) public only_delegate(1) returns (bool) {
+    function removeParameter(bytes32 _parameter) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+
         if (numChildren() > 0) return false; 
         if (fundamentalParass_[_parameter]) return false;
 
