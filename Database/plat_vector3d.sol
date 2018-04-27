@@ -1,9 +1,9 @@
 /*
-Copyright (c) 2017 Yong Yao, Zeusshield Blockchain Technology Development Co., Ltd
-2017-12-18: v0.01
+Copyright (c) 2018, ZSC Dev Team
 */
 
-pragma solidity ^0.4.17;
+pragma solidity ^0.4.21;
+
 import "./plat_math.js";
 
 library PlatVector3d {

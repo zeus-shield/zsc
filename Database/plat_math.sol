@@ -3,7 +3,7 @@ Copyright (c) 2016 Smart Contract Solutions, Inc.
 Original: https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/contracts/math/SafeMath.sol
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 /**
  * @title SafeMath

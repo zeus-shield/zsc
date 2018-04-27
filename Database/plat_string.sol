@@ -1,9 +1,8 @@
 /*
 Copyright (c) 2018, ZSC Dev Team
-2017-12-18: v0.01
 */
 
-pragma solidity ^0.4.17;
+pragma solidity ^0.4.21;
 
 library PlatString {
     function append(string _a, string _b, string _c, string _d, string _e) internal pure returns (string){
