@@ -2,7 +2,7 @@
 Copyright (c) 2018 ZSC Dev Team
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 import "./plat_string.sol";
 import "./object.sol";
@@ -28,7 +28,7 @@ contract ControlInfo is Object {
     }
 
 
-    function ControlInfo() public {}
+    constructor() public {}
     
     function checkAllowedUser(bytes32 _userName, address _sender) internal constant returns (bool);
     function addAllowedUsr(bytes32 _userName, address _creator) internal returns (bool);
