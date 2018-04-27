@@ -1,8 +1,8 @@
 /*
-Copyright (c) 2018 ZSC Dev.
+Copyright (c) 2018, ZSC Dev Team
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 import "./wallet_base.sol";
 
@@ -10,15 +10,18 @@ contract WalletErc20 is WalletBase {
     address _erc20TokenAdr;
 
     // Constructor
-    function WalletErc20(bytes32 _name) public WalletBase(_name) {
+    constructor(bytes32 _name) public WalletBase(_name) {
         setNodeType("wallet-erc20"); 
     }
 
-    function setERC20TokenAddress(address _tokenAdr) public only_delegate(1) {
+    function setERC20TokenAddress(address _tokenAdr) public {
+        checkDelegate(msg.sender, 1);
         _erc20TokenAdr = _tokenAdr;
     }
 
-    function getBlance(bool _locked) public only_delegate(1) constant returns (uint256) {
+    function getBlance(bool _locked) public constant returns (uint256) {
+        checkDelegate(msg.sender, 1);
+
         if (_locked) { 
             return super.getBlance(true);
         } else {
@@ -26,7 +29,9 @@ contract WalletErc20 is WalletBase {
         }
     }
 
-    function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (uint) {
+    function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (uint) {
+        checkDelegate(msg.sender, 1);
+
         require(checkBeforeSent(_dest, _amount));
     
         if (ERC20Interface(_erc20TokenAdr).transfer(_dest, _value)) {
@@ -37,7 +42,8 @@ contract WalletErc20 is WalletBase {
         }
     }
 
-    function informTransaction(address _src, address _dest, uint256 _amount) only_delegate(1) only_delegate(1) public {
+    function informTransaction(address _src, address _dest, uint256 _amount) public {
+        checkDelegate(msg.sender, 1);
         recordInput(_src, _dest, _amount, "");
     }
 }
