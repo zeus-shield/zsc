@@ -2,7 +2,7 @@
 Copyright (c) 2018 ZSC Dev Team
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 import "./object.sol";
 
@@ -10,7 +10,7 @@ contract AppProxy is Object {
     string private controlApisAbi_;
     address private controlApisAdr_;
 
-    function AppProxy() Object("null") {
+    constructor() Object("null") {
     }
     
     function setControlApisAbi(string _abi) public only_owner {
