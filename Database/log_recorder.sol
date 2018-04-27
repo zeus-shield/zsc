@@ -1,8 +1,8 @@
 /*
-Copyright (c) 2018 ZSC Dev Team
+Copyright (c) 2018, ZSC Dev Team
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 import "./Object.sol";
 
@@ -15,19 +15,25 @@ contract LogRecorder is Delegated {
     mapping(address => bool) listeners_;
     mapping(address => LogInfo) public print_log_;
 
-    modifier only_listener(address _adr) {require(listeners_[_adr]); _; }
+    constructor()) public Delegated() {}
 
-    function LogRecorder() public Delegated() {}
+    function checkListener(address _adr) {
+        require(listeners_[_adr]);
+    }
 
-    
-    function registerListener(address _adr, bytes32 _name) public only_delegate(1) {
+    function registerListener(address _adr, bytes32 _name) public {
+        checkListener(msg.sender);
+
         listeners_[_adr] = true;
         print_log_[_adr].name_ = _name;
         print_log_[_adr].nos_ = 1;
         print_log_[_adr].logs_[0] = "registered";
     }
 
-    function addLog(string _log, bool _newLine) public only_listener(msg.sender) {
+    function addLog(string _log, bool _newLine) public  {
+        checkDelegate(msg.sender, 1);
+
+        require(listeners_[msg.sender]);
         uint index = print_log_[msg.sender].nos_ - 1;
         if (_newLine == true) {
             print_log_[msg.sender].nos_++;
@@ -37,8 +43,11 @@ contract LogRecorder is Delegated {
         }
     }
 
-    function printLog(address _adr, uint _index) public only_listener(_adr) constant returns (string) {
-        if (isDelegate(msg.sender, 1) == false || _index >= print_log_[_adr].nos_ ) 
+    function printLog(address _adr, uint _index) public constant returns (string) {
+        checkListener(msg.sender);
+        checkDelegate(msg.sender, 1);
+
+        if (_index >= print_log_[_adr].nos_ ) 
             return "null";
 
         string memory str = PlatString.bytes32ToString(print_log_[_adr].name_);
