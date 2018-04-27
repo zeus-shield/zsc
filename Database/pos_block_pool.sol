@@ -1,8 +1,8 @@
 /*
-Copyright (c) 2018 ZSC Dev.
+Copyright (c) 2018, ZSC Dev Team
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 import "./pos_block.sol";
 
@@ -25,11 +25,12 @@ contract PosBlockPool is Object {
     uint blockSizeLimit_;
 
     // Constructor
-    function PosBlockPool() public Object("zsc_pos_block_pool") {
+    constructor() public Object("zsc_pos_block_pool") {
         blockSizeLimit_ = 1024 * 1024 * 2;
     } 
 
-    function createPool(bytes32 _name, uint _dividendDuration, uint _rewardRate /* x / 1000: x = 0, 1, 2, ..., 1000) */) public only_delegate(1) {
+    function createPool(bytes32 _name, uint _dividendDuration, uint _rewardRate /* x / 1000: x = 0, 1, 2, ..., 1000) */) public {
+        checkDelegate(msg.sender, 1);
         require(poolExists_[_name]);
 
         poolIndice_[_name] = poolNos_;
@@ -67,7 +68,9 @@ contract PosBlockPool is Object {
         return blockSizeLimit_;
     }
     
-    function registerNewTx(bool _input, uint _poolIndex, bytes32 _tx, address _sender, address _receiver, uint _gasUsage) public only_delegate(1) {
+    function registerNewTx(bool _input, uint _poolIndex, bytes32 _tx, address _sender, address _receiver, uint _gasUsage) public {
+        checkDelegate(msg.sender, 1);
+
         pools_[_poolIndex].remaingGasUsage_ += _gasUsage;
         uint blockIndex;
         address myBlock;
