@@ -1,9 +1,10 @@
 /*
 Copyright (c) 2018, ZSC Dev Team
-2018-02-12: v0.01
+
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
+
 import "./db_user.sol";
 
 contract DBStaker is DBUser {
@@ -25,7 +26,7 @@ contract DBStaker is DBUser {
     uint private lastRewardTime_;
 
     // Constructor
-    function DBStaker(bytes32 _name) public DBUser(_name) {
+    constructor(bytes32 _name) public DBUser(_name) {
         setNodeType("staker"); 
         lastStoreTime_ = now;
         lastRewardTime_ = lastStoreTime_;
@@ -36,21 +37,27 @@ contract DBStaker is DBUser {
     	addParameter("Reward Ratio");
     }
 
-    function setParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool) {
+    function setParameter(bytes32 _parameter, string _value) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+
         if (_parameter != "Divended Duration") 
             return false;  
         return super.setParameter(_parameter, _value);
     }
 
-    function addParameter(bytes32 _parameter, string _value) public only_delegate(1) returns (bool) {
+    function addParameter(bytes32 _parameter, string _value) public returns (bool) {
+        checkDelegate(msg.sender, 1);
         return false;
     }
 
-    function removeParameter(bytes32 _parameter) public only_delegate(1) returns (bool) {
+    function removeParameter(bytes32 _parameter) public returns (bool) {
+        checkDelegate(msg.sender, 1);
         return false; 
     }
 
-    function claimStakePoint() public only_delegate(1) {
+    function claimStakePoint() public {
+        checkDelegate(msg.sender, 1);
+
     	uint currentTime = now;
     	uint ratio = currentTime.sub(lastStoreTime_);
         ratio = ratio.div(DAY_IN_SECONDS_BY_100);
@@ -63,7 +70,9 @@ contract DBStaker is DBUser {
         spRemaining_ = spRemaining_.add(spAmount);
     }
 
-    function useStakePoint(uint _amount) public only_delegate(1) returns (uint) {
+    function useStakePoint(uint _amount) public returns (uint) {
+        checkDelegate(msg.sender, 1);
+
         if (spRemaining_ > _amount) {
             spRemaining_ = spRemaining_.sub(_amount);
             spForReward_ = spForReward_.add(_amount);
@@ -76,7 +85,9 @@ contract DBStaker is DBUser {
         }
     }
 
-    function claimReward() public only_delegate(1) returns (uint) {
+    function claimReward() public returns (uint) {
+        checkDelegate(msg.sender, 1);
+
         uint currentTime = now;
     	if (currentTime.sub(lastRewardTime_) > divendendDuration_) {
     		uint reward = (spForReward_ / 100) / 365;
@@ -87,7 +98,8 @@ contract DBStaker is DBUser {
     	}
     }
 
-    function getRemainingSP() public only_delegate(1) constant returns (uint) {
+    function getRemainingSP() public constant returns (uint) {
+        checkDelegate(msg.sender, 1);
     	return spRemaining_;
     }
 }
