@@ -1,9 +1,13 @@
-pragma solidity ^0.4.18;
+/*
+Copyright (c) 2018, ZSC Dev Team
+*/
+
+pragma solidity ^0.4.21;
 
 contract owned {
     address public owner;
 
-    function owned() public { owner = msg.sender; }
+    constructor() public { owner = msg.sender; }
 
     modifier only_owner { if (msg.sender != owner) revert(); _; }
 
@@ -63,7 +67,7 @@ contract ZSCTestToken is owned, ERC20Interface {
     mapping(address => mapping (address => uint256)) allowed_;
 
     // Constructor
-    function ZSCTestToken(bytes32 _name) public {
+    constructor(bytes32 _name) public {
         // Only for testing purpose
         totalTokens_ = 1000 * 1000 * 1000 * 10**18;
         balances_[msg.sender] = totalTokens_;
@@ -105,7 +109,7 @@ contract ZSCTestToken is owned, ERC20Interface {
 
             balances_[msg.sender] -= _amount;
             balances_[_to] += _amount;
-            Transfer(msg.sender, _to, _amount);
+            emit Transfer(msg.sender, _to, _amount);
             return true;
         } else {
             return false;
@@ -128,7 +132,7 @@ contract ZSCTestToken is owned, ERC20Interface {
             balances_[_from] -= _amount;
             allowed_[_from][msg.sender] -= _amount;
             balances_[_to] += _amount;
-            Transfer(_from, _to, _amount);
+            emit Transfer(_from, _to, _amount);
             return true;
         } else {
             return false;
@@ -139,7 +143,7 @@ contract ZSCTestToken is owned, ERC20Interface {
     // If this function is called again it overwrites the current allowance with _value.     
     function approve(address _spender, uint256 _amount) public returns (bool success) {
         allowed_[msg.sender][_spender] = _amount;
-        Approval(msg.sender, _spender, _amount);
+        emit Approval(msg.sender, _spender, _amount);
         return true;
     }
  
