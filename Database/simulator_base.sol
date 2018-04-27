@@ -1,8 +1,8 @@
 /*
-Copyright (c) 2018 ZSC Dev Team
+Copyright (c) 2018, ZSC Dev Team
 */
 
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 import "./object.sol";
 import "./plat_math.sol";
@@ -20,7 +20,7 @@ contract SimulatorBase is Object {
     
     uint private randSeed = 0;
 
-    function SimulatorBase(bytes32 _name) public Object(_name) {
+    constructor(bytes32 _name) public Object(_name) {
         running_ = false;
         started_ = false;
     }
@@ -36,7 +36,9 @@ contract SimulatorBase is Object {
         return randValue;
     }
 
-    function startSimulation(uint _probLevel, uint _price, uint _lockedAmount, address _agrWallet, address _proWallet, address _recWallet) public only_delegate(1) {
+    function startSimulation(uint _probLevel, uint _price, uint _lockedAmount, address _agrWallet, address _proWallet, address _recWallet) public {
+        checkDelegate(msg.sender, 1);
+
         require(_price != 0);
         require(_probLevel > 0 && _probLevel < 100);
         require(_agrWallet != address(0) && _proWallet != address(0) &&  _recWallet != address(0));
@@ -51,11 +53,14 @@ contract SimulatorBase is Object {
         recWalletAdr_    = _recWallet;
     }
 
-    function doesFinished() public only_delegate(1) constant returns (bool) { 
+    function doesFinished() public constant returns (bool) { 
+        checkDelegate(msg.sender, 1);
         return (started_ && !running_);
     } 
 
-    function needClaim() public only_delegate(1) constant returns (bool) {
+    function needClaim() public constant returns (bool) {
+        checkDelegate(msg.sender, 1);
+
         uint rand = randGen(0, 100, now);
         if (rand < probability_) {
             return true;
@@ -63,15 +68,19 @@ contract SimulatorBase is Object {
         return false;
     }
 
-    function getAgreementPrice() public only_delegate(1) constant returns (uint) {
+    function getAgreementPrice() public constant returns (uint) {
+        checkDelegate(msg.sender, 1);
         return agrPrice_;
     }
 
-    function getProviderLockedAmount() public only_delegate(1) constant returns (uint) {
+    function getProviderLockedAmount() public constant returns (uint) {
+        checkDelegate(msg.sender, 1);
         return proLockedAmount_;
     }
 
-    function getWalletAddress(bytes32 _type) public only_delegate(1) constant returns (address) {
+    function getWalletAddress(bytes32 _type) public constant returns (address) {
+        checkDelegate(msg.sender, 1);
+
         if (_type == "proivder") {
             return proWalletAdr_;
         } else if (_type == "agreement") {
