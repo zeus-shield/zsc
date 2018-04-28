@@ -31,7 +31,8 @@ contract PosStakerGroup is Object {
         spRemaining_ = 0;
     } 
 
-    function setZscTokenAddress(address _adr) public only_delegate(1) {
+    function setZscTokenAddress(address _adr) public {
+        checkDelegate(msg.sender, 1);
         zscTokenContract_ = _adr;
     }
 
@@ -39,7 +40,9 @@ contract PosStakerGroup is Object {
         return stakerNos_;
     }
     
-    function registerStaker(address _nodeAddress) public only_delegate(1) {
+    function registerStaker(address _nodeAddress) public {
+        checkDelegate(msg.sender, 1);
+
         require(_nodeAddress != 0 && stakerIndex_[_nodeAddress] == 0);
         uint index = stakerNos_;
 
@@ -50,7 +53,9 @@ contract PosStakerGroup is Object {
         stakerNos_++;
     }
 
-    function removeStaker(address _nodeAddress) public only_delegate(1)  {
+    function removeStaker(address _nodeAddress) public {
+        checkDelegate(msg.sender, 1);
+
         require(stakerExists_[_nodeAddress]);
 
         uint index = stakerIndex_[_nodeAddress];
@@ -76,7 +81,9 @@ contract PosStakerGroup is Object {
         return DBStaker(stakers_[_index]).useStakePoint(_amount);
     }
 
-    function getTotalRemainingSP() internal only_delegate(1) constant returns (uint) {
+    function getTotalRemainingSP() internal constant returns (uint) {
+        checkDelegate(msg.sender, 1);
+
         uint total = 0;
 
         for (uint i = 1; i < stakerNos_; ++i) {
