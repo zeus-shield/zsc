@@ -8,9 +8,9 @@ import "./object.sol";
 import "./plat_math.sol";
 
 contract DBStaker is Object {
-    function useStakePoint(uint _amount) public only_delegate(1) returns (uint);
-    function claimReward() public only_delegate(1) returns (uint);
-    function getRemainingSP() public only_delegate(1) constant returns (uint);
+    function useStakePoint(uint _amount) public returns (uint);
+    function claimReward() public returns (uint);
+    function getRemainingSP() public constant returns (uint);
 }
 
 contract PosStakerGroup is Object {
@@ -25,7 +25,7 @@ contract PosStakerGroup is Object {
     address private zscTokenContract_;
 
     // Constructor
-    constructor() public Object("zsc_block_pool") {
+    constructor() public {
         stakerNos_ = 0;
         spUsed_ = 0;
         spRemaining_ = 0;
