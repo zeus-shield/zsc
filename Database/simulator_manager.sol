@@ -7,14 +7,14 @@ pragma solidity ^0.4.21;
 import "./simulator_base.sol";
 
 contract WalletBase is Object {
-    function getBlance(bool _locked) public only_delegate(1) constant returns (uint256);
-    function getLockBalanceInfoByAgreement(address _agreementAdr) public only_delegate(1) constant returns (uint, uint, uint, address);
-    function setLockValue(bool _tag, uint _amount, uint _duration, address _agreementAdr) public only_delegate(1) returns (bool);
-    function executeTransaction(address _dest, uint256 _amount, bytes _data) public only_delegate(1) returns (bool);
+    function getBlance(bool _locked) public constant returns (uint256);
+    function getLockBalanceInfoByAgreement(address _agreementAdr) public constant returns (uint, uint, uint, address);
+    function setLockValue(bool _tag, uint _amount, uint _duration, address _agreementAdr) public returns (bool);
+    function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (bool);
 }
 
 contract DBDatabase is Object { 
-    function getNode(bytes32 _name) public only_delegate(1) constant returns (address);
+    function getNode(bytes32 _name) public constant returns (address);
 }
 
 contract SimulatorManager is Object {
@@ -53,19 +53,23 @@ contract SimulatorManager is Object {
     }
 
     /*_proLev: 1 : 100*/
-    function addSimulationRun(uint _proLevel, uint _price, uint _lockedAmount, address _agrWallet, address _proWallet, address _recWallet) public returns (bytes32) {
+    function addSimulationRun(uint _proLevel, uint _price, uint _lockedAmount, uint _end,  address _agrWallet, address _proWallet, address _recWallet) public returns (bytes32) {
         checkDelegate(msg.sender, 1);
 
         bytes32 runName = formatSimulationName();
         require(!simulationExist_[runName]);
 
         address adr = new SimulatorBase(runName);
-        SimulatorBase(adr).startSimulation(_proLevel, _price, _lockedAmount, _agrWallet, _proWallet, _recWallet);
+        require(adr != address(0));
+
+        SimulatorBase(adr).startSimulation(_proLevel, _price, _end, _lockedAmount, _agrWallet, _proWallet, _recWallet);
+        
         simulationExist_[runName] = true;
         simulationIndices_[runName] = simulationTempNos_;
         simulationRuns_[simulationTempNos_] = adr;
         simulationTempNos_++;
         rewarded_[adr] = false;
+        
         return runName;
     }
 
@@ -96,6 +100,8 @@ contract SimulatorManager is Object {
         } else {
             WalletBase(agrWallet).executeTransaction(proWallet, SafeMath.add(agrPrice_, proLockedAmount_), "reward fee");
         }
+
+        rewarded_[sim] == true;
         return true;
     }
 
