@@ -137,4 +137,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.04.19-20: add file WebClient/zsc_html.js and WebClient/zsc_wallet.js;updated solidity based core modules with focus on Agreement and Wallet
 2018.04.21-24: add file WebAdm/adm_show_userdetails.php, WebAdm/js/zsc_show_user.js
 2018.04.25-26: add SafeMath module
+2018.04.27-28: update the code with reference to the solidity compiler 0.4.21
 ```
