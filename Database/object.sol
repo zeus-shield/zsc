@@ -22,13 +22,13 @@ contract Recorder {
 }
 
 contract Owned {
-    address private owner;
+    address owner;
 
     modifier only_owner {require(isOwner(msg.sender)); _;}
 
     constructor() public {owner = msg.sender;}
     
-    function isOwner(address _account) public returns (bool) { 
+    function isOwner(address _account) public constant returns (bool) { 
         return (_account == owner); 
     }
     
@@ -37,8 +37,8 @@ contract Owned {
         owner = newOwner;
     }       
 
-    function checkOwner(address _account) internal { 
-        require(isOwner(msg.sender)); 
+    function checkOwner(address _account) internal constant { 
+        require(isOwner(_account)); 
     }
 }
 
@@ -60,10 +60,13 @@ contract Delegated is Owned{
     }
 
     function setDelegate(address _address, uint _priority) public {
-        require(isDelegate(msg.sender, 1)); 
-        require(_address != 0);
-        if (_priority > 0) delegates_[_address] = _priority;
-        else delete delegates_[_address];
+        if (isDelegate(msg.sender, _priority) == false) revert();
+        if (_address == 0) revert();
+        if (_priority > 0) { 
+            delegates_[_address] = _priority;
+        } else {
+            delete delegates_[_address];
+        }
     }
 
     function isDelegate(address _account, uint _priority) public constant returns (bool)  {
@@ -73,8 +76,8 @@ contract Delegated is Owned{
         return false;
     }
 
-    function checkDelegate(address _address, uint _priority) internal {
-        require(isDelegate(msg.sender, 1));
+    function checkDelegate(address _address, uint _priority) internal constant {
+        require(isDelegate(_address, _priority));
     }
     
 }
@@ -82,7 +85,7 @@ contract Delegated is Owned{
 contract Object is Delegated {
     using SafeMath for uint;
 
-    bytes32 private name_ ;
+    bytes32 private name_ = "null";
     address internal logRecorder_ = 0;
 
     // Constructor
