@@ -7,7 +7,7 @@ pragma solidity ^0.4.21;
 import "./plat_math.sol";
 import "./object.sol";
 
-contract CBDBDatabase {
+contract CBDBDatabase is Object {
     function getNode(bytes32 _name) public constant returns (address);
     function destroyNode(address _node) public returns (bool);
     function _addNode(address _node) public ;

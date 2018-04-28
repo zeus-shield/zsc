@@ -15,9 +15,9 @@ contract LogRecorder is Delegated {
     mapping(address => bool) listeners_;
     mapping(address => LogInfo) public print_log_;
 
-    constructor()) public Delegated() {}
+    constructor() public Delegated() {}
 
-    function checkListener(address _adr) {
+    function checkListener(address _adr) internal constant {
         require(listeners_[_adr]);
     }
 

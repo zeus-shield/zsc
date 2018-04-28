@@ -25,7 +25,7 @@ contract PosBlockPool is Object {
     uint blockSizeLimit_;
 
     // Constructor
-    constructor() public Object("zsc_pos_block_pool") {
+    constructor() public {
         blockSizeLimit_ = 1024 * 1024 * 2;
     } 
 

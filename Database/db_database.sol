@@ -7,9 +7,7 @@ pragma solidity ^0.4.21;
 import "./plat_string.sol";
 import "./object.sol";
 import "./db_node.sol";
-    function getNode(bytes32 _name) public constant returns (address);
-    function destroyNode(address _node) public returns (bool);
-    function _addNode(address _node) public ;
+
 contract DBDatabase is Object {
     address private rootNode_ = 0;
     address[] private nodes_;
