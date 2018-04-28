@@ -35,7 +35,9 @@ contract DBNode is Object {
     constructor(bytes32 _name) public Object(_name) {
     }
 
-    function kill() public only_delegate(1) { 
+    function kill() public { 
+        checkDelegate(msg.sender, 1);
+
         removeAndDestroyAllChildren(); 
         super.kill();
     }
