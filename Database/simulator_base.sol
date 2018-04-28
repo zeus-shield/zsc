@@ -8,8 +8,7 @@ import "./object.sol";
 import "./plat_math.sol";
 
 contract SimulatorBase is Object {
-    bool private started_;
-    bool private running_ ;
+    bool private finished_ ;
     uint private endTime_ ;
     uint private probability_;   //from 0 to 1000
     uint private agrPrice_;
@@ -22,8 +21,7 @@ contract SimulatorBase is Object {
     uint private randSeed = 0;
 
     constructor(bytes32 _name) public Object(_name) {
-        running_ = false;
-        started_ = false;
+        finished_ = false;
     }
 
     // Generates a random number
@@ -45,8 +43,6 @@ contract SimulatorBase is Object {
         require(_agrWallet != address(0) && _proWallet != address(0) &&  _recWallet != address(0));
 
         probability_     = randGen(_probLevel, 100, now);
-        started_         = true;
-        running_         = true;
         endTime_         = _end;
         agrPrice_        = _price;
         proLockedAmount_ = _lockedAmount;
@@ -59,10 +55,15 @@ contract SimulatorBase is Object {
         checkDelegate(msg.sender, 1);
 
         if (now > endTime_) {
-            running_ = false;
+            return true;
         }
-        return (started_ && !running_);
+        return finished_;
     } 
+
+    function setFinished() public {
+        checkDelegate(msg.sender, 1);
+        finished_ = true;
+    }
 
     function needClaim() public constant returns (bool) {
         checkDelegate(msg.sender, 1);
