@@ -17,6 +17,7 @@ contract ControlInfo is Object {
     mapping(bytes32 => ParameterInfo) private nodeParameters_;
     mapping(bytes32 => bool) private nodeExists_;
     
+    /*
     modifier only_registered(bytes32 _nodeName) {
         require(checkAllowedUser(_nodeName, msg.sender) || isDelegate(msg.sender, 1)); 
         _;
@@ -26,11 +27,20 @@ contract ControlInfo is Object {
         require( (nodeParameters_[_nodeName].creator_ == msg.sender) || isDelegate(msg.sender, 1)); 
         _;
     }
+    */
 
     constructor(bytes32 _name) public Object(_name){}
-    
-    function checkAllowedUser(bytes32 _userName, address _sender) internal constant returns (bool);
+
+    function allowedUser(bytes32 _userName, address _sender) internal constant returns (bool);
     function addAllowedUsr(bytes32 _userName, address _creator) internal returns (bool);
+
+    function checkMatched(bytes32 _userName, address _sender) internal constant {
+        require( (nodeParameters_[_userName].creator_ == _sender) || isDelegate(_sender, 1)); 
+    }
+
+    function checkRegistered(bytes32 _userName, address _sender) internal constant{
+        require(allowedUser(_userName, msg.sender) || isDelegate(_sender, 1)); 
+    }
 
     function _recordString(bytes32 _nodeName, bytes32 _parameter, string _value) public {
         require(msg.sender == nodeParameters_[_nodeName].nodeAdr_);
