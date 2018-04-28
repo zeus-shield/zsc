@@ -15,12 +15,28 @@ echo $htmlModules->loadScriptFiles();
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
     var ControlApisAdvAdr = "<?php echo $htmlModules->readModuleAddress('ControlApisAdv')?>";
-    var userDetails = new ZSCShowUser(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
+    var userWallets = new ZSCShowUserWallets(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
+    var userAgrs = new ZSCShowUserAgrs(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
+    var userTmps = new ZSCShowUserTmps(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
 
-    function showUserDetails() {
-        if (userDetails.parserUserName()) {
-            userDetails.loadUserWallets(function() {
-                userDetails.loadWalletHtml("UserDetails");
+    function showUserWallets() {
+        if (userWallets.parserUserName()) {
+            userWallets.loadUserWallets(function() {
+                userWallets.loadWalletHtml("UserWallets");
+            });
+        }
+    }
+
+    function showUserAgreements() {
+        if (userAgrs.parserUserName()) {
+            userAgrs.loadUserAgrs(function() {
+            });
+        }
+    }
+
+    function showUserTemplates() {
+        if (userTmps.parserUserName()) {
+            userTmps.loadUserTmps(function() {
             });
         }
     }
@@ -35,11 +51,13 @@ echo $htmlModules->loadScriptFiles();
 
 <?php echo $htmlModules->loadAllAdrs();?>
 
-    <div class="well" id="UserDetails"> </div>
+    <div class="well" id="UserWallets"> </div>
 
 <script type="text/javascript">
     window.addEventListener('load', function() {
-        showUserDetails();
+        showUserWallets();
+        showUserAgreements();
+        showUserTemplates();
     });  
 </script>   
 </body>
