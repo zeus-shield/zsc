@@ -76,12 +76,7 @@ contract SimulatorManager is Object {
     function checkSimulationRunByIndex(uint _index) private constant returns (bool) {
         require(_index < simulationNos_);
         address sim = simulationRuns_[_index];
-        if (rewarded_[sim] == false) {
-            if (SimulatorBase(sim).doesFinished()) {
-                return true;
-            }
-        }
-        return false;
+        return (rewarded_[sim] == false &&  SimulatorBase(sim).doesFinished());
     }
 
     function conductClaimAndReward(uint _simIndex) private returns (bool) {
@@ -101,6 +96,7 @@ contract SimulatorManager is Object {
             WalletBase(agrWallet).executeTransaction(proWallet, SafeMath.add(agrPrice_, proLockedAmount_), "reward fee");
         }
 
+        SimulatorBase(sim).setFinished();
         rewarded_[sim] == true;
         return true;
     }
