@@ -50,7 +50,9 @@ class ZscHtmlModules extends ZscSystemModules {
         <script type="text/javascript" src="./js/zsc_printlog.js"></script>
         <script type="text/javascript" src="./js/zsc_user_management.js"></script>
         <script type="text/javascript" src="./js/zsc_wallet_managerment.js"></script>
-        <script type="text/javascript" src="./js/zsc_show_user.js"></script>
+        <script type="text/javascript" src="./js/zsc_show_user_wallets.js"></script>
+        <script type="text/javascript" src="./js/zsc_show_user_agrs.js"></script>
+        <script type="text/javascript" src="./js/zsc_show_user_tmps.js"></script>
         <script type="text/javascript" src="./js/compiled_zsc_test_token.js"></script>
         <script type="text/javascript" src="./js/compiled_database.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_pro.js"></script>

@@ -25,10 +25,6 @@ function recordSystemModuleAdrs($modules) {
             $modules->writeModuleAddress($module, $adr);
         }
     }
-
-    $extraModuleName = "zscTokenAddress";
-    $extraModuleValue = $_GET[$extraModuleName];
-    $modules->writeModuleAddress($extraModuleName, $extraModuleValue);
 }
 recordSystemModuleAdrs($htmlModules);
 ?>
