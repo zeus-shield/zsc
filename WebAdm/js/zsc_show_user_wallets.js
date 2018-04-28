@@ -2,7 +2,7 @@
 Copyright (c) 2018 ZSC Dev Team
 */
 
-function ZSCShowUser(adr, abi) {
+function ZSCShowUserWallets(adr, abi) {
     this.userName;
     this.walletNos = 0;
     this.walletSymbols = [];
@@ -12,9 +12,9 @@ function ZSCShowUser(adr, abi) {
     this.myControlApi = web3.eth.contract(abi).at(adr);
 }
 
-ZSCShowUser.prototype = new ZSCJsBase();
+ZSCShowUserWallets.prototype = new ZSCJsBase();
 
-ZSCShowUser.prototype.parserUserName = function() {    
+ZSCShowUserWallets.prototype.parserUserName = function() {    
         var urlinfo=window.location.href; 
         var found1 = urlinfo.indexOf("?");
         var found2 = urlinfo.indexOf("=");
@@ -32,7 +32,7 @@ ZSCShowUser.prototype.parserUserName = function() {
         return true;
 }  
 
-ZSCShowUser.prototype.loadUserWallets = function(func) {
+ZSCShowUserWallets.prototype.loadUserWallets = function(func) {
     this.numUserWallets(function() {
         for (var i = 0; i < this.walletNos; ++i) {
             this.loadWalletInfoByIndex(i, function(index){
@@ -44,7 +44,7 @@ ZSCShowUser.prototype.loadUserWallets = function(func) {
     });
 }
 
-ZSCShowUser.prototype.numUserWallets = function(func) {
+ZSCShowUserWallets.prototype.numUserWallets = function(func) {
     this.myControlApi.numRegisteredErc20Tokens(this.userName,
         {from: this.account, gas: 9000000},
         function(error, result){ 
@@ -57,7 +57,7 @@ ZSCShowUser.prototype.numUserWallets = function(func) {
         });
 }
 
-ZSCShowUser.prototype.loadWalletInfoByIndex = function(index, func) {
+ZSCShowUserWallets.prototype.loadWalletInfoByIndex = function(index, func) {
     this.myControlApi.getTokenBalanceInfoByIndex(this.userName, index,
         {from: this.account, gas: 9000000},
         function(error, result){ 
@@ -70,7 +70,7 @@ ZSCShowUser.prototype.loadWalletInfoByIndex = function(index, func) {
         });
 }
 
-ZSCShowUser.prototype.parserWalletInfoByIndex = function(urlinfo, index) {
+ZSCShowUserWallets.prototype.parserWalletInfoByIndex = function(urlinfo, index) {
     var found1 = urlinfo.indexOf("?");
     var found2 = urlinfo.indexOf("=");
 
@@ -92,7 +92,7 @@ ZSCShowUser.prototype.parserWalletInfoByIndex = function(urlinfo, index) {
     return true;
 }
 
-ZSCShowUser.prototype.loadWalletHtml = function(elementId)  {
+ZSCShowUserWallets.prototype.loadWalletHtml = function(elementId)  {
     var funcPrefix = funcName + "('"; 
     var funcSuffix = "')";
     var walletObj = extra;
