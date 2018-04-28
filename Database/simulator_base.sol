@@ -10,6 +10,7 @@ import "./plat_math.sol";
 contract SimulatorBase is Object {
     bool private started_;
     bool private running_ ;
+    uint private endTime_ ;
     uint private probability_;   //from 0 to 1000
     uint private agrPrice_;
     uint private proLockedAmount_;
@@ -30,22 +31,23 @@ contract SimulatorBase is Object {
     // https://gist.github.com/alexvandesande/259b4ffb581493ec0a1c
     function randGen(uint _min, uint _max, uint _seed) private constant returns (uint){
         require(_max > _min);
-        uint randValue = uint(keccak256(block.blockhash(block.number-1), _seed ))%(_max - _min);
+        uint randValue = uint(keccak256(blockhash(block.number-1), _seed ))%(_max - _min);
         randValue.add(_min);
 
         return randValue;
     }
 
-    function startSimulation(uint _probLevel, uint _price, uint _lockedAmount, address _agrWallet, address _proWallet, address _recWallet) public {
+    function startSimulation(uint _probLevel, uint _price, uint _end, uint _lockedAmount, address _agrWallet, address _proWallet, address _recWallet) public {
         checkDelegate(msg.sender, 1);
 
         require(_price != 0);
         require(_probLevel > 0 && _probLevel < 100);
         require(_agrWallet != address(0) && _proWallet != address(0) &&  _recWallet != address(0));
 
+        probability_     = randGen(_probLevel, 100, now);
         started_         = true;
         running_         = true;
-        probability_     = randGen(_probLevel, 100, now);
+        endTime_         = _end;
         agrPrice_        = _price;
         proLockedAmount_ = _lockedAmount;
         agrWalletAdr_    = _agrWallet;
@@ -55,6 +57,10 @@ contract SimulatorBase is Object {
 
     function doesFinished() public constant returns (bool) { 
         checkDelegate(msg.sender, 1);
+
+        if (now > endTime_) {
+            running_ = false;
+        }
         return (started_ && !running_);
     } 
 
