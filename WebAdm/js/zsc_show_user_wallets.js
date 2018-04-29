@@ -16,6 +16,7 @@ ZSCShowUserWallets.prototype = new ZSCJsBase();
 
 ZSCShowUserWallets.prototype.setUserName = function(userName) {
     this.userName = userName;
+    this.setModuleType("userWallets");
 }
 
 ZSCShowUserWallets.prototype.loadUserWallets = function(func) {
@@ -78,7 +79,10 @@ ZSCShowUserWallets.prototype.parserWalletInfoByIndex = function(urlinfo, index) 
     return true;
 }
 
-ZSCShowUserWallets.prototype.loadUserWalletsHtml = function(elementId)  {
+ZSCShowUserWallets.prototype.loadUserWalletsHtml = function(funcName, elementId)  {
+    var funcPrefix = funcName + '('; 
+    var funcSuffix = ')"';
+
     var text ="";
     text += '<div class="well">';
     text += '<table align="center" style="width:800px;min-height:30px">'
@@ -87,10 +91,12 @@ ZSCShowUserWallets.prototype.loadUserWalletsHtml = function(elementId)  {
     text += '</tr>'
 
     for (var i = 0; i < this.walletNos(); ++i) {
-        symbol = this.walletSymbols(i);
-        adr = this.walletAdrs(i);
-        balance = this.walletAdrs(i);
+        var symbol = this.walletSymbols(i);
+        var adr = this.walletAdrs(i);
+        var balance = this.walletAdrs(i);
+        var enName = this.userName + '+' + symbol;
         text += '<tr>'
+        text += '   <td><button type="button" onClick="' + showPrefix + "'" + this.userName + "', '" + enName + "'" + showSuffix + '">Details</button>'
         text += '   <td><text>' + symbol + '</text></td>'
         text += '   <td><text>' + balance + '</text></td>'
         text += '   <td><text>' + adr  + '</text></td>'  
