@@ -2,6 +2,15 @@
 Copyright (c) 2018 ZSC Dev Team
 */
 function ZSCJsBase() {
+    this.moduleType;
+}
+
+ZSCJsBase.prototype.setModuleType = function(type){
+    this.moduleType = type;
+}
+
+ZSCJsBase.prototype.getModuleType = function(type){
+    return this.moduleType;
 }
 
 ZSCJsBase.prototype.showHashResult = function(elementID, hash, func){
