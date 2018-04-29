@@ -30,24 +30,23 @@ ZSCWalletMangement.prototype.addTokenContractInfo = function(nameId, symbolId, d
 }  
 
 ZSCWalletMangement.prototype.loadWalletManagementHtml = function(elementId) {
-    var funcPrefix = funcName + '('; 
-    var funcSuffix = ')"';
-
     var text = '<table align="center" style="width:800px;min-height:30px">'
     text += '<tr>'
     text += '   <td><text>Name</text></td> <td><text>Actived</text></td>  <td><text>Sysmbol</text></td>  <td><text>Decimals</text></td>  <td><text>Address</text></td> '
-    text += '</tr><tr>'
+    text += '</tr>'
 
     for (var i = 0; i < this.userNos; ++i) {
         var name = this.userName[i];
         var hashId = this.userName[i] + "Hash"
+        text += '<tr>'
         text += '   <td><text>' + this.tokenNames[i]    + '</text></td>'
         text += '   <td><text>' + this.tokenStatus[i]    + '</text></td>'
         text += '   <td><text>' + this.tokenSymbols[i]  + '</text></td>'
         text += '   <td><text>' + this.tokenDecimals[i]    + '</text></td>'
         text += '   <td><text>' + this.tokenAdrs[i]      + '</text></td>'
+        text += '</tr>'
     }
-    text += '</tr>'
+    text += '</table>'
     document.getElementById(elementId).innerHTML = text;  
 }
 
