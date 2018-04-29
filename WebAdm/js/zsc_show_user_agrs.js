@@ -14,6 +14,7 @@ ZSCShowUserAgrs.prototype = new ZSCJsBase();
 
 ZSCShowUserAgrs.prototype.setUserName = function(userName) {
     this.userName = userName;
+    this.setModuleType("userAgreements");
 }
 
 ZSCShowUserAgrs.prototype.loadUserAgrs = function(func) {
@@ -54,7 +55,10 @@ ZSCShowUserAgrs.prototype.getAgrNameByIndex = function(index, func) {
         });
 }
 
-ZSCShowUserAgrs.prototype.loadWalletHtml = function(elementId)  {
+ZSCShowUserAgrs.prototype.loadWalletHtml = function(funcName, elementId)  {
+    var funcPrefix = funcName + '('; 
+    var funcSuffix = ')"';
+
     var text ="";
     text += '<div class="well">';
     text += '<table align="center" style="width:800px;min-height:30px">'
@@ -64,6 +68,7 @@ ZSCShowUserAgrs.prototype.loadWalletHtml = function(elementId)  {
 
     for (var i = 0; i < this.agrNos; ++i) {
         text += '<tr>'
+        text += '   <td><button type="button" onClick="' + showPrefix + "'" + this.userName + "', '" + this.agrNames[i] + "'" + showSuffix + '">Details</button>'
         text += '   <td><text>' + i + '</text></td>'
         text += '   <td><text>' + this.agrNames[i] + '</text></td>'
         text += '</tr>'
