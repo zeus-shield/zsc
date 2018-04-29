@@ -102,7 +102,7 @@ ZSCUserMangement.prototype.loadUserManagementHtml = function(showDetails, approv
 
     var text = '<table align="center" style="width:800px;min-height:30px">'
     text += '<tr>'
-    text += '   <td><text>user name</text></td>  <td><text>user type</text></td>  <td><text>user status</text></td>  <td><text>user id</text></td> <td><text>user zsc wallet</text></td> <td></td> <td>Log</td>  '
+    text += '   <td>user name</td>  <td>user type</td>  <td>user status</td>  <td>user id</td> <td>node adr</td> <td>operations</td> <td>user wallet</td> <td>user templates</td> <td>user agreements</td>  <td>log</td>  '
     text += '</tr>'
 
     for (var i = 0; i < this.userNos; ++i) {
@@ -111,13 +111,16 @@ ZSCUserMangement.prototype.loadUserManagementHtml = function(showDetails, approv
         text += '</tr>';
         text += '   <td><button type="button" onClick="' + showPrefix + "'" + name + "', '" + hashId + "'" + showSuffix + '">Approve</button>'
         text += '   <td><text>' + names    + '</text></td>'
-        text += '   <td><text>' + this.userStatus[i]  + '</text></td>'
         text += '   <td><text>' + this.userType[i]    + '</text></td>'
+        text += '   <td><text>' + this.userStatus[i]  + '</text></td>'
         text += '   <td><text>' + this.userId[i]      + '</text></td>'
         text += '   <td><text>' + this.userNodeAdr[i] + '</text></td>'
         text += '   <td><button type="button" onClick="' + approvePrefix + "'" + name + "', '" + hashId + "'" + approveSuffix + '">Approve</button>'
         text += '       <button type="button" onClick="' + setStatusPrefix + "'" + name + "', '" + ",'true'," + hashId + "'"  + setStatusSuffix + '">Active</button>'
         text += '       <button type="button" onClick="' + setStatusPrefix + "'" + name + "', '" + ",'false',"+ hashId + "'" + setStatusSuffix + '">Deactive</button></td>'
+        text += '   <td><button type="button" onClick="' + showPrefix + "'wallets', '" + name + "', '" + hashId + "'" + showSuffix + '">Wallets</button>'
+        text += '   <td><button type="button" onClick="' + showPrefix + "'templates', '" + name + "', '" + hashId + "'" + showSuffix + '">Templates</button>'
+        text += '   <td><button type="button" onClick="' + showPrefix + "'agreements', '" + name + "', '" + hashId + "'" + showSuffix + '">Agreements</button>'
         text += '   <td><text id="'+ hashId + '"></text></td>'
         text += '</tr>'
     }
