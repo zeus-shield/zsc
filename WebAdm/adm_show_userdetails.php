@@ -16,31 +16,63 @@ echo $htmlModules->loadScriptFiles();
     var web3 = setupWeb3js(false);
     var ControlApisAdvAdr = "<?php echo $htmlModules->readModuleAddress('ControlApisAdv')?>";
     var userWallets = new ZSCShowUserWallets(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
-    var userAgrs = new ZSCShowUserAgrs(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
-    var userTmps = new ZSCShowUserTmps(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
+    var userAgrs    = new ZSCShowUserAgrs(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
+    var userTmps    = new ZSCShowUserTmps(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
 
-    function showUserWallets() {
-        if (userWallets.parserUserName()) {
-            userWallets.loadUserWallets(function() {
-                userWallets.loadWalletHtml("UserWallets");
-            });
-        }
+    function parserHrefForUserDetails(func) {    
+        var urlinfo = window.location.href; 
+        var found1  = urlinfo.indexOf("?");
+        var found2  = urlinfo.indexOf("=");
+    
+        if (found1 == -1 || found2 == -1) return false;
+
+        var len        =urlinfo.length;
+        var offset     =urlinfo.indexOf("?");
+        var newsidinfo =urlinfo.substr(offset,len)
+        var newsids    = newsidinfo.split("&");
+    
+        var detailInfo = newsids[0];
+        var detailType = userName.split("=")[1];
+
+        var nameInfo   = newsids[1];
+        var userName   = userName.split("=")[1];
+
+        func(detailType, userName);
+    }  
+
+    function showUserWallets(userName) {
+        userWallets.setUserNmae(userName);
+        userWallets.loadUserWallets(function() {
+            userWallets.loadWalletsHtml("UserDetails");
+        });
     }
 
     function showUserAgreements() {
-        if (userAgrs.parserUserName()) {
-            userAgrs.loadUserAgrs(function() {
-            });
-        }
+        userAgrs.setUserNmae(userName);
+        userAgrs.loadUserAgrs(function() {
+            userWallets.loadUserAgrsHtml("UserDetails");
+        });
     }
 
     function showUserTemplates() {
-        if (userTmps.parserUserName()) {
-            userTmps.loadUserTmps(function() {
-            });
-        }
+        userTmps.setUserNmae(userName);
+        userTmps.loadUserTmps(function() {
+            userWallets.loadUserTmpsHtml("UserDetails");
+        });
     }
 
+    function showDetails() {
+        parserHrefForUserDetails(function(type, userName) {
+            if (type == "wallets") {
+                showUserWallets(userName);
+            } else if (type == "agrs") {
+                showUserAgreements(userName);
+            } else if (type == "tmps") {
+                showUserTemplates(userName);
+            }
+        });
+    }
+    
 </script>
 </head>
 <body>
@@ -51,13 +83,11 @@ echo $htmlModules->loadScriptFiles();
 
 <?php echo $htmlModules->loadAllAdrs();?>
 
-    <div class="well" id="UserWallets"> </div>
+    <div class="well" id="UserDetails"> </div>
 
 <script type="text/javascript">
     window.addEventListener('load', function() {
-        showUserWallets();
-        showUserAgreements();
-        showUserTemplates();
+        showDetails();
     });  
 </script>   
 </body>
