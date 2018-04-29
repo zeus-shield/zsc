@@ -18,6 +18,7 @@ echo $htmlModules->loadScriptFiles();
     var userWallets = new ZSCShowUserWallets(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
     var userAgrs    = new ZSCShowUserAgrs(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
     var userTmps    = new ZSCShowUserTmps(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
+    var enObject    = new ZSCShowElement(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
 
     function parserHrefForUserDetails(func) {    
         var urlinfo = window.location.href; 
@@ -40,35 +41,42 @@ echo $htmlModules->loadScriptFiles();
         func(detailType, userName);
     }  
 
-    function showUserWallets(userName) {
+    function showUserDetails(userName, enName) {
+        enObject.init(userName, enName);
+        enObject.loadParameterNamesAndvalues(function() {
+            
+        });
+    }
+
+    function sloadUserWallets(userName) {
         userWallets.setUserNmae(userName);
         userWallets.loadUserWallets(function() {
             userWallets.loadWalletsHtml("UserDetails");
         });
     }
 
-    function showUserAgreements() {
+    function loadUserAgreements() {
         userAgrs.setUserNmae(userName);
         userAgrs.loadUserAgrs(function() {
             userWallets.loadUserAgrsHtml("UserDetails");
         });
     }
 
-    function showUserTemplates() {
+    function loadUserTemplates() {
         userTmps.setUserNmae(userName);
         userTmps.loadUserTmps(function() {
             userWallets.loadUserTmpsHtml("UserDetails");
         });
     }
 
-    function showDetails() {
+    function loadUserInfos() {
         parserHrefForUserDetails(function(type, userName) {
             if (type == "wallets") {
-                showUserWallets(userName);
-            } else if (type == "agrs") {
-                showUserAgreements(userName);
-            } else if (type == "tmps") {
-                showUserTemplates(userName);
+                loadUserWallets(userName);
+            } else if (type == "agreements") {
+                loadUserAgreements(userName);
+            } else if (type == "templates") {
+                loadUserTemplates(userName);
             }
         });
     }
@@ -87,7 +95,7 @@ echo $htmlModules->loadScriptFiles();
 
 <script type="text/javascript">
     window.addEventListener('load', function() {
-        showDetails();
+        loadUserInfos();
     });  
 </script>   
 </body>
