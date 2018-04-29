@@ -14,6 +14,7 @@ ZSCShowUserTmps.prototype = new ZSCJsBase();
 
 ZSCShowUserTmps.prototype.setUserName = function(userName) {
     this.userName = userName;
+    this.setModuleType("userTemplates");
 }
 
 ZSCShowUserTmps.prototype.loadUserAgrs = function(func) {
@@ -54,7 +55,10 @@ ZSCShowUserTmps.prototype.getTmpNameByIndex = function(index, func) {
         });
 }
 
-ZSCShowUserTmps.prototype.loadUserTmpsHtml = function(elementId)  {
+ZSCShowUserTmps.prototype.loadUserTmpsHtml = function(funcName, elementId)  {
+    var funcPrefix = funcName + '('; 
+    var funcSuffix = ')"';
+
     var text ="";
     text += '<div class="well">';
     text += '<table align="center" style="width:800px;min-height:30px">'
@@ -64,6 +68,7 @@ ZSCShowUserTmps.prototype.loadUserTmpsHtml = function(elementId)  {
 
     for (var i = 0; i < this.tmpNos; ++i) {
         text += '<tr>'
+        text += '   <td><button type="button" onClick="' + showPrefix + "'" + this.userName + "', '" + i + "'" + showSuffix + '">Details</button>'
         text += '   <td><text>' + i + '</text></td>'
         text += '   <td><text>' + this.tmpNames[i] + '</text></td>'
         text += '</tr>'
