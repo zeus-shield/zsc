@@ -23,7 +23,11 @@ ZSCShowElement.prototype.init = function(userName, enName) {
 ZSCShowElement.prototype.loadParameterNamesAndvalues = function(func) {
     this.numParameters(function() {
         this.loadParameterNames(function() {
-            
+            this.loadParameterValues(function(index){
+                if (index == this.parameNos - 1) {
+                    func();
+                }
+            });
         }); 
     });
 }
@@ -41,5 +45,42 @@ ZSCShowElement.prototype.numParameters = function(func) {
          });
 }
 
+ZSCShowElement.prototype.loadParameterNames = function(func) {
+    for (var i = 0; i < this.parameNos; ++i) {
+        loadParameterNameByIndex(i, function(index, para) {
+            uF_parameters[index] = para;
+            if (index == this.parameNos - 1) {
+                func();
+            }
+        });
+    } 
+} 
+
+ZSCShowElement.prototype.loadParameterNameByIndex = function(index, func) {
+    this.myControlApi.getElementParameterNameByIndex(this.name, index, 
+        {from: this.account},
+        function(error, para){ 
+            if(!error) {
+                var ret = web3.toUtf8(para);
+                func(index, ret);  
+            } else { 
+                console.log("error: " + error);
+            }
+        });
+}
+
+ZSCShowElement.prototype.loadParameterValues = function(func) {
+    for (var i = 0; i < this.parameNos; ++i) {
+        loadParameterValueByIndex(i, function(index, value) {
+            if (index == this.parameNos - 1) {
+                func(index);
+            }
+        });
+    } 
+} 
+
+ZSCShowElement.prototype.loadParameterValueByIndex = function(index, func){ 
+
+}
 
 
