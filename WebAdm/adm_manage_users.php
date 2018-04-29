@@ -14,9 +14,7 @@ echo $htmlModules->loadScriptFiles();
 ?>
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
-
     var AdmAdvAdr = "<?php echo $htmlModules->readModuleAddress('AdmAdv')?>";
-   
     var userManager = new ZSCUserMangement(AdmAdvAdr, cC_getContractAbi('AdmAdv'));
 
     function addUser(usernameId, elementId) {
@@ -37,8 +35,14 @@ echo $htmlModules->loadScriptFiles();
         });    
     }
 
-    function showDetails(userName, elementId) {
-        window.location.href="adm_show_userdetails.php?uername=" + userName + "&";   
+    function showUserDetails(showType, userName, elementId) {
+        window.location.href="adm_show_userdetails.php?type=" + showType + "&uername=" + userName + "&";   
+    }
+
+    function loadUserManager() {
+        userManager.loadUsers(function(){
+            userManager.loadUserManagementHtml("showUserDetails", "approve", "setUserStatus", "UserManagement");
+        });
     }
 
 </script>
@@ -47,7 +51,7 @@ echo $htmlModules->loadScriptFiles();
 
 <?php echo $htmlModules->loadHeader();?>
 
-<div class="page-header"><font size="5" color="blue" >Setup ZSC system in the testing envrioment</font></div>
+<div class="page-header"><font size="5" color="blue" >Manage ZSC users</font></div>
 
 <?php echo $htmlModules->loadAllAdrs();?>
 
@@ -60,9 +64,9 @@ echo $htmlModules->loadScriptFiles();
     <div class="well" id="UserManagement"> </div>
 
 <script type="text/javascript">
-	userManager.loadUsers(function(){
-		userManager.loadUserManagementHtml("showDetails", "approve", "setUserStatus", "UserManagement");
-	});
+    window.addEventListener('load', function() {
+        loadUserManager();
+    }); 
 </script>
 
 </body>
