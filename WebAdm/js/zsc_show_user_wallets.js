@@ -14,23 +14,9 @@ function ZSCShowUserWallets(adr, abi) {
 
 ZSCShowUserWallets.prototype = new ZSCJsBase();
 
-ZSCShowUserWallets.prototype.parserUserName = function() {    
-        var urlinfo=window.location.href; 
-        var found1 = urlinfo.indexOf("?");
-        var found2 = urlinfo.indexOf("=");
-    
-        if (found1 == -1 || found2 == -1) return false;
-
-        var len=urlinfo.length;
-        var offset=urlinfo.indexOf("?");
-        var newsidinfo=urlinfo.substr(offset,len)
-        var newsids = newsidinfo.split("&");
-    
-        var userName = newsids[0];
-        this.userName = userName.split("=")[1];
-    
-        return true;
-}  
+ZSCShowUserWallets.prototype.setUserName = function(userName) {
+    this.userName = userName;
+}
 
 ZSCShowUserWallets.prototype.loadUserWallets = function(func) {
     this.numUserWallets(function() {
@@ -92,37 +78,25 @@ ZSCShowUserWallets.prototype.parserWalletInfoByIndex = function(urlinfo, index) 
     return true;
 }
 
-ZSCShowUserWallets.prototype.loadWalletHtml = function(elementId)  {
-    var funcPrefix = funcName + "('"; 
-    var funcSuffix = "')";
-    var walletObj = extra;
-    var symbol;
-    var adr;
-    var balance;
-    var hashId;
-
+ZSCShowUserWallets.prototype.loadUserWalletsHtml = function(elementId)  {
     var text ="";
     text += '<div class="well">';
     text += '<table align="center" style="width:800px;min-height:30px">'
     text += '<tr>'
-    text += '   <td><text>Symbol</text></td> <td><text>Balance</text></td>  <td><text>Address</text></td>  <td></td> <td></td> '
-    text += '</tr><tr>'
+    text += '   <td><text>Symbol</text></td> <td><text>Balance</text></td>  <td><text>Address</text></td>  '
+    text += '</tr>'
 
     for (var i = 0; i < this.walletNos(); ++i) {
-        symbol = walletObj.getTokenSymbol(i);
-        adr = walletObj.getTokenAddress(i);
-        balance = walletObj.getTokenBalance(i);
-        hashId = symbol + "Hash";
-        sentoId = symbol + "Dest";
-        amountId = symbol + "Amount";
+        symbol = this.walletSymbols(i);
+        adr = this.walletAdrs(i);
+        balance = this.walletAdrs(i);
         text += '<tr>'
         text += '   <td><text>' + symbol + '</text></td>'
         text += '   <td><text>' + balance + '</text></td>'
         text += '   <td><text>' + adr  + '</text></td>'  
-        text += '   <td><text id="'+ hashId + '"></text></td>'
         text += '</tr>'
     }
-    text += '</div>'
+    text += '</table></div>'
 
     document.getElementById(elementId).innerHTML = text;  
 }
