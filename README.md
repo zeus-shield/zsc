@@ -71,7 +71,10 @@ Official implementation for the solidity-based core part of the ZSC system, as w
         |-- zsc_wallet_management
         |-- zsc_setup
         |-- zsc_printlog
-        |-- zsc_show_user
+        |-- zsc_show_user_wallets
+        |-- zsc_show_user_agrs
+        |-- zsc_show_user_tmps
+        |-- zsc_show_element
 ```
 
 ## WebClient
@@ -81,6 +84,10 @@ Official implementation for the solidity-based core part of the ZSC system, as w
     |-- zsc_user
     |-- zsc_element
     |-- zsc_wallet
+    |-- zsc_pos
+    |-- zsc_templates
+    |-- zsc_transactions
+    |-- zsc_agreements
 ```
 
 ## .sol update log
@@ -138,4 +145,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.04.21-24: add file WebAdm/adm_show_userdetails.php, WebAdm/js/zsc_show_user.js
 2018.04.25-26: add SafeMath module
 2018.04.27-28: update the code with reference to the solidity compiler 0.4.21
+2018.04.29: add file WebAdm/js/zsc_show_user_agrs.js, WebAdm/js/zsc_show_user_wallets.js, WebAdm/js/zsc_show_user_tmps.js
 ```
