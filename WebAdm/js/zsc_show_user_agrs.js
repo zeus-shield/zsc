@@ -12,23 +12,9 @@ function ZSCShowUserAgrs(adr, abi) {
 
 ZSCShowUserAgrs.prototype = new ZSCJsBase();
 
-ZSCShowUserAgrs.prototype.parserUserName = function() {    
-        var urlinfo=window.location.href; 
-        var found1 = urlinfo.indexOf("?");
-        var found2 = urlinfo.indexOf("=");
-    
-        if (found1 == -1 || found2 == -1) return false;
-
-        var len=urlinfo.length;
-        var offset=urlinfo.indexOf("?");
-        var newsidinfo=urlinfo.substr(offset,len)
-        var newsids = newsidinfo.split("&");
-    
-        var userName = newsids[0];
-        this.userName = userName.split("=")[1];
-    
-        return true;
-}  
+ZSCShowUserAgrs.prototype.setUserName = function(userName) {
+    this.userName = userName;
+}
 
 ZSCShowUserAgrs.prototype.loadUserAgrs = function(func) {
     this.numUserAgrs(function() {
@@ -67,4 +53,24 @@ ZSCShowUserAgrs.prototype.getAgrNameByIndex = function(index, func) {
             }
         });
 }
+
+ZSCShowUserAgrs.prototype.loadWalletHtml = function(elementId)  {
+    var text ="";
+    text += '<div class="well">';
+    text += '<table align="center" style="width:800px;min-height:30px">'
+    text += '<tr>'
+    text += '   <td><text>Index</text></td> <td><text>Agreement Name</text></td>  '
+    text += '</tr>'
+
+    for (var i = 0; i < this.agrNos; ++i) {
+        text += '<tr>'
+        text += '   <td><text>' + i + '</text></td>'
+        text += '   <td><text>' + this.agrNames[i] + '</text></td>'
+        text += '</tr>'
+    }
+    text += '</table></div>'
+
+    document.getElementById(elementId).innerHTML = text;  
+}
+
 
