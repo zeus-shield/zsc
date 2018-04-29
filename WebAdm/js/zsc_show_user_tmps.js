@@ -34,7 +34,7 @@ ZSCShowUserTmps.prototype.numUserTmps= function(func) {
         {from: this.account, gas: 9000000},
         function(error, result){ 
             if(!error) {
-                this.tmpNos = result;
+                this.tmpNos = result.toString(10);
                 func();
             } else {
                 console.log("error: " + error);
@@ -47,7 +47,7 @@ ZSCShowUserTmps.prototype.getTmpNameByIndex = function(index, func) {
         {from: this.account, gas: 9000000},
         function(error, result){ 
             if(!error) {
-                this.tmpNames[index] = result;
+                this.tmpNames[index] = toUtf8(para);
                 func(index);
             } else {
                 console.log("error: " + error);
@@ -68,7 +68,7 @@ ZSCShowUserTmps.prototype.loadUserTmpsHtml = function(funcName, elementId)  {
 
     for (var i = 0; i < this.tmpNos; ++i) {
         text += '<tr>'
-        text += '   <td><button type="button" onClick="' + showPrefix + "'" + this.userName + "', '" + i + "'" + showSuffix + '">Details</button>'
+        text += '   <td><button type="button" onClick="' + showPrefix + "'" + this.userName + "', '" + this.tmpNames[i] + "'" + showSuffix + '">Details</button>'
         text += '   <td><text>' + i + '</text></td>'
         text += '   <td><text>' + this.tmpNames[i] + '</text></td>'
         text += '</tr>'
