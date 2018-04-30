@@ -33,8 +33,17 @@ contract DBStaker is DBUser {
     }
 
     function initParameters() internal {
-    	addParameter("Divended Duration");
-    	addParameter("Reward Ratio");
+    	addFundamentalParameter("userFamilyName");
+        addFundamentalParameter("userFirstName");
+        addFundamentalParameter("userNationality");
+        addFundamentalParameter("userPhone");
+        addFundamentalParameter("userGender");
+        addFundamentalParameter("userBirthday");
+        addFundamentalParameter("userIdentification");
+        addFundamentalParameter("userResidentialAddress");
+
+        addFundamentalParameter("Divended Duration");
+    	addFundamentalParameter("Reward Ratio");
     }
 
     function setParameter(bytes32 _parameter, string _value) public returns (bool) {
@@ -45,14 +54,16 @@ contract DBStaker is DBUser {
         return super.setParameter(_parameter, _value);
     }
 
-    function addParameter(bytes32 _parameter, string _value) public returns (bool) {
+    function addParameter(bytes32 _parameter) public returns (bool) {
         checkDelegate(msg.sender, 1);
         return false;
+        return super.addParameter(_parameter);
     }
 
     function removeParameter(bytes32 _parameter) public returns (bool) {
         checkDelegate(msg.sender, 1);
-        return false; 
+        return false;
+        return super.removeParameter(_parameter);
     }
 
     function claimStakePoint() public {
