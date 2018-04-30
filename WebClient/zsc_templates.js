@@ -6,7 +6,7 @@ Copyright (c) 2018 ZSC Dev Team
 function ZSCTemplate(nm, abi, adr) {
     this.userName = nm;
     this.tmpNos = 0;
-    this.tmpName = [];
+    this.tmpNames = [];
     this.myControlApi = web3.eth.contract(abi).at(adr);
 }
 
@@ -31,7 +31,7 @@ ZSCTemplate.prototype.numTemplates= function(func) {
         {from: this.account, gas: 9000000},
         function(error, result){ 
             if(!error) {
-                this.agrNos = result;
+                this.agrNos = result.toString(10);
                 func();
             } else {
                 console.log("error: " + error);
@@ -44,10 +44,36 @@ ZSCTemplate.prototype.getTmpNameByIndex = function(index, func) {
         {from: this.account, gas: 9000000},
         function(error, result){ 
             if(!error) {
-                this.agrName[index] = result;
+                this.tmpNames[index] = web3.toUtf8(result);
                 func(index);
             } else {
                 console.log("error: " + error);
             }
         });
 }
+
+ZSCTemplate.prototype.loadTemplatesHtml = function(elementId)  {
+    var timeMoment;
+    var inputTag;
+    var amount;
+    var sender;
+    var receiver;
+
+    var text ="";
+    text += '<div class="well">';
+    text += '<table align="center" style="width:800px;min-height:30px">'
+    text += '<tr>'
+    text += '   <td>Index</td> <td>Template name</td>'
+    text += '</tr>'
+
+    for (var i = 0; i < this.tmpNos; ++i) {
+        text += '<tr>'
+        text += '   <td><text>' + i + '</text></td>'
+        text += '   <td><text>' + this.tmpNames[i]  + '</text></td>'
+        text += '</tr>'
+    }
+    text += '</table></div>'
+
+    document.getElementById(elementId).innerHTML = text;  
+}
+
