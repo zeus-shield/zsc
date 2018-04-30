@@ -24,6 +24,7 @@
     var zscWalletGM;
     var zscTransGM;
     var zscTmpsGM;
+    var zscAgrsGM;
 
     /*tag:
     logon, wallet, profile, templates, agreements
@@ -47,8 +48,9 @@
                 var controlApisAdvAdr = zscUser.getControlApisAdr();
                 zscElement  = new ZSCElement(fullAbi, controlApisAdvAdr);
                 zscWalletGM = new ZSCWallet(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
-                zscTransGM  = new ZSCTransactions(zscUser.getUserName(), fullAbi, controlApisAdvAdr)
-                zscTmpsGM   = new ZSCTransactions(zscUser.getUserName(), fullAbi, controlApisAdvAdr)
+                zscTransGM  = new ZSCTransaction(zscUser.getUserName(), fullAbi, controlApisAdvAdr)
+                zscTmpsGM   = new ZSCTemplate(zscUser.getUserName(), fullAbi, controlApisAdvAdr)
+                zscAgrsGM   = new ZSCAgreement(zscUser.getUserName(), fullAbi, controlApisAdvAdr)
                 loadHtmlPageBody("welecome");
             } else {
                 alert("User name or password wrong!!");
@@ -131,19 +133,24 @@
         } else {
             if (tag == "wallet") {
                 zscWalletGM.loadTokenWallets(function() {
-                    zscWalletGM.loadWallets("PageBody", "transferValue", "showTransactions", "enableWallet");
+                    zscWalletGM.loadWalletsHtml("PageBody", "transferValue", "showTransactions", "enableWallet");
                 });
             } else if (tag == "profile") {
                 zscElement.loadParameterNamesAndvalues(function() {
-                    zscElement.loadParameters("PageBody", "submitProfileChanges");
+                    zscElement.loadParametersHtml("PageBody", "submitProfileChanges");
                 });
             } else if (tag == "transaction") {
                 zscTransGM.loadTransactions(function() {
-                    zscTransGM.loadTransactions("PageBody");
+                    zscTransGM.loadTransactionsHtml("PageBody");
                 });
-            } else if (tag == "templates") {
-                zscTransGM.loadTempates(function() {
-                }
+            } else if (tag == "template") {
+                zscTmpsGM.loadTransactions(function() {
+                    zscTmpsGM.loadTemplatesHtml("PageBody");
+                });
+            } else if (tag == "agreement") {
+                zscAgrsGM.loadAgreements(function() {
+                    zscAgrsGM.loadAgreementsHtml("PageBody");
+                });
             }
         }
     }
