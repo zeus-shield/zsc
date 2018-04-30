@@ -19,6 +19,8 @@ echo $htmlModules->loadScriptFiles();
     var userAgrs    = new ZSCShowUserAgrs(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
     var userTmps    = new ZSCShowUserTmps(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
     var enObject    = new ZSCShowElement(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
+    var showType;
+    var showUser;
 
     function parserHrefForUserDetails(func) {    
         var urlinfo = window.location.href; 
@@ -51,7 +53,7 @@ echo $htmlModules->loadScriptFiles();
     function sloadUserWallets(userName) {
         userWallets.setUserNmae(userName);
         userWallets.loadUserWallets(function() {
-            userWallets.loadWalletsHtml("UserDetails", "showUserElement");
+            userWallets.loadWalletsHtml("showUserElement");
         });
     }
 
@@ -71,6 +73,8 @@ echo $htmlModules->loadScriptFiles();
 
     function loadUserInfos() {
         parserHrefForUserDetails(function(type, userName) {
+            showType = type;
+            showUser = userName;
             if (type == "wallets") {
                 loadUserWallets(userName);
             } else if (type == "agreements") {
@@ -80,16 +84,24 @@ echo $htmlModules->loadScriptFiles();
             }
         });
     }
+
+    function reloadUserInfos() {
+        window.location.href="adm_show_userdetails.php?type=" + showType + "&uername=" + showUser + "&";   
+    }
     
 </script>
 </head>
 <body>
 
 <?php echo $htmlModules->loadHeader();?>
-
-<div class="page-header"><font size="5" color="blue" >Manage Token Contracts</font></div>
-
 <?php echo $htmlModules->loadAllAdrs();?>
+
+<div class="page-header"><font size="5" color="blue">Show user details</font></div>
+<div class="well">
+    <button type="button" onClick="reloadUserInfos()">Wallets</button>
+    <button type="button" onClick="reloadUserInfos()">Templates</button>
+    <button type="button" onClick="reloadUserInfos()">Agreements</button>
+</div>
 
     <div class="well" id="UserElement"> </div> <br><br>
     <div class="well" id="UserDetails"> </div>
