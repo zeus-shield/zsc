@@ -12,12 +12,6 @@ function ZSCAgreement(nm, abi, adr) {
 
 ZSCAgreement.prototype.getUserName = function() {return this.userName;}
 
-ZSCAgreement.prototype.getAgreStatus = function(index) { return this.tokenStatus[index];}
-
-ZSCAgreement.prototype.getAgrName = function(index) { return this.tokenSymbol[index];}
-
-ZSCAgreement.prototype.getAgrAddress = function(index) { return this.tokenAddress[index];}
-
 ZSCAgreement.prototype.loadAgreements = function(func) {
     this.numAgreements(function() {
         for (var i = 0; i < this.agrNos; ++i) {
@@ -35,7 +29,7 @@ ZSCAgreement.prototype.numAgreements= function(func) {
         {from: this.account, gas: 9000000},
         function(error, result){ 
             if(!error) {
-                this.agrNos = result;
+                this.agrNos = result.toString(10); 
                 func();
             } else {
                 console.log("error: " + error);
@@ -48,10 +42,35 @@ ZSCAgreement.prototype.getAgrNameByIndex = function(index, func) {
         {from: this.account, gas: 9000000},
         function(error, result){ 
             if(!error) {
-                this.agrName[index] = result;
+                this.agrName[index] = web3.toUtf8(result);
                 func(index);
             } else {
                 console.log("error: " + error);
             }
         });
+}
+
+ZSCAgreement.prototype.loadAgreementsHtml = function(elementId)  {
+    var timeMoment;
+    var inputTag;
+    var amount;
+    var sender;
+    var receiver;
+
+    var text ="";
+    text += '<div class="well">';
+    text += '<table align="center" style="width:800px;min-height:30px">'
+    text += '<tr>'
+    text += '   <td>Index</td> <td>Agreement name</td>'
+    text += '</tr>'
+
+    for (var i = 0; i < this.tmpNos; ++i) {
+        text += '<tr>'
+        text += '   <td><text>' + i + '</text></td>'
+        text += '   <td><text>' + this.agrName[i] + '</text></td>'
+        text += '</tr>'
+    }
+    text += '</table></div>'
+
+    document.getElementById(elementId).innerHTML = text;  
 }
