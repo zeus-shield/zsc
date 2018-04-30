@@ -14,16 +14,6 @@ function ZSCWallet(nm, abi, adr) {
 }
 ZSCWallet.prototype.getUserName = function() {return this.userName;}
 
-ZSCWallet.prototype.getTokenStatus = function(index) { return this.tokenStatus[index];}
-
-ZSCWallet.prototype.getTokenSymbol = function(index) { return this.tokenSymbol[index];}
-
-ZSCWallet.prototype.getTokenBalance = function(index) { return this.tokenBalance[index];}
-
-ZSCWallet.prototype.getTokenAddress = function(index) { return this.tokenAddress[index];}
-
-ZSCWallet.prototype.getTokenNos = function() { return this.tokenNos; }
-
 ZSCWallet.prototype.transferValue = function(destAddressID, amountID, logID) {  
     var srcAddress = document.getElementById(destAddressID).innerText;
     var destAddress = document.getElementById(destAddressID).value;
@@ -132,5 +122,52 @@ ZSCWallet.prototype.parserTokenBalanceInfoByIndex = function(urlinfo, index) {
     return true;
 }
 
+ZSCWallet.prototype.loadWallets = function(elementId, func1, func2, func3)  {
+    var funcPrefix = func1 + "('"; 
+    var funcSuffix = "')";
+    var symbol;
+    var adr;
+    var balance;
+    var hashId;
+
+    var showTransPrefix = func2 + "('";
+    var showTransSuffix = "')";
+
+    var enableWalletPrefix = func3 + "('";
+    var enableWalletSuffix = "')";
+
+    var text ="";
+    text += '<div class="well">';
+    text += '<table align="center" style="width:800px;min-height:30px">'
+    text += '<tr>'
+    text += '   <td><text>Symbol</text></td> <td><text>Balance</text></td>  <td><text>Address</text></td>  <td><text>Sent To</text></td> <td>Amount</td> <td></td> '
+    text += '</tr>'
+
+    for (var i = 0; i < this.tokenNos; ++i) {
+        symbol = this.tokenSymbol[i];
+        adr = this.tokenAddress[i];
+        balance = this.tokenBalance[i];
+        hashId = symbol + "Hash";
+        sentoId = symbol + "Dest";
+        amountId = symbol + "Amount";
+        text += '<tr>'
+        text += '   <td><text>' + symbol + '</text></td>'
+        text += '   <td><text>' + balance + '</text></td>'
+        text += '   <td><text>' + adr  + '</text></td>'   
+        if (this.tokenStatus[i] == "false") {
+            text += '   <td><button type="button" onClick="' + enableWalletPrefix + symbol + "', '" + hashId + "'" + showTransSuffix + '">Enable</button></td>'
+        } else {
+            text += '   <td><input id="' + sentoId + '"></input> <td>'   
+            text += '   <td><input id="' + amountId + '"></input> <td>'
+            text += '   <td><button type="button" onClick="' + funcPrefix + sentoId + "', '" + amountId + "', '" + hashId + "'" + funcSuffix + '">Transfer</button></td>'
+            text += '   <td><button type="button" onClick="' + showTransPrefix + symbol, "', '" + hashId + "'" + showTransSuffix + '">Show</button></td>'
+        }
+        text += '   <td><text id="'+ hashId + '"></text></td>'
+        text += '</tr>'
+    }
+    text += '</div>'
+
+    document.getElementById(elementId).innerHTML = text;  
+}
 
 
