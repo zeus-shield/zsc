@@ -23,6 +23,7 @@
     var zscElement;
     var zscWalletGM;
     var zscTransGM;
+    var zscTmpsGM;
 
     /*tag:
     logon, wallet, profile, templates, agreements
@@ -45,8 +46,9 @@
                 var fullAbi = zscUser.getControlApisFullAbi();
                 var controlApisAdvAdr = zscUser.getControlApisAdr();
                 zscElement  = new ZSCElement(fullAbi, controlApisAdvAdr);
-                zscWalletGM = new ZSCWallet(zscUser.getUserName, fullAbi, controlApisAdvAdr);
-                zscTransGM  = new ZSCTransactions(zscUser.getUserName, fullAbi, controlApisAdvAdr)
+                zscWalletGM = new ZSCWallet(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+                zscTransGM  = new ZSCTransactions(zscUser.getUserName(), fullAbi, controlApisAdvAdr)
+                zscTmpsGM   = new ZSCTransactions(zscUser.getUserName(), fullAbi, controlApisAdvAdr)
                 loadHtmlPageBody("welecome");
             } else {
                 alert("User name or password wrong!!");
@@ -129,18 +131,18 @@
         } else {
             if (tag == "wallet") {
                 zscWalletGM.loadTokenWallets(function() {
-                    zscHtml.loadPageBody(tag, ["transferValue", "showTransactions", "enableWallet"], ZSCWalletGM);
+                    zscWalletGM.loadWallets("PageBody", "transferValue", "showTransactions", "enableWallet");
                 });
             } else if (tag == "profile") {
                 zscElement.loadParameterNamesAndvalues(function() {
-                    zscHtml.loadPageBody(tag, ["submitProfileChanges"], zscElement);
+                    zscElement.loadParameters("PageBody", "submitProfileChanges");
                 });
             } else if (tag == "transaction") {
                 zscTransGM.loadTransactions(function() {
-                    zscHtml.loadPageBody(tag, ["null"], zscTransGM);
+                    zscTransGM.loadTransactions("PageBody");
                 });
             } else if (tag == "templates") {
-                uF_loadBindedEntities(tag, function() {
+                zscTransGM.loadTempates(function() {
                 }
             }
         }
