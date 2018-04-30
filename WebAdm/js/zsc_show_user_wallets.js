@@ -79,7 +79,7 @@ ZSCShowUserWallets.prototype.parserWalletInfoByIndex = function(urlinfo, index) 
     return true;
 }
 
-ZSCShowUserWallets.prototype.loadUserWalletsHtml = function(funcName, elementId)  {
+ZSCShowUserWallets.prototype.loadUserWalletsHtml = function(elementId)  {
     var funcPrefix = funcName + '('; 
     var funcSuffix = ')"';
 
@@ -94,9 +94,7 @@ ZSCShowUserWallets.prototype.loadUserWalletsHtml = function(funcName, elementId)
         var symbol = this.walletSymbols(i);
         var adr = this.walletAdrs(i);
         var balance = this.walletAdrs(i);
-        var enName = this.userName + '+' + symbol;
         text += '<tr>'
-        text += '   <td><button type="button" onClick="' + showPrefix + "'" + this.userName + "', '" + enName + "'" + showSuffix + '">Details</button>'
         text += '   <td><text>' + symbol + '</text></td>'
         text += '   <td><text>' + balance + '</text></td>'
         text += '   <td><text>' + adr  + '</text></td>'  
