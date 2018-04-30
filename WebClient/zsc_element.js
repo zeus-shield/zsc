@@ -17,14 +17,6 @@ ZSCElement.prototype.setElementName = function(nm) {this.name = nm;}
 
 ZSCElement.prototype.getElementName = function() { return this.name;}
 
-ZSCElement.prototype.getNodeAddress = function() { return this.nodeAddress;}
-
-ZSCElement.prototype.getParameterName = function(index) { return this.parameterNames[index]; }
-
-ZSCElement.prototype.getParameterValue = function(index) { return this.parameterValues[index]; }
-
-ZSCElement.prototype.getParameterNos = function(index) { return this.parameNos; }
-
 ZSCElement.prototype.doesElementExisit = function(func) {
     this.myControlApi.doesElementExist(this.name,
         function(error, ret){ 
@@ -132,4 +124,22 @@ ZSCElement.prototype.setElementParameter = function(logID, hr) {
     }
 } 
 
+
+ZSCElement.prototype.loadParameters = function(elementId, funcName) {
+    var functionInput = funcName + "('SubmitChangesHash')";
+   
+    var text ="";
+    text += '<div class="well">';
+   
+    for (var i = 0; i < this.parameNos; ++i) {
+        text += '   <text>' + this.parameterNames[i] + ': </text>'
+        text += '   <input type="text" id="' + this.parameterValues[i] + '"></input>'
+    }
+    text += '</div>'
+    text += '   <button type="button" onClick="' + functionInput + '">Submit Changes</button>'
+    text += '   <text id="SubmitChangesHash"></text>'
+    text += '</div>'
+
+    document.getElementById(elementId).innerHTML = text;  
+}
 
