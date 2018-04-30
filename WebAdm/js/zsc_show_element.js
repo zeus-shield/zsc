@@ -80,7 +80,39 @@ ZSCShowElement.prototype.loadParameterValues = function(func) {
 } 
 
 ZSCShowElement.prototype.loadParameterValueByIndex = function(index, func){ 
+    this.myControlApi.getElementParameter(this.name, this.parameterNames[index], 
+        {from: this.account},
+        function(error, para){ 
+            if(!error) {
+                this.parameterValues[index] = web3.toUtf8(para);
+                func(index, value);
+            } else { 
+                console.log("error: " + error);
+            }
+        });
+}
 
+ZSCShowElement.prototype.loadParameterValueHtml = function(elementId) {
+    var text ="";
+    text += '<div class="well">';
+    text += '<table align="center" style="width:800px;min-height:30px">'
+    text += '<tr>'
+    text += '   <td>Parameter name</td> <td>Parameter value</td>'
+    text += '</tr>'
+
+    for (var i = 0; i < this.parameNos; ++i) {
+        var symbol = this.walletSymbols(i);
+        var adr = this.walletAdrs(i);
+        var balance = this.walletAdrs(i);
+        var enName = this.userName + '+' + symbol;
+        text += '<tr>'
+        text += '   <td><text>' + this.parameterNames[i] + '</text></td>'
+        text += '   <td><text>' + this.parameterValues[i]  + '</text></td>'  
+        text += '</tr>'
+    }
+    text += '</table></div>'
+
+    document.getElementById(elementId).innerHTML = text;  
 }
 
 
