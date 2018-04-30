@@ -21,10 +21,10 @@ contract DBAgreement is DBEntity {
     }
 
     function initParameters() internal {
-        super.addParameter("status");
-        super.addParameter("startTime");
-        super.addParameter("endTime");
-        super.addParameter("receiver");
+        addFundamentalParameter("status");
+        addFundamentalParameter("startTime");
+        addFundamentalParameter("endTime");
+        addFundamentalParameter("receiver");
     }
 
     function setParameter(bytes32 _parameter, string _value) public returns (bool) {
@@ -37,11 +37,11 @@ contract DBAgreement is DBEntity {
         }
     }
 
-    function addParameter(bytes32 _parameter, string _value) public returns (bool) {
+    function addParameter(bytes32 _parameter) public returns (bool) {
         checkDelegate(msg.sender, 1);
 
         if (status_ == "CREATED") {
-            return super.addParameter(_parameter, _value);
+            return super.addFundamentalParameter(_parameter);
         } else {
             return false;
         }
