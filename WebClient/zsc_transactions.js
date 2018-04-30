@@ -38,7 +38,7 @@ ZSCTransactions.prototype.numTransactions = function(func) {
         {from: this.account, gas: 9000000},
         function(error, result){ 
             if(!error) {
-                this.walletNos = result;
+                this.walletNos = result.toString(10);
                 func();
             } else {
                 console.log("error: " + error);
@@ -94,7 +94,7 @@ ZSCTransactions.prototype.parserTransactionInfoByIndex = function(urlinfo, index
     return true;
 }
 
-ZSCTransactions.prototype.loadTransactions = function()  {
+ZSCTransactions.prototype.loadTransactionsHtml = function(elementId)  {
     var timeMoment;
     var inputTag;
     var amount;
@@ -123,7 +123,7 @@ ZSCTransactions.prototype.loadTransactions = function()  {
         text += '   <td><text>' + receiver  + '</text></td>'
         text += '</tr>'
     }
-    text += '</div>'
+    text += '</table></div>'
 
     document.getElementById(elementId).innerHTML = text;  
 }

@@ -125,7 +125,7 @@ ZSCElement.prototype.setElementParameter = function(logID, hr) {
 } 
 
 
-ZSCElement.prototype.loadParameters = function(elementId, funcName) {
+ZSCElement.prototype.loadParametersHtml = function(elementId, funcName) {
     var functionInput = funcName + "('SubmitChangesHash')";
    
     var text ="";

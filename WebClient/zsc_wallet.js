@@ -75,7 +75,7 @@ ZSCWallet.prototype.numTokenWallets = function(func) {
         {from: this.account, gas: 9000000},
         function(error, result){ 
             if(!error) {
-                this.tokenNos = result;
+                this.tokenNos = result.toString(10);
                 func();
             } else {
                 console.log("error: " + error);
@@ -122,7 +122,7 @@ ZSCWallet.prototype.parserTokenBalanceInfoByIndex = function(urlinfo, index) {
     return true;
 }
 
-ZSCWallet.prototype.loadWallets = function(elementId, func1, func2, func3)  {
+ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2, func3)  {
     var funcPrefix = func1 + "('"; 
     var funcSuffix = "')";
     var symbol;
@@ -165,7 +165,7 @@ ZSCWallet.prototype.loadWallets = function(elementId, func1, func2, func3)  {
         text += '   <td><text id="'+ hashId + '"></text></td>'
         text += '</tr>'
     }
-    text += '</div>'
+    text += '</table></div>'
 
     document.getElementById(elementId).innerHTML = text;  
 }
