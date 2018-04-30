@@ -18,20 +18,33 @@ contract DBProvider is DBUser {
     }
 
     function initParameters() internal {
-        addParameter("assurerType");
-        addParameter("assurerName");
-        addParameter("principalFirstName");
-        addParameter("principalLastName");
-        addParameter("principalIdentific");
-        addParameter("principalPhone");
-        addParameter("principalEmail");
-        addParameter("principalNationality");
-        addParameter("companyName");
-        addParameter("companyId");
-        addParameter("companyNationality");
-        addParameter("companyPhone");
-        addParameter("companyEmail");
-        addParameter("claimEmail");
-        addParameter("claimPhone");
+        addFundamentalParameter("assurerType");
+        addFundamentalParameter("assurerName");
+        addFundamentalParameter("principalFirstName");
+        addFundamentalParameter("principalLastName");
+        addFundamentalParameter("principalIdentific");
+        addFundamentalParameter("principalPhone");
+        addFundamentalParameter("principalEmail");
+        addFundamentalParameter("principalNationality");
+        addFundamentalParameter("companyName");
+        addFundamentalParameter("companyId");
+        addFundamentalParameter("companyNationality");
+        addFundamentalParameter("companyPhone");
+        addFundamentalParameter("companyEmail");
+        addFundamentalParameter("claimEmail");
+        addFundamentalParameter("claimPhone");
     }
+
+    function addParameter(bytes32 _parameter) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+        return false;
+        return super.addParameter(_parameter);
+    }
+
+    function removeParameter(bytes32 _parameter) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+        return false;
+        return super.removeParameter(_parameter);
+    }
+
 }
