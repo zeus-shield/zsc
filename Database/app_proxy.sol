@@ -13,19 +13,23 @@ contract AppProxy is Object {
     constructor() Object("null") {
     }
     
-    function setControlApisAbi(string _abi) public only_owner {
+    function setControlApisAbi(string _abi) public {
+        checkOwner(msg.sender);
         controlApisAbi_ = _abi;
     }
 
-    function setControlApisAdr(address _adr) public only_owner {
+    function setControlApisAdr(address _adr) public {
+        checkOwner(msg.sender);
         controlApisAdr_ = _adr;
     }
 
     function getControlApisAbi() public constant returns (string) {
+        checkOwner(msg.sender);
         return controlApisAbi_;
     }
 
     function getControlApisAdr() public constant returns (string) {
+        checkOwner(msg.sender);
         return controlApisAdr_;
     }
 
