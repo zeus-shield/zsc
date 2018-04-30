@@ -41,31 +41,31 @@ echo $htmlModules->loadScriptFiles();
         func(detailType, userName);
     }  
 
-    function showUserDetails(userName, enName) {
+    function showUserElement(userName, enName) {
         enObject.init(userName, enName);
         enObject.loadParameterNamesAndvalues(function() {
-            
+            enObject.loadParameterValueHtml("UserElement");
         });
     }
 
     function sloadUserWallets(userName) {
         userWallets.setUserNmae(userName);
         userWallets.loadUserWallets(function() {
-            userWallets.loadWalletsHtml("UserDetails");
+            userWallets.loadWalletsHtml("UserDetails", "showUserElement");
         });
     }
 
     function loadUserAgreements() {
         userAgrs.setUserNmae(userName);
         userAgrs.loadUserAgrs(function() {
-            userWallets.loadUserAgrsHtml("UserDetails");
+            userWallets.loadUserAgrsHtml("UserDetails", "showUserElement");
         });
     }
 
     function loadUserTemplates() {
         userTmps.setUserNmae(userName);
         userTmps.loadUserTmps(function() {
-            userWallets.loadUserTmpsHtml("UserDetails");
+            userWallets.loadUserTmpsHtml("UserDetails", "showUserElement");
         });
     }
 
@@ -91,6 +91,7 @@ echo $htmlModules->loadScriptFiles();
 
 <?php echo $htmlModules->loadAllAdrs();?>
 
+    <div class="well" id="UserElement"> </div> <br><br>
     <div class="well" id="UserDetails"> </div>
 
 <script type="text/javascript">
