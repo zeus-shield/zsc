@@ -14,6 +14,7 @@ contract ControlBase {
 contract DBEntity is DBNode {
     bytes32[] private parameterNames_;
     mapping(bytes32 => bool) private parameterExist_;
+    mapping(bytes32 => bool) private fundamentalParas_;
 
     bool private activated_;
 
@@ -40,6 +41,13 @@ contract DBEntity is DBNode {
         return activated_;
     }
 
+    function addFundamentalParameter(bytes32 _parameter) internal returns (bool) {
+        if (addParameter(_parameter)) {
+            fundamentalParas_[_parameter] == true;
+        }
+        return true;
+    }
+
     function addParameter(bytes32 _parameter) public returns (bool) {
         checkDelegate(msg.sender, 1);
         require(parameterExist_[_parameter] == false);
@@ -52,6 +60,10 @@ contract DBEntity is DBNode {
     function removeParameter(bytes32 _parameter) public returns (bool) {
         checkDelegate(msg.sender, 1);
         require(parameterExist_[_parameter] == true);
+
+        if(fundamentalParas_[_parameter]) {
+            return false;
+        }
 
         for (uint i = 0; i < parameterNames_.length; ++i) {
             if (parameterNames_[i] == _parameter) {
