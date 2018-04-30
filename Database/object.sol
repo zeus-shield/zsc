@@ -24,8 +24,6 @@ contract Recorder {
 contract Owned {
     address owner;
 
-    modifier only_owner {require(isOwner(msg.sender)); _;}
-
     constructor() public {owner = msg.sender;}
     
     function isOwner(address _account) public constant returns (bool) { 
@@ -74,7 +72,6 @@ contract Delegated is Owned{
     function checkDelegate(address _address, uint _priority) internal constant {
         require(isDelegate(_address, _priority));
     }
-    
 }
 
 contract Object is Delegated {
@@ -110,8 +107,7 @@ contract Object is Delegated {
     // Owner can transfer out any accidentally sent ERC20 tokens
     // ------------------------------------------------------------------------
     function transferAnyERC20Token(address tokenAddress, uint tokens) public returns (bool success) {
-        checkDelegate(msg.sender, 1);
-
+        checkOwner(msg.sender);
         return ERC20Interface(tokenAddress).transfer(owner, tokens);
     }    
 }
