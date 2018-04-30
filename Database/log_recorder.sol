@@ -22,7 +22,7 @@ contract LogRecorder is Delegated {
     }
 
     function registerListener(address _adr, bytes32 _name) public {
-        checkListener(msg.sender);
+        checkDelegate(msg.sender, 1);
 
         listeners_[_adr] = true;
         print_log_[_adr].name_ = _name;
@@ -31,9 +31,8 @@ contract LogRecorder is Delegated {
     }
 
     function addLog(string _log, bool _newLine) public  {
-        checkDelegate(msg.sender, 1);
-
-        require(listeners_[msg.sender]);
+        checkListener(msg.sender);
+        
         uint index = print_log_[msg.sender].nos_ - 1;
         if (_newLine == true) {
             print_log_[msg.sender].nos_++;
@@ -44,8 +43,8 @@ contract LogRecorder is Delegated {
     }
 
     function printLog(address _adr, uint _index) public constant returns (string) {
-        checkListener(msg.sender);
         checkDelegate(msg.sender, 1);
+        checkListener(_adr);
 
         if (_index >= print_log_[_adr].nos_ ) 
             return "null";
