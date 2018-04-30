@@ -21,18 +21,6 @@ ZSCTransactions.prototype.setTokenSymbol = function(symbol) {return this.tokenSy
 
 ZSCTransactions.prototype.getTokenSymbol = function() { return this.tokenSymbol;}
 
-ZSCTransactions.prototype.getTimeMoment = function(index) { return this.timeMoments[index];}
-
-ZSCTransactions.prototype.getAmount = function(index) { return this.amounts[index];}
-
-ZSCTransactions.prototype.getSender = function(index) { return this.senders[index];}
-
-ZSCTransactions.prototype.getReceiver = function(index) { return this.receivers[index];}
-
-ZSCTransactions.prototype.getInputTag = function(index) { return this.inputTags[index];}
-
-ZSCTransactions.prototype.getTransactionNos = function() { return this.nos; }
-
 ZSCTransactions.prototype.loadTransactions = function(func) {
     this.numTransactions(function() {
         for (var i = 0; i < this.walletNos; ++i) {
@@ -106,4 +94,37 @@ ZSCTransactions.prototype.parserTransactionInfoByIndex = function(urlinfo, index
     return true;
 }
 
+ZSCTransactions.prototype.loadTransactions = function()  {
+    var timeMoment;
+    var inputTag;
+    var amount;
+    var sender;
+    var receiver;
+
+    var text ="";
+    text += '<div class="well">';
+    text += '<table align="center" style="width:800px;min-height:30px">'
+    text += '<tr>'
+    text += '   <td><text>Time</text></td> <td><text>Does Input</text></td>  <td><text>Amount</text></td>  <td><text>Sender</text></td> <td>Receiver</td>'
+    text += '</tr>'
+
+    for (var i = 0; i <     this.nos; ++i) {
+        timeMoment = this.timeMoments[i];
+        inputTag   = this.inputTags[i];
+        amount     = this.amounts[i];
+        sender     = this.enders[i];
+        receiver   = this.receivers[i];
+
+        text += '<tr>'
+        text += '   <td><text>' + timeMoment + '</text></td>'
+        text += '   <td><text>' + inputTag + '</text></td>'
+        text += '   <td><text>' + amount  + '</text></td>'
+        text += '   <td><text>' + sender  + '</text></td>'
+        text += '   <td><text>' + receiver  + '</text></td>'
+        text += '</tr>'
+    }
+    text += '</div>'
+
+    document.getElementById(elementId).innerHTML = text;  
+}
 
