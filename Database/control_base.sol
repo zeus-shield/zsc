@@ -52,6 +52,9 @@ contract DBNode is Object {
 contract PosManager is Object {
     function registerStaker(address _nodeAddress) public;
     function removeStaker(address _nodeAddress) public;
+
+    function getPosBlockNos(uint _poolIndex) public returns (string);
+    function getPosBlockInfoByIndex(uint _poolIndex, uint _blockIndex) public returns (string);
 }
 
 contract WalletManager is Object {
@@ -145,6 +148,9 @@ contract ControlBase is ControlInfo {
         return WalletManager(walletGM_);
     }
 
+    function getPosManager() internal constant returns (PosManager) {      
+        return WalletManager(bindedPos_);
+    }
 
     function getSimulatorManager() internal constant returns (SimulatorManager) {      
         return SimulatorManager(simulatorGM_);
