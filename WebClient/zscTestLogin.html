@@ -25,6 +25,7 @@
     var zscTransGM;
     var zscTmpsGM;
     var zscAgrsGM;
+    var zscBlocksGM;
 
     /*tag:
     logon, wallet, profile, templates, agreements
@@ -46,11 +47,12 @@
             if(ret) {
                 var fullAbi = zscUser.getControlApisFullAbi();
                 var controlApisAdvAdr = zscUser.getControlApisAdr();
-                zscElement  = new ZSCElement(fullAbi, controlApisAdvAdr);
+                zscElement  = new ZSCElement(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
                 zscWalletGM = new ZSCWallet(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
-                zscTransGM  = new ZSCTransaction(zscUser.getUserName(), fullAbi, controlApisAdvAdr)
-                zscTmpsGM   = new ZSCTemplate(zscUser.getUserName(), fullAbi, controlApisAdvAdr)
-                zscAgrsGM   = new ZSCAgreement(zscUser.getUserName(), fullAbi, controlApisAdvAdr)
+                zscTransGM  = new ZSCTransaction(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+                zscTmpsGM   = new ZSCTemplate(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+                zscAgrsGM   = new ZSCAgreement(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+                zscBlocksGM = new ZSCBlock(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
                 loadHtmlPageBody("welecome");
             } else {
                 alert("User name or password wrong!!");
