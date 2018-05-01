@@ -28,7 +28,6 @@ contract PosBlockPool is Object {
     // Constructor
     constructor() public {
         blockSizeLimit_ = 1024 * 1024 * 2;
-        minedBlockNos_ = 0;
     } 
 
     function createPool(bytes32 _name, uint _dividendDuration, uint _rewardRate /* x / 1000: x = 0, 1, 2, ..., 1000) */) public {
@@ -46,20 +45,20 @@ contract PosBlockPool is Object {
 
     function getBlockByIndex(uint _poolIndex, uint _blockIndex) internal constant returns (address) {
         require(_poolIndex < poolNos_);
-        require(_blockIndex < pools_[_poolIndex].nos_);
+        require(_blockIndex < pools_[_poolIndex].totalBlockNos_);
         
         return pools_[_poolIndex].blocks_[_blockIndex];
     }
 
     function registerNewBlock(uint _poolIndex) private returns (address) {
-        uint blockIndex = pools_[_poolIndex].nos_;
+        uint blockIndex = pools_[_poolIndex].totalBlockNos_;
         address adr = new PosBlock();
 
         require(adr != address(0));
         PosBlock(adr).setBlockSizeLimit(blockSizeLimit_);
 
         pools_[_poolIndex].blocks_[blockIndex] = adr;
-        pools_[_poolIndex].nos_++;
+        pools_[_poolIndex].totalBlockNos_++;
         return adr;
     }
 
@@ -91,7 +90,7 @@ contract PosBlockPool is Object {
     }
 
     function getLastPendingBlockIndex(uint _poolIndex) internal constant returns (uint) { 
-        if (pools_[_poolIndex].nos_ == 0) return 0;
+        if (pools_[_poolIndex].totalBlockNos_ == 0) return 0;
         address myBlock;
 
         for (uint i = poolNos_ - 1; i >= 0; --i) {
@@ -112,8 +111,8 @@ contract PosBlockPool is Object {
     }
 
     function setBlockMinedByIndex(uint _poolIndex, uint _blockIndex) internal {
-        address block = pools_[_poolIndex].blocks_[_blockIndex];
-        PosBlock(block).setMined();
+        address blockAdr = pools_[_poolIndex].blocks_[_blockIndex];
+        PosBlock(blockAdr).setMined();
         pools_[_poolIndex].minedBlockNos_++;
     }
 }
