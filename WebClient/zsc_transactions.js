@@ -15,6 +15,9 @@ function ZSCTransactions(nm, abi, adr) {
     this.receivers = [];
     this.myControlApi = web3.eth.contract(abi).at(adr);
 }
+
+ZSCPos.prototype = new ZSCClient();
+
 ZSCTransactions.prototype.getUserName = function() {return this.userName;}
 
 ZSCTransactions.prototype.setTokenSymbol = function(symbol) {return this.tokenSymbol = symbol;}
@@ -35,7 +38,7 @@ ZSCTransactions.prototype.loadTransactions = function(func) {
 
 ZSCTransactions.prototype.numTransactions = function(func) {
     this.myControlApi.numUserTransactions(this.userName, this.tokenSymbol, 
-        {from: this.account, gas: 9000000},
+        {from: this.getAccount(), gas: this.getGasLimit(20)},
         function(error, result){ 
             if(!error) {
                 this.walletNos = result.toString(10);
@@ -48,7 +51,7 @@ ZSCTransactions.prototype.numTransactions = function(func) {
 
 ZSCTransactions.prototype.loadTransactionInfoByIndex = function(index, func) {
     this.myControlApi.getUserTransactionByIndex(this.userName, this.tokenSymbol, index,
-        {from: this.account, gas: 9000000},
+        {from: this.getAccount(), gas: this.getGasLimit(20)},
         function(error, result){ 
             if(!error) {
                 parserTransactionInfoByIndex(result, index)
