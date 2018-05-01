@@ -47,14 +47,17 @@ contract DBNode is Object {
     function numChildren() public constant returns(uint);
     function getChildByIndex(uint _index) public  constant returns(address);
     function addChild(address _node) public returns (address);
+
+    function getMiningInfoByIndex(bool _isReward, uint _index) public constant returns (uint, uint);
+    function numMiningInfo(bool _isReward) public constant returns (uint);
 }
 
 contract PosManager is Object {
     function registerStaker(address _nodeAddress) public;
     function removeStaker(address _nodeAddress) public;
 
-    function getPosBlockNos(uint _poolIndex) public returns (string);
-    function getPosBlockInfoByIndex(uint _poolIndex, uint _blockIndex) public returns (string);
+    function numBlockInfo(uint _poolIndex, bool _isMined) public constant returns (uint);
+    function getBlockInfoByIndex(uint _poolIndex, uint _blockIndex) public constant returns (uint, uint, uint);
 }
 
 contract WalletManager is Object {
@@ -149,7 +152,7 @@ contract ControlBase is ControlInfo {
     }
 
     function getPosManager() internal constant returns (PosManager) {      
-        return WalletManager(bindedPos_);
+        return PosManager(bindedPos_);
     }
 
     function getSimulatorManager() internal constant returns (SimulatorManager) {      
@@ -438,4 +441,34 @@ contract ControlBase is ControlInfo {
         DBNode(userWallet).executeTransaction(userWallet, lockedAmount, "");
         return DBDatabase(bindedDB_).destroyNode(agrAdr);
     }
+
+    function prepareMiningInfoByIndex(bytes32 _enName, bool _isReward, uint _index) internal constant returns (string) {
+        uint time;
+        uint amount;
+
+        (time, amount) = getDBNode(_enName).getMiningInfoByIndex(_isReward, _index);
+
+        string memory str ="";
+        str = PlatString.append(str, "info?time=", PlatString.uintToString(time),    "&");
+        str = PlatString.append(str, "amount=",    PlatString.uintToString(amount), "&");
+        return str;
+    }
+
+    function prepareBlockInfoByIndex(uint _poolIndex, uint _blockIndex) internal constant returns (string) {
+        checkDelegate(msg.sender, 1);
+   
+        uint size; 
+        uint txNos;
+        uint limit;
+
+        (limit, size, txNos) = getPosManager().getBlockInfoByIndex(_poolIndex, _blockIndex);
+
+        string memory str = "";
+        str = PlatString.append(str, "info?limit=", PlatString.uintToString(limit), "&");
+        str = PlatString.append(str, "info?size=", PlatString.uintToString(size), "&");
+        str = PlatString.append(str, "info?txNos=", PlatString.uintToString(txNos), "&");
+
+        return str;
+    }
+
 }
