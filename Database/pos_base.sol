@@ -26,16 +26,16 @@ contract PosBase is PosStakerGroup, PosBlockPool {
         createPool("three months", YEAR_IN_SECONDS, 2);
     }
 
-    function mineSingleBlock(uint _poolIndex, uint _blockIndex) private {
+    function mineSingleBlock(address _block) private {
         uint stakerNos = numStakers();
-        uint blockSize = getBlockSizeByIndex(_poolIndex, _blockIndex);
+        uint blockSize = PosBlock(_block).getCurrentSize();
         bool minedTag = false;
         while (true) {
             for (uint i = getNextStakerForUseSP(); i < stakerNos; ++i) {
                 blockSize = blockSize - 1 + useStakerSPByIndex(i, 1);
                 if (blockSize == 0) {
                     setNextStakerForUseSP(i);
-                    setBlockMinedByIndex(_poolIndex, _blockIndex);
+                    PosBlock(_block).setMined();
                     minedTag = true;
                 }
             }
@@ -48,15 +48,45 @@ contract PosBase is PosStakerGroup, PosBlockPool {
     function minePendingBlocks(uint _poolIndex) public {
         checkDelegate(msg.sender, 1);
 
-        uint blockNos = numBlocks(_poolIndex);
+        uint blockNos = numTotalBlocks(_poolIndex);
+        address block;
 
         for (uint i = getLastPendingBlockIndex(_poolIndex); i < blockNos - 1; ++i) {
-            if (getBlockSizeByIndex(_poolIndex, i) > getTotalRemainingSP()) {
+            block = getBlockByIndex(_poolIndex, i);
+            if (PosBlock(block).getCurrentSize() > getTotalRemainingSP()) {
                 break;
             }
 
-            mineSingleBlock(_poolIndex, i);
+            mineSingleBlock(block);
         }
     }
 
+    function getPosBlockNos(uint _poolIndex) public returns (string) {
+        checkDelegate(msg.sender, 1);
+
+        uint totalBlockNos = numTotalBlocks(_poolIndex);
+        uint minedBlockNos = numMinedBlocks(_poolIndex);
+
+        string memory str ="";
+        str = PlatString.append(str, "info?totalBlockNos=", PlatString.uintToString(totalBlockNos), "&");
+        str = PlatString.append(str, "info?minedBlockNos=", PlatString.uintToString(totalBlockNos.sub(minedBlockNos)), "&");
+
+        return str;
+    }
+
+    function getPosBlockInfoByIndex(uint _poolIndex, uint _blockIndex) public returns (string) {
+        checkDelegate(msg.sender, 1);
+        address block = getBlockByIndex(_poolIndex, _blockIndex);
+
+        uint size = PosBlock(block).getCurrentSize();
+        uint txNos = PosBlock(block).numTx();
+        uint limit = PosBlock(block).getBlockLimit();
+
+        string memory str ="";
+        str = PlatString.append(str, "info?limit=", PlatString.uintToString(limit), "&");
+        str = PlatString.append(str, "info?size=", PlatString.uintToString(size), "&");
+        str = PlatString.append(str, "info?txNos=", PlatString.uintToString(txNos), "&");
+
+        return str;
+    }
 }
