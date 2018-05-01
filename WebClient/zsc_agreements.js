@@ -26,7 +26,7 @@ ZSCAgreement.prototype.loadAgreements = function(func) {
 
 ZSCAgreement.prototype.numAgreements= function(func) {
     this.myControlApi.numAgreements(this.userName,
-        {from: this.account, gas: 9000000},
+        {from: this.getAccount(), gas: 9000000},
         function(error, result){ 
             if(!error) {
                 this.agrNos = result.toString(10); 
@@ -39,7 +39,7 @@ ZSCAgreement.prototype.numAgreements= function(func) {
 
 ZSCAgreement.prototype.getAgrNameByIndex = function(index, func) {
     this.myControlApi.getAgreementNameByIndex(this.userName, index,
-        {from: this.account, gas: 9000000},
+        {from: this.getAccount(), gas: 9000000},
         function(error, result){ 
             if(!error) {
                 this.agrName[index] = web3.toUtf8(result);
