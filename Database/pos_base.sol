@@ -49,44 +49,36 @@ contract PosBase is PosStakerGroup, PosBlockPool {
         checkDelegate(msg.sender, 1);
 
         uint blockNos = numTotalBlocks(_poolIndex);
-        address block;
+        address blockAdr;
 
         for (uint i = getLastPendingBlockIndex(_poolIndex); i < blockNos - 1; ++i) {
-            block = getBlockByIndex(_poolIndex, i);
-            if (PosBlock(block).getCurrentSize() > getTotalRemainingSP()) {
+            blockAdr = getBlockByIndex(_poolIndex, i);
+            if (PosBlock(blockAdr).getCurrentSize() > getTotalRemainingSP()) {
                 break;
             }
 
-            mineSingleBlock(block);
+            mineSingleBlock(blockAdr);
         }
     }
 
-    function getPosBlockNos(uint _poolIndex) public returns (string) {
+    function numBlockInfo(uint _poolIndex, bool _isMined) public constant returns (uint) {
         checkDelegate(msg.sender, 1);
 
-        uint totalBlockNos = numTotalBlocks(_poolIndex);
-        uint minedBlockNos = numMinedBlocks(_poolIndex);
-
-        string memory str ="";
-        str = PlatString.append(str, "info?totalBlockNos=", PlatString.uintToString(totalBlockNos), "&");
-        str = PlatString.append(str, "info?minedBlockNos=", PlatString.uintToString(totalBlockNos.sub(minedBlockNos)), "&");
-
-        return str;
+        if (_isMined) {
+            return numMinedBlocks(_poolIndex);
+        } else {
+            return numTotalBlocks(_poolIndex);
+        }
     }
 
-    function getPosBlockInfoByIndex(uint _poolIndex, uint _blockIndex) public returns (string) {
+    function getBlockInfoByIndex(uint _poolIndex, uint _blockIndex) public constant returns (uint, uint, uint) {
         checkDelegate(msg.sender, 1);
-        address block = getBlockByIndex(_poolIndex, _blockIndex);
+        address blockAdr = getBlockByIndex(_poolIndex, _blockIndex);
 
-        uint size = PosBlock(block).getCurrentSize();
-        uint txNos = PosBlock(block).numTx();
-        uint limit = PosBlock(block).getBlockLimit();
+        uint size = PosBlock(blockAdr).getCurrentSize();
+        uint txNos = PosBlock(blockAdr).numTx();
+        uint limit = PosBlock(blockAdr).getBlockLimit();
 
-        string memory str ="";
-        str = PlatString.append(str, "info?limit=", PlatString.uintToString(limit), "&");
-        str = PlatString.append(str, "info?size=", PlatString.uintToString(size), "&");
-        str = PlatString.append(str, "info?txNos=", PlatString.uintToString(txNos), "&");
-
-        return str;
+        return (limit, size, txNos);
     }
 }
