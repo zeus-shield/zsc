@@ -348,4 +348,13 @@ contract ControlApis is ControlBase {
         return prepareTranasationfoByIndex(PlatString.tobytes32(temp), _index);
     }
 
+    function getPosBlockNosInfo(bytes32 _userName, uint _poolIndex) public constant returns (string) {
+        checkRegistered(_userName, msg.sender);
+        return getPosBlockNos(_poolIndex);
+    }
+
+    function getPosBlockInfoByIndex(bytes32 _userName, uint _poolIndex, uint _blockIndex) public constant returns (string) {
+        checkRegistered(_userName, msg.sender);
+        return getPosBlockInfoByIndex(_poolIndex, _blockIndex);
+    }
 }
