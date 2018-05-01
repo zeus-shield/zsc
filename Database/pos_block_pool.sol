@@ -8,7 +8,8 @@ import "./pos_block.sol";
 
 contract PosBlockPool is Object {
     struct BlockPool {
-        uint nos_;
+        uint totalBlockNos_;
+        uint minedBlockNos_;
         uint minedGasUsage_;
         uint remaingGasUsage_;
         uint rewardRate_;
@@ -27,6 +28,7 @@ contract PosBlockPool is Object {
     // Constructor
     constructor() public {
         blockSizeLimit_ = 1024 * 1024 * 2;
+        minedBlockNos_ = 0;
     } 
 
     function createPool(bytes32 _name, uint _dividendDuration, uint _rewardRate /* x / 1000: x = 0, 1, 2, ..., 1000) */) public {
@@ -34,7 +36,8 @@ contract PosBlockPool is Object {
         require(poolExists_[_name]);
 
         poolIndice_[_name] = poolNos_;
-        pools_[poolNos_].nos_ = 0;
+        pools_[poolNos_].totalBlockNos_ = 0;
+        pools_[poolNos_].minedBlockNos_ = 0;
         pools_[poolNos_].minedGasUsage_ = 0;
         pools_[poolNos_].remaingGasUsage_ = 0;
         pools_[poolNos_].dividendDuration_ = _dividendDuration;
@@ -64,20 +67,16 @@ contract PosBlockPool is Object {
         blockSizeLimit_ = _sizeLimit;
     }
 
-    function getBlockSizeLimit() internal constant returns (uint) {
-        return blockSizeLimit_;
-    }
-    
     function registerNewTx(bool _input, uint _poolIndex, bytes32 _tx, address _sender, address _receiver, uint _gasUsage) public {
         checkDelegate(msg.sender, 1);
 
         pools_[_poolIndex].remaingGasUsage_ += _gasUsage;
         uint blockIndex;
         address myBlock;
-        if (pools_[_poolIndex].nos_ == 0) {
+        if (pools_[_poolIndex].totalBlockNos_ == 0) {
             myBlock = registerNewBlock(_poolIndex);
         } else {
-            blockIndex = pools_[_poolIndex].nos_ - 1;
+            blockIndex = pools_[_poolIndex].totalBlockNos_ - 1;
             myBlock = getBlockByIndex(_poolIndex, blockIndex);
            
             if (PosBlock(myBlock).checkIsFull(_gasUsage)) {
@@ -88,6 +87,7 @@ contract PosBlockPool is Object {
             }
         }
         PosBlock(myBlock).registerTx(_input, _tx, _sender, _receiver, _gasUsage);
+        pools_[_poolIndex].totalBlockNos_++;
     }
 
     function getLastPendingBlockIndex(uint _poolIndex) internal constant returns (uint) { 
@@ -103,15 +103,17 @@ contract PosBlockPool is Object {
         return 0;
     }
 
-    function numBlocks(uint _poolIndex) internal constant returns (uint) { 
-        return pools_[_poolIndex].nos_; 
+    function numTotalBlocks(uint _poolIndex) internal constant returns (uint) { 
+        return pools_[_poolIndex].totalBlockNos_; 
     }
-    
-    function getBlockSizeByIndex(uint _poolIndex, uint _blockIndex) internal constant returns (uint) {
-        return PosBlock(pools_[_poolIndex].blocks_[_blockIndex]).getCurrentSize();
+
+    function numMinedBlocks(uint _poolIndex) internal constant returns (uint) { 
+        return pools_[_poolIndex].minedBlockNos_; 
     }
 
     function setBlockMinedByIndex(uint _poolIndex, uint _blockIndex) internal {
-        PosBlock(pools_[_poolIndex].blocks_[_blockIndex]).setMined();
+        address block = pools_[_poolIndex].blocks_[_blockIndex];
+        PosBlock(block).setMined();
+        pools_[_poolIndex].minedBlockNos_++;
     }
 }
