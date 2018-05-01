@@ -3,8 +3,9 @@ Copyright (c) 2018 ZSC Dev Team
 */
 
 //class zscElement
-function ZSCElement(controlApisAdvAbi, controlApisAdvAdr) {
-    this.name;
+function ZSCElement(userName, controlApisAdvAbi, controlApisAdvAdr) {
+    this.userName = userName;
+    this.enName;
     this.parameNos = 0;
     this.ethBalance = 0;
     this.nodeAddress = 0;
@@ -13,12 +14,14 @@ function ZSCElement(controlApisAdvAbi, controlApisAdvAdr) {
     this.myControlApi = web3.eth.contract(controlApisAdvAbi).at(controlApisAdvAdr);
 }
 
-ZSCElement.prototype.setElementName = function(nm) {this.name = nm;}
+ZSCElement.prototype = new ZSCClient();
 
-ZSCElement.prototype.getElementName = function() { return this.name;}
+ZSCElement.prototype.setElementName = function(nm) {this.enName = nm;}
+
+ZSCElement.prototype.getElementName = function() { return this.enName;}
 
 ZSCElement.prototype.doesElementExisit = function(func) {
-    this.myControlApi.doesElementExist(this.name,
+    this.myControlApi.doesElementExist(this.userName, this.enName, 
         function(error, ret){ 
             if(!error) func(ret);  
             else  console.log("error: " + error);
@@ -38,8 +41,8 @@ ZSCElement.prototype.loadParameterNamesAndvalues = function(func) {
 }
 
 ZSCElement.prototype.numParameters = function(func) {
-    this.myControlApi.numElementParameters(this.name, 
-        {from: bF_getEthAccount()},
+    this.myControlApi.numElementParameters(this.userName, this.enName, 
+        {from: this.getAccount()},
         function(error, num){ 
             if(!error) { 
                 this.parameNos = num.toString(10); 
@@ -62,8 +65,8 @@ ZSCElement.prototype.loadParameterNames = function(func) {
 } 
 
 ZSCElement.prototype.loadParameterNameByIndex = function(index, func) {
-    this.myControlApi.getElementParameterNameByIndex(this.name, index, 
-        {from: bF_getEthAccount()},
+    this.myControlApi.getElementParameterNameByIndex(this.userName, this.enName, index, 
+        {from: this.getAccount()},
         function(error, para){ 
             if(!error) {
                 var ret = web3.toUtf8(para);
@@ -85,8 +88,8 @@ ZSCElement.prototype.loadParameterValues = function(func) {
 } 
 
 ZSCElement.prototype.loadParameterValueByIndex = function(index, func){ 
-    this.myControlApi.getElementParameter(this.name, this.getParameterName(index), 
-        {from: bF_getEthAccount()},
+    this.myControlApi.getElementParameter(this.userName, this.enName, this.getParameterName(index), 
+        {from: this.getAccount()},
         function(error, value){ 
             if(!error) {
                 this.parameterValues[index] = value;
@@ -116,7 +119,7 @@ ZSCElement.prototype.setElementParameter = function(logID, hr) {
 
     if (count > 0) {
         myControlApi.setElementMultipleParameters(hr, info,  
-            {from: bF_getEthAccount(), gasPrice: bF_getGasPrice(1), gas : bF_getGasLimit(55000)}, 
+            {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(55000)}, 
             function(error, result){ 
                 if(!error) bF_showHashResult(logID, result, function(){});
                 else console.log("error: " + error);
