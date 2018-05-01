@@ -12,6 +12,9 @@ function ZSCWallet(nm, abi, adr) {
     this.tokenStatus = [];
     this.myControlApi = web3.eth.contract(abi).at(adr);
 }
+
+ZSCPos.prototype = new ZSCClient();
+
 ZSCWallet.prototype.getUserName = function() {return this.userName;}
 
 ZSCWallet.prototype.transferValue = function(destAddressID, amountID, logID) {  
@@ -21,7 +24,7 @@ ZSCWallet.prototype.transferValue = function(destAddressID, amountID, logID) {
 
     if (destAddress != 0 && amount > 0) {
         this.myControlApi.elementTransferValue(this.userName, srcAddress, destAddress, web3.toWei(amount, 'ether') , 
-            {from: bF_getEthAccount(), gasPrice: bF_getGasPrice(1), gas : bF_getGasLimit(55000)}, 
+            {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
             function(error, result){ 
             if(!error) {
                 this.informTransfer(srcAddress, destAddress, result);
@@ -35,7 +38,7 @@ ZSCWallet.prototype.transferValue = function(destAddressID, amountID, logID) {
 ZSCWallet.prototype.informTransfer = function(srcAddress, destAddress, amount) { 
     if (amount > 0) {
         this.myControlApi.elementInformTransfer(this.userName, srcAddress, destAddress, web3.toWei(amount, 'ether') , 
-            {from: bF_getEthAccount(), gasPrice: bF_getGasPrice(1), gas : bF_getGasLimit(55000)}, 
+            {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
             function(error, result){ 
             if(!error) {
             } else {
@@ -47,7 +50,7 @@ ZSCWallet.prototype.informTransfer = function(srcAddress, destAddress, amount) {
 
 ZSCWallet.prototype.enableWallet = function(tokenSymbol, elementId, func) {
     this.myControlApi.enableElementWallet(this.userName, tokenSymbol, 0, 
-        {from: this.account, gas: 9000000},
+        {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
         function(error, result){ 
             if(!error) {
                 bF_showHashResult(elementId, result, function(){});
@@ -85,7 +88,7 @@ ZSCWallet.prototype.numTokenWallets = function(func) {
 
 ZSCWallet.prototype.loadTokenInfoByIndex = function(index, func) {
     this.myControlApi.getTokenBalanceInfoByIndex(this.userName, i,
-        {from: this.account, gas: 9000000},
+        {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
         function(error, result){ 
             if(!error) {
                 this.parserTokenBalanceInfoByIndex(result, index);
