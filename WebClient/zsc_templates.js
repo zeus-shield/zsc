@@ -10,6 +10,8 @@ function ZSCTemplate(nm, abi, adr) {
     this.myControlApi = web3.eth.contract(abi).at(adr);
 }
 
+ZSCPos.prototype = new ZSCClient();
+
 ZSCTemplate.prototype.getUserName = function() {return this.userName;}
 
 ZSCTemplate.prototype.getTmpName = function(index) { return this.tmpName[index];}
@@ -28,7 +30,7 @@ ZSCTemplate.prototype.loadTempates = function(func) {
 
 ZSCTemplate.prototype.numTemplates= function(func) {
     this.myControlApi.numTemplates(this.userName,
-        {from: this.account, gas: 9000000},
+        {from: this.getAccount(), gas: this.getGasLimit(20)},
         function(error, result){ 
             if(!error) {
                 this.agrNos = result.toString(10);
@@ -41,7 +43,7 @@ ZSCTemplate.prototype.numTemplates= function(func) {
 
 ZSCTemplate.prototype.getTmpNameByIndex = function(index, func) {
     this.myControlApi.getTemplateNameByIndex(this.userName, index,
-        {from: this.account, gas: 9000000},
+        {from: this.getAccount(), gas: this.getGasLimit(20)},
         function(error, result){ 
             if(!error) {
                 this.tmpNames[index] = web3.toUtf8(result);
