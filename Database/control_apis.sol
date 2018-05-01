@@ -348,13 +348,23 @@ contract ControlApis is ControlBase {
         return prepareTranasationfoByIndex(PlatString.tobytes32(temp), _index);
     }
 
-    function getPosBlockNosInfo(bytes32 _userName, uint _poolIndex) public constant returns (string) {
+    function numBlockInfo(bytes32 _userName, uint _poolIndex, bool _isMined) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
-        return getPosBlockNos(_poolIndex);
+        return getPosManager().numBlockInfo(_poolIndex, _isMined);
     }
 
-    function getPosBlockInfoByIndex(bytes32 _userName, uint _poolIndex, uint _blockIndex) public constant returns (string) {
+    function getBlockInfoByIndex(bytes32 _userName, uint _poolIndex, uint _blockIndex) public constant returns (string) {
         checkRegistered(_userName, msg.sender);
-        return getPosBlockInfoByIndex(_poolIndex, _blockIndex);
+        return prepareBlockInfoByIndex(_poolIndex, _blockIndex);
+    }
+
+    function numStakerMining(bytes32 _userName, bool _isReward) public constant returns (uint) {
+        checkRegistered(_userName, msg.sender);
+        return getDBNode(_userName).numMiningInfo(_isReward);
+    }
+
+    function getStakerMiningInfoByIndex(bytes32 _userName, bool _isReward, uint _index) public constant returns (string) {
+        checkRegistered(_userName, msg.sender);
+        return prepareMiningInfoByIndex(_userName, _isReward, _index);
     }
 }
