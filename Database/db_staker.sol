@@ -25,9 +25,16 @@ contract DBStaker is DBUser {
     uint private lastStoreTime_;
     uint private lastRewardTime_;
 
+    uint private rewardNos_;
+    uint private spUsedNos_;
+    mapping(uint => RewardInfo) private rewardInfo_;
+    mapping(uint => SPInfo) private spUsedInfo_;
+
     // Constructor
     constructor(bytes32 _name) public DBUser(_name) {
         setNodeType("staker"); 
+        rewardNos_ = 0;
+        spUsedNos_ = 0;
         lastStoreTime_ = now;
         lastRewardTime_ = lastStoreTime_;
     }
@@ -83,35 +90,63 @@ contract DBStaker is DBUser {
 
     function useStakePoint(uint _amount) public returns (uint) {
         checkDelegate(msg.sender, 1);
+        uint ret = 0;
 
         if (spRemaining_ > _amount) {
             spRemaining_ = spRemaining_.sub(_amount);
             spForReward_ = spForReward_.add(_amount);
-            return 0;
         } else {
             uint delta = SafeMath.sub(_amount, spRemaining_);
             spForReward_ = spForReward_.sub(spRemaining_);
             spRemaining_ = 0;
-            return delta;
+            ret = delta;
         }
+        spUsedInfo_[spUsedNos_] = SPInfo(now, _amount);
+        spUsedNos_++;
+        return ret;
     }
 
     function claimReward() public returns (uint) {
         checkDelegate(msg.sender, 1);
-
+        uint ret = 0;
         uint currentTime = now;
+
     	if (currentTime.sub(lastRewardTime_) > divendendDuration_) {
     		uint reward = (spForReward_ / 100) / 365;
     		spForReward_ = 0;
-    		return reward;
-    	} else {
-    		return 0;
-    	}
+    		ret = reward;
+    	} 
+
+        rewardInfo_[rewardNos_] = RewardInfo(currentTime, _amount);
+        rewardNos_++;
+        return ret;
     }
 
     function getRemainingSP() public constant returns (uint) {
         checkDelegate(msg.sender, 1);
     	return spRemaining_;
+    }
+
+    function getMiningInfoByIndexs(bool _isReward, uint _index) public constant returns (uint, uint) {
+        checkDelegate(msg.sender, 1);
+
+        if (_isReward) {
+            require(_index < rewardNos_);
+            return (rewardInfo_[_index].time_, rewardInfo_[_index].amount_);
+        } else {
+            require(_index < spUsedNos_);
+            return (spUsedInfo_[_index].time_, spUsedInfo_[_index].amount_);
+        }
+    }
+
+    function numMiningInfo(bool _isReward) public constant returns (uint) {
+        checkDelegate(msg.sender, 1);
+
+        if (_isReward) {
+            return rewardNos;
+        } else {
+            return spUsedNos_;
+        }
     }
 }
 
