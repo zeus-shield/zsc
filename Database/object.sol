@@ -26,17 +26,13 @@ contract Owned {
 
     constructor() public {owner = msg.sender;}
     
-    function isOwner(address _account) public constant returns (bool) { 
-        return (_account == owner); 
-    }
-    
     function transferOwnership(address newOwner) public {
         checkOwner(msg.sender);
         owner = newOwner;
     }       
 
     function checkOwner(address _account) internal constant { 
-        require(isOwner(_account)); 
+        require(_account == owner); 
     }
 }
 
@@ -108,6 +104,6 @@ contract Object is Delegated {
     // ------------------------------------------------------------------------
     function transferAnyERC20Token(address tokenAddress, uint tokens) public returns (bool success) {
         checkOwner(msg.sender);
-        return ERC20Interface(tokenAddress).transfer(owner, tokens);
+        return ERC20Interface(tokenAddress).transfer(msg.sender, tokens);
     }    
 }
