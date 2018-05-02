@@ -59,9 +59,9 @@ ZSCPos.prototype.numMiningInfo = function(isReward, func) {
         function(error, result){ 
             if(!error) {
                 if (isReward) {
-                    this.rewardNos = result;
+                    this.rewardNos = result.toString(10);
                 } else {
-                    this.spUsedNos = result;
+                    this.spUsedNos = result.toString(10);
                 }
                 func();
             } else {
@@ -70,7 +70,7 @@ ZSCPos.prototype.numMiningInfo = function(isReward, func) {
         });
 }
 
-ZSCPos.prototype.getMiningInfo = function(isReward, index, func) {
+ZSCPos.prototype.getMiningInfoByIndex = function(isReward, index, func) {
     this.myControlApi.getStakerMiningInfoByIndex(this.userName, true, index,
         {from: this.getAccount()},
         function(error, result){ 
@@ -108,3 +108,41 @@ ZSCPos.prototype.parserMiningInfo = function(isReward, info, index) {
 
     return true;
 }
+
+ZSCPos.prototype.loadPosInfoHtml = function(isReward, elementId)  {
+    var timeMoment;
+    var inputTag;
+    var amount;
+    var sender;
+    var receiver;
+
+    var text ="";
+    text += '<div class="well">';
+    text += '<table align="center" style="width:800px;min-height:30px">'
+
+    if (isReward) {
+        text += '<tr>'
+        text += '   <td>Reward time</td> <td>Reward amount</td>'
+        text += '</tr>'
+        for (var i = 0; i < this.tmpNos; ++i) {
+            text += '<tr>'
+            text += '   <td>' + this.rewardTimes[i] + '</td>'
+            text += '   <td>' + this.rewardAmounts[i]  + '</td>'
+            text += '</tr>'
+        }
+    } else {
+        text += '<tr>'
+        text += '   <td>SP used time</td> <td>SP used amount</td>'
+        text += '</tr>'
+        for (var i = 0; i < this.tmpNos; ++i) {
+            text += '<tr>'
+            text += '   <td>' + this.spUsedTimes[i] + '</td>'
+            text += '   <td>' + this.spUsedAmounts[i]  + '</td>'
+            text += '</tr>'
+        }
+    }
+    text += '</table></div>'
+
+    document.getElementById(elementId).innerHTML = text;  
+}
+
