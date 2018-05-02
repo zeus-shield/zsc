@@ -48,7 +48,6 @@ contract DBStaker is DBUser {
         addFundamentalParameter("userBirthday");
         addFundamentalParameter("userIdentification");
         addFundamentalParameter("userResidentialAddress");
-
         addFundamentalParameter("Divended Duration");
     	addFundamentalParameter("Reward Ratio");
     }

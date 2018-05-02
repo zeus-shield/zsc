@@ -34,17 +34,17 @@ contract DBReceiver is DBUser {
         agreementExist_[_adr] = true;
         agreements_[agrNos_] = _adr;
         agrNos_++;
+
+        return true;
     } 
 
     function numChildren() public returns (uint) {
         checkDelegate(msg.sender, 1);
-
         return agrNos_;
     }
 
     function getChildByIndex(uint _index) public returns (address) {
         checkDelegate(msg.sender, 1);
-
         require(_index < agrNos_);
         return agreements_[_index];
     }
