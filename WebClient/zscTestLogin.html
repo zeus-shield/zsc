@@ -25,7 +25,8 @@
     var zscTransGM;
     var zscTmpsGM;
     var zscAgrsGM;
-    var zscBlocksGM;
+    var zscBlockGM;
+    var zscPosGM;
 
     /*tag:
     logon, wallet, profile, templates, agreements
@@ -52,7 +53,8 @@
                 zscTransGM  = new ZSCTransaction(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
                 zscTmpsGM   = new ZSCTemplate(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
                 zscAgrsGM   = new ZSCAgreement(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
-                zscBlocksGM = new ZSCBlock(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+                zscBlockGM  = new ZSCBlock(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+                zscPosGM    = new ZSCPos(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
                 loadHtmlPageBody("welecome");
             } else {
                 alert("User name or password wrong!!");
@@ -101,6 +103,14 @@
         loadPageBody("transaction");
     }
 
+    function showMiningInfo() {
+        loadPageBody("mining");
+    }
+
+    function showPosInfo() {
+        loadPageBody("pos");
+    }
+
 </script>
 </head>
 <body>
@@ -146,12 +156,24 @@
                     zscTransGM.loadTransactionsHtml("PageBody");
                 });
             } else if (tag == "template") {
-                zscTmpsGM.loadTransactions(function() {
+                zscTmpsGM.loadTempates(function() {
                     zscTmpsGM.loadTemplatesHtml("PageBody");
                 });
             } else if (tag == "agreement") {
                 zscAgrsGM.loadAgreements(function() {
                     zscAgrsGM.loadAgreementsHtml("PageBody");
+                });
+            } else if (tag == "block") {
+                zscBlockGM.loadAllBlocks(function() {
+                    zscBlockGM.loadBlockInfoHtml("PageBody");
+                });
+            } else if (tag == "pos-reward") {
+                zscPosGM.loadRewardHistory(function() {
+                    zscAgrsGM.loadPosInfoHtml(true, "PageBody");
+                });
+            } else if (tag == "pos-spused") {
+                zscPosGM.loadRewardHistory(function() {
+                    zscAgrsGM.loadPosInfoHtml(true, "PageBody");
                 });
             }
         }
