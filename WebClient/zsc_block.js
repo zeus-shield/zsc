@@ -85,3 +85,27 @@ ZSCBlock.prototype.parserBlockInfo = function(info, index) {
 
     return true;
 }
+
+ZSCBlock.prototype.loadBlockInfoHtml = function(isReward, elementId)  {
+    var timeMoment;
+    var inputTag;
+    var amount;
+    var sender;
+    var receiver;
+
+    var text ="";
+    text += '<div class="well">';
+    text += '<table align="center" style="width:800px;min-height:30px">'
+    text += '<tr>'
+    text += '   <td>SP used time</td> <td>SP used amount</td>'
+    for (var i = 0; i < this.tmpNos; ++i) {
+        text += '<tr>'
+        text += '   <td>' + this.spUsedTimes[i] + '</td>'
+        text += '   <td>' + this.spUsedAmounts[i]  + '</td>'
+        text += '</tr>'
+    }
+    text += '</table></div>'
+
+    document.getElementById(elementId).innerHTML = text;  
+}
+
