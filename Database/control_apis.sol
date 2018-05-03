@@ -51,21 +51,29 @@ contract ControlApis is ControlBase {
     }
 
     /// @dev Get the number of elements of the database
-    function numElements() public constant returns (uint) { 
-        checkDelegate(msg.sender, 1);
-        return getDBDatabase().numNodes(); 
+    function numElements(bytes32 _userName, uint _typeInUint) public constant returns (uint) { 
+        if (_type == 5) {
+            checkRegistered(_userName, msg.sender);
+        } else {
+            checkDelegate(msg.sender, 1);
+        }
+
+        return getDBFactory(mapType(_type)).numFactoryElements(); 
     }
     
     /// @dev Get the element name by the index
     /// @param _index The index of the element in the database
-    function getElementNameByIndex(uint _index) public constant returns (bytes32) { 
-        checkDelegate(msg.sender, 1);
+    function getElementNameByIndex(bytes32 _userName, uint _typeInUint, uint _index) public constant returns (bytes32) { 
+        if (_type == 5) {
+            checkRegistered(_userName, msg.sender);
+        } else {
+            checkDelegate(msg.sender, 1);
+        }
 
-        address nd = getDBDatabase().getNodeByIndex(_index);
+        address nd = getDBFactory(mapType(_type)).getFactoryElementByIndex(_index);
         require(nd != address(0));
         return Object(nd).name();
     }
-
 
     /// @dev Check the element wheather or not existing
     /// @param _enName The name of the element to be checked
