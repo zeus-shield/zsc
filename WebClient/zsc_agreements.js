@@ -10,6 +10,8 @@ function ZSCAgreement(nm, abi, adr) {
     this.myControlApi = web3.eth.contract(abi).at(adr);
 }
 
+ZSCViewAgreement.prototype = new ZSCClient();
+
 ZSCAgreement.prototype.getUserName = function() {return this.userName;}
 
 ZSCAgreement.prototype.loadAgreements = function(func) {
@@ -50,12 +52,9 @@ ZSCAgreement.prototype.getAgrNameByIndex = function(index, func) {
         });
 }
 
-ZSCAgreement.prototype.loadAgreementsHtml = function(elementId)  {
-    var timeMoment;
-    var inputTag;
-    var amount;
-    var sender;
-    var receiver;
+ZSCAgreement.prototype.loadAgreementsHtml = function(elementId, func)  {
+    var showPrefix = func + "('"; 
+    var showSuffix = "')";
 
     var text ="";
     text += '<div class="well">';
@@ -68,6 +67,7 @@ ZSCAgreement.prototype.loadAgreementsHtml = function(elementId)  {
         text += '<tr>'
         text += '   <td><text>' + i + '</text></td>'
         text += '   <td><text>' + this.agrName[i] + '</text></td>'
+        text += '   <td><button type="button" onClick="' + showPrefix + this.agrNames[i] + showSuffix + '">Details</button></td>'
         text += '</tr>'
     }
     text += '</table></div>'
