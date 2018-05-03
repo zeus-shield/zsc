@@ -52,8 +52,9 @@ Official implementation for the solidity-based core part of the ZSC system, as w
                 |-- db_template
                 |-- db_agreement
             |-- factory_base
-            |-- control_base, control_info
-                |-- control_apis
+            |-- control_info
+                |-- control_base 
+                    |-- control_apis
 
 |--plat_string
 |--plat_math (SafeMath)
@@ -91,6 +92,7 @@ Official implementation for the solidity-based core part of the ZSC system, as w
         |-- zsc_templates
         |-- zsc_transactions
         |-- zsc_wallet
+        |-- zsc_view_agreement
 ```
 
 ## .sol update log
@@ -150,4 +152,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.04.27-28: update the code with reference to the solidity compiler 0.4.21
 2018.04.29: add files WebAdm/js/zsc_show_user_agrs.js, WebAdm/js/zsc_show_user_wallets.js, WebAdm/js/zsc_show_user_tmps.js
 2018.04.28-05.01: add files WebClient/zsc_block.js, WebClient/zsc_agreements.js, WebClient/zsc_client.js, WebClient/zsc_element.js, WebClient/zsc_pos.js, WebClient/zsc_templates.js, WebClient/zsc_transactions.js
+2018.05.02-05.03: add file WebClient/zsc_view_agreement.js; update others
 ```
