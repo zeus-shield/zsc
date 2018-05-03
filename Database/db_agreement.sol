@@ -30,6 +30,10 @@ contract DBAgreement is DBEntity {
     function setParameter(bytes32 _parameter, string _value) public returns (bool) {
         checkDelegate(msg.sender, 1);
 
+        if (_parameter == "copies") {
+            return true;
+        }
+
         if (status_ == "CREATED") {
             return super.setParameter(_parameter, _value);
         } else {
@@ -40,6 +44,10 @@ contract DBAgreement is DBEntity {
     function addParameter(bytes32 _parameter) public returns (bool) {
         checkDelegate(msg.sender, 1);
 
+        if (_parameter == "copies") {
+            return true;
+        }
+
         if (status_ == "CREATED") {
             return super.addFundamentalParameter(_parameter);
         } else {
@@ -49,7 +57,6 @@ contract DBAgreement is DBEntity {
 
     function removeParameter(bytes32 _parameter) public returns (bool) {
         checkDelegate(msg.sender, 1);
-
         return false;
     }
 
