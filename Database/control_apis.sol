@@ -71,8 +71,7 @@ contract ControlApis is ControlBase {
     /// @param _enName The name of the element to be checked
     function doesElementExist(bytes32 _userName, bytes32 _enName) public constant returns (bool) {
         checkRegistered(_userName, msg.sender);
-        checkMatched(_userName, msg.sender);
-        checkDelegate(msg.sender, 1);
+        checkMatched(_userName, _enName, msg.sender);
 
         return (getDBNode(_enName) != DBNode(0));
     }
@@ -92,7 +91,7 @@ contract ControlApis is ControlBase {
             creatorAdr = msg.sender;
         }
 
-        return createFactoryNode(mapType(_typeInUint), _enName, _extraInfo, creatorAdr);
+        return createFactoryNode(mapType(_typeInUint), _userName, _enName, _extraInfo, creatorAdr);
     }
 
     function enableElementWallet(bytes32 _userName, bytes32 _tokeSymbol, address _extraAdr) public returns (address) {
@@ -127,7 +126,7 @@ contract ControlApis is ControlBase {
     /// @param _enName The name of the element belonging to the user
     function getElementType(bytes32 _userName, bytes32 _enName) public constant returns (bytes32) {
         checkRegistered(_userName, msg.sender);
-        checkMatched(_enName, msg.sender);
+        checkMatched(_userName, _enName, msg.sender);
 
         DBNode nd = getDBNode( _enName);
         require(nd != DBNode(0));
@@ -140,7 +139,7 @@ contract ControlApis is ControlBase {
     /// @param _parameter The name of the added parameter
     function addElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public returns (bool) {
         checkRegistered(_userName, msg.sender);
-        checkMatched(_enName, msg.sender);
+        checkMatched(_userName, _enName, msg.sender);
 
         return operateNodeParameter("add", _enName, _parameter, "");
     }
@@ -151,7 +150,7 @@ contract ControlApis is ControlBase {
     /// @param _value The parameter value
     function setElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter, string _value) public returns (bool) {
         checkRegistered(_userName, msg.sender);
-        checkMatched(_enName, msg.sender);
+        checkMatched(_userName, _enName, msg.sender);
 
         return operateNodeParameter("set", _enName, _parameter, _value);
     }
@@ -161,7 +160,7 @@ contract ControlApis is ControlBase {
     /// @param _parameter The name of the existing parameter
     function getElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public constant returns (string) {
         checkRegistered(_userName, msg.sender);
-        checkMatched(_enName, msg.sender);
+        checkMatched(_userName, _enName, msg.sender);
 
         return getControlInfoParameterValue(_enName, _parameter);
     }
@@ -170,7 +169,7 @@ contract ControlApis is ControlBase {
     /// @param _enName The name of the element
     function getElementAddress(bytes32 _userName, bytes32 _enName) public constant returns (address) {
         checkRegistered(_userName, msg.sender);
-        checkMatched(_enName, msg.sender);
+        checkMatched(_userName, _enName, msg.sender);
 
         return address(getDBNode(_enName));
     }
@@ -179,7 +178,7 @@ contract ControlApis is ControlBase {
     /// @param _enName The name of the element
     function getElementBalance(bytes32 _userName, bytes32 _enName, bytes32 _symbol, bool _locked) public constant returns (uint256) {
         checkRegistered(_userName, msg.sender);
-        checkMatched(_enName, msg.sender);
+        checkMatched(_userName, _enName, msg.sender);
 
         string memory str = PlatString.append(_enName, "-", _symbol);
         bytes32 walletName = PlatString.tobytes32(str);
@@ -192,7 +191,7 @@ contract ControlApis is ControlBase {
     /// @param _enName The name of the existing element
     function numElementParameters(bytes32 _userName, bytes32 _enName) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
-        checkMatched(_enName, msg.sender);
+        checkMatched(_userName, _enName, msg.sender);
 
         return  getDBNode(_enName).numParameters();
     }
@@ -208,7 +207,7 @@ contract ControlApis is ControlBase {
     */
     function getElementParameterNameByIndex(bytes32 _userName, bytes32 _enName, uint _index) public constant returns (bytes32) {
         checkRegistered(_userName, msg.sender);
-        checkMatched(_enName, msg.sender);
+        checkMatched(_userName, _enName, msg.sender);
 
         return  getDBNode(_enName).getParameterNameByIndex(_index);
     }
@@ -224,7 +223,7 @@ contract ControlApis is ControlBase {
 
     function elementInformTransfer(bytes32 _userName, bytes32 _enName, address _dest, uint256 _amount) public returns (bool) {
         checkRegistered(_userName, msg.sender);
-        checkMatched(_enName, msg.sender);
+        checkMatched(_userName, _enName, msg.sender);
 
         return  conductInformTransaction(_enName, _dest, _amount);
     }
@@ -233,7 +232,7 @@ contract ControlApis is ControlBase {
     /// @param _agrName The agreement name
     function publishAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
         checkRegistered(_userName, msg.sender);
-        checkMatched(_agrName, msg.sender);
+        checkMatched(_userName, _agrName, msg.sender);
 
         return conductPublishAgreement(_userName, _agrName, msg.sender);
     }
@@ -304,7 +303,6 @@ contract ControlApis is ControlBase {
         require(ret);        
         return conductPurchaseAgreement(_userName, _agrName); 
     }
-
 
     function numRegisteredErc20Tokens(bytes32 _userName) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
