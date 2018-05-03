@@ -6,7 +6,7 @@ pragma solidity ^0.4.21;
 
 import "./db_entity.sol";
 
-contract WalletBase is DBEntity {
+contract WalletBase is DBNode {
     struct Payment {
         uint time_;
         bool isInput_;
@@ -37,28 +37,8 @@ contract WalletBase is DBEntity {
 
     function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (uint);
 
-  function initParameters() internal {
-        addFundamentalParameter("totoal balance");
-        addFundamentalParameter("locked balance");
-    }
-
     function setAsEthAccount() internal {
         isEthAccount_ = true;
-    }
-
-    function setParameter(bytes32 _parameter, string _value) public returns (bool) {
-        checkDelegate(msg.sender, 1);
-        return false;
-    }
-
-    function addParameter(bytes32 _parameter) public returns (bool) {
-        checkDelegate(msg.sender, 1);
-        return false;
-    }
-
-    function removeParameter(bytes32 _parameter) public returns (bool) {
-        checkDelegate(msg.sender, 1);
-        return false;
     }
 
     function changeValue(bool _doesIncrease, bool _isLocked, uint _amount) internal returns (bool) {
@@ -75,12 +55,10 @@ contract WalletBase is DBEntity {
             require(totalValue_ >= _amount);
             totalValue_ = totalValue_.sub( _amount);
         }
-        super.setParameter("totoal balance", PlatString.uintToString(totalValue_));
-        super.setParameter("locked balance", PlatString.uintToString(lokedValue_));
     }
 
     function checkBeforeSent(address _dst, uint _amount) internal returns (bool) {
-        if (totalValue_ >= _amount && _dst != address(this)) {
+        if (totalValue_.sub(lokedValue_) >= _amount && _dst != address(this)) {
             return true;
         } else {
             return false;
