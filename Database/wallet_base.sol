@@ -28,6 +28,10 @@ contract WalletBase is DBNode {
     uint lokedValue_;
     uint256 totalValue_;
 
+    address[] multiSig_;
+    mapping(address => bool) sigAdrExists_;
+    mapping(address => bool) sigStatus_;
+
     // Constructor
     constructor(bytes32 _name) public DBNode(_name) {
         isEthAccount_ = false;
@@ -39,6 +43,29 @@ contract WalletBase is DBNode {
 
     function setAsEthAccount() internal {
         isEthAccount_ = true;
+    }
+
+    function addSignature(address _sigAdr) public {
+        checkDelegate(msg.sender, 1);
+        require(_sigAdr != address(0));
+        require(!sigAdrExists_[_sigAdr])
+        multiSig_.push(_sigAdr);
+        sigAdrExists_[_s_sigAdrig] = true;
+    }
+
+    function signature(address _sigAdr) public {
+        checkDelegate(msg.sender, 1);
+        require(sigAdrExists_[_sig])
+        sigStatus_[_sigAdr] = true;
+    }
+
+    function checkMulSig() internal returns (bool) {
+        for (uint i = 0; i < multiSig_.length; ++i) {
+            if (sigStatus_[multiSig_[i]] == false) {
+                return false;
+            }
+        }
+        return true;
     }
 
     function changeValue(bool _doesIncrease, bool _isLocked, uint _amount) internal returns (bool) {
@@ -59,7 +86,8 @@ contract WalletBase is DBNode {
 
     function checkBeforeSent(address _dst, uint _amount) internal returns (bool) {
         if (totalValue_.sub(lokedValue_) >= _amount && _dst != address(this)) {
-            return true;
+            if (checkMulSig()) return true;
+            else return false;
         } else {
             return false;
         }
