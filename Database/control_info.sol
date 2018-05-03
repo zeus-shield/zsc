@@ -9,6 +9,7 @@ import "./object.sol";
 
 contract ControlInfo is Object {   
     struct ParameterInfo {
+        bytes32 userName_;
         address nodeAdr_;
         address creator_; // ETH wallet address
         mapping (bytes32 => string) value_;
@@ -34,8 +35,11 @@ contract ControlInfo is Object {
     function allowedUser(bytes32 _userName, address _sender) internal constant returns (bool);
     function addAllowedUsr(bytes32 _userName, address _creator) internal returns (bool);
 
-    function checkMatched(bytes32 _userName, address _sender) internal constant {
-        require( (nodeParameters_[_userName].creator_ == _sender) || isDelegate(_sender, 1)); 
+    function checkMatched(bytes32 _userName, bytes32 _enName, address _sender) internal constant {
+        if (isDelegate(_sender, 1)) return;
+        if (nodeParameters_[_enName].creator_ == _sender) return;
+        if (nodeParameters_[_enName].userName_ == _userName) return;
+        revert();
     }
 
     function checkRegistered(bytes32 _userName, address _sender) internal constant{
@@ -47,11 +51,12 @@ contract ControlInfo is Object {
         nodeParameters_[_nodeName].value_[_parameter] = _value;
     }
 
-    function registerNode(bool _isUser, bytes32 _nodeName, address _nodeAdr, address _creator) internal {
+    function registerNode(bool _isUser, bytes32 _userName,  bytes32 _nodeName, address _nodeAdr, address _creator) internal {
         require(!nodeExists_[_nodeName]);   
         if (_isUser) {
             addAllowedUsr(_nodeName, _creator);
         }
+        nodeParameters_[_nodeName].userName_ = _userName;
         nodeParameters_[_nodeName].nodeAdr_ = _nodeAdr;
         nodeParameters_[_nodeName].creator_ = _creator;
     }
