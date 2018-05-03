@@ -181,7 +181,7 @@ contract ControlBase is ControlInfo {
 
         address walletAdr = getDBFactory(_type).createNode(temp, parentNode, _creator);
         require(walletAdr != 0);
-        registerNode(false, DBNode(walletAdr).name(), walletAdr, _creator);
+        registerNode(false, _user, DBNode(walletAdr).name(), walletAdr, _creator);
 
         DBNode(walletAdr).setERC20TokenAddress(erc20Address);
         WalletManager(walletGM_).enableTokenByHolder(_tokeSymbol, DBNode(walletAdr).name(), walletAdr);
@@ -189,7 +189,7 @@ contract ControlBase is ControlInfo {
         return walletAdr;
     }
 
-    function createFactoryNode(bytes32 _type, bytes32 _nodeName, bytes32 _extra, address _creator) internal returns (address) {
+    function createFactoryNode(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra, address _creator) internal returns (address) {
         address adr;
         address parentNode = address(0);
 
@@ -203,9 +203,9 @@ contract ControlBase is ControlInfo {
         if (_type == "provider" || _type == "receiver" || _type == "staker") {
             DBNode(adr).configureHandlers();
             DBNode(adr).setId(_creator);
-            registerNode(true, _nodeName, adr, _creator);
+            registerNode(true, _userName, _nodeName, adr, _creator);
         } else {
-            registerNode(false, _nodeName, adr, _creator);
+            registerNode(false, _userName, _nodeName, adr, _creator);
         }
 
         if (_type == "staker") {
