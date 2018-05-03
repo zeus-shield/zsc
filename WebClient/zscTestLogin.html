@@ -92,7 +92,7 @@
         zscElement.transferEth(destAddress, amount, logId);
     }
 
-    function submitProfileChanges(logID) {
+    function submitElementParameterChanges(logID) {
         zscElement.setElementParameter(logID, zscUser.getUserNameHr());
     }
 
@@ -113,6 +113,17 @@
 
     function showPosInfo() {
         loadPageBody("pos");
+    }
+
+    function showElementParameters(elementName) {
+        zscElement.setElementName(elementName);
+        loadPageBody("parameter")
+    }
+
+    function enableAsAgreement(index) {
+        zscTmpsGM.enableAsAgreement(index, function() {
+            loadPageBody("template");
+        });
     }
 
 </script>
@@ -147,38 +158,49 @@
         } else if (tag == "applied") {
             zscHtml.loadWaitingApproval("reFresh", zscUser.getUserType());
         } else {
-            if (tag == "wallet") {
-                zscWalletGM.loadTokenWallets(function() {
-                    zscWalletGM.loadWalletsHtml("PageBody", "transferValue", "showTransactions", "enableWallet");
-                });
-            } else if (tag == "profile") {
-                zscElement.loadParameterNamesAndvalues(function() {
-                    zscElement.loadParametersHtml("PageBody", "submitProfileChanges");
-                });
-            } else if (tag == "transaction") {
-                zscTransGM.loadTransactions(function() {
-                    zscTransGM.loadTransactionsHtml("PageBody");
-                });
-            } else if (tag == "template") {
-                zscTmpsGM.loadTempates(function() {
-                    zscTmpsGM.loadTemplatesHtml("PageBody");
-                });
-            } else if (tag == "agreement") {
-                zscAgrsGM.loadAgreements(function() {
-                    zscAgrsGM.loadAgreementsHtml("PageBody");
-                });
-            } else if (tag == "block") {
-                zscBlockGM.loadAllBlocks(function() {
-                    zscBlockGM.loadBlockInfoHtml("PageBody");
-                });
-            } else if (tag == "pos-reward") {
-                zscPosGM.loadRewardHistory(function() {
-                    zscAgrsGM.loadPosInfoHtml(true, "PageBody");
-                });
-            } else if (tag == "pos-spused") {
-                zscPosGM.loadRewardHistory(function() {
-                    zscAgrsGM.loadPosInfoHtml(false, "PageBody");
-                });
+            switch(tag) {
+                case "wallet": 
+                    zscWalletGM.loadTokenWallets(function() {
+                        zscWalletGM.loadWalletsHtml("PageBody", "transferValue", "showTransactions", "enableWallet");
+                    });
+                    break;
+                case "parameter":
+                    zscElement.loadParameterNamesAndvalues(function() {
+                        zscElement.loadParametersHtml("PageBody", "submitElementParameterChanges");
+                    });
+                    break;
+                case "transaction":
+                    zscTransGM.loadTransactions(function() {
+                        zscTransGM.loadTransactionsHtml("PageBody");
+                    });
+                    break;
+                case "template": 
+                    zscTmpsGM.loadTempates(function() {
+                        zscTmpsGM.loadTemplatesHtml("PageBody", "showElementParameters", "enableAsAgreement");
+                    });
+                    break;
+                case "agreement": 
+                    zscAgrsGM.loadAgreements(function() {
+                        zscAgrsGM.loadAgreementsHtml("PageBody");
+                    });
+                    break;
+                case "block":
+                    zscBlockGM.loadAllBlocks(function() {
+                        zscBlockGM.loadBlockInfoHtml("PageBody");
+                    });
+                    break;
+                case "pos-reward":
+                    zscPosGM.loadRewardHistory(function() {
+                        zscAgrsGM.loadPosInfoHtml(true, "PageBody");
+                    });
+                    break;
+                case "pos-spused":
+                    zscPosGM.loadRewardHistory(function() {
+                        zscAgrsGM.loadPosInfoHtml(false, "PageBody");
+                    });
+                    break;
+                default:
+                    break;
             }
         }
     }
