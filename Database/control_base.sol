@@ -193,8 +193,12 @@ contract ControlBase is ControlInfo {
         address adr;
         address parentNode = address(0);
 
-        if (_type == "template" || _type == "agreement") {
-            parentNode = getDBNode(_extra).getHandler(_type);
+        if (_type == "template") {
+            parentNode = getDBNode(_userName).getHandler(_type);
+        } else if (_type == "agreement") {
+            uint copies = PlatString.stringToUint(getControlInfoParameterValue(_extra, "copies"));
+            parentNode = address(getDBNode(_extra));
+            require(DBNode(parentNode).numChildren() < copies);
         }
 
         adr = getDBFactory(_type).createNode(_nodeName, parentNode, _creator);
@@ -210,6 +214,8 @@ contract ControlBase is ControlInfo {
 
         if (_type == "staker") {
             PosManager(bindedPos_).registerStaker(adr);
+        } else if (_type == "template") {
+            DBNode(adr).setParameter("provider", PlatString.bytes32ToString(_userName));
         } else if (_type == "agreement") {
             duplicateNode(_extra,  _nodeName);
             DBNode(adr).setAgreementStatus("READY", "null");
