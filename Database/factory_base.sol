@@ -17,6 +17,10 @@ contract FactoryBase is Object {
 
     function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
 
+    function numFactoryElements() public constant returns (uint);
+
+    function getFactoryElementByIndex() public constant returns (address);
+
     function getBindedDB() internal constant returns (address) { return bindedDB_;}
 
     function initFactory(address _controller, address _database) public {

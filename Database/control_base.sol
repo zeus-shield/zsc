@@ -9,6 +9,8 @@ import "./control_info.sol";
 
 contract DBFactory is Object { 
     function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
+    function numFactoryElements() public constant returns (uint);
+    function getFactoryElementByIndex() public constant returns (address);
 }
 
 contract DBDatabase is Object { 
