@@ -22,6 +22,7 @@ contract DBTemplate is DBEntity {
         addFundamentalParameter("refund (%)");
         addFundamentalParameter("duration");
         addFundamentalParameter("provider");
+        addFundamentalParameter("copies");
         addFundamentalParameter("lockedAmount") = true;
     }
 
@@ -30,12 +31,15 @@ contract DBTemplate is DBEntity {
 
         if (numChildren() > 0) return false; 
 
-        if (addedProvider_ == false) {
-            addedProvider_ = true;
-            return super.setParameter("provider", name());
+        if (addedProvider_ == false)
+            if (_parameter == "provider") {
+                addedProvider_ = true;
+            }
+        } else {
+            if (_parameter == "provider") {
+                return true;
+            }
         }
-
-        if (_parameter == "provider") return false;
 
         return super.setParameter(_parameter, _value);
     }
