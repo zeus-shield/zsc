@@ -18,6 +18,7 @@
 <script type="text/javascript" src="./zsc_transactions.js"></script>
 <script type="text/javascript" src="./zsc_user.js"></script>
 <script type="text/javascript" src="./zsc_wallet.js"></script>
+<script type="text/javascript" src="./zsc_view_agreement.js"></script>
 <script type="text/javascript">
 
     var web3 = setupWeb3js(false);
@@ -31,6 +32,7 @@
     var zscAgrsGM;
     var zscBlockGM;
     var zscPosGM;
+    var zscViewAgrsGM;
 
     /*tag:
     logon, wallet, profile, templates, agreements
@@ -59,6 +61,7 @@
                 zscAgrsGM   = new ZSCAgreement(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
                 zscBlockGM  = new ZSCBlock(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
                 zscPosGM    = new ZSCPos(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+                zscViewAgrsGM = new ZSCViewAgreement(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
                 loadHtmlPageBody("welecome");
             } else {
                 alert("User name or password wrong!!");
@@ -126,6 +129,11 @@
         });
     }
 
+    function purchasePublishedAgreement(index) {
+        zscViewAgrsGM.purchaseAgreement(index, function(result) {
+        });
+    }
+
 </script>
 </head>
 <body>
@@ -181,7 +189,7 @@
                     break;
                 case "agreement": 
                     zscAgrsGM.loadAgreements(function() {
-                        zscAgrsGM.loadAgreementsHtml("PageBody");
+                        zscAgrsGM.loadAgreementsHtml("PageBody", "showElementParameters");
                     });
                     break;
                 case "block":
@@ -197,6 +205,11 @@
                 case "pos-spused":
                     zscPosGM.loadRewardHistory(function() {
                         zscAgrsGM.loadPosInfoHtml(false, "PageBody");
+                    });
+                    break;
+                case "published-agreement":
+                    zscViewAgrsGM.loadAllAgreements(function() {
+                        zscViewAgrsGM.loadAllAgreementsHtml("PageBody", "showElementParameters", "purchasePublishedAgreement");
                     });
                     break;
                 default:
