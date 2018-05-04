@@ -220,16 +220,42 @@ contract ControlApis is ControlBase {
         return  getDBNode(_enName).getParameterNameByIndex(_index);
     }
 
-    /// @dev Transfer ETH from a user element to the destination address
+    /// @dev Transfer a particular amount from a user wallet to the destination address
     /// @param _dest The destination address
-    /// @param _amount The amount of ETH to be transferred
-    function elementTransferValue(bytes32 _userName, address _src, address _dest, uint256 _amount) public returns (uint) {
+    /// @param _amount The amount to be transferred
+    function submitTransfer(bytes32 _userName, bytes32 _tokenSymbol, address _dest, uint256 _amount) public returns (uint) {
+        require(_amount > 0);
         checkRegistered(_userName, msg.sender);
 
-        return  DBNode(_src).executeTransaction(_dest, _amount, "null");
+        bytes32 walletName = formatWalletName(_userName, _tokenSymbol);
+        bytes32 walletAdr = address(getDBNode(walletName));
+
+        require(walletAdr != address(0));
+
+        uint amount = 0;
+        if (DBNode(walletAdr).doesLastTransactionSigned()) {
+            amount = DBNode(walletAdr).submitTransaction(_dest, _amount, "", msg.sender);
+        } 
+        return amount;
     }
 
-    function elementInformTransfer(bytes32 _userName, bytes32 _enName, address _dest, uint256 _amount) public returns (bool) {
+    /// @dev Confirm a transaction
+    function confirmTransfer(bytes32 _userName, bytes32 _tokenSymbol) public returns (uint) {
+        checkRegistered(_userName, msg.sender);
+
+        bytes32 walletName = formatWalletName(_userName, _tokenSymbol);
+        bytes32 walletAdr = address(getDBNode(walletName));
+
+        require(walletAdr != address(0));
+
+        uint amount = 0;
+        if (!DBNode(walletAdr).doesLastTransactionSigned()) {
+            amount = DBNode(walletAdr).confirmTransaction(msg.sender);
+        } 
+        return amount;
+    }
+
+    function informTransfer(bytes32 _userName, bytes32 _enName, address _dest, uint256 _amount) public returns (bool) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
