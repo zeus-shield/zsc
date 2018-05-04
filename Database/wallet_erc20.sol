@@ -4,13 +4,13 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./wallet_base.sol";
+import "./wallet_multisig.sol";
 
-contract WalletErc20 is WalletBase {
+contract WalletErc20 is WalletMultiSig {
     address _erc20TokenAdr;
 
     // Constructor
-    constructor(bytes32 _name) public WalletBase(_name) {
+    constructor(bytes32 _name) public WalletMultiSig(_name) {
         setNodeType("wallet-erc20"); 
     }
 
@@ -29,14 +29,21 @@ contract WalletErc20 is WalletBase {
         }
     }
 
-    function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (uint) {
-        checkDelegate(msg.sender, 1);
+    function confirmTransaction(bytes32 _user) public returns (uint) {
+        if (doesMulSigFinished(_user)) {
+            address dest;
+            uint amount;
+            bytes32 data;
 
-        require(checkBeforeSent(_dest, _amount));
-    
-        if (ERC20Interface(_erc20TokenAdr).transfer(_dest, _value)) {
-            recordOut(address(this), _dest, _amount, PlatString.tobytes32(msg.data));
-            return _amount;
+            (dest, amount, data) = getLastUnsignedTransaction();
+            
+            require(checkBeforeSent(dest, amount));        
+            if (ERC20Interface(_erc20TokenAdr).transfer(dest, amount)) {
+                changeValue(true, data == "locked", amount);
+                return amount;
+            } else {
+                return 0;
+            }
         } else {
             return 0;
         }
@@ -45,5 +52,6 @@ contract WalletErc20 is WalletBase {
     function informTransaction(address _src, address _dest, uint256 _amount) public {
         checkDelegate(msg.sender, 1);
         recordInput(_src, _dest, _amount, "");
+        changeValue(false, _data == "locked", _amount);
     }
 }
