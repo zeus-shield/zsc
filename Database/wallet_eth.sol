@@ -4,12 +4,12 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./wallet_base.sol";
+import "./wallet_multisig.sol";
 
-contract WalletEth is WalletBase {
+contract WalletEth is WalletMultiSig {
 
     // Constructor
-    constructor(bytes32 _name) public WalletBase(_name) {
+    constructor(bytes32 _name) public WalletMultiSig(_name) {
         setNodeType("wallet-eth"); 
         setAsEthAccount();
     }
@@ -19,6 +19,7 @@ contract WalletEth is WalletBase {
             revert();
         } else {
             recordInput(msg.sender, address(this), msg.value, PlatString.tobytes32(msg.data));
+            changeValue(false, false, _amount);
         }
     }
 
@@ -32,16 +33,23 @@ contract WalletEth is WalletBase {
         }
     }
 
-    function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (uint) {
-        checkDelegate(msg.sender, 1);
+    function confirmTransaction(bytes32 _user) public returns (uint) {
+        if (doesMulSigFinished(_user)) {
+            address dest;
+            uint amount;
+            bytes32 data;
 
-        require(checkBeforeSent(_dest, _amount));        
-
-        if (_dest.call.value(_value)(_data)) {
-            recordOut(address(this), _dest, _amount, PlatString.tobytes32(msg.data));
-            return _amount;
+            (dest, amount, data) = getLastUnsignedTransaction();
+            
+            if (dest.call.value(amount)(data)) {
+                changeValue(true, data == "locked", amount);
+                return amount;
+            } else {
+                return 0;
+            }
         } else {
             return 0;
         }
     }
+
 }
