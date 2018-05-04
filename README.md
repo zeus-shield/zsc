@@ -41,8 +41,9 @@ Official implementation for the solidity-based core part of the ZSC system, as w
             |-- db_idmanager
             |-- db_node 
                 |-- wallet_base
-                    |-- wallet_eth
-                    |-- wallet_erc20
+                    |-- wallet_multisig
+                        |-- wallet_eth
+                        |-- wallet_erc20
                 |-- db_entity 
                     |-- db_user
                         |-- db_receiver
@@ -73,6 +74,7 @@ Official implementation for the solidity-based core part of the ZSC system, as w
         |-- zsc_show_element
         |-- zsc_show_user_agrs
         |-- zsc_show_user_tmps
+        |-- zsc_show_user_transactions
         |-- zsc_show_user_wallets
         |-- zsc_user_management
         |-- zsc_wallet_management
@@ -153,4 +155,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.04.29: add files WebAdm/js/zsc_show_user_agrs.js, WebAdm/js/zsc_show_user_wallets.js, WebAdm/js/zsc_show_user_tmps.js
 2018.04.28-05.01: add files WebClient/zsc_block.js, WebClient/zsc_agreements.js, WebClient/zsc_client.js, WebClient/zsc_element.js, WebClient/zsc_pos.js, WebClient/zsc_templates.js, WebClient/zsc_transactions.js
 2018.05.02-05.03: add file WebClient/zsc_view_agreement.js; update others
+2018.05.04: add files WebAdm/zsc_show_user_transactions.js, Database/wallet_multisig.sol
 ```
