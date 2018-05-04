@@ -10,7 +10,7 @@ import "./control_info.sol";
 contract DBFactory is Object { 
     function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
     function numFactoryElements() public constant returns (uint);
-    function getFactoryElementByIndex() public constant returns (address);
+    function getFactoryElementByIndex(uint _index) public constant returns (address);
 }
 
 contract DBDatabase is Object { 
@@ -36,7 +36,9 @@ contract DBNode is Object {
     function numParameters() public constant returns (uint);
     function getParameterNameByIndex(uint _index) public constant returns (bytes32);
 
-    function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (uint);
+    function doesLastTransactionSigned() public constant returns (bool);
+    function submitTransaction(address _dest, uint256 _amount, bytes _data, address _user) public returns (uint);
+    function confirmTransaction(bytes32 _user) public returns (uint);    
     function informTransaction(address _src, address _dest, uint256 _amount) public;
     function setERC20TokenAddress(address _tokenAdr) public;
     function numTransactions() public constant returns (uint);
@@ -376,15 +378,18 @@ contract ControlBase is ControlInfo {
         return true;
     }
 
-    function conductPurchaseAgreement(bytes32 _enName, bytes32 _agrName) internal returns (uint) {
+    function conductPurchaseAgreement(bool _isFirstSubmit, bytes32 _enName, bytes32 _agrName, address _user) internal returns (uint) {
         bytes32 tokenSymbol = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "walletSymbol"));
         uint price          = PlatString.stringToUint(getControlInfoParameterValue(_agrName, "price"));
         address recWallet   = getDBDatabase().getNode(formatWalletName(_enName, tokenSymbol));
         address agrWallet   = getDBDatabase().getNode(formatWalletName(_agrName, tokenSymbol));
 
-        uint purchaseAount = DBNode(recWallet).executeTransaction(agrWallet, price, "");
-        require(purchaseAount != 0);
-
+        uint purchaseAount = 0;
+        if (DBNode(recWallet).doesLastTransactionSigned() && _isFirstSubmit) {
+            purchaseAount = DBNode(recWallet).submitTransaction(agrWallet, price, "", _user);
+        } else if (!DBNode(recWallet).doesLastTransactionSigned() && !_isFirstSubmit) {
+            purchaseAount = DBNode(recWallet).confirmTransaction(agrWallet, price, "", _user);
+        }
         return purchaseAount;
     }
 
