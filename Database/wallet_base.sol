@@ -9,6 +9,7 @@ import "./db_entity.sol";
 contract WalletBase is DBNode {
     struct Payment {
         uint time_;
+        bool isSigned_
         bool isInput_;
         bytes32 txhash_;
         address sender_;
@@ -17,12 +18,8 @@ contract WalletBase is DBNode {
         bytes32 data_;
     }
 
-    struct PaymentHistory {
-        uint nos_;
-        mapping(uint => Payment) payments_;
-    }
-
-    PaymentHistory private paymentHistory_;
+    uint nos_;
+    mapping(uint => Payment) payments_;
     
     bool private isEthAccount_;
     uint lokedValue_;
@@ -39,33 +36,14 @@ contract WalletBase is DBNode {
         unlockedValue_= 0;
     }
 
-    function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (uint);
+    ////////// virtual functions /////////////
+    function submitTransaction(address _dest, uint256 _amount, bytes _data, address _user) public returns (uint);
 
+    function confirmTransaction(address _dest, uint256 _amount, bytes _data, bytes32 _user) public returns (uint);
+
+    ////////// internal functions /////////////
     function setAsEthAccount() internal {
         isEthAccount_ = true;
-    }
-
-    function addSignature(address _sigAdr) public {
-        checkDelegate(msg.sender, 1);
-        require(_sigAdr != address(0));
-        require(!sigAdrExists_[_sigAdr])
-        multiSig_.push(_sigAdr);
-        sigAdrExists_[_s_sigAdrig] = true;
-    }
-
-    function signature(address _sigAdr) public {
-        checkDelegate(msg.sender, 1);
-        require(sigAdrExists_[_sig])
-        sigStatus_[_sigAdr] = true;
-    }
-
-    function checkMulSig() internal returns (bool) {
-        for (uint i = 0; i < multiSig_.length; ++i) {
-            if (sigStatus_[multiSig_[i]] == false) {
-                return false;
-            }
-        }
-        return true;
     }
 
     function changeValue(bool _doesIncrease, bool _isLocked, uint _amount) internal returns (bool) {
@@ -74,6 +52,7 @@ contract WalletBase is DBNode {
                 lokedValue_ = lokedValue_.add(_amount);
             } 
             totalValue_ = totalValue_.add(_amount);
+            payments_[nos_ - 1].isSigned_ = true;
         } else {
             if (_isLocked) {
                 require(lokedValue_ >= _amount);
@@ -84,10 +63,9 @@ contract WalletBase is DBNode {
         }
     }
 
-    function checkBeforeSent(address _dst, uint _amount) internal returns (bool) {
+    function checkBeforeSent(address _dst, uint _amount) internal constant returns (bool) {
         if (totalValue_.sub(lokedValue_) >= _amount && _dst != address(this)) {
-            if (checkMulSig()) return true;
-            else return false;
+            return true;
         } else {
             return false;
         }
@@ -96,18 +74,31 @@ contract WalletBase is DBNode {
     function recordInput(address _sender, bytes32 _tx, uint _amount, bytes32 _data) internal {
         uint index = paymentHistory_.nos_;
         paymentHistory_.nos_++;
-        paymentHistory_.payments_[index] = Payment(now, true,  _tx, _sender, address(this), _amount, _data);
-
-        changeValue(true, _data == "locked", _amount);
+        paymentHistory_.payments_[index] = Payment(now, true, false, _tx, _sender, address(this), _amount, _data);
     }
 
     function recordOut(address _sender, bytes32 _tx, uint _amount, bytes32 _data) internal {
         require(totalValue_ >= _amount);
         uint index = paymentHistory_.nos_;
         paymentHistory_.nos_++;
-        paymentHistory_.payments_[index] = Payment(now, false, _tx, _sender, address(this), _amount, _data);
+        paymentHistory_.payments_[index] = Payment(now, false, true, _tx, _sender, address(this), _amount, _data);
+    }
 
-        changeValue(false, _data == "locked", _amount);
+    function getLastUnsignedTransaction() internal constant returns (address, uint, bytes32) {
+        if (nos_ == 0) {
+            revert();
+         } else {
+            return (payments_[nos_ - 1].receiver_, payments_[nos_ - 1].amount_, payments_[nos_ - 1].data_);
+         }
+    }
+
+    ////////// public functions /////////////
+    function doesLastTransactionSigned() public constant returns (bool) {
+        if (nos_ == 0) {
+            return true;
+        } else {
+            return payments_[nos_ - 1].isSigned_;
+        }
     }
 
     function getBlance(bool _locked) public constant returns (uint256) {
