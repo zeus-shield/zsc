@@ -304,12 +304,27 @@ contract ControlApis is ControlBase {
     /// @dev Buy an insurance agreement from a provider
     /// @param _userName The receiver name
     /// @param _agrName The agreement name
-    function purchaseAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
+    function submitPurchaseAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
         checkRegistered(_userName, msg.sender);
 
-        bool ret = preparePurchaseAgreement(_userName, _agrName);
-        require(ret);        
-        return conductPurchaseAgreement(_userName, _agrName); 
+        uint amount = conductPurchaseAgreement(true, _userName, _agrName, msg.sender);
+        if (amount > 0) {
+            require(preparePurchaseAgreement(_userName, _agrName));
+        }     
+        return amount; 
+    }
+
+    /// @dev Buy an insurance agreement from a provider
+    /// @param _userName The receiver name
+    /// @param _agrName The agreement name
+    function confirmPurchaseAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
+        checkRegistered(_userName, msg.sender);
+
+        uint amount = conductPurchaseAgreement(false, _userName, _agrName, msg.sender);
+        if (amount > 0) {
+            require(preparePurchaseAgreement(_userName, _agrName));
+        }     
+        return amount; 
     }
 
     function numRegisteredErc20Tokens(bytes32 _userName) public constant returns (uint) {
