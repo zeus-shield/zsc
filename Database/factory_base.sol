@@ -19,7 +19,7 @@ contract FactoryBase is Object {
 
     function numFactoryElements() public constant returns (uint);
 
-    function getFactoryElementByIndex() public constant returns (address);
+    function getFactoryElementByIndex(uint _index) public constant returns (address);
 
     function getBindedDB() internal constant returns (address) { return bindedDB_;}
 
