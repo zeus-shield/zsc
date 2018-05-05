@@ -44,11 +44,25 @@ contract WalletMultiSig is WalletBase {
         sigAdrExists_[_s_sigAdrig] = true;
     }
     
-    function submitTransaction(address _dest, uint256 _amount, bytes _data, bytes32 _user) public returns (uint) {
+    function submitTransaction(address _dest, uint256 _amount, bytes _data, bytes32 _sigAdr) public returns (uint) {
         checkDelegate(msg.sender, 1);
-        checkAllowedSignature(_user);
+        checkAllowedSignature(_sigAdr);
 
-        recordOut(address(this), _dest, _amount, PlatString.tobytes32(msg.data));
+        recordOut(address(this), _dest, _amount, PlatString.tobytes32(_data));
         return confirmTransaction(_user);
+    }
+
+    function confirmTransaction(address _sigAdr) public returns (uint) {
+        if (doesMulSigFinished(_sigAdr)) {
+            address dest;
+            uint amount;
+            bytes32 data;
+
+            (dest, amount, data) = getLastUnsignedTransaction();
+            
+            return executeTransaction(false, dest, amount, data);
+        } else {
+            return 0;
+        }
     }
 }
