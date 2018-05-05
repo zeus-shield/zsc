@@ -33,20 +33,16 @@ contract WalletEth is WalletMultiSig {
         }
     }
 
-    function confirmTransaction(bytes32 _user) public returns (uint) {
-        if (doesMulSigFinished(_user)) {
-            address dest;
-            uint amount;
-            bytes32 data;
+    function executeTransaction(bool _doesDirectly, address _dest, uint256 _amount, bytes _data) public returns (uint) {
+        checkDelegate(msg.sender, 1);
+        require(checkBeforeSent(_dest, _amount));        
 
-            (dest, amount, data) = getLastUnsignedTransaction();
-            
-            if (dest.call.value(amount)(data)) {
-                changeValue(true, data == "locked", amount);
-                return amount;
-            } else {
-                return 0;
+        if (_dest.call.value(_amount)(data)) {
+            if (_doesDirectly) {
+                recordOut(address(this), _dest, _amount, PlatString.tobytes32(_data));
             }
+            changeValue(true, data == "locked", _amount);
+            return amount;
         } else {
             return 0;
         }
