@@ -7,12 +7,6 @@ pragma solidity ^0.4.21;
 import "./object.sol";
 import "./control_info.sol";
 
-contract DBFactory is Object { 
-    function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
-    function numFactoryElements() public constant returns (uint);
-    function getFactoryElementByIndex(uint _index) public constant returns (address);
-}
-
 contract DBDatabase is Object { 
     function getNode(bytes32 _name) public constant returns (address);
     function checkeNodeByAddress(address _adr) public constant returns (bool);
@@ -82,6 +76,16 @@ contract SimulatorManager is Object {
     function runSimulation(uint _steps) public;
 }
 
+contract FactoryManager is Object {
+    function getFactory(bytes32 _type) public constant returns (address);
+}
+
+contract DBFactory is Object { 
+    function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
+    function numFactoryElements() public constant returns (uint);
+    function getFactoryElementByIndex(uint _index) public constant returns (address);
+}
+
 contract ControlBase is ControlInfo {   
     mapping(uint => bytes32) private factoryTypes_;
     mapping(bytes32 => address) private factories_;
@@ -90,19 +94,11 @@ contract ControlBase is ControlInfo {
     address private bindedPos_;
     address private walletGM_;
     address private simulatorGM_;
+    address private facotryGM_;
     address private zscTokenAddress_;
 
     constructor(bytes32 _name) public ControlInfo(_name) {
-        factoryTypes_[1] = "provider";
-        factoryTypes_[2] = "receiver";
-        factoryTypes_[3] = "staker";
-        factoryTypes_[4] = "template";
-        factoryTypes_[5] = "agreement";
-        factoryTypes_[6] = "wallet-eth";
-        factoryTypes_[7] = "wallet-erc20";
     }
-
-    function mapType(uint _type) internal constant returns (bytes32) { return factoryTypes_[_type]; }
 
     function formatWalletName(bytes32 _userName, bytes32 _tokenSymbol) internal pure returns (bytes32) {
         string memory str;
@@ -115,7 +111,7 @@ contract ControlBase is ControlInfo {
         temp = PlatString.tobytes32(str);
     }
     
-    function setSystemModuleAdrs(address _adm, address _db, address _walletGM, address _simulatorGM, address _pos, address _zscToken) internal {
+    function setSystemModuleAdrs(address _adm, address _db, address _walletGM, address _simulatorGM, address _pos, address _FactoryGM, address _zscToken) internal {
         require (_adm != 0 && _db != 0 && _walletGM != 0 && _pos != 0 && _zscToken != 0);     
 
         bindedAdm_ = _adm;
@@ -132,20 +128,16 @@ contract ControlBase is ControlInfo {
         setDelegate(simulatorGM_, 1);
 
         bindedDB_ = _db;
+        setDelegate(bindedDB_, 1);
+
+        facotryGM_ = _FactoryGM;
+        setDelegate(facotryGM_, 1);
+
         addLog("setSystemModules ", true);
     }
 
-    function addFactoryAdr(bytes32 _name, address _adr) internal {
-        require(_adr != 0 && factories_[_name] == 0);
-        factories_[_name] = _adr;
-
-        addLog("Added factory: ", true);
-        addLog(PlatString.bytes32ToString(_name), false);
-    }
-
     function getDBFactory(bytes32 _name) internal constant returns (DBFactory) {
-        require(factories_[_name] != 0);
-        return DBFactory(factories_[_name]);
+        return DBFactory(FactoryManager(facotryGM_).getFactory(_name));
     }
 
     function getDBDatabase() internal constant returns (DBDatabase) { 
