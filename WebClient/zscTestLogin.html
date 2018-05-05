@@ -129,8 +129,27 @@
         });
     }
 
-    function purchasePublishedAgreement(index) {
-        zscViewAgrsGM.purchaseAgreement(index, function(result) {
+    function submitPurchaseAgreement(index) {
+        zscViewAgrsGM.submitPurchaseAgreement(index, function(result) {
+            loadPageBody("view-agreement")
+        });
+    }
+
+    function confirmPurchaseAgreement(index) {
+        zscViewAgrsGM.confirmPurchaseAgreement(index, function(result) {
+            loadPageBody("view-agreement")
+        });
+    }
+
+    function submitPublishAgreement(index) {
+        zscAgrsGM.submitPublishAgreement(index, function(result) {
+            loadPageBody("agreement")
+        });
+    }
+
+    function confirmPublishAgreement(index) {
+        zscAgrsGM.confirmPublishAgreement(index, function(result) {
+            loadPageBody("agreement")
         });
     }
 
@@ -189,7 +208,7 @@
                     break;
                 case "agreement": 
                     zscAgrsGM.loadAgreements(function() {
-                        zscAgrsGM.loadAgreementsHtml("PageBody", "showElementParameters");
+                        zscAgrsGM.loadAgreementsHtml("PageBody", "showElementParameters", "submitPublishAgreement", "confirmPublishAgreement");
                     });
                     break;
                 case "block":
@@ -207,9 +226,9 @@
                         zscAgrsGM.loadPosInfoHtml(false, "PageBody");
                     });
                     break;
-                case "published-agreement":
+                case "view-agreement":
                     zscViewAgrsGM.loadAllAgreements(function() {
-                        zscViewAgrsGM.loadAllAgreementsHtml("PageBody", "showElementParameters", "purchasePublishedAgreement");
+                        zscViewAgrsGM.loadAllAgreementsHtml("PageBody", "showElementParameters", "submitPurchaseAgreement", "confirmPurchaseAgreement");
                     });
                     break;
                 default:
