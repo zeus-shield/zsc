@@ -36,11 +36,12 @@ contract DBNode is Object {
     function numParameters() public constant returns (uint);
     function getParameterNameByIndex(uint _index) public constant returns (bytes32);
 
+    function setERC20TokenAddress(address _tokenAdr) public;
     function doesLastTransactionSigned() public constant returns (bool);
     function submitTransaction(address _dest, uint256 _amount, bytes _data, address _user) public returns (uint);
-    function confirmTransaction(bytes32 _user) public returns (uint);    
+    function confirmTransaction(address _sigAdr) public returns (uint);    
+    function executeTransaction(bool _doesDirectly, address _dest, uint256 _amount, bytes _data) public returns (uint);
     function informTransaction(address _src, address _dest, uint256 _amount) public;
-    function setERC20TokenAddress(address _tokenAdr) public;
     function numTransactions() public constant returns (uint);
     function getTransactionInfoByIndex(uint _index) public constant returns (uint, bool, bytes32, uint, address, address);
 
@@ -103,7 +104,7 @@ contract ControlBase is ControlInfo {
 
     function mapType(uint _type) internal constant returns (bytes32) { return factoryTypes_[_type]; }
 
-    function formatWalletName(bytes32 _userName, bytes32 _tokenSymbol) private pure returns (bytes32) {
+    function formatWalletName(bytes32 _userName, bytes32 _tokenSymbol) internal pure returns (bytes32) {
         string memory str;
         bytes32 temp;
         if (_tokenSymbol == "ETH") {
@@ -378,41 +379,54 @@ contract ControlBase is ControlInfo {
         return true;
     }
 
-    function conductPurchaseAgreement(bool _isFirstSubmit, bytes32 _enName, bytes32 _agrName, address _user) internal returns (uint) {
+    function conductPurchaseAgreement(bool _isFirstSubmit, bytes32 _enName, bytes32 _agrName, address _sigAdr) internal returns (uint) {
         bytes32 tokenSymbol = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "walletSymbol"));
         uint price          = PlatString.stringToUint(getControlInfoParameterValue(_agrName, "price"));
         address recWallet   = getDBDatabase().getNode(formatWalletName(_enName, tokenSymbol));
         address agrWallet   = getDBDatabase().getNode(formatWalletName(_agrName, tokenSymbol));
 
         uint purchaseAount = 0;
-        if (DBNode(recWallet).doesLastTransactionSigned() && _isFirstSubmit) {
-            purchaseAount = DBNode(recWallet).submitTransaction(agrWallet, price, "", _user);
-        } else if (!DBNode(recWallet).doesLastTransactionSigned() && !_isFirstSubmit) {
-            purchaseAount = DBNode(recWallet).confirmTransaction(agrWallet, price, "", _user);
+        if (_isFirstSubmit) {
+            if (DBNode(recWallet).doesLastTransactionSigned()) {
+                purchaseAount = DBNode(recWallet).submitTransaction(agrWallet, price, "", _sigAdr);
+            }
+        } else { 
+            if (!DBNode(recWallet).doesLastTransactionSigned()) {
+                purchaseAount = DBNode(recWallet).confirmTransaction(_sigAdr);
+            }
         }
         return purchaseAount;
     }
 
-    function conductPublishAgreement(bytes32 _userName, bytes32 _agrName, address _creator) internal returns (uint) {
+    function conductPublishAgreement(bool _isFirstSubmit, bytes32 _userName, bytes32 _agrName, address _creator) internal returns (uint) {
         bytes32 tokenSymbol = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "walletSymbol"));
         address userWallet = address(getDBNode(formatWalletName(_userName, tokenSymbol)));
         address agrWallet; 
-        if (tokenSymbol == "ETH") {
-            agrWallet = enableWallet("wallet-eth", _agrName, tokenSymbol, _creator);
-        } else {
-            if (!WalletManager(walletGM_).doesTokenContractAdded()) {
-                return 0;
-            } else {
-                agrWallet = enableWallet("wallet-erc20", _agrName, tokenSymbol, _creator);
-            }
-        }
 
         require(agrWallet != address(0));
         uint lockedAmount = PlatString.stringToUint(getControlInfoParameterValue(_agrName, "lockedAmount"));
 
-        uint amount = DBNode(userWallet).executeTransaction(agrWallet, lockedAmount, "");
-        getDBNode(_agrName).setAgreementStatus("PUBLISHED", "null");
-
+        uint amount = 0;
+        if (_isFirstSubmit) {
+            if (DBNode(userWallet).doesLastTransactionSigned()) {
+                if (tokenSymbol == "ETH") {
+                    agrWallet = enableWallet("wallet-eth", _agrName, tokenSymbol, _creator);
+                } else {
+                    if (!WalletManager(walletGM_).doesTokenContractAdded()) {
+                        return 0;
+                    } else {
+                        agrWallet = enableWallet("wallet-erc20", _agrName, tokenSymbol, _creator);
+                    }
+                }
+                amount = DBNode(userWallet).submitTransaction(agrWallet, lockedAmount, "", _creator);
+            }
+        } else {
+            if (!DBNode(userWallet).doesLastTransactionSigned()) {
+                agrWallet = address(getDBNode(formatWalletName(_agrName, tokenSymbol)));
+                amount = DBNode(userWallet).confirmTransaction(_creator);
+                getDBNode(_agrName).setAgreementStatus("PUBLISHED", "null");
+            }
+        }
         return amount;
     }
 
@@ -451,7 +465,7 @@ contract ControlBase is ControlInfo {
         address userWallet = address(getDBNode(formatWalletName(proName, tokenSymbol)));
         require(userWallet != address(0));
 
-        DBNode(userWallet).executeTransaction(userWallet, lockedAmount, "");
+        DBNode(userWallet).executeTransaction(true, userWallet, lockedAmount, "");
         return DBDatabase(bindedDB_).destroyNode(agrAdr);
     }
 
