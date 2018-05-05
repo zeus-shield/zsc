@@ -79,13 +79,19 @@
         loadHtmlPageBody("apply");
     }
 
-    function transferValue(destAddressId, amountId, logId) {
+    function submitTransferValue(tokenSymbol, destAddressId, amountId, logId) {
         var adr = document.getElementById(destAddressId).value; 
         var amount = document.getElementById(amountId).value; 
 
-        ZSCWalletGM.transferValue(destAddress, amount, logId);
+        ZSCWalletGM.transferValue(tokenSymbol, destAddress, amount, logId, function(){
+            loadHtmlPageBody("wallet");
+        });
+    }
 
-        loadHtmlPageBody("wallet");
+    function confirmTransferValue(tokenSymbol, logId) {
+        ZSCWalletGM.confirmTransferValue(tokenSymbol, logId, function(){
+            loadHtmlPageBody("wallet");
+        });
     }
 
     function showErc20Tokens(destAddressId, amountId, logId) {
@@ -188,7 +194,7 @@
             switch(tag) {
                 case "wallet": 
                     zscWalletGM.loadTokenWallets(function() {
-                        zscWalletGM.loadWalletsHtml("PageBody", "transferValue", "showTransactions", "enableWallet");
+                        zscWalletGM.loadWalletsHtml("PageBody", "submitTransferValue", "confirmTransferValue", "showTransactions", "enableWallet");
                     });
                     break;
                 case "parameter":
