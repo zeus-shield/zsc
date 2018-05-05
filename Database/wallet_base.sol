@@ -11,7 +11,6 @@ contract WalletBase is DBNode {
         uint time_;
         bool isSigned_
         bool isInput_;
-        bytes32 txhash_;
         address sender_;
         address receiver_;
         uint256 amount_;
@@ -37,9 +36,11 @@ contract WalletBase is DBNode {
     }
 
     ////////// virtual functions /////////////
-    function submitTransaction(address _dest, uint256 _amount, bytes _data, address _user) public returns (uint);
+    function submitTransaction(address _dest, uint256 _amount, bytes _data, address _sigAdr) public returns (uint);
 
-    function confirmTransaction(address _dest, uint256 _amount, bytes _data, bytes32 _user) public returns (uint);
+    function confirmTransaction(address _sigAdr) public returns (uint);
+
+    function executeTransaction(bool _doesDirectly, address _dest, uint256 _amount, bytes _data) public returns (uint);
 
     ////////// internal functions /////////////
     function setAsEthAccount() internal {
@@ -71,17 +72,18 @@ contract WalletBase is DBNode {
         }
     }
 
-    function recordInput(address _sender, bytes32 _tx, uint _amount, bytes32 _data) internal {
-        uint index = paymentHistory_.nos_;
-        paymentHistory_.nos_++;
-        paymentHistory_.payments_[index] = Payment(now, true, false, _tx, _sender, address(this), _amount, _data);
+    function recordInput(address _sender, uint _amount, bytes32 _data) internal {
+        uint index = nos_;
+        nos_++;
+        payments_[index] = Payment(now, true, false, _sender, address(this), _amount, _data);
     }
 
-    function recordOut(address _sender, bytes32 _tx, uint _amount, bytes32 _data) internal {
+    function recordOut(address _receiver, uint _amount, bytes32 _data) internal {
         require(totalValue_ >= _amount);
-        uint index = paymentHistory_.nos_;
-        paymentHistory_.nos_++;
-        paymentHistory_.payments_[index] = Payment(now, false, true, _tx, _sender, address(this), _amount, _data);
+        if ()
+        uint index = nos_;
+        nos_++;
+        payments_[index] = Payment(now, false, true, address(this), _receiver, _amount, _data);
     }
 
     function getLastUnsignedTransaction() internal constant returns (address, uint, bytes32) {
@@ -94,6 +96,8 @@ contract WalletBase is DBNode {
 
     ////////// public functions /////////////
     function doesLastTransactionSigned() public constant returns (bool) {
+        checkDelegate(msg.sender, 1);
+
         if (nos_ == 0) {
             return true;
         } else {
@@ -111,7 +115,7 @@ contract WalletBase is DBNode {
     function numTransactions() public constant returns (uint) {
         checkDelegate(msg.sender, 1);
 
-        return paymentHistory_.nos_;
+        return nos_;
     }
 
     function getTransactionInfoByIndex(uint _index) public constant returns (uint, bool, bytes32, uint, address, address) {
@@ -119,11 +123,11 @@ contract WalletBase is DBNode {
         
         require(_index < paymentHistory_.nos_);
         
-        return (paymentHistory_[_index].time_,
-                paymentHistory_[_index].isInput_,
-                paymentHistory_[_index].txhash_,
-                paymentHistory_[_index].amount_,
-                paymentHistory_[_index].sender_, 
-                paymentHistory_[_index].receiver_);
+        return (payments_[_index].time_,
+                payments_[_index].isInput_,
+                payments_[_index].txhash_,
+                payments_[_index].amount_,
+                payments_[_index].sender_, 
+                payments_[_index].receiver_);
     }
 }
