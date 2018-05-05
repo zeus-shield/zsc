@@ -13,21 +13,24 @@ function ZSCWallet(nm, abi, adr) {
     this.myControlApi = web3.eth.contract(abi).at(adr);
 }
 
-ZSCPos.prototype = new ZSCClient();
+ZSCWallet.prototype = new ZSCClient();
 
 ZSCWallet.prototype.getUserName = function() {return this.userName;}
 
-ZSCWallet.prototype.transferValue = function(destAddressID, amountID, logID) {  
-    var srcAddress = document.getElementById(destAddressID).innerText;
+ZSCWallet.prototype.submitTransferValue = function(tokenSymbol, destAddressID, amountID, logId, func) {  
     var destAddress = document.getElementById(destAddressID).value;
     var amount = document.getElementById(amountID).value;
 
     if (destAddress != 0 && amount > 0) {
-        this.myControlApi.elementTransferValue(this.userName, srcAddress, destAddress, web3.toWei(amount, 'ether') , 
+        this.myControlApi.submitTransfer(this.userName, tokenSymbol, destAddress, web3.toWei(amount, 'ether') , 
             {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
             function(error, result){ 
             if(!error) {
-                this.informTransfer(srcAddress, destAddress, result);
+                if (result > 0) {
+                    this.informTransfer(srcAddress, destAddress, result, func);
+                } else {
+                    func();
+                }
             } else {
                 console.log("error: " + error);
             }
@@ -35,12 +38,29 @@ ZSCWallet.prototype.transferValue = function(destAddressID, amountID, logID) {
     }
 }
 
-ZSCWallet.prototype.informTransfer = function(srcAddress, destAddress, amount) { 
+ZSCWallet.prototype.confirmTransferValue = function(tokenSymbol, logId, func) {  
+    this.myControlApi.confirmTransfer(this.userName, tokenSymbol, 
+        {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
+        function(error, result){ 
+        if(!error) {
+            if (result > 0) {
+                this.informTransfer(srcAddress, destAddress, result);
+            } else {
+                func();
+            }
+        } else {
+            console.log("error: " + error);
+        }
+    });
+}
+
+ZSCWallet.prototype.informTransfer = function(srcAddress, destAddress, amount, func) { 
     if (amount > 0) {
         this.myControlApi.elementInformTransfer(this.userName, srcAddress, destAddress, web3.toWei(amount, 'ether') , 
             {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
             function(error, result){ 
             if(!error) {
+                func();
             } else {
                 console.log("error: " + error);
             }
@@ -125,19 +145,23 @@ ZSCWallet.prototype.parserTokenBalanceInfoByIndex = function(urlinfo, index) {
     return true;
 }
 
-ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2, func3)  {
-    var funcPrefix = func1 + "('"; 
-    var funcSuffix = "')";
+ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2, func3, func4)  {
+    var transPrefix = func1 + "('"; 
+    var transSuffix = "')";
+
+    var confirmPrefix = func1 + "('"; 
+    var confirmSuffix = "')";
+
+    var showTransPrefix = func3 + "('";
+    var showTransSuffix = "')";
+
+    var enableWalletPrefix = func4 + "('";
+    var enableWalletSuffix = "')";
+
     var symbol;
     var adr;
     var balance;
     var hashId;
-
-    var showTransPrefix = func2 + "('";
-    var showTransSuffix = "')";
-
-    var enableWalletPrefix = func3 + "('";
-    var enableWalletSuffix = "')";
 
     var text ="";
     text += '<div class="well">';
@@ -162,7 +186,8 @@ ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2, func3)  
         } else {
             text += '   <td><input id="' + sentoId + '"></input> <td>'   
             text += '   <td><input id="' + amountId + '"></input> <td>'
-            text += '   <td><button type="button" onClick="' + funcPrefix + sentoId + "', '" + amountId + "', '" + hashId + "'" + funcSuffix + '">Transfer</button></td>'
+            text += '   <td><button type="button" onClick="' + transPrefix + symbol + "', '" + sentoId + "', '" + amountId + "', '" + hashId + "'" + transSuffix + '">Transfer</button></td>'
+            text += '   <td><button type="button" onClick="' + confirmPrefix + symbol + "', '" + hashId + "'" + confirmSuffix + '">Confirm</button></td>'
             text += '   <td><button type="button" onClick="' + showTransPrefix + symbol, "', '" + hashId + "'" + showTransSuffix + '">Show</button></td>'
         }
         text += '   <td><text id="'+ hashId + '"></text></td>'
