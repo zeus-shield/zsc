@@ -9,11 +9,12 @@ function ZSCSetup(logRecorderAdr, zscTokenAdr, adrs) {
     this.PosAdvAdr = adrs[2];
     this.WalletManagerAdr = adrs[3];
     this.SimulatorManagerAdr = adrs[4];
-    this.FactoryProAdr = adrs[5];
-    this.FactoryRecAdr = adrs[6];
-    this.FactoryTmpAdr = adrs[7];
-    this.FactoryAgrAdr = adrs[8];
-    this.ControlApisAdvAdr = adrs[9];
+    this.FactoryManagerAdr = adrs[5];
+    this.FactoryProAdr = adrs[6];
+    this.FactoryRecAdr = adrs[7];
+    this.FactoryTmpAdr = adrs[8];
+    this.FactoryAgrAdr = adrs[9];
+    this.ControlApisAdvAdr = adrs[10];
     this.zscTokenAdr = zscTokenAdr;
     this.account = web3.eth.accounts[0];
 }
@@ -52,6 +53,8 @@ ZSCSetup.prototype.initSystemModule = function(module, extra, hashID) {
         this.initWalletManager(module, hashID);
     } else if (module == "SimulatorManager") {
         this.initSimulatorManager(module, hashID);
+    } else if (module == "FacotryManager") {
+        this.initFactoryManager(module, hashID);
     } else if (module == "DBDatabase") {
         this.initDatabase(module, hashID);
     } else if (module == "ControlApisAdv") {
@@ -59,11 +62,21 @@ ZSCSetup.prototype.initSystemModule = function(module, extra, hashID) {
             this.setSystemModules(module, hashID);
         } else {
             var factoryAdr;
-            if (extra == "FactoryPro") factoryAdr = FactoryProAdr;
-            else if (extra == "FactoryRec") factoryAdr = FactoryRecAdr;
-            else if (extra == "FactoryTmp") factoryAdr = FactoryTmpAdr;
-            else if (extra == "FactoryAgr") factoryAdr = FactoryAgrAdr;
-            this.addFactory("ControlApisAdv", extra, factoryAdr, hashID + extra);
+            var factoryType;
+            if (extra == "FactoryPro") {
+                factoryAdr = FactoryProAdr;
+                factoryType = "provider";
+            } else if (extra == "FactoryRec") {
+                factoryAdr = FactoryRecAdr;
+                factoryType = "receiver";
+            } else if (extra == "FactoryTmp") {
+                factoryAdr = FactoryTmpAdr;
+                factoryType = "template";
+            } else if (extra == "FactoryAgr") {
+                factoryAdr = FactoryAgrAdr;
+                factoryType = "agreement";
+            }
+            this.addFactory("FactoryManagerAdr", factoryType, factoryAdr, hashID + extra);
         }
     } else {
         var factoryAdr;
@@ -106,6 +119,16 @@ ZSCSetup.prototype.initSimulatorManager = function(abiName, hashID) {
     });
 }
 
+ZSCSetup.prototype.initFactoryManager = function(abiName, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi(abiName));
+    var myFactoryGM = myContract.at(this.FactoryManagerAdr);
+    myFactoryGM.initFactoryManager(this.ControlApisAdr, this.DBDatabaseAdr, {from:web3.eth.accounts[0], gas: 9000000},
+    function(error, result){ 
+        if(!error) this.showHashResult(hashID, result);
+        else console.log("error: " + error);
+    });
+}
+
 ZSCSetup.prototype.initDatabase = function(abiName, hashID) {
     var factories = [this.FactoryProAdr, this.FactoryRecAdr, this.FactoryTmpAdr, this.FactoryAgrAdr];
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
@@ -122,7 +145,7 @@ ZSCSetup.prototype.initDatabase = function(abiName, hashID) {
 ZSCSetup.prototype.initFactory = function(FactoryModule, FactoryAdr， hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(FactoryModule));
     var myFactory= myContract.at(FactoryAdr);
-    myFactory.initFactory(this.ControlApisAdr, this.DBDatabaseAdr, {from: web3.eth.accounts[0], gas: 9000000},
+    myFactory.initFactory(this.FactoryManagerAdr, {from: web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
         if(!error) this.showHashResult(hashID, result);
         else console.log("error: " + error);
@@ -144,8 +167,8 @@ ZSCSetup.prototype.setSystemModules = function(abiName, hashID) {
 
 ZSCSetup.prototype.addFactory = function(abiName, factoryType, FactoryAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
-    var myControlApi= myContract.at(this.ControlApisAdr);
-    myControlApi.addFactory(factoryType, FactoryAdr, {from: web3.eth.accounts[0], gas: 9000000},
+    var myFactoryGM = myContract.at(this.FactoryManagerAdr);
+    myFactoryGM.addFactory(factoryType, FactoryAdr, {from: web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
         if(!error) this.showHashResult(hashID, result);
         else console.log("error: " + error);
