@@ -20,6 +20,7 @@ contract DBNode is Object {
     address private posAdv_ = address(0);
     address private walletGM_ = address(0);
     address private simulatorGM_ = address(0);
+    address private factoryGM_ = address(0);
 
     bytes32 private nodeType_ = "node";
     address private ethWalletId_ ;
@@ -28,8 +29,6 @@ contract DBNode is Object {
 
     address[] children_;
     mapping(bytes32 => address) childMap_;
-
-    address[] factories_;
 
     // Constructor
     constructor(bytes32 _name) public Object(_name) {
@@ -61,20 +60,17 @@ contract DBNode is Object {
         return ethWalletId_;
     }
     
-    function setDelegatedModules(address _database, address _contoller, address _posAdv, address _walletGM, address _simulatorGM, address[] _factories) public {
+    function setDelegatedModules(address _database, address _contoller, address _posAdv, address _walletGM, address _simulatorGM, address _factoryGM) public {
         checkDelegate(msg.sender, 1);
 
         database_ = _database;
-        factories_ = _factories;
         controller_ = _contoller;
         posAdv_ = _posAdv;
         walletGM_ = _walletGM;
         simulatorGM_ = _simulatorGM;
+        factoryGM_ = _factoryGM;
 
         setDelegate(database_, 1);
-        for (uint i=0; i<factories_.length; i++) {
-            setDelegate(factories_[i], 1);
-        }
         CBDBDatabase(database_)._addNode(this);
     }
     
@@ -117,7 +113,7 @@ contract DBNode is Object {
         DBNode(_node).setParent(this);
 
         CBDBDatabase(database_).setDelegate(_node, 1);
-        DBNode(_node).setDelegatedModules(database_, controller_, posAdv_, walletGM_, simulatorGM_, factories_);
+        DBNode(_node).setDelegatedModules(database_, controller_, posAdv_, walletGM_, simulatorGM_, factoryGM_);
 
         children_.push(_node);
         childMap_[DBNode(_node).name()] = _node;
