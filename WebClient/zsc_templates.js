@@ -7,6 +7,7 @@ function ZSCTemplate(nm, abi, adr) {
     this.userName = nm;
     this.tmpNos = 0;
     this.tmpNames = [];
+    this.tmpChildrenNos = [];
     this.myControlApi = web3.eth.contract(abi).at(adr);
 }
 
@@ -19,10 +20,12 @@ ZSCTemplate.prototype.getTmpName = function(index) { return this.tmpName[index];
 ZSCTemplate.prototype.loadTempates = function(func) {
     this.numTemplates(function() {
         for (var i = 0; i < this.agrNos; ++i) {
-            this.getTmpNameByIndex(i, function(index){
-                if (indx == this.agrNos - 1) {
-                    func();
-                }
+            this.getTmpNameByIndex(i, function(j){
+                this.numTmpChildrenNos(j, function(index) {
+                    if (indx == this.agrNos - 1) {
+                        func();
+                    }
+                });
             });
         }
     });
@@ -54,12 +57,25 @@ ZSCTemplate.prototype.getTmpNameByIndex = function(index, func) {
         });
 }
 
+ZSCTemplate.prototype.numTmpChildrenNos = function(index, func) {
+    this.myControlApi.numElementChildren(this.userName, this.tmpNames[index],
+        {from: this.getAccount()},
+        function(error, result){ 
+            if(!error) {
+                this.tmpChildrenNos[index] = result.toString(10);
+                func(index);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
+
 /* zsc API:
    function createElement(bytes32 _userName, uint _typeInUint, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) 
 */
 
 ZSCTemplate.prototype.enableAsAgreement = function(index, func) {
-    this.myControlApi.createElement(this.userName, 5, this.tmpNames[i] + "-agr", this.tmpNames[i], 0,
+    this.myControlApi.createElement(this.userName, 5, this.tmpNames[i] + "-agr-" + this.tmpChildrenNos[index], this.tmpNames[i], 0,
         {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(55000)},
         function(error, result){ 
             if(!error) {
