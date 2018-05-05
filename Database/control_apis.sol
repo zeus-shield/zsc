@@ -301,6 +301,13 @@ contract ControlApis is ControlBase {
         }
     }
 
+    function numElementChildren(bytes32 _userName, bytes32 _enName) public constant returns (uint) {
+        checkRegistered(_userName, msg.sender);
+        checkMatched(_userName, _enName, msg.sender);
+
+        return  getDBNode(_enName).numChildren();
+    }
+
     function getAgreementNameByIndex(bytes32 _userName, uint _index) public constant returns (bytes32) {
         checkRegistered(_userName, msg.sender);
 
