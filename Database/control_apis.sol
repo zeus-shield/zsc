@@ -17,17 +17,9 @@ contract ControlApis is ControlBase {
     /// @dev Set the zsc adm address
     /// @param _adm The address of the zsc adm 
     /// @param _db The address of the database 
-    function setSystemModules(address _adm, address _db, address _walletGM, address _simulatorGM, address _pos, address _zscToken) public {
+    function setSystemModules(address _adm, address _db, address _walletGM, address _simulatorGM, address _pos, address _factoryGM, address _zscToken) public {
         checkDelegate(msg.sender, 1);
-        setSystemModuleAdrs(_adm, _db, _walletGM, _simulatorGM, _pos, _zscToken);
-    }
-
-    /// @dev Add the database factory of managing the elements
-    /// @param _typeInUint The type of the database factory
-    /// @param _adr The address of the database factory
-    function addElementFactory(uint _typeInUint, address _adr) public {
-        checkDelegate(msg.sender, 1);
-        addFactoryAdr(mapType(_typeInUint), _adr);
+        setSystemModuleAdrs(_adm, _db, _walletGM, _simulatorGM, _pos, _factoryGM, _zscToken);
     }
 
     function registerErc20Token(bytes32 _symbol, bytes32 _name, uint _decimals, address _tokenAdr) public returns (bool) {
@@ -51,26 +43,26 @@ contract ControlApis is ControlBase {
     }
 
     /// @dev Get the number of elements of the database
-    function numFactoryElements(bytes32 _userName, uint _typeInUint) public constant returns (uint) { 
-        if (_typeInUint == 5) {
+    function numFactoryElements(bytes32 _userName, bytes32 _factoryType) public constant returns (uint) { 
+        if (_factoryType == "agreement") {
             checkRegistered(_userName, msg.sender);
         } else {
             checkDelegate(msg.sender, 1);
         }
 
-        return getDBFactory(mapType(_typeInUint)).numFactoryElements(); 
+        return getDBFactory(_factoryType).numFactoryElements(); 
     }
     
     /// @dev Get the element name by the index
     /// @param _index The index of the element in the database
-    function getFactoryElementNameByIndex(bytes32 _userName, uint _typeInUint, uint _index) public constant returns (bytes32) { 
-        if (_typeInUint == 5) {
+    function getFactoryElementNameByIndex(bytes32 _userName, bytes32 _factoryType, uint _index) public constant returns (bytes32) { 
+        if (_factoryType == "agreement") {
             checkRegistered(_userName, msg.sender);
         } else {
             checkDelegate(msg.sender, 1);
         }
 
-        address nd = getDBFactory(mapType(_typeInUint)).getFactoryElementByIndex(_index);
+        address nd = getDBFactory(_factoryType).getFactoryElementByIndex(_index);
         require(nd != address(0));
         return Object(nd).name();
     }
@@ -85,11 +77,11 @@ contract ControlApis is ControlBase {
     }
 
     /// @dev Creat an element
-    /// @param _typeInUint The type of the factory for creating the element
+    /// @param _factoryType The type of the factory for creating the element
     /// @param _enName The name of the element belonging to the user
     /// @param _extraInfo The extra information
     /// @param _extraAdr The extra address
-    function createElement(bytes32 _userName, uint _typeInUint, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
+    function createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
         checkRegistered(_userName, msg.sender);
 
         address creatorAdr;
@@ -99,7 +91,7 @@ contract ControlApis is ControlBase {
             creatorAdr = msg.sender;
         }
 
-        return createFactoryNode(mapType(_typeInUint), _userName, _enName, _extraInfo, creatorAdr);
+        return createFactoryNode(_factoryType, _userName, _enName, _extraInfo, creatorAdr);
     }
 
     function enableElementWallet(bytes32 _userName, bytes32 _tokeSymbol, address _extraAdr) public returns (address) {
@@ -112,13 +104,13 @@ contract ControlApis is ControlBase {
             creatorAdr = msg.sender;
         }
 
-        uint typeUint;
+        bytes32 factoryType;
         if (_tokeSymbol == "ETH") {
-            typeUint = 6;
+            factoryType = "wallet-eth";
         } else {
-            typeUint = 7;
+            factoryType = "wallet-erc20";
         }
-        return enableWallet(mapType(typeUint), _userName, _tokeSymbol, creatorAdr);
+        return enableWallet(factoryType, _userName, _tokeSymbol, creatorAdr);
     }
 
     /// @dev Get the element by its address
