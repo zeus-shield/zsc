@@ -32,23 +32,23 @@ class ZscBase {
     }
 
     public function getModuleArray() { 
-        return array("TestToken", "LogRecorder", "DBDatabase",  "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "FactoryPro", "FactoryRec", "FactoryStaker", "FactoryTmp", "FactoryAgr", "FactoryWalletEth", "FactoryWalletErc20", "ControlApisAdv");
+        return array("TestToken", "LogRecorder", "DBDatabase",  "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "FactoryManager", "FactoryPro", "FactoryRec", "FactoryStaker", "FactoryTmp", "FactoryAgr", "FactoryWalletEth", "FactoryWalletErc20", "ControlApisAdv");
     } 
 
     public function getLogedModuleArray() {
-        return array("DBDatabase", "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "FactoryPro", "FactoryRec", "FactoryStaker", "FactoryTmp", "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20", "ControlApisAdv");
+        return array("DBDatabase", "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "FactoryManager", "FactoryPro", "FactoryRec", "FactoryStaker", "FactoryTmp", "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20", "ControlApisAdv");
     }
     
     public function getLogedModuleNameArrayInString() {
-        return "['DBDatabase', 'AdmAdv', 'PosAdv', 'WalletManager', 'SimulatorManager', 'FactoryPro', 'FactoryTmp', 'FactoryRec', 'FactoryStaker', 'FactoryAgr',  'FactoryWalletEth', 'FactoryWalletErc20', 'ControlApisAdv']";
+        return "['DBDatabase', 'AdmAdv', 'PosAdv', 'WalletManager', 'SimulatorManager', 'FactoryManager',  'FactoryPro', 'FactoryTmp', 'FactoryRec', 'FactoryStaker', 'FactoryAgr',  'FactoryWalletEth', 'FactoryWalletErc20', 'ControlApisAdv']";
     }
 
     public function getInitedModuleArray() {
-        return array("DBDatabase", "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager",  "FactoryPro", "FactoryRec", "FactoryStaker" , "FactoryTmp",  "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv"); 
+        return array("DBDatabase", "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "FactoryManager", "FactoryPro", "FactoryRec", "FactoryStaker" , "FactoryTmp",  "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv", "ControlApisAdv"); 
     }
 
     public function getInitedModuleParaArray() {
-        return array("null",       "null",    "null",         "null",   "null",               "null",       "null",       "null",          "null",        "null",         "null",             "null",               "FactoryPro",     "FactoryRec",       "FactoryTmp",   "FactoryAgr" ,  "SystemModules");   
+        return array("null",       "null",    "null",         "null",   "null",             "null",            "null",       "null",       "null",          "null",        "null",         "null",             "null",               "FactoryPro",     "FactoryRec",       "FactoryTmp",   "FactoryAgr" ,  "SystemModules");   
     }
 }
 
