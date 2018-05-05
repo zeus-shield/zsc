@@ -228,7 +228,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
 
         bytes32 walletName = formatWalletName(_userName, _tokenSymbol);
-        bytes32 walletAdr = address(getDBNode(walletName));
+        address walletAdr = address(getDBNode(walletName));
 
         require(walletAdr != address(0));
 
@@ -244,7 +244,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
 
         bytes32 walletName = formatWalletName(_userName, _tokenSymbol);
-        bytes32 walletAdr = address(getDBNode(walletName));
+        address walletAdr = address(getDBNode(walletName));
 
         require(walletAdr != address(0));
 
@@ -264,11 +264,18 @@ contract ControlApis is ControlBase {
 
     /// @dev Announce an insurance agreement by a provider
     /// @param _agrName The agreement name
-    function publishAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
+    function submitPublishAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _agrName, msg.sender);
 
-        return conductPublishAgreement(_userName, _agrName, msg.sender);
+        return conductPublishAgreement(true, _userName, _agrName, msg.sender);
+    }
+
+    function confirmPublishAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
+        checkRegistered(_userName, msg.sender);
+        checkMatched(_userName, _agrName, msg.sender);
+
+        return conductPublishAgreement(false, _userName, _agrName, msg.sender);
     }
 
     function numTemplates(bytes32 _userName) public constant returns (uint) {
