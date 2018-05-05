@@ -46,6 +46,7 @@ contract FactoryManager is Object {
         if (factories_[_type] == address(0)) {
             factories_[_type] = _adr;
             setDelegate(_adr, 1);
+            Object(_adr).setDelegate(apiController_, 1);
             Object(bindedDB_).delegateFactory(_adr, 1);
             return true;
         } else {
@@ -58,6 +59,7 @@ contract FactoryManager is Object {
         if (factories_[_type] != address(0)) {
             factories_[_type] = address(0);
             setDelegate(_adr, 0);
+            Object(_adr).setDelegate(apiController_, 0);
             Object(bindedDB_).delegateFactory(_adr, 0);
             return true;
         } else {
@@ -65,7 +67,7 @@ contract FactoryManager is Object {
         }
     }
 
-    function getFactory(bytes32 _type) public return (address) {
+    function getFactory(bytes32 _type) public constant return (address) {
         checkDelegate(msg.sender, 1);
         require(actories_[_type] != address(0));
         return actories_[_type];
