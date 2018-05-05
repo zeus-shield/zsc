@@ -4,11 +4,14 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./db_entity.sol";
+import "./object.sol";
+
+contract FactoryManager is Object {
+    function getBindedDB() public constant returns (address);
+}
 
 contract FactoryBase is Object {
-    address private bindedDB_;
-    address private apiController_;
+    address private factoryGM_;
 
     constructor(bytes32 _name) public Object(_name) {
     }
@@ -21,20 +24,17 @@ contract FactoryBase is Object {
 
     function getFactoryElementByIndex(uint _index) public constant returns (address);
 
-    function getBindedDB() internal constant returns (address) { return bindedDB_;}
+    function getBindedDB() internal constant returns (address) { return FactoryManager(factoryGM_).getBindedDB();}
 
-    function initFactory(address _controller, address _database) public {
+    function initFactory(address _factoryGM) public {
         checkDelegate(msg.sender, 1);
         
-        require(_database != 0);
-        bindedDB_ = _database;
+        require(_factoryGM != 0);
 
-        if (_controller != 0 && _controller != apiController_) {
-            if (apiController_ != 0) {
-                setDelegate(apiController_, 0);
-            }
-            apiController_ = _controller;
-            setDelegate(_controller, 1);
+        if (factoryGM_ != _factoryGM) {
+            setDelegate(factoryGM_, 0);
+            setDelegate(_factoryGM, 1);
+            factoryGM_ = _factoryGM;
         }
         setupFactoryRoot();
     }
