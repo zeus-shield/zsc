@@ -147,5 +147,15 @@ contract DBStaker is DBUser {
             return spUsedNos_;
         }
     }
+
+    function numAgreements() public constant returns (uint) {
+        checkDelegate(msg.sender, 1);
+        return 0;
+    }
+
+    function getAgreementByIndex(uint _index) public constant returns (uint) {
+        checkDelegate(msg.sender, 1);
+        return _index.sub(_index);
+    }
 }
 
