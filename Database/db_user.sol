@@ -29,10 +29,10 @@ contract DBUser is DBEntity {
         checkDelegate(msg.sender, 1);
         
         bytes32 nodeType = getNodeType();
+        handlers_["wallet"] = configureSingleHandle("-wallet");
+    
         if (nodeType == "provider") {
-            handlers_["wallet"] = configureSingleHandle("-wallet");
             handlers_["template"] = configureSingleHandle("-tmp");
-            handlers_["agreement"] = configureSingleHandle("-agree");
         }
     }
 
@@ -40,5 +40,9 @@ contract DBUser is DBEntity {
         checkDelegate(msg.sender, 1);
         return handlers_[_type];
     }
+
+    function numAgreements() public constant returns (uint);
+
+    function getAgreementByIndex(uint _index) public constant returns (address);
 }
 
