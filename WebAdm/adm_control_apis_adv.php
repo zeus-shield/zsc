@@ -4,7 +4,6 @@ Copyright (c) 2018 ZSC Dev Team
 */
 ?>
 
-
 <?php
 include("adm_header.php");
 $htmlModules = new ZscHtmlModules();
@@ -21,9 +20,8 @@ $htmlModules = new ZscHtmlModules();
     var web3 = setupWeb3js(false);
     var zscSetup = new ZSCSetup(recorderAdr, zscTokenAddress, logedModuleAdrs);
 
-    function initSystemModule(module, extraInfo, elementId) {
-        var zscTokenAddress = "<?php echo $htmlModules->readModuleAddress('zscTokenAddress')?>";
-        zscSetup.initSystemModule(module, extraInfo, elementId);
+    function initSystemModule(module, elementId) {
+        zscSetup.initSystemModule(module, elementId);
     }
 
     function setControlApisAdvAbi(elementId) {
