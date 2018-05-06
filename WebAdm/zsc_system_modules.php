@@ -36,6 +36,19 @@ class ZscSystemModules extends ZscBase {
         return $text;
     }
 
+    public function getFactoryModuleAddressArrayInString() {
+        $factoryModules = parent::getFactoryModuleArray();
+        $num = count($factoryModules);
+    
+        $text = "";
+    
+        for($x = 0; $x < $num; $x++) {
+            $name = $readModuleAddress[$x];
+            $text .= "['".$this->readModuleAddress($name);
+        }
+        return $text;
+    }
+
     public function getUrlSuffixForAdrs() {
         $system_modules = parent::getModuleArray();
         $num = count($system_modules);
