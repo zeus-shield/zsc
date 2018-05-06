@@ -52,6 +52,7 @@ class ZscHtmlModules extends ZscSystemModules {
         <script type="text/javascript" src="./js/zsc_show_user_element.js"></script>
         <script type="text/javascript" src="./js/zsc_show_user_agrs.js"></script>
         <script type="text/javascript" src="./js/zsc_show_user_tmps.js"></script>
+        <script type="text/javascript" src="./js/zsc_show_user_transactions.js"></script>
         <script type="text/javascript" src="./js/zsc_show_user_wallets.js"></script>
         <script type="text/javascript" src="./js/zsc_user_management.js"></script>
         <script type="text/javascript" src="./js/zsc_wallet_managerment.js"></script>
@@ -155,32 +156,43 @@ class ZscHtmlModules extends ZscSystemModules {
 
     public function loadInitModules($func) {
         $modules = ZscBase::getInitedModuleArray(); 
-        $paras = ZscBase::getInitedModuleParaArray();
-
         $num = count($modules);
-    
         $text = '';
     
         for($x = 0; $x < $num; $x++) {
             $name = $modules[$x];
-            $para = $paras[$x];
             $hashId = $name.'Hash'.$x;
             $action = '';
             $object = '';
-            if ($para == "null") {
-                $action = "Init ";
-                $object = $name;
-            } else {
-                $action = "Set ";
-                $object = $para;
-            }
+            $action = "Init ".$name;
+            
             /*
             <text>Step - 1 </text>
             <button type="button" onClick="initSystemModule('DBDatabase', 'null','DBDatabaseHash')">Init DBDatabase</button> 
             <text id="DBDatabaseHash"></text><br>
             */
             $text .= '<text>Step - '.($x+1).' </text>';
-            $text .= '<button type="button" onClick="'.initSystemModule.'(\''.$name.'\', \''.$para.'\',\''.$hashId.'\')">'.$action.$object.'</button>';
+            $text .= '<button type="button" onClick="'.initSystemModule.'(\''.$name.'\', \''.$hashId.'\')">'.$action.'</button>';
+            $text .= '<text id="'.$hashId.'"></text><br><br>';
+        }
+    
+        return $text;
+    }
+
+    public function loadAddFactoryModules($func) {
+        $modules = ZscBase::getFactoryModuleArray(); 
+        $num = count($modules);
+        $text = '';
+    
+        for($x = 0; $x < $num; $x++) {
+            $name = $modules[$x];
+            $hashId = $name.'Hash'.$x;
+            $action = '';
+            $object = '';
+            $action = "Set ".$name;
+            
+            $text .= '<text>Step - '.($x+1).' </text>';
+            $text .= '<button type="button" onClick="'.addFactoryModule.'(\''.$name.'\', \''.$hashId.'\')">'.$action.'</button>';
             $text .= '<text id="'.$hashId.'"></text><br><br>';
         }
     
