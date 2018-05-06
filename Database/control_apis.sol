@@ -286,43 +286,32 @@ contract ControlApis is ControlBase {
 
     function numAgreements(bytes32 _userName) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
+        address userAdr = address(getDBNode(_userName));        
+        bytes32 userType = DBNode(userAdr).getNodeType();
 
-        bytes32 userType = getDBNode(_userName).getNodeType();
-        address userAdr = address(getDBNode(_userName));
-        address agrAdr; 
-        
-        if (userType == "provider") {
-            agrAdr = DBNode(userAdr).getHandler("agreement");
-            return DBNode(agrAdr).numChildren();
-        } else if (userType == "receiver") {
-            return DBNode(userAdr).numChildren();
-        } else if (userType == "staker") {
-            return 0;
+        if (userType == "provider" || userType == "staker" || userType == "receiver") {
+            return DBNode(userAdr).numAgreements();
+        } else {
+            revert();
         }
     }
 
     function numElementChildren(bytes32 _userName, bytes32 _enName) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
-
         return  getDBNode(_enName).numChildren();
     }
 
     function getAgreementNameByIndex(bytes32 _userName, uint _index) public constant returns (bytes32) {
         checkRegistered(_userName, msg.sender);
+        address userAdr = address(getDBNode(_userName));        
+        bytes32 userType = DBNode(userAdr).getNodeType();
 
-        bytes32 userType = getDBNode(_userName).getNodeType();
-        address userAdr = address(getDBNode(_userName));
-        address agrAdr; 
-
-        if (userType == "provider") {
-            agrAdr = getDBNode(_userName).getChildByIndex(_index);
+        if (userType == "provider" || userType == "staker" || userType == "receiver") {
+            address agrAdr = DBNode(userAdr).getAgreementByIndex(_index);
             return Object(agrAdr).name();
-        } else if (userType == "receiver") {
-            agrAdr = DBNode(userAdr).getChildByIndex(_index);
-            return Object(agrAdr).name();
-        } else if (userType == "staker") {
-            return "null";
+        } else {
+            revert();
         }
     }
 
