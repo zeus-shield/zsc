@@ -97,13 +97,14 @@ ZSCTemplate.prototype.loadTemplatesHtml = function(elementId, funcSetPara, funcP
     text += '<div class="well">';
     text += '<table align="center" style="width:800px;min-height:30px">'
     text += '<tr>'
-    text += '   <td>Index</td> <td>Template name</td> <td>Template details</td> <td>Publish Template</td>'
+    text += '   <td>Index</td> <td>Template name</td> <td>Children Nos.</td> <td>Template details</td> <td>Publish Template</td>'
     text += '</tr>'
 
     for (var i = 0; i < this.tmpNos; ++i) {
         text += '<tr>'
         text += '   <td><text>' + i + '</text></td>'
         text += '   <td><text>' + this.tmpNames[i]  + '</text></td>'
+        text += '   <td><text>' + this.tmpChildrenNos[i]  + '</text></td>'
         text += '   <td><button type="button" onClick="' + funcSetParaPrefix + this.tmpNames[i] + funcSetParaSuffix + '">Show</button></td>'
         text += '   <td><button type="button" onClick="' + funcPublishPrefix + i + funcPublishSuffix + '">Publish</button></td>'
         text += '</tr>'
