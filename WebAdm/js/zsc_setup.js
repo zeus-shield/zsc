@@ -45,7 +45,7 @@ ZSCSetup.prototype.setLogRecorderToListener = function(listener,listenerName, ha
     });
 }  
 
-ZSCSetup.prototype.initSystemModule = function(module, extra, hashID) {
+ZSCSetup.prototype.initSystemModule = function(module, hashID) {
     if (module == "AdmAdv") {
     } else if (module == "PosAdv") {
         this.initPosAdv(module, hashID);
@@ -58,26 +58,7 @@ ZSCSetup.prototype.initSystemModule = function(module, extra, hashID) {
     } else if (module == "DBDatabase") {
         this.initDatabase(module, hashID);
     } else if (module == "ControlApisAdv") {
-        if (extra == "SystemModules") {
-            this.setSystemModules(module, hashID);
-        } else {
-            var factoryAdr;
-            var factoryType;
-            if (extra == "FactoryPro") {
-                factoryAdr = FactoryProAdr;
-                factoryType = "provider";
-            } else if (extra == "FactoryRec") {
-                factoryAdr = FactoryRecAdr;
-                factoryType = "receiver";
-            } else if (extra == "FactoryTmp") {
-                factoryAdr = FactoryTmpAdr;
-                factoryType = "template";
-            } else if (extra == "FactoryAgr") {
-                factoryAdr = FactoryAgrAdr;
-                factoryType = "agreement";
-            }
-            this.addFactory("FactoryManagerAdr", factoryType, factoryAdr, hashID + extra);
-        }
+        this.setSystemModules(module, hashID);
     } else {
         var factoryAdr;
         if (module == "FactoryPro") factoryAdr = FactoryProAdr;
@@ -87,6 +68,25 @@ ZSCSetup.prototype.initSystemModule = function(module, extra, hashID) {
 
         this.initFactory(module, factoryAdr, hashID + module);
     }
+}
+
+ZSCSetup.prototype.addFactoryModule = function(module, hashID) {
+   var factoryAdr;
+   var factoryType;
+   if (extra == "FactoryPro") {
+       factoryAdr = this.FactoryProAdr;
+       factoryType = "provider";
+   } else if (extra == "FactoryRec") {
+       factoryAdr = this.FactoryRecAdr;
+       factoryType = "receiver";
+   } else if (extra == "FactoryTmp") {
+       factoryAdr = this.FactoryTmpAdr;
+       factoryType = "template";
+   } else if (extra == "FactoryAgr") {
+       factoryAdr = this.FactoryAgrAdr;
+       factoryType = "agreement";
+   }
+   this.addFactory("FactoryManagerAdr", factoryType, factoryAdr, hashID + extra);
 }
 
 ZSCSetup.prototype.initPosAdv = function(abiName, hashID) {
