@@ -38,17 +38,6 @@ contract DBReceiver is DBUser {
         return true;
     } 
 
-    function numChildren() public returns (uint) {
-        checkDelegate(msg.sender, 1);
-        return agrNos_;
-    }
-
-    function getChildByIndex(uint _index) public returns (address) {
-        checkDelegate(msg.sender, 1);
-        require(_index < agrNos_);
-        return agreements_[_index];
-    }
-
     function addParameter(bytes32 _parameter) public returns (bool) {
         checkDelegate(msg.sender, 1);
         return false;
@@ -59,5 +48,16 @@ contract DBReceiver is DBUser {
         checkDelegate(msg.sender, 1);
         return false;
         return super.removeParameter(_parameter);
+    }
+
+    function numAgreements() public constant returns (uint) {
+        checkDelegate(msg.sender, 1);
+        return agrNos_;
+    }
+
+    function getAgreementByIndex(uint _index) public constant returns (uint) {
+        checkDelegate(msg.sender, 1);
+        require(_index < agrNos_);
+        return agreements_[_index];
     }
 }
