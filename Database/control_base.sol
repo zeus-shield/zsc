@@ -42,6 +42,8 @@ contract DBNode is Object {
     function setAgreementStatus(bytes32 _tag, bytes32 receiver) public returns (bool);
     function configureHandlers() public returns (bool);
     function getHandler(bytes32 _type) public constant returns (address);
+    function numAgreements() public constant returns (uint);
+    function getAgreementByIndex(uint _index) public constant returns (address);
 
     function numChildren() public constant returns(uint);
     function getChildByIndex(uint _index) public  constant returns(address);
