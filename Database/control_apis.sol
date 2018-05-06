@@ -76,6 +76,15 @@ contract ControlApis is ControlBase {
         return (getDBNode(_enName) != DBNode(0));
     }
 
+    function addSignatureAdr(bytes32 _userName, address _sigAdr) public returns (bool) {
+        checkRegistered(_userName, msg.sender);
+        if (getDBNode(_userName).addSignature(address _sigAdr)) {
+            registerSignature(_userName, _sigAdr);
+        }
+        return true;
+    }
+    
+
     /// @dev Creat an element
     /// @param _factoryType The type of the factory for creating the element
     /// @param _enName The name of the element belonging to the user
@@ -251,7 +260,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return  conductInformTransaction(_enName, _dest, _amount);
+        return conductInformTransaction(_enName, _dest, _amount);
     }
 
     /// @dev Announce an insurance agreement by a provider
