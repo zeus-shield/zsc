@@ -51,6 +51,8 @@ contract DBNode is Object {
 
     function getMiningInfoByIndex(bool _isReward, uint _index) public constant returns (uint, uint);
     function numMiningInfo(bool _isReward) public constant returns (uint);
+
+    function addSignature(address _sigAdr) public returns (bool);
 }
 
 contract PosManager is Object {
@@ -180,7 +182,7 @@ contract ControlBase is ControlInfo {
 
         address walletAdr = getDBFactory(_type).createNode(temp, parentNode, _creator);
         require(walletAdr != 0);
-        registerNode(false, _user, DBNode(walletAdr).name(), walletAdr, _creator);
+        registerEntityNode(_user, DBNode(walletAdr).name(), walletAdr, _creator);
 
         DBNode(walletAdr).setERC20TokenAddress(erc20Address);
         WalletManager(walletGM_).enableTokenByHolder(_tokeSymbol, DBNode(walletAdr).name(), walletAdr);
@@ -195,7 +197,7 @@ contract ControlBase is ControlInfo {
         if (_type == "template") {
             parentNode = getDBNode(_userName).getHandler(_type);
         } else if (_type == "agreement") {
-            uint copies = PlatString.stringToUint(getControlInfoParameterValue(_extra, "copies"));
+            uint copies = PlatString.stringToUint(getNodeParameterValue(_extra, "copies"));
             parentNode = address(getDBNode(_extra));
             require(DBNode(parentNode).numChildren() < copies);
         }
@@ -206,9 +208,9 @@ contract ControlBase is ControlInfo {
         if (_type == "provider" || _type == "receiver" || _type == "staker") {
             DBNode(adr).configureHandlers();
             DBNode(adr).setId(_creator);
-            registerNode(true, _userName, _nodeName, adr, _creator);
+            registerUserNode(_userName, _nodeName, adr, _creator);
         } else {
-            registerNode(false, _userName, _nodeName, adr, _creator);
+            registerEntityNode(_userName, _nodeName, adr, _creator);
         }
 
         if (_type == "staker") {
@@ -233,6 +235,7 @@ contract ControlBase is ControlInfo {
         } else if (_operation == "set") {
             str = PlatString.append("setNodeParameter - ", str);
             ret = getDBNode(_node).setParameter(_parameter, _value);
+            setNodeParameterValue(_node, _parameter, _value);
         }        
         addLog(str, true);
         return ret;
@@ -251,7 +254,7 @@ contract ControlBase is ControlInfo {
         uint paraNos = DBNode(nodeSrc).numParameters();
         for (uint i = 0; i < paraNos; ++i) {
             tempPara = DBNode(nodeSrc).getParameterNameByIndex(i);
-            tempValue = getControlInfoParameterValue(_nodeSrc, tempPara);
+            tempValue = getNodeParameterValue(_nodeSrc, tempPara);
 
             DBNode(nodeDst).addParameter(tempPara);
             DBNode(nodeDst).setParameter(tempPara, tempValue);
@@ -354,11 +357,11 @@ contract ControlBase is ControlInfo {
         bytes32 tokenSymbol;
         uint endTime;
 
-        proName     = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "provider"));
-        price       = PlatString.stringToUint(getControlInfoParameterValue(_agrName, "price"));
-        lockedAmount= PlatString.stringToUint(getControlInfoParameterValue(_agrName, "lockedAmount"));
-        tokenSymbol = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "walletSymbol"));
-        endTime     = PlatString.stringToUint(getControlInfoParameterValue(_agrName, "endTime"));
+        proName     = PlatString.tobytes32(getNodeParameterValue(_agrName, "provider"));
+        price       = PlatString.stringToUint(getNodeParameterValue(_agrName, "price"));
+        lockedAmount= PlatString.stringToUint(getNodeParameterValue(_agrName, "lockedAmount"));
+        tokenSymbol = PlatString.tobytes32(getNodeParameterValue(_agrName, "walletSymbol"));
+        endTime     = PlatString.stringToUint(getNodeParameterValue(_agrName, "endTime"));
 
         address agrAdr = getDBDatabase().getNode(_agrName);
         address proAdr = getDBDatabase().getNode(proName);
@@ -374,8 +377,8 @@ contract ControlBase is ControlInfo {
     }
 
     function conductPurchaseAgreement(bool _isFirstSubmit, bytes32 _enName, bytes32 _agrName, address _sigAdr) internal returns (uint) {
-        bytes32 tokenSymbol = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "walletSymbol"));
-        uint price          = PlatString.stringToUint(getControlInfoParameterValue(_agrName, "price"));
+        bytes32 tokenSymbol = PlatString.tobytes32(getNodeParameterValue(_agrName, "walletSymbol"));
+        uint price          = PlatString.stringToUint(getNodeParameterValue(_agrName, "price"));
         address recWallet   = getDBDatabase().getNode(formatWalletName(_enName, tokenSymbol));
         address agrWallet   = getDBDatabase().getNode(formatWalletName(_agrName, tokenSymbol));
 
@@ -393,12 +396,12 @@ contract ControlBase is ControlInfo {
     }
 
     function conductPublishAgreement(bool _isFirstSubmit, bytes32 _userName, bytes32 _agrName, address _creator) internal returns (uint) {
-        bytes32 tokenSymbol = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "walletSymbol"));
+        bytes32 tokenSymbol = PlatString.tobytes32(getNodeParameterValue(_agrName, "walletSymbol"));
         address userWallet = address(getDBNode(formatWalletName(_userName, tokenSymbol)));
         address agrWallet; 
 
         require(agrWallet != address(0));
-        uint lockedAmount = PlatString.stringToUint(getControlInfoParameterValue(_agrName, "lockedAmount"));
+        uint lockedAmount = PlatString.stringToUint(getNodeParameterValue(_agrName, "lockedAmount"));
 
         uint amount = 0;
         if (_isFirstSubmit) {
@@ -426,7 +429,7 @@ contract ControlBase is ControlInfo {
 
     function conductInformTransaction(bytes32 _enName, address _dest, uint256 _amount) internal returns (bool) {
         bytes32 destName = Object(_dest).name();
-        bytes32 tokenSymbol = PlatString.tobytes32(getControlInfoParameterValue(destName, "walletSymbol"));
+        bytes32 tokenSymbol = PlatString.tobytes32(getNodeParameterValue(destName, "walletSymbol"));
         address userWallet = address(getDBNode(formatWalletName(_enName, tokenSymbol)));
         DBNode(_dest).informTransaction(userWallet, _dest, _amount);
         return true;
@@ -436,7 +439,7 @@ contract ControlBase is ControlInfo {
         address agrAdr = address(getDBNode(_agrName));
         require(agrAdr != address(0));
 
-        bytes32 status = PlatString.tobytes32(getControlInfoParameterValue(_agrName, "status"));
+        bytes32 status = PlatString.tobytes32(getNodeParameterValue(_agrName, "status"));
         if (status == "PAID") return false;
 
         address agrWallet = address(getDBNode(formatWalletName(_agrName, tokenSymbol)));
@@ -447,13 +450,13 @@ contract ControlBase is ControlInfo {
         uint lockedAmount;
         string memory temp;
 
-        temp        = getControlInfoParameterValue(_agrName, "walletSymbol");
+        temp        = getNodeParameterValue(_agrName, "walletSymbol");
         tokenSymbol = PlatString.tobytes32(temp);
 
-        temp        = getControlInfoParameterValue(_agrName, "provider");
+        temp        = getNodeParameterValue(_agrName, "provider");
         proName     = PlatString.tobytes32(temp);
 
-        temp        = getControlInfoParameterValue(_agrName, "lockedAmount");
+        temp        = getNodeParameterValue(_agrName, "lockedAmount");
         lockedAmount= PlatString.stringToUint(temp);
 
         address userWallet = address(getDBNode(formatWalletName(proName, tokenSymbol)));
