@@ -10,14 +10,18 @@ import "./object.sol";
 contract ControlInfo is Object {   
     struct ParameterInfo {
         bytes32 userName_;
-        mapping (address => bool) signatures_; // ETH wallet address
-
         address nodeAdr_;
         address creator_;
         mapping (bytes32 => string) value_;
     }
+
+    struct UserInfo {
+        address nodeAdr_;
+        mapping (address => bool) signatures_;
+        mapping (bytes32 => ParameterInfo) paras_;
+    }
     
-    mapping(bytes32 => ParameterInfo) private nodeParameters_;
+    mapping(bytes32 => UserInfo) private userParameters_;
     mapping(bytes32 => bool) private nodeExists_;
     
     /*
@@ -32,13 +36,8 @@ contract ControlInfo is Object {
     }
     */
 
-    constructor(bytes32 _name) public Object(_name){}
+    constructor(bytes32 _name) public Object(_name){
 
-    function registerNode(bytes32 _userName, bytes32 _nodeName, address _nodeAdr, address _creator) private {
-        nodeParameters_[_nodeName].userName_ = _userName;
-        nodeParameters_[_nodeName].nodeAdr_  = _nodeAdr;
-        nodeParameters_[_nodeName].creator_  = _creator;
-        nodeParameters_[_nodeName].signatures_[_creator] = true;
     }
 
     function allowedUser(bytes32 _userName, address _sender) internal constant returns (bool);
@@ -47,8 +46,8 @@ contract ControlInfo is Object {
 
     function checkMatched(bytes32 _userName, bytes32 _enName, address _sender) internal constant {
         if (isDelegate(_sender, 1)) return;
-        if (nodeParameters_[_enName].signatures_[_sender]) return;
-        if (nodeParameters_[_enName].userName_ == _userName) return;
+        if (userParameters_[_userName].signatures_[_sender]) return;
+        if (userParameters_[_userName].paras_[_enName].userName_ == _userName) return;
         revert();
     }
 
@@ -59,26 +58,37 @@ contract ControlInfo is Object {
     function registerSignature(bytes32 _userName, address _sigAdr) internal {
         require(nodeExists_[_userName]);   
         addAllowedUser(_userName, _sigAdr);
-        nodeParameters_[_userName].signatures_[_sigAdr] = true;
+        userParameters_[_userName].signatures_[_sigAdr] = true;
     }
 
-    function registerUserNode(bytes32 _userName,  bytes32 _nodeName, address _nodeAdr, address _creator) internal {
-        require(!nodeExists_[_nodeName]);   
-        addAllowedUser(_nodeName, _creator);
-        registerNode(_userName, _nodeName, _nodeAdr, _creator);
+    function registerUserNode(bytes32 _userName, address _nodeAdr, address _sigAdr) internal {
+        require(!nodeExists_[_userName]);   
+        addAllowedUser(_userName, _sigAdr);
+        userParameters_[_userName].nodeAdr_ = _nodeAdr;
+        userParameters_[_userName].signatures_[_sigAdr] = true;
+        nodeExists_[_userName] = true;
     }  
 
-    function registerEntityNode(bytes32 _userName,  bytes32 _nodeName, address _nodeAdr, address _creator) internal {
-        require(!nodeExists_[_nodeName]);   
-        registerNode(_userName, _nodeName, _nodeAdr, _creator);
+    function registerEntityNode(bytes32 _userName,  bytes32 _enName, address _nodeAdr, address _creator) internal {
+        require(!nodeExists_[_enName]);   
+        userParameters_[_userName].paras_[_enName].userName_ = _userName; 
+        userParameters_[_userName].paras_[_enName].nodeAdr_ = _nodeAdr;
+        userParameters_[_userName].paras_[_enName].creator_ = _creator;
+        nodeExists_[_enName] = true;
     }
     
-    function getNodeParameterValue(bytes32 _nodeName, bytes32 _parameter) internal constant returns (string) {
-        return nodeParameters_[_nodeName].value_[_parameter];
+    function getNodeParameterValue(bytes32 _userName, bytes32 _enName, bytes32 _parameter) internal constant returns (string) {
+        require(nodeExists_[_userName]);   
+        require(nodeExists_[_enName]);   
+
+        return userParameters_[_userName].paras_[_enName].value_[_parameter];
     }
 
-    function setNodeParameterValue(bytes32 _nodeName, bytes32 _parameter, string _value) internal returns (bool) {
-        nodeParameters_[_nodeName].value_[_parameter] = _value;
+    function setNodeParameterValue(bytes32 _userName, bytes32 _enName, bytes32 _parameter, string _value) internal returns (bool) {
+        require(nodeExists_[_userName]);   
+        require(nodeExists_[_enName]);   
+
+        userParameters_[_userName].paras_[_enName].value_[_parameter] = _value;
         return true;
     }
 }
