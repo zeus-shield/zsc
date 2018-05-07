@@ -78,7 +78,7 @@ contract ControlApis is ControlBase {
 
     function addSignatureAdr(bytes32 _userName, address _sigAdr) public returns (bool) {
         checkRegistered(_userName, msg.sender);
-        if (getDBNode(_userName).addSignature(address _sigAdr)) {
+        if (getDBNode(_userName).addSignature(_sigAdr)) {
             registerSignature(_userName, _sigAdr);
         }
         return true;
@@ -171,7 +171,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return getControlInfoParameterValue(_enName, _parameter);
+        return getNodeParameterValue(_enName, _parameter);
     }
 
     /// @dev Get the address of the element 
