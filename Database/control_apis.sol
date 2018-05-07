@@ -150,7 +150,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return operateNodeParameter("add", _enName, _parameter, "");
+        return operateNodeParameter(_userName, "add", _enName, _parameter, "");
     }
 
     /// @dev Set the value to a paramter of an element 
@@ -161,7 +161,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return operateNodeParameter("set", _enName, _parameter, _value);
+        return operateNodeParameter(_userName, "set", _enName, _parameter, _value);
     }
 
     /// @dev Get the value of a paramter of an element
@@ -171,7 +171,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return getNodeParameterValue(_enName, _parameter);
+        return getNodeParameterValue(_userName, _enName, _parameter);
     }
 
     /// @dev Get the address of the element 
@@ -260,7 +260,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return conductInformTransaction(_enName, _dest, _amount);
+        return conductInformTransaction(_userName, _enName, _dest, _amount);
     }
 
     /// @dev Announce an insurance agreement by a provider
@@ -328,7 +328,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
 
         address adr = getDBNode(_userName).getChildByIndex(_index);
-        return deleteAgreement(Object(adr).name());
+        return deleteAgreement(_userName, Object(adr).name());
     }
 
     /// @dev Buy an insurance agreement from a provider
