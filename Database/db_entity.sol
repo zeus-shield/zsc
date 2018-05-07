@@ -79,12 +79,11 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function setParameter(bytes32 _parameter, string _value) public returns (bool) {
+    function setParameter(bytes32 _parameter, string _value) public constant returns (bool) {
         checkDelegate(msg.sender, 1);
         require(parameterExist_[_parameter] == true);
-
-        ControlBase(getController())._recordString(name(), _parameter, _value);
         return true;
+        return(PlatString.length(_value) != 0);
     }
 
     function numParameters() public constant returns (uint) {
