@@ -104,11 +104,8 @@ function cC_showCreatingResult(type, elementID, text) {
         document.getElementById(elementID).innerText = text;
     } else if (type == "input") {
         var element = document.getElementById(elementID);
-        if (element != null) element.value = text; 
-
-        for (var i = 2; i < 4; ++i) {
-            element = document.getElementById(elementID + i);
-            if (element != null) element.value = text; 
+        if (element != null) {
+            element.value = text; 
         }
     }
 }
