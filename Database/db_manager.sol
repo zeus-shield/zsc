@@ -28,8 +28,10 @@ contract DBManager is Object {
         }
     }
 
-    function addDBDatabase(bytes32 _name, address _adr) public returns (bool) {
+    function addDatabase(bytes32 _name, address _adr) public returns (bool) {
         checkDelegate(msg.sender, 1); 
+        require(_controlApiAdr != address(0));
+        
         if (!databaseExists_[_name]) {
             return false;
         }
@@ -44,13 +46,13 @@ contract DBManager is Object {
         return true;
     }
     
-    function getDBDatabase(bytes32 _name) public returns (address) {
+    function getDatabase(bytes32 _name) public returns (address) {
         checkDelegate(msg.sender, 1); 
         require(databaseExists_[_name]);
         return databases_[databaseIndice_[name]];
     }
 
-    function removeDBDatabase(bytes32 _name) public returns (address) {
+    function removeDatabase(bytes32 _name) public returns (address) {
         checkDelegate(msg.sender, 1); 
         require(databaseExists_[_name]);
         address adr = databases_[databaseIndice_[name]];
