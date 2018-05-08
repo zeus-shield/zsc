@@ -21,25 +21,22 @@ contract DBDatabase is Object {
     constructor(bytes32 _name) public Object(_name) {
     }
 
-    function initDatabase(address _controller, address _posAdv, address _walletGM, address _simulatorGM, address _factoryGM) public {
+    function initDatabase(address[] _moduleGMs) public {
         checkDelegate(msg.sender, 1);
 
         if (rootNode_ == 0) {
             rootNode_ = new DBNode(name());
-            setDelegate(rootNode_, 1);
-            setDelegate(_controller, 1);
-            setDelegate(_posAdv, 1);
-            setDelegate(_walletGM, 1);
-            setDelegate(_simulatorGM, 1);
-            setDelegate(_factoryGM, 1);
-            DBNode(rootNode_).setDelegatedModules(this, _controller, _posAdv, _walletGM, _simulatorGM, _factoryGM);
+            for (uint i = 0; i < _moduleGMs.length; ++i) {
+                setDelegate(_moduleGMs[i], 1);
+            }
+            DBNode(rootNode_).setDelegatedModules(this, _moduleGMs);
         }
     }
 
-    function delegateFactory(address _factoryAdr, uint _priority) public {
+    function delegateModuleManager(address _moduleGMAdr, uint _priority) public {
         checkDelegate(msg.sender, 1);
         for (uint i = 0; i < nodes_.length; ++i) {
-            Object(nodes_[i]).setDelegate(_factoryAdr, _priority);    
+            Object(nodes_[i]).setDelegate(_moduleGMAdr, _priority);    
         }
     }
 
