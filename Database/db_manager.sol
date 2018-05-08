@@ -12,8 +12,6 @@ contract DBManager is Object {
     mapping(bytes32 => uint) private databaseIndice_;
     mapping(bytes32 => bool) private databaseExists_;
 
-    address private controlApiAdr_;
-
     constructor(bytes32 _name) public Object(_name) {
     }
 
@@ -58,5 +56,11 @@ contract DBManager is Object {
         address adr = databases_[databaseIndice_[name]];
         return Object(adr).kill();
     }
-}
 
+    function delegateObject(address _adr, uint _priority) public {
+        checkDelegate(msg.sender, 1); 
+        for (uint i = 0; i < databaseNos_; ++i) {
+            Object(database_[i]).setDelegate(_adr, _priority); 
+        }
+    }
+}
