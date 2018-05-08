@@ -4,9 +4,9 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./object.sol";
+import "./module_base_adv.sol";
 
-contract WalletManager is Object {
+contract WalletManager is ModuleBaseAdv {
     struct Erc20Token {
         bytes32 name_;  
         bytes32 status_;
@@ -26,16 +26,11 @@ contract WalletManager is Object {
     mapping(bytes32 => uint) private erc20TokenIndice_;
     mapping(bytes32 => bool) private erc20TokenExists_;
 
-    uint private holderNos_;
-    mapping(uint => TokenHolder) private tokenHoders_;
-    mapping(bytes32 => uint) private holderIndices_;
-    mapping(bytes32 => bool) private holderExists_;
-
     address private bindedDB_;
     address private apiController_;
 
     // Constructor
-    constructor() public Object("zsc_wallet_manager") {
+    constructor() public ModuleBaseAdv("zsc_wallet_manager") {
         tokenNos_ = 0;
     } 
 
@@ -98,22 +93,6 @@ contract WalletManager is Object {
         return erc20Tokens_[index].tokenAdr_;
     }
 
-    function enableTokenByHolder(bytes32 _tokenSymbol, bytes32 _nodeName, address _nodeAddress) public returns (bool) {
-        checkDelegate(msg.sender, 1);
-
-        require(erc20TokenExists_[_tokenSymbol]);
-        require(!holderExists_[_nodeName]);
-
-        uint tokenIndex = erc20TokenIndice_[_tokenSymbol];
-        uint holderIndex = holderIndices_[_nodeName];
-
-        holderExists_[_nodeName] = true;
-        holderIndices_[_nodeName] = holderNos_;
-        tokenHoders_[holderNos_].name_ = _nodeName;
-        tokenHoders_[holderNos_].adr_ = _nodeAddress;
-        tokenHoders_[holderIndex].enabledTokens_[tokenIndex] = true;   
-    }
-
     function numTokenContracts() public constant returns (uint) {
         return tokenNos_;
     }
@@ -127,5 +106,42 @@ contract WalletManager is Object {
                 erc20Tokens_[_index].symbol_,
                 erc20Tokens_[_index].decimals_,
                 erc20Tokens_[_index].tokenAdr_);
+    }
+
+
+contract ModuleManager is Object {
+    function getModuleObj(bytes32 _name) public returns (address);
+    function getModuleDatabase(bytes32 _name) public returns (address);
+}
+
+    function enableWalletByUser(bytes32 _type, bytes32 _user, bytes32 _tokeSymbol, address _creator) internal returns (address) {
+        address dbAdr = getModuleManager().getModuleDatabase("user");
+        address ndAdr = Database(dbAdr).getNode(_user);
+
+        require(ndAdr != address(0));
+        
+        if (DBNode(_user).getNodeType() == "staker" && _tokeSymbol != "ZSC") {
+            return address(0);
+        }
+
+        address parentNode = getDBNode(_user).getHandler("wallet");
+        address erc20Address = 0; 
+        bytes32 temp;
+
+        temp = formatWalletName(_user, _tokeSymbol);
+
+        if (_tokeSymbol != "ETH") {
+            erc20Address = WalletManager(walletGM_).getTokenContractAddress(_tokeSymbol);
+            require(erc20Address != 0);
+        }
+
+        address walletAdr = getDBFactory(_type).createNode(temp, parentNode, _creator);
+        require(walletAdr != 0);
+        registerEntityNode(_user, DBNode(walletAdr).name(), walletAdr, _creator);
+
+        DBNode(walletAdr).setERC20TokenAddress(erc20Address);
+        WalletManager(walletGM_).enableTokenByHolder(_tokeSymbol, DBNode(walletAdr).name(), walletAdr);
+
+        return walletAdr;
     }
 }
