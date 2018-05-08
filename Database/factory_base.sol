@@ -6,11 +6,8 @@ pragma solidity ^0.4.21;
 
 import "./object.sol";
 
-contract FactoryManager is Object {
-    function getBindedDB() public constant returns (address);
-}
-
 contract FactoryBase is Object {
+    address private database_;
     address private factoryGM_;
 
     constructor(bytes32 _name) public Object(_name) {
@@ -24,7 +21,16 @@ contract FactoryBase is Object {
 
     function getFactoryElementByIndex(uint _index) public constant returns (address);
 
-    function getBindedDB() internal constant returns (address) { return FactoryManager(factoryGM_).getBindedDB();}
+    function setDatabase(address _adr) public {
+        require(database_ == address(0));
+        
+        checkDelegate(msg.sender, 1);
+        database_ = _adr;
+    } 
+
+    function getBindedDatabase() internal constant returns (address) { 
+        return database_;
+    }
 
     function initFactory(address _factoryGM) public {
         checkDelegate(msg.sender, 1);
