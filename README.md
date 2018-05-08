@@ -33,10 +33,12 @@ Official implementation for the solidity-based core part of the ZSC system, as w
             |-- pos_block
             |-- pos_block_pool, pos_staker_group
                 |-- pos_base
+            |-- module_manager
             |-- simulator_base
             |-- simulator_manager
             |-- adm_base
-            |-- app_proxy            
+            |-- app_proxy   
+            |-- db_manager         
             |-- db_database
             |-- db_idmanager
             |-- db_node 
@@ -158,4 +160,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.05.02-05.03: add file WebClient/zsc_view_agreement.js; update others
 2018.05.04: add files WebAdm/zsc_show_user_transactions.js, Database/wallet_multisig.sol
 2018.05.05-05.06: add files Database/delegate.sol, Database/factory_manager.sol
+2018.05.07-05.08: add files Database/log_transaction.sol, Database/db_managet.sol; changed/updated file factory_manager.sol->module_manager.sol
 ```
