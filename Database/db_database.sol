@@ -21,27 +21,40 @@ contract DBDatabase is Object {
     constructor(bytes32 _name) public Object(_name) {
     }
 
-    function initDatabase(address[] _moduleGMs) public {
+    function initDatabase(address _dbManager) public {
         checkDelegate(msg.sender, 1);
+
+        super.setDelegate(_dbManager, 1);
 
         if (rootNode_ == 0) {
             rootNode_ = new DBNode(name());
-            for (uint i = 0; i < _moduleGMs.length; ++i) {
-                setDelegate(_moduleGMs[i], 1);
+            require(rootNode_ != address(0));
+
+            address delegateAdr;
+            uint priority;
+
+            DBNode(rootNode_).setDelegate(address(this), 1);
+
+            for (uint i = 0; i < numDelegates(); ++i) {
+                (delegateAdr, priority) = getDelegateInfoByIndex(i);
+                DBNode(rootNode_).setDelegate(delegateAdr, priority);
             }
-            DBNode(rootNode_).setDelegatedModules(this, _moduleGMs);
         }
     }
 
-    function delegateModuleManager(address _moduleGMAdr, uint _priority) public {
+    function setDelegate(address _adr, uint _priority) public {
         checkDelegate(msg.sender, 1);
+
+        super.setDelegate(_adr, _priority);
+
         for (uint i = 0; i < nodes_.length; ++i) {
-            Object(nodes_[i]).setDelegate(_moduleGMAdr, _priority);    
+            DBNode(nodes_[i]).setDelegate(_adr, _priority);    
         }
     }
 
     function kill() public { 
         checkDelegate(msg.sender, 1);
+        
         destroyNode(rootNode_);
         super.kill();
     }
