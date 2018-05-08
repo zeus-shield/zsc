@@ -6,12 +6,14 @@ pragma solidity ^0.4.21;
 
 import "./object.sol";
 
-contract DBIDManager is Object {
-    address[]  IDs_;
-    mapping(address => bool) IDExist_;
+contract IDManager is Object {
+    uint idNos_;
+    address[]  ids_;
+    mapping(bytes32 => uint) private indice_;
+    mapping(bytes32 => bool) private exists_;
 
     // Constructor
-    constructor() public Object("null") {
+    constructor(bytes32 _name) public Object(_name) {
     }
 
     function numIds() public constant returns (uint) {
@@ -19,41 +21,40 @@ contract DBIDManager is Object {
         return IDs_.length;
     }
 
-    function addId(address _id) public returns (bool) {
+    function addId(bytes32 _name, address _id) public returns (bool) {
         checkDelegate(msg.sender, 1);
+        require(!exists_[_name]);
 
-        if (IDExist_[_id] == true)
-            return false;
-
-        IDExist_[_id] = true;
-        IDs_.push(_id);
+        exists_[_name] = true;
+        indice_[_name] = idNos_;
+        ids_.push(_id);
+        idNos_++;
 
         return true;
     }
 
-    function removeId(address _id) public returns (bool) {
+    function removeId(bytes32 _name) public returns (bool) {
         checkDelegate(msg.sender, 1);
+        require(exists_[_name]);
 
-        if (IDExist_[_id] == false)
-            return false;
-
-        for (uint i = 0; i < IDs_.length; ++i) {
-           if (IDs_[i] == _id) {
-                IDExist_[_id] = false;
-                IDs_[i] = IDs_[IDs_.length - 1];
+        for (uint i = 0; i < idNos_; ++i) {
+           if (ids_[i] == _id) {
+                exists_[_id] = false;
+                ids_[i] = ids_[ids_.length - 1];
                 break;
             }
         }
 
-        delete IDs_[IDs_.length - 1];
-        IDs_.length -= 1;
+        delete ids_[ids_.length - 1];
+        ids_.length -= 1;
         return true;
     }
 
-    function getId(uint _index) public constant returns (address) {
+    function getId(bytes32 _name) public constant returns (address) {
         checkDelegate(msg.sender, 1);
+        require(_)
 
-        if(_index >= IDs_.length) return 0;
-        return IDs_[_index];
+        if(_index >= ids_.length) return 0;
+        return ids_[_index];
     }
 }
