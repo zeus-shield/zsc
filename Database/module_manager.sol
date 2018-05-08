@@ -6,43 +6,50 @@ pragma solidity ^0.4.21;
 
 import "./object.sol";
 
-contract DBDatabase is Object {
-    function delegateModuleManager(address _factoryAdr, uint _priority) public;
-}
-
-contract ModuleBase is Object {
-    function setDatabase(address _adr) public;
+contract DBManager is Object {
+    function getDatabase(bytes32 _name) public returns (address);
 }
 
 contract ModuleManager is Object {
     address private apiController_ = address(0);
+    address private databaseGM_ = address(0);
+    mapping(bytes32 => address) private factories_;
 
-    mapping(bytes32 => address) private modules_;
-    mapping(bytes32 => address) private databases_;
 
     constructor(bytes32 _name) public Object(_name) {
     }
 
-    function initModuleManager(address _controller) public {
+    function initManagerManager(address _controller, address _databaseGM) public {
         checkDelegate(msg.sender, 1);
+        
+        require(apiController_ == address(0) && databaseGM_ == address(0));
+        require(_databaseGM != 0 && _controller != 0);
 
-        require(_controller != 0);
-        if (_controller != apiController_) {
-            setDelegate(apiController_, 0);
-            setDelegate(_controller, 1);
-            apiController_ = _controller;
-        }
+        databaseGM_ = _databaseGM;
+        apiController_ = _controller;
+
+        setDelegate(databaseGM_, 0);
+        setDelegate(apiController_, 0);
     }
 
-    function addModulePair(bytes32 _type, address _moduleAdr, address _databaseAdr) public returns (bool) {
+    function addFactory(bytes32 _commenName, address _factory) public returns (bool) {
         checkDelegate(msg.sender, 1);
+
+        require(!pairExists_[_nameCommen]);
+        require(_module != address(0) && _database != address(0))
+
+        pairs_[_nameCommen] = PairInfo(_nameCommen, _module, _database);
+
+        ManagerBase(adrDatabase).internalShareDelegate(adrModule);
+
         require(_moduleAdr != address(0) && _databaseAdr != address(0));
 
-        if (factories_[_type] == address(0)) {
+        if (modules_[_name] == address(0)) {
             setDelegate(_moduleAdr, 1);
 
-            modules_[_type] = _moduleAdr;
-            databases_[_type] = _databaseAdr;
+            exists_[_name] = true;
+            modules_[_name] = _moduleAdr;
+            databases_[_name] = _databaseAdr;
 
             Object(_moduleAdr).setDelegate(apiController_, 1);
             Object(_databaseAdr).setDelegate(apiController_, 1);
@@ -55,23 +62,70 @@ contract ModuleManager is Object {
         }
     }
 
-    function removeModulePair(bytes32 _type) public returns (bool) {
+    function addManager(bytes32 _name, address _factory) public returns (bool) {
         checkDelegate(msg.sender, 1);
-        address _moduleAdr;
-        address databaseAdr_;
 
-        _moduleAdr  = factories_[_type];
-        databaseAdr_ = databases_[_type];
+        require(!pairExists_[_nameCommen]);
+        require(_module != address(0) && _database != address(0))
 
-        factories_[_type] = 0;
-        databases_[_type] = 0;
+        pairs_[_nameCommen] = PairInfo(_nameCommen, _module, _database);
 
-        if (_moduleAdr != address(0)) {
-            DBDatabase(_databaseAdr).delegateModuleManager(_moduleAdr, 0);
+        ManagerBase(adrDatabase).internalShareDelegate(adrModule);
+
+        require(_moduleAdr != address(0) && _databaseAdr != address(0));
+
+        if (modules_[_name] == address(0)) {
+            setDelegate(_moduleAdr, 1);
+
+            exists_[_name] = true;
+            modules_[_name] = _moduleAdr;
+            databases_[_name] = _databaseAdr;
+
+            Object(_moduleAdr).setDelegate(apiController_, 1);
+            Object(_databaseAdr).setDelegate(apiController_, 1);
+
+            FactoryBase(_databaseAdr).setDatabase(_databaseAdr);            
+            DBDatabase(_databaseAdr).delegateModuleManager(_moduleAdr, 1);
             return true;
         } else {
             return false;
         }
+    }
+
+    function removePair(bytes32 _name) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+        require(exists_[_name]);
+
+        address _moduleAdr;
+        address databaseAdr_;
+
+        _moduleAdr  = factories_[_name];
+        databaseAdr_ = databases_[_name];
+
+        factories_[_name] = 0;
+        databases_[_name] = 0;
+
+        if (_moduleAdr != address(0)) {
+            DBDatabase(_databaseAdr).delegateModuleManager(_moduleAdr, 0);
+            FactoryBase(_databaseAdr).setDatabase(0);    
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function getModuleObj(bytes32 _name) public returns (address) {
+        checkDelegate(msg.sender, 1);
+        require(exists_[_name]);
+
+        return modules_[_name];
+    }
+
+    function getModuleDatabase(bytes32 _name) public returns (address) {
+        checkDelegate(msg.sender, 1);
+        require(exists_[_name]);
+
+        return databases_[_name];
     }
 }
 
