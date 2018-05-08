@@ -23,11 +23,15 @@ contract Owned {
     }
 }
 
-contract Delegated is Owned{
-    mapping (address => uint) public delegates_;
+contract Delegated is Owned {
+    uint delegateNos_;
+    mapping (uint => address) public adrs_;
+    mapping (uint => uint) public priorities_;
+    mapping (address => uint) public indice_;
+    mapping (address => bool) public exists_;
 
     constructor() public {
-        delegates_[msg.sender] = 1;
+        addDelegate(msg.sender, 1);
     }
 
     function kill() public {
@@ -35,24 +39,45 @@ contract Delegated is Owned{
         selfdestruct(owner); 
     }
 
-    function setDelegate(address _address, uint _priority) public {
-        if (isDelegate(msg.sender, _priority) == false) revert();
-        if (_address == 0) revert();
-        if (_priority > 0) { 
-            delegates_[_address] = _priority;
+    function addDelegate(address _adr, uint _priority) private {
+        uint index;
+        if (exists_[_adr]) {
+            index = indice_[_adr];
+            adrs_[index] = _adr;
+            priorities_[index] = _priority;
         } else {
-            delete delegates_[_address];
+            index = delegateNos_;
+            exists_[_adr] = true;
+            indice_[_adr] = index;
+            adrs_[index] = _adr;
+            priorities_[index] = _priority;
+            delegateNos_++;
         }
     }
 
-    function isDelegate(address _account, uint _priority) public constant returns (bool)  {
-        if (address(this) == _account) return true;
-        if (delegates_[_account] == 0) return false;
-        if (delegates_[_account] <= _priority ) return true;
-        return false;
+    function numDelegates() internal constant returns (uint) {
+        return delegateNos_;
     }
 
-    function checkDelegate(address _address, uint _priority) internal constant {
-        require(isDelegate(_address, _priority));
+    function getDelegateInfoByIndex(uint _index) internal constant returns (address, uint) {
+        require(_index < delegateNos_);
+        return (adrs_[_index], priorities_[_index]);
+    }
+
+    function checkDelegate(address _adr, uint _priority) internal constant {
+        require(isDelegate(_adr, _priority));
+    }
+
+    function setDelegate(address _adr, uint _priority) public {
+        checkDelegate(msg.sender, 1);
+        addDelegate(_adr, _priority);
+    }
+
+    function isDelegate(address _adr, uint _priority) public constant returns (bool)  {
+        if (_adr == address(this)) return true;
+        if (!exists_[_adr]) return false;
+
+        uint index = indice_[_adr];
+        return (priorities_[index] != 0 && priorities_[index] <= _priority);
     }
 }
