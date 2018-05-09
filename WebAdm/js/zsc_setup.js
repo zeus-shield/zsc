@@ -9,12 +9,13 @@ function ZSCSetup(logRecorderAdr, zscTokenAdr, adrs) {
     this.PosAdvAdr = adrs[2];
     this.WalletManagerAdr = adrs[3];
     this.SimulatorManagerAdr = adrs[4];
-    this.FactoryManagerAdr = adrs[5];
-    this.FactoryProAdr = adrs[6];
-    this.FactoryRecAdr = adrs[7];
-    this.FactoryTmpAdr = adrs[8];
-    this.FactoryAgrAdr = adrs[9];
-    this.ControlApisAdvAdr = adrs[10];
+    this.DatabaseManagerAdr = adrs[5];
+    this.FactoryManagerAdr = adrs[6];
+    this.FactoryProAdr = adrs[7];
+    this.FactoryRecAdr = adrs[8];
+    this.FactoryTmpAdr = adrs[9];
+    this.FactoryAgrAdr = adrs[10];
+    this.ControlApisAdvAdr = adrs[11];
     this.zscTokenAdr = zscTokenAdr;
     this.account = web3.eth.accounts[0];
 }
@@ -142,7 +143,7 @@ ZSCSetup.prototype.initDatabase = function(abiName, hashID) {
     });
 }  
 
-ZSCSetup.prototype.initFactory = function(FactoryModule, FactoryAdr， hashID) {
+ZSCSetup.prototype.initFactory = function(FactoryModule, FactoryAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(FactoryModule));
     var myFactory= myContract.at(FactoryAdr);
     myFactory.initFactory(this.FactoryManagerAdr, {from: web3.eth.accounts[0], gas: 9000000},
@@ -165,13 +166,25 @@ ZSCSetup.prototype.setSystemModules = function(abiName, hashID) {
     });
 } 
 
-ZSCSetup.prototype.addFactory = function(abiName, factoryType, FactoryAdr, hashID) {
+ZSCSetup.prototype.addFactoryModule = function(abiName, factoryType, FactoryAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var myFactoryGM = myContract.at(this.FactoryManagerAdr);
-    myFactoryGM.addFactory(factoryType, FactoryAdr, {from: web3.eth.accounts[0], gas: 9000000},
-    function(error, result){ 
-        if(!error) this.showHashResult(hashID, result);
-        else console.log("error: " + error);
-    });
+    myFactoryGM.addFactory(factoryType, FactoryAdr, 
+        {from: this.account, gas: 9000000},
+        function(error, result){ 
+            if(!error) this.showHashResult(hashID, result);
+            else console.log("error: " + error);
+        });
+}
+
+ZSCSetup.prototype.addDatabaseModule = function(abiName, databaseName, databaseAdr, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi(abiName));
+    var myDatabaseGM = myContract.at(this.DatabaseManagerAdr);
+    myDatabaseGM.addDatabase(databaseName, databaseAdr, 
+        {from: this.account, gas: 9000000},
+        function(error, result){ 
+            if(!error) this.showHashResult(hashID, result);
+            else console.log("error: " + error);
+        });
 }
 
