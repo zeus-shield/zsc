@@ -16,6 +16,8 @@ function cC_getContractFullName(contractName) {
         return "./zsc/db/Database/log_recorder.sol:LogRecorder";
     } else if (contractName == 'WalletManager') {
         return "./zsc/db/Database/wallet_manager.sol:WalletManager";
+    } else if (contractName == 'DatabaseManager') {
+        return "./zsc/db/Database/database_manager.sol:DatabaseManager";
     } else if (contractName == 'SimulatorManager') {
         return "./zsc/db/Database/simulator_manager.sol:SimulatorManager";
     } else if (contractName == 'FactoryManager') {
@@ -55,7 +57,9 @@ function cC_getCompiledFile(contractName) {
     } else if (contractName == 'SimulatorManager') {
         return compiledSimulatorManager;
     } else if (contractName == 'FactoryManager') {
-        return compiledFactoryManager;
+        return compiledSimulatorManager;
+    } else if (contractName == 'DatabaseManager') {
+        return compiledDatabaseManager;
     } else if (contractName == 'DBDatabase') {
         return compiledDatabase;
     } else if (contractName == 'FactoryPro') {
