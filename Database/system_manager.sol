@@ -10,16 +10,17 @@ contract DBManager is Object {
     function getDatabase(bytes32 _name) public returns (address);
 }
 
-contract ModuleManager is Object {
+contract SystemManager is Object {
     address private apiController_ = address(0);
     address private databaseGM_ = address(0);
     mapping(bytes32 => address) private factories_;
+    mapping(bytes32 => address) private factoryExists_;
 
 
     constructor(bytes32 _name) public Object(_name) {
     }
 
-    function initManagerManager(address _controller, address _databaseGM) public {
+    function initModuleManager(address _controller, address _databaseGM) public {
         checkDelegate(msg.sender, 1);
         
         require(apiController_ == address(0) && databaseGM_ == address(0));
@@ -28,37 +29,26 @@ contract ModuleManager is Object {
         databaseGM_ = _databaseGM;
         apiController_ = _controller;
 
-        setDelegate(databaseGM_, 0);
-        setDelegate(apiController_, 0);
+        setDelegate(databaseGM_, 1);
+        setDelegate(apiController_, 1);
     }
 
-    function addFactory(bytes32 _commenName, address _factory) public returns (bool) {
+    function addFactory(bytes32 _type, address _adr) public returns (bool) {
         checkDelegate(msg.sender, 1);
 
-        require(!pairExists_[_nameCommen]);
-        require(_module != address(0) && _database != address(0))
+        require(!factoryExists_[_type]);
+        require(_factory != address(0));
 
-        pairs_[_nameCommen] = PairInfo(_nameCommen, _module, _database);
+        factories_[_type] = _adr;
+        setDelegate(_adr, 1);
 
-        ManagerBase(adrDatabase).internalShareDelegate(adrModule);
+        Object(_adr).setDelegate(apiController_, 1);
 
-        require(_moduleAdr != address(0) && _databaseAdr != address(0));
-
-        if (modules_[_name] == address(0)) {
-            setDelegate(_moduleAdr, 1);
-
-            exists_[_name] = true;
-            modules_[_name] = _moduleAdr;
-            databases_[_name] = _databaseAdr;
-
-            Object(_moduleAdr).setDelegate(apiController_, 1);
-            Object(_databaseAdr).setDelegate(apiController_, 1);
-
-            FactoryBase(_databaseAdr).setDatabase(_databaseAdr);            
-            DBDatabase(_databaseAdr).delegateModuleManager(_moduleAdr, 1);
-            return true;
-        } else {
-            return false;
+        FactoryBase(_databaseAdr).setDatabase(_databaseAdr);            
+        DBDatabase(_databaseAdr).delegateModuleManager(_moduleAdr, 1);
+        return true;
+       lse {
+        return false;
         }
     }
 
