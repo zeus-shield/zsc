@@ -11,7 +11,7 @@ contract SystemBase is Object {
     function getAdr(bytes32 _name) public returns (address);
     function setFactoryDatabase(bytes32 _objectName, address _databaseAdr) public;
     function setModuleDatabase(address _databaseAdr) public;
-    function delegateObject(bytes32 _databaseName, address _objectAdr, uint _priority) public;
+    function delegateObject( address _objectAdr, uint _priority) public;
 }
 
 contract SystemManager is Object {
@@ -71,6 +71,8 @@ contract SystemManager is Object {
         modules_[_name] = _adr;
         moduleExists_[_name] = true;
 
+        SystemBase(factoryGM_).delegateObject(_adr, 1);
+
         return true;
     }
 
@@ -86,7 +88,7 @@ contract SystemManager is Object {
         address factoryAdr = getFactory(_factroyName);
         address datbaseAdr = getDatabase(_databaseName);
 
-        SystemBase(databaseAdr).delegateObject(_databaseName, factoryAdr, 1);
+        SystemBase(databaseAdr).delegateObject(factoryAdr, 1);
         SystemBase(databaseGM_).setFactoryDatabase(_factroyName, datbaseAdr);
     }
 
