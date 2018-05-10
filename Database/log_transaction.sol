@@ -6,7 +6,7 @@ pragma solidity ^0.4.21;
 
 import "./log_base.sol";
 
-contract LogTransaction is LogBase {
+contract LogTransaction is LogBase, Delegated {
 
     constructor() public {}
 
