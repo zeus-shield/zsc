@@ -5,19 +5,20 @@ Copyright (c) 2018, ZSC Dev Team
 pragma solidity ^0.4.21;
 
 import "./simulator_base.sol";
+import "./manager_base.sol";
 
-contract WalletBase is Object {
+contract WalletBase {
     function getBlance(bool _locked) public constant returns (uint256);
     function getLockBalanceInfoByAgreement(address _agreementAdr) public constant returns (uint, uint, uint, address);
     function setLockValue(bool _tag, uint _amount, uint _duration, address _agreementAdr) public returns (bool);
     function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (bool);
 }
 
-contract DBDatabase is Object { 
+contract DBDatabase { 
     function getNode(bytes32 _name) public constant returns (address);
 }
 
-contract SimulatorManager is Object {
+contract SimulatorManager is ManagerBase {
     uint private simulationNos_;
     uint private simulationTempNos_;
     mapping(uint => address) private simulationRuns_;
@@ -25,26 +26,8 @@ contract SimulatorManager is Object {
     mapping(bytes32 => bool) private simulationExist_;
     mapping(address => bool) private rewarded_;
 
-    address private bindedDB_;
-    address private apiController_;
-
-    constructor(bytes32 _name) public Object(_name) {
+    constructor(bytes32 _name) public ManagerBase(_name) {
         simulationNos_ = 0;
-    }
-
-    function initSimulatorManager(address _controller, address _database) public {
-        checkDelegate(msg.sender, 1);
-
-        require(_database != 0);
-        bindedDB_ = _database;
-
-        if (_controller != 0 && _controller != apiController_) {
-            if (apiController_ != 0) {
-                setDelegate(apiController_, 0);
-            }
-            apiController_ = _controller;
-            setDelegate(_controller, 1);
-        }
     }
 
     function formatSimulationName() private constant returns (bytes32) {
