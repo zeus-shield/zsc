@@ -16,6 +16,10 @@ contract LogManager is Delegated {
         bool registered_;
     }
     
+    /* listener address list */
+    address[] addrs_;
+
+    /* listener address => listener info */
     mapping(address => Listener)listeners_;
 
     constructor() public Delegated() {}
@@ -24,8 +28,18 @@ contract LogManager is Delegated {
         /* check delegate */
         checkDelegate(msg.sender, 1);
 
-        /* TODO */
+        for(uint i=0; i<addrs_.length; i++ ) {
+            if(0 != addrs_[i])
+            {
+                if(0 != listeners_[addrs_[i]].log_instance_)
+                {
+                    Delegated(listeners_[addrs_[i]].log_instance_).kill();
+                }
+                delete listeners_[addrs_[i]];
+            }
+        }
         
+        delete addrs_;
         super.kill();
     }
 
@@ -47,7 +61,7 @@ contract LogManager is Delegated {
             instance = new LogTransaction();
         }
         else if(_type == 1) {
-            instance = new LogUser();
+            //instance = new LogUser();
         }
         else if(_type == 2) {
             /* TODO */
@@ -55,6 +69,8 @@ contract LogManager is Delegated {
         else {
             require(false);
         }
+
+        addr_.push(_addr);
         
         listeners_[_addr].log_instance_ = instance;
         listeners_[_addr].name_ = _name;
