@@ -72,9 +72,10 @@ contract SimulatorManager is Object {
     function runSimulation(uint _steps) public;
 }
 
-contract ModuleManager is Object {
-    function getModuleObj(bytes32 _name) public returns (address);
-    function getModuleDatabase(bytes32 _name) public returns (address);
+contract SystemManager is Object {
+    function getFactory(bytes32 _name) public returns (address);
+    function getDatabase(bytes32 _name) public returns (address);
+    function getModuleManager(bytes32 _name) public returns (address)
 }
 
 contract DBFactory is Object { 
@@ -95,7 +96,7 @@ contract ControlBase is ControlInfo {
     mapping(uint => bytes32) private factoryTypes_;
     mapping(bytes32 => address) private factories_;
     address private databaseGM_;
-    address private moduleGM_;
+    address private systemGM_;
 
     address private bindedAdm_;
     address private bindedPos_;
@@ -117,12 +118,12 @@ contract ControlBase is ControlInfo {
         temp = PlatString.tobytes32(str);
     }
     
-    function setSystemModuleAdrs(address _adm, address _walletGM, address _zscToken) internal {
-        require (_adm != 0 && _db != 0 && _walletGM != 0 && _pos != 0 && _zscToken != 0);     
+    function setSystemModuleAdrs(address _adm, address _systemGM, address _zscToken) internal {
+        require (_adm != 0 && _db != 0 && _systemGM != 0 && _zscToken != 0);     
 
         zscTokenAddress_ = _zscToken;
 
-        moduleGM_ = _moduleGM;
+        systemGM_ = _systemGM;
         setDelegate(moduleGM_, 1);
 
         bindedAdm_ = _adm;
@@ -132,23 +133,23 @@ contract ControlBase is ControlInfo {
     }
 
     function getDBDatabase(bytes32 _name) internal constant returns (DBDatabase) { 
-        return DBDatabase(ModuleManager(moduleGM_).getModuleDatabase(_name));
+        return DBDatabase(SystemManager(systemGM_).getDatabase(_name));
     }
 
     function getDBFactory(bytes32 _name) internal constant returns (DBFactory) {
-        return DBFactory(ModuleManager(moduleGM_).getModuleObj(_name));
+        return DBFactory(SystemManager(systemGM_).getFactory(_name));
     }
 
     function getWalletManager() internal constant returns (WalletManager) {      
-        return DBDatabase(ModuleManager("wallet-gm").getModuleObj(_name));
+        return DBDatabase(SystemManager(systemGM_).getModuleManager("wallet-gm"));
     }
 
     function getPosManager() internal constant returns (PosManager) {      
-        return DBDatabase(ModuleManager("pos-gm").getModuleObj(_name));
+        return DBDatabase(SystemManager(systemGM_).getModuleManager("pos-gm"));
     }
 
     function getSimulatorManager() internal constant returns (SimulatorManager) {      
-        return DBDatabase(ModuleManager("simulator-gm").getModuleObj(_name));
+        return DBDatabase(SystemManager(systemGM_).getModuleManager("simulator-gm"));
     }
 
     function getDBNode(bytes32 _type, bytes32 _node) internal constant returns (DBNode) {      
