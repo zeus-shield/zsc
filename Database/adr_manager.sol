@@ -4,10 +4,9 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./object.sol";
+import "./manager_base.sol";
 
-contract AdrManager is Object {
-    address private systemGM_;
+contract AdrManager is ManagerBase {
     uint private adrNos_;
 
     mapping(uint => bytes32) private names_;
@@ -20,15 +19,6 @@ contract AdrManager is Object {
     constructor(bytes32 _name) public Object(_name) {
     }
 
-    function initAdrManager(address _systemGM) internal {
-        require(_systemGM != 0);
-        if (_systemGM != systemGM_) {
-            setDelegate(systemGM_, 0);
-            setDelegate(_systemGM, 1);
-            systemGM_ = _systemGM;
-        }
-    }
-
     function numAdrs() public constant returns (uint) {
         checkDelegate(msg.sender, 1);
         return adrNos_;
@@ -37,7 +27,7 @@ contract AdrManager is Object {
     function addAdr(bytes32 _name, address _id) public returns (bool) {
         checkDelegate(msg.sender, 1);
         require(!exists_[_name]);
-        
+
         exists_[_name] = true;
         indice_[_name] = idNos_;
         names_[idNos_] = _name;
