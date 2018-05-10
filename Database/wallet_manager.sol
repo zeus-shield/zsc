@@ -4,9 +4,9 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./module_base_adv.sol";
+import "./manager_base.sol";
 
-contract WalletManager is ModuleBaseAdv {
+contract WalletManager is ManagerBase {
     struct Erc20Token {
         bytes32 name_;  
         bytes32 status_;
@@ -26,26 +26,10 @@ contract WalletManager is ModuleBaseAdv {
     mapping(bytes32 => uint) private erc20TokenIndice_;
     mapping(bytes32 => bool) private erc20TokenExists_;
 
-    address private bindedDB_;
-    address private apiController_;
-
     // Constructor
-    constructor() public ModuleBaseAdv("zsc_wallet_manager") {
+    constructor() public ManagerBase("zsc_wallet_manager") {
         tokenNos_ = 0;
     } 
-
-    function initWalletManager(address _controller, address _database) public {
-        require(_database != 0);
-        bindedDB_ = _database;
-
-        if (_controller != 0 && _controller != apiController_) {
-            if (apiController_ != 0) {
-                setDelegate(apiController_, 0);
-            }
-            apiController_ = _controller;
-            setDelegate(_controller, 1);
-        }
-    }
 
     function doesTokenContractAdded(bytes32 _symbol) public constant returns (bool) {
         checkDelegate(msg.sender, 1);
@@ -108,15 +92,8 @@ contract WalletManager is ModuleBaseAdv {
                 erc20Tokens_[_index].tokenAdr_);
     }
 
-
-contract ModuleManager is Object {
-    function getModuleObj(bytes32 _name) public returns (address);
-    function getModuleDatabase(bytes32 _name) public returns (address);
-}
-
     function enableWalletByUser(bytes32 _type, bytes32 _user, bytes32 _tokeSymbol, address _creator) internal returns (address) {
-        address dbAdr = getModuleManager().getModuleDatabase("user");
-        address ndAdr = Database(dbAdr).getNode(_user);
+        address ndAdr = Database(bindedDatabase_).getNode(_user);
 
         require(ndAdr != address(0));
         
