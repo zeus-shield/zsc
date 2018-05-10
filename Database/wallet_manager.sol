@@ -92,33 +92,36 @@ contract WalletManager is ManagerBase {
                 erc20Tokens_[_index].tokenAdr_);
     }
 
-    function enableWalletByUser(bytes32 _type, bytes32 _user, bytes32 _tokeSymbol, address _creator) internal returns (address) {
-        address ndAdr = Database(bindedDatabase_).getNode(_user);
+    function enableWalletByUser(bytes32 _type, bytes32 _user, bytes32 _tokeSymbol, address _creator) public returns (address) {
+        checkDelegate(msg.sender, 1);
 
+        address ndAdr = DBDatabase(getDatabase()).getNode(_user);
         require(ndAdr != address(0));
         
-        if (DBNode(_user).getNodeType() == "staker" && _tokeSymbol != "ZSC") {
-            return address(0);
+        bytes32 ndType = DBNode(_user).getNodeType();
+
+        if (ndType == "provider" || ndType == "receiver") {
+            if (_tokeSymbol != "ZSC") return address(0);
+
+            address parentNode = getDBNode(_user).getHandler("wallet");
+            address erc20Address = 0; 
+            bytes32 temp;
+    
+            temp = formatWalletName(_user, _tokeSymbol);
+    
+            if (_tokeSymbol != "ETH") {
+                erc20Address = getTokenContractAddress(_tokeSymbol);
+                require(erc20Address != 0);
+            }
+
+            address systemGM   = getSystemManager();
+            address factoryAdr = SystemManager(systemGM).getDBFactory(_type);
+            address walletAdr  = DBFactory(factoryAdr).createNode(temp, parentNode, _creator);
+            require(walletAdr != 0);
+    
+            DBNode(walletAdr).setERC20TokenAddress(erc20Address);    
+            return walletAdr;
         }
-
-        address parentNode = getDBNode(_user).getHandler("wallet");
-        address erc20Address = 0; 
-        bytes32 temp;
-
-        temp = formatWalletName(_user, _tokeSymbol);
-
-        if (_tokeSymbol != "ETH") {
-            erc20Address = WalletManager(walletGM_).getTokenContractAddress(_tokeSymbol);
-            require(erc20Address != 0);
-        }
-
-        address walletAdr = getDBFactory(_type).createNode(temp, parentNode, _creator);
-        require(walletAdr != 0);
-        registerEntityNode(_user, DBNode(walletAdr).name(), walletAdr, _creator);
-
-        DBNode(walletAdr).setERC20TokenAddress(erc20Address);
-        WalletManager(walletGM_).enableTokenByHolder(_tokeSymbol, DBNode(walletAdr).name(), walletAdr);
-
-        return walletAdr;
+        return address(0);
     }
 }
