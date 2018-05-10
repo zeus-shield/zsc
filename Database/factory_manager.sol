@@ -34,10 +34,10 @@ contract FactoryManager is AdrManager {
         return super.removeAdr(_name);
     }
 
-    function setFactoryDatabase(bytes32 _factoryName, address _databaseAdr) public {
+    function setDatabase(bytes32 _objectName, address _databaseAdr) public {
         checkDelegate(msg.sender, 1); 
 
-        address factoryAdr = getAdr(_name);
+        address factoryAdr = getAdr(_objectName);
         FactoryBase(factoryAdr).setDatabase(_databaseAdr);
     }
 }
