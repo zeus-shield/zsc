@@ -23,11 +23,4 @@ contract DBManager is AdrManager {
 
         return super.removeAdr(_name);
     }
-
-    function delegateObject(bytes32 _databaseName, address _objectAdr, uint _priority) public {
-        checkDelegate(msg.sender, 1); 
-
-        address dbAdr = getAdr(_databaseName);
-        Object(dbAdr).setDelegate(_objectAdr, _priority);
-    }
 }
