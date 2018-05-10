@@ -8,16 +8,10 @@ import "./adr_manager.sol";
 
 contract FactoryBase {
 	function setDatabase(address _adr) public;
-    function getDatabase() public constant returns (address);
 }
 
 contract FactoryManager is AdrManager {
     constructor(bytes32 _name) public AdrManager(_name) {
-    }
-
-    function initFactoryManager(address _systemGM) public {
-        checkDelegate(msg.sender, 1);
-        initAdrManager(_systemGM);
     }
 
     function addAdr(bytes32 _name, address _database) public returns (bool) {
@@ -34,10 +28,10 @@ contract FactoryManager is AdrManager {
         return super.removeAdr(_name);
     }
 
-    function setDatabase(bytes32 _objectName, address _databaseAdr) public {
+    function setDatabase(bytes32 _factoryName, address _databaseAdr) public {
         checkDelegate(msg.sender, 1); 
 
-        address factoryAdr = getAdr(_objectName);
+        address factoryAdr = getAdr(_factoryName);
         FactoryBase(factoryAdr).setDatabase(_databaseAdr);
     }
 }
