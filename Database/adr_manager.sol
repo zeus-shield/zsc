@@ -61,4 +61,11 @@ contract AdrManager is ManagerBase {
         return adrs_[indice_[_name]];
     }
 
+    function delegateObject(address _objectAdr, uint _priority) public {
+        checkDelegate(msg.sender, 1); 
+
+        for (uint i = 0; i < adrNos_; ++i) {
+            Object(adrs_[i]).setDelegate(_objectAdr, _priority);
+        }
+    }
 }
