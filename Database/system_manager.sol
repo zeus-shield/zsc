@@ -78,8 +78,17 @@ contract SystemManager is Object {
         return true;
     }
 
+    function getDatabaseManager() public constant returns (address) {
+        checkDelegate(msg.sender, 1);
+        require(databaseGM_ != address(0));
+
+        return databaseGM_;
+    }
+
     function getFactoryManager() public constant returns (address) {
         checkDelegate(msg.sender, 1);
+        require(factoryGM_ != address(0));
+        
         return factoryGM_;
     }
 
