@@ -23,4 +23,20 @@ contract DBManager is AdrManager {
 
         return super.removeAdr(_name);
     }
+
+    function operateNodeParameter(bytes32 _operation, bytes32 _userName, bytes32 _node, bytes32 _parameter, string _value) internal returns (bool) {
+        bool ret;
+        string memory str = ""; 
+        str = PlatString.append(str, PlatString.bytes32ToString(_node), " : " );
+        str = PlatString.append(str, PlatString.bytes32ToString(_parameter), " : " , _value);
+        if (_operation == "add") {
+            str = PlatString.append("addNodeParameter - ", str);
+            ret = getDBNode(_node).addParameter(_parameter);
+        } else if (_operation == "set") {
+            str = PlatString.append("setNodeParameter - ", str);
+            ret = getDBNode(_node).setParameter(_parameter, _value);
+        }        
+        addLog(str, true);
+        return ret;
+    }
 }
