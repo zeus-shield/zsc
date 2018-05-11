@@ -11,6 +11,7 @@ contract LogTransaction is LogBase {
     struct LogInfo {
         uint nos_;
         bytes32 name_;
+        uint now_;
         mapping(uint => string) logs_;
     }
 
@@ -23,6 +24,7 @@ contract LogTransaction is LogBase {
 
         print_log_.nos_ = 1;
         print_log_.name_ = _name;
+        print_log_.now_ = 0;
         print_log_.logs_[0] = "registered";
     }
 
@@ -35,6 +37,7 @@ contract LogTransaction is LogBase {
         } else {
             print_log_.logs_[index] = PlatString.append(print_log_.logs_[index], _log);
         }
+        print_log_.now_ = now;
     }
     
     function printLog(uint _index) public view returns (string) {
