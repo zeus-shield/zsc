@@ -7,7 +7,7 @@ pragma solidity ^0.4.21;
 import "./delegate.sol";
 
 contract LogBase is Delegated {
-    function initLog() public;
+    function initLog(bytes32 _name) public;
     function addLog(string _log, bool _newLine) public;
-    function printLog(address _addr, uint _index) public constant returns (string);
+    function printLog(uint _index) public constant returns (string);
 }
