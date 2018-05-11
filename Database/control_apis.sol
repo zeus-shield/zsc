@@ -100,7 +100,12 @@ contract ControlApis is ControlBase {
             creatorAdr = msg.sender;
         }
 
-        return createFactoryNode(_factoryType, _userName, _enName, _extraInfo, creatorAdr);
+        address ndAdr = getFactoryManager().createFactoryNode(createFactoryNode, _userName, _enName, _extraInfo, creatorAdr);
+        if (_factoryType == "staker") {
+            getPosManager().registerStaker(adr);
+        }  
+
+        return ndAdr;
     }
 
     function enableElementWallet(bytes32 _userName, bytes32 _tokeSymbol, address _extraAdr) public returns (address) {
@@ -113,13 +118,7 @@ contract ControlApis is ControlBase {
             creatorAdr = msg.sender;
         }
 
-        bytes32 factoryType;
-        if (_tokeSymbol == "ETH") {
-            factoryType = "wallet-eth";
-        } else {
-            factoryType = "wallet-erc20";
-        }
-        return enableWallet(factoryType, _userName, _tokeSymbol, creatorAdr);
+        return getWalletManager().enableWalletByUser(_userName, _tokeSymbol, creatorAdr);
     }
 
     /// @dev Get the element by its address
