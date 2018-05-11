@@ -58,8 +58,6 @@ contract SystemManager is Object {
 
 contract DBFactory is Object { 
     function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
-    function numFactoryElements() public constant returns (uint);
-    function getFactoryElementByIndex(uint _index) public constant returns (address);
 }
 
 contract ManagerBase is Object {
