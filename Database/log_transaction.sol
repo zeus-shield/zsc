@@ -10,6 +10,7 @@ contract LogTransaction is LogBase {
 
     struct LogInfo {
         uint nos_;
+        bytes32 name_;
         mapping(uint => string) logs_;
     }
 
@@ -17,10 +18,11 @@ contract LogTransaction is LogBase {
 
     constructor() public LogBase() {}
 
-    function initLog() public {
+    function initLog(bytes32 _name) public {
         checkDelegate(msg.sender, 1);
 
         print_log_.nos_ = 1;
+        print_log_.name_ = _name;
         print_log_.logs_[0] = "registered";
     }
 
@@ -35,9 +37,15 @@ contract LogTransaction is LogBase {
         }
     }
     
-    function printLog(address _addr, uint _index) public view returns (string) {
-        /* TODO */
-        string memory str = "TODO"; 
+    function printLog(uint _index) public view returns (string) {
+
+        checkDelegate(msg.sender, 1);
+
+        if (_index >= print_log_.nos_ ) 
+            return "null";
+
+        string memory str = PlatString.bytes32ToString(print_log_.name_);
+        str = PlatString.append("[", str, "] ", print_log_.logs_[_index]);
         return str;
     }
 }
