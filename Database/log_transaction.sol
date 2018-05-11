@@ -6,11 +6,25 @@ pragma solidity ^0.4.21;
 
 import "./log_base.sol";
 
-contract LogTransaction is LogBase, Delegated {
+contract LogTransaction is LogBase {
 
-    constructor() public {}
+    struct LogInfo {
+        uint nos_;
+        mapping(uint => string) logs_;
+    }
 
-    function addLog(string _log, bool _newLine) public {
+    LogInfo print_log_;
+
+    constructor() public Delegated() {}
+
+    function initLog() public {
+        checkDelegate(msg.sender, 1);
+
+        print_log_.nos_ = 1;
+        print_log_.logs_[0] = "registered";
+    }
+
+    function addLog(string _log, bool _newLine) public {        
         /* TODO */
     }
     
