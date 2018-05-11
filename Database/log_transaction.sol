@@ -55,7 +55,14 @@ contract LogTransaction is LogBase {
 
         checkDelegate(msg.sender, 1);
 
-        /* TODO */
-
+        string memory str = PlatString.bytes32ToString(name_);
+        str = PlatString.append("[", str, "]\n");
+        for(uint i=0; i<=nos_; i++) {
+            if(_startTime <= log_[i].now_  && _endTime >= log_[i].now_) {
+                string memory time = PlatString.uintToString(log_[i].now_);
+                str = PlatString.append(str, "[", time, "} ",log_[i].info_, "\n");
+            }
+        }
+        return str;
     }
 }
