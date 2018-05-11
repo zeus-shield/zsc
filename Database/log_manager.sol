@@ -79,7 +79,7 @@ contract LogManager is Delegated {
         listeners_[_addr].name_ = _name;
         listeners_[_addr].registered_ = true;
 
-        LogBase(instance).initLog(_addr, _name);
+        LogBase(instance).initLog();
     }
 
     function addLog(string _log, bool _newLine) public {
@@ -106,6 +106,6 @@ contract LogManager is Delegated {
         /* check instance */
         require(0 != listeners_[_addr].log_instance_);
 
-        return LogBase(listeners_[msg.sender].log_instance_).printLog(_addr, _index);
+        return LogBase(listeners_[msg.sender].log_instance_).printLog(_index);
     }
 }
