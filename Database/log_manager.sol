@@ -10,6 +10,7 @@ import "./delegate.sol";
 
 contract LogManager is Delegated {
     
+    
     struct Listener {
         address log_instance_;
         bytes32 name_;
@@ -70,11 +71,15 @@ contract LogManager is Delegated {
             require(false);
         }
 
-        addr_.push(_addr);
+        require(0 != instance);
+
+        addrs_.push(_addr);
         
         listeners_[_addr].log_instance_ = instance;
         listeners_[_addr].name_ = _name;
         listeners_[_addr].registered_ = true;
+
+        LogBase(instance).initLog(_addr, _name);
     }
 
     function addLog(string _log, bool _newLine) public {
