@@ -141,7 +141,6 @@ contract ControlApis is ControlBase {
         return nd.getNodeType();
     }
 
-
     /// @dev Add a paramter to an element
     /// @param _enName The name of the existing element
     /// @param _parameter The name of the added parameter
@@ -149,7 +148,8 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return operateNodeParameter(_userName, "add", _enName, _parameter, "");
+        bool ret = getDatabaseManager().operateNodeParameter(_userName, "add", _enName, _parameter, "");
+        require(ret);
     }
 
     /// @dev Set the value to a paramter of an element 
@@ -160,7 +160,12 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return operateNodeParameter(_userName, "set", _enName, _parameter, _value);
+        bool ret = getDatabaseManager().operateNodeParameter(_userName, "set", _enName, _parameter, "");
+        require(ret);
+        
+        setNodeParameterValue(_userName, _node, _parameter, _value);
+
+        return true;
     }
 
     /// @dev Get the value of a paramter of an element

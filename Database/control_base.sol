@@ -74,9 +74,12 @@ contract SimulatorManager is Object {
 }
 
 contract SystemManager is Object {
-    function getFactory(bytes32 _name) public returns (address);
-    function getDatabase(bytes32 _name) public returns (address);
-    function getModuleManager(bytes32 _name) public returns (address)
+    function getFactory(bytes32 _name) public constant returns (address);
+    function getDatabase(bytes32 _name) public constant returns (address);
+    function getModuleManager(bytes32 _name) public constant returns (address);
+
+    function getDatabaseManager() public constant returns (address);
+    function getFactoryManager() public constant returns (address);
 }
 
 contract DBFactory is Object { 
@@ -95,6 +98,10 @@ contract DBDatabase is Object {
 
 contract FactoryManager {
     function createFactoryNode(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra, address _creator) internal returns (address);
+}
+
+contract DBManager {
+    function operateNodeParameter(bytes32 _operation, bytes32 _userName, bytes32 _node, bytes32 _parameter, string _value) internal returns (bool);
 }
 
 contract ControlBase is ControlInfo {   
@@ -137,12 +144,16 @@ contract ControlBase is ControlInfo {
         addLog("setSystemModules ", true);
     }
 
-    function getDBDatabase(bytes32 _name) internal constant returns (DBDatabase) { 
-        return DBDatabase(SystemManager(systemGM_).getDatabase(_name));
+    function getFactoryManager() internal constant returns (DBFactory) {
+        return SystemManager(systemGM_).getFactoryManager();
     }
 
-    function getFactoryManager() internal constant returns (DBFactory) {
-        return DBFactory(SystemManager(systemGM_).getFactory(_name));
+    function getDatabaseManager() internal constant returns (DBManager) {
+        return SystemManager(systemGM_).getDatabaseManager());
+    }
+
+    function getDBDatabase(bytes32 _name) internal constant returns (DBDatabase) { 
+        return DBDatabase(SystemManager(systemGM_).getDatabase(_name));
     }
 
     function getWalletManager() internal constant returns (WalletManager) {      
@@ -161,40 +172,6 @@ contract ControlBase is ControlInfo {
         return DBNode(getDBDatabase(_type).getNode(_node));
     }
 
-    function createFactoryNode(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra, address _creator) internal returns (address) {
-        address adr;
-        address parentNode = address(0);
-
-        if (_type == "template") {
-            parentNode = getDBNode(_userName).getHandler(_type);
-        } else if (_type == "agreement") {
-            uint copies = PlatString.stringToUint(getNodeParameterValue(_userName, _extra, "copies"));
-            parentNode = address(getDBNode(_extra));
-            require(DBNode(parentNode).numChildren() < copies);
-        }
-
-        adr = getDBFactory(_type).createNode(_nodeName, parentNode, _creator);
-        require(adr != 0);
-
-        if (_type == "provider" || _type == "receiver" || _type == "staker") {
-            DBNode(adr).configureHandlers();
-            DBNode(adr).setId(_creator);
-            registerUserNode(_nodeName, adr, _creator);
-        } else {
-            registerEntityNode(_userName, _nodeName, adr, _creator);
-        }
-
-        if (_type == "staker") {
-            PosManager(bindedPos_).registerStaker(adr);
-        } else if (_type == "template") {
-            DBNode(adr).setParameter("provider", PlatString.bytes32ToString(_userName));
-        } else if (_type == "agreement") {
-            duplicateNode(_userName, _extra,  _nodeName);
-            DBNode(adr).setAgreementStatus("READY", "null");
-        }
-        return adr;
-    }
-
     function operateNodeParameter(bytes32 _operation, bytes32 _userName, bytes32 _node, bytes32 _parameter, string _value) internal returns (bool) {
         bool ret;
         string memory str = ""; 
@@ -206,7 +183,6 @@ contract ControlBase is ControlInfo {
         } else if (_operation == "set") {
             str = PlatString.append("setNodeParameter - ", str);
             ret = getDBNode(_node).setParameter(_parameter, _value);
-            setNodeParameterValue(_userName, _node, _parameter, _value);
         }        
         addLog(str, true);
         return ret;
