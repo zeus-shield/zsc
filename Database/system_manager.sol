@@ -52,13 +52,13 @@ contract SystemManager is Object {
         SystemBase(databaseGM_).addAdr(_name, _adr);
     }
 
-    function getFactory(bytes32 _name) public returns (address) {
+    function getFactory(bytes32 _name) public constant returns (address) {
         checkDelegate(msg.sender, 1);
 
         return SystemBase(factoryGM_).getAdr(_name);
     }
 
-    function getDatabase(bytes32 _name) public returns (address) {
+    function getDatabase(bytes32 _name) public constant returns (address) {
         checkDelegate(msg.sender, 1);
 
         return SystemBase(databaseGM_).getAdr(_name);
@@ -68,6 +68,8 @@ contract SystemManager is Object {
         checkDelegate(msg.sender, 1);
         require(!moduleExists_(_name));
 
+        setDelegate(_adr, 1);
+
         modules_[_name] = _adr;
         moduleExists_[_name] = true;
 
@@ -76,7 +78,12 @@ contract SystemManager is Object {
         return true;
     }
 
-    function getModuleManager(bytes32 _name) public returns (address) {
+    function getFactoryManager() public constant returns (address) {
+        checkDelegate(msg.sender, 1);
+        return factoryGM_;
+    }
+
+    function getModuleManager(bytes32 _name) public constant returns (address) {
         checkDelegate(msg.sender, 1);
         require(moduleExists_(_name));
         return modules_[_name];

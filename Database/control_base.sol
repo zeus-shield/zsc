@@ -65,6 +65,7 @@ contract WalletManager is Object {
     function enableTokenByHolder(bytes32 _tokenSymbol, bytes32 _nodeName, address _nodeAddress) public returns (bool);
     function numTokenContracts() public constant returns (uint);
     function getTokenInfoByIndex(uint _index) public constant returns (bytes32, bytes32, bytes32, uint, address);
+    function enableWalletByUser(bytes32 _user, bytes32 _tokeSymbol, address _creator) public returns (address);
 }
 
 contract SimulatorManager is Object {
@@ -90,6 +91,10 @@ contract DBDatabase is Object {
     function numNodes() public constant returns (uint);
     function getNodeByIndex(uint _index) public constant returns (address);
     function destroyNode(address _node) public returns (bool);
+}
+
+contract FactoryManager {
+    function createFactoryNode(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra, address _creator) internal returns (address);
 }
 
 contract ControlBase is ControlInfo {   
@@ -136,7 +141,7 @@ contract ControlBase is ControlInfo {
         return DBDatabase(SystemManager(systemGM_).getDatabase(_name));
     }
 
-    function getDBFactory(bytes32 _name) internal constant returns (DBFactory) {
+    function getFactoryManager() internal constant returns (DBFactory) {
         return DBFactory(SystemManager(systemGM_).getFactory(_name));
     }
 
@@ -154,32 +159,6 @@ contract ControlBase is ControlInfo {
 
     function getDBNode(bytes32 _type, bytes32 _node) internal constant returns (DBNode) {      
         return DBNode(getDBDatabase(_type).getNode(_node));
-    }
-    
-    function enableWallet(bytes32 _type, bytes32 _user, bytes32 _tokeSymbol, address _creator) internal returns (address) {
-        require(getDBNode(_user) != DBNode(0));
-        
-        if (getDBNode(_user).getNodeType() == "staker" && _tokeSymbol != "ZSC") return address(0);
-
-        address parentNode = getDBNode(_user).getHandler("wallet");
-        address erc20Address = 0; 
-        bytes32 temp;
-
-        temp = formatWalletName(_user, _tokeSymbol);
-
-        if (_tokeSymbol != "ETH") {
-            erc20Address = WalletManager(walletGM_).getTokenContractAddress(_tokeSymbol);
-            require(erc20Address != 0);
-        }
-
-        address walletAdr = getDBFactory(_type).createNode(temp, parentNode, _creator);
-        require(walletAdr != 0);
-        registerEntityNode(_user, DBNode(walletAdr).name(), walletAdr, _creator);
-
-        DBNode(walletAdr).setERC20TokenAddress(erc20Address);
-        WalletManager(walletGM_).enableTokenByHolder(_tokeSymbol, DBNode(walletAdr).name(), walletAdr);
-
-        return walletAdr;
     }
 
     function createFactoryNode(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra, address _creator) internal returns (address) {
@@ -399,12 +378,12 @@ contract ControlBase is ControlInfo {
         if (_isFirstSubmit) {
             if (DBNode(userWallet).doesLastTransactionSigned()) {
                 if (tokenSymbol == "ETH") {
-                    agrWallet = enableWallet("wallet-eth", _agrName, tokenSymbol, _creator);
+                    agrWallet = getWalletManager().enableWalletByUser(_agrName, tokenSymbol, _creator);
                 } else {
                     if (!WalletManager(walletGM_).doesTokenContractAdded()) {
                         return 0;
                     } else {
-                        agrWallet = enableWallet("wallet-erc20", _agrName, tokenSymbol, _creator);
+                        agrWallet = getWalletManager().enableWalletByUser(_agrName, tokenSymbol, _creator);
                     }
                 }
                 amount = DBNode(userWallet).submitTransaction(agrWallet, lockedAmount, "", _creator);

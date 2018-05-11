@@ -31,6 +31,26 @@ contract WalletManager is ManagerBase {
         tokenNos_ = 0;
     } 
 
+    function formatWalletName(bytes32 _userName, bytes32 _tokenSymbol) internal pure returns (bytes32) {
+        string memory str;
+        bytes32 temp;
+        if (_tokenSymbol == "ETH") {
+            str = PlatString.append(_userName, "-ETH");
+        } else {
+            str = PlatString.append(_userName, "-", _tokenSymbol);
+        }
+        temp = PlatString.tobytes32(str);
+    }
+
+    function getTokenContractAddress(bytes32 _symbol) internal constant returns (address) {
+        checkDelegate(msg.sender, 1);
+
+        require(erc20TokenExists_[_symbol]);
+        
+        uint index = erc20TokenIndice_[_symbol];
+        return erc20Tokens_[index].tokenAdr_;
+    }
+
     function doesTokenContractAdded(bytes32 _symbol) public constant returns (bool) {
         checkDelegate(msg.sender, 1);
         return erc20TokenExists_[_symbol];
@@ -68,15 +88,6 @@ contract WalletManager is ManagerBase {
         erc20Tokens_[index].status_ = "false";
     }
 
-    function getTokenContractAddress(bytes32 _symbol) public constant returns (address) {
-        checkDelegate(msg.sender, 1);
-
-        require(erc20TokenExists_[_symbol]);
-        
-        uint index = erc20TokenIndice_[_symbol];
-        return erc20Tokens_[index].tokenAdr_;
-    }
-
     function numTokenContracts() public constant returns (uint) {
         return tokenNos_;
     }
@@ -92,35 +103,38 @@ contract WalletManager is ManagerBase {
                 erc20Tokens_[_index].tokenAdr_);
     }
 
-    function enableWalletByUser(bytes32 _type, bytes32 _user, bytes32 _tokeSymbol, address _creator) public returns (address) {
+    function enableWalletByUser(bytes32 _user, bytes32 _tokeSymbol, address _creator) public returns (address) {
         checkDelegate(msg.sender, 1);
 
         address ndAdr = DBDatabase(getDatabase()).getNode(_user);
         require(ndAdr != address(0));
         
         bytes32 ndType = DBNode(_user).getNodeType();
-
         if (ndType == "provider" || ndType == "receiver") {
-            if (_tokeSymbol != "ZSC") return address(0);
+            if (_tokeSymbol == "ZSC" || _tokeSymbol == "ETH") {
+                address parentNode = getDBNode(_user).getHandler("wallet");
+                address erc20Address = 0; 
+                bytes32 temp;
+                bytes32 factoryType;
+    
+                temp = formatWalletName(_user, _tokeSymbol);
 
-            address parentNode = getDBNode(_user).getHandler("wallet");
-            address erc20Address = 0; 
-            bytes32 temp;
+                if (_tokeSymbol == "ETH") {
+                    factoryType = "wallet-eth";
+                } else {
+                    factoryType = "wallet-erc20";
+                    erc20Address = getTokenContractAddress(_tokeSymbol);
+                    require(erc20Address != 0);
+                }
+
+                address systemGM   = getSystemManager();
+                address factoryAdr = SystemManager(systemGM).getFactory(factoryType);
+                address walletAdr  = DBFactory(factoryAdr).createNode(temp, parentNode, _creator);
+                require(walletAdr != 0);
     
-            temp = formatWalletName(_user, _tokeSymbol);
-    
-            if (_tokeSymbol != "ETH") {
-                erc20Address = getTokenContractAddress(_tokeSymbol);
-                require(erc20Address != 0);
+                DBNode(walletAdr).setERC20TokenAddress(erc20Address);    
+                return walletAdr;
             }
-
-            address systemGM   = getSystemManager();
-            address factoryAdr = SystemManager(systemGM).getDBFactory(_type);
-            address walletAdr  = DBFactory(factoryAdr).createNode(temp, parentNode, _creator);
-            require(walletAdr != 0);
-    
-            DBNode(walletAdr).setERC20TokenAddress(erc20Address);    
-            return walletAdr;
         }
         return address(0);
     }
