@@ -9,5 +9,6 @@ import "./delegate.sol";
 contract LogBase is Delegated {
     function initLog(bytes32 _name) public;
     function addLog(string _log, bool _newLine) public;
-    function printLog(uint _index) public constant returns (string);
+    function printLog(uint _index) public view returns (string);
+    function printLogByTime(uint _startTime, uint _endTime) public view returns (string);
 }
