@@ -108,4 +108,20 @@ contract LogManager is Delegated {
 
         return LogBase(listeners_[msg.sender].log_instance_).printLog(_index);
     }
+
+    function printLogByTime(address _addr, uint _startTime, uint _endTime) public view returns (string) {
+        /* check param */
+        require(0 != _addr);
+
+        /* check delegate */
+        checkDelegate(msg.sender, 1);
+
+        /* check registered */
+        require(listeners_[_addr].registered_);
+
+        /* check instance */
+        require(0 != listeners_[_addr].log_instance_);
+
+        return LogBase(listeners_[msg.sender].log_instance_).printLogByTime(_startTime, _endTime);
+    }
 }
