@@ -15,6 +15,29 @@ contract FactoryManager is AdrManager {
     constructor(bytes32 _name) public AdrManager(_name) {
     }
 
+   /*
+      internal functions
+   */
+    function duplicateNode(address _nodeSrcAdr, address _nodeDstAdr) internal returns (bool) {
+        require(_nodeSrcAdr != address(0) && _nodeDstAdr != address(0));
+
+        bytes32 tempPara;
+        bytes32 tempValue; 
+
+        uint paraNos = DBNode(nodeSrc).numParameters();
+        for (uint i = 0; i < paraNos; ++i) {
+            tempPara = DBNode(nodeSrc).getParameterNameByIndex(i);
+            tempValue = DBNode(nodeSrc).getParameter(tempPara);
+
+            DBNode(nodeDst).addParameter(tempPara);
+            DBNode(nodeDst).setParameter(tempPara, tempValue);
+        }
+        return true;
+    }
+
+   /*
+      public functions
+   */
     function addAdr(bytes32 _name, address _adr) public returns (bool) {
         checkDelegate(msg.sender, 1); 
         require(systemGM_ != address(0));
@@ -29,7 +52,9 @@ contract FactoryManager is AdrManager {
         return super.removeAdr(_name);
     }
 
-    function createFactoryNode(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra, address _creator) internal returns (address) {
+    function createFactoryNode(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra, address _creator) public returns (address) {
+        checkDelegate(msg.sender, 1); 
+
         address dbAdr = getDatabase();
         address userAdr;
         address parentAdr;
@@ -61,10 +86,9 @@ contract FactoryManager is AdrManager {
         if (_type == "template") {
             DBNode(adr).setParameter("provider", PlatString.bytes32ToString(_userName));
         } else if (_type == "agreement") {
-            duplicateNode(_userName, _extra,  _nodeName);
+            duplicateNode(DBDatabase(dbAdr).getNode(_extra),  ndAdr);
             DBNode(adr).setAgreementStatus("READY", "null");
         }
         return adr;
     }
-
 }
