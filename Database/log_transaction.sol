@@ -32,7 +32,7 @@ contract LogTransaction is LogBase {
             log_[nos_].info_ = _log;
 
         } else {
-            log_[nos_].info_ = PlatString.append(log_[nos_].info, _log);
+            log_[nos_].info_ = PlatString.append(log_[nos_].info_, _log);
         }
         log_[nos_].now_ = now;
     }
@@ -40,7 +40,7 @@ contract LogTransaction is LogBase {
     function printLog(uint _index) public view returns (string) {
         checkDelegate(msg.sender, 1);
 
-        if(_index > print_log_.nos_ ) 
+        if(_index > nos_ ) 
             return "null";
 
         string memory str = PlatString.bytes32ToString(name_);
@@ -60,7 +60,8 @@ contract LogTransaction is LogBase {
         for(uint i=0; i<=nos_; i++) {
             if(_startTime <= log_[i].now_  && _endTime >= log_[i].now_) {
                 string memory time = PlatString.uintToString(log_[i].now_);
-                str = PlatString.append(str, "[", time, "} ",log_[i].info_, "\n");
+                str = PlatString.append(str, "[", time, "] ", log_[i].info_);
+                str = PlatString.append(str, "\n");
             }
         }
         return str;
