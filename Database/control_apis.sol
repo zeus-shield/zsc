@@ -83,7 +83,6 @@ contract ControlApis is ControlBase {
         }
         return true;
     }
-    
 
     /// @dev Creat an element
     /// @param _factoryType The type of the factory for creating the element
@@ -103,8 +102,14 @@ contract ControlApis is ControlBase {
         address ndAdr = getFactoryManager().createFactoryNode(_factoryType, _userName, _enName, _extraInfo, creatorAdr);
         require(ndAdr != address(0));
 
+        if (_factoryType == "provider" || _type == "receiver" || _type == "staker") {
+            registerUserNode(_nodeName, ndAdr, _creator);
+        } else {
+            registerEntityNode(_userName, _nodeName, ndAdr, _creator);
+        }
+
         if (_factoryType == "staker") {
-            getPosManager().registerStaker(adr);
+            getPosManager().registerStaker(ndAdr);
         } 
 
         return ndAdr;
