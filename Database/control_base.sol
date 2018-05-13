@@ -86,11 +86,14 @@ contract FactoryManager {
 }
 
 contract DBManager {
-    function operateNodeParameter(bytes32 _operation, bytes32 _userName, bytes32 _node, bytes32 _parameter, string _value) internal returns (bool);
+    function addNodeParameter(bytes32 _dbName, bytes32 _nodeName, bytes32 _parameter) public returns (bool);
+    function setNodeParameterValue(bytes32 _dbName, bytes32 _nodeName, bytes32 _parameter, bytes32 _value) public returns (bool);
+    function getNodeParameterValue(bytes32 _dbName, bytes32 _nodeName, bytes32 _parameter) public constant returns (bytes32);
 }
 
 contract SystemManager is Object {
-    function getSystemComponent(bytes32 _type, bytes32 _name) public constant returns (address);
+    function getComponent(bytes32 _type, bytes32 _name) public constant returns (address);
+    function addComponent(bytes32 _type, bytes32 _name, address _adr) public returns (bool) {
 }
 
 contract ControlBase is ControlInfo {   
@@ -134,69 +137,29 @@ contract ControlBase is ControlInfo {
     }
 
     function getFactoryManager() internal constant returns (DBFactory) {
-        return SystemManager(systemGM_).getSystemComponent("factory", "gm");
+        return SystemManager(systemGM_).getComponent("factory", "gm");
     }
 
     function getDatabaseManager() internal constant returns (DBManager) {
-        return SystemManager(systemGM_).getSystemComponent("database", "gm");
-    }
-
-    function getDBDatabase(bytes32 _name) internal constant returns (DBDatabase) { 
-        return SystemManager(systemGM_).getSystemComponent("database", _name);
+        return SystemManager(systemGM_).getComponent("database", "gm");
     }
 
     function getWalletManager() internal constant returns (WalletManager) {      
-        return SystemManager(systemGM_).getSystemComponent("database", "wallet-gm");
+        return SystemManager(systemGM_).getComponent("module", "wallet-gm");
     }
 
     function getPosManager() internal constant returns (PosManager) {      
-        return SystemManager(systemGM_).getSystemComponent("database", "pos-gm");
+        return SystemManager(systemGM_).getComponent("module", "pos-gm");
     }
 
     function getSimulatorManager() internal constant returns (SimulatorManager) {      
-        return SystemManager(systemGM_).getSystemComponent("database", "simulator-gm"));
+        return SystemManager(systemGM_).getComponent("module", "simulator-gm"));
     }
 
     function getDBNode(bytes32 _type, bytes32 _node) internal constant returns (DBNode) {      
         return DBNode(getDBDatabase(_type).getNode(_node));
     }
 
-    function operateNodeParameter(bytes32 _operation, bytes32 _userName, bytes32 _node, bytes32 _parameter, string _value) internal returns (bool) {
-        bool ret;
-        string memory str = ""; 
-        str = PlatString.append(str, PlatString.bytes32ToString(_node), " : " );
-        str = PlatString.append(str, PlatString.bytes32ToString(_parameter), " : " , _value);
-        if (_operation == "add") {
-            str = PlatString.append("addNodeParameter - ", str);
-            ret = getDBNode(_node).addParameter(_parameter);
-        } else if (_operation == "set") {
-            str = PlatString.append("setNodeParameter - ", str);
-            ret = getDBNode(_node).setParameter(_parameter, _value);
-        }        
-        addLog(str, true);
-        return ret;
-    }
-
-    function duplicateNode(bytes32 _userName, bytes32 _nodeSrc, bytes32 _nodeDst) internal returns (bool) {
-        address nodeSrc = address(getDBNode( _nodeSrc));
-        address nodeDst = address(getDBNode( _nodeDst));
-
-        if (nodeSrc == address(0)) return false;
-        if (nodeDst == address(0)) return false;
-        
-        bytes32 tempPara;
-        string memory tempValue; 
-
-        uint paraNos = DBNode(nodeSrc).numParameters();
-        for (uint i = 0; i < paraNos; ++i) {
-            tempPara = DBNode(nodeSrc).getParameterNameByIndex(i);
-            tempValue = getNodeParameterValue(_userName, _nodeSrc, tempPara);
-
-            DBNode(nodeDst).addParameter(tempPara);
-            DBNode(nodeDst).setParameter(tempPara, tempValue);
-        }
-        return true;
-    }
 
     function manageErc20TokenContract(bool _doesAdd, bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) internal returns (bool) {
         if (_doesAdd) {
