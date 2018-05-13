@@ -9,8 +9,8 @@ import "./object.sol";
 contract SystemBase is Object {
     function addAdr(bytes32 _name, address _database) public returns (bool);
     function getAdr(bytes32 _name) public returns (address);
-    function setFactoryDatabase(bytes32 _objectName, address _databaseAdr) public;
-    function setModuleDatabase(address _databaseAdr) public;
+    function numAdrs() public constant returns (uint);
+    function setDatabase(address _databaseAdr) public;
     function delegateObject( address _objectAdr, uint _priority) public;
 }
 
@@ -44,15 +44,22 @@ contract SystemManager is Object {
     }
 
     function addFactory(bytes32 _name, address _adr) internal returns (bool) {
-        Object(_adr).setDelegate(apiController_, 1);
-
-        SystemBase(factoryGM_).addAdr(_name, _adr);
-        SystemBase(databaseGM_).delegateObject(_adr, 1);
+        if (SystemBase(factoryGM_).addAdr(_name, _adr)) {
+            Object(_adr).setDelegate(apiController_, 1);
+            SystemBase(databaseGM_).delegateObject(_adr, 1);
+        } else {
+            return false;
+        }
     }
 
     function addDatabase(bytes32 _name, address _adr) internal returns (bool) {
-        Object(_adr).setDelegate(apiController_, 1);
-        SystemBase(databaseGM_).addAdr(_name, _adr);
+        if (SystemBase(databaseGM_).addAdr(_name, _adr)) {
+            Object(_adr).setDelegate(apiController_, 1);
+            Object(_adr).setDelegate(factoryGM_, 1);
+            SystemBase(factoryGM_).setDatabase(_adr);
+        } else {
+            return false;
+        }
     }
 
     function addModuleManager(bytes32 _name, address _adr) internal returns (bool) {
@@ -65,64 +72,27 @@ contract SystemManager is Object {
         moduleExists_[_name] = true;
 
         SystemBase(factoryGM_).delegateObject(_adr, 1);
+        SystemBase(databaseGM_).delegateObject(_adr, 1);
 
         return true;
-    }
-
-    function getFactory(bytes32 _name) internal constant returns (address) {
-        return SystemBase(factoryGM_).getAdr(_name);
-    }
-
-    function getDatabase(bytes32 _name) internal constant returns (address) {
-        return SystemBase(databaseGM_).getAdr(_name);
-    }
-
-    function getDatabaseManager() internal constant returns (address) {
-        require(databaseGM_ != address(0));
-        return databaseGM_;
-    }
-
-    function getFactoryManager() internal constant returns (address) {
-        require(factoryGM_ != address(0));
-        return factoryGM_;
-    }
-
-    function getModuleManager(bytes32 _name) internal constant returns (address) {
-        require(moduleExists_(_name));
-        return modules_[_name];
-    }
-
-    function mapFactoryDatabase(bytes32 _factroyName, bytes32 _databaseName) public {
-        address factoryAdr = getFactory(_factroyName);
-        address datbaseAdr = getDatabase(_databaseName);
-
-        SystemBase(databaseAdr).delegateObject(factoryAdr, 1);
-        SystemBase(databaseGM_).setFactoryDatabase(_factroyName, datbaseAdr);
-    }
-
-    function mapModuleDatabase(bytes32 _moduleName, bytes32 _databaseName) public {
-        require(!moduleExists_(_name));
-
-        SystemBase(databaseAdr).delegateObject(_databaseName, moduleExists_(_name), 1);
-        SystemBase(getDatabase(_databaseName)).setModuleDatabase(datbaseAdr);
     }
 
     function getComponent(bytes32 _type, bytes32 _name) public constant returns (address) {
         checkDelegate(msg.sender, 1);
         if (_type == "factory") {
             if (_name == "gm") {
-                return getFactoryManager();
+                return factoryGM_;
             } else {
-                return getFactory(_name);
+                return SystemBase(factoryGM_).getAdr(_name);
             }
         } else if (_type == "database") {
             if (_name == "gm") {
-                return getDatabaseManager();
+                return databaseGM_;
             } else {
-                return getDatabase(_name);
+                return SystemBase(databaseGM_).getAdr(_name);
             }
         } else if (_type == "module") {
-            return getModuleManager(_name);
+            return modules_[_name];
         } else {
             revert();
         }
