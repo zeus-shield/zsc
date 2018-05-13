@@ -63,20 +63,5 @@ contract ControlInfo is Object {
         userParameters_[_userName].paras_[_enName].creator_ = _creator;
         nodeExists_[_enName] = true;
     }
-    
-    function getNodeParameterValue(bytes32 _userName, bytes32 _enName, bytes32 _parameter) internal constant returns (string) {
-        require(nodeExists_[_userName]);   
-        require(nodeExists_[_enName]);   
-
-        return userParameters_[_userName].paras_[_enName].value_[_parameter];
-    }
-
-    function setNodeParameterValue(bytes32 _userName, bytes32 _enName, bytes32 _parameter, string _value) internal returns (bool) {
-        require(nodeExists_[_userName]);   
-        require(nodeExists_[_enName]);   
-
-        userParameters_[_userName].paras_[_enName].value_[_parameter] = _value;
-        return true;
-    }
 }
 
