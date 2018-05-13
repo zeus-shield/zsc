@@ -38,30 +38,25 @@ contract SystemManager is Object {
         setDelegate(apiController_, 1);
         setDelegate(databaseGM_, 1);
         setDelegate(factoryGM_, 1);
+
+        Object(factoryGM_).setDelegate(apiController_, 1);
+        Object(databaseGM_).setDelegate(apiController_, 1);
     }
 
     function addFactory(bytes32 _name, address _adr) public returns (bool) {
         checkDelegate(msg.sender, 1);
 
+        Object(_adr).setDelegate(apiController_, 1);
+
         SystemBase(factoryGM_).addAdr(_name, _adr);
+        SystemBase(databaseGM_).delegateObject(_adr, 1);
     }
 
     function addDatabase(bytes32 _name, address _adr) public returns (bool) {
         checkDelegate(msg.sender, 1);
 
+        Object(_adr).setDelegate(apiController_, 1);
         SystemBase(databaseGM_).addAdr(_name, _adr);
-    }
-
-    function getFactory(bytes32 _name) public constant returns (address) {
-        checkDelegate(msg.sender, 1);
-
-        return SystemBase(factoryGM_).getAdr(_name);
-    }
-
-    function getDatabase(bytes32 _name) public constant returns (address) {
-        checkDelegate(msg.sender, 1);
-
-        return SystemBase(databaseGM_).getAdr(_name);
     }
 
     function addModuleManager(bytes32 _name, address _adr) public returns (bool) {
@@ -69,6 +64,7 @@ contract SystemManager is Object {
         require(!moduleExists_(_name));
 
         setDelegate(_adr, 1);
+        Object(_adr).setDelegate(apiController_, 1);
 
         modules_[_name] = _adr;
         moduleExists_[_name] = true;
@@ -78,29 +74,30 @@ contract SystemManager is Object {
         return true;
     }
 
-    function getDatabaseManager() public constant returns (address) {
-        checkDelegate(msg.sender, 1);
-        require(databaseGM_ != address(0));
+    function getFactory(bytes32 _name) internal constant returns (address) {
+        return SystemBase(factoryGM_).getAdr(_name);
+    }
 
+    function getDatabase(bytes32 _name) internal constant returns (address) {
+        return SystemBase(databaseGM_).getAdr(_name);
+    }
+
+    function getDatabaseManager() internal constant returns (address) {
+        require(databaseGM_ != address(0));
         return databaseGM_;
     }
 
-    function getFactoryManager() public constant returns (address) {
-        checkDelegate(msg.sender, 1);
+    function getFactoryManager() internal constant returns (address) {
         require(factoryGM_ != address(0));
-        
         return factoryGM_;
     }
 
-    function getModuleManager(bytes32 _name) public constant returns (address) {
-        checkDelegate(msg.sender, 1);
+    function getModuleManager(bytes32 _name) internal constant returns (address) {
         require(moduleExists_(_name));
         return modules_[_name];
     }
 
     function mapFactoryDatabase(bytes32 _factroyName, bytes32 _databaseName) public {
-        checkDelegate(msg.sender, 1);
-
         address factoryAdr = getFactory(_factroyName);
         address datbaseAdr = getDatabase(_databaseName);
 
@@ -109,11 +106,32 @@ contract SystemManager is Object {
     }
 
     function mapModuleDatabase(bytes32 _moduleName, bytes32 _databaseName) public {
-        checkDelegate(msg.sender, 1);
         require(!moduleExists_(_name));
 
         SystemBase(databaseAdr).delegateObject(_databaseName, moduleExists_(_name), 1);
         SystemBase(getDatabase(_databaseName)).setModuleDatabase(datbaseAdr);
+    }
+
+    function getSystemComponent(bytes32 _type, bytes32 _name) public constant returns (address) {
+        checkDelegate(msg.sender, 1);
+
+        if (_type == "factory") {
+            if (_name == "gm") {
+                return getFactoryManager();
+            } else {
+                return getFactory(_name);
+            }
+        } else if (_type == "database") {
+            if (_name == "gm") {
+                return getDatabaseManager();
+            } else {
+                return getDatabase(_name);
+            }
+        } else if (_type == "module") {
+            return getModuleManager(_name);
+        } else {
+            revert();
+        }
     }
 }
 
