@@ -70,7 +70,7 @@ contract Delegated is Owned {
 
     function setDelegate(address _adr, uint _priority) public {
         checkDelegate(msg.sender, 1);
-        if (_adr != address(this) {
+        if (_adr != address(this)) {
             addDelegate(_adr, _priority);
         }
     }
