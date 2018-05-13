@@ -100,10 +100,12 @@ contract ControlApis is ControlBase {
             creatorAdr = msg.sender;
         }
 
-        address ndAdr = getFactoryManager().createFactoryNode(createFactoryNode, _userName, _enName, _extraInfo, creatorAdr);
+        address ndAdr = getFactoryManager().createFactoryNode(_factoryType, _userName, _enName, _extraInfo, creatorAdr);
+        require(ndAdr != address(0));
+
         if (_factoryType == "staker") {
             getPosManager().registerStaker(adr);
-        }  
+        } 
 
         return ndAdr;
     }
@@ -144,38 +146,32 @@ contract ControlApis is ControlBase {
     /// @dev Add a paramter to an element
     /// @param _enName The name of the existing element
     /// @param _parameter The name of the added parameter
-    function addElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public returns (bool) {
+    function addElementParameter(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public returns (bool) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        bool ret = getDatabaseManager().operateNodeParameter(_userName, "add", _enName, _parameter, "");
-        require(ret);
+        return getDatabaseManager().addNodeParameter(_dbName, _enName, _parameter);
     }
 
     /// @dev Set the value to a paramter of an element 
     /// @param _enName The name of the element
     /// @param _parameter The name of the existing parameter
     /// @param _value The parameter value
-    function setElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter, string _value) public returns (bool) {
+    function setElementParameter(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter, bytes32 _value) public returns (bool) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        bool ret = getDatabaseManager().operateNodeParameter(_userName, "set", _enName, _parameter, "");
-        require(ret);
-        
-        setNodeParameterValue(_userName, _node, _parameter, _value);
-
-        return true;
+        return getDatabaseManager().setNodeParameterValue(_dbName, _enName, _parameter, _value);
     }
 
     /// @dev Get the value of a paramter of an element
     /// @param _enName The name of the element
     /// @param _parameter The name of the existing parameter
-    function getElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public constant returns (string) {
+    function getElementParameter(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public constant returns (string) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return getNodeParameterValue(_userName, _enName, _parameter);
+        return getDatabaseManager().getNodeParameterValue(_dbName, _enName, _parameter);
     }
 
     /// @dev Get the address of the element 
