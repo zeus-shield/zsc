@@ -68,26 +68,23 @@ contract FactoryManager is AdrManager {
             parentAdr = DBDatabase(dbAdr).getNode(_extra);
         }
 
-        ndAdr = getAdr(_type).createNode(_nodeName, parentNode, _creator);
-        require(adr != 0);
+        ndAdr = FactoryBase(getAdr(_type)).createNode(_nodeName, parentNode, _creator);
+        require(ndAdr != 0);
 
         if (_type == "provider" || _type == "receiver" || _type == "staker") {
-            DBNode(adr).configureHandlers();
-            DBNode(adr).setId(_creator);
-            registerUserNode(_nodeName, adr, _creator);
-        } else {
-            registerEntityNode(_userName, _nodeName, adr, _creator);
-        }
+            DBNode(ndAdr).configureHandlers();
+            DBNode(ndAdr).setId(_creator);
+        } 
 
         /*if (_type == "staker") {
             PosManager(bindedPos_).registerStaker(adr);
         } else 
         */
         if (_type == "template") {
-            DBNode(adr).setParameter("provider", PlatString.bytes32ToString(_userName));
+            DBNode(ndAdr).setParameter("provider", PlatString.bytes32ToString(_userName));
         } else if (_type == "agreement") {
             duplicateNode(DBDatabase(dbAdr).getNode(_extra),  ndAdr);
-            DBNode(adr).setAgreementStatus("READY", "null");
+            DBNode(ndAdr).setAgreementStatus("READY", "null");
         }
         return adr;
     }
