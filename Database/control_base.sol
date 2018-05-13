@@ -73,21 +73,6 @@ contract SimulatorManager is Object {
     function runSimulation(uint _steps) public;
 }
 
-contract SystemManager is Object {
-    function getFactory(bytes32 _name) public constant returns (address);
-    function getDatabase(bytes32 _name) public constant returns (address);
-    function getModuleManager(bytes32 _name) public constant returns (address);
-
-    function getDatabaseManager() public constant returns (address);
-    function getFactoryManager() public constant returns (address);
-}
-
-contract DBFactory is Object { 
-    function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
-    function numFactoryElements() public constant returns (uint);
-    function getFactoryElementByIndex(uint _index) public constant returns (address);
-}
-
 contract DBDatabase is Object { 
     function getNode(bytes32 _name) public constant returns (address);
     function checkeNodeByAddress(address _adr) public constant returns (bool);
@@ -102,6 +87,10 @@ contract FactoryManager {
 
 contract DBManager {
     function operateNodeParameter(bytes32 _operation, bytes32 _userName, bytes32 _node, bytes32 _parameter, string _value) internal returns (bool);
+}
+
+contract SystemManager is Object {
+    function getSystemComponent(bytes32 _type, bytes32 _name) public constant returns (address);
 }
 
 contract ControlBase is ControlInfo {   
@@ -145,27 +134,27 @@ contract ControlBase is ControlInfo {
     }
 
     function getFactoryManager() internal constant returns (DBFactory) {
-        return SystemManager(systemGM_).getFactoryManager();
+        return SystemManager(systemGM_).getSystemComponent("factory", "gm");
     }
 
     function getDatabaseManager() internal constant returns (DBManager) {
-        return SystemManager(systemGM_).getDatabaseManager());
+        return SystemManager(systemGM_).getSystemComponent("database", "gm");
     }
 
     function getDBDatabase(bytes32 _name) internal constant returns (DBDatabase) { 
-        return DBDatabase(SystemManager(systemGM_).getDatabase(_name));
+        return SystemManager(systemGM_).getSystemComponent("database", _name);
     }
 
     function getWalletManager() internal constant returns (WalletManager) {      
-        return DBDatabase(SystemManager(systemGM_).getModuleManager("wallet-gm"));
+        return SystemManager(systemGM_).getSystemComponent("database", "wallet-gm");
     }
 
     function getPosManager() internal constant returns (PosManager) {      
-        return DBDatabase(SystemManager(systemGM_).getModuleManager("pos-gm"));
+        return SystemManager(systemGM_).getSystemComponent("database", "pos-gm");
     }
 
     function getSimulatorManager() internal constant returns (SimulatorManager) {      
-        return DBDatabase(SystemManager(systemGM_).getModuleManager("simulator-gm"));
+        return SystemManager(systemGM_).getSystemComponent("database", "simulator-gm"));
     }
 
     function getDBNode(bytes32 _type, bytes32 _node) internal constant returns (DBNode) {      
