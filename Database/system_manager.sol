@@ -43,24 +43,19 @@ contract SystemManager is Object {
         Object(databaseGM_).setDelegate(apiController_, 1);
     }
 
-    function addFactory(bytes32 _name, address _adr) public returns (bool) {
-        checkDelegate(msg.sender, 1);
-
+    function addFactory(bytes32 _name, address _adr) internal returns (bool) {
         Object(_adr).setDelegate(apiController_, 1);
 
         SystemBase(factoryGM_).addAdr(_name, _adr);
         SystemBase(databaseGM_).delegateObject(_adr, 1);
     }
 
-    function addDatabase(bytes32 _name, address _adr) public returns (bool) {
-        checkDelegate(msg.sender, 1);
-
+    function addDatabase(bytes32 _name, address _adr) internal returns (bool) {
         Object(_adr).setDelegate(apiController_, 1);
         SystemBase(databaseGM_).addAdr(_name, _adr);
     }
 
-    function addModuleManager(bytes32 _name, address _adr) public returns (bool) {
-        checkDelegate(msg.sender, 1);
+    function addModuleManager(bytes32 _name, address _adr) internal returns (bool) {
         require(!moduleExists_(_name));
 
         setDelegate(_adr, 1);
@@ -112,9 +107,8 @@ contract SystemManager is Object {
         SystemBase(getDatabase(_databaseName)).setModuleDatabase(datbaseAdr);
     }
 
-    function getSystemComponent(bytes32 _type, bytes32 _name) public constant returns (address) {
+    function getComponent(bytes32 _type, bytes32 _name) public constant returns (address) {
         checkDelegate(msg.sender, 1);
-
         if (_type == "factory") {
             if (_name == "gm") {
                 return getFactoryManager();
@@ -129,6 +123,20 @@ contract SystemManager is Object {
             }
         } else if (_type == "module") {
             return getModuleManager(_name);
+        } else {
+            revert();
+        }
+    }
+
+    function addComponent(bytes32 _type, bytes32 _name, address _adr) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+
+        if (_type == "factory") {
+            return addFactory(_type, _name, _adr);
+        } else if (_type == "database") {
+            return addDatabase(_type, _name, _adr);
+        } else if (_type == "module") {
+            return addModuleManager(_name);
         } else {
             revert();
         }
