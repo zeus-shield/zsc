@@ -7,12 +7,9 @@ pragma solidity ^0.4.21;
 import "./plat_string.sol";
 import "./db_node.sol";
 
-contract ControlBase {
-    function _recordString(bytes32 _nodeName, bytes32 _parameter, string _value) public;
-}
-
 contract DBEntity is DBNode {
     bytes32[] private parameterNames_;
+    bytes32[] private parameterValues_;
     mapping(bytes32 => bool) private parameterExist_;
     mapping(bytes32 => bool) private fundamentalParas_;
 
@@ -79,11 +76,19 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function setParameter(bytes32 _parameter, string _value) public constant returns (bool) {
+    function setParameter(bytes32 _parameter, bytes32 _value) public constant returns (bool) {
         checkDelegate(msg.sender, 1);
         require(parameterExist_[_parameter] == true);
+
+        parameterValues_[_parameter] = _value;
         return true;
-        return(PlatString.length(_value) != 0);
+    }
+
+    function setParameter(bytes32 _parameter) public constant returns (bool) {
+        checkDelegate(msg.sender, 1);
+        require(parameterExist_[_parameter] == true);
+
+        return parameterValues_[_parameter];
     }
 
     function numParameters() public constant returns (uint) {
