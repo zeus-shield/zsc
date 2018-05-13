@@ -54,7 +54,7 @@ contract LogManager is Delegated {
         checkDelegate(msg.sender, 1);
 
         /* check registered */
-        if(listeners_[_addr].registered) {
+        if(listeners_[_addr].registered_) {
             return;
         }
 
@@ -79,7 +79,7 @@ contract LogManager is Delegated {
         listeners_[_addr].name_ = _name;
         listeners_[_addr].registered_ = true;
 
-        LogBase(instance).initLog();
+        LogBase(instance).initLog(_name);
     }
 
     function addLog(string _log, bool _newLine) public {
