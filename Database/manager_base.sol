@@ -53,10 +53,12 @@ contract DBNode is Object {
 }
 
 contract SystemManager is Object {
-    function getFactory(bytes32 _name) public returns (address);
+    function getComponent(bytes32 _type, bytes32 _name) public constant returns (address);
+    function addComponent(bytes32 _type, bytes32 _name, address _adr) public returns (bool);
 }
 
-contract DBFactory is Object { 
+contract FactoryBase {
+    function setDatabase(address _adr) public;
     function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
 }
 
