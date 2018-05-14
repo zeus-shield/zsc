@@ -4,10 +4,10 @@ Copyright (c) 2018 ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./adr_manager.sol";
+import "./sys_com_group.sol";
 
-contract DBManager is AdrManager {
-    constructor(bytes32 _name) public AdrManager(_name) {
+contract SysGmDB is SysComGroup {
+    constructor(bytes32 _name) public SysComGroup(_name) {
     }
 
    /*
