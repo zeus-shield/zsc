@@ -5,7 +5,7 @@ Copyright (c) 2018, ZSC Dev Team
 pragma solidity ^0.4.21;
 
 import "./simulator_base.sol";
-import "./manager_base.sol";
+import "./sys_com_module.sol";
 
 contract WalletBase {
     function getBlance(bool _locked) public constant returns (uint256);
@@ -18,7 +18,7 @@ contract DBDatabase {
     function getNode(bytes32 _name) public constant returns (address);
 }
 
-contract SimulatorManager is ManagerBase {
+contract SysGmSimulator is SysComModule {
     uint private simulationNos_;
     uint private simulationTempNos_;
     mapping(uint => address) private simulationRuns_;
@@ -26,7 +26,7 @@ contract SimulatorManager is ManagerBase {
     mapping(bytes32 => bool) private simulationExist_;
     mapping(address => bool) private rewarded_;
 
-    constructor(bytes32 _name) public ManagerBase(_name) {
+    constructor(bytes32 _name) public SysComModule(_name) {
         simulationNos_ = 0;
     }
 
