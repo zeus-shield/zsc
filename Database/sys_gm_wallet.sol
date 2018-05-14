@@ -4,9 +4,9 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./manager_base.sol";
+import "./sys_com_module.sol";
 
-contract WalletManager is ManagerBase {
+contract SysGmWallet is SysComModule {
     struct Erc20Token {
         bytes32 name_;  
         bytes32 status_;
@@ -27,7 +27,7 @@ contract WalletManager is ManagerBase {
     mapping(bytes32 => bool) private erc20TokenExists_;
 
     // Constructor
-    constructor() public ManagerBase("zsc_wallet_manager") {
+    constructor() public SysComModule("zsc_wallet_manager") {
         tokenNos_ = 0;
     } 
 
