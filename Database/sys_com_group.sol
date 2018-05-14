@@ -4,9 +4,10 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./manager_base.sol";
+import "./object.sol";
+import "./sys_inclue.sol";
 
-contract AdrManager is ManagerBase {
+contract SysComAdrs is Object {
     uint private adrNos_;
 
     mapping(uint => bytes32) private names_;
