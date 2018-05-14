@@ -36,7 +36,8 @@ contract SysGmFactory is SysComGroup {
     function createFactoryNode(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra, address _creator) public returns (address) {
         checkDelegate(msg.sender, 1); 
 
-        address dbAdr = getDatabase();
+        address factoryAdr = getAdr(_type);
+        address dbAdr = FactoryBase(factoryAdr).getDatabase();
         address userAdr;
         address parentAdr;
         address ndAdr;
