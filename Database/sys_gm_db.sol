@@ -6,13 +6,13 @@ pragma solidity ^0.4.21;
 
 import "./sys_com_group.sol";
 
-contract SysGmDB is SysComGroup {
+contract SysGmDb is SysComGroup {
     constructor(bytes32 _name) public SysComGroup(_name) {
     }
 
-   /*
+    /*
       internal functions
-   */
+    */
     function operateNodeParameter(bytes32 _operation, bytes32 _nodeName, bytes32 _parameter, string _value) internal returns (bool) {
         string memory str = ""; 
         str = PlatString.append(str, PlatString.bytes32ToString(_nodeName), " : " );
@@ -28,16 +28,9 @@ contract SysGmDB is SysComGroup {
         return ret;
     }
 
-   /*
+    /*
       public functions
-   */
-    function addAdr(bytes32 _name, address _adr) public returns (bool) {
-        checkDelegate(msg.sender, 1); 
-        require(systemGM_ != address(0));
-        
-        return super.addAdr(_name, _adr);
-    }
-
+    */
     function removeAdr(bytes32 _name) public returns (address) {
         checkDelegate(msg.sender, 1); 
         Object(adr).kill();
