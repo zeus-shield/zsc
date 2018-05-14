@@ -29,16 +29,17 @@ Official implementation for the solidity-based core part of the ZSC system, as w
     |-- delegated 
         |-- log_recorder
         |-- objct 
-            |-- wallet_manager
             |-- pos_block
             |-- pos_block_pool, pos_staker_group
                 |-- pos_base
-            |-- manger_base
-                |-- adr_manager
-                    |-- factory_manager
-                    |-- db_manager
-                |-- wallet_manager
-                |-- simulator_manager
+            |-- sys_overlayer
+            |-- sys_com_base
+                |-- sys_com_module
+                    |-- sys_gm_wallet
+                    |-- sys_gm_simulator
+                |-- sys_com_group
+                    |-- sys_gm_db
+                    |-- sys_gm_factory
             |-- adm_base
             |-- app_proxy   
             |-- db_database
@@ -57,7 +58,6 @@ Official implementation for the solidity-based core part of the ZSC system, as w
                 |-- db_template
                 |-- db_agreement
             |-- factory_base
-            |-- factory_manager
             |-- control_info
                 |-- control_base 
                     |-- control_apis
@@ -164,4 +164,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.05.05-05.06: add files Database/delegate.sol, Database/factory_manager.sol
 2018.05.07-05.08: add files Database/log_transaction.sol, Database/db_managet.sol; changed/updated file factory_manager.sol->module_manager.sol
 2018.05.07-05.08: add files Database/adr_manager.sol, Database/manager_base.sol, Database/system_manager.sol, WebAdm/adm_add_factory.php
+2018.05.09-05.14: removed files module_base.sol, module_base_adv.sol; added files sys_com_module.sol, sys_include.sol, log_base.sol, log_manager.sol; changed/updated files: system_manger.sol -> sys_overlayer.sol, wallet_manager.sol -> sys_gm_wallet.sol, simulator_manager.sol -> sys_gm_simulator.sol, factory_manager.sol -> sys_gm_factory.sol, db_manager.sol -> sys_gm_db.sol, adr_manager.sol -> sys_com_group.sol, manager_base.sol -> sys_com_base.sol
 ```
