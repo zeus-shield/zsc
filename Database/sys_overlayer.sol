@@ -6,7 +6,7 @@ pragma solidity ^0.4.21;
 
 import "./object.sol";
 
-contract SystemBase is Object {
+contract SysComBase is Object {
     function addAdr(bytes32 _name, address _database) public returns (bool);
     function getAdr(bytes32 _name) public returns (address);
     function numAdrs() public constant returns (uint);
@@ -14,7 +14,7 @@ contract SystemBase is Object {
     function delegateObject( address _objectAdr, uint _priority) public;
 }
 
-contract SystemManager is Object {
+contract SysOverlayer is Object {
     address private apiController_ = address(0);
     address private databaseGM_    = address(0);
     address private factoryGM_     = address(0);
