@@ -6,11 +6,6 @@ pragma solidity ^0.4.21;
 
 import "./sys_com_group.sol";
 
-contract FactoryBase {
-	function setDatabase(address _adr) public;
-    function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
-}
-
 contract SysGmFactory is SysComGroup {
     constructor(bytes32 _name) public SysComGroup(_name) {
     }
@@ -38,20 +33,6 @@ contract SysGmFactory is SysComGroup {
    /*
       public functions
    */
-    function addAdr(bytes32 _name, address _adr) public returns (bool) {
-        checkDelegate(msg.sender, 1); 
-        require(systemGM_ != address(0));
-
-        return super.addAdr(_name, _adr);
-    }
-
-    function removeAdr(bytes32 _name) public returns (bool) {
-        checkDelegate(msg.sender, 1); 
-
-        address factoryAdr = getAdr(_name);
-        return super.removeAdr(_name);
-    }
-
     function createFactoryNode(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra, address _creator) public returns (address) {
         checkDelegate(msg.sender, 1); 
 
