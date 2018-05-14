@@ -26,14 +26,16 @@ contract FactoryBase is Object {
 
     function getDatabase() public constant returns (address) { 
         checkDelegate(msg.sender, 1);
+
         require(bindedDB_ != address(0));
         return bindedDB_);
     }
 
     function getFactoryManager() public constant returns (address) {
         checkDelegate(msg.sender, 1);
-        require(moduleGM_ != address(0));
-        return moduleGM_;
+        
+        require(factoryGM_ != address(0));
+        return factoryGM_;
     }
 
     function initFactory(address _factoryGM) public {
