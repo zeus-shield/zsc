@@ -4,10 +4,9 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./object.sol";
-import "./sys_inclue.sol";
+import "./sys_com_base.sol";
 
-contract SysComAdrs is Object {
+contract SysComAdrs is SysComBase {
     uint private adrNos_;
 
     mapping(uint => bytes32) private names_;
@@ -17,7 +16,7 @@ contract SysComAdrs is Object {
     mapping(bytes32 => bool) private exists_;
 
     // Constructor
-    constructor(bytes32 _name) public Object(_name) {
+    constructor(bytes32 _name) public SysComBase(_name) {
     }
 
     function numAdrs() public constant returns (uint) {
@@ -27,6 +26,8 @@ contract SysComAdrs is Object {
 
     function addAdr(bytes32 _name, address _id) public returns (bool) {
         checkDelegate(msg.sender, 1);
+        
+        getSysOverlayer();
         require(!exists_[_name]);
 
         exists_[_name] = true;
