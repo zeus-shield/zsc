@@ -12,7 +12,6 @@ contract ControlInfo is Object {
         bytes32 userName_;
         address nodeAdr_;
         address creator_;
-        mapping (bytes32 => string) value_;
     }
 
     struct UserInfo {
@@ -24,9 +23,7 @@ contract ControlInfo is Object {
     mapping(bytes32 => UserInfo) private userParameters_;
     mapping(bytes32 => bool) private nodeExists_;
 
-    constructor(bytes32 _name) public Object(_name){
-
-    }
+    constructor(bytes32 _name) public Object(_name) {}
 
     function allowedUser(bytes32 _userName, address _sender) internal constant returns (bool);
 
@@ -48,11 +45,11 @@ contract ControlInfo is Object {
         userParameters_[_userName].signatures_[_sigAdr] = true;
     }
 
-    function registerUserNode(bytes32 _userName, address _nodeAdr, address _sigAdr) internal {
+    function registerUserNode(bytes32 _userName, address _nodeAdr, address _creator) internal {
         require(!nodeExists_[_userName]);   
-        addAllowedUser(_userName, _sigAdr);
+        addAllowedUser(_userName, _creator);
         userParameters_[_userName].nodeAdr_ = _nodeAdr;
-        userParameters_[_userName].signatures_[_sigAdr] = true;
+        userParameters_[_userName].signatures_[_creator] = true;
         nodeExists_[_userName] = true;
     }  
 
