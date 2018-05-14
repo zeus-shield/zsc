@@ -25,24 +25,9 @@ contract SysOverlayer is Object {
     constructor(bytes32 _name) public Object(_name) {
     }
 
-    function initSystemManager(address _controller, address _databaseGM, address _factoryGM) public {
-        checkDelegate(msg.sender, 1);
-        
-        require(apiController_ == address(0) && databaseGM_ == address(0) && factoryGM_ == address(0));
-        require(_databaseGM != address(0) && _controller != address(0) && _factoryGM != address(0));
-
-        apiController_ = _controller;
-        databaseGM_    = _databaseGM;
-        factoryGM_     = _factoryGM;
-
-        setDelegate(apiController_, 1);
-        setDelegate(databaseGM_, 1);
-        setDelegate(factoryGM_, 1);
-
-        Object(factoryGM_).setDelegate(apiController_, 1);
-        Object(databaseGM_).setDelegate(apiController_, 1);
-    }
-
+    /*
+      internal functions
+    */
     function addFactory(bytes32 _name, address _adr) internal returns (bool) {
         if (SystemBase(factoryGM_).addAdr(_name, _adr)) {
             Object(_adr).setDelegate(apiController_, 1);
@@ -77,6 +62,41 @@ contract SysOverlayer is Object {
         return true;
     }
 
+    /*
+      public functions
+    */
+    function initSysOverlayer(address _controller, address _databaseGM, address _factoryGM) public {
+        checkDelegate(msg.sender, 1);
+        
+        require(apiController_ == address(0) && databaseGM_ == address(0) && factoryGM_ == address(0));
+        require(_databaseGM != address(0) && _controller != address(0) && _factoryGM != address(0));
+
+        apiController_ = _controller;
+        databaseGM_    = _databaseGM;
+        factoryGM_     = _factoryGM;
+
+        setDelegate(apiController_, 1);
+        setDelegate(databaseGM_, 1);
+        setDelegate(factoryGM_, 1);
+
+        Object(factoryGM_).setDelegate(apiController_, 1);
+        Object(databaseGM_).setDelegate(apiController_, 1);
+    }
+
+    function addComponent(bytes32 _type, bytes32 _name, address _adr) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+
+        if (_type == "factory") {
+            return addFactory(_type, _name, _adr);
+        } else if (_type == "database") {
+            return addDatabase(_type, _name, _adr);
+        } else if (_type == "module") {
+            return addModuleManager(_name);
+        } else {
+            revert();
+        }
+    }
+
     function getComponent(bytes32 _type, bytes32 _name) public constant returns (address) {
         checkDelegate(msg.sender, 1);
         if (_type == "factory") {
@@ -93,20 +113,6 @@ contract SysOverlayer is Object {
             }
         } else if (_type == "module") {
             return modules_[_name];
-        } else {
-            revert();
-        }
-    }
-
-    function addComponent(bytes32 _type, bytes32 _name, address _adr) public returns (bool) {
-        checkDelegate(msg.sender, 1);
-
-        if (_type == "factory") {
-            return addFactory(_type, _name, _adr);
-        } else if (_type == "database") {
-            return addDatabase(_type, _name, _adr);
-        } else if (_type == "module") {
-            return addModuleManager(_name);
         } else {
             revert();
         }
