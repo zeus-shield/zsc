@@ -31,7 +31,7 @@ contract SimulatorManager is Object {
 }
 
 contract FactoryManager {
-    function createFactoryNode(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra, address _creator) internal returns (address);
+    function createFactoryNode(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra, address _creator) public returns (address) {
 }
 
 contract DBManager {
