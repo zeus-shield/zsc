@@ -4,15 +4,15 @@ Copyright (c) 2018 ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./adr_manager.sol";
+import "./sys_com_group.sol";
 
 contract FactoryBase {
 	function setDatabase(address _adr) public;
     function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
 }
 
-contract FactoryManager is AdrManager {
-    constructor(bytes32 _name) public AdrManager(_name) {
+contract SysGmFactory is SysComGroup {
+    constructor(bytes32 _name) public SysComGroup(_name) {
     }
 
    /*
