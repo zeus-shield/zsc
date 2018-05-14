@@ -10,7 +10,6 @@ contract SysComBase is Object {
     function addAdr(bytes32 _name, address _database) public returns (bool);
     function getAdr(bytes32 _name) public returns (address);
     function numAdrs() public constant returns (uint);
-    function setDatabase(address _databaseAdr) public;
     function delegateObject( address _objectAdr, uint _priority) public;
 }
 
@@ -29,9 +28,8 @@ contract SysOverlayer is Object {
       internal functions
     */
     function addFactory(bytes32 _name, address _adr) internal returns (bool) {
-        if (SystemBase(factoryGM_).addAdr(_name, _adr)) {
-            Object(_adr).setDelegate(apiController_, 1);
-            SystemBase(databaseGM_).delegateObject(_adr, 1);
+        if (SysComBase(factoryGM_).addAdr(_name, _adr)) {
+            SysComBase(databaseGM_).delegateObject(_adr, 1);
         } else {
             return false;
         }
@@ -40,8 +38,6 @@ contract SysOverlayer is Object {
     function addDatabase(bytes32 _name, address _adr) internal returns (bool) {
         if (SystemBase(databaseGM_).addAdr(_name, _adr)) {
             Object(_adr).setDelegate(apiController_, 1);
-            Object(_adr).setDelegate(factoryGM_, 1);
-            SystemBase(factoryGM_).setDatabase(_adr);
         } else {
             return false;
         }
@@ -60,6 +56,25 @@ contract SysOverlayer is Object {
         SystemBase(databaseGM_).delegateObject(_adr, 1);
 
         return true;
+    }
+
+    function mapFactoryDatabase(bytes32 _factoryName, bytes32 _dbName, uint _priority) internal {
+        address factoryAdr = SysComBase(factoryGM_).getAdr(_factoryName);
+        address dbAdr      = SysComBase(databaseGM_).getAdr(_dbName);
+
+        FactoryBase(factoryAdr).setDatabase(dbAdr);
+        DBDatabase(dbAdr).setDelegate(factoryAdr, _priority);
+    }
+
+
+    function mapMuduleDatabase(bytes32 _moduleGmName, bytes32 _dbName, uint _priority) internal {
+        require(moduleExists_[_moduleGmName]);
+
+        address moduleGmAdr = modules_[_moduleGmName];
+        address dbAdr       = SysComBase(databaseGM_).getAdr(_dbName);
+
+        moduleGmAdr.setDatabase(dbAdr);
+        DBDatabase(dbAdr).setDelegate(moduleGmAdr, _priority);
     }
 
     /*
@@ -86,15 +101,24 @@ contract SysOverlayer is Object {
     function addComponent(bytes32 _type, bytes32 _name, address _adr) public returns (bool) {
         checkDelegate(msg.sender, 1);
 
+        uint ret = false;
         if (_type == "factory") {
-            return addFactory(_type, _name, _adr);
+            ret = addFactory(_type, _name, _adr);
+            if (ret) {
+                mapFactoryDatabase(_name, "zsc")
+            }
         } else if (_type == "database") {
-            return addDatabase(_type, _name, _adr);
+            require(_name == "zsc");
+            ret = addDatabase(_type, _name, _adr);
         } else if (_type == "module") {
-            return addModuleManager(_name);
+            ret = addModuleManager(_name);
+            if (ret) {
+                mapMuduleDatabase(_name, "zsc");
+            }
         } else {
             revert();
         }
+        return ret;
     }
 
     function getComponent(bytes32 _type, bytes32 _name) public constant returns (address) {
