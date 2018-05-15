@@ -18,7 +18,7 @@ contract IDManager is Object {
 
     function numIds() public constant returns (uint) {
         checkDelegate(msg.sender, 1);
-        return IDs_.length;
+        return ids_.length;
     }
 
     function addId(bytes32 _name, address _id) public returns (bool) {
@@ -33,13 +33,13 @@ contract IDManager is Object {
         return true;
     }
 
-    function removeId(bytes32 _name) public returns (bool) {
+    function removeId(bytes32 _name, address _id) public returns (bool) {
         checkDelegate(msg.sender, 1);
         require(exists_[_name]);
 
         for (uint i = 0; i < idNos_; ++i) {
            if (ids_[i] == _id) {
-                exists_[_id] = false;
+                exists_[_name] = false;
                 ids_[i] = ids_[ids_.length - 1];
                 break;
             }
@@ -50,9 +50,9 @@ contract IDManager is Object {
         return true;
     }
 
-    function getId(bytes32 _name) public constant returns (address) {
+    function getId(bytes32 _name, uint _index) public constant returns (address) {
         checkDelegate(msg.sender, 1);
-        require(_)
+        require(exists_[_name]);
 
         if(_index >= ids_.length) return 0;
         return ids_[_index];
