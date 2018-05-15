@@ -31,10 +31,10 @@ contract SysComAdrs is SysComBase {
         require(!exists_[_name]);
 
         exists_[_name] = true;
-        indice_[_name] = idNos_;
-        names_[idNos_] = _name;
-        ids_.push(_id);
-        idNos_++;
+        indice_[_name] = adrNos_;
+        names_[adrNos_] = _name;
+        adrs_[adrNos_] = _id;
+        adrNos_++;
 
         return true;
     }
@@ -45,7 +45,7 @@ contract SysComAdrs is SysComBase {
 
         uint index = indice_[_name];
 
-        names_[index] = names_[idNos_ - 1];
+        names_[index] = names_[adrNos_ - 1];
         adrs_[index] = adrs_[adrNos_ - 1];
         indice_[names_[index]] = index;
 
