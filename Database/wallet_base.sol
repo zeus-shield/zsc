@@ -9,7 +9,7 @@ import "./db_entity.sol";
 contract WalletBase is DBNode {
     struct Payment {
         uint time_;
-        bool isSigned_
+        bool isSigned_;
         bool isInput_;
         address sender_;
         address receiver_;
@@ -32,7 +32,7 @@ contract WalletBase is DBNode {
     constructor(bytes32 _name) public DBNode(_name) {
         isEthAccount_ = false;
         lokedValue_ = 0;
-        unlockedValue_= 0;
+        totalValue_= 0;
     }
 
     ////////// virtual functions /////////////
@@ -80,7 +80,7 @@ contract WalletBase is DBNode {
 
     function recordOut(address _receiver, uint _amount, bytes32 _data) internal {
         require(totalValue_ >= _amount);
-        if ()
+        //if ()
         uint index = nos_;
         nos_++;
         payments_[index] = Payment(now, false, true, address(this), _receiver, _amount, _data);
@@ -108,7 +108,7 @@ contract WalletBase is DBNode {
     function getBlance(bool _locked) public constant returns (uint256) {
         checkDelegate(msg.sender, 1);
 
-        if (_locked) return lockedValue_;
+        if (_locked) return lokedValue_;
         else return totalValue_;
     }
 
@@ -121,11 +121,11 @@ contract WalletBase is DBNode {
     function getTransactionInfoByIndex(uint _index) public constant returns (uint, bool, bytes32, uint, address, address) {
         checkDelegate(msg.sender, 1);
         
-        require(_index < paymentHistory_.nos_);
+        require(_index < nos_);
         
         return (payments_[_index].time_,
                 payments_[_index].isInput_,
-                payments_[_index].txhash_,
+                payments_[_index].data_,
                 payments_[_index].amount_,
                 payments_[_index].sender_, 
                 payments_[_index].receiver_);
