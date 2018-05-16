@@ -28,7 +28,7 @@ contract FactoryBase is Object {
         checkDelegate(msg.sender, 1);
 
         require(bindedDB_ != address(0));
-        return bindedDB_);
+        return bindedDB_;
     }
 
     function getFactoryManager() public constant returns (address) {
