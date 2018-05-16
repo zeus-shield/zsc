@@ -47,25 +47,25 @@ contract ControlBase is ControlInfo {
 
         addLog("setSystemModules ", true);
     }
-
+    
     function getFactoryManager() internal constant returns (FactoryManager) {
-        return SystemManager(systemGM_).getComponent("factory", "gm");
+        return FactoryManager(SystemManager(systemGM_).getComponent("factory", "gm"));
     }
 
     function getDatabaseManager() internal constant returns (DBManager) {
-        return SystemManager(systemGM_).getComponent("database", "gm");
+        return DBManager(SystemManager(systemGM_).getComponent("database", "gm"));
     }
 
     function getWalletManager() internal constant returns (WalletManager) {      
-        return SystemManager(systemGM_).getComponent("module", "wallet-gm");
+        return WalletManager(SystemManager(systemGM_).getComponent("module", "wallet-gm"));
     }
 
     function getPosManager() internal constant returns (PosManager) {      
-        return SystemManager(systemGM_).getComponent("module", "pos-gm");
+        return PosManager(SystemManager(systemGM_).getComponent("module", "pos-gm"));
     }
 
     function getSimulatorManager() internal constant returns (SimulatorManager) {      
-        return SystemManager(systemGM_).getComponent("module", "simulator-gm"));
+        return SimulatorManager(SystemManager(systemGM_).getComponent("module", "simulator-gm"));
     }
 
     function getDBNode(bytes32 _type, bytes32 _node) internal constant returns (DBNode) {      
