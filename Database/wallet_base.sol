@@ -66,12 +66,8 @@ contract WalletBase is DBNode {
         }
     }
 
-    function checkBeforeSent(address _dst, uint _amount) internal constant returns (bool) {
-        if (totalValue_.sub(lokedValue_) >= _amount && _dst != address(this)) {
-            return true;
-        } else {
-            return false;
-        }
+    function checkBeforeSent(address _dst, uint _amount) internal constant {
+        require(totalValue_.sub(lokedValue_) >= _amount && _dst != address(this));
     }
 
     function recordInput(address _sender, uint _amount, bytes32 _data) internal {
@@ -92,16 +88,6 @@ contract WalletBase is DBNode {
     }
 
     ////////// public functions /////////////
-    function doesLastTransactionSigned() public constant returns (bool) {
-        checkDelegate(msg.sender, 1);
-
-        if (nos_ == 0) {
-            return true;
-        } else {
-            return payments_[nos_ - 1].isSigned_;
-        }
-    }
-
     function getBlance(bool _locked) public constant returns (uint256) {
         checkDelegate(msg.sender, 1);
 
