@@ -198,19 +198,15 @@ contract ControlBase is ControlInfo {
 
         uint purchaseAount = 0;
         if (_isFirstSubmit) {
-            if (DBNode(recWallet).doesLastTransactionSigned()) {
-                purchaseAount = DBNode(recWallet).submitTransaction(agrWallet, price, "", _sigAdr);
-            }
+            purchaseAount = DBNode(recWallet).submitTransaction(agrWallet, price, "", _sigAdr);
         } else { 
-            if (!DBNode(recWallet).doesLastTransactionSigned()) {
-                purchaseAount = DBNode(recWallet).confirmTransaction(_sigAdr);
-            }
+            purchaseAount = DBNode(recWallet).confirmTransaction(_sigAdr);
         }
         return purchaseAount;
     }
 
-    function conductPublishAgreement(bool _isFirstSubmit, bytes32 _userName, bytes32 _agrName, address _creator) internal returns (uint) {
-        bytes32 tokenSymbol = PlatString.tobytes32(getDatabaseManager().getNodeParameterValue("zsc",, _agrName, "walletSymbol"));
+    function conductPublishAgreement(bytes32 _userName, bytes32 _agrName, address _creator) internal returns (uint) {
+        bytes32 tokenSymbol = PlatString.tobytes32(getDatabaseManager().getNodeParameterValue("zsc", _agrName, "walletSymbol"));
         address userWallet = address(getDBNode("zsc", formatWalletName(_userName, tokenSymbol)));
         address agrWallet; 
 
@@ -218,26 +214,19 @@ contract ControlBase is ControlInfo {
         uint lockedAmount = PlatString.stringToUint(getDatabaseManager().getNodeParameterValue("zsc", _agrName, "lockedAmount"));
 
         uint amount = 0;
-        if (_isFirstSubmit) {
-            if (DBNode(userWallet).doesLastTransactionSigned()) {
-                if (tokenSymbol == "ETH") {
-                    agrWallet = getWalletManager().enableWalletByUser(_agrName, tokenSymbol, _creator);
-                } else {
-                    if (!WalletManager(walletGM_).doesTokenContractAdded()) {
-                        return 0;
-                    } else {
-                        agrWallet = getWalletManager().enableWalletByUser(_agrName, tokenSymbol, _creator);
-                    }
-                }
-                amount = DBNode(userWallet).submitTransaction(agrWallet, lockedAmount, "", _creator);
-            }
+        if (tokenSymbol == "ETH") {
+            agrWallet = getWalletManager().enableWalletByUser(_agrName, tokenSymbol, _creator);
         } else {
-            if (!DBNode(userWallet).doesLastTransactionSigned()) {
-                agrWallet = address(getDBNode("zsc", formatWalletName(_agrName, tokenSymbol)));
-                amount = DBNode(userWallet).confirmTransaction(_creator);
-                getDBNode("zsc", _agrName).setAgreementStatus("PUBLISHED", "null");
+            if (!WalletManager(walletGM_).doesTokenContractAdded()) {
+                return 0;
+            } else {
+                agrWallet = getWalletManager().enableWalletByUser(_agrName, tokenSymbol, _creator);
             }
         }
+        amount = DBNode(userWallet).executeTransaction(agrWallet, lockedAmount, "", _creator);
+        require(amount > 0);
+
+        getDBNode("zsc", _agrName).setAgreementStatus("PUBLISHED", "null");
         return amount;
     }
 
