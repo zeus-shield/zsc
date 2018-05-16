@@ -270,18 +270,11 @@ contract ControlApis is ControlBase {
 
     /// @dev Announce an insurance agreement by a provider
     /// @param _agrName The agreement name
-    function submitPublishAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
+    function publishAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _agrName, msg.sender);
 
-        return conductPublishAgreement(true, _userName, _agrName, msg.sender);
-    }
-
-    function confirmPublishAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
-        checkRegistered(_userName, msg.sender);
-        checkMatched(_userName, _agrName, msg.sender);
-
-        return conductPublishAgreement(false, _userName, _agrName, msg.sender);
+        return conductPublishAgreement(_userName, _agrName, msg.sender);
     }
 
     function numTemplates(bytes32 _userName) public constant returns (uint) {
