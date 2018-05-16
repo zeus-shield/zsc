@@ -47,7 +47,11 @@ contract ControlBase is ControlInfo {
 
         addLog("setSystemModules ", true);
     }
-    
+
+    function getDBDatabase(bytes32 _name) internal constant returns (DBDatabase) {
+        return DBDatabase(SystemManager(systemGM_).getComponent("database", _name));
+    }
+
     function getFactoryManager() internal constant returns (FactoryManager) {
         return FactoryManager(SystemManager(systemGM_).getComponent("factory", "gm"));
     }
@@ -68,8 +72,8 @@ contract ControlBase is ControlInfo {
         return SimulatorManager(SystemManager(systemGM_).getComponent("module", "simulator-gm"));
     }
 
-    function getDBNode(bytes32 _type, bytes32 _node) internal constant returns (DBNode) {      
-        return DBNode(getDBDatabase(_type).getNode(_node));
+    function getDBNode(bytes32 _dbName, bytes32 _nodeName) internal constant returns (DBNode) {      
+        return DBNode(getDBDatabase(_dbName).getNode(_nodeName));
     }
 
     function manageErc20TokenContract(bool _doesAdd, bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) internal returns (bool) {
@@ -123,8 +127,8 @@ contract ControlBase is ControlInfo {
 
         walletName = formatWalletName(_enName, "ETH");
 
-        tokenAdr = address(getDBNode(walletName));
-        tokenBalance = getDBNode(walletName).getBlance(false);
+        tokenAdr = address(getDBNode("zsc", walletName));
+        tokenBalance = getDBNode("zsc", walletName).getBlance(false);
 
         string memory str ="";
         str = PlatString.append(str, "info?status=", PlatString.bytes32ToString(status),      "&");
@@ -135,7 +139,7 @@ contract ControlBase is ControlInfo {
     }
 
     function prepareTranasationfoByIndex(bytes32 _walletName, uint _index) internal constant returns (string) {
-        require(_index < getDBNode(_walletName).numTransactions());
+        require(_index < getDBNode("zsc",_walletName).numTransactions());
         
         uint tranTime;
         bool isInput;
@@ -145,7 +149,7 @@ contract ControlBase is ControlInfo {
         address receiver;
         bytes32 inputTag;
 
-        (tranTime, isInput, txHash, amount, sender, receiver) =  getDBNode(_walletName).getTransactionInfoByIndex(_index);
+        (tranTime, isInput, txHash, amount, sender, receiver) =  getDBNode("zsc",_walletName).getTransactionInfoByIndex(_index);
 
         if (isInput) inputTag = "true";
         else inputTag = "false";
@@ -180,7 +184,7 @@ contract ControlBase is ControlInfo {
         bytes32 runName = getSimulatorManager().addSimulationRun(70, price, endTime, lockedAmount, agrAdr, proAdr, recAdr);
         require(runName != "null");
 
-        getDBNode(_agrName).setAgreementStatus("PAID", _userName);
+        getDBNode("zsc", _agrName).setAgreementStatus("PAID", _userName);
         DBNode(recAdr).addChild(agrAdr);
 
         return true;
@@ -207,7 +211,7 @@ contract ControlBase is ControlInfo {
 
     function conductPublishAgreement(bool _isFirstSubmit, bytes32 _userName, bytes32 _agrName, address _creator) internal returns (uint) {
         bytes32 tokenSymbol = PlatString.tobytes32(getDatabaseManager().getNodeParameterValue("zsc",, _agrName, "walletSymbol"));
-        address userWallet = address(getDBNode(formatWalletName(_userName, tokenSymbol)));
+        address userWallet = address(getDBNode("zsc", formatWalletName(_userName, tokenSymbol)));
         address agrWallet; 
 
         require(agrWallet != address(0));
@@ -229,9 +233,9 @@ contract ControlBase is ControlInfo {
             }
         } else {
             if (!DBNode(userWallet).doesLastTransactionSigned()) {
-                agrWallet = address(getDBNode(formatWalletName(_agrName, tokenSymbol)));
+                agrWallet = address(getDBNode("zsc", formatWalletName(_agrName, tokenSymbol)));
                 amount = DBNode(userWallet).confirmTransaction(_creator);
-                getDBNode(_agrName).setAgreementStatus("PUBLISHED", "null");
+                getDBNode("zsc", _agrName).setAgreementStatus("PUBLISHED", "null");
             }
         }
         return amount;
@@ -240,19 +244,19 @@ contract ControlBase is ControlInfo {
     function conductInformTransaction(bytes32 _userName, bytes32 _enName, address _dest, uint256 _amount) internal returns (bool) {
         bytes32 destName = Object(_dest).name();
         bytes32 tokenSymbol = PlatString.tobytes32(getDatabaseManager().getNodeParameterValue("zsc", destName, "walletSymbol"));
-        address userWallet = address(getDBNode(formatWalletName(_enName, tokenSymbol)));
+        address userWallet = address(getDBNode("zsc", formatWalletName(_enName, tokenSymbol)));
         DBNode(_dest).informTransaction(userWallet, _dest, _amount);
         return true;
     }
 
     function deleteAgreement(bytes32 _userName, bytes32 _agrName) internal returns (bool) {
-        address agrAdr = address(getDBNode(_agrName));
+        address agrAdr = address(getDBNode("zsc", _agrName));
         require(agrAdr != address(0));
 
         bytes32 status = PlatString.tobytes32(getDatabaseManager().getNodeParameterValue("zsc", _agrName, "status"));
         if (status == "PAID") return false;
 
-        address agrWallet = address(getDBNode(formatWalletName(_agrName, tokenSymbol)));
+        address agrWallet = address(getDBNode("zsc", formatWalletName(_agrName, tokenSymbol)));
         require(agrWallet != address(0));
 
         bytes32 tokenSymbol;
@@ -269,7 +273,7 @@ contract ControlBase is ControlInfo {
         temp        = getDatabaseManager().getNodeParameterValue("zsc", _agrName, "lockedAmount");
         lockedAmount= PlatString.stringToUint(temp);
 
-        address userWallet = address(getDBNode(formatWalletName(proName, tokenSymbol)));
+        address userWallet = address(getDBNode("zsc", formatWalletName(proName, tokenSymbol)));
         require(userWallet != address(0));
 
         DBNode(userWallet).executeTransaction(true, userWallet, lockedAmount, "");
@@ -280,7 +284,7 @@ contract ControlBase is ControlInfo {
         uint time;
         uint amount;
 
-        (time, amount) = getDBNode(_enName).getMiningInfoByIndex(_isReward, _index);
+        (time, amount) = getDBNode("zsc", _enName).getMiningInfoByIndex(_isReward, _index);
 
         string memory str ="";
         str = PlatString.append(str, "info?time=", PlatString.uintToString(time),    "&");
