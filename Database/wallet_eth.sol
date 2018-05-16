@@ -35,7 +35,7 @@ contract WalletEth is WalletMultiSig {
 
     function executeTransaction(bool _doesDirectly, address _dest, uint256 _amount, bytes _data) public returns (uint) {
         checkDelegate(msg.sender, 1);
-        require(checkBeforeSent(_dest, _amount));        
+        checkBeforeSent(_dest, _amount);        
 
         if (_dest.call.value(_amount)(data)) {
             if (_doesDirectly) {
