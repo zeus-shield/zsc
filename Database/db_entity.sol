@@ -76,11 +76,12 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function setParameter(bytes32 _parameter, bytes32 _value) public constant returns (bool) {
+    function setParameter(bytes32 _parameter, bytes32 _value) public returns (bool) {
         checkDelegate(msg.sender, 1);
         require(parameterExist_[_parameter] == true);
 
-        parameterValues_[_parameter] = _value;
+        //parameterValues_[_parameter] = _value;
+        parameterValues_.push(_value);
         return true;
     }
 
@@ -88,7 +89,8 @@ contract DBEntity is DBNode {
         checkDelegate(msg.sender, 1);
         require(parameterExist_[_parameter] == true);
 
-        return parameterValues_[_parameter];
+        //return parameterValues_[_parameter];
+        return true;
     }
 
     function numParameters() public constant returns (uint) {
