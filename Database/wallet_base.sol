@@ -9,16 +9,16 @@ import "./db_entity.sol";
 contract WalletBase is DBNode {
     struct Payment {
         uint time_;
-        bool isSigned_;
         bool isInput_;
         address sender_;
         address receiver_;
         uint256 amount_;
         bytes32 data_;
     }
-
     uint nos_;
     mapping(uint => Payment) payments_;
+
+    Payment tempPyment_;
     
     bool private isEthAccount_;
     uint lokedValue_;
@@ -33,27 +33,29 @@ contract WalletBase is DBNode {
         isEthAccount_ = false;
         lokedValue_ = 0;
         totalValue_= 0;
+        tempSigned_ = false;
     }
-
-    ////////// virtual functions /////////////
-    function submitTransaction(address _dest, uint256 _amount, bytes _data, address _sigAdr) public returns (uint);
-
-    function confirmTransaction(address _sigAdr) public returns (uint);
-
-    function executeTransaction(bool _doesDirectly, address _dest, uint256 _amount, bytes _data) public returns (uint);
 
     ////////// internal functions /////////////
     function setAsEthAccount() internal {
         isEthAccount_ = true;
     }
 
+    function updateTempPayment(address _dest, uint _amount, bytes32 _data) internal {
+        tempPyment_.time_     = now;
+        tempPyment_.isInput_  = false;
+        tempPyment_.sender_   = address(this);
+        tempPyment_.receiver_ = _dest;
+        tempPyment_.amount_   = _amount;
+        tempPyment_.data_     = _data;
+    }
+    
     function changeValue(bool _doesIncrease, bool _isLocked, uint _amount) internal returns (bool) {
         if (_doesIncrease) {
             if (_isLocked) {
                 lokedValue_ = lokedValue_.add(_amount);
             } 
             totalValue_ = totalValue_.add(_amount);
-            payments_[nos_ - 1].isSigned_ = true;
         } else {
             if (_isLocked) {
                 require(lokedValue_ >= _amount);
@@ -75,23 +77,18 @@ contract WalletBase is DBNode {
     function recordInput(address _sender, uint _amount, bytes32 _data) internal {
         uint index = nos_;
         nos_++;
-        payments_[index] = Payment(now, true, false, _sender, address(this), _amount, _data);
+        payments_[index] = Payment(now, false, _sender, address(this), _amount, _data);
     }
 
     function recordOut(address _receiver, uint _amount, bytes32 _data) internal {
         require(totalValue_ >= _amount);
-        //if ()
         uint index = nos_;
         nos_++;
-        payments_[index] = Payment(now, false, true, address(this), _receiver, _amount, _data);
+        payments_[index] = Payment(now, true, address(this), _receiver, _amount, _data);
     }
 
-    function getLastUnsignedTransaction() internal constant returns (address, uint, bytes32) {
-        if (nos_ == 0) {
-            revert();
-         } else {
-            return (payments_[nos_ - 1].receiver_, payments_[nos_ - 1].amount_, payments_[nos_ - 1].data_);
-         }
+    function getTempPaymentInfo() internal constant returns (address, uint, bytes32) {
+        return (tempPyment_.receiver_, tempPyment_.amount_, tempPyment_.data_);
     }
 
     ////////// public functions /////////////
