@@ -8,8 +8,8 @@ import "./sys_com_module.sol";
 
 contract SysGmWallet is SysComModule {
     struct Erc20Token {
-        bytes32 name_;  
         bytes32 status_;
+        bytes32 name_;  
         bytes32 symbol_ ;
         uint    decimals_;
         address tokenAdr_;
@@ -43,15 +43,13 @@ contract SysGmWallet is SysComModule {
     }
 
     function getTokenContractAddress(bytes32 _symbol) internal constant returns (address) {
-        checkDelegate(msg.sender, 1);
-
         require(erc20TokenExists_[_symbol]);
         
         uint index = erc20TokenIndice_[_symbol];
         return erc20Tokens_[index].tokenAdr_;
     }
 
-    function doesTokenContractAdded(bytes32 _symbol) public constant returns (bool) {
+    function doesTokenContractExists(bytes32 _symbol) public constant returns (bool) {
         checkDelegate(msg.sender, 1);
         return erc20TokenExists_[_symbol];
     }
@@ -59,7 +57,7 @@ contract SysGmWallet is SysComModule {
     function addTokenContract(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public returns (bool) {
         checkDelegate(msg.sender, 1);
 
-        if (erc20TokenExists_[_symbol]) return false;
+        require(!erc20TokenExists_[_symbol]);
 
         erc20TokenIndice_[_symbol] = tokenNos_;
         erc20Tokens_[tokenNos_] = Erc20Token("true", _name, _symbol, _decimals, _tokenAdr);
@@ -70,12 +68,16 @@ contract SysGmWallet is SysComModule {
     function removeTokenContract(bytes32 _symbol) public returns (bool) {
         checkDelegate(msg.sender, 1);
 
-        if (!erc20TokenExists_[_symbol]) return false;
+        require(erc20TokenExists_[_symbol]);
         
         uint index = erc20TokenIndice_[_symbol];
+        Erc20Token info = erc20Tokens_[tokenNos_ - 1];
+
+        erc20TokenIndice_[endSymbol] = index;
+
         delete erc20TokenIndice_[_symbol];
         delete erc20TokenExists_[_symbol];
-        delete erc20Tokens_[index];
+        delete erc20Tokens_[tokenNos_ - 1];
         tokenNos_--;
     }
 
@@ -96,8 +98,8 @@ contract SysGmWallet is SysComModule {
         checkDelegate(msg.sender, 1);
 
         require(_index < tokenNos_);
-        return (erc20Tokens_[_index].name_, 
-                erc20Tokens_[_index].status_, 
+        return (erc20Tokens_[_index].status_,
+                erc20Tokens_[_index].name_, 
                 erc20Tokens_[_index].symbol_,
                 erc20Tokens_[_index].decimals_,
                 erc20Tokens_[_index].tokenAdr_);
