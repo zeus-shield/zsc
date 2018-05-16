@@ -11,9 +11,16 @@ contract WalletMultiSig is WalletBase {
     mapping(address => bool) sigAdrExists_;
     mapping(address => bool) sigStatus_;
 
+    bool submittedTransaction_; 
+
     // Constructor
     constructor(bytes32 _name) public WalletBase(_name) {
+        submittedTransaction_ = false;
     }
+
+
+    ////////// virtual functions /////////////
+    function executeTransaction(bool _doesDirectly, address _dest, uint256 _amount, bytes _data) public returns (uint);
 
     ////////// internal functions /////////////
     function checkAllowedSignature(address _sigAdr) internal constant returns (bool) {
@@ -51,7 +58,11 @@ contract WalletMultiSig is WalletBase {
         checkDelegate(msg.sender, 1);
         checkAllowedSignature(_sigAdr);
 
-        recordOut(address(this), _dest, _amount, PlatString.tobytes32(_data));
+        require(!tempPaymetStatus_);
+
+        submittedTransaction_ = true;
+
+        updateTempPayment(_dest, _amount, PlatString.tobytes32(_data));
         return confirmTransaction(_user);
     }
 
@@ -61,11 +72,17 @@ contract WalletMultiSig is WalletBase {
             uint amount;
             bytes32 data;
 
-            (dest, amount, data) = getLastUnsignedTransaction();
-            
-            return executeTransaction(false, dest, amount, data);
+            (dest, amount, data) = getTempPaymentInfo();
+
+            uint ret = executeTransaction(false, dest, amount, data);
+            require(ret > 0);
+
+            tempPaymetStatus_ = false;
+        
+            return ret;
         } else {
             return 0;
         }
     }
 }
+
