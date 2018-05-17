@@ -140,4 +140,22 @@ contract SysGmWallet is SysComModule {
         }
         return address(0);
     }
+
+    function conductPurchaseAgreement(bool _isFirstSubmit, bytes32 _userName, bytes32 _agrName, address _sigAdr) internal returns (uint) {
+        address argAdr = DBDatabase(getDatabase()).getNode(_agrName);
+
+
+        bytes32 tokenSymbol = PlatString.tobytes32(DBNode(agrAdr).getParameter("walletSymbol"));
+        uint price          = PlatString.stringToUint(DBNode(agrAdr).getParameter("price"));
+        address recWallet   =  DBDatabase(getDatabase()).getNode(formatWalletName(_userName, tokenSymbol));
+        address agrWallet   =  DBDatabase(getDatabase()).getNode(formatWalletName(_agrName, tokenSymbol));
+
+        uint purchaseAount = 0;
+        if (_isFirstSubmit) {
+            purchaseAount = DBNode(recWallet).submitTransaction(agrWallet, price, "", _sigAdr);
+        } else { 
+            purchaseAount = DBNode(recWallet).confirmTransaction(_sigAdr);
+        }
+        return purchaseAount;
+    }
 }
