@@ -85,14 +85,14 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function setParameter(bytes32 _parameter) public constant returns (bool) {
+
+    function getParameter(bytes32 _parameter) public constant returns (bytes32) {
         checkDelegate(msg.sender, 1);
         require(parameterExist_[_parameter] == true);
 
-        //return parameterValues_[_parameter];
-        return true;
+        return parameterValues_[_index];
     }
-
+    
     function numParameters() public constant returns (uint) {
         checkDelegate(msg.sender, 1);
         return parameterNames_.length;
