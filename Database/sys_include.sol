@@ -21,7 +21,8 @@ contract DBNode {
 
     function addParameter(bytes32 _parameter) public returns (bool);
     function removeParameter(bytes32 _parameter) public returns (bool);
-    function setParameter(bytes32 _parameter, string _value) public returns (bool);
+    function setParameter(bytes32 _parameter, bytes32 _value) public returns (bool);
+    function getParameter(bytes32 _parameter) public constant returns (bytes32);
     function numParameters() public constant returns (uint);
     function getParameterNameByIndex(uint _index) public constant returns (bytes32);
 
