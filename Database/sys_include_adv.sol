@@ -23,6 +23,8 @@ contract WalletManager is Object {
     function numTokenContracts() public constant returns (uint);
     function getTokenInfoByIndex(uint _index) public constant returns (bytes32, bytes32, bytes32, uint, address);
     function enableWalletByUser(bytes32 _user, bytes32 _tokeSymbol, address _creator) public returns (address);
+
+    function conductPurchaseAgreement(bool _isFirstSubmit, bytes32 _userName, bytes32 _agrName, address _sigAdr) internal returns (uint);
 }
 
 contract SimulatorManager is Object {
