@@ -125,10 +125,10 @@ contract ControlBase is ControlInfo {
             (tokenName, status, tokenSymbol, tokenDecimals, tokenAdr) =  WalletManager(walletGM_).getTokenInfoByIndex(_index);
         }
 
-        walletName = formatWalletName(_enName, "ETH");
+        walletName = formatWalletName(_enName, tokenSymbol);
 
         tokenAdr = address(getDBNode("zsc", walletName));
-        tokenBalance = getDBNode("zsc", walletName).getBlance(false);
+        tokenBalance = DBNode(tokenAdr).getBlance(false);
 
         string memory str ="";
         str = PlatString.append(str, "info?status=", PlatString.bytes32ToString(status),      "&");
@@ -177,9 +177,9 @@ contract ControlBase is ControlInfo {
         tokenSymbol = PlatString.tobytes32(getDatabaseManager().getNodeParameterValue("zsc", _agrName, "walletSymbol"));
         endTime     = PlatString.stringToUint(getDatabaseManager().getNodeParameterValue("zsc", _agrName, "endTime"));
 
-        address agrAdr = getDBDatabase().getNode(_agrName);
-        address proAdr = getDBDatabase().getNode(proName);
-        address recAdr = getDBDatabase().getNode(_userName);
+        address agrAdr = address(getDBNode("zsc", _agrName));
+        address proAdr = address(getDBNode("zsc", proName)); 
+        address recAdr = address(getDBNode("zsc", _userName)); 
 
         bytes32 runName = getSimulatorManager().addSimulationRun(70, price, endTime, lockedAmount, agrAdr, proAdr, recAdr);
         require(runName != "null");
