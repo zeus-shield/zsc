@@ -24,12 +24,12 @@ contract ControlApis is ControlBase {
 
     function registerErc20Token(bytes32 _symbol, bytes32 _name, uint _decimals, address _tokenAdr) public returns (bool) {
         checkDelegate(msg.sender, 1);
-        return manageErc20TokenContract(true, _name, _symbol, _decimals, _tokenAdr);
+        return getWalletManager().addTokenContract(_name, _symbol, _decimals, _tokenAdr);
     }
 
     function removeErc20Token(bytes32 _symbol) public returns (bool) {
         checkDelegate(msg.sender, 1);
-        return manageErc20TokenContract(false, 0, _symbol, 0, 0);
+        return getWalletManager().removeTokenContract(_symbol);
     }
 
     function runSimulationTest(uint _steps) public {
@@ -335,7 +335,7 @@ contract ControlApis is ControlBase {
     function submitPurchaseAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
         checkRegistered(_userName, msg.sender);
 
-        uint amount = conductPurchaseAgreement(true, _userName, _agrName, msg.sender);
+        uint amount = getWalletManager().conductPurchaseAgreement(true, _userName, _agrName, msg.sender);
         if (amount > 0) {
             require(preparePurchaseAgreement(_userName, _agrName));
         }     
@@ -348,7 +348,7 @@ contract ControlApis is ControlBase {
     function confirmPurchaseAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
         checkRegistered(_userName, msg.sender);
 
-        uint amount = conductPurchaseAgreement(false, _userName, _agrName, msg.sender);
+        uint amount = getWalletManager().conductPurchaseAgreement(false, _userName, _agrName, msg.sender);
         if (amount > 0) {
             require(preparePurchaseAgreement(_userName, _agrName));
         }     
