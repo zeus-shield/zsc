@@ -144,7 +144,6 @@ contract SysGmWallet is SysComModule {
     function conductPurchaseAgreement(bool _isFirstSubmit, bytes32 _userName, bytes32 _agrName, address _sigAdr) internal returns (uint) {
         address argAdr = DBDatabase(getDatabase()).getNode(_agrName);
 
-
         bytes32 tokenSymbol = PlatString.tobytes32(DBNode(agrAdr).getParameter("walletSymbol"));
         uint price          = PlatString.stringToUint(DBNode(agrAdr).getParameter("price"));
         address recWallet   =  DBDatabase(getDatabase()).getNode(formatWalletName(_userName, tokenSymbol));
@@ -157,5 +156,29 @@ contract SysGmWallet is SysComModule {
             purchaseAount = DBNode(recWallet).confirmTransaction(_sigAdr);
         }
         return purchaseAount;
+    }
+
+    function conductPublishAgreement(bytes32 _userName, bytes32 _agrName, address _creator) internal returns (uint) {
+        address argAdr = DBDatabase(getDatabase()).getNode(_agrName);
+        bytes32 tokenSymbol = PlatString.tobytes32(DBNode(agrAdr).getParameter("walletSymbol"));
+        address userWallet = DBDatabase(getDatabase()).getNode(formatWalletName(_userName, tokenSymbol));
+
+        require(userWallet != address(0));
+        uint lockedAmount = PlatString.stringToUint(PlatString.tobytes32(DBNode(_agrName).getParameter("lockedAmount"));
+
+        address agrWallet = enableWalletByUser(_agrName, tokenSymbol, _creator);
+        uint amount = DBNode(userWallet).executeTransaction(agrWallet, lockedAmount, "", _creator);
+        require(amount > 0);
+
+        DBNode(argAdr).setAgreementStatus("PUBLISHED", "null");
+        return amount;
+    }
+
+    function conductInformTransaction(bytes32 _userName, bytes32 _enName, address _dest, uint256 _amount) internal returns (bool) {
+        address destAdr = DBDatabase(getDatabase()).getNode(Object(_dest).name());
+        bytes32 tokenSymbol = PlatString.tobytes32(DBNode(agrAdr).getParameter("walletSymbol"));
+        address userWallet = DBDatabase(getDatabase()).getNode(formatWalletName(_enName, tokenSymbol));
+        DBNode(_dest).informTransaction(userWallet, _dest, _amount);
+        return true;
     }
 }
