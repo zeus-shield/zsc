@@ -23,6 +23,10 @@ $htmlModules = new ZscHtmlModules();
     function addFactoryModule(module, elementId) {
         zscSetup.addFactoryModule(module, elementId);
     }
+
+    function addDatabaseModule(module) {
+    }
+
 </script>
 </head>
 <body>
@@ -33,10 +37,13 @@ $htmlModules = new ZscHtmlModules();
 ?>
 
     <div class="well">
-        
         <?php echo $htmlModules->loadAddFactoryModules('addFactoryModule');?>
-
     </div>
+
+    <div class="well">
+        <button type="button" onClick="addDatabaseModule('DBDatabase')">Add ZSC database</button>;
+    </div>
+
 </body>
 </html>
 
