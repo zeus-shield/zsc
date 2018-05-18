@@ -31,7 +31,14 @@ contract SysGmWallet is SysComModule {
         tokenNos_ = 0;
     } 
 
-    function formatWalletName(bytes32 _userName, bytes32 _tokenSymbol) internal pure returns (bytes32) {
+    function getTokenContractAddress(bytes32 _symbol) internal constant returns (address) {
+        require(erc20TokenExists_[_symbol]);
+        
+        uint index = erc20TokenIndice_[_symbol];
+        return erc20Tokens_[index].tokenAdr_;
+    }
+
+    function formatWalletName(bytes32 _userName, bytes32 _tokenSymbol) public pure returns (bytes32) {
         string memory str;
         bytes32 temp;
         if (_tokenSymbol == "ETH") {
@@ -40,13 +47,6 @@ contract SysGmWallet is SysComModule {
             str = PlatString.append(_userName, "-", _tokenSymbol);
         }
         temp = PlatString.tobytes32(str);
-    }
-
-    function getTokenContractAddress(bytes32 _symbol) internal constant returns (address) {
-        require(erc20TokenExists_[_symbol]);
-        
-        uint index = erc20TokenIndice_[_symbol];
-        return erc20Tokens_[index].tokenAdr_;
     }
 
     function doesTokenContractExists(bytes32 _symbol) public constant returns (bool) {
