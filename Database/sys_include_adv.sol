@@ -25,6 +25,7 @@ contract WalletManager is Object {
     function enableWalletByUser(bytes32 _user, bytes32 _tokeSymbol, address _creator) public returns (address);
 
     function conductPurchaseAgreement(bool _isFirstSubmit, bytes32 _userName, bytes32 _agrName, address _sigAdr) internal returns (uint);
+    function formatWalletName(bytes32 _userName, bytes32 _tokenSymbol) public pure returns (bytes32);
 }
 
 contract SimulatorManager is Object {
