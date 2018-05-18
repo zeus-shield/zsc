@@ -15,23 +15,23 @@ class ZscSystemModules extends ZscBase {
     public  function __destruct() {
     }
 
-    public function readModuleAddress($name) {
+    public function readObjectAddress($name) {
         return parent::readContent('./adrs/'.$name.'.txt');
     }
 
-    public function writeModuleAddress($name, $adr) {
+    public function writeObjectAddress($name, $adr) {
         parent::writeContent('./adrs/'.$name.'.txt', $adr);
     }
 
-    public function getLogedModuleAddressArrayInString() {
-        $logedModules = parent::getModuleArray();
+    public function getLogedObjectAddressArrayInString() {
+        $logedModules = parent::getLogedObjectArray();
         $num = count($logedModules);
     
         $text = "";
     
         for($x = 0; $x < $num; $x++) {
             $name = $logedModules[$x];
-            $text .= "['".$this->readModuleAddress($name);
+            $text .= "['".$this->readObjectAddress($name);
         }
         return $text;
     }
@@ -44,18 +44,18 @@ class ZscSystemModules extends ZscBase {
     
         for($x = 0; $x < $num; $x++) {
             $name = $readModuleAddress[$x];
-            $text .= "['".$this->readModuleAddress($name);
+            $text .= "['".$this->readObjectAddress($name);
         }
         return $text;
     }
 
     public function getUrlSuffixForAdrs() {
-        $system_modules = parent::getModuleArray();
+        $system_modules = parent::getObjectArray();
         $num = count($system_modules);
         $text = '?';
-        for($x = 0; $x < $num; $x++) {
+        for($x = 1; $x < $num; $x++) {
             $name = $system_modules[$x];
-            $text .= $name.'='.$this->readModuleAddress($name).'&';
+            $text .= $name.'='.$this->readObjectAddress($name).'&';
         }
         return $text;
     }
