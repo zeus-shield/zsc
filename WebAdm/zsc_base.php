@@ -31,16 +31,16 @@ class ZscBase {
         fclose($myfile);
     }
 
-    public function getModuleArray() { 
-        return array("TestToken", "LogRecorder", "DBDatabase",  "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "DatabaseManager", "FactoryManager", "FactoryPro", "FactoryRec", "FactoryStaker", "FactoryTmp", "FactoryAgr", "FactoryWalletEth", "FactoryWalletErc20", "ControlApisAdv");
-    } 
-
-    public function getLogedModuleArray() {
-        return array("DBDatabase", "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "FactoryManager", "FactoryPro", "FactoryRec", "FactoryStaker", "FactoryTmp", "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20", "ControlApisAdv");
-    }
-
     public function getFactoryModuleArray() {
         return array("FactoryPro", "FactoryRec", "FactoryStaker" , "FactoryTmp",  "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20"); 
+    }
+    
+    public function getLogedObjectArray() {
+        return array("DBDatabase", "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "DatabaseManager", "FactoryManager", "SystemOverlayer", "ControlApisAdv", "FactoryPro", "FactoryRec", "FactoryStaker" , "FactoryTmp",  "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20");
+    }
+
+    public function getObjectArray() {
+        return array("TestToken", "LogRecorder", "DBDatabase", "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "DatabaseManager", "FactoryManager", "SystemOverlayer", "ControlApisAdv", "FactoryPro", "FactoryRec", "FactoryStaker" , "FactoryTmp",  "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20");
     }
 }
 
