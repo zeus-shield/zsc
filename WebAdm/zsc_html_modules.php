@@ -66,10 +66,13 @@ class ZscHtmlModules extends ZscSystemModules {
         <script type="text/javascript" src="./js/compiled_factory_wallet_erc20.js"></script>
         <script type="text/javascript" src="./js/compiled_apis_adv.js"></script>
         <script type="text/javascript" src="./js/compiled_adm_adv.js"></script>
-        <script type="text/javascript" src="./js/compiled_wallet_manager.js"></script>
-        <script type="text/javascript" src="./js/compiled_simulator_manager.js"></script>
         <script type="text/javascript" src="./js/compiled_pos.js"></script>
-        <script type="text/javascript" src="./js/compiled_loger.js"></script>';
+        <script type="text/javascript" src="./js/compiled_loger.js"></script>
+        <script type="text/javascript" src="./js/compiled_sys_gm_db.js"></script>
+        <script type="text/javascript" src="./js/compiled_sys_gm_factory.js"></script>
+        <script type="text/javascript" src="./js/compiled_sys_gm_simulator.js"></script>
+        <script type="text/javascript" src="./js/compiled_sys_gm_wallet.js"></script>
+        <script type="text/javascript" src="./js/compiled_sys_overlayer.js"></script>';
         return $text;
     }
     
@@ -99,12 +102,12 @@ class ZscHtmlModules extends ZscSystemModules {
     }
 
     public function loadCreateContract($func) {
-        $modules = ZscBase::getModuleArray();
-        $num = count($modules);
+        $objects= ZscBase::getObjectArray();
+        $num = count($objects);
 
         $text = '';
         for($x = 0; $x < $num; $x++) {
-            $name = $modules[$x];
+            $name = $objects[$x];
             $text .= '<text>Step - '.$x.': Create '.$name.'</text>';
             $text .= '<div class="well">';
             $text .= '   <text> Name: </text>';
@@ -113,6 +116,7 @@ class ZscHtmlModules extends ZscSystemModules {
             $text .= '   <text id="'.$name.'Log"></text> <br>';
             $text .= '</div>';
         }
+
         return $text;
     }
     
@@ -154,25 +158,19 @@ class ZscHtmlModules extends ZscSystemModules {
         return $text;
     }
 
-    public function loadInitModules($func) {
-        $modules = ZscBase::getInitedModuleArray(); 
-        $num = count($modules);
+    public function loadInitObjects($func) {
+        $objects= ZscBase::getObjectArray();
+        $num = count($objects);
+
         $text = '';
     
         for($x = 0; $x < $num; $x++) {
-            $name = $modules[$x];
+            $name = $objects[$x];
             $hashId = $name.'Hash'.$x;
-            $action = '';
-            $object = '';
             $action = "Init ".$name;
             
-            /*
-            <text>Step - 1 </text>
-            <button type="button" onClick="initSystemModule('DBDatabase', 'null','DBDatabaseHash')">Init DBDatabase</button> 
-            <text id="DBDatabaseHash"></text><br>
-            */
             $text .= '<text>Step - '.($x+1).' </text>';
-            $text .= '<button type="button" onClick="'.initSystemModule.'(\''.$name.'\', \''.$hashId.'\')">'.$action.'</button>';
+            $text .= '<button type="button" onClick="'.$func.'(\''.$name.'\', \''.$hashId.'\')">'.$action.'</button>';
             $text .= '<text id="'.$hashId.'"></text><br><br>';
         }
     
@@ -187,12 +185,10 @@ class ZscHtmlModules extends ZscSystemModules {
         for($x = 0; $x < $num; $x++) {
             $name = $modules[$x];
             $hashId = $name.'Hash'.$x;
-            $action = '';
-            $object = '';
             $action = "Set ".$name;
             
             $text .= '<text>Step - '.($x+1).' </text>';
-            $text .= '<button type="button" onClick="'.addFactoryModule.'(\''.$name.'\', \''.$hashId.'\')">'.$action.'</button>';
+            $text .= '<button type="button" onClick="'.$func.'(\''.$name.'\', \''.$hashId.'\')">'.$action.'</button>';
             $text .= '<text id="'.$hashId.'"></text><br><br>';
         }
     
