@@ -36,9 +36,3 @@ contract SimulatorManager is Object {
 contract FactoryManager {
     function createFactoryNode(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra, address _creator) public returns (address) {
 }
-
-contract DBManager {
-    function addNodeParameter(bytes32 _dbName, bytes32 _nodeName, bytes32 _parameter) public returns (bool);
-    function setNodeParameterValue(bytes32 _dbName, bytes32 _nodeName, bytes32 _parameter, bytes32 _value) public returns (bool);
-    function getNodeParameterValue(bytes32 _dbName, bytes32 _nodeName, bytes32 _parameter) public constant returns (bytes32);
-}
