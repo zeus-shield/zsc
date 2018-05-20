@@ -33,11 +33,6 @@ contract WalletBase is DBNode {
     }
 
     ////////// internal functions /////////////
-
-    function updateTempPayment(address _dest, uint _amount, bytes32 _data) internal {
-
-    }
-    
     function changeValue(bool _doesIncrease, bool _isLocked, uint _amount) internal returns (bool) {
         if (_doesIncrease) {
             if (_isLocked) {
@@ -69,10 +64,6 @@ contract WalletBase is DBNode {
         uint index = nos_;
         nos_++;
         payments_[index] = Payment(now, true, address(this), _receiver, _amount, _data);
-    }
-
-    function getTempPaymentInfo() internal constant returns (address, uint, bytes32) {
-        return (tempPyment_.receiver_, tempPyment_.amount_, tempPyment_.data_);
     }
 
     ////////// public functions /////////////
