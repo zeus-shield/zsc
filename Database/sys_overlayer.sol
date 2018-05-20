@@ -36,7 +36,7 @@ contract SysOverlayer is Object {
     }
 
     function addDatabase(bytes32 _name, address _adr) internal returns (bool) {
-        if (SystemBase(databaseGM_).addAdr(_name, _adr)) {
+        if (SysComBase(databaseGM_).addAdr(_name, _adr)) {
             Object(_adr).setDelegate(apiController_, 1);
         } else {
             return false;
@@ -52,8 +52,8 @@ contract SysOverlayer is Object {
         modules_[_name] = _adr;
         moduleExists_[_name] = true;
 
-        SystemBase(factoryGM_).delegateObject(_adr, 1);
-        SystemBase(databaseGM_).delegateObject(_adr, 1);
+        SysComBase(factoryGM_).delegateObject(_adr, 1);
+        SysComBase(databaseGM_).delegateObject(_adr, 1);
 
         return true;
     }
@@ -100,6 +100,7 @@ contract SysOverlayer is Object {
 
         Object(factoryGM_).setDelegate(apiController_, 1);
         Object(databaseGM_).setDelegate(apiController_, 1);
+        Object(databaseGM_).setDelegate(factoryGM_, 1);
     }
 
     function addComponent(bytes32 _type, bytes32 _name, address _adr) public returns (bool) {
@@ -130,13 +131,13 @@ contract SysOverlayer is Object {
             if (_name == "gm") {
                 return factoryGM_;
             } else {
-                return SystemBase(factoryGM_).getAdr(_name);
+                return SysComBase(factoryGM_).getAdr(_name);
             }
         } else if (_type == "database") {
             if (_name == "gm") {
                 return databaseGM_;
             } else {
-                return SystemBase(databaseGM_).getAdr(_name);
+                return SysComBase(databaseGM_).getAdr(_name);
             }
         } else if (_type == "module") {
             return modules_[_name];
