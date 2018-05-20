@@ -42,10 +42,6 @@ contract ControlBase is ControlInfo {
         return FactoryManager(SystemManager(systemOL_).getComponent("factory", "gm"));
     }
 
-    function getDatabaseManager() internal constant returns (DBManager) {
-        return DBManager(SystemManager(systemOL_).getComponent("database", "gm"));
-    }
-
     function getWalletManager() internal constant returns (WalletManager) {      
         return WalletManager(SystemManager(systemOL_).getComponent("module", "wallet-gm"));
     }
@@ -61,6 +57,28 @@ contract ControlBase is ControlInfo {
     function getDBNode(bytes32 _dbName, bytes32 _nodeName) internal constant returns (DBNode) {
         address dbAdr = SystemManager(systemGM_).getComponent("database", _dbName);
         return DBNode(DBDatabase(dbAdr).getNode(_nodeName));
+    }
+
+    function deleteAgreement(bytes32 _userName, bytes32 _agrName) internal returns (bool) {
+        address agrAdr = address(getDBNode(zscDB_, _agrName));
+        require(agrAdr != address(0));
+
+        bytes32 status;
+        bytes32 proName;
+        uint price;
+        uint lockedAmount;
+        bytes32 tokenSymbol;
+        uint endTime;
+
+        (status, proName, price, lockedAmount, tokenSymbol, endTime) = getDBNode(zscDB_, _agrName).getAgreementInfo();
+        if (status == "PAID") return false;
+
+        address agrWallet = address(getDBNode(zscDB_, getWalletManager().formatWalletName(_agrName, tokenSymbol)));
+        address userWallet = address(getDBNode(zscDB_, getWalletManager().formatWalletName(proName, tokenSymbol)));
+        require(agrWallet != address(0) && userWallet != address(0));
+
+        DBNode(userWallet).executeTransaction(true, userWallet, lockedAmount, "");
+        return DBDatabase(bindedDB_).destroyNode(agrAdr);
     }
 
     function prepareTokenContractInfoByIndex(uint _index) internal constant returns (string) {
@@ -144,17 +162,14 @@ contract ControlBase is ControlInfo {
     }
 
     function preparePurchaseAgreement(bytes32 _userName, bytes32 _agrName) internal returns (bool) {
+        bytes32 status;
         bytes32 proName;
         uint price;
         uint lockedAmount;
         bytes32 tokenSymbol;
         uint endTime;
 
-        proName     = PlatString.tobytes32(getDatabaseManager().getNodeParameterValue(zscDB_,_agrName, "provider"));
-        price       = PlatString.stringToUint(ggetDatabaseManager().getNodeParameterValue(zscDB_,_agrName, "price"));
-        lockedAmount= PlatString.stringToUint(getDatabaseManager().getNodeParameterValue(zscDB_, _agrName, "lockedAmount"));
-        tokenSymbol = PlatString.tobytes32(getDatabaseManager().getNodeParameterValue(zscDB_, _agrName, "walletSymbol"));
-        endTime     = PlatString.stringToUint(getDatabaseManager().getNodeParameterValue(zscDB_, _agrName, "endTime"));
+        (status, proName, price, lockedAmount, tokenSymbol, endTime) = getDBNode(zscDB_, _agrName).getAgreementInfo();
 
         address agrAdr = address(getDBNode(zscDB_, _agrName));
         address proAdr = address(getDBNode(zscDB_, proName)); 
@@ -167,37 +182,6 @@ contract ControlBase is ControlInfo {
         DBNode(recAdr).addChild(agrAdr);
 
         return true;
-    }
-
-    function deleteAgreement(bytes32 _userName, bytes32 _agrName) internal returns (bool) {
-        address agrAdr = address(getDBNode(zscDB_, _agrName));
-        require(agrAdr != address(0));
-
-        bytes32 status = PlatString.tobytes32(getDatabaseManager().getNodeParameterValue(zscDB_, _agrName, "status"));
-        if (status == "PAID") return false;
-
-        address agrWallet = address(getDBNode(zscDB_, getWalletManager().formatWalletName(_agrName, tokenSymbol)));
-        require(agrWallet != address(0));
-
-        bytes32 tokenSymbol;
-        bytes32 proName;
-        uint lockedAmount;
-        string memory temp;
-
-        temp        = getDatabaseManager().getNodeParameterValue(zscDB_, _agrName, "walletSymbol");
-        tokenSymbol = PlatString.tobytes32(temp);
-
-        temp        = getDatabaseManager().getNodeParameterValue(zscDB_, _agrName, "provider");
-        proName     = PlatString.tobytes32(temp);
-
-        temp        = getDatabaseManager().getNodeParameterValue(zscDB_, _agrName, "lockedAmount");
-        lockedAmount= PlatString.stringToUint(temp);
-
-        address userWallet = address(getDBNode(zscDB_, getWalletManager().formatWalletName(proName, tokenSymbol)));
-        require(userWallet != address(0));
-
-        DBNode(userWallet).executeTransaction(true, userWallet, lockedAmount, "");
-        return DBDatabase(bindedDB_).destroyNode(agrAdr);
     }
 
     function prepareMiningInfoByIndex(bytes32 _enName, bool _isReward, uint _index) internal constant returns (string) {
