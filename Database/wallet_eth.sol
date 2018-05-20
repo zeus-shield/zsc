@@ -11,7 +11,6 @@ contract WalletEth is WalletMultiSig {
     // Constructor
     constructor(bytes32 _name) public WalletMultiSig(_name) {
         setNodeType("wallet-eth"); 
-        setAsEthAccount();
     }
 
     function() public payable {        
