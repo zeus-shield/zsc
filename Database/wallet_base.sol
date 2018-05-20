@@ -18,9 +18,6 @@ contract WalletBase is DBNode {
     uint nos_;
     mapping(uint => Payment) payments_;
 
-    Payment tempPyment_;
-    
-    bool private isEthAccount_;
     uint lokedValue_;
     uint256 totalValue_;
 
@@ -30,24 +27,15 @@ contract WalletBase is DBNode {
 
     // Constructor
     constructor(bytes32 _name) public DBNode(_name) {
-        isEthAccount_ = false;
         lokedValue_ = 0;
         totalValue_= 0;
         tempSigned_ = false;
     }
 
     ////////// internal functions /////////////
-    function setAsEthAccount() internal {
-        isEthAccount_ = true;
-    }
 
     function updateTempPayment(address _dest, uint _amount, bytes32 _data) internal {
-        tempPyment_.time_     = now;
-        tempPyment_.isInput_  = false;
-        tempPyment_.sender_   = address(this);
-        tempPyment_.receiver_ = _dest;
-        tempPyment_.amount_   = _amount;
-        tempPyment_.data_     = _data;
+
     }
     
     function changeValue(bool _doesIncrease, bool _isLocked, uint _amount) internal returns (bool) {
