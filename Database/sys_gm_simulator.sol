@@ -6,13 +6,7 @@ pragma solidity ^0.4.21;
 
 import "./simulator_base.sol";
 import "./sys_com_module.sol";
-
-contract WalletBase {
-    function getBlance(bool _locked) public constant returns (uint256);
-    function getLockBalanceInfoByAgreement(address _agreementAdr) public constant returns (uint, uint, uint, address);
-    function setLockValue(bool _tag, uint _amount, uint _duration, address _agreementAdr) public returns (bool);
-    function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (bool);
-}
+import "./sys_include.sol";
 
 contract DBDatabase { 
     function getNode(bytes32 _name) public constant returns (address);
@@ -65,7 +59,6 @@ contract SysGmSimulator is SysComModule {
     function conductClaimAndReward(uint _simIndex) private returns (bool) {
         require(_simIndex < simulationNos_);
         address sim = simulationRuns_[_simIndex];
-
         address agrWallet = SimulatorBase(sim).getWalletAddress("agreement");
         address proWallet = SimulatorBase(sim).getWalletAddress("provider");
         address recWallet = SimulatorBase(sim).getWalletAddress("receiver");
@@ -78,7 +71,6 @@ contract SysGmSimulator is SysComModule {
         } else {
             WalletBase(agrWallet).executeTransaction(proWallet, SafeMath.add(agrPrice_, proLockedAmount_), "reward fee");
         }
-
         SimulatorBase(sim).setFinished();
         rewarded_[sim] == true;
         return true;
@@ -94,7 +86,6 @@ contract SysGmSimulator is SysComModule {
     
     function runSimulation(uint _steps) public {
         checkDelegate(msg.sender, 1);
-
         simulationNos_ = simulationTempNos_;
         
         for (uint i = 0; i < _steps; ++i) {
