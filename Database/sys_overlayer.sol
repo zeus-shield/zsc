@@ -67,7 +67,7 @@ contract SysOverlayer is Object {
     }
 
 
-    function mapMuduleDatabase(bytes32 _moduleGmName, bytes32 _dbName, uint _priority) internal {
+    function mapModuleDatabase(bytes32 _moduleGmName, bytes32 _dbName, uint _priority) internal {
         require(moduleExists_[_moduleGmName]);
 
         address moduleGmAdr = modules_[_moduleGmName];
@@ -113,7 +113,7 @@ contract SysOverlayer is Object {
         } else if (_type == "module") {
             ret = addModuleManager(_name);
             if (ret) {
-                mapMuduleDatabase(_name, "zsc");
+                mapModuleDatabase(_name, "zsc");
             }
         } else {
             revert();
