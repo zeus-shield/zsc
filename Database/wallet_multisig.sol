@@ -12,6 +12,7 @@ contract WalletMultiSig is WalletBase {
     mapping(address => bool) sigStatus_;
 
     bool submittedTransaction_; 
+    Payment tempPyment_;
 
     // Constructor
     constructor(bytes32 _name) public WalletBase(_name) {
@@ -63,7 +64,13 @@ contract WalletMultiSig is WalletBase {
 
         submittedTransaction_ = true;
 
-        updateTempPayment(_dest, _amount, PlatString.tobytes32(_data));
+        tempPyment_.time_     = now;
+        tempPyment_.isInput_  = false;
+        tempPyment_.sender_   = address(this);
+        tempPyment_.receiver_ = _dest;
+        tempPyment_.amount_   = _amount;
+        tempPyment_.data_     = PlatString.tobytes32(_data);
+
         return confirmTransaction(_user);
     }
 
@@ -72,13 +79,8 @@ contract WalletMultiSig is WalletBase {
         require(submittedTransaction_);
 
         if (doesMulSigFinished(_sigAdr)) {
-            address dest;
-            uint amount;
-            bytes32 data;
 
-            (dest, amount, data) = getTempPaymentInfo();
-
-            uint ret = executeTransaction(false, dest, amount, data);
+            uint ret = executeTransaction(false, tempPyment_.receiver_, tempPyment_.amount_, tempPyment_.data_);
             require(ret > 0);
 
             tempPaymetStatus_ = false;
