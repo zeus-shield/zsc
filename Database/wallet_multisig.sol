@@ -21,7 +21,7 @@ contract WalletMultiSig is WalletBase {
 
 
     ////////// virtual functions /////////////
-    function executeTransaction(bool _doesDirectly, address _dest, uint256 _amount, bytes _data) public returns (uint);
+    function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (uint);
 
     ////////// internal functions /////////////
     function checkAllowedSignature(address _sigAdr) internal constant returns (bool) {
@@ -80,7 +80,7 @@ contract WalletMultiSig is WalletBase {
 
         if (doesMulSigFinished(_sigAdr)) {
 
-            uint ret = executeTransaction(false, tempPyment_.receiver_, tempPyment_.amount_, tempPyment_.data_);
+            uint ret = executeTransaction(tempPyment_.receiver_, tempPyment_.amount_, tempPyment_.data_);
             require(ret > 0);
 
             tempPaymetStatus_ = false;
