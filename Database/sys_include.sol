@@ -28,9 +28,9 @@ contract DBNode {
 
     function setERC20TokenAddress(address _tokenAdr) public;
     function doesLastTransactionSigned() public constant returns (bool);
-    function submitTransaction(address _dest, uint256 _amount, bytes _data, address _user) public returns (uint);
-    function confirmTransaction(address _sigAdr) public returns (uint);    
-    function executeTransaction(bool _doesDirectly, address _dest, uint256 _amount, bytes _data) public returns (uint);
+    //function submitTransaction(address _dest, uint256 _amount, bytes _data, address _user) public returns (uint);
+    //function confirmTransaction(address _sigAdr) public returns (uint);    
+    function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (uint);
     function informTransaction(address _src, address _dest, uint256 _amount) public;
     function numTransactions() public constant returns (uint);
     function getTransactionInfoByIndex(uint _index) public constant returns (uint, bool, bytes32, uint, address, address);
@@ -49,6 +49,8 @@ contract DBNode {
     function numMiningInfo(bool _isReward) public constant returns (uint);
 
     function addSignature(address _sigAdr) public returns (bool);
+
+    function getAgreementInfo() public constant returns (bytes32, uint, uint, bytes32, uint);
 }
 
 contract FactoryBase {
