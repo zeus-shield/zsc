@@ -155,7 +155,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return getDatabaseManager().addNodeParameter(_dbName, _enName, _parameter);
+        return getDBNode(_dbName, _enName).addParameter(_parameter);
     }
 
     /// @dev Set the value to a paramter of an element 
@@ -166,7 +166,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return getDatabaseManager().setNodeParameterValue(_dbName, _enName, _parameter, _value);
+        return getDBNode(_dbName, _enName).setParameter(_parameter, _value);
     }
 
     /// @dev Get the value of a paramter of an element
@@ -176,7 +176,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return getDatabaseManager().getNodeParameterValue(_dbName, _enName, _parameter);
+        return getDBNode(_dbName, _enName).getParameter(_parameter);
     }
 
     /// @dev Get the address of the element 
@@ -239,12 +239,20 @@ contract ControlApis is ControlBase {
         require(walletAdr != address(0));
 
         uint amount = 0;
+        amount = DBNode(walletAdr).executeTransaction(_dest, _amount, "", msg.sender);
+
+        return amount;
+
+        /* Multisig module
         if (DBNode(walletAdr).doesLastTransactionSigned()) {
             amount = DBNode(walletAdr).submitTransaction(_dest, _amount, "", msg.sender);
         } 
         return amount;
+        */
     }
 
+
+    /* Multisig module
     /// @dev Confirm a transaction
     function confirmTransfer(bytes32 _userName, bytes32 _tokenSymbol) public returns (uint) {
         checkRegistered(_userName, msg.sender);
@@ -260,12 +268,13 @@ contract ControlApis is ControlBase {
         } 
         return amount;
     }
+    */
 
     function informTransfer(bytes32 _userName, bytes32 _enName, address _dest, uint256 _amount) public returns (bool) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return conductInformTransaction(_userName, _enName, _dest, _amount);
+        return getWalletManager().conductInformTransaction(_userName, _enName, _dest, _amount);
     }
 
     /// @dev Announce an insurance agreement by a provider
@@ -274,7 +283,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _agrName, msg.sender);
 
-        return conductPublishAgreement(_userName, _agrName, msg.sender);
+        return getWalletManager().conductPublishAgreement(_userName, _agrName, msg.sender);
     }
 
     function numTemplates(bytes32 _userName) public constant returns (uint) {
