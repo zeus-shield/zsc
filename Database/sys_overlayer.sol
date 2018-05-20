@@ -62,6 +62,8 @@ contract SysOverlayer is Object {
         address factoryAdr = SysComBase(factoryGM_).getAdr(_factoryName);
         address dbAdr      = SysComBase(databaseGM_).getAdr(_dbName);
 
+        require(factoryAdr != 0 && dbAdr != 0);
+
         FactoryBase(factoryAdr).setDatabase(dbAdr);
         DBDatabase(dbAdr).setDelegate(factoryAdr, _priority);
     }
@@ -72,6 +74,8 @@ contract SysOverlayer is Object {
 
         address moduleGmAdr = modules_[_moduleGmName];
         address dbAdr       = SysComBase(databaseGM_).getAdr(_dbName);
+
+        require(moduleGmAdr != 0 && dbAdr != 0);
 
         moduleGmAdr.setDatabase(dbAdr);
         DBDatabase(dbAdr).setDelegate(moduleGmAdr, _priority);
@@ -108,7 +112,6 @@ contract SysOverlayer is Object {
                 mapFactoryDatabase(_name, "zsc")
             }
         } else if (_type == "database") {
-            require(_name == "zsc");
             ret = addDatabase(_type, _name, _adr);
         } else if (_type == "module") {
             ret = addModuleManager(_name);
