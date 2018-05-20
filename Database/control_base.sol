@@ -91,7 +91,7 @@ contract ControlBase is ControlInfo {
     }
 
     function prepareTokenContractInfoByIndex(uint _index) internal constant returns (string) {
-        require(_index <= WalletManager(walletGM_).numTokenContracts());
+        require(_index <= getWalletManager().numTokenContracts());
 
         if (_index == 0) {
             return "ETH";
@@ -102,7 +102,7 @@ contract ControlBase is ControlInfo {
         bytes32 tokenSymbol;
         uint tokenDecimals;
         address tokenAdr;
-        (tokenName, status, tokenSymbol, tokenDecimals, tokenAdr) =  WalletManager(walletGM_).getTokenInfoByIndex(_index - 1);
+        (tokenName, status, tokenSymbol, tokenDecimals, tokenAdr) =  getWalletManager().getTokenInfoByIndex(_index - 1);
 
         string memory str ="";
         str = PlatString.append(str, "info?name=", PlatString.bytes32ToString(tokenName),   "&");
@@ -114,7 +114,7 @@ contract ControlBase is ControlInfo {
     }
 
     function prepareTokenBalanceInfoByIndex(bytes32 _enName, uint _index) internal constant returns (string) {
-        require(_index <= WalletManager(walletGM_).numTokenContracts());
+        require(_index <= getWalletManager().numTokenContracts());
 
         bytes32 tokenName;
         bytes32 status;
@@ -128,7 +128,7 @@ contract ControlBase is ControlInfo {
             status = "true";
             tokenSymbol = "ETH";
         } else {
-            (tokenName, status, tokenSymbol, tokenDecimals, tokenAdr) =  WalletManager(walletGM_).getTokenInfoByIndex(_index - 1);
+            (tokenName, status, tokenSymbol, tokenDecimals, tokenAdr) =  getWalletManager().getTokenInfoByIndex(_index - 1);
         }
 
         walletName = getWalletManager().formatWalletName(_enName, tokenSymbol);
@@ -177,7 +177,7 @@ contract ControlBase is ControlInfo {
         (time, amount) = getDBNode(_enName).getMiningInfoByIndex(_isReward, _index);
 
         string memory str ="";
-        str = PlatString.append(str, "info?time=", PlatString.uintToString(time),    "&");
+        str = PlatString.append(str, "info?time=", PlatString.uintToString(time),   "&");
         str = PlatString.append(str, "amount=",    PlatString.uintToString(amount), "&");
         return str;
     }
