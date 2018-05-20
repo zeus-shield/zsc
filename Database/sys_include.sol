@@ -49,13 +49,19 @@ contract DBNode {
     function numMiningInfo(bool _isReward) public constant returns (uint);
 
     function addSignature(address _sigAdr) public returns (bool);
-
     function getAgreementInfo() public constant returns (bytes32, uint, uint, bytes32, uint);
 }
 
 contract FactoryBase {
     function setDatabase(address _adr) public;
     function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
+}
+
+contract WalletBase {
+    function getBlance(bool _locked) public constant returns (uint256);
+    function getLockBalanceInfoByAgreement(address _agreementAdr) public constant returns (uint, uint, uint, address);
+    function setLockValue(bool _tag, uint _amount, uint _duration, address _agreementAdr) public returns (bool);
+    function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (bool);
 }
 
 contract SysOverlayer {
