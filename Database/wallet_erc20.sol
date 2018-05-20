@@ -6,11 +6,11 @@ pragma solidity ^0.4.21;
 
 import "./wallet_multisig.sol";
 
-contract WalletErc20 is WalletMultiSig {
+contract WalletErc20 is WalletBase {
     address _erc20TokenAdr;
 
     // Constructor
-    constructor(bytes32 _name) public WalletMultiSig(_name) {
+    constructor(bytes32 _name) public WalletBase(_name) {
         setNodeType("wallet-erc20"); 
     }
 
@@ -29,14 +29,12 @@ contract WalletErc20 is WalletMultiSig {
         }
     }
 
-    function executeTransaction(bool _doesDirectly, address _dest, uint256 _amount, bytes _data) public returns (uint) {
+    function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (uint) {
         checkDelegate(msg.sender, 1);
         checkBeforeSent(_dest, _amount);
 
         if (ERC20Interface(_erc20TokenAdr).transfer(_dest, _amount)) {
-            if (_doesDirectly) {
-                recordOut(address(this), _dest, _amount, PlatString.tobytes32(_data));
-            }
+            recordOut(address(this), _dest, _amount, PlatString.tobytes32(_data));
             changeValue(true, data == "locked", _amount);
             return amount;
         } else {
