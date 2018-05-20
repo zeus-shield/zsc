@@ -119,7 +119,7 @@ contract ControlBase is ControlInfo {
             status = "true";
             tokenSymbol = "ETH";
         } else {
-            (tokenName, status, tokenSymbol, tokenDecimals, tokenAdr) =  WalletManager(walletGM_).getTokenInfoByIndex(_index);
+            (tokenName, status, tokenSymbol, tokenDecimals, tokenAdr) =  WalletManager(walletGM_).getTokenInfoByIndex(_index - 1);
         }
 
         walletName = getWalletManager().formatWalletName(_enName, tokenSymbol);
