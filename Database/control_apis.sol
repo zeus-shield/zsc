@@ -43,6 +43,12 @@ contract ControlApis is ControlBase {
     }
 
     /// @dev Get the number of elements of the database
+    function setDBDatabase(bytes32 _name) public { 
+        checkDelegate(msg.sender, 1);
+        setDBName(_name);
+    }
+
+    /// @dev Get the number of elements of the database
     function numFactoryElements(bytes32 _userName, bytes32 _factoryType) public constant returns (uint) { 
         if (_factoryType == "agreement") {
             checkRegistered(_userName, msg.sender);
@@ -53,6 +59,7 @@ contract ControlApis is ControlBase {
         return getDBFactory(_factoryType).numFactoryElements(); 
     }
     
+
     /// @dev Get the element name by the index
     /// @param _index The index of the element in the database
     function getFactoryElementNameByIndex(bytes32 _userName, bytes32 _factoryType, uint _index) public constant returns (bytes32) { 
@@ -73,7 +80,9 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return (getDBNode(_enName) != DBNode(0));
+        address adr = address(getDBNode(_enName));
+
+        return (adr != address(0));
     }
 
     function addSignatureAdr(bytes32 _userName, address _sigAdr) public returns (bool) {
@@ -151,32 +160,32 @@ contract ControlApis is ControlBase {
     /// @dev Add a paramter to an element
     /// @param _enName The name of the existing element
     /// @param _parameter The name of the added parameter
-    function addElementParameter(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public returns (bool) {
+    function addElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public returns (bool) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return getDBNode(_dbName, _enName).addParameter(_parameter);
+        return getDBNode(_enName).addParameter(_parameter);
     }
 
     /// @dev Set the value to a paramter of an element 
     /// @param _enName The name of the element
     /// @param _parameter The name of the existing parameter
     /// @param _value The parameter value
-    function setElementParameter(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter, bytes32 _value) public returns (bool) {
+    function setElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter, bytes32 _value) public returns (bool) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return getDBNode(_dbName, _enName).setParameter(_parameter, _value);
+        return getDBNode(_enName).setParameter(_parameter, _value);
     }
 
     /// @dev Get the value of a paramter of an element
     /// @param _enName The name of the element
     /// @param _parameter The name of the existing parameter
-    function getElementParameter(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public constant returns (string) {
+    function getElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public constant returns (string) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return getDBNode(_dbName, _enName).getParameter(_parameter);
+        return getDBNode(_enName).getParameter(_parameter);
     }
 
     /// @dev Get the address of the element 
