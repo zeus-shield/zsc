@@ -85,6 +85,19 @@ contract DBAgreement is DBEntity {
         }
         return super.setParameter("status",  _tag);
     }
+
+    function getAgreementInfo() public constant returns (bytes32, bytes32, uint, uint, bytes32, uint) {
+        checkDelegate(msg.sender, 1);
+
+        return (PlatString.tobytes32(getParameter("status")),
+                PlatString.tobytes32(getParameter("provider")),
+                PlatString.stringToUint(getParameter("price")),
+                PlatString.stringToUint(getParameter("lockedAmount")),
+                PlatString.tobytes32(getParameter("walletSymbol")),
+                PlatString.stringToUint(getParameter("endTime")) );
+
+    }
+
  }
 
 
