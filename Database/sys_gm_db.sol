@@ -37,36 +37,5 @@ contract SysGmDb is SysComGroup {
 
         return super.removeAdr(_name);
     }
-
-    function addNodeParameter(bytes32 _dbName, bytes32 _nodeName, bytes32 _parameter) public returns (bool) {
-        checkDelegate(msg.sender, 1); 
-
-        setDatabase(_dbName);
-
-        address dbAdr = getDatabase();
-        address ndAdr = DBDatabase(dbAdr).getNode(_nodeName);
-
-        return operateNodeParameter("add", _nodeName, _parameter, "null"); 
-    }
-
-    function setNodeParameterValue(bytes32 _dbName, bytes32 _nodeName, bytes32 _parameter, bytes32 _value) public returns (bool) {
-        checkDelegate(msg.sender, 1); 
-        setDatabase(_dbName);
-
-        address dbAdr = getDatabase();
-        address ndAdr = DBDatabase(dbAdr).getNode(_nodeName);
-
-        return operateNodeParameter("set", _nodeName, _parameter, _value); 
-    }
-
-    function getNodeParameterValue(bytes32 _dbName, bytes32 _nodeName, bytes32 _parameter) public constant returns (bytes32) {
-        checkDelegate(msg.sender, 1); 
-        setDatabase(_dbName);
-
-        address dbAdr = getDatabase();
-        address ndAdr = DBDatabase(dbAdr).getNode(_nodeName);
-
-        return DBNode(ndAdr).getParameter(_parameter);
-    }
 }
 
