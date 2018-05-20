@@ -6,10 +6,10 @@ pragma solidity ^0.4.21;
 
 import "./wallet_multisig.sol";
 
-contract WalletEth is WalletMultiSig {
+contract WalletEth is WalletBase {
 
     // Constructor
-    constructor(bytes32 _name) public WalletMultiSig(_name) {
+    constructor(bytes32 _name) public WalletBase(_name) {
         setNodeType("wallet-eth"); 
     }
 
@@ -32,14 +32,12 @@ contract WalletEth is WalletMultiSig {
         }
     }
 
-    function executeTransaction(bool _doesDirectly, address _dest, uint256 _amount, bytes _data) public returns (uint) {
+    function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (uint) {
         checkDelegate(msg.sender, 1);
         checkBeforeSent(_dest, _amount);        
 
         if (_dest.call.value(_amount)(data)) {
-            if (_doesDirectly) {
-                recordOut(address(this), _dest, _amount, PlatString.tobytes32(_data));
-            }
+            recordOut(address(this), _dest, _amount, PlatString.tobytes32(_data));
             changeValue(true, data == "locked", _amount);
             return amount;
         } else {
