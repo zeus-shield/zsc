@@ -91,6 +91,7 @@ contract SysGmWallet is SysComModule {
     }
 
     function numTokenContracts() public constant returns (uint) {
+        checkDelegate(msg.sender, 1);
         return tokenNos_;
     }
     
