@@ -56,7 +56,6 @@ contract SysGmWallet is SysComModule {
 
     function addTokenContract(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public returns (bool) {
         checkDelegate(msg.sender, 1);
-
         require(!erc20TokenExists_[_symbol]);
 
         erc20TokenIndice_[_symbol] = tokenNos_;
@@ -65,9 +64,8 @@ contract SysGmWallet is SysComModule {
         return true;
     }
 
-    function removeTokenContract(bytes32 _symbol) public returns (bool) {
+    function removeTokenContract(bytes32 _symbol) public {
         checkDelegate(msg.sender, 1);
-
         require(erc20TokenExists_[_symbol]);
         
         uint index = erc20TokenIndice_[_symbol];
@@ -81,10 +79,9 @@ contract SysGmWallet is SysComModule {
         tokenNos_--;
     }
 
-    function disableTokenContract(bytes32 _symbol) public returns (bool) {
+    function disableTokenContract(bytes32 _symbol) public {
         checkDelegate(msg.sender, 1);
-
-        if (!erc20TokenExists_[_symbol]) return false;
+        require(!erc20TokenExists_[_symbol]);
         
         uint index = erc20TokenIndice_[_symbol];
         erc20Tokens_[index].status_ = "false";
@@ -115,7 +112,7 @@ contract SysGmWallet is SysComModule {
         bytes32 ndType = DBNode(_user).getNodeType();
         if (ndType == "provider" || ndType == "receiver") {
             if (_tokeSymbol == "ZSC" || _tokeSymbol == "ETH") {
-                address parentNode = getDBNode(_user).getHandler("wallet");
+                address parentNode   = getDBNode(_user).getHandler("wallet");
                 address erc20Address = 0; 
                 bytes32 temp;
                 bytes32 factoryType;
@@ -129,7 +126,6 @@ contract SysGmWallet is SysComModule {
                     erc20Address = getTokenContractAddress(_tokeSymbol);
                     require(erc20Address != 0);
                 }
-
                 address systemGM   = getSystemManager();
                 address factoryAdr = SystemManager(systemGM).getFactory(factoryType);
                 address walletAdr  = DBFactory(factoryAdr).createNode(temp, parentNode, _creator);
@@ -147,8 +143,8 @@ contract SysGmWallet is SysComModule {
 
         bytes32 tokenSymbol = PlatString.tobytes32(DBNode(agrAdr).getParameter("walletSymbol"));
         uint price          = PlatString.stringToUint(DBNode(agrAdr).getParameter("price"));
-        address recWallet   =  DBDatabase(getDatabase()).getNode(formatWalletName(_userName, tokenSymbol));
-        address agrWallet   =  DBDatabase(getDatabase()).getNode(formatWalletName(_agrName, tokenSymbol));
+        address recWallet   = DBDatabase(getDatabase()).getNode(formatWalletName(_userName, tokenSymbol));
+        address agrWallet   = DBDatabase(getDatabase()).getNode(formatWalletName(_agrName, tokenSymbol));
 
         uint purchaseAount = 0;
         if (_isFirstSubmit) {
@@ -176,9 +172,9 @@ contract SysGmWallet is SysComModule {
     }
 
     function conductInformTransaction(bytes32 _userName, bytes32 _enName, address _dest, uint256 _amount) internal returns (bool) {
-        address destAdr = DBDatabase(getDatabase()).getNode(Object(_dest).name());
+        address destAdr     = DBDatabase(getDatabase()).getNode(Object(_dest).name());
         bytes32 tokenSymbol = PlatString.tobytes32(DBNode(agrAdr).getParameter("walletSymbol"));
-        address userWallet = DBDatabase(getDatabase()).getNode(formatWalletName(_enName, tokenSymbol));
+        address userWallet  = DBDatabase(getDatabase()).getNode(formatWalletName(_enName, tokenSymbol));
         DBNode(_dest).informTransaction(userWallet, _dest, _amount);
         return true;
     }
