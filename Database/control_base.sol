@@ -10,8 +10,6 @@ import "./sys_include_adv.sol";
 import "./control_info.sol";
 
 contract ControlBase is ControlInfo {   
-    mapping(uint => bytes32) private factoryTypes_;
-    mapping(bytes32 => address) private factories_;
     address private systemOL_;
     address private zscTokenAddress_;
     address private bindedAdm_;
@@ -21,12 +19,12 @@ contract ControlBase is ControlInfo {
     constructor(bytes32 _name) public ControlInfo(_name) {
     }
     
-    function setSystemModuleAdrs(address _adm, address _posGM, address _systemOverlayer, address _zscToken) internal {
-        require (_adm != 0 && _posGM != 0 && _systemOverlayer != 0 && _zscToken != 0);     
+    function setSystemModuleAdrs(address _adm, address _posGM, address _systemOL, address _zscToken) internal {
+        require (_adm != 0 && _posGM != 0 && _systemOL != 0 && _zscToken != 0);     
 
         zscTokenAddress_ = _zscToken;
 
-        systemOL_ = _systemOverlayer;
+        systemOL_ = _systemOL;
         setDelegate(systemOL_, 1);
 
         bindedAdm_ = _adm;
@@ -100,7 +98,7 @@ contract ControlBase is ControlInfo {
         bytes32 tokenSymbol;
         uint tokenDecimals;
         address tokenAdr;
-        (tokenName, status, tokenSymbol, tokenDecimals, tokenAdr) =  getWalletManager().getTokenInfoByIndex(_index - 1);
+        (tokenName, status, tokenSymbol, tokenDecimals, tokenAdr) = getWalletManager().getTokenInfoByIndex(_index - 1);
 
         string memory str ="";
         str = PlatString.append(str, "info?name=", PlatString.bytes32ToString(tokenName),   "&");
@@ -142,7 +140,7 @@ contract ControlBase is ControlInfo {
         return str;
     }
 
-    function prepareTranasationfoByIndex(bytes32 _walletName, uint _index) internal constant returns (string) {
+    function prepareTransationfoByIndex(bytes32 _walletName, uint _index) internal constant returns (string) {
         require(_index < getDBNode(_walletName).numTransactions());
         
         uint tranTime;
