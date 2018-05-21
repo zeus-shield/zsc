@@ -6,23 +6,27 @@ pragma solidity ^0.4.21;
 
 import "./pos_block_pool.sol";
 import "./pos_staker_group.sol";
-import "./manager_base.sol";
+import "./sys_include.sol";
+import "./sys_com_base.sol";
 
 //Proof of Stake for ZSC system
-contract PosBase is PosStakerGroup, PosBlockPool {
+contract PosBase is SysComBase, PosStakerGroup, PosBlockPool {
     uint private constant YEAR_IN_SECONDS = 86400 * 365;
     uint private constant HALF_YEAR_IN_SECONDS = 86400 * 365 / 2;
     uint private constant QUATER_YEAR_IN_SECONDS = 86400 * 365 / 4;
 
     // Constructor
-    constructor(bytes32 _name) public ManagerBase(_name) {
+    constructor(bytes32 _name) public SysComBase(_name) {
     } 
 
-    function initManager(address _systemManager) public {
+    function setSysOverlayer(address _sysOverlayer) public {
         checkDelegate(msg.sender, 1);
 
-        super.initManager(_systemManager);
-        
+        super.setSysOverlayer(_sysOverlayer);
+        initPosBase();
+    }
+
+    function initPosBase() internal {
         createPool("year", YEAR_IN_SECONDS, 10);
         createPool("half year", YEAR_IN_SECONDS, 4);
         createPool("three months", YEAR_IN_SECONDS, 2);
