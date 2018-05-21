@@ -26,7 +26,7 @@ contract WalletManager {
 
     function conductPurchaseAgreement(bool _isFirstSubmit, bytes32 _userName, bytes32 _agrName, address _sigAdr) public returns (uint);
     function conductPublishAgreement(bytes32 _userName, bytes32 _agrName, address _creator) public returns (uint);
-    function conductInformTransaction(bytes32 _userName, bytes32 _enName, address _dest, uint256 _amount) public returns (bool);
+    function conductInformTransaction(bytes32 _enName, address _dest, uint256 _amount) public returns (bool);
     function formatWalletName(bytes32 _userName, bytes32 _tokenSymbol) public pure returns (bytes32);
 }
 
@@ -36,5 +36,8 @@ contract SimulatorManager {
 }
 
 contract FactoryManager {
+    function numAdrs() public constant returns (uint);
+    function addAdr(bytes32 _name, address _id) public returns (bool);
+    function getAdr(bytes32 _name) public constant returns (address);
     function createFactoryNode(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra, address _creator) public returns (address);
 }
