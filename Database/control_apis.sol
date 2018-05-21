@@ -280,7 +280,7 @@ contract ControlApis is ControlBase {
     */
 
 
-    function informTransfer(bytes32 _userName, bytes32 _enName, bytes32 _dest, uint256 _amount) public returns (bool) {
+    function informTransfer(bytes32 _userName, bytes32 _enName, address _dest, uint256 _amount) public returns (bool) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
