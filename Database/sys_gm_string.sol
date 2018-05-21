@@ -8,6 +8,13 @@ import "./sys_com_module.sol";
 
 contract SysGmString is SysComModule {
 
+    struct ParameterValues {
+        uint count_;
+        mapping(bytes32 => string) ParameterValues_;
+    }
+
+    mapping(bytes32 => mapping(bytes32 => mapping(bytes32 => ParameterValues)))listeners_;
+
     constructor(bytes32 _name) public SysComModule(_name) {}
 
     function setSysOverlayer(address _sysOverlayer) public {
