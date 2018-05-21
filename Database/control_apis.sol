@@ -280,13 +280,13 @@ contract ControlApis is ControlBase {
     */
 
 
-    function informTransfer(bytes32 _userName, bytes32 _enName, address _dest, uint256 _amount) public returns (bool) {
+    function informTransfer(bytes32 _userName, bytes32 _enName, bytes32 _dest, uint256 _amount) public returns (bool) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return getWalletManager().conductInformTransaction(_userName, _enName, _dest, _amount);
+        return getWalletManager().conductInformTransaction(_enName, _dest, _amount);
     }
-    
+
     /// @dev Announce an insurance agreement by a provider
     /// @param _agrName The agreement name
     function publishAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
@@ -361,6 +361,7 @@ contract ControlApis is ControlBase {
         return amount; 
     }
 
+    /*
     /// @dev Buy an insurance agreement from a provider
     /// @param _userName The receiver name
     /// @param _agrName The agreement name
@@ -373,6 +374,7 @@ contract ControlApis is ControlBase {
         }     
         return amount; 
     }
+    */
 
     function numRegisteredErc20Tokens(bytes32 _userName) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
