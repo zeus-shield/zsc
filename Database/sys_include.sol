@@ -55,6 +55,7 @@ contract DBNode {
 
 contract FactoryBase {
     function setDatabase(address _adr) public;
+    function getDatabase() public constant returns (address);
     function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
 }
 
