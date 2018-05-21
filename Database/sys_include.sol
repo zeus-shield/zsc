@@ -7,6 +7,7 @@ pragma solidity ^0.4.21;
 contract DBDatabase {
     function getNode(bytes32 _name) public constant returns (address);
     function destroyNode(address _node) public returns (bool);
+    function checkeNodeByAddress(address _adr) public constant returns (bool);
     function _addNode(address _node) public ;
 }
 
@@ -49,7 +50,7 @@ contract DBNode {
     function numMiningInfo(bool _isReward) public constant returns (uint);
 
     function addSignature(address _sigAdr) public returns (bool);
-    function getAgreementInfo() public constant returns (bytes32, uint, uint, bytes32, uint);
+    function getAgreementInfo() public constant returns (bytes32, bytes32, uint, uint, bytes32, uint);
 }
 
 contract FactoryBase {
