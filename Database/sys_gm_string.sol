@@ -10,16 +10,13 @@ contract SysGmString is SysComModule {
 
     struct ParameterValues {
         uint count_;
-        mapping(bytes32 => string) ParameterValues_;
+        /* parameter => value(string)*/
+        mapping(bytes32 => string) parameterValues_;
     }
 
-    mapping(bytes32 => mapping(bytes32 => mapping(bytes32 => ParameterValues)))listeners_;
+    mapping(bytes32 => mapping(bytes32 => mapping(bytes32 => ParameterValues))) private strings_;
 
     constructor(bytes32 _name) public SysComModule(_name) {}
-
-    function setSysOverlayer(address _sysOverlayer) public {
-        return;
-    }
 
     function addEntityParameter(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public returns (bool) {
         return true;
