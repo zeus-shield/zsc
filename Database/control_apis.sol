@@ -16,10 +16,9 @@ contract ControlApis is ControlBase {
 
     /// @dev Set the zsc adm address
     /// @param _adm The address of the zsc adm 
-    /// @param _db The address of the database 
-    function setSystemModules(address _adm, address _db, address _walletGM, address _simulatorGM, address _pos, address _factoryGM, address _zscToken) public {
+    function setSystemModules(address _adm, address _posGM, address _systemOverlayer, address _zscToken) public {
         checkDelegate(msg.sender, 1);
-        setSystemModuleAdrs(_adm, _db, _walletGM, _simulatorGM, _pos, _factoryGM, _zscToken);
+        setSystemModuleAdrs(_adm, _posGM, _systemOverlayer, _zscToken);
     }
 
     function registerErc20Token(bytes32 _symbol, bytes32 _name, uint _decimals, address _tokenAdr) public returns (bool) {
@@ -48,6 +47,7 @@ contract ControlApis is ControlBase {
         setDBName(_name);
     }
 
+    /*
     /// @dev Get the number of elements of the database
     function numFactoryElements(bytes32 _userName, bytes32 _factoryType) public constant returns (uint) { 
         if (_factoryType == "agreement") {
@@ -73,6 +73,7 @@ contract ControlApis is ControlBase {
         require(nd != address(0));
         return Object(nd).name();
     }
+    */
 
     /// @dev Check the element wheather or not existing
     /// @param _enName The name of the element to be checked
@@ -81,7 +82,6 @@ contract ControlApis is ControlBase {
         checkMatched(_userName, _enName, msg.sender);
 
         address adr = address(getDBNode(_enName));
-
         return (adr != address(0));
     }
 
@@ -111,10 +111,10 @@ contract ControlApis is ControlBase {
         address ndAdr = getFactoryManager().createFactoryNode(_factoryType, _userName, _enName, _extraInfo, creatorAdr);
         require(ndAdr != address(0));
 
-        if (_factoryType == "provider" || _type == "receiver" || _type == "staker") {
-            registerUserNode(_nodeName, ndAdr, _creator);
+        if (_factoryType == "provider" || _factoryType == "receiver" || _factoryType == "staker") {
+            registerUserNode(_enName, ndAdr, creatorAdr);
         } else {
-            registerEntityNode(_userName, _nodeName, ndAdr, _creator);
+            registerEntityNode(_userName, _enName, ndAdr, creatorAdr);
         }
 
         if (_factoryType == "staker") {
@@ -181,7 +181,7 @@ contract ControlApis is ControlBase {
     /// @dev Get the value of a paramter of an element
     /// @param _enName The name of the element
     /// @param _parameter The name of the existing parameter
-    function getElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public constant returns (string) {
+    function getElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public constant returns (bytes32) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
@@ -232,7 +232,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return  getDBNode(_enName).getParameterNameByIndex(_index);
+        return getDBNode(_enName).getParameterNameByIndex(_index);
     }
 
     /// @dev Transfer a particular amount from a user wallet to the destination address
@@ -242,13 +242,13 @@ contract ControlApis is ControlBase {
         require(_amount > 0);
         checkRegistered(_userName, msg.sender);
 
-        bytes32 walletName = formatWalletName(_userName, _tokenSymbol);
+        bytes32 walletName = getWalletManager().formatWalletName(_userName, _tokenSymbol);
         address walletAdr = address(getDBNode(walletName));
 
         require(walletAdr != address(0));
 
         uint amount = 0;
-        amount = DBNode(walletAdr).executeTransaction(_dest, _amount, "", msg.sender);
+        amount = DBNode(walletAdr).executeTransaction(_dest, _amount, "");
 
         return amount;
 
@@ -279,13 +279,14 @@ contract ControlApis is ControlBase {
     }
     */
 
+
     function informTransfer(bytes32 _userName, bytes32 _enName, address _dest, uint256 _amount) public returns (bool) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
         return getWalletManager().conductInformTransaction(_userName, _enName, _dest, _amount);
     }
-
+    
     /// @dev Announce an insurance agreement by a provider
     /// @param _agrName The agreement name
     function publishAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
@@ -344,7 +345,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
 
         address adr = getDBNode(_userName).getChildByIndex(_index);
-        return deleteAgreement(_userName, Object(adr).name());
+        return deleteAgreement( Object(adr).name());
     }
 
     /// @dev Buy an insurance agreement from a provider
