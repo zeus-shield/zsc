@@ -9,8 +9,7 @@ import "./log_transaction.sol";
 import "./delegate.sol";
 
 contract LogManager is Delegated {
-    
-    
+
     struct Listener {
         address log_instance_;
         bytes32 name_;
