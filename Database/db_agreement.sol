@@ -27,7 +27,7 @@ contract DBAgreement is DBEntity {
         addFundamentalParameter("receiver");
     }
 
-    function setParameter(bytes32 _parameter, string _value) public returns (bool) {
+    function setParameter(bytes32 _parameter, bytes32 _value) public returns (bool) {
         checkDelegate(msg.sender, 1);
 
         if (_parameter == "copies") {
@@ -44,8 +44,8 @@ contract DBAgreement is DBEntity {
     function addParameter(bytes32 _parameter) public returns (bool) {
         checkDelegate(msg.sender, 1);
 
-        if (_parameter == "copies") {
-            return true;
+        if (_parameter == "copies" && numChildren() > 0) {
+            return false;
         }
 
         if (status_ == "CREATED") {
