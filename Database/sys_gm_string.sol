@@ -10,15 +10,36 @@ contract SysGmString is SysComModule {
 
     struct ParameterValues {
         uint count_;
-        /* parameter => value(string)*/
-        mapping(bytes32 => string) parameterValues_;
+        /* index => parameter */
+        mapping(uint => bytes32) index_;
+        /* parameter => register */
+        mapping(bytes32 => bool) register_;
+        /* parameter => string */
+        mapping(bytes32 => string) strings_;
     }
 
-    mapping(bytes32 => mapping(bytes32 => mapping(bytes32 => ParameterValues))) private strings_;
+    /* database name => user name => entity name => parameter value */
+    mapping(bytes32 => mapping(bytes32 => mapping(bytes32 => ParameterValues))) private entitys_;
 
     constructor(bytes32 _name) public SysComModule(_name) {}
 
     function addEntityParameter(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public returns (bool) {
+        /* check delegate */
+        checkDelegate(msg.sender, 1);
+
+        /* check param */
+
+        /* check register */
+        if(true == entitys_[_dbName][_userName][_enName].register_[_parameter])
+        {
+            return true;
+        }
+        
+        uint count = entitys_[_dbName][_userName][_enName].count_;
+        entitys_[_dbName][_userName][_enName].index_[count] = _parameter;
+        entitys_[_dbName][_userName][_enName].register_[_parameter] = true;
+        entitys_[_dbName][_userName][_enName].count_ ++;
+        
         return true;
     }
 
