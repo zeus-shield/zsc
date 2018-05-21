@@ -5,6 +5,7 @@ Copyright (c) 2018, ZSC Dev Team
 pragma solidity ^0.4.21;
 
 import "./sys_com_module.sol";
+import "./sys_include_adv.sol";
 
 contract SysGmWallet is SysComModule {
     struct Erc20Token {
@@ -64,20 +65,21 @@ contract SysGmWallet is SysComModule {
         return true;
     }
 
+    /*
     function removeTokenContract(bytes32 _symbol) public {
         checkDelegate(msg.sender, 1);
         require(erc20TokenExists_[_symbol]);
         
         uint index = erc20TokenIndice_[_symbol];
-        Erc20Token info = erc20Tokens_[tokenNos_ - 1];
+        Erc20Token storage info = erc20Tokens_[tokenNos_ - 1];
 
-        erc20TokenIndice_[endSymbol] = index;
+        erc20TokenIndice_[_symbol] = index;
 
         delete erc20TokenIndice_[_symbol];
         delete erc20TokenExists_[_symbol];
         delete erc20Tokens_[tokenNos_ - 1];
         tokenNos_--;
-    }
+    }*/
 
     function disableTokenContract(bytes32 _symbol) public {
         checkDelegate(msg.sender, 1);
@@ -109,10 +111,10 @@ contract SysGmWallet is SysComModule {
         address ndAdr = DBDatabase(getDatabase()).getNode(_user);
         require(ndAdr != address(0));
         
-        bytes32 ndType = DBNode(_user).getNodeType();
+        bytes32 ndType = DBNode(ndAdr).getNodeType();
         if (ndType == "provider" || ndType == "receiver") {
             if (_tokeSymbol == "ZSC" || _tokeSymbol == "ETH") {
-                address parentNode   = getDBNode(_user).getHandler("wallet");
+                address parentNode   = DBNode(ndAdr).getHandler("wallet");
                 address erc20Address = 0; 
                 bytes32 temp;
                 bytes32 factoryType;
@@ -126,9 +128,9 @@ contract SysGmWallet is SysComModule {
                     erc20Address = getTokenContractAddress(_tokeSymbol);
                     require(erc20Address != 0);
                 }
-                address systemGM   = getSystemManager();
-                address factoryAdr = SystemManager(systemGM).getFactory(factoryType);
-                address walletAdr  = DBFactory(factoryAdr).createNode(temp, parentNode, _creator);
+                address factoryGM   = SysOverlayer(getSysOverlayer()).getComponent("factory", "gm");
+                address factoryAdr = FactoryManager(factoryGM).getAdr(factoryType);
+                address walletAdr  = FactoryBase(factoryAdr).createNode(temp, parentNode, _creator);
                 require(walletAdr != 0);
     
                 DBNode(walletAdr).setERC20TokenAddress(erc20Address);    
@@ -139,13 +141,21 @@ contract SysGmWallet is SysComModule {
     }
 
     function conductPurchaseAgreement(bool _isFirstSubmit, bytes32 _userName, bytes32 _agrName, address _sigAdr) public returns (uint) {
-        address argAdr = DBDatabase(getDatabase()).getNode(_agrName);
+        checkDelegate(msg.sender, 1);
 
-        bytes32 tokenSymbol = PlatString.tobytes32(DBNode(agrAdr).getParameter("walletSymbol"));
-        uint price          = PlatString.stringToUint(DBNode(agrAdr).getParameter("price"));
+        address agrAdr = DBDatabase(getDatabase()).getNode(_agrName);
+
+        bytes32 tokenSymbol = DBNode(agrAdr).getParameter("walletSymbol");
+        uint price          = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(agrAdr).getParameter("price")));
         address recWallet   = DBDatabase(getDatabase()).getNode(formatWalletName(_userName, tokenSymbol));
         address agrWallet   = DBDatabase(getDatabase()).getNode(formatWalletName(_agrName, tokenSymbol));
 
+
+        require(_isFirstSubmit);
+        _sigAdr = address(0);
+        return DBNode(recWallet).executeTransaction(agrWallet, price, "");
+
+        /*
         uint purchaseAount = 0;
         if (_isFirstSubmit) {
             purchaseAount = DBNode(recWallet).submitTransaction(agrWallet, price, "", _sigAdr);
@@ -153,28 +163,35 @@ contract SysGmWallet is SysComModule {
             purchaseAount = DBNode(recWallet).confirmTransaction(_sigAdr);
         }
         return purchaseAount;
+        */
     }
 
     function conductPublishAgreement(bytes32 _userName, bytes32 _agrName, address _creator) public returns (uint) {
-        address argAdr = DBDatabase(getDatabase()).getNode(_agrName);
-        bytes32 tokenSymbol = PlatString.tobytes32(DBNode(agrAdr).getParameter("walletSymbol"));
+        checkDelegate(msg.sender, 1);
+
+        address agrAdr = DBDatabase(getDatabase()).getNode(_agrName);
+        bytes32 tokenSymbol = DBNode(agrAdr).getParameter("walletSymbol");
         address userWallet = DBDatabase(getDatabase()).getNode(formatWalletName(_userName, tokenSymbol));
 
         require(userWallet != address(0));
-        uint lockedAmount = PlatString.stringToUint(PlatString.tobytes32(DBNode(_agrName).getParameter("lockedAmount"));
+        string memory temp = PlatString.bytes32ToString(DBNode(agrAdr).getParameter("lockedAmount"));
+        uint lockedAmount = PlatString.stringToUint(temp);
 
         address agrWallet = enableWalletByUser(_agrName, tokenSymbol, _creator);
-        uint amount = DBNode(userWallet).executeTransaction(agrWallet, lockedAmount, "", _creator);
+        uint amount = DBNode(userWallet).executeTransaction(agrWallet, lockedAmount, "");
         require(amount > 0);
 
-        DBNode(argAdr).setAgreementStatus("PUBLISHED", "null");
+        DBNode(agrAdr).setAgreementStatus("PUBLISHED", "null");
         return amount;
     }
 
-    function conductInformTransaction(bytes32 _userName, bytes32 _enName, address _dest, uint256 _amount) public returns (bool) {
-        address destAdr     = DBDatabase(getDatabase()).getNode(Object(_dest).name());
-        bytes32 tokenSymbol = PlatString.tobytes32(DBNode(agrAdr).getParameter("walletSymbol"));
-        address userWallet  = DBDatabase(getDatabase()).getNode(formatWalletName(_enName, tokenSymbol));
+    function conductInformTransaction(bytes32 _enName, address _dest, uint256 _amount) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+
+        address dbAdr       = getDatabase();
+        //address destAdr     = DBDatabase(dbAdr).getNode(Object(_dest).name());
+        bytes32 tokenSymbol = DBNode(_dest).getParameter("walletSymbol");
+        address userWallet  = DBDatabase(dbAdr).getNode(formatWalletName(_enName, tokenSymbol));
         DBNode(_dest).informTransaction(userWallet, _dest, _amount);
         return true;
     }
