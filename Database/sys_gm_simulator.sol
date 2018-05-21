@@ -8,10 +8,6 @@ import "./simulator_base.sol";
 import "./sys_com_module.sol";
 import "./sys_include.sol";
 
-contract DBDatabase { 
-    function getNode(bytes32 _name) public constant returns (address);
-}
-
 contract SysGmSimulator is SysComModule {
     uint private simulationNos_;
     uint private simulationTempNos_;
