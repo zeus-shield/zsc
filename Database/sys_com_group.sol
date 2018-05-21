@@ -6,7 +6,7 @@ pragma solidity ^0.4.21;
 
 import "./sys_com_base.sol";
 
-contract SysComAdrs is SysComBase {
+contract SysComGroup is SysComBase {
     uint private adrNos_;
 
     mapping(uint => bytes32) private names_;
