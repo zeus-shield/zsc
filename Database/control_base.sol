@@ -5,8 +5,8 @@ Copyright (c) 2018 ZSC Dev Team
 pragma solidity ^0.4.21;
 
 import "./object.sol";
-import "./system_include.sol";
-import "./system_include_adv.sol";
+import "./sys_include.sol";
+import "./sys_include_adv.sol";
 import "./control_info.sol";
 
 contract ControlBase is ControlInfo {   
@@ -22,12 +22,12 @@ contract ControlBase is ControlInfo {
     }
     
     function setSystemModuleAdrs(address _adm, address _posGM, address _systemOverlayer, address _zscToken) internal {
-        require (_adm != 0 && _db != 0 && _systemGM != 0 && _zscToken != 0);     
+        require (_adm != 0 && _posGM != 0 && _systemOverlayer != 0 && _zscToken != 0);     
 
         zscTokenAddress_ = _zscToken;
 
         systemOL_ = _systemOverlayer;
-        setDelegate(moduleGM_, 1);
+        setDelegate(systemOL_, 1);
 
         bindedAdm_ = _adm;
         setDelegate(bindedAdm_, 1);
@@ -42,33 +42,31 @@ contract ControlBase is ControlInfo {
         dbName_ = _name;
     }
 
-    function getDBName() internal constant returns (bytes32) {
-        require(dbName_ != "null");
-        return dbName_;
-    }
-
     function getFactoryManager() internal constant returns (FactoryManager) {
-        return FactoryManager(SystemManager(systemOL_).getComponent("factory", "gm"));
+        return FactoryManager(SysOverlayer(systemOL_).getComponent("factory", "gm"));
     }
 
     function getWalletManager() internal constant returns (WalletManager) {      
-        return WalletManager(SystemManager(systemOL_).getComponent("module", "wallet-gm"));
+        return WalletManager(SysOverlayer(systemOL_).getComponent("module", "wallet-gm"));
     }
 
     function getPosManager() internal constant returns (PosManager) {      
-        return PosManager(SystemManager(systemOL_).getComponent("module", "pos-gm"));
+        return PosManager(SysOverlayer(systemOL_).getComponent("module", "pos-gm"));
     }
 
     function getSimulatorManager() internal constant returns (SimulatorManager) {      
-        return SimulatorManager(SystemManager(systemOL_).getComponent("module", "simulator-gm"));
+        return SimulatorManager(SysOverlayer(systemOL_).getComponent("module", "simulator-gm"));
+    }
+
+    function getDBDatabase() internal constant returns (DBDatabase) {
+        return DBDatabase(SysOverlayer(systemOL_).getComponent("database", dbName_));
     }
 
     function getDBNode(bytes32 _nodeName) internal constant returns (DBNode) {
-        address dbAdr = SystemManager(systemGM_).getComponent("database", getDBName());
-        return DBNode(DBDatabase(dbAdr).getNode(_nodeName));
+        return DBNode(getDBDatabase().getNode(_nodeName));
     }
 
-    function deleteAgreement(bytes32 _userName, bytes32 _agrName) internal returns (bool) {
+    function deleteAgreement( bytes32 _agrName) internal returns (bool) {
         address agrAdr = address(getDBNode(_agrName));
         require(agrAdr != address(0));
 
@@ -86,8 +84,8 @@ contract ControlBase is ControlInfo {
         address userWallet = address(getDBNode(getWalletManager().formatWalletName(proName, tokenSymbol)));
         require(agrWallet != address(0) && userWallet != address(0));
 
-        DBNode(userWallet).executeTransaction(true, userWallet, lockedAmount, "");
-        return DBDatabase(bindedDB_).destroyNode(agrAdr);
+        DBNode(userWallet).executeTransaction(userWallet, lockedAmount, "");
+        return getDBDatabase().destroyNode(agrAdr);
     }
 
     function prepareTokenContractInfoByIndex(uint _index) internal constant returns (string) {
@@ -145,7 +143,7 @@ contract ControlBase is ControlInfo {
     }
 
     function prepareTranasationfoByIndex(bytes32 _walletName, uint _index) internal constant returns (string) {
-        require(_index < getDBNode("zsc",_walletName).numTransactions());
+        require(_index < getDBNode(_walletName).numTransactions());
         
         uint tranTime;
         bool isInput;
@@ -155,7 +153,7 @@ contract ControlBase is ControlInfo {
         address receiver;
         bytes32 inputTag;
 
-        (tranTime, isInput, txHash, amount, sender, receiver) =  getDBNode("zsc",_walletName).getTransactionInfoByIndex(_index);
+        (tranTime, isInput, txHash, amount, sender, receiver) =  getDBNode(_walletName).getTransactionInfoByIndex(_index);
 
         if (isInput) inputTag = "true";
         else inputTag = "false";
