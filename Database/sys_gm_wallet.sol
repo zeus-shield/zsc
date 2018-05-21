@@ -138,7 +138,7 @@ contract SysGmWallet is SysComModule {
         return address(0);
     }
 
-    function conductPurchaseAgreement(bool _isFirstSubmit, bytes32 _userName, bytes32 _agrName, address _sigAdr) internal returns (uint) {
+    function conductPurchaseAgreement(bool _isFirstSubmit, bytes32 _userName, bytes32 _agrName, address _sigAdr) public returns (uint) {
         address argAdr = DBDatabase(getDatabase()).getNode(_agrName);
 
         bytes32 tokenSymbol = PlatString.tobytes32(DBNode(agrAdr).getParameter("walletSymbol"));
@@ -155,7 +155,7 @@ contract SysGmWallet is SysComModule {
         return purchaseAount;
     }
 
-    function conductPublishAgreement(bytes32 _userName, bytes32 _agrName, address _creator) internal returns (uint) {
+    function conductPublishAgreement(bytes32 _userName, bytes32 _agrName, address _creator) public returns (uint) {
         address argAdr = DBDatabase(getDatabase()).getNode(_agrName);
         bytes32 tokenSymbol = PlatString.tobytes32(DBNode(agrAdr).getParameter("walletSymbol"));
         address userWallet = DBDatabase(getDatabase()).getNode(formatWalletName(_userName, tokenSymbol));
@@ -171,7 +171,7 @@ contract SysGmWallet is SysComModule {
         return amount;
     }
 
-    function conductInformTransaction(bytes32 _userName, bytes32 _enName, address _dest, uint256 _amount) internal returns (bool) {
+    function conductInformTransaction(bytes32 _userName, bytes32 _enName, address _dest, uint256 _amount) public returns (bool) {
         address destAdr     = DBDatabase(getDatabase()).getNode(Object(_dest).name());
         bytes32 tokenSymbol = PlatString.tobytes32(DBNode(agrAdr).getParameter("walletSymbol"));
         address userWallet  = DBDatabase(getDatabase()).getNode(formatWalletName(_enName, tokenSymbol));
