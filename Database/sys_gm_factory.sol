@@ -19,13 +19,13 @@ contract SysGmFactory is SysComGroup {
         bytes32 tempPara;
         bytes32 tempValue; 
 
-        uint paraNos = DBNode(nodeSrc).numParameters();
+        uint paraNos = DBNode(_nodeSrcAdr).numParameters();
         for (uint i = 0; i < paraNos; ++i) {
-            tempPara = DBNode(nodeSrc).getParameterNameByIndex(i);
-            tempValue = DBNode(nodeSrc).getParameter(tempPara);
+            tempPara = DBNode(_nodeSrcAdr).getParameterNameByIndex(i);
+            tempValue = DBNode(_nodeSrcAdr).getParameter(tempPara);
 
-            DBNode(nodeDst).addParameter(tempPara);
-            DBNode(nodeDst).setParameter(tempPara, tempValue);
+            DBNode(_nodeDstAdr).addParameter(tempPara);
+            DBNode(_nodeDstAdr).setParameter(tempPara, tempValue);
         }
         return true;
     }
@@ -50,7 +50,7 @@ contract SysGmFactory is SysComGroup {
             parentAdr = DBDatabase(dbAdr).getNode(_extra);
         }
 
-        ndAdr = FactoryBase(getAdr(_type)).createNode(_nodeName, parentNode, _creator);
+        ndAdr = FactoryBase(getAdr(_type)).createNode(_nodeName, parentAdr, _creator);
         require(ndAdr != 0);
 
         if (_type == "provider" || _type == "receiver" || _type == "staker") {
@@ -63,11 +63,11 @@ contract SysGmFactory is SysComGroup {
         } else 
         */
         if (_type == "template") {
-            DBNode(ndAdr).setParameter("provider", PlatString.bytes32ToString(_userName));
+            DBNode(ndAdr).setParameter("provider", _userName);
         } else if (_type == "agreement") {
             duplicateNode(DBDatabase(dbAdr).getNode(_extra),  ndAdr);
             DBNode(ndAdr).setAgreementStatus("READY", "null");
         }
-        return adr;
+        return ndAdr;
     }
 }
