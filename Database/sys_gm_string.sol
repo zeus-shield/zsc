@@ -39,11 +39,24 @@ contract SysGmString is SysComModule {
         entitys_[_dbName][_userName][_enName].index_[count] = _parameter;
         entitys_[_dbName][_userName][_enName].register_[_parameter] = true;
         entitys_[_dbName][_userName][_enName].count_ ++;
-        
+
         return true;
     }
 
     function setEntityParameterValue(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter, string _value) public returns (bool) {
+        /* check delegate */
+        checkDelegate(msg.sender, 1);
+
+        /* check param */
+
+        /* check register */
+        if(false == entitys_[_dbName][_userName][_enName].register_[_parameter])
+        {
+            require(addEntityParameter(_dbName, _userName, _enName, _parameter));
+        }
+
+        entitys_[_dbName][_userName][_enName].strings_[_parameter] = _value;
+
         return true;
     }
 
