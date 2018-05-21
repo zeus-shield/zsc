@@ -29,7 +29,7 @@ contract WalletBase is DBNode {
     constructor(bytes32 _name) public DBNode(_name) {
         lokedValue_ = 0;
         totalValue_= 0;
-        tempSigned_ = false;
+        //tempSigned_ = false;
     }
 
     ////////// internal functions /////////////
