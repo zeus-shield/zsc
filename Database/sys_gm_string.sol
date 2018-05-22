@@ -64,7 +64,14 @@ contract SysGmString is SysComModule {
     }
 
     function getEntityParameterNameByIndex(bytes32 _dbName, bytes32 _userName, bytes32 _enName, uint _index) public constant returns (bytes32) {
-        bytes32 parameter;
+        /* check delegate */
+        checkDelegate(msg.sender, 1);
+
+        bytes32 parameter = entitys_[_dbName][_userName][_enName].index_[_index];
+
+        /* check register */
+        require(entitys_[_dbName][_userName][_enName].register_[parameter]);
+
         return parameter;
     }
 
