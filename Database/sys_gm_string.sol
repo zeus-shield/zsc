@@ -27,8 +27,6 @@ contract SysGmString is SysComModule {
         /* check delegate */
         checkDelegate(msg.sender, 1);
 
-        /* check param */
-
         /* check register */
         if(true == entitys_[_dbName][_userName][_enName].register_[_parameter])
         {
@@ -47,8 +45,6 @@ contract SysGmString is SysComModule {
         /* check delegate */
         checkDelegate(msg.sender, 1);
 
-        /* check param */
-
         /* check register */
         if(false == entitys_[_dbName][_userName][_enName].register_[_parameter])
         {
@@ -61,7 +57,10 @@ contract SysGmString is SysComModule {
     }
 
     function numEntityParameters(bytes32 _dbName, bytes32 _userName, bytes32 _enName) public constant returns (uint) {
-        return 0;
+        /* check delegate */
+        checkDelegate(msg.sender, 1);
+
+        return  entitys_[_dbName][_userName][_enName].count_;
     }
 
     function getEntityParameterNameByIndex(bytes32 _dbName, bytes32 _userName, bytes32 _enName, uint _index) public constant returns (bytes32) {
