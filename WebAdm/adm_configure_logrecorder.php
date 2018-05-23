@@ -35,28 +35,41 @@ recordSystemModuleAdrs($htmlModules);
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
     
-    function getModuleAdr(module) {
+    function getObjectAdr(module) {
         var adr;
-        if (module == "AdmAdv") adr = "<?php echo $htmlModules->readModuleAddress('AdmAdv')?>";        
-        else if (module == "PosAdv") adr = "<?php echo $htmlModules->readModuleAddress('PosAdv')?>";
-        else if (module == "DBDatabase") adr = "<?php echo $htmlModules->readModuleAddress('DBDatabase')?>";
-        else if (module == "WalletManager") adr = "<?php echo $htmlModules->readModuleAddress('WalletManager')?>";
-        else if (module == "FactoryPro") adr = "<?php echo $htmlModules->readModuleAddress('FactoryPro')?>";
-        else if (module == "FactoryRec") adr = "<?php echo $htmlModules->readModuleAddress('FactoryRec')?>";
-        else if (module == "FactoryTmp") adr = "<?php echo $htmlModules->readModuleAddress('FactoryTmp')?>";
-        else if (module == "FactoryAgr") adr = "<?php echo $htmlModules->readModuleAddress('FactoryAgr')?>";
-        else if (module == "ControlApisAdv") adr = "<?php echo $htmlModules->readModuleAddress('ControlApisAdv')?>";
+        if (module == "TestToken") adr = "<?php echo $htmlModules->readObjectAddress('TestToken')?>";        
+        else if (module == "LogRecorder") adr = "<?php echo $htmlModules->readObjectAddress('LogRecorder')?>";        
+
+        else if (module == "DBDatabase") adr = "<?php echo $htmlModules->readObjectAddress('DBDatabase')?>";
+        else if (module == "AdmAdv") adr = "<?php echo $htmlModules->readObjectAddress('AdmAdv')?>";        
+        else if (module == "PosAdv") adr = "<?php echo $htmlModules->readObjectAddress('PosAdv')?>";
+        else if (module == "WalletManager") adr = "<?php echo $htmlModules->readObjectAddress('WalletManager')?>";
+        else if (module == "SimulatorManager") adr = "<?php echo $htmlModules->readObjectAddress('SimulatorManager')?>";
+        else if (module == "DatabaseManager") adr = "<?php echo $htmlModules->readObjectAddress('DatabaseManager')?>";
+        else if (module == "FactoryManager") adr = "<?php echo $htmlModules->readObjectAddress('FactoryManager')?>";
+        else if (module == "SystemOverlayer") adr = "<?php echo $htmlModules->readObjectAddress('SystemOverlayer')?>";
+        else if (module == "ControlApisAdv") adr = "<?php echo $htmlModules->readObjectAddress('ControlApisAdv')?>";
+
+
+        else if (module == "FactoryPro") adr = "<?php echo $htmlModules->readObjectAddress('FactoryPro')?>";
+        else if (module == "FactoryRec") adr = "<?php echo $htmlModules->readObjectAddress('FactoryRec')?>";
+        else if (module == "FactoryTmp") adr = "<?php echo $htmlModules->readObjectAddress('FactoryTmp')?>";
+        else if (module == "FactoryAgr") adr = "<?php echo $htmlModules->readObjectAddress('FactoryAgr')?>";
+
+        else if (module == "FactoryWalletEth") adr = "<?php echo $htmlModules->readObjectAddress('FactoryWalletEth')?>";
+        else if (module == "FactoryWalletErc20") adr = "<?php echo $htmlModules->readObjectAddress('FactoryWalletErc20')?>";
+
         return adr;
     }
 
     function registerToLogRecorder(module, elementId) {
-        logAdr = "<?php echo $htmlModules->readModuleAddress('LogRecorder')?>";
-        sF_registerListenerToLogRecorder(logAdr,  getModuleAdr(module), module, elementId);
+        logAdr = "<?php echo $htmlModules->readObjectAddress('LogRecorder')?>";
+        sF_registerListenerToLogRecorder(logAdr,  getObjectAdr(module), module, elementId);
     }
 
     function setLogRecorderToListener(module, elementId) {
-        logAdr = "<?php echo $htmlModules->readModuleAddress('LogRecorder')?>";
-        sF_setLogRecorderToListener(logAdr,  getModuleAdr(module), module, elementId);
+        logAdr = "<?php echo $htmlModules->readObjectAddress('LogRecorder')?>";
+        sF_setLogRecorderToListener(logAdr,  getObjectAdr(module), module, elementId);
     }
 
 </script>
