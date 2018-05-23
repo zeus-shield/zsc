@@ -71,6 +71,21 @@ ZSCSetup.prototype.initSystemModule = function(module, hashID) {
     }
 }
 
+////////////////////////////////////////////
+ZSCSetup.prototype.setControlAbisAdvAbi = function(hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi(AdmAdv));
+    var myAdmAdv = myContract.at(this.AdmAdvAdr);
+
+    var data = cC_getContractAbiString('ControlApisAdv');
+
+    myAdmAdv.setControlApisFullAbi(cC_getContractAbi(abiName), 
+        {from:web3.eth.accounts[0], gas: 9000000},
+        function(error, result) { 
+            if(!error) this.showHashResult(hashID, result);
+            else console.log("error: " + error);
+    });
+}  
+
 ZSCSetup.prototype.addFactoryModule = function(module, hashID) {
    var factoryAdr;
    var factoryType;
