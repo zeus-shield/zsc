@@ -121,7 +121,7 @@ class ZscHtmlModules extends ZscSystemModules {
     }
     
     public function loadRegisterLogRecorderHtml($func) {
-        $logedModules = ZscBase::getLogedModuleArray();
+        $logedModules = ZscBase::getLogedObjectArray();
         $num = count($logedModules);
     
         $text = '<div class="well">';
@@ -140,7 +140,7 @@ class ZscHtmlModules extends ZscSystemModules {
     }
 
     public function loadSetLogRecorderHtml($func) {
-        $logedModules = ZscBase::getLogedModuleArray();
+        $logedModules = ZscBase::getLogedObjectArray();
         $num = count($logedModules);
     
         $text = '<div class="well">';
