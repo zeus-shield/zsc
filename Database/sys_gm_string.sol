@@ -67,6 +67,9 @@ contract SysGmString is SysComModule {
         /* check delegate */
         checkDelegate(msg.sender, 1);
 
+        /* check param */
+        require(entitys_[_dbName][_userName][_enName].count_ >= (_index  + 1));
+
         bytes32 parameter = entitys_[_dbName][_userName][_enName].index_[_index];
 
         /* check register */
