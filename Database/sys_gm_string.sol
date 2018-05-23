@@ -11,7 +11,7 @@ contract SysGmString is SysComModule {
     struct ParameterValues {
         uint count_;
         /* index => parameter */
-        mapping(uint => bytes32) index_;
+        mapping(uint => bytes32) parameters_;
         /* parameter => register */
         mapping(bytes32 => bool) register_;
         /* parameter => string */
@@ -34,7 +34,7 @@ contract SysGmString is SysComModule {
         }
         
         uint count = entitys_[_dbName][_userName][_enName].count_;
-        entitys_[_dbName][_userName][_enName].index_[count] = _parameter;
+        entitys_[_dbName][_userName][_enName].parameters_[count] = _parameter;
         entitys_[_dbName][_userName][_enName].register_[_parameter] = true;
         entitys_[_dbName][_userName][_enName].count_ ++;
 
@@ -70,7 +70,7 @@ contract SysGmString is SysComModule {
         /* check param */
         require(entitys_[_dbName][_userName][_enName].count_ >= (_index  + 1));
 
-        bytes32 parameter = entitys_[_dbName][_userName][_enName].index_[_index];
+        bytes32 parameter = entitys_[_dbName][_userName][_enName].parameters_[_index];
 
         /* check register */
         require(entitys_[_dbName][_userName][_enName].register_[parameter]);
