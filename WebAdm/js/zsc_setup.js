@@ -21,7 +21,8 @@ function ZSCSetup(logRecorderAdr, zscTokenAdr, adrs) {
     this.FactoryRecAdr = adrs[10];
     this.FactoryTmpAdr = adrs[11];
     this.FactoryAgrAdr = adrs[12];
-    this.ControlApisAdvAdr = adrs[13];
+    this.FactoryWalletEthAdr = adrs[13];
+    this.FactoryWalletErc20Adr = adrs[14];
     this.zscTokenAdr = zscTokenAdr;
     this.account = web3.eth.accounts[0];
 }
@@ -112,7 +113,7 @@ ZSCSetup.prototype.addFactoryModule = function(module, hashID) {
 ZSCSetup.prototype.initPosAdv = function(abiName, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var myPosAdv = myContract.at(this.PosAdvAdr);
-    myPosAdv.initPos(this.ControlApisAdvAdr, {from:web3.eth.accounts[0], gas: 9000000},
+    myPosAdv.setSysOverlayer(this.SystemOverlayerAdr, {from:web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
         if(!error) this.showHashResult(hashID, result);
         else console.log("error: " + error);
@@ -122,7 +123,7 @@ ZSCSetup.prototype.initPosAdv = function(abiName, hashID) {
 ZSCSetup.prototype.initWalletManager = function(abiName, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var myPosAdv = myContract.at(this.WalletManagerAdr);
-    myPosAdv.initPos(this.ControlApisAdr, this.DBDatabaseAdr, {from:web3.eth.accounts[0], gas: 9000000},
+    myPosAdv.setSysOverlayer(this.SystemOverlayerAdr, this.DBDatabaseAdr, {from:web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
         if(!error) this.showHashResult(hashID, result);
         else console.log("error: " + error);
@@ -132,7 +133,7 @@ ZSCSetup.prototype.initWalletManager = function(abiName, hashID) {
 ZSCSetup.prototype.initSimulatorManager = function(abiName, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var myPosAdv = myContract.at(this.SimulatorManagerAdr);
-    myPosAdv.initPos(this.ControlApisAdr, this.DBDatabaseAdr, {from:web3.eth.accounts[0], gas: 9000000},
+    myPosAdv.setSysOverlayer(this.SystemOverlayerAdr, {from:web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
         if(!error) this.showHashResult(hashID, result);
         else console.log("error: " + error);
@@ -142,7 +143,7 @@ ZSCSetup.prototype.initSimulatorManager = function(abiName, hashID) {
 ZSCSetup.prototype.initFactoryManager = function(abiName, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var myFactoryGM = myContract.at(this.FactoryManagerAdr);
-    myFactoryGM.initFactoryManager(this.ControlApisAdr, this.DBDatabaseAdr, {from:web3.eth.accounts[0], gas: 9000000},
+    myFactoryGM.setSysOverlayer(this.SystemOverlayerAdr, {from:web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
         if(!error) this.showHashResult(hashID, result);
         else console.log("error: " + error);
@@ -185,10 +186,11 @@ ZSCSetup.prototype.setSystemModules = function(abiName, hashID) {
     });
 } 
 
-ZSCSetup.prototype.addFactoryModule = function(abiName, factoryType, FactoryAdr, hashID) {
-    var myContract = web3.eth.contract(cC_getContractAbi(abiName));
-    var myFactoryGM = myContract.at(this.FactoryManagerAdr);
-    myFactoryGM.addFactory(factoryType, FactoryAdr, 
+ZSCSetup.prototype.addFactoryModule = function(factoryType, FactoryAdr, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi("SystemOverlayer"));
+    var myOverlayer = myContract.at(this.SystemOverlayerAdr);
+
+    myOverlayer.addComponent("factory", factoryType, FactoryAdr, 
         {from: this.account, gas: 9000000},
         function(error, result){ 
             if(!error) this.showHashResult(hashID, result);
@@ -196,14 +198,16 @@ ZSCSetup.prototype.addFactoryModule = function(abiName, factoryType, FactoryAdr,
         });
 }
 
-ZSCSetup.prototype.addDatabaseModule = function(abiName, databaseName, databaseAdr, hashID) {
-    var myContract = web3.eth.contract(cC_getContractAbi(abiName));
-    var myDatabaseGM = myContract.at(this.DatabaseManagerAdr);
-    myDatabaseGM.addDatabase(databaseName, databaseAdr, 
+ZSCSetup.prototype.addDatabaseModule = function(databaseName, databaseAdr, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi("SystemOverlayer"));
+    var myOverlayer = myContract.at(this.SystemOverlayerAdr);
+
+    myOverlayer.addComponent("database", databaseName, databaseAdr, 
         {from: this.account, gas: 9000000},
         function(error, result){ 
             if(!error) this.showHashResult(hashID, result);
             else console.log("error: " + error);
         });
 }
+
 
