@@ -6,44 +6,43 @@ Copyright (c) 2018 ZSC Dev Team
 
 <?php
 include("adm_header.php");
-$htmlModules = new ZscHtmlModules();
+$htmlObjects = new ZSChtmlObjects();
 ?>
 
 <html>
 <head>
-<?php echo $htmlModules->loadScriptFiles(); ?>
+<?php echo $htmlObjects->loadScriptFiles(); ?>
 <script type="text/javascript">
-    var recorderAdr = "<?php echo $htmlModules->readModuleAddress('LogRecorder')?>";
-    var zscTokenAddress = "<?php echo $htmlModules->readModuleAddress('zscTokenAddress')?>";
-    var logedModuleAdrs = <?php echo $htmlModules->getLogedModuleAddressArrayInString()?>;
+    var recorderAdr = "<?php echo $htmlObjects->readObjectAddress('LogRecorder')?>";
+    var zscTokenAddress = "<?php echo $htmlObjects->readObjectAddress('zscTokenAddress')?>";
+    var logedModuleAdrs = <?php echo $htmlObjects->getLogedModuleAddressArrayInString()?>;
 
     var web3 = setupWeb3js(false);
     var zscSetup = new ZSCSetup(recorderAdr, zscTokenAddress, logedModuleAdrs);
 
-    function initSystemModule(module, elementId) {
+    function initSystemComponent(module, elementId) {
         zscSetup.initSystemModule(module, elementId);
     }
 
     function setControlApisAdvAbi(elementId) {
-        var adr = "<?php echo $htmlModules->readModuleAddress('ControlApisAdv')?>";
-        sF_setControlAbisAdvAbi(adr, elementId);
+        var adr = "<?php echo $htmlObjects->readObjectAddress('ControlApisAdv')?>";
+        zscSetup.setControlAbisAdvAbi(elementId);
     }
 </script>
 </head>
 <body>
 <?php 
-    echo $htmlModules->loadHeader(); 
+    echo $htmlObjects->loadHeader(); 
     echo '<div class="page-header"> <font size="5" color="blue" >Setup ZSC system in the testing envrioment</font></div>';
-    echo $htmlModules->loadAllAdrs();
+    echo $htmlObjects->loadAllAdrs();
 ?>
 
     <div class="well">
         <text>Step - 0 </text>
-        <button type="button" onClick="setControlApisAdvAbi('ControlApisAdvAbiHash', '0')">Set ControlApisAdv Abi</button> <br>
+        <button type="button" onClick="setControlApisAdvAbi('ControlApisAdvAbiHash')">Set ControlApisAdv Abi</button> <br>
         <text id="ControlApisAdvAbiHash"></text> <br>
-        <text id="ControlApisAdvAbi"> </text> <br>
 
-        <?php echo $htmlModules->loadInitModules('initSystemModule');?>
+        <?php echo $htmlObjects->loadInitModules('initSystemComponent');?>
 
     </div>
 </body>

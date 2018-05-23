@@ -8,13 +8,13 @@ Copyright (c) 2018 ZSC Dev Team
 <head>
 <?php 
 include("adm_header.php");
-$htmlModules = new ZscHtmlModules();
+$htmlObjects = new ZSCHtmlObjects();
 
-echo $htmlModules->loadScriptFiles();
+echo $htmlObjects->loadScriptFiles();
 ?>
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
-    var ControlApisAdvAdr = "<?php echo $htmlModules->readModuleAddress('ControlApisAdv')?>";
+    var ControlApisAdvAdr = "<?php echo $htmlObjects->readObjectAddress('ControlApisAdv')?>";
     var walletManager = new ZSCWalletMangement(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
 
     function addTokenContract(nameId, symbolId, decimalsId, adrId, hashId) {
@@ -27,11 +27,11 @@ echo $htmlModules->loadScriptFiles();
 </head>
 <body>
 
-<?php echo $htmlModules->loadHeader();?>
+<?php echo $htmlObjects->loadHeader();?>
 
 <div class="page-header"><font size="5" color="blue" >Manage Token Contracts</font></div>
 
-<?php echo $htmlModules->loadAllAdrs();?>
+<?php echo $htmlObjects->loadAllAdrs();?>
 
     <div class="well">
         <text>Name</text>  <input type="text" id="TokenName" value="test"></input> <br>

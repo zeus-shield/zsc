@@ -40,6 +40,7 @@ Official implementation for the solidity-based core part of the ZSC system, as w
                 |-- sys_com_group
                     |-- sys_gm_db
                     |-- sys_gm_factory
+                    |-- sys_gm_string
             |-- adm_base
             |-- app_proxy   
             |-- db_database
@@ -70,8 +71,8 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 ```bash
 |--php
     |-- zsc_base
-        |-- zsc_system_modules
-            |-- zsc_html_modules
+        |-- zsc_system_objects
+            |-- zsc_html_objects
 |--js
     |-- zsc_printlog
     |-- zsc_js_base
@@ -165,4 +166,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.05.07-05.08: add files Database/log_transaction.sol, Database/db_managet.sol; changed/updated file factory_manager.sol->module_manager.sol
 2018.05.07-05.08: add files Database/adr_manager.sol, Database/manager_base.sol, Database/system_manager.sol, WebAdm/adm_add_factory.php
 2018.05.09-05.14: removed files module_base.sol, module_base_adv.sol; added files sys_com_module.sol, sys_include.sol, log_base.sol, log_manager.sol; changed/updated files: system_manger.sol -> sys_overlayer.sol, wallet_manager.sol -> sys_gm_wallet.sol, simulator_manager.sol -> sys_gm_simulator.sol, factory_manager.sol -> sys_gm_factory.sol, db_manager.sol -> sys_gm_db.sol, adr_manager.sol -> sys_com_group.sol, manager_base.sol -> sys_com_base.sol
+2018.05.15-05.23: re-construct/adjust architecture for sys_gm_*.sol; changed/updated files: WebAdm/adm_add_database.php, WebAdm/zsc_system_modules.php -> WebAdm/zsc_system_objects.php, WebAdm/zsc_html_modules.php -> WebAdm/zsc_html_objects.php; added file Database/sys_gm_string.sol;
 ```

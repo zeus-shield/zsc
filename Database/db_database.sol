@@ -29,16 +29,15 @@ contract DBDatabase is Object {
         if (rootNode_ == 0) {
             rootNode_ = new DBNode(name());
             require(rootNode_ != address(0));
-
-            address delegateAdr;
-            uint priority;
-
             DBNode(rootNode_).setDelegate(address(this), 1);
+        } 
 
-            for (uint i = 0; i < numDelegates(); ++i) {
-                (delegateAdr, priority) = getDelegateInfoByIndex(i);
-                DBNode(rootNode_).setDelegate(delegateAdr, priority);
-            }
+        address delegateAdr;
+        uint priority;
+
+        for (uint i = 0; i < numDelegates(); ++i) {
+            (delegateAdr, priority) = getDelegateInfoByIndex(i);
+            setDelegate(delegateAdr, priority);
         }
     }
 

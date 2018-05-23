@@ -20,8 +20,8 @@ $htmlObjects = new ZSCHtmlObjects();
     var web3 = setupWeb3js(false);
     var zscSetup = new ZSCSetup(recorderAdr, zscTokenAddress, logedModuleAdrs);
 
-    function addDatabase(moduleId, elementId) {
-        zscSetup.addDatabaseModule(document.getElementById(moduleId).value, elementId);
+    function addFactoryModule(module, elementId) {
+        zscSetup.addFactoryModule(module, elementId);
     }
 </script>
 </head>
@@ -33,11 +33,9 @@ $htmlObjects = new ZSCHtmlObjects();
 ?>
 
     <div class="well">
-       <text>Add database</text><br><br>
-       <input type="text" id="DatabaseName" ></input> <br> 
-       <button type="button" onClick="addDatabase('DatabaseName', 'AddDatabaseHashId')">Add</button><br> 
-       <text id="AddDatabaseHashId"></text>
+        <?php echo $htmlObjects->loadAddFactoryModules('addFactoryModule');?>
     </div>
+
 </body>
 </html>
 

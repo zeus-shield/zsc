@@ -6,7 +6,7 @@ Copyright (c) 2018, ZSC Dev Team
 
 <?php
 
-class ZscBase {
+class ZSCBase {
     public function __construct() { 
     }
 
@@ -19,7 +19,7 @@ class ZscBase {
         if ($myfile == FALSE) {
             $tex = '';
         } else { 
-            $text = fread($myfile,filesize($file));
+            $text = fread($myfile, filesize($file));
             fclose($myfile);
         }
         return $text;
@@ -36,11 +36,15 @@ class ZscBase {
     }
     
     public function getLogedObjectArray() {
-        return array("DBDatabase", "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "DatabaseManager", "FactoryManager", "SystemOverlayer", "ControlApisAdv", "FactoryPro", "FactoryRec", "FactoryStaker" , "FactoryTmp",  "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20");
+        return array("SystemOverlayer", "ControlApisAdv", "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "DatabaseManager", "FactoryManager", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryStaker" , "FactoryTmp",  "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20");
     }
 
     public function getObjectArray() {
-        return array("TestToken", "LogRecorder", "DBDatabase", "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "DatabaseManager", "FactoryManager", "SystemOverlayer", "ControlApisAdv", "FactoryPro", "FactoryRec", "FactoryStaker" , "FactoryTmp",  "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20");
+        return array("TestToken", "LogRecorder", "SystemOverlayer", "ControlApisAdv", "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "DatabaseManager", "FactoryManager", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryStaker" , "FactoryTmp",  "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20");
+    }
+
+    public function getGMArray() {
+        return array("WalletManager", "SimulatorManager", "DatabaseManager", "FactoryManager");
     }
 }
 

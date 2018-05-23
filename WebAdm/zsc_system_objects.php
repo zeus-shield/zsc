@@ -7,7 +7,7 @@ Copyright (c) 2018, ZSC Dev Team
 <?php
 include("zsc_base.php");
 
-class ZscSystemModules extends ZscBase {    
+class ZSCSystemObjects extends ZSCBase {    
     public function __construct() {
         parent::__construct();
     }
@@ -53,9 +53,13 @@ class ZscSystemModules extends ZscBase {
         $system_modules = parent::getObjectArray();
         $num = count($system_modules);
         $text = '?';
-        for($x = 1; $x < $num; $x++) {
+        for($x = 0; $x < $num; $x++) {
             $name = $system_modules[$x];
-            $text .= $name.'='.$this->readObjectAddress($name).'&';
+            if ($x == $num - 1) {
+                $text .= $name.'='.$this->readObjectAddress($name);
+            } else {
+                $text .= $name.'='.$this->readObjectAddress($name).'&';
+            }
         }
         return $text;
     }

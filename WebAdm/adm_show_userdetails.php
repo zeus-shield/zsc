@@ -8,13 +8,13 @@ Copyright (c) 2018 ZSC Dev Team
 <head>
 <?php 
 include("adm_header.php");
-$htmlModules = new ZscHtmlModules();
+$htmlObjects = new ZSCHtmlObjects();
 
-echo $htmlModules->loadScriptFiles();
+echo $htmlObjects->loadScriptFiles();
 ?>
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
-    var ControlApisAdvAdr = "<?php echo $htmlModules->readModuleAddress('ControlApisAdv')?>";
+    var ControlApisAdvAdr = "<?php echo $htmlObjects->readObjectAddress('ControlApisAdv')?>";
     var userWallets = new ZSCShowUserWallets(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
     var userAgrs    = new ZSCShowUserAgrs(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
     var userTmps    = new ZSCShowUserTmps(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
@@ -93,8 +93,8 @@ echo $htmlModules->loadScriptFiles();
 </head>
 <body>
 
-<?php echo $htmlModules->loadHeader();?>
-<?php echo $htmlModules->loadAllAdrs();?>
+<?php echo $htmlObjects->loadHeader();?>
+<?php echo $htmlObjects->loadAllAdrs();?>
 
 <div class="page-header"><font size="5" color="blue">Show user details</font></div>
 <div class="well">

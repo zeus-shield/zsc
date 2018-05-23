@@ -21,12 +21,17 @@ contract WalletErc20 is WalletBase {
 
     function getBlance(bool _locked) public constant returns (uint256) {
         checkDelegate(msg.sender, 1);
+        uint total = ERC20Interface(_erc20TokenAdr).balanceOf(address(this));
+        uint amount;
 
         if (_locked) { 
-            return super.getBlance(true);
+            amount = super.getBlance(true);
+            require(amount <= total);
         } else {
-            return ERC20Interface(_erc20TokenAdr).balanceOf(address(this));
+            amount = super.getBlance(false);
+            require(amount == total);
         }
+        return amount;
     }
 
     function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (uint) {

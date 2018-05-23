@@ -153,7 +153,7 @@ contract ControlApis is ControlBase {
         checkMatched(_userName, _enName, msg.sender);
 
         DBNode nd = getDBNode( _enName);
-        require(nd != DBNode(0));
+        require(address(nd) != address(0));
         return nd.getNodeType();
     }
 
@@ -415,7 +415,7 @@ contract ControlApis is ControlBase {
         require(nd != DBNode(0));
 
         string memory temp = PlatString.append(_userName, "-", _tokenSymbol);
-        return prepareTranasationfoByIndex(PlatString.tobytes32(temp), _index);
+        return prepareTransationfoByIndex(PlatString.tobytes32(temp), _index);
     }
 
     function numBlockInfo(bytes32 _userName, uint _poolIndex, bool _isMined) public constant returns (uint) {
