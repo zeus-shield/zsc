@@ -18,18 +18,34 @@ contract SysGmString is SysComModule {
         mapping(bytes32 => string) strings_;
     }
 
+    struct UserHolderInfo {
+        address holder_;
+        mapping(address => bool) multisig_;
+    }
+
     /* database name => user name => entity name => parameter value */
     mapping(bytes32 => mapping(bytes32 => mapping(bytes32 => ParameterValues))) private entitys_;
 
+    mapping(bytes32 => mapping(bytes32 => UserHolderInfo)) private userHolders_;
+
     constructor(bytes32 _name) public SysComModule(_name) {}
+
+    function checkHolder(bytes32 _dbName, bytes32 _userName, address _holder) internal constant {
+        require(msg.sender == userHolders_[_dbName].[_userName].holder_);
+    }
+
+    function registerHolder(bytes32 _dbName, bytes32 _userName, address _holder) public {
+        checkDelegate(msg.sender, 1);
+        userHolders_[_dbName].[_userName].holder_ = _holder;
+    }
 
     function addEntityParameter(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public returns (bool) {
         /* check delegate */
-        checkDelegate(msg.sender, 1);
+        //checkDelegate(msg.sender, 1);
+        checkHolder(_dbName, _userName, msg.sender);
 
         /* check register */
-        if(true == entitys_[_dbName][_userName][_enName].registers_[_parameter])
-        {
+        if(true == entitys_[_dbName][_userName][_enName].registers_[_parameter]) {
             return true;
         }
         
@@ -43,11 +59,11 @@ contract SysGmString is SysComModule {
 
     function setEntityParameterValue(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter, string _value) public returns (bool) {
         /* check delegate */
-        checkDelegate(msg.sender, 1);
+        //checkDelegate(msg.sender, 1);
+        checkHolder(_dbName, _userName, msg.sender);
 
         /* check register */
-        if(false == entitys_[_dbName][_userName][_enName].registers_[_parameter])
-        {
+        if(false == entitys_[_dbName][_userName][_enName].registers_[_parameter]) {
             require(addEntityParameter(_dbName, _userName, _enName, _parameter));
         }
 
@@ -58,14 +74,16 @@ contract SysGmString is SysComModule {
 
     function numEntityParameters(bytes32 _dbName, bytes32 _userName, bytes32 _enName) public view returns (uint) {
         /* check delegate */
-        checkDelegate(msg.sender, 1);
+        //checkDelegate(msg.sender, 1);
+        checkHolder(_dbName, _userName, msg.sender);
 
         return  entitys_[_dbName][_userName][_enName].count_;
     }
 
     function getEntityParameterNameByIndex(bytes32 _dbName, bytes32 _userName, bytes32 _enName, uint _index) public view returns (bytes32) {
         /* check delegate */
-        checkDelegate(msg.sender, 1);
+        //checkDelegate(msg.sender, 1);
+        checkHolder();
 
         /* check param */
         require(entitys_[_dbName][_userName][_enName].count_ >= (_index  + 1));
@@ -80,7 +98,8 @@ contract SysGmString is SysComModule {
 
     function getEntityParameterValue(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public view returns (string) {
         /* check delegate */
-        checkDelegate(msg.sender, 1);
+        //checkDelegate(msg.sender, 1);
+        checkHolder(_dbName, _userName, msg.sender);
 
         /* check register */
         require(entitys_[_dbName][_userName][_enName].registers_[_parameter]);
