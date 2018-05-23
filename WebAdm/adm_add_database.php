@@ -21,7 +21,7 @@ $htmlObjects = new ZSCHtmlObjects();
     var zscSetup = new ZSCSetup(recorderAdr, zscTokenAddress, logedModuleAdrs);
 
     function addDatabase(moduleId, elementId) {
-        zscSetup.addDatabaseModule(document.getElementById(moduleId).value, elementId);
+        zscSetup.addDatabase(document.getElementById(moduleId).value, elementId);
     }
 </script>
 </head>

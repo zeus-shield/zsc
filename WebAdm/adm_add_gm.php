@@ -21,7 +21,7 @@ $htmlObjects = new ZSCHtmlObjects();
     var zscSetup = new ZSCSetup(recorderAdr, zscTokenAddress, logedModuleAdrs);
 
     function addGM(module, elementId) {
-        zscSetup.addGMModule(module, elementId);
+        zscSetup.addGM(module, elementId);
     }
 </script>
 </head>
