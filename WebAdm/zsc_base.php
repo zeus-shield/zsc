@@ -42,6 +42,10 @@ class ZSCBase {
     public function getObjectArray() {
         return array("TestToken", "LogRecorder", "SystemOverlayer", "ControlApisAdv", "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "DatabaseManager", "FactoryManager", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryStaker" , "FactoryTmp",  "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20");
     }
+
+    public function getGMArray() {
+        return array("WalletManager", "SimulatorManager", "DatabaseManager", "FactoryManager");
+    }
 }
 
 ?>
