@@ -186,7 +186,25 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
         for($x = 0; $x < $num; $x++) {
             $name = $modules[$x];
             $hashId = $name.'Hash'.$x;
-            $action = "Set ".$name;
+            $action = "Add ".$name;
+            
+            $text .= '<text>Step - '.($x+1).' </text>';
+            $text .= '<button type="button" onClick="'.$func.'(\''.$name.'\', \''.$hashId.'\')">'.$action.'</button>';
+            $text .= '<text id="'.$hashId.'"></text><br><br>';
+        }
+    
+        return $text;
+    }
+
+    public function loadAddGMs($func) {
+        $gms = ZscBase::getGMArray(); 
+        $num = count($gms);
+        $text = '';
+    
+        for($x = 0; $x < $num; $x++) {
+            $name = $gms[$x];
+            $hashId = $name.'Hash'.$x;
+            $action = "Add ".$name;
             
             $text .= '<text>Step - '.($x+1).' </text>';
             $text .= '<button type="button" onClick="'.$func.'(\''.$name.'\', \''.$hashId.'\')">'.$action.'</button>';
