@@ -8,13 +8,13 @@ Copyright (c) 2018 ZSC Dev Team
 <head>
 <?php 
 include("adm_header.php");
-$htmlModules = new ZscHtmlModules();
+$htmlObjects = new ZSCHtmlObjects();
 
-echo $htmlModules->loadScriptFiles();
+echo $htmlObjects->loadScriptFiles();
 ?>
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
-    var AdmAdvAdr = "<?php echo $htmlModules->readModuleAddress('AdmAdv')?>";
+    var AdmAdvAdr = "<?php echo $htmlObjects->readObjectAddress('AdmAdv')?>";
     var userManager = new ZSCUserMangement(AdmAdvAdr, cC_getContractAbi('AdmAdv'));
 
     function addUser(usernameId, elementId) {
@@ -49,11 +49,11 @@ echo $htmlModules->loadScriptFiles();
 </head>
 <body>
 
-<?php echo $htmlModules->loadHeader();?>
+<?php echo $htmlObjects->loadHeader();?>
 
 <div class="page-header"><font size="5" color="blue" >Manage ZSC users</font></div>
 
-<?php echo $htmlModules->loadAllAdrs();?>
+<?php echo $htmlObjects->loadAllAdrs();?>
 
     <div class="well">
         <text>Username</text>  <input type="text" id="AddUserName" value="test"></input> <br>
