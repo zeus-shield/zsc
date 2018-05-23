@@ -6,9 +6,9 @@ Copyright (c) 2018, ZSC Dev Team
 
 <?php
 
-include("zsc_system_modules.php");
+include("zsc_system_objects.php");
 
-class ZscHtmlModules extends ZscSystemModules {
+class ZSCHtmlObjects extends ZSCSystemObjects {
     public function __construct(){
         parent::__construct();
     }
@@ -17,14 +17,15 @@ class ZscHtmlModules extends ZscSystemModules {
     }
 
     public function loadHeader() {
-        $databaseAdr = "dddd";
         $text='<br><br>
         <div align="center">
         <table align="center" style="width:400px;min-height:30px">
            <tr>
             <td align="center"><a href="adm_create_contract.php">Create contract</a></td>
             <td align="center"><a href="adm_configure_logrecorder.php">Configure LogRecorder</a></td>
-            <td align="center"><a href="adm_control_apis_adv.php">Control system</a></td>
+            <td align="center"><a href="adm_add_factory.php">Add Factory</a></td>
+            <td align="center"><a href="adm_add_database.php">Add Database</a></td>
+            <td align="center"><a href="adm_init_sys_component.php">Init System Component</a></td>
             <td align="center"><a href="adm_manage_users.php">Users</a></td>
             <td align="center"><a href="adm_show_userdetails.php">User Details</a></td>
             <td align="center"><a href="adm_manage_token_contracts.php">Manage Tokens</a></td>
