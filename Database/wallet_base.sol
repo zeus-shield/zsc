@@ -15,21 +15,16 @@ contract WalletBase is DBNode {
         uint256 amount_;
         bytes32 data_;
     }
-    uint nos_;
-    mapping(uint => Payment) payments_;
+    uint private nos_;
+    mapping(uint => Payment) private payments_;
 
-    uint lokedValue_;
-    uint256 totalValue_;
-
-    address[] multiSig_;
-    mapping(address => bool) sigAdrExists_;
-    mapping(address => bool) sigStatus_;
+    uint private lokedValue_;
+    uint256 private totalValue_;
 
     // Constructor
     constructor(bytes32 _name) public DBNode(_name) {
         lokedValue_ = 0;
         totalValue_= 0;
-        //tempSigned_ = false;
     }
 
     ////////// internal functions /////////////
