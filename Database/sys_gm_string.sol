@@ -11,9 +11,9 @@ contract SysGmString is SysComModule {
     struct ParameterValues {
         uint count_;
         /* index => parameter */
-        mapping(uint => bytes32) index_;
+        mapping(uint => bytes32) parameters_;
         /* parameter => register */
-        mapping(bytes32 => bool) register_;
+        mapping(bytes32 => bool) registers_;
         /* parameter => string */
         mapping(bytes32 => string) strings_;
     }
@@ -28,14 +28,14 @@ contract SysGmString is SysComModule {
         checkDelegate(msg.sender, 1);
 
         /* check register */
-        if(true == entitys_[_dbName][_userName][_enName].register_[_parameter])
+        if(true == entitys_[_dbName][_userName][_enName].registers_[_parameter])
         {
             return true;
         }
         
         uint count = entitys_[_dbName][_userName][_enName].count_;
-        entitys_[_dbName][_userName][_enName].index_[count] = _parameter;
-        entitys_[_dbName][_userName][_enName].register_[_parameter] = true;
+        entitys_[_dbName][_userName][_enName].parameters_[count] = _parameter;
+        entitys_[_dbName][_userName][_enName].registers_[_parameter] = true;
         entitys_[_dbName][_userName][_enName].count_ ++;
 
         return true;
@@ -46,7 +46,7 @@ contract SysGmString is SysComModule {
         checkDelegate(msg.sender, 1);
 
         /* check register */
-        if(false == entitys_[_dbName][_userName][_enName].register_[_parameter])
+        if(false == entitys_[_dbName][_userName][_enName].registers_[_parameter])
         {
             require(addEntityParameter(_dbName, _userName, _enName, _parameter));
         }
@@ -67,10 +67,13 @@ contract SysGmString is SysComModule {
         /* check delegate */
         checkDelegate(msg.sender, 1);
 
-        bytes32 parameter = entitys_[_dbName][_userName][_enName].index_[_index];
+        /* check param */
+        require(entitys_[_dbName][_userName][_enName].count_ >= (_index  + 1));
+
+        bytes32 parameter = entitys_[_dbName][_userName][_enName].parameters_[_index];
 
         /* check register */
-        require(entitys_[_dbName][_userName][_enName].register_[parameter]);
+        require(entitys_[_dbName][_userName][_enName].registers_[parameter]);
 
         return parameter;
     }
@@ -80,7 +83,7 @@ contract SysGmString is SysComModule {
         checkDelegate(msg.sender, 1);
 
         /* check register */
-        require(entitys_[_dbName][_userName][_enName].register_[_parameter]);
+        require(entitys_[_dbName][_userName][_enName].registers_[_parameter]);
 
         string memory str = entitys_[_dbName][_userName][_enName].strings_[_parameter];
 
