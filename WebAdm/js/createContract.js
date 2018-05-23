@@ -182,7 +182,10 @@ function cC_getUrlSuffixForControlPage() {
     var text = "?";
     for (var i = 0; i < cC_ModuleName.length; ++i) {
         text += cC_ModuleName[i] + "=";
-        text += cC_ModuleAdr[i] + "&";
+
+        if (i != cC_ModuleName.length - 1) {
+            text += cC_ModuleAdr[i] + "&";
+        }
     }
     return text;
 }
