@@ -125,6 +125,17 @@ contract SysGmString is SysComModule {
     }
 
     function removeEntityParameterValueByIndex(bytes32 _dbName, bytes32 _userName, bytes32 _enName, uint _index) public returns (bool) {
-        return true
+        /* check holder */
+        checkHolder(_dbName, _userName, msg.sender);
+
+        /* check param */
+        require(entitys_[_dbName][_userName][_enName].count_ >= (_index  + 1));
+
+        bytes32 parameter = entitys_[_dbName][_userName][_enName].parameters_[_index];
+
+        /* check register */
+        require(entitys_[_dbName][_userName][_enName].registers_[parameter]);
+
+        return removeEntityParameterValue(_dbName, _userName, _enName, parameter);
     }
 }
