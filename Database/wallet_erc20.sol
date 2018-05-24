@@ -40,7 +40,7 @@ contract WalletErc20 is WalletBase {
 
         if (ERC20Interface(_erc20TokenAdr).transfer(_dest, _amount)) {
             recordOut(address(this), _dest, _amount, PlatString.tobytes32(_data));
-            changeValue(true, data == "locked", _amount);
+            changeValue(false, data == "locked", _amount);
             return amount;
         } else {
             return 0;
@@ -50,6 +50,6 @@ contract WalletErc20 is WalletBase {
     function informTransaction(address _src, address _dest, uint256 _amount) public {
         checkDelegate(msg.sender, 1);
         recordInput(_src, _dest, _amount, "");
-        changeValue(false, _data == "locked", _amount);
+        changeValue(true, _data == "locked", _amount);
     }
 }
