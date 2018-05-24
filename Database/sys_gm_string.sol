@@ -123,4 +123,8 @@ contract SysGmString is SysComModule {
 
         return true;
     }
+
+    function removeEntityParameterValueByIndex(bytes32 _dbName, bytes32 _userName, bytes32 _enName, uint _index) public returns (bool) {
+        return true
+    }
 }
