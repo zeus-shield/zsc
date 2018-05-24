@@ -12,6 +12,8 @@ contract SysGmString is SysComModule {
         uint count_;
         /* index => parameter */
         mapping(uint => bytes32) parameters_;
+        /* parameter => index */
+        mapping(bytes32 => uint) indexs_;
         /* parameter => register */
         mapping(bytes32 => bool) registers_;
         /* parameter => string */
@@ -50,6 +52,7 @@ contract SysGmString is SysComModule {
         
         uint count = entitys_[_dbName][_userName][_enName].count_;
         entitys_[_dbName][_userName][_enName].parameters_[count] = _parameter;
+        entitys_[_dbName][_userName][_enName].indexs_[_parameter] = count;
         entitys_[_dbName][_userName][_enName].registers_[_parameter] = true;
         entitys_[_dbName][_userName][_enName].count_ ++;
 
