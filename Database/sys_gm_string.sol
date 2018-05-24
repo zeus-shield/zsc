@@ -30,7 +30,7 @@ contract SysGmString is SysComModule {
 
     constructor(bytes32 _name) public SysComModule(_name) {}
 
-    function checkHolder(bytes32 _dbName, bytes32 _userName, address _holder) internal constant {
+    function checkHolder(bytes32 _dbName, bytes32 _userName, address _holder) internal view {
         require(_holder == userHolders_[_dbName][_userName].holder_);
     }
 
@@ -40,8 +40,7 @@ contract SysGmString is SysComModule {
     }
 
     function addEntityParameter(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public returns (bool) {
-        /* check delegate */
-        //checkDelegate(msg.sender, 1);
+        /* check holder */
         checkHolder(_dbName, _userName, msg.sender);
 
         /* check register */
@@ -58,8 +57,7 @@ contract SysGmString is SysComModule {
     }
 
     function setEntityParameterValue(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter, string _value) public returns (bool) {
-        /* check delegate */
-        //checkDelegate(msg.sender, 1);
+        /* check holder */
         checkHolder(_dbName, _userName, msg.sender);
 
         /* check register */
@@ -73,16 +71,14 @@ contract SysGmString is SysComModule {
     }
 
     function numEntityParameters(bytes32 _dbName, bytes32 _userName, bytes32 _enName) public view returns (uint) {
-        /* check delegate */
-        //checkDelegate(msg.sender, 1);
+        /* check holder */
         checkHolder(_dbName, _userName, msg.sender);
 
         return  entitys_[_dbName][_userName][_enName].count_;
     }
 
     function getEntityParameterNameByIndex(bytes32 _dbName, bytes32 _userName, bytes32 _enName, uint _index) public view returns (bytes32) {
-        /* check delegate */
-        //checkDelegate(msg.sender, 1);
+        /* check holder */
         checkHolder(_dbName, _userName, msg.sender);
 
         /* check param */
@@ -97,8 +93,7 @@ contract SysGmString is SysComModule {
     }
 
     function getEntityParameterValue(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public view returns (string) {
-        /* check delegate */
-        //checkDelegate(msg.sender, 1);
+        /* check holder */
         checkHolder(_dbName, _userName, msg.sender);
 
         /* check register */
