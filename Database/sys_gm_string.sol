@@ -80,6 +80,18 @@ contract SysGmString is SysComModule {
         return  entitys_[_dbName][_userName][_enName].count_;
     }
 
+    function getEntityParameterValue(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public view returns (string) {
+        /* check holder */
+        checkHolder(_dbName, _userName, msg.sender);
+
+        /* check register */
+        require(entitys_[_dbName][_userName][_enName].registers_[_parameter]);
+
+        string memory str = entitys_[_dbName][_userName][_enName].strings_[_parameter];
+
+        return str;
+    }
+
     function getEntityParameterByIndex(bytes32 _dbName, bytes32 _userName, bytes32 _enName, uint _index) public view returns (bytes32) {
         /* check holder */
         checkHolder(_dbName, _userName, msg.sender);
@@ -93,18 +105,6 @@ contract SysGmString is SysComModule {
         require(entitys_[_dbName][_userName][_enName].registers_[parameter]);
 
         return parameter;
-    }
-
-    function getEntityParameterValue(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public view returns (string) {
-        /* check holder */
-        checkHolder(_dbName, _userName, msg.sender);
-
-        /* check register */
-        require(entitys_[_dbName][_userName][_enName].registers_[_parameter]);
-
-        string memory str = entitys_[_dbName][_userName][_enName].strings_[_parameter];
-
-        return str;
     }
 
     function removeEntityParameterValue(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public returns (bool) {
