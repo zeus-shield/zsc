@@ -18,7 +18,7 @@ contract WalletEth is WalletBase {
             revert();
         } else {
             recordInput(msg.sender, address(this), msg.value, PlatString.tobytes32(msg.data));
-            changeValue(false, false, _amount);
+            changeValue(true, false, _amount);
         }
     }
 
@@ -43,7 +43,7 @@ contract WalletEth is WalletBase {
 
         if (_dest.call.value(_amount)(data)) {
             recordOut(address(this), _dest, _amount, PlatString.tobytes32(_data));
-            changeValue(true, data == "locked", _amount);
+            changeValue(false, data == "locked", _amount);
             return amount;
         } else {
             return 0;
