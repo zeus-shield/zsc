@@ -31,12 +31,12 @@ contract SysGmString is SysComModule {
     constructor(bytes32 _name) public SysComModule(_name) {}
 
     function checkHolder(bytes32 _dbName, bytes32 _userName, address _holder) internal constant {
-        require(msg.sender == userHolders_[_dbName].[_userName].holder_);
+        require(_holder == userHolders_[_dbName][_userName].holder_);
     }
 
     function registerHolder(bytes32 _dbName, bytes32 _userName, address _holder) public {
         checkDelegate(msg.sender, 1);
-        userHolders_[_dbName].[_userName].holder_ = _holder;
+        userHolders_[_dbName][_userName].holder_ = _holder;
     }
 
     function addEntityParameter(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public returns (bool) {
@@ -83,7 +83,7 @@ contract SysGmString is SysComModule {
     function getEntityParameterNameByIndex(bytes32 _dbName, bytes32 _userName, bytes32 _enName, uint _index) public view returns (bytes32) {
         /* check delegate */
         //checkDelegate(msg.sender, 1);
-        checkHolder();
+        checkHolder(_dbName, _userName, msg.sender);
 
         /* check param */
         require(entitys_[_dbName][_userName][_enName].count_ >= (_index  + 1));
