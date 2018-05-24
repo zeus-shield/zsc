@@ -80,7 +80,7 @@ contract SysGmString is SysComModule {
         return  entitys_[_dbName][_userName][_enName].count_;
     }
 
-    function getEntityParameterNameByIndex(bytes32 _dbName, bytes32 _userName, bytes32 _enName, uint _index) public view returns (bytes32) {
+    function getEntityParameterByIndex(bytes32 _dbName, bytes32 _userName, bytes32 _enName, uint _index) public view returns (bytes32) {
         /* check holder */
         checkHolder(_dbName, _userName, msg.sender);
 
