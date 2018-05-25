@@ -29,26 +29,54 @@ function ZSCSetup(logRecorderAdr, zscTokenAdr, adrs) {
 
 ZSCSetup.prototype = new ZSCJsBase();
 
-ZSCSetup.prototype.registerListenerToLogRecorder = function(listener, listenerName, hashID) {
+function showHashResultTest(elementID, hash, func){
+    web3.eth.getTransactionReceipt(hash, 
+    function(error, result){ 
+        if(!error) {
+            var show;
+            if (result == null) {
+                show =  "(pending)" + hash ;
+                showHashResultTest(elementID, hash, func);
+            } else {
+                if (result.status == 0) {
+                    show = "(failure)" + hash;
+                } else {
+                    show = "(succeeded)" + hash ;
+                    func();
+                }
+            }
+            document.getElementById(elementID).innerText = show;
+        } else {
+            console.log("error: " + error);
+        }
+    });
+} 
+
+
+ZSCSetup.prototype.registerListenerToLogRecorder = function(listener, listenerName, hashID, func) {
     var myContract = web3.eth.contract(cC_getContractAbi("LogRecorder"));
     var myLogRecorder = myContract.at(this.RecorderAdr);
     var account = web3.eth.accounts[0];
 
-    myLogRecorder.registerListener(listener, listenerName, {from:account, gas: 9000000},
-    function(error, result){ 
-        if(!error) this.showHashResult(hashID, result);
-        else console.log("error: " + error);
-    });
+    myLogRecorder.registerListener(listener, listenerName, 
+        {from:account, gas: 9000000},
+        function(error, result) { 
+            if(!error) { 
+                showHashResultTest(hashID, result, func);
+            } else {
+                console.log("error: " + error);
+            }
+        });
 }  
 
-ZSCSetup.prototype.setLogRecorderToListener = function(listener,listenerName, hashID) {
+ZSCSetup.prototype.setLogRecorderToListener = function(listener,listenerName, hashID, func) {
     var myContract = web3.eth.contract(cC_getContractAbi(listenerName));
     var myListener = myContract.at(listener);
     var account = web3.eth.accounts[0];
 
     myListener.setLogRecorder(logRecorderAdr, {from:account, gas: 9000000},
     function(error, result){ 
-        if(!error) this.showHashResult(hashID, result);
+        if(!error) showHashResultTest(hashID, result, func);
         else console.log("error: " + error);
     });
 }  
