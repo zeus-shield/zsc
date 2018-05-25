@@ -13,7 +13,7 @@ function ZSCShowElement(controlApisAdvAbi, controlApisAdvAdr) {
     this.myControlApi = web3.eth.contract(controlApisAdvAbi).at(controlApisAdvAdr);
 }
 
-ZSCShowUserAgrs.prototype = new ZSCJsBase();
+ZSCShowElement.prototype = new ZSCJsBase();
 
 ZSCShowElement.prototype.init = function(userName, enName) {
     this.userName = userName;

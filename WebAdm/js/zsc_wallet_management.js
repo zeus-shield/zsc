@@ -92,7 +92,7 @@ ZSCWalletMangement.prototype.loadErcTokenContractInfoByIndex = function(index, f
 /*
 "info?name=", "symbol=", "decimals=", "adr=",     
 */
-ZSCUserMangement.prototype.parserTokenContractInfoByIndex = function(urlinfo, index) {
+ZSCWalletMangement.prototype.parserTokenContractInfoByIndex = function(urlinfo, index) {
     var found1 = urlinfo.indexOf("?");
     var found2 = urlinfo.indexOf("=");
 
