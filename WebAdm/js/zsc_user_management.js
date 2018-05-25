@@ -25,7 +25,7 @@ ZSCUserMangement.prototype.addUser = function(userNameId, hashId, func){
     });
 }  
 
-ZSCUserMangement.prototype.setUserActiveStatus = (username, status, elementId, function() {
+//ZSCUserMangement.prototype.setUserActiveStatus = (username, status, elementId, function() {}
 
 
 ZSCUserMangement.prototype.loadUsers = function(func) {
@@ -129,7 +129,7 @@ ZSCUserMangement.prototype.loadUserManagementHtml = function(showDetails, approv
 
 ZSCUserMangement.prototype.approveUser = function(userName, func) {
     this.myControlApi.addUser(userName, {from: this.account, gas: 9000000},
-    function(error, result){ 
+    function(error, result) { 
         if(!error) this.howHashResult(hashId, result, func)
         else console.log("error: " + error);
     });
@@ -137,9 +137,9 @@ ZSCUserMangement.prototype.approveUser = function(userName, func) {
 
 ZSCUserMangement.prototype.setUserStatus = function(userName, status, func) {
     this.myControlApi.setUserStatus(userName, status, {from: this.account, gas: 9000000},
-    function(error, result){ 
-        if(!error) this.howHashResult(hashId, result, func)
-        else console.log("error: " + error);
-    });
+        function(error, result) { 
+            if(!error) this.howHashResult(hashId, result, func)
+             else console.log("error: " + error);
+        });
 }
 
