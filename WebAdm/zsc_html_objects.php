@@ -78,13 +78,13 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
     }
     
     public function loadAllAdrs() {
-        $modules = ZscBase::getModuleArray();
+        $modules = ZscBase::getObjectArray();
         $num = count($modules);
 
         $text  = '<div class="well">';
         for ($x = 0; $x < $num; $x++) {
             $name = $modules[$x];
-            $text .=    '<text id = "'.$name.'Adr">'.$name.' address: '.parent::readModuleAddress($name).'</text> <br>';
+            $text .=    '<text id = "'.$name.'Adr">'.$name.' address: '.parent::readObjectAddress($name).'</text> <br>';
         }
         $text .= '</div>';
 
