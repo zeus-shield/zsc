@@ -13,7 +13,7 @@ $urlSuffixTag = false;
 $htmlObjects= new ZSCHtmlObjects();
 
 function recordSystemObjectAdrs($modules) {
-    $system_modules = $modules->getModuleArray();
+    $system_modules = $modules->getObjectArray();
     $num = count($system_modules);
     
     for($x = 0; $x < $num; $x++) {
@@ -35,9 +35,9 @@ recordSystemObjectAdrs($htmlObjects);
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
     
-    var recorderAdr = "<?php echo $htmlObjects->readModuleAddress('LogRecorder')?>";
-    var zscTokenAddress = "<?php echo $htmlObjects->readModuleAddress('zscTokenAddress')?>";
-    var factoryModuleAdrs = <?php echo $htmlObjects->getFactoryModuleAddressArrayInString()?>;
+    var recorderAdr = "<?php echo $htmlObjects->readObjectAddress('LogRecorder')?>";
+    var zscTokenAddress = "<?php echo $htmlObjects->readObjectAddress('TestToken')?>";
+    var logedModuleAdrs = <?php echo $htmlObjects->getLogedObjectAddressArrayInString()?>;
 
     var zscSetup = new ZSCSetup(recorderAdr, zscTokenAddress, logedModuleAdrs);
 
@@ -67,20 +67,26 @@ recordSystemObjectAdrs($htmlObjects);
 
         return adr;
     }
-
+</script>
+</head>
+<body>
+<script type="text/javascript">
     function registerToLogRecorder(module, elementId) {
         var logAdr = "<?php echo $htmlObjects->readObjectAddress('LogRecorder')?>";
-        zscSetup.registerListenerToLogRecorder(logAdr,  getObjectAdr(module), module, elementId);
+        zscSetup.registerListenerToLogRecorder(getObjectAdr(module), module, elementId, function() {
+            console.log("Ok");
+        });
     }
 
     function setLogRecorderToListener(module, elementId) {
         var logAdr = "<?php echo $htmlObjects->readObjectAddress('LogRecorder')?>";
-        zscSetup.setLogRecorderToListener(logAdr,  getObjectAdr(module), module, elementId);
+        zscSetup.setLogRecorderToListener(getObjectAdr(module), module, elementId, function() {
+            console.log("Ok");
+        });
     }
 
 </script>
-</head>
-<body>
+
 <?php echo $htmlObjects->loadHeader();?>
 
 </head>
