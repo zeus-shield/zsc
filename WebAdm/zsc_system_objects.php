@@ -27,26 +27,32 @@ class ZSCSystemObjects extends ZSCBase {
         $logedModules = parent::getLogedObjectArray();
         $num = count($logedModules);
     
-        $text = "";
+        $text = "[";
     
         for($x = 0; $x < $num; $x++) {
             $name = $logedModules[$x];
-            $text .= "['".$this->readObjectAddress($name);
+            if ($x == $num - 1)
+                $text .= "'".$this->readObjectAddress($name)."'";
+            else 
+                $text .= "'".$this->readObjectAddress($name)."', ";
         }
-        return $text;
+        return $text."]";
     }
 
     public function getFactoryModuleAddressArrayInString() {
         $factoryModules = parent::getFactoryModuleArray();
         $num = count($factoryModules);
     
-        $text = "";
+        $text = "[";
     
         for($x = 0; $x < $num; $x++) {
-            $name = $readModuleAddress[$x];
-            $text .= "['".$this->readObjectAddress($name);
+            $name = $factoryModules[$x];
+            if ($x == $num - 1)
+                $text .= "'".$this->readObjectAddress($name)."'";
+            else 
+                $text .= "'".$this->readObjectAddress($name)."', ";
         }
-        return $text;
+        return $text."]";
     }
 
     public function getUrlSuffixForAdrs() {
