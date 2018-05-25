@@ -12,7 +12,7 @@ function cC_getContractFullName(contractName) {
         return "./zsc/adm_adv.sol:AdmAdv";
 
     } else if (contractName == 'PosAdv') {
-        return "./zsc/pos_adv.sol:PosAdv";
+        return "./zsc/db/Database/pos_base.sol:PosBase";
 
     } else if (contractName == 'LogRecorder') {
         return "./zsc/db/Database/log_recorder.sol:LogRecorder";
@@ -27,10 +27,10 @@ function cC_getContractFullName(contractName) {
         return "./zsc/db/Database/sys_overlayer.sol:SysOverlayer";
 
     } else if (contractName == 'SimulatorManager') {
-        return "./zsc/db/Database/sys_gm_simulator.sol:SimulatorManager";
+        return "./zsc/db/Database/sys_gm_simulator.sol:SysGmSimulator";
 
     } else if (contractName == 'FactoryManager') {
-        return "./zsc/db/Database/sys_gm_factory.sol:FactoryManager";
+        return "./zsc/db/Database/sys_gm_factory.sol:SysGmFactory";
 
     } else if (contractName == 'DBDatabase') {
         return "./zsc/db/Database/db_database.sol:DBDatabase";
@@ -83,7 +83,7 @@ function cC_getCompiledFile(contractName) {
         return compiledSimulatorManager;
 
     } else if (contractName == 'FactoryManager') {
-        return compiledSimulatorManager;
+        return compiledFactoryManager;
 
     } else if (contractName == 'DatabaseManager') {
         return compiledDatabaseManager;
@@ -183,9 +183,7 @@ function cC_getUrlSuffixForControlPage() {
     for (var i = 0; i < cC_ModuleName.length; ++i) {
         text += cC_ModuleName[i] + "=";
 
-        if (i != cC_ModuleName.length - 1) {
-            text += cC_ModuleAdr[i] + "&";
-        }
+        text += cC_ModuleAdr[i] + "&";
     }
     return text;
 }
