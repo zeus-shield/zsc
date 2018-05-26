@@ -32,12 +32,12 @@ contract SysGmToken is SysComModule {
         /* TODO */
     } 
 
-    function getTokenAddress(bytes32 _symbol) internal view returns (address) {
+    function numOfTokens() public view returns (uint) {
         /* TODO */
-        return address(0);
+        return uint(0);
     }
 
-    function doesTokenExists(bytes32 _symbol) public view returns (bool) {
+    function doesTokenExist(bytes32 _symbol) public view returns (bool) {
         /* TODO */
         return true;
     }
@@ -47,23 +47,18 @@ contract SysGmToken is SysComModule {
         return true;
     }
 
-    function removeTokenContract(bytes32 _symbol) public returns (bool) {
+    function removeToken(bytes32 _symbol) public returns (bool) {
         /* TODO */
         return true;
     }
 
-    function disableTokenContract(bytes32 _symbol) public returns (bool) {
-        /* TODO */
-        return true;
-    }
-
-    function numTokenContracts() public view returns (uint) {
-        /* TODO */
-        return uint(0);
-    }
-    
-    function getTokenInfoByIndex(uint _index) public constant returns (bytes32, bytes32, bytes32, uint, address) {
+    function getTokenInfoByIndex(uint _index) public view returns (bytes32, bytes32, bytes32, uint, address) {
         /* TODO */
         return (bytes32(0), bytes32(0), bytes32(0), uint(0), address(0));
+    }
+
+    function getTokenAddress(bytes32 _symbol) public view returns (address) {
+        /* TODO */
+        return address(0);
     }
 }
