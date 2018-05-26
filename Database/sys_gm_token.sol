@@ -8,7 +8,14 @@ import "./sys_com_module.sol";
 
 contract SysGmToken is SysComModule {
 
-    // Constructor
+    struct TokenInfo {
+        bytes32 status_;
+        bytes32 name_;  
+        bytes32 symbol_ ;
+        uint    decimals_;
+        address address_;
+    }
+
     constructor() public SysComModule("sys_gm_token") {
         /* TODO */
     } 
