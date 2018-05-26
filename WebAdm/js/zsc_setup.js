@@ -116,34 +116,37 @@ ZSCSetup.prototype.setControlAbisAdvAbi = function(hashID) {
     myAdmAdv.setControlApisFullAbi(cC_getContractAbi(abiName), 
         {from:web3.eth.accounts[0], gas: 9000000},
         function(error, result) { 
-            if(!error) this.showHashResult(hashID, result);
+            if(!error) showHashResultTest(hashID, result, func);
             else console.log("error: " + error);
     });
 }  
 
-ZSCSetup.prototype.addFactoryModule = function(module, hashID) {
-   var factoryAdr;
-   var factoryType;
-   if (extra == "FactoryPro") {
-       factoryAdr = this.FactoryProAdr;
-       factoryType = "provider";
-   } else if (extra == "FactoryRec") {
-       factoryAdr = this.FactoryRecAdr;
-       factoryType = "receiver";
-   } else if (extra == "FactoryTmp") {
-       factoryAdr = this.FactoryTmpAdr;
-       factoryType = "template";
-   } else if (extra == "FactoryAgr") {
-       factoryAdr = this.FactoryAgrAdr;
-       factoryType = "agreement";
-   } else if (extra == "FactoryWalletEth") {
-       factoryAdr = this.FactoryAgrAdr;
-       factoryType = "wallet-eth";
-   } else if (extra == "FactoryWalletErc20") {
-       factoryAdr = this.FactoryAgrAdr;
-       factoryType = "wallet-erc20";
-   }
-   this.addFactory(factoryType, factoryAdr, hashID + extra);
+ZSCSetup.prototype.addFactoryModule = function(factModule, hashID) {
+    var factoryAdr;
+    var factoryType;
+    if (factModule == "FactoryPro") {
+        factoryAdr = this.FactoryProAdr;
+        factoryType = "provider";
+    } else if (factModule == "FactoryRec") {
+        factoryAdr = this.FactoryRecAdr;
+        factoryType = "receiver";
+    } else if (factModule == "FactoryStaker") {
+        factoryAdr = this.FactoryRecAdr;
+        factoryType = "staker";
+    } else if (factModule == "FactoryTmp") {
+        factoryAdr = this.FactoryTmpAdr;
+        factoryType = "template";
+    } else if (factModule == "FactoryAgr") {
+        factoryAdr = this.FactoryAgrAdr;
+        factoryType = "agreement";
+    } else if (factModule == "FactoryWalletEth") {
+        factoryAdr = this.FactoryAgrAdr;
+        factoryType = "wallet-eth";
+    } else if (factModule == "FactoryWalletErc20") {
+        factoryAdr = this.FactoryAgrAdr;
+        factoryType = "wallet-erc20";
+    }
+    this.addFactory(factoryType, factoryAdr, hashID);
 }
 
 ZSCSetup.prototype.initPosAdv = function(abiName, hashID) {
@@ -151,7 +154,7 @@ ZSCSetup.prototype.initPosAdv = function(abiName, hashID) {
     var myPosAdv = myContract.at(this.PosAdvAdr);
     myPosAdv.setSysOverlayer(this.SystemOverlayerAdr, {from:web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
-        if(!error) this.showHashResult(hashID, result);
+        if(!error) showHashResultTest(hashID, result, func);
         else console.log("error: " + error);
     });
 }
@@ -161,7 +164,7 @@ ZSCSetup.prototype.initWalletManager = function(abiName, hashID) {
     var myPosAdv = myContract.at(this.WalletManagerAdr);
     myPosAdv.setSysOverlayer(this.SystemOverlayerAdr, this.DBDatabaseAdr, {from:web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
-        if(!error) this.showHashResult(hashID, result);
+        if(!error) showHashResultTest(hashID, result, function(){});
         else console.log("error: " + error);
     });
 }
@@ -171,7 +174,7 @@ ZSCSetup.prototype.initSimulatorManager = function(abiName, hashID) {
     var myPosAdv = myContract.at(this.SimulatorManagerAdr);
     myPosAdv.setSysOverlayer(this.SystemOverlayerAdr, {from:web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
-        if(!error) this.showHashResult(hashID, result);
+        if(!error) showHashResultTest(hashID, result, function(){});
         else console.log("error: " + error);
     });
 }
@@ -181,7 +184,7 @@ ZSCSetup.prototype.initFactoryManager = function(abiName, hashID) {
     var myFactoryGM = myContract.at(this.FactoryManagerAdr);
     myFactoryGM.setSysOverlayer(this.SystemOverlayerAdr, {from:web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
-        if(!error) this.showHashResult(hashID, result);
+        if(!error) showHashResultTest(hashID, result, function(){});
         else console.log("error: " + error);
     });
 }
@@ -194,7 +197,7 @@ ZSCSetup.prototype.initDatabase = function(abiName, hashID) {
     //ddress _controller, address _posAdv, address _walletManager, address[] _factories
     myDatabase.initDatabase(this.DatabaseManagerAdr, {from:web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
-        if(!error) this.showHashResult(hashID, result);
+        if(!error) showHashResultTest(hashID, result, function(){});
         else console.log("error: " + error);
     });
 }  
@@ -204,7 +207,7 @@ ZSCSetup.prototype.initFactory = function(FactoryModule, FactoryAdr, hashID) {
     var myFactory= myContract.at(FactoryAdr);
     myFactory.initFactory(this.FactoryManagerAdr, {from: web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
-        if(!error) this.showHashResult(hashID, result);
+        if(!error) showHashResultTest(hashID, result, function(){});
         else console.log("error: " + error);
     });
 }  
@@ -217,7 +220,7 @@ ZSCSetup.prototype.initControlApis = function(abiName, hashID) {
     myControlApi.setSystemModules(this.AdmAdvAdr, this.PosAdvAdr, this.SystemOverlayerAdr, this.zscTokenAdr,
     {from: web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
-        if(!error) this.showHashResult(hashID, result);
+        if(!error) showHashResultTest(hashID, result, function(){});
         else console.log("error: " + error);
     });
 } 
@@ -229,7 +232,7 @@ ZSCSetup.prototype.addFactory= function(factoryType, FactoryAdr, hashID) {
     myOverlayer.addComponent("factory", factoryType, FactoryAdr, 
         {from: this.account, gas: 9000000},
         function(error, result){ 
-            if(!error) this.showHashResult(hashID, result);
+            if(!error) showHashResultTest(hashID, result, function(){});
             else console.log("error: " + error);
         });
 }
@@ -241,7 +244,7 @@ ZSCSetup.prototype.addDatabase = function(databaseName, databaseAdr, hashID) {
     myOverlayer.addComponent("database", databaseName, databaseAdr, 
         {from: this.account, gas: 9000000},
         function(error, result){ 
-            if(!error) this.showHashResult(hashID, result);
+            if(!error) showHashResultTest(hashID, result, function(){});
             else console.log("error: " + error);
         });
 }
@@ -253,7 +256,7 @@ ZSCSetup.prototype.addGM = function(gmName, gmAdr, hashID) {
     myOverlayer.addComponent("module", gmName, gmAdr, 
         {from: this.account, gas: 9000000},
         function(error, result){ 
-            if(!error) this.showHashResult(hashID, result);
+            if(!error) showHashResultTest(hashID, result, function(){});
             else console.log("error: " + error);
         });
 }
