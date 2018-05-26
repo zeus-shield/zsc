@@ -13,15 +13,15 @@ $htmlObjects = new ZSCHtmlObjects();
 <head>
 <?php echo $htmlObjects->loadScriptFiles(); ?>
 <script type="text/javascript">
-    var recorderAdr = "<?php echo $htmlObjects->readModuleAddress('LogRecorder')?>";
-    var zscTokenAddress = "<?php echo $htmlObjects->readModuleAddress('zscTokenAddress')?>";
-    var factoryModuleAdrs = <?php echo $htmlObjects->getFactoryModuleAddressArrayInString()?>;
+    var recorderAdr = "<?php echo $htmlObjects->readObjectAddress('LogRecorder')?>";
+    var zscTokenAddress = "<?php echo $htmlObjects->readObjectAddress('TestToken')?>";
+    var logedModuleAdrs = <?php echo $htmlObjects->getLogedObjectAddressArrayInString()?>;
 
     var web3 = setupWeb3js(false);
     var zscSetup = new ZSCSetup(recorderAdr, zscTokenAddress, logedModuleAdrs);
 
-    function addFactoryModule(module, elementId) {
-        zscSetup.addFactoryModule(module, elementId);
+    function addFactoryModule(factModule, elementId) {
+        zscSetup.addFactoryModule(factModule, elementId);
     }
 </script>
 </head>
