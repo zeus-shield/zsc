@@ -16,6 +16,18 @@ contract SysGmToken is SysComModule {
         address address_;
     }
 
+    /* token count */
+    uint private count_;
+
+    /* index => token info */
+    mapping(uint => TokenInfo) private tokens_;
+
+    /* symbol => index */
+    mapping(bytes32 => uint) private indexs_;
+
+    /* symbol => exist */
+    mapping(bytes32 => bool) private exists_;
+
     constructor() public SysComModule("sys_gm_token") {
         /* TODO */
     } 
