@@ -74,7 +74,7 @@ ZSCSetup.prototype.setLogRecorderToListener = function(listener,listenerName, ha
     var myListener = myContract.at(listener);
     var account = web3.eth.accounts[0];
 
-    myListener.setLogRecorder(logRecorderAdr, {from:account, gas: 9000000},
+    myListener.setLogRecorder(this.RecorderAdr, {from:account, gas: 9000000},
     function(error, result){ 
         if(!error) showHashResultTest(hashID, result, func);
         else console.log("error: " + error);
@@ -110,13 +110,16 @@ ZSCSetup.prototype.initSystemModule = function(module, hashID) {
 
 ////////////////////////////////////////////
 ZSCSetup.prototype.setControlAbisAdvAbi = function(hashID) {
-    var myContract = web3.eth.contract(cC_getContractAbi(AdmAdv));
+    var myContract = web3.eth.contract(cC_getContractAbi("AdmAdv"));
     var myAdmAdv = myContract.at(this.AdmAdvAdr);
 
-    myAdmAdv.setControlApisFullAbi(cC_getContractAbi(abiName), 
+    var str = cC_getContractAbiString("ControlApisAdv");
+    console.log(str)
+
+    myAdmAdv.setControlApisFullAbi(str, 
         {from:web3.eth.accounts[0], gas: 9000000},
         function(error, result) { 
-            if(!error) showHashResultTest(hashID, result, func);
+            if(!error) showHashResultTest(hashID, result, function(){console.log("ok");});
             else console.log("error: " + error);
     });
 }  
@@ -154,7 +157,7 @@ ZSCSetup.prototype.initPosAdv = function(abiName, hashID) {
     var myPosAdv = myContract.at(this.PosAdvAdr);
     myPosAdv.setSysOverlayer(this.SystemOverlayerAdr, {from:web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
-        if(!error) showHashResultTest(hashID, result, func);
+        if(!error) showHashResultTest(hashID, result, function(){});
         else console.log("error: " + error);
     });
 }
