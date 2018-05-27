@@ -33,15 +33,17 @@ contract SysGmToken is SysComModule {
     } 
 
     function numOfTokens() public view returns (uint) {
-        /* check holder */
+        /* check delegate */
         checkDelegate(msg.sender, 1);
-        
+
         return number_;
     }
 
     function doesTokenExist(bytes32 _symbol) public view returns (bool) {
-        /* TODO */
-        return true;
+        /* check delegate */
+        checkDelegate(msg.sender, 1);
+
+        return exists_[_symbol];
     }
 
     function addToken(bytes32 _name, bytes32 _symbol, uint _decimals, address _tokenAdr) public returns (bool) {
