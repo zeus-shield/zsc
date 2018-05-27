@@ -24,10 +24,14 @@ contract Object is Delegated {
     using SafeMath for uint;
 
     bytes32 private name_ = "null";
-    address internal logRecorder_ = 0;
+    address public logRecorder_ = 0;
+    string public log_;
 
     // Constructor
-    constructor(bytes32 _name) public { name_ = _name;}
+    constructor(bytes32 _name) public { 
+        name_ = _name;
+        log_ = " ";
+    }
 
     // This unnamed function is called whenever someone tries to send ether to it
     function() public payable { revert(); }
@@ -47,6 +51,13 @@ contract Object is Delegated {
         if (logRecorder_ != 0) {
             Recorder(logRecorder_).addLog(_log, _newLine);
         }
+
+        //for alpha test; 2018-05-26
+        if (_newLine) {
+            log_ = PlatString.append(log_, "\n", _log);
+        } else {
+            log_ = PlatString.append(log_, _log);
+        } 
     }
 
     // ------------------------------------------------------------------------
