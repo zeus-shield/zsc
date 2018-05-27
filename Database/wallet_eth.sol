@@ -4,7 +4,7 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./wallet_multisig.sol";
+import "./wallet_base.sol";
 
 contract WalletEth is WalletBase {
 
@@ -17,14 +17,15 @@ contract WalletEth is WalletBase {
         if (msg.value < (1 ether) / 100) {
             revert();
         } else {
-            recordInput(msg.sender, address(this), msg.value, PlatString.tobytes32(msg.data));
-            changeValue(true, false, _amount);
+            bytes32 strData = PlatString.tobytes32(string(msg.data));
+            recordInput(msg.sender, msg.value, strData);
+            changeValue(true, false, msg.value);
         }
     }
 
     function getBlance(bool _locked) public constant returns (uint256) {
         checkDelegate(msg.sender, 1);
-        uint total = this.balance;;
+        uint total = address(this).balance;
         uint amount;
 
         if (_locked) { 
@@ -40,11 +41,12 @@ contract WalletEth is WalletBase {
     function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (uint) {
         checkDelegate(msg.sender, 1);
         checkBeforeSent(_dest, _amount);        
+        bytes32 strData = PlatString.tobytes32(string(_data));
 
-        if (_dest.call.value(_amount)(data)) {
-            recordOut(address(this), _dest, _amount, PlatString.tobytes32(_data));
-            changeValue(false, data == "locked", _amount);
-            return amount;
+        if (_dest.call.value(_amount)(_data)) {
+            recordOut(_dest, _amount, strData);
+            changeValue(false, strData == "locked", _amount);
+            return _amount;
         } else {
             return 0;
         }
