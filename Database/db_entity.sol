@@ -44,9 +44,17 @@ contract DBEntity is DBNode {
     }
 
     function addFundamentalParameter(bytes32 _parameter) internal returns (bool) {
-        if (addParameter(_parameter)) {
-            fundamentalParas_[_parameter] == true;
-        }
+        checkDelegate(msg.sender, 1);
+        require(!parameterExist_[_parameter]);
+
+        uint index = paraNos_;
+        paraNos_++;
+
+        parameterExist_[_parameter] = true;
+        parameterIndice_[_parameter] = index;
+        parameterNames_[index] = _parameter;
+
+        fundamentalParas_[_parameter] == true;
         return true;
     }
 
