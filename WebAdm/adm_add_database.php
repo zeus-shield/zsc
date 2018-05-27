@@ -13,15 +13,16 @@ $htmlObjects = new ZSCHtmlObjects();
 <head>
 <?php echo $htmlObjects->loadScriptFiles(); ?>
 <script type="text/javascript">
-    var recorderAdr = "<?php echo $htmlObjects->readModuleAddress('LogRecorder')?>";
-    var zscTokenAddress = "<?php echo $htmlObjects->readModuleAddress('zscTokenAddress')?>";
-    var factoryModuleAdrs = <?php echo $htmlObjects->getFactoryModuleAddressArrayInString()?>;
+    var recorderAdr = "<?php echo $htmlObjects->readObjectAddress('LogRecorder')?>";
+    var zscTokenAddress = "<?php echo $htmlObjects->readObjectAddress('TestToken')?>";
+    var logedModuleAdrs = <?php echo $htmlObjects->getLogedObjectAddressArrayInString()?>;
 
     var web3 = setupWeb3js(false);
     var zscSetup = new ZSCSetup(recorderAdr, zscTokenAddress, logedModuleAdrs);
 
     function addDatabase(moduleId, elementId) {
-        zscSetup.addDatabase(document.getElementById(moduleId).value, elementId);
+        var databaseAdr = "<?php echo $htmlObjects->readObjectAddress('DBDatabase')?>";
+        zscSetup.addDatabase(document.getElementById(moduleId).value, databaseAdr, elementId);
     }
 </script>
 </head>
@@ -34,7 +35,7 @@ $htmlObjects = new ZSCHtmlObjects();
 
     <div class="well">
        <text>Add database</text><br><br>
-       <input type="text" id="DatabaseName" ></input> <br> 
+       <input type="text" id="DatabaseName" value="zsc"></input> <br> 
        <button type="button" onClick="addDatabase('DatabaseName', 'AddDatabaseHashId')">Add</button><br> 
        <text id="AddDatabaseHashId"></text>
     </div>
