@@ -13,14 +13,13 @@ contract ControlBase is ControlInfo {
     address private systemOL_;
     address private zscTokenAddress_;
     address private bindedAdm_;
-    address private bindedPos_;
 
     bytes32 private dbName_ = "null";
     constructor(bytes32 _name) public ControlInfo(_name) {
     }
     
-    function setSystemModuleAdrs(address _adm, address _posGM, address _systemOL, address _zscToken) internal {
-        require (_adm != 0 && _posGM != 0 && _systemOL != 0 && _zscToken != 0);     
+    function setSystemOverlayerAdrs(address _adm, address _systemOL, address _zscToken) internal {
+        require (_adm != 0 && _systemOL != 0 && _zscToken != 0);     
 
         zscTokenAddress_ = _zscToken;
 
@@ -29,9 +28,6 @@ contract ControlBase is ControlInfo {
 
         bindedAdm_ = _adm;
         setDelegate(bindedAdm_, 1);
-
-        bindedPos_ = _posGM;
-        setDelegate(bindedPos_, 1);
 
         addLog("setSystemModules ", true);
     }
