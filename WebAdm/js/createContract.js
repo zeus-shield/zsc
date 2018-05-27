@@ -132,9 +132,9 @@ function cC_getContractBin(contractName) {
 }
 
 function cC_getContractAbiString(contractName) {
-    var solcompiled = getCompiledFile(contractName);
-    var contractFullName = getContractFullNme(contractName);
-    var abi =  solcompiled.contracts[contractFullName].abi
+    var solcompiled = cC_getCompiledFile(contractName);
+    var contractFullName = cC_getContractFullName(contractName);
+    var abi =  solcompiled.contracts[contractFullName].abi;
     return abi;
 }
 
