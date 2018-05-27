@@ -14,8 +14,8 @@ $htmlObjects = new ZSChtmlObjects();
 <?php echo $htmlObjects->loadScriptFiles(); ?>
 <script type="text/javascript">
     var recorderAdr = "<?php echo $htmlObjects->readObjectAddress('LogRecorder')?>";
-    var zscTokenAddress = "<?php echo $htmlObjects->readObjectAddress('zscTokenAddress')?>";
-    var logedModuleAdrs = <?php echo $htmlObjects->getLogedModuleAddressArrayInString()?>;
+    var zscTokenAddress = "<?php echo $htmlObjects->readObjectAddress('TestToken')?>";
+    var logedModuleAdrs = <?php echo $htmlObjects->getLogedObjectAddressArrayInString()?>;
 
     var web3 = setupWeb3js(false);
     var zscSetup = new ZSCSetup(recorderAdr, zscTokenAddress, logedModuleAdrs);
@@ -42,7 +42,7 @@ $htmlObjects = new ZSChtmlObjects();
         <button type="button" onClick="setControlApisAdvAbi('ControlApisAdvAbiHash')">Set ControlApisAdv Abi</button> <br>
         <text id="ControlApisAdvAbiHash"></text> <br>
 
-        <?php echo $htmlObjects->loadInitModules('initSystemComponent');?>
+        <?php echo $htmlObjects->loadInitObjects('initSystemComponent');?>
 
     </div>
 </body>
