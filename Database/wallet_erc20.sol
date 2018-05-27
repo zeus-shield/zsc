@@ -4,7 +4,7 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./wallet_multisig.sol";
+import "./wallet_base.sol";
 
 contract WalletErc20 is WalletBase {
     address _erc20TokenAdr;
@@ -37,19 +37,21 @@ contract WalletErc20 is WalletBase {
     function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (uint) {
         checkDelegate(msg.sender, 1);
         checkBeforeSent(_dest, _amount);
+        bytes32 strData = PlatString.tobytes32(string(_data));
 
         if (ERC20Interface(_erc20TokenAdr).transfer(_dest, _amount)) {
-            recordOut(address(this), _dest, _amount, PlatString.tobytes32(_data));
-            changeValue(false, data == "locked", _amount);
-            return amount;
+            recordOut(_dest, _amount, strData);
+            changeValue(false, strData == "locked", _amount);
+            return _amount;
         } else {
             return 0;
         }
     }
 
     function informTransaction(address _src, address _dest, uint256 _amount) public {
+        require(_dest == address(this));
         checkDelegate(msg.sender, 1);
-        recordInput(_src, _dest, _amount, "");
-        changeValue(true, _data == "locked", _amount);
+        recordInput(_src, _amount, "");
+        changeValue(true, false, _amount);
     }
 }
