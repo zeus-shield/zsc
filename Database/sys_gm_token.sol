@@ -62,7 +62,12 @@ contract SysGmToken is SysComModule {
     }
 
     function getTokenAddress(bytes32 _symbol) public view returns (address) {
-        /* TODO */
-        return address(0);
+        /* check delegate */
+        checkDelegate(msg.sender, 1);
+
+        /* check exist */
+        require(true == exists_[_symbol]);
+
+        return tokens_[indexs_[_symbol]].address_;
     }
 }
