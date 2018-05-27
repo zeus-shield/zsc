@@ -16,8 +16,8 @@ contract SysGmToken is SysComModule {
         address address_;
     }
 
-    /* token count */
-    uint private count_;
+    /* token number */
+    uint private number_;
 
     /* index => token info */
     mapping(uint => TokenInfo) private tokens_;
@@ -29,7 +29,7 @@ contract SysGmToken is SysComModule {
     mapping(bytes32 => bool) private exists_;
 
     constructor() public SysComModule("sys_gm_token") {
-        /* TODO */
+        number_ = 0;
     } 
 
     function numOfTokens() public view returns (uint) {
