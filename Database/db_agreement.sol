@@ -10,14 +10,14 @@ contract DBAgreement is DBEntity {
     bytes32 private status_ = "CREATE"; // 0: CREATED; 1: READY; 2: PUBLISHED; 3: PAID;
     uint private startTime_;
     uint private duration_;
+    uint private endTime_;
     uint private price_;
     uint private refundPercentage_; // 1 : 100
     bytes32 private walletSymbol_;
 
     // Constructor
-    constructor(bytes32 _name) public DBUser(_name) {
+    constructor(bytes32 _name) public DBEntity(_name) {
         setNodeType("agreement");
-        status_ = 0;
     }
 
     function initParameters() internal {
@@ -57,45 +57,59 @@ contract DBAgreement is DBEntity {
 
     function removeParameter(bytes32 _parameter) public returns (bool) {
         checkDelegate(msg.sender, 1);
-        return false;
+        revert();
+        return (_parameter == "null");
     }
 
     function setAgreementStatus(bytes32 _tag, bytes32 _receiver) public returns (bool) {
         checkDelegate(msg.sender, 1);
+        bytes32 curTag = _tag;
+        bool ret;
 
         if (status_ == "PAID") return false;
 
-        if(status_ == "CREATED" && _tag == "READY") {
+        if(status_ == "CREATED" && curTag == "READY") {
             status_ = "READY";
-        } else if (status_ == "READY" && _tag == "PUBLISHED") {
-            status_ = "PUBLISHED";
-        } else if (status_ == "PUBLISHED" && _tag == "PAID") {
+        } else if (status_ == "READY") {
+            if(curTag == "PUBLISHED") {
+                status_ = "PUBLISHED";
+            }
+        } else if (status_ == "PUBLISHED" && curTag == "PAID") {
+            bytes32 temp;
+
             status_ = "PAID";
             startTime_ = now;
             endTime_ = SafeMath.add(startTime_, duration_);
 
-            ret = super.setParameter("receiver", PlatString.bytes32ToString(_receiver));
+            ret = super.setParameter("receiver", _receiver);
             require(ret);
-            ret = super.setParameter("startTime", PlatString.uintToString(startTime_));
+
+            temp = PlatString.tobytes32(PlatString.uintToString(startTime_));
+            ret = super.setParameter("startTime", temp);
             require(ret);
-            super.setParameter("endTime", PlatString.uintToString(endTime_));
-            ret = require(ret);
+
+            temp = PlatString.tobytes32(PlatString.uintToString(endTime_));
+            ret = super.setParameter("endTime", temp);
+            require(ret);
         } else {
             return false;
         }
-        return super.setParameter("status",  _tag);
+        return super.setParameter("status", curTag);
     }
 
     function getAgreementInfo() public constant returns (bytes32, bytes32, uint, uint, bytes32, uint) {
         checkDelegate(msg.sender, 1);
 
-        return (PlatString.tobytes32(getParameter("status")),
-                PlatString.tobytes32(getParameter("provider")),
-                PlatString.stringToUint(getParameter("price")),
-                PlatString.stringToUint(getParameter("lockedAmount")),
-                PlatString.tobytes32(getParameter("walletSymbol")),
-                PlatString.stringToUint(getParameter("endTime")) );
+        uint price = PlatString.stringToUint(PlatString.bytes32ToString(getParameter("price")));
+        uint lockedAmount = PlatString.stringToUint(PlatString.bytes32ToString(getParameter("lockedAmount")));
+        uint endTime = PlatString.stringToUint(PlatString.bytes32ToString(getParameter("endTime")));
 
+        return (getParameter("status"),
+                getParameter("provider"),
+                price,
+                lockedAmount,
+                getParameter("walletSymbol"),
+                endTime);
     }
 
  }
