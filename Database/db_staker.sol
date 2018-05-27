@@ -79,7 +79,7 @@ contract DBStaker is DBUser {
     	uint ratio = currentTime.sub(lastStoreTime_);
         ratio = ratio.div(DAY_IN_SECONDS_BY_100);
 
-    	uint spAmount = SafeMath.mul(ratio, ERC20Interface(getERC20TokenAddress()).balancOf(address(this)));
+    	uint spAmount = 0; //SafeMath.mul(ratio, ERC20Interface(getERC20TokenAddress()).balancOf(address(this)));
         spAmount = spAmount.div(100);
 
     	lastStoreTime_ = currentTime;
@@ -116,7 +116,7 @@ contract DBStaker is DBUser {
     		ret = reward;
     	} 
 
-        rewardInfo_[rewardNos_] = RewardInfo(currentTime, _amount);
+        rewardInfo_[rewardNos_] = RewardInfo(currentTime, 0);
         rewardNos_++;
         return ret;
     }
@@ -142,7 +142,7 @@ contract DBStaker is DBUser {
         checkDelegate(msg.sender, 1);
 
         if (_isReward) {
-            return rewardNos;
+            return rewardNos_;
         } else {
             return spUsedNos_;
         }
@@ -153,9 +153,9 @@ contract DBStaker is DBUser {
         return 0;
     }
 
-    function getAgreementByIndex(uint _index) public constant returns (uint) {
+    function getAgreementByIndex(uint _index) public constant returns (address) {
         checkDelegate(msg.sender, 1);
-        return _index.sub(_index);
+        return address(_index.sub(_index));
     }
 }
 
