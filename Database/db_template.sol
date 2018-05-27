@@ -23,15 +23,15 @@ contract DBTemplate is DBEntity {
         addFundamentalParameter("duration");
         addFundamentalParameter("provider");
         addFundamentalParameter("copies");
-        addFundamentalParameter("lockedAmount") = true;
+        addFundamentalParameter("lockedAmount");
     }
 
-    function setParameter(bytes32 _parameter, string _value) public returns (bool) {
+    function setParameter(bytes32 _parameter, bytes32 _value) public returns (bool) {
         checkDelegate(msg.sender, 1);
 
         if (numChildren() > 0) return false; 
 
-        if (addedProvider_ == false)
+        if (addedProvider_ == false) {
             if (_parameter == "provider") {
                 addedProvider_ = true;
             }
