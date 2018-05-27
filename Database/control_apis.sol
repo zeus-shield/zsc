@@ -16,9 +16,9 @@ contract ControlApis is ControlBase {
 
     /// @dev Set the zsc adm address
     /// @param _adm The address of the zsc adm 
-    function setSystemModules(address _adm, address _posGM, address _systemOverlayer, address _zscToken) public {
+    function setSystemOverlayer(address _adm, address _systemOL, address _zscToken) public {
         checkDelegate(msg.sender, 1);
-        setSystemModuleAdrs(_adm, _posGM, _systemOverlayer, _zscToken);
+        setSystemOverlayerAdrs(_adm, _systemOL, _zscToken);
     }
 
     function registerErc20Token(bytes32 _symbol, bytes32 _name, uint _decimals, address _tokenAdr) public returns (bool) {
