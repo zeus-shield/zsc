@@ -23,13 +23,14 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
            <tr>
             <td align="center"><a href="adm_create_contract.php">Create contract</a></td>
             <td align="center"><a href="adm_configure_logrecorder.php">Configure LogRecorder</a></td>
-            <td align="center"><a href="adm_add_factory.php">Add Factory</a></td>
-            <td align="center"><a href="adm_add_database.php">Add Database</a></td>
             <td align="center"><a href="adm_init_sys_component.php">Init System Component</a></td>
+            <td align="center"><a href="adm_add_database.php">Add Database</a></td>
+            <td align="center"><a href="adm_add_factory.php">Add Factory</a></td>
             <td align="center"><a href="adm_manage_users.php">Users</a></td>
             <td align="center"><a href="adm_show_userdetails.php">User Details</a></td>
             <td align="center"><a href="adm_manage_token_contracts.php">Manage Tokens</a></td>
             <td align="center"><a href="adm_show_log.php">Show Log</a></td>
+            <td align="center"><a href="adm_print_abi.php">Print Abi</a></td>
           </tr>
         </table>
         </div>';
@@ -177,6 +178,21 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
         return $text;
     }
 
+    public function loadPrintObjectAbi($func) {
+        $objects= ZscBase::getObjectArray();
+        $num = count($objects);
+
+        $text = '';
+    
+        for($x = 0; $x < $num; $x++) {
+            $name = $objects[$x];
+            $action = "Print ".$name." Abi";
+            $text .= ' | <button type="button" onClick="'.$func.'(\''.$name.'\')">'.$action.'</button> | '; 
+        }
+    
+        return $text;
+    }
+
     public function loadAddFactoryModules($func) {
         $modules = ZscBase::getFactoryModuleArray(); 
         $num = count($modules);
@@ -184,7 +200,7 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
     
         for($x = 0; $x < $num; $x++) {
             $name = $modules[$x];
-            $hashId = $name.'Hash'.$x;
+            $hashId = $name.'Hash';
             $action = "Add ".$name;
             
             $text .= '<text>Step - '.($x+1).' </text>';
