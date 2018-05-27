@@ -27,7 +27,7 @@ contract DBReceiver is DBUser {
         addFundamentalParameter("userResidentialAddress");
     }
 
-    function addChild(address _adr) public returns (bool) {
+    function addChild(address _adr) public returns (address) {
         checkDelegate(msg.sender, 1);
 
         require(!agreementExist_[_adr]);
@@ -35,7 +35,7 @@ contract DBReceiver is DBUser {
         agreements_[agrNos_] = _adr;
         agrNos_++;
 
-        return true;
+        return 0;
     } 
 
     function addParameter(bytes32 _parameter) public returns (bool) {
@@ -55,7 +55,7 @@ contract DBReceiver is DBUser {
         return agrNos_;
     }
 
-    function getAgreementByIndex(uint _index) public constant returns (uint) {
+    function getAgreementByIndex(uint _index) public constant returns (address) {
         checkDelegate(msg.sender, 1);
         require(_index < agrNos_);
         return agreements_[_index];
