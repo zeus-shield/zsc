@@ -8,19 +8,22 @@ import "./object.sol";
 import "./sys_include.sol";
 
 contract SysComBase is Object {
-    address private systemOL_;
+    //changed to public for the alpha-test purpose, 2018-05-27
+    address public systemOL_ = address(0);
 
     constructor(bytes32 _name) public Object(_name) {
     }
 
     function setSysOverlayer(address _systemOL) public {
         checkDelegate(msg.sender, 1);
-        
-        require(systemOL_ != 0);
+        require(_systemOL != address(0));
+
         if (systemOL_ != _systemOL) {
-            setDelegate(systemOL_, 0);
-            setDelegate(_systemOL, 1);
-            systemOL_ = _systemOL;
+           if (systemOL_ != address(0)) {
+               setDelegate(systemOL_, 0);
+           } 
+           systemOL_ = _systemOL;
+           setDelegate(systemOL_, 1);
         }
     }
 
