@@ -6,7 +6,7 @@ pragma solidity ^0.4.21;
 
 import "./object.sol";
 
-contract SysComBase is Object {
+contract SysCom {
     function addAdr(bytes32 _name, address _database) public returns (bool);
     function getAdr(bytes32 _name) public constant returns (address);
     function numAdrs() public constant returns (uint);
@@ -15,12 +15,12 @@ contract SysComBase is Object {
 }
 
 contract SysOverlayer is Object {
-    address private apiController_ = address(0);
-    address private databaseGM_    = address(0);
-    address private factoryGM_     = address(0);
+    address public apiController_ = address(0);
+    address public databaseGM_    = address(0);
+    address public factoryGM_     = address(0);
 
-    mapping(bytes32 => address) private modules_;
-    mapping(bytes32 => bool) private moduleExists_;
+    mapping(bytes32 => address) public modules_;
+    mapping(bytes32 => bool) public moduleExists_;
 
     constructor(bytes32 _name) public Object(_name) {
     }
@@ -29,44 +29,51 @@ contract SysOverlayer is Object {
       internal functions
     */
     function addFactory(bytes32 _name, address _adr) internal returns (bool) {
-        if (SysComBase(factoryGM_).addAdr(_name, _adr)) {
-            SysComBase(databaseGM_).delegateObject(_adr, 1);
+        addLog(" addFactory", true);
+
+        if (SysCom(factoryGM_).addAdr(_name, _adr)) {
+            SysCom(databaseGM_).delegateObject(_adr, 1);
         } else {
             return false;
         }
     }
 
     function addDatabase(bytes32 _name, address _adr) internal returns (bool) {
-        if (SysComBase(databaseGM_).addAdr(_name, _adr)) {
-            SysComBase(_adr).setDelegate(apiController_, 1);
+        addLog(" addDatabase", true);
+
+        bool ret = SysCom(databaseGM_).addAdr(_name, _adr);
+        if (ret) {
+            //SysCom(_adr).setDelegate(apiController_, 1);
         } else {
             return false;
         }
+        return true;
     }
 
     function addModuleManager(bytes32 _name, address _adr) internal returns (bool) {
         require(!moduleExists_[_name]);
+        addLog(" addModuleManager", true);
 
         setDelegate(_adr, 1);
-        SysComBase(_adr).setDelegate(apiController_, 1);
+        Object(_adr).setDelegate(apiController_, 1);
 
         modules_[_name] = _adr;
         moduleExists_[_name] = true;
 
-        SysComBase(factoryGM_).delegateObject(_adr, 1);
-        SysComBase(databaseGM_).delegateObject(_adr, 1);
+        SysCom(factoryGM_).delegateObject(_adr, 1);
+        SysCom(databaseGM_).delegateObject(_adr, 1);
 
         return true;
     }
 
     function mapFactoryDatabase(bytes32 _factoryName, bytes32 _dbName, uint _priority) internal {
-        address factoryAdr = SysComBase(factoryGM_).getAdr(_factoryName);
-        address dbAdr      = SysComBase(databaseGM_).getAdr(_dbName);
+        address factoryAdr = SysCom(factoryGM_).getAdr(_factoryName);
+        address dbAdr      = SysCom(databaseGM_).getAdr(_dbName);
 
         require(factoryAdr != 0 && dbAdr != 0);
 
-        SysComBase(factoryAdr).setDatabase(dbAdr);
-        SysComBase(dbAdr).setDelegate(factoryAdr, _priority);
+        SysCom(factoryAdr).setDatabase(dbAdr);
+        Object(dbAdr).setDelegate(factoryAdr, _priority);
     }
 
 
@@ -74,12 +81,12 @@ contract SysOverlayer is Object {
         require(moduleExists_[_moduleGmName]);
 
         address moduleGmAdr = modules_[_moduleGmName];
-        address dbAdr       = SysComBase(databaseGM_).getAdr(_dbName);
+        address dbAdr       = SysCom(databaseGM_).getAdr(_dbName);
 
         require(moduleGmAdr != 0 && dbAdr != 0);
 
-        SysComBase(moduleGmAdr).setDatabase(dbAdr);
-        SysComBase(dbAdr).setDelegate(moduleGmAdr, _priority);
+        SysCom(moduleGmAdr).setDatabase(dbAdr);
+        Object(dbAdr).setDelegate(moduleGmAdr, _priority);
     }
 
     /*
@@ -99,15 +106,19 @@ contract SysOverlayer is Object {
         setDelegate(databaseGM_, 1);
         setDelegate(factoryGM_, 1);
 
-        SysComBase(factoryGM_).setDelegate(apiController_, 1);
-        SysComBase(databaseGM_).setDelegate(apiController_, 1);
-        SysComBase(databaseGM_).setDelegate(factoryGM_, 1);
+        Object(factoryGM_).setDelegate(apiController_, 1);
+        Object(databaseGM_).setDelegate(apiController_, 1);
+        Object(databaseGM_).setDelegate(factoryGM_, 1);
+        addLog(" initSysOverlayer", true);
     }
 
     function addComponent(bytes32 _type, bytes32 _name, address _adr) public returns (bool) {
         checkDelegate(msg.sender, 1);
 
         bool ret = false;
+
+        addLog("addComponent", true);
+
         if (_type == "factory") {
             ret = addFactory(_name, _adr);
             if (ret) {
@@ -132,13 +143,13 @@ contract SysOverlayer is Object {
             if (_name == "gm") {
                 return factoryGM_;
             } else {
-                return SysComBase(factoryGM_).getAdr(_name);
+                return SysCom(factoryGM_).getAdr(_name);
             }
         } else if (_type == "database") {
             if (_name == "gm") {
                 return databaseGM_;
             } else {
-                return SysComBase(databaseGM_).getAdr(_name);
+                return SysCom(databaseGM_).getAdr(_name);
             }
         } else if (_type == "module") {
             return modules_[_name];
