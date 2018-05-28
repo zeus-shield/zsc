@@ -85,26 +85,35 @@ ZSCSetup.prototype.initSystemModule = function(module, hashID) {
     if (module == "AdmAdv") {
     } else if (module == "PosAdv") {
         this.initPosAdv(module, hashID);
+
     } else if (module == "WalletManager") {
         this.initWalletManager(module, hashID);
+
     } else if (module == "SimulatorManager") {
         this.initSimulatorManager(module, hashID);
-    } else if (module == "FacotryManager") {
+
+    } else if (module == "FactoryManager") {
         this.initFactoryManager(module, hashID);
+
+    } else if (module == "DatabaseManager") {
+        this.initDatabaseManager(module, hashID);
+
     } else if (module == "DBDatabase") {
         this.initDatabase(module, hashID);
+
     } else if (module == "ControlApisAdv") {
         this.initControlApis(module, hashID);
+
     } else {
         var factoryAdr;
-        if (module == "FactoryPro") factoryAdr = FactoryProAdr;
-        else if (module == "FactoryRec") factoryAdr = FactoryRecAdr;
-        else if (module == "FactoryTmp") factoryAdr = FactoryTmpAdr;
-        else if (module == "FactoryAgr") factoryAdr = FactoryAgrAdr;
-        else if (module == "FactoryWalletErc20") factoryAdr = FactoryWalletErc20Adr;
-        else if (module == "FactoryWalletEth") factoryAdr = FactoryWalletEthAdr;
+        if (module == "FactoryPro") factoryAdr = this.FactoryProAdr;
+        else if (module == "FactoryRec") factoryAdr = this.FactoryRecAdr;
+        else if (module == "FactoryTmp") factoryAdr = this.FactoryTmpAdr;
+        else if (module == "FactoryAgr") factoryAdr = this.FactoryAgrAdr;
+        else if (module == "FactoryWalletErc20") factoryAdr = this.FactoryWalletErc20Adr;
+        else if (module == "FactoryWalletEth") factoryAdr = this.FactoryWalletEthAdr;
 
-        this.initFactory(module, factoryAdr, hashID + module);
+        this.initFactory(module, factoryAdr, hashID);
     }
 }
 
@@ -190,10 +199,22 @@ ZSCSetup.prototype.initFactoryManager = function(abiName, hashID) {
     });
 }
 
-ZSCSetup.prototype.initDatabase = function(abiName, hashID) {
-    var factories = [this.FactoryProAdr, this.FactoryRecAdr, this.FactoryTmpAdr, this.FactoryAgrAdr];
+ZSCSetup.prototype.initControlApis = function(abiName, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
-    var myDatabase = myContract.at(DBDatabaseAdr);
+    var myControlApi= myContract.at(this.ControlApisAdvAdr);
+
+    //setSystemModules(address _adm, address _posGM, address _systemOverlayer, address _zscToken) public {
+    myControlApi.setSystemOverlayer(this.AdmAdvAdr, this.SystemOverlayerAdr, this.zscTokenAdr,
+    {from: web3.eth.accounts[0], gas: 9000000},
+    function(error, result){ 
+        if(!error) showHashResultTest(hashID, result, function(){});
+        else console.log("error: " + error);
+    });
+} 
+
+ZSCSetup.prototype.initDatabase = function(abiName, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi(abiName));
+    var myDatabase = myContract.at(this.DBDatabaseAdr);
 
     //ddress _controller, address _posAdv, address _walletManager, address[] _factories
     myDatabase.initDatabase(this.DatabaseManagerAdr, {from:web3.eth.accounts[0], gas: 9000000},
@@ -212,19 +233,6 @@ ZSCSetup.prototype.initFactory = function(FactoryModule, FactoryAdr, hashID) {
         else console.log("error: " + error);
     });
 }  
-
-ZSCSetup.prototype.initControlApis = function(abiName, hashID) {
-    var myContract = web3.eth.contract(cC_getContractAbi(abiName));
-    var myControlApi= myContract.at(this.ControlApisAdr);
-
-    //setSystemModules(address _adm, address _posGM, address _systemOverlayer, address _zscToken) public {
-    myControlApi.setSystemOverlayer(this.AdmAdvAdr, this.SystemOverlayerAdr, this.zscTokenAdr,
-    {from: web3.eth.accounts[0], gas: 9000000},
-    function(error, result){ 
-        if(!error) showHashResultTest(hashID, result, function(){});
-        else console.log("error: " + error);
-    });
-} 
 
 ZSCSetup.prototype.addFactory= function(factoryType, FactoryAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("SystemOverlayer"));
