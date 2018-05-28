@@ -104,6 +104,9 @@ ZSCSetup.prototype.initSystemModule = function(module, hashID) {
     } else if (module == "ControlApisAdv") {
         this.initControlApis(module, hashID);
 
+    } else if (module == "SystemOverlayer") {
+        this.initSystemOverlayer(module, hashID);
+
     } else {
         var factoryAdr;
         if (module == "FactoryPro") factoryAdr = this.FactoryProAdr;
@@ -199,12 +202,35 @@ ZSCSetup.prototype.initFactoryManager = function(abiName, hashID) {
     });
 }
 
+ZSCSetup.prototype.initDatabaseManager = function(abiName, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi(abiName));
+    var myDatabaseGM = myContract.at(this.DatabaseManagerAdr);
+    myDatabaseGM.setSysOverlayer(this.SystemOverlayerAdr, {from:web3.eth.accounts[0], gas: 9000000},
+    function(error, result){ 
+        if(!error) showHashResultTest(hashID, result, function(){});
+        else console.log("error: " + error);
+    });
+}
+
 ZSCSetup.prototype.initControlApis = function(abiName, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var myControlApi= myContract.at(this.ControlApisAdvAdr);
 
     //setSystemModules(address _adm, address _posGM, address _systemOverlayer, address _zscToken) public {
     myControlApi.setSystemOverlayer(this.AdmAdvAdr, this.SystemOverlayerAdr, this.zscTokenAdr,
+    {from: web3.eth.accounts[0], gas: 9000000},
+    function(error, result){ 
+        if(!error) showHashResultTest(hashID, result, function(){});
+        else console.log("error: " + error);
+    });
+} 
+
+ZSCSetup.prototype.initSystemOverlayer = function(abiName, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi(abiName));
+    var mySystemOverlayer= myContract.at(this.SystemOverlayerAdr);
+
+    //initSysOverlayer(address _controller, address _databaseGM, address _factoryGM) public {
+    mySystemOverlayer.initSysOverlayer(this.ControlApisAdvAdr, this.DatabaseManagerAdr, this.FactoryManagerAdr,
     {from: web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
         if(!error) showHashResultTest(hashID, result, function(){});
