@@ -19,9 +19,6 @@ contract SysGmToken is SysComModule {
     /* token number */
     uint private number_;
 
-    /* index => symbol */
-    mapping(uint => bytes32) private symbols_;
-
     /* index => token info */
     mapping(uint => TokenInfo) private tokens_;
 
@@ -65,7 +62,23 @@ contract SysGmToken is SysComModule {
     }
 
     function removeToken(bytes32 _symbol) public returns (bool) {
-        /* TODO */
+        /* check delegate */
+        checkDelegate(msg.sender, 1);
+
+        /* check exist */
+        require(true == exists_[_symbol]);
+
+        uint index = indexs_[_symbol];
+
+        tokens_[index] = tokens_[number_ - 1];
+        indexs_[tokens_[number_ - 1].symbol_] = index;
+
+        delete tokens_[number_ - 1];
+        delete indexs_[_symbol];
+        delete exists_[_symbol];
+
+        number_ --;
+
         return true;
     }
 
