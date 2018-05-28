@@ -19,6 +19,9 @@ contract SysGmToken is SysComModule {
     /* token number */
     uint private number_;
 
+    /* index => symbol */
+    mapping(uint => bytes32) private symbols_;
+
     /* index => token info */
     mapping(uint => TokenInfo) private tokens_;
 
