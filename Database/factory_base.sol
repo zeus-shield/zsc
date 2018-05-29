@@ -40,10 +40,14 @@ contract FactoryBase is Object {
 
     function initFactory(address _factoryGM) public {
         checkDelegate(msg.sender, 1);
-        
         require(_factoryGM != 0);
+
+        addLog("-0-", true);
+
         if (factoryGM_ != _factoryGM) {
-            setDelegate(factoryGM_, 0);
+            if (factoryGM_ == 0) {
+                setDelegate(factoryGM_, 0);
+            }
             setDelegate(_factoryGM, 1);
             factoryGM_ = _factoryGM;
         }
