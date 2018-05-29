@@ -10,11 +10,11 @@ import "./sys_include_adv.sol";
 import "./control_info.sol";
 
 contract ControlBase is ControlInfo {   
-    address private systemOL_;
-    address private zscTokenAddress_;
-    address private bindedAdm_;
+    address public systemOL_;
+    address public zscTokenAddress_;
+    address public bindedAdm_;
 
-    bytes32 private dbName_ = "null";
+    bytes32 public dbName_ = "null";
     constructor(bytes32 _name) public ControlInfo(_name) {
     }
     

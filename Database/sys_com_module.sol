@@ -7,7 +7,7 @@ pragma solidity ^0.4.21;
 import "./sys_com_base.sol";
 
 contract SysComModule is SysComBase {
-    address private bindedDB_;
+    address public bindedDB_;
 
     constructor(bytes32 _name) public SysComBase(_name) {
     }
