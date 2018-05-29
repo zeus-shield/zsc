@@ -31,10 +31,10 @@ contract DBNode {
     function doesLastTransactionSigned() public constant returns (bool);
     //function submitTransaction(address _dest, uint256 _amount, bytes _data, address _user) public returns (uint);
     //function confirmTransaction(address _sigAdr) public returns (uint);    
-    function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (uint);
+    function executeTransaction(address _dest, uint256 _amount) public returns (uint);
     function informTransaction(address _src, address _dest, uint256 _amount) public;
     function numTransactions() public constant returns (uint);
-    function getTransactionInfoByIndex(uint _index) public constant returns (uint, bool, bytes32, uint, address, address);
+    function getTransactionInfoByIndex(uint _index) public constant returns (uint, bool,  bytes32, uint, address, address);
 
     function setAgreementStatus(bytes32 _tag, bytes32 receiver) public returns (bool);
     function configureHandlers() public returns (bool);
@@ -57,13 +57,6 @@ contract FactoryBase {
     function setDatabase(address _adr) public;
     function getDatabase() public constant returns (address);
     function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
-}
-
-contract WalletBase {
-    function getBlance(bool _locked) public constant returns (uint256);
-    function getLockBalanceInfoByAgreement(address _agreementAdr) public constant returns (uint, uint, uint, address);
-    function setLockValue(bool _tag, uint _amount, uint _duration, address _agreementAdr) public returns (bool);
-    function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (bool);
 }
 
 contract SysOverlayer {
