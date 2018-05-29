@@ -162,6 +162,22 @@ ZSCSetup.prototype.addFactoryModule = function(factModule, hashID) {
     this.addFactory(factoryType, factoryAdr, hashID);
 }
 
+ZSCSetup.prototype.addGMyModule = function(gmModule, hashID) {
+    var gmAdr;
+    var gmType;
+    if (gmModule == "PosAdv") {
+        gmAdr = this.PosAdvAdr;
+        gmType = "pos-gm";
+    } else if (factModule == "WalletManager") {
+        factoryAdr = this.WalletManagerAdr;
+        factoryType = "wallet-gm";
+    } else if (factModule == "SimulatorManager") {
+        factoryAdr = this.SimulatorManagerAdr;
+        factoryType = "simulator-gm";
+    }
+    this.addGM(gmType, gmAdr, hashID);
+}
+
 ZSCSetup.prototype.initPosAdv = function(abiName, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var myPosAdv = myContract.at(this.PosAdvAdr);
@@ -285,7 +301,7 @@ ZSCSetup.prototype.addDatabase = function(databaseName, databaseAdr, hashID) {
 }
 
 ZSCSetup.prototype.addGM = function(gmName, gmAdr, hashID) {
-    var myContract = web3.eth.contract(cC_getContractAbi("SystemOverlayer"));
+    var myContract = web3.eth.contract(cC_getContractAbi(gmName));
     var myOverlayer = myContract.at(this.SystemOverlayerAdr);
 
     myOverlayer.addComponent("module", gmName, gmAdr, 
