@@ -41,9 +41,8 @@ contract SysOverlayer is Object {
     function addDatabase(bytes32 _name, address _adr) internal returns (bool) {
         addLog(" addDatabase", true);
 
-        bool ret = SysCom(databaseGM_).addAdr(_name, _adr);
-        if (ret) {
-            //SysCom(_adr).setDelegate(apiController_, 1);
+        if (SysCom(databaseGM_).addAdr(_name, _adr)) {
+            Object(_adr).setDelegate(apiController_, 1);
         } else {
             return false;
         }
@@ -116,9 +115,6 @@ contract SysOverlayer is Object {
         checkDelegate(msg.sender, 1);
 
         bool ret = false;
-
-        addLog("addComponent", true);
-
         if (_type == "factory") {
             ret = addFactory(_name, _adr);
             if (ret) {
