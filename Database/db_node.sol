@@ -22,7 +22,7 @@ contract DBNode is Object {
     address private simulatorGM_ = address(0);
     address private factoryGM_ = address(0);
 
-    bytes32 private nodeType_ = "node";
+    bytes32 internal nodeType_;
     address private ethWalletId_ ;
     bool    private activated_;
 
@@ -31,6 +31,7 @@ contract DBNode is Object {
 
     // Constructor
     function DBNode(bytes32 _name) public Object(_name) {
+        nodeType_ = "node";
     }
 
     function kill() public { 
@@ -38,10 +39,6 @@ contract DBNode is Object {
 
         removeAndDestroyAllChildren(); 
         super.kill();
-    }
-    
-    function setNodeType(bytes32 _type) internal {
-        nodeType_ = _type;
     }
 
     function getNodeType() public constant returns (bytes32) {
