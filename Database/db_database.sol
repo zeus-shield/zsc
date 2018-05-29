@@ -9,10 +9,10 @@ import "./object.sol";
 import "./db_node.sol";
 
 contract DBDatabase is Object {
-    address private rootNode_ = 0;
-    address[] private nodes_;
-    mapping(bytes32 => address) private nodeAddress_;
-    mapping(address => bool) private nodeExists_;
+    address public rootNode_ = 0;
+    address[] public nodes_;
+    mapping(bytes32 => address) public nodeAddress_;
+    mapping(address => bool) public nodeExists_;
 
     /*added on 2018-02-25*/
     struct NodeParameterValue {mapping (bytes32 => string) values_; }
@@ -25,11 +25,13 @@ contract DBDatabase is Object {
         checkDelegate(msg.sender, 1);
 
         super.setDelegate(_dbManager, 1);
+        addLog("-0-", true);
 
         if (rootNode_ == 0) {
             rootNode_ = new DBNode(name());
             require(rootNode_ != address(0));
-            DBNode(rootNode_).setDelegate(address(this), 1);
+            _addNode(rootNode_);
+            addLog("-1-", true);
         } 
 
         address delegateAdr;
@@ -37,15 +39,18 @@ contract DBDatabase is Object {
 
         for (uint i = 0; i < numDelegates(); ++i) {
             (delegateAdr, priority) = getDelegateInfoByIndex(i);
-            setDelegate(delegateAdr, priority);
+            DBNode(rootNode_).setDelegate(delegateAdr, priority);
+            addLog("-2-", true);
         }
     }
 
     function setDelegate(address _adr, uint _priority) public {
         checkDelegate(msg.sender, 1);
 
-        super.setDelegate(_adr, _priority);
+        addLog(" setDelegate ", true);
 
+        super.setDelegate(_adr, _priority);
+        
         for (uint i = 0; i < nodes_.length; ++i) {
             DBNode(nodes_[i]).setDelegate(_adr, _priority);    
         }
@@ -83,16 +88,16 @@ contract DBDatabase is Object {
     function _addNode(address _node) public {
         checkDelegate(msg.sender, 1);
 
-        bytes32 ndName = DBNode(_node).name();
-        require (nodeAddress_[ndName] == 0);
+        require(nodeExists_[_node] == false);
 
+        bytes32 ndName = Object(_node).name();
         nodes_.push(_node);
         nodeAddress_[ndName] = _node;
         nodeExists_[_node] = true;
 
         //for testing purpose; 2018-03-06, 2018-03-14
         string memory str = "_addNode() - ";
-        string memory nodeName = PlatString.bytes32ToString(DBNode(_node).name());
+        string memory nodeName = PlatString.bytes32ToString(ndName);
         str = PlatString.append(str, nodeName);
         addLog(str, true);
     }
