@@ -22,10 +22,16 @@ contract DBEntity is DBNode {
     // Constructor
     function DBEntity(bytes32 _name) public DBNode(_name) {
         paraNos_ = 0;
-        initParameters();
+        //initParameters();
     }
 
     function initParameters() internal;
+
+    function initEntity() public {
+        checkDelegate(msg.sender, 1);
+        initParameters();
+    }
+    
 
     function getBlance(bool _locked) public constant returns (uint256) {
         checkDelegate(msg.sender, 1);
