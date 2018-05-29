@@ -25,18 +25,23 @@ contract Object is Delegated {
 
     bytes32 private name_ = "null";
     address public logRecorder_ = 0;
-    string public log_;
+
+    string public objectLog_ ;
 
     // Constructor
     constructor(bytes32 _name) public { 
         name_ = _name;
-        log_ = " ";
     }
 
     // This unnamed function is called whenever someone tries to send ether to it
     function() public payable { revert(); }
 
     function name() public constant returns (bytes32) { 
+        checkDelegate(msg.sender, 1);
+        return name_;
+    }
+
+    function getName() public constant returns (bytes32) { 
         checkDelegate(msg.sender, 1);
         return name_;
     }
@@ -52,12 +57,7 @@ contract Object is Delegated {
             Recorder(logRecorder_).addLog(_log, _newLine);
         }
 
-        //for alpha test; 2018-05-26
-        if (_newLine) {
-            log_ = PlatString.append(log_, "\n", _log);
-        } else {
-            log_ = PlatString.append(log_, _log);
-        } 
+        objectLog_ = PlatString.append(objectLog_, "; ", _log);
     }
 
     // ------------------------------------------------------------------------
