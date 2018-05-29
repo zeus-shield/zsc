@@ -14,7 +14,7 @@ contract DBProvider is DBUser {
 
     // Constructor
     function DBProvider(bytes32 _name) public DBUser(_name) {
-        setNodeType("proiver"); 
+        nodeType_ = "provider";
     }
 
     function initParameters() internal {

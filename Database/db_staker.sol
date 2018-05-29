@@ -32,7 +32,7 @@ contract DBStaker is DBUser {
 
     // Constructor
     function DBStaker(bytes32 _name) public DBUser(_name) {
-        setNodeType("staker"); 
+        nodeType_ = "staker";
         rewardNos_ = 0;
         spUsedNos_ = 0;
         lastStoreTime_ = now;

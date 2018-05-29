@@ -13,7 +13,7 @@ contract DBReceiver is DBUser {
 
     // Constructor
     function DBReceiver(bytes32 _name) public DBUser(_name) {
-        setNodeType("receiver"); 
+        nodeType_ = "receiver";
     }
 
     function initParameters() internal {

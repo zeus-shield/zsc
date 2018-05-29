@@ -10,7 +10,7 @@ contract DBTemplate is DBEntity {
     bool private addedProvider_;
     
     function DBTemplate(bytes32 _name) public DBEntity(_name) {
-        setNodeType("template");
+        nodeType_ = "template";
         addedProvider_ = false;
     }
 
