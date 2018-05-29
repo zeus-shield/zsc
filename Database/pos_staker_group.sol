@@ -4,16 +4,16 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./object.sol";
+import "./delegate.sol";
 import "./plat_math.sol";
 
-contract DBStaker is Object {
+contract DBStaker {
     function useStakePoint(uint _amount) public returns (uint);
     function claimReward() public returns (uint);
     function getRemainingSP() public constant returns (uint);
 }
 
-contract PosStakerGroup is Object {
+contract PosStakerGroup is Delegated {
     uint private stakerNos_;
     uint private spUsed_;
     uint private spRemaining_;

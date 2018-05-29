@@ -6,7 +6,7 @@ pragma solidity ^0.4.21;
 
 import "./pos_block.sol";
 
-contract PosBlockPool is Object {
+contract PosBlockPool is Delegated {
     struct BlockPool {
         uint totalBlockNos_;
         uint minedBlockNos_;
