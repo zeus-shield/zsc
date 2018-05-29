@@ -60,6 +60,17 @@ contract ControlBase is ControlInfo {
         return DBNode(getDBDatabase().getNode(_nodeName));
     }
 
+    function formatWalletName(bytes32 _userName, bytes32 _tokenSymbol) private pure returns (bytes32) {
+        string memory str;
+        bytes32 temp;
+        if (_tokenSymbol == "ETH") {
+            str = PlatString.append(_userName, "-ETH");
+        } else {
+            str = PlatString.append(_userName, "-", _tokenSymbol);
+        }
+        temp = PlatString.tobytes32(str);
+    }
+
     function deleteAgreement( bytes32 _agrName) internal returns (bool) {
         address agrAdr = address(getDBNode(_agrName));
         require(agrAdr != address(0));
@@ -78,8 +89,44 @@ contract ControlBase is ControlInfo {
         address userWallet = address(getDBNode(getWalletManager().formatWalletName(proName, tokenSymbol)));
         require(agrWallet != address(0) && userWallet != address(0));
 
-        DBNode(userWallet).executeTransaction(userWallet, lockedAmount, "");
+        DBNode(userWallet).executeTransaction(userWallet, lockedAmount);
         return getDBDatabase().destroyNode(agrAdr);
+    }
+
+
+    function enableWalletByUser(bytes32 _user, bytes32 _tokeSymbol, address _creator) internal returns (address) {
+        checkDelegate(msg.sender, 1);
+
+        address ndAdr = address(getDBNode(_user));
+        require(ndAdr != address(0));
+        
+        bytes32 ndType = DBNode(ndAdr).getNodeType();
+        if (ndType == "provider" || ndType == "receiver") {
+            if (_tokeSymbol == "ZSC" || _tokeSymbol == "ETH") {
+                address parentNode   = DBNode(ndAdr).getHandler("wallet");
+                address erc20Address = 0; 
+                bytes32 temp;
+                bytes32 factoryType;
+    
+                temp = formatWalletName(_user, _tokeSymbol);
+
+                if (_tokeSymbol == "ETH") {
+                    factoryType = "wallet-eth";
+                } else {
+                    factoryType = "wallet-erc20";
+                    erc20Address = getTokenContractAddress(_tokeSymbol);
+                    require(erc20Address != 0);
+                }
+                address factoryGM   = SysOverlayer(getSysOverlayer()).getComponent("factory", "gm");
+                address factoryAdr = FactoryManager(factoryGM).getAdr(factoryType);
+                address walletAdr  = FactoryBase(factoryAdr).createNode(temp, parentNode, _creator);
+                require(walletAdr != 0);
+    
+                DBNode(walletAdr).setERC20TokenAddress(erc20Address);    
+                return walletAdr;
+            }
+        }
+        return address(0);
     }
 
     function prepareTokenContractInfoByIndex(uint _index) internal constant returns (string) {
