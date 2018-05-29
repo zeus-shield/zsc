@@ -15,7 +15,7 @@ contract ControlBase is ControlInfo {
     address public bindedAdm_;
 
     bytes32 public dbName_ = "null";
-    constructor(bytes32 _name) public ControlInfo(_name) {
+    function ControlBase(bytes32 _name) public ControlInfo(_name) {
     }
     
     function setSystemOverlayerAdrs(address _adm, address _systemOL, address _zscToken) internal {

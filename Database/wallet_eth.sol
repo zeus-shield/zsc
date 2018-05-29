@@ -9,7 +9,7 @@ import "./wallet_base.sol";
 contract WalletEth is WalletBase {
 
     // Constructor
-    constructor(bytes32 _name) public WalletBase(_name) {
+    function WalletEth(bytes32 _name) public WalletBase(_name) {
         setNodeType("wallet-eth"); 
     }
 

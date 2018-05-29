@@ -9,7 +9,7 @@ import "./db_entity.sol";
 contract DBTemplate is DBEntity {
     bool private addedProvider_;
     
-    constructor(bytes32 _name) public DBEntity(_name) {
+    function DBTemplate(bytes32 _name) public DBEntity(_name) {
         setNodeType("template");
         addedProvider_ = false;
     }

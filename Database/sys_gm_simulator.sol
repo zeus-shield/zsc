@@ -16,7 +16,7 @@ contract SysGmSimulator is SysComModule {
     mapping(bytes32 => bool) private simulationExist_;
     mapping(address => bool) private rewarded_;
 
-    constructor(bytes32 _name) public SysComModule(_name) {
+    function SysGmSimulator(bytes32 _name) public SysComModule(_name) {
         simulationNos_ = 0;
     }
 

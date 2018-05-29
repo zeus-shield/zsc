@@ -18,7 +18,7 @@ contract DBDatabase is Object {
     struct NodeParameterValue {mapping (bytes32 => string) values_; }
     mapping (bytes32 => NodeParameterValue) nodeParameters_;
 
-    constructor(bytes32 _name) public Object(_name) {
+    function DBDatabase(bytes32 _name) public Object(_name) {
     }
 
     function initDatabase(address _dbManager) public {
@@ -50,7 +50,6 @@ contract DBDatabase is Object {
         addLog(" setDelegate ", true);
 
         super.setDelegate(_adr, _priority);
-        
         for (uint i = 0; i < nodes_.length; ++i) {
             DBNode(nodes_[i]).setDelegate(_adr, _priority);    
         }

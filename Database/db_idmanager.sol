@@ -13,7 +13,7 @@ contract IDManager is Object {
     mapping(bytes32 => bool) private exists_;
 
     // Constructor
-    constructor(bytes32 _name) public Object(_name) {
+    function IDManager(bytes32 _name) public Object(_name) {
     }
 
     function numIds() public constant returns (uint) {

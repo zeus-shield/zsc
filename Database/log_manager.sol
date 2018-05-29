@@ -22,7 +22,7 @@ contract LogManager is Delegated {
     /* listener address => listener info */
     mapping(address => Listener)listeners_;
 
-    constructor() public Delegated() {}
+    function LogManager() public Delegated() {}
 
     function kill() public {
         /* check delegate */

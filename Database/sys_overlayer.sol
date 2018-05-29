@@ -22,7 +22,7 @@ contract SysOverlayer is Object {
     mapping(bytes32 => address) public modules_;
     mapping(bytes32 => bool) public moduleExists_;
 
-    constructor(bytes32 _name) public Object(_name) {
+    function SysOverlayer(bytes32 _name) public Object(_name) {
     }
 
     /*

@@ -9,7 +9,7 @@ import "./sys_com_base.sol";
 contract SysComModule is SysComBase {
     address public bindedDB_;
 
-    constructor(bytes32 _name) public SysComBase(_name) {
+    function SysComModule(bytes32 _name) public SysComBase(_name) {
     }
     
     function setDatabase(address _adr) public {

@@ -10,7 +10,7 @@ contract DBUser is DBEntity {
     mapping(bytes32 => address) private handlers_;
 
     // Constructor
-    constructor(bytes32 _name) public DBEntity(_name) {
+    function DBUser(bytes32 _name) public DBEntity(_name) {
     } 
 
     function configureSingleHandle(bytes32 _nameSuffix) private returns (address) {

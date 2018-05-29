@@ -31,7 +31,7 @@ contract DBStaker is DBUser {
     mapping(uint => SPInfo) private spUsedInfo_;
 
     // Constructor
-    constructor(bytes32 _name) public DBUser(_name) {
+    function DBStaker(bytes32 _name) public DBUser(_name) {
         setNodeType("staker"); 
         rewardNos_ = 0;
         spUsedNos_ = 0;

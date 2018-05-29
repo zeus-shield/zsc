@@ -13,7 +13,7 @@ contract DBProvider is DBUser {
     address private templates_ = 0;
 
     // Constructor
-    constructor(bytes32 _name) public DBUser(_name) {
+    function DBProvider(bytes32 _name) public DBUser(_name) {
         setNodeType("proiver"); 
     }
 

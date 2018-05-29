@@ -30,7 +30,7 @@ contract SysGmString is SysComModule {
 
     mapping(bytes32 => mapping(bytes32 => UserHolderInfo)) private userHolders_;
 
-    constructor(bytes32 _name) public SysComModule(_name) {}
+    function SysGmString(bytes32 _name) public SysComModule(_name) {}
 
     function checkHolder(bytes32 _dbName, bytes32 _userName, address _holder) internal view {
         require(_holder == userHolders_[_dbName][_userName].holder_);

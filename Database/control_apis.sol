@@ -9,7 +9,7 @@ import "./control_base.sol";
 contract ControlApis is ControlBase {
     /// @dev Constructor
     /// @param _name The name of the controller
-    constructor(bytes32 _name) public ControlBase(_name) {
+    function ControlApis(bytes32 _name) public ControlBase(_name) {
     }
 
     function setUserActiveStatus(bytes32 _user, bool _tag) public returns (bool);

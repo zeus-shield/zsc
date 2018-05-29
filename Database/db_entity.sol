@@ -20,7 +20,7 @@ contract DBEntity is DBNode {
     bool private activated_;
 
     // Constructor
-    constructor(bytes32 _name) public DBNode(_name) {
+    function DBEntity(bytes32 _name) public DBNode(_name) {
         paraNos_ = 0;
         initParameters();
     }

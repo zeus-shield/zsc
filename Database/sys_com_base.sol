@@ -11,7 +11,7 @@ contract SysComBase is Object {
     //changed to public for the alpha-test purpose, 2018-05-27
     address public systemOL_ = address(0);
 
-    constructor(bytes32 _name) public Object(_name) {
+    function SysComBase(bytes32 _name) public Object(_name) {
     }
 
     function setSysOverlayer(address _systemOL) public {

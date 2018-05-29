@@ -8,7 +8,7 @@ import "./db_entity.sol";
 
 contract DBItem is DBEntity {   
     // Constructor
-    constructor(bytes32 _name) public DBEntity(_name) {
+    function DBItem(bytes32 _name) public DBEntity(_name) {
     	setEntityType("item");
     }
     

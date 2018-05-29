@@ -16,7 +16,7 @@ contract SysComGroup is SysComBase {
     mapping(bytes32 => bool) public exists_;
 
     // Constructor
-    constructor(bytes32 _name) public SysComBase(_name) {
+    function SysComGroup(bytes32 _name) public SysComBase(_name) {
     }
 
     function numAdrs() public constant returns (uint) {

@@ -28,7 +28,7 @@ contract PosBlock is Object {
     address private nextBlock_ = address(0);
     uint private blockSizeLimit_ = 0;
 
-    constructor() public Object("null") {
+    function PosBlock() public Object("null") {
         currentSize_ = 0;
         txNos_ = 0;
         minedStatus_ = false;

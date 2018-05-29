@@ -25,7 +25,7 @@ contract PosStakerGroup is Object {
     address private zscTokenContract_;
 
     // Constructor
-    constructor() public {
+    function PosStakerGroup() public {
         stakerNos_ = 0;
         spUsed_ = 0;
         spRemaining_ = 0;

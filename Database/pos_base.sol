@@ -16,7 +16,7 @@ contract PosBase is SysComBase, PosStakerGroup, PosBlockPool {
     uint private constant QUATER_YEAR_IN_SECONDS = 86400 * 365 / 4;
 
     // Constructor
-    constructor(bytes32 _name) public SysComBase(_name) {
+    function PosBase(bytes32 _name) public SysComBase(_name) {
     } 
 
     function setSysOverlayer(address _sysOverlayer) public {

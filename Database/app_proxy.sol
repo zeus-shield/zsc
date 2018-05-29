@@ -10,7 +10,7 @@ contract AppProxy is Object {
     string private controlApisAbi_;
     address private controlApisAdr_;
 
-    constructor() public Object("null") {
+    function AppProxy() public Object("null") {
     }
     
     function setControlApisAbi(string _abi) public {

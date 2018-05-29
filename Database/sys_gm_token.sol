@@ -28,7 +28,7 @@ contract SysGmToken is SysComModule {
     /* symbol => exist */
     mapping(bytes32 => bool) private exists_;
 
-    constructor() public SysComModule("sys_gm_token") {
+    function SysGmToken() public SysComModule("sys_gm_token") {
         number_ = 0;
     } 
 

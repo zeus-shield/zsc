@@ -7,7 +7,7 @@ pragma solidity ^0.4.21;
 import "./sys_com_group.sol";
 
 contract SysGmDb is SysComGroup {
-    constructor(bytes32 _name) public SysComGroup(_name) {
+    function SysGmDb(bytes32 _name) public SysComGroup(_name) {
     }
 
     /*

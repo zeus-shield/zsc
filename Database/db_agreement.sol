@@ -16,7 +16,7 @@ contract DBAgreement is DBEntity {
     bytes32 private walletSymbol_;
 
     // Constructor
-    constructor(bytes32 _name) public DBEntity(_name) {
+    function DBAgreement(bytes32 _name) public DBEntity(_name) {
         setNodeType("agreement");
     }
 

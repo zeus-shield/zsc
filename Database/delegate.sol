@@ -11,7 +11,7 @@ import "./plat_math.sol";
 contract Owned {
     address owner;
 
-    constructor() public {owner = msg.sender;}
+    function Owned() public {owner = msg.sender;}
     
     function transferOwnership(address newOwner) public {
         checkOwner(msg.sender);
@@ -30,7 +30,7 @@ contract Delegated is Owned {
     mapping (address => uint) public indice_;
     mapping (address => bool) public exists_;
 
-    constructor() public {
+    function Delegated() public {
         addDelegate(msg.sender, 1);
     }
 

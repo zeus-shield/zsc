@@ -10,7 +10,7 @@ contract FactoryBase is Object {
 	address bindedDB_;
 	address factoryGM_;
 
-    constructor(bytes32 _name) public Object(_name) {
+    function FactoryBase(bytes32 _name) public Object(_name) {
     }
 
     function setupFactoryRoot() internal;

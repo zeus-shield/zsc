@@ -15,7 +15,7 @@ contract WalletMultiSig is WalletBase {
     Payment tempPyment_;
 
     // Constructor
-    constructor(bytes32 _name) public WalletBase(_name) {
+    function WalletMultiSig(bytes32 _name) public WalletBase(_name) {
         submittedTransaction_ = false;
     }
 

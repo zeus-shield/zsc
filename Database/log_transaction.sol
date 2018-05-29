@@ -17,7 +17,7 @@ contract LogTransaction is LogBase {
     uint nos_;
     mapping(uint => LogInfo) log_;
 
-    constructor() public LogBase() {}
+    function LogTransaction() public LogBase() {}
 
     function initLog(bytes32 _name) public {
         checkDelegate(msg.sender, 1);

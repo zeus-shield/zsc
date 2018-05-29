@@ -22,7 +22,7 @@ contract WalletBase is DBNode {
     uint256 private totalValue_;
 
     // Constructor
-    constructor(bytes32 _name) public DBNode(_name) {
+    function WalletBase(bytes32 _name) public DBNode(_name) {
         lokedValue_ = 0;
         totalValue_= 0;
     }

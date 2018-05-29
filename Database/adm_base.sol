@@ -29,7 +29,7 @@ contract AdmBase is Object {
 
     modifier only_added(bytes32 _hexx) {require(testUsers_[userIndex_[_hexx]].status_ == 1); _;}
     
-    constructor(bytes32 _name) public Object(_name) {}
+    function AdmBase(bytes32 _name) public Object(_name) {}
 
     function toHexx(bytes32 _value) internal constant returns (bytes32);
 

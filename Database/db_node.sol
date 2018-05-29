@@ -30,7 +30,7 @@ contract DBNode is Object {
     mapping(bytes32 => address) childMap_;
 
     // Constructor
-    constructor(bytes32 _name) public Object(_name) {
+    function DBNode(bytes32 _name) public Object(_name) {
     }
 
     function kill() public { 

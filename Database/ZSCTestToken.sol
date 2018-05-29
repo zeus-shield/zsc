@@ -63,7 +63,7 @@ contract Owned {
 
     event OwnershipTransferred(address indexed _from, address indexed _to);
 
-    constructor() public {
+    function Owned() public {
         owner = msg.sender;
     }
 
@@ -102,7 +102,7 @@ contract ZSCTestToken is ERC20Interface, Owned {
     // ------------------------------------------------------------------------
     // Constructor
     // ------------------------------------------------------------------------
-    constructor() public {
+    function ZSCTestToken() public {
         halted = false;
         symbol = "ZSCTest";
         name = "ZSCTest Token";

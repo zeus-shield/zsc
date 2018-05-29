@@ -23,7 +23,7 @@ contract ControlInfo is Object {
     mapping(bytes32 => UserInfo) private userParameters_;
     mapping(bytes32 => bool) private nodeExists_;
 
-    constructor(bytes32 _name) public Object(_name) {}
+    function ControlInfo(bytes32 _name) public Object(_name) {}
 
     function allowedUser(bytes32 _userName, address _sender) internal constant returns (bool);
 

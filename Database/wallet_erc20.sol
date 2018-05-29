@@ -10,7 +10,7 @@ contract WalletErc20 is WalletBase {
     address _erc20TokenAdr;
 
     // Constructor
-    constructor(bytes32 _name) public WalletBase(_name) {
+    function WalletErc20(bytes32 _name) public WalletBase(_name) {
         setNodeType("wallet-erc20"); 
     }
 

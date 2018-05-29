@@ -20,7 +20,7 @@ contract SimulatorBase is Object {
     
     uint private randSeed = 0;
 
-    constructor(bytes32 _name) public Object(_name) {
+    function SimulatorBase(bytes32 _name) public Object(_name) {
         finished_ = false;
     }
 

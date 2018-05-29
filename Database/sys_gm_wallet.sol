@@ -28,7 +28,7 @@ contract SysGmWallet is SysComModule {
     mapping(bytes32 => bool) private erc20TokenExists_;
 
     // Constructor
-    constructor() public SysComModule("zsc_wallet_manager") {
+    function SysGmWallet() public SysComModule("zsc_wallet_manager") {
         tokenNos_ = 0;
     } 
 

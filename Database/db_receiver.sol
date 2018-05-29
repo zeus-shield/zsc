@@ -12,7 +12,7 @@ contract DBReceiver is DBUser {
     mapping(address => bool) private agreementExist_;
 
     // Constructor
-    constructor(bytes32 _name) public DBUser(_name) {
+    function DBReceiver(bytes32 _name) public DBUser(_name) {
         setNodeType("receiver"); 
     }
 

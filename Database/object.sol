@@ -29,7 +29,7 @@ contract Object is Delegated {
     string public objectLog_ ;
 
     // Constructor
-    constructor(bytes32 _name) public { 
+    function Object(bytes32 _name) public { 
         name_ = _name;
     }
 
