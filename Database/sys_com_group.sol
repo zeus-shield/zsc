@@ -9,11 +9,11 @@ import "./sys_com_base.sol";
 contract SysComGroup is SysComBase {
     uint private adrNos_;
 
-    mapping(uint => bytes32) private names_;
-    mapping(uint => address) private adrs_;
+    mapping(uint => bytes32) public names_;
+    mapping(uint => address) public adrs_;
 
-    mapping(bytes32 => uint) private indice_;
-    mapping(bytes32 => bool) private exists_;
+    mapping(bytes32 => uint) public indice_;
+    mapping(bytes32 => bool) public exists_;
 
     // Constructor
     constructor(bytes32 _name) public SysComBase(_name) {
@@ -26,15 +26,19 @@ contract SysComGroup is SysComBase {
 
     function addAdr(bytes32 _name, address _id) public returns (bool) {
         checkDelegate(msg.sender, 1);
-        
-        getSysOverlayer();
         require(!exists_[_name]);
+
+        addLog(" add adr ", true);
 
         exists_[_name] = true;
         indice_[_name] = adrNos_;
         names_[adrNos_] = _name;
         adrs_[adrNos_] = _id;
         adrNos_++;
+
+        address adr = getSysOverlayer();
+
+        Object(_id).setDelegate(adr, 1);
 
         return true;
     }
