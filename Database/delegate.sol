@@ -24,6 +24,8 @@ contract Owned {
 }
 
 contract Delegated is Owned {
+    using SafeMath for uint;
+
     uint delegateNos_;
     mapping (uint => address) public adrs_;
     mapping (uint => uint) public priorities_;
@@ -31,7 +33,11 @@ contract Delegated is Owned {
     mapping (address => bool) public exists_;
 
     function Delegated() public {
-        addDelegate(msg.sender, 1);
+        exists_[msg.sender] = true;
+        indice_[msg.sender] = 0;
+        adrs_[0] = msg.sender;
+        priorities_[0] = 1;
+        delegateNos_ = 1;
     }
 
     function kill() public {
