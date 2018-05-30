@@ -62,10 +62,10 @@ contract SysGmSimulator is SysComModule {
         uint proLockedAmount_ = SimulatorBase(sim).getProviderLockedAmount();
 
         if (SimulatorBase(sim).needClaim()) {
-            WalletBase(agrWallet).executeTransaction(proWallet, agrPrice_, "purchase fee");
-            WalletBase(agrWallet).executeTransaction(recWallet, proLockedAmount_, "claimed fee");
+            DBNode(agrWallet).executeTransaction(proWallet, agrPrice_);
+            DBNode(agrWallet).executeTransaction(recWallet, proLockedAmount_);
         } else {
-            WalletBase(agrWallet).executeTransaction(proWallet, SafeMath.add(agrPrice_, proLockedAmount_), "reward fee");
+            DBNode(agrWallet).executeTransaction(proWallet, SafeMath.add(agrPrice_, proLockedAmount_));
         }
         SimulatorBase(sim).setFinished();
         rewarded_[sim] == true;
