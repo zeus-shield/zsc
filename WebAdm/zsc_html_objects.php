@@ -26,9 +26,8 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
             <td align="center"><a href="adm_init_sys_component.php">Init System Component</a></td>
             <td align="center"><a href="adm_add_database.php">Add Database</a></td>
             <td align="center"><a href="adm_add_factory.php">Add Factory</a></td>
-            <td align="center"><a href="adm_manage_users.php">Users</a></td>
+            <td align="center"><a href="adm_manage_users.php">Manage Users</a></td>
             <td align="center"><a href="adm_show_userdetails.php">User Details</a></td>
-            <td align="center"><a href="adm_manage_token_contracts.php">Manage Tokens</a></td>
             <td align="center"><a href="adm_show_log.php">Show Log</a></td>
             <td align="center"><a href="adm_print_abi.php">Print Abi</a></td>
           </tr>
@@ -65,12 +64,6 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
         <script type="text/javascript" src="./js/compiled_sys_overlayer.js"></script>
         <script type="text/javascript" src="./js/compiled_adm_adv.js"></script>
         <script type="text/javascript" src="./js/compiled_apis_adv.js"></script>
-        <script type="text/javascript" src="./js/compiled_pos.js"></script>
-
-        <script type="text/javascript" src="./js/compiled_sys_gm_factory.js"></script>
-        <script type="text/javascript" src="./js/compiled_sys_gm_db.js"></script>
-        <script type="text/javascript" src="./js/compiled_sys_gm_simulator.js"></script>
-        <script type="text/javascript" src="./js/compiled_sys_gm_wallet.js"></script>
 
         <script type="text/javascript" src="./js/compiled_database.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_pro.js"></script>
