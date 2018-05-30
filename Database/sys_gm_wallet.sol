@@ -153,7 +153,7 @@ contract SysGmWallet is SysComModule {
 
         require(_isFirstSubmit);
         _sigAdr = address(0);
-        return DBNode(recWallet).executeTransaction(agrWallet, price, "");
+        return DBNode(recWallet).executeTransaction(agrWallet, price);
 
         /*
         uint purchaseAount = 0;
@@ -178,7 +178,7 @@ contract SysGmWallet is SysComModule {
         uint lockedAmount = PlatString.stringToUint(temp);
 
         address agrWallet = enableWalletByUser(_agrName, tokenSymbol, _creator);
-        uint amount = DBNode(userWallet).executeTransaction(agrWallet, lockedAmount, "");
+        uint amount = DBNode(userWallet).executeTransaction(agrWallet, lockedAmount);
         require(amount > 0);
 
         DBNode(agrAdr).setAgreementStatus("PUBLISHED", "null");
