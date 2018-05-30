@@ -15,18 +15,12 @@ echo $htmlObjects->loadScriptFiles();
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
     var AdmAdvAdr = "<?php echo $htmlObjects->readObjectAddress('AdmAdv')?>";
-    var userManager = new ZSCUserMangement(AdmAdvAdr, cC_getContractAbi('AdmAdv'));
+    var userManager = new ZSCUserManagement(AdmAdvAdr, cC_getContractAbi('AdmAdv'));
 
     function addUser(usernameId, elementId) {
         userManager.addUser(usernameId, elementId, function() {
         	window.location.reload(true);
         });
-    }
-
-    function approve(userName, elementId) {
-        userManager.aproveUser(userName, elementId, function() {
-        	window.location.reload(true);
-        });    
     }
 
     function setUserStatus(userName, status, elementId) {
@@ -41,7 +35,7 @@ echo $htmlObjects->loadScriptFiles();
 
     function loadUserManager() {
         userManager.loadUsers(function(){
-            userManager.loadUserManagementHtml("showUserDetails", "approve", "setUserStatus", "UserManagement");
+            userManager.loadUserManagementHtml("showUserDetails", "setUserStatus", "UserManagement");
         });
     }
 
