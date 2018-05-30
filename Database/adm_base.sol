@@ -6,9 +6,9 @@ pragma solidity ^0.4.21;
 
 import "./object.sol";
 
-contract ControlApis is Object {
-    function createElement(uint _typeInUint, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address);
-    function enableElementWallet(uint _typeInUint/*5: eth; 6: erc20*/, bytes32 _enName, bytes32 _tokeSymbol, address _extraAdr) public returns (address);
+contract ControlApis {
+    function createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address);
+    function enableElementWallet(bytes32 _userName, bytes32 _tokeSymbol, address _extraAdr) public returns (address);
     function setUserActiveStatus(bytes32 _user, bool _tag) public returns (bool);
 }
 
@@ -24,8 +24,10 @@ contract AdmBase is Object {
     mapping(bytes32 => uint) private userIndex_;
     mapping(bytes32 => address) private systemAdrs_;
 
-    address private zscTestTokenAddress_;
-    string private controlApisFullAib_;
+    address public zscTestTokenAddress_;
+    address public controlApisAdr_;
+    string public controlApisFullAib_;
+    uint public allocatedZSC_;
 
     modifier only_added(bytes32 _hexx) {require(testUsers_[userIndex_[_hexx]].status_ == 1); _;}
     
@@ -37,13 +39,23 @@ contract AdmBase is Object {
         return userIndex_[_hexx]; 
     }
 
-    function setZSCTestTokenAddress(address _adr) public { 
+    function initAdm(address _zscTokenAdr, address _controlApisAdr) public { 
         checkDelegate(msg.sender, 1);
-        zscTestTokenAddress_ = _adr; 
+
+        zscTestTokenAddress_ = _zscTokenAdr; 
+        controlApisAdr_ = _controlApisAdr;
+    }
+
+
+    function setZSCAmountToUser(uint _allocatedZSC) public { 
+        checkDelegate(msg.sender, 1);
+
+        allocatedZSC_ = _allocatedZSC;
     }
 
     function setControlApisFullAbi(string _fullAbi) public { 
         checkDelegate(msg.sender, 1);
+
         controlApisFullAib_ = _fullAbi; 
     }
 
@@ -51,43 +63,46 @@ contract AdmBase is Object {
         return controlApisFullAib_; 
     }
 
-    function setAdrs(address _controlApis,
-                     address _dbDatabase,
-                     address _factoryPro,
-                     address _factoryRec,
-                     address _factoryTmp,
-                     address _factoryAgr) 
-        public {
+    function addUser(bytes32 _user) public {
         checkDelegate(msg.sender, 1);
 
-        if (_controlApis != 0) systemAdrs_["ControlApis"] = _controlApis;
-        if (_dbDatabase != 0)  systemAdrs_["DBDatabase"]  = _dbDatabase;
-        if (_factoryPro != 0)  systemAdrs_["FactoryPro"]  = _factoryPro;
-        if (_factoryRec != 0)  systemAdrs_["FactoryRec"]  = _factoryRec;
-        if (_factoryTmp != 0)  systemAdrs_["FactoryTmp"]  = _factoryTmp;
-        if (_factoryAgr != 0)  systemAdrs_["FactoryAgr"]  = _factoryAgr;
-    }
-
-    function getControlApisAdr() public constant returns (address){ return systemAdrs_["ControlApis"]; }
-    function getDBDatabaseAdr()  public constant returns (address) { checkDelegate(msg.sender, 1); return systemAdrs_["DBDatabase"]; }
-    function getFactoryProAdr()  public constant returns (address) { checkDelegate(msg.sender, 1); return systemAdrs_["FactoryPro"] ; }
-    function getFactoryRecAdr()  public constant returns (address) { checkDelegate(msg.sender, 1); return systemAdrs_["FactoryRec"] ; }
-    function getFactoryTmpAdr()  public constant returns (address) { checkDelegate(msg.sender, 1); return systemAdrs_["FactoryTmp"] ; }
-    function getFactoryAgrAdr()  public constant returns (address) { checkDelegate(msg.sender, 1); return systemAdrs_["FactoryAgr"] ; }
-    
-    function addUser(bytes32 _user) public {
-        checkOwner(msg.sender);
+        addLog("add a User - ", true);
+        addLog(PlatString.bytes32ToString(_user), false);
 
         bytes32 ret = toHexx(_user);
         require(testUsers_[userIndex_[ret]].status_ ==0);
 
         userIndex_[ret] = testUsers_.length;
         testUsers_.push(TestUserInfo(_user, "added", 0, 0x0, 0x0));
-
-        addLog("add a User - ", true);
-        addLog(PlatString.bytes32ToString(_user), false);
     }
 
+    function activeByUser(bytes32 _hexx, bytes32 _type) public only_added(_hexx)  {
+        uint index = getUserIndex(_hexx);
+        testUsers_[index].status_ = "applied";
+        testUsers_[index].type_ = _type;
+        testUsers_[index].id_ = msg.sender;
+
+        bytes32 userName = testUsers_[index].name_;
+        address creator = testUsers_[index].id_;
+
+        //createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr)
+        address adr = ControlApis(controlApisAdr_).createElement(userName, _type, userName, "", creator);
+        require(adr != 0x0);
+
+        //enableElementWallet(bytes32 _userName, bytes32 _tokeSymbol, address _extraAdr);
+        adr = ControlApis(controlApisAdr_).enableElementWallet(userName, "ETH", creator);
+        require(adr != 0x0);
+
+        adr = ControlApis(controlApisAdr_).enableElementWallet(userName, "ZSC", creator);
+        require(adr != 0x0);
+
+        ControlApis(controlApisAdr_).setUserActiveStatus(userName, true);
+
+        transferAnyERC20Token(zscTestTokenAddress_, allocatedZSC_);
+    }
+
+  
+    /*
     function applyForUser(bytes32 _hexx, bytes32 _type) public only_added(_hexx)  {
         uint index = getUserIndex(_hexx);
         testUsers_[index].status_ = "applied";
@@ -126,6 +141,7 @@ contract AdmBase is Object {
 
         ControlApis(systemAdrs_["controlApis"]).setUserActiveStatus(_name, _tag);
     }
+    */
 
     function numUsers() public constant returns (uint) {
         checkDelegate(msg.sender, 1);
@@ -169,14 +185,16 @@ contract AdmBase is Object {
         return testUsers_[userIndex_[_hexx]].type_;
     }
 
+    /*
     function approveWallet(address _controlApisAdr, bytes32 _userType, bytes32 _userName, address _creator) internal {
         if (_userType == "provider" || _userType == "receiver") {
-            ControlApis(_controlApisAdr).enableElementWallet(4 /* wallet-eth */, _userName, "ETH", _creator);
+            ControlApis(_controlApisAdr).enableElementWallet(4, _userName, "ETH", _creator);
         } else if (_userType == "staker") {
-            ControlApis(_controlApisAdr).enableElementWallet(5 /* wallet-erc20 */, _userName, "ZSC", _creator);
+            ControlApis(_controlApisAdr).enableElementWallet(5, _userName, "ZSC", _creator);
         } else {
 
         }
     }
+    */
 
 }
