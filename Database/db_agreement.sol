@@ -112,6 +112,17 @@ contract DBAgreement is DBEntity {
                 endTime);
     }
 
+    // Generates a random number
+    // Original file at 
+    // https://gist.github.com/alexvandesande/259b4ffb581493ec0a1c
+    function randGen(uint _min, uint _max, uint _seed) private constant returns (uint){
+        require(_max > _min);
+        uint randValue = uint(keccak256(block.blockhash(block.number-1), _seed ))%(_max - _min);
+        randValue.add(_min);
+
+        return randValue;
+    }
+
  }
 
 
