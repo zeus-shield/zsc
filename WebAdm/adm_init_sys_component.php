@@ -28,6 +28,12 @@ $htmlObjects = new ZSChtmlObjects();
         var adr = "<?php echo $htmlObjects->readObjectAddress('ControlApisAdv')?>";
         zscSetup.setControlAbisAdvAbi(elementId);
     }
+
+    function setTestZSCToUser(amountId, elementId) {
+        var adr = "<?php echo $htmlObjects->readObjectAddress('ControlApisAdv')?>";
+        zscSetup.setZSCAmountToUser(document.getElementById(amountId).value, elementId);
+    }
+
 </script>
 </head>
 <body>
@@ -38,9 +44,16 @@ $htmlObjects = new ZSChtmlObjects();
 ?>
 
     <div class="well">
-        <text>Step - 0 </text>
+        <text>Step - 0 - 1 </text>
         <button type="button" onClick="setControlApisAdvAbi('ControlApisAdvAbiHash')">Set ControlApisAdv Abi</button> <br>
         <text id="ControlApisAdvAbiHash"></text> <br>
+
+
+        <text>Step - 0 - 2</text>
+        <input type="text" id="AllocatedAmount" value="1000"></input> <br> 
+        <button type="button" onClick="setTestZSCToUser('AllocatedAmount', 'setTestZSCToUserHash')">Set Amount of TestZSC allocated to alpha-test user</button> <br>
+        <text id="setTestZSCToUserHash"></text> <br>
+
 
         <?php echo $htmlObjects->loadInitObjects('initSystemComponent');?>
 
