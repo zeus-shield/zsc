@@ -7,6 +7,61 @@ pragma solidity ^0.4.21;
 import "./object.sol";
 import "./control_info.sol";
 
+contract DBNode {
+    function setId(address _ethWalletiId) public;
+    function getId() public returns (address);
+    function getNodeType() public constant returns (bytes32);
+    function getBlance(bool _locked) public constant returns (uint256);
+
+    function setActivated(bool _activated) public;
+    function getActivated() public constant returns (bool);
+
+    function addParameter(bytes32 _parameter) public returns (bool);
+    function removeParameter(bytes32 _parameter) public returns (bool);
+    function setParameter(bytes32 _parameter, bytes32 _value) public returns (bool);
+    function getParameter(bytes32 _parameter) public constant returns (bytes32);
+    function numParameters() public constant returns (uint);
+    function getParameterNameByIndex(uint _index) public constant returns (bytes32);
+
+    function setERC20TokenAddress(address _tokenAdr) public;
+    function doesLastTransactionSigned() public constant returns (bool);
+    //function submitTransaction(address _dest, uint256 _amount, bytes _data, address _user) public returns (uint);
+    //function confirmTransaction(address _sigAdr) public returns (uint);    
+    function executeTransaction(address _dest, uint256 _amount) public returns (uint);
+    function informTransaction(address _src, address _dest, uint256 _amount) public;
+    function numTransactions() public constant returns (uint);
+    function getTransactionInfoByIndex(uint _index) public constant returns (uint, bool,  bytes32, uint, address, address);
+
+    function setAgreementStatus(bytes32 _tag, bytes32 receiver) public returns (bool);
+    function configureHandlers() public returns (bool);
+    function getHandler(bytes32 _type) public constant returns (address);
+    function numAgreements() public constant returns (uint);
+    function getAgreementByIndex(uint _index) public constant returns (address);
+
+    function numChildren() public constant returns(uint);
+    function getChildByIndex(uint _index) public  constant returns(address);
+    function addChild(address _node) public returns (address);
+
+    function getMiningInfoByIndex(bool _isReward, uint _index) public constant returns (uint, uint);
+    function numMiningInfo(bool _isReward) public constant returns (uint);
+
+    function addSignature(address _sigAdr) public returns (bool);
+    function getAgreementInfo() public constant returns (bytes32, bytes32, uint, uint, bytes32, uint);
+}
+
+contract DBFactory {
+    function setDatabase(address _adr) public;
+    function getDatabase() public constant returns (address);
+    function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
+}
+
+contract DBDatabase {
+    function getNode(bytes32 _name) public constant returns (address);
+    function destroyNode(address _node) public returns (bool);
+    function checkeNodeByAddress(address _adr) public constant returns (bool);
+    function _addNode(address _node) public ;
+}
+
 contract ControlBase is ControlInfo {   
     address public systemOL_;
     address public zscTokenAddress_;
@@ -35,6 +90,46 @@ contract ControlBase is ControlInfo {
         addLog("initControlApisAdrs ", true);
     }
 
+    function mapFactoryDatabase(bytes32 _factoryName, bytes32 _dbName, uint _priority) internal {
+        addLog("mapFactoryDatabase", true);
+        address factoryAdr = factories_[_factoryName];
+        address dbAdr      = databases_[_dbName];
+
+        require(factoryAdr != 0 && dbAdr != 0);
+
+        DBFactory(factoryAdr).setDatabase(dbAdr);
+        Object(dbAdr).setDelegate(factoryAdr, _priority);
+    }
+
+    function addComponent(bytes32 _type, bytes32 _name, address _adr) internal returns (bool) {
+        bool ret = false;
+        addLog("addComponent ", true);
+        addLog(PlatString.bytes32ToString(_type), false);
+        addLog(PlatString.bytes32ToString(_name), false);
+
+        if (_type == "factory") {
+            require(factories_[_name] == address(0));
+            factories_[_name] = _adr;
+            mapFactoryDatabase(_name, dbName_, 1);
+        } else if (_type == "database") {
+            require(databases_[_name] == address(0));
+            databases_[_name] = _adr;        
+        } else {
+            revert();
+        }
+        return ret;
+    }
+
+    function getComponent(bytes32 _type, bytes32 _name) internal constant returns (address) {
+        if (_type == "factory") {
+            return factories_[_name];
+        } else if (_type == "database") {
+            return databases_[_name];
+        } else {
+            revert();
+        }
+    }
+
     function getDBFactory(bytes32 _name) internal constant returns (DBFactory) {
         return DBFactory(getComponent("factory", _name));
     }
@@ -56,6 +151,23 @@ contract ControlBase is ControlInfo {
             str = PlatString.append(_userName, "-", _tokenSymbol);
         }
         temp = PlatString.tobytes32(str);
+    }
+
+    function duplicateNode(address _nodeSrcAdr, address _nodeDstAdr) internal returns (bool) {
+        require(_nodeSrcAdr != address(0) && _nodeDstAdr != address(0));
+
+        bytes32 tempPara;
+        bytes32 tempValue; 
+
+        uint paraNos = DBNode(_nodeSrcAdr).numParameters();
+        for (uint i = 0; i < paraNos; ++i) {
+            tempPara = DBNode(_nodeSrcAdr).getParameterNameByIndex(i);
+            tempValue = DBNode(_nodeSrcAdr).getParameter(tempPara);
+
+            DBNode(_nodeDstAdr).addParameter(tempPara);
+            DBNode(_nodeDstAdr).setParameter(tempPara, tempValue);
+        }
+        return true;
     }
 
     function createFactoryNode(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra, address _creator) internal returns (address) {
