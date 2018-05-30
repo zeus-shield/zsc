@@ -18,9 +18,12 @@ contract AdmBase is Object {
         bytes32 status_ ; //0: not exist; 1: added; 2: applied; 3: approved;  4: locked
         bytes32 type_;    //1: provider; 2: receiver; 3: staker
         address id_   ;
-        address node_ ;
+        address nodeAdr_ ;
+        address ethAdr_ ;
+        address zscAdr_ ;
     }
     TestUserInfo[] testUsers_;
+    mapping(bytes32 => bool) private userExist_;
     mapping(bytes32 => uint) private userIndex_;
     mapping(bytes32 => address) private systemAdrs_;
 
@@ -46,11 +49,10 @@ contract AdmBase is Object {
         controlApisAdr_ = _controlApisAdr;
     }
 
-
     function setZSCAmountToUser(uint _allocatedZSC) public { 
         checkDelegate(msg.sender, 1);
 
-        allocatedZSC_ = _allocatedZSC;
+        allocatedZSC_ = _allocatedZSC * 1 ether;
     }
 
     function setControlApisFullAbi(string _fullAbi) public { 
@@ -70,10 +72,11 @@ contract AdmBase is Object {
         addLog(PlatString.bytes32ToString(_user), false);
 
         bytes32 ret = toHexx(_user);
-        require(testUsers_[userIndex_[ret]].status_ ==0);
+        require(userExist_[_user] == false);
 
+        userExist_[_user] = true;
         userIndex_[ret] = testUsers_.length;
-        testUsers_.push(TestUserInfo(_user, "added", 0, 0x0, 0x0));
+        testUsers_.push(TestUserInfo(_user, "added", 0, address(0), address(0), address(0), address(0)));
     }
 
     function activeByUser(bytes32 _hexx, bytes32 _type) public only_added(_hexx)  {
@@ -86,15 +89,15 @@ contract AdmBase is Object {
         address creator = testUsers_[index].id_;
 
         //createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr)
-        address adr = ControlApis(controlApisAdr_).createElement(userName, _type, userName, "", creator);
-        require(adr != 0x0);
+        testUsers_[index].nodeAdr_ = ControlApis(controlApisAdr_).createElement(userName, _type, userName, "", creator);
+        require(testUsers_[index].nodeAdr_ != address(0));
 
         //enableElementWallet(bytes32 _userName, bytes32 _tokeSymbol, address _extraAdr);
-        adr = ControlApis(controlApisAdr_).enableElementWallet(userName, "ETH", creator);
-        require(adr != 0x0);
+        testUsers_[index].ethAdr_ = ControlApis(controlApisAdr_).enableElementWallet(userName, "ETH", creator);
+        require(testUsers_[index].ethAdr_ != address(0));
 
-        adr = ControlApis(controlApisAdr_).enableElementWallet(userName, "ZSC", creator);
-        require(adr != 0x0);
+        testUsers_[index].zscAdr_ = ControlApis(controlApisAdr_).enableElementWallet(userName, "ZSC", creator);
+        require(testUsers_[index].zscAdr_ != address(0));
 
         ControlApis(controlApisAdr_).setUserActiveStatus(userName, true);
 
@@ -153,11 +156,14 @@ contract AdmBase is Object {
 
         require(_index < testUsers_.length);
         string memory str ="";
-        str = PlatString.append(str, "info?name=", PlatString.bytes32ToString(testUsers_[_index].name_),   "&");
-        str = PlatString.append(str, "status=",    PlatString.bytes32ToString(testUsers_[_index].status_), "&");
-        str = PlatString.append(str, "type=",      PlatString.bytes32ToString(testUsers_[_index].type_),   "&");
-        str = PlatString.append(str, "id=",        PlatString.addressToString(testUsers_[_index].id_),     "&");
-        str = PlatString.append(str, "node=",      PlatString.addressToString(testUsers_[_index].node_),   "&");
+        str = PlatString.append(str, "info?name=", PlatString.bytes32ToString(testUsers_[_index].name_),    "&");
+        str = PlatString.append(str, "status=",    PlatString.bytes32ToString(testUsers_[_index].status_),  "&");
+        str = PlatString.append(str, "type=",      PlatString.bytes32ToString(testUsers_[_index].type_),    "&");
+        str = PlatString.append(str, "id=",        PlatString.addressToString(testUsers_[_index].id_),      "&");
+        str = PlatString.append(str, "node=",      PlatString.addressToString(testUsers_[_index].nodeAdr_), "&");
+        str = PlatString.append(str, "eth=",       PlatString.addressToString(testUsers_[_index].ethAdr_),  "&");
+        str = PlatString.append(str, "zsc=",       PlatString.addressToString(testUsers_[_index].zscAdr_),  "&");
+        str = PlatString.append(str, "end");
         return str;
     }
 
