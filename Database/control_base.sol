@@ -5,8 +5,6 @@ Copyright (c) 2018 ZSC Dev Team
 pragma solidity ^0.4.21;
 
 import "./object.sol";
-import "./sys_include.sol";
-import "./sys_include_adv.sol";
 import "./control_info.sol";
 
 contract ControlBase is ControlInfo {   
@@ -14,53 +12,42 @@ contract ControlBase is ControlInfo {
     address public zscTokenAddress_;
     address public bindedAdm_;
 
-    bytes32 public dbName_ = "null";
+    bytes32 public dbName_ = "zsc";
+
+    mapping(bytes32 => address) public databases_;
+    mapping(bytes32 => address) public factories_;
+
     function ControlBase(bytes32 _name) public ControlInfo(_name) {
     }
     
-    function setSystemOverlayerAdrs(address _adm, address _systemOL, address _zscToken) internal {
-        require (_adm != 0 && _systemOL != 0 && _zscToken != 0);     
+    function getCurrentDBName() internal constant returns (bytes32) {
+        return dbName_;
+    }
+
+    function initControlApisAdrs(address _zscToken, address _adm) internal {
+        require (_adm != 0 && _zscToken != 0);     
 
         zscTokenAddress_ = _zscToken;
-
-        systemOL_ = _systemOL;
-        setDelegate(systemOL_, 1);
 
         bindedAdm_ = _adm;
         setDelegate(bindedAdm_, 1);
 
-        addLog("setSystemModules ", true);
+        addLog("initControlApisAdrs ", true);
     }
 
-    function setDBName(bytes32 _name) internal {
-        dbName_ = _name;
+    function getDBFactory(bytes32 _name) internal constant returns (DBFactory) {
+        return DBFactory(getComponent("factory", _name));
     }
 
-    function getFactoryManager() internal constant returns (FactoryManager) {
-        return FactoryManager(SysOverlayer(systemOL_).getComponent("factory", "gm"));
+    function getDBDatabase(bytes32 _name) internal constant returns (DBDatabase) {
+        return DBDatabase(getComponent("database", _name));
     }
 
-    function getWalletManager() internal constant returns (WalletManager) {      
-        return WalletManager(SysOverlayer(systemOL_).getComponent("module", "wallet-gm"));
+    function getDBNode(bytes32 _db, bytes32 _nodeName) internal constant returns (DBNode) {
+        return DBNode(getDBDatabase(_db).getNode(_nodeName));
     }
 
-    function getPosManager() internal constant returns (PosManager) {      
-        return PosManager(SysOverlayer(systemOL_).getComponent("module", "pos-gm"));
-    }
-
-    function getSimulatorManager() internal constant returns (SimulatorManager) {      
-        return SimulatorManager(SysOverlayer(systemOL_).getComponent("module", "simulator-gm"));
-    }
-
-    function getDBDatabase() internal constant returns (DBDatabase) {
-        return DBDatabase(SysOverlayer(systemOL_).getComponent("database", dbName_));
-    }
-
-    function getDBNode(bytes32 _nodeName) internal constant returns (DBNode) {
-        return DBNode(getDBDatabase().getNode(_nodeName));
-    }
-
-    function formatWalletName(bytes32 _userName, bytes32 _tokenSymbol) private pure returns (bytes32) {
+    function formatWalletName(bytes32 _userName, bytes32 _tokenSymbol) internal pure returns (bytes32) {
         string memory str;
         bytes32 temp;
         if (_tokenSymbol == "ETH") {
@@ -71,8 +58,38 @@ contract ControlBase is ControlInfo {
         temp = PlatString.tobytes32(str);
     }
 
+    function createFactoryNode(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra, address _creator) internal returns (address) {
+        address userAdr;
+        address parentAdr;
+        address ndAdr;
+
+        if (_type == "template") {
+            userAdr = address(getDBNode(dbName_, _userName));
+            parentAdr = DBNode(userAdr).getHandler("template");
+        } else if (_type == "agreement") {
+            userAdr = address(getDBNode(dbName_, _userName));
+            parentAdr = address(getDBNode(dbName_, _extra));
+        }
+
+        ndAdr = getDBFactory(_type).createNode(_nodeName, parentAdr, _creator);
+        require(ndAdr != 0);
+
+        if (_type == "provider" || _type == "receiver" || _type == "staker") {
+            DBNode(ndAdr).configureHandlers();
+            DBNode(ndAdr).setId(_creator);
+        } 
+
+        if (_type == "template") {
+            DBNode(ndAdr).setParameter("provider", _userName);
+        } else if (_type == "agreement") {
+            duplicateNode(getDBNode(dbName_, _extra),  ndAdr);
+            DBNode(ndAdr).setAgreementStatus("READY", "null");
+        }
+        return ndAdr;
+    }
+
     function deleteAgreement( bytes32 _agrName) internal returns (bool) {
-        address agrAdr = address(getDBNode(_agrName));
+        address agrAdr = address(getDBNode(dbName_, _agrName));
         require(agrAdr != address(0));
 
         bytes32 status;
@@ -82,97 +99,107 @@ contract ControlBase is ControlInfo {
         bytes32 tokenSymbol;
         uint endTime;
 
-        (status, proName, price, lockedAmount, tokenSymbol, endTime) = getDBNode(_agrName).getAgreementInfo();
+        (status, proName, price, lockedAmount, tokenSymbol, endTime) = getDBNode(dbName_, _agrName).getAgreementInfo();
         if (status == "PAID") return false;
 
-        address agrWallet = address(getDBNode(getWalletManager().formatWalletName(_agrName, tokenSymbol)));
-        address userWallet = address(getDBNode(getWalletManager().formatWalletName(proName, tokenSymbol)));
+        address agrWallet = address(getDBNode(dbName_, formatWalletName(_agrName, tokenSymbol)));
+        address userWallet = address(getDBNode(dbName_, formatWalletName(proName, tokenSymbol)));
         require(agrWallet != address(0) && userWallet != address(0));
 
         DBNode(userWallet).executeTransaction(userWallet, lockedAmount);
-        return getDBDatabase().destroyNode(agrAdr);
+        return getDBDatabase(dbName_).destroyNode(agrAdr);
     }
 
-
-    function enableWalletByUser(bytes32 _user, bytes32 _tokeSymbol, address _creator) internal returns (address) {
-        checkDelegate(msg.sender, 1);
-
-        address ndAdr = address(getDBNode(_user));
+    function enableWalletByUser(bytes32 _enName, bytes32 _tokeSymbol, address _creator) internal returns (address) {
+        address ndAdr = address(getDBNode(dbName_, _enName));
         require(ndAdr != address(0));
         
         bytes32 ndType = DBNode(ndAdr).getNodeType();
-        if (ndType == "provider" || ndType == "receiver") {
-            if (_tokeSymbol == "ZSC" || _tokeSymbol == "ETH") {
-                address parentNode   = DBNode(ndAdr).getHandler("wallet");
-                address erc20Address = 0; 
-                bytes32 temp;
-                bytes32 factoryType;
-    
-                temp = formatWalletName(_user, _tokeSymbol);
+        require(ndType == "provider" || ndType == "receiver");
+        require(_tokeSymbol == "ZSC" || _tokeSymbol == "ETH");
 
-                if (_tokeSymbol == "ETH") {
-                    factoryType = "wallet-eth";
-                } else {
-                    factoryType = "wallet-erc20";
-                    erc20Address = getTokenContractAddress(_tokeSymbol);
-                    require(erc20Address != 0);
-                }
-                address factoryGM   = SysOverlayer(getSysOverlayer()).getComponent("factory", "gm");
-                address factoryAdr = FactoryManager(factoryGM).getAdr(factoryType);
-                address walletAdr  = FactoryBase(factoryAdr).createNode(temp, parentNode, _creator);
-                require(walletAdr != 0);
-    
-                DBNode(walletAdr).setERC20TokenAddress(erc20Address);    
-                return walletAdr;
-            }
-        }
-        return address(0);
-    }
+        bytes32 factoryType;
+        address parentNode   = DBNode(ndAdr).getHandler("wallet");   
+        bytes32 walletName = formatWalletName(_enName, _tokeSymbol);
 
-    function prepareTokenContractInfoByIndex(uint _index) internal constant returns (string) {
-        require(_index <= getWalletManager().numTokenContracts());
-
-        if (_index == 0) {
-            return "ETH";
+        if (_tokeSymbol == "ETH") {
+            factoryType = "wallet-eth";
+        } else {
+            factoryType = "wallet-erc20";
         }
 
-        bytes32 tokenName;
-        bytes32 status;
-        bytes32 tokenSymbol;
-        uint tokenDecimals;
-        address tokenAdr;
-        (tokenName, status, tokenSymbol, tokenDecimals, tokenAdr) = getWalletManager().getTokenInfoByIndex(_index - 1);
+        address walletAdr  = getDBFactory(factoryType).createNode(walletName, parentNode, _creator);
+        require(walletAdr != 0);
 
-        string memory str ="";
-        str = PlatString.append(str, "info?name=", PlatString.bytes32ToString(tokenName),   "&");
-        str = PlatString.append(str, "status=",    PlatString.bytes32ToString(status),      "&");
-        str = PlatString.append(str, "symbol=",    PlatString.bytes32ToString(tokenSymbol), "&");
-        str = PlatString.append(str, "decimals=",  PlatString.uintToString(tokenDecimals),  "&");
-        str = PlatString.append(str, "adr=",       PlatString.addressToString(tokenAdr),    "&");
-        return str;
+        if (factoryType == "wallet-erc20") {
+            DBNode(walletAdr).setERC20TokenAddress(zscTokenAddress_);  
+        }  
+
+        return walletAdr;
     }
 
-    function prepareTokenBalanceInfoByIndex(bytes32 _enName, uint _index) internal constant returns (string) {
-        require(_index <= getWalletManager().numTokenContracts());
+    function conductInformTransaction(bytes32 _enName, address _dest, uint256 _amount) internal returns (bool) {
+        bytes32 tokenSymbol = DBNode(_dest).getParameter("walletSymbol");
+        address userWallet  = address(getDBNode(dbName_, formatWalletName(_enName, tokenSymbol)));
+        DBNode(_dest).informTransaction(userWallet, _dest, _amount);
+        return true;
+    }
 
-        bytes32 tokenName;
+    function conductPublishAgreement(bytes32 _userName, bytes32 _agrName, address _creator) internal returns (uint) {
+        checkDelegate(msg.sender, 1);
+
+        address agrAdr = address(getDBNode(dbName_, _agrName));
+        bytes32 tokenSymbol = DBNode(agrAdr).getParameter("walletSymbol");
+        address userWallet = address(getDBNode(dbName_, formatWalletName(_userName, tokenSymbol)));
+
+        require(userWallet != address(0));
+        string memory temp = PlatString.bytes32ToString(DBNode(agrAdr).getParameter("lockedAmount"));
+        uint lockedAmount = PlatString.stringToUint(temp);
+
+        address agrWallet = enableWalletByUser(_agrName, tokenSymbol, _creator);
+        uint amount = DBNode(userWallet).executeTransaction(agrWallet, lockedAmount);
+        require(amount > 0);
+
+        DBNode(agrAdr).setAgreementStatus("PUBLISHED", "null");
+        return amount;
+    }
+
+    function conductPurchaseAgreement(bytes32 _userName, bytes32 _agrName) internal returns (uint) {
+        checkDelegate(msg.sender, 1);
+
+        address agrAdr = address(getDBNode(dbName_, _agrName));
+
+        bytes32 tokenSymbol = DBNode(agrAdr).getParameter("walletSymbol");
+        uint price          = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(agrAdr).getParameter("price")));
+        address recWallet   = address(getDBNode(dbName_, formatWalletName(_userName, tokenSymbol)));
+        address agrWallet   = address(getDBNode(dbName_, formatWalletName(_agrName, tokenSymbol)));
+
+        uint ret = DBNode(recWallet).executeTransaction(agrWallet, price);
+
+        getDBNode(dbName_, _agrName).setAgreementStatus("PAID", _userName);
+        getDBNode(dbName_, _userName).addChild(agrAdr);
+
+        return ret;
+    }
+
+    function prepareTokenBalanceInfoByIndex(bytes32 _enName, uint _index) internal constant returns (string) { 
         bytes32 status;
         bytes32 tokenSymbol;
-        uint tokenDecimals;
         address tokenAdr;
         uint tokenBalance;
         bytes32 walletName;
 
+        status = "true";
         if (_index == 0) {
-            status = "true";
             tokenSymbol = "ETH";
+        } else if (_index == 1) {
+            tokenSymbol = "ZSC";
         } else {
-            (tokenName, status, tokenSymbol, tokenDecimals, tokenAdr) =  getWalletManager().getTokenInfoByIndex(_index - 1);
+            revert();
         }
 
-        walletName = getWalletManager().formatWalletName(_enName, tokenSymbol);
-
-        tokenAdr = address(getDBNode(walletName));
+        walletName   = formatWalletName(_enName, tokenSymbol);
+        tokenAdr     = address(getDBNode(dbName_, walletName));
         tokenBalance = DBNode(tokenAdr).getBlance(false);
 
         string memory str ="";
@@ -184,7 +211,9 @@ contract ControlBase is ControlInfo {
     }
 
     function prepareTransationfoByIndex(bytes32 _walletName, uint _index) internal constant returns (string) {
-        require(_index < getDBNode(_walletName).numTransactions());
+        address walletAdr = getDBNode(dbName_, _walletName);
+
+        require(_index < DBNode(walletAdr).numTransactions());
         
         uint tranTime;
         bool isInput;
@@ -194,7 +223,7 @@ contract ControlBase is ControlInfo {
         address receiver;
         bytes32 inputTag;
 
-        (tranTime, isInput, txHash, amount, sender, receiver) =  getDBNode(_walletName).getTransactionInfoByIndex(_index);
+        (tranTime, isInput, txHash, amount, sender, receiver) =  DBNode(walletAdr).getTransactionInfoByIndex(_index);
 
         if (isInput) inputTag = "true";
         else inputTag = "false";
@@ -207,57 +236,5 @@ contract ControlBase is ControlInfo {
         str = PlatString.append(str, "sender=",    PlatString.addressToString(sender),   "&");
         str = PlatString.append(str, "receiver=",  PlatString.addressToString(receiver), "&");
         return str;
-    }
-
-    function prepareMiningInfoByIndex(bytes32 _enName, bool _isReward, uint _index) internal constant returns (string) {
-        uint time;
-        uint amount;
-
-        (time, amount) = getDBNode(_enName).getMiningInfoByIndex(_isReward, _index);
-
-        string memory str ="";
-        str = PlatString.append(str, "info?time=", PlatString.uintToString(time),   "&");
-        str = PlatString.append(str, "amount=",    PlatString.uintToString(amount), "&");
-        return str;
-    }
-
-    function prepareBlockInfoByIndex(uint _poolIndex, uint _blockIndex) internal constant returns (string) {
-        checkDelegate(msg.sender, 1);
-   
-        uint size; 
-        uint txNos;
-        uint limit;
-
-        (limit, size, txNos) = getPosManager().getBlockInfoByIndex(_poolIndex, _blockIndex);
-
-        string memory str = "";
-        str = PlatString.append(str, "info?limit=", PlatString.uintToString(limit), "&");
-        str = PlatString.append(str, "info?size=", PlatString.uintToString(size), "&");
-        str = PlatString.append(str, "info?txNos=", PlatString.uintToString(txNos), "&");
-
-        return str;
-    }
-
-    function preparePurchaseAgreement(bytes32 _userName, bytes32 _agrName) internal returns (bool) {
-        bytes32 status;
-        bytes32 proName;
-        uint price;
-        uint lockedAmount;
-        bytes32 tokenSymbol;
-        uint endTime;
-
-        (status, proName, price, lockedAmount, tokenSymbol, endTime) = getDBNode(_agrName).getAgreementInfo();
-
-        address agrAdr = address(getDBNode(_agrName));
-        address proAdr = address(getDBNode(proName)); 
-        address recAdr = address(getDBNode(_userName)); 
-
-        bytes32 runName = getSimulatorManager().addSimulationRun(70, price, endTime, lockedAmount, agrAdr, proAdr, recAdr);
-        require(runName != "null");
-
-        getDBNode(_agrName).setAgreementStatus("PAID", _userName);
-        DBNode(recAdr).addChild(agrAdr);
-
-        return true;
     }
 }
