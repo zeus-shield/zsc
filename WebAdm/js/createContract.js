@@ -39,7 +39,7 @@ function cC_getContractFullName(contractName) {
         return "./zsc/factory_pro.sol:FactoryPro";
 
     } else if (contractName == 'FactoryRec') {
-        return "./zsc/factory_pro.sol:FactoryRec";
+        return "./zsc/factory_rec.sol:FactoryRec";
 
     } else if (contractName == 'FactoryStaker') {
         return "./zsc/factory_staker.sol:FactoryStaker";
@@ -187,6 +187,29 @@ function cC_getUrlSuffixForControlPage() {
     }
     return text;
 }
+
+function cC_showHashResultTest(elementID, hash, func){
+    web3.eth.getTransactionReceipt(hash, 
+    function(error, result){ 
+        if(!error) {
+            var show;
+            if (result == null) {
+                show =  "(pending)" + hash ;
+                cC_showHashResultTest(elementID, hash, func);
+            } else {
+                if (result.status == 0) {
+                    show = "(failure)" + hash;
+                } else {
+                    show = "(succeeded)" + hash ;
+                    func();
+                }
+            }
+            document.getElementById(elementID).innerText = show;
+        } else {
+            console.log("error: " + error);
+        }
+    });
+} 
 
 
 
