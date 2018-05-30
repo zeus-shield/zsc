@@ -19,10 +19,10 @@ contract PosBase is SysComBase, PosStakerGroup, PosBlockPool {
     function PosBase(bytes32 _name) public SysComBase(_name) {
     } 
 
-    function setSysOverlayer(address _sysOverlayer) public {
+    function setControlApiAdr(address _controlApiAdr) public {
         checkDelegate(msg.sender, 1);
 
-        super.setSysOverlayer(_sysOverlayer);
+        super.setControlApiAdr(_controlApiAdr);
         initPosBase();
     }
 
