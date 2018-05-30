@@ -16,11 +16,17 @@ contract ControlApis is ControlBase {
 
     /// @dev Set the zsc adm address
     /// @param _adm The address of the zsc adm 
-    function setSystemOverlayer(address _adm, address _systemOL, address _zscToken) public {
+    function initControlApis(address _zscToken, address _adm) public {
         checkDelegate(msg.sender, 1);
-        setSystemOverlayerAdrs(_adm, _systemOL, _zscToken);
+        initControlApisAdrs(_zscToken, _adm);
     }
 
+    function addSystemComponent(bytes32 _type, bytes32 _name, address _adr) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+        return addComponent(_type, _name, _adr);
+    }
+
+    /*
     function registerErc20Token(bytes32 _symbol, bytes32 _name, uint _decimals, address _tokenAdr) public returns (bool) {
         checkDelegate(msg.sender, 1);
         return getWalletManager().addTokenContract(_name, _symbol, _decimals, _tokenAdr);
@@ -40,12 +46,7 @@ contract ControlApis is ControlBase {
         checkDelegate(msg.sender, 1);
         return prepareTokenContractInfoByIndex(_index);
     }
-
-    /// @dev Get the number of elements of the database
-    function setDBDatabase(bytes32 _name) public { 
-        checkDelegate(msg.sender, 1);
-        setDBName(_name);
-    }
+    */
 
     /*
     /// @dev Get the number of elements of the database
@@ -81,13 +82,13 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        address adr = address(getDBNode(_enName));
+        address adr = address(getDBNode(getCurrentDBName(), _enName));
         return (adr != address(0));
     }
 
     function addSignatureAdr(bytes32 _userName, address _sigAdr) public returns (bool) {
         checkRegistered(_userName, msg.sender);
-        if (getDBNode(_userName).addSignature(_sigAdr)) {
+        if (getDBNode(getCurrentDBName(), _userName).addSignature(_sigAdr)) {
             registerSignature(_userName, _sigAdr);
         }
         return true;
@@ -101,6 +102,8 @@ contract ControlApis is ControlBase {
     function createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
         checkRegistered(_userName, msg.sender);
 
+        require(_factoryType != "staker");
+
         address creatorAdr;
         if (isDelegate(msg.sender, 1)) {
             creatorAdr = _extraAdr;
@@ -108,33 +111,27 @@ contract ControlApis is ControlBase {
             creatorAdr = msg.sender;
         }
 
-        address ndAdr = getFactoryManager().createFactoryNode(_factoryType, _userName, _enName, _extraInfo, creatorAdr);
+        address ndAdr = createFactoryNode(_factoryType, _userName, _enName, _extraInfo, creatorAdr);
         require(ndAdr != address(0));
 
-        if (_factoryType == "provider" || _factoryType == "receiver" || _factoryType == "staker") {
+        if (_factoryType == "provider" || _factoryType == "receiver") {
             registerUserNode(_enName, ndAdr, creatorAdr);
         } else {
             registerEntityNode(_userName, _enName, ndAdr, creatorAdr);
         }
-
-        if (_factoryType == "staker") {
-            getPosManager().registerStaker(ndAdr);
-        } 
-
         return ndAdr;
     }
 
     function enableElementWallet(bytes32 _userName, bytes32 _tokeSymbol, address _extraAdr) public returns (address) {
-        checkRegistered(_userName, msg.sender);
-
         address creatorAdr;
         if (isDelegate(msg.sender, 1)) {
             creatorAdr = _extraAdr;
         } else {
+            checkRegistered(_userName, msg.sender);
             creatorAdr = msg.sender;
         }
 
-        return getWalletManager().enableWalletByUser(_userName, _tokeSymbol, creatorAdr);
+        return enableWalletByUser(_userName, _tokeSymbol, creatorAdr);
     }
 
     /// @dev Get the element by its address
@@ -142,7 +139,7 @@ contract ControlApis is ControlBase {
     function getElementNameByAddress(bytes32 _userName, address _adr) public constant returns (bytes32) {
         checkRegistered(_userName, msg.sender);
 
-        require (getDBDatabase().checkeNodeByAddress(_adr));
+        require (getDBDatabase(getCurrentDBName()).checkeNodeByAddress(_adr));
         return Object(_adr).name();
     }
 
@@ -152,7 +149,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        DBNode nd = getDBNode( _enName);
+        DBNode nd = getDBNode(getCurrentDBName(), _enName);
         require(address(nd) != address(0));
         return nd.getNodeType();
     }
@@ -164,7 +161,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return getDBNode(_enName).addParameter(_parameter);
+        return getDBNode(getCurrentDBName(), _enName).addParameter(_parameter);
     }
 
     /// @dev Set the value to a paramter of an element 
@@ -175,7 +172,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return getDBNode(_enName).setParameter(_parameter, _value);
+        return getDBNode(getCurrentDBName(), _enName).setParameter(_parameter, _value);
     }
 
     /// @dev Get the value of a paramter of an element
@@ -185,7 +182,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return getDBNode(_enName).getParameter(_parameter);
+        return getDBNode(getCurrentDBName(), _enName).getParameter(_parameter);
     }
 
     /// @dev Get the address of the element 
@@ -194,7 +191,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return address(getDBNode(_enName));
+        return address(getDBNode(getCurrentDBName(), _enName));
     }
 
     /// @dev Get the eth balance of the element
@@ -205,9 +202,9 @@ contract ControlApis is ControlBase {
 
         string memory str = PlatString.append(_enName, "-", _symbol);
         bytes32 walletName = PlatString.tobytes32(str);
-        require(getDBNode(walletName) != DBNode(0));
+        require(getDBNode(getCurrentDBName(), walletName) != DBNode(0));
 
-        return getDBNode(walletName).getBlance(_locked);
+        return getDBNode(getCurrentDBName(), walletName).getBlance(_locked);
     }
 
     /// @dev Get the number of paramters of an element
@@ -216,7 +213,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return  getDBNode(_enName).numParameters();
+        return  getDBNode(getCurrentDBName(), _enName).numParameters();
     }
 
     /// @dev Get the number of paramters of an element
@@ -232,7 +229,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return getDBNode(_enName).getParameterNameByIndex(_index);
+        return getDBNode(getCurrentDBName(), _enName).getParameterNameByIndex(_index);
     }
 
     /// @dev Transfer a particular amount from a user wallet to the destination address
@@ -242,13 +239,13 @@ contract ControlApis is ControlBase {
         require(_amount > 0);
         checkRegistered(_userName, msg.sender);
 
-        bytes32 walletName = getWalletManager().formatWalletName(_userName, _tokenSymbol);
-        address walletAdr = address(getDBNode(walletName));
+        bytes32 walletName = formatWalletName(_userName, _tokenSymbol);
+        address walletAdr = address(getDBNode(getCurrentDBName(), walletName));
 
         require(walletAdr != address(0));
 
         uint amount = 0;
-        amount = DBNode(walletAdr).executeTransaction(_dest, _amount, "");
+        amount = DBNode(walletAdr).executeTransaction(_dest, _amount);
 
         return amount;
 
@@ -284,7 +281,7 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        return getWalletManager().conductInformTransaction(_enName, _dest, _amount);
+        return conductInformTransaction(_enName, _dest, _amount);
     }
 
     /// @dev Announce an insurance agreement by a provider
@@ -293,26 +290,26 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _agrName, msg.sender);
 
-        return getWalletManager().conductPublishAgreement(_userName, _agrName, msg.sender);
+        return conductPublishAgreement(_userName, _agrName, msg.sender);
     }
 
     function numTemplates(bytes32 _userName) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
 
-        address adr = getDBNode(_userName).getHandler("template");
+        address adr = getDBNode(getCurrentDBName(), _userName).getHandler("template");
         return DBNode(adr).numChildren();
     }
 
     function getTemplateNameByIndex(bytes32 _userName, uint _index) public constant returns (bytes32) {
         checkRegistered(_userName, msg.sender);
 
-        address adr = getDBNode(_userName).getChildByIndex(_index);
+        address adr = getDBNode(getCurrentDBName(), _userName).getChildByIndex(_index);
         return Object(adr).name();
     }
 
     function numAgreements(bytes32 _userName) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
-        address userAdr = address(getDBNode(_userName));        
+        address userAdr = address(getDBNode(getCurrentDBName(), _userName));        
         bytes32 userType = DBNode(userAdr).getNodeType();
 
         if (userType == "provider" || userType == "staker" || userType == "receiver") {
@@ -325,12 +322,12 @@ contract ControlApis is ControlBase {
     function numElementChildren(bytes32 _userName, bytes32 _enName) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
-        return  getDBNode(_enName).numChildren();
+        return  getDBNode(getCurrentDBName(), _enName).numChildren();
     }
 
     function getAgreementNameByIndex(bytes32 _userName, uint _index) public constant returns (bytes32) {
         checkRegistered(_userName, msg.sender);
-        address userAdr = address(getDBNode(_userName));        
+        address userAdr = address(getDBNode(getCurrentDBName(), _userName));        
         bytes32 userType = DBNode(userAdr).getNodeType();
 
         if (userType == "provider" || userType == "staker" || userType == "receiver") {
@@ -344,7 +341,7 @@ contract ControlApis is ControlBase {
     function deleteAgreementByIndex(bytes32 _userName, uint _index) public returns (bool) {
         checkRegistered(_userName, msg.sender);
 
-        address adr = getDBNode(_userName).getChildByIndex(_index);
+        address adr = getDBNode(getCurrentDBName(), _userName).getChildByIndex(_index);
         return deleteAgreement( Object(adr).name());
     }
 
@@ -354,11 +351,7 @@ contract ControlApis is ControlBase {
     function submitPurchaseAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
         checkRegistered(_userName, msg.sender);
 
-        uint amount = getWalletManager().conductPurchaseAgreement(true, _userName, _agrName, msg.sender);
-        if (amount > 0) {
-            require(preparePurchaseAgreement(_userName, _agrName));
-        }     
-        return amount; 
+        return conductPurchaseAgreement(_userName, _agrName); 
     }
 
     /*
@@ -376,11 +369,13 @@ contract ControlApis is ControlBase {
     }
     */
 
+    /*
     function numRegisteredErc20Tokens(bytes32 _userName) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
 
         return getWalletManager().numTokenContracts() + 1;
     }
+    */
 
     function getTokenBalanceInfoByIndex(bytes32 _userName, uint _index) public constant returns (string) {
         checkRegistered(_userName, msg.sender);
@@ -391,33 +386,34 @@ contract ControlApis is ControlBase {
     function getUserWalletAddress(bytes32 _userName, bytes32 _tokenSymbol) public constant returns (address) {
         checkRegistered(_userName, msg.sender);
 
-        DBNode nd = getDBNode( _userName);
+        DBNode nd = getDBNode(getCurrentDBName(), _userName);
         require(nd != DBNode(0));
 
         string memory temp = PlatString.append(_userName, "-", _tokenSymbol);
-        return address(getDBNode(PlatString.tobytes32(temp)));
+        return address(getDBNode(getCurrentDBName(), PlatString.tobytes32(temp)));
     }
 
     function numUserTransactions(bytes32 _userName, bytes32 _tokenSymbol) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
 
-        DBNode nd = getDBNode( _userName);
+        DBNode nd = getDBNode(getCurrentDBName(), _userName);
         require(nd != DBNode(0));
 
         string memory temp = PlatString.append(_userName, "-", _tokenSymbol);
-        return getDBNode(PlatString.tobytes32(temp)).numTransactions();
+        return getDBNode(getCurrentDBName(), PlatString.tobytes32(temp)).numTransactions();
     }
 
     function getUserTransactionByIndex(bytes32 _userName, bytes32 _tokenSymbol, uint _index) public constant returns (string) {
         checkRegistered(_userName, msg.sender);
 
-        DBNode nd = getDBNode( _userName);
+        DBNode nd = getDBNode(getCurrentDBName(), _userName);
         require(nd != DBNode(0));
 
         string memory temp = PlatString.append(_userName, "-", _tokenSymbol);
         return prepareTransationfoByIndex(PlatString.tobytes32(temp), _index);
     }
 
+    /*
     function numBlockInfo(bytes32 _userName, uint _poolIndex, bool _isMined) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
         return getPosManager().numBlockInfo(_poolIndex, _isMined);
@@ -437,4 +433,5 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         return prepareMiningInfoByIndex(_userName, _isReward, _index);
     }
+    */
 }
