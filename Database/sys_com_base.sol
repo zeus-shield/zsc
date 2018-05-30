@@ -9,26 +9,26 @@ import "./sys_include.sol";
 
 contract SysComBase is Object {
     //changed to public for the alpha-test purpose, 2018-05-27
-    address public systemOL_ = address(0);
+    address public controlApiAdr_ = address(0);
 
     function SysComBase(bytes32 _name) public Object(_name) {
     }
 
-    function setSysOverlayer(address _systemOL) public {
+    function setControlApiAdr(address _adr) public {
         checkDelegate(msg.sender, 1);
-        require(_systemOL != address(0));
+        require(controlApiAdr_ != address(0));
 
-        if (systemOL_ != _systemOL) {
-           if (systemOL_ != address(0)) {
-               setDelegate(systemOL_, 0);
+        if (controlApiAdr_ != _adr) {
+           if (controlApiAdr_ != address(0)) {
+               setDelegate(controlApiAdr_, 0);
            } 
-           systemOL_ = _systemOL;
-           setDelegate(systemOL_, 1);
+           controlApiAdr_ = _adr;
+           setDelegate(controlApiAdr_, 1);
         }
     }
 
-    function getSysOverlayer() internal constant returns (address) {
-        require(systemOL_ != address(0));
-        return systemOL_;
+    function getControlApiAdr() internal constant returns (address) {
+        require(controlApiAdr_ != address(0));
+        return controlApiAdr_;
     }
 }
