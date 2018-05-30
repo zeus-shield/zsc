@@ -8,7 +8,7 @@ import "./object.sol";
 
 contract FactoryBase is Object {
 	address bindedDB_;
-	address factoryGM_;
+	address controlApi_;
 
     function FactoryBase(bytes32 _name) public Object(_name) {
     }
@@ -31,25 +31,18 @@ contract FactoryBase is Object {
         return bindedDB_;
     }
 
-    function getFactoryManager() public constant returns (address) {
+    function initFactory(address _controlApi) public {
         checkDelegate(msg.sender, 1);
-        
-        require(factoryGM_ != address(0));
-        return factoryGM_;
-    }
-
-    function initFactory(address _factoryGM) public {
-        checkDelegate(msg.sender, 1);
-        require(_factoryGM != 0);
+        require(_controlApi != 0);
 
         addLog("-0-", true);
 
-        if (factoryGM_ != _factoryGM) {
-            if (factoryGM_ == 0) {
-                setDelegate(factoryGM_, 0);
+        if (controlApi_ != _controlApi) {
+            if (controlApi_ == 0) {
+                setDelegate(controlApi_, 0);
             }
-            setDelegate(_factoryGM, 1);
-            factoryGM_ = _factoryGM;
+            setDelegate(_controlApi, 1);
+            controlApi_ = _controlApi;
         }
     }
 }
