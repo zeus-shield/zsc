@@ -36,15 +36,21 @@ class ZSCBase {
     }
     
     public function getLogedObjectArray() {
+        /*
         return array("AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "DatabaseManager", "FactoryManager", "SystemOverlayer", "ControlApisAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp",  "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20");
+        */
+        return array("AdmAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp",  "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20", "ControlApisAdv");
     }
 
     public function getObjectArray() {
+        /*
         return array("TestToken", "LogRecorder", "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "DatabaseManager", "FactoryManager", "SystemOverlayer", "ControlApisAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp",  "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20");
+        */
+        return array("TestToken", "LogRecorder", "AdmAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp",  "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20", "ControlApisAdv");
     }
 
     public function getGMArray() {
-        return array("PosAdv", "WalletManager", "SimulatorManager",  "DatabaseManager", "FactoryManager");
+        return array("PosAdv", "WalletManager", "SimulatorManager");
     }
 }
 
