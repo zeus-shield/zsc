@@ -21,7 +21,6 @@ contract Recorder {
 }
 
 contract Object is Delegated {
-    using SafeMath for uint;
 
     bytes32 private name_ = "null";
     address public logRecorder_ = 0;
@@ -57,7 +56,7 @@ contract Object is Delegated {
             Recorder(logRecorder_).addLog(_log, _newLine);
         }
 
-        objectLog_ = PlatString.append(objectLog_, "; ", _log);
+        objectLog_ = PlatString.append(" | ", objectLog_,  _log);
     }
 
     // ------------------------------------------------------------------------
