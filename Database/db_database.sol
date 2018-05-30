@@ -21,10 +21,11 @@ contract DBDatabase is Object {
     function DBDatabase(bytes32 _name) public Object(_name) {
     }
 
-    function initDatabase(address _dbManager) public {
+    function initDatabase(address _controlApi) public {
         checkDelegate(msg.sender, 1);
+        require(_controlApi != address(0));
 
-        super.setDelegate(_dbManager, 1);
+        super.setDelegate(_controlApi, 1);
         addLog("-0-", true);
 
         if (rootNode_ == 0) {
@@ -47,7 +48,7 @@ contract DBDatabase is Object {
     function setDelegate(address _adr, uint _priority) public {
         checkDelegate(msg.sender, 1);
 
-        addLog(" setDelegate ", true);
+        addLog(" sub setDelegate ", true);
 
         super.setDelegate(_adr, _priority);
         for (uint i = 0; i < nodes_.length; ++i) {
