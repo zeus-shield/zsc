@@ -213,7 +213,11 @@ function sF_refreshGetLog(logRecorderAdr, adr, elementID) {
                 index++;
                 sF_logIndexMap.set(adr, index);
             }
-            document.getElementById(elementID).innerText = sF_logMap.get(sc_logerModuleAdr);
+            if (adr != sF_logerModuleAdr) {
+                document.getElementById(elementID).innerText = "";
+            } else {
+                document.getElementById(elementID).innerText = sF_logMap.get(adr);
+            }
         }
         else console.log("error: " + error);
     });
@@ -224,7 +228,7 @@ function sF_initSystemLog(logRecorderAdr, adrs, elementID, initialModuleIndex) {
     for (var i = 0; i < adrs.length; ++i) {
         sF_logMap.set(adrs[i], "");
         sF_logIndexMap.set(adrs[i], 0);
-        window.setInterval("sF_refreshGetLog('" + logRecorderAdr + "', '" + adrs[i] + "', '" + elementID + "')", 2000);
+        window.setInterval("sF_refreshGetLog('" + logRecorderAdr + "', '" + adrs[i] + "', '" + elementID + i + "')", 1000);
     }
 }
 
