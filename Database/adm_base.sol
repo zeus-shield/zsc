@@ -37,7 +37,10 @@ contract AdmBase is Object {
     uint public allocatedZSC_;
 
     function checkAdded(bytes32 _hexx) internal constant {
-        require(testUsers_[userIndex_[_hexx]].status_ == "added");
+        uint index = getUserIndex(_hexx);
+        bytes32 status = testUsers_[index].status_;
+
+        require(status == "added" || status == "applied");
     }
     
     function AdmBase(bytes32 _name) public Object(_name) {}
@@ -99,13 +102,15 @@ contract AdmBase is Object {
         testUsers_[index].id_ = msg.sender;
 
         bytes32 userName = testUsers_[index].name_;
+
+
         address creator = testUsers_[index].id_;
 
-/*
         //createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr)
         testUsers_[index].nodeAdr_ = ControlApis(controlApisAdr_).createElement(userName, _type, userName, "", creator);
-        require(testUsers_[index].nodeAdr_ != address(0));
-
+        
+        //require(testUsers_[index].nodeAdr_ != address(0));
+/*
         //enableElementWallet(bytes32 _userName, bytes32 _tokeSymbol, address _extraAdr);
         testUsers_[index].ethAdr_ = ControlApis(controlApisAdr_).enableElementWallet(userName, "ETH", creator);
         require(testUsers_[index].ethAdr_ != address(0));
@@ -114,8 +119,8 @@ contract AdmBase is Object {
         require(testUsers_[index].zscAdr_ != address(0));
 
         transferAnyERC20Token(zscTestTokenAddress_, allocatedZSC_);
-*/
         ControlApis(controlApisAdr_).setUserStatus(userName, true);
+*/
 
         addLog("activeByUser - ", true);
         addLog(PlatString.bytes32ToString(userName), false);
