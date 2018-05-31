@@ -18,18 +18,24 @@ ZSCHtml.prototype.setHtmlContent = function(elementId, text) {
     document.getElementById(elementId).innerHTML = text;  
 }
 
-ZSCHtml.prototype.loadPageHeader = function(funcName) {
+ZSCHtml.prototype.loadPageHeader = function(funcName, doesUserApplied) {
     var funcPrefix = funcName + "(";
     var funcSuffix = ")";
-    var text = ''
-    text += '<div class="well">'
-    text += '   <button type="button" onClick="' + funcPrefix + "'apply'" + funcSuffix + '">Apply for user</button>'
-    text += '   <button type="button" onClick="' + funcPrefix + "'wallet'" + funcSuffix + '">Wallate</button>'
-    text += '   <button type="button" onClick="' + funcPrefix + "'profile'" + funcSuffix + '">Profile</button>'
-    text += '   <button type="button" onClick="' + funcPrefix + "'templates'" + funcSuffix + '">Templates</button>'
-    text += '   <button type="button" onClick="' + funcPrefix + "'agreements'" + funcSuffix + '">Agreements</button>'
+    var text;
+
+    text = '<div class="well">'
+
+    if (doesUserApplied == false) {
+        text += '   <button type="button" onClick="' + funcPrefix + "'apply-provider' " + funcSuffix + '">Apply for provider</button> <br><br>'
+        text += '   <button type="button" onClick="' + funcPrefix + "'apply-receiver' " + funcSuffix + '">Apply for receiver</button> <br><br>'
+    } else {
+        text += '   <button type="button" onClick="' + funcPrefix + "'wallet'" + funcSuffix + '">Wallate</button>'
+        text += '   <button type="button" onClick="' + funcPrefix + "'profile'" + funcSuffix + '">Profile</button>'
+        text += '   <button type="button" onClick="' + funcPrefix + "'templates'" + funcSuffix + '">Templates</button>'
+        text += '   <button type="button" onClick="' + funcPrefix + "'agreements'" + funcSuffix + '">Agreements</button>'
+    }
     text += '</div>'
-    this.setHtmlContent(this.hearderId, text);  
+    this.setHtmlContent(this.pageHeaderId, text);  
 }
 
 
@@ -55,7 +61,7 @@ ZSCHtml.prototype.loadPageBody = function(tag, func) {
         case "login": 
             text = this.loadLogin(func); 
             break;
-        case "welecom": 
+        case "welecome": 
             text = this.loadWelcome(); 
             break;
         case "apply": 
@@ -66,14 +72,13 @@ ZSCHtml.prototype.loadPageBody = function(tag, func) {
 } 
 
 ZSCHtml.prototype.loadLogin = function(funcName) {
-    var functionInput = funcName + "('AdmAdvAdr', 'userName')";
-    var text = ''
-    text += '<div class="well">'
+    var functionInput = funcName + "('AdmAdvAdr', 'UserName')";
+    text =  '<div class="well">'
     text += '   <text>Login ZSC system</text><br><br>'
     text += '   <text>ZSC platform address </text> <br>'
-    text += '   <input class="form-control"  type="text" id="AdmAdvAdr" value="0x1ac03ee2171d22aa7b7d68231018f7169ba2d8ac"></input> <br> <br>'
+    text += '   <input class="form-control"  type="text" id="AdmAdvAdr" value="0xc232ad281d2dac98c638cf3face57e357f58feff"></input> <br> <br>'
     text += '   <text>User Name </text> <br>' 
-    text += '   <input type="text" id="userName" value="test"></input> <br>' 
+    text += '   <input type="text" id="UserName" value="test"></input> <br>' 
     text += '   <button type="button" onClick="' + functionInput + '">Enter</button>'
     text += '</div>'
     
@@ -81,31 +86,11 @@ ZSCHtml.prototype.loadLogin = function(funcName) {
 }
 
 ZSCHtml.prototype.loadWelcome = function() {
-    var text = ''
-    text += '<div class="well">'
+    var text = '<div class="well">'
     text += '   <text>Welcome to the ZSC testing platform</text>'
     text += '</div>'
     return text; 
 }
 
-ZSCHtml.prototype.loadButtonForEnablingElement = function(funcName) {
-    var text = '<text>Enable the user in ZSC blockchain system</text>'
-
-    var functionInput = funcName + "('provider', 'AppleForProviderHash')";
-    text += '<div class="well">'
-    text += '    <button type="button" onClick="' + functionInput + '">Enable as provider</button>'
-    text += '    <text id="AppleForProviderHash"></text><br><br>'
-
-    functionInput = funcName + "('receiver', 'AppleForReceiverHash')";
-    text += '    <button type="button" onClick="' + functionInput + '">Enable as receiver</button>'
-    text += '    <text id="AppleForReceiverHash"></text><br><br>'
-
-    functionInput = funcName + "('staker', 'AppleForStakerHash')";
-    text += '    <button type="button" onClick="' + functionInput + '">Enable as staker</button>'
-    text += '    <text id="AppleForStakerHash"></text>'
-    text += '</div>'
-    
-    return text;
-}
 
 
