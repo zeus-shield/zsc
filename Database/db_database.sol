@@ -26,34 +26,45 @@ contract DBDatabase is Object {
         require(_controlApi != address(0));
 
         super.setDelegate(_controlApi, 1);
-        addLog("-0-", true);
+        addLog("initDatabase", true);
 
         if (rootNode_ == 0) {
             rootNode_ = new DBNode(name());
             require(rootNode_ != address(0));
-            _addNode(rootNode_);
-            addLog("-1-", true);
-        } 
+            setDelegate(rootNode_, 1);
+            DBNode(rootNode_).setDatabase(address(this));
+            addLog("rootNode_ - setDatabase", true);
 
-        address delegateAdr;
-        uint priority;
-
-        for (uint i = 0; i < numDelegates(); ++i) {
-            (delegateAdr, priority) = getDelegateInfoByIndex(i);
-            DBNode(rootNode_).setDelegate(delegateAdr, priority);
-            addLog("-2-", true);
+            address delegateAdr;
+            uint priority;
+    
+            for (uint i = 0; i < numDelegates(); ++i) {
+                (delegateAdr, priority) = getDelegateInfoByIndex(i);
+                DBNode(rootNode_).setDelegate(delegateAdr, priority);
+            }
+        } else {
+            revert();
         }
     }
 
-    function setDelegate(address _adr, uint _priority) public {
+    function delegateFactory(address _adr, uint _priority) public {
         checkDelegate(msg.sender, 1);
 
         addLog(" sub setDelegate ", true);
+        addLog(PlatString.addressToString(_adr), false);
+        addLog("  |  ", false);
+        //addLog(PlatString.uintToString(_priority),false);
 
-        super.setDelegate(_adr, _priority);
+        setDelegate(_adr, _priority);
+        DBNode(rootNode_).setDelegate(_adr, 1);
+
+        /*
         for (uint i = 0; i < nodes_.length; ++i) {
-            DBNode(nodes_[i]).setDelegate(_adr, _priority);    
+            DBNode(nodes_[i]).setDelegate(_adr, _priority);   
+            addLog("  node-", false);
+            addLog(PlatString.uintToString(i), false);
         }
+        */
     }
 
     function kill() public { 
@@ -63,6 +74,11 @@ contract DBDatabase is Object {
         super.kill();
     }
     
+    function getRootNode() public constant returns (address) { 
+        checkDelegate(msg.sender, 1);
+        return rootNode_; 
+    }
+
     function getNode(bytes32 _name) public constant returns (address) { 
         checkDelegate(msg.sender, 1);
         return nodeAddress_[_name]; 
@@ -91,15 +107,14 @@ contract DBDatabase is Object {
         require(nodeExists_[_node] == false);
 
         bytes32 ndName = Object(_node).name();
+
         nodes_.push(_node);
         nodeAddress_[ndName] = _node;
         nodeExists_[_node] = true;
 
-        //for testing purpose; 2018-03-06, 2018-03-14
-        string memory str = "_addNode() - ";
-        string memory nodeName = PlatString.bytes32ToString(ndName);
-        str = PlatString.append(str, nodeName);
-        addLog(str, true);
+        //for testing purpose; 2018-03-06, 2018-03-14, 2018-05-31
+        addLog("_addNode: ", true);
+        addLog(PlatString.bytes32ToString(ndName), false);
     }
     
     function destroyNode(address _node) public returns (bool) {
@@ -117,7 +132,7 @@ contract DBDatabase is Object {
             }    
         }
         delete nodes_[nodes_.length - 1];
-        nodes_.length --;
+        nodes_.length--;
             
         delete nodeAddress_[DBNode(_node).name()];
         delete nodeExists_[_node];
