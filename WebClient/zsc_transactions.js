@@ -13,10 +13,11 @@ function ZSCTransactions(nm, abi, adr) {
     this.amounts = [];
     this.senders = [];
     this.receivers = [];
-    this.myControlApi = web3.eth.contract(abi).at(adr);
+    this.contractAdr = adr;
+    this.contractAbi = abi;
 }
 
-ZSCPos.prototype = new ZSCClient();
+ZSCTransactions.prototype = new ZSCClient();
 
 ZSCTransactions.prototype.getUserName = function() {return this.userName;}
 
@@ -25,37 +26,46 @@ ZSCTransactions.prototype.setTokenSymbol = function(symbol) {return this.tokenSy
 ZSCTransactions.prototype.getTokenSymbol = function() { return this.tokenSymbol;}
 
 ZSCTransactions.prototype.loadTransactions = function(func) {
-    this.numTransactions(function() {
-        for (var i = 0; i < this.walletNos; ++i) {
-            this.loadTransactionInfoByIndex(i, function(index){
-                if (indx == this.walletNos - 1) {
-                    func();
+    var gm = this;
+    var callBack = func;
+
+    gm.numTransactions(gm, function() {
+        for (var i = 0; i < gm.walletNos; ++i) {
+            gm.loadTransactionInfoByIndex(gm, i, function(index){
+                if (indx == gm.walletNos - 1) {
+                    callBack();
                 }
             });
         }
     });
 }
 
-ZSCTransactions.prototype.numTransactions = function(func) {
-    this.myControlApi.numUserTransactions(this.userName, this.tokenSymbol, 
-        {from: this.getAccount(), gas: this.getGasLimit(20)},
+ZSCTransactions.prototype.numTransactions = function(gm, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.numUserTransactions(gm.userName, gm.tokenSymbol, 
+        {from: gm.getAccount(), gas: gm.getGasLimit(20)},
         function(error, result){ 
             if(!error) {
                 this.walletNos = result.toString(10);
-                func();
+                callBack();
             } else {
                 console.log("error: " + error);
             }
         });
 }
 
-ZSCTransactions.prototype.loadTransactionInfoByIndex = function(index, func) {
-    this.myControlApi.getUserTransactionByIndex(this.userName, this.tokenSymbol, index,
-        {from: this.getAccount(), gas: this.getGasLimit(20)},
+ZSCTransactions.prototype.loadTransactionInfoByIndex = function(gm, index, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.getUserTransactionByIndex(gm.userName, gm.tokenSymbol, index,
+        {from: gm.getAccount(), gas: gm.getGasLimit(20)},
         function(error, result){ 
             if(!error) {
-                parserTransactionInfoByIndex(result, index)
-                func(index);
+                parserTransactionInfoByIndex(gm, result, index)
+                callBack(index);
             } else {
                 console.log("error: " + error);
             }
@@ -70,7 +80,7 @@ ZSCTransactions.prototype.loadTransactionInfoByIndex = function(index, func) {
 "sender=",   
 "receiver=", 
 */
-ZSCTransactions.prototype.parserTransactionInfoByIndex = function(urlinfo, index) {
+ZSCTransactions.prototype.parserTransactionInfoByIndex = function(gm, urlinfo, index) {
     var found1 = urlinfo.indexOf("?");
     var found2 = urlinfo.indexOf("=");
 
@@ -88,12 +98,12 @@ ZSCTransactions.prototype.parserTransactionInfoByIndex = function(urlinfo, index
     var senderInfo   = newsids[4];
     var receiverInfo = newsids[5];
 
-    this.timeMoments[index] = timeInfo.split("=")[1];
-    this.inputTags[index]   = inputInfo.split("=")[1];
-    this.txHash[index]      = txInfo.split("=")[1];
-    this.amounts[index]     = amountInfo.split("=")[1];
-    this.senders[index]     = senderInfo.split("=")[1];
-    this.receivers[index]   = receiverInfo.split("=")[1];
+    gm.timeMoments[index] = timeInfo.split("=")[1];
+    gm.inputTags[index]   = inputInfo.split("=")[1];
+    gm.txHash[index]      = txInfo.split("=")[1];
+    gm.amounts[index]     = amountInfo.split("=")[1];
+    gm.senders[index]     = senderInfo.split("=")[1];
+    gm.receivers[index]   = receiverInfo.split("=")[1];
     return true;
 }
 
