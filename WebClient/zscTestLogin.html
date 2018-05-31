@@ -43,27 +43,29 @@
         document.getElementById("PageHeader").innerHTML = "";  
         document.getElementById("PageBody").innerHTML = "";  
         zscHtml.setHtmlCotentIds( "PageBody", "PageHeader");
-        zscHtml.loadPageBody("login", "checkUser", "null", "null");
+        zscHtml.loadPageBody("login", "checkUser");
     }
 
-    function checkUser(adrId, userId, passId){
+    function checkUser(adrId, userId){
         var admAdr = document.getElementById(adrId).value; 
         var user = document.getElementById(userId).value; 
-        var pass = document.getElementById(passId).value; 
 
         zscUser = new ZSCUser(admAdr);
-        zscUser.tryLogin(user, pass, function(ret) {
+        zscUser.tryLogin(user, function(ret) {
             if(ret) {
+                var userName = zscUser.getUserName();
                 var fullAbi = zscUser.getControlApisFullAbi();
                 var controlApisAdvAdr = zscUser.getControlApisAdr();
-                zscElement  = new ZSCElement(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
-                zscWalletGM = new ZSCWallet(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
-                zscTransGM  = new ZSCTransaction(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
-                zscTmpsGM   = new ZSCTemplate(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
-                zscAgrsGM   = new ZSCAgreement(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+                zscElement  = new ZSCElement(userName, fullAbi, controlApisAdvAdr);
+                //zscTransGM  = new ZSCTransactions(userName, fullAbi, controlApisAdvAdr);
+                //zscTmpsGM   = new ZSCTemplate(userName, fullAbi, controlApisAdvAdr);
+                //zscAgrsGM   = new ZSCAgreement(userName, fullAbi, controlApisAdvAdr);
+                //zscViewAgrsGM = new ZSCViewAgreement(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+                /*
                 zscBlockGM  = new ZSCBlock(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
                 zscPosGM    = new ZSCPos(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
-                zscViewAgrsGM = new ZSCViewAgreement(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+                zscWalletGM = new ZSCWallet(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+                */
                 loadHtmlPageBody("welecome");
             } else {
                 alert("User name or password wrong!!");
@@ -72,8 +74,8 @@
     }
 
     function applyForUser(type, hashLogId) {
-        zscUser.applyForUser(type, hashLogId, function() {
-            loadHtmlPageBody("applied");
+        zscUser.activeByUser(type, hashLogId, function() {
+            //loadHtmlPageBody("applied");
         }); 
     }
 
@@ -161,6 +163,18 @@
         });
     }
 
+    function loadLocalPageHeader() {
+        zscUser.getUserStatusFromAdm(function(status) {
+            if (status == 0) {
+                //Should not happen 
+            } else if (status == "added") {
+                zscHtml.loadPageHeader("loadHtmlPageBody", false);
+            } else if (status == "applied") {
+                zscHtml.loadPageHeader("loadHtmlPageBody", true);
+            } 
+        }); 
+    }
+
 </script>
 </head>
 <body>
@@ -173,25 +187,20 @@
     htmlLoadLogin();
 
     function loadHtmlPageBody(tag) {
-        document.getElementById("PageBody").innerHTML = "";  
-        zscHtml.loadPageHeader("loadHtmlPageBody");
-
         if (tag == "welecome") {
-            zscHtml.loadPageBody("welecome", ["loadHtmlPageBody"], "null");
-        } else if (tag == "apply") {
-            zscUser.getUserStatusFromAdm(function(status) {
-                if (status == 0) {
-                    //Should not happen 
-                } else if (ret == "added") {
-                    zscHtml.loadButtonForEnablingElement("applyForUser");
-                } else if (ret == "applied") {
-                    loadHtmlPageBody("applied");
-                } else if (ret == "approved") {
-                    loadHtmlPageBody("approved");
-                }
-            });  
-        } else if (tag == "applied") {
-            zscHtml.loadWaitingApproval("reFresh", zscUser.getUserType());
+            zscHtml.loadPageBody("welecome");
+            loadLocalPageHeader();
+
+        } else if (tag == "apply-provider") {
+            document.getElementById("PageHeader").innerHTML = "waiting for application...";  
+            document.getElementById("PageBody").innerHTML = '<div class="well"> <text id="ApplyForProviderHash"></text> </div>';
+            applyForUser("provider", "ApplyForProviderHash");
+
+        } else if (tag == "apply-receiver") {
+            document.getElementById("PageHeader").innerHTML = "waiting for application...";  
+            document.getElementById("PageBody").innerHTML = '<div class="well"> <text id="ApplyForProviderHash"></text> </div>';
+            applyForUser("receiver", "ApplyForReceiverHash");
+
         } else {
             switch(tag) {
                 case "wallet": 
@@ -217,21 +226,6 @@
                 case "agreement": 
                     zscAgrsGM.loadAgreements(function() {
                         zscAgrsGM.loadAgreementsHtml("PageBody", "showElementParameters", "submitPublishAgreement", "confirmPublishAgreement");
-                    });
-                    break;
-                case "block":
-                    zscBlockGM.loadAllBlocks(function() {
-                        zscBlockGM.loadBlockInfoHtml("PageBody");
-                    });
-                    break;
-                case "pos-reward":
-                    zscPosGM.loadRewardHistory(function() {
-                        zscAgrsGM.loadPosInfoHtml(true, "PageBody");
-                    });
-                    break;
-                case "pos-spused":
-                    zscPosGM.loadRewardHistory(function() {
-                        zscAgrsGM.loadPosInfoHtml(false, "PageBody");
                     });
                     break;
                 case "view-agreement":
