@@ -9,7 +9,8 @@ import "./object.sol";
 contract ControlApis {
     function createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address);
     function enableElementWallet(bytes32 _userName, bytes32 _tokeSymbol, address _extraAdr) public returns (address);
-    function setUserActiveStatus(bytes32 _user, bool _tag) public returns (bool);
+    function setUserStatus(bytes32 _user, bool _tag) public returns (bool);
+    function getUserStatus(bytes32 _user) public constant returns (bool);
 }
 
 contract AdmBase is Object {
@@ -17,14 +18,17 @@ contract AdmBase is Object {
         bytes32 name_ ;
         bytes32 status_ ; //0: not exist; 1: added; 2: applied; 3: approved;  4: locked
         bytes32 type_;    //1: provider; 2: receiver; 3: staker
+        bytes32 actived_;
         address id_   ;
         address nodeAdr_ ;
         address ethAdr_ ;
         address zscAdr_ ;
     }
-    TestUserInfo[] testUsers_;
+    uint public userNos_ = 0;
+
     mapping(bytes32 => bool) private userExist_;
     mapping(bytes32 => uint) private userIndex_;
+    mapping(uint => TestUserInfo) private testUsers_;
     mapping(bytes32 => address) private systemAdrs_;
 
     address public zscTestTokenAddress_;
@@ -32,7 +36,9 @@ contract AdmBase is Object {
     string public controlApisFullAib_;
     uint public allocatedZSC_;
 
-    modifier only_added(bytes32 _hexx) {require(testUsers_[userIndex_[_hexx]].status_ == 1); _;}
+    function checkAdded(bytes32 _hexx) internal constant {
+        require(testUsers_[userIndex_[_hexx]].status_ == "added");
+    }
     
     function AdmBase(bytes32 _name) public Object(_name) {}
 
@@ -65,29 +71,37 @@ contract AdmBase is Object {
         return controlApisFullAib_; 
     }
 
+    function getControlApisAdr() public constant returns (address) { 
+        return controlApisAdr_; 
+    }
+
     function addUser(bytes32 _user) public {
         checkDelegate(msg.sender, 1);
 
         addLog("add a User - ", true);
         addLog(PlatString.bytes32ToString(_user), false);
 
-        bytes32 ret = toHexx(_user);
         require(userExist_[_user] == false);
-
         userExist_[_user] = true;
-        userIndex_[ret] = testUsers_.length;
-        testUsers_.push(TestUserInfo(_user, "added", 0, address(0), address(0), address(0), address(0)));
+
+        userIndex_[toHexx(_user)] = userNos_;
+        testUsers_[userNos_] = TestUserInfo(_user, "added", 0, "false", address(0), address(0), address(0), address(0));
+        userNos_++;
     }
 
-    function activeByUser(bytes32 _hexx, bytes32 _type) public only_added(_hexx)  {
+    function activeByUser(bytes32 _hexx, bytes32 _type) public {
+        checkAdded(_hexx);
+
         uint index = getUserIndex(_hexx);
         testUsers_[index].status_ = "applied";
         testUsers_[index].type_ = _type;
+        testUsers_[index].actived_ = "true";
         testUsers_[index].id_ = msg.sender;
 
         bytes32 userName = testUsers_[index].name_;
         address creator = testUsers_[index].id_;
 
+/*
         //createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr)
         testUsers_[index].nodeAdr_ = ControlApis(controlApisAdr_).createElement(userName, _type, userName, "", creator);
         require(testUsers_[index].nodeAdr_ != address(0));
@@ -99,9 +113,28 @@ contract AdmBase is Object {
         testUsers_[index].zscAdr_ = ControlApis(controlApisAdr_).enableElementWallet(userName, "ZSC", creator);
         require(testUsers_[index].zscAdr_ != address(0));
 
-        ControlApis(controlApisAdr_).setUserActiveStatus(userName, true);
-
         transferAnyERC20Token(zscTestTokenAddress_, allocatedZSC_);
+*/
+        ControlApis(controlApisAdr_).setUserStatus(userName, true);
+
+        addLog("activeByUser - ", true);
+        addLog(PlatString.bytes32ToString(userName), false);
+    }
+
+    function setUserActiveState(bytes32 _user, bool _tag) public {
+        checkDelegate(msg.sender, 1);
+
+        require(userExist_[_user]);
+
+        bytes32 ret = toHexx(_user);
+        uint index = getUserIndex(ret);
+
+        if (_tag) {
+            testUsers_[index].actived_ = "true";
+        } else {
+            testUsers_[index].actived_ = "false";
+        }
+        ControlApis(controlApisAdr_).setUserStatus(_user, _tag);
     }
 
   
@@ -148,15 +181,16 @@ contract AdmBase is Object {
 
     function numUsers() public constant returns (uint) {
         checkDelegate(msg.sender, 1);
-        return testUsers_.length;
+        return userNos_;
     }
 
     function getUserInfoByIndex(uint _index) public constant returns (string) {
         checkDelegate(msg.sender, 1);
 
-        require(_index < testUsers_.length);
+        require(_index < userNos_);
         string memory str ="";
         str = PlatString.append(str, "info?name=", PlatString.bytes32ToString(testUsers_[_index].name_),    "&");
+        str = PlatString.append(str, "actived=",   PlatString.bytes32ToString(testUsers_[_index].actived_),  "&");
         str = PlatString.append(str, "status=",    PlatString.bytes32ToString(testUsers_[_index].status_),  "&");
         str = PlatString.append(str, "type=",      PlatString.bytes32ToString(testUsers_[_index].type_),    "&");
         str = PlatString.append(str, "id=",        PlatString.addressToString(testUsers_[_index].id_),      "&");
@@ -168,26 +202,30 @@ contract AdmBase is Object {
     }
 
     function tryLogin(bytes32 _user) public constant returns (bytes32) {
-        bytes32 hexx = toHexx(_user);
-        if (testUsers_[userIndex_[hexx]].status_ == 0) {
-            return 0x0;
+        if (userExist_[_user]) {
+            return toHexx(_user);
         } else {
-            return hexx;
+            return 0x0;
         }
     }
 
-    function keepOnline(bytes32 _user, bytes32 _hexx) public only_added(_hexx) constant returns (bool) {
+    function keepOnline(bytes32 _user, bytes32 _hexx) public constant returns (bool) {
+        checkAdded(_hexx);
         if (testUsers_[userIndex_[_hexx]].name_ == _user)
             return true;
         else 
             return false;
     }
 
-    function getUserStatus(bytes32 _hexx) public only_added(_hexx) constant returns (bytes32) {
+    function getUserStatus(bytes32 _hexx) public constant returns (bytes32) {
+        checkAdded(_hexx);
+
         return testUsers_[userIndex_[_hexx]].status_;
     }
 
-    function getUserType(bytes32 _hexx) public only_added(_hexx) constant returns (bytes32) {
+    function getUserType(bytes32 _hexx) public constant returns (bytes32) {
+        checkAdded(_hexx);
+
         return testUsers_[userIndex_[_hexx]].type_;
     }
 
