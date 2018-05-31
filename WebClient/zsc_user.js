@@ -9,6 +9,7 @@ function ZSCUser(admAdr) {
     this.userType;
     this.controlApisAdr;
     this.controlApisFullAbi;
+    this.myAdmAdv = web3.eth.contract(this.getLoginAbi()).at(this.admAdr);
 }
 ZSCUser.prototype.setControlApisAdr = function(adr) { this.controlApisAdr = adr; } 
 ZSCUser.prototype.setControlApisFullAbi = function(abi) { this.controlApisFullAbi = abi; } 
@@ -18,33 +19,52 @@ ZSCUser.prototype.getUserStatus = function() { return this.userStatus; }
 ZSCUser.prototype.getUserType = function() { return this.userType; }
 ZSCUser.prototype.getControlApisAdr = function() { return this.controlApisAdr; }
 ZSCUser.prototype.getControlApisFullAbi = function() { return this.controlApisFullAbi; }
-ZSCUser.prototype.getLoginAbi = function() { return [{"constant":true,"inputs":[{"name":"_user","type":"bytes32"},{"name":"_hexx","type":"bytes32"}],"name":"getFullAbi","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"bytes32"},{"name":"_pass","type":"bytes32"}],"name":"tryLogin","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}]; }
+ZSCUser.prototype.getLoginAbi = function() { 
+    return [{"constant":true,"inputs":[],"name":"getControlApisFullAbi","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisAdr","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_hexx","type":"bytes32"},{"name":"_type","type":"bytes32"}],"name":"activeByUser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"bytes32"}],"name":"tryLogin","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_hexx","type":"bytes32"}],"name":"getUserType","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"bytes32"},{"name":"_hexx","type":"bytes32"}],"name":"keepOnline","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_hexx","type":"bytes32"}],"name":"getUserStatus","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}];
+}
 
-ZSCUser.prototype.tryLogin = function(user, pass, func){
-    var myContract = web3.eth.contract(this.getLoginAbi());
-    var myControlApi = myContract.at(this.admAdr);
+ZSCUser.prototype.tryLogin = function(user, func){
+    var gm = this;
+    var callBack = func;
+    var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
 
-    myControlApi.tryLogin(user, pass, function(error, hexx) {
+    myAdmAdv.tryLogin(user, function(error, hexx) {
         if(!error) {
             if (hexx == 0x0) {
-                func(false);
+                callBack(false);
             } else {
-                this.getFullAbi(user, hexx, adr, func);
+                gm.getAdr(gm, user, hexx, func);
             }
-        } else console.log("error: " + error);
+        } else { 
+            console.log("error: " + error);
+        }
+    });
+}
+
+ZSCUser.prototype.getAdr = function(gm, user, hexx, func){
+    var callBack = func;
+    var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
+
+    myAdmAdv.getControlApisAdr(function(error, adr) {
+        if(!error) { 
+            gm.getFullAbi(gm, user, hexx, adr, callBack);
+        } else {
+            console.log("error: " + error);
+        }
     } );
 }
 
-ZSCUser.prototype.getFullAbi = function (user, hexx, adr, func){
-    var myContract = web3.eth.contract(this.getLoginAbi());
-    var myControlApi = myContract.at(adr);
-    myControlApi.getFullAbi(user, hexx, adr, function(error, fullAbi) {
+ZSCUser.prototype.getFullAbi = function(gm, user, hexx, adr, func){
+    var callBack = func;
+    var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
+
+    myAdmAdv.getControlApisFullAbi(function(error, fullAbi) {
         if(!error) { 
-            this.userName = user;
-            this.userNameHr = hex;
-            this.controlApisAdr = adr;
-            this.controlApisFullAbi = fullAbi;
-            func(true);
+            gm.userName = user;
+            gm.userNameHr = hexx;
+            gm.controlApisAdr = adr;
+            gm.controlApisFullAbi = fullAbi;
+            callBack(true);
         } else {
             console.log("error: " + error);
         }
@@ -52,38 +72,41 @@ ZSCUser.prototype.getFullAbi = function (user, hexx, adr, func){
 }
 
 ZSCUser.prototype.keepOnline = function(func){
-    var myContract = web3.eth.contract(this.getLoginAbi());
-    var myControlApi = myContract.at(this.admAdr);
+    var callBack = func;
+    var gm = this;
+    var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
 
-    myControlApi.keepOnline(this.userName, this.userNameHr, function(error, ret) {
-        if(!error) func(ret);
+    myAdmAdv.keepOnline(gm.userName, gm.userNameHr, function(error, ret) {
+        if(!error) callBack(ret);
         else console.log("error: " + error);
     } );
 }
 
-ZSCUser.prototype.applyForUser = function(type, hashLogId, func){
-    var myContract = web3.eth.contract(this.getLoginAbi());
-    var myControlApi = myContract.at(this.admAdr);
+ZSCUser.prototype.activeByUser = function(type, hashLogId, func){
+    var callBack = func;
+    var gm = this;
+    var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
 
-    myControlApi.applyForUser(this.userNameHr, type, function(error, ret) {
+    myAdmAdv.activeByUser(this.userNameHr, type, function(error, ret) {
         if(!error) { 
-            this.type = type;
-            bF_showHashResult(ret, hashLogId, func);
+            gm.type = type;
+            bF_showHashResult(ret, hashLogId, callBack);
         } else { 
             console.log("error: " + error);
         }
     } );
 }
 
-ZSCUser.prototype.getUserStatusFromAdm = function(func){
-    var myContract = web3.eth.contract(this.getLoginAbi());
-    var myControlApi = myContract.at(this.admAdr);
+ZSCUser.prototype.getUserStatusFromAdm = function(func) {
+    var gm = this;
+    var callBack = func;
+    var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
 
-    myControlApi.getUserStatus(this.userNameHr,
+    myAdmAdv.getUserStatus(gm.userNameHr,
         function(error, ret) {
             if(!error) { 
-                this.userStatus = toUtf8(ret);
-                func(this.userStatus);
+                gm.userStatus = web3.toUtf8(ret);
+                callBack(gm.userStatus);
             } else { 
                 console.log("error: " + error);
              }
