@@ -60,4 +60,14 @@ contract DBReceiver is DBUser {
         require(_index < agrNos_);
         return agreements_[_index];
     }
+
+    function numTemplates() public constant returns (uint) {
+        checkDelegate(msg.sender, 1);
+        return 0;
+    }
+
+    function getTemplateByIndex(uint _index) public constant returns (address) {
+        checkDelegate(msg.sender, 1);
+        return address(_index - _index);
+    }
 }
