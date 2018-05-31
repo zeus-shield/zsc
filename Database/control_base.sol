@@ -56,7 +56,9 @@ contract DBFactory {
 }
 
 contract DBDatabase {
+    function delegateFactory(address _adr, uint _priority) public;
     function getNode(bytes32 _name) public constant returns (address);
+    function getRootNode() public constant returns (address);
     function destroyNode(address _node) public returns (bool);
     function checkeNodeByAddress(address _adr) public constant returns (bool);
     function _addNode(address _node) public ;
@@ -90,15 +92,14 @@ contract ControlBase is ControlInfo {
         addLog("initControlApisAdrs ", true);
     }
 
-    function mapFactoryDatabase(bytes32 _factoryName, bytes32 _dbName, uint _priority) internal {
+    function mapFactoryDatabase(address _factoryAdr, bytes32 _dbName, uint _priority) internal {
         addLog("mapFactoryDatabase", true);
-        address factoryAdr = factories_[_factoryName];
         address dbAdr      = databases_[_dbName];
 
-        require(factoryAdr != 0 && dbAdr != 0);
+        require(_factoryAdr != 0 && dbAdr != 0);
 
-        DBFactory(factoryAdr).setDatabase(dbAdr);
-        Object(dbAdr).setDelegate(factoryAdr, _priority);
+        DBFactory(_factoryAdr).setDatabase(dbAdr);
+        DBDatabase(dbAdr).delegateFactory(_factoryAdr, _priority);
     }
 
     function addComponent(bytes32 _type, bytes32 _name, address _adr) internal returns (bool) {
@@ -110,7 +111,7 @@ contract ControlBase is ControlInfo {
         if (_type == "factory") {
             require(factories_[_name] == address(0));
             factories_[_name] = _adr;
-            mapFactoryDatabase(_name, dbName_, 1);
+            mapFactoryDatabase(_adr, dbName_, 1);
         } else if (_type == "database") {
             require(databases_[_name] == address(0));
             databases_[_name] = _adr;        
@@ -172,8 +173,8 @@ contract ControlBase is ControlInfo {
 
     function createFactoryNode(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra, address _creator) internal returns (address) {
         address userAdr;
-        address parentAdr;
         address ndAdr;
+        address parentAdr = getDBDatabase(dbName_).getRootNode();
 
         if (_type == "template") {
             userAdr = address(getDBNode(dbName_, _userName));
@@ -183,7 +184,12 @@ contract ControlBase is ControlInfo {
             parentAdr = address(getDBNode(dbName_, _extra));
         }
 
+        require(address(getDBNode(dbName_, _nodeName)) == 0);
+
         ndAdr = getDBFactory(_type).createNode(_nodeName, parentAdr, _creator);
+
+        return 0;
+
         require(ndAdr != 0);
 
         if (_type == "provider" || _type == "receiver" || _type == "staker") {
