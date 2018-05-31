@@ -21,11 +21,8 @@ contract Recorder {
 }
 
 contract Object is Delegated {
-
     bytes32 private name_ = "null";
     address public logRecorder_ = 0;
-
-    string public objectLog_ ;
 
     // Constructor
     function Object(bytes32 _name) public { 
@@ -55,8 +52,6 @@ contract Object is Delegated {
         if (logRecorder_ != 0) {
             Recorder(logRecorder_).addLog(_log, _newLine);
         }
-
-        objectLog_ = PlatString.append(" | ", objectLog_,  _log);
     }
 
     // ------------------------------------------------------------------------
