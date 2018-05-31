@@ -35,16 +35,6 @@ contract DBProvider is DBUser {
         addFundamentalParameter("claimPhone");
     }
 
-    function numTemplateChildren(uint _tmpIndex) internal constant returns (uint) {
-        address tmpNode = DBNode(getHandler("template")).getChildByIndex(_tmpIndex);
-        return DBNode(tmpNode).numChildren();
-    }
-
-    function getTemplateChildByIndex(uint _tmpIndex, uint _childIndex) internal constant returns (address) {
-        address tmpNode = DBNode(getHandler("template")).getChildByIndex(_tmpIndex);
-        return DBNode(tmpNode).getChildByIndex(_childIndex);
-    }
-    
     function addParameter(bytes32 _parameter) public returns (bool) {
         checkDelegate(msg.sender, 1);
         return false;
@@ -56,41 +46,47 @@ contract DBProvider is DBUser {
         return false;
         return super.removeParameter(_parameter);
     }
-    
-    function numAgreements() public constant returns (uint) {
+
+    function numTemplates() public constant returns (uint) {
         checkDelegate(msg.sender, 1);
 
-        uint agrNos = 0;
-        address agrParentNode = getHandler("provider");
-        uint tmpNos = DBNode(agrParentNode).numChildren();
+        uint nos = 0;
+        uint total = numChildren();
+        address child;
 
-        for (uint i = 0; i < tmpNos; ++i) {
-            agrNos = agrNos.add(numTemplateChildren(i));
+        for (uint i = 0; i < total;  ++i) {
+            child = getChildByIndex(i);
+            if (DBNode(child).getNodeType() == "template") nos++;
         }
-        return agrNos;
+        return nos;
+    }
+
+    function getTemplateByIndex(uint _index) public constant returns (address) {
+        checkDelegate(msg.sender, 1);
+
+        uint total = numChildren();
+        require(_index < total);
+
+        uint pos = 0;
+        address child;
+
+        for (uint i = 0; i < total; ++i) {
+            child = getChildByIndex(i);
+            if (DBNode(child).getNodeType() == "template") {
+                if (pos == _index) return child;
+                else pos++;
+            }
+        }
+        revert();
+    }
+
+    function numAgreements() public constant returns (uint) {
+        checkDelegate(msg.sender, 1);
+        return 0;
     }
 
     function getAgreementByIndex(uint _index) public constant returns (address) {
         checkDelegate(msg.sender, 1);
-
-        uint agrNos = 0;
-        address agrParentNode = getHandler("provider");
-        uint tmpNos = DBNode(agrParentNode).numChildren();
-        address child;
-        uint pos = 0;
-
-        for (uint i = 0; i < tmpNos; ++i) {
-            child = DBNode(agrParentNode).getChildByIndex(i);
-            agrNos = DBNode(child).numChildren();
-            for (uint j = 0; j < agrNos; ++j) {
-                if (_index == pos) {
-                    return getTemplateChildByIndex(i, j);
-                } else {
-                    pos++;
-                }
-            }
-        }
-
-        revert();
+        return address(_index - _index);
     }
 }
