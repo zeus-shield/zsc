@@ -13,15 +13,14 @@ contract DBUser is DBEntity {
     function DBUser(bytes32 _name) public DBEntity(_name) {
     } 
 
+/*
     function configureSingleHandle(bytes32 _nameSuffix) private returns (address) {
         string memory str = PlatString.append(name(), _nameSuffix);
         address nd = new DBNode(PlatString.tobytes32(str));
         require(nd != 0);
 
-        DBNode(nd).setDelegate(address(this), 1);
         DBNode(nd).setId(getId());
-        super.addChild(nd);
-
+        addChild(nd);
         return nd;
     }
 
@@ -40,9 +39,13 @@ contract DBUser is DBEntity {
         checkDelegate(msg.sender, 1);
         return handlers_[_type];
     }
-
+*/
     function numAgreements() public constant returns (uint);
 
+    function numTemplates() public constant returns (uint);
+
     function getAgreementByIndex(uint _index) public constant returns (address);
+
+    function getTemplateByIndex(uint _index) public constant returns (address);
 }
 
