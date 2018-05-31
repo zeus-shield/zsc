@@ -12,7 +12,8 @@ contract ControlApis is ControlBase {
     function ControlApis(bytes32 _name) public ControlBase(_name) {
     }
 
-    function setUserActiveStatus(bytes32 _user, bool _tag) public returns (bool);
+    function setUserStatus(bytes32 _user, bool _tag) public returns (bool);
+    function getUserStatus(bytes32 _user) public constant returns (bool);
 
     /// @dev Set the zsc adm address
     /// @param _adm The address of the zsc adm 
@@ -100,18 +101,20 @@ contract ControlApis is ControlBase {
     /// @param _extraInfo The extra information
     /// @param _extraAdr The extra address
     function createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
-        checkRegistered(_userName, msg.sender);
-
         require(_factoryType != "staker");
 
         address creatorAdr;
         if (isDelegate(msg.sender, 1)) {
             creatorAdr = _extraAdr;
         } else {
+            checkRegistered(_userName, msg.sender);
             creatorAdr = msg.sender;
         }
-
+        
         address ndAdr = createFactoryNode(_factoryType, _userName, _enName, _extraInfo, creatorAdr);
+
+        return 0;
+
         require(ndAdr != address(0));
 
         if (_factoryType == "provider" || _factoryType == "receiver") {
