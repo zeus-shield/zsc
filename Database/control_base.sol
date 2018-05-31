@@ -33,10 +33,13 @@ contract DBNode {
     function getTransactionInfoByIndex(uint _index) public constant returns (uint, bool,  bytes32, uint, address, address);
 
     function setAgreementStatus(bytes32 _tag, bytes32 receiver) public returns (bool);
-    function configureHandlers() public returns (bool);
-    function getHandler(bytes32 _type) public constant returns (address);
+    //function configureHandlers() public returns (bool);
+    //function getHandler(bytes32 _type) public constant returns (address);
+
     function numAgreements() public constant returns (uint);
+    function numTemplates() public constant returns (uint);
     function getAgreementByIndex(uint _index) public constant returns (address);
+    function getTemplateByIndex(uint _index) public constant returns (address);
 
     function numChildren() public constant returns(uint);
     function getChildByIndex(uint _index) public  constant returns(address);
@@ -85,7 +88,6 @@ contract ControlBase is ControlInfo {
         require (_adm != 0 && _zscToken != 0);     
 
         zscTokenAddress_ = _zscToken;
-
         bindedAdm_ = _adm;
         setDelegate(bindedAdm_, 1);
 
@@ -93,11 +95,7 @@ contract ControlBase is ControlInfo {
     }
 
     function mapFactoryDatabase(address _factoryAdr, bytes32 _dbName, uint _priority) internal {
-        addLog("mapFactoryDatabase", true);
-        address dbAdr      = databases_[_dbName];
-
-        require(_factoryAdr != 0 && dbAdr != 0);
-
+        address dbAdr = databases_[_dbName];
         DBFactory(_factoryAdr).setDatabase(dbAdr);
         DBDatabase(dbAdr).delegateFactory(_factoryAdr, _priority);
     }
@@ -145,13 +143,12 @@ contract ControlBase is ControlInfo {
 
     function formatWalletName(bytes32 _userName, bytes32 _tokenSymbol) internal pure returns (bytes32) {
         string memory str;
-        bytes32 temp;
         if (_tokenSymbol == "ETH") {
             str = PlatString.append(_userName, "-ETH");
         } else {
             str = PlatString.append(_userName, "-", _tokenSymbol);
         }
-        temp = PlatString.tobytes32(str);
+        return PlatString.tobytes32(str);
     }
 
     function duplicateNode(address _nodeSrcAdr, address _nodeDstAdr) internal returns (bool) {
@@ -172,30 +169,18 @@ contract ControlBase is ControlInfo {
     }
 
     function createFactoryNode(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra, address _creator) internal returns (address) {
-        address userAdr;
         address ndAdr;
         address parentAdr = getDBDatabase(dbName_).getRootNode();
 
         if (_type == "template") {
-            userAdr = address(getDBNode(dbName_, _userName));
-            parentAdr = DBNode(userAdr).getHandler("template");
+            parentAdr = address(getDBNode(dbName_, _userName));
         } else if (_type == "agreement") {
-            userAdr = address(getDBNode(dbName_, _userName));
             parentAdr = address(getDBNode(dbName_, _extra));
         }
 
         require(address(getDBNode(dbName_, _nodeName)) == 0);
-
         ndAdr = getDBFactory(_type).createNode(_nodeName, parentAdr, _creator);
-
-        return 0;
-
         require(ndAdr != 0);
-
-        if (_type == "provider" || _type == "receiver" || _type == "staker") {
-            DBNode(ndAdr).configureHandlers();
-            DBNode(ndAdr).setId(_creator);
-        } 
 
         if (_type == "template") {
             DBNode(ndAdr).setParameter("provider", _userName);
@@ -203,7 +188,46 @@ contract ControlBase is ControlInfo {
             duplicateNode(getDBNode(dbName_, _extra),  ndAdr);
             DBNode(ndAdr).setAgreementStatus("READY", "null");
         }
+
+        if (_type == "provider" || _type == "receiver" || _type == "agreement") {
+            enableZSCWallet(_nodeName, ndAdr, _creator);
+        }
         return ndAdr;
+    }
+
+    function enableZSCWallet(bytes32 _enName, address _enAdr,  address _creator) private {
+        bytes32 walletName = formatWalletName(_enName, "ZSC");
+        getDBFactory("wallet-erc20").createNode(walletName, _enAdr, _creator);
+        require(walletAdr != 0);
+        DBNode(walletAdr).setERC20TokenAddress(zscTokenAddress_); 
+    }
+
+    function enableWalletByUser(bytes32 _enName, bytes32 _tokeSymbol, address _creator) internal returns (address) {
+        address ndAdr = address(getDBNode(dbName_, _enName));
+        require(ndAdr != address(0));
+        
+        bytes32 ndType = DBNode(ndAdr).getNodeType();
+        require(ndType == "provider" || ndType == "receiver" || ndType == "template" || ndType == "agreement");
+        require(_tokeSymbol == "ZSC");
+
+        bytes32 factoryType;
+        address parentNode   = ndAdr;    
+        bytes32 walletName = formatWalletName(_enName, _tokeSymbol);
+
+        if (_tokeSymbol == "ETH") {
+            factoryType = "wallet-eth";
+        } else {
+            factoryType = "wallet-erc20";
+        }
+
+        address walletAdr  = getDBFactory(factoryType).createNode(walletName, parentNode, _creator);
+        require(walletAdr != 0);
+
+        if (factoryType == "wallet-erc20") {
+            DBNode(walletAdr).setERC20TokenAddress(zscTokenAddress_);  
+        }  
+
+        return walletAdr;
     }
 
     function deleteAgreement( bytes32 _agrName) internal returns (bool) {
@@ -226,34 +250,6 @@ contract ControlBase is ControlInfo {
 
         DBNode(userWallet).executeTransaction(userWallet, lockedAmount);
         return getDBDatabase(dbName_).destroyNode(agrAdr);
-    }
-
-    function enableWalletByUser(bytes32 _enName, bytes32 _tokeSymbol, address _creator) internal returns (address) {
-        address ndAdr = address(getDBNode(dbName_, _enName));
-        require(ndAdr != address(0));
-        
-        bytes32 ndType = DBNode(ndAdr).getNodeType();
-        require(ndType == "provider" || ndType == "receiver");
-        require(_tokeSymbol == "ZSC" || _tokeSymbol == "ETH");
-
-        bytes32 factoryType;
-        address parentNode   = DBNode(ndAdr).getHandler("wallet");   
-        bytes32 walletName = formatWalletName(_enName, _tokeSymbol);
-
-        if (_tokeSymbol == "ETH") {
-            factoryType = "wallet-eth";
-        } else {
-            factoryType = "wallet-erc20";
-        }
-
-        address walletAdr  = getDBFactory(factoryType).createNode(walletName, parentNode, _creator);
-        require(walletAdr != 0);
-
-        if (factoryType == "wallet-erc20") {
-            DBNode(walletAdr).setERC20TokenAddress(zscTokenAddress_);  
-        }  
-
-        return walletAdr;
     }
 
     function conductInformTransaction(bytes32 _enName, address _dest, uint256 _amount) internal returns (bool) {
