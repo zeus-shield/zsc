@@ -9,6 +9,7 @@ function ZSCUser(admAdr) {
     this.userType;
     this.controlApisAdr;
     this.controlApisFullAbi;
+    this.account = web3.eth.accounts[0];
     this.myAdmAdv = web3.eth.contract(this.getLoginAbi()).at(this.admAdr);
 }
 ZSCUser.prototype.setControlApisAdr = function(adr) { this.controlApisAdr = adr; } 
@@ -82,18 +83,19 @@ ZSCUser.prototype.keepOnline = function(func){
     } );
 }
 
-ZSCUser.prototype.activeByUser = function(type, hashLogId, func){
-    var callBack = func;
+ZSCUser.prototype.activeByUser = function(type, hashLogId){
     var gm = this;
     var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
 
-    myAdmAdv.activeByUser(this.userNameHr, type, function(error, ret) {
-        if(!error) { 
-            gm.type = type;
-            bF_showHashResult(ret, hashLogId, callBack);
-        } else { 
-            console.log("error: " + error);
-        }
+    myAdmAdv.activeByUser(gm.userNameHr, type, 
+        {from: gm.account, gas: 9000000},
+        function(error, ret) {
+            if(!error) { 
+                gm.type = type;
+                bF_showHashResult(hashLogId, ret, function(){window.location.reload(true);});
+            } else { 
+                console.log("error: " + error);
+            }
     } );
 }
 
