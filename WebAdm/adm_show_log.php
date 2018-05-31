@@ -36,8 +36,8 @@ echo $htmlObjects->loadAllAdrs();
     <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("FactoryRec")."')"?>">FactoryRec</button> 
     <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("FactoryTmp")."')"?>">FactoryTmp</button> 
     <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("FactoryAgr")."')"?>">FactoryAgr</button> 
-    <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("FactoryAgr")."')"?>">FactoryWalletEth</button> 
-    <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("FactoryAgr")."')"?>">FactoryWalletErc20</button> 
+    <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("FactoryWalletEth")."')"?>">FactoryWalletEth</button> 
+    <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("FactoryWalletErc20")."')"?>">FactoryWalletErc20</button> 
     <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("ControlApisAdv")."')"?>">ControlApisAdv</button><br><br>
     <text id = "SystemLog0"></text> 
     <text id = "SystemLog1"></text> 
