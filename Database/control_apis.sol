@@ -24,6 +24,7 @@ contract ControlApis is ControlBase {
 
     function addSystemComponent(bytes32 _type, bytes32 _name, address _adr) public returns (bool) {
         checkDelegate(msg.sender, 1);
+        require(_adr != address(0));
         return addComponent(_type, _name, _adr);
     }
 
@@ -110,7 +111,7 @@ contract ControlApis is ControlBase {
             checkRegistered(_userName, msg.sender);
             creatorAdr = msg.sender;
         }
-        
+
         address ndAdr = createFactoryNode(_factoryType, _userName, _enName, _extraInfo, creatorAdr);
 
         return 0;
@@ -299,8 +300,7 @@ contract ControlApis is ControlBase {
     function numTemplates(bytes32 _userName) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
 
-        address adr = getDBNode(getCurrentDBName(), _userName).getHandler("template");
-        return DBNode(adr).numChildren();
+        return getDBNode(getCurrentDBName(), _userName).numTemplates();
     }
 
     function getTemplateNameByIndex(bytes32 _userName, uint _index) public constant returns (bytes32) {
