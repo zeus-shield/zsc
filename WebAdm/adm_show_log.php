@@ -1,10 +1,17 @@
+<?php 
+/*
+Copyright (c) 2018 ZSC Dev Team
+*/
+?>
 
-
-<?php include("adm_header.php"); ?>
+<?php
+include("adm_header.php");
+$htmlObjects = new ZSCHtmlObjects();
+?>
 
 <html>
 <head>
-<?php echo includeScriptFiles(); ?>
+<?php echo $htmlObjects->loadScriptFiles(); ?>
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
     
@@ -12,22 +19,43 @@
 </head>
 <body>
 
-<?php echo includeHeader();?>
+<?php     
+echo $htmlObjects->loadHeader(); 
+?>
 
-<div class="page-header"><font size="5" color="blue" >Setup ZSC system in the testing envrioment</font></div>
-
-<?php echo includAllAdrs();?>
+<div class="page-header"><font size="5" color="blue" >ZSC Alpha-test Adm: show log</font></div>
+ <?php     
+echo $htmlObjects->loadAllAdrs();
+?>   
 
 <text>Log:</text>
 <div class="well">
-    <button type="button" onClick="<?php echo "sF_changeLogerModule('".readModuleAddress("DBDatabase")."')"?>">DBDatabase</button> 
-    <button type="button" onClick="<?php echo "sF_changeLogerModule('".readModuleAddress("FactoryPro")."')"?>">FactoryPro</button> 
-    <button type="button" onClick="<?php echo "sF_changeLogerModule('".readModuleAddress("ControlApisAdv")."')"?>">ControlApisAdv</button>  <br>
-    <text id = "SystemLog">Log:</text> <br>
+    <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("AdmAdv")."')"?>">AdmAdv</button> 
+    <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("DBDatabase")."')"?>">DBDatabase</button> 
+    <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("FactoryPro")."')"?>">FactoryPro</button> 
+    <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("FactoryRec")."')"?>">FactoryRec</button> 
+    <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("FactoryTmp")."')"?>">FactoryTmp</button> 
+    <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("FactoryAgr")."')"?>">FactoryAgr</button> 
+    <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("FactoryAgr")."')"?>">FactoryWalletEth</button> 
+    <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("FactoryAgr")."')"?>">FactoryWalletErc20</button> 
+    <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("ControlApisAdv")."')"?>">ControlApisAdv</button><br><br>
+    <text id = "SystemLog0"></text> 
+    <text id = "SystemLog1"></text> 
+    <text id = "SystemLog2"></text> 
+    <text id = "SystemLog3"></text> 
+    <text id = "SystemLog4"></text> 
+    <text id = "SystemLog5"></text> 
+    <text id = "SystemLog6"></text> 
+    <text id = "SystemLog7"></text> 
+    <text id = "SystemLog8"></text> 
 </div>
 <script type="text/javascript">
-    var adrs = <?php echo getLogedModuleAddressArrayInString()?>;
-    sF_initSystemModule("SystemLog", adrs, module + "Hash");
+	var logedModuleAdrs = <?php echo $htmlObjects->getLogedObjectAddressArrayInString()?>;
+    var recorderAdr = "<?php echo $htmlObjects->readObjectAddress('LogRecorder')?>";
+
+    //function sF_initSystemLog(logRecorderAdr, adrs, elementID, initialModuleIndex) {
+    sF_initSystemLog(recorderAdr, logedModuleAdrs, "SystemLog", 0);
+
 </script>      
 </body>
 </html>
