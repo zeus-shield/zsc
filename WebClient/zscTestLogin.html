@@ -11,11 +11,9 @@
 <script type="text/javascript" src="./htmlFormat.js"></script>
 <script type="text/javascript" src="./basicFunctions.js"></script>
 <script type="text/javascript" src="./zsc_agreements.js"></script>
-<script type="text/javascript" src="./zsc_block.js"></script>
 <script type="text/javascript" src="./zsc_client.js"></script>
 <script type="text/javascript" src="./zsc_element.js"></script>
 <script type="text/javascript" src="./zsc_html.js"></script>
-<script type="text/javascript" src="./zsc_pos.js"></script>
 <script type="text/javascript" src="./zsc_templates.js"></script>
 <script type="text/javascript" src="./zsc_transactions.js"></script>
 <script type="text/javascript" src="./zsc_user.js"></script>
@@ -74,9 +72,7 @@
     }
 
     function applyForUser(type, hashLogId) {
-        zscUser.activeByUser(type, hashLogId, function() {
-            //loadHtmlPageBody("applied");
-        }); 
+        zscUser.activeByUser(type, hashLogId);
     }
 
     function reFresh() {
@@ -171,6 +167,7 @@
                 zscHtml.loadPageHeader("loadHtmlPageBody", false);
             } else if (status == "applied") {
                 zscHtml.loadPageHeader("loadHtmlPageBody", true);
+                loadHtmlPageBody("applied");
             } 
         }); 
     }
@@ -192,15 +189,15 @@
             loadLocalPageHeader();
 
         } else if (tag == "apply-provider") {
-            document.getElementById("PageHeader").innerHTML = "waiting for application...";  
+            document.getElementById("PageHeader").innerHTML = "Applying... <br> Need to reload once succeeded";  
             document.getElementById("PageBody").innerHTML = '<div class="well"> <text id="ApplyForProviderHash"></text> </div>';
             applyForUser("provider", "ApplyForProviderHash");
 
         } else if (tag == "apply-receiver") {
-            document.getElementById("PageHeader").innerHTML = "waiting for application...";  
+            document.getElementById("PageHeader").innerHTML = "Applying... <br> Need to reload once succeeded";  
             document.getElementById("PageBody").innerHTML = '<div class="well"> <text id="ApplyForProviderHash"></text> </div>';
             applyForUser("receiver", "ApplyForReceiverHash");
-
+            
         } else {
             switch(tag) {
                 case "wallet": 
