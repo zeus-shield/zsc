@@ -108,19 +108,9 @@ contract AdmBase is Object {
 
         //createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr)
         testUsers_[index].nodeAdr_ = ControlApis(controlApisAdr_).createElement(userName, _type, userName, "", creator);
-        
-        //require(testUsers_[index].nodeAdr_ != address(0));
-/*
-        //enableElementWallet(bytes32 _userName, bytes32 _tokeSymbol, address _extraAdr);
-        testUsers_[index].ethAdr_ = ControlApis(controlApisAdr_).enableElementWallet(userName, "ETH", creator);
-        require(testUsers_[index].ethAdr_ != address(0));
-
-        testUsers_[index].zscAdr_ = ControlApis(controlApisAdr_).enableElementWallet(userName, "ZSC", creator);
-        require(testUsers_[index].zscAdr_ != address(0));
 
         transferAnyERC20Token(zscTestTokenAddress_, allocatedZSC_);
         ControlApis(controlApisAdr_).setUserStatus(userName, true);
-*/
 
         addLog("activeByUser - ", true);
         addLog(PlatString.bytes32ToString(userName), false);
