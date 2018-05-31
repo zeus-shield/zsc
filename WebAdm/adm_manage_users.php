@@ -18,15 +18,11 @@ echo $htmlObjects->loadScriptFiles();
     var userManager = new ZSCUserManagement(AdmAdvAdr, cC_getContractAbi('AdmAdv'));
 
     function addUser(usernameId, elementId) {
-        userManager.addUser(usernameId, elementId, function() {
-        	window.location.reload(true);
-        });
+        userManager.addUser(usernameId, elementId);
     }
 
     function setUserStatus(userName, status, elementId) {
-        userManager.setUserActiveStatus(userName, status, elementId, function() {
-            window.location.reload(true);
-        });    
+        userManager.setUserActiveState(userName, status, elementId);   
     }
 
     function showUserDetails(showType, userName, elementId) {
@@ -46,8 +42,6 @@ echo $htmlObjects->loadScriptFiles();
 <?php echo $htmlObjects->loadHeader();?>
 
 <div class="page-header"><font size="5" color="blue" >Manage ZSC users</font></div>
-
-<?php echo $htmlObjects->loadAllAdrs();?>
 
     <div class="well">
         <text>Username</text>  <input type="text" id="AddUserName" value="test"></input> <br>
