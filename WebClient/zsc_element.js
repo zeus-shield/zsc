@@ -11,7 +11,8 @@ function ZSCElement(userName, controlApisAdvAbi, controlApisAdvAdr) {
     this.nodeAddress = 0;
     this.parameterNames = [];
     this.parameterValues = [];
-    this.myControlApi = web3.eth.contract(controlApisAdvAbi).at(controlApisAdvAdr);
+    this.contractAdr = controlApisAdvAdr;
+    this.contractAbi = controlApisAdvAbi;
 }
 
 ZSCElement.prototype = new ZSCClient();
@@ -21,31 +22,40 @@ ZSCElement.prototype.setElementName = function(nm) {this.enName = nm;}
 ZSCElement.prototype.getElementName = function() { return this.enName;}
 
 ZSCElement.prototype.doesElementExisit = function(func) {
-    this.myControlApi.doesElementExist(this.userName, this.enName, 
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.doesElementExist(gm.userName, gm.enName, 
         function(error, ret){ 
-            if(!error) func(ret);  
+            if(!error) callBack(ret);  
             else  console.log("error: " + error);
         });
 }
 
 ZSCElement.prototype.loadParameterNamesAndvalues = function(func) {
-    this.numParameters(function() {
-        this.loadParameterNames(function() {
-            this.loadParameterValues(function(index){
-                if (index == this.parameNos - 1) {
-                    func();
+    var gm = this;
+
+    gm.numParameters(gm, function() {
+        gm.loadParameterNames(gm, function() {
+            gm.loadParameterValues(gm, function(index){
+                if (index == gm.parameNos - 1) {
+                    callBack();
                 }
             });
         }); 
     });
 }
 
-ZSCElement.prototype.numParameters = function(func) {
-    this.myControlApi.numElementParameters(this.userName, this.enName, 
+ZSCElement.prototype.numParameters = function(gm, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.numElementParameters(gm.userName, gm.enName, 
         {from: this.getAccount()},
         function(error, num){ 
             if(!error) { 
-                this.parameNos = num.toString(10); 
+                gm.parameNos = num.toString(10); 
                 func();
             } else {
                 console.log("error: " + error);
@@ -53,18 +63,24 @@ ZSCElement.prototype.numParameters = function(func) {
          });
 }
 
-ZSCElement.prototype.loadParameterNames = function(func) {
-    for (var i = 0; i < this.parameNos; ++i) {
-        loadParameterNameByIndex(i, function(index, para) {
-            uF_parameters[index] = para;
-            if (index == this.parameNos - 1) {
+ZSCElement.prototype.loadParameterNames = function(gm, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    for (var i = 0; i < gm.parameNos; ++i) {
+        loadParameterNameByIndex(gm, i, function(index, para) {
+            gm.parameterNames[index] = para;
+            if (index == gm.parameNos - 1) {
                 func();
             }
         });
     } 
 } 
 
-ZSCElement.prototype.loadParameterNameByIndex = function(index, func) {
+ZSCElement.prototype.loadParameterNameByIndex = function(gm, index, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
     this.myControlApi.getElementParameterNameByIndex(this.userName, this.enName, index, 
         {from: this.getAccount()},
         function(error, para){ 
