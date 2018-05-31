@@ -49,12 +49,7 @@ contract DBDatabase is Object {
 
     function delegateFactory(address _adr, uint _priority) public {
         checkDelegate(msg.sender, 1);
-
-        addLog(" sub setDelegate ", true);
-        addLog(PlatString.addressToString(_adr), false);
-        addLog("  |  ", false);
-        //addLog(PlatString.uintToString(_priority),false);
-
+        
         setDelegate(_adr, _priority);
         DBNode(rootNode_).setDelegate(_adr, 1);
 
