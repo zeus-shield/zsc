@@ -20,8 +20,8 @@ $htmlObjects = new ZSCHtmlObjects();
     var web3 = setupWeb3js(false);
     var zscSetup = new ZSCSetup(recorderAdr, zscTokenAddress, logedModuleAdrs);
 
-    function addGM(module, elementId) {
-        zscSetup.addGM(module, elementId);
+    function addGMModule(module, elementId) {
+        zscSetup.addGMModule(module, elementId);
     }
 </script>
 </head>
@@ -29,11 +29,10 @@ $htmlObjects = new ZSCHtmlObjects();
 <?php 
     echo $htmlObjects->loadHeader(); 
     echo '<div class="page-header"> <font size="5" color="blue" >Add Component - Manager </font></div>';
-    echo $htmlObjects->loadAllAdrs();
 ?>
 
     <div class="well">
-        <?php echo $htmlObjects->loadAddGMs('addGM');?>
+        <?php echo $htmlObjects->loadAddGMs('addGMModule');?>
     </div>
 
 </body>
