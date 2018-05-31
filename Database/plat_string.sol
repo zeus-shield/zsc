@@ -160,11 +160,19 @@ library PlatString {
     }
 
     function addressToString(address x) internal pure returns (string) {
-        bytes memory b = new bytes(20);
+        bytes memory s = new bytes(40);
         for (uint i = 0; i < 20; i++) {
-            b[i] = byte(uint8(uint(x) / (2**(8*(19 - i)))));
+            byte b = byte(uint8(uint(x) / (2**(8*(19 - i)))));
+            byte hi = byte(uint8(b) / 16);
+            byte lo = byte(uint8(b) - 16 * uint8(hi));
+
+            if (hi  < 10) s[2*i] = byte(uint8(hi) + 0x30);
+            else s[2*i] = byte(uint8(hi) + 0x57);
+
+            if (lo  < 10) s[2*i+1] = byte(uint8(lo) + 0x30);
+            else s[2*i+1] = byte(uint8(lo) + 0x57);     
         }
-        return string(b);
+        return string(s);
     }
 
     function isEmpty(string str) internal pure returns (bool) {
