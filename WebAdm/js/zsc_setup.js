@@ -77,7 +77,10 @@ ZSCSetup.prototype.setLogRecorderToListener = function(listener,listenerName, ha
 }  
 
 ZSCSetup.prototype.initSystemModule = function(module, hashID) {
-    if (module == "AdmAdv") {
+    if (module == "TestToken") {
+        this.initTestZSCToken(hashID);
+
+    } else if (module == "AdmAdv") {
         this.initAdmAdv(hashID);
 
     } else if (module == "PosAdv") {
@@ -186,6 +189,18 @@ ZSCSetup.prototype.addGMModule = function(gmModule, hashID) {
     }
     this.addGM(gmType, gmAdr, hashID);
 }
+
+ZSCSetup.prototype.initTestZSCToken = function(hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi("TestToken"));
+    var myTestToken = myContract.at(this.zscTokenAdr);
+
+    myTestToken.allocate(this.AdmAdvAdr, 100 * 1000 * 1000 * Math.pow(10, 18), 
+        {from: web3.eth.accounts[0], gas: 9000000},
+        function(error, result){ 
+            if(!error) cC_showHashResultTest(hashID, result, function(){});
+            else console.log("error: " + error);
+        });
+} 
 
 ZSCSetup.prototype.initAdmAdv = function(hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("AdmAdv"));
