@@ -40,7 +40,7 @@
     function htmlLoadLogin() {
         document.getElementById("PageHeader").innerHTML = "";  
         document.getElementById("PageBody").innerHTML = "";  
-        zscHtml.setHtmlCotentIds( "PageBody", "PageHeader");
+        zscHtml.setHtmlCotentIds( "PageHeader", "PageBody");
         zscHtml.loadPageBody("login", "checkUser");
     }
 
@@ -55,6 +55,7 @@
                 var fullAbi = zscUser.getControlApisFullAbi();
                 var controlApisAdvAdr = zscUser.getControlApisAdr();
                 zscElement  = new ZSCElement(userName, fullAbi, controlApisAdvAdr);
+                zscWalletGM = new ZSCWallet(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
                 //zscTransGM  = new ZSCTransactions(userName, fullAbi, controlApisAdvAdr);
                 //zscTmpsGM   = new ZSCTemplate(userName, fullAbi, controlApisAdvAdr);
                 //zscAgrsGM   = new ZSCAgreement(userName, fullAbi, controlApisAdvAdr);
@@ -88,11 +89,14 @@
         });
     }
 
+    //Disable during alpha-test
+    /*
     function confirmTransferValue(tokenSymbol, logId) {
         ZSCWalletGM.confirmTransferValue(tokenSymbol, logId, function(){
             loadHtmlPageBody("wallet");
         });
     }
+    */
 
     function showErc20Tokens(destAddressId, amountId, logId) {
         var adr = document.getElementById(destAddressId).value; 
@@ -106,9 +110,12 @@
     }
 
     function enableWallet(tokenSymbol, elementId) {
+        //Disable during alpha-test
+        /*
         ZSCWalletGM.enableWallet(tokenSymbol, elementId, function() {
            loadPageBody("wallet");
         });
+        */
     }
 
     function showTransactions(tokenSymbol) {
@@ -117,11 +124,13 @@
     }
 
     function showMiningInfo() {
-        loadPageBody("mining");
+        //Disable during alpha-test
+        //loadPageBody("mining");
     }
 
     function showPosInfo() {
-        loadPageBody("pos");
+        //Disable during alpha-test
+        //loadPageBody("pos");
     }
 
     function showElementParameters(elementName) {
@@ -141,11 +150,14 @@
         });
     }
 
+    //Disable during alpha-test
+    /*
     function confirmPurchaseAgreement(index) {
         zscViewAgrsGM.confirmPurchaseAgreement(index, function(result) {
             loadPageBody("view-agreement")
         });
     }
+    */
 
     function submitPublishAgreement(index) {
         zscAgrsGM.submitPublishAgreement(index, function(result) {
@@ -153,11 +165,14 @@
         });
     }
 
+    //Disable during alpha-test
+    /*
     function confirmPublishAgreement(index) {
         zscAgrsGM.confirmPublishAgreement(index, function(result) {
             loadPageBody("agreement")
         });
     }
+    */
 
     function loadLocalPageHeader() {
         zscUser.getUserStatusFromAdm(function(status) {
@@ -197,12 +212,12 @@
             document.getElementById("PageHeader").innerHTML = "Applying... <br> Need to reload once succeeded";  
             document.getElementById("PageBody").innerHTML = '<div class="well"> <text id="ApplyForProviderHash"></text> </div>';
             applyForUser("receiver", "ApplyForReceiverHash");
-            
+
         } else {
             switch(tag) {
                 case "wallet": 
-                    zscWalletGM.loadTokenWallets(function() {
-                        zscWalletGM.loadWalletsHtml("PageBody", "submitTransferValue", "confirmTransferValue", "showTransactions", "enableWallet");
+                    zscWalletGM.loadTokenInfoByIndex(0, function() {
+                        zscWalletGM.loadWalletsHtml("PageBody", "submitTransferValue", "showTransactions");
                     });
                     break;
                 case "parameter":
