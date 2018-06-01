@@ -9,6 +9,7 @@ import "./object.sol";
 contract ControlApis {
     function createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address);
     function enableElementWallet(bytes32 _userName, bytes32 _tokeSymbol, address _extraAdr) public returns (address);
+    function getUserWalletAddress(bytes32 _userName, bytes32 _tokenSymbol) public constant returns (address);
     function setUserStatus(bytes32 _user, bool _tag) public returns (bool);
     function getUserStatus(bytes32 _user) public constant returns (bool);
 }
@@ -109,7 +110,10 @@ contract AdmBase is Object {
         //createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr)
         testUsers_[index].nodeAdr_ = ControlApis(controlApisAdr_).createElement(userName, _type, userName, "", creator);
 
-        transferAnyERC20Token(zscTestTokenAddress_, allocatedZSC_);
+        address userZSCWalletAdr = ControlApis(controlApisAdr_).getUserWalletAddress(userName, "ZSC");
+        
+        ERC20Interface(zscTestTokenAddress_).transfer(userZSCWalletAdr, allocatedZSC_);
+        
         ControlApis(controlApisAdr_).setUserStatus(userName, true);
 
         addLog("activeByUser - ", true);
