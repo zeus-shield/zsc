@@ -112,6 +112,16 @@ contract ZSCTestToken is ERC20Interface, Owned {
         balances[owner] = _totalSupply;
     }
 
+    function allocate(address to, uint amount) public onlyOwner {
+        require(to != address(0));
+        require(!halted && amount > 0);
+        require(balances[owner] >= amount);
+
+        balances[owner] = balances[owner].sub(amount);
+        balances[to] = balances[to].add(amount);
+        emit Transfer(address(0), to, amount);
+    }
+
     // ------------------------------------------------------------------------
     // Set the halted tag when the emergent case happened
     // ------------------------------------------------------------------------
