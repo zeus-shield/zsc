@@ -152,8 +152,8 @@ ZSCWallet.prototype.parserTokenBalanceInfoByIndex = function(gm, urlinfo, index)
 
     var statusInfo   = newsids[0];
     var symbolInfo   = newsids[1];
-    var adrInfo      = newsids[2];
-    var balanceInfo  = newsids[3];
+    var balanceInfo  = newsids[2];
+    var adrInfo      = newsids[3];
 
     gm.tokenStatus[index]  = statusInfo.split("=")[1];
     gm.tokenSymbol[index]  = symbolInfo.split("=")[1];
@@ -174,12 +174,7 @@ ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2)  {
     var balance;
     var hashId;
 
-    var text ="";
-    text += '<div class="well">';
-    text += '<table align="center" style="width:800px;min-height:30px">'
-    text += '<tr>'
-    text += '   <td><text> Symbol </text></td> <td><text> Address </text></td>  <td><text> Balance </text></td> '
-    text += '</tr>'
+    text = '<div class="well">';
 
     for (var i = 0; i < this.tokenNos; ++i) {
         symbol = this.tokenSymbol[i];
@@ -189,30 +184,19 @@ ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2)  {
         sentoId = symbol + "Dest";
         amountId = symbol + "Amount";
 
-
-
         if (this.tokenStatus[i] == "false") {
-            text += '<tr><button type="button" onClick="' + enableWalletPrefix + symbol + "', '" + hashId + "'" + showTransSuffix + '">Enable</button></tr>'
+            text += '<button type="button" onClick="' + enableWalletPrefix + symbol + "', '" + hashId + "'" + showTransSuffix + '">Enable</button>'
         } else {
-            text += '<tr> <td> ------------------------  </td> <td> ------  </td> <td> ------  </td> </tr>'
-            text += '<tr>'
-            text += '   <td><text>' + adr  + '</text></td>'   
-            text += '   <td><text>' + symbol + '</text></td>'
-            text += '   <td><text>' + balance + '</text></td>'
-            text += '</tr>'
-            text += '<tr> <td> ---  </td> <td> --- </td> <td> ---  </td> </tr>'
-            text += '<tr>'
-            text += '   <td> SentTo:<input id="' + sentoId + '"></input> | Amount:<input id="' + amountId + '"></input> </td>'
-            text += '   <td>'
-            text += '       <button type="button" onClick="' + transPrefix + symbol + "', '" + sentoId + "', '" + amountId + "', '" + hashId + "'" + transSuffix + '">  Transfer  </button>'
-            text += '   </td>'
-            text += '   <td><button type="button" onClick="' + showTransPrefix + symbol + "', '" + hashId + "'" + showTransSuffix + '">  Histories  </button></td>'
-            text += '</tr>'
-            text += '<tr> <text id="'+ hashId + '" value = "log:"> </text> </tr>'
-            text += '<tr> <td> --- </td> <td> --- </td> <td> --- </td> </tr>'
+            text += 'Symbol: <text>Test' + symbol + '</text><br><br>'
+            text += 'Address: <text>0x' + adr  + '</text><br><br>'   
+            text += 'Balance: <text>' + balance + '</text><br><br>'
+            text += '  <button type="button" onClick="' + transPrefix + symbol + "', '" + sentoId + "', '" + amountId + "', '" + hashId + "'" + transSuffix + '">  Transfer  </button> <br>'
+            text += 'Dest-adr<input id="' + sentoId + '"></input> <br> Amount:<input id="' + amountId + '"></input> <br><br>'
+            text += '  <button type="button" onClick="' + showTransPrefix + symbol + "', '" + hashId + "'" + showTransSuffix + '">  Histories  </button><br><br>'
+            text += '<text id="'+ hashId + '" value = "log:"> </text> <br>'
         }
     }
-    text += '</table></div>'
+    text += '</div>'
 
     document.getElementById(elementId).innerHTML = text;  
 }
