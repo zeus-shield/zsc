@@ -11,11 +11,10 @@ function ZSCElement(userName, controlApisAdvAbi, controlApisAdvAdr) {
     this.nodeAddress = 0;
     this.parameterNames = [];
     this.parameterValues = [];
+    this.account = web3.eth.accounts[0];
     this.contractAdr = controlApisAdvAdr;
-    this.contractAbi = controlApisAdvAbi;
+    this.contractAbi = JSON.parse(controlApisAdvAbi);
 }
-
-ZSCElement.prototype = new ZSCClient();
 
 ZSCElement.prototype.setElementName = function(nm) {this.enName = nm;}
 
