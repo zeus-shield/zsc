@@ -27,15 +27,13 @@ contract DBReceiver is DBUser {
         addFundamentalParameter("userResidentialAddress");
     }
 
-    function addChild(address _adr) public returns (address) {
+    function bindAgreement(address _adr) public {
         checkDelegate(msg.sender, 1);
 
         require(!agreementExist_[_adr]);
         agreementExist_[_adr] = true;
         agreements_[agrNos_] = _adr;
         agrNos_++;
-
-        return 0;
     } 
 
     function addParameter(bytes32 _parameter) public returns (bool) {
