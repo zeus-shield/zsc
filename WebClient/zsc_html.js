@@ -31,9 +31,10 @@ ZSCHtml.prototype.loadPageHeader = function(funcName, doesUserApplied) {
     } else {
         text += '   <button type="button" onClick="' + funcPrefix + "'wallet'" + funcSuffix + '">Wallate</button>'
         text += '   <button type="button" onClick="' + funcPrefix + "'profile'" + funcSuffix + '">Profile</button>'
-        text += '   <button type="button" onClick="' + funcPrefix + "'templates'" + funcSuffix + '">Templates</button>'
-        text += '   <button type="button" onClick="' + funcPrefix + "'agreements'" + funcSuffix + '">Agreements</button>'
+        text += '   <button type="button" onClick="' + funcPrefix + "'template'" + funcSuffix + '">Templates</button>'
+        text += '   <button type="button" onClick="' + funcPrefix + "'agreement'" + funcSuffix + '">Agreements</button>'
     }
+    text += ' <br><text id="ApplyForProviderHash"></text>'
     text += '</div>'
     this.setHtmlContent(this.pageHeaderId, text);  
 }
@@ -76,7 +77,7 @@ ZSCHtml.prototype.loadLogin = function(funcName) {
     text =  '<div class="well">'
     text += '   <text>Login ZSC system</text><br><br>'
     text += '   <text>ZSC platform address </text> <br>'
-    text += '   <input class="form-control"  type="text" id="AdmAdvAdr" value="0xc232ad281d2dac98c638cf3face57e357f58feff"></input> <br> <br>'
+    text += '   <input class="form-control"  type="text" id="AdmAdvAdr" value="0xc7e03da56e2be02cbdca9e7a7cf6148df7eaae97"></input> <br> <br>'
     text += '   <text>User Name </text> <br>' 
     text += '   <input type="text" id="UserName" value="test"></input> <br>' 
     text += '   <button type="button" onClick="' + functionInput + '">Enter</button>'
