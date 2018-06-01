@@ -36,6 +36,7 @@ contract DBNode {
     //function configureHandlers() public returns (bool);
     //function getHandler(bytes32 _type) public constant returns (address);
 
+    function bindAgreement(address _adr) public;
     function numAgreements() public constant returns (uint);
     function numTemplates() public constant returns (uint);
     function getAgreementByIndex(uint _index) public constant returns (address);
@@ -195,13 +196,17 @@ contract ControlBase is ControlInfo {
         return ndAdr;
     }
 
-    function enableZSCWallet(bytes32 _enName, address _enAdr,  address _creator) private {
+    function enableZSCWallet(bytes32 _enName, address _enAdr,  address _creator) private returns (address) {
         bytes32 walletName = formatWalletName(_enName, "ZSC");
         address walletAdr  = getDBFactory("wallet-erc20").createNode(walletName, _enAdr, _creator);
+
         require(walletAdr != 0);
         DBNode(walletAdr).setERC20TokenAddress(zscTokenAddress_); 
+        return walletAdr;
     }
 
+    //Disabled during alpha-test
+    /*
     function enableWalletByUser(bytes32 _enName, bytes32 _tokeSymbol, address _creator) internal returns (address) {
         address ndAdr = address(getDBNode(dbName_, _enName));
         require(ndAdr != address(0));
@@ -229,6 +234,7 @@ contract ControlBase is ControlInfo {
 
         return walletAdr;
     }
+    */
 
     function deleteAgreement( bytes32 _agrName) internal returns (bool) {
         address agrAdr = address(getDBNode(dbName_, _agrName));
@@ -264,13 +270,16 @@ contract ControlBase is ControlInfo {
 
         address agrAdr = address(getDBNode(dbName_, _agrName));
         bytes32 tokenSymbol = DBNode(agrAdr).getParameter("walletSymbol");
-        address userWallet = address(getDBNode(dbName_, formatWalletName(_userName, tokenSymbol)));
 
+        //address agrWallet = enableWalletByUser(_agrName, tokenSymbol, _creator);
+        address agrWallet = enableZSCWallet(_agrName, agrAdr, _creator); 
+
+        address userWallet = address(getDBNode(dbName_, formatWalletName(_userName, tokenSymbol)));
         require(userWallet != address(0));
+
         string memory temp = PlatString.bytes32ToString(DBNode(agrAdr).getParameter("lockedAmount"));
         uint lockedAmount = PlatString.stringToUint(temp);
 
-        address agrWallet = enableWalletByUser(_agrName, tokenSymbol, _creator);
         uint amount = DBNode(userWallet).executeTransaction(agrWallet, lockedAmount);
         require(amount > 0);
 
@@ -291,7 +300,7 @@ contract ControlBase is ControlInfo {
         uint ret = DBNode(recWallet).executeTransaction(agrWallet, price);
 
         getDBNode(dbName_, _agrName).setAgreementStatus("PAID", _userName);
-        getDBNode(dbName_, _userName).addChild(agrAdr);
+        getDBNode(dbName_, _userName).bindAgreement(agrAdr);
 
         return ret;
     }
@@ -314,13 +323,13 @@ contract ControlBase is ControlInfo {
 
         walletName   = formatWalletName(_enName, tokenSymbol);
         tokenAdr     = address(getDBNode(dbName_, walletName));
-        tokenBalance = DBNode(tokenAdr).getBlance();
+        tokenBalance = DBNode(tokenAdr).getBlance().div(1 ether);
 
         string memory str ="";
         str = PlatString.append(str, "info?status=", PlatString.bytes32ToString(status),      "&");
         str = PlatString.append(str, "symbol=",      PlatString.bytes32ToString(tokenSymbol), "&");
-        str = PlatString.append(str, "adr=",         PlatString.addressToString(tokenAdr),    "&");
         str = PlatString.append(str, "balance=",     PlatString.uintToString(tokenBalance),   "&");
+        str = PlatString.append(str, "adr=",         PlatString.addressToString(tokenAdr),    "&");
         return str;
     }
 
