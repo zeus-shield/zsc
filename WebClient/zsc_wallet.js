@@ -5,12 +5,14 @@ Copyright (c) 2018 ZSC Dev Team
 //class zscWallet
 function ZSCWallet(nm, abi, adr) {
     this.userName = nm;
-    this.tokenNos = 0;
+    this.tokenNos = 1;
     this.tokenSymbol = [];
     this.tokenAddress = [];
     this.tokenBalance = [];
     this.tokenStatus = [];
-    this.myControlApi = web3.eth.contract(abi).at(adr);
+    this.account = web3.eth.accounts[0];
+    this.contractAdr = adr;
+    this.contractAbi = JSON.parse(abi);
 }
 
 ZSCWallet.prototype = new ZSCClient();
@@ -82,37 +84,52 @@ ZSCWallet.prototype.enableWallet = function(tokenSymbol, elementId, func) {
 }
 
 ZSCWallet.prototype.loadTokenWallets = function(func) {
-    this.numTokenWallets(function() {
-        for (var i = 0; i < this.tokenNos; ++i) {
-            this.loadTokenInfoByIndex(i, function(index){
-                if (indx == this.tokenNos - 1) {
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    //gm.numTokenWallets(gm, function(gm) {
+        for (var i = 0; i < gm.tokenNos; ++i) {
+            gm.loadTokenInfoByIndex(gm, i, function(gm, index) {
+                if (indx == gm.tokenNos - 1) {
                     func();
                 }
             });
         }
-    });
+    //});
 }
 
-ZSCWallet.prototype.numTokenWallets = function(func) {
-    this.myControlApi.numRegisteredErc20Tokens(this.userName,
-        {from: this.account, gas: 9000000},
+//Disabled during alpha-test
+/*
+ZSCWallet.prototype.numTokenWallets = function(gm, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.numRegisteredErc20Tokens(
+        gm.userName,
+        {from: gm.account, gas: 9000000},
         function(error, result){ 
             if(!error) {
-                this.tokenNos = result.toString(10);
-                func();
+                gm.tokenNos = result.toString(10);
+                func(gm);
             } else {
                 console.log("error: " + error);
             }
         });
 }
+*/
 
 ZSCWallet.prototype.loadTokenInfoByIndex = function(index, func) {
-    this.myControlApi.getTokenBalanceInfoByIndex(this.userName, i,
-        {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(this.contractAbi).at(this.contractAdr);
+
+    myControlApi.getTokenBalanceInfoByIndex(gm.userName, index + 1,
+        {from: gm.account, gas: 90000000},
         function(error, result){ 
             if(!error) {
-                this.parserTokenBalanceInfoByIndex(result, index);
-                func(index);
+                gm.parserTokenBalanceInfoByIndex(gm, result, index);
+                callBack();
             } else {
                 console.log("error: " + error);
             }
@@ -122,7 +139,7 @@ ZSCWallet.prototype.loadTokenInfoByIndex = function(index, func) {
 /*
 "info?status=", "symbol=", "adr=", "balance=",    
 */
-ZSCWallet.prototype.parserTokenBalanceInfoByIndex = function(urlinfo, index) {
+ZSCWallet.prototype.parserTokenBalanceInfoByIndex = function(gm, urlinfo, index) {
     var found1 = urlinfo.indexOf("?");
     var found2 = urlinfo.indexOf("=");
 
@@ -138,25 +155,19 @@ ZSCWallet.prototype.parserTokenBalanceInfoByIndex = function(urlinfo, index) {
     var adrInfo      = newsids[2];
     var balanceInfo  = newsids[3];
 
-    this.tokenStatus[index]  = statusInfo.split("=")[1];
-    this.tokenSymbols[index] = symbolInfo.split("=")[1];
-    this.tokenAdrs[index]    = adrInfo.split("=")[1];
-    this.tokenBalance        = balanceInfo.split("=")[1];
+    gm.tokenStatus[index]  = statusInfo.split("=")[1];
+    gm.tokenSymbol[index]  = symbolInfo.split("=")[1];
+    gm.tokenAddress[index] = adrInfo.split("=")[1];
+    gm.tokenBalance[index] = balanceInfo.split("=")[1];
     return true;
 }
 
-ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2, func3, func4)  {
+ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2)  {
     var transPrefix = func1 + "('"; 
     var transSuffix = "')";
 
-    var confirmPrefix = func1 + "('"; 
-    var confirmSuffix = "')";
-
-    var showTransPrefix = func3 + "('";
+    var showTransPrefix = func2 + "('";
     var showTransSuffix = "')";
-
-    var enableWalletPrefix = func4 + "('";
-    var enableWalletSuffix = "')";
 
     var symbol;
     var adr;
@@ -167,7 +178,7 @@ ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2, func3, f
     text += '<div class="well">';
     text += '<table align="center" style="width:800px;min-height:30px">'
     text += '<tr>'
-    text += '   <td><text>Symbol</text></td> <td><text>Balance</text></td>  <td><text>Address</text></td>  <td><text>Sent To</text></td> <td>Amount</td> <td></td> '
+    text += '   <td><text> Symbol </text></td> <td><text> Address </text></td>  <td><text> Balance </text></td> '
     text += '</tr>'
 
     for (var i = 0; i < this.tokenNos; ++i) {
@@ -177,21 +188,29 @@ ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2, func3, f
         hashId = symbol + "Hash";
         sentoId = symbol + "Dest";
         amountId = symbol + "Amount";
-        text += '<tr>'
-        text += '   <td><text>' + symbol + '</text></td>'
-        text += '   <td><text>' + balance + '</text></td>'
-        text += '   <td><text>' + adr  + '</text></td>'   
+
+
+
         if (this.tokenStatus[i] == "false") {
-            text += '   <td><button type="button" onClick="' + enableWalletPrefix + symbol + "', '" + hashId + "'" + showTransSuffix + '">Enable</button></td>'
+            text += '<tr><button type="button" onClick="' + enableWalletPrefix + symbol + "', '" + hashId + "'" + showTransSuffix + '">Enable</button></tr>'
         } else {
-            text += '   <td><input id="' + sentoId + '"></input> <td>'   
-            text += '   <td><input id="' + amountId + '"></input> <td>'
-            text += '   <td><button type="button" onClick="' + transPrefix + symbol + "', '" + sentoId + "', '" + amountId + "', '" + hashId + "'" + transSuffix + '">Transfer</button></td>'
-            text += '   <td><button type="button" onClick="' + confirmPrefix + symbol + "', '" + hashId + "'" + confirmSuffix + '">Confirm</button></td>'
-            text += '   <td><button type="button" onClick="' + showTransPrefix + symbol, "', '" + hashId + "'" + showTransSuffix + '">Show</button></td>'
+            text += '<tr> <td> ------------------------  </td> <td> ------  </td> <td> ------  </td> </tr>'
+            text += '<tr>'
+            text += '   <td><text>' + adr  + '</text></td>'   
+            text += '   <td><text>' + symbol + '</text></td>'
+            text += '   <td><text>' + balance + '</text></td>'
+            text += '</tr>'
+            text += '<tr> <td> ---  </td> <td> --- </td> <td> ---  </td> </tr>'
+            text += '<tr>'
+            text += '   <td> SentTo:<input id="' + sentoId + '"></input> | Amount:<input id="' + amountId + '"></input> </td>'
+            text += '   <td>'
+            text += '       <button type="button" onClick="' + transPrefix + symbol + "', '" + sentoId + "', '" + amountId + "', '" + hashId + "'" + transSuffix + '">  Transfer  </button>'
+            text += '   </td>'
+            text += '   <td><button type="button" onClick="' + showTransPrefix + symbol + "', '" + hashId + "'" + showTransSuffix + '">  Histories  </button></td>'
+            text += '</tr>'
+            text += '<tr> <text id="'+ hashId + '" value = "log:"> </text> </tr>'
+            text += '<tr> <td> --- </td> <td> --- </td> <td> --- </td> </tr>'
         }
-        text += '   <td><text id="'+ hashId + '"></text></td>'
-        text += '</tr>'
     }
     text += '</table></div>'
 
