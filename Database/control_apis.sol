@@ -102,20 +102,17 @@ contract ControlApis is ControlBase {
     /// @param _extraInfo The extra information
     /// @param _extraAdr The extra address
     function createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
+        checkRegistered(_userName, msg.sender);
         require(_factoryType != "staker");
 
         address creatorAdr;
         if (isDelegate(msg.sender, 1)) {
             creatorAdr = _extraAdr;
         } else {
-            checkRegistered(_userName, msg.sender);
             creatorAdr = msg.sender;
         }
 
         address ndAdr = createFactoryNode(_factoryType, _userName, _enName, _extraInfo, creatorAdr);
-
-        return 0;
-
         require(ndAdr != address(0));
 
         if (_factoryType == "provider" || _factoryType == "receiver") {
@@ -126,17 +123,21 @@ contract ControlApis is ControlBase {
         return ndAdr;
     }
 
+    //Disabled during alpha-test
+    /* 
     function enableElementWallet(bytes32 _userName, bytes32 _tokeSymbol, address _extraAdr) public returns (address) {
+        checkRegistered(_userName, msg.sender);
+        
         address creatorAdr;
         if (isDelegate(msg.sender, 1)) {
             creatorAdr = _extraAdr;
         } else {
-            checkRegistered(_userName, msg.sender);
             creatorAdr = msg.sender;
         }
 
         return enableWalletByUser(_userName, _tokeSymbol, creatorAdr);
     }
+    */
 
     /// @dev Get the element by its address
     /// @param _adr The address of the existing element
@@ -198,18 +199,23 @@ contract ControlApis is ControlBase {
         return address(getDBNode(getCurrentDBName(), _enName));
     }
 
+    //Disabled during alpha-test
+    /*
     /// @dev Get the eth balance of the element
     /// @param _enName The name of the element
-    function getElementBalance(bytes32 _userName, bytes32 _enName, bytes32 _symbol, bool _locked) public constant returns (uint256) {
+    function getElementBalance(bytes32 _userName, bytes32 _enName, bytes32 _symbol) public constant returns (uint256) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
         string memory str = PlatString.append(_enName, "-", _symbol);
         bytes32 walletName = PlatString.tobytes32(str);
-        require(getDBNode(getCurrentDBName(), walletName) != DBNode(0));
+        address walletAdr = address(getDBNode(getCurrentDBName(), walletName));
 
-        return getDBNode(getCurrentDBName(), walletName).getBlance(_locked);
+        require(walletAdr != address(0));
+
+        return DBNode(walletAdr).getBlance();
     }
+    */
 
     /// @dev Get the number of paramters of an element
     /// @param _enName The name of the existing element
@@ -261,7 +267,7 @@ contract ControlApis is ControlBase {
         */
     }
 
-
+    //Disabled during alpha-test
     /* Multisig module
     /// @dev Confirm a transaction
     function confirmTransfer(bytes32 _userName, bytes32 _tokenSymbol) public returns (uint) {
@@ -297,6 +303,12 @@ contract ControlApis is ControlBase {
         return conductPublishAgreement(_userName, _agrName, msg.sender);
     }
 
+    function numElementChildren(bytes32 _userName, bytes32 _enName) public constant returns (uint) {
+        checkRegistered(_userName, msg.sender);
+        checkMatched(_userName, _enName, msg.sender);
+        return  getDBNode(getCurrentDBName(), _enName).numChildren();
+    }
+
     function numTemplates(bytes32 _userName) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
 
@@ -306,47 +318,32 @@ contract ControlApis is ControlBase {
     function getTemplateNameByIndex(bytes32 _userName, uint _index) public constant returns (bytes32) {
         checkRegistered(_userName, msg.sender);
 
-        address adr = getDBNode(getCurrentDBName(), _userName).getChildByIndex(_index);
+        address adr = getDBNode(getCurrentDBName(), _userName).getTemplateByIndex(_index);
         return Object(adr).name();
     }
 
     function numAgreements(bytes32 _userName) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
-        address userAdr = address(getDBNode(getCurrentDBName(), _userName));        
-        bytes32 userType = DBNode(userAdr).getNodeType();
 
-        if (userType == "provider" || userType == "staker" || userType == "receiver") {
-            return DBNode(userAdr).numAgreements();
-        } else {
-            revert();
-        }
-    }
-
-    function numElementChildren(bytes32 _userName, bytes32 _enName) public constant returns (uint) {
-        checkRegistered(_userName, msg.sender);
-        checkMatched(_userName, _enName, msg.sender);
-        return  getDBNode(getCurrentDBName(), _enName).numChildren();
+        return getDBNode(getCurrentDBName(), _userName).numAgreements();
     }
 
     function getAgreementNameByIndex(bytes32 _userName, uint _index) public constant returns (bytes32) {
         checkRegistered(_userName, msg.sender);
-        address userAdr = address(getDBNode(getCurrentDBName(), _userName));        
-        bytes32 userType = DBNode(userAdr).getNodeType();
 
-        if (userType == "provider" || userType == "staker" || userType == "receiver") {
-            address agrAdr = DBNode(userAdr).getAgreementByIndex(_index);
-            return Object(agrAdr).name();
-        } else {
-            revert();
-        }
+        address adr = getDBNode(getCurrentDBName(), _userName).getAgreementByIndex(_index);
+        return Object(adr).name();
     }
 
+    //Disabled during alpha-test
+    /*
     function deleteAgreementByIndex(bytes32 _userName, uint _index) public returns (bool) {
         checkRegistered(_userName, msg.sender);
 
-        address adr = getDBNode(getCurrentDBName(), _userName).getChildByIndex(_index);
+        address adr = getDBNode(getCurrentDBName(), _userName).getAgreementByIndex(_index);
         return deleteAgreement( Object(adr).name());
     }
+    */
 
     /// @dev Buy an insurance agreement from a provider
     /// @param _userName The receiver name
@@ -386,6 +383,8 @@ contract ControlApis is ControlBase {
         return prepareTokenBalanceInfoByIndex(_userName, _index);
     }
 
+    //Disabled during alpha-test
+    /*
     function getUserWalletAddress(bytes32 _userName, bytes32 _tokenSymbol) public constant returns (address) {
         checkRegistered(_userName, msg.sender);
 
@@ -395,25 +394,24 @@ contract ControlApis is ControlBase {
         string memory temp = PlatString.append(_userName, "-", _tokenSymbol);
         return address(getDBNode(getCurrentDBName(), PlatString.tobytes32(temp)));
     }
+    */
 
     function numUserTransactions(bytes32 _userName, bytes32 _tokenSymbol) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
 
-        DBNode nd = getDBNode(getCurrentDBName(), _userName);
-        require(nd != DBNode(0));
+        bytes32 walletName = formatWalletName(_userName, _tokenSymbol);
+        address walletAdr = address(getDBNode(getCurrentDBName(), walletName));
 
-        string memory temp = PlatString.append(_userName, "-", _tokenSymbol);
-        return getDBNode(getCurrentDBName(), PlatString.tobytes32(temp)).numTransactions();
+        require(walletAdr != address(0));
+        
+        return DBNode(walletAdr).numTransactions();
     }
 
     function getUserTransactionByIndex(bytes32 _userName, bytes32 _tokenSymbol, uint _index) public constant returns (string) {
         checkRegistered(_userName, msg.sender);
 
-        DBNode nd = getDBNode(getCurrentDBName(), _userName);
-        require(nd != DBNode(0));
-
-        string memory temp = PlatString.append(_userName, "-", _tokenSymbol);
-        return prepareTransationfoByIndex(PlatString.tobytes32(temp), _index);
+        bytes32 walletName = formatWalletName(_userName, _tokenSymbol);
+        return prepareTransationfoByIndex(walletName, _index);
     }
 
     /*
