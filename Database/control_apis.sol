@@ -377,6 +377,17 @@ contract ControlApis is ControlBase {
     }
     */
 
+    function getUserWalletAddress(bytes32 _userName, bytes32 _tokenSymbol) public constant returns (address) {
+        checkRegistered(_userName, msg.sender);
+
+        bytes32 walletName = formatWalletName(_userName, _tokenSymbol);
+        address walletAdr = address(getDBNode(getCurrentDBName(), walletName));
+
+        //require(walletAdr != address(0));        
+
+        return walletAdr;
+    }
+
     function getTokenBalanceInfoByIndex(bytes32 _userName, uint _index) public constant returns (string) {
         checkRegistered(_userName, msg.sender);
 
