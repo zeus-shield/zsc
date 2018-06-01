@@ -55,7 +55,7 @@
                 var fullAbi = zscUser.getControlApisFullAbi();
                 var controlApisAdvAdr = zscUser.getControlApisAdr();
                 zscElement  = new ZSCElement(userName, fullAbi, controlApisAdvAdr);
-                zscWalletGM = new ZSCWallet(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+                zscWalletGM = new ZSCWallet(userName, fullAbi, controlApisAdvAdr);
                 //zscTransGM  = new ZSCTransactions(userName, fullAbi, controlApisAdvAdr);
                 //zscTmpsGM   = new ZSCTemplate(userName, fullAbi, controlApisAdvAdr);
                 //zscAgrsGM   = new ZSCAgreement(userName, fullAbi, controlApisAdvAdr);
@@ -192,8 +192,8 @@
 <body>
     <div class="col-lg-12">
         <i>Web-client for testing ZSC system</i>
-        <div class="col-lg-6" id="PageHeader"></div>
-        <div class="col-lg-6" id="PageBody"></div>
+        <div id="PageHeader"></div>
+        <div id="PageBody"></div>
     </div>
 <script type="text/javascript">
     htmlLoadLogin();
@@ -210,7 +210,7 @@
 
         } else if (tag == "apply-receiver") {
             document.getElementById("PageHeader").innerHTML = "Applying... <br> Need to reload once succeeded";  
-            document.getElementById("PageBody").innerHTML = '<div class="well"> <text id="ApplyForProviderHash"></text> </div>';
+            document.getElementById("PageBody").innerHTML = '<div class="well"> <text id="ApplyForReceiverHash"></text> </div>';
             applyForUser("receiver", "ApplyForReceiverHash");
 
         } else {
