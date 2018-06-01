@@ -32,6 +32,7 @@ contract DBDatabase is Object {
             rootNode_ = new DBNode(name());
             require(rootNode_ != address(0));
             setDelegate(rootNode_, 1);
+            DBNode(rootNode_).setDelegate(_controlApi, 1);
             DBNode(rootNode_).setDatabase(address(this));
             addLog("rootNode_ - setDatabase", true);
 
@@ -49,7 +50,7 @@ contract DBDatabase is Object {
 
     function delegateFactory(address _adr, uint _priority) public {
         checkDelegate(msg.sender, 1);
-        
+
         setDelegate(_adr, _priority);
         DBNode(rootNode_).setDelegate(_adr, 1);
 
