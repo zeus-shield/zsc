@@ -11,7 +11,7 @@ contract DBNode {
     function setId(address _ethWalletiId) public;
     function getId() public returns (address);
     function getNodeType() public constant returns (bytes32);
-    function getBlance(bool _locked) public constant returns (uint256);
+    function getBlance() public constant returns (uint256);
 
     function setActivated(bool _activated) public;
     function getActivated() public constant returns (bool);
@@ -197,7 +197,7 @@ contract ControlBase is ControlInfo {
 
     function enableZSCWallet(bytes32 _enName, address _enAdr,  address _creator) private {
         bytes32 walletName = formatWalletName(_enName, "ZSC");
-        getDBFactory("wallet-erc20").createNode(walletName, _enAdr, _creator);
+        address walletAdr  = getDBFactory("wallet-erc20").createNode(walletName, _enAdr, _creator);
         require(walletAdr != 0);
         DBNode(walletAdr).setERC20TokenAddress(zscTokenAddress_); 
     }
@@ -314,7 +314,7 @@ contract ControlBase is ControlInfo {
 
         walletName   = formatWalletName(_enName, tokenSymbol);
         tokenAdr     = address(getDBNode(dbName_, walletName));
-        tokenBalance = DBNode(tokenAdr).getBlance(false);
+        tokenBalance = DBNode(tokenAdr).getBlance();
 
         string memory str ="";
         str = PlatString.append(str, "info?status=", PlatString.bytes32ToString(status),      "&");
