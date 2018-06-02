@@ -192,9 +192,6 @@ contract ControlBase is ControlInfo {
         }
 
         ndAdr = getDBFactory(_type).createNode(_nodeName, parentAdr, _creator);
-
-
-        return 0;
         
         require(ndAdr != 0);
 
@@ -202,8 +199,8 @@ contract ControlBase is ControlInfo {
             DBNode(ndAdr).setParameter("provider", _userName);
         } else if (_type == "agreement") {
             duplicateNode(getDBNode(dbName_, _extra),  ndAdr);
-            DBNode(ndAdr).setAgreementStatus("READY", "null");
-            enableZSCWallet(_nodeName, ndAdr, _creator);
+            //DBNode(ndAdr).setAgreementStatus("READY", "null");
+            //enableZSCWallet(_nodeName, ndAdr, _creator);
         }
 
         return ndAdr;
