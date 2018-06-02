@@ -16,6 +16,7 @@ contract ControlApis {
 contract AdmBase is Object {
     struct TestUserInfo {
         bytes32 name_ ;
+        bytes32 pass_ ;
         bytes32 status_ ; //0: not exist; 1: added; 2: applied; 3: approved;  4: locked
         bytes32 type_;    //1: provider; 2: receiver; 3: staker
         bytes32 actived_;
@@ -29,7 +30,6 @@ contract AdmBase is Object {
     mapping(bytes32 => bool) private userExist_;
     mapping(bytes32 => uint) private userIndex_;
     mapping(uint => TestUserInfo) private testUsers_;
-    mapping(bytes32 => address) private systemAdrs_;
 
     address public zscTestTokenAddress_;
     address public controlApisAdr_;
@@ -78,7 +78,7 @@ contract AdmBase is Object {
         return controlApisAdr_; 
     }
 
-    function addUser(bytes32 _user) public {
+    function addUser(bytes32 _user, bytes32 _pass) public {
         checkDelegate(msg.sender, 1);
 
         addLog("add a User - ", true);
@@ -88,7 +88,7 @@ contract AdmBase is Object {
         userExist_[_user] = true;
 
         userIndex_[toHexx(_user)] = userNos_;
-        testUsers_[userNos_] = TestUserInfo(_user, "added", 0, "false", address(0), address(0), address(0), address(0));
+        testUsers_[userNos_] = TestUserInfo(_user, _pass, "added", 0, "false", address(0), address(0), address(0), address(0));
         userNos_++;
     }
 
@@ -188,6 +188,7 @@ contract AdmBase is Object {
         require(_index < userNos_);
         string memory str ="";
         str = PlatString.append(str, "info?name=", PlatString.bytes32ToString(testUsers_[_index].name_),    "&");
+        str = PlatString.append(str, "pass=",   PlatString.bytes32ToString(testUsers_[_index].pass_),  "&");
         str = PlatString.append(str, "actived=",   PlatString.bytes32ToString(testUsers_[_index].actived_),  "&");
         str = PlatString.append(str, "status=",    PlatString.bytes32ToString(testUsers_[_index].status_),  "&");
         str = PlatString.append(str, "type=",      PlatString.bytes32ToString(testUsers_[_index].type_),    "&");
@@ -199,8 +200,14 @@ contract AdmBase is Object {
         return str;
     }
 
-    function tryLogin(bytes32 _user) public constant returns (bytes32) {
-        if (userExist_[_user]) {
+    function tryLogin(bytes32 _user, bytes32 _pass) public constant returns (bytes32) {
+        if (!userExist_[_user]) {
+            return 0;
+        }
+
+        uint index = userIndex_[toHexx(_user)];
+
+        if (testUsers_[index].pass_ == _pass) {
             return toHexx(_user);
         } else {
             return 0x0;
