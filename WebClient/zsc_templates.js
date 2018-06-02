@@ -64,9 +64,7 @@ ZSCTemplate.prototype.getTmpNameByIndex = function(gm, index, func) {
         function(error, result){ 
             if(!error) {
                 gm.tmpNames[index] = web3.toUtf8(result);
-                if (index == gm.tmpNos - 1) {
-                    func(gm, index);
-                }
+                func(gm, index);
             } else {
                 console.log("error: " + error);
             }
@@ -141,6 +139,9 @@ ZSCTemplate.prototype.loadTemplatesHtml = function(elementId, funcCreateTmp, fun
     var funcPublishPrefix = funcPublish + "('";
     var funcPublishSuffix = "')";
 
+    var showAgrsPrefix = showAgrs + "('";
+    var showAgrsSuffix = "')";
+
     var text ="";
     text += '<div class="well">';
     text += '   <td><button type="button" onClick="' + funcCreateTmpFull + '">Creat New Template</button></td> <br>'
@@ -154,19 +155,19 @@ ZSCTemplate.prototype.loadTemplatesHtml = function(elementId, funcCreateTmp, fun
     text += '<div class="well">';
     text += '<table align="center" style="width:700px;min-height:30px">'
     text += '<tr>'
-    text += '   <td>Name</td> <td>Details</td> <td>Published (nos.) </td> <td>Publish Template</td>'
+    text += '   <td>Name</td> <td>Details</td> <td>Published (nos.) </td> <td>Publish </td>  <td>Agreements </td> '
     text += '</tr>'
-    text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td>  </tr>'
+    text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
 
     for (var i = 0; i < this.tmpNos; ++i) {
         text += '<tr>'
-        text += '   <td><button type="button" onClick="' + funcPublishPrefix + i + funcPublishSuffix + '">Publish</button></td>'
         text += '   <td><text>' + this.tmpNames[i]  + '</text></td>'
         text += '   <td><button type="button" onClick="' + funcSetParaPrefix + this.tmpNames[i] + funcSetParaSuffix + '">Edit</button></td>'
         text += '   <td><text>' + this.tmpChildrenNos[i]  + '</text></td>'
         text += '   <td><button type="button" onClick="' + funcPublishPrefix + i + funcPublishSuffix + '">Publish</button></td>'
+        text += '   <td><button type="button" onClick="' + showAgrsPrefix + this.tmpNames[i] + showAgrsSuffix + '">Show</button></td>'
         text += '</tr>'
-        text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td>  </tr>'
+        text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
     }
     text += '</table></div>'
 
