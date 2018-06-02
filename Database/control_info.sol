@@ -30,6 +30,7 @@ contract ControlInfo is Object {
     function addAllowedUser(bytes32 _userName, address _creator) internal returns (bool);
 
     function checkMatched(bytes32 _userName, bytes32 _enName, address _sender) internal constant {
+        if (isDelegate(_sender, 1)) return;
         if (userParameters_[_userName].signatures_[_sender]) return;
         if (userParameters_[_userName].paras_[_enName].userName_ == _userName) return;
         revert();
