@@ -5,6 +5,7 @@ function ZSCUserManagement(admAdr, abi) {
     this.admAdvAdr = admAdr;
     this.admAdvAbi = abi;
     this.userName = [];
+    this.userPass = [];
     this.userStatus = [];
     this.userType = [];
     this.userId = [];
@@ -20,9 +21,10 @@ function ZSCUserManagement(admAdr, abi) {
 
 ZSCUserManagement.prototype = new ZSCJsBase();
 
-ZSCUserManagement.prototype.addUser = function(userNameId, hashId){
+ZSCUserManagement.prototype.addUser = function(userNameId, passWordId, hashId){
     var userName = document.getElementById(userNameId).value; 
-    this.myAdmAdv.addUser(userName, 
+    var passWord = document.getElementById(passWordId).value; 
+    this.myAdmAdv.addUser(userName, passWord,
         {from: this.account, gas: 9000000},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashId, result, function() {window.location.reload(true);});
@@ -84,15 +86,17 @@ ZSCUserManagement.prototype.parserUserInfo = function(index, info) {
     var newsids    = newsidinfo.split("&");
 
     var userName    = newsids[0];
-    var userActived = newsids[1];
-    var userStatus  = newsids[2];
-    var userType    = newsids[3];
-    var userId      = newsids[4];
-    var userNodeAdr = newsids[5];
-    var userEthAdr  = newsids[6];
-    var userZscAdr  = newsids[7];
+    var userPass    = newsids[1];
+    var userActived = newsids[2];
+    var userStatus  = newsids[3];
+    var userType    = newsids[4];
+    var userId      = newsids[5];
+    var userNodeAdr = newsids[6];
+    var userEthAdr  = newsids[7];
+    var userZscAdr  = newsids[8];
 
     this.userName[index]    = userName.split("=")[1];
+    this.userPass[index]    = userPass.split("=")[1];
     this.userActived[index] = userActived.split("=")[1];
     this.userStatus[index]  = userStatus.split("=")[1];
     this.userType[index]    = userType.split("=")[1];
@@ -143,14 +147,15 @@ ZSCUserManagement.prototype.loadUserManagementHtml = function(showDetails, setSt
     var text = ' <text id="ButtonHashId"> </text>'
     text += '<table align="center" style="width:800px;min-height:30px">'
     text += '<tr>'
-    text += '   <td>name</td> <td>actived</td> <td>status</td> <td>type</td>  <td>active</td>  <td>deactive</td>  <td>detail</td> '
+    text += '   <td>name</td> <td>pass</td> <td>actived</td> <td>type</td> <td>status</td>  <td>active</td>  <td>deactive</td>  <td>detail</td> '
     text += '</tr> '
-    text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td>  </tr>'
+    text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td>  </tr>'
 
     var hashId = "ButtonHashId";
     for (var i = 0; i < this.userNos; ++i) {
         text += '</tr>';
         text += '   <td><text> ' + this.userName[i]    + '</text></td>'
+        text += '   <td><text> ' + this.userPass[i] + ' </text></td>'
         text += '   <td><text> ' + this.userActived[i] + ' </text></td>'
         text += '   <td><text> ' + this.userType[i]    + ' </text></td>'
         text += '   <td><text> ' + this.userStatus[i]  + ' </text></td>'
