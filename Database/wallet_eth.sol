@@ -19,7 +19,7 @@ contract WalletEth is WalletBase {
             revert();
         } else {
             recordInput(msg.sender, msg.value);
-            changeValue(true, msg.value);
+            //changeValue(true, msg.value);
         }
     }
 
@@ -34,7 +34,7 @@ contract WalletEth is WalletBase {
 
         if (_dest.call.value(_amount)(_data)) {
             recordOut(_dest, _amount);
-            changeValue(false,  _amount);
+            //changeValue(false,  _amount);
             return _amount;
         } else {
             return 0;

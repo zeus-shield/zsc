@@ -31,7 +31,6 @@ contract WalletErc20 is WalletBase {
 
         if (ERC20Interface(_erc20TokenAdr).transfer(_dest, _amount)) {
             recordOut(_dest, _amount);
-            changeValue(false, _amount);
             return _amount;
         } else {
             return 0;
@@ -42,6 +41,5 @@ contract WalletErc20 is WalletBase {
         require(_dest == address(this));
         checkDelegate(msg.sender, 1);
         recordInput(_src, _amount);
-        changeValue(true, _amount);
     }
 }
