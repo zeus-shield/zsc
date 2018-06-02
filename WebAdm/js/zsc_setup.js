@@ -39,9 +39,8 @@ function ZSCSetup(logRecorderAdr, zscTokenAdr, adrs) {
     this.FactoryRecAdr = adrs[3];
     this.FactoryTmpAdr = adrs[4];
     this.FactoryAgrAdr = adrs[5];
-    this.FactoryWalletEthAdr   = adrs[6];
-    this.FactoryWalletErc20Adr = adrs[7];
-    this.ControlApisAdvAdr   = adrs[8];
+    this.FactoryWalletErc20Adr = adrs[6];
+    this.ControlApisAdvAdr   = adrs[7];
     this.zscTokenAdr = zscTokenAdr;
     this.account = web3.eth.accounts[0];
 }
