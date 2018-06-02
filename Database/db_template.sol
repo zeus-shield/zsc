@@ -15,28 +15,27 @@ contract DBTemplate is DBEntity {
     }
 
     function initParameters() internal {
-        addFundamentalParameter("automatic");
-        addFundamentalParameter("duration");
-        addFundamentalParameter("walletSymbol");
-        addFundamentalParameter("price");
-        addFundamentalParameter("refund (%)");
-        addFundamentalParameter("duration");
         addFundamentalParameter("provider");
-        addFundamentalParameter("copies");
-        addFundamentalParameter("lockedAmount");
+        addFundamentalParameter("discription");
+        //addFundamentalParameter("automatic");
+        addFundamentalParameter("duration");
+        //addFundamentalParameter("walletSymbol");
+        addFundamentalParameter("price");
+        addFundamentalParameter("insurance");
+        //addFundamentalParameter("copies");
+        //addFundamentalParameter("lockedAmount");
     }
-/*
+
     function setParameter(bytes32 _parameter, bytes32 _value) public returns (bool) {
         checkDelegate(msg.sender, 1);
-
         if (numChildren() > 0) return false; 
 
-        if (addedProvider_ == false) {
-            if (_parameter == "provider") {
+        if (_parameter == "provider") {
+            if (addedProvider_ == false) {
                 addedProvider_ = true;
-            }
-        } else {
-            if (_parameter == "provider") {
+                super.setParameter("provider", _value);
+                return true;
+            } else {
                 return true;
             }
         }
@@ -54,11 +53,7 @@ contract DBTemplate is DBEntity {
     function removeParameter(bytes32 _parameter) public returns (bool) {
         checkDelegate(msg.sender, 1);
 
-        if (numChildren() > 0) {
-            return false; 
-        }
-
+        if (numChildren() > 0) return false; 
         return super.removeParameter(_parameter);
     }
-*/
 }
