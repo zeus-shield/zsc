@@ -118,7 +118,6 @@ contract ControlApis is ControlBase {
     function createElementNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
         checkRegistered(_userName, msg.sender);
 
-
         if (_factoryType == "provider" || _factoryType == "receiver" || _factoryType == "staker") {
             revert();
         }
@@ -220,22 +219,18 @@ contract ControlApis is ControlBase {
     }
 
     //Disabled during alpha-test
-    /*
     /// @dev Get the eth balance of the element
     /// @param _enName The name of the element
-    function getElementBalance(bytes32 _userName, bytes32 _enName, bytes32 _symbol) public constant returns (uint256) {
+    function getElementBalance(bytes32 _userName, bytes32 _enName, bytes32 _symbol) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
-        string memory str = PlatString.append(_enName, "-", _symbol);
-        bytes32 walletName = PlatString.tobytes32(str);
+        bytes32 walletName = formatWalletName(_enName, _symbol);
         address walletAdr = address(getDBNode(getCurrentDBName(), walletName));
-
         require(walletAdr != address(0));
 
         return DBNode(walletAdr).getBlance();
     }
-    */
 
     /// @dev Get the number of paramters of an element
     /// @param _enName The name of the existing element
@@ -327,6 +322,13 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
         return  getDBNode(getCurrentDBName(), _enName).numChildren();
+    }
+
+    function getElementChildNameByIndex(bytes32 _userName, bytes32 _enName, uint _index) public constant returns (bytes32) {
+        checkRegistered(_userName, msg.sender);
+        checkMatched(_userName, _enName, msg.sender);
+        address adr = getDBNode(getCurrentDBName(), _enName).getChildByIndex(_index);
+        return Object(adr).name();
     }
 
     function numTemplates(bytes32 _userName) public constant returns (uint) {
