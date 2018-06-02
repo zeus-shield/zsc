@@ -18,14 +18,13 @@ contract WalletBase is DBNode {
     uint private nos_;
     mapping(uint => Payment) private payments_;
 
-    uint256 private totalValue_;
-
     // Constructor
     function WalletBase(bytes32 _name) public DBNode(_name) {
-        totalValue_= 0;
     }
 
     ////////// internal functions /////////////
+    //Disabled during alpha-test
+    /*
     function changeValue(bool _doesIncrease, uint _amount) internal returns (bool) {
         if (_doesIncrease) {
             totalValue_ = totalValue_.add(_amount);
@@ -34,9 +33,10 @@ contract WalletBase is DBNode {
             totalValue_ = totalValue_.sub( _amount);
         }
     }
+    */
 
     function checkBeforeSent(address _dst, uint _amount) internal constant {
-        require(totalValue_ >= _amount && _dst != address(this));
+        require(getBlance() >= _amount && _dst != address(this));
     }
 
     function recordInput(address _sender, uint _amount) internal {
@@ -46,7 +46,6 @@ contract WalletBase is DBNode {
     }
 
     function recordOut(address _receiver, uint _amount) internal {
-        require(totalValue_ >= _amount);
         uint index = nos_;
         nos_++;
         payments_[index] = Payment(now, true, 0x0, address(this), _receiver, _amount);
