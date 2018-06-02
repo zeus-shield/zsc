@@ -30,7 +30,6 @@ $htmlObjects = new ZSCHtmlObjects();
 <?php 
     echo $htmlObjects->loadHeader(); 
     echo '<div class="page-header"> <font size="5" color="blue" >Setup ZSC system in the testing envrioment</font></div>';
-    echo $htmlObjects->loadAllAdrs();
 ?>
 
     <div class="well">
