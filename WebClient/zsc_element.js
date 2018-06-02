@@ -123,14 +123,15 @@ ZSCElement.prototype.loadParameterValueByIndex = function(gm, index, func){
 }
 
 
-ZSCElement.prototype.setElementParameter = function(logID) {
+ZSCElement.prototype.setElementParameter = function(logID, func) {
     var gm = this;
+    var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
     var info = "";
     var count = 0;
 
-    for (var i = 0; i < gm.parameterNames.length; ++i) {
+    for (var i = 0; i < gm.parameNos; ++i) {
         var value = document.getElementById(gm.parameterNames[i]).value;
         if (value != gm.parameterValues[i]) {
             count ++;
@@ -144,17 +145,25 @@ ZSCElement.prototype.setElementParameter = function(logID) {
         myControlApi.setElementMultipleParameters(gm.userName, gm.enName, info,  
             {from:gm.account, gas: 9000000},
             function(error, result){ 
-                if(!error) bF_showHashResult(logID, result, function(){});
+                if(!error) bF_showHashResult(logID, result, callBack);
                 else console.log("error: " + error);
         });
     }
 } 
 
 
-ZSCElement.prototype.loadParametersHtml = function(elementId, funcName) {
+ZSCElement.prototype.loadParametersHtml = function(elementId, type, funcName) {
     var functionInput = funcName + "('SubmitChangesHash')";
+    var titlle;
+
+    if (type == "profile") {
+        titlle = "user [" + this.userName + "] profile: "
+    } else {
+        titlle = "entity [" + this.enName + "] details: "
+    }
    
     var text ="";
+    text += '<div class="well"> <text>' + titlle + ' </text></div>';
     text += '<div class="well">';
     text += '<table align="center" style="width:400px;min-height:30px">'
 
