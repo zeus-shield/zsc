@@ -169,9 +169,21 @@ contract ControlBase is ControlInfo {
         return true;
     }
 
-    function createFactoryNode(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra, address _creator) internal returns (address) {
+    function createNodeForUser(bytes32 _type, bytes32 _nodeName, address _creator) internal returns (address) {
         address ndAdr;
         address parentAdr = getDBDatabase(dbName_).getRootNode();
+
+        require(address(getDBNode(dbName_, _nodeName)) == 0);
+        ndAdr = getDBFactory(_type).createNode(_nodeName, parentAdr, _creator);
+        require(ndAdr != 0);
+
+        enableZSCWallet(_nodeName, ndAdr, _creator);
+        return ndAdr;
+    }
+
+    function createNodeForEelement(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra, address _creator) internal returns (address) {
+        address ndAdr;
+        address parentAdr;
 
         if (_type == "template") {
             parentAdr = address(getDBNode(dbName_, _userName));
@@ -179,8 +191,11 @@ contract ControlBase is ControlInfo {
             parentAdr = address(getDBNode(dbName_, _extra));
         }
 
-        require(address(getDBNode(dbName_, _nodeName)) == 0);
         ndAdr = getDBFactory(_type).createNode(_nodeName, parentAdr, _creator);
+
+
+        return 0;
+        
         require(ndAdr != 0);
 
         if (_type == "template") {
@@ -188,13 +203,12 @@ contract ControlBase is ControlInfo {
         } else if (_type == "agreement") {
             duplicateNode(getDBNode(dbName_, _extra),  ndAdr);
             DBNode(ndAdr).setAgreementStatus("READY", "null");
-        }
-
-        if (_type == "provider" || _type == "receiver" || _type == "agreement") {
             enableZSCWallet(_nodeName, ndAdr, _creator);
         }
+
         return ndAdr;
     }
+
 
     function enableZSCWallet(bytes32 _enName, address _enAdr,  address _creator) private returns (address) {
         bytes32 walletName = formatWalletName(_enName, "ZSC");
