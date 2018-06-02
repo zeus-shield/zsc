@@ -97,11 +97,7 @@ contract ControlApis is ControlBase {
     }
 
     /// @dev Creat an element
-    /// @param _factoryType The type of the factory for creating the element
-    /// @param _enName The name of the element belonging to the user
-    /// @param _extraInfo The extra information
-    /// @param _extraAdr The extra address
-    function createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
+    function createUserNode(bytes32 _factoryType, bytes32 _userName, address _extraAdr) public returns (address) {
         checkRegistered(_userName, msg.sender);
         require(_factoryType != "staker");
 
@@ -112,16 +108,40 @@ contract ControlApis is ControlBase {
             creatorAdr = msg.sender;
         }
 
-        address ndAdr = createFactoryNode(_factoryType, _userName, _enName, _extraInfo, creatorAdr);
+        address ndAdr = createNodeForUser(_factoryType, _userName, creatorAdr);
         require(ndAdr != address(0));
-
-        if (_factoryType == "provider" || _factoryType == "receiver") {
-            registerUserNode(_enName, ndAdr, creatorAdr);
-        } else {
-            registerEntityNode(_userName, _enName, ndAdr, creatorAdr);
-        }
+        registerUserNode(_userName, ndAdr, creatorAdr);
+        
         return ndAdr;
     }
+
+    function createElementNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
+        checkRegistered(_userName, msg.sender);
+
+
+        if (_factoryType == "provider" || _factoryType == "receiver" || _factoryType == "staker") {
+            revert();
+        }
+        require(address(getDBNode(getCurrentDBName(), _enName)) == 0);
+        addLog("createElementNode", true);
+
+        address creatorAdr;
+        if (isDelegate(msg.sender, 1)) {
+            creatorAdr = _extraAdr;
+        } else {
+            creatorAdr = msg.sender;
+        }
+
+        address ndAdr = createNodeForEelement(_factoryType, _userName, _enName, _extraInfo, creatorAdr);
+        return 0;
+
+
+        require(ndAdr != address(0));
+        registerEntityNode(_userName, _enName, ndAdr, creatorAdr);
+        
+        return ndAdr;
+    }
+
 
     //Disabled during alpha-test
     /* 
