@@ -25,7 +25,7 @@ contract DBTemplate is DBEntity {
         addFundamentalParameter("copies");
         addFundamentalParameter("lockedAmount");
     }
-
+/*
     function setParameter(bytes32 _parameter, bytes32 _value) public returns (bool) {
         checkDelegate(msg.sender, 1);
 
@@ -60,4 +60,5 @@ contract DBTemplate is DBEntity {
 
         return super.removeParameter(_parameter);
     }
+*/
 }

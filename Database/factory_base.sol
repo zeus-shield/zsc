@@ -13,8 +13,6 @@ contract FactoryBase is Object {
     function FactoryBase(bytes32 _name) public Object(_name) {
     }
 
-    function setupFactoryRoot() internal;
-
     function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
 
     function setDatabase(address _adr) public {        

@@ -77,7 +77,7 @@ contract DBProvider is DBUser {
                 else pos++;
             }
         }
-        revert();
+        return address(0);
     }
 
     function numAgreements() public constant returns (uint) {
