@@ -19,20 +19,17 @@ ZSCWallet.prototype = new ZSCClient();
 
 ZSCWallet.prototype.getUserName = function() {return this.userName;}
 
-ZSCWallet.prototype.submitTransferValue = function(tokenSymbol, destAddressID, amountID, logId, func) {  
-    var destAddress = document.getElementById(destAddressID).value;
-    var amount = document.getElementById(amountID).value;
+ZSCWallet.prototype.submitTransferValue = function(tokenSymbol, destAddress, amount, logId, func) {  
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
     if (destAddress != 0 && amount > 0) {
-        this.myControlApi.submitTransfer(this.userName, tokenSymbol, destAddress, web3.toWei(amount, 'ether') , 
-            {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
+        myControlApi.submitTransfer(gm.userName, tokenSymbol, destAddress, web3.toWei(amount, 'ether') , 
+            {from:gm.account, gas: 9000000},
             function(error, result){ 
             if(!error) {
-                if (result > 0) {
-                    this.informTransfer(srcAddress, destAddress, result, func);
-                } else {
-                    func();
-                }
+                bF_showHashResult(logId, result, callBack);
             } else {
                 console.log("error: " + error);
             }
@@ -40,6 +37,8 @@ ZSCWallet.prototype.submitTransferValue = function(tokenSymbol, destAddressID, a
     }
 }
 
+//Disabled during alpha-test
+/*
 ZSCWallet.prototype.confirmTransferValue = function(tokenSymbol, logId, func) {  
     this.myControlApi.confirmTransfer(this.userName, tokenSymbol, 
         {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
@@ -82,6 +81,7 @@ ZSCWallet.prototype.enableWallet = function(tokenSymbol, elementId, func) {
             }
         });
 }
+*/
 
 ZSCWallet.prototype.loadTokenWallets = function(func) {
     var gm = this;
@@ -185,15 +185,19 @@ ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2)  {
         amountId = symbol + "Amount";
 
         if (this.tokenStatus[i] == "false") {
-            text += '<button type="button" onClick="' + enableWalletPrefix + symbol + "', '" + hashId + "'" + showTransSuffix + '">Enable</button>'
+            text += '<button type="button" onClick="' + enableWalletPrefix + symbol + "', '" + hashId + showTransSuffix + '">Enable</button>'
         } else {
-            text += 'Symbol: <text>Test' + symbol + '</text><br><br>'
-            text += 'Address: <text>0x' + adr  + '</text><br><br>'   
+            text += '---------------</text><br>'
+            text += 'Symbol: <text>Test' + symbol + '</text><br>'
+            text += 'Address: <text>0x' + adr  + '</text><br>'   
             text += 'Balance: <text>' + balance + '</text><br><br>'
-            text += '  <button type="button" onClick="' + transPrefix + symbol + "', '" + sentoId + "', '" + amountId + "', '" + hashId + "'" + transSuffix + '">  Transfer  </button> <br>'
-            text += 'Dest-adr<input id="' + sentoId + '"></input> <br> Amount:<input id="' + amountId + '"></input> <br><br>'
-            text += '  <button type="button" onClick="' + showTransPrefix + symbol + "', '" + hashId + "'" + showTransSuffix + '">  Histories  </button><br><br>'
+            text += '---------------</text><br>'
+            text += '  <button type="button" onClick="' + showTransPrefix + symbol + "', '" + hashId + showTransSuffix + '">Show Transactions</button><br><br>'
+            text += '---------------</text><br>'
+            text += 'Dest-adr<input id="' + sentoId + '"></input> <br> Amount:<input id="' + amountId + '"></input> <br>'
+            text += '  <button type="button" onClick="' + transPrefix + symbol + "', '" + sentoId + "', '" + amountId + "', '" + hashId + transSuffix + '">  Transfer  </button> <br>'
             text += '<text id="'+ hashId + '" value = "log:"> </text> <br>'
+            text += '---------------</text><br>'
         }
     }
     text += '</div>'
