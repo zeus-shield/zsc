@@ -17,8 +17,8 @@ echo $htmlObjects->loadScriptFiles();
     var AdmAdvAdr = "<?php echo $htmlObjects->readObjectAddress('AdmAdv')?>";
     var userManager = new ZSCUserManagement(AdmAdvAdr, cC_getContractAbi('AdmAdv'));
 
-    function addUser(usernameId, elementId) {
-        userManager.addUser(usernameId, elementId);
+    function addUser(usernameId, passwordId, elementId) {
+        userManager.addUser(usernameId, passwordId, elementId);
     }
 
     function setUserStatus(userName, status, elementId) {
@@ -44,9 +44,10 @@ echo $htmlObjects->loadScriptFiles();
 <div class="page-header"><font size="5" color="blue" >Manage ZSC users</font></div>
 
     <div class="well">
-        <text>Username</text>  <input type="text" id="AddUserName" value="test"></input> <br>
-        <button type="button" onClick="addUser('AddUserName', 'AddUserHash')">Add a user</button> <br>
-        <text id="AddUserHash"></text>
+        <text>Username</text>  <input type="text" id="AddUsername" value="test"></input> <br>
+        <text>Password</text>  <input type="text" id="AddPassword" value="test"></input> <br>
+        <button type="button" onClick="addUser('AddUsername', 'AddUsername', 'AddUserhash')">Add a user</button> <br>
+        <text id="AddUserhash"></text>
     </div>
 
     <div class="well" id="UserManagement"> </div>
