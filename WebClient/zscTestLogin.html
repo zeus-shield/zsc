@@ -44,12 +44,13 @@
         zscHtml.loadPageBody("login", "checkUser");
     }
 
-    function checkUser(adrId, userId){
+    function checkUser(adrId, userId, passId){
         var admAdr = document.getElementById(adrId).value; 
         var user = document.getElementById(userId).value; 
+        var password = document.getElementById(passId).value; 
 
         zscUser = new ZSCUser(admAdr);
-        zscUser.tryLogin(user, function(ret) {
+        zscUser.tryLogin(user, password, function(ret) {
             if(ret) {
                 var userName = zscUser.getUserName();
                 var fullAbi = zscUser.getControlApisFullAbi();
@@ -57,8 +58,9 @@
                 zscElement  = new ZSCElement(userName, fullAbi, controlApisAdvAdr);
                 zscWalletGM = new ZSCWallet(userName, fullAbi, controlApisAdvAdr);
                 zscTmpsGM   = new ZSCTemplate(userName, fullAbi, controlApisAdvAdr);
+                zscAgrsGM   = new ZSCAgreement(userName, fullAbi, controlApisAdvAdr);
                 //zscTransGM  = new ZSCTransactions(userName, fullAbi, controlApisAdvAdr);
-                //zscAgrsGM   = new ZSCAgreement(userName, fullAbi, controlApisAdvAdr);
+                //
                 //zscViewAgrsGM = new ZSCViewAgreement(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
                 /*
                 zscBlockGM  = new ZSCBlock(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
@@ -95,6 +97,7 @@
         });
     }
 
+
     //Disable during alpha-test
     /*
     function confirmTransferValue(tokenSymbol, logId) {
@@ -111,48 +114,54 @@
         zscElement.transferEth(destAddress, amount, logId);
     }
 
-    function submitElementParameterChanges(logID) {
-        zscElement.setElementParameter(logID);
+    function submitParameterProfileChanges(logID) {
+        zscElement.setElementParameter(logID, function(){});
+    }
+
+    function submitParameterTemplateChanges(logID) {
+        zscElement.setElementParameter(logID, function() {
+            loadHtmlPageBody("template");
+        });
     }
 
     function enableWallet(tokenSymbol, elementId) {
         //Disable during alpha-test
         /*
         ZSCWalletGM.enableWallet(tokenSymbol, elementId, function() {
-           loadPageBody("wallet");
+           loadHtmlPageBody("wallet");
         });
         */
     }
 
+    function showPublishedAgreements(templateName) {
+        zscAgrsGM.setTemplateName(templateName);
+        loadHtmlPageBody("agreement-provider");
+    }
+
     function showTransactions(tokenSymbol) {
         zscTransGM.setTokenSymbol(tokenSymbol);
-        loadPageBody("transaction");
+        loadHtmlPageBody("transaction");
     }
 
-    function showMiningInfo() {
-        //Disable during alpha-test
-        //loadPageBody("mining");
-    }
-
-    function showPosInfo() {
-        //Disable during alpha-test
-        //loadPageBody("pos");
-    }
-
-    function showElementParameters(elementName) {
+    function showTemplateParameters(elementName) {
         zscElement.setElementName(elementName);
-        loadPageBody("parameter")
+        loadHtmlPageBody("parameter-template")
+    }
+
+    function showAgreementParameters(elementName) {
+        zscElement.setElementName(elementName);
+        loadHtmlPageBody("parameter-agreement")
     }
 
     function enableAsAgreement(index) {
         zscTmpsGM.enableAsAgreement(index, function() {
-            loadPageBody("template");
+            loadHtmlPageBody("template");
         });
     }
 
     function submitPurchaseAgreement(index) {
         zscViewAgrsGM.submitPurchaseAgreement(index, function(result) {
-            loadPageBody("view-agreement")
+            loadHtmlPageBody("view-agreement")
         });
     }
 
@@ -160,14 +169,14 @@
     /*
     function confirmPurchaseAgreement(index) {
         zscViewAgrsGM.confirmPurchaseAgreement(index, function(result) {
-            loadPageBody("view-agreement")
+            loadHtmlPageBody("view-agreement")
         });
     }
     */
 
     function submitPublishAgreement(index) {
         zscAgrsGM.submitPublishAgreement(index, function(result) {
-            loadPageBody("agreement")
+            loadHtmlPageBody("agreement")
         });
     }
 
@@ -175,7 +184,7 @@
     /*
     function confirmPublishAgreement(index) {
         zscAgrsGM.confirmPublishAgreement(index, function(result) {
-            loadPageBody("agreement")
+            loadHtmlPageBody("agreement")
         });
     }
     */
@@ -185,10 +194,12 @@
             if (status == 0) {
                 //Should not happen 
             } else if (status == "added") {
-                zscHtml.loadPageHeader("loadHtmlPageBody", false);
+                zscHtml.loadPageHeader("loadHtmlPageBody", "null", false);
             } else if (status == "applied") {
-                zscHtml.loadPageHeader("loadHtmlPageBody", true);
-                loadHtmlPageBody("applied");
+                zscUser.getUserTypeFromAdm(function(type){
+                    zscHtml.loadPageHeader("loadHtmlPageBody", type, true);
+                    loadHtmlPageBody("applied");
+                }); 
             } 
         }); 
     }
@@ -227,16 +238,29 @@
                     });
                     break;
 
-                case "profile":
-                    zscElement.setElementName(zscUser.getUserName());
-                    zscElement.loadParameterNamesAndvalues(function() {
-                        zscElement.loadParametersHtml("PageBody", "submitElementParameterChanges");
+                case "template": 
+                    zscTmpsGM.loadTempates(function() {
+                        //elementId, funcCreateTmp, funcSetPara, funcPublish
+                        zscTmpsGM.loadTemplatesHtml("PageBody", "creatNewTemplate", "enableAsAgreement", "showTemplateParameters", "showPublishedAgreements");
+                    });
+                    break;
+                
+                case "agreement-provider": 
+                    zscAgrsGM.loadAgreements(function() {
+                        zscAgrsGM.loadPublAgreementsHtml("PageBody", "published", "showAgreementParameters");
                     });
                     break;
 
-                case "parameter":
+                case "parameter-profile":
+                    zscElement.setElementName(zscUser.getUserName());
                     zscElement.loadParameterNamesAndvalues(function() {
-                        zscElement.loadParametersHtml("PageBody", "submitElementParameterChanges");
+                        zscElement.loadParametersHtml("PageBody", "profile", "submitParameterProfileChanges");
+                    });
+                    break;
+
+                case "parameter-template":
+                    zscElement.loadParameterNamesAndvalues(function() {
+                        zscElement.loadParametersHtml("PageBody", "template", "submitParameterTemplateChanges");
                     });
                     break;
                 case "transaction":
@@ -244,16 +268,8 @@
                         zscTransGM.loadTransactionsHtml("PageBody");
                     });
                     break;
-                case "template": 
-                    zscTmpsGM.loadTempates(function() {
-                        zscTmpsGM.loadTemplatesHtml("PageBody", "creatNewTemplate", "showElementParameters", "enableAsAgreement");
-                    });
-                    break;
-                case "agreement": 
-                    zscAgrsGM.loadAgreements(function() {
-                        zscAgrsGM.loadAgreementsHtml("PageBody", "showElementParameters", "submitPublishAgreement", "confirmPublishAgreement");
-                    });
-                    break;
+
+
                 case "view-agreement":
                     zscViewAgrsGM.loadAllAgreements(function() {
                         zscViewAgrsGM.loadAllAgreementsHtml("PageBody", "showElementParameters", "submitPurchaseAgreement", "confirmPurchaseAgreement");
