@@ -56,8 +56,8 @@
                 var controlApisAdvAdr = zscUser.getControlApisAdr();
                 zscElement  = new ZSCElement(userName, fullAbi, controlApisAdvAdr);
                 zscWalletGM = new ZSCWallet(userName, fullAbi, controlApisAdvAdr);
+                zscTmpsGM   = new ZSCTemplate(userName, fullAbi, controlApisAdvAdr);
                 //zscTransGM  = new ZSCTransactions(userName, fullAbi, controlApisAdvAdr);
-                //zscTmpsGM   = new ZSCTemplate(userName, fullAbi, controlApisAdvAdr);
                 //zscAgrsGM   = new ZSCAgreement(userName, fullAbi, controlApisAdvAdr);
                 //zscViewAgrsGM = new ZSCViewAgreement(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
                 /*
@@ -81,11 +81,17 @@
     }
 
     function submitTransferValue(tokenSymbol, destAddressId, amountId, logId) {
-        var adr = document.getElementById(destAddressId).value; 
+        var destAddress = document.getElementById(destAddressId).value; 
         var amount = document.getElementById(amountId).value; 
 
-        ZSCWalletGM.transferValue(tokenSymbol, destAddress, amount, logId, function(){
+        zscWalletGM.submitTransferValue(tokenSymbol, destAddress, amount, logId, function(){
             loadHtmlPageBody("wallet");
+        });
+    }
+
+    function creatNewTemplate(logId) {
+        zscTmpsGM.creatNewTemplate(logId, function(){
+            loadHtmlPageBody("template");
         });
     }
 
@@ -99,14 +105,14 @@
     */
 
     function showErc20Tokens(destAddressId, amountId, logId) {
-        var adr = document.getElementById(destAddressId).value; 
+        var destAddress = document.getElementById(destAddressId).value; 
         var amount = document.getElementById(amountId).value; 
 
         zscElement.transferEth(destAddress, amount, logId);
     }
 
     function submitElementParameterChanges(logID) {
-        zscElement.setElementParameter(logID, zscUser.getUserNameHr());
+        zscElement.setElementParameter(logID);
     }
 
     function enableWallet(tokenSymbol, elementId) {
@@ -220,6 +226,14 @@
                         zscWalletGM.loadWalletsHtml("PageBody", "submitTransferValue", "showTransactions");
                     });
                     break;
+
+                case "profile":
+                    zscElement.setElementName(zscUser.getUserName());
+                    zscElement.loadParameterNamesAndvalues(function() {
+                        zscElement.loadParametersHtml("PageBody", "submitElementParameterChanges");
+                    });
+                    break;
+
                 case "parameter":
                     zscElement.loadParameterNamesAndvalues(function() {
                         zscElement.loadParametersHtml("PageBody", "submitElementParameterChanges");
@@ -232,7 +246,7 @@
                     break;
                 case "template": 
                     zscTmpsGM.loadTempates(function() {
-                        zscTmpsGM.loadTemplatesHtml("PageBody", "showElementParameters", "enableAsAgreement");
+                        zscTmpsGM.loadTemplatesHtml("PageBody", "creatNewTemplate", "showElementParameters", "enableAsAgreement");
                     });
                     break;
                 case "agreement": 
