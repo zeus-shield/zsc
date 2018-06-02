@@ -18,7 +18,7 @@ ZSCHtml.prototype.setHtmlContent = function(elementId, text) {
     document.getElementById(elementId).innerHTML = text;  
 }
 
-ZSCHtml.prototype.loadPageHeader = function(funcName, doesUserApplied) {
+ZSCHtml.prototype.loadPageHeader = function(funcName, userType, doesUserApplied) {
     var funcPrefix = funcName + "(";
     var funcSuffix = ")";
     var text;
@@ -30,8 +30,10 @@ ZSCHtml.prototype.loadPageHeader = function(funcName, doesUserApplied) {
         text += '   <button type="button" onClick="' + funcPrefix + "'apply-receiver' " + funcSuffix + '">Apply for receiver</button> <br><br>'
     } else {
         text += '   <button type="button" onClick="' + funcPrefix + "'wallet'" + funcSuffix + '">Wallate</button>'
-        text += '   <button type="button" onClick="' + funcPrefix + "'profile'" + funcSuffix + '">Profile</button>'
-        text += '   <button type="button" onClick="' + funcPrefix + "'template'" + funcSuffix + '">Templates</button>'
+        text += '   <button type="button" onClick="' + funcPrefix + "'parameter-profile'" + funcSuffix + '">Profile</button>'
+        if (userType == "provider") {
+            text += '   <button type="button" onClick="' + funcPrefix + "'template'" + funcSuffix + '">Templates</button>'
+        }
         text += '   <button type="button" onClick="' + funcPrefix + "'agreement'" + funcSuffix + '">Agreements</button>'
     }
     text += ' <br><text id="ApplyForProviderHash"></text>'
@@ -73,13 +75,14 @@ ZSCHtml.prototype.loadPageBody = function(tag, func) {
 } 
 
 ZSCHtml.prototype.loadLogin = function(funcName) {
-    var functionInput = funcName + "('AdmAdvAdr', 'UserName')";
+    var functionInput = funcName + "('AdmAdvAdr', 'UserName', 'PassWord')";
     text =  '<div class="well">'
     text += '   <text>Login ZSC system</text><br><br>'
     text += '   <text>ZSC platform address </text> <br>'
     text += '   <input class="form-control"  type="text" id="AdmAdvAdr" value="0xc7e03da56e2be02cbdca9e7a7cf6148df7eaae97"></input> <br> <br>'
     text += '   <text>User Name </text> <br>' 
     text += '   <input type="text" id="UserName" value="test"></input> <br>' 
+    text += '   <input type="password" id="PassWord" value="test"></input> <br>' 
     text += '   <button type="button" onClick="' + functionInput + '">Enter</button>'
     text += '</div>'
     
