@@ -65,12 +65,16 @@ ZSCAgreementAll.prototype.getAllAgreementNameByIndex = function(gm, index, func)
         });
 }
 
-ZSCAgreementAll.prototype.submitPurchaseAgreement = function(index, func) {
-    this.myControlApi.submitPurchaseAgreement(this.userName, this.agrNames[index] ,
-        {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
+ZSCAgreementAll.prototype.submitPurchaseAgreement = function(elementName, func) {
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.purchaseAgreement(gm.userName, elementName,
+        {from:gm.account, gas: 9000000},
         function(error, result){ 
             if(!error) {
-                func(result);
+                bF_showHashResult("PurchaseAgreementHash", result, callBack);
             } else {
                 console.log("error: " + error);
             }
@@ -90,6 +94,11 @@ ZSCAgreementAll.prototype.loadAllAgreementsHtml = function(elementId, showFunc, 
     text += '<div class="well">';
     text += '<div class="well"> <text>' + titlle + ' </text></div>';
     text += '<table align="center" style="width:600px;min-height:30px">'
+
+    text += '<div class="well">';
+    text += '<text> Purchase agreement: </text> <text id="PurchaseAgreementHash"> </text>'
+    text += '</div>';
+
     text += '<tr>'
     if (this.userType == "receiver") {
         text += '   <td>Index</td> <td>Name</td> <td> Details </td> <td> Purchase </td>'
