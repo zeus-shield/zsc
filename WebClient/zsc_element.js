@@ -5,6 +5,7 @@ Copyright (c) 2018 ZSC Dev Team
 //class zscElement
 function ZSCElement(userName, controlApisAdvAbi, controlApisAdvAdr) {
     this.userName = userName;
+    this.userType;
     this.enName;
     this.parameNos = 0;
     this.ethBalance = 0;
@@ -15,6 +16,8 @@ function ZSCElement(userName, controlApisAdvAbi, controlApisAdvAdr) {
     this.contractAdr = controlApisAdvAdr;
     this.contractAbi = JSON.parse(controlApisAdvAbi);
 }
+
+ZSCElement.prototype.setUserType = function(type) {this.userType = type;}
 
 ZSCElement.prototype.setElementName = function(nm) {this.enName = nm;}
 
@@ -165,19 +168,40 @@ ZSCElement.prototype.loadParametersHtml = function(elementId, type, funcName) {
     var text ="";
     text += '<div class="well"> <text>' + titlle + ' </text></div>';
     text += '<div class="well">';
-    text += '<table align="center" style="width:400px;min-height:30px">'
+    text += '<table align="center" style="width:600px;min-height:30px">'
+
+    var paraName;
 
     for (var i = 0; i < this.parameNos; ++i) {
+        paraName = this.parameterNames[i];
+        if (paraName == "duration") {
+            paraName += " (seconds) [>=60]";
+        } else if (paraName == "price") {
+            paraName += " [>0]";
+        } else if (paraName == "insurance") {
+            paraName += " (locked for claim) [>0]";
+        }
         text += '<tr>'
-        text += '  <td> <text>' + this.parameterNames[i] + ': </text> </td>'
+        text += '  <td> <text>' + paraName + ': </text> </td>'
         text += '  <td> <input type="text" id="' + this.parameterNames[i] + '" value="' + this.parameterValues[i] + '"></input> </td>'
         text += '</tr>'
     }
     text += '</table></div>'
-    text += '<div>'
-    text += '   <button type="button" onClick="' + functionInput + '">Submit Changes</button>'
-    text += '   <text id="SubmitChangesHash"></text>'
-    text += '</div>'
+    if (type == "agreement-provider") {
+        text += '<div>'
+        text += '   <button type="button" onClick="' + functionInput + '">Back</button>'
+        text += '</div>'
+    } else if (type == "agreement-all") {
+        if (this.userT)
+        text += '<div>'
+        text += '   <button type="button" onClick="' + functionInput + '">Back</button>'
+        text += '</div>'
+    } else {
+        text += '<div>'
+        text += '   <button type="button" onClick="' + functionInput + '">Submit Changes</button>'
+        text += '   <text id="SubmitChangesHash"></text>'
+        text += '</div>'
+    }
 
     document.getElementById(elementId).innerHTML = text;  
 }
