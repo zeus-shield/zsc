@@ -10,7 +10,9 @@
 <script type="text/javascript" src="./userFunctions.js"></script>
 <script type="text/javascript" src="./htmlFormat.js"></script>
 <script type="text/javascript" src="./basicFunctions.js"></script>
-<script type="text/javascript" src="./zsc_agreements.js"></script>
+<script type="text/javascript" src="./zsc_agreements_all.js"></script>
+<script type="text/javascript" src="./zsc_agreements_provider.js"></script>
+<script type="text/javascript" src="./zsc_agreements_receiver.js"></script>
 <script type="text/javascript" src="./zsc_client.js"></script>
 <script type="text/javascript" src="./zsc_element.js"></script>
 <script type="text/javascript" src="./zsc_html.js"></script>
@@ -29,7 +31,7 @@
     var zscWalletGM;
     var zscTransGM;
     var zscTmpsGM;
-    var zscAgrsGM;
+    var zscAgrsProGM;
     var zscBlockGM;
     var zscPosGM;
     var zscViewAgrsGM;
@@ -55,10 +57,11 @@
                 var userName = zscUser.getUserName();
                 var fullAbi = zscUser.getControlApisFullAbi();
                 var controlApisAdvAdr = zscUser.getControlApisAdr();
-                zscElement  = new ZSCElement(userName, fullAbi, controlApisAdvAdr);
-                zscWalletGM = new ZSCWallet(userName, fullAbi, controlApisAdvAdr);
-                zscTmpsGM   = new ZSCTemplate(userName, fullAbi, controlApisAdvAdr);
-                zscAgrsGM   = new ZSCAgreement(userName, fullAbi, controlApisAdvAdr);
+                zscElement   = new ZSCElement(userName, fullAbi, controlApisAdvAdr);
+                zscWalletGM  = new ZSCWallet(userName, fullAbi, controlApisAdvAdr);
+                zscTmpsGM    = new ZSCTemplate(userName, fullAbi, controlApisAdvAdr);
+                zscAgrsProGM = new ZSCAgreementProvider(userName, fullAbi, controlApisAdvAdr);
+                zscAgrsAllGM = new ZSCAgreementAll(userName, fullAbi, controlApisAdvAdr);
                 //zscTransGM  = new ZSCTransactions(userName, fullAbi, controlApisAdvAdr);
                 //
                 //zscViewAgrsGM = new ZSCViewAgreement(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
@@ -133,8 +136,8 @@
         */
     }
 
-    function showPublishedAgreements(templateName) {
-        zscAgrsGM.setTemplateName(templateName);
+    function showProvidersAgreements(templateName) {
+        zscAgrsProGM.setTemplateName(templateName);
         loadHtmlPageBody("agreement-provider");
     }
 
@@ -159,8 +162,8 @@
         });
     }
 
-    function submitPurchaseAgreement(index) {
-        zscViewAgrsGM.submitPurchaseAgreement(index, function(result) {
+    function submitPurchaseAgreement(elementName) {
+        zscAgrsAllGM.submitPurchaseAgreement(elementName, function(result) {
             loadHtmlPageBody("view-agreement")
         });
     }
@@ -175,7 +178,7 @@
     */
 
     function submitPublishAgreement(index) {
-        zscAgrsGM.submitPublishAgreement(index, function(result) {
+        zscAgrsProGM.submitPublishAgreement(index, function(result) {
             loadHtmlPageBody("agreement")
         });
     }
@@ -183,7 +186,7 @@
     //Disable during alpha-test
     /*
     function confirmPublishAgreement(index) {
-        zscAgrsGM.confirmPublishAgreement(index, function(result) {
+        zscAgrsProGM.confirmPublishAgreement(index, function(result) {
             loadHtmlPageBody("agreement")
         });
     }
@@ -241,13 +244,7 @@
                 case "template": 
                     zscTmpsGM.loadTempates(function() {
                         //elementId, funcCreateTmp, funcSetPara, funcPublish
-                        zscTmpsGM.loadTemplatesHtml("PageBody", "creatNewTemplate", "enableAsAgreement", "showTemplateParameters", "showPublishedAgreements");
-                    });
-                    break;
-                
-                case "agreement-provider": 
-                    zscAgrsGM.loadAgreements(function() {
-                        zscAgrsGM.loadPublAgreementsHtml("PageBody", "published", "showAgreementParameters");
+                        zscTmpsGM.loadTemplatesHtml("PageBody", "creatNewTemplate", "enableAsAgreement", "showTemplateParameters", "showProvidersAgreements");
                     });
                     break;
 
@@ -263,18 +260,32 @@
                         zscElement.loadParametersHtml("PageBody", "template", "submitParameterTemplateChanges");
                     });
                     break;
+                
+                case "parameter-agreement":
+                    zscElement.loadParameterNamesAndvalues(function() {
+                        zscElement.loadParametersHtml("PageBody", "agreement", "null");
+                    });
+                    break;
+
+                case "agreement-provider": 
+                    zscAgrsProGM.loadAgreements(function() {
+                        zscAgrsProGM.loadAgreementsHtml("PageBody", "showAgreementParameters");
+                    });
+                    break;
+
+                case "agreement-all": 
+                    zscAgrsAllGM.setUserType(zscUser.getUserType());
+                    zscAgrsAllGM.loadAllAgreements(function() {
+                        zscAgrsAllGM.loadAllAgreementsHtml("PageBody", "showAllAgreementParameters", "submitPurchaseAgreement");
+                    });
+                    break;
+
                 case "transaction":
                     zscTransGM.loadTransactions(function() {
                         zscTransGM.loadTransactionsHtml("PageBody");
                     });
                     break;
-
-
-                case "view-agreement":
-                    zscViewAgrsGM.loadAllAgreements(function() {
-                        zscViewAgrsGM.loadAllAgreementsHtml("PageBody", "showElementParameters", "submitPurchaseAgreement", "confirmPurchaseAgreement");
-                    });
-                    break;
+                    
                 default:
                     break;
             }
