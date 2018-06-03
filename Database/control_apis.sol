@@ -50,33 +50,23 @@ contract ControlApis is ControlBase {
     }
     */
 
-    /*
+   
     /// @dev Get the number of elements of the database
     function numFactoryElements(bytes32 _userName, bytes32 _factoryType) public constant returns (uint) { 
-        if (_factoryType == "agreement") {
-            checkRegistered(_userName, msg.sender);
-        } else {
-            checkDelegate(msg.sender, 1);
-        }
+        checkRegistered(_userName, msg.sender);
 
-        return getDBFactory(_factoryType).numFactoryElements(); 
+        return getDBFactory(_factoryType).numFactoryNodes(); 
     }
     
 
     /// @dev Get the element name by the index
     /// @param _index The index of the element in the database
     function getFactoryElementNameByIndex(bytes32 _userName, bytes32 _factoryType, uint _index) public constant returns (bytes32) { 
-        if (_factoryType == "agreement") {
-            checkRegistered(_userName, msg.sender);
-        } else {
-            checkDelegate(msg.sender, 1);
-        }
+        checkRegistered(_userName, msg.sender);
 
-        address nd = getDBFactory(_factoryType).getFactoryElementByIndex(_index);
-        require(nd != address(0));
-        return Object(nd).name();
+        return getDBFactory(_factoryType).getFactoryNodeNameByIndex(_index); 
     }
-    */
+
 
     /// @dev Check the element wheather or not existing
     /// @param _enName The name of the element to be checked
@@ -122,7 +112,6 @@ contract ControlApis is ControlBase {
             revert();
         }
         require(address(getDBNode(getCurrentDBName(), _enName)) == 0);
-        addLog("createElementNode", true);
 
         address creatorAdr;
         if (isDelegate(msg.sender, 1)) {
@@ -309,14 +298,16 @@ contract ControlApis is ControlBase {
         return conductInformTransaction(_enName, _dest, _amount);
     }
 
+    //Disabled during alpha-test
     /// @dev Announce an insurance agreement by a provider
-    /// @param _agrName The agreement name
+    /*
     function publishAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _agrName, msg.sender);
 
         return conductPublishAgreement(_userName, _agrName, msg.sender);
     }
+    */
 
     function numElementChildren(bytes32 _userName, bytes32 _enName) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
@@ -368,10 +359,11 @@ contract ControlApis is ControlBase {
     */
 
     /// @dev Buy an insurance agreement from a provider
-    /// @param _userName The receiver name
-    /// @param _agrName The agreement name
-    function submitPurchaseAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
+    function purchaseAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
         checkRegistered(_userName, msg.sender);
+
+        bytes32 userType = getDBNode(getCurrentDBName(), _userName).getNodeType();
+        require(userType == "receiver");
 
         return conductPurchaseAgreement(_userName, _agrName); 
     }
@@ -379,7 +371,6 @@ contract ControlApis is ControlBase {
     /*
     /// @dev Buy an insurance agreement from a provider
     /// @param _userName The receiver name
-    /// @param _agrName The agreement name
     function confirmPurchaseAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
         checkRegistered(_userName, msg.sender);
 
