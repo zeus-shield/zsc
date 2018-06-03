@@ -7,7 +7,7 @@ pragma solidity ^0.4.21;
 import "./db_entity.sol";
 
 contract DBAgreement is DBEntity {
-    bytes32 private status_ = "CREATE"; // 0: CREATED; 1: READY; 2: PUBLISHED; 3: PAID;
+    bytes32 private status_ ; // 0: CREATED; 1: PUBLISHED; 2: PAID;
     uint private startTime_;
     uint private duration_;
     uint private endTime_;
@@ -18,6 +18,7 @@ contract DBAgreement is DBEntity {
     // Constructor
     function DBAgreement(bytes32 _name) public DBEntity(_name) {
         nodeType_ = "agreement";
+        status_ = "CREATED"; 
     }
 
     function initParameters() internal {
@@ -55,18 +56,13 @@ contract DBAgreement is DBEntity {
 
     function setAgreementStatus(bytes32 _tag, bytes32 _receiver) public returns (bool) {
         checkDelegate(msg.sender, 1);
-        bytes32 curTag = _tag;
         bool ret;
 
         if (status_ == "PAID") return false;
 
-        if(status_ == "CREATED" && curTag == "READY") {
-            status_ = "READY";
-        } else if (status_ == "READY") {
-            if(curTag == "PUBLISHED") {
-                status_ = "PUBLISHED";
-            }
-        } else if (status_ == "PUBLISHED" && curTag == "PAID") {
+        if(status_ == "CREATED" && _tag == "PUBLISHED") {
+            status_ = "PUBLISHED";
+        } else if (status_ == "PUBLISHED" && _tag == "PAID") {
             bytes32 temp;
 
             status_ = "PAID";
@@ -74,19 +70,16 @@ contract DBAgreement is DBEntity {
             endTime_ = SafeMath.add(startTime_, duration_);
 
             ret = super.setParameter("receiver", _receiver);
-            require(ret);
 
             temp = PlatString.tobytes32(PlatString.uintToString(startTime_));
             ret = super.setParameter("startTime", temp);
-            require(ret);
 
             temp = PlatString.tobytes32(PlatString.uintToString(endTime_));
             ret = super.setParameter("endTime", temp);
-            require(ret);
         } else {
             return false;
         }
-        return super.setParameter("status", curTag);
+        return super.setParameter("status", status_);
     }
 
     function getAgreementInfo() public constant returns (bytes32, bytes32, uint, uint, bytes32, uint) {
