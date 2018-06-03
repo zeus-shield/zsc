@@ -29,14 +29,11 @@ ZSCAgreementProvider.prototype.loadAgreements = function(func) {
         } else {
             for (var i = 0; i < gm.agrNos; ++i) {
                 gm.getAgrNameByIndex(gm, i, function(gm, j){
-                    callBack();
-                    /*
                     gm.getAgrBalance(gm, j, function(gm, index) {
                         if (index == gm.agrNos - 1) {
                             callBack();
                         }
                     });
-                    */
                 });
             }
         }
@@ -81,11 +78,11 @@ ZSCAgreementProvider.prototype.getAgrBalance = function(gm, index, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     
-    myControlApi.getElementBalance(gm.agrNames[index], "ZSC",
+    myControlApi.getElementBalance(gm.userName, gm.agrNames[index], "ZSC",
         {from: gm.account},
         function(error, result){ 
             if(!error) {
-                gm.balance[index] = web3.toUtf8(10);
+                gm.balance[index] = result.toString(10);
                 callBack(gm, index);
             } else {
                 console.log("error: " + error);
@@ -116,7 +113,7 @@ ZSCAgreementProvider.prototype.loadAgreementsHtml = function(elementId, funcSetP
     text += '<div class="well"> <text>' + titlle + ' </text></div>';
     text += '<table align="center" style="width:600px;min-height:30px">'
     text += '<tr>'
-    text += '   <td>Name</td> <td>Details</td> <td>Balance</td>'
+    text += '   <td>Name</td> <td>Balance </td> <td>Details </td>'
     text += '</tr>'
     text += '<tr> <td>---</td> <td>---</td> <td>---</td> </tr>'
 
@@ -124,7 +121,7 @@ ZSCAgreementProvider.prototype.loadAgreementsHtml = function(elementId, funcSetP
         text += '<tr>'
         text += '   <td><text>' + this.agrNames[i]  + '</text></td>'
         text += '   <td><text>' + this.balance[i]  + '</text></td>'
-        text += '   <td><button type="button" onClick="' + funcSetParaPrefix + this.agrNames[i] + funcSetParaSuffix + '">Edit</button></td>'
+        text += '   <td><button type="button" onClick="' + funcSetParaPrefix + this.agrNames[i] + funcSetParaSuffix + '">Show</button></td>'
         text += '</tr>'
         text += '<tr> <td>---</td> <td>---</td> <td>---</td>  </tr>'
     }
