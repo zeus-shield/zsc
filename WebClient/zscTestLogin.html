@@ -61,6 +61,7 @@
                 zscWalletGM  = new ZSCWallet(userName, fullAbi, controlApisAdvAdr);
                 zscTmpsGM    = new ZSCTemplate(userName, fullAbi, controlApisAdvAdr);
                 zscAgrsProGM = new ZSCAgreementProvider(userName, fullAbi, controlApisAdvAdr);
+                zscAgrsRecGM = new ZSCAgreementReceiver(userName, fullAbi, controlApisAdvAdr);
                 zscAgrsAllGM = new ZSCAgreementAll(userName, fullAbi, controlApisAdvAdr);
                 //zscTransGM  = new ZSCTransactions(userName, fullAbi, controlApisAdvAdr);
                 //
@@ -127,6 +128,22 @@
         });
     }
 
+    function claimReward(logID) {
+        loadHtmlPageBody("template");
+    }
+
+    function claimInsurance(logID) {
+        loadHtmlPageBody("agreement-reciver");
+    }
+
+    function dealwithShowAgreementForAll(elementName, type) {
+        if (type == "provider") { 
+            loadHtmlPageBody("agreement-all");
+        } else if (type == "receiver") {
+            loadHtmlPageBody("agreement-all");
+        }
+    }
+
     function enableWallet(tokenSymbol, elementId) {
         //Disable during alpha-test
         /*
@@ -151,9 +168,14 @@
         loadHtmlPageBody("parameter-template")
     }
 
-    function showAgreementParameters(elementName) {
+    function showProAgrParameters(elementName) {
         zscElement.setElementName(elementName);
-        loadHtmlPageBody("parameter-agreement")
+        loadHtmlPageBody("parameter-agreement-provider")
+    }
+
+    function showRecAgrParameters(elementName) {
+        zscElement.setElementName(elementName);
+        loadHtmlPageBody("parameter-agreement-receiver")
     }
 
     function enableAsAgreement(index) {
@@ -247,7 +269,7 @@
                         zscTmpsGM.loadTemplatesHtml("PageBody", "creatNewTemplate", "enableAsAgreement", "showTemplateParameters", "showProvidersAgreements");
                     });
                     break;
-
+                    
                 case "parameter-profile":
                     zscElement.setElementName(zscUser.getUserName());
                     zscElement.loadParameterNamesAndvalues(function() {
@@ -261,22 +283,41 @@
                     });
                     break;
                 
-                case "parameter-agreement":
+                case "parameter-agreement-provider":
                     zscElement.loadParameterNamesAndvalues(function() {
-                        zscElement.loadParametersHtml("PageBody", "agreement", "null");
+                        zscElement.loadParametersHtml("PageBody", "agreement-provider", "claimReward");
+                    });
+                    break;
+
+                case "parameter-agreement-receiver":
+                    zscElement.loadParameterNamesAndvalues(function() {
+                        zscElement.loadParametersHtml("PageBody", "agreement-receiver", "claimInsurance");
+                    });
+                    break;
+
+                case "parameter-agreement-all":
+                    zscElement.setUserType(zscUser.getUserType());
+                    zscElement.loadParameterNamesAndvalues(function() {
+                        zscElement.loadParametersHtml("PageBody", "agreement-all", "fromProAgrToProTmp");
                     });
                     break;
 
                 case "agreement-provider": 
                     zscAgrsProGM.loadAgreements(function() {
-                        zscAgrsProGM.loadAgreementsHtml("PageBody", "showAgreementParameters");
+                        zscAgrsProGM.loadAgreementsHtml("PageBody", "showProAgrParameters");
+                    });
+                    break;
+
+                case "agreement-receiver": 
+                    zscAgrsRecGM.loadAgreements(function() {
+                        zscTmpsGM.loadAgreementsHtml("PageBody", "showRecAgrParameters");
                     });
                     break;
 
                 case "agreement-all": 
                     zscAgrsAllGM.setUserType(zscUser.getUserType());
                     zscAgrsAllGM.loadAllAgreements(function() {
-                        zscAgrsAllGM.loadAllAgreementsHtml("PageBody", "showAllAgreementParameters", "submitPurchaseAgreement");
+                        zscAgrsAllGM.loadAllAgreementsHtml("PageBody", "showAllAgrParameters", "submitPurchaseAgreement");
                     });
                     break;
 
