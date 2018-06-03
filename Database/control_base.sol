@@ -200,10 +200,9 @@ contract ControlBase is ControlInfo {
             DBNode(ndAdr).setParameter("provider", _userName);
         } else if (_type == "agreement") {
             duplicateNode(getDBNode(dbName_, _extra),  ndAdr);
-            DBNode(ndAdr).setAgreementStatus("READY", "null");
             address agrWalletAdr = enableZSCWallet(_nodeName, ndAdr, _creator);
 
-            publishZSCAgreement(_userName, _nodeName, agrWalletAdr);
+            publishZSCAgreement(_userName, ndAdr, agrWalletAdr);
         }
         return ndAdr;
     }
@@ -217,26 +216,33 @@ contract ControlBase is ControlInfo {
         return walletAdr;
     }
 
-    function publishZSCAgreement(bytes32 _userName, bytes32 _agrName, address _agrWalletAdr) internal {
+    function publishZSCAgreement(bytes32 _userName, address _agrAdr, address _agrWalletAdr) internal {
         string memory temp;
         uint lockedAmount;
         uint price;
+        uint duration;
 
-        temp = PlatString.bytes32ToString(DBNode(agrAdr).getParameter("insurance(lockedAmount)"));
+        temp = PlatString.bytes32ToString(DBNode(_agrAdr).getParameter("insurance"));
         lockedAmount = PlatString.stringToUint(temp);
 
-        temp = PlatString.bytes32ToString(DBNode(agrAdr).getParameter("price"));
+        temp = PlatString.bytes32ToString(DBNode(_agrAdr).getParameter("price"));
         price = PlatString.stringToUint(temp);
-        return;
 
-        require(lockedAmount > 0 && price > 0);
+        temp = PlatString.bytes32ToString(DBNode(_agrAdr).getParameter("duration"));
+        duration = PlatString.stringToUint(temp);
 
-        address agrAdr = address(getDBNode(dbName_, _agrName));
+        addLog("publishZSCAgreement: ", true);
+        addLog("| price: ", false);
+        addLog(PlatString.uintToString(price), false);
+        addLog("| insurance: ", false);
+        addLog(PlatString.uintToString(lockedAmount), false);
+
+        require(lockedAmount > 0 && price > 0 && duration >= 60);
+
         address userWallet = address(getDBNode(dbName_, formatWalletName(_userName, "ZSC")));
-        uint amount = DBNode(userWallet).executeTransaction(_agrWalletAdr, lockedAmount);
-        require(amount > 0);
+        DBNode(userWallet).executeTransaction(_agrWalletAdr, lockedAmount * 1 ether);
 
-        DBNode(agrAdr).setAgreementStatus("PUBLISHED", "null");
+        DBNode(_agrAdr).setAgreementStatus("PUBLISHED", "null");
     }
 
     //Disabled during alpha-test
@@ -350,7 +356,7 @@ contract ControlBase is ControlInfo {
         address recWallet   = address(getDBNode(dbName_, formatWalletName(_userName, tokenSymbol)));
         address agrWallet   = address(getDBNode(dbName_, formatWalletName(_agrName, tokenSymbol)));
 
-        uint ret = DBNode(recWallet).executeTransaction(agrWallet, price);
+        uint ret = DBNode(recWallet).executeTransaction(agrWallet, price * 1 ether);
 
         //getDBNode(dbName_, _agrName).setAgreementStatus("PAID", _userName);
         //getDBNode(dbName_, _userName).bindAgreement(agrAdr);
