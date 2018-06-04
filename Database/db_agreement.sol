@@ -32,6 +32,9 @@ contract DBAgreement is DBEntity {
         checkDelegate(msg.sender, 1);
 
         if (status_ == "CREATED") {
+            if (_parameter == "duration") {
+                duration_ = PlatString.stringToUint(PlatString.bytes32ToString(_value));
+            }
             return super.setParameter(_parameter, _value);
         } else {
             return false;
@@ -108,6 +111,21 @@ contract DBAgreement is DBEntity {
         return randValue;
     }
 
+    function simulatePayforInsurance() public returns (uint) {
+        uint current = now;
+        if (current < endTime_) return 0;
+
+        uint randValue = randGen(0, 100, current);
+        if (randValue < 50) {
+            status_ = "Insurance to receiver";
+            super.setParameter("status", status_);
+            return 1;
+        } else {
+            status_ = "Paid to provider";
+            super.setParameter("status", status_);
+            return 2;
+        }
+    } 
  }
 
 
