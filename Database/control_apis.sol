@@ -218,7 +218,7 @@ contract ControlApis is ControlBase {
         address walletAdr = address(getDBNode(getCurrentDBName(), walletName));
         require(walletAdr != address(0));
 
-        return DBNode(walletAdr).getBlance();
+        return DBNode(walletAdr).getBlance().div(1 ether);
     }
 
     /// @dev Get the number of paramters of an element
@@ -366,6 +366,12 @@ contract ControlApis is ControlBase {
         require(userType == "receiver");
 
         return conductPurchaseAgreement(_userName, _agrName); 
+    }
+
+    function claimInsurance(bytes32 _userName, bytes32 _agrName) public returns (bool) {
+        checkRegistered(_userName, msg.sender);
+
+        return conductZSCClaimInsurance(_userName, _agrName);
     }
 
     /*
