@@ -51,6 +51,8 @@ contract DBNode {
 
     function addSignature(address _sigAdr) public returns (bool);
     function getAgreementInfo() public constant returns (bytes32, bytes32, uint, uint, bytes32, uint);
+
+    function simulatePayforInsurance() public returns (uint);
 }
 
 contract DBFactory {
@@ -344,13 +346,14 @@ contract ControlBase is ControlInfo {
     */
 
     function conductPurchaseAgreement(bytes32 _userName, bytes32 _agrName) internal returns (uint) {
-        checkDelegate(msg.sender, 1);
+        bytes32 tokenSymbol = "ZSC"; //DBNode(agrAdr).getParameter("walletSymbol");
 
         address agrAdr = address(getDBNode(dbName_, _agrName));
 
-        bytes32 tokenSymbol = "ZSC"; //DBNode(agrAdr).getParameter("walletSymbol");
-        uint price          = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(agrAdr).getParameter("price")));
+        bytes32 status = DBNode(agrAdr).getParameter("status");
+        require(status == "PUBLISHED");
 
+        uint price     = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(agrAdr).getParameter("price")));
         require(price > 0);
 
         address recWallet   = address(getDBNode(dbName_, formatWalletName(_userName, tokenSymbol)));
@@ -358,10 +361,71 @@ contract ControlBase is ControlInfo {
 
         uint ret = DBNode(recWallet).executeTransaction(agrWallet, price * 1 ether);
 
-        //getDBNode(dbName_, _agrName).setAgreementStatus("PAID", _userName);
-        //getDBNode(dbName_, _userName).bindAgreement(agrAdr);
+        getDBNode(dbName_, _agrName).setAgreementStatus("PAID", _userName);
+        getDBNode(dbName_, _userName).bindAgreement(agrAdr);
+
+        addLog(PlatString.bytes32ToString(_userName), true);
+        addLog(" purchased ", false);
+        addLog(PlatString.bytes32ToString(_agrName), false);
 
         return ret;
+    }
+
+
+    function conductZSCClaimInsurance(bytes32 _userName, bytes32 _agrName) internal returns (bool) {
+        bytes32 agrName = _agrName;
+
+        address agrAdr = address(getDBNode(dbName_, agrName));
+        bytes32 status = DBNode(agrAdr).getParameter("status");
+        require(status == "PAID");
+
+        bytes32 provider = DBNode(agrAdr).getParameter("provider");
+        bytes32 receiver = DBNode(agrAdr).getParameter("receiver");
+        require(_userName == provider || _userName == receiver);
+
+        address proWallet   = address(getDBNode(dbName_, formatWalletName(provider, "ZSC")));
+        address recWallet   = address(getDBNode(dbName_, formatWalletName(receiver, "ZSC")));
+        address agrWallet   = address(getDBNode(dbName_, formatWalletName(agrName, "ZSC")));
+
+        string memory temp;
+        uint lockedAmount;
+        uint price;
+
+        temp = PlatString.bytes32ToString(DBNode(agrAdr).getParameter("insurance"));
+        lockedAmount = PlatString.stringToUint(temp);
+
+        temp = PlatString.bytes32ToString(DBNode(agrAdr).getParameter("price"));
+        price = PlatString.stringToUint(temp);
+
+        uint ret = DBNode(agrAdr).simulatePayforInsurance();
+
+
+        if (ret == 0) {
+            return false;
+        } else if (ret == 1) {
+            //Insurance to receiver
+            DBNode(agrWallet).executeTransaction(proWallet, price * 1 ether);
+            DBNode(agrWallet).executeTransaction(recWallet, lockedAmount * 1 ether);
+
+            temp = "";
+            temp = PlatString.append(temp, PlatString.bytes32ToString(agrName), ": Paid price (", PlatString.uintToString(price));
+            temp = PlatString.append(temp, ") to provider", PlatString.bytes32ToString(provider));
+            addLog(temp, true);
+
+            temp = "";
+            temp = PlatString.append(temp, "; Give insurance (", PlatString.uintToString(lockedAmount));
+            temp = PlatString.append(temp, ") to receiver", PlatString.bytes32ToString(receiver));
+            addLog(temp, false);
+        } else if (ret == 2) {
+            //Paid to provider
+            DBNode(agrWallet).executeTransaction(proWallet, (lockedAmount + price) * 1 ether);
+
+            temp = "";
+            temp = PlatString.append(temp, PlatString.bytes32ToString(agrName), ": Give reward (", PlatString.uintToString(price + lockedAmount));
+            temp = PlatString.append(temp, ") to provider", PlatString.bytes32ToString(provider));
+            addLog(temp, true);
+        }
+        return true;
     }
 
     function prepareTokenBalanceInfoByIndex(bytes32 _enName, uint _index) internal constant returns (string) { 
