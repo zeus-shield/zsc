@@ -128,12 +128,16 @@
         });
     }
 
-    function claimReward(logID) {
-        loadHtmlPageBody("template");
+    function claimReward(logId) {
+        zscAgrsProGM.claimReward(logId, zscElement.getElementName(), function() {
+            loadHtmlPageBody("template");
+        });
     }
 
-    function claimInsurance(logID) {
-        loadHtmlPageBody("agreement-reciver");
+    function claimInsurance(logId) {
+        zscAgrsRecGM.claimInsurance(logId, zscElement.getElementName(), function() {
+            loadHtmlPageBody("agreement-receiver");
+        });        
     }
 
     function dealwithShowAgreementForAll(elementName, type) {
@@ -178,6 +182,11 @@
         loadHtmlPageBody("parameter-agreement-receiver")
     }
 
+    function showAllAgrParameters(elementName) {
+        zscElement.setElementName(elementName);
+        loadHtmlPageBody("parameter-agreement-all")
+    }
+
     function enableAsAgreement(index) {
         zscTmpsGM.enableAsAgreement(index, function() {
             loadHtmlPageBody("template");
@@ -186,7 +195,7 @@
 
     function submitPurchaseAgreement(elementName) {
         zscAgrsAllGM.submitPurchaseAgreement(elementName, function(result) {
-            loadHtmlPageBody("view-agreement")
+            loadHtmlPageBody("agreement-all")
         });
     }
 
@@ -203,6 +212,18 @@
         zscAgrsProGM.submitPublishAgreement(index, function(result) {
             loadHtmlPageBody("agreement")
         });
+    }
+
+    function backToProTmp() {
+        loadHtmlPageBody("template");
+    }
+
+    function backToRecAgr() {
+        loadHtmlPageBody("agreement-receiver");
+    }
+
+    function bakcToAllAgr() {
+        loadHtmlPageBody("agreement-all");
     }
 
     //Disable during alpha-test
@@ -279,26 +300,26 @@
 
                 case "parameter-template":
                     zscElement.loadParameterNamesAndvalues(function() {
-                        zscElement.loadParametersHtml("PageBody", "template", "submitParameterTemplateChanges");
+                        zscElement.loadParametersHtml("PageBody", "template", "submitParameterTemplateChanges", "backToProTmp");
                     });
                     break;
                 
                 case "parameter-agreement-provider":
                     zscElement.loadParameterNamesAndvalues(function() {
-                        zscElement.loadParametersHtml("PageBody", "agreement-provider", "claimReward");
+                        zscElement.loadParametersHtml("PageBody", "agreement-provider", "claimReward", "backToProTmp");
                     });
                     break;
 
                 case "parameter-agreement-receiver":
                     zscElement.loadParameterNamesAndvalues(function() {
-                        zscElement.loadParametersHtml("PageBody", "agreement-receiver", "claimInsurance");
+                        zscElement.loadParametersHtml("PageBody", "agreement-receiver", "claimInsurance", "backToRecAgr");
                     });
                     break;
 
                 case "parameter-agreement-all":
                     zscElement.setUserType(zscUser.getUserType());
                     zscElement.loadParameterNamesAndvalues(function() {
-                        zscElement.loadParametersHtml("PageBody", "agreement-all", "fromProAgrToProTmp");
+                        zscElement.loadParametersHtml("PageBody", "agreement-all", "null", "bakcToAllAgr");
                     });
                     break;
 
@@ -310,7 +331,7 @@
 
                 case "agreement-receiver": 
                     zscAgrsRecGM.loadAgreements(function() {
-                        zscTmpsGM.loadAgreementsHtml("PageBody", "showRecAgrParameters");
+                        zscAgrsRecGM.loadAgreementsHtml("PageBody", "showRecAgrParameters");
                     });
                     break;
 
