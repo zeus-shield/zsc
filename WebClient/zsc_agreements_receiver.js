@@ -90,6 +90,21 @@ ZSCAgreementReceiver.prototype.getAgrBalance = function(gm, index, func) {
         });
 }
 
+ZSCAgreementReceiver.prototype.claimInsurance = function(hashLogId, elementName, func) {
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    
+    myControlApi.claimInsurance(gm.userName, elementName,
+        {from: gm.account, gas: 9000000},
+        function(error, result){ 
+            if(!error) {
+                bF_showHashResult(hashLogId, result, callBack);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
 
 ZSCAgreementReceiver.prototype.loadAgreementsHtml = function(elementId, funcShowPara)  {
     var funcShowParaPrefix = funcShowPara + "('"; 
