@@ -65,9 +65,7 @@ ZSCAgreementProvider.prototype.getAgrNameByIndex = function(gm, index, func) {
         function(error, result){ 
             if(!error) {
                 gm.agrNames[index] = web3.toUtf8(result);
-                if (index == gm.agrNos - 1) {
-                    callBack(gm, index);
-                }
+                callBack(gm, index);
             } else {
                 console.log("error: " + error);
             }
@@ -83,7 +81,9 @@ ZSCAgreementProvider.prototype.getAgrBalance = function(gm, index, func) {
         function(error, result){ 
             if(!error) {
                 gm.balance[index] = result.toString(10);
-                callBack(gm, index);
+                if (index == gm.agrNos - 1) {
+                    callBack(gm, index);
+                }
             } else {
                 console.log("error: " + error);
             }
@@ -96,6 +96,22 @@ ZSCAgreementProvider.prototype.confirmPublishAgreement = function(index, func) {
         function(error, result){ 
             if(!error) {
                 func(result);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
+
+ZSCAgreementProvider.prototype.claimReward = function(hashLogId, elementName, func) {
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    
+    myControlApi.claimInsurance(gm.userName, elementName,
+        {from: gm.account, gas: 9000000},
+        function(error, result){ 
+            if(!error) {
+                bF_showHashResult(hashLogId, result, callBack);
             } else {
                 console.log("error: " + error);
             }
