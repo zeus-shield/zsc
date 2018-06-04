@@ -8,6 +8,7 @@ function ZSCAgreementAll(nm, abi, adr) {
     this.userType;
     this.allAgrNos = 0;
     this.allAgrNames = [];
+    this.allAgrStatus = [];
     this.account = web3.eth.accounts[0];
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
@@ -24,10 +25,12 @@ ZSCAgreementAll.prototype.loadAllAgreements = function(func) {
     
     gm.numAllAgreements(gm, function(gm) {
         for (var i = 0; i < gm.allAgrNos; ++i) {
-            gm.getAllAgreementNameByIndex(gm, i, function(gm, index){
-                if (index == gm.allAgrNos - 1) {
-                    callBack();
-                }
+            gm.getAllAgreementNameByIndex(gm, i, function(gm, index) {
+                gm.getAllAgreementStatus(gm, index, function(gm, index) {
+                    if (index == gm.allAgrNos - 1) {
+                        callBack();
+                    }
+                });
             });
         }
     });
@@ -58,6 +61,22 @@ ZSCAgreementAll.prototype.getAllAgreementNameByIndex = function(gm, index, func)
         function(error, result){ 
             if(!error) {
                 gm.allAgrNames[index] = web3.toUtf8(result);
+                func(gm, index);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
+
+ZSCAgreementAll.prototype.getAllAgreementStatus = function(gm, index, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.getElementParameter(gm.userName, gm.allAgrNames[index], "status",
+        {from: gm.account},
+        function(error, result){ 
+            if(!error) {
+                gm.allAgrStatus[index] = web3.toUtf8(result);
                 func(gm, index);
             } else {
                 console.log("error: " + error);
@@ -101,9 +120,9 @@ ZSCAgreementAll.prototype.loadAllAgreementsHtml = function(elementId, showFunc, 
 
     text += '<tr>'
     if (this.userType == "receiver") {
-        text += '   <td>Index</td> <td>Name</td> <td> Details </td> <td> Purchase </td>'
+        text += '   <td>Index</td> <td>Name</td> <td>Status</td> <td> Details </td> <td> Purchase </td>'
     } else {
-        text += '   <td>Index</td> <td>Name</td> <td> Details </td> <td> </td>'
+        text += '   <td>Index</td> <td>Name</td> <td>Status</td> <td> Details </td> <td> </td>'
     }
     text += '</tr>'
     text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td> </tr>'
@@ -112,11 +131,12 @@ ZSCAgreementAll.prototype.loadAllAgreementsHtml = function(elementId, showFunc, 
         text += '<tr>'
         text += '   <td><text>' + i + '</text></td>'
         text += '   <td><text>' + this.allAgrNames[i] + '</text></td>'
+        text += '   <td><text>' + this.allAgrStatus[i] + '</text></td>'
         text += '   <td><button type="button" onClick="' + showPrefix + this.allAgrNames[i] + showSuffix + '">Details</button></td>'
         if (this.userType == "receiver") {
             text += '   <td><button type="button" onClick="' + purchasePrefix + this.allAgrNames[i] + purchaseSuffix + '">Purchase</button></td>'
         }
-            text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td></tr>'
+        text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td></tr>'
         text += '</tr>'
     }
     text += '</table></div>'
