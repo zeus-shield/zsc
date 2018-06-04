@@ -155,8 +155,11 @@ ZSCElement.prototype.setElementParameter = function(logID, func) {
 } 
 
 
-ZSCElement.prototype.loadParametersHtml = function(elementId, type, funcName) {
-    var functionInput = funcName + "('SubmitChangesHash')";
+ZSCElement.prototype.loadParametersHtml = function(elementId, type, funcName, backFuncName) {
+    var functionInput = funcName + "('ButtonActiveHash')";
+
+    var functionBack = backFuncName + "()";
+
     var titlle;
 
     if (type == "profile") {
@@ -187,20 +190,34 @@ ZSCElement.prototype.loadParametersHtml = function(elementId, type, funcName) {
         text += '</tr>'
     }
     text += '</table></div>'
-    if (type == "agreement-provider") {
-        text += '<div>'
-        text += '   <button type="button" onClick="' + functionInput + '">Back</button>'
-        text += '</div>'
-    } else if (type == "agreement-all") {
-        if (this.userT)
-        text += '<div>'
-        text += '   <button type="button" onClick="' + functionInput + '">Back</button>'
-        text += '</div>'
-    } else {
+    if (type == "profile") {
         text += '<div>'
         text += '   <button type="button" onClick="' + functionInput + '">Submit Changes</button>'
-        text += '   <text id="SubmitChangesHash"></text>'
+        text += '   <text id="ButtonActiveHash"></text>'
         text += '</div>'
+    } else if (type == "template") {
+        text += '<div>'
+        text += '   <button type="button" onClick="' + functionInput + '">Submit Changes</button>'
+        text += '   <button type="button" onClick="' + functionBack + '">Back</button>'
+        text += '   <text id="ButtonActiveHash"></text>'
+        text += '</div>'
+    } else if (type == "agreement-provider") {
+        text += '<div>'
+        text += '   <button type="button" onClick="' + functionBack + '">Back</button>'
+        text += '   <button type="button" onClick="' + functionInput + '">Claim Reward</button>'
+        text += '   <text id="ButtonActiveHash"></text>'
+        text += '</div>'
+    } else if (type == "agreement-receiver") {
+        text += '<div>'
+        text += '   <button type="button" onClick="' + functionBack + '">Back</button>'
+        text += '   <button type="button" onClick="' + functionInput + '">Claim Insurance</button>'
+        text += '   <text id="ButtonActiveHash"></text>'
+        text += '</div>'
+    } else if (type == "agreement-all") {
+        text += '<div>'
+        text += '   <button type="button" onClick="' + functionBack + '">Back</button>'
+        text += '</div>'
+    } else {
     }
 
     document.getElementById(elementId).innerHTML = text;  
