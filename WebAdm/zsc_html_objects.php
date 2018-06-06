@@ -19,7 +19,7 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
     public function loadHeader() {
         $text='<br><br>
         <div align="center">
-        <table align="center" style="width:400px;min-height:30px">
+        <table align="center" style="width:800px">
            <tr>
             <td align="center"><a href="adm_create_contract.php">Create contract</a></td>
             <td align="center"><a href="adm_configure_logrecorder.php">Configure LogRecorder</a></td>
@@ -30,6 +30,7 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
             <td align="center"><a href="adm_show_userdetails.php">User Details</a></td>
             <td align="center"><a href="adm_show_log.php">Show Log</a></td>
             <td align="center"><a href="adm_print_abi.php">Print Abi</a></td>
+            <td align="center"><a href="adm_uninstall_system.php">Uninstall System</a></td>
           </tr>
         </table>
         </div>';
@@ -113,6 +114,27 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
             $text .= '   <text> Name: </text>';
             $text .= '   <input type="text" id="'.$name.'Name" value = "test_'.$name.'"></input>';
             $text .= '   <button type="button" onClick="'.$func.'(\''.$name.'\',\''.$name.'Name\')">Create</button> <br>';
+            $text .= '   <text id="'.$name.'Log"></text> <br>';
+            $text .= '</div>';
+        }
+
+        return $text;
+    }
+
+    public function killContract($func) {
+        $objects= ZscBase::getObjectArray();
+        $num = count($objects);
+
+        $text = '';
+        for($x = 0; $x < $num; $x++) {
+            $name = $objects[$x];
+            $adr = parent::readObjectAddress($name);
+
+            $text .= '<text>Step - '.$x.': Create '.$name.'</text>';
+            $text .= '<div class="well">';
+            $text .= '   <text> Name: </text>';
+            $text .= '   <input type="text" id="'.$name.'Name" value = "test_'.$name.'"></input>';
+            $text .= '   <button type="button" onClick="'.$func.'(\''.$name.'\',\''.$adr.'\')">Kill</button> <br>';
             $text .= '   <text id="'.$name.'Log"></text> <br>';
             $text .= '</div>';
         }
