@@ -72,6 +72,10 @@ contract Owned {
         _;
     }
 
+    function kill() public onlyOwner {
+        selfdestruct(owner); 
+    }
+
     function transferOwnership(address _newOwner) public onlyOwner {
         newOwner = _newOwner;
     }
