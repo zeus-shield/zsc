@@ -58,6 +58,9 @@ function cC_getContractFullName(contractName) {
 
     } else if (contractName == 'ControlApisAdv') {
         return "./zsc/control_apis_adv.sol:ControlApisAdv";
+
+    } else if (contractName == 'ControlApisForUser') {
+        return "./zsc/control_apis_user.sol:AbisForUserControlApis";
     } 
 }
 
@@ -114,7 +117,10 @@ function cC_getCompiledFile(contractName) {
 
     } else if (contractName == 'ControlApisAdv') {
         return compiledApisAdv;
-    }
+        
+    } else if (contractName == 'ControlApisForUser') {
+        return compiledAbiForUser;
+    } 
 }
 
 function cC_getContractAbi(contractName) {
