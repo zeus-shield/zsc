@@ -213,7 +213,7 @@ contract ZSCDatabaseRoot is owned {
     {
         _isAdmin[admin_] = true;
         _admins.push(admin_);
-        AdminAddition(admin_);
+        emit AdminAddition(admin_);
     }
 
     function removeOwner(address admin_)
@@ -228,7 +228,7 @@ contract ZSCDatabaseRoot is owned {
                 break;
             }
         _admins.length -= 1;
-        AdminRemoval(admin_);
+        emit AdminRemoval(admin_);
     }
 
 }
