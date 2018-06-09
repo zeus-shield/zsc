@@ -64,7 +64,7 @@ contract ZSCEntity {
     }
 
     // Constructor
-    function ZSCEntity(string name_, uint id_)
+    function ZSCEntity(string name_, uint id_) public
     {
         _name = name_;
         _id   = id_;
@@ -72,8 +72,7 @@ contract ZSCEntity {
     }
 
     // This unnamed function is called whenever someone tries to send ether to it
-    function()
-       payable
+    function() public payable
     {
         if (msg.value > 0) {
             _ethValue += msg.value;
