@@ -7,7 +7,7 @@ pragma solidity ^0.4.21;
 contract owned {
     address public owner;
 
-    constructor() public {
+    function owned() public {
         owner = msg.sender;
     }
 
@@ -69,7 +69,7 @@ contract ZSCEntity {
     }
 
     // Constructor
-    constructor(string name_, uint id_)
+    function ZSCEntity(string name_, uint id_)
     {
         _name = name_;
         _id   = id_;
