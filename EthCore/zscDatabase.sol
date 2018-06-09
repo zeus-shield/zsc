@@ -12,7 +12,7 @@ contract owned {
     }
 
     modifier onlyOwner {
-        if (msg.sender != owner) throw;
+        require(msg.sender == owner);
         _;
     }
 
@@ -46,12 +46,12 @@ contract SafeMath {
         assert(c>=a && c>=b);
         return c;
     }
-
-    function assert(bool assertion)
-        internal
+    /*
+    function assert(bool assertion) internal pure
     {
-        if (!assertion) throw;
+        require(assertion);
     }
+    */
 }
 
 contract ZSCEntity {
@@ -64,7 +64,7 @@ contract ZSCEntity {
     uint    _zscValue = 0;
 
     modifier isCreator(address msger)  {
-        if (msger != _creator) throw;
+        require(msger == _creator);
         _;
     }
 
@@ -149,10 +149,10 @@ contract ZSCUser is ZSCEntity, SafeMath {
 contract ZSCContract is ZSCEntity {
     mapping(address => uint) _providers;
     mapping(address => uint) _receivers;
-    uint _totalPercentage; //range (0, 10000)
+    //uint _totalPercentage; //range (0, 10000)
 
     modifier percentageRange(uint value_)  {
-        if (value_ <0 || value_ >10000) throw;
+        require((0 <= value_) && (10000 >= value_));
         _;
     }
     // Constructor
@@ -185,20 +185,17 @@ contract ZSCDatabaseRoot is owned {
     event AdminRemoval(address indexed admin_);
 
     modifier adminDoesNotExist(address admin_) {
-        if (_isAdmin[admin_])
-            throw;
+        require(!_isAdmin[admin_]);
         _;
     }
 
     modifier adminExists(address admin_) {
-        if (!_isAdmin[admin_])
-            throw;
+        require(_isAdmin[admin_]);
         _;
     }
 
     modifier notNull(address _address) {
-        if (_address == 0)
-            throw;
+        require(0 != _address);
         _;
     }
 
@@ -254,7 +251,7 @@ contract ZSCDatabaseUsers is owned, SafeMath {
         public
         onlyOwner
     {
-        if (_exist[name_] == 0) throw;
+        require(0 != _exist[name_]);
         uint id = _nos + _startIndex;
 
         ZSCUser user = new ZSCUser(name_, id);
@@ -268,7 +265,7 @@ contract ZSCDatabaseUsers is owned, SafeMath {
         constant
         returns (uint)
     {
-        if (_exist[name_] == 0) throw;
+        require(0 != _exist[name_]);
         return (_exist[name_] - _startIndex);
     }
 
@@ -277,7 +274,7 @@ contract ZSCDatabaseUsers is owned, SafeMath {
         onlyOwner
     {
         uint index = id_ - _startIndex;
-        if (index >= _nos) throw;
+        require(index < _nos);
 
         ZSCUser user = ZSCUser(_users[index]);
         user.setType(type_);
@@ -298,7 +295,7 @@ contract ZSCDatabaseUsers is owned, SafeMath {
         returns (address)
     {
         uint index = id_ - _startIndex;
-        if (index >= _nos) throw;
+        require(index < _nos);
 
         return _users[index];
     }
