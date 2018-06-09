@@ -78,7 +78,9 @@ library PlatJson {
 
             // Quote -> end of string
             if (c == '"') {
-                var (success, token) = allocateToken(parser, tokens);
+                bool success;
+                Token memory token;
+                (success, token) = allocateToken(parser, tokens);
                 if (!success) {
                     parser.pos = start;
                     return RETURN_ERROR_NO_MEM;
@@ -127,7 +129,9 @@ library PlatJson {
         }
 
         // found the end
-        var (success, token) = allocateToken(parser, tokens);
+        bool success;
+        Token memory token;
+        (success, token) = allocateToken(parser, tokens);
         if (!success) {
             parser.pos = start;
             return RETURN_ERROR_NO_MEM;
@@ -139,7 +143,9 @@ library PlatJson {
 
     function parse(string json, uint numberElements) internal pure returns (uint, Token[], uint) {
         bytes memory s = bytes(json);
-        var (parser, tokens) = init(numberElements);
+        Parser memory parser;
+        Token[] memory tokens;
+        (parser, tokens) = init(numberElements);
 
         // Token memory token;
         uint r;
@@ -152,7 +158,9 @@ library PlatJson {
             // 0x7b, 0x5b opening curly parentheses or brackets
             if (c == 0x7b || c == 0x5b) {
                 count++;
-                var (success, token)= allocateToken(parser, tokens);
+                bool success;
+                Token memory token;
+                (success, token)= allocateToken(parser, tokens);
                 if (!success) {
                     return (RETURN_ERROR_NO_MEM, tokens, 0);
                 }
