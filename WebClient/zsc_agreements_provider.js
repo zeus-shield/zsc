@@ -9,6 +9,7 @@ function ZSCAgreementProvider(nm, abi, adr) {
     this.agrNos = 0;
     this.agrNames = [];
     this.balance = [];
+    this.itemTags = [];
     this.account = web3.eth.accounts[0];
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
@@ -17,6 +18,21 @@ function ZSCAgreementProvider(nm, abi, adr) {
 ZSCAgreementProvider.prototype.getUserName = function() {return this.userName;}
 
 ZSCAgreementProvider.prototype.setTemplateName = function(name) {this.tmpName = name;}
+
+ZSCAgreementProvider.prototype.resetAllItemTags = function(gm) {
+    for (var i = 0; i < gm.agrNos; ++i) {
+        gm.itemTags[i] = false;
+    }
+}
+
+ZSCAgreementProvider.prototype.checkAllItemTags = function(gm) {
+    for (var i = 0; i < gm.agrNos; ++i) {
+        if (gm.itemTags[i] == false) {
+            return false;
+        }
+    }
+    return true;
+}
 
 ZSCAgreementProvider.prototype.loadAgreements = function(func) {
     var gm = this;
@@ -27,12 +43,19 @@ ZSCAgreementProvider.prototype.loadAgreements = function(func) {
         if (gm.agrNos == 0) {
             callBack();
         } else {
+            gm.resetAllItemTags(gm);
             for (var i = 0; i < gm.agrNos; ++i) {
                 gm.getAgrNameByIndex(gm, i, function(gm, j){
                     gm.getAgrBalance(gm, j, function(gm, index) {
+                        if (gm.checkAllItemTags(gm) == true) {
+                            callBack()
+                        }
+                        
+                        /*
                         if (index == gm.agrNos - 1) {
                             callBack();
                         }
+                        */
                     });
                 });
             }
@@ -40,7 +63,7 @@ ZSCAgreementProvider.prototype.loadAgreements = function(func) {
     });
 }
 
-ZSCAgreementProvider.prototype.numAgreements= function(gm, func) {
+ZSCAgreementProvider.prototype.numAgreements = function(gm, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
@@ -81,9 +104,8 @@ ZSCAgreementProvider.prototype.getAgrBalance = function(gm, index, func) {
         function(error, result){ 
             if(!error) {
                 gm.balance[index] = result.toString(10);
-                if (index == gm.agrNos - 1) {
-                    callBack(gm, index);
-                }
+                gm.itemTags[index] = true;
+                callBack(gm, index);
             } else {
                 console.log("error: " + error);
             }
