@@ -83,7 +83,7 @@ contract WalletMultiSig is WalletBase {
             uint ret = executeTransaction(tempPyment_.receiver_, tempPyment_.amount_, tempPyment_.data_);
             require(ret > 0);
 
-            tempPaymetStatus_ = false;
+            //tempPaymetStatus_ = false;
         
             return ret;
         } else {
