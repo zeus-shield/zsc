@@ -52,7 +52,7 @@ contract DBStaker is DBUser {
     	addFundamentalParameter("Reward Ratio");
     }
 
-    function setParameter(bytes32 _parameter, string _value) public returns (bool) {
+    function setParameter(bytes32 _parameter, bytes32 _value) public returns (bool) {
         checkDelegate(msg.sender, 1);
 
         if (_parameter != "Divended Duration") 
