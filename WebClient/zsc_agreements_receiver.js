@@ -9,6 +9,7 @@ function ZSCAgreementReceiver(nm, abi, adr) {
     this.agrNos = 0;
     this.agrNames = [];
     this.balance = [];
+    this.itemTags = [];
     this.account = web3.eth.accounts[0];
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
@@ -17,6 +18,21 @@ function ZSCAgreementReceiver(nm, abi, adr) {
 ZSCAgreementReceiver.prototype.getUserName = function() {return this.userName;}
 
 ZSCAgreementReceiver.prototype.setTemplateName = function(name) {this.tmpName = name;}
+
+ZSCAgreementReceiver.prototype.resetAllItemTags = function(gm) {
+    for (var i = 0; i < gm.agrNos; ++i) {
+        gm.itemTags[i] = false;
+    }
+}
+
+ZSCAgreementReceiver.prototype.checkAllItemTags = function(gm) {
+    for (var i = 0; i < gm.agrNos; ++i) {
+        if (gm.itemTags[i] == false) {
+            return false;
+        }
+    }
+    return true;
+}
 
 ZSCAgreementReceiver.prototype.loadAgreements = function(func) {
     var gm = this;
@@ -27,12 +43,16 @@ ZSCAgreementReceiver.prototype.loadAgreements = function(func) {
         if (gm.agrNos == 0) {
             callBack();
         } else {
+            gm.resetAllItemTags(gm);
             for (var i = 0; i < gm.agrNos; ++i) {
                 gm.getAgrNameByIndex(gm, i, function(gm, j){
                     gm.getAgrBalance(gm, j, function(gm, index) {
-                        if (index == gm.agrNos - 1) {
-                            callBack();
+                        if (gm.checkAllItemTags(gm) == true) {
+                            callBack()
                         }
+                        /*if (index == gm.agrNos - 1) {
+                            callBack();
+                        }*/
                     });
                 });
             }
@@ -65,9 +85,7 @@ ZSCAgreementReceiver.prototype.getAgrNameByIndex = function(gm, index, func) {
         function(error, result){ 
             if(!error) {
                 gm.agrNames[index] = web3.toUtf8(result);
-                if (index == gm.agrNos - 1) {
-                    callBack(gm, index);
-                }
+                callBack(gm, index);
             } else {
                 console.log("error: " + error);
             }
@@ -83,6 +101,7 @@ ZSCAgreementReceiver.prototype.getAgrBalance = function(gm, index, func) {
         function(error, result){ 
             if(!error) {
                 gm.balance[index] = result.toString(10);
+                gm.itemTags[index] = true;
                 callBack(gm, index);
             } else {
                 console.log("error: " + error);
