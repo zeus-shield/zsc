@@ -44,7 +44,7 @@ contract WalletMultiSig is WalletBase {
     }
 
     ////////// public functions /////////////
-    function addSignature(address _sigAdr) public return (bool) {
+    function addSignature(address _sigAdr) public returns (bool) {
         checkDelegate(msg.sender, 1);
         require(_sigAdr != address(0));
         
