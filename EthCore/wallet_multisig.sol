@@ -21,7 +21,7 @@ contract WalletMultiSig is WalletBase {
 
 
     ////////// virtual functions /////////////
-    function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (uint);
+    function executeTransaction(address _dest, uint256 _amount) public returns (uint);
 
     ////////// internal functions /////////////
     function checkAllowedSignature(address _sigAdr) internal constant returns (bool) {
@@ -52,15 +52,15 @@ contract WalletMultiSig is WalletBase {
             return false;
         }
         multiSig_.push(_sigAdr);
-        sigAdrExists_[_s_sigAdrig] = true;
+        sigAdrExists_[_sigAdr] = true;
         return true;
     }
     
-    function submitTransaction(address _dest, uint256 _amount, bytes _data, bytes32 _sigAdr) public returns (uint) {
+    function submitTransaction(address _dest, uint256 _amount, address _sigAdr) public returns (uint) {
         checkDelegate(msg.sender, 1);
         checkAllowedSignature(_sigAdr);
 
-        require(!tempPaymetStatus_);
+        //require(!tempPaymetStatus_);
 
         submittedTransaction_ = true;
 
@@ -69,9 +69,9 @@ contract WalletMultiSig is WalletBase {
         tempPyment_.sender_   = address(this);
         tempPyment_.receiver_ = _dest;
         tempPyment_.amount_   = _amount;
-        tempPyment_.data_     = PlatString.tobytes32(_data);
+        //tempPyment_.data_     = PlatString.tobytes32(_data);
 
-        return confirmTransaction(_user);
+        return confirmTransaction(_sigAdr);
     }
 
     function confirmTransaction(address _sigAdr) public returns (uint) {
@@ -80,7 +80,7 @@ contract WalletMultiSig is WalletBase {
 
         if (doesMulSigFinished(_sigAdr)) {
 
-            uint ret = executeTransaction(tempPyment_.receiver_, tempPyment_.amount_, tempPyment_.data_);
+            uint ret = executeTransaction(tempPyment_.receiver_, tempPyment_.amount_);
             require(ret > 0);
 
             //tempPaymetStatus_ = false;
