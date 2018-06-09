@@ -13,11 +13,12 @@ function ZSCTransactions(nm, abi, adr) {
     this.amounts = [];
     this.senders = [];
     this.receivers = [];
+    this.account = web3.eth.accounts[0];
     this.contractAdr = adr;
-    this.contractAbi = abi;
+    this.contractAbi = JSON.parse(abi);
+    this.account = web3.eth.accounts[0];
+    this.gas = 7400000;
 }
-
-ZSCTransactions.prototype = new ZSCClient();
 
 ZSCTransactions.prototype.getUserName = function() {return this.userName;}
 
@@ -45,7 +46,7 @@ ZSCTransactions.prototype.numTransactions = function(gm, func) {
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
     myControlApi.numUserTransactions(gm.userName, gm.tokenSymbol, 
-        {from: gm.getAccount(), gas: gm.getGasLimit(20)},
+        {from: gm.account, gas: gm.gas},
         function(error, result){ 
             if(!error) {
                 this.walletNos = result.toString(10);
@@ -61,7 +62,7 @@ ZSCTransactions.prototype.loadTransactionInfoByIndex = function(gm, index, func)
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
     myControlApi.getUserTransactionByIndex(gm.userName, gm.tokenSymbol, index,
-        {from: gm.getAccount(), gas: gm.getGasLimit(20)},
+        {from: gm.account, gas: gm.gas},
         function(error, result){ 
             if(!error) {
                 parserTransactionInfoByIndex(gm, result, index)
@@ -116,10 +117,11 @@ ZSCTransactions.prototype.loadTransactionsHtml = function(elementId)  {
 
     var text ="";
     text += '<div class="well">';
-    text += '<table align="center" style="width:800px;min-height:30px">'
+    text += '<table align="center" style="width:700px;min-height:30px">'
     text += '<tr>'
     text += '   <td><text>Time</text></td> <td><text>Does Input</text></td>  <td><text>Amount</text></td>  <td><text>Sender</text></td> <td>Receiver</td>'
     text += '</tr>'
+    text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td>  </tr>'
 
     for (var i = 0; i <     this.nos; ++i) {
         timeMoment = this.timeMoments[i];
@@ -134,7 +136,8 @@ ZSCTransactions.prototype.loadTransactionsHtml = function(elementId)  {
         text += '   <td><text>' + amount  + '</text></td>'
         text += '   <td><text>' + sender  + '</text></td>'
         text += '   <td><text>' + receiver  + '</text></td>'
-        text += '</tr>'
+        text += '</tr>' 
+        text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td>  </tr>'
     }
     text += '</table></div>'
 
