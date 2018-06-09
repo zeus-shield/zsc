@@ -193,7 +193,11 @@ contract ControlApis is ControlBase {
     /// @param _parameter The name of the existing parameter
     function getElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public constant returns (bytes32) {
         checkRegistered(_userName, msg.sender);
-        checkMatched(_userName, _enName, msg.sender);
+
+        bytes32 ndType = getDBNode(getCurrentDBName(), _enName).getNodeType();
+        if (ndType != "agreement") {
+            checkMatched(_userName, _enName, msg.sender);
+        }
 
         return getDBNode(getCurrentDBName(), _enName).getParameter(_parameter);
     }
@@ -212,7 +216,11 @@ contract ControlApis is ControlBase {
     /// @param _enName The name of the element
     function getElementBalance(bytes32 _userName, bytes32 _enName, bytes32 _symbol) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
-        checkMatched(_userName, _enName, msg.sender);
+
+        bytes32 ndType = getDBNode(getCurrentDBName(), _enName).getNodeType();
+        if (ndType != "agreement") {
+            checkMatched(_userName, _enName, msg.sender);
+        }
 
         bytes32 walletName = formatWalletName(_enName, _symbol);
         address walletAdr = address(getDBNode(getCurrentDBName(), walletName));
@@ -225,7 +233,11 @@ contract ControlApis is ControlBase {
     /// @param _enName The name of the existing element
     function numElementParameters(bytes32 _userName, bytes32 _enName) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
-        checkMatched(_userName, _enName, msg.sender);
+
+        bytes32 ndType = getDBNode(getCurrentDBName(), _enName).getNodeType();
+        if (ndType != "agreement") {
+            checkMatched(_userName, _enName, msg.sender);
+        }
 
         return  getDBNode(getCurrentDBName(), _enName).numParameters();
     }
@@ -241,7 +253,11 @@ contract ControlApis is ControlBase {
     */
     function getElementParameterNameByIndex(bytes32 _userName, bytes32 _enName, uint _index) public constant returns (bytes32) {
         checkRegistered(_userName, msg.sender);
-        checkMatched(_userName, _enName, msg.sender);
+
+        bytes32 ndType = getDBNode(getCurrentDBName(), _enName).getNodeType();
+        if (ndType != "agreement") {
+            checkMatched(_userName, _enName, msg.sender);
+        }
 
         return getDBNode(getCurrentDBName(), _enName).getParameterNameByIndex(_index);
     }
