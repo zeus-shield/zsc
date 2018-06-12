@@ -20,6 +20,9 @@ db_idmanager
 factory_base
 wallet_eth
 wallet_erc20
+db_receiver
+db_provider
+db_staker
 )
 
 for((i=0;i<${#SOURCES[@]};i++));
