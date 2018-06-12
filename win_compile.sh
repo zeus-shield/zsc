@@ -3,18 +3,20 @@
 SFLAGS="--optimize --overwrite --pretty-json --combined-json bin,abi"
 CORE="EthCore"
 
-echo "########## compiling log_recorder.sol ##########"
-solc ${SFLAGS} ./${CORE}/log_recorder.sol -o build/log_recorder
+SOURCES=(
+log_recorder
+pos_block
+pos_base
+sys_overlayer
+#sys_gm_wallet
+sys_gm_simulator
+)
 
-echo "########## compiling pos_block.sol ##########"
-solc ${SFLAGS} ./${CORE}/pos_block.sol -o build/pos_block
-
-echo "########## compiling pos_base.sol ##########"
-solc ${SFLAGS} ./${CORE}/pos_base.sol -o build/pos_base
-
-echo "########## compiling sys_overlayer.sol ##########"
-solc ${SFLAGS} ./${CORE}/sys_overlayer.sol -o build/sys_overlayer
-
-
+for((i=0;i<${#SOURCES[@]};i++));
+do
+SOURCE=${SOURCES[i]}".sol";
+echo "########## compiling "${SOURCE}" ##########"
+solc ${SFLAGS} ./${CORE}/${SOURCE} -o build/${SOURCES[i]}
+done
 
 read -p "Press any key to continue."
