@@ -18,6 +18,8 @@ app_proxy
 db_database
 db_idmanager
 factory_base
+wallet_eth
+wallet_erc20
 )
 
 for((i=0;i<${#SOURCES[@]};i++));
