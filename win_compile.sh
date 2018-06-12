@@ -23,6 +23,9 @@ wallet_erc20
 db_receiver
 db_provider
 db_staker
+db_item
+db_template
+db_agreement
 )
 
 for((i=0;i<${#SOURCES[@]};i++));
