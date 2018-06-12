@@ -13,6 +13,11 @@ sys_gm_simulator
 sys_gm_string
 #sys_gm_db
 #sys_gm_factory
+adm_base
+app_proxy
+db_database
+db_idmanager
+factory_base
 )
 
 for((i=0;i<${#SOURCES[@]};i++));
