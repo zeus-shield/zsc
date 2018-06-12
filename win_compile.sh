@@ -26,6 +26,9 @@ db_staker
 db_item
 db_template
 db_agreement
+control_apis
+plat_string
+plat_math
 )
 
 for((i=0;i<${#SOURCES[@]};i++));
