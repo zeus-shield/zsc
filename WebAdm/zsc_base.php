@@ -46,7 +46,7 @@ class ZSCBase {
         /*
         return array("TestToken", "LogRecorder", "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "DatabaseManager", "FactoryManager", "SystemOverlayer", "ControlApisAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp",  "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20");
         */
-        return array("TestToken", "LogRecorder", "AdmAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp",  "FactoryAgr",  "FactoryWalletErc20", "ControlApisAdv");
+        return array("TestToken", "LogRecorder", "TimeStamp", "AdmAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp",  "FactoryAgr",  "FactoryWalletErc20", "ControlApisAdv");
     }
 
     public function getGMArray() {

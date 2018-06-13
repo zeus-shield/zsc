@@ -62,6 +62,7 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
         <script type="text/javascript" src="./js/compiled_zsc_test_token.js"></script>
 
         <script type="text/javascript" src="./js/compiled_loger.js"></script>
+        <script type="text/javascript" src="./js/compiled_time_stamp.js"></script>
         <script type="text/javascript" src="./js/compiled_sys_overlayer.js"></script>
         <script type="text/javascript" src="./js/compiled_adm_adv.js"></script>
         <script type="text/javascript" src="./js/compiled_apis_adv.js"></script>
@@ -73,6 +74,7 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
         <script type="text/javascript" src="./js/compiled_factory_agr.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_wallet_eth.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_wallet_erc20.js"></script>
+        <script type="text/javascript" src="./js/control_apis_user.js"></script>
         ';
         return $text;
     }
