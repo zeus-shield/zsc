@@ -14,11 +14,14 @@ $htmlObjects = new ZSChtmlObjects();
 <?php echo $htmlObjects->loadScriptFiles(); ?>
 <script type="text/javascript">
     var recorderAdr = "<?php echo $htmlObjects->readObjectAddress('LogRecorder')?>";
+    var timeStampAdr = "<?php echo $htmlObjects->readObjectAddress('TimeStamp')?>";
     var zscTokenAddress = "<?php echo $htmlObjects->readObjectAddress('TestToken')?>";
     var logedModuleAdrs = <?php echo $htmlObjects->getLogedObjectAddressArrayInString()?>;
 
     var web3 = setupWeb3js(false);
-    var zscSetup = new ZSCSetup(recorderAdr, zscTokenAddress, logedModuleAdrs);
+    //var web3 = new Web3(web3.currentProvider);
+
+    var zscSetup = new ZSCSetup(recorderAdr, timeStampAdr, zscTokenAddress, logedModuleAdrs);
 
     function printAbi(module) {
         document.getElementById("AbiString").innerText = cC_getContractAbiString(module);  

@@ -34,12 +34,14 @@ recordSystemObjectAdrs($htmlObjects);
 <?php echo $htmlObjects->loadScriptFiles(); ?>
 <script type="text/javascript">
     var web3 = setupWeb3js(false);
-    
+    //var web3 = new Web3(web3.currentProvider);
+
     var recorderAdr = "<?php echo $htmlObjects->readObjectAddress('LogRecorder')?>";
+    var timeStampAdr = "<?php echo $htmlObjects->readObjectAddress('TimeStamp')?>";
     var zscTokenAddress = "<?php echo $htmlObjects->readObjectAddress('TestToken')?>";
     var logedModuleAdrs = <?php echo $htmlObjects->getLogedObjectAddressArrayInString()?>;
 
-    var zscSetup = new ZSCSetup(recorderAdr, zscTokenAddress, logedModuleAdrs);
+    var zscSetup = new ZSCSetup(recorderAdr, timeStampAdr, zscTokenAddress, logedModuleAdrs);
 
     function getObjectAdr(module) {
         var adr;
