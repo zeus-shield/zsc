@@ -33,8 +33,10 @@ ZSCHtml.prototype.loadPageHeader = function(funcName, userType, doesUserApplied)
         text += '   <button type="button" onClick="' + funcPrefix + "'parameter-profile'" + funcSuffix + '">Profile</button>'
         if (userType == "provider") {
             text += '   <button type="button" onClick="' + funcPrefix + "'template'" + funcSuffix + '">Templates</button>'
+        } else if (userType == "receiver") {
+            text += '   <button type="button" onClick="' + funcPrefix + "'agreement-receiver'" + funcSuffix + '">Agreements</button>'
         }
-        text += '   <button type="button" onClick="' + funcPrefix + "'agreement'" + funcSuffix + '">Agreements</button>'
+        text += '   <button type="button" onClick="' + funcPrefix + "'agreement-all'" + funcSuffix + '">Show All Agreements</button>'
     }
     text += ' <br><text id="ApplyForProviderHash"></text>'
     text += '</div>'
