@@ -2,7 +2,7 @@
 Copyright (c) 2018 ZSC Dev Team
 */
 
-function ZSCSetup(logRecorderAdr, zscTokenAdr, adrs) {
+function ZSCSetup(logRecorderAdr, timerAdr, zscTokenAdr, adrs) {
     /*
     "SystemOverlayer", "ControlApisAdv", "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "DatabaseManager", "FactoryManager",
      "DBDatabase", "FactoryPro", "FactoryRec", "FactoryStaker" , "FactoryTmp",  "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20"
@@ -33,6 +33,8 @@ function ZSCSetup(logRecorderAdr, zscTokenAdr, adrs) {
     "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20", "ControlApisAdv");
     */
     this.RecorderAdr = logRecorderAdr;
+    this.TimerAdr = timerAdr;
+    this.zscTokenAdr = zscTokenAdr;
     this.AdmAdvAdr = adrs[0];
     this.DBDatabaseAdr = adrs[1];
     this.FactoryProAdr = adrs[2];
@@ -41,7 +43,6 @@ function ZSCSetup(logRecorderAdr, zscTokenAdr, adrs) {
     this.FactoryAgrAdr = adrs[5];
     this.FactoryWalletErc20Adr = adrs[6];
     this.ControlApisAdvAdr   = adrs[7];
-    this.zscTokenAdr = zscTokenAdr;
     this.account = web3.eth.accounts[0];
 }
 
@@ -68,7 +69,7 @@ ZSCSetup.prototype.setLogRecorderToListener = function(listener,listenerName, ha
     var myListener = myContract.at(listener);
     var account = web3.eth.accounts[0];
 
-    myListener.setLogRecorder(this.RecorderAdr, {from:account, gas: 9000000},
+    myListener.setLogRecorderAndTimer(this.RecorderAdr, this.TimerAdr, {from:account, gas: 7000000},
     function(error, result){ 
         if(!error) cC_showHashResultTest(hashID, result, func);
         else console.log("error: " + error);
@@ -124,7 +125,7 @@ ZSCSetup.prototype.setControlAbisAdvAbi = function(hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("AdmAdv"));
     var myAdmAdv = myContract.at(this.AdmAdvAdr);
 
-    var str = cC_getContractAbiString("ControlApisAdv");
+    var str = cC_getContractAbiString("ControlApisForUser");
     myAdmAdv.setControlApisFullAbi(str, 
         {from:web3.eth.accounts[0], gas: 9000000},
         function(error, result) { 
