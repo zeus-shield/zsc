@@ -17,6 +17,9 @@ function cC_getContractFullName(contractName) {
     } else if (contractName == 'LogRecorder') {
         return "./zsc/db/EthCore/log_recorder.sol:LogRecorder";
 
+    } else if (contractName == 'TimeStamp') {
+        return "./zsc/db/EthCore/time_stamp.sol:TimeStamp";
+
     } else if (contractName == 'DatabaseManager') {
         return "./zsc/db/EthCore/sys_gm_db.sol:SysGmDb";
 
@@ -60,7 +63,7 @@ function cC_getContractFullName(contractName) {
         return "./zsc/control_apis_adv.sol:ControlApisAdv";
 
     } else if (contractName == 'ControlApisForUser') {
-        return "./zsc/control_apis_user.sol:AbisForUserControlApis";
+        return "./zsc/db/EthCore/control_apis_user.sol:AbisForUserControlApis";
     } 
 }
 
@@ -72,6 +75,9 @@ function cC_getCompiledFile(contractName) {
 
     } else if (contractName == 'LogRecorder') {
         return compiledLogRecorder;
+
+    } else if (contractName == 'TimeStamp') {
+        return compiledTimeStamp;
 
     } else if (contractName == 'PosAdv') {
         return compiledPosAdv;
