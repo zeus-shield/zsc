@@ -26,35 +26,27 @@ contract TimeStamp is Delegated {
 
     uint16 constant ORIGIN_YEAR = 1970;
 
-    function TimeStamp() {
+    function TimeStamp() public {
     }
 
-    function isLeapYear(uint16 year) public constant returns (bool) {
+    function isLeapYear(uint16 year) public pure returns (bool) {
         if (year % 4 != 0) {
             return false;
-        }
-
-        if (year % 100 != 0) {
+        } else if (year % 100 != 0) {
+            return true;
+        } else if (year % 400 != 0) {
+            return false;
+        } else {
             return true;
         }
-
-        if (year % 400 != 0) {
-            return false;
-        }
-
-        return true;
     }
 
-    function leapYearsBefore(uint year) public constant returns (uint) {
-        year.sub(1);
-
-        uint year_4   = year.div(4);
-        uint year_100 = year.div(100);
-        uint year_400 = year.div(400);
-        return year_4 - year_100 + year_400;
+    function leapYearsBefore(uint year) public pure returns (uint) {
+        year -= 1;
+        return year / 4 - year / 100 + year / 400;
     }
 
-    function getDaysInMonth(uint8 month, uint16 year) constant returns (uint8) {
+    function getDaysInMonth(uint8 month, uint16 year) public pure returns (uint8) {
         if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
             return 31;
         } else if (month == 4 || month == 6 || month == 9 || month == 11) {
@@ -66,7 +58,7 @@ contract TimeStamp is Delegated {
         }
     }
 
-    function parseTimestamp(uint timestamp) internal returns (DateTime dt) {
+    function parseTimestamp(uint timestamp) internal pure returns (DateTime dt) {
         uint secondsAccountedFor = 0;
         uint buf;
         uint8 i;
@@ -111,7 +103,7 @@ contract TimeStamp is Delegated {
         dt.weekday = getWeekday(timestamp);
     }
 
-    function getYear(uint timestamp) constant returns (uint16) {
+    function getYear(uint timestamp) public pure returns (uint16) {
         uint secondsAccountedFor = 0;
         uint16 year;
         uint numLeapYears;
@@ -135,43 +127,43 @@ contract TimeStamp is Delegated {
         return year;
     }
 
-    function getMonth(uint timestamp) constant returns (uint8) {
+    function getMonth(uint timestamp) public pure returns (uint8) {
         return parseTimestamp(timestamp).month;
     }
 
-    function getDay(uint timestamp) constant returns (uint8) {
+    function getDay(uint timestamp) public pure returns (uint8) {
         return parseTimestamp(timestamp).day;
     }
 
-    function getHour(uint timestamp) constant returns (uint8) {
+    function getHour(uint timestamp) public pure returns (uint8) {
         return uint8((timestamp / 60 / 60) % 24);
     }
 
-    function getMinute(uint timestamp) constant returns (uint8) {
+    function getMinute(uint timestamp) public pure returns (uint8) {
         return uint8((timestamp / 60) % 60);
     }
 
-    function getSecond(uint timestamp) constant returns (uint8) {
+    function getSecond(uint timestamp) public pure returns (uint8) {
         return uint8(timestamp % 60);
     }
 
-    function getWeekday(uint timestamp) constant returns (uint8) {
+    function getWeekday(uint timestamp) public pure returns (uint8) {
         return uint8((timestamp / DAY_IN_SECONDS + 4) % 7);
     }
 
-    function toTimestamp(uint16 year, uint8 month, uint8 day) constant returns (uint timestamp) {
+    function toTimestamp(uint16 year, uint8 month, uint8 day) public pure returns (uint timestamp) {
         return toTimestamp(year, month, day, 0, 0, 0);
     }
 
-    function toTimestamp(uint16 year, uint8 month, uint8 day, uint8 hour) constant returns (uint timestamp) {
+    function toTimestamp(uint16 year, uint8 month, uint8 day, uint8 hour) public pure returns (uint timestamp) {
         return toTimestamp(year, month, day, hour, 0, 0);
     }
 
-    function toTimestamp(uint16 year, uint8 month, uint8 day, uint8 hour, uint8 minute) constant returns (uint timestamp) {
+    function toTimestamp(uint16 year, uint8 month, uint8 day, uint8 hour, uint8 minute) public pure returns (uint timestamp) {
         return toTimestamp(year, month, day, hour, minute, 0);
     }
 
-    function toTimestamp(uint16 year, uint8 month, uint8 day, uint8 hour, uint8 minute, uint8 second) constant returns (uint timestamp) {
+    function toTimestamp(uint16 year, uint8 month, uint8 day, uint8 hour, uint8 minute, uint8 second) public pure returns (uint timestamp) {
         uint16 i;
 
         // Year
