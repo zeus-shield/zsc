@@ -87,7 +87,7 @@ ZSCUser.prototype.activeByUser = function(type, hashLogId){
     var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
 
     myAdmAdv.activeByUser(gm.userNameHr, type, 
-        {from: gm.account, gas: 90000000},
+        {from: gm.account, gas: 9000000},
         function(error, ret) {
             if(!error) { 
                 gm.type = type;

@@ -40,4 +40,3 @@ function bF_showHashResult(elementID, hash, func) {
         }
     });
 }
-

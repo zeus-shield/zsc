@@ -40,5 +40,4 @@ contract WalletEth is WalletBase {
             return 0;
         }
     }
-
 }

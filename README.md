@@ -167,5 +167,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.05.09-05.14: removed files module_base.sol, module_base_adv.sol; added files sys_com_module.sol, sys_include.sol, log_base.sol, log_manager.sol; changed/updated files: system_manger.sol -> sys_overlayer.sol, wallet_manager.sol -> sys_gm_wallet.sol, simulator_manager.sol -> sys_gm_simulator.sol, factory_manager.sol -> sys_gm_factory.sol, db_manager.sol -> sys_gm_db.sol, adr_manager.sol -> sys_com_group.sol, manager_base.sol -> sys_com_base.sol
 2018.05.15-05.23: re-construct/adjust architecture for sys_gm_*.sol; changed/updated files: WebAdm/adm_add_database.php, WebAdm/zsc_system_modules.php -> WebAdm/zsc_system_objects.php, WebAdm/zsc_html_modules.php -> WebAdm/zsc_html_objects.php; added file Database/sys_gm_string.sol;
 2018.05.24-05.29: add file WebAdm/adm_add_gm.php, WebAdm/adm_print_abi.php; change codes with reference to solidity compiler 4.21
-2018.05.30-06.12: conduct testing on the alpha-version
+2018.05.30-06.12: conduct internal testing on the alpha-version
 ```

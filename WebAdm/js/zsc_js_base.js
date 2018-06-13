@@ -1,4 +1,4 @@
-/*
+7/*
 Copyright (c) 2018 ZSC Dev Team
 */
 function ZSCJsBase() {
@@ -20,7 +20,7 @@ ZSCJsBase.prototype.showHashResult = function(elementID, hash, func){
             var show;
             if (result == null) {
                 show =  "(pending)" + hash ;
-                this.howHashResult(elementID, hash, func);
+                this.showHashResult(elementID, hash, func);
             } else {
                 if (result.status == 0) {
                     show = "(failure)" + hash;
