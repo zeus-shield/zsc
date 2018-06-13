@@ -5,7 +5,7 @@ Copyright (c) 2018 ZSC Dev Team
 //class zscWallet
 function ZSCTransactions(nm, abi, adr) {
     this.userName = nm;
-    this.nos;
+    this.transNos;
     this.tokenSymbol;
     this.timeMoments = [];
     this.inputTags = [];
@@ -13,7 +13,6 @@ function ZSCTransactions(nm, abi, adr) {
     this.amounts = [];
     this.senders = [];
     this.receivers = [];
-    this.account = web3.eth.accounts[0];
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
     this.account = web3.eth.accounts[0];
@@ -30,13 +29,17 @@ ZSCTransactions.prototype.loadTransactions = function(func) {
     var gm = this;
     var callBack = func;
 
-    gm.numTransactions(gm, function() {
-        for (var i = 0; i < gm.walletNos; ++i) {
-            gm.loadTransactionInfoByIndex(gm, i, function(index){
-                if (indx == gm.walletNos - 1) {
-                    callBack();
-                }
-            });
+    gm.numTransactions(gm, function(gm) {
+        if (gm.transNos == 0) {
+            callBack();
+        } else {
+            for (var i = 0; i < gm.transNos; ++i) {
+                gm.loadTransactionInfoByIndex(gm, i, function(index){
+                    if (index == gm.transNos - 1) {
+                        callBack();
+                    }
+                });
+            }
         }
     });
 }
@@ -46,11 +49,11 @@ ZSCTransactions.prototype.numTransactions = function(gm, func) {
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
     myControlApi.numUserTransactions(gm.userName, gm.tokenSymbol, 
-        {from: gm.account, gas: gm.gas},
+        {from: gm.account},
         function(error, result){ 
             if(!error) {
-                this.walletNos = result.toString(10);
-                callBack();
+                gm.transNos = result.toString(10);
+                callBack(gm);
             } else {
                 console.log("error: " + error);
             }
@@ -65,7 +68,7 @@ ZSCTransactions.prototype.loadTransactionInfoByIndex = function(gm, index, func)
         {from: gm.account, gas: gm.gas},
         function(error, result){ 
             if(!error) {
-                parserTransactionInfoByIndex(gm, result, index)
+                gm.parserTransactionInfoByIndex(gm, result, index)
                 callBack(index);
             } else {
                 console.log("error: " + error);
@@ -117,27 +120,27 @@ ZSCTransactions.prototype.loadTransactionsHtml = function(elementId)  {
 
     var text ="";
     text += '<div class="well">';
-    text += '<table align="center" style="width:700px;min-height:30px">'
+    text += '<table align="center" style="width:800px;min-height:30px">'
     text += '<tr>'
-    text += '   <td><text>Time</text></td> <td><text>Does Input</text></td>  <td><text>Amount</text></td>  <td><text>Sender</text></td> <td>Receiver</td>'
+    text += '   <td><text>Time</text></td> <td><text>Does Input</text></td>  <td><text>Amount</text></td>  <td><text>Sender/Receiver</text></td>'
     text += '</tr>'
     text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td>  </tr>'
 
-    for (var i = 0; i <     this.nos; ++i) {
+    for (var i = 0; i < this.transNos; ++i) {
         timeMoment = this.timeMoments[i];
         inputTag   = this.inputTags[i];
-        amount     = this.amounts[i];
-        sender     = this.enders[i];
+        amount     = web3.fromWei(this.amounts[i], 'ether');
+        sender     = this.senders[i];
         receiver   = this.receivers[i];
 
         text += '<tr>'
         text += '   <td><text>' + timeMoment + '</text></td>'
         text += '   <td><text>' + inputTag + '</text></td>'
         text += '   <td><text>' + amount  + '</text></td>'
-        text += '   <td><text>' + sender  + '</text></td>'
-        text += '   <td><text>' + receiver  + '</text></td>'
+        text += '   <td><text>Sender:   0x' + sender  + '</text><br>'
+        text += '       <text>Receiver: 0x' + receiver  + '</text></td>'
         text += '</tr>' 
-        text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td>  </tr>'
+        text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td>  </tr>'
     }
     text += '</table></div>'
 
