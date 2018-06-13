@@ -23,7 +23,8 @@
 <script type="text/javascript" src="./zsc_wallet.js"></script>
 <script type="text/javascript">
 
-    var web3 = setupWeb3js(false);
+    //var web3 = new Web3(web3.currentProvider);
+    var web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
 
     var zscHtml = new ZSCHtml();
     var zscUser;
@@ -63,7 +64,7 @@
                 zscAgrsProGM = new ZSCAgreementProvider(userName, fullAbi, controlApisAdvAdr);
                 zscAgrsRecGM = new ZSCAgreementReceiver(userName, fullAbi, controlApisAdvAdr);
                 zscAgrsAllGM = new ZSCAgreementAll(userName, fullAbi, controlApisAdvAdr);
-                //zscTransGM  = new ZSCTransactions(userName, fullAbi, controlApisAdvAdr);
+                zscTransGM  = new ZSCTransactions(userName, fullAbi, controlApisAdvAdr);
                 //
                 //zscViewAgrsGM = new ZSCViewAgreement(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
                 /*
