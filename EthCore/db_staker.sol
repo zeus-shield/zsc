@@ -5,9 +5,9 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./db_user.sol";
+import "./db_entity.sol";
 
-contract DBStaker is DBUser {
+contract DBStaker is DBEntity {
 	struct SPInfo {
 		uint time_;
 		uint amount_;

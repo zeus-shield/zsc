@@ -4,16 +4,15 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./plat_string.sol";
-import "./db_user.sol";
+import "./db_entity.sol";
 //import "./db_item.sol";
 //import "./db_template.sol";
 
-contract DBProvider is DBUser {
+contract DBProvider is DBEntity {
     address private templates_ = 0;
 
     // Constructor
-    function DBProvider(bytes32 _name) public DBUser(_name) {
+    function DBProvider(bytes32 _name) public DBEntity(_name) {
         nodeType_ = "provider";
     }
 

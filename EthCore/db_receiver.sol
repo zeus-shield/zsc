@@ -4,15 +4,15 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./db_user.sol";
+import "./db_entity.sol";
 
-contract DBReceiver is DBUser {
+contract DBReceiver is DBEntity {
     uint agrNos_;
     mapping(uint => address) private agreements_;
     mapping(address => bool) private agreementExist_;
 
     // Constructor
-    function DBReceiver(bytes32 _name) public DBUser(_name) {
+    function DBReceiver(bytes32 _name) public DBEntity(_name) {
         nodeType_ = "receiver";
     }
 
