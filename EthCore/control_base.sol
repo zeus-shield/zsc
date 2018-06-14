@@ -24,11 +24,10 @@ contract DBNode {
     function getParameterNameByIndex(uint _index) public constant returns (bytes32);
 
     function setERC20TokenAddress(address _tokenAdr) public;
-    function doesLastTransactionSigned() public constant returns (bool);
     //function submitTransaction(address _dest, uint256 _amount, bytes _data, address _user) public returns (uint);
     //function confirmTransaction(address _sigAdr) public returns (uint);    
     function executeTransaction(address _dest, uint256 _amount) public returns (uint);
-    function informTransaction(address _src, address _dest, uint256 _amount) public;
+    function informTransaction(address _src, uint256 _amount) public;
     function numTransactions() public constant returns (uint);
     function getTransactionInfoByIndex(uint _index) public constant returns (uint, bool,  bytes32, uint, address, address);
 
@@ -46,11 +45,11 @@ contract DBNode {
     function getChildByIndex(uint _index) public  constant returns(address);
     function addChild(address _node) public returns (address);
 
-    function getMiningInfoByIndex(bool _isReward, uint _index) public constant returns (uint, uint);
-    function numMiningInfo(bool _isReward) public constant returns (uint);
+    //function getMiningInfoByIndex(bool _isReward, uint _index) public constant returns (uint, uint);
+    //function numMiningInfo(bool _isReward) public constant returns (uint);
 
-    function addSignature(address _sigAdr) public returns (bool);
-    function getAgreementInfo() public constant returns (bytes32, bytes32, uint, uint, bytes32, uint);
+    //function addSignature(address _sigAdr) public returns (bool);
+    //function getAgreementInfo() public constant returns (bytes32, bytes32, uint, uint, bytes32, uint);
 
     function simulatePayforInsurance() public returns (uint);
 }
@@ -226,6 +225,7 @@ contract ControlBase is ControlInfo {
 
         temp = PlatString.bytes32ToString(DBNode(_agrAdr).getParameter("insurance"));
         lockedAmount = PlatString.stringToUint(temp);
+        lockedAmount = lockedAmount.mul(1 ether);
 
         temp = PlatString.bytes32ToString(DBNode(_agrAdr).getParameter("price"));
         price = PlatString.stringToUint(temp);
@@ -242,7 +242,9 @@ contract ControlBase is ControlInfo {
         require(lockedAmount > 0 && price > 0 && duration >= 60);
 
         address userWallet = address(getDBNode(dbName_, formatWalletName(_userName, "ZSC")));
-        DBNode(userWallet).executeTransaction(_agrWalletAdr, lockedAmount * 1 ether);
+
+        DBNode(userWallet).executeTransaction(_agrWalletAdr, lockedAmount);
+        DBNode(_agrWalletAdr).informTransaction(userWallet, lockedAmount);
 
         DBNode(_agrAdr).setAgreementStatus("PUBLISHED", "null");
     }
@@ -278,6 +280,7 @@ contract ControlBase is ControlInfo {
     }
     */
 
+    /*
     function deleteAgreement( bytes32 _agrName) internal returns (bool) {
         address agrAdr = address(getDBNode(dbName_, _agrName));
         require(agrAdr != address(0));
@@ -299,13 +302,7 @@ contract ControlBase is ControlInfo {
         DBNode(userWallet).executeTransaction(userWallet, lockedAmount);
         return getDBDatabase(dbName_).destroyNode(agrAdr);
     }
-
-    function conductInformTransaction(bytes32 _enName, address _dest, uint256 _amount) internal returns (bool) {
-        bytes32 tokenSymbol = DBNode(_dest).getParameter("walletSymbol");
-        address userWallet  = address(getDBNode(dbName_, formatWalletName(_enName, tokenSymbol)));
-        DBNode(_dest).informTransaction(userWallet, _dest, _amount);
-        return true;
-    }
+    */
 
     //Disabled during alpha-test
     /*
@@ -355,11 +352,13 @@ contract ControlBase is ControlInfo {
 
         uint price     = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(agrAdr).getParameter("price")));
         require(price > 0);
+        price = price.mul(1 ether);
 
         address recWallet   = address(getDBNode(dbName_, formatWalletName(_userName, tokenSymbol)));
         address agrWallet   = address(getDBNode(dbName_, formatWalletName(_agrName, tokenSymbol)));
 
-        uint ret = DBNode(recWallet).executeTransaction(agrWallet, price * 1 ether);
+        uint ret = DBNode(recWallet).executeTransaction(agrWallet, price);
+        DBNode(agrWallet).informTransaction(recWallet, price);
 
         getDBNode(dbName_, _agrName).setAgreementStatus("PAID", _userName);
         getDBNode(dbName_, _userName).bindAgreement(agrAdr);
@@ -383,9 +382,9 @@ contract ControlBase is ControlInfo {
         bytes32 receiver = DBNode(agrAdr).getParameter("receiver");
         require(_userName == provider || _userName == receiver);
 
-        address proWallet   = address(getDBNode(dbName_, formatWalletName(provider, "ZSC")));
-        address recWallet   = address(getDBNode(dbName_, formatWalletName(receiver, "ZSC")));
-        address agrWallet   = address(getDBNode(dbName_, formatWalletName(agrName, "ZSC")));
+        address proWallet = address(getDBNode(dbName_, formatWalletName(provider, "ZSC")));
+        address recWallet = address(getDBNode(dbName_, formatWalletName(receiver, "ZSC")));
+        address agrWallet = address(getDBNode(dbName_, formatWalletName(agrName, "ZSC")));
 
         string memory temp;
         uint lockedAmount;
@@ -393,20 +392,25 @@ contract ControlBase is ControlInfo {
 
         temp = PlatString.bytes32ToString(DBNode(agrAdr).getParameter("insurance"));
         lockedAmount = PlatString.stringToUint(temp);
+        lockedAmount = lockedAmount.mul(1 ether);
 
         temp = PlatString.bytes32ToString(DBNode(agrAdr).getParameter("price"));
         price = PlatString.stringToUint(temp);
+        price = price.mul(1 ether);
 
         uint ret = DBNode(agrAdr).simulatePayforInsurance();
-
 
         if (ret == 0) {
             return false;
         } else if (ret == 1) {
             //Insurance to receiver
-            DBNode(agrWallet).executeTransaction(proWallet, price * 1 ether);
-            DBNode(agrWallet).executeTransaction(recWallet, lockedAmount * 1 ether);
+            DBNode(agrWallet).executeTransaction(proWallet, price);
+            DBNode(agrWallet).executeTransaction(recWallet, lockedAmount);
 
+            DBNode(proWallet).informTransaction(agrWallet, price);
+            DBNode(recWallet).informTransaction(agrWallet, lockedAmount);
+
+            /*
             temp = "";
             temp = PlatString.append(temp, PlatString.bytes32ToString(agrName), ": Paid price (", PlatString.uintToString(price));
             temp = PlatString.append(temp, ") to provider", PlatString.bytes32ToString(provider));
@@ -416,14 +420,19 @@ contract ControlBase is ControlInfo {
             temp = PlatString.append(temp, "; Give insurance (", PlatString.uintToString(lockedAmount));
             temp = PlatString.append(temp, ") to receiver", PlatString.bytes32ToString(receiver));
             addLog(temp, false);
+            */
         } else if (ret == 2) {
             //Paid to provider
-            DBNode(agrWallet).executeTransaction(proWallet, (lockedAmount + price) * 1 ether);
+            DBNode(agrWallet).executeTransaction(proWallet, lockedAmount + price);
 
+            DBNode(proWallet).informTransaction(agrWallet, lockedAmount + price);
+
+            /*
             temp = "";
             temp = PlatString.append(temp, PlatString.bytes32ToString(agrName), ": Give reward (", PlatString.uintToString(price + lockedAmount));
             temp = PlatString.append(temp, ") to provider", PlatString.bytes32ToString(provider));
             addLog(temp, true);
+            */
         }
         return true;
     }
