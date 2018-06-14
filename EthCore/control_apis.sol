@@ -78,6 +78,7 @@ contract ControlApis is ControlBase {
         return (adr != address(0));
     }
 
+    /*
     function addSignatureAdr(bytes32 _userName, address _sigAdr) public returns (bool) {
         checkRegistered(_userName, msg.sender);
         if (getDBNode(getCurrentDBName(), _userName).addSignature(_sigAdr)) {
@@ -85,6 +86,7 @@ contract ControlApis is ControlBase {
         }
         return true;
     }
+    */
 
     /// @dev Creat an element
     function createUserNode(bytes32 _factoryType, bytes32 _userName, address _extraAdr) public returns (address) {
@@ -276,7 +278,8 @@ contract ControlApis is ControlBase {
 
         uint amount = 0;
         amount = DBNode(walletAdr).executeTransaction(_dest, _amount);
-
+        
+        DBNode(_dest).informTransaction(walletAdr, lockedAmount);
         return amount;
 
         /* Multisig module
@@ -305,14 +308,6 @@ contract ControlApis is ControlBase {
         return amount;
     }
     */
-
-
-    function informTransfer(bytes32 _userName, bytes32 _enName, address _dest, uint256 _amount) public returns (bool) {
-        checkRegistered(_userName, msg.sender);
-        checkMatched(_userName, _enName, msg.sender);
-
-        return conductInformTransaction(_enName, _dest, _amount);
-    }
 
     //Disabled during alpha-test
     /// @dev Announce an insurance agreement by a provider
