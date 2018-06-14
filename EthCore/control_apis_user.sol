@@ -71,8 +71,6 @@ contract AbisForUserControlApis {
     /// @param _amount The amount to be transferred
     function submitTransfer(bytes32 _userName, bytes32 _tokenSymbol, address _dest, uint256 _amount) public returns (uint);
 
-    function informTransfer(bytes32 _userName, bytes32 _enName, address _dest, uint256 _amount) public returns (bool);
-
     function numElementChildren(bytes32 _userName, bytes32 _enName) public constant returns (uint);
 
     function getElementChildNameByIndex(bytes32 _userName, bytes32 _enName, uint _index) public constant returns (bytes32);
