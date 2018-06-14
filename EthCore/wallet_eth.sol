@@ -28,16 +28,21 @@ contract WalletEth is WalletBase {
         return address(this).balance;
     }
 
-    function executeTransaction(address _dest, uint256 _amount, bytes _data) public returns (uint) {
+    function executeTransaction(address _dest, uint256 _amount) public returns (uint) {
         checkDelegate(msg.sender, 1);
         checkBeforeSent(_dest, _amount);        
 
-        if (_dest.call.value(_amount)(_data)) {
+        if (_dest.call.value(_amount)()) {
             recordOut(_dest, _amount);
             //changeValue(false,  _amount);
             return _amount;
         } else {
             return 0;
         }
+    }
+
+    function informTransaction(address _src, uint256 _amount) public {
+        return;
+        if (_src == address(0) || _amount == 0) return;
     }
 }
