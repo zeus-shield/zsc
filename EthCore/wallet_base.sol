@@ -54,6 +54,10 @@ contract WalletBase is DBNode {
     ////////// public functions /////////////
     function getBlance() public constant returns (uint);
 
+    function executeTransaction(address _dest, uint256 _amount) public returns (uint);
+
+    function informTransaction(address _src, uint256 _amount) public;
+
     function numTransactions() public constant returns (uint) {
         checkDelegate(msg.sender, 1);
         return nos_;
