@@ -11,6 +11,8 @@ function ZSCWalletMangement(adr, abi) {
     this.tokenAdrs = [];
     this.account = web3.eth.accounts[0];
     this.myControlApi = web3.eth.contract(abi).at(adr);
+    this.gasPrice = cC_getGasPrice(20);
+    this.gasLimit = cC_getGasLimit(743);
 }
 
 ZSCWalletMangement.prototype = new ZSCJsBase();
@@ -22,7 +24,7 @@ ZSCWalletMangement.prototype.addTokenContractInfo = function(nameId, symbolId, d
     var tokenAddress =  document.getElementById(adrId).value;
 
     this.myControlApi.registerErc20Token(tokenName, tokenSymbol, decimals, tokenAddress,
-        {from: this.account, gas: 9000000},
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) this.showHashResult(hashId, result, func);
             else console.log("error: " + error);
@@ -64,7 +66,7 @@ ZSCWalletMangement.prototype.loadErcTokenContracts = function(func) {
 
 ZSCWalletMangement.prototype.numErcTokens = function(func) {
     this.myControlApi.numRegisteredErc20Tokens("null",
-        {from: this.account, gas: 9000000},
+        {from: this.account},
         function(error, result){ 
             if(!error) {
                 this.tokenNos = result;
@@ -77,7 +79,7 @@ ZSCWalletMangement.prototype.numErcTokens = function(func) {
 
 ZSCWalletMangement.prototype.loadErcTokenContractInfoByIndex = function(index, func) {
     this.myControlApi.getTokenContractInfoByIndex(i,
-        {from: this.account, gas: 9000000},
+        {from: this.account},
         function(error, result){ 
             if(!error) {
                 this.parserTokenContractInfoByIndex(result, index);
