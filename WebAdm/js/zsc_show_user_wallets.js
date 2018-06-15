@@ -10,6 +10,8 @@ function ZSCShowUserWallets(adr, abi) {
     this.walletBalance = [];
     this.account = web3.eth.accounts[0];
     this.myControlApi = web3.eth.contract(abi).at(adr);
+    this.gasPrice = cC_getGasPrice(20);
+    this.gasLimit = cC_getGasLimit(743);
 }
 
 ZSCShowUserWallets.prototype = new ZSCJsBase();
@@ -33,7 +35,7 @@ ZSCShowUserWallets.prototype.loadUserWallets = function(func) {
 
 ZSCShowUserWallets.prototype.numUserWallets = function(func) {
     this.myControlApi.numRegisteredErc20Tokens(this.userName,
-        {from: this.account, gas: 9000000},
+        {from: this.account},
         function(error, result){ 
             if(!error) {
                 this.walletNos = result;
@@ -46,7 +48,7 @@ ZSCShowUserWallets.prototype.numUserWallets = function(func) {
 
 ZSCShowUserWallets.prototype.loadWalletInfoByIndex = function(index, func) {
     this.myControlApi.getTokenBalanceInfoByIndex(this.userName, index,
-        {from: this.account, gas: 9000000},
+        {from: this.account},
         function(error, result){ 
             if(!error) {
                 parserWalletInfoByIndex(result, index)
