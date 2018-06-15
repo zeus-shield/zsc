@@ -29,11 +29,12 @@ function sF_registerListenerToLogRecorder(logRecorderAdr, listener, listenerName
     var myLogRecorder = myContract.at(logRecorderAdr);
     var account = web3.eth.accounts[0];
 
-    myLogRecorder.registerListener(listener, listenerName, {from:account, gas: 9000000},
-    function(error, result){ 
-        if(!error) sF_showHashResult(hashID, result);
-        else console.log("error: " + error);
-    });
+    myLogRecorder.registerListener(listener, listenerName, 
+        {from: account, gas: cC_getGasLimit(743), gasPrice: cC_getGasPrice(30)},
+        function(error, result){ 
+            if(!error) sF_showHashResult(hashID, result);
+            else console.log("error: " + error);
+        });
 }  
 
 function sF_setLogRecorderToListener(logRecorderAdr, listener,listenerName, hashID) {
@@ -41,11 +42,12 @@ function sF_setLogRecorderToListener(logRecorderAdr, listener,listenerName, hash
     var myListener = myContract.at(listener);
     var account = web3.eth.accounts[0];
 
-    myListener.setLogRecorder(logRecorderAdr, {from:account, gas: 9000000},
-    function(error, result){ 
-        if(!error) sF_showHashResult(hashID, result);
-        else console.log("error: " + error);
-    });
+    myListener.setLogRecorder(logRecorderAdr, 
+        {from: account, gas: cC_getGasLimit(743), gasPrice: cC_getGasPrice(30)},
+        function(error, result){ 
+            if(!error) sF_showHashResult(hashID, result);
+            else console.log("error: " + error);
+        });
 }  
 
 function sF_initSystemModule(module, extra, adrs, zscTokenAdr, hashID) {
@@ -98,93 +100,102 @@ function sF_initSystemModule(module, extra, adrs, zscTokenAdr, hashID) {
 function sF_initPosAdv(PosAdvAdr, ControlApisAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("PosAdv"));
     var myPosAdv = myContract.at(PosAdvAdr);
-    myPosAdv.initPos(ControlApisAdr, {from:web3.eth.accounts[0], gas: 9000000},
-    function(error, result){ 
-        if(!error) sF_showHashResult(hashID, result);
-        else console.log("error: " + error);
-    });
+    myPosAdv.initPos(ControlApisAdr, 
+        {from: account, gas: cC_getGasLimit(743), gasPrice: cC_getGasPrice(30)},
+        function(error, result){ 
+            if(!error) sF_showHashResult(hashID, result);
+            else console.log("error: " + error);
+        });
 }
 
 function sF_initWalletManager(DBDatabaseAdr, ControlApisAdr, WalletManagerAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("WalletManager"));
     var myPosAdv = myContract.at(WalletManagerAdr);
-    myPosAdv.initPos(ControlApisAdr, DBDatabaseAdr, {from:web3.eth.accounts[0], gas: 9000000},
-    function(error, result){ 
-        if(!error) sF_showHashResult(hashID, result);
-        else console.log("error: " + error);
-    });
+    myPosAdv.initPos(ControlApisAdr, DBDatabaseAdr, 
+        {from: account, gas: cC_getGasLimit(743), gasPrice: cC_getGasPrice(30)},
+        function(error, result){ 
+            if(!error) sF_showHashResult(hashID, result);
+            else console.log("error: " + error);
+        });
 }
 
 
 function sF_initDatabase(DBDatabaseAdr, Factoroies, ControlApisAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("DBDatabase"));
     var myDatabase = myContract.at(DBDatabaseAdr);
-    myDatabase.initDatabase(Factoroies, ControlApisAdr, {from:web3.eth.accounts[0], gas: 9000000},
-    function(error, result){ 
-        if(!error) sF_showHashResult(hashID, result);
-        else console.log("error: " + error);
-    });
+    myDatabase.initDatabase(Factoroies, ControlApisAdr, 
+        {from: account, gas: cC_getGasLimit(743), gasPrice: cC_getGasPrice(30)},
+        function(error, result){ 
+            if(!error) sF_showHashResult(hashID, result);
+            else console.log("error: " + error);
+        });
 }  
 
 
 function sF_initFactory(FactoryModule, FactoryAdr, DBDatabaseAdr, ControlApisAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(FactoryModule));
     var myFactory= myContract.at(FactoryAdr);
-    myFactory.initFactory(ControlApisAdr, DBDatabaseAdr, {from: web3.eth.accounts[0], gas: 9000000},
-    function(error, result){ 
-        if(!error) sF_showHashResult(hashID, result);
-        else console.log("error: " + error);
-    });
+    myFactory.initFactory(ControlApisAdr, DBDatabaseAdr, 
+        {from: account, gas: cC_getGasLimit(743), gasPrice: cC_getGasPrice(30)},
+        function(error, result){ 
+            if(!error) sF_showHashResult(hashID, result);
+            else console.log("error: " + error);
+        });
 }  
 
 function sF_setAdm(AdmAdvAdr, ControlApisAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
     var myControlApi= myContract.at(ControlApisAdr);
-    myControlApi.setAdm(AdmAdvAdr, {from: web3.eth.accounts[0], gas: 9000000},
-    function(error, result){ 
-        if(!error) sF_showHashResult(hashID, result);
-        else console.log("error: " + error);
-    });
+    myControlApi.setAdm(AdmAdvAdr, 
+        {from: account, gas: cC_getGasLimit(743), gasPrice: cC_getGasPrice(30)},
+        function(error, result){ 
+            if(!error) sF_showHashResult(hashID, result);
+            else console.log("error: " + error);
+        });
 } 
 
 function sF_setWalletManager(WalletManagerAdr, ControlApisAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
     var myControlApi= myContract.at(ControlApisAdr);
-    myControlApi.setWalletManger(WalletManagerAdr, {from: web3.eth.accounts[0], gas: 9000000},
-    function(error, result){ 
-        if(!error) sF_showHashResult(hashID, result);
-        else console.log("error: " + error);
-    });
+    myControlApi.setWalletManger(WalletManagerAdr, 
+        {from: account, gas: cC_getGasLimit(743), gasPrice: cC_getGasPrice(30)},
+        function(error, result){ 
+            if(!error) sF_showHashResult(hashID, result);
+            else console.log("error: " + error);
+        });
 } 
 
 function sF_setPos(PosAdvAdr, zscTokenAddress,  ControlApisAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
     var myControlApi= myContract.at(ControlApisAdr);
-    myControlApi.setAdm(PosAdvAdr, zscTokenAddress, {from: web3.eth.accounts[0], gas: 9000000},
-    function(error, result){ 
-        if(!error) sF_showHashResult(hashID, result);
-        else console.log("error: " + error);
-    });
+    myControlApi.setAdm(PosAdvAdr, zscTokenAddress, 
+        {from: account, gas: cC_getGasLimit(743), gasPrice: cC_getGasPrice(30)},
+        function(error, result){ 
+            if(!error) sF_showHashResult(hashID, result);
+            else console.log("error: " + error);
+        });
 } 
 
 function sF_setDatabaseAdr(DBDatabaseAdr, ControlApisAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
     var myControlApi= myContract.at(ControlApisAdr);
-    myControlApi.setDatabaseAdr(DBDatabaseAdr, {from: web3.eth.accounts[0], gas: 9000000},
-    function(error, result){ 
-        if(!error) sF_showHashResult(hashID, result);
-        else console.log("error: " + error);
-    });
+    myControlApi.setDatabaseAdr(DBDatabaseAdr, 
+        {from: account, gas: cC_getGasLimit(743), gasPrice: cC_getGasPrice(30)},
+        function(error, result){ 
+            if(!error) sF_showHashResult(hashID, result);
+            else console.log("error: " + error);
+        });
 }  
 
 function sF_addFactory(factoryType, FactoryAdr, ControlApisAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
     var myControlApi= myContract.at(ControlApisAdr);
-    myControlApi.addFactory(factoryType, FactoryAdr, {from: web3.eth.accounts[0], gas: 9000000},
-    function(error, result){ 
-        if(!error) sF_showHashResult(hashID, result);
-        else console.log("error: " + error);
-    });
+    myControlApi.addFactory(factoryType, FactoryAdr, 
+        {from: account, gas: cC_getGasLimit(743), gasPrice: cC_getGasPrice(30)},
+        function(error, result){ 
+            if(!error) sF_showHashResult(hashID, result);
+            else console.log("error: " + error);
+        });
 }  
 
 ////////////////
@@ -239,11 +250,12 @@ function sF_setControlAbisAdvAbi(ControlApisAdr,  hashID) {
     var account = web3.eth.accounts[0];
     var data = cC_getContractAbiString('ControlApisAdv');
 
-    myControlApi.setFullAbi(data, {from: account, gas: 5000000},
-    function(error, result){ 
-        if(!error) sF_showHashResult(hashID, result);
-        else console.log("error: " + error);
-    });
+    myControlApi.setFullAbi(data, 
+        {from: account, gas: cC_getGasLimit(743), gasPrice: cC_getGasPrice(30)},
+        function(error, result){ 
+            if(!error) sF_showHashResult(hashID, result);
+            else console.log("error: " + error);
+        });
 }  
 
 
