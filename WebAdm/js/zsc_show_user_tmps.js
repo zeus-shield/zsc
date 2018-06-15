@@ -8,6 +8,8 @@ function ZSCShowUserTmps(adr, abi) {
     this.tmpNames = [];
     this.account = web3.eth.accounts[0];
     this.myControlApi = web3.eth.contract(abi).at(adr);
+    this.gasPrice = cC_getGasPrice(20);
+    this.gasLimit = cC_getGasLimit(743);
 }
 
 ZSCShowUserTmps.prototype = new ZSCJsBase();
@@ -31,7 +33,7 @@ ZSCShowUserTmps.prototype.loadUserAgrs = function(func) {
 
 ZSCShowUserTmps.prototype.numUserTmps= function(func) {
     this.myControlApi.numTemplates(this.userName,
-        {from: this.account, gas: 9000000},
+        {from: this.account},
         function(error, result){ 
             if(!error) {
                 this.tmpNos = result.toString(10);
@@ -44,7 +46,7 @@ ZSCShowUserTmps.prototype.numUserTmps= function(func) {
 
 ZSCShowUserTmps.prototype.getTmpNameByIndex = function(index, func) {
     this.myControlApi.getTemplateNameByIndex(this.userName, index,
-        {from: this.account, gas: 9000000},
+        {from: this.account},
         function(error, result){ 
             if(!error) {
                 this.tmpNames[index] = toUtf8(para);
