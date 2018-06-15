@@ -8,6 +8,8 @@ function ZSCShowUserAgrs(adr, abi) {
     this.agrNames = [];
     this.account = web3.eth.accounts[0];
     this.myControlApi = web3.eth.contract(abi).at(adr);
+    this.gasPrice = cC_getGasPrice(20);
+    this.gasLimit = cC_getGasLimit(743);
 }
 
 ZSCShowUserAgrs.prototype = new ZSCJsBase();
@@ -31,7 +33,7 @@ ZSCShowUserAgrs.prototype.loadUserAgrs = function(func) {
 
 ZSCShowUserAgrs.prototype.numUserAgrs= function(func) {
     this.myControlApi.numAgreements(this.userName,
-        {from: this.account, gas: 9000000},
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) {
                 this.agrNos = result;
@@ -44,7 +46,7 @@ ZSCShowUserAgrs.prototype.numUserAgrs= function(func) {
 
 ZSCShowUserAgrs.prototype.getAgrNameByIndex = function(index, func) {
     this.myControlApi.getAgreementNameByIndex(this.userName, index,
-        {from: this.account, gas: 9000000},
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) {
                 this.agrNames[index] = result;
