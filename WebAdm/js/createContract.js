@@ -168,7 +168,7 @@ function cC_setupContract(contractName, paramId) {
     var databin = cC_getContractBin(contractName);
     var greeterContract = web3.eth.contract(cC_getContractAbi(contractName)); 
     var account = web3.eth.accounts[0];
-    var greeter = greeterContract.new(parameter, {account, data: databin, gas: 7500000}, function(e, contract){
+    var greeter = greeterContract.new(parameter, {account, data: databin, gas: 7400000}, function(e, contract){
         if(!e) {
             if(!contract.address) {
                 logResult += "Send transactionHash: " + contract.transactionHash + "\nwaiting to be mined... ";
@@ -192,13 +192,13 @@ function cC_setupContract(contractName, paramId) {
 
 function cC_killContract(contractName, adr) {
     var logResult = "";
-    var abi = web3.eth.contract(cC_getContractAbi(contractName)); 
+    var abi = cC_getContractAbi(contractName); 
     var account = web3.eth.accounts[0];
     
     var myControlApi = web3.eth.contract(abi).at(adr);
 
     myControlApi.kill(
-        {from: account, gas: 9000000},
+        {from: account, gas: cC_getGasLimit(743), gasPrice: cC_getGasPrice(30)},
         function(error, result){ 
             if(!error) {
                 cC_showHashResultTest(contractName + "Log", result, function() {});
@@ -206,28 +206,14 @@ function cC_killContract(contractName, adr) {
                 console.log("error: " + error);
             }
         });
+}
 
+function cC_getGasPrice(limit) {
+    return limit * 1000000000; //limits * gwei
+}
 
-    var greeter = greeterContract.new(parameter, {account, data: databin, gas: 7500000}, function(e, contract){
-        if(!e) {
-            if(!contract.address) {
-                logResult += "Send transactionHash: " + contract.transactionHash + "\nwaiting to be mined... ";
-                cC_showCreatingResult("text", contractName + "Log", logResult);
-            } else {
-                logResult += "Mined! Address: " + contract.address + "\n";
-                cC_showCreatingResult("text", contractName + "Adr", contractName + ": " + contract.address);
-                cC_showCreatingResult("text", contractName + "Log", logResult);
-                cC_showCreatingResult("input", contractName + "AdrPara", contract.address);
-
-                var index = cC_ModuleName.length;
-                cC_ModuleName[index] = contractName;
-                cC_ModuleAdr[index] = contract.address;
-            }
-        } else {
-            logResult += ": Error!! - " + e;
-            cC_showCreatingResult("text", contractName + "Log", logResult);
-        }
-    }) 
+function cC_getGasLimit(limit) {
+    return limit * 1000 * 1000; //limits * 1 million
 }
 
 function cC_getUrlSuffixForControlPage() {
