@@ -44,6 +44,8 @@ function ZSCSetup(logRecorderAdr, timerAdr, zscTokenAdr, adrs) {
     this.FactoryWalletErc20Adr = adrs[6];
     this.ControlApisAdvAdr   = adrs[7];
     this.account = web3.eth.accounts[0];
+    this.gasPrice = cC_getGasPrice(20);
+    this.gasLimit = cC_getGasLimit(743);
 }
 
 ZSCSetup.prototype = new ZSCJsBase();
@@ -51,10 +53,9 @@ ZSCSetup.prototype = new ZSCJsBase();
 ZSCSetup.prototype.registerListenerToLogRecorder = function(listener, listenerName, hashID, func) {
     var myContract = web3.eth.contract(cC_getContractAbi("LogRecorder"));
     var myLogRecorder = myContract.at(this.RecorderAdr);
-    var account = web3.eth.accounts[0];
 
     myLogRecorder.registerListener(listener, listenerName, 
-        {from:account, gas: 9000000},
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result) { 
             if(!error) { 
                 cC_showHashResultTest(hashID, result, func);
@@ -67,13 +68,13 @@ ZSCSetup.prototype.registerListenerToLogRecorder = function(listener, listenerNa
 ZSCSetup.prototype.setLogRecorderToListener = function(listener,listenerName, hashID, func) {
     var myContract = web3.eth.contract(cC_getContractAbi(listenerName));
     var myListener = myContract.at(listener);
-    var account = web3.eth.accounts[0];
 
-    myListener.setLogRecorderAndTimer(this.RecorderAdr, this.TimerAdr, {from:account, gas: 7000000},
-    function(error, result){ 
-        if(!error) cC_showHashResultTest(hashID, result, func);
-        else console.log("error: " + error);
-    });
+    myListener.setLogRecorderAndTimer(this.RecorderAdr, this.TimerAdr, 
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
+        function(error, result){ 
+            if(!error) cC_showHashResultTest(hashID, result, func);
+            else console.log("error: " + error);
+        });
 }  
 
 ZSCSetup.prototype.initSystemModule = function(module, hashID) {
@@ -127,7 +128,7 @@ ZSCSetup.prototype.setControlAbisAdvAbi = function(hashID) {
 
     var str = cC_getContractAbiString("ControlApisForUser");
     myAdmAdv.setControlApisFullAbi(str, 
-        {from:web3.eth.accounts[0], gas: 9000000},
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result) { 
             if(!error) cC_showHashResultTest(hashID, result, function(){console.log("ok");});
             else console.log("error: " + error);
@@ -139,7 +140,7 @@ ZSCSetup.prototype.setZSCAmountToUser = function(amount, hashID) {
     var myAdmAdv = myContract.at(this.AdmAdvAdr);
 
     myAdmAdv.setZSCAmountToUser(amount, 
-        {from:web3.eth.accounts[0], gas: 9000000},
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result) { 
             if(!error) cC_showHashResultTest(hashID, result, function(){console.log("ok");});
             else console.log("error: " + error);
@@ -195,7 +196,7 @@ ZSCSetup.prototype.initTestZSCToken = function(hashID) {
     var myTestToken = myContract.at(this.zscTokenAdr);
 
     myTestToken.allocate(this.AdmAdvAdr, 100 * 1000 * 1000 * Math.pow(10, 18), 
-        {from: web3.eth.accounts[0], gas: 9000000},
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){});
             else console.log("error: " + error);
@@ -206,32 +207,35 @@ ZSCSetup.prototype.initAdmAdv = function(hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("AdmAdv"));
     var myAdmAdv = myContract.at(this.AdmAdvAdr);
 
-    myAdmAdv.initAdm(this.zscTokenAdr, this.ControlApisAdvAdr, {from: web3.eth.accounts[0], gas: 9000000},
-    function(error, result){ 
-        if(!error) cC_showHashResultTest(hashID, result, function(){});
-        else console.log("error: " + error);
-    });
+    myAdmAdv.initAdm(this.zscTokenAdr, this.ControlApisAdvAdr, 
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
+        function(error, result){ 
+            if(!error) cC_showHashResultTest(hashID, result, function(){});
+            else console.log("error: " + error);
+        });
 } 
 
 ZSCSetup.prototype.initDatabase = function(abiName, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var myDatabase = myContract.at(this.DBDatabaseAdr);
 
-    myDatabase.initDatabase(this.ControlApisAdvAdr, {from:web3.eth.accounts[0], gas: 9000000},
-    function(error, result){ 
-        if(!error) cC_showHashResultTest(hashID, result, function(){});
-        else console.log("error: " + error);
-    });
+    myDatabase.initDatabase(this.ControlApisAdvAdr, 
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
+        function(error, result){ 
+            if(!error) cC_showHashResultTest(hashID, result, function(){});
+            else console.log("error: " + error);
+        });
 }  
 
 ZSCSetup.prototype.initFactory = function(FactoryModule, FactoryAdr, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(FactoryModule));
     var myFactory= myContract.at(FactoryAdr);
-    myFactory.initFactory(this.ControlApisAdvAdr, {from: web3.eth.accounts[0], gas: 9000000},
-    function(error, result){ 
-        if(!error) cC_showHashResultTest(hashID, result, function(){});
-        else console.log("error: " + error);
-    });
+    myFactory.initFactory(this.ControlApisAdvAdr, 
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
+        function(error, result){ 
+            if(!error) cC_showHashResultTest(hashID, result, function(){});
+            else console.log("error: " + error);
+        });
 }  
 
 ZSCSetup.prototype.addDatabase = function(databaseName, databaseAdr, hashID) {
@@ -239,7 +243,7 @@ ZSCSetup.prototype.addDatabase = function(databaseName, databaseAdr, hashID) {
     var myControlApi= myContract.at(this.ControlApisAdvAdr);
 
     myControlApi.addSystemComponent("database", databaseName, databaseAdr, 
-        {from: this.account, gas: 9000000},
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){});
             else console.log("error: " + error);
@@ -251,7 +255,7 @@ ZSCSetup.prototype.addFactory= function(factoryType, FactoryAdr, hashID) {
     var myControlApi= myContract.at(this.ControlApisAdvAdr);
 
     myControlApi.addSystemComponent("factory", factoryType, FactoryAdr, 
-        {from: this.account, gas: 9000000},
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){});
             else console.log("error: " + error);
@@ -264,11 +268,11 @@ ZSCSetup.prototype.initControlApis = function(abiName, hashID) {
 
     //setSystemModules(address _adm, address _posGM, address _systemOverlayer, address _zscToken) public {
     myControlApi.initControlApis(this.zscTokenAdr, this.AdmAdvAdr, 
-    {from: web3.eth.accounts[0], gas: 9000000},
-    function(error, result){ 
-        if(!error) cC_showHashResultTest(hashID, result, function(){});
-        else console.log("error: " + error);
-    });
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
+        function(error, result){ 
+            if(!error) cC_showHashResultTest(hashID, result, function(){});
+            else console.log("error: " + error);
+        });
 } 
 
 /*
