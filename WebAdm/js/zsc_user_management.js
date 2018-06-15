@@ -16,7 +16,8 @@ function ZSCUserManagement(admAdr, abi) {
     this.userNos = 0;
     this.account = web3.eth.accounts[0];
     this.myAdmAdv = web3.eth.contract(abi).at(admAdr);
-    this.phpCallback;
+    this.gasPrice = cC_getGasPrice(20);
+    this.gasLimit = cC_getGasLimit(743);
 }
 
 ZSCUserManagement.prototype = new ZSCJsBase();
@@ -25,7 +26,7 @@ ZSCUserManagement.prototype.addUser = function(userNameId, passWordId, hashId){
     var userName = document.getElementById(userNameId).value; 
     var passWord = document.getElementById(passWordId).value; 
     this.myAdmAdv.addUser(userName, passWord,
-        {from: this.account, gas: 9000000},
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashId, result, function() {window.location.reload(true);});
             else console.log("error: " + error);
@@ -172,7 +173,7 @@ ZSCUserManagement.prototype.setUserActiveState = function(userName, status, hash
     var tag;
     if (status == "false") tag = false;
     else tag = true;
-    this.myAdmAdv.setUserActiveState(userName, tag, {from: this.account, gas: 9000000},
+    this.myAdmAdv.setUserActiveState(userName, tag, {from: this.account, gas: 7430000},
         function(error, result) { 
             if(!error) cC_showHashResultTest(hashId, result, function() {window.location.reload(true);})
              else console.log("error: " + error);
