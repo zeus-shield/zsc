@@ -11,6 +11,8 @@ function ZSCUser(admAdr) {
     this.controlApisFullAbi;
     this.account = web3.eth.accounts[0];
     this.myAdmAdv = web3.eth.contract(this.getLoginAbi()).at(this.admAdr);
+    this.gasPrice = bF_getGasPrice(20);
+    this.gasLimit = bF_getGasLimit(743);
 }
 
 ZSCUser.prototype.getUserName = function() { return this.userName; }
@@ -87,7 +89,7 @@ ZSCUser.prototype.activeByUser = function(type, hashLogId){
     var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
 
     myAdmAdv.activeByUser(gm.userNameHr, type, 
-        {from: gm.account, gas: 9000000},
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, ret) {
             if(!error) { 
                 gm.type = type;
