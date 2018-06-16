@@ -18,9 +18,10 @@ $htmlObjects = new ZSChtmlObjects();
     var zscTokenAddress = "<?php echo $htmlObjects->readObjectAddress('TestToken')?>";
     var logedModuleAdrs = <?php echo $htmlObjects->getLogedObjectAddressArrayInString()?>;
 
-    var web3 = setupWeb3js(false);
+    //var web3 = setupWeb3js(false);
     //var web3 = new Web3(web3.currentProvider);
-
+    var web3 = setupWeb3js();
+    
     var zscSetup = new ZSCSetup(recorderAdr, timeStampAdr, zscTokenAddress, logedModuleAdrs);
 
     function printAbi(module) {

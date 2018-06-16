@@ -33,9 +33,10 @@ recordSystemObjectAdrs($htmlObjects);
 <head>
 <?php echo $htmlObjects->loadScriptFiles(); ?>
 <script type="text/javascript">
-    var web3 = setupWeb3js(false);
+    //var web3 = setupWeb3js(false);
     //var web3 = new Web3(web3.currentProvider);
-
+    var web3 = setupWeb3js();
+    
     var recorderAdr = "<?php echo $htmlObjects->readObjectAddress('LogRecorder')?>";
     var timeStampAdr = "<?php echo $htmlObjects->readObjectAddress('TimeStamp')?>";
     var zscTokenAddress = "<?php echo $htmlObjects->readObjectAddress('TestToken')?>";

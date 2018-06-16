@@ -13,7 +13,10 @@ $htmlObjects = new ZSCHtmlObjects();
 echo $htmlObjects->loadScriptFiles();
 ?>
 <script type="text/javascript">
-    var web3 = setupWeb3js(false);
+    //var web3 = setupWeb3js(false);
+    //var web3 = new Web3(web3.currentProvider);
+    var web3 = setupWeb3js();
+    
     var AdmAdvAdr = "<?php echo $htmlObjects->readObjectAddress('AdmAdv')?>";
     var userManager = new ZSCUserManagement(AdmAdvAdr, cC_getContractAbi('AdmAdv'));
 

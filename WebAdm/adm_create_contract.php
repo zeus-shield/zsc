@@ -14,7 +14,9 @@ include("adm_header.php");
     echo $htmlObjects->loadScriptFiles();
 ?>
 <script type="text/javascript">
-    var web3 = setupWeb3js(false);
+    //var web3 = setupWeb3js(false);
+    //var web3 = new Web3(web3.currentProvider);
+    var web3 = setupWeb3js();
     
     function gotoConfigureLogRecorder() {
         var href = "adm_configure_logrecorder.php" + cC_getUrlSuffixForControlPage();
