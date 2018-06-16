@@ -15,6 +15,8 @@ function ZSCElement(userName, controlApisAdvAbi, controlApisAdvAdr) {
     this.account = web3.eth.accounts[0];
     this.contractAdr = controlApisAdvAdr;
     this.contractAbi = JSON.parse(controlApisAdvAbi);
+    this.gasPrice = bF_getGasPrice(20);
+    this.gasLimit = bF_getGasLimit(743);
 }
 
 ZSCElement.prototype.setUserType = function(type) {this.userType = type;}
@@ -146,7 +148,7 @@ ZSCElement.prototype.setElementParameter = function(logID, func) {
 
     if (count > 0) {
         myControlApi.setElementMultipleParameters(gm.userName, gm.enName, info,  
-            {from:gm.account, gas: 9000000},
+            {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
             function(error, result){ 
                 if(!error) bF_showHashResult(logID, result, callBack);
                 else console.log("error: " + error);
