@@ -11,6 +11,8 @@ function ZSCTemplate(nm, abi, adr) {
     this.account = web3.eth.accounts[0];
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
+    this.gasPrice = bF_getGasPrice(20);
+    this.gasLimit = bF_getGasLimit(743);
 }
 
 ZSCTemplate.prototype.getUserName = function() {return this.userName;}
@@ -100,7 +102,7 @@ ZSCTemplate.prototype.creatNewTemplate = function(logId, func) {
     
     //createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
     myControlApi.createElementNode("template", gm.userName, tmpName, "null", gm.account,
-        {from:gm.account, gas: 9000000},
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) {
                 bF_showHashResult(logId, result, callBack);
@@ -120,7 +122,7 @@ ZSCTemplate.prototype.enableAsAgreement = function(tmpIndex, func) {
 
     //createElementNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
     myControlApi.createElementNode("agreement", gm.userName, agrName, extra, gm.account,
-        {from:gm.account, gas: 9000000},
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit * 2},
         function(error, result){ 
             if(!error) {
                 bF_showHashResult("CreateNewAgreementHash", result, callBack);
