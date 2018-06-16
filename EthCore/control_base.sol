@@ -201,8 +201,8 @@ contract ControlBase is ControlInfo {
             DBNode(ndAdr).setParameter("provider", _userName);
         } else if (_type == "agreement") {
             duplicateNode(getDBNode(dbName_, _extra),  ndAdr);
-            address agrWalletAdr = enableZSCWallet(_nodeName, ndAdr, _creator);
 
+            address agrWalletAdr = enableZSCWallet(_nodeName, ndAdr, _creator);
             publishZSCAgreement(_userName, ndAdr, agrWalletAdr);
         }
         return ndAdr;
@@ -229,15 +229,18 @@ contract ControlBase is ControlInfo {
 
         temp = PlatString.bytes32ToString(DBNode(_agrAdr).getParameter("price"));
         price = PlatString.stringToUint(temp);
+        price = price.mul(1 ether);
 
         temp = PlatString.bytes32ToString(DBNode(_agrAdr).getParameter("duration"));
         duration = PlatString.stringToUint(temp);
 
+        /*
         addLog("publishZSCAgreement: ", true);
         addLog("| price: ", false);
         addLog(PlatString.uintToString(price), false);
         addLog("| insurance: ", false);
         addLog(PlatString.uintToString(lockedAmount), false);
+        */
 
         require(lockedAmount > 0 && price > 0 && duration >= 60);
 
