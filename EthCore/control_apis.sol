@@ -123,8 +123,6 @@ contract ControlApis is ControlBase {
         }
 
         address ndAdr = createNodeForEelement(_factoryType, _userName, _enName, _extraInfo, creatorAdr);
-        return 0;
-
 
         require(ndAdr != address(0));
         registerEntityNode(_userName, _enName, ndAdr, creatorAdr);
@@ -279,7 +277,7 @@ contract ControlApis is ControlBase {
         uint amount = 0;
         amount = DBNode(walletAdr).executeTransaction(_dest, _amount);
         
-        DBNode(_dest).informTransaction(walletAdr, lockedAmount);
+        DBNode(_dest).informTransaction(walletAdr, _amount);
         return amount;
 
         /* Multisig module
