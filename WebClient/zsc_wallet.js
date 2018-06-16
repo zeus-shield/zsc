@@ -13,6 +13,8 @@ function ZSCWallet(nm, abi, adr) {
     this.account = web3.eth.accounts[0];
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
+    this.gasPrice = bF_getGasPrice(20);
+    this.gasLimit = bF_getGasLimit(743);
 }
 
 ZSCWallet.prototype = new ZSCClient();
@@ -26,7 +28,7 @@ ZSCWallet.prototype.submitTransferValue = function(tokenSymbol, destAddress, amo
 
     if (destAddress != 0 && amount > 0) {
         myControlApi.submitTransfer(gm.userName, tokenSymbol, destAddress, web3.toWei(amount, 'ether') , 
-            {from:gm.account, gas: 9000000},
+            {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
             function(error, result){ 
             if(!error) {
                 bF_showHashResult(logId, result, callBack);
@@ -125,7 +127,7 @@ ZSCWallet.prototype.loadTokenInfoByIndex = function(index, func) {
     var myControlApi = web3.eth.contract(this.contractAbi).at(this.contractAdr);
 
     myControlApi.getTokenBalanceInfoByIndex(gm.userName, index + 1,
-        {from: gm.account, gas: 90000000},
+        {from: gm.account},
         function(error, result){ 
             if(!error) {
                 gm.parserTokenBalanceInfoByIndex(gm, result, index);
