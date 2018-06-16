@@ -11,6 +11,8 @@ function ZSCShowElement(controlApisAdvAbi, controlApisAdvAdr) {
     this.parameterValues = [];
     this.account = web3.eth.accounts[0];
     this.myControlApi = web3.eth.contract(controlApisAdvAbi).at(controlApisAdvAdr);
+    this.gasPrice = cC_getGasPrice(20);
+    this.gasLimit = cC_getGasLimit(743);
 }
 
 ZSCShowElement.prototype = new ZSCJsBase();

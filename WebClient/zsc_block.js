@@ -11,6 +11,8 @@ function ZSCBlock(nm, abi, adr) {
     this.blockTxNos = [];
     this.minedStatus = [];
     this.myControlApi = web3.eth.contract(abi).at(adr);
+    this.gasPrice = bF_getGasPrice(20);
+    this.gasLimit = bF_getGasLimit(743);
 }
 
 ZSCBlock.prototype = new ZSCClient();
