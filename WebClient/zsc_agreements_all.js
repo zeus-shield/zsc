@@ -12,6 +12,8 @@ function ZSCAgreementAll(nm, abi, adr) {
     this.account = web3.eth.accounts[0];
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
+    this.gasPrice = bF_getGasPrice(20);
+    this.gasLimit = bF_getGasLimit(743);
 }
 
 ZSCAgreementAll.prototype.getUserName = function() {return this.userName;}
@@ -90,7 +92,7 @@ ZSCAgreementAll.prototype.submitPurchaseAgreement = function(elementName, func) 
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
     myControlApi.purchaseAgreement(gm.userName, elementName,
-        {from:gm.account, gas: 9000000},
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) {
                 bF_showHashResult("PurchaseAgreementHash", result, callBack);
