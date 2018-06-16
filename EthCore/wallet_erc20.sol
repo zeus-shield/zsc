@@ -38,7 +38,7 @@ contract WalletErc20 is WalletBase {
     }
 
     function informTransaction(address _src, uint256 _amount) public {
-        require(_src == address(this));
+        require(_src != address(this));
         checkDelegate(msg.sender, 1);
         recordInput(_src, _amount);
     }
