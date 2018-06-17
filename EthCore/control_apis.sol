@@ -93,22 +93,34 @@ contract ControlApis is ControlBase {
         checkDelegate(msg.sender, 1);
         require(_factoryType != "staker");
 
-        address ndAdr = createNodeForUser(_factoryType, _userName, _extraAdr);
+        address ndAdr = createNodeForUser(_factoryType, _userName);
         require(ndAdr != address(0));
         registerUserNode(_userName, ndAdr, _extraAdr);
         
         return ndAdr;
     }
 
-    function createElementNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName, bytes32 _extraInfo) public returns (address) {
+    function createTemplateNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName) public returns (address) {
         checkRegistered(_userName, msg.sender);
+        require(_factoryType == "template");
 
-        if (_factoryType == "provider" || _factoryType == "receiver" || _factoryType == "staker") {
-            revert();
-        }
         require(address(getDBNode(getCurrentDBName(), _enName)) == 0);
         
-        address ndAdr = createNodeForEelement(_factoryType, _userName, _enName, _extraInfo, msg.sender);
+        address ndAdr = createNodeForTemplate(_factoryType, _userName, _enName);
+
+        require(ndAdr != address(0));
+        registerEntityNode(_userName, _enName, ndAdr, msg.sender);
+        
+        return ndAdr;
+    }
+
+    function createAgreementNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName, bytes32 _extraInfo) public returns (address) {
+        checkRegistered(_userName, msg.sender);
+        require(_factoryType == "agreement");
+
+        require(address(getDBNode(getCurrentDBName(), _enName)) == 0);
+        
+        address ndAdr = createNodeForAgreement(_factoryType, _userName, _enName, _extraInfo);
 
         require(ndAdr != address(0));
         registerEntityNode(_userName, _enName, ndAdr, msg.sender);
@@ -163,16 +175,6 @@ contract ControlApis is ControlBase {
         return getDBNode(getCurrentDBName(), _enName).addParameter(_parameter);
     }
 
-    /// @dev Set the value to a paramter of an element 
-    /// @param _enName The name of the element
-    /// @param _parameter The name of the existing parameter
-    /// @param _value The parameter value
-    function setElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter, bytes32 _value) public returns (bool) {
-        checkRegistered(_userName, msg.sender);
-        checkMatched(_userName, _enName, msg.sender);
-
-        return getDBNode(getCurrentDBName(), _enName).setParameter(_parameter, _value);
-    }
 
     /// @dev Get the value of a paramter of an element
     /// @param _enName The name of the element
@@ -182,7 +184,7 @@ contract ControlApis is ControlBase {
 
         bytes32 ndType = getDBNode(getCurrentDBName(), _enName).getNodeType();
         if (ndType != "agreement") {
-            checkMatched(_userName, _enName, msg.sender);
+            //checkMatched(_userName, _enName, msg.sender);
         }
 
         return getDBNode(getCurrentDBName(), _enName).getParameter(_parameter);
@@ -263,7 +265,7 @@ contract ControlApis is ControlBase {
         uint amount = 0;
         amount = DBNode(walletAdr).executeTransaction(_dest, _amount);
         
-        DBNode(_dest).informTransaction(walletAdr, _amount);
+        //DBNode(_dest).informTransaction(walletAdr, _amount);
         return amount;
 
         /* Multisig module
