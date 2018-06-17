@@ -41,8 +41,10 @@ contract WalletEth is WalletBase {
         }
     }
 
+    /*
     function informTransaction(address _src, uint256 _amount) public {
         return;
         if (_src == address(0) || _amount == 0) return;
     }
+    */
 }
