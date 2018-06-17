@@ -16,7 +16,7 @@ contract ControlInfo is Object {
 
     struct UserInfo {
         address nodeAdr_;
-        mapping (address => bool) signatures_;
+        address signature_;
         mapping (bytes32 => ParameterInfo) paras_;
     }
     
@@ -31,8 +31,9 @@ contract ControlInfo is Object {
 
     function checkMatched(bytes32 _userName, bytes32 _enName, address _sender) internal constant {
         if (isDelegate(_sender, 1)) return;
-        if (userParameters_[_userName].signatures_[_sender]) return;
-        if (userParameters_[_userName].paras_[_enName].userName_ == _userName) return;
+        if (_userName == _enName) return;
+        //if (userParameters_[_userName].signature_ == _sender) return;
+        if (userParameters_[_userName].paras_[_enName].creator_ == _sender) return;
         revert();
     }
 
@@ -40,17 +41,11 @@ contract ControlInfo is Object {
         require(allowedUser(_userName, _sender) || isDelegate(_sender, 1)); 
     }
 
-    function registerSignature(bytes32 _userName, address _sigAdr) internal {
-        require(nodeExists_[_userName]);   
-        addAllowedUser(_userName, _sigAdr);
-        userParameters_[_userName].signatures_[_sigAdr] = true;
-    }
-
     function registerUserNode(bytes32 _userName, address _nodeAdr, address _creator) internal {
         require(!nodeExists_[_userName]);   
         addAllowedUser(_userName, _creator);
         userParameters_[_userName].nodeAdr_ = _nodeAdr;
-        userParameters_[_userName].signatures_[_creator] = true;
+        userParameters_[_userName].signature_ = _creator;
         nodeExists_[_userName] = true;
     }  
 
