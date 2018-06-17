@@ -225,11 +225,11 @@ contract ControlBase is ControlInfo {
 
         temp = PlatString.bytes32ToString(DBNode(_agrAdr).getParameter("insurance"));
         lockedAmount = PlatString.stringToUint(temp);
-        lockedAmount = lockedAmount.mul(1 ether);
+        lockedAmount *= 1 ether;
 
         temp = PlatString.bytes32ToString(DBNode(_agrAdr).getParameter("price"));
         price = PlatString.stringToUint(temp);
-        price = price.mul(1 ether);
+        price *= 1 ether;
 
         temp = PlatString.bytes32ToString(DBNode(_agrAdr).getParameter("duration"));
         duration = PlatString.stringToUint(temp);
