@@ -90,42 +90,28 @@ contract ControlApis is ControlBase {
 
     /// @dev Creat an element
     function createUserNode(bytes32 _factoryType, bytes32 _userName, address _extraAdr) public returns (address) {
-        checkRegistered(_userName, msg.sender);
+        checkDelegate(msg.sender, 1);
         require(_factoryType != "staker");
 
-        address creatorAdr;
-        if (isDelegate(msg.sender, 1)) {
-            creatorAdr = _extraAdr;
-        } else {
-            creatorAdr = msg.sender;
-        }
-
-        address ndAdr = createNodeForUser(_factoryType, _userName, creatorAdr);
+        address ndAdr = createNodeForUser(_factoryType, _userName, _extraAdr);
         require(ndAdr != address(0));
-        registerUserNode(_userName, ndAdr, creatorAdr);
+        registerUserNode(_userName, ndAdr, _extraAdr);
         
         return ndAdr;
     }
 
-    function createElementNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
+    function createElementNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName, bytes32 _extraInfo) public returns (address) {
         checkRegistered(_userName, msg.sender);
 
         if (_factoryType == "provider" || _factoryType == "receiver" || _factoryType == "staker") {
             revert();
         }
         require(address(getDBNode(getCurrentDBName(), _enName)) == 0);
-
-        address creatorAdr;
-        if (isDelegate(msg.sender, 1)) {
-            creatorAdr = _extraAdr;
-        } else {
-            creatorAdr = msg.sender;
-        }
-
-        address ndAdr = createNodeForEelement(_factoryType, _userName, _enName, _extraInfo, creatorAdr);
+        
+        address ndAdr = createNodeForEelement(_factoryType, _userName, _enName, _extraInfo, msg.sender);
 
         require(ndAdr != address(0));
-        registerEntityNode(_userName, _enName, ndAdr, creatorAdr);
+        registerEntityNode(_userName, _enName, ndAdr, msg.sender);
         
         return ndAdr;
     }
