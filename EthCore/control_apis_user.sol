@@ -30,7 +30,9 @@ contract AbisForUserControlApis {
     /// @dev Creat an element
     function createUserNode(bytes32 _factoryType, bytes32 _userName, address _extraAdr) public returns (address);
 
-    function createElementNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName, bytes32 _extraInfo) public returns (address);
+    function createTemplateNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName) public returns (address);
+
+    function createAgreementNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName, bytes32 _extraInfo) public returns (address);
 
     /// @dev Get the element by its address
     /// @param _adr The address of the existing element
@@ -45,11 +47,6 @@ contract AbisForUserControlApis {
     /// @param _parameter The name of the added parameter
     function addElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public returns (bool);
 
-    /// @dev Set the value to a paramter of an element 
-    /// @param _enName The name of the element
-    /// @param _parameter The name of the existing parameter
-    /// @param _value The parameter value
-    function setElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter, bytes32 _value) public returns (bool);
     /// @dev Get the value of a paramter of an element
     /// @param _enName The name of the element
     /// @param _parameter The name of the existing parameter
