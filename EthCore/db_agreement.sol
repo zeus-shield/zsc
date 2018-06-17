@@ -11,9 +11,6 @@ contract DBAgreement is DBEntity {
     uint private startTime_;
     uint private duration_;
     uint private endTime_;
-    uint private price_;
-    uint private refundPercentage_; // 1 : 100
-    bytes32 private walletSymbol_;
 
     // Constructor
     function DBAgreement(bytes32 _name) public DBEntity(_name) {
@@ -23,7 +20,6 @@ contract DBAgreement is DBEntity {
 
     function initParameters() internal {
         addFundamentalParameter("status");
-        addFundamentalParameter("startTime");
         addFundamentalParameter("endTime");
         addFundamentalParameter("receiver");
     }
@@ -51,15 +47,8 @@ contract DBAgreement is DBEntity {
         }
     }
 
-    function removeParameter(bytes32 _parameter) public returns (bool) {
-        checkDelegate(msg.sender, 1);
-        revert();
-        return (_parameter == "null");
-    }
-
     function setAgreementStatus(bytes32 _tag, bytes32 _receiver) public returns (bool) {
         checkDelegate(msg.sender, 1);
-        bool ret;
 
         if (status_ == "PAID") return false;
 
@@ -70,21 +59,19 @@ contract DBAgreement is DBEntity {
 
             status_ = "PAID";
             startTime_ = now;
-            endTime_ = SafeMath.add(startTime_, duration_);
+            endTime_ = startTime_ + duration_;
 
-            ret = super.setParameter("receiver", _receiver);
+            super.setParameter("receiver", _receiver);
 
             temp = PlatString.tobytes32(PlatString.uintToString(startTime_));
-            ret = super.setParameter("startTime", temp);
-
-            temp = PlatString.tobytes32(PlatString.uintToString(endTime_));
-            ret = super.setParameter("endTime", temp);
+            super.setParameter("startTime", temp);
         } else {
             return false;
         }
         return super.setParameter("status", status_);
     }
 
+    /*
     function getAgreementInfo() public constant returns (bytes32, bytes32, uint, uint, bytes32, uint) {
         checkDelegate(msg.sender, 1);
 
@@ -99,23 +86,14 @@ contract DBAgreement is DBEntity {
                 getParameter("walletSymbol"),
                 endTime);
     }
-
-    // Generates a random number
-    // Original file at 
-    // https://gist.github.com/alexvandesande/259b4ffb581493ec0a1c
-    function randGen(uint _min, uint _max, uint _seed) private constant returns (uint){
-        require(_max > _min);
-        uint randValue = uint(keccak256(block.blockhash(block.number-1), _seed ))%(_max - _min);
-        randValue.add(_min);
-
-        return randValue;
-    }
+    */
 
     function simulatePayforInsurance() public returns (uint) {
         uint current = now;
         if (current < endTime_) return 0;
 
-        uint randValue = randGen(0, 100, current);
+        uint randValue = uint(keccak256(block.blockhash(block.number-1), current ))%100;
+
         if (randValue < 50) {
             status_ = "Insurance to receiver";
             super.setParameter("status", status_);
