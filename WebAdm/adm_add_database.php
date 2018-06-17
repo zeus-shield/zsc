@@ -18,9 +18,13 @@ $htmlObjects = new ZSCHtmlObjects();
     var timeStampAdr = "<?php echo $htmlObjects->readObjectAddress('TimeStamp')?>";
     var logedModuleAdrs = <?php echo $htmlObjects->getLogedObjectAddressArrayInString()?>;
 
-    //var web3 = setupWeb3js(false);
-    //var web3 = new Web3(web3.currentProvider);
-    var web3 = setupWeb3js();
+    var web3;
+    if (doesLocalWeb3js()) {
+        web3 = setupWeb3js();
+    } else {
+        //Metamask
+        web3 = new Web3(web3.currentProvider);
+    }
     
     var zscSetup = new ZSCSetup(recorderAdr, timeStampAdr, zscTokenAddress, logedModuleAdrs);
 

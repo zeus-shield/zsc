@@ -13,9 +13,13 @@ $htmlObjects = new ZSCHtmlObjects();
 echo $htmlObjects->loadScriptFiles();
 ?>
 <script type="text/javascript">
-    //var web3 = setupWeb3js(false);
-    //var web3 = new Web3(web3.currentProvider);
-    var web3 = setupWeb3js();
+    var web3;
+    if (doesLocalWeb3js()) {
+        web3 = setupWeb3js();
+    } else {
+        //Metamask
+        web3 = new Web3(web3.currentProvider);
+    }
     
     var ControlApisAdvAdr = "<?php echo $htmlObjects->readObjectAddress('ControlApisAdv')?>";
     var userWallets = new ZSCShowUserWallets(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
