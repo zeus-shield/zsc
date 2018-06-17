@@ -16,15 +16,9 @@ contract CBDBDatabase is Object {
 contract DBNode is Object {
     address private database_ = address(0);
     address private parent_ = address(0);
-    address private controller_ = address(0);
-    address private posAdv_ = address(0);
-    address private walletGM_ = address(0);
-    address private simulatorGM_ = address(0);
-    address private factoryGM_ = address(0);
 
     bytes32 internal nodeType_;
     address private ethWalletId_ ;
-    bool    private activated_;
 
     address[] children_;
     mapping(bytes32 => address) childMap_;
@@ -36,7 +30,6 @@ contract DBNode is Object {
 
     function kill() public { 
         checkDelegate(msg.sender, 1);
-
         removeAndDestroyAllChildren(); 
         super.kill();
     }
