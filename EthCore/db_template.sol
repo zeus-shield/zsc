@@ -16,7 +16,7 @@ contract DBTemplate is DBEntity {
 
     function initParameters() internal {
         addFundamentalParameter("provider");
-        addFundamentalParameter("discription");
+        addFundamentalParameter("info");
         //addFundamentalParameter("automatic");
         addFundamentalParameter("duration");
         //addFundamentalParameter("walletSymbol");
@@ -50,10 +50,12 @@ contract DBTemplate is DBEntity {
         return super.addParameter(_parameter);
     }
 
+    /*
     function removeParameter(bytes32 _parameter) public returns (bool) {
         checkDelegate(msg.sender, 1);
 
         if (numChildren() > 0) return false; 
         return super.removeParameter(_parameter);
     }
+    */
 }
