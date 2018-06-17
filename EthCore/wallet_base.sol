@@ -22,19 +22,6 @@ contract WalletBase is DBNode {
     function WalletBase(bytes32 _name) public DBNode(_name) {
     }
 
-    ////////// internal functions /////////////
-    //Disabled during alpha-test
-    /*
-    function changeValue(bool _doesIncrease, uint _amount) internal returns (bool) {
-        if (_doesIncrease) {
-            totalValue_ = totalValue_.add(_amount);
-        } else {
-            require(totalValue_ >= _amount);
-            totalValue_ = totalValue_.sub( _amount);
-        }
-    }
-    */
-
     function checkBeforeSent(address _dst, uint _amount) internal constant {
         require(getBlance() >= _amount && _dst != address(this));
     }
@@ -53,10 +40,8 @@ contract WalletBase is DBNode {
 
     ////////// public functions /////////////
     function getBlance() public constant returns (uint);
-
-    function executeTransaction(address _dest, uint256 _amount) public returns (uint);
-
-    function informTransaction(address _src, uint256 _amount) public;
+    //function executeTransaction(address _dest, uint256 _amount) public returns (uint);
+    //function informTransaction(address _src, uint256 _amount) public;
 
     function numTransactions() public constant returns (uint) {
         checkDelegate(msg.sender, 1);
