@@ -39,16 +39,6 @@ contract DBEntity is DBNode {
         return 0;
     }
 
-    function setActivated(bool _activated) public {
-        checkDelegate(msg.sender, 1);
-        activated_ = _activated;
-    }
-
-    function getActivated() public constant returns (bool) {
-        checkDelegate(msg.sender, 1);
-        return activated_;
-    }
-
     function addFundamentalParameter(bytes32 _parameter) internal returns (bool) {
         checkDelegate(msg.sender, 1);
         require(!parameterExist_[_parameter]);
@@ -77,6 +67,7 @@ contract DBEntity is DBNode {
         return true;
     }
 
+/*
     function removeParameter(bytes32 _parameter) public returns (bool) {
         checkDelegate(msg.sender, 1);
         require(parameterExist_[_parameter]);
@@ -102,6 +93,7 @@ contract DBEntity is DBNode {
 
         return true;
     }
+    */
 
     function setParameter(bytes32 _parameter, bytes32 _value) public returns (bool) {
         checkDelegate(msg.sender, 1);
