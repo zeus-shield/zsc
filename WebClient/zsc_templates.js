@@ -101,7 +101,7 @@ ZSCTemplate.prototype.creatNewTemplate = function(logId, func) {
     var tmpName = gm.userName + "-tmp-" + this.tmpNos
     
     //createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
-    myControlApi.createElementNode("template", gm.userName, tmpName, "null", gm.account,
+    myControlApi.createElementNode("template", gm.userName, tmpName, "null",
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) {
@@ -121,8 +121,8 @@ ZSCTemplate.prototype.enableAsAgreement = function(tmpIndex, func) {
     var extra = gm.tmpNames[tmpIndex];
 
     //createElementNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
-    myControlApi.createElementNode("agreement", gm.userName, agrName, extra, gm.account,
-        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit * 2},
+    myControlApi.createElementNode("agreement", gm.userName, agrName, extra,
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) {
                 bF_showHashResult("CreateNewAgreementHash", result, callBack);
