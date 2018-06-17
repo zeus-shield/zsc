@@ -103,20 +103,20 @@ contract AdmBase is Object {
 
         bytes32 userName = testUsers_[index].name_;
 
-
-        address creator = testUsers_[index].id_;
-
         //createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr)
-        testUsers_[index].nodeAdr_ = ControlApis(controlApisAdr_).createUserNode(_type, userName, creator);
+        testUsers_[index].nodeAdr_ = ControlApis(controlApisAdr_).createUserNode(_type, userName, msg.sender);
 
         address userZSCWalletAdr = ControlApis(controlApisAdr_).getUserWalletAddress(userName, "ZSC");
         
         ERC20Interface(zscTestTokenAddress_).transfer(userZSCWalletAdr, allocatedZSC_);
-        
-        ControlApis(controlApisAdr_).setUserStatus(userName, true);
-
+    
         addLog("activeByUser - ", true);
         addLog(PlatString.bytes32ToString(userName), false);
+        addLog("| address - ", false);
+        addLog(PlatString.addressToString(msg.sender), false);
+        return;
+
+        //ControlApis(controlApisAdr_).setUserStatus(userName, true);
     }
 
     function setUserActiveState(bytes32 _user, bool _tag) public {
