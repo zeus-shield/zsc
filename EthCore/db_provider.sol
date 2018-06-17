@@ -32,6 +32,8 @@ contract DBProvider is DBEntity {
         addFundamentalParameter("companyEmail");
         addFundamentalParameter("claimEmail");
         addFundamentalParameter("claimPhone");
+
+        setParameter("assurerType", "provider");
     }
 
     function addParameter(bytes32 _parameter) public returns (bool) {
@@ -40,12 +42,14 @@ contract DBProvider is DBEntity {
         return super.addParameter(_parameter);
     }
 
+    /*
     function removeParameter(bytes32 _parameter) public returns (bool) {
         checkDelegate(msg.sender, 1);
         return false;
         return super.removeParameter(_parameter);
     }
-
+    */
+    
     function numTemplates() public constant returns (uint) {
         checkDelegate(msg.sender, 1);
 
