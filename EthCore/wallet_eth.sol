@@ -7,6 +7,8 @@ pragma solidity ^0.4.21;
 import "./wallet_base.sol";
 
 contract WalletEth is WalletBase {
+    address tempAdr_;
+    uint tempAmount_;
 
     // Constructor
     function WalletEth(bytes32 _name) public WalletBase(_name) {
@@ -41,10 +43,8 @@ contract WalletEth is WalletBase {
         }
     }
 
-    /*
     function informTransaction(address _src, uint256 _amount) public {
-        return;
-        if (_src == address(0) || _amount == 0) return;
+        tempAdr_ = _src;
+        tempAmount_ = _amount;
     }
-    */
 }
