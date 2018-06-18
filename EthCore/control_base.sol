@@ -215,19 +215,24 @@ contract ControlBase is ControlInfo {
         //string memory temp;
         address agrAdr = address(getDBNode(dbName_, _agrName));
         require(agrAdr != 0);
-        
+
+        bytes32 status = DBNode(agrAdr).getParameter("status");
+        require(status == "CREATED");
+
         address agrWalletAdr = enableZSCWallet(_agrName, agrAdr);
         address userWallet = address(getDBNode(dbName_, formatWalletName(_userName, "ZSC")));
 
         uint lockedAmount = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(agrAdr).getParameter("insurance")));
 
+        /*
         addLog("publishZSCAgreement: ", true);
         addLog(PlatString.bytes32ToString(_agrName), false);
         addLog("| insurance: ", false);
         addLog(PlatString.uintToString(lockedAmount), false);
+        */
 
         DBNode(userWallet).executeTransaction(agrWalletAdr, lockedAmount.mul(1 ether));
-        DBNode(agrWalletAdr).informTransaction(userWallet, lockedAmount);
+        //DBNode(agrWalletAdr).informTransaction(userWallet, lockedAmount);
 
         DBNode(agrAdr).setAgreementStatus("PUBLISHED", "null");
     }
@@ -342,15 +347,16 @@ contract ControlBase is ControlInfo {
         address agrWallet   = address(getDBNode(dbName_, formatWalletName(_agrName, tokenSymbol)));
 
         uint ret = DBNode(recWallet).executeTransaction(agrWallet, price);
-        DBNode(agrWallet).informTransaction(recWallet, price);
+        //DBNode(agrWallet).informTransaction(recWallet, price);
 
         getDBNode(dbName_, _agrName).setAgreementStatus("PAID", _userName);
         getDBNode(dbName_, _userName).bindAgreement(agrAdr);
 
+        /*
         addLog(PlatString.bytes32ToString(_userName), true);
         addLog(" purchased ", false);
         addLog(PlatString.bytes32ToString(_agrName), false);
-
+        */
         return ret;
     }
 
@@ -391,8 +397,8 @@ contract ControlBase is ControlInfo {
             DBNode(agrWallet).executeTransaction(proWallet, price);
             DBNode(agrWallet).executeTransaction(recWallet, lockedAmount);
 
-            DBNode(proWallet).informTransaction(agrWallet, price);
-            DBNode(recWallet).informTransaction(agrWallet, lockedAmount);
+            //DBNode(proWallet).informTransaction(agrWallet, price);
+            //DBNode(recWallet).informTransaction(agrWallet, lockedAmount);
 
             /*
             temp = "";
@@ -408,7 +414,7 @@ contract ControlBase is ControlInfo {
         } else if (ret == 2) {
             //Paid to provider
             DBNode(agrWallet).executeTransaction(proWallet, lockedAmount + price);
-            DBNode(proWallet).informTransaction(agrWallet, lockedAmount + price);
+            //DBNode(proWallet).informTransaction(agrWallet, lockedAmount + price);
 
             /*
             temp = "";
