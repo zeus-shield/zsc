@@ -113,8 +113,9 @@ ZSCAgreement.prototype.loadAgreementsHtml = function(elementId, tag, func1)  {
     var titlle = "provider [" + this.userName + "] - published agreements: "
 
     var text ="";
-    text += '<div class="well">';
     text += '<div class="well"> <text>' + titlle + ' </text></div>';
+
+    text += '<div class="well">';
     text += '<table align="center" style="width:700px;min-height:30px">'
     text += '<tr>'
     text += '   <td>Name</td> <td>Details</td> <td>Balance</td>'
