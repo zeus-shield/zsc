@@ -114,17 +114,23 @@ ZSCAgreementProvider.prototype.getAgrBalance = function(gm, index, func) {
         });
 }
 
-ZSCAgreementProvider.prototype.confirmPublishAgreement = function(index, func) {
-    this.myControlApi.confirmPublishAgreement(this.userName, this.agrNames[index] ,
-        {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
+ZSCAgreementProvider.prototype.publishAgreement = function(agrName, func) {
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    //createElementNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
+    myControlApi.publishAgreement(gm.userName, agrName,
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) {
-                func(result);
+                bF_showHashResult("PublishAgreementHash", result, callBack);
             } else {
                 console.log("error: " + error);
             }
         });
 }
+
 
 ZSCAgreementProvider.prototype.claimReward = function(hashLogId, elementName, func) {
     var gm = this;
@@ -142,18 +148,27 @@ ZSCAgreementProvider.prototype.claimReward = function(hashLogId, elementName, fu
         });
 }
 
-ZSCAgreementProvider.prototype.loadAgreementsHtml = function(elementId, funcSetPara)  {
+ZSCAgreementProvider.prototype.loadAgreementsHtml = function(elementId, funcPublish, funcSetPara)  {
     var funcSetParaPrefix = funcSetPara + "('"; 
     var funcSetParaSuffix = "')";
+
+    var funcPublishPrefix = funcPublish + "('"; 
+    var funcPublishSuffix = "')";
 
     var titlle = "provider [" + this.userName + "] - published agreements: "
 
     var text ="";
     text += '<div class="well">';
+
     text += '<div class="well"> <text>' + titlle + ' </text></div>';
+    
+    text += '<div class="well">';
+    text += '<text> Publish agreement: </text> <text id="PublishAgreementHash"> </text>'
+    text += '</div>';
+
     text += '<table align="center" style="width:600px;min-height:30px">'
     text += '<tr>'
-    text += '   <td>Name</td> <td>Balance </td> <td>Details </td>'
+    text += '   <td>Name</td> <td>Balance </td> <td>Publish </td> <td>Details </td>'
     text += '</tr>'
     text += '<tr> <td>---</td> <td>---</td> <td>---</td> </tr>'
 
@@ -161,6 +176,7 @@ ZSCAgreementProvider.prototype.loadAgreementsHtml = function(elementId, funcSetP
         text += '<tr>'
         text += '   <td><text>' + this.agrNames[i]  + '</text></td>'
         text += '   <td><text>' + this.balance[i]  + '</text></td>'
+        text += '   <td><button type="button" onClick="' + funcPublishPrefix + this.agrNames[i] + funcPublishSuffix + '">Publish</button></td>'
         text += '   <td><button type="button" onClick="' + funcSetParaPrefix + this.agrNames[i] + funcSetParaSuffix + '">Show</button></td>'
         text += '</tr>'
         text += '<tr> <td>---</td> <td>---</td> <td>---</td>  </tr>'
