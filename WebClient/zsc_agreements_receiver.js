@@ -131,11 +131,11 @@ ZSCAgreementReceiver.prototype.loadAgreementsHtml = function(elementId, funcShow
     var funcShowParaPrefix = funcShowPara + "('"; 
     var funcShowParaSuffix = "')";
 
-    var titlle = "provider [" + this.userName + "] - published agreements: "
+    var titlle = "receiver [" + this.userName + "] - published agreements: "
 
     var text ="";
-    text += '<div class="well">';
     text += '<div class="well"> <text>' + titlle + ' </text></div>';
+    text += '<div class="well">';
     text += '<table align="center" style="width:600px;min-height:30px">'
     text += '<tr>'
     text += '   <td>Name</td> <td>Balance </td> <td>Details </td>'
