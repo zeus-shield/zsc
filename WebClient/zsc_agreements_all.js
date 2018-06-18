@@ -9,6 +9,7 @@ function ZSCAgreementAll(nm, abi, adr) {
     this.allAgrNos = 0;
     this.allAgrNames = [];
     this.allAgrStatus = [];
+    this.itemTags = [];
     this.account = web3.eth.accounts[0];
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
@@ -20,20 +21,40 @@ ZSCAgreementAll.prototype.getUserName = function() {return this.userName;}
 
 ZSCAgreementAll.prototype.setUserType = function(type) {return this.userType = type;}
 
+ZSCAgreementAll.prototype.resetAllItemTags = function(gm) {
+    for (var i = 0; i < gm.agrNos; ++i) {
+        gm.itemTags[i] = false;
+    }
+}
+
+ZSCAgreementAll.prototype.checkAllItemTags = function(gm) {
+    for (var i = 0; i < gm.agrNos; ++i) {
+        if (gm.itemTags[i] == false) {
+            return false;
+        }
+    }
+    return true;
+}
+
 ZSCAgreementAll.prototype.loadAllAgreements = function(func) {
     var gm = this;
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     
     gm.numAllAgreements(gm, function(gm) {
-        for (var i = 0; i < gm.allAgrNos; ++i) {
-            gm.getAllAgreementNameByIndex(gm, i, function(gm, index) {
-                gm.getAllAgreementStatus(gm, index, function(gm, index) {
-                    if (index == gm.allAgrNos - 1) {
-                        callBack();
-                    }
+       if (gm.agrNos == 0) {
+            callBack();
+        } else {
+            gm.resetAllItemTags(gm);
+            for (var i = 0; i < gm.allAgrNos; ++i) {
+                gm.getAllAgreementNameByIndex(gm, i, function(gm, index) {
+                    gm.getAllAgreementStatus(gm, index, function(gm, index) {
+                        if (gm.checkAllItemTags(gm) == true) {
+                            callBack();
+                        }
+                    });
                 });
-            });
+            }
         }
     });
 }
@@ -79,6 +100,7 @@ ZSCAgreementAll.prototype.getAllAgreementStatus = function(gm, index, func) {
         function(error, result){ 
             if(!error) {
                 gm.allAgrStatus[index] = web3.toUtf8(result);
+                gm.itemTags[index] = true;
                 func(gm, index);
             } else {
                 console.log("error: " + error);
@@ -112,8 +134,8 @@ ZSCAgreementAll.prototype.loadAllAgreementsHtml = function(elementId, showFunc, 
     var titlle = "All published agreements: "
 
     var text ="";
-    text += '<div class="well">';
     text += '<div class="well"> <text>' + titlle + ' </text></div>';
+    text += '<div class="well">';
     text += '<table align="center" style="width:600px;min-height:30px">'
 
     text += '<div class="well">';
