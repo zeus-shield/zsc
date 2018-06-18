@@ -22,6 +22,8 @@ contract DBAgreement is DBEntity {
         addFundamentalParameter("status");
         addFundamentalParameter("endTime");
         addFundamentalParameter("receiver");
+
+        super.setParameter("status", "CREATED");
     }
 
     function setParameter(bytes32 _parameter, bytes32 _value) public returns (bool) {
