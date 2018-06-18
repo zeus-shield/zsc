@@ -5,6 +5,7 @@ Copyright (c) 2018 ZSC Dev Team
 //class zscWallet
 function ZSCTemplate(nm, abi, adr) {
     this.userName = nm;
+    this.userType;
     this.tmpNos = 0;
     this.tmpNames = [];
     this.tmpChildrenNos = [];
@@ -18,6 +19,8 @@ function ZSCTemplate(nm, abi, adr) {
 ZSCTemplate.prototype.getUserName = function() {return this.userName;}
 
 ZSCTemplate.prototype.getTmpName = function(index) { return this.tmpName[index];}
+
+ZSCTemplate.prototype.setUserType = function(type) {return this.userType = type;}
 
 ZSCTemplate.prototype.loadTempates = function(func) {
     var gm = this;
@@ -145,12 +148,22 @@ ZSCTemplate.prototype.loadTemplatesHtml = function(elementId, funcCreateTmp, fun
     var showAgrsSuffix = "')";
 
     var text ="";
+
+    var titlle = this.userType + " [" + this.userName + "] - templates info"
+
+    text += '<div class="well"> <text>' + titlle + ' </text></div>';
+
     text += '<div class="well">';
     text += '   <td><button type="button" onClick="' + funcCreateTmpFull + '">Create New Template</button></td> <br>'
     text += '   <text id="CreateNewTemplateHash"> </text>'
     text += '</div>';
 
+  
+
     text += '<div class="well">';
+    text += '   <div class="well">';
+    text += '      <text> Adding agreement: </text> <text id="CreateNewAgreementHash"> </text>'
+    text += '   </div>';
     text += '<table align="center" style="width:700px;min-height:30px">'
     text += '<tr>'
     text += '   <td>Name</td> <td>Details</td> <td>Add as Agreement </td>   <td>Added Nos. </td>  <td>  </td> '
