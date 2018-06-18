@@ -20,6 +20,7 @@ contract DBAgreement is DBEntity {
 
     function initParameters() internal {
         addFundamentalParameter("status");
+        addFundamentalParameter("startTime");
         addFundamentalParameter("endTime");
         addFundamentalParameter("receiver");
 
@@ -67,6 +68,9 @@ contract DBAgreement is DBEntity {
 
             temp = PlatString.tobytes32(PlatString.uintToString(startTime_));
             super.setParameter("startTime", temp);
+
+            temp = PlatString.tobytes32(PlatString.uintToString(endTime_));
+            super.setParameter("endTime", temp);
         } else {
             return false;
         }
