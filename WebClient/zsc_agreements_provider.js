@@ -158,10 +158,8 @@ ZSCAgreementProvider.prototype.loadAgreementsHtml = function(elementId, funcPubl
     var titlle = "provider [" + this.userName + "] - published agreements: "
 
     var text ="";
-    text += '<div class="well">';
-
     text += '<div class="well"> <text>' + titlle + ' </text></div>';
-    
+    text += '<div class="well">';    
     text += '<div class="well">';
     text += '<text> Publish agreement: </text> <text id="PublishAgreementHash"> </text>'
     text += '</div>';
