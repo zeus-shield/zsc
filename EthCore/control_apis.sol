@@ -92,7 +92,7 @@ contract ControlApis is ControlBase {
     function createUserNode(bytes32 _factoryType, bytes32 _userName, address _extraAdr) public returns (address) {
         checkDelegate(msg.sender, 1);
         require(_factoryType != "staker");
-        
+
         require(address(getDBNode(getCurrentDBName(), _userName)) == 0);
 
         address ndAdr = createNodeForUser(_factoryType, _userName);
@@ -253,9 +253,11 @@ contract ControlApis is ControlBase {
         uint amount = 0;
         amount = DBNode(walletAdr).executeTransaction(_dest, _amount);
 
+        /*
         if (getDBDatabase(getCurrentDBName()).checkeNodeByAddress(_dest)) {
             DBNode(_dest).informTransaction(walletAdr, _amount);
         }
+        */
         return amount;
 
         /* Multisig module
