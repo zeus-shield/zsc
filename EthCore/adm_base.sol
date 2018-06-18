@@ -109,14 +109,16 @@ contract AdmBase is Object {
         address userZSCWalletAdr = ControlApis(controlApisAdr_).getUserWalletAddress(userName, "ZSC");
         
         ERC20Interface(zscTestTokenAddress_).transfer(userZSCWalletAdr, allocatedZSC_);
-    
+        return;
+
+        /*
         addLog("activeByUser - ", true);
         addLog(PlatString.bytes32ToString(userName), false);
         addLog("| address - ", false);
         addLog(PlatString.addressToString(msg.sender), false);
-        return;
 
         //ControlApis(controlApisAdr_).setUserStatus(userName, true);
+        */
     }
 
     function setUserActiveState(bytes32 _user, bool _tag) public {
