@@ -5,6 +5,7 @@ Copyright (c) 2018 ZSC Dev Team
 //class zscWallet
 function ZSCWallet(nm, abi, adr) {
     this.userName = nm;
+    this.userType;
     this.tokenNos = 1;
     this.tokenSymbol = [];
     this.tokenAddress = [];
@@ -20,6 +21,8 @@ function ZSCWallet(nm, abi, adr) {
 ZSCWallet.prototype = new ZSCClient();
 
 ZSCWallet.prototype.getUserName = function() {return this.userName;}
+
+ZSCWallet.prototype.setUserType = function(type) {return this.userType = type;}
 
 ZSCWallet.prototype.submitTransferValue = function(tokenSymbol, destAddress, amount, logId, func) {  
     var gm = this;
@@ -176,7 +179,11 @@ ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2)  {
     var balance;
     var hashId;
 
-    text = '<div class="well">';
+    var titlle = this.userType + " [" + this.userName + "] - wallet info"
+
+    text = '<div class="well"> <text> ' + titlle + ' </text></div>';
+
+    text += '<div class="well">';
 
     for (var i = 0; i < this.tokenNos; ++i) {
         symbol = this.tokenSymbol[i];
@@ -193,8 +200,8 @@ ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2)  {
             text += 'Symbol: <text>Test' + symbol + '</text><br>'
             text += 'Address: <text>0x' + adr  + '</text><br>'   
             text += 'Balance: <text>' + balance + '</text><br><br>'
-            text += '---------------</text><br>'
-            text += '  <button type="button" onClick="' + showTransPrefix + symbol + "', '" + hashId + showTransSuffix + '">Show Transactions</button><br><br>'
+            //text += '---------------</text><br>'
+            //text += '  <button type="button" onClick="' + showTransPrefix + symbol + "', '" + hashId + showTransSuffix + '">Show Transactions</button><br><br>'
             text += '---------------</text><br>'
             text += 'Dest-adr<input id="' + sentoId + '"></input> <br> Amount:<input id="' + amountId + '"></input> <br>'
             text += '  <button type="button" onClick="' + transPrefix + symbol + "', '" + sentoId + "', '" + amountId + "', '" + hashId + transSuffix + '">  Transfer  </button> <br>'
