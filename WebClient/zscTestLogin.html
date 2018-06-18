@@ -276,12 +276,14 @@
         } else {
             switch(tag) {
                 case "wallet": 
+                    zscWalletGM.setUserType(zscUser.getUserType());
                     zscWalletGM.loadTokenInfoByIndex(0, function() {
                         zscWalletGM.loadWalletsHtml("PageBody", "submitTransferValue", "showTransactions");
                     });
                     break;
 
                 case "template": 
+                    zscTmpsGM.setUserType(zscUser.getUserType());
                     zscTmpsGM.loadTempates(function() {
                         //elementId, funcCreateTmp, funcSetPara, funcPublish
                         zscTmpsGM.loadTemplatesHtml("PageBody", "creatNewTemplate", "enableAsAgreement", "showTemplateParameters", "showProvidersAgreements");
@@ -290,6 +292,7 @@
                     
                 case "parameter-profile":
                     zscElement.setElementName(zscUser.getUserName());
+                    zscElement.setUserType(zscUser.getUserType());
                     zscElement.loadParameterNamesAndvalues(function() {
                         zscElement.loadParametersHtml("PageBody", "profile", "submitParameterProfileChanges");
                     });
