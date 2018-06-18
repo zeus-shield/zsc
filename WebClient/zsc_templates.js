@@ -12,7 +12,7 @@ function ZSCTemplate(nm, abi, adr) {
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
     this.gasPrice = bF_getGasPrice(20);
-    this.gasLimit = bF_getGasLimit(743);
+    this.gasLimit = bF_getGasLimit(7430);
 }
 
 ZSCTemplate.prototype.getUserName = function() {return this.userName;}
@@ -101,7 +101,7 @@ ZSCTemplate.prototype.creatNewTemplate = function(logId, func) {
     var tmpName = gm.userName + "-tmp-" + this.tmpNos
     
     //createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
-    myControlApi.createElementNode("template", gm.userName, tmpName, "null",
+    myControlApi.createElementNode("template", gm.userName, tmpName, "null", 
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) {
@@ -146,18 +146,14 @@ ZSCTemplate.prototype.loadTemplatesHtml = function(elementId, funcCreateTmp, fun
 
     var text ="";
     text += '<div class="well">';
-    text += '   <td><button type="button" onClick="' + funcCreateTmpFull + '">Creat New Template</button></td> <br>'
+    text += '   <td><button type="button" onClick="' + funcCreateTmpFull + '">Create New Template</button></td> <br>'
     text += '   <text id="CreateNewTemplateHash"> </text>'
-    text += '</div>';
-
-    text += '<div class="well">';
-    text += '<text> Enabling agreement: </text> <text id="CreateNewAgreementHash"> </text>'
     text += '</div>';
 
     text += '<div class="well">';
     text += '<table align="center" style="width:700px;min-height:30px">'
     text += '<tr>'
-    text += '   <td>Name</td> <td>Details</td> <td>Published (nos.) </td> <td>Publish </td>  <td>Agreements </td> '
+    text += '   <td>Name</td> <td>Details</td> <td>Add as Agreement </td>   <td>Added Nos. </td>  <td>  </td> '
     text += '</tr>'
     text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
 
@@ -165,9 +161,9 @@ ZSCTemplate.prototype.loadTemplatesHtml = function(elementId, funcCreateTmp, fun
         text += '<tr>'
         text += '   <td><text>' + this.tmpNames[i]  + '</text></td>'
         text += '   <td><button type="button" onClick="' + funcSetParaPrefix + this.tmpNames[i] + funcSetParaSuffix + '">Edit</button></td>'
+        text += '   <td><button type="button" onClick="' + funcPublishPrefix + i + funcPublishSuffix + '">Add</button></td>'
         text += '   <td><text>' + this.tmpChildrenNos[i]  + '</text></td>'
-        text += '   <td><button type="button" onClick="' + funcPublishPrefix + i + funcPublishSuffix + '">Publish</button></td>'
-        text += '   <td><button type="button" onClick="' + showAgrsPrefix + this.tmpNames[i] + showAgrsSuffix + '">Show</button></td>'
+        text += '   <td><button type="button" onClick="' + showAgrsPrefix + this.tmpNames[i] + showAgrsSuffix + '">List</button></td>'
         text += '</tr>'
         text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
     }
