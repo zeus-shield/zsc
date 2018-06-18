@@ -165,7 +165,7 @@ ZSCElement.prototype.loadParametersHtml = function(elementId, type, funcName, ba
     var titlle;
 
     if (type == "profile") {
-        titlle = "user [" + this.userName + "] profile: "
+        titlle = this.userType + " [" + this.userName + "] - profile: "
     } else {
         titlle = "entity [" + this.enName + "] details: "
     }
