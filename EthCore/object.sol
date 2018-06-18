@@ -20,9 +20,11 @@ contract Recorder {
     function addLog(string _log, bool _newLine) public;
 }
 
+/*
 contract TimeStamp {
     function getTime(uint _time) public constant returns (bytes32);
 }
+*/
 
 contract Object is Delegated {
     bytes32 private name_ = "null";
@@ -48,6 +50,7 @@ contract Object is Delegated {
         timer_ = _timerAdr;
     }
 
+/*
     function getTimeStr(uint _time) internal constant returns (bytes32) {
         if (timer_ != address(0)) {
             return TimeStamp(timer_).getTime(_time);
@@ -55,7 +58,7 @@ contract Object is Delegated {
             return 0;
         }
     }
-
+*/
     function addLog(string _log, bool _newLine) public {
         checkDelegate(msg.sender, 1);
         if (logRecorder_ != 0) {
