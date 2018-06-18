@@ -92,6 +92,8 @@ contract ControlApis is ControlBase {
     function createUserNode(bytes32 _factoryType, bytes32 _userName, address _extraAdr) public returns (address) {
         checkDelegate(msg.sender, 1);
         require(_factoryType != "staker");
+        
+        require(address(getDBNode(getCurrentDBName(), _userName)) == 0);
 
         address ndAdr = createNodeForUser(_factoryType, _userName);
         require(ndAdr != address(0));
@@ -100,34 +102,20 @@ contract ControlApis is ControlBase {
         return ndAdr;
     }
 
-    function createTemplateNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName) public returns (address) {
+    function createElementNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName, bytes32 _extraInfo) public returns (address) {
         checkRegistered(_userName, msg.sender);
-        require(_factoryType == "template");
+
+        require(_factoryType == "template" || _factoryType == "agreement");
 
         require(address(getDBNode(getCurrentDBName(), _enName)) == 0);
         
-        address ndAdr = createNodeForTemplate(_factoryType, _userName, _enName);
+        address ndAdr = createNodeForElement(_factoryType, _userName, _enName, _extraInfo);
 
         require(ndAdr != address(0));
         registerEntityNode(_userName, _enName, ndAdr, msg.sender);
         
         return ndAdr;
     }
-
-    function createAgreementNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName, bytes32 _extraInfo) public returns (address) {
-        checkRegistered(_userName, msg.sender);
-        require(_factoryType == "agreement");
-
-        require(address(getDBNode(getCurrentDBName(), _enName)) == 0);
-        
-        address ndAdr = createNodeForAgreement(_factoryType, _userName, _enName, _extraInfo);
-
-        require(ndAdr != address(0));
-        registerEntityNode(_userName, _enName, ndAdr, msg.sender);
-        
-        return ndAdr;
-    }
-
 
     //Disabled during alpha-test
     /* 
@@ -264,8 +252,10 @@ contract ControlApis is ControlBase {
 
         uint amount = 0;
         amount = DBNode(walletAdr).executeTransaction(_dest, _amount);
-        
-        //DBNode(_dest).informTransaction(walletAdr, _amount);
+
+        if (getDBDatabase(getCurrentDBName()).checkeNodeByAddress(_dest)) {
+            DBNode(_dest).informTransaction(walletAdr, _amount);
+        }
         return amount;
 
         /* Multisig module
@@ -295,16 +285,13 @@ contract ControlApis is ControlBase {
     }
     */
 
-    //Disabled during alpha-test
     /// @dev Announce an insurance agreement by a provider
-    /*
-    function publishAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
+    function publishAgreement(bytes32 _userName, bytes32 _agrName) public {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _agrName, msg.sender);
 
-        return conductPublishAgreement(_userName, _agrName, msg.sender);
+        publishZSCAgreement(_userName, _agrName);
     }
-    */
 
     function numElementChildren(bytes32 _userName, bytes32 _enName) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
