@@ -21,7 +21,7 @@ contract FactoryBase is Object {
         factoryNodeNos_++;
     }
 
-    function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
+    function createNode(bytes32 _nodeName, address _parent) public returns (address);
 
     function numFactoryNodes() public constant returns (uint) {
         checkDelegate(msg.sender, 1);
