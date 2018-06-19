@@ -11,26 +11,10 @@ import "./sys_com_base.sol";
 
 //Proof of Stake for ZSC system
 contract PosBase is SysComBase, PosStakerGroup, PosBlockPool {
-    uint private constant YEAR_IN_SECONDS = 86400 * 365;
-    uint private constant HALF_YEAR_IN_SECONDS = 86400 * 365 / 2;
-    uint private constant QUATER_YEAR_IN_SECONDS = 86400 * 365 / 4;
 
     // Constructor
     function PosBase(bytes32 _name) public SysComBase(_name) {
     } 
-
-    function setControlApiAdr(address _controlApiAdr) public {
-        checkDelegate(msg.sender, 1);
-
-        super.setControlApiAdr(_controlApiAdr);
-        initPosBase();
-    }
-
-    function initPosBase() internal {
-        createPool("year", YEAR_IN_SECONDS, 10);
-        createPool("half year", YEAR_IN_SECONDS, 4);
-        createPool("three months", YEAR_IN_SECONDS, 2);
-    }
 
     function mineSingleBlock(address _block) private {
         uint stakerNos = numStakers();
@@ -51,14 +35,14 @@ contract PosBase is SysComBase, PosStakerGroup, PosBlockPool {
         }
     }
 
-    function minePendingBlocks(uint _poolIndex) public {
+    function minePendingBlocks() public {
         checkDelegate(msg.sender, 1);
 
-        uint blockNos = numTotalBlocks(_poolIndex);
+        uint blockNos = numTotalBlocks();
         address blockAdr;
 
-        for (uint i = getLastPendingBlockIndex(_poolIndex); i < blockNos - 1; ++i) {
-            blockAdr = getBlockByIndex(_poolIndex, i);
+        for (uint i = getLastPendingBlockIndex(); i < blockNos - 1; ++i) {
+            blockAdr = getBlockByIndex(i);
             if (PosBlock(blockAdr).getCurrentSize() > getTotalRemainingSP()) {
                 break;
             }
@@ -67,19 +51,19 @@ contract PosBase is SysComBase, PosStakerGroup, PosBlockPool {
         }
     }
 
-    function numBlockInfo(uint _poolIndex, bool _isMined) public constant returns (uint) {
+    function numBlockInfo(bool _isMined) public constant returns (uint) {
         checkDelegate(msg.sender, 1);
 
         if (_isMined) {
-            return numMinedBlocks(_poolIndex);
+            return numMinedBlocks();
         } else {
-            return numTotalBlocks(_poolIndex);
+            return numTotalBlocks();
         }
     }
 
-    function getBlockInfoByIndex(uint _poolIndex, uint _blockIndex) public constant returns (uint, uint, uint) {
+    function getBlockInfoByIndex(uint _blockIndex) public constant returns (uint, uint, uint) {
         checkDelegate(msg.sender, 1);
-        address blockAdr = getBlockByIndex(_poolIndex, _blockIndex);
+        address blockAdr = getBlockByIndex(_blockIndex);
 
         uint size = PosBlock(blockAdr).getCurrentSize();
         uint txNos = PosBlock(blockAdr).numTx();
