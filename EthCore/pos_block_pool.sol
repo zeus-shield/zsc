@@ -46,7 +46,7 @@ contract PosBlockPool is Delegated {
         checkDelegate(msg.sender, 1);
 
         remaingGasUsage_ += _gasUsage;
-        
+
         address myBlock;
         if (totalBlockNos_ == 0) {
             myBlock = registerNewBlock();
@@ -61,15 +61,15 @@ contract PosBlockPool is Delegated {
             }
         }
         PosBlock(myBlock).registerTx(_sender, _gasUsage);
-        pools_[_poolIndex].totalBlockNos_++;
+        totalBlockNos_++;
     }
 
-    function getLastPendingBlockIndex(uint _poolIndex) internal constant returns (uint) { 
-        if (pools_[_poolIndex].totalBlockNos_ == 0) return 0;
+    function getLastPendingBlockIndex() internal constant returns (uint) { 
+        if (totalBlockNos_ == 0) return 0;
         address myBlock;
 
-        for (uint i = poolNos_ - 1; i >= 0; --i) {
-            myBlock = pools_[_poolIndex].blocks_[i];
+        for (uint i = totalBlockNos_ - 1; i >= 0; --i) {
+            myBlock = blocks_[i];
             if (PosBlock(myBlock).doesMined()) {
                 return (i + 1);
             }
@@ -77,17 +77,17 @@ contract PosBlockPool is Delegated {
         return 0;
     }
 
-    function numTotalBlocks(uint _poolIndex) internal constant returns (uint) { 
-        return pools_[_poolIndex].totalBlockNos_; 
+    function numTotalBlocks() internal constant returns (uint) { 
+        return totalBlockNos_; 
     }
 
-    function numMinedBlocks(uint _poolIndex) internal constant returns (uint) { 
-        return pools_[_poolIndex].minedBlockNos_; 
+    function numMinedBlocks() internal constant returns (uint) { 
+        return minedBlockNos_; 
     }
 
-    function setBlockMinedByIndex(uint _poolIndex, uint _blockIndex) internal {
-        address blockAdr = pools_[_poolIndex].blocks_[_blockIndex];
+    function setBlockMinedByIndex(uint _blockIndex) internal {
+        address blockAdr = blocks_[_blockIndex];
         PosBlock(blockAdr).setMined();
-        pools_[_poolIndex].minedBlockNos_++;
+        minedBlockNos_++;
     }
 }
