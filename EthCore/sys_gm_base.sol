@@ -7,17 +7,18 @@ pragma solidity ^0.4.21;
 import "./object.sol";
 import "./sys_include.sol";
 
-contract SysComBase is Object {
-    //changed to public for the alpha-test purpose, 2018-05-27
+contract SysGmBase is Object {
     address public controlApiAdr_ = address(0);
     address public bindedDB_ = address(0);
 
-    function SysComBase(bytes32 _name) public Object(_name) {
+    function SysGmBase(bytes32 _name) public Object(_name) {
     }
 
     function setControlApiAdr(address _adr) public {
         checkDelegate(msg.sender, 1);
 
+        require(_adr != address(0));
+        
         if (controlApiAdr_ != _adr) {
            if (controlApiAdr_ != address(0)) {
                setDelegate(controlApiAdr_, 0);
@@ -34,6 +35,9 @@ contract SysComBase is Object {
 
     function setDatabase(address _adr) public {      
         checkDelegate(msg.sender, 1);
+        
+        require(_adr != address(0));
+
         bindedDB_ = _adr;
     } 
 
