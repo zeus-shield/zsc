@@ -66,7 +66,7 @@ contract PosBase is SysComBase, PosStakerGroup, PosBlockPool {
         address blockAdr = getBlockByIndex(_blockIndex);
 
         uint size = PosBlock(blockAdr).getCurrentSize();
-        uint txNos = PosBlock(blockAdr).numTx();
+        uint txNos = PosBlock(blockAdr).numTxInfos();
         uint limit = PosBlock(blockAdr).getBlockLimit();
 
         return (limit, size, txNos);
