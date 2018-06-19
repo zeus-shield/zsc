@@ -79,9 +79,9 @@ ZSCHtml.prototype.loadPageBody = function(tag, func) {
 ZSCHtml.prototype.loadLogin = function(funcName) {
     var functionInput = funcName + "('AdmAdvAdr', 'UserName', 'PassWord')";
     text =  '<div class="well">'
-    text += '   <text>Login ZSC system</text><br><br>'
-    text += '   <text>ZSC platform address </text> <br>'
-    text += '   <input class="form-control"  type="text" id="AdmAdvAdr" value="0xc7e03da56e2be02cbdca9e7a7cf6148df7eaae97"></input> <br> <br>'
+    text += '   <text>Login ZSC system </text><br><br>'
+    text += '   <text>Address of ZSC login module on the Rinkeby Ethereum test network </text> <br>'
+    text += '   <input class="form-control"  type="text" id="AdmAdvAdr" value="0x5fcdb83a9f39537ead97113dd2c3ea0216dc2508"></input> <br> <br>'
     text += '   <text>User Name </text> <br>' 
     text += '   <input type="text" id="UserName" value="test"></input> <br>' 
     text += '   <input type="password" id="PassWord" value="test"></input> <br>' 
