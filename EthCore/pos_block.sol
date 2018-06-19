@@ -85,7 +85,7 @@ contract PosBlock is Object {
 
         if (minedStatus_) return false;
 
-        txHashs_[txNos_] = TxInfo(_sender, _gasUsage, now);
+        txInfos_[txNos_] = TxInfo(_sender, _gasUsage, now);
         txNos_++;
         return true;
     }
@@ -95,7 +95,7 @@ contract PosBlock is Object {
 
         require(_index < txNos_);
         
-        return (txHashs_[_index].sender_, txHashs_[_index].gasUsage_, txHashs_[_index].reigsterTime_);
+        return (txInfos_[_index].sender_, txInfos_[_index].gasUsage_, txInfos_[_index].reigsterTime_);
     }
     
     function getBlockLimit() public constant returns (uint) {
