@@ -4,9 +4,9 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./sys_com_module.sol";
+import "./sys_gm_base.sol";
 
-contract SysGmToken is SysComModule {
+contract SysGmToken is SysGmBase {
 
     struct TokenInfo {
         bytes32 status_;
@@ -28,18 +28,18 @@ contract SysGmToken is SysComModule {
     /* symbol => exist */
     mapping(bytes32 => bool) private exists_;
 
-    function SysGmToken() public SysComModule("sys_gm_token") {
+    function SysGmToken() public SysGmBase("sys_gm_token") {
         number_ = 0;
     } 
 
-    function numOfTokens() public view returns (uint) {
+    function numOfTokens() public constant returns (uint) {
         /* check delegate */
         checkDelegate(msg.sender, 1);
 
         return number_;
     }
 
-    function doesTokenExist(bytes32 _symbol) public view returns (bool) {
+    function doesTokenExist(bytes32 _symbol) public constant returns (bool) {
         /* check delegate */
         checkDelegate(msg.sender, 1);
 
@@ -77,12 +77,12 @@ contract SysGmToken is SysComModule {
         delete indexs_[_symbol];
         delete exists_[_symbol];
 
-        number_ --;
+        number_--;
 
         return true;
     }
 
-    function getTokenInfoByIndex(uint _index) public view returns (bytes32, bytes32, bytes32, uint, address) {
+    function getTokenInfoByIndex(uint _index) public constant returns (bytes32, bytes32, bytes32, uint, address) {
         /* check delegate */
         checkDelegate(msg.sender, 1);
 
@@ -90,7 +90,7 @@ contract SysGmToken is SysComModule {
         require(number_ > _index);
 
         /* check exist */
-        require(true == exists_[tokens_[_index].symbol_]);
+        //require(true == exists_[tokens_[_index].symbol_]);
 
         return (tokens_[_index].status_,
                 tokens_[_index].name_,
@@ -99,7 +99,16 @@ contract SysGmToken is SysComModule {
                 tokens_[_index].address_);
     }
 
-    function getTokenAddress(bytes32 _symbol) public view returns (address) {
+    function getTokenInfoBySymbol(bytes32 _symbol) public constant returns (bytes32, bytes32, bytes32, uint, address) {
+        /* check delegate */
+        checkDelegate(msg.sender, 1);
+
+        require(exists_[_symbol]);
+
+        return getTokenInfoByIndex(indexs_[_symbol]);
+    }
+
+    function getTokenAddress(bytes32 _symbol) public constant returns (address) {
         /* check delegate */
         checkDelegate(msg.sender, 1);
 
