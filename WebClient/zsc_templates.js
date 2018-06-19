@@ -13,7 +13,7 @@ function ZSCTemplate(nm, abi, adr) {
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
     this.gasPrice = bF_getGasPrice(20);
-    this.gasLimit = bF_getGasLimit(7430);
+    this.gasLimit = bF_getGasLimit(720);
 }
 
 ZSCTemplate.prototype.getUserName = function() {return this.userName;}

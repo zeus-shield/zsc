@@ -14,7 +14,7 @@ function ZSCAgreementAll(nm, abi, adr) {
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
     this.gasPrice = bF_getGasPrice(20);
-    this.gasLimit = bF_getGasLimit(743);
+    this.gasLimit = bF_getGasLimit(720);
 }
 
 ZSCAgreementAll.prototype.getUserName = function() {return this.userName;}
