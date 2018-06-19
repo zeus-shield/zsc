@@ -32,8 +32,8 @@ contract PosStakerGroup is Delegated {
     mapping(address => uint)    private stakerIndex_;
     mapping(uint => StakerInfo) private stakers_;
     mapping(address => bool)    private stakerExists_;
-    mapping(byte32 => uint)     private rewardRatios_;
-    mapping(byte32 => uint)     private rewardDividendDurations_;
+    mapping(bytes32 => uint)     private rewardRatios_;
+    mapping(bytes32 => uint)     private rewardDividendDurations_;
 
     address private zscTokenContract_;
     uint private rewardBasis_;
@@ -56,31 +56,31 @@ contract PosStakerGroup is Delegated {
         return stakerNos_;
     }
 
-    function addStakeType(byte32 _type, uint _dividendDuration, uint _ratio) public {
+    function addStakerType(bytes32 _stakerType, uint _dividendDuration, uint _ratio) public {
         checkDelegate(msg.sender, 1);
-        require(rewardRatio[_type] == 0 && _dividendDuration != 0 && _ratio != 0);
-        rewardRatios_[_type] = _ratio;
-        rewardDividendDurations_[_type] = _dividendDuration;
+        require(rewardRatios_[_stakerType] == 0 && _dividendDuration != 0 && _ratio != 0);
+        rewardRatios_[_stakerType] = _ratio;
+        rewardDividendDurations_[_stakerType] = _dividendDuration;
     }
 
-    function removeStakeType(byte32 _type) public {
+    function removeStakerType(bytes32 _stakerType) public {
         checkDelegate(msg.sender, 1);
-        require(rewardRatio[_type] != 0);
-        delete rewardRatio[_type];
-        delete rewardDividendDurations_[_type];
+        require(rewardRatios_[_stakerType] != 0);
+        delete rewardRatios_[_stakerType];
+        delete rewardDividendDurations_[_stakerType];
     }
     
-    function registerStaker(address _nodeAddress, byte32 _stakeType) public {
+    function registerStaker(address _nodeAddress, bytes32 _stakerType) public {
         checkDelegate(msg.sender, 1);
-        require(_nodeAddress != 0 && stakerExists_[_nodeAddress] == false && rewardRatio[_type] != 0);
+        require(_nodeAddress != 0 && stakerExists_[_nodeAddress] == false && rewardRatios_[_stakerType] != 0);
 
         uint currentTime = now;
-        uint duration = rewardDividendDurations_[_type];
-        uint ratio = rewardRatio[_stakeType];
+        uint duration = rewardDividendDurations_[_stakerType];
+        uint ratio = rewardRatios_[_stakerType];
 
         stakerExists_[_nodeAddress] = true;
         stakerIndex_[_nodeAddress] = stakerNos_;
-        stakers_[index] = StakerInfo(_nodeAddress, duration, currentTime, currentTime + duration, ratio);
+        stakers_[stakerNos_] = StakerInfo(_nodeAddress, duration, currentTime, currentTime + duration, ratio);
         stakerNos_++;
     }
 
@@ -92,9 +92,9 @@ contract PosStakerGroup is Delegated {
         uint index = stakerIndex_[_nodeAddress];
 
         if (index > 0) {
-            address lastAddress = stakers_[stakerNos_ - 1];
+            address lastAddress = stakers_[stakerNos_ - 1].adr_;
     
-            stakers_[index] = lastAddress;
+            stakers_[index].adr_ = lastAddress;
     
             delete stakerIndex_[_nodeAddress];
             delete stakers_[stakerNos_ - 1];
@@ -109,7 +109,7 @@ contract PosStakerGroup is Delegated {
     }
 
     function useStakerSPByIndex(uint _index, uint _amount) internal returns (uint) {
-        return DBStaker(stakers_[_index]).useStakePoint(_amount);
+        return DBStaker(stakers_[_index].adr_).useStakePoint(_amount);
     }
 
     function getTotalRemainingSP() internal constant returns (uint) {
@@ -118,7 +118,7 @@ contract PosStakerGroup is Delegated {
         uint total = 0;
 
         for (uint i = 1; i < stakerNos_; ++i) {
-            total = total.add(DBStaker(stakers_[i]).getRemainingSP());
+            total = total.add(DBStaker(stakers_[i].adr_).getRemainingSP());
         }
         return total;
     } 
