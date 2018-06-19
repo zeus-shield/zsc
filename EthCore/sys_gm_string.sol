@@ -1,12 +1,12 @@
-/*
+        /*
 Copyright (c) 2018, ZSC Dev Team
 */
 
 pragma solidity ^0.4.21;
 
-import "./sys_com_module.sol";
+import "./sys_gm_base.sol";
 
-contract SysGmString is SysComModule {
+contract SysGmString is SysGmBase {
 
     struct ParameterValues {
         uint count_;
@@ -32,7 +32,7 @@ contract SysGmString is SysComModule {
 
     function SysGmString(bytes32 _name) public SysComModule(_name) {}
 
-    function checkHolder(bytes32 _dbName, bytes32 _userName, address _holder) internal view {
+    function checkHolder(bytes32 _dbName, bytes32 _userName, address _holder) internal constant {
         require(_holder == userHolders_[_dbName][_userName].holder_);
     }
 
@@ -73,14 +73,14 @@ contract SysGmString is SysComModule {
         return true;
     }
 
-    function numEntityParameters(bytes32 _dbName, bytes32 _userName, bytes32 _enName) public view returns (uint) {
+    function numEntityParameters(bytes32 _dbName, bytes32 _userName, bytes32 _enName) public constant returns (uint) {
         /* check holder */
         checkHolder(_dbName, _userName, msg.sender);
 
         return  entitys_[_dbName][_userName][_enName].count_;
     }
 
-    function getEntityParameterValue(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public view returns (string) {
+    function getEntityParameterValue(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public constant returns (string) {
         /* check holder */
         checkHolder(_dbName, _userName, msg.sender);
 
@@ -92,7 +92,7 @@ contract SysGmString is SysComModule {
         return str;
     }
 
-    function getEntityParameterByIndex(bytes32 _dbName, bytes32 _userName, bytes32 _enName, uint _index) public view returns (bytes32) {
+    function getEntityParameterByIndex(bytes32 _dbName, bytes32 _userName, bytes32 _enName, uint _index) public constant returns (bytes32) {
         /* check holder */
         checkHolder(_dbName, _userName, msg.sender);
 
