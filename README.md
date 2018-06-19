@@ -33,14 +33,8 @@ Official implementation for the solidity-based core part of the ZSC system, as w
             |-- pos_block_pool, pos_staker_group
                 |-- pos_base
             |-- sys_overlayer
-            |-- sys_com_base
-                |-- sys_com_module
-                    |-- sys_gm_wallet
-                    |-- sys_gm_simulator
-                |-- sys_com_group
-                    |-- sys_gm_db
-                    |-- sys_gm_factory
-                    |-- sys_gm_string
+            |-- sys_gm_base
+                |-- sys_gm_tpken
             |-- adm_base
             |-- app_proxy   
             |-- db_database
@@ -92,7 +86,9 @@ Official implementation for the solidity-based core part of the ZSC system, as w
     |-- zsc_html 
     |-- zsc_user
     |-- zsc_client
-        |-- zsc_agreements
+        |-- zsc_agreements_all
+        |-- zsc_agreements_provider
+        |-- zsc_agreements_receiver
         |-- zsc_block
         |-- zsc_element
         |-- zsc_pos
@@ -168,4 +164,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.05.15-05.23: re-construct/adjust architecture for sys_gm_*.sol; changed/updated files: WebAdm/adm_add_database.php, WebAdm/zsc_system_modules.php -> WebAdm/zsc_system_objects.php, WebAdm/zsc_html_modules.php -> WebAdm/zsc_html_objects.php; added file Database/sys_gm_string.sol;
 2018.05.24-05.29: add file WebAdm/adm_add_gm.php, WebAdm/adm_print_abi.php; change codes with reference to solidity compiler 4.21
 2018.05.30-06.12: conduct internal testing on the alpha-version
+2018.06.13-06.19: release the close-beta version to Rinkeby Etherume test network, not including the modules: pos, staker, sys_gm_token, sys_gm_simulator, wallet_eth, wallet_multisig; re-construct the "sys_gm_*" modules
 ```
