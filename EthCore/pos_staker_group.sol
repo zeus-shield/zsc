@@ -5,7 +5,6 @@ Copyright (c) 2018, ZSC Dev Team
 pragma solidity ^0.4.21;
 
 import "./delegate.sol";
-import "./plat_math.sol";
 
 contract DBStaker {
     function useStakePoint(uint _amount) public returns (uint);
@@ -14,21 +13,38 @@ contract DBStaker {
 }
 
 contract PosStakerGroup is Delegated {
+    uint private constant FULL_YEAR_IN_SECONDS = 86400 * 365;
+    uint private constant HALF_YEAR_IN_SECONDS = 86400 * 365 / 2;
+    uint private constant QUATER_YEAR_IN_SECONDS = 86400 * 365 / 4;
+
+    struct StakerInfo {
+        address adr_;
+        uint dividendDuration_;
+        uint startTime_;
+        uint endTime_;
+        uint rewardRate_;
+    }
+
     uint private stakerNos_;
     uint private spUsed_;
     uint private spRemaining_;
     uint private nextStakerForUseSP_;
-    mapping(address => uint) private stakerIndex_;
-    mapping(uint => address) private stakers_;
-    mapping(address => bool) private stakerExists_;
+    mapping(address => uint)    private stakerIndex_;
+    mapping(uint => StakerInfo) private stakers_;
+    mapping(address => bool)    private stakerExists_;
+    mapping(byte32 => uint)     private rewardRatios_;
+    mapping(byte32 => uint)     private rewardDividendDurations_;
 
     address private zscTokenContract_;
+    uint private rewardBasis_;
+
 
     // Constructor
     function PosStakerGroup() public {
         stakerNos_ = 0;
         spUsed_ = 0;
         spRemaining_ = 0;
+        rewardBasis_ = 1;
     } 
 
     function setZscTokenAddress(address _adr) public {
@@ -39,17 +55,32 @@ contract PosStakerGroup is Delegated {
     function numStakers() internal constant returns (uint) {
         return stakerNos_;
     }
-    
-    function registerStaker(address _nodeAddress) public {
-        checkDelegate(msg.sender, 1);
 
-        require(_nodeAddress != 0 && stakerIndex_[_nodeAddress] == 0);
-        uint index = stakerNos_;
+    function addStakeType(byte32 _type, uint _dividendDuration, uint _ratio) public {
+        checkDelegate(msg.sender, 1);
+        require(rewardRatio[_type] == 0 && _dividendDuration != 0 && _ratio != 0);
+        rewardRatios_[_type] = _ratio;
+        rewardDividendDurations_[_type] = _dividendDuration;
+    }
+
+    function removeStakeType(byte32 _type) public {
+        checkDelegate(msg.sender, 1);
+        require(rewardRatio[_type] != 0);
+        delete rewardRatio[_type];
+        delete rewardDividendDurations_[_type];
+    }
+    
+    function registerStaker(address _nodeAddress, byte32 _stakeType) public {
+        checkDelegate(msg.sender, 1);
+        require(_nodeAddress != 0 && stakerExists_[_nodeAddress] == false && rewardRatio[_type] != 0);
+
+        uint currentTime = now;
+        uint duration = rewardDividendDurations_[_type];
+        uint ratio = rewardRatio[_stakeType];
 
         stakerExists_[_nodeAddress] = true;
-        stakerIndex_[_nodeAddress] = index;
-
-        stakers_[index] = _nodeAddress;
+        stakerIndex_[_nodeAddress] = stakerNos_;
+        stakers_[index] = StakerInfo(_nodeAddress, duration, currentTime, currentTime + duration, ratio);
         stakerNos_++;
     }
 
