@@ -7,21 +7,12 @@ pragma solidity ^0.4.21;
 import "./pos_block.sol";
 
 contract PosBlockPool is Delegated {
-    struct BlockPool {
-        uint totalBlockNos_;
-        uint minedBlockNos_;
-        uint minedGasUsage_;
-        uint remaingGasUsage_;
-        uint rewardRate_;
-        uint dividendDuration_;
-        mapping(uint => address) blocks_;
-    }
-
-    uint private poolNos_;
-    mapping(uint => BlockPool) private pools_;
-    mapping(bytes32 => uint) private poolIndice_;
-    mapping(bytes32 => bool) private poolExists_;
-
+    uint totalBlockNos_;
+    uint minedBlockNos_;
+    uint minedGasUsage_;
+    uint remaingGasUsage_;
+    mapping(uint => address) blocks_;
+    
     ////////////////
     uint blockSizeLimit_;
 
@@ -30,35 +21,20 @@ contract PosBlockPool is Delegated {
         blockSizeLimit_ = 1024 * 1024 * 2;
     } 
 
-    function createPool(bytes32 _name, uint _dividendDuration, uint _rewardRate /* x / 1000: x = 0, 1, 2, ..., 1000) */) public {
-        checkDelegate(msg.sender, 1);
-        require(poolExists_[_name]);
-
-        poolIndice_[_name] = poolNos_;
-        pools_[poolNos_].totalBlockNos_ = 0;
-        pools_[poolNos_].minedBlockNos_ = 0;
-        pools_[poolNos_].minedGasUsage_ = 0;
-        pools_[poolNos_].remaingGasUsage_ = 0;
-        pools_[poolNos_].dividendDuration_ = _dividendDuration;
-        pools_[poolNos_].rewardRate_ = _rewardRate;
-    }
-
-    function getBlockByIndex(uint _poolIndex, uint _blockIndex) internal constant returns (address) {
-        require(_poolIndex < poolNos_);
-        require(_blockIndex < pools_[_poolIndex].totalBlockNos_);
+    function getBlockByIndex(uint _blockIndex) internal constant returns (address) {
+        require(_blockIndex < totalBlockNos_);
         
-        return pools_[_poolIndex].blocks_[_blockIndex];
+        return blocks_[_blockIndex];
     }
 
-    function registerNewBlock(uint _poolIndex) private returns (address) {
-        uint blockIndex = pools_[_poolIndex].totalBlockNos_;
+    function registerNewBlock() private returns (address) {
         address adr = new PosBlock();
-
         require(adr != address(0));
+
         PosBlock(adr).setBlockSizeLimit(blockSizeLimit_);
 
-        pools_[_poolIndex].blocks_[blockIndex] = adr;
-        pools_[_poolIndex].totalBlockNos_++;
+        blocks_[totalBlockNos_] = adr;
+        totalBlockNos_++;
         return adr;
     }
 
@@ -66,26 +42,25 @@ contract PosBlockPool is Delegated {
         blockSizeLimit_ = _sizeLimit;
     }
 
-    function registerNewTx(bool _input, uint _poolIndex, bytes32 _tx, address _sender, address _receiver, uint _gasUsage) public {
+    function registerGasUsage(address _sender, uint _gasUsage) public {
         checkDelegate(msg.sender, 1);
 
-        pools_[_poolIndex].remaingGasUsage_ += _gasUsage;
-        uint blockIndex;
+        remaingGasUsage_ += _gasUsage;
+        
         address myBlock;
-        if (pools_[_poolIndex].totalBlockNos_ == 0) {
-            myBlock = registerNewBlock(_poolIndex);
+        if (totalBlockNos_ == 0) {
+            myBlock = registerNewBlock();
         } else {
-            blockIndex = pools_[_poolIndex].totalBlockNos_ - 1;
-            myBlock = getBlockByIndex(_poolIndex, blockIndex);
+            myBlock = getBlockByIndex(totalBlockNos_ - 1);
            
             if (PosBlock(myBlock).checkIsFull(_gasUsage)) {
-                address adr = registerNewBlock(_poolIndex);
+                address adr = registerNewBlock();
                 PosBlock(myBlock).setNextBlock(adr);
                 PosBlock(adr).setPreviousBlock(myBlock);
                 myBlock = adr;
             }
         }
-        PosBlock(myBlock).registerTx(_input, _tx, _sender, _receiver, _gasUsage);
+        PosBlock(myBlock).registerTx(_sender, _gasUsage);
         pools_[_poolIndex].totalBlockNos_++;
     }
 
