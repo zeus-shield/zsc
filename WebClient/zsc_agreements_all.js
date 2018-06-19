@@ -152,16 +152,18 @@ ZSCAgreementAll.prototype.loadAllAgreementsHtml = function(elementId, showFunc, 
     text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td> </tr>'
 
     for (var i = 0; i < this.allAgrNos; ++i) {
-        text += '<tr>'
-        text += '   <td><text>' + i + '</text></td>'
-        text += '   <td><text>' + this.allAgrNames[i] + '</text></td>'
-        text += '   <td><text>' + this.allAgrStatus[i] + '</text></td>'
-        text += '   <td><button type="button" onClick="' + showPrefix + this.allAgrNames[i] + showSuffix + '">Details</button></td>'
-        if (this.userType == "receiver") {
-            text += '   <td><button type="button" onClick="' + purchasePrefix + this.allAgrNames[i] + purchaseSuffix + '">Purchase</button></td>'
+        if (this.allAgrStatus[i] == "PUBLISHED") {
+            text += '<tr>'
+            text += '   <td><text>' + i + '</text></td>'
+            text += '   <td><text>' + this.allAgrNames[i] + '</text></td>'
+            text += '   <td><text>' + this.allAgrStatus[i] + '</text></td>'
+            text += '   <td><button type="button" onClick="' + showPrefix + this.allAgrNames[i] + showSuffix + '">Details</button></td>'
+            if (this.userType == "receiver") {
+                text += '   <td><button type="button" onClick="' + purchasePrefix + this.allAgrNames[i] + purchaseSuffix + '">Purchase</button></td>'
+            }
+            text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td></tr>'
+            text += '</tr>'
         }
-        text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td></tr>'
-        text += '</tr>'
     }
     text += '</table></div>'
 
