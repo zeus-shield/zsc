@@ -45,7 +45,7 @@ function ZSCSetup(logRecorderAdr, timerAdr, zscTokenAdr, adrs) {
     this.ControlApisAdvAdr   = adrs[7];
     this.account = web3.eth.accounts[0];
     this.gasPrice = cC_getGasPrice(20);
-    this.gasLimit = cC_getGasLimit(743);
+    this.gasLimit = cC_getGasLimit(700);
 }
 
 ZSCSetup.prototype = new ZSCJsBase();
@@ -136,10 +136,10 @@ ZSCSetup.prototype.setControlAbisAdvAbi = function(hashID) {
 }  
 
 ZSCSetup.prototype.setZSCAmountToUser = function(amount, hashID) {
-    var myContract = web3.eth.contract(cC_getContractAbi("AdmAdv"));
-    var myAdmAdv = myContract.at(this.AdmAdvAdr);
+    var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
+    var myControlApi = myContract.at(this.ControlApisAdvAdr);
 
-    myAdmAdv.setZSCAmountToUser(amount, 
+    myControlApi.setZSCAmountToUser(amount, 
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result) { 
             if(!error) cC_showHashResultTest(hashID, result, function(){console.log("ok");});
@@ -195,7 +195,7 @@ ZSCSetup.prototype.initTestZSCToken = function(hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("TestToken"));
     var myTestToken = myContract.at(this.zscTokenAdr);
 
-    myTestToken.allocate(this.AdmAdvAdr, 100 * 1000 * 1000 * Math.pow(10, 18), 
+    myTestToken.allocate(this.ControlApisAdvAdr, 100 * 1000 * 1000 * Math.pow(10, 18), 
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){});
