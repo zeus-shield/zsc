@@ -14,7 +14,7 @@ function ZSCAgreementReceiver(nm, abi, adr) {
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
     this.gasPrice = bF_getGasPrice(20);
-    this.gasLimit = bF_getGasLimit(720);
+    this.gasLimit = bF_getGasLimit(700);
 }
 
 ZSCAgreementReceiver.prototype.getUserName = function() {return this.userName;}
@@ -131,7 +131,7 @@ ZSCAgreementReceiver.prototype.loadAgreementsHtml = function(elementId, funcShow
     var funcShowParaPrefix = funcShowPara + "('"; 
     var funcShowParaSuffix = "')";
 
-    var titlle = "receiver [" + this.userName + "] - published agreements: "
+    var titlle = "receiver [" + this.userName + "] - purchased agreements: "
 
     var text ="";
     text += '<div class="well"> <text>' + titlle + ' </text></div>';
