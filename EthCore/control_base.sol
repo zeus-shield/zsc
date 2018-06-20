@@ -92,6 +92,10 @@ contract ControlBase is ControlInfo {
         addLog("initControlApisAdrs ", true);
     }
 
+    function getZSCTokenAddress() internal constant returns (address) {
+        return zscTokenAddress_;
+    }
+ 
     function mapFactoryDatabase(address _factoryAdr, bytes32 _dbName, uint _priority) internal {
         address dbAdr = databases_[_dbName];
         DBFactory(_factoryAdr).setDatabase(dbAdr);
@@ -168,7 +172,7 @@ contract ControlBase is ControlInfo {
         ndAdr = getDBFactory(_type).createNode(_nodeName, parentAdr);
         require(ndAdr != 0);
 
-        enableZSCWallet(_nodeName, ndAdr);
+        //enableZSCWallet(_nodeName, ndAdr);
         return ndAdr;
     }
 
@@ -444,7 +448,13 @@ contract ControlBase is ControlInfo {
 
         walletName   = formatWalletName(_enName, tokenSymbol);
         tokenAdr     = address(getDBNode(dbName_, walletName));
-        tokenBalance = DBNode(tokenAdr).getBlance().div(1 ether);
+
+        if (tokenAdr == address(0)) {
+            status = "false";
+            tokenBalance = 0;
+        } else {
+           tokenBalance = DBNode(tokenAdr).getBlance().div(1 ether);
+        }
 
         string memory str ="";
         str = PlatString.append(str, "info?status=", PlatString.bytes32ToString(status),      "&");
