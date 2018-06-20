@@ -214,6 +214,12 @@
     }
     */
 
+    function enableTestZSCWallet(hashId) {
+        zscWalletGM.enableUserWallet(hashId, function() {
+            loadHtmlPageBody("wallet")
+        });
+    }
+
     function publishAgreement(agrName) {
         zscAgrsProGM.publishAgreement(agrName, function(result) {
             loadHtmlPageBody("agreement-provider")
@@ -277,8 +283,9 @@
             switch(tag) {
                 case "wallet": 
                     zscWalletGM.setUserType(zscUser.getUserType());
+                    zscWalletGM.setUserName(zscUser.getUserName());
                     zscWalletGM.loadTokenInfoByIndex(0, function() {
-                        zscWalletGM.loadWalletsHtml("PageBody", "submitTransferValue", "showTransactions");
+                        zscWalletGM.loadWalletsHtml("PageBody", "submitTransferValue", "showTransactions", "enableTestZSCWallet");
                     });
                     break;
 
