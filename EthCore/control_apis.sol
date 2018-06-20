@@ -7,6 +7,8 @@ pragma solidity ^0.4.21;
 import "./control_base.sol";
 
 contract ControlApis is ControlBase {
+    uint allocatedZSC_;
+
     /// @dev Constructor
     /// @param _name The name of the controller
     function ControlApis(bytes32 _name) public ControlBase(_name) {
@@ -14,6 +16,11 @@ contract ControlApis is ControlBase {
 
     function setUserStatus(bytes32 _user, bool _tag) public returns (bool);
     function getUserStatus(bytes32 _user) public constant returns (bool);
+
+    function setZSCAmountToUser(uint _allocatedZSC) public { 
+        checkDelegate(msg.sender, 1);
+        allocatedZSC_ = _allocatedZSC * 1 ether;
+    }
 
     /// @dev Set the zsc adm address
     /// @param _adm The address of the zsc adm 
@@ -117,21 +124,21 @@ contract ControlApis is ControlBase {
         return ndAdr;
     }
 
-    //Disabled during alpha-test
-    /* 
-    function enableElementWallet(bytes32 _userName, bytes32 _tokeSymbol, address _extraAdr) public returns (address) {
+    function enableUserZSCWallet(bytes32 _userName) public returns (address) {
         checkRegistered(_userName, msg.sender);
-        
-        address creatorAdr;
-        if (isDelegate(msg.sender, 1)) {
-            creatorAdr = _extraAdr;
-        } else {
-            creatorAdr = msg.sender;
-        }
 
-        return enableWalletByUser(_userName, _tokeSymbol, creatorAdr);
+        address userAdr = address(getDBNode(getCurrentDBName(), _userName));
+        require(userAdr != 0);
+
+        address walletAdr = enableZSCWallet(_userName, userAdr);
+        address tokenAddress = getZSCTokenAddress();
+
+        require(tokenAddress != address(0) && allocatedZSC_ >0);
+        require(ERC20Interface(tokenAddress).balanceOf(address(this)) > allocatedZSC_);
+
+        ERC20Interface(tokenAddress).transfer(walletAdr, allocatedZSC_);
+        return walletAdr;
     }
-    */
 
     /// @dev Get the element by its address
     /// @param _adr The address of the existing element
