@@ -15,12 +15,14 @@ function ZSCWallet(nm, abi, adr) {
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
     this.gasPrice = bF_getGasPrice(20);
-    this.gasLimit = bF_getGasLimit(720);
+    this.gasLimit = bF_getGasLimit(700);
 }
 
 ZSCWallet.prototype = new ZSCClient();
 
 ZSCWallet.prototype.getUserName = function() {return this.userName;}
+
+ZSCWallet.prototype.setUserName = function(nm) {this.userName = nm; }
 
 ZSCWallet.prototype.setUserType = function(type) {return this.userType = type;}
 
@@ -141,6 +143,22 @@ ZSCWallet.prototype.loadTokenInfoByIndex = function(index, func) {
         });
 }
 
+ZSCWallet.prototype.enableUserWallet = function(hashId, func) {
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(this.contractAbi).at(this.contractAdr);
+
+    myControlApi.enableUserZSCWallet(gm.userName,
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
+        function(error, result){ 
+            if(!error) {
+                bF_showHashResult(hashId, result, callBack);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
+
 /*
 "info?status=", "symbol=", "adr=", "balance=",    
 */
@@ -167,12 +185,15 @@ ZSCWallet.prototype.parserTokenBalanceInfoByIndex = function(gm, urlinfo, index)
     return true;
 }
 
-ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2)  {
+ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2, func3)  {
     var transPrefix = func1 + "('"; 
     var transSuffix = "')";
 
     var showTransPrefix = func2 + "('";
     var showTransSuffix = "')";
+
+    var enableWalletPrefix = func3 + "('";
+    var enableWalletSuffix = "')";
 
     var symbol;
     var adr;
@@ -193,10 +214,12 @@ ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2)  {
         sentoId = symbol + "Dest";
         amountId = symbol + "Amount";
 
+        text += '---------------</text><br>'
         if (this.tokenStatus[i] == "false") {
-            text += '<button type="button" onClick="' + enableWalletPrefix + symbol + "', '" + hashId + showTransSuffix + '">Enable</button>'
+            text += '<button type="button" onClick="' + enableWalletPrefix + 'EnableZSCWalletHash' + "', '" + hashId + enableWalletSuffix + '">Enable TestZSC Wallet</button><br>'
+            text += '<text id="EnableZSCWalletHash" value = "log:"> </text> <br>';
+            text += '<text>---------------</text><br>'
         } else {
-            text += '---------------</text><br>'
             text += 'Symbol: <text>Test' + symbol + '</text><br>'
             text += 'Address: <text>0x' + adr  + '</text><br>'   
             text += 'Balance: <text>' + balance + '</text><br><br>'
@@ -205,9 +228,10 @@ ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2)  {
             text += '---------------</text><br>'
             text += 'Dest-adr<input id="' + sentoId + '"></input> <br> Amount:<input id="' + amountId + '"></input> <br>'
             text += '  <button type="button" onClick="' + transPrefix + symbol + "', '" + sentoId + "', '" + amountId + "', '" + hashId + transSuffix + '">  Transfer  </button> <br>'
-            text += '<text id="'+ hashId + '" value = "log:"> </text> <br>'
-            text += '---------------</text><br>'
+            text += '<text id="'+ hashId + '" value = "log:"> </text> <br>';
+            text += '<text>---------------</text><br>'
         }
+
     }
     text += '</div>'
 
