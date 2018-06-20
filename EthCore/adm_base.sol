@@ -58,12 +58,6 @@ contract AdmBase is Object {
         controlApisAdr_ = _controlApisAdr;
     }
 
-    function setZSCAmountToUser(uint _allocatedZSC) public { 
-        checkDelegate(msg.sender, 1);
-
-        allocatedZSC_ = _allocatedZSC * 1 ether;
-    }
-
     function setControlApisFullAbi(string _fullAbi) public { 
         checkDelegate(msg.sender, 1);
 
@@ -106,9 +100,7 @@ contract AdmBase is Object {
         //createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr)
         testUsers_[index].nodeAdr_ = ControlApis(controlApisAdr_).createUserNode(_type, userName, msg.sender);
 
-        address userZSCWalletAdr = ControlApis(controlApisAdr_).getUserWalletAddress(userName, "ZSC");
-        
-        ERC20Interface(zscTestTokenAddress_).transfer(userZSCWalletAdr, allocatedZSC_);
+        //address userZSCWalletAdr = ControlApis(controlApisAdr_).getUserWalletAddress(userName, "ZSC");
         return;
 
         /*
