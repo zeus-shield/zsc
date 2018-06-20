@@ -30,6 +30,8 @@ contract AbisForUserControlApis {
     /// @dev Creat an element
     function createUserNode(bytes32 _factoryType, bytes32 _userName, address _extraAdr) public returns (address);
 
+    function enableUserZSCWallet(bytes32 _userName) public returns (address);
+
     function createElementNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName, bytes32 _extraInfo) public returns (address);
 
     function publishAgreement(bytes32 _userName, bytes32 _agrName) public;
