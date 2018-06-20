@@ -12,7 +12,7 @@ function ZSCUser(admAdr) {
     this.account = web3.eth.accounts[0];
     this.myAdmAdv = web3.eth.contract(this.getLoginAbi()).at(this.admAdr);
     this.gasPrice = bF_getGasPrice(20);
-    this.gasLimit = bF_getGasLimit(740);
+    this.gasLimit = bF_getGasLimit(700);
 }
 
 ZSCUser.prototype.getUserName = function() { return this.userName; }

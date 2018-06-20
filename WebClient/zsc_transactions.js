@@ -17,7 +17,7 @@ function ZSCTransactions(nm, abi, adr) {
     this.contractAbi = JSON.parse(abi);
     this.account = web3.eth.accounts[0];
     this.gasPrice = bF_getGasPrice(20);
-    this.gasLimit = bF_getGasLimit(720);
+    this.gasLimit = bF_getGasLimit(700);
 }
 
 ZSCTransactions.prototype.getUserName = function() {return this.userName;}
