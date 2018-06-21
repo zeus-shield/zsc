@@ -130,7 +130,11 @@ contract ControlApis is ControlBase {
         address userAdr = address(getDBNode(getCurrentDBName(), _userName));
         require(userAdr != 0);
 
+        require(getUserWalletAddress(_userName, "ZSC") == address(0));
+
         address walletAdr = enableZSCWallet(_userName, userAdr);
+        require(userAdr != 0);
+
         address tokenAddress = getZSCTokenAddress();
 
         require(tokenAddress != address(0) && allocatedZSC_ >0);
@@ -435,6 +439,10 @@ contract ControlApis is ControlBase {
 
         bytes32 walletName = formatWalletName(_userName, _tokenSymbol);
         return prepareTransationfoByIndex(walletName, _index);
+    }
+
+    function getModuleAddresses() public constant returns (string) {
+        return prepareModulesAddresses();
     }
 
     /*
