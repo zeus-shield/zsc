@@ -491,4 +491,27 @@ contract ControlBase is ControlInfo {
         str = PlatString.append(str, "receiver=",  PlatString.addressToString(receiver), "&");
         return str;
     }
+
+    function prepareModulesAddresses() internal constant returns (string) {
+        address dbAdr = address(getDBDatabase(dbName_));
+        address factoryProAdr = address(getDBFactory("provider"));
+        address factoryRecAdr = address(getDBFactory("receiver"));
+        address factoryTmpAdr = address(getDBFactory("template"));
+        address factoryAgrAdr = address(getDBFactory("agreement"));
+        address factoryErc20Adr = address(getDBFactory("wallet-erc20"));
+
+        string memory str ="adrs?";
+        str = PlatString.append(str, "testZSC=",      PlatString.addressToString(zscTokenAddress_), "&");
+        str = PlatString.append(str, "log-becorder=", PlatString.addressToString(logRecorder_),     "&");
+        str = PlatString.append(str, "adm-base=",     PlatString.addressToString(bindedAdm_),       "&");
+        str = PlatString.append(str, "control-apis=", PlatString.addressToString(address(this)),    "&");
+        str = PlatString.append(str, "database=",     PlatString.addressToString(dbAdr),            "&");
+        str = PlatString.append(str, "factory-provider=",    PlatString.addressToString(factoryProAdr),    "&");
+        str = PlatString.append(str, "factory-receiver=",    PlatString.addressToString(factoryRecAdr),    "&");
+        str = PlatString.append(str, "factory-template=",    PlatString.addressToString(factoryTmpAdr),    "&");
+        str = PlatString.append(str, "factory-agreement=",   PlatString.addressToString(factoryAgrAdr),    "&");
+        str = PlatString.append(str, "factory-wallet-erc20=",PlatString.addressToString(factoryErc20Adr),  "&");
+        return str;
+    }
+    
 }
