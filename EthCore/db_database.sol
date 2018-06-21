@@ -66,7 +66,8 @@ contract DBDatabase is Object {
     function kill() public { 
         checkDelegate(msg.sender, 1);
         
-        destroyNode(rootNode_);
+        //destroyNode(rootNode_);
+        destroyAllNodes();
         super.kill();
     }
     
@@ -100,9 +101,9 @@ contract DBDatabase is Object {
     function _addNode(address _node) public {
         checkDelegate(msg.sender, 1);
 
-        require(nodeExists_[_node] == false);
-
         bytes32 ndName = Object(_node).name();
+        require(nodeExists_[_node] == false);
+        require(nodeAddress_[ndName] == address(0));
 
         nodes_.push(_node);
         nodeAddress_[ndName] = _node;
@@ -137,5 +138,12 @@ contract DBDatabase is Object {
         delete _node;
 
         return true;
+    }
+
+    function destroyAllNodes() internal {
+        uint len = nodes_.length;
+        for (uint i = 0; i < len; ++i) {
+            delete nodes_[i];
+        }
     }
 }
