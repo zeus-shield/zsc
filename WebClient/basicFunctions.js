@@ -10,8 +10,8 @@ function bF_getEthAccount() {
     return account;
 }
 
-function bF_getGasPrice(limit) {
-    return limit * 1000000000; //limits * gwei
+function bF_getGasPrice() {
+    return 30 * 1000000000; //30 * gwei
 }
 
 function bF_getGasLimit(limit) {
