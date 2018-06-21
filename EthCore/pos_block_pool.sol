@@ -45,7 +45,7 @@ contract PosBlockPool is Delegated {
     function registerGasUsage(address _sender, uint _gasUsage) public {
         checkDelegate(msg.sender, 1);
 
-        remaingGasUsage_ += _gasUsage;
+        remaingGasUsage_ = remaingGasUsage_.add(_gasUsage);
 
         address myBlock;
         if (totalBlockNos_ == 0) {
