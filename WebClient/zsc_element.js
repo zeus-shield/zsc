@@ -15,7 +15,7 @@ function ZSCElement(userName, controlApisAdvAbi, controlApisAdvAdr) {
     this.account = web3.eth.accounts[0];
     this.contractAdr = controlApisAdvAdr;
     this.contractAbi = JSON.parse(controlApisAdvAbi);
-    this.gasPrice = bF_getGasPrice(20);
+    this.gasPrice = bF_getGasPrice();
     this.gasLimit = bF_getGasLimit(700);
 }
 
