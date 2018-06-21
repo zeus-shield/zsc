@@ -6,6 +6,7 @@ pragma solidity ^0.4.21;
 
 contract AbisForUserControlApis {
     function setUserStatus(bytes32 _user, bool _tag) public returns (bool);
+
     function getUserStatus(bytes32 _user) public constant returns (bool);
 
     /// @dev Set the zsc adm address
@@ -64,6 +65,7 @@ contract AbisForUserControlApis {
     /// @dev Get the number of paramters of an element
     /// @param _enName The name of the existing element
     function numElementParameters(bytes32 _userName, bytes32 _enName) public constant returns (uint);
+
     function getElementParameterNameByIndex(bytes32 _userName, bytes32 _enName, uint _index) public constant returns (bytes32);
     /// @dev Transfer a particular amount from a user wallet to the destination address
     /// @param _dest The destination address
@@ -79,6 +81,7 @@ contract AbisForUserControlApis {
     function getTemplateNameByIndex(bytes32 _userName, uint _index) public constant returns (bytes32);
 
     function numAgreements(bytes32 _userName) public constant returns (uint);
+    
     function getAgreementNameByIndex(bytes32 _userName, uint _index) public constant returns (bytes32);
 
     /// @dev Buy an insurance agreement from a provider
@@ -91,8 +94,11 @@ contract AbisForUserControlApis {
     function getTokenBalanceInfoByIndex(bytes32 _userName, uint _index) public constant returns (string);
 
     function numUserTransactions(bytes32 _userName, bytes32 _tokenSymbol) public constant returns (uint);
+
     function getUserTransactionByIndex(bytes32 _userName, bytes32 _tokenSymbol, uint _index) public constant returns (string);
+
     function setElementMultipleParameters(bytes32 _userName, bytes32 _enName, string _info) public;
 
+    function getModuleAddresses() public constant returns (string);
 }
 
