@@ -24,7 +24,7 @@ ZSCWallet.prototype.getUserName = function() {return this.userName;}
 
 ZSCWallet.prototype.setUserName = function(nm) {this.userName = nm; }
 
-ZSCWallet.prototype.setUserType = function(type) {return this.userType = type;}
+ZSCWallet.prototype.setUserType = function(type) {this.userType = type;}
 
 ZSCWallet.prototype.submitTransferValue = function(tokenSymbol, destAddress, amount, logId, func) {  
     var gm = this;
@@ -221,7 +221,7 @@ ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2, func3)  
             text += '<text>---------------</text><br>'
         } else {
             text += 'Symbol: <text>Test' + symbol + '</text><br>'
-            text += 'Address: <text>0x' + adr  + '</text><br>'   
+            text += 'Address: <text> <a href="https://rinkeby.etherscan.io/address/0x' + adr + '" target="_blank" >0x' + adr + '</a></text><br>'
             text += 'Balance: <text>' + balance + '</text><br><br>'
             //text += '---------------</text><br>'
             //text += '  <button type="button" onClick="' + showTransPrefix + symbol + "', '" + hashId + showTransSuffix + '">Show Transactions</button><br><br>'
