@@ -28,6 +28,10 @@ echo $htmlObjects->loadScriptFiles();
         userManager.addUser(usernameId, passwordId, elementId);
     }
 
+    function addUserRandom(prefixId, suffixLenId, passLenId, hashId) {
+        userManager.addUserRandom(prefixId, suffixLenId, passLenId, hashId);
+    }
+
     function setUserStatus(userName, status, elementId) {
         userManager.setUserActiveState(userName, status, elementId);   
     }
@@ -55,6 +59,14 @@ echo $htmlObjects->loadScriptFiles();
         <text>Password</text>  <input type="text" id="AddPassword" value="test"></input> <br>
         <button type="button" onClick="addUser('AddUsername', 'AddPassword', 'AddUserhash')">Add a user</button> <br>
         <text id="AddUserhash"></text>
+    </div>
+
+    <div class="well">
+        <text>Prefix</text>  <input type="text" id="UserPrefix" value="zsc-"></input> <br>
+        <text>Suffix-length</text>  <input type="text" id="UserLength" value="6"></input> <br>
+        <text>Pass-length</text>  <input type="text" id="PassLength" value="10"></input> <br>
+        <button type="button" onClick="addUserRandom('UserPrefix', 'UserLength', 'PassLength', 'AddUserRandomhash')">Random add a user</button> <br>
+        <text id="AddUserRandomhash"></text>
     </div>
 
     <div class="well" id="UserManagement"> </div>
