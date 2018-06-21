@@ -21,6 +21,7 @@
 <script type="text/javascript" src="./zsc_user.js"></script>
 <script type="text/javascript" src="./zsc_view_agreement.js"></script>
 <script type="text/javascript" src="./zsc_wallet.js"></script>
+<script type="text/javascript" src="./zsc_module_adrs.js"></script>
 <script type="text/javascript">
 
     var web3;
@@ -41,6 +42,7 @@
     var zscBlockGM;
     var zscPosGM;
     var zscViewAgrsGM;
+    var zscModuleAdrGM;
 
     /*tag:
     logon, wallet, profile, templates, agreements
@@ -70,6 +72,7 @@
                 zscAgrsRecGM = new ZSCAgreementReceiver(userName, fullAbi, controlApisAdvAdr);
                 zscAgrsAllGM = new ZSCAgreementAll(userName, fullAbi, controlApisAdvAdr);
                 zscTransGM  = new ZSCTransactions(userName, fullAbi, controlApisAdvAdr);
+                zscModuleAdrGM = new ZSCModuleAdrs(userName, fullAbi, controlApisAdvAdr);
                 //
                 //zscViewAgrsGM = new ZSCViewAgreement(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
                 /*
@@ -281,6 +284,18 @@
 
         } else {
             switch(tag) {
+                case "logout": 
+                    window.location.reload(true);
+                    break;
+                
+                case "module-adrs": 
+                    zscModuleAdrGM.setUserType(zscUser.getUserType());
+                    zscModuleAdrGM.setUserName(zscUser.getUserName());
+                    zscModuleAdrGM.getModuleAdrs(function() {
+                        zscModuleAdrGM.loadModuleAdrsHtml("PageBody");
+                    });
+                    break;
+
                 case "wallet": 
                     zscWalletGM.setUserType(zscUser.getUserType());
                     zscWalletGM.setUserName(zscUser.getUserName());
