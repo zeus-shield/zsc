@@ -9,6 +9,7 @@ function ZSCAgreementProvider(nm, abi, adr) {
     this.agrNos = 0;
     this.agrNames = [];
     this.balance = [];
+    this.status = [];
     this.itemTags = [];
     this.account = web3.eth.accounts[0];
     this.contractAdr = adr;
@@ -49,15 +50,17 @@ ZSCAgreementProvider.prototype.loadAgreements = function(func) {
             for (var i = 0; i < gm.agrNos; ++i) {
                 gm.getAgrNameByIndex(gm, i, function(gm, j){
                     gm.getAgrBalance(gm, j, function(gm, index) {
-                        if (gm.checkAllItemTags(gm) == true) {
-                            callBack()
-                        }
+                        gm.getAgrStatus(gm, j, function(gm, index) {
+                            if (gm.checkAllItemTags(gm) == true) {
+                                callBack()
+                            }
                         
-                        /*
-                        if (index == gm.agrNos - 1) {
-                            callBack();
-                        }
-                        */
+                            /*
+                            if (index == gm.agrNos - 1) {
+                                callBack();
+                            }
+                            */
+                        });
                     });
                 });
             }
@@ -106,6 +109,22 @@ ZSCAgreementProvider.prototype.getAgrBalance = function(gm, index, func) {
         function(error, result){ 
             if(!error) {
                 gm.balance[index] = result.toString(10);
+                callBack(gm, index);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
+
+ZSCAgreementProvider.prototype.getAgrStatus = function(gm, index, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.getElementParameter(gm.userName, gm.agrNames[index], "status",
+        {from: gm.account},
+        function(error, result){ 
+            if(!error) {
+                gm.status[index] = web3.toUtf8(result);
                 gm.itemTags[index] = true;
                 callBack(gm, index);
             } else {
@@ -166,18 +185,19 @@ ZSCAgreementProvider.prototype.loadAgreementsHtml = function(elementId, funcPubl
 
     text += '<table align="center" style="width:600px;min-height:30px">'
     text += '<tr>'
-    text += '   <td>Name</td> <td>Balance </td> <td>Publish </td> <td>Details </td>'
+    text += '   <td>Name</td> <td>Balance </td> <td>Status </td>  <td>Publish </td> <td>Details </td>'
     text += '</tr>'
-    text += '<tr> <td>---</td> <td>---</td> <td>---</td> </tr>'
+    text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td>  </tr>'
 
     for (var i = 0; i < this.agrNos; ++i) {
         text += '<tr>'
         text += '   <td><text>' + this.agrNames[i]  + '</text></td>'
         text += '   <td><text>' + this.balance[i]  + '</text></td>'
+        text += '   <td><text>' + this.status[i]  + '</text></td>'
         text += '   <td><button type="button" onClick="' + funcPublishPrefix + this.agrNames[i] + funcPublishSuffix + '">Publish</button></td>'
         text += '   <td><button type="button" onClick="' + funcSetParaPrefix + this.agrNames[i] + funcSetParaSuffix + '">Show</button></td>'
         text += '</tr>'
-        text += '<tr> <td>---</td> <td>---</td> <td>---</td>  </tr>'
+        text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td>  </tr>'
     }
     text += '</table></div>'
 
