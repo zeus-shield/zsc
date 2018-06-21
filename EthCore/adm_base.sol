@@ -47,6 +47,8 @@ contract AdmBase is Object {
 
     function toHexx(bytes32 _value) internal constant returns (bytes32);
 
+    function prepareRandomCharacters() internal;
+
     function getUserIndex(bytes32 _hexx) internal constant returns (uint) { 
         return userIndex_[_hexx]; 
     }
@@ -56,6 +58,8 @@ contract AdmBase is Object {
 
         zscTestTokenAddress_ = _zscTokenAdr; 
         controlApisAdr_ = _controlApisAdr;
+
+        prepareRandomCharacters();
     }
 
     function setControlApisFullAbi(string _fullAbi) public { 
@@ -85,6 +89,8 @@ contract AdmBase is Object {
         testUsers_[userNos_] = TestUserInfo(_user, _pass, "added", 0, "false", address(0), address(0), address(0), address(0));
         userNos_++;
     }
+
+    function addUserRandom(bytes32 _prefix, uint _nameLenght, uint _passLength) public;
 
     function activeByUser(bytes32 _hexx, bytes32 _type) public {
         checkAdded(_hexx);
