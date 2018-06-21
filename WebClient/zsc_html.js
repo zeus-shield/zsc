@@ -26,8 +26,11 @@ ZSCHtml.prototype.loadPageHeader = function(funcName, userType, doesUserApplied)
     text = '<div class="well">'
 
     if (doesUserApplied == false) {
+        text += '   <button type="button" onClick="' + funcPrefix + "'module-adrs'" + funcSuffix + '">Show Module Adrs</button> '
+        text += '   <button type="button" onClick="' + funcPrefix + "'logout'" + funcSuffix + '">Log Out</button>'
+        text += '</div><div class="well">'
         text += '   <button type="button" onClick="' + funcPrefix + "'apply-provider' " + funcSuffix + '">Apply for provider</button> <br><br>'
-        text += '   <button type="button" onClick="' + funcPrefix + "'apply-receiver' " + funcSuffix + '">Apply for receiver</button> <br><br>'
+        text += '   <button type="button" onClick="' + funcPrefix + "'apply-receiver' " + funcSuffix + '">Apply for receiver</button> <br>'
     } else {
         text += '   <button type="button" onClick="' + funcPrefix + "'wallet'" + funcSuffix + '">Wallate</button>'
         text += '   <button type="button" onClick="' + funcPrefix + "'parameter-profile'" + funcSuffix + '">Profile</button>'
@@ -37,6 +40,8 @@ ZSCHtml.prototype.loadPageHeader = function(funcName, userType, doesUserApplied)
             text += '   <button type="button" onClick="' + funcPrefix + "'agreement-receiver'" + funcSuffix + '">Agreements</button>'
         }
         text += '   <button type="button" onClick="' + funcPrefix + "'agreement-all'" + funcSuffix + '">Show All Agreements</button>'
+        text += '   <button type="button" onClick="' + funcPrefix + "'module-adrs'" + funcSuffix + '">Show Module Adrs</button>'
+        text += '   <button type="button" onClick="' + funcPrefix + "'logout'" + funcSuffix + '">Log Out</button>'
     }
     text += ' <br><text id="ApplyForProviderHash"></text>'
     text += '</div>'
@@ -80,8 +85,9 @@ ZSCHtml.prototype.loadLogin = function(funcName) {
     var functionInput = funcName + "('AdmAdvAdr', 'UserName', 'PassWord')";
     text =  '<div class="well">'
     text += '   <text>Login ZSC system </text><br><br>'
-    text += '   <text>Address of ZSC login module on the Rinkeby Ethereum test network </text> <br>'
-    text += '   <input class="form-control"  type="text" id="AdmAdvAdr" value="0x5fcdb83a9f39537ead97113dd2c3ea0216dc2508"></input> <br> <br>'
+    text += '   <text>Address of ZSC login module on the Rinkeby Ethereum test network</text> <br>'
+    text += '   <text>!!! DONT CHANGE THIS ADDRESS !!!</text> <br>'
+    text += '   <input class="form-control"  type="text" id="AdmAdvAdr" value="0x295459c5ba2e760daacb57e0ac455456227df223"></input> <br> <br>'
     text += '   <text>User Name </text> <br>' 
     text += '   <input type="text" id="UserName" value="test"></input> <br>' 
     text += '   <input type="password" id="PassWord" value="test"></input> <br>' 
