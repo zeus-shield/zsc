@@ -13,5 +13,13 @@ contract AISearch is Object {
         bytes32 value_;
     }
 
+    struct ElemetInfo {
+        address addr_;
+        bytes32 type_;
+        bytes32 name_;
+        /* parameter => value */
+        mapping(bytes32 => bytes32) attr_;
+    }
+
     function AISearch(bytes32 _name) public Object(_name) {}
 }
