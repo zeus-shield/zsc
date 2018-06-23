@@ -17,7 +17,7 @@ contract DBEntity is DBNode {
     mapping(bytes32 => bool) private parameterExist_;
     mapping(bytes32 => bool) private fundamentalParas_;
 
-    bool private activated_;
+    //bool private activated_;
 
     // Constructor
     function DBEntity(bytes32 _name) public DBNode(_name) {
