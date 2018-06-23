@@ -213,4 +213,17 @@ contract TimeStamp is Delegated {
 
         return timestamp;
     }
+
+    function getTimeMoment(uint _timeStamp) public pure returns (bytes32 _timeMoment) {
+        DateTime memory dt = parseTimestamp(_timeStamp);
+
+        string memory str = "";
+        str = PlatString.append(str, PlatString.uintToString(uint(dt.year)),   "-");
+        str = PlatString.append(str, PlatString.uintToString(uint(dt.month)),  "-");
+        str = PlatString.append(str, PlatString.uintToString(uint(dt.hour)),   "-");
+        str = PlatString.append(str, PlatString.uintToString(uint(dt.minute)), "-");
+        str = PlatString.append(str, PlatString.uintToString(uint(dt.second)));
+
+        _timeMoment = PlatString.tobytes32(str);
+    }
 }
