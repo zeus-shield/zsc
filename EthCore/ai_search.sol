@@ -21,5 +21,10 @@ contract AISearch is Object {
         mapping(bytes32 => bytes32) attr_;
     }
 
+    struct FactoryInfo {
+        bytes32 type_;
+        /* elemet name => ElemetInfo */
+        mapping(bytes32 => ElemetInfo) element_;
+    }   
     function AISearch(bytes32 _name) public Object(_name) {}
 }
