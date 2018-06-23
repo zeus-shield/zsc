@@ -23,6 +23,22 @@ contract FactoryBase is Object {
 
     function createNode(bytes32 _nodeName, address _parent) public returns (address);
 
+    function deleteFactoryNode(bytes32 _nodeName) public {
+        checkDelegate(msg.sender, 1);
+        uint index = 0;
+
+        for (uint i = 0; i < factoryNodeNos_; ++i) {
+            if (factoryNodes_[i] == _nodeName) {
+                index = i;
+                break;
+            }
+        }
+
+        factoryNodes_[index] = factoryNodes_[factoryNodeNos_ - 1];
+        delete factoryNodes_[factoryNodeNos_ - 1];
+        factoryNodeNos_--;
+    }
+
     function numFactoryNodes() public constant returns (uint) {
         checkDelegate(msg.sender, 1);
         return factoryNodeNos_;
