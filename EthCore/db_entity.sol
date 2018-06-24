@@ -31,13 +31,6 @@ contract DBEntity is DBNode {
         checkDelegate(msg.sender, 1);
         initParameters();
     }
-    
-
-    function getBlance(bool _locked) public constant returns (uint256) {
-        checkDelegate(msg.sender, 1);
-        if (_locked) return 0;
-        return 0;
-    }
 
     function addFundamentalParameter(bytes32 _parameter) internal returns (bool) {
         checkDelegate(msg.sender, 1);
