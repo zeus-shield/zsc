@@ -34,6 +34,8 @@ contract AISearch is Object {
         bytes32 type_;
         // element count
         uint elementCount_;
+        // elemet index => elemet name
+        mapping(uint => bytes32) elementNames_;
         // elemet name => ElemetInfo
         mapping(bytes32 => ElemetInfo) elements_;
     }   
@@ -53,9 +55,15 @@ contract AISearch is Object {
         return factorys_[_factoryType].elementCount_;
     }
 
-    function getFactoryElementNameByIndex(bytes32 _userName, bytes32 _factoryType, uint _index) public constant returns (bytes32) {
-        /* TODO */
-        return 0;
+    function getFactoryElementNameByIndex(bytes32 _factoryType, uint _index) public constant returns (bytes32) {
+        // check sender
+        checkDelegate(msg.sender, 1);
+
+        // check param
+        require(bytes32(0) != _factoryType);
+        require(elementCount_ > _index);
+
+        return factorys_[_factoryType].elementNames_[_index];
     }
 
     function numElementParameters(bytes32 _userName, bytes32 _enName) public constant returns (uint) {
