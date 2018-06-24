@@ -25,8 +25,10 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 
 ## Smart contract inheritance
 ```bash
+|-- Erc721
 |-- owned
     |-- delegated 
+        |-- Erce721Adv
         |-- log_recorder
         |-- objct 
             |-- pos_block
@@ -165,4 +167,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.05.24-05.29: add file WebAdm/adm_add_gm.php, WebAdm/adm_print_abi.php; change codes with reference to solidity compiler 4.21
 2018.05.30-06.12: conduct internal testing on the alpha-version
 2018.06.13-06.19: release the close-beta version to Rinkeby Etherume test network, not including the modules: pos, staker, sys_gm_token, sys_gm_simulator, wallet_eth, wallet_multisig; re-construct the "sys_gm_*" modules
+2018.06.20-06.22: add files EthCore/erc721_base.sol, EthCore/erc721_adv.sol
 ```
