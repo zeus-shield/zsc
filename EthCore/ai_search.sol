@@ -93,8 +93,15 @@ contract AISearch is Object {
         return factorys_[_factoryType].elements_[_enName].parameterNames_[_index];
     }
 
-    function getElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public constant returns (bytes32) {
-        /* TODO */
-        return 0;
+    function getElementParameter(bytes32 _factoryType, bytes32 _enName, bytes32 _parameter) public constant returns (bytes32) {
+        // check sender
+        checkDelegate(msg.sender, 1);
+
+        // check param
+        require(bytes32(0) != _factoryType);
+        require(bytes32(0) != _enName);
+        require(bytes32(0) != _parameter);
+
+        return factorys_[_factoryType].elements_[_enName].parameters_[_parameter];
     }
 }
