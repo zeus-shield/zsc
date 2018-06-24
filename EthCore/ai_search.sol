@@ -17,24 +17,40 @@ contract AISearch is Object {
         address addr_;
         bytes32 type_;
         bytes32 name_;
-        /* parameter => value */
-        mapping(bytes32 => bytes32) attr_;
+        // parameter => value
+        mapping(bytes32 => bytes32) attrs_;
     }
 
     struct FactoryInfo {
+        /* factory type:
+           provider
+           receiver
+           staker
+           template
+           agreement
+           wallet-eth
+           wallet-erc20
+         */
         bytes32 type_;
-        /* elemet name => ElemetInfo */
-        mapping(bytes32 => ElemetInfo) element_;
+        // element count
+        uint elementCount_;
+        // elemet name => ElemetInfo
+        mapping(bytes32 => ElemetInfo) elements_;
     }   
 
-    /* factory type => FactoryInfo */
-    mapping(bytes32 => FactoryInfo) factory_;
+    // factory type => FactoryInfo
+    mapping(bytes32 => FactoryInfo) factorys_;
 
     function AISearch(bytes32 _name) public Object(_name) {}
 
-    function numFactoryElements(bytes32 _userName, bytes32 _factoryType) public constant returns (uint) {
-        /* TODO */
-        return 0;
+    function numFactoryElements(bytes32 _factoryType) public constant returns (uint) {
+        // check sender
+        checkDelegate(msg.sender, 1);
+
+        // check param
+        require(bytes32(0) != _factoryType);
+
+        return factorys_[_factoryType].elementCount_;
     }
 
     function getFactoryElementNameByIndex(bytes32 _userName, bytes32 _factoryType, uint _index) public constant returns (bytes32) {
