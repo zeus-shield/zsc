@@ -128,6 +128,9 @@ contract DBDatabase is Object {
                 break;
             }    
         }
+
+        DBNode(nodes_[nodes_.length - 1]).kill();
+
         delete nodes_[nodes_.length - 1];
         nodes_.length--;
             
@@ -143,6 +146,7 @@ contract DBDatabase is Object {
     function destroyAllNodes() internal {
         uint len = nodes_.length;
         for (uint i = 0; i < len; ++i) {
+            DBNode(nodes_[i]).kill();
             delete nodes_[i];
         }
     }
