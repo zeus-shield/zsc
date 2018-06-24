@@ -65,7 +65,7 @@ contract AISearch is Object {
 
         // check param
         require(bytes32(0) != _factoryType);
-        require(elementCount_ > _index);
+        require(factorys_[_factoryType].elementCount_ > _index);
 
         return factorys_[_factoryType].elementNames_[_index];
     }
