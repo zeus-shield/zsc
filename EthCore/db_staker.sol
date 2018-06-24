@@ -30,6 +30,9 @@ contract DBStaker is DBEntity {
     mapping(uint => RewardInfo) private rewardInfo_;
     mapping(uint => SPInfo) private spUsedInfo_;
 
+    uint private divendendDuration_;
+    uint private rewardRatio_;
+
     // Constructor
     function DBStaker(bytes32 _name) public DBUser(_name) {
         nodeType_ = "staker";
@@ -48,15 +51,24 @@ contract DBStaker is DBEntity {
         addFundamentalParameter("userBirthday");
         addFundamentalParameter("userIdentification");
         addFundamentalParameter("userResidentialAddress");
-        addFundamentalParameter("Divended Duration");
-    	addFundamentalParameter("Reward Ratio");
+        addFundamentalParameter("divendendDuration");
+    	addFundamentalParameter("rewardRatio");
+    }
+
+    function setPoSInfo(uint _divendendDuration, uint _rewardRatio) {
+        checkDelegate(msg.sender, 1);
+        divendendDuration_ = _divendendDuration;
+        rewardRatio_ = _rewardRatio;
+        setParameter("divendendDuration", PlatString.uintToString(divendendDuration_));
+        setParameter("rewardRatio", PlatString.uintToString(rewardRatio_));
     }
 
     function setParameter(bytes32 _parameter, bytes32 _value) public returns (bool) {
         checkDelegate(msg.sender, 1);
 
-        if (_parameter != "Divended Duration") 
+        if (_parameter == "divendendDuration" || _parameter == "rewardRatio") { 
             return false;  
+        }
         return super.setParameter(_parameter, _value);
     }
 
