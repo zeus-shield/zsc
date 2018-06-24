@@ -17,8 +17,10 @@ contract AISearch is Object {
         address addr_;
         bytes32 type_;
         bytes32 name_;
+        // parameter count
+        uint parameterCount;
         // parameter => value
-        mapping(bytes32 => bytes32) attrs_;
+        mapping(bytes32 => bytes32) parameters_;
     }
 
     struct FactoryInfo {
@@ -66,9 +68,15 @@ contract AISearch is Object {
         return factorys_[_factoryType].elementNames_[_index];
     }
 
-    function numElementParameters(bytes32 _userName, bytes32 _enName) public constant returns (uint) {
-        /* TODO */
-        return 0;
+    function numElementParameters(bytes32 _factoryType, bytes32 _enName) public constant returns (uint) {
+        // check sender
+        checkDelegate(msg.sender, 1);
+
+        // check param
+        require(bytes32(0) != _factoryType);
+        require(bytes32(0) != _enName);
+
+        return factorys_[_factoryType].elements_[_enName].parameterCount;
     }
 
     function getElementParameterNameByIndex(bytes32 _userName, bytes32 _enName, uint _index) public constant returns (bytes32) {
