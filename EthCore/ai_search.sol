@@ -31,4 +31,29 @@ contract AISearch is Object {
     mapping(bytes32 => FactoryInfo) factory_;
 
     function AISearch(bytes32 _name) public Object(_name) {}
+
+    function numFactoryElements(bytes32 _userName, bytes32 _factoryType) public constant returns (uint) {
+        /* TODO */
+        return 0;
+    }
+
+    function getFactoryElementNameByIndex(bytes32 _userName, bytes32 _factoryType, uint _index) public constant returns (bytes32) {
+        /* TODO */
+        return 0;
+    }
+
+    function numElementParameters(bytes32 _userName, bytes32 _enName) public constant returns (uint) {
+        /* TODO */
+        return 0;
+    }
+
+    function getElementParameterNameByIndex(bytes32 _userName, bytes32 _enName, uint _index) public constant returns (bytes32) {
+        /* TODO */
+        return 0;
+    }
+
+    function getElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public constant returns (bytes32) {
+        /* TODO */
+        return 0;
+    }
 }
