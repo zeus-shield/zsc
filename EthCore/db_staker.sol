@@ -44,8 +44,8 @@ contract DBStaker is DBEntity {
     	addFundamentalParameter("rewardRatio");
     }
 
-    function computeRemaingSP(uint _tokenAmount) private view returns (uint) {
-        uint timeDiff = now.sub(lastStoreTime_);
+    function computeRemaingSP(uint _tokenAmount, uint _currentTime) private view returns (uint) {
+        uint timeDiff = _currentTime.sub(lastStoreTime_);
         uint spAmount = _tokenAmount * rewardRatio_;
         spAmount = spAmount.div(MAX_RATIO_VALUE);
         spAmount = spAmount.div(DAY_IN_SECONDS);
@@ -77,6 +77,19 @@ contract DBStaker is DBEntity {
         rewardRatio_ = _rewardRatio;
         setParameter("divendendDuration", PlatString.tobytes32(PlatString.uintToString(divendendDuration_)));
         setParameter("rewardRatio", PlatString.tobytes32(PlatString.uintToString(divendendDuration_)));
+    }
+
+    function claimStakePoint(uint _tokenAmount) public {
+        checkDelegate(msg.sender, 1);
+        
+        uint currentTime = now;
+        rewardInfo_[rewardNos_++] = RewardInfo(now, computeRemaingSP(_tokenAmount, currentTime));
+        lastStoreTime_ = currentTime;
+    }
+
+    function getRemainingStakePoint(uint _tokenAmount) public view returns (uint) {
+        checkDelegate(msg.sender, 1);
+    	return computeRemaingSP(_tokenAmount, now);
     }
 
     function getMiningInfoByIndexs(uint _index) public constant returns (uint, uint) {
