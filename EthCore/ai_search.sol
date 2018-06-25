@@ -25,7 +25,7 @@ contract AISearch is Object {
         // parameter name => parameter index
         mapping(bytes32 => uint) parameterIndexs_;
         // parameter name => exist flag
-        mapping(bytes32 => bool) exist_;
+        mapping(bytes32 => bool) parameterExists_;
         // parameter name => parameter value
         mapping(bytes32 => bytes32) parameters_;
     }
@@ -51,11 +51,15 @@ contract AISearch is Object {
         // elemet name => elemet index
         mapping(bytes32 => uint) elementIndexs_;
         // elemet name => exist flag
-        mapping(bytes32 => bool) exist_;
+        mapping(bytes32 => bool) elementExists_;
         // elemet name => ElemetInfo
         mapping(bytes32 => ElementInfo) elements_;
     }   
 
+    // factory count
+    uint factoryCount_;
+    // factory type => exist flag
+    mapping(bytes32 => bool) factoryExists_;
     // factory type => FactoryInfo
     mapping(bytes32 => FactoryInfo) private factorys_;
 
@@ -68,6 +72,16 @@ contract AISearch is Object {
         // delete all data
 
         super.kill();
+    }
+
+    function checkFactoryExist(bytes32 _factoryType) private return(bool) {
+        // check sender
+        checkDelegate(msg.sender, 1);
+
+        // check param
+        require(bytes32(0) != _factoryType);
+
+        return factoryExists_[_factoryType];
     }
 
     function removeParameter(bytes32 _factoryType, bytes32 _elementName, bytes32 _parameterName) public {
