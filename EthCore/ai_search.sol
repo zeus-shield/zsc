@@ -53,6 +53,18 @@ contract AISearch is Object {
         super.kill();
     }
 
+    function removeParameter(bytes32 _factoryType, bytes32 _elementName, bytes32 _parameterName) public {
+        // check sender
+        checkDelegate(msg.sender, 1);
+
+        // check param
+        require(bytes32(0) != _factoryType);
+        require(bytes32(0) != _elementName);
+        require(bytes32(0) != _parameterName);
+
+        // TODO
+    }
+
     function numFactoryElements(bytes32 _factoryType) public view returns (uint) {
         // check sender
         checkDelegate(msg.sender, 1);
