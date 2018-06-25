@@ -45,9 +45,18 @@ contract AISearch is Object {
     }   
 
     // factory type => FactoryInfo
-    mapping(bytes32 => FactoryInfo) factorys_;
+    mapping(bytes32 => FactoryInfo) private factorys_;
 
     function AISearch(bytes32 _name) public Object(_name) {}
+
+    function kill() public {
+        // check sender
+        checkDelegate(msg.sender, 1);
+
+        // delete all data
+
+        super.kill();
+    }
 
     function numFactoryElements(bytes32 _factoryType) public constant returns (uint) {
         // check sender
