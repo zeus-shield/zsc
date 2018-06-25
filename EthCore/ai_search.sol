@@ -53,7 +53,7 @@ contract AISearch is Object {
         super.kill();
     }
 
-    function numFactoryElements(bytes32 _factoryType) public constant returns (uint) {
+    function numFactoryElements(bytes32 _factoryType) public view returns (uint) {
         // check sender
         checkDelegate(msg.sender, 1);
 
@@ -63,7 +63,7 @@ contract AISearch is Object {
         return factorys_[_factoryType].elementCount_;
     }
 
-    function getFactoryElementNameByIndex(bytes32 _factoryType, uint _index) public constant returns (bytes32) {
+    function getFactoryElementNameByIndex(bytes32 _factoryType, uint _index) public view returns (bytes32) {
         // check sender
         checkDelegate(msg.sender, 1);
 
@@ -74,7 +74,7 @@ contract AISearch is Object {
         return factorys_[_factoryType].elementNames_[_index];
     }
 
-    function numElementParameters(bytes32 _factoryType, bytes32 _enName) public constant returns (uint) {
+    function numElementParameters(bytes32 _factoryType, bytes32 _enName) public view returns (uint) {
         // check sender
         checkDelegate(msg.sender, 1);
 
@@ -85,7 +85,7 @@ contract AISearch is Object {
         return factorys_[_factoryType].elements_[_enName].parameterCount;
     }
 
-    function getElementParameterNameByIndex(bytes32 _factoryType, bytes32 _enName, uint _index) public constant returns (bytes32) {
+    function getElementParameterNameByIndex(bytes32 _factoryType, bytes32 _enName, uint _index) public view returns (bytes32) {
         // check sender
         checkDelegate(msg.sender, 1);
 
@@ -97,7 +97,7 @@ contract AISearch is Object {
         return factorys_[_factoryType].elements_[_enName].parameterNames_[_index];
     }
 
-    function getElementParameter(bytes32 _factoryType, bytes32 _enName, bytes32 _parameter) public constant returns (bytes32) {
+    function getElementParameter(bytes32 _factoryType, bytes32 _enName, bytes32 _parameter) public view returns (bytes32) {
         // check sender
         checkDelegate(msg.sender, 1);
 
