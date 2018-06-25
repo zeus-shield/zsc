@@ -74,7 +74,7 @@ contract AISearch is Object {
         super.kill();
     }
 
-    function checkFactoryExist(bytes32 _factoryType) private return(bool) {
+    function checkFactoryExist(bytes32 _factoryType) private return (bool) {
         // check sender
         checkDelegate(msg.sender, 1);
 
@@ -119,6 +119,39 @@ contract AISearch is Object {
         }
 
         return factorys_[_factoryType].elements_[_elementName].parameterExists_[_parameterName];
+    }
+
+    function addParameter(bytes32 _factoryType, bytes32 _elementName, address _elementAddress, bytes32 _parameterName, bytes32 _parameterValue) public {
+        uint elementIndex = 0;
+        uint parameterIndex = 0;
+
+        // check sender
+        checkDelegate(msg.sender, 1);
+
+        // check param
+        require(bytes32(0) != _factoryType);
+        require(bytes32(0) != _elementName);
+        require(address(0) != _elementAddress);
+        require(bytes32(0) != _parameterName);
+        require(bytes32(0) != _parameterValue);
+
+        factorys_[_factoryType].type_ = _factoryType;
+        elementIndex = factorys_[_factoryType].elementCount_;
+        factorys_[_factoryType].elementNames_[elementIndex] = _elementName;
+        factorys_[_factoryType].elementIndexs_[_elementName] = elementIndex;
+        factorys_[_factoryType].elementExists_[_elementName] = true;
+
+        factorys_[_factoryType].elements_[_elementName].addr_ = _elementAddress;
+        factorys_[_factoryType].elements_[_elementName].type_ = _factoryType;
+        factorys_[_factoryType].elements_[_elementName].name_ = _elementName;
+        parameterIndex = factorys_[_factoryType].elements_[_elementName].parameterCount;
+        factorys_[_factoryType].elements_[_elementName].parameterNames_[parameterIndex] = _parameterName;
+        factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName] = parameterIndex;
+        factorys_[_factoryType].elements_[_elementName].parameterExists_[_parameterName] = true;
+        factorys_[_factoryType].elements_[_elementName].parameters_[_parameterName] = _parameterValue;
+        factorys_[_factoryType].elements_[_elementName].parameterCount ++;
+
+        factorys_[_factoryType].elementCount_ ++;
     }
 
     function removeParameter(bytes32 _factoryType, bytes32 _elementName, bytes32 _parameterName) public {
