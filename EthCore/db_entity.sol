@@ -4,28 +4,22 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./plat_string.sol";
 import "./db_node.sol";
 
 contract DBEntity is DBNode {
     uint private paraNos_;
-
     mapping(bytes32 => uint) private parameterIndice_;
     mapping(uint => bytes32) private parameterNames_;
     mapping(uint => bytes32) private parameterValues_;
-
     mapping(bytes32 => bool) private parameterExist_;
     mapping(bytes32 => bool) private fundamentalParas_;
-
-    //bool private activated_;
 
     // Constructor
     function DBEntity(bytes32 _name) public DBNode(_name) {
         paraNos_ = 0;
     }
 
-    function initParameters() internal {
-    }
+    function initParameters() internal;
 
     function initEntity() public {
         checkDelegate(msg.sender, 1);
@@ -34,7 +28,6 @@ contract DBEntity is DBNode {
     
     function __addParameter(bytes32 _parameter) private {
         require(!parameterExist_[_parameter]);
-        
         parameterExist_[_parameter] = true;
         parameterIndice_[_parameter] = paraNos_;
         parameterNames_[paraNos_] = _parameter;
@@ -43,7 +36,6 @@ contract DBEntity is DBNode {
 
     function addFundamentalParameter(bytes32 _parameter) internal returns (bool) {
         checkDelegate(msg.sender, 1);
-        
         __addParameter(_parameter);
         fundamentalParas_[_parameter] = true;
         return true;
@@ -51,7 +43,6 @@ contract DBEntity is DBNode {
 
     function addParameter(bytes32 _parameter) public returns (bool) {
         checkDelegate(msg.sender, 1);
-        
         __addParameter(_parameter);
         return true;
     }
@@ -85,18 +76,14 @@ contract DBEntity is DBNode {
     function setParameter(bytes32 _parameter, bytes32 _value) public returns (bool) {
         checkDelegate(msg.sender, 1);
         require(parameterExist_[_parameter]);
-
-        uint index = parameterIndice_[_parameter];
-        parameterValues_[index] = _value;
+        parameterValues_[parameterIndice_[_parameter]] = _value;
         return true;
     }
 
     function getParameter(bytes32 _parameter) public constant returns (bytes32) {
         checkDelegate(msg.sender, 1);
         require(parameterExist_[_parameter] == true);
-
-        uint index = parameterIndice_[_parameter];
-        return parameterValues_[index];
+        return parameterValues_[parameterIndice_[_parameter]];
     }
     
     function numParameters() public constant returns (uint) {
