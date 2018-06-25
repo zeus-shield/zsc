@@ -22,45 +22,40 @@ contract DBEntity is DBNode {
     // Constructor
     function DBEntity(bytes32 _name) public DBNode(_name) {
         paraNos_ = 0;
-        //initParameters();
     }
 
-    function initParameters() internal;
+    function initParameters() internal {
+    }
 
     function initEntity() public {
         checkDelegate(msg.sender, 1);
         initParameters();
     }
+    
+    function __addParameter(bytes32 _parameter) private {
+        require(!parameterExist_[_parameter]);
+        
+        parameterExist_[_parameter] = true;
+        parameterIndice_[_parameter] = paraNos_;
+        parameterNames_[paraNos_] = _parameter;
+        paraNos_++;
+    }
 
     function addFundamentalParameter(bytes32 _parameter) internal returns (bool) {
         checkDelegate(msg.sender, 1);
-        require(!parameterExist_[_parameter]);
-
-        uint index = paraNos_;
-        paraNos_++;
-
-        parameterExist_[_parameter] = true;
-        parameterIndice_[_parameter] = index;
-        parameterNames_[index] = _parameter;
-
-        fundamentalParas_[_parameter] == true;
+        
+        __addParameter(_parameter);
+        fundamentalParas_[_parameter] = true;
         return true;
     }
 
     function addParameter(bytes32 _parameter) public returns (bool) {
         checkDelegate(msg.sender, 1);
-        require(!parameterExist_[_parameter]);
-
-        uint index = paraNos_;
-        paraNos_++;
-
-        parameterExist_[_parameter] = true;
-        parameterIndice_[_parameter] = index;
-        parameterNames_[index] = _parameter;
+        
+        __addParameter(_parameter);
         return true;
     }
 
-/*
     function removeParameter(bytes32 _parameter) public returns (bool) {
         checkDelegate(msg.sender, 1);
         require(parameterExist_[_parameter]);
@@ -86,7 +81,6 @@ contract DBEntity is DBNode {
 
         return true;
     }
-    */
 
     function setParameter(bytes32 _parameter, bytes32 _value) public returns (bool) {
         checkDelegate(msg.sender, 1);
