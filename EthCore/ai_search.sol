@@ -74,7 +74,7 @@ contract AISearch is Object {
         super.kill();
     }
 
-    function checkFactoryExist(bytes32 _factoryType) private return (bool) {
+    function checkFactoryExist(bytes32 _factoryType) private returns (bool) {
         // check sender
         checkDelegate(msg.sender, 1);
 
@@ -84,7 +84,7 @@ contract AISearch is Object {
         return factoryExists_[_factoryType];
     }
 
-    function checkElementExist(bytes32 _factoryType, bytes32 _elementName) private return (bool) {
+    function checkElementExist(bytes32 _factoryType, bytes32 _elementName) private returns (bool) {
         // check sender
         checkDelegate(msg.sender, 1);
 
@@ -100,7 +100,7 @@ contract AISearch is Object {
         return factorys_[_factoryType].elementExists_[_elementName];
     }
 
-    function checkParameterExist(bytes32 _factoryType, bytes32 _elementName, bytes32 _parameterName) private return (bool) {
+    function checkParameterExist(bytes32 _factoryType, bytes32 _elementName, bytes32 _parameterName) private returns (bool) {
         // check sender
         checkDelegate(msg.sender, 1);
 
@@ -121,7 +121,11 @@ contract AISearch is Object {
         return factorys_[_factoryType].elements_[_elementName].parameterExists_[_parameterName];
     }
 
-    function addElement(bytes32 _factoryType, bytes32 _elementName, address _elementAddress) public {
+    function addElement(bytes32 _factoryType, bytes32 _elementName, address _elementAddress) public returns (bool) {
+        uint count = 0;
+
+        // If there is data, update. If there is no data, add.
+
         // check sender
         checkDelegate(msg.sender, 1);
 
@@ -131,9 +135,9 @@ contract AISearch is Object {
         require(address(0) != _elementAddress);
 
         factorys_[_factoryType].type_ = _factoryType;
-        elementIndex = factorys_[_factoryType].elementCount_;
-        factorys_[_factoryType].elementNames_[elementIndex] = _elementName;
-        factorys_[_factoryType].elementIndexs_[_elementName] = elementIndex;
+        count = factorys_[_factoryType].elementCount_;
+        factorys_[_factoryType].elementNames_[count] = _elementName;
+        factorys_[_factoryType].elementIndexs_[_elementName] = count;
         factorys_[_factoryType].elementExists_[_elementName] = true;
 
         factorys_[_factoryType].elements_[_elementName].addr_ = _elementAddress;
@@ -141,11 +145,14 @@ contract AISearch is Object {
         factorys_[_factoryType].elements_[_elementName].name_ = _elementName;
 
         factorys_[_factoryType].elementCount_ ++;
+
+        return true;
     }
 
-    function addParameter(bytes32 _factoryType, bytes32 _elementName, address _elementAddress, bytes32 _parameterName, bytes32 _parameterValue) public {
-        uint elementIndex = 0;
-        uint parameterIndex = 0;
+    function addParameter(bytes32 _factoryType, bytes32 _elementName, address _elementAddress, bytes32 _parameterName, bytes32 _parameterValue) public returns (bool) {
+        uint count = 0;
+
+        // If there is data, update. If there is no data, add.
 
         // check sender
         checkDelegate(msg.sender, 1);
@@ -157,26 +164,23 @@ contract AISearch is Object {
         require(bytes32(0) != _parameterName);
         require(bytes32(0) != _parameterValue);
 
-        factorys_[_factoryType].type_ = _factoryType;
-        elementIndex = factorys_[_factoryType].elementCount_;
-        factorys_[_factoryType].elementNames_[elementIndex] = _elementName;
-        factorys_[_factoryType].elementIndexs_[_elementName] = elementIndex;
-        factorys_[_factoryType].elementExists_[_elementName] = true;
+        addElement(_factoryType, _elementName, _elementAddress);
 
-        factorys_[_factoryType].elements_[_elementName].addr_ = _elementAddress;
-        factorys_[_factoryType].elements_[_elementName].type_ = _factoryType;
-        factorys_[_factoryType].elements_[_elementName].name_ = _elementName;
-        parameterIndex = factorys_[_factoryType].elements_[_elementName].parameterCount;
-        factorys_[_factoryType].elements_[_elementName].parameterNames_[parameterIndex] = _parameterName;
-        factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName] = parameterIndex;
+        count = factorys_[_factoryType].elements_[_elementName].parameterCount;
+        factorys_[_factoryType].elements_[_elementName].parameterNames_[count] = _parameterName;
+        factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName] = count;
         factorys_[_factoryType].elements_[_elementName].parameterExists_[_parameterName] = true;
         factorys_[_factoryType].elements_[_elementName].parameters_[_parameterName] = _parameterValue;
         factorys_[_factoryType].elements_[_elementName].parameterCount ++;
 
-        factorys_[_factoryType].elementCount_ ++;
+        return true;
     }
 
-    function removeParameter(bytes32 _factoryType, bytes32 _elementName, bytes32 _parameterName) public {
+    function removeParameter(bytes32 _factoryType, bytes32 _elementName, bytes32 _parameterName) public returns (bool) {
+        uint index = 0;
+        uint count = 0;
+        bytes32 name = 0;
+
         // check sender
         checkDelegate(msg.sender, 1);
 
@@ -185,7 +189,33 @@ contract AISearch is Object {
         require(bytes32(0) != _elementName);
         require(bytes32(0) != _parameterName);
 
-        // TODO
+        if(!checkFactoryExist(_factoryType) {
+            return false;
+        }
+
+        if(!checkElementExist(_factoryType, _elementName) {
+            return false;
+        }
+
+        if(!checkParameterExist(_factoryType, _elementName, _parameterName) {
+            return false;
+        }
+
+        index = factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName];
+        count = factorys_[_factoryType].elements_[_elementName].parameterCount;
+        name = factorys_[_factoryType].elements_[_elementName].elementNames_[count-1];
+
+        factorys_[_factoryType].elements_[_elementName].parameterNames_[index] = name;
+        factorys_[_factoryType].elements_[_elementName].parameterNames_[count-1] = _parameterName;
+        factorys_[_factoryType].elements_[_elementName].parameterIndexs_[name] = index;
+        factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName] = count-1;
+
+        delete factorys_[_factoryType].elements_[_elementName].parameterExists_[_parameterName];
+        delete factorys_[_factoryType].elements_[_elementName].parameters_[_parameterName];
+
+        factorys_[_factoryType].elements_[_elementName].parameterCount --;
+
+        return true;
     }
 
     function numFactoryElements(bytes32 _factoryType) public view returns (uint) {
