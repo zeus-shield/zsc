@@ -8,19 +8,30 @@ import "./object.sol";
 
 contract AISearch is Object {
 
-    struct ElemetInfo {
+    struct ElementInfo {
+        // element base info
+        // element address
         address addr_;
+        // element type
         bytes32 type_;
+        // element name
         bytes32 name_;
+
+        // parameter info for the element
         // parameter count
         uint parameterCount;
-        // elemet index => elemet name
+        // parameter index => parameter name
         mapping(uint => bytes32) parameterNames_;
-        // parameter => value
+        // parameter name => parameter index
+        mapping(bytes32 => uint) parameterIndexs_;
+        // parameter name => exist flag
+        mapping(bytes32 => bool) exist_;
+        // parameter name => parameter value
         mapping(bytes32 => bytes32) parameters_;
     }
 
     struct FactoryInfo {
+        // factory base info
         /* factory type:
            provider
            receiver
@@ -31,12 +42,18 @@ contract AISearch is Object {
            wallet-erc20
          */
         bytes32 type_;
+
+        // element info for the factory
         // element count
         uint elementCount_;
         // elemet index => elemet name
         mapping(uint => bytes32) elementNames_;
+        // elemet name => elemet index
+        mapping(bytes32 => uint) elementIndexs_;
+        // elemet name => exist flag
+        mapping(bytes32 => bool) exist_;
         // elemet name => ElemetInfo
-        mapping(bytes32 => ElemetInfo) elements_;
+        mapping(bytes32 => ElementInfo) elements_;
     }   
 
     // factory type => FactoryInfo
