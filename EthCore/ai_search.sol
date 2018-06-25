@@ -8,11 +8,6 @@ import "./object.sol";
 
 contract AISearch is Object {
 
-    struct Attribute {
-        bytes32 parameter_;
-        bytes32 value_;
-    }
-
     struct ElemetInfo {
         address addr_;
         bytes32 type_;
