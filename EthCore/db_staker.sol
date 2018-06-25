@@ -24,17 +24,16 @@ contract DBStaker is DBEntity {
     uint private divendendDuration_;
     uint private lastStoreTime_;
     uint private lastRewardTime_;
+    uint private rewardRatio_;
 
     uint private rewardNos_;
     uint private spUsedNos_;
     mapping(uint => RewardInfo) private rewardInfo_;
     mapping(uint => SPInfo) private spUsedInfo_;
 
-    uint private divendendDuration_;
-    uint private rewardRatio_;
 
     // Constructor
-    function DBStaker(bytes32 _name) public DBUser(_name) {
+    function DBStaker(bytes32 _name) public DBEntity(_name) {
         nodeType_ = "staker";
         rewardNos_ = 0;
         spUsedNos_ = 0;
@@ -55,12 +54,12 @@ contract DBStaker is DBEntity {
     	addFundamentalParameter("rewardRatio");
     }
 
-    function setPoSInfo(uint _divendendDuration, uint _rewardRatio) {
+    function setPoSInfo(uint _divendendDuration, uint _rewardRatio) public {
         checkDelegate(msg.sender, 1);
         divendendDuration_ = _divendendDuration;
         rewardRatio_ = _rewardRatio;
-        setParameter("divendendDuration", PlatString.uintToString(divendendDuration_));
-        setParameter("rewardRatio", PlatString.uintToString(rewardRatio_));
+        setParameter("divendendDuration", PlatString.tobytes32(PlatString.uintToString(divendendDuration_)));
+        setParameter("rewardRatio", PlatString.tobytes32(PlatString.uintToString(divendendDuration_)));
     }
 
     function setParameter(bytes32 _parameter, bytes32 _value) public returns (bool) {
@@ -77,13 +76,7 @@ contract DBStaker is DBEntity {
         return false;
         return super.addParameter(_parameter);
     }
-
-    function removeParameter(bytes32 _parameter) public returns (bool) {
-        checkDelegate(msg.sender, 1);
-        return false;
-        return super.removeParameter(_parameter);
-    }
-
+    
     function claimStakePoint() public {
         checkDelegate(msg.sender, 1);
 
