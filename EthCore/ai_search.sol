@@ -100,6 +100,27 @@ contract AISearch is Object {
         return factorys_[_factoryType].elementExists_[_elementName];
     }
 
+    function checkParameterExist(bytes32 _factoryType, bytes32 _elementName, bytes32 _parameterName) private return (bool) {
+        // check sender
+        checkDelegate(msg.sender, 1);
+
+        // check param
+        require(bytes32(0) != _factoryType);
+        require(bytes32(0) != _elementName);
+        require(bytes32(0) != _parameterName);
+
+        // check factory exist
+        if(!checkFactoryExist(_factoryType)) {
+            return false;
+        }
+
+        if(!checkElementExist(_factoryType, _elementName)) {
+            return false;
+        }
+
+        return factorys_[_factoryType].elements_[_elementName].parameterExists_[_parameterName];
+    }
+
     function removeParameter(bytes32 _factoryType, bytes32 _elementName, bytes32 _parameterName) public {
         // check sender
         checkDelegate(msg.sender, 1);
