@@ -121,6 +121,25 @@ contract AISearch is Object {
         return factorys_[_factoryType].elements_[_elementName].parameterExists_[_parameterName];
     }
 
+    function addFactory(bytes32 _factoryType) public returns (bool) {
+        // If there is data, update. If there is no data, add.
+
+        // check sender
+        checkDelegate(msg.sender, 1);
+
+        // check param
+        require(bytes32(0) != _factoryType);
+
+        factorys_[_factoryType].type_ = _factoryType;
+
+        if(!checkFactoryExist(_factoryType)) {
+            factoryExists_[_factoryType] = true;
+            factoryCount_ ++;
+        }
+
+        return true;
+    }
+
     function addElement(bytes32 _factoryType, bytes32 _elementName, address _elementAddress) public returns (bool) {
         uint count = 0;
 
@@ -134,12 +153,15 @@ contract AISearch is Object {
         require(bytes32(0) != _elementName);
         require(address(0) != _elementAddress);
 
-        factorys_[_factoryType].type_ = _factoryType;
+        // add factory base info
+        require(addFactory(_factoryType));
+
         count = factorys_[_factoryType].elementCount_;
         factorys_[_factoryType].elementNames_[count] = _elementName;
         factorys_[_factoryType].elementIndexs_[_elementName] = count;
         factorys_[_factoryType].elementExists_[_elementName] = true;
 
+        // add element base info
         factorys_[_factoryType].elements_[_elementName].addr_ = _elementAddress;
         factorys_[_factoryType].elements_[_elementName].type_ = _factoryType;
         factorys_[_factoryType].elements_[_elementName].name_ = _elementName;
@@ -164,7 +186,7 @@ contract AISearch is Object {
         require(bytes32(0) != _parameterName);
         require(bytes32(0) != _parameterValue);
 
-        addElement(_factoryType, _elementName, _elementAddress);
+        require(addElement(_factoryType, _elementName, _elementAddress));
 
         count = factorys_[_factoryType].elements_[_elementName].parameterCount;
         factorys_[_factoryType].elements_[_elementName].parameterNames_[count] = _parameterName;
