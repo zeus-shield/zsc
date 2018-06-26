@@ -12,6 +12,8 @@ function ZSCElement(userName, controlApisAdvAbi, controlApisAdvAdr) {
     this.nodeAddress = 0;
     this.parameterNames = [];
     this.parameterValues = [];
+    this.nameTags = [];
+    this.valueTags = [];
     this.account = web3.eth.accounts[0];
     this.contractAdr = controlApisAdvAdr;
     this.contractAbi = JSON.parse(controlApisAdvAbi);
@@ -24,6 +26,36 @@ ZSCElement.prototype.setUserType = function(type) {this.userType = type;}
 ZSCElement.prototype.setElementName = function(nm) {this.enName = nm;}
 
 ZSCElement.prototype.getElementName = function() { return this.enName;}
+
+ZSCElement.prototype.resetAllNameTags = function(gm) {
+    for (var i = 0; i < gm.parameNos; ++i) {
+        gm.nameTags[i] = false;
+    }
+}
+
+ZSCElement.prototype.checkAllNameTags = function(gm) {
+    for (var i = 0; i < gm.parameNos; ++i) {
+        if (gm.nameTags[i] == false) {
+            return false;
+        }
+    }
+    return true;
+}
+
+ZSCElement.prototype.resetAllValueTags = function(gm) {
+    for (var i = 0; i < gm.parameNos; ++i) {
+        gm.valueTags[i] = false;
+    }
+}
+
+ZSCElement.prototype.checkAllValueTags = function(gm) {
+    for (var i = 0; i < gm.parameNos; ++i) {
+        if (gm.valueTags[i] == false) {
+            return false;
+        }
+    }
+    return true;
+}
 
 ZSCElement.prototype.doesElementExisit = function(func) {
     var gm = this;
@@ -42,11 +74,11 @@ ZSCElement.prototype.loadParameterNamesAndvalues = function(func) {
     var callBack = func;
 
     gm.numParameters(gm, function() {
+        gm.resetAllNameTags(gm);
+        gm.resetAllValueTags(gm);
         gm.loadParameterNames(gm, function(gm) {
             gm.loadParameterValues(gm, function(gm, index){
-                if (index == gm.parameNos - 1) {
-                    callBack();
-                }
+                callBack();
             });
         }); 
     });
@@ -75,8 +107,9 @@ ZSCElement.prototype.loadParameterNames = function(gm, func) {
     for (var i = 0; i < gm.parameNos; ++i) {
         gm.loadParameterNameByIndex(gm, i, function(index, para) {
             gm.parameterNames[index] = para;
-            if (index == gm.parameNos - 1) {
-                func(gm, index);
+            gm.nameTags[index] = true;
+            if (gm.checkAllNameTags(gm)) {
+                callBack(gm, index);
             }
         });
     } 
@@ -102,7 +135,7 @@ ZSCElement.prototype.loadParameterValues = function(gm, func) {
     var callBack = func;
     for (var i = 0; i < gm.parameNos; ++i) {
         gm.loadParameterValueByIndex(gm, i, function(gm, index) {
-            if (index == gm.parameNos - 1) {
+            if (gm.checkAllValueTags(gm)) {
                 callBack(gm, index);
             }
         });
@@ -118,9 +151,8 @@ ZSCElement.prototype.loadParameterValueByIndex = function(gm, index, func){
         function(error, value){ 
             if(!error) {
                 gm.parameterValues[index] = web3.toUtf8(value);
-                if (index == gm.parameNos - 1) {
-                     callBack(gm, index);
-                }
+                gm.valueTags[index] = true;
+                callBack(gm, index);
             } else { 
                 console.log("error: " + error);
             }
