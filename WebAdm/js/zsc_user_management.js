@@ -13,6 +13,7 @@ function ZSCUserManagement(admAdr, abi) {
     this.userEthAdr = [];
     this.userZscAdr = [];
     this.userActived = [];
+    this.itemTags = [];
     this.userNos = 0;
     this.account = web3.eth.accounts[0];
     this.myAdmAdv = web3.eth.contract(abi).at(admAdr);
@@ -21,6 +22,21 @@ function ZSCUserManagement(admAdr, abi) {
 }
 
 ZSCUserManagement.prototype = new ZSCJsBase();
+
+ZSCUserManagement.prototype.resetAllItemTags = function(gm) {
+    for (var i = 0; i < gm.userNos; ++i) {
+        gm.itemTags[i] = false;
+    }
+}
+
+ZSCUserManagement.prototype.checkAllItemTags = function(gm) {
+    for (var i = 0; i < gm.userNos; ++i) {
+        if (gm.itemTags[i] == false) {
+            return false;
+        }
+    }
+    return true;
+}
 
 ZSCUserManagement.prototype.addUser = function(userNameId, passWordId, hashId){
     var userName = document.getElementById(userNameId).value; 
@@ -49,7 +65,12 @@ ZSCUserManagement.prototype.addUserRandom = function(prefixId, suffixLenId, pass
 ZSCUserManagement.prototype.loadUsers = function(phpFunc) {
     this.phpCallback = phpFunc;
     this.numUsers(this, function(gm) {
-        gm.loadUserInfos();
+        gm.resetAllItemTags(gm);
+       if (gm.userNos == 0) {
+            gm.phpCallback();
+        } else {
+            gm.loadUserInfos();
+        }
     });
 }
 
@@ -69,20 +90,22 @@ ZSCUserManagement.prototype.numUsers = function(gm, func) {
 ZSCUserManagement.prototype.loadUserInfos = function() {
     for (var i = 0; i < this.userNos; ++i) {
         this.loadUserInfoByIndex(this, i, function(gm, index, userInfo) {
-                gm.parserUserInfo(index, userInfo);
-                if (index == gm.userNos - 1) {
-                    gm.phpCallback();
-                 }
-            });
+            gm.parserUserInfo(index, userInfo);
+            if (gm.checkAllItemTags(gm) == true) {
+                gm.phpCallback();
+            }
+        });
     } 
 } 
 
 ZSCUserManagement.prototype.loadUserInfoByIndex = function(gm, index, func) {
-    this.myAdmAdv.getUserInfoByIndex(index, 
+    var gm = this;
+    gm.myAdmAdv.getUserInfoByIndex(index, 
         {from: this.account},
         function(error, para){ 
             if(!error) {
                 var ret = para;
+                gm.itemTags[index] = true;
                 func(gm, index, ret);  
             } else { 
                 console.log("error: " + error);
