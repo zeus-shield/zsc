@@ -30,7 +30,7 @@ contract SysGmString is SysGmBase {
 
     mapping(bytes32 => mapping(bytes32 => UserHolderInfo)) private userHolders_;
 
-    function SysGmString(bytes32 _name) public SysComModule(_name) {}
+    function SysGmString(bytes32 _name) public SysGmBase(_name) {}
 
     function checkHolder(bytes32 _dbName, bytes32 _userName, address _holder) internal constant {
         require(_holder == userHolders_[_dbName][_userName].holder_);
@@ -73,14 +73,14 @@ contract SysGmString is SysGmBase {
         return true;
     }
 
-    function numEntityParameters(bytes32 _dbName, bytes32 _userName, bytes32 _enName) public constant returns (uint) {
+    function numEntityParameters(bytes32 _dbName, bytes32 _userName, bytes32 _enName) public view returns (uint) {
         /* check holder */
         checkHolder(_dbName, _userName, msg.sender);
 
         return  entitys_[_dbName][_userName][_enName].count_;
     }
 
-    function getEntityParameterValue(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public constant returns (string) {
+    function getEntityParameterValue(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public view returns (string) {
         /* check holder */
         checkHolder(_dbName, _userName, msg.sender);
 
@@ -92,7 +92,7 @@ contract SysGmString is SysGmBase {
         return str;
     }
 
-    function getEntityParameterByIndex(bytes32 _dbName, bytes32 _userName, bytes32 _enName, uint _index) public constant returns (bytes32) {
+    function getEntityParameterByIndex(bytes32 _dbName, bytes32 _userName, bytes32 _enName, uint _index) public view returns (bytes32) {
         /* check holder */
         checkHolder(_dbName, _userName, msg.sender);
 
