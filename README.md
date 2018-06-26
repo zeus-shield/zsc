@@ -7,6 +7,9 @@ Zeusshield (ZSC) system: AI&P2P Insurance Market Platform
 
 Official implementation for the solidity-based core part of the ZSC system, as well as the js-based web-client and js/php based web-adm.
 
+## Implementation overview
+1st large-scale Dapp fully settled on the Ethereum platform. Every operation in the system is accomplished through Ethereum. The ZSC development team is leading the architecture design for the pure Ethereum-based large scale Dapp.
+
 ## Project structure
 ```bash
 |-- Database:  
@@ -58,6 +61,7 @@ Official implementation for the solidity-based core part of the ZSC system, as w
             |-- control_info
                 |-- control_base 
                     |-- control_apis
+            |-- ai_search
 
 |--plat_string
 |--plat_math (SafeMath)
@@ -168,4 +172,5 @@ Official implementation for the solidity-based core part of the ZSC system, as w
 2018.05.30-06.12: conduct internal testing on the alpha-version
 2018.06.13-06.19: release the close-beta version to Rinkeby Etherume test network, not including the modules: pos, staker, sys_gm_token, sys_gm_simulator, wallet_eth, wallet_multisig; re-construct the "sys_gm_*" modules
 2018.06.20-06.22: add files EthCore/erc721_base.sol, EthCore/erc721_adv.sol
+2018.06.23-06.26: add file EthCore/ai_search.sol; update the zsc PoS module
 ```
