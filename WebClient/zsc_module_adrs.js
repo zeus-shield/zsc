@@ -43,6 +43,7 @@ ZSCModuleAdrs.prototype.parserAdrInfo = function(gm, info) {
         gm.adrValue[i] = "0x" + newsids[i].split("=")[1];
     }
     gm.adrName[0] = "TestZSC-Token";
+    gm.adrName[1] = "log-recorder";
 }
 
 ZSCModuleAdrs.prototype.loadModuleAdrsHtml = function(elementId)  {

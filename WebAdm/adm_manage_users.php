@@ -67,7 +67,7 @@ echo $htmlObjects->loadScriptFiles();
 
     <div class="well">
         <text>Prefix</text>  <input type="text" id="UserPrefix" value="zsc-"></input> 
-        <text>Suffix-length</text>  <input type="text" id="UserLength" value="6"></input> 
+        <text>Suffix-length</text>  <input type="text" id="UserLength" value="4"></input> 
         <text>Pass-length</text>  <input type="text" id="PassLength" value="10"></input> <br>
         <button type="button" onClick="addUserRandom('UserPrefix', 'UserLength', 'PassLength', 'AddUserRandomhash')">Random add a user</button> <br>
         <text id="AddUserRandomhash"></text>

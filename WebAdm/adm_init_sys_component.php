@@ -57,7 +57,7 @@ $htmlObjects = new ZSChtmlObjects();
 
 
         <text>Step - 0 - 2</text>
-        <input type="text" id="AllocatedAmount" value="1000"></input> <br> 
+        <input type="text" id="AllocatedAmount" value="50000"></input> <br> 
         <button type="button" onClick="setTestZSCToUser('AllocatedAmount', 'setTestZSCToUserHash')">Set Amount of TestZSC allocated to alpha-test user</button> <br>
         <text id="setTestZSCToUserHash"></text> <br>
 

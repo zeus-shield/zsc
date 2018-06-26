@@ -162,7 +162,7 @@ ZSCTemplate.prototype.loadTemplatesHtml = function(elementId, funcCreateTmp, fun
 
     text += '<div class="well">';
     text += '   <div class="well">';
-    text += '      <text> Note - 1: "Adding" is to create an insurance agreement from a template. </text><br>'
+    text += '      <text> Note - 1: "Adding" is to create one insurance agreement from a template. </text><br>'
     text += '      <text> Note - 2: Due to the confirmation time on the (Rinkeby) Ethereum platform, need to add one by one. </text><br>'
     text += '      <text> Adding agreement: </text> <text id="CreateNewAgreementHash"> </text>'
     text += '   </div>';
