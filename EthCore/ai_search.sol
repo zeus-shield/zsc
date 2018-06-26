@@ -223,8 +223,13 @@ contract AISearch is Object {
             return false;
         }
 
-        index = factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName];
         count = factorys_[_factoryType].elements_[_elementName].parameterCount;
+        if(0 == count) {
+            return false;
+        }
+
+        // remove parameter
+        index = factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName];
         name = factorys_[_factoryType].elements_[_elementName].parameterNames_[count-1];
 
         factorys_[_factoryType].elements_[_elementName].parameterNames_[index] = name;
@@ -236,6 +241,63 @@ contract AISearch is Object {
         delete factorys_[_factoryType].elements_[_elementName].parameters_[_parameterName];
 
         factorys_[_factoryType].elements_[_elementName].parameterCount --;
+
+        return true;
+    }
+
+    function removeElement(bytes32 _factoryType, bytes32 _elementName) public returns (bool) {
+        uint elementCount = 0;
+        bytes32 elementName = 0;
+        uint elementIndex = 0;
+        uint parameterCount = 0;
+        bytes32 parameterName = 0;
+
+        // check sender
+        checkDelegate(msg.sender, 1);
+
+        // check param
+        require(bytes32(0) != _factoryType);
+        require(bytes32(0) != _elementName);
+
+        if(!checkElementExist(_factoryType, _elementName) {
+            return false;
+        }
+
+        elementCount = factorys_[_factoryType].elementCount_;
+        if(0 == elementCount) {
+            return false;
+        }
+
+        uint elementCount_;
+        mapping(uint => bytes32) elementNames_;
+        mapping(bytes32 => uint) elementIndexs_;
+        mapping(bytes32 => bool) elementExists_;
+        mapping(bytes32 => ElementInfo) elements_;
+
+        // remove all parameters of element
+        parameterCount = factorys_[_factoryType].elements_[_elementName].parameterCount;
+        if(parameterCount > 0) {
+            for(uint i=0; i<parameterCount; i++) {
+                parameterName = factorys_[_factoryType].elements_[_elementName].parameterIndexs_[i];
+                require(removeParameter(_factoryType, _elementName, parameterName));
+            }
+        }
+        factorys_[_factoryType].elements_[_elementName].parameterCount = 0;
+
+        // remove element
+        elementIndex = factorys_[_factoryType].elementIndexs_[_elementName];
+        elementName = factorys_[_factoryType].elementNames_[elementCount-1];
+
+        factorys_[_factoryType].elementNames_[elementIndex] = elementName;
+        factorys_[_factoryType].elementNames_[elementCount-1] = _elementName;
+        factorys_[_factoryType].elementIndexs_[elementName] = elementIndex;
+        factorys_[_factoryType].elementIndexs_[_elementName] = elementCount-1;
+
+        // remove element control
+        delete factorys_[_factoryType].elementExists_[_elementName];
+        delete delete factorys_[_factoryType].elements_[_elementName];
+
+        factorys_[_factoryType].elementCount --;
 
         return true;
     }
