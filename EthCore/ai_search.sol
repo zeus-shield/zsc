@@ -142,6 +142,8 @@ contract AISearch is Object {
         // If there is data, update. If there is no data, add.
         factorys_[_factoryType].type_ = _factoryType;
         if (!checkFactoryExist(_factoryType)) {
+            factoryNames_[factoryCount_] = _factoryType;
+            factoryIndexs_[_factoryType] = factoryCount_;
             factoryExists_[_factoryType] = true;
             factoryCount_ ++;
         }
@@ -300,6 +302,8 @@ contract AISearch is Object {
     }
 
     function removeFactory(bytes32 _factoryType) public returns (bool) {
+        bytes32 factoryName = 0;
+        uint factoryIndex = 0;
         uint elementCount = 0;
         bytes32 elementName = 0;
 
@@ -327,9 +331,14 @@ contract AISearch is Object {
         }
         factorys_[_factoryType].elementCount_ = 0;
 
-        uint factoryCount_;
-        mapping(bytes32 => bool) factoryExists_;
-        mapping(bytes32 => FactoryInfo) private factorys_;
+        // remove factory
+        factoryIndex = factoryIndexs_[_factoryType];
+        factoryName = factoryNames_[factoryCount_-1];
+
+        factoryNames_[factoryIndex] = factoryName;
+        factoryNames_[factoryCount_-1] = _factoryName;
+        factoryIndexs_[factoryName] = factoryIndex;
+        factoryIndexs_[_factoryName] = factoryCount_-1;
 
         delete factoryExists_[_factoryType];
         delete factorys_[_factoryType];
