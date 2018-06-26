@@ -188,12 +188,15 @@ contract AISearch is Object {
 
         require(addElement(_factoryType, _elementName, _elementAddress));
 
-        count = factorys_[_factoryType].elements_[_elementName].parameterCount;
-        factorys_[_factoryType].elements_[_elementName].parameterNames_[count] = _parameterName;
-        factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName] = count;
-        factorys_[_factoryType].elements_[_elementName].parameterExists_[_parameterName] = true;
+        // If there is data, update. If there is no data, add.
         factorys_[_factoryType].elements_[_elementName].parameters_[_parameterName] = _parameterValue;
-        factorys_[_factoryType].elements_[_elementName].parameterCount ++;
+        if(!checkParameterExist(_factoryType, _elementName, _parameterName)) {
+            count = factorys_[_factoryType].elements_[_elementName].parameterCount;
+            factorys_[_factoryType].elements_[_elementName].parameterNames_[count] = _parameterName;
+            factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName] = count;
+            factorys_[_factoryType].elements_[_elementName].parameterExists_[_parameterName] = true;
+            factorys_[_factoryType].elements_[_elementName].parameterCount ++;
+        }
 
         return true;
     }
