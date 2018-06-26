@@ -28,62 +28,40 @@ contract SysGmWallet is SysGmBase {
     TokenHolder tokenHolders_;
 
     // Constructor
-    function SysGmWallet() public SysComModule("zsc_wallet_manager") {
+    function SysGmWallet(bytes32 _name) public SysGmBase(_name) {
         holderNos_ = 0;
     } 
+    
+    function formatWalletName(bytes32 _userName, bytes32 _tokenSymbol) internal pure returns (bytes32) {
+        string memory str;
+        str = PlatString.append(_userName, "-", _tokenSymbol);
+        return PlatString.tobytes32(str);
+    }
 
-    /*
-    function removeTokenContract(bytes32 _symbol) public {
+    function enableWalletByUser(bytes32 _user, bytes32 _tokeSymbol, address _factoryAdr, address _tokenContractAdr) public returns (address) {
         checkDelegate(msg.sender, 1);
-        require(erc20TokenExists_[_symbol]);
         
-        uint index = erc20TokenIndice_[_symbol];
-        Erc20Token storage info = erc20Tokens_[tokenNos_ - 1];
-
-        erc20TokenIndice_[_symbol] = index;
-
-        delete erc20TokenIndice_[_symbol];
-        delete erc20TokenExists_[_symbol];
-        delete erc20Tokens_[tokenNos_ - 1];
-        tokenNos_--;
-    }*/
-
-    function enableWalletByUser(bytes32 _user, bytes32 _tokeSymbol, address _creator) public returns (address) {
-        checkDelegate(msg.sender, 1);
+        require(_factoryAdr != address(0));
+        if (_tokeSymbol != "ETH") {
+            require(_tokenContractAdr != address(0));
+        }
 
         address ndAdr = DBDatabase(getDatabase()).getNode(_user);
         require(ndAdr != address(0));
         
         bytes32 ndType = DBNode(ndAdr).getNodeType();
-        if (ndType == "provider" || ndType == "receiver") {
-            if (_tokeSymbol == "ZSC" || _tokeSymbol == "ETH") {
-                address parentNode   = DBNode(ndAdr).getHandler("wallet");
-                address erc20Address = 0; 
-                bytes32 temp;
-                bytes32 factoryType;
+        require(ndType == "provider" || ndType == "receiver" || ndType == "staker" || ndType == "agreement");
+        
+        address walletAdr  = DBFactory(_factoryAdr).createNode(formatWalletName(_user, _tokeSymbol), ndAdr);
+        require(walletAdr != 0);
     
-                temp = formatWalletName(_user, _tokeSymbol);
-
-                if (_tokeSymbol == "ETH") {
-                    factoryType = "wallet-eth";
-                } else {
-                    factoryType = "wallet-erc20";
-                    erc20Address = getTokenContractAddress(_tokeSymbol);
-                    require(erc20Address != 0);
-                }
-                address factoryGM   = SysOverlayer(getSysOverlayer()).getComponent("factory", "gm");
-                address factoryAdr = FactoryManager(factoryGM).getAdr(factoryType);
-                address walletAdr  = FactoryBase(factoryAdr).createNode(temp, parentNode, _creator);
-                require(walletAdr != 0);
-    
-                DBNode(walletAdr).setERC20TokenAddress(erc20Address);    
-                return walletAdr;
-            }
-        }
+        DBNode(walletAdr).setERC20TokenAddress(_tokenContractAdr);    
+        return walletAdr;
+      
         return address(0);
     }
-
-
+    
+    /*
     function conductPublishAgreement(bytes32 _userName, bytes32 _agrName, address _creator) public returns (uint) {
         checkDelegate(msg.sender, 1);
 
@@ -113,4 +91,5 @@ contract SysGmWallet is SysGmBase {
         DBNode(_dest).informTransaction(userWallet, _dest, _amount);
         return true;
     }
+    */
 }
