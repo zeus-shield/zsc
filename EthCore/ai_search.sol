@@ -79,6 +79,7 @@ contract AISearch is Object {
         checkDelegate(msg.sender, 1);
 
         // delete all data
+        removeAll();
 
         super.kill();
     }
@@ -276,13 +277,13 @@ contract AISearch is Object {
 
         // remove all parameters of element
         parameterCount = factorys_[_factoryType].elements_[_elementName].parameterCount;
-        if (parameterCount > 0) {
+        if (0 < arameterCount) {
             for (uint i=0; i<parameterCount; i++) {
                 parameterName = factorys_[_factoryType].elements_[_elementName].parameterIndexs_[i];
                 require(removeParameter(_factoryType, _elementName, parameterName));
             }
         }
-        factorys_[_factoryType].elements_[_elementName].parameterCount_ = 0;
+        require(0 == factorys_[_factoryType].elements_[_elementName].parameterCount_);
 
         // remove element
         elementIndex = factorys_[_factoryType].elementIndexs_[_elementName];
@@ -323,13 +324,13 @@ contract AISearch is Object {
 
         // remove all elements of factory
         elementCount = factorys_[_factoryType].elementCount_;
-        if (elementCount > 0) {
+        if (0 < elementCount) {
             for (uint i=0; i<elementCount; i++) {
                 elementName = factorys_[_factoryType].elementIndexs_[i];
                 require(removeElement(_factoryType, elementName));
             }
         }
-        factorys_[_factoryType].elementCount_ = 0;
+        reqiure(0 == factorys_[_factoryType].elementCount_);
 
         // remove factory
         factoryIndex = factoryIndexs_[_factoryType];
@@ -344,6 +345,22 @@ contract AISearch is Object {
         delete factorys_[_factoryType];
 
         factoryCount_ --;
+
+        return true;
+    }
+
+    function removeAll() public returns (bool) {
+        // check sender
+        checkDelegate(msg.sender, 1);
+
+        // remove all factorys
+        if (0 < factoryCount_) {
+            for (uint i=0; i<factoryCount_; i++) {
+                factoryType = factoryIndexs_[i];
+                require(removeFactory(factoryType));
+            }
+        }
+        require(0 == factoryCount_);
 
         return true;
     }
