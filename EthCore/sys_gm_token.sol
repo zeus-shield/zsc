@@ -28,18 +28,18 @@ contract SysGmToken is SysGmBase {
     /* symbol => exist */
     mapping(bytes32 => bool) private exists_;
 
-    function SysGmToken() public SysGmBase("sys_gm_token") {
+    function SysGmToken(bytes32 _name) public SysGmBase(_name) {
         number_ = 0;
     } 
 
-    function numOfTokens() public constant returns (uint) {
+    function numOfTokens() public view returns (uint) {
         /* check delegate */
         checkDelegate(msg.sender, 1);
 
         return number_;
     }
 
-    function doesTokenExist(bytes32 _symbol) public constant returns (bool) {
+    function doesTokenExist(bytes32 _symbol) public view returns (bool) {
         /* check delegate */
         checkDelegate(msg.sender, 1);
 
@@ -82,7 +82,7 @@ contract SysGmToken is SysGmBase {
         return true;
     }
 
-    function getTokenInfoByIndex(uint _index) public constant returns (bytes32, bytes32, bytes32, uint, address) {
+    function getTokenInfoByIndex(uint _index) public view returns (bytes32, bytes32, bytes32, uint, address) {
         /* check delegate */
         checkDelegate(msg.sender, 1);
 
@@ -99,7 +99,7 @@ contract SysGmToken is SysGmBase {
                 tokens_[_index].address_);
     }
 
-    function getTokenInfoBySymbol(bytes32 _symbol) public constant returns (bytes32, bytes32, bytes32, uint, address) {
+    function getTokenInfoBySymbol(bytes32 _symbol) public view returns (bytes32, bytes32, bytes32, uint, address) {
         /* check delegate */
         checkDelegate(msg.sender, 1);
 
@@ -108,7 +108,7 @@ contract SysGmToken is SysGmBase {
         return getTokenInfoByIndex(indexs_[_symbol]);
     }
 
-    function getTokenAddress(bytes32 _symbol) public constant returns (address) {
+    function getTokenAddress(bytes32 _symbol) public view returns (address) {
         /* check delegate */
         checkDelegate(msg.sender, 1);
 
