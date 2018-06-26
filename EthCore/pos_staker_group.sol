@@ -7,9 +7,11 @@ pragma solidity ^0.4.21;
 import "./delegate.sol";
 
 contract DBStaker {
-    function useStakePoint(uint _amount) public returns (uint);
-    function claimReward() public returns (uint);
-    function getRemainingSP() public constant returns (uint);
+    function setPoSInfo(uint _divendendDuration, uint _rewardBaseRatio, uint _startTime, uint _endTime) public;
+    function claimStakePoint(uint _tokenAmount) public returns (uint);
+    function getRemainingStakePoint(uint _tokenAmount) public view returns (uint);
+    function getMiningInfoByIndexs(uint _index) public constant returns (uint, uint);
+    function numMiningInfo() public constant returns (uint);
 }
 
 contract PosStakerGroup is Delegated {
@@ -20,11 +22,11 @@ contract PosStakerGroup is Delegated {
     struct StakerInfo {
         address adr_;
         uint dividendDuration_;
+        uint rewardRate_;
         uint startTime_;
         uint endTime_;
-        uint rewardRate_;
     }
-
+    
     uint private stakerNos_;
     uint private spUsed_;
     uint private spRemaining_;
@@ -32,8 +34,8 @@ contract PosStakerGroup is Delegated {
     mapping(address => uint)    private stakerIndex_;
     mapping(uint => StakerInfo) private stakers_;
     mapping(address => bool)    private stakerExists_;
-    mapping(bytes32 => uint)     private rewardRatios_;
-    mapping(bytes32 => uint)     private rewardDividendDurations_;
+    mapping(bytes32 => uint)    private rewardRatios_;
+    mapping(bytes32 => uint)    private rewardDividendDurations_;
 
     address private zscTokenContract_;
     uint private rewardBasis_;
@@ -56,13 +58,13 @@ contract PosStakerGroup is Delegated {
         return stakerNos_;
     }
 
-    function addStakerType(bytes32 _stakerType, uint _dividendDuration, uint _ratio) public {
+    function registerStakerType(bytes32 _stakerType, uint _dividendDuration, uint _ratio) public {
         checkDelegate(msg.sender, 1);
         require(rewardRatios_[_stakerType] == 0 && _dividendDuration != 0 && _ratio != 0);
         rewardRatios_[_stakerType] = _ratio;
         rewardDividendDurations_[_stakerType] = _dividendDuration;
     }
-
+    
     function removeStakerType(bytes32 _stakerType) public {
         checkDelegate(msg.sender, 1);
         require(rewardRatios_[_stakerType] != 0);
@@ -70,7 +72,7 @@ contract PosStakerGroup is Delegated {
         delete rewardDividendDurations_[_stakerType];
     }
     
-    function registerStaker(address _nodeAddress, bytes32 _stakerType) public {
+    function addStaker(bytes32 _stakerType, address _nodeAddress) public {
         checkDelegate(msg.sender, 1);
         require(_nodeAddress != 0 && stakerExists_[_nodeAddress] == false && rewardRatios_[_stakerType] != 0);
 
@@ -108,8 +110,8 @@ contract PosStakerGroup is Delegated {
         }
     }
 
-    function useStakerSPByIndex(uint _index, uint _amount) internal returns (uint) {
-        return DBStaker(stakers_[_index].adr_).useStakePoint(_amount);
+    function claimStakerSPByIndex(uint _index, uint _tokenAmount) internal returns (uint) {
+        return DBStaker(stakers_[_index].adr_).claimStakePoint(_tokenAmount);
     }
 
     function getTotalRemainingSP() internal constant returns (uint) {

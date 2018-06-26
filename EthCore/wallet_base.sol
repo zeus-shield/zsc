@@ -27,21 +27,16 @@ contract WalletBase is DBNode {
     }
 
     function recordInput(address _sender, uint _amount) internal {
-        uint index = nos_;
-        nos_++;
-        payments_[index] = Payment(now, false, 0x0, _sender, address(this), _amount);
+        payments_[nos_++] = Payment(now, false, 0x0, _sender, address(this), _amount);
     }
 
     function recordOut(address _receiver, uint _amount) internal {
-        uint index = nos_;
-        nos_++;
-        payments_[index] = Payment(now, true, 0x0, address(this), _receiver, _amount);
+        payments_[nos_++] = Payment(now, true, 0x0, address(this), _receiver, _amount);
     }
 
     ////////// public functions /////////////
     function getBlance() public constant returns (uint);
-    //function executeTransaction(address _dest, uint256 _amount) public returns (uint);
-    //function informTransaction(address _src, uint256 _amount) public;
+    function executeTransaction(address _dest, uint256 _amount) public returns (uint);
 
     function numTransactions() public constant returns (uint) {
         checkDelegate(msg.sender, 1);
