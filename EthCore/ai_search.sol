@@ -114,6 +114,7 @@ contract AISearch is Object {
             return false;
         }
 
+        // check element exist
         if(!checkElementExist(_factoryType, _elementName)) {
             return false;
         }
@@ -122,7 +123,6 @@ contract AISearch is Object {
     }
 
     function addFactory(bytes32 _factoryType) public returns (bool) {
-        // If there is data, update. If there is no data, add.
 
         // check sender
         checkDelegate(msg.sender, 1);
@@ -130,8 +130,8 @@ contract AISearch is Object {
         // check param
         require(bytes32(0) != _factoryType);
 
+        // If there is data, update. If there is no data, add.
         factorys_[_factoryType].type_ = _factoryType;
-
         if(!checkFactoryExist(_factoryType)) {
             factoryExists_[_factoryType] = true;
             factoryCount_ ++;
@@ -156,17 +156,17 @@ contract AISearch is Object {
         // add factory base info
         require(addFactory(_factoryType));
 
-        count = factorys_[_factoryType].elementCount_;
-        factorys_[_factoryType].elementNames_[count] = _elementName;
-        factorys_[_factoryType].elementIndexs_[_elementName] = count;
-        factorys_[_factoryType].elementExists_[_elementName] = true;
-
-        // add element base info
+        // If there is data, update. If there is no data, add.
         factorys_[_factoryType].elements_[_elementName].addr_ = _elementAddress;
         factorys_[_factoryType].elements_[_elementName].type_ = _factoryType;
         factorys_[_factoryType].elements_[_elementName].name_ = _elementName;
-
-        factorys_[_factoryType].elementCount_ ++;
+        if(!checkElementExist(_factoryType, _elementName)) {
+            count = factorys_[_factoryType].elementCount_;
+            factorys_[_factoryType].elementNames_[count] = _elementName;
+            factorys_[_factoryType].elementIndexs_[_elementName] = count;
+            factorys_[_factoryType].elementExists_[_elementName] = true;
+            factorys_[_factoryType].elementCount_ ++;
+        }
 
         return true;
     }
