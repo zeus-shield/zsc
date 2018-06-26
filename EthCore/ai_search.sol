@@ -219,21 +219,13 @@ contract AISearch is Object {
         require(bytes32(0) != _elementName);
         require(bytes32(0) != _parameterName);
 
-        if(!checkFactoryExist(_factoryType) {
-            return false;
-        }
-
-        if(!checkElementExist(_factoryType, _elementName) {
-            return false;
-        }
-
         if(!checkParameterExist(_factoryType, _elementName, _parameterName) {
             return false;
         }
 
         index = factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName];
         count = factorys_[_factoryType].elements_[_elementName].parameterCount;
-        name = factorys_[_factoryType].elements_[_elementName].elementNames_[count-1];
+        name = factorys_[_factoryType].elements_[_elementName].parameterNames_[count-1];
 
         factorys_[_factoryType].elements_[_elementName].parameterNames_[index] = name;
         factorys_[_factoryType].elements_[_elementName].parameterNames_[count-1] = _parameterName;
