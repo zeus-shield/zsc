@@ -123,48 +123,17 @@ ZSCUserManagement.prototype.loadUserManagementHtml = function(showDetails, setSt
 
     var setStatusPrefix = setStatus + "('"; 
     var setStatusSuffix = "')";
-
-    /*
-    var text = '<table align="center" style="width:800px;min-height:30px">'
-    text += '<tr>'
-    text += '   <td>user info</td> <td>adrs</td> <td>operations</td> <td>details</td>  '
-    text += '</tr> '
-    text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
-
-    for (var i = 0; i < this.userNos; ++i) {
-        var hashId = this.userName[i] + "Hash"
-        text += '</tr>';
-        text += '   <td><text>   name: ' + this.userName[i]    + '</text><br>'
-        text += '       <text>actived: ' + this.userActived[i] + ' </text><br>'
-        text += '       <text>   type: ' + this.userType[i]    + ' </text><br>'
-        text += '       <text> status: ' + this.userStatus[i]  + ' </text>'
-        text += '   </td>'
-        text += '   <td><text>   id: ' + this.userId[i]      + ' </text><br>'
-        text += '       <text> node: ' + this.userNodeAdr[i] + ' </text><br>'
-        text += '       <text id="'+ hashId + '"> log: </text>'
-        text += '   </td>'
-        text += '   <td><button type="button" onClick="' + setStatusPrefix + "'" + name + "', '" + ",'true'," + hashId + "'"  + setStatusSuffix + '">Active</button><br>'
-        text += '       <button type="button" onClick="' + setStatusPrefix + "'" + name + "', '" + ",'false',"+ hashId + "'" + setStatusSuffix + '">Deactive</button>'
-        text += '   </td>'
-        text += '   <td><button type="button" onClick="' + showPrefix + "'wallets', '" + name + "', '" + hashId + "'" + showSuffix + '">Wallets</button><br>'
-        text += '       <button type="button" onClick="' + showPrefix + "'templates', '" + name + "', '" + hashId + "'" + showSuffix + '">Templates</button><br>'
-        text += '       <button type="button" onClick="' + showPrefix + "'agreements', '" + name + "', '" + hashId + "'" + showSuffix + '">Agreements</button>'
-        text += '   </td>'
-        text += '</tr>'
-        text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
-    }
-    */
+    var hashId = "ButtonHashId";
 
     var text = ' <text id="ButtonHashId"> </text>'
-    text += '<table align="center" style="width:800px;min-height:30px">'
+    text += '<table id="ZSCUserInfoBody" align="center" style="width:800px;min-height:30px">'
     text += '<tr>'
     text += '   <td>index </td> <td>name</td> <td>pass</td> <td>actived</td> <td>type</td> <td>status</td>  <td>active</td>  <td>deactive</td>  <td>detail</td> '
     text += '</tr> '
     text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td>  </tr>'
 
-    var hashId = "ButtonHashId";
     for (var i = 0; i < this.userNos; ++i) {
-        text += '</tr>';
+        text += '<tr>';
         text += '   <td><text> ' + i + '</text></td>'
         text += '   <td><text> ' + this.userName[i]    + '</text></td>'
         text += '   <td><text> ' + this.userPass[i] + ' </text></td>'
@@ -174,9 +143,9 @@ ZSCUserManagement.prototype.loadUserManagementHtml = function(showDetails, setSt
         text += '   <td><button type="button" onClick="' + setStatusPrefix + this.userName[i] + "', 'true', '"  + hashId + setStatusSuffix + '">Active</button></td>'
         text += '   <td><button type="button" onClick="' + setStatusPrefix + this.userName[i] + "', 'false', '" + hashId + setStatusSuffix + '">Deactive</button></td>'
         text += '   <td><button type="button" onClick="' + showPrefix + showSuffix + '">Details</button></td>'
-        text += '</tr> <br>'
-        //text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
+        text += '</tr> '
     }
+    text += '</table>';
     document.getElementById(elementId).innerHTML = text;  
 }
 
@@ -189,5 +158,36 @@ ZSCUserManagement.prototype.setUserActiveState = function(userName, status, hash
             if(!error) cC_showHashResultTest(hashId, result, function() {window.location.reload(true);})
              else console.log("error: " + error);
         });
+}
+
+ZSCUserManagement.prototype.exportUserInfo = function() {
+    var downloadLink;
+    var dataType = 'application/vnd.ms-excel';
+    var tableSelect = document.getElementById("ZSCUserInfoBody");
+    var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+    
+    // Specify file name
+    filename = "userinfos"?"userinfos"+'.xls':'excel_data.xls';
+    
+    // Create download link element
+    downloadLink = document.createElement("a");
+    
+    document.body.appendChild(downloadLink);
+    
+    if(navigator.msSaveOrOpenBlob){
+        var blob = new Blob(['\ufeff', tableHTML], {
+            type: dataType
+        });
+        navigator.msSaveOrOpenBlob( blob, filename);
+    }else{
+        // Create a link to the file
+        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+    
+        // Setting the file name
+        downloadLink.download = filename;
+        
+        //triggering the function
+        downloadLink.click();
+    }
 }
 
