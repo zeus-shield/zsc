@@ -46,6 +46,10 @@ echo $htmlObjects->loadScriptFiles();
         });
     }
 
+    function exportZSCUserInfo() {
+        userManager.exportUserInfo();
+    }
+
 </script>
 </head>
 <body>
@@ -62,11 +66,15 @@ echo $htmlObjects->loadScriptFiles();
     </div>
 
     <div class="well">
-        <text>Prefix</text>  <input type="text" id="UserPrefix" value="zsc-"></input> <br>
-        <text>Suffix-length</text>  <input type="text" id="UserLength" value="6"></input> <br>
+        <text>Prefix</text>  <input type="text" id="UserPrefix" value="zsc-"></input> 
+        <text>Suffix-length</text>  <input type="text" id="UserLength" value="6"></input> 
         <text>Pass-length</text>  <input type="text" id="PassLength" value="10"></input> <br>
         <button type="button" onClick="addUserRandom('UserPrefix', 'UserLength', 'PassLength', 'AddUserRandomhash')">Random add a user</button> <br>
         <text id="AddUserRandomhash"></text>
+    </div>
+
+    <div class="well">
+        <button type="button" onClick="exportZSCUserInfo()">Export ZSC User Info</button> <br>
     </div>
 
     <div class="well" id="UserManagement"> </div>
