@@ -58,6 +58,10 @@ contract AISearch is Object {
 
     // factory count
     uint factoryCount_;
+    // factory index => factory name
+    mapping(uint => bytes32) factoryNames_;
+    // factory name => factory index
+    mapping(bytes32 => uint) factoryIndexs_;
     // factory type => exist flag
     mapping(bytes32 => bool) factoryExists_;
     // factory type => FactoryInfo
@@ -98,7 +102,7 @@ contract AISearch is Object {
         require(bytes32(0) != _elementName);
 
         // check factory exist
-        if(!checkFactoryExist(_factoryType)) {
+        if (!checkFactoryExist(_factoryType)) {
             return false;
         }
 
@@ -115,12 +119,12 @@ contract AISearch is Object {
         require(bytes32(0) != _parameterName);
 
         // check factory exist
-        if(!checkFactoryExist(_factoryType)) {
+        if (!checkFactoryExist(_factoryType)) {
             return false;
         }
 
         // check element exist
-        if(!checkElementExist(_factoryType, _elementName)) {
+        if (!checkElementExist(_factoryType, _elementName)) {
             return false;
         }
 
@@ -137,7 +141,7 @@ contract AISearch is Object {
 
         // If there is data, update. If there is no data, add.
         factorys_[_factoryType].type_ = _factoryType;
-        if(!checkFactoryExist(_factoryType)) {
+        if (!checkFactoryExist(_factoryType)) {
             factoryExists_[_factoryType] = true;
             factoryCount_ ++;
         }
@@ -165,7 +169,7 @@ contract AISearch is Object {
         factorys_[_factoryType].elements_[_elementName].addr_ = _elementAddress;
         factorys_[_factoryType].elements_[_elementName].type_ = _factoryType;
         factorys_[_factoryType].elements_[_elementName].name_ = _elementName;
-        if(!checkElementExist(_factoryType, _elementName)) {
+        if (!checkElementExist(_factoryType, _elementName)) {
             count = factorys_[_factoryType].elementCount_;
             factorys_[_factoryType].elementNames_[count] = _elementName;
             factorys_[_factoryType].elementIndexs_[_elementName] = count;
@@ -195,7 +199,7 @@ contract AISearch is Object {
 
         // If there is data, update. If there is no data, add.
         factorys_[_factoryType].elements_[_elementName].parameters_[_parameterName] = _parameterValue;
-        if(!checkParameterExist(_factoryType, _elementName, _parameterName)) {
+        if (!checkParameterExist(_factoryType, _elementName, _parameterName)) {
             count = factorys_[_factoryType].elements_[_elementName].parameterCount;
             factorys_[_factoryType].elements_[_elementName].parameterNames_[count] = _parameterName;
             factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName] = count;
@@ -219,12 +223,12 @@ contract AISearch is Object {
         require(bytes32(0) != _elementName);
         require(bytes32(0) != _parameterName);
 
-        if(!checkParameterExist(_factoryType, _elementName, _parameterName) {
+        if (!checkParameterExist(_factoryType, _elementName, _parameterName) {
             return false;
         }
 
         count = factorys_[_factoryType].elements_[_elementName].parameterCount;
-        if(0 == count) {
+        if (0 == count) {
             return false;
         }
 
