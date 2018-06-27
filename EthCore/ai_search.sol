@@ -84,7 +84,7 @@ contract AISearch is Object {
         super.kill();
     }
 
-    function checkFactoryExist(bytes32 _factoryType) private returns (bool) {
+    function checkFactoryExist(bytes32 _factoryType) private view returns (bool) {
         // check sender
         checkDelegate(msg.sender, 1);
 
@@ -94,7 +94,7 @@ contract AISearch is Object {
         return factoryExists_[_factoryType];
     }
 
-    function checkElementExist(bytes32 _factoryType, bytes32 _elementName) private returns (bool) {
+    function checkElementExist(bytes32 _factoryType, bytes32 _elementName) private view returns (bool) {
         // check sender
         checkDelegate(msg.sender, 1);
 
@@ -110,7 +110,7 @@ contract AISearch is Object {
         return factorys_[_factoryType].elementExists_[_elementName];
     }
 
-    function checkParameterExist(bytes32 _factoryType, bytes32 _elementName, bytes32 _parameterName) private returns (bool) {
+    function checkParameterExist(bytes32 _factoryType, bytes32 _elementName, bytes32 _parameterName) private view returns (bool) {
         // check sender
         checkDelegate(msg.sender, 1);
 
@@ -277,13 +277,13 @@ contract AISearch is Object {
 
         // remove all parameters of element
         parameterCount = factorys_[_factoryType].elements_[_elementName].parameterCount;
-        if (0 < arameterCount) {
+        if (0 < parameterCount) {
             for (uint i=0; i<parameterCount; i++) {
-                parameterName = factorys_[_factoryType].elements_[_elementName].parameterIndexs_[i];
+                parameterName = factorys_[_factoryType].elements_[_elementName].parameterNames_[i];
                 require(removeParameter(_factoryType, _elementName, parameterName));
             }
         }
-        require(0 == factorys_[_factoryType].elements_[_elementName].parameterCount_);
+        require(0 == factorys_[_factoryType].elements_[_elementName].parameterCount);
 
         // remove element
         elementIndex = factorys_[_factoryType].elementIndexs_[_elementName];
@@ -303,7 +303,8 @@ contract AISearch is Object {
     }
 
     function removeFactory(bytes32 _factoryType) public returns (bool) {
-        bytes32 factoryName = 0;
+        bytes32 factoryType
+         = 0;
         uint factoryIndex = 0;
         uint elementCount = 0;
         bytes32 elementName = 0;
@@ -326,20 +327,20 @@ contract AISearch is Object {
         elementCount = factorys_[_factoryType].elementCount_;
         if (0 < elementCount) {
             for (uint i=0; i<elementCount; i++) {
-                elementName = factorys_[_factoryType].elementIndexs_[i];
+                elementName = factorys_[_factoryType].elementNames_[i];
                 require(removeElement(_factoryType, elementName));
             }
         }
-        reqiure(0 == factorys_[_factoryType].elementCount_);
+        require(0 == factorys_[_factoryType].elementCount_);
 
         // remove factory
         factoryIndex = factoryIndexs_[_factoryType];
-        factoryName = factoryNames_[factoryCount_-1];
+        factoryType = factoryNames_[factoryCount_-1];
 
-        factoryNames_[factoryIndex] = factoryName;
-        factoryNames_[factoryCount_-1] = _factoryName;
-        factoryIndexs_[factoryName] = factoryIndex;
-        factoryIndexs_[_factoryName] = factoryCount_-1;
+        factoryNames_[factoryIndex] = factoryType;
+        factoryNames_[factoryCount_-1] = _factoryType;
+        factoryIndexs_[factoryType] = factoryIndex;
+        factoryIndexs_[_factoryType] = factoryCount_-1;
 
         delete factoryExists_[_factoryType];
         delete factorys_[_factoryType];
@@ -350,13 +351,15 @@ contract AISearch is Object {
     }
 
     function removeAll() public returns (bool) {
+        bytes32 factoryType = 0;
+
         // check sender
         checkDelegate(msg.sender, 1);
 
         // remove all factorys
         if (0 < factoryCount_) {
             for (uint i=0; i<factoryCount_; i++) {
-                factoryType = factoryIndexs_[i];
+                factoryType = factoryNames_[i];
                 require(removeFactory(factoryType));
             }
         }
