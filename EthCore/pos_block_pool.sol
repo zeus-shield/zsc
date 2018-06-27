@@ -21,9 +21,9 @@ contract PosBlockPool is Delegated {
         blockSizeLimit_ = 1024 * 1024 * 2;
     } 
 
-    function getBlockByIndex(uint _blockIndex) internal constant returns (address) {
+    function getBlockByIndex(uint _blockIndex) public view returns (address) {
+        checkDelegate(msg.sender, 1);
         require(_blockIndex < totalBlockNos_);
-        
         return blocks_[_blockIndex];
     }
 
@@ -38,13 +38,13 @@ contract PosBlockPool is Delegated {
         return adr;
     }
 
-    function adjustBlockSizeLImit(uint _sizeLimit /*in terms of gas usage*/) internal {
+    function adjustBlockSizeLImit(uint _sizeLimit /*in terms of gas usage*/) public {
+        checkDelegate(msg.sender, 1);
         blockSizeLimit_ = _sizeLimit;
     }
 
     function registerGasUsage(address _sender, uint _gasUsage) public {
         checkDelegate(msg.sender, 1);
-
         remaingGasUsage_ = remaingGasUsage_.add(_gasUsage);
 
         address myBlock;
@@ -64,7 +64,9 @@ contract PosBlockPool is Delegated {
         totalBlockNos_++;
     }
 
-    function getLastPendingBlockIndex() internal constant returns (uint) { 
+    function getLastPendingBlockIndex() public view returns (uint) { 
+        checkDelegate(msg.sender, 1);
+        
         if (totalBlockNos_ == 0) return 0;
         address myBlock;
 
@@ -77,15 +79,19 @@ contract PosBlockPool is Delegated {
         return 0;
     }
 
-    function numTotalBlocks() internal constant returns (uint) { 
+    function numTotalBlocks() public view returns (uint) { 
+        checkDelegate(msg.sender, 1);
         return totalBlockNos_; 
     }
 
-    function numMinedBlocks() internal constant returns (uint) { 
+    function numMinedBlocks() public view returns (uint) { 
+        checkDelegate(msg.sender, 1);
         return minedBlockNos_; 
     }
 
-    function setBlockMinedByIndex(uint _blockIndex) internal {
+    function setBlockMinedByIndex(uint _blockIndex) public {
+        checkDelegate(msg.sender, 1);
+        
         address blockAdr = blocks_[_blockIndex];
         PosBlock(blockAdr).setMined();
         minedBlockNos_++;
