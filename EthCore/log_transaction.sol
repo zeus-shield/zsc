@@ -8,18 +8,26 @@ import "./log_base.sol";
 
 contract LogTransaction is LogBase {
 
+    // log info
     struct LogInfo {
+        // current time
         uint now_;
+        // information
         string info_;
     }
 
+    // module name
     bytes32 name_;
+    // number of log
     uint nos_;
+    // index => log info
     mapping(uint => LogInfo) log_;
 
+    // constructor
     function LogTransaction() public LogBase() {}
 
     function initLog(bytes32 _name) public {
+        // check sender
         checkDelegate(msg.sender, 1);
 
         name_ = _name;
@@ -27,6 +35,9 @@ contract LogTransaction is LogBase {
     }
 
     function addLog(string _log, bool _newLine) public {
+        // check sender
+        checkDelegate(msg.sender, 1);
+
         if(true == _newLine && 0 < nos_) {
             nos_++;
             log_[nos_].info_ = _log;
@@ -38,8 +49,10 @@ contract LogTransaction is LogBase {
     }
     
     function printLog(uint _index) public view returns (string) {
+        // check sender
         checkDelegate(msg.sender, 1);
 
+        // check param
         if(_index > nos_ ) 
             return "null";
 
@@ -49,11 +62,11 @@ contract LogTransaction is LogBase {
     }
 
     function printLogByTime(uint _startTime, uint _endTime) public view returns (string) {
-
-        /* check param */
-        require(_endTime > _startTime);
-
+        // check param
         checkDelegate(msg.sender, 1);
+
+        // check param
+        require(_endTime > _startTime);
 
         string memory str = PlatString.bytes32ToString(name_);
         str = PlatString.append("[", str, "]\n");
