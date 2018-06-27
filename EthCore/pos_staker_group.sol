@@ -54,7 +54,8 @@ contract PosStakerGroup is Delegated {
         zscTokenContract_ = _adr;
     }
 
-    function numStakers() internal constant returns (uint) {
+    function numStakers() public view returns (uint) {
+        checkDelegate(msg.sender, 1);
         return stakerNos_;
     }
 
@@ -110,29 +111,33 @@ contract PosStakerGroup is Delegated {
         }
     }
 
-    function claimStakerSPByIndex(uint _index, uint _tokenAmount) internal returns (uint) {
+    function claimStakerSPByIndex(uint _index, uint _tokenAmount) public returns (uint) {
+        checkDelegate(msg.sender, 1);
         return DBStaker(stakers_[_index].adr_).claimStakePoint(_tokenAmount);
     }
 
-    function getTotalRemainingSP() internal constant returns (uint) {
+    function getTotalRemainingSP() public view returns (uint) {
         checkDelegate(msg.sender, 1);
 
         uint total = 0;
 
         for (uint i = 1; i < stakerNos_; ++i) {
-            total = total.add(DBStaker(stakers_[i].adr_).getRemainingSP());
+            //total = total.add(DBStaker(stakers_[i].adr_).getRemainingSP());
         }
         return total;
     } 
 
-    function setNextStakerForUseSP(uint _index) internal {
+    function setNextStakerForUseSP(uint _index) public {
+        checkDelegate(msg.sender, 1);
+
         nextStakerForUseSP_ = _index;
         if (nextStakerForUseSP_ == stakerNos_) {
             nextStakerForUseSP_ = 0;
         }
     }
 
-    function getNextStakerForUseSP() internal constant returns (uint) {
+    function getNextStakerForUseSP() public view returns (uint) {
+        checkDelegate(msg.sender, 1);
         return nextStakerForUseSP_;
     }
 }
