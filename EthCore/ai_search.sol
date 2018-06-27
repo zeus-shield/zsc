@@ -368,59 +368,82 @@ contract AISearch is Object {
         return true;
     }
 
-    function numFactoryElements(bytes32 _factoryType) public view returns (uint) {
+    function numElements(bytes32 _factoryType) public view returns (uint) {
         // check sender
         checkDelegate(msg.sender, 1);
 
         // check param
         require(bytes32(0) != _factoryType);
+
+        if (!checkFactoryExist(_factoryType)) {
+            return 0;
+        }
 
         return factorys_[_factoryType].elementCount_;
     }
 
-    function getFactoryElementNameByIndex(bytes32 _factoryType, uint _index) public view returns (bytes32) {
+    function getElementNameByIndex(bytes32 _factoryType, uint _index) public view returns (bytes32) {
         // check sender
         checkDelegate(msg.sender, 1);
 
         // check param
         require(bytes32(0) != _factoryType);
+
+        if (!checkFactoryExist(_factoryType)) {
+            return 0;
+        }
+
+        // check param
         require(factorys_[_factoryType].elementCount_ > _index);
 
         return factorys_[_factoryType].elementNames_[_index];
     }
 
-    function numElementParameters(bytes32 _factoryType, bytes32 _enName) public view returns (uint) {
+    function numParameters(bytes32 _factoryType, bytes32 _elementName) public view returns (uint) {
         // check sender
         checkDelegate(msg.sender, 1);
 
         // check param
         require(bytes32(0) != _factoryType);
-        require(bytes32(0) != _enName);
+        require(bytes32(0) != _elementName);
 
-        return factorys_[_factoryType].elements_[_enName].parameterCount;
+        if (!checkElementExist(_factoryType, _elementName)) {
+            return 0;
+        }
+
+        return factorys_[_factoryType].elements_[_elementName].parameterCount;
     }
 
-    function getElementParameterNameByIndex(bytes32 _factoryType, bytes32 _enName, uint _index) public view returns (bytes32) {
+    function getParameterNameByIndex(bytes32 _factoryType, bytes32 _elementName, uint _index) public view returns (bytes32) {
         // check sender
         checkDelegate(msg.sender, 1);
 
         // check param
         require(bytes32(0) != _factoryType);
-        require(bytes32(0) != _enName);
-        require(factorys_[_factoryType].elements_[_enName].parameterCount > _index);
+        require(bytes32(0) != _elementName);
 
-        return factorys_[_factoryType].elements_[_enName].parameterNames_[_index];
+        if (!checkElementExist(_factoryType, _elementName)) {
+            return 0;
+        }
+
+        require(factorys_[_factoryType].elements_[_elementName].parameterCount > _index);
+
+        return factorys_[_factoryType].elements_[_elementName].parameterNames_[_index];
     }
 
-    function getElementParameter(bytes32 _factoryType, bytes32 _enName, bytes32 _parameter) public view returns (bytes32) {
+    function getParameter(bytes32 _factoryType, bytes32 _elementName, bytes32 _parameterName) public view returns (bytes32) {
         // check sender
         checkDelegate(msg.sender, 1);
 
         // check param
         require(bytes32(0) != _factoryType);
-        require(bytes32(0) != _enName);
-        require(bytes32(0) != _parameter);
+        require(bytes32(0) != _elementName);
+        require(bytes32(0) != _parameterName);
 
-        return factorys_[_factoryType].elements_[_enName].parameters_[_parameter];
+        if (!checkParameterExist(_factoryType, _elementName, _parameterName)) {
+            return 0;
+        }
+
+        return factorys_[_factoryType].elements_[_elementName].parameters_[_parameterName];
     }
 }
