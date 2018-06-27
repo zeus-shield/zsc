@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2018, ZSC Dev Team
+ Copyright (c) 2018, ZSC Dev Team
 */
 
 pragma solidity ^0.4.21;
@@ -16,16 +16,16 @@ contract LogManager is Delegated {
         bool registered_;
     }
     
-    /* listener address list */
+    // listener address list
     address[] addrs_;
 
-    /* listener address => listener info */
+    // listener address => listener info
     mapping(address => Listener)listeners_;
 
     function LogManager() public Delegated() {}
 
     function kill() public {
-        /* check delegate */
+        // check delegate
         checkDelegate(msg.sender, 1);
 
         for(uint i=0; i<addrs_.length; i++ ) {
@@ -46,13 +46,13 @@ contract LogManager is Delegated {
     function registerListener(uint _type, address _addr, bytes32 _name) public {
         address instance = address(0);
 
-        /* check param */
+        // check param
         require(0 != _addr);
 
-        /* check delegate */
+        // check delegate
         checkDelegate(msg.sender, 1);
 
-        /* check registered */
+        // check registered
         if(listeners_[_addr].registered_) {
             return;
         }
@@ -64,7 +64,7 @@ contract LogManager is Delegated {
             //instance = new LogUser();
         }
         else if(_type == 2) {
-            /* TODO */
+            // TODO
         }
         else {
             require(false);
@@ -83,42 +83,42 @@ contract LogManager is Delegated {
 
     function addLog(string _log, bool _newLine) public {
 
-        /* check registered */
+        // check registered
         require(listeners_[msg.sender].registered_);
 
-        /* check instance */
+        // check instance
         require(0 != listeners_[msg.sender].log_instance_);
 
         LogBase(listeners_[msg.sender].log_instance_).addLog(_log, _newLine);
     }
     
     function printLog(address _addr, uint _index) public view returns (string) {
-        /* check param */
+        // check param
         require(0 != _addr);
 
-        /* check delegate */
+        // check delegate
         checkDelegate(msg.sender, 1);
 
-        /* check registered */
+        // check registered
         require(listeners_[_addr].registered_);
 
-        /* check instance */
+        // check instance
         require(0 != listeners_[_addr].log_instance_);
 
         return LogBase(listeners_[msg.sender].log_instance_).printLog(_index);
     }
 
     function printLogByTime(address _addr, uint _startTime, uint _endTime) public view returns (string) {
-        /* check param */
+        // check param
         require(0 != _addr);
 
-        /* check delegate */
+        // check delegate
         checkDelegate(msg.sender, 1);
 
-        /* check registered */
+        // check registered
         require(listeners_[_addr].registered_);
 
-        /* check instance */
+        // check instance
         require(0 != listeners_[_addr].log_instance_);
 
         return LogBase(listeners_[msg.sender].log_instance_).printLogByTime(_startTime, _endTime);
