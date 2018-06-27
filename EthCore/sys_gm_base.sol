@@ -14,16 +14,16 @@ contract SysGmBase is Object {
     function SysGmBase(bytes32 _name) public Object(_name) {
     }
 
-    function setControlApiAdr(address _adr) public {
+    function initSysGm(address _controlAdr) public {
         checkDelegate(msg.sender, 1);
 
-        require(_adr != address(0));
+        require(_controlAdr != address(0));
         
-        if (controlApiAdr_ != _adr) {
+        if (controlApiAdr_ != _controlAdr) {
            if (controlApiAdr_ != address(0)) {
                setDelegate(controlApiAdr_, 0);
            } 
-           controlApiAdr_ = _adr;
+           controlApiAdr_ = _controlAdr;
            setDelegate(controlApiAdr_, 1);
         }
     }
