@@ -1,5 +1,5 @@
-        /*
-Copyright (c) 2018, ZSC Dev Team
+/*
+ Copyright (c) 2018, ZSC Dev Team
 */
 
 pragma solidity ^0.4.21;
@@ -10,13 +10,13 @@ contract SysGmString is SysGmBase {
 
     struct ParameterValues {
         uint count_;
-        /* index => parameter */
+        // index => parameter
         mapping(uint => bytes32) parameters_;
-        /* parameter => index */
+        // parameter => index
         mapping(bytes32 => uint) indexs_;
-        /* parameter => register */
+        // parameter => register
         mapping(bytes32 => bool) registers_;
-        /* parameter => string */
+        // parameter => string
         mapping(bytes32 => string) strings_;
     }
 
@@ -25,14 +25,14 @@ contract SysGmString is SysGmBase {
         mapping(address => bool) multisig_;
     }
 
-    /* database name => user name => entity name => parameter value */
+    // database name => user name => entity name => parameter value
     mapping(bytes32 => mapping(bytes32 => mapping(bytes32 => ParameterValues))) private entitys_;
 
     mapping(bytes32 => mapping(bytes32 => UserHolderInfo)) private userHolders_;
 
     function SysGmString(bytes32 _name) public SysGmBase(_name) {}
 
-    function checkHolder(bytes32 _dbName, bytes32 _userName, address _holder) internal constant {
+    function checkHolder(bytes32 _dbName, bytes32 _userName, address _holder) internal view {
         require(_holder == userHolders_[_dbName][_userName].holder_);
     }
 
@@ -42,10 +42,10 @@ contract SysGmString is SysGmBase {
     }
 
     function addEntityParameter(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public returns (bool) {
-        /* check holder */
+        // check holder
         checkHolder(_dbName, _userName, msg.sender);
 
-        /* check register */
+        // check register
         if(true == entitys_[_dbName][_userName][_enName].registers_[_parameter]) {
             return true;
         }
@@ -60,10 +60,10 @@ contract SysGmString is SysGmBase {
     }
 
     function setEntityParameterValue(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter, string _value) public returns (bool) {
-        /* check holder */
+        // check holder
         checkHolder(_dbName, _userName, msg.sender);
 
-        /* check register */
+        // check register
         if(false == entitys_[_dbName][_userName][_enName].registers_[_parameter]) {
             require(addEntityParameter(_dbName, _userName, _enName, _parameter));
         }
@@ -74,17 +74,17 @@ contract SysGmString is SysGmBase {
     }
 
     function numEntityParameters(bytes32 _dbName, bytes32 _userName, bytes32 _enName) public view returns (uint) {
-        /* check holder */
+        // check holder
         checkHolder(_dbName, _userName, msg.sender);
 
         return  entitys_[_dbName][_userName][_enName].count_;
     }
 
     function getEntityParameterValue(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public view returns (string) {
-        /* check holder */
+        // check holder
         checkHolder(_dbName, _userName, msg.sender);
 
-        /* check register */
+        // check register
         require(entitys_[_dbName][_userName][_enName].registers_[_parameter]);
 
         string memory str = entitys_[_dbName][_userName][_enName].strings_[_parameter];
@@ -93,25 +93,25 @@ contract SysGmString is SysGmBase {
     }
 
     function getEntityParameterByIndex(bytes32 _dbName, bytes32 _userName, bytes32 _enName, uint _index) public view returns (bytes32) {
-        /* check holder */
+        // check holder
         checkHolder(_dbName, _userName, msg.sender);
 
-        /* check param */
+        // check param
         require(entitys_[_dbName][_userName][_enName].count_ >= (_index  + 1));
 
         bytes32 parameter = entitys_[_dbName][_userName][_enName].parameters_[_index];
 
-        /* check register */
+        // check register
         require(entitys_[_dbName][_userName][_enName].registers_[parameter]);
 
         return parameter;
     }
 
     function removeEntityParameterValue(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public returns (bool) {
-        /* check holder */
+        // check holder
         checkHolder(_dbName, _userName, msg.sender);
 
-        /* check register */
+        // check register
         require(entitys_[_dbName][_userName][_enName].registers_[_parameter]);
 
         uint index = entitys_[_dbName][_userName][_enName].indexs_[_parameter];
@@ -125,15 +125,15 @@ contract SysGmString is SysGmBase {
     }
 
     function removeEntityParameterValueByIndex(bytes32 _dbName, bytes32 _userName, bytes32 _enName, uint _index) public returns (bool) {
-        /* check holder */
+        // check holder
         checkHolder(_dbName, _userName, msg.sender);
 
-        /* check param */
+        // check param
         require(entitys_[_dbName][_userName][_enName].count_ >= (_index  + 1));
 
         bytes32 parameter = entitys_[_dbName][_userName][_enName].parameters_[_index];
 
-        /* check register */
+        // check register
         require(entitys_[_dbName][_userName][_enName].registers_[parameter]);
 
         return removeEntityParameterValue(_dbName, _userName, _enName, parameter);
