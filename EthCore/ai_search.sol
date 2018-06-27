@@ -1,5 +1,5 @@
-        /*
-Copyright (c) 2018, ZSC Dev Team
+/*
+ Copyright (c) 2018, ZSC Dev Team
 */
 
 pragma solidity ^0.4.21;
@@ -226,7 +226,7 @@ contract AISearch is Object {
         require(bytes32(0) != _elementName);
         require(bytes32(0) != _parameterName);
 
-        if (!checkParameterExist(_factoryType, _elementName, _parameterName) {
+        if (!checkParameterExist(_factoryType, _elementName, _parameterName)) {
             return false;
         }
 
@@ -266,7 +266,7 @@ contract AISearch is Object {
         require(bytes32(0) != _factoryType);
         require(bytes32(0) != _elementName);
 
-        if (!checkElementExist(_factoryType, _elementName) {
+        if (!checkElementExist(_factoryType, _elementName)) {
             return false;
         }
 
@@ -314,7 +314,7 @@ contract AISearch is Object {
         // check param
         require(bytes32(0) != _factoryType);
 
-        if (!checkFactoryExist(_factoryType) {
+        if (!checkFactoryExist(_factoryType)) {
             return false;
         }
 
