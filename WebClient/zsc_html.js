@@ -8,8 +8,7 @@ function ZSCHtml() {
     this.pageBodyId;
 }
 
-
-ZSCHtml.prototype.setHtmlCotentIds = function(hearderId, bodyId) {
+ZSCHtml.prototype.setHtmlContentIds = function(hearderId, bodyId) {
     this.pageBodyId = bodyId;
     this.pageHeaderId = hearderId;
 }
@@ -48,7 +47,6 @@ ZSCHtml.prototype.loadPageHeader = function(funcName, userType, doesUserApplied)
     this.setHtmlContent(this.pageHeaderId, text);  
 }
 
-
 ZSCHtml.prototype.loadWaitingApproval = function(funcName) {
     var func;
     var hashLogId;
@@ -63,8 +61,6 @@ ZSCHtml.prototype.loadWaitingApproval = function(funcName) {
     this.setHtmlContent(this.pageBodyId, text);  
 }
 
-
-//////////
 ZSCHtml.prototype.loadPageBody = function(tag, func) {
     var text;
     switch(tag) {
