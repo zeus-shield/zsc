@@ -2,11 +2,24 @@
     <head>
         <script type="text/javascript" src="../web3.js/dist/web3.js"></script>
         <script type="text/javascript" src="./tool.js"></script>
+        <script type="text/javascript" src="./test_search.js"></script>
         <script type="text/javascript">
-            function test(module, option) {
-                let string = "[Module]:" + module + ", " + "[Option]:" + option;
-                alert(string);
-                Tool.DeployContract();
+            function testModules(module, operation) {
+                //let string = '[Module]:' + module + ', ' + '[Operation]:' + operation;
+                //alert(string);
+                console.log('[Module]:%s, [Operation]:%s', module, operation);
+                switch(module)
+                {
+                    case 'Search':
+                        let testSearch = new TestSearch();
+                        testSearch.Do(operation);
+                        break;
+                    case 'Analysis':
+                        console.log('Analysis');
+                        break;
+                    default:
+                        break;
+                }
             }
         </script>
     </head>
@@ -18,13 +31,13 @@
             </tr>
             <tr align="left">
                 <td>Search Module:</td>
-                <td><button type="button" id="search_deploy" onClick="test('Search', 'Deploy')">Deploy</button></td>
-                <td><button type="button" id="search_create" onClick="test('Search', 'Create')">Data Create</button></td>
+                <td><button type="button" id="search_deploy" onClick="testModules('Search', 'Deploy')">Deploy</button></td>
+                <td><button type="button" id="search_create" onClick="testModules('Search', 'Create')">Data Create</button></td>
             </tr>
             <tr align="left">
                 <td>Analysis Module:</td>
-                <td><button type="button" id="analysis_deploy" onClick="test('Analysis', 'Deploy')">Deploy</button></td>
-                <td><button type="button" id="analysis_create" onClick="test('Analysis', 'Create')">Data Create</button></td>
+                <td><button type="button" id="analysis_deploy" onClick="testModules('Analysis', 'Deploy')">Deploy</button></td>
+                <td><button type="button" id="analysis_create" onClick="testModules('Analysis', 'Create')">Data Create</button></td>
             </tr>
         </table>
     </body>
