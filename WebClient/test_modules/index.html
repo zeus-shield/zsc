@@ -3,23 +3,24 @@
         <script type="text/javascript" src="../web3.js/dist/web3.js"></script>
         <script type="text/javascript" src="./tool.js"></script>
         <script type="text/javascript" src="./test_search.js"></script>
+        <script type="text/javascript" src="./test_analysis.js"></script>
         <script type="text/javascript">
             function testModules(module, operation) {
+                let test = 0;
                 //let string = '[Module]:' + module + ', ' + '[Operation]:' + operation;
                 //alert(string);
                 console.log('[Module]:%s, [Operation]:%s', module, operation);
-                switch(module)
-                {
+                switch(module) {
                     case 'Search':
-                        let testSearch = new TestSearch();
-                        testSearch.Do(operation);
+                        test = new TestSearch();
                         break;
                     case 'Analysis':
-                        console.log('Analysis');
+                        test = new TestAnalysis();
                         break;
                     default:
                         break;
                 }
+                test.Do(operation);
             }
         </script>
     </head>
