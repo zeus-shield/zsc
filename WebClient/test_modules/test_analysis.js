@@ -1,18 +1,18 @@
 
 function TestAnalysis() {};
 
-TestAnalysis.prototype.Deploy = function() {
-    console.log("TestAnalysis.Deploy()");
+TestAnalysis.prototype.deploy = function() {
+    console.log("TestAnalysis.deploy()");
     let tool = new Tool();
     tool.DeployContract();
 }
 
-TestAnalysis.prototype.Create = function() {
-    console.log("TestAnalysis.Create()");
+TestAnalysis.prototype.create = function() {
+    console.log("TestAnalysis.create()");
 }
 
-TestAnalysis.prototype.Do = function(operation) {
-    console.log("TestAnalysis.Do(%s)", operation);
+TestAnalysis.prototype.do = function(operation) {
+    console.log("TestAnalysis.do(%s)", operation);
 }
 
 // Node.js and other environments that support module.exports.

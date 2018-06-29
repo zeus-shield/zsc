@@ -1,18 +1,35 @@
 
-function TestSearch() {};
+function TestSearch() {
+    this.outputId;
+};
 
-TestSearch.prototype.Deploy = function() {
-    console.log("TestSearch.Deploy()");
+TestSearch.prototype.setOutput = function(id) {
+    console.log("TestSearch.setOutput()");
+    this.outputId = id;
+}
+
+TestSearch.prototype.deploy = function() {
+    console.log("TestSearch.deploy()");
     let tool = new Tool();
     tool.DeployContract();
 }
 
-TestSearch.prototype.Create = function() {
-    console.log("TestSearch.Create()");
+TestSearch.prototype.create = function() {
+    console.log("TestSearch.create()");
 }
 
-TestSearch.prototype.Do = function(operation) {
-    console.log("TestSearch.Do(%s)", operation);
+TestSearch.prototype.do = function(operation) {
+    console.log("TestSearch.do(%s)", operation);
+    switch(operation) {
+        case 'Deploy':
+            break;
+        case 'Create':
+            break;
+        default:
+            console.assert("Assertion of score length failed");
+            document.getElementById(this.outputId).innerHTML = "Operation Error!";
+            break;
+    }
 }
 
 // Node.js and other environments that support module.exports.
