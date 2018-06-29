@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <script type="text/javascript" src="../web3.js/dist/web3.js"></script>
+        <script type="text/javascript" src="./tool.js"></script>
+        <script type="text/javascript" src="./test_search.js"></script>
+        <script type="text/javascript" src="./test_analysis.js"></script>
+        <script type="text/javascript">
+            function testModules(module, operation) {
+                let test = 0;
+                //let string = '[Module]:' + module + ', ' + '[Operation]:' + operation;
+                //alert(string);
+                console.log('[Module]:%s, [Operation]:%s', module, operation);
+                switch(module) {
+                    case 'Search':
+                        test = new TestSearch();
+                        test.setOutput('search_output');
+                        break;
+                    case 'Analysis':
+                        test = new TestAnalysis();
+                        break;
+                    default:
+                        break;
+                }
+
+                //operation = 'else';
+                test.do(operation);
+            }
+        </script>
+    </head>
+
+    <body>
+        <table border="0" width="500px" height="10px" align="left">
+            <tr>
+                <td>[Test Modules]</td>
+            </tr>
+            <tr align="left">
+                <td>Search Module:</td>
+                <td><button type="button" id="search_deploy" onClick="testModules('Search', 'Deploy')">Deploy</button></td>
+                <td><button type="button" id="search_create" onClick="testModules('Search', 'Create')">Data Create</button></td>
+                <td id="search_output">output:</td>
+            </tr>
+            <tr align="left">
+                <td>Analysis Module:</td>
+                <td><button type="button" id="analysis_deploy" onClick="testModules('Analysis', 'Deploy')">Deploy</button></td>
+                <td><button type="button" id="analysis_create" onClick="testModules('Analysis', 'Create')">Data Create</button></td>
+            </tr>
+        </table>
+    </body>
+</html>
