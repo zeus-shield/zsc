@@ -1,24 +1,31 @@
 <html>
-<head>
-<script type="text/javascript" src="../web3.js/dist/web3.js"></script>
-<script type="text/javascript" src="./tool.js"></script>
-<script type="text/javascript">
-function test(id)
-{
-  alert(document.getElementById(id).innerHTML);
-}
-</script>
-</head>
+    <head>
+        <script type="text/javascript" src="../web3.js/dist/web3.js"></script>
+        <script type="text/javascript" src="./tool.js"></script>
+        <script type="text/javascript">
+            function test(module, option) {
+                let string = "[Module]:" + module + ", " + "[Option]:" + option;
+                alert(string);
+                Tool.DeployContract();
+            }
+        </script>
+    </head>
 
-<body>
-<br />
-<br />
-<br />
-<button type="button" id="search" onClick="test('search')">search</button>
-<br/>
-<button type="button" id="analysis" onClick="test('analysis')">analysis</button>
-<br />
-
-</body>
-
+    <body>
+        <table border="0" width="300px" height="10px" align="left">
+            <tr>
+                <td>[Test Modules]</td>
+            </tr>
+            <tr align="left">
+                <td>Search Module:</td>
+                <td><button type="button" id="search_deploy" onClick="test('Search', 'Deploy')">Deploy</button></td>
+                <td><button type="button" id="search_create" onClick="test('Search', 'Create')">Data Create</button></td>
+            </tr>
+            <tr align="left">
+                <td>Analysis Module:</td>
+                <td><button type="button" id="analysis_deploy" onClick="test('Analysis', 'Deploy')">Deploy</button></td>
+                <td><button type="button" id="analysis_create" onClick="test('Analysis', 'Create')">Data Create</button></td>
+            </tr>
+        </table>
+    </body>
 </html>
