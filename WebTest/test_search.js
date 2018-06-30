@@ -27,7 +27,9 @@ TestSearch.prototype.do = function(operation) {
             break;
         default:
             console.assert("Assertion of score length failed");
-            document.getElementById(this.outputId).innerHTML = "Operation Error!";
+            var element = document.getElementById(this.outputId);
+            element.style.fontSize = "small";//10 +'pt';
+            element.innerHTML = "Operation Error!";
             break;
     }
 }
