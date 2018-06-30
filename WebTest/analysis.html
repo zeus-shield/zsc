@@ -3,7 +3,20 @@
         <h4>Analysis Module</h4>
     </head>
     <body>
+        <script type="text/javascript">
+            function doTest(operation) {
+                let test = 0;
+                //let string = '[Module]:' + 'Search' + ', ' + '[Operation]:' + operation;
+                //alert(string);
+                console.log('[Module]:%s, [Operation]:%s', 'Search', operation);
+            }
+        </script>
+
         <div id="analysis">
+            <a href="./index.html" title="Back">Back</a></br></br>
+            <button type="button" id="deploy" onClick="doTest('Deploy')">Deploy</button>
+            <button type="button" id="create" onClick="doTest('Create')">Data Create</button>
+            <p id="output"></p>
         </div>
     </body>
 </html>
