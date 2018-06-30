@@ -17,6 +17,7 @@ contract AdmBase is Object {
     struct TestUserInfo {
         bytes32 name_ ;
         bytes32 pass_ ;
+        bytes32 email_;
         bytes32 status_ ; //0: not exist; 1: added; 2: applied; 3: approved;  4: locked
         bytes32 type_;    //1: provider; 2: receiver; 3: staker
         bytes32 actived_;
@@ -86,10 +87,24 @@ contract AdmBase is Object {
         userExist_[_user] = true;
 
         userIndex_[toHexx(_user)] = userNos_;
-        testUsers_[userNos_] = TestUserInfo(_user, _pass, "added", 0, "false", address(0), address(0), address(0), address(0));
+        testUsers_[userNos_] = TestUserInfo(_user, _pass, "null", "added", 0, "false", address(0), address(0), address(0), address(0));
         userNos_++;
     }
-
+    
+    function createAccount(bytes32 _user, bytes32 _pass, bytes32 _email) public {
+        addUser(_user, _pass);
+        testUsers_[userNos_ - 1].email_ = _email;
+    }
+    
+    function changePass(bytes32 _user, bytes32 _oldPass, bytes32 _newPass) {
+        checkAdded(toHexx(_user));
+        
+        uint index = userIndex_[toHexx(_user)];
+        require(testUsers_[index].pass_ == _oldPass);
+        
+        testUsers_[index].pass_ = _newPass;
+    }
+    
     function addUserRandom(bytes32 _prefix, uint _nameLenght, uint _passLength) public;
 
     function activeByUser(bytes32 _hexx, bytes32 _type) public {
