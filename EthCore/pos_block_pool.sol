@@ -64,21 +64,6 @@ contract PosBlockPool is Delegated {
         totalBlockNos_++;
     }
 
-    function getLastPendingBlockIndex() public view returns (uint) { 
-        checkDelegate(msg.sender, 1);
-        
-        if (totalBlockNos_ == 0) return 0;
-        address myBlock;
-
-        for (uint i = totalBlockNos_ - 1; i >= 0; --i) {
-            myBlock = blocks_[i];
-            if (PosBlock(myBlock).doesMined()) {
-                return (i + 1);
-            }
-        }
-        return 0;
-    }
-
     function numTotalBlocks() public view returns (uint) { 
         checkDelegate(msg.sender, 1);
         return totalBlockNos_; 
@@ -89,11 +74,17 @@ contract PosBlockPool is Delegated {
         return minedBlockNos_; 
     }
 
-    function setBlockMinedByIndex(uint _blockIndex) public {
+    function minePendingBlockByIndex(uint _index) public returns (uint) {
         checkDelegate(msg.sender, 1);
+        require(_index < totalBlockNos_);
         
-        address blockAdr = blocks_[_blockIndex];
-        PosBlock(blockAdr).setMined();
-        minedBlockNos_++;
+        address myBlock = blocks_[_index];
+        if (PosBlock(myBlock).doesMined()) {
+            return 0;
+        } else {
+            PosBlock(myBlock).setMined();
+            minedBlockNos_++;
+            return PosBlock(myBlock).getCurrentSize();
+        }
     }
 }
