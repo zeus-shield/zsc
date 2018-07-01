@@ -94,6 +94,14 @@
         |-- zsc_view_agreement
 ```
 
+## WebTest
+```bash
+|--js
+    |-- test_analysis 
+    |-- test_search
+    |-- require
+```
+
 ## Dev update log
 
 ```bash
@@ -164,4 +172,5 @@
 2018.06.13-06.19: release the close-beta version to Rinkeby Etherume test network, not including the modules: pos, staker, sys_gm_token, sys_gm_simulator, wallet_eth, wallet_multisig; re-construct the "sys_gm_*" modules
 2018.06.20-06.22: add files EthCore/erc721_base.sol, EthCore/erc721_adv.sol
 2018.06.23-06.26: add file EthCore/ai_search.sol; update the zsc PoS module
+2018.06.27-07.01: add files WebTest/index.html, WebTest/main.js, WebTest/require.js, WebTest/require.mini.js, WebTest/test_analysis.html, WebTest/test_analysis.js, WebTest/test_search.html, WebTest/test_search.js, WebTest/tool.js
 ```
