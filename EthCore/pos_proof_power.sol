@@ -4,9 +4,9 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./delegate.sol";
+import "./erc721_adv.sol";
 
-contract PosProofPower is Delegated {
+contract PosProofPower is Erc721Adv {
     struct ProofPowerInfo {
         address sender_;
         uint time_;
@@ -20,14 +20,20 @@ contract PosProofPower is Delegated {
     address private nextBlock_ = address(0);
     uint private blockSizeLimit_ = 0;
 
-    function PosProofPower() public Delegated() {
+    function PosProofPower(bytes32 _name) public Object(_name) {
         totalPower_ = 0;
         ppNos_ = 0;
     }
 
-    function getTotalPower() public view returns (uint) {
+    function createVirtulPowerUnits(uint256 _number) public {
         checkDelegate(msg.sender, 1);
-        return totalPower_;
+        require(_number != 0);
+
+        uint lastTokenId = getLastTokenId();
+        for (uint256 i = lastTokenId + 1; i < lastTokenId + _number; ++i) {
+            _mint(address(this), i);
+        }
+
     }
 }
 
