@@ -34,6 +34,8 @@ contract ERC721Adv is ERC721, Object {
     // Total amount of tokens
     uint256 private totalTokens_;
 
+    uint256 private totalSupply_;
+
     // Mapping from token ID to owner
     mapping (uint256 => address) private tokenOwner_;
 
@@ -50,10 +52,10 @@ contract ERC721Adv is ERC721, Object {
     }
 
     function getLastTokenId() internal view returns (uint256) {
-        if (totalTokens_ == 0) {
+        if (totalSupply_ == 0) {
             return 0;
         }
-        return totalTokens_ - 1;
+        return totalSupply_ - 1;
     }
 
     function checkOnlyOwnerOf(uint256 _tokenId, address _user) private view {
@@ -61,7 +63,7 @@ contract ERC721Adv is ERC721, Object {
     }
 
     function totoalSupply() external view returns (uint256) {
-      return totalTokens_;
+      return totalSupply_;
     }
 
     function balanceOf(address _owner) external view returns (uint256) {
@@ -132,6 +134,7 @@ contract ERC721Adv is ERC721, Object {
     function _mint(address _to, uint256 _tokenId) internal {
         require(_to != address(0));
         addToken(_to, _tokenId);
+        totalSupply_++;
         Transfer(0x0, _to, _tokenId);
     }
 
@@ -145,6 +148,7 @@ contract ERC721Adv is ERC721, Object {
             clearApproval(msg.sender, _tokenId);
         }
         removeToken(msg.sender, _tokenId);
+        totalSupply_--;
         Transfer(msg.sender, 0x0, _tokenId);
     }
 
