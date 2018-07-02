@@ -1,12 +1,16 @@
 
+//private value
+const outputId = Symbol(`outputId`);
+
 export default class TestSearch {
+
     constructor() {
-        this.outputId = ``;
+        this[outputId] = ``;
     }
 
     setOutput(id) {
         console.log(`TestSearch.setOutput(%s)`, id);
-        this.outputId = id;
+        this[outputId] = id;
     }
 
     deploy() {
@@ -27,7 +31,7 @@ export default class TestSearch {
                 this.create();
                 break;
             default:
-                let element = document.getElementById(this.outputId);
+                let element = document.getElementById(this[outputId]);
                 element.style.fontSize = `small`;//10 +`pt`;
                 element.innerHTML = `Operation Error!`;
                 break;
