@@ -2,7 +2,14 @@
 //define(['test_analysis'], function(){});
 //require(['test_analysis'], function (){});
 
-function TestSearch() {
+const STATUS = {
+  INIT: "init",
+  DEPLOY: "deploy",
+  CREATE: "create"
+};
+
+export default function TestSearch() {
+//function TestSearch() {
     this.outputId;
 };
 
@@ -28,6 +35,7 @@ TestSearch.prototype.do = function(operation) {
             this.deploy();
             break;
         case 'Create':
+            this.create();
             break;
         default:
             //console.assert("Assertion of score length failed");

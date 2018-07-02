@@ -1,4 +1,5 @@
 
+/*
 require.config({
     paths: {
         "test_search": "test_search",
@@ -6,10 +7,12 @@ require.config({
     }
 });
 
-require(['test_search'], function (){});
-require(['test_analysis'], function (){});
+require(['test_search', 'test_analysis'], function (){});
+*/
+import TestSearch from './test_search.js';
+import TestAnalysis from './test_analysis.js';
 
-function main(module, operation) {
+export default function main(module, operation) {
     let test = 0;
     let string = 'Module:' + '[' + module + ']' + ', ' + 'Operation:' + '['+ operation + ']';
     alert(string);

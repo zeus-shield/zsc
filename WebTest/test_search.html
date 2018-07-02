@@ -3,10 +3,20 @@
         <h4>Search Module</h4>
         <!--script type="text/javascript" src="../WebClient/web3.js/dist/web3.js"></script-->
         <!--script type="text/javascript" src="./tool.js"></script-->
-        <script type="text/javascript" src="require.mini.js" defer async="true" ></script>
-        <script type="text/javascript" src="require.mini.js" data-main="main"></script>
+        <!--script type="text/javascript" src="require.mini.js" defer async="true" ></script-->
+        <!--script type="text/javascript" src="require.mini.js" data-main="main"></script-->
+        <!--script type="module" src="./main.js"></script-->
     </head>
     <body>
+        <script type="module">
+            import main from "./main.js";
+            window.enter = main;
+        </script>
+        <script type="text/javascript">
+            function main(module, operation) {
+                window.enter(module, operation);
+            }
+        </script>
         <div id="search">
             <a href="./index.html" title="Back">Back</a></br></br>
             <button type="button" id="deploy" onClick="main('Search', 'Deploy')">Deploy</button>

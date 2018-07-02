@@ -1,5 +1,5 @@
 
-function TestAnalysis() {
+export default function TestAnalysis() {
     this.outputId;
 };
 
