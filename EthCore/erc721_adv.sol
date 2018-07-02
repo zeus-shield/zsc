@@ -4,7 +4,7 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./delegate.sol";
+import "./object.sol";
 
 
 /// @title ERC-721 Non-Fungible Token Standard
@@ -28,7 +28,7 @@ contract ERC721 {
  * @title ERC721Adv
  * Generic implementation for the required functionality of the ERC721 standard
  */
-contract ERC721Adv is ERC721, Delegated {
+contract ERC721Adv is ERC721, Object {
     using SafeMath for uint256;
 
     // Total amount of tokens
@@ -45,6 +45,16 @@ contract ERC721Adv is ERC721, Delegated {
 
     // Mapping from token ID to index of the owner tokens list
     mapping(uint256 => uint256) private ownedTokensIndex_;
+
+    function ERC721Adv(bytes32 _name) public Object(_name) {
+    }
+
+    function getLastTokenId() internal view returns (uint256) {
+        if (totalTokens_ == 0) {
+            return 0;
+        }
+        return totalTokens_ - 1;
+    }
 
     function checkOnlyOwnerOf(uint256 _tokenId, address _user) private view {
         require(tokenOwner_[_tokenId] == _user);
