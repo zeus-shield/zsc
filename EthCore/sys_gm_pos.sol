@@ -7,23 +7,44 @@ pragma solidity ^0.4.21;
 import "./sys_include.sol";
 import "./sys_gm_base.sol";
 import "./pos_block_pool.sol";
+import "./pos_proof_power.sol";
 import "./pos_staker_group.sol";
 
 //Proof of Stake for ZSC system
 contract SysGmPos is SysGmBase {
     address stakerGroup_;
     address blockPool_;
+    address proofPower_;
 
     // Constructor
     function SysGmPos(bytes32 _name) public SysGmBase(_name) {
     } 
 
-    function initSysGm(address _adr) public {
+    function configurePos(address _stakerGroup, address _blockPool, address _proofPower) public {
         checkDelegate(msg.sender, 1);
-        stakerGroup_ = new PosStakerGroup();
-        blockPool_ = new PosBlockPool();
-        super.initSysGm(_adr);
+
+        if (_stakerGroup != address(0)) {
+            if (stakerGroup_ != _stakerGroup && stakerGroup_ != address(0)) {
+                Object(stakerGroup_).kill();
+            }
+            stakerGroup_ = _stakerGroup;
+        }
+
+        if (_blockPool != address(0)) {
+            if (blockPool_ != _blockPool && blockPool_ != address(0)) {
+                Object(blockPool_).kill();
+            }
+            blockPool_   = _blockPool;
+        }
+
+        if (_proofPower != address(0))  {
+            if (proofPower_ != _proofPower && proofPower_ != address(0)) {
+                Object(proofPower_).kill();
+            }
+            proofPower_  = _proofPower;
+        }
     }
+
 
     function mineSingleBlock(address _block) private {
         uint stakerNos = PosStakerGroup(stakerGroup_).numStakers();
