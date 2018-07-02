@@ -25,7 +25,7 @@ contract PosProofPower is Erc721Adv {
         ppNos_ = 0;
     }
 
-    function createVirtulPowerUnits(uint256 _number) public {
+    function createVPUs(uint256 _number) public {
         checkDelegate(msg.sender, 1);
         require(_number != 0);
 
@@ -33,7 +33,11 @@ contract PosProofPower is Erc721Adv {
         for (uint256 i = lastTokenId + 1; i < lastTokenId + _number; ++i) {
             _mint(address(this), i);
         }
+    }
 
+    function purchaseVPU(address _buyerAdr, uint256 _vpuId) public {
+        checkDelegate(msg.sender, 1);
+        transfer(address(this), _buyerAdr, _vpuId);
     }
 }
 
