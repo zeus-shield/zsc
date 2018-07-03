@@ -74,16 +74,11 @@ contract PosBlockPool is Delegated {
         totalBlockNos_++;
     }
 
-    function numTotalBlocks() public view returns (uint) { 
+    function numBlocks() public view returns (uint, uint) { 
         checkDelegate(msg.sender, 1);
-        return totalBlockNos_; 
+        return (totalBlockNos_, minedBlockNos_); 
     }
-
-    function numMinedBlocks() public view returns (uint) { 
-        checkDelegate(msg.sender, 1);
-        return minedBlockNos_; 
-    }
-
+    
     function minePendingBlockByIndex(uint _index) public returns (uint) {
         checkDelegate(msg.sender, 1);
         require(_index < totalBlockNos_);
