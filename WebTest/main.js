@@ -32,6 +32,9 @@ export default function main(module, operation) {
             break;
     }
 
-    test.setOutput('output');
-    test.do(operation);
+    if(0 != test)
+    {
+        test.setOutput('output');
+        test.do(operation);
+    }
 }
