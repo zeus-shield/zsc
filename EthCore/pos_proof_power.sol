@@ -8,8 +8,8 @@ import "./erc721_adv.sol";
 
 contract PosProofPower is Erc721Adv {
     struct ProofPowerInfo {
-        address sender_;
-        uint time_;
+        uint rewardRatio_;
+        uint power_;
     }
     
     uint private ppNos_;
@@ -25,17 +25,20 @@ contract PosProofPower is Erc721Adv {
         ppNos_ = 0;
     }
 
-    function createVPUs(uint256 _number) public {
+
+    function createVPUs(uint _number, uint _ratio, uint _power) public {
         checkDelegate(msg.sender, 1);
         require(_number != 0);
-
-        uint lastTokenId = getLastTokenId();
-        for (uint256 i = lastTokenId + 1; i < lastTokenId + _number; ++i) {
+        
+        uint firstId = getLastTokenId() + 1;
+        uint lastId = firstId + _number;
+        for (uint i = firstId; i < lastId; ++i) {
             _mint(address(this), i);
+            ppInfos_[i] = ProofPowerInfo(_ratio, _power);
         }
     }
 
-    function purchaseVPU(address _buyerAdr, uint256 _vpuId) public {
+    function purchaseVPU(address _buyerAdr, uint _vpuId) public {
         checkDelegate(msg.sender, 1);
         transfer(address(this), _buyerAdr, _vpuId);
     }
