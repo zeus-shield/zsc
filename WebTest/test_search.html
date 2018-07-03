@@ -6,10 +6,26 @@
         <!--script type="text/javascript" src="require.mini.js" data-main="main"></script-->
         <script type="module" src="./main.js"></script>
         <script type="module" src="./file.js"></script>
+        <style>
+            label {
+                width: 60px;
+                height: 15px;
+                line-height: 15px;
+                text-align: center;
+                display: block;
+                background: #ccc;
+                border: 5px solid #ccc;
+            }
+            input {
+                display: none;
+            }
+        </style>
     </head>
     <body>
         <div id="search">
             <a href="./index.html" title="Back">Back</a></br></br>
+            <label for="file">Upload</label>
+            <text>Please upload compiled file at first!</text>
             <input type="file" id="file" onchange="file('Search', this)" /></br></br>
             <button type="button" id="deploy" onClick="main('Search', 'Deploy')">Deploy</button>
             <button type="button" id="create" onClick="main('Search', 'Create')">Data Create</button>
