@@ -1,6 +1,9 @@
 
+import Deploy from '../deploy.js';
+
 //private member
 const outputId = Symbol('outputId');
+const moduleName = Symbol('moduleName');
 const compiledJson = Symbol('compiledJson');
 
 export default class TestSearch {
@@ -15,12 +18,36 @@ export default class TestSearch {
         this[outputId] = id;
     }
 
-    setCompiledJson(json) {
-        this[compiledJson] = json;
+    setModuleName(name) {
+        this[moduleName] = name;
+    }
+
+    setCompiledJson(data) {
+        this[compiledJson] = JSON.parse(data);
     }
 
     deploy() {
         console.log('TestSearch.deploy()');
+        let contractName = '';
+        let byteCode = '';
+        let abi = '';
+        let parameter = '';
+        let deploy;
+
+        for (contractName in this[compiledJson].contracts) {
+            if (contractName.indexOf(`${this[moduleName]}.sol`) > 0)
+                break;
+            //console.log(contractName);
+        }
+
+        byteCode = '0x' + this[compiledJson].contracts[contractName].bin;
+        abi = JSON.parse(this[compiledJson].contracts[contractName].abi);
+        parameter = '123';
+
+        deploy = new Deploy()
+        if('undefined' != typeof deploy) {
+            deploy.do(byteCode, abi, parameter);
+        }
     }
 
     create() {
