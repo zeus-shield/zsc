@@ -27,8 +27,7 @@ contract PosBlockPool {
     function getBlockByIndex(uint _blockIndex) public view returns (address);
     function adjustBlockSizeLImit(uint _sizeLimit /*in terms of gas usage*/) public;
     function registerGasUsage(address _sender, uint _gasUsage) public;
-    function numTotalBlocks() public view returns (uint);
-    function numMinedBlocks() public view returns (uint);
+    function numBlocks() public view returns (uint, uint);
     function minePendingBlockByIndex(uint _index) public returns (uint);
 }
 
@@ -108,9 +107,11 @@ contract SysGmPos is SysGmBase {
     function minePendingBlocks() public {
         checkDelegate(msg.sender, 1);
 
-        uint totalBlocks = PosBlockPool(blockPool_).numTotalBlocks();
-        uint minedBlocks = PosBlockPool(blockPool_).numMinedBlocks();
+        uint totalBlocks;
+        uint minedBlocks;
         address blockAdr;
+        
+        (totalBlocks, minedBlocks) = PosBlockPool(blockPool_).numBlocks();
 
         for (uint i = minedBlocks - 1; i < totalBlocks; ++i) {
             blockAdr = PosBlockPool(blockPool_).getBlockByIndex(i);
@@ -122,14 +123,9 @@ contract SysGmPos is SysGmBase {
         }
     }
 
-    function numBlockInfo(bool _isMined) public constant returns (uint) {
+    function numBlockInfo() public view returns (uint, uint) {
         checkDelegate(msg.sender, 1);
-
-        if (_isMined) {
-            return PosBlockPool(blockPool_).numMinedBlocks();
-        } else {
-            return PosBlockPool(blockPool_).numTotalBlocks();
-        }
+        return PosBlockPool(blockPool_).numBlocks();
     }
 
     function getBlockInfoByIndex(uint _blockIndex) public constant returns (uint, uint, uint) {
