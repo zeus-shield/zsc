@@ -16,10 +16,19 @@ contract PosBlockPool is Delegated {
     ////////////////
     uint blockSizeLimit_;
 
+    address private posGm_;
+
     // Constructor
     function PosBlockPool() public {
         blockSizeLimit_ = 1024 * 1024 * 2;
     } 
+
+    function initPosBlockPool(address _posGmAdr) public {
+        checkDelegate(msg.sender, 1);
+        require(_posGmAdr != address(0));
+        posGm_ = _posGmAdr;
+        setDelegate(posGm_, 1);
+    }
 
     function getBlockByIndex(uint _blockIndex) public view returns (address) {
         checkDelegate(msg.sender, 1);
@@ -29,8 +38,9 @@ contract PosBlockPool is Delegated {
 
     function registerNewBlock() private returns (address) {
         address adr = new PosBlock();
-        require(adr != address(0));
-
+        require(adr != address(0) && posGm_ != address(0));
+        
+        PosBlock(adr).setDelegate(posGm_, 1);
         PosBlock(adr).setBlockSizeLimit(blockSizeLimit_);
 
         blocks_[totalBlockNos_] = adr;
