@@ -25,14 +25,26 @@ contract PosProofPower is Erc721Adv {
         ppNos_ = 0;
     }
 
+    function createVPUs(uint[] _ratio, uint[] _power) public {
+        checkDelegate(msg.sender, 1);
+        require(_ratio.length != 0);
+        require(_ratio.length == _power.length);
+
+        uint firstId = totoalSupply();
+        uint lastId = firstId + _ratio.length;
+        for (uint i = firstId; i <= lastId; ++i) {
+            _mint(address(this), i);
+            ppInfos_[i] = ProofPowerInfo(_ratio[i], _power[i]);
+        }
+    }
 
     function createVPUs(uint _number, uint _ratio, uint _power) public {
         checkDelegate(msg.sender, 1);
-        require(_number != 0);
-        
-        uint firstId = getLastTokenId() + 1;
+        require(_number != 0 && _ratio != 0 && _power != 0);
+
+        uint firstId = totoalSupply();
         uint lastId = firstId + _number;
-        for (uint i = firstId; i < lastId; ++i) {
+        for (uint i = firstId; i <= lastId; ++i) {
             _mint(address(this), i);
             ppInfos_[i] = ProofPowerInfo(_ratio, _power);
         }
@@ -40,7 +52,7 @@ contract PosProofPower is Erc721Adv {
 
     function purchaseVPU(address _buyerAdr, uint _vpuId) public {
         checkDelegate(msg.sender, 1);
-        transfer(address(this), _buyerAdr, _vpuId);
+        _transfer(address(this), _buyerAdr, _vpuId);
     }
 }
 
