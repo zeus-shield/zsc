@@ -39,8 +39,9 @@ contract PosStakerGroup is Delegated {
 
     address private zscTokenContract_;
     uint private rewardBasis_;
-
-
+    
+    address posGm_;
+    
     // Constructor
     function PosStakerGroup() public {
         stakerNos_ = 0;
@@ -48,6 +49,13 @@ contract PosStakerGroup is Delegated {
         spRemaining_ = 0;
         rewardBasis_ = 1;
     } 
+    
+    function initPosStakerGroup(address _posGmAdr) public {
+        checkDelegate(msg.sender, 1);
+        require(_posGmAdr != address(0));
+        posGm_ = _posGmAdr;
+        setDelegate(posGm_, 1);
+    }
 
     function setZscTokenAddress(address _adr) public {
         checkDelegate(msg.sender, 1);
