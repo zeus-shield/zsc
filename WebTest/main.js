@@ -19,11 +19,21 @@ export default function main(module, operation) {
 
     switch(module) {
         case 'Search': {
-            test = new TestSearch();
+            if('undefined' == typeof window.TestSearch) {
+                test = new TestSearch();
+                window.TestSearch = test;
+            } else {
+                test = window.TestSearch;
+            }
             break;
         }
         case 'Analysis': {
-            test = new TestAnalysis();
+            if('undefined' == typeof window.TestAnalysis) {
+                test = new TestAnalysis();
+                window.TestAnalysis = test;
+            } else {
+                test = window.TestAnalysis;
+            }
             break;
         }
         default:

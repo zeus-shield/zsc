@@ -16,11 +16,21 @@ export default function file(module, input) {
 
             switch(module) {
                 case 'Search': {
-                    test = new TestSearch();
+                    if('undefined' == typeof window.TestSearch) {
+                        test = new TestSearch();
+                        window.TestSearch = test;
+                    } else {
+                        test = window.TestSearch;
+                    }
                     break;
                 }
                 case 'Analysis': {
-                    test = new TestAnalysis();
+                    if('undefined' == typeof window.TestAnalysis) {
+                        test = new TestAnalysis();
+                        window.TestAnalysis = test;
+                    } else {
+                        test = window.TestAnalysis;
+                    }
                     break;
                 }
                 default:
@@ -32,7 +42,6 @@ export default function file(module, input) {
             if('undefined' != typeof test) {
                 test.setCompiledJson(this.result);
             }
-            
         }
     } 
     //support IE 7 8 9 10
