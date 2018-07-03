@@ -25,6 +25,7 @@ export default function main(module, operation) {
             } else {
                 test = window.TestSearch;
             }
+            test.setModuleName('ai_search');
             break;
         }
         case 'Analysis': {
@@ -34,6 +35,7 @@ export default function main(module, operation) {
             } else {
                 test = window.TestAnalysis;
             }
+            test.setModuleName('ai_analysis');
             break;
         }
         default:
@@ -46,5 +48,18 @@ export default function main(module, operation) {
     {
         test.setOutput('output');
         test.do(operation);
+    }
+}
+
+// Node.js and other environments that support module.exports.
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = main();
+} else {
+    // AMD.
+    if (typeof define === 'functon' && define.amd) {
+        define([], function() {return main;});
+    // Browser.
+    } else {
+        window.main = main;
     }
 }

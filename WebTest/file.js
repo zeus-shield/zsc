@@ -63,3 +63,16 @@ export default function file(module, input) {
         alert('error'); 
     } 
 }
+
+// Node.js and other environments that support module.exports.
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = file();
+} else {
+    // AMD.
+    if (typeof define === 'functon' && define.amd) {
+        define([], function() {return file;});
+    // Browser.
+    } else {
+        window.file = file;
+    }
+}
