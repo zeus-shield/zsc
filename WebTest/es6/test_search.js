@@ -1,16 +1,22 @@
 
 //private member
 const outputId = Symbol('outputId');
+const compiledJson = Symbol('compiledJson');
 
 export default class TestSearch {
 
     constructor() {
         this[outputId] = '';
+        this[compiledJson] = '';
     }
 
     setOutput(id) {
         console.log('TestSearch.setOutput(%s)', id);
         this[outputId] = id;
+    }
+
+    setCompiledJson(json) {
+        this[compiledJson] = json;
     }
 
     deploy() {
