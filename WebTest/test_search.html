@@ -1,24 +1,18 @@
 <html>
     <head>
         <h4>Search Module</h4>
-        <!--script type="text/javascript" src="../WebClient/web3.js/dist/web3.js"></script-->
-        <!--script type="text/javascript" src="./tool.js"></script-->
+        <script type="text/javascript" src="../WebClient/web3.js/dist/web3.js"></script>
         <!--script type="text/javascript" src="require.mini.js" defer async="true" ></script-->
         <!--script type="text/javascript" src="require.mini.js" data-main="main"></script-->
-        <!--script type="module" src="./main.js"></script-->
+        <script type="module" src="./main.js"></script>
+        <script type="module" src="./file.js"></script>
     </head>
     <body>
-        <script type="module">
-            import main from "./main.js";
-            import file from "./file.js";
-            window.enter = main;
-            window.file = file;
-        </script>
         <div id="search">
             <a href="./index.html" title="Back">Back</a></br></br>
-            <input type="file" id="file" onchange="window.file('Search', this)" /></br></br>
-            <button type="button" id="deploy" onClick="window.enter('Search', 'Deploy')">Deploy</button>
-            <button type="button" id="create" onClick="window.enter('Search', 'Create')">Data Create</button>
+            <input type="file" id="file" onchange="file('Search', this)" /></br></br>
+            <button type="button" id="deploy" onClick="main('Search', 'Deploy')">Deploy</button>
+            <button type="button" id="create" onClick="main('Search', 'Create')">Data Create</button>
             <p id="output"></p>
         </div>
     </body>
