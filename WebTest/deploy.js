@@ -1,9 +1,13 @@
 
+import Contract from './contract.js';
+
+//private member
+
 export default class Deploy {
     constructor() {
     }
 
-    do(byteCode, abi, parameter) {
+    do(module, byteCode, abi, parameter) {
         console.log('Deploy.do()');
         const Web3 = require('web3');
         let web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
@@ -19,12 +23,15 @@ export default class Deploy {
             from:web3.eth.accounts[0],
             data: byteCode, gas: 4700000}, function(error, contractInstance) {
             if(!error) {
+                let transactionHash = '';
+                let contractAddress = '';
+                let output = document.getElementById(window.outputElement);
+                let contract;
+                output.style.fontSize = 'small';//10 +'pt';
                 if(!contractInstance.address) {
                     console.log("transactionHash: " + contractInstance.transactionHash);
-                    var transactionHash = contractInstance.transactionHash;
-                    let element = document.getElementById('output');
-                    element.style.fontSize = 'small';//10 +'pt';
-                    element.innerHTML = `[TransactionHash]:${transactionHash}`;
+                    transactionHash = contractInstance.transactionHash;
+                    output.innerHTML = `[TransactionHash]:${transactionHash}`;
                 } else {
                     console.log("contractAddress: " + contractInstance.address);
                     //console.log(contractInstance);
@@ -33,17 +40,23 @@ export default class Deploy {
                         alert("Address Failed!");
 
                     } else {
-                        var transactionHash = contractInstance.transactionHash;
-                        var contractAddress = contractInstance.address;
-                        let element = document.getElementById('output');
-                        element.style.fontSize = 'small';//10 +'pt';
-                        element.innerHTML = `[TransactionHash]:${transactionHash}</br>[ContractAddress]:${contractAddress}`;
-                    }
+                        transactionHash = contractInstance.transactionHash;
+                        contractAddress = contractInstance.address;
+                        output.innerHTML = `[TransactionHash]:${transactionHash}</br>[ContractAddress]:${contractAddress}`;
 
+                        if('undefined' == typeof window.contractClass) {
+                            contract = new Contract();
+                            window.contractClass = contract;
+                        } else {
+                            contract = window.contractClass;
+                        }
+                        contract.add(module, contractAddress);
+                    }
                 }
             } else {
                 //console.log("DeployContract: Error!!");
                 console.log(error);
+                output.innerHTML = error;
             }
         })
       
