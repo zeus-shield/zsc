@@ -69,57 +69,27 @@ contract SysGmPos is SysGmBase {
         }
     }
 
-    function mineSingleBlock(address _block) private {
-        uint stakerNos = PosStakerGroup(stakerGroup_).numStakers();
-        uint blockSize = PosBlock(_block).getCurrentSize();
-        bool minedTag = false;
-        while (true) {
-            for (uint i = PosStakerGroup(stakerGroup_).getNextStakerForUseSP(); i < stakerNos; ++i) {
-                blockSize = blockSize - 1;// + useStakerSPByIndex(i, 1);
-                if (blockSize == 0) {
-                    PosStakerGroup(stakerGroup_).setNextStakerForUseSP(i);
-                    PosBlock(_block).setMined();
-                    minedTag = true;
-                }
-            }
-            if (minedTag) {
-                break;
-            }
-        }
-    }
-
     function minePendingBlocks() public {
         checkDelegate(msg.sender, 1);
 
         uint totalBlocks;
         uint minedBlocks;
-        address blockAdr;
+        uint minedGas = 0;
         
-        (totalBlocks, minedBlocks) = PosBlockPool(blockPool_).numBlocks();
+        (totalBlocks, minedBlocks) = PosGaskPool(gasPool_).numBlocks();
 
         for (uint i = minedBlocks - 1; i < totalBlocks; ++i) {
-            blockAdr = PosBlockPool(blockPool_).getBlockByIndex(i);
-            if (PosBlock(blockAdr).getCurrentSize() > PosStakerGroup(stakerGroup_).getTotalRemainingSP()) {
-                break;
-            }
-
-            mineSingleBlock(blockAdr);
+            minedGas = minedGas.add(PosGaskPool(gasPool_).minePendingBlockByIndex(i));
         }
     }
 
     function numBlockInfo() public view returns (uint, uint) {
         checkDelegate(msg.sender, 1);
-        return PosBlockPool(blockPool_).numBlocks();
+        return PosGaskPool(gasPool_).numBlocks();
     }
 
     function getBlockInfoByIndex(uint _blockIndex) public constant returns (uint, uint, uint) {
         checkDelegate(msg.sender, 1);
-        address blockAdr = PosBlockPool(blockPool_).getBlockByIndex(_blockIndex);
-
-        uint size = PosBlock(blockAdr).getCurrentSize();
-        uint txNos = PosBlock(blockAdr).numTxInfos();
-        uint limit = PosBlock(blockAdr).getBlockLimit();
-
-        return (limit, size, txNos);
+        return PosGaskPool(gasPool_).getBlockByIndex;
     }
 }
