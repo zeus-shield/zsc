@@ -6,11 +6,51 @@ pragma solidity ^0.4.21;
 
 import "./sys_include.sol";
 import "./sys_gm_base.sol";
-import "./pos_block_pool.sol";
-import "./pos_proof_power.sol";
-import "./pos_staker_group.sol";
 
-//Proof of Stake for ZSC system
+contract PosBlock{
+    function setBlockSizeLimit(uint _limit) public;
+    function setPreviousBlock(address _previous) public;
+    function setNextBlock(address _next) public;
+    function getPreviousBlock() public constant returns (address);
+    function getNextBlock() public constant returns (address);
+    function setMined() public;
+    function doesMined() public constant returns (bool);
+    function checkIsFull(uint _gasUsage) public constant returns (bool);
+    function registerTx(address _sender, uint _gasUsage) public returns (bool);
+    function getTxInfoByIndex(uint _index) public constant returns (address, uint, uint);
+    function getBlockLimit() public constant returns (uint);
+    function numTxInfos() public constant returns (uint);
+    function getCurrentSize() public constant returns (uint);
+}
+
+contract PosBlockPool {
+    function getBlockByIndex(uint _blockIndex) public view returns (address);
+    function adjustBlockSizeLImit(uint _sizeLimit /*in terms of gas usage*/) public;
+    function registerGasUsage(address _sender, uint _gasUsage) public;
+    function numBlocks() public view returns (uint, uint);
+    function minePendingBlockByIndex(uint _index) public returns (uint);
+}
+
+contract PosProofPower {
+    function createVPUs(uint[] _ratio, uint[] _power, uint[] _priceMin) public;
+    function createVPUs(uint _number, uint _ratio, uint _power, uint _priceMin) public;
+    function getVPUInfo(uint _vpuId) public view returns (uint, uint, uint, uint);
+    function purchaseVPU(address _buyerAdr, uint _vpuId) public;
+}
+
+contract PosStakerGroup {
+    function setZscTokenAddress(address _adr) public;
+    function numStakers() public view returns (uint);
+    function registerStakerType(bytes32 _stakerType, uint _dividendDuration, uint _ratio) public;
+    function removeStakerType(bytes32 _stakerType) public;
+    function addStaker(bytes32 _stakerType, address _nodeAddress) public;
+    function removeStaker(address _nodeAddress) public;
+    function claimStakerSPByIndex(uint _index, uint _tokenAmount) public returns (uint);
+    function getTotalRemainingSP() public view returns (uint);
+    function setNextStakerForUseSP(uint _index) public;
+    function getNextStakerForUseSP() public view returns (uint);
+}
+
 contract SysGmPos is SysGmBase {
     address stakerGroup_;
     address blockPool_;
@@ -45,7 +85,6 @@ contract SysGmPos is SysGmBase {
         }
     }
 
-
     function mineSingleBlock(address _block) private {
         uint stakerNos = PosStakerGroup(stakerGroup_).numStakers();
         uint blockSize = PosBlock(_block).getCurrentSize();
@@ -68,10 +107,13 @@ contract SysGmPos is SysGmBase {
     function minePendingBlocks() public {
         checkDelegate(msg.sender, 1);
 
-        uint blockNos = PosBlockPool(blockPool_).numTotalBlocks();
+        uint totalBlocks;
+        uint minedBlocks;
         address blockAdr;
+        
+        (totalBlocks, minedBlocks) = PosBlockPool(blockPool_).numBlocks();
 
-        for (uint i = PosBlockPool(blockPool_).getLastPendingBlockIndex(); i < blockNos - 1; ++i) {
+        for (uint i = minedBlocks - 1; i < totalBlocks; ++i) {
             blockAdr = PosBlockPool(blockPool_).getBlockByIndex(i);
             if (PosBlock(blockAdr).getCurrentSize() > PosStakerGroup(stakerGroup_).getTotalRemainingSP()) {
                 break;
@@ -81,14 +123,9 @@ contract SysGmPos is SysGmBase {
         }
     }
 
-    function numBlockInfo(bool _isMined) public constant returns (uint) {
+    function numBlockInfo() public view returns (uint, uint) {
         checkDelegate(msg.sender, 1);
-
-        if (_isMined) {
-            return PosBlockPool(blockPool_).numMinedBlocks();
-        } else {
-            return PosBlockPool(blockPool_).numTotalBlocks();
-        }
+        return PosBlockPool(blockPool_).numBlocks();
     }
 
     function getBlockInfoByIndex(uint _blockIndex) public constant returns (uint, uint, uint) {

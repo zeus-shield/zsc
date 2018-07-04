@@ -4,7 +4,7 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./object.sol";
+import "./delegate.sol";
 
 
 /// @title ERC-721 Non-Fungible Token Standard
@@ -13,14 +13,15 @@ contract ERC721 {
     event Transfer(address indexed _from, address indexed _to, uint256 indexed _tokenId);
     event Approval(address indexed _owner, address indexed _approved, uint256 indexed _tokenId);
     event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);
+    function totoalSupply() public view returns (uint256);
     function balanceOf(address _owner) external view returns (uint256);
     function ownerOf(uint256 _tokenId) external view returns (address);
-    function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes data) external payable;
-    function safeTransferFrom(address _from, address _to, uint256 _tokenId) external payable;
-    function transferFrom(address _from, address _to, uint256 _tokenId) external payable;
-    function approve(address _approved, uint256 _tokenId) external payable;
+    //function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes data) external;
+    function safeTransferFrom(address _from, address _to, uint256 _tokenId) external;
+    function transferFrom(address _from, address _to, uint256 _tokenId) external;
+    function approve(address _approved, uint256 _tokenId) external;
     function setApprovalForAll(address _operator, bool _approved) external;
-    function getApproved(uint256 _tokenId) public view returns (address);
+    function getApproved(uint256 _tokenId) external view returns (address);
     function isApprovedForAll(address _owner, address _operator) external view returns (bool);
 }
 
@@ -28,7 +29,7 @@ contract ERC721 {
  * @title ERC721Adv
  * Generic implementation for the required functionality of the ERC721 standard
  */
-contract ERC721Adv is ERC721, Object {
+contract Erc721Adv is Delegated, ERC721 {
     using SafeMath for uint256;
 
     // Total amount of tokens
@@ -48,21 +49,14 @@ contract ERC721Adv is ERC721, Object {
     // Mapping from token ID to index of the owner tokens list
     mapping(uint256 => uint256) private ownedTokensIndex_;
 
-    function ERC721Adv(bytes32 _name) public Object(_name) {
-    }
-
-    function getLastTokenId() internal view returns (uint256) {
-        if (totalSupply_ == 0) {
-            return 0;
-        }
-        return totalSupply_ - 1;
+    function Erc721Adv() public {
     }
 
     function checkOnlyOwnerOf(uint256 _tokenId, address _user) private view {
         require(tokenOwner_[_tokenId] == _user);
     }
 
-    function totoalSupply() external view returns (uint256) {
+    function totoalSupply() public view returns (uint256) {
       return totalSupply_;
     }
 
@@ -76,23 +70,23 @@ contract ERC721Adv is ERC721, Object {
         return tokenOwner_[_tokenId];
     }
 
-    /*
-    function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes data) external payable {
-        checkOnlyOwnerOf(_tokenId, _from);
+    
+    function safeTransferFrom(address _from, address _to, uint256 _tokenId) external {
+        _transfer(_from, _to, _tokenId);
     }
-    */
+    
 
-    function approve(address _to, uint256 _tokenId) external payable {
+    function approve(address _to, uint256 _tokenId) external {
         checkOnlyOwnerOf(_tokenId, msg.sender);
         require(_to != msg.sender);
 
-        if(_to != address(0) || getApproved(_tokenId) != address(0)) {
+        if(_to != address(0) || tokenApprovedFor_[_tokenId] != address(0)) {
             Approval(msg.sender, _to, _tokenId);
         }
         tokenApprovedFor_[_tokenId] = _to;
     }
 
-    function getApproved(uint256 _tokenId) public view returns (address) {
+    function getApproved(uint256 _tokenId) external view returns (address) {
         return tokenApprovedFor_[_tokenId];
     }
 
@@ -112,8 +106,8 @@ contract ERC721Adv is ERC721, Object {
     * @dev Claims the ownership of a given token ID
     * @param _tokenId uint256 ID of the token being claimed by the msg.sender
     */
-    function takeOwnership(uint256 _tokenId) external payable { 
-        require(getApproved(_tokenId) == msg.sender);
+    function takeOwnership(uint256 _tokenId) external { 
+        require(tokenApprovedFor_[_tokenId] == msg.sender);
         clearApprovalAndTransfer(tokenOwner_[_tokenId], msg.sender, _tokenId);
     }
 
@@ -122,9 +116,9 @@ contract ERC721Adv is ERC721, Object {
     * @param _to address to receive the ownership of the given token ID
     * @param _tokenId uint256 ID of the token to be transferred
     */
-    function transfer(address _to, uint256 _tokenId) public {
-        checkOnlyOwnerOf(_tokenId, msg.sender);
-        clearApprovalAndTransfer(msg.sender, _to, _tokenId);
+    function _transfer(address _from, address _to, uint256 _tokenId) internal {
+        checkOnlyOwnerOf(_tokenId, _from);
+        clearApprovalAndTransfer(_from, _to, _tokenId);
     }
 
     /**
@@ -144,7 +138,7 @@ contract ERC721Adv is ERC721, Object {
     */
     function _burn(uint256 _tokenId) internal {
         checkOnlyOwnerOf(_tokenId, msg.sender);
-        if (getApproved(_tokenId) != 0) {
+        if (tokenApprovedFor_[_tokenId] != 0) {
             clearApproval(msg.sender, _tokenId);
         }
         removeToken(msg.sender, _tokenId);
