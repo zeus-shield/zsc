@@ -1,17 +1,11 @@
 
-export default function TestAnalysis() {
-    this.outputId;
-};
+import Output from './output.js';
 
-TestAnalysis.prototype.setOutput = function(id) {
-    console.log("TestAnalysis.setOutput()");
-    this.outputId = id;
-}
+export default function TestAnalysis() {
+};
 
 TestAnalysis.prototype.deploy = function() {
     console.log("TestAnalysis.deploy()");
-    //let tool = new Tool();
-    //tool.DeployContract();
 }
 
 TestAnalysis.prototype.create = function() {
@@ -29,9 +23,7 @@ TestAnalysis.prototype.do = function(operation) {
             break;
         default:
             //console.assert("Assertion of score length failed");
-            let element = document.getElementById(this.outputId);
-            element.style.fontSize = "small";//10 +'pt';
-            element.innerHTML = "Operation Error!";
+            Output(window.outputElement, 'small', 'red', 'Operation Error!');
             break;
     }
 }

@@ -1,5 +1,6 @@
 
 import Deploy from '../deploy.js';
+import Output from '../output.js';
 
 //private member
 const moduleName = Symbol('moduleName');
@@ -58,9 +59,7 @@ export default class TestSearch {
                 this.create();
                 break;
             default:
-                let output = document.getElementById(window.outputElement);
-                output.style.fontSize = 'small';//10 +'pt';
-                output.innerHTML = 'Operation Error!';
+                Output(window.outputElement, 'small', 'red', 'Operation Error!');
                 break;
         }
     }

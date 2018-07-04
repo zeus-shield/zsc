@@ -1,6 +1,7 @@
 
 import TestSearch from './es6/test_search.js';
 import TestAnalysis from './test_analysis.js';
+import Output from './output.js';
 
 export default function file(module, input) {
     //support chrome IE10
@@ -41,9 +42,7 @@ export default function file(module, input) {
 
             if('undefined' != typeof test) {
                 test.setCompiledJson(this.result);
-                let output = document.getElementById('output');
-                output.style.fontSize = 'small';//10 +'pt';
-                output.innerHTML = 'Upload successfully!';
+                Output('output', 'small', 'red', 'Upload successfully!');
             }
         }
     } 

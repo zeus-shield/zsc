@@ -1,5 +1,6 @@
 
 import Contract from './contract.js';
+import Output from './output.js';
 
 //private member
 
@@ -25,25 +26,24 @@ export default class Deploy {
             if(!error) {
                 let transactionHash = '';
                 let contractAddress = '';
-                let output = document.getElementById(window.outputElement);
+                let string = '';
                 let contract;
-                output.style.fontSize = 'small';//10 +'pt';
                 if(!contractInstance.address) {
                     console.log("transactionHash: " + contractInstance.transactionHash);
                     transactionHash = contractInstance.transactionHash;
-                    output.innerHTML = `[TransactionHash]:${transactionHash}`;
+                    string = `[TransactionHash]:${transactionHash}`;
+                    Output(window.outputElement, 'small', 'red', string);
                 } else {
                     console.log("contractAddress: " + contractInstance.address);
                     //console.log(contractInstance);
                     //console.assert(contractInstance.address == contractInstanceReturned.address, "address failed");
                     if(contractInstance.address != contractInstanceReturned.address) {
-                        alert("Address Failed!");
-
+                        Output(window.outputElement, 'small', 'red', 'Address Failed!');
                     } else {
                         transactionHash = contractInstance.transactionHash;
                         contractAddress = contractInstance.address;
-                        output.innerHTML = `[TransactionHash]:${transactionHash}</br>[ContractAddress]:${contractAddress}`;
-
+                        string = `[TransactionHash]:${transactionHash}</br>[ContractAddress]:${contractAddress}`;
+                        Output(window.outputElement, 'small', 'red', string);
                         if('undefined' == typeof window.contractClass) {
                             contract = new Contract();
                             window.contractClass = contract;
@@ -55,8 +55,7 @@ export default class Deploy {
                 }
             } else {
                 //console.log("DeployContract: Error!!");
-                console.log(error);
-                output.innerHTML = error;
+                Output(window.outputElement, 'small', 'red', error);
             }
         })
       

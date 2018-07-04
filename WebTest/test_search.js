@@ -2,6 +2,8 @@
 //define(['test_analysis'], function(){});
 //require(['test_analysis'], function (){});
 
+import Output from './output.js';
+
 const STATUS = {
   INIT: "init",
   DEPLOY: "deploy",
@@ -9,19 +11,10 @@ const STATUS = {
 };
 
 export default function TestSearch() {
-//function TestSearch() {
-    this.outputId;
 };
-
-TestSearch.prototype.setOutput = function(id) {
-    console.log("TestSearch.setOutput()");
-    this.outputId = id;
-}
 
 TestSearch.prototype.deploy = function() {
     console.log("TestSearch.deploy()");
-    //let tool = new Tool();
-    //tool.DeployContract();
 }
 
 TestSearch.prototype.create = function() {
@@ -39,9 +32,7 @@ TestSearch.prototype.do = function(operation) {
             break;
         default:
             //console.assert("Assertion of score length failed");
-            let element = document.getElementById(this.outputId);
-            element.style.fontSize = "small";//10 +'pt';
-            element.innerHTML = "Operation Error!";
+            Output(window.outputElement, 'small', 'red', 'Operation Error!');
             break;
     }
 }
