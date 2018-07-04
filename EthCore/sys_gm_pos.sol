@@ -7,23 +7,7 @@ pragma solidity ^0.4.21;
 import "./sys_include.sol";
 import "./sys_gm_base.sol";
 
-contract PosBlock{
-    function setBlockSizeLimit(uint _limit) public;
-    function setPreviousBlock(address _previous) public;
-    function setNextBlock(address _next) public;
-    function getPreviousBlock() public constant returns (address);
-    function getNextBlock() public constant returns (address);
-    function setMined() public;
-    function doesMined() public constant returns (bool);
-    function checkIsFull(uint _gasUsage) public constant returns (bool);
-    function registerTx(address _sender, uint _gasUsage) public returns (bool);
-    function getTxInfoByIndex(uint _index) public constant returns (address, uint, uint);
-    function getBlockLimit() public constant returns (uint);
-    function numTxInfos() public constant returns (uint);
-    function getCurrentSize() public constant returns (uint);
-}
-
-contract PosBlockPool {
+contract PosGasPool {
     function getBlockByIndex(uint _blockIndex) public view returns (address);
     function adjustBlockSizeLImit(uint _sizeLimit /*in terms of gas usage*/) public;
     function registerGasUsage(address _sender, uint _gasUsage) public;
@@ -53,14 +37,14 @@ contract PosStakerGroup {
 
 contract SysGmPos is SysGmBase {
     address stakerGroup_;
-    address blockPool_;
+    address gasPool_;
     address proofPower_;
 
     // Constructor
     function SysGmPos(bytes32 _name) public SysGmBase(_name) {
     } 
 
-    function configurePos(address _stakerGroup, address _blockPool, address _proofPower) public {
+    function configurePos(address _stakerGroup, address _gasPool, address _proofPower) public {
         checkDelegate(msg.sender, 1);
 
         if (_stakerGroup != address(0)) {
@@ -70,11 +54,11 @@ contract SysGmPos is SysGmBase {
             stakerGroup_ = _stakerGroup;
         }
 
-        if (_blockPool != address(0)) {
-            if (blockPool_ != _blockPool && blockPool_ != address(0)) {
-                Object(blockPool_).kill();
+        if (_gasPool != address(0)) {
+            if (gasPool_ != _gasPool && gasPool_ != address(0)) {
+                Object(gasPool_).kill();
             }
-            blockPool_   = _blockPool;
+            gasPool_   = _gasPool;
         }
 
         if (_proofPower != address(0))  {
