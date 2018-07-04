@@ -8,11 +8,11 @@ import "./erc721_adv.sol";
 
 contract PosProofPower is Erc721Adv {
     struct VirtualPowerUnit {
-        uint durability_;
-        uint rewardRatio_;
-        uint rewards_;
-        uint priceMin_;
-        uint priceCur_;
+        bool available_;
+        uint maxRewards_;
+        uint curRewards_;
+        uint usedRewards_;
+        uint price_;
     }
     address private posGm_;
     uint private vpuNos_;
@@ -35,41 +35,27 @@ contract PosProofPower is Erc721Adv {
         setDelegate(posGm_, 1);
     }
     
-    function createVPUs(uint[] _durability, uint[] _ratio, uint[] _power, uint[] _priceMin) public {
+    function createVPUs(uint _number, uint _maxReward, uint _price) public {
         checkDelegate(msg.sender, 1);
-        require(_ratio.length != 0);
-        require(_ratio.length == _power.length);
-
-        uint firstId = totoalSupply();
-        uint lastId = firstId + _ratio.length;
-        for (uint i = firstId; i <= lastId; ++i) {
-            _mint(address(this), i);
-            vpus_[i] = VirtualPowerUnit(_durability[i], _ratio[i], _power[i], _priceMin[i], _priceMin[i]);
-            vpuNos_++;
-        }
-    }
-
-    function createVPUs(uint _number, uint _durability, uint _ratio, uint _power, uint _priceMin) public {
-        checkDelegate(msg.sender, 1);
-        require(_number != 0 && _ratio != 0 && _power != 0 && _priceMin != 0);
+        require(_number != 0 && _maxReward != 0 && _price != 0);
 
         uint firstId = totoalSupply();
         uint lastId = firstId + _number;
         for (uint i = firstId; i <= lastId; ++i) {
             _mint(address(this), i);
-            vpus_[i] = VirtualPowerUnit(_durability, _ratio, _power, _priceMin, _priceMin);
+            vpus_[i] = VirtualPowerUnit(true, _maxReward, 0, 0, _price);
             vpuNos_++;
         }
     }
     
-    function getVPUInfo(uint _vpuId) public view returns (uint, uint, uint, uint, uint) {
+    function getVPUInfo(uint _vpuId) public view returns (bool, uint, uint, uint, uint) {
         checkDelegate(msg.sender, 1);
         require(_vpuId < vpuNos_);
-        return (vpus_[_vpuId].durability_,
-                vpus_[_vpuId].rewardRatio_, 
-                vpus_[_vpuId].power_, 
-                vpus_[_vpuId].priceMin_, 
-                vpus_[_vpuId].priceCur_);
+        return (vpus_[_vpuId].available_,
+                vpus_[_vpuId].maxRewards_, 
+                vpus_[_vpuId].curRewards_, 
+                vpus_[_vpuId].usedRewards_, 
+                vpus_[_vpuId].price_);
     }
     
     function purchaseVPU(address _buyerAdr, uint _vpuId) public {
@@ -77,9 +63,23 @@ contract PosProofPower is Erc721Adv {
         _transfer(address(this), _buyerAdr, _vpuId);
     }
 
-    function consumeVPU(uint _) public {
+    function rewardToVPU(uint _vpuId, uint _rewards) public returns (uint) {
         checkDelegate(msg.sender, 1);
-        _transfer(address(this), _buyerAdr, _vpuId);
+        
+        if (vpus_[_vpuId].available_ == false) {
+            return _rewards;
+        }
+
+        uint sum = vpus_[_vpuId].curRewards_.add(_rewards);
+
+        if (sum < vpus_[_vpuId].maxRewards_) {
+            vpus_[_vpuId].curRewards_ = sum;
+            return 0;
+        } else {
+            vpus_[_vpuId].curRewards_ = vpus_[_vpuId].maxRewards_;
+            vpus_[_vpuId].available_ = false;
+            return vpus_[_vpuId].maxRewards_.sub(sum);
+        }
     }
 }
 
