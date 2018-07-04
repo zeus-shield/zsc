@@ -19,21 +19,21 @@ export default function main(module, operation) {
 
     switch(module) {
         case 'Search': {
-            if('undefined' == typeof window.TestSearch) {
+            if('undefined' == typeof window.testSearchClass) {
                 test = new TestSearch();
-                window.TestSearch = test;
+                window.testSearchClass = test;
             } else {
-                test = window.TestSearch;
+                test = window.testSearchClass;
             }
             test.setModuleName('ai_search');
             break;
         }
         case 'Analysis': {
-            if('undefined' == typeof window.TestAnalysis) {
+            if('undefined' == typeof window.testAnalysisClass) {
                 test = new TestAnalysis();
-                window.TestAnalysis = test;
+                window.testAnalysisClass = test;
             } else {
-                test = window.TestAnalysis;
+                test = window.testAnalysisClass;
             }
             test.setModuleName('ai_analysis');
             break;
@@ -46,9 +46,10 @@ export default function main(module, operation) {
 
     if(0 != test)
     {
-        test.setOutput('output');
         test.do(operation);
     }
+
+    window.outputElement = 'output';
 }
 
 // Node.js and other environments that support module.exports.
