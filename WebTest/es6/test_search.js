@@ -2,20 +2,14 @@
 import Deploy from '../deploy.js';
 
 //private member
-const outputId = Symbol('outputId');
 const moduleName = Symbol('moduleName');
 const compiledJson = Symbol('compiledJson');
 
 export default class TestSearch {
 
     constructor() {
-        this[outputId] = '';
+        this[moduleName] = '';
         this[compiledJson] = '';
-    }
-
-    setOutput(id) {
-        console.log('TestSearch.setOutput(%s)', id);
-        this[outputId] = id;
     }
 
     setModuleName(name) {
@@ -46,7 +40,7 @@ export default class TestSearch {
 
         deploy = new Deploy()
         if('undefined' != typeof deploy) {
-            deploy.do(byteCode, abi, parameter);
+            deploy.do('Search', byteCode, abi, parameter);
         }
     }
 
@@ -64,9 +58,9 @@ export default class TestSearch {
                 this.create();
                 break;
             default:
-                let element = document.getElementById(this[outputId]);
-                element.style.fontSize = 'small';//10 +'pt';
-                element.innerHTML = 'Operation Error!';
+                let output = document.getElementById(window.outputElement);
+                output.style.fontSize = 'small';//10 +'pt';
+                output.innerHTML = 'Operation Error!';
                 break;
         }
     }
