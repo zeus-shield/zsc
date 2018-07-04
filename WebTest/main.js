@@ -25,7 +25,7 @@ export default function main(module, operation) {
             } else {
                 test = window.testSearchClass;
             }
-            test.setModuleName('ai_search');
+            test.setContractName('AISearch');
             break;
         }
         case 'Analysis': {
@@ -35,7 +35,7 @@ export default function main(module, operation) {
             } else {
                 test = window.testAnalysisClass;
             }
-            test.setModuleName('ai_analysis');
+            test.setContractName('AIAnalysis');
             break;
         }
         default:

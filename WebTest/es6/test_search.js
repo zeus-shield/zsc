@@ -3,18 +3,18 @@ import Deploy from '../deploy.js';
 import Output from '../output.js';
 
 //private member
-const moduleName = Symbol('moduleName');
+const contractName = Symbol('contractName');
 const compiledJson = Symbol('compiledJson');
 
 export default class TestSearch {
 
     constructor() {
-        this[moduleName] = '';
+        this[contractName] = '';
         this[compiledJson] = '';
     }
 
-    setModuleName(name) {
-        this[moduleName] = name;
+    setContractName(name) {
+        this[contractName] = name;
     }
 
     setCompiledJson(data) {
@@ -23,20 +23,20 @@ export default class TestSearch {
 
     deploy() {
         console.log('TestSearch.deploy()');
-        let contractName = '';
+        let name = '';
         let byteCode = '';
         let abi = '';
         let parameter = '';
         let deploy;
 
-        for (contractName in this[compiledJson].contracts) {
-            if (contractName.indexOf(`${this[moduleName]}.sol`) > 0)
+        for (name in this[compiledJson].contracts) {
+            if (name.indexOf(this[contractName]) > 0)
                 break;
             //console.log(contractName);
         }
 
-        byteCode = '0x' + this[compiledJson].contracts[contractName].bin;
-        abi = JSON.parse(this[compiledJson].contracts[contractName].abi);
+        byteCode = '0x' + this[compiledJson].contracts[name].bin;
+        abi = JSON.parse(this[compiledJson].contracts[name].abi);
         parameter = '123';
 
         deploy = new Deploy()
