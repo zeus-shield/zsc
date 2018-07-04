@@ -16,20 +16,20 @@ export default function file(module, input) {
 
             switch(module) {
                 case 'Search': {
-                    if('undefined' == typeof window.TestSearch) {
+                    if('undefined' == typeof window.testSearchClass) {
                         test = new TestSearch();
-                        window.TestSearch = test;
+                        window.testSearchClass = test;
                     } else {
-                        test = window.TestSearch;
+                        test = window.testSearchClass;
                     }
                     break;
                 }
                 case 'Analysis': {
-                    if('undefined' == typeof window.TestAnalysis) {
+                    if('undefined' == typeof window.testAnalysisClass) {
                         test = new TestAnalysis();
-                        window.TestAnalysis = test;
+                        window.testAnalysisClass = test;
                     } else {
-                        test = window.TestAnalysis;
+                        test = window.testAnalysisClass;
                     }
                     break;
                 }
@@ -41,6 +41,9 @@ export default function file(module, input) {
 
             if('undefined' != typeof test) {
                 test.setCompiledJson(this.result);
+                let output = document.getElementById('output');
+                output.style.fontSize = 'small';//10 +'pt';
+                output.innerHTML = 'Upload successfully!';
             }
         }
     } 
