@@ -1,11 +1,11 @@
 <html>
     <head>
         <h4>Search Module</h4>
-        <script type="text/javascript" src="../WebClient/web3.js/dist/web3.js"></script>
+        <script type="text/javascript" src="../../WebClient/web3.js/dist/web3.js"></script>
         <!--script type="text/javascript" src="require.mini.js" defer async="true" ></script-->
         <!--script type="text/javascript" src="require.mini.js" data-main="main"></script-->
-        <script type="module" src="./main.js"></script>
-        <script type="module" src="./file.js"></script>
+        <script type="module" src="../js/main.js"></script>
+        <script type="module" src="../js/file.js"></script>
         <style>
             label {
                 width: 60px;
@@ -23,7 +23,7 @@
     </head>
     <body>
         <div id="search">
-            <a href="./index.html" title="Back">Back</a></br></br>
+            <a href="../index.html" title="Back">Back</a></br></br>
             <label for="file">Upload</label>
             <text>Please compile solidity file and upload compiled json file at first!</text>
             <input type="file" id="file" onchange="file('Search', this)" /></br></br>

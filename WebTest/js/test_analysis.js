@@ -1,16 +1,21 @@
 
-import Deploy from '../deploy.js';
-import Output from '../output.js';
+import Deploy from './deploy.js';
+import Output from './output.js';
 
 //private member
 const contractName = Symbol('contractName');
 const compiledJson = Symbol('compiledJson');
+const abi = Symbol('abi');
+const contractAddress = Symbol('contractAddress');
+const deployFunc = Symbol('deployFunc');
 
-export default class TestSearch {
+export default class TestAnalysis {
 
     constructor() {
         this[contractName] = '';
         this[compiledJson] = '';
+        this[abi] = '';
+        this[contractAddress] = '';
     }
 
     setContractName(name) {
@@ -21,11 +26,15 @@ export default class TestSearch {
         this[compiledJson] = JSON.parse(data);
     }
 
+    [deployFunc](caller, address) {
+        console.log('TestAnalysis.deployFunc()');
+        caller[contractAddress] = address;
+    }
+
     deploy() {
-        console.log('TestSearch.deploy()');
+        console.log('TestAnalysis.deploy()');
         let name = '';
-        let byteCode = '';
-        let abi = '';
+        let byteCode = '';  
         let parameter = '';
         let deploy;
 
@@ -36,21 +45,21 @@ export default class TestSearch {
         }
 
         byteCode = '0x' + this[compiledJson].contracts[name].bin;
-        abi = JSON.parse(this[compiledJson].contracts[name].abi);
-        parameter = '123';
+        this[abi] = JSON.parse(this[compiledJson].contracts[name].abi);
+        parameter = 'tester';
 
         deploy = new Deploy()
         if('undefined' != typeof deploy) {
-            deploy.do('Search', byteCode, abi, parameter);
+            deploy.do(byteCode, this[abi], parameter, this, this[deployFunc]);
         }
     }
 
     create() {
-        console.log('TestSearch.create()');
+        console.log('TestAnalysis.create()');
     }
 
     do(operation) {
-        console.log('TestSearch.do(%s)', operation);
+        console.log('TestAnalysis.do(%s)', operation);
         switch(operation) {
             case 'Deploy':
                 this.deploy();

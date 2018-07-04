@@ -1,5 +1,5 @@
 
-import TestSearch from './es6/test_search.js';
+import TestSearch from './test_search.js';
 import TestAnalysis from './test_analysis.js';
 import Output from './output.js';
 

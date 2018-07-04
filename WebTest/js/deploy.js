@@ -8,7 +8,7 @@ export default class Deploy {
     constructor() {
     }
 
-    do(module, byteCode, abi, parameter) {
+    do(byteCode, abi, parameter, caller, func) {
         console.log('Deploy.do()');
         const Web3 = require('web3');
         let web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
@@ -44,6 +44,7 @@ export default class Deploy {
                         contractAddress = contractInstance.address;
                         string = `[TransactionHash]:${transactionHash}</br>[ContractAddress]:${contractAddress}`;
                         Output(window.outputElement, 'small', 'red', string);
+                        /*
                         if('undefined' == typeof window.contractClass) {
                             contract = new Contract();
                             window.contractClass = contract;
@@ -51,6 +52,8 @@ export default class Deploy {
                             contract = window.contractClass;
                         }
                         contract.add(module, contractAddress);
+                        */
+                        func(caller, contractAddress);
                     }
                 }
             } else {

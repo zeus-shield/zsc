@@ -9,7 +9,7 @@ require.config({
 
 require(['test_search', 'test_analysis'], function (){});
 */
-import TestSearch from './es6/test_search.js';
+import TestSearch from './test_search.js';
 import TestAnalysis from './test_analysis.js';
 
 export default function main(module, operation) {
