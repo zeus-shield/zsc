@@ -35,16 +35,3 @@ TestAnalysis.prototype.do = function(operation) {
             break;
     }
 }
-
-// Node.js and other environments that support module.exports.
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = TestAnalysis();
-} else {
-    // AMD.
-    if (typeof define === 'functon' && define.amd) {
-        define([], function() {return TestAnalysis;});
-    // Browser.
-    } else {
-        window.TestAnalysis = TestAnalysis;
-    }
-}
