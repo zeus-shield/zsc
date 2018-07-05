@@ -96,7 +96,7 @@ contract AdmBase is Object {
         testUsers_[userNos_ - 1].email_ = _email;
     }
     
-    function changePass(bytes32 _user, bytes32 _oldPass, bytes32 _newPass) {
+    function changePass(bytes32 _user, bytes32 _oldPass, bytes32 _newPass) public {
         checkAdded(toHexx(_user));
         
         uint index = userIndex_[toHexx(_user)];
@@ -106,6 +106,15 @@ contract AdmBase is Object {
     }
     
     function addUserRandom(bytes32 _prefix, uint _nameLenght, uint _passLength) public;
+
+    function addUserRandom(uint _number, bytes32 _prefix, uint _nameLenght, uint _passLength) public {
+        checkDelegate(msg.sender, 1);
+        require(_number > 0); 
+
+        for (uint i = 0; i < _number; ++i) {
+            addUserRandom(_prefix, _nameLenght, _passLength);
+        }
+    }
 
     function activeByUser(bytes32 _hexx, bytes32 _type) public {
         checkAdded(_hexx);
