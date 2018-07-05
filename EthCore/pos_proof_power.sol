@@ -9,10 +9,11 @@ import "./erc721_adv.sol";
 contract PosProofPower is Erc721Adv {
     struct VirtualPowerUnit {
         bool available_;
-        uint maxRewards_;
-        uint curRewards_;
-        uint usedRewards_;
         uint price_;
+        uint maxRewards_;
+        uint totalRewards_;
+        uint curRewards_;
+        uint claimedRewards_;
     }
     address private posGm_;
     uint private vpuNos_;
@@ -43,19 +44,20 @@ contract PosProofPower is Erc721Adv {
         uint lastId = firstId + _number;
         for (uint i = firstId; i <= lastId; ++i) {
             _mint(address(this), i);
-            vpus_[i] = VirtualPowerUnit(true, _maxReward, 0, 0, _price);
+            vpus_[i] = VirtualPowerUnit(true, _price, _maxReward, 0, 0, 0);
             vpuNos_++;
         }
     }
     
-    function getVPUInfo(uint _vpuId) public view returns (bool, uint, uint, uint, uint) {
+    function getVPUInfo(uint _vpuId) public view returns (bool, uint, uint, uint, uint, uint) {
         checkDelegate(msg.sender, 1);
         require(_vpuId < vpuNos_);
         return (vpus_[_vpuId].available_,
+                vpus_[_vpuId].price_,
                 vpus_[_vpuId].maxRewards_, 
+                vpus_[_vpuId].totalRewards_, 
                 vpus_[_vpuId].curRewards_, 
-                vpus_[_vpuId].usedRewards_, 
-                vpus_[_vpuId].price_);
+                vpus_[_vpuId].claimedRewards_);
     }
     
     function purchaseVPU(address _buyerAdr, uint _vpuId) public {
@@ -70,16 +72,26 @@ contract PosProofPower is Erc721Adv {
             return _rewards;
         }
 
-        uint sum = vpus_[_vpuId].curRewards_.add(_rewards);
+        uint sum = vpus_[_vpuId].totalRewards_.add(_rewards);
 
-        if (sum < vpus_[_vpuId].maxRewards_) {
-            vpus_[_vpuId].curRewards_ = sum;
+        if (sum <= vpus_[_vpuId].maxRewards_) {
+            vpus_[_vpuId].curRewards_   = vpus_[_vpuId].curRewards_.add(_rewards);
+            vpus_[_vpuId].totalRewards_ = sum;
             return 0;
         } else {
-            vpus_[_vpuId].curRewards_ = vpus_[_vpuId].maxRewards_;
-            vpus_[_vpuId].available_ = false;
-            return vpus_[_vpuId].maxRewards_.sub(sum);
+            uint delta = sum.sub(vpus_[_vpuId].maxRewards_); 
+            uint input = _rewards.sub(delta);            
+            vpus_[_vpuId].curRewards_   = vpus_[_vpuId].curRewards_.add(input);
+            vpus_[_vpuId].totalRewards_ = vpus_[_vpuId].maxRewards_;
+            vpus_[_vpuId].available_    = false;
+            return delta;
         }
+    }
+
+    function claimRwardFromVPU(address _staker, uint _vpuId) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+        vpus_[_vpuId].claimedRewards_ = vpus_[_vpuId].claimedRewards_.add(vpus_[_vpuId].curRewards_);
+        vpus_[_vpuId].curRewards_ = 0;
     }
 }
 
