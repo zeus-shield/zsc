@@ -19,14 +19,24 @@ export default class ZSCSearch {
     addParameter(_factoryType, _elementName, _elementAddress, _parameterName, _parameterValue, func) {
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
-        contractInstance.addParameter(_factoryType, _elementName, _elementAddress, _parameterName, _parameterValue, {
-            from: this[account]}, function(error, result) { 
+        let gasUsed = contractInstance.addParameter.estimateGas(
+            _factoryType, _elementName, _elementAddress, _parameterName, _parameterValue,
+            function(error, result) {
                 if(!error) {
-                    Output(window.outputElement, 'small', 'red', result);
+                    alert(result);
+                    contractInstance.addParameter(
+                        _factoryType, _elementName, _elementAddress, _parameterName, _parameterValue,
+                        {gas: result},
+                        function(error, result) { 
+                            if(!error) {
+                                Output(window.outputElement, 'small', 'red', `[TransactionHash]:${result}`);
+                            } else {
+                                Output(window.outputElement, 'small', 'red', error);
+                            }
+                        });
                 } else {
                     Output(window.outputElement, 'small', 'red', error);
                 }
             });
     }
-
 }
