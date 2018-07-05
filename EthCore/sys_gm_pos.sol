@@ -74,12 +74,12 @@ contract SysGmPos is SysGmBase {
 
         uint totalBlocks;
         uint minedBlocks;
-        uint minedGas = 0;
+        uint minedPower = 0;
         
         (totalBlocks, minedBlocks) = PosGaskPool(gasPool_).numBlocks();
 
         for (uint i = minedBlocks - 1; i < totalBlocks; ++i) {
-            minedGas = minedGas.add(PosGaskPool(gasPool_).minePendingBlockByIndex(i));
+            minedPower = minedPower.add(PosGaskPool(gasPool_).minePendingBlockByIndex(i));
         }
     }
 
