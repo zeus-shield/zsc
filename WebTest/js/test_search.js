@@ -1,6 +1,7 @@
 
 import Deploy from './deploy.js';
 import Output from './output.js';
+import ZSCSearch from './zsc_search.js';
 
 //private member
 const contractName = Symbol('contractName');
@@ -56,6 +57,8 @@ export default class TestSearch {
 
     create() {
         console.log('TestSearch.create()');
+        let zsc = new ZSCSearch(this[abi], this[contractAddress]);
+        zsc.addParameter('1', '1', 0x1, '1', '1');
     }
 
     do(operation) {

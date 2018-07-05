@@ -1,23 +1,32 @@
 /*
  Copyright (c) 2018 ZSC Dev Team
 */
-export default class ZSCSearch() {
-    construct() {
+
+import Output from './output.js';
+
+//private member
+const constractAbi = Symbol('abi');
+const constractAddress = Symbol('address');
+const account = Symbol('account');
+
+export default class ZSCSearch {
+    constructor(abi, address) {
+        this[constractAbi] = abi;
+        this[constractAddress] = address;
+        this[account] = web3.eth.accounts[0];
     }
 
-    ZSCTemplate.prototype.numTemplates= function(gm, func) {
-    var callBack = func;
-    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    addParameter(_factoryType, _elementName, _elementAddress, _parameterName, _parameterValue, func) {
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
-    myControlApi.numTemplates(gm.userName,
-        {from: gm.account},
-        function(error, result){ 
-            if(!error) {
-                gm.tmpNos = result.toString(10);
-                callBack(gm);
-            } else {
-                console.log("error: " + error);
-            }
-        });
+        contractInstance.addParameter(_factoryType, _elementName, _elementAddress, _parameterName, _parameterValue, {
+            from: this[account]}, function(error, result) { 
+                if(!error) {
+                    Output(window.outputElement, 'small', 'red', result);
+                } else {
+                    Output(window.outputElement, 'small', 'red', error);
+                }
+            });
     }
+
 }
