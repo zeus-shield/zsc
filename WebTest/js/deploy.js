@@ -16,7 +16,12 @@ export default class Deploy {
         //  data: byteCode,
         //  gasPrice: '60000000000',
         //  gas: 9050000}, function(e, contract) {
-
+        /*
+        let gasEstimate = web3.eth.estimateGas({
+            data: byteCode
+        });
+        console.log(gasEstimate);
+        */
         let contractInstanceReturned = contractObject.new(parameter, {
             from:web3.eth.accounts[0],
             data: byteCode, gas: 4700000}, function(error, contractInstance) {

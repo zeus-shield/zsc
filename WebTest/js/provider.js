@@ -24,7 +24,7 @@ export default function provider(injected) {
         if(window.localhostWeb3) {
             provider = window.localhostWeb3;
         } else {
-            provider = new Web3.providers.HttpProvider("http://localhost:7545");
+            provider = new Web3.providers.HttpProvider("http://localhost:8545");
             window.localhostWeb3 = provider;
         }
     }
