@@ -9,14 +9,14 @@ import "./delegate.sol";
 contract PosGasPool is Delegated {
     struct BlockInfo {
         bool mined_;
-        uint gasUsage_;
+        uint blockSize_;
         uint reigsterTime_;
     }
 
     uint totalBlockNos_;
     uint minedBlockNos_;
     uint minedGasUsage_;
-    uint remaingGasUsage_;
+    uint remaingPower_;
     mapping(uint => BlockInfo) blocks_;
     
     ////////////////
@@ -36,13 +36,20 @@ contract PosGasPool is Delegated {
         setDelegate(posGm_, 1);
     }
 
-    function registerGasUsage(uint _gasUsage) public {
+    function registerPower(uint _power) public {
         checkDelegate(msg.sender, 1);
         require(posGm_ != address(0));
 
-        remaingGasUsage_ = remaingGasUsage_.add(_gasUsage);
-        blocks_[totalBlockNos_] = BlockInfo(false, _gasUsage, now);
-        totalBlockNos_++;
+        remaingPower_ = remaingPower_.add(_power);
+
+        uint curPower = _power;
+        while (curPower > blockSizeLimit_) {
+            blocks_[totalBlockNos_] = BlockInfo(false, blockSizeLimit_, now);
+            totalBlockNos_++;
+            curPower = curPower.sub(blockSizeLimit_);
+        }
+        blocks_[totalBlockNos_] = BlockInfo(false, curPower, now);
+        totalBlockNos_++; 
     }
 
     function getBlockByIndex(uint _blockIndex) public view returns (uint, uint) {
