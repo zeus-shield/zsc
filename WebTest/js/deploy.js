@@ -1,5 +1,4 @@
 
-import Contract from './contract.js';
 import Output from './output.js';
 
 //private member
@@ -10,9 +9,7 @@ export default class Deploy {
 
     do(byteCode, abi, parameter, caller, func) {
         console.log('Deploy.do()');
-        const Web3 = require('web3');
-        let web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
-
+        
         let contractObject = web3.eth.contract(abi);
         //let contractInstanceReturned = contractObject.new(parameter, {
         //  from:web3.eth.accounts[0],

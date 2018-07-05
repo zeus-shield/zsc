@@ -15,7 +15,7 @@ import TestAnalysis from './test_analysis.js';
 export default function main(module, operation) {
     let test = 0;
     let string = `Module:[${module}], Operation:[${operation}]`;
-    alert(string);
+    //alert(string);
 
     switch(module) {
         case 'Search': {
@@ -48,8 +48,6 @@ export default function main(module, operation) {
     {
         test.do(operation);
     }
-
-    window.outputElement = 'output';
 }
 
 // Node.js and other environments that support module.exports.
