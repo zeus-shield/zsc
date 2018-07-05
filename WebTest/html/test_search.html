@@ -20,15 +20,35 @@
                 display: none;
             }
         </style>
+        <script type="text/javascript">
+            window.onload = function () {
+                window.outputElement = 'output';
+                provider(false);
+                document.getElementById('provider').addEventListener('change',function(){
+                     if('injected' == this.value) {
+                        provider(true);
+                     } else {
+                        provider(false);
+                     }
+                },false);
+            }
+        </script>
     </head>
-    <body>
+    <body id="test_search">
         <div id="search">
             <a href="../index.html" title="Back">Back</a></br></br>
-            <label for="file">Upload</label>
             <text>Please compile solidity file and upload compiled json file at first!</text>
-            <input type="file" id="file" onchange="file('Search', this)" /></br></br>
-            <button type="button" id="deploy" onClick="main('Search', 'Deploy')">Deploy</button>
-            <button type="button" id="create" onClick="main('Search', 'Create')">Data Create</button>
+            <label for="file">Upload</label>
+            <input type="file" id="file" onchange="file('Search', this)" /></br>
+            <text>Please select web3 provider:</text></br>
+            <select id="provider">
+              <option value ="local">Localhost</option>
+              <option value ="injected">Injected Web3</option>
+            </select>
+            </br>
+            </br>
+            <button type="button" id="deploy" onclick="main('Search', 'Deploy')">Deploy</button>
+            <button type="button" id="create" onclick="main('Search', 'Create')">Data Create</button>
             <p id="output"></p>
         </div>
     </body>
