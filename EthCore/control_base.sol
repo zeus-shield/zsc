@@ -40,12 +40,6 @@ contract DBNode {
     function getChildByIndex(uint _index) public  constant returns(address);
     function addChild(address _node) public returns (address);
 
-
-    function numWallets() public returns (uint);
-    function addWallet(bytes32 _symbol, address _adr) public;
-    function getWalletByName(bytes32 _symbol) public returns (address);
-    function getWalletByIndex(uint _index) public returns (address);
-
     //function getMiningInfoByIndex(bool _isReward, uint _index) public constant returns (uint, uint);
     //function numMiningInfo(bool _isReward) public constant returns (uint);
 
@@ -217,7 +211,6 @@ contract ControlBase is ControlInfo {
         address walletAdr  = getDBFactory("wallet-erc20").createNode(walletNmae, _enAdr);
 
         require(walletAdr != 0);
-        DBNode(_enName).addWallet("ZSC", walletAdr);
         DBNode(walletAdr).setERC20TokenAddress(zscTokenAddress_); 
         return walletAdr;
     }
@@ -231,8 +224,6 @@ contract ControlBase is ControlInfo {
         require(status == "CREATED");
 
         address agrWalletAdr = enableZSCWallet(_agrName, agrAdr);
-        DBNode(agrAdr).addWallet("ZSC", agrWalletAdr);
-        
         address userWallet = address(getDBNode(dbName_, formatWalletName(_userName, "ZSC")));
 
         uint lockedAmount = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(agrAdr).getParameter("insurance")));
