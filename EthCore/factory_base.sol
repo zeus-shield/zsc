@@ -12,16 +12,18 @@ contract FactoryBase is Object {
 
     uint private factoryNodeNos_ = 0;
     mapping(uint => bytes32) private factoryNodes_;
+    mapping(bytes32 => address) private nodeAdrs_;
 
     function FactoryBase(bytes32 _name) public Object(_name) {
     }
 
-    function addFactoryNode(bytes32 _nodeName) internal {
+    function addFactoryNode(bytes32 _nodeName, address _adr) internal {
         factoryNodes_[factoryNodeNos_] = _nodeName;
+        nodeAdrs_[_nodeName] = _adr;
         factoryNodeNos_++;
     }
 
-    function createNode(bytes32 _nodeName, address _parent) public returns (address);
+    function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
 
     function deleteFactoryNode(bytes32 _nodeName) public {
         checkDelegate(msg.sender, 1);
