@@ -244,6 +244,7 @@ contract AISearch is Object {
         factorys_[_factoryType].elements_[_elementName].parameterIndexs_[name] = index;
         factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName] = count-1;
 
+        delete factorys_[_factoryType].elements_[_elementName].parameterNames_[count-1];
         delete factorys_[_factoryType].elements_[_elementName].parameterExists_[_parameterName];
         delete factorys_[_factoryType].elements_[_elementName].parameters_[_parameterName];
 
@@ -294,6 +295,7 @@ contract AISearch is Object {
         factorys_[_factoryType].elementIndexs_[elementName] = elementIndex;
         factorys_[_factoryType].elementIndexs_[_elementName] = elementCount-1;
 
+        delete factorys_[_factoryType].elementNames_[elementCount-1];
         delete factorys_[_factoryType].elementExists_[_elementName];
         delete factorys_[_factoryType].elements_[_elementName];
 
@@ -342,6 +344,7 @@ contract AISearch is Object {
         factoryIndexs_[factoryType] = factoryIndex;
         factoryIndexs_[_factoryType] = factoryCount_-1;
 
+        delete factoryNames_[factoryCount_-1];
         delete factoryExists_[_factoryType];
         delete factorys_[_factoryType];
 
