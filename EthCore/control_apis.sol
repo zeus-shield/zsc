@@ -410,6 +410,41 @@ contract ControlApis is ControlBase {
         return prepareTokenBalanceInfoByIndex(_userName, _index);
     }
 
+    /*------2018-07-06: new verstion: YYA------  */
+
+    function enableUserWallet(bytes32 _userName) public returns (address) {
+        checkRegistered(_userName, msg.sender);
+
+        address userAdr = address(getDBNode(getCurrentDBName(), _userName));
+        require(userAdr != 0);
+
+        require(getUserWalletAddress(_userName, "wat") == address(0));
+
+        address walletAdr = enableWallet(_userName, userAdr);
+        require(walletAdr != 0);
+
+        return walletAdr;
+    }
+
+    function getUserWalletAddress(bytes32 _userName) public constant returns (address) {
+        checkRegistered(_userName, msg.sender);
+
+        bytes32 walletName = formatWalletName(_userName, "wat");
+        address walletAdr = address(getDBNode(getCurrentDBName(), walletName));
+        require(walletAdr != address(0));        
+
+        return walletAdr;
+    }
+
+    function getTokenBalanceInfoBySymbol(bytes32 _userName, bytes32 _symbol) public constant returns (string) {
+        checkRegistered(_userName, msg.sender);
+
+        return prepareTokenBalanceInfoBySymbol(_userName, _symbol);
+    }
+    /*------2018-07-06: new verstion: END-----  */
+
+
+
     //Disabled during alpha-test
     /*
     function getUserWalletAddress(bytes32 _userName, bytes32 _tokenSymbol) public constant returns (address) {
