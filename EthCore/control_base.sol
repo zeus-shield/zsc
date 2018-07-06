@@ -201,7 +201,7 @@ contract ControlBase is ControlInfo {
             parentAdr = address(getDBNode(dbName_, _extra));
         }
 
-        ndAdr = getDBFactory(_type).createNode(_nodeName, parentAdr);
+        ndAdr = getDBFactory(_type).createNode(_nodeName, parentAdr, 0x0);
         require(ndAdr != 0);
 
         if (_type == "template") {
@@ -221,18 +221,18 @@ contract ControlBase is ControlInfo {
         return ndAdr;
     }
 
-    function enableZSCWallet(bytes32 _enName, address _enAdr) internal returns (address) {
+    function enableZSCWallet(bytes32 _enName, address _enAdr, address _creator) internal returns (address) {
         bytes32 walletNmae = formatWalletName(_enName, "ZSC");
-        address walletAdr  = getDBFactory("wallet-erc20").createNode(walletNmae, _enAdr);
+        address walletAdr  = getDBFactory("wallet-erc20").createNode(walletNmae, _enAdr, _creator);
 
         require(walletAdr != 0);
         DBNode(walletAdr).setERC20TokenAddress(zscTokenAddress_); 
         return walletAdr;
     }
 
-    function enableWallet(bytes32 _enName, address _enAdr) internal returns (address) {
+    function enableWallet(bytes32 _enName, address _enAdr, address _creator) internal returns (address) {
         bytes32 walletNmae = formatWalletName(_enName, "wat");
-        address walletAdr  = getDBFactory("wallet-adv").createNode(walletNmae, _enAdr);
+        address walletAdr  = getDBFactory("wallet-adv").createNode(walletNmae, _enAdr, _creator);
 
         require(walletAdr != 0);
         DBNode(walletAdr).setERC20TokenAddress(zscTokenAddress_); 
