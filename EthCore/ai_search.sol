@@ -84,6 +84,47 @@ contract AISearch is Object {
         super.kill();
     }
 
+    function debugParameter(bytes32 _factoryType, bytes32 _elementName, bytes32 _parameterName) public returns (bool) {
+        uint count = 0;
+        uint index = 0;
+        bytes32 name = 0;
+        bool exist = false;
+        bytes32 value = 0;
+
+        // check sender
+        checkDelegate(msg.sender, 1);
+
+        // check param
+        require(bytes32(0) != _factoryType);
+        require(bytes32(0) != _elementName);
+        require(bytes32(0) != _parameterName);
+
+        if (!checkParameterExist(_factoryType, _elementName, _parameterName)) {
+            return false;
+        }
+
+        count = factorys_[_factoryType].elements_[_elementName].parameterCount;
+        if (0 == count) {
+            return false;
+        }
+
+        // debug parameter
+        index = factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName];
+        name = factorys_[_factoryType].elements_[_elementName].parameterNames_[index];
+        exist = factorys_[_factoryType].elements_[_elementName].parameterExists_[_parameterName];
+        value = factorys_[_factoryType].elements_[_elementName].parameters_[_parameterName];
+        require(_parameterName == name);
+
+        // layer, index, name, exist, subcount
+        if (exist) {
+            log4(0xF3, bytes32(index), _parameterName, 1, value);
+        } else {
+            log4(0xF3, bytes32(index), _parameterName, 0, value);
+        }
+
+        return true;
+    }
+
     function checkFactoryExist(bytes32 _factoryType) private view returns (bool) {
         // check sender
         checkDelegate(msg.sender, 1);
@@ -305,8 +346,7 @@ contract AISearch is Object {
     }
 
     function removeFactory(bytes32 _factoryType) public returns (bool) {
-        bytes32 factoryType
-         = 0;
+        bytes32 factoryType = 0;
         uint factoryIndex = 0;
         uint elementCount = 0;
         bytes32 elementName = 0;
