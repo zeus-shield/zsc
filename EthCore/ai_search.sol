@@ -176,6 +176,54 @@ contract AISearch is Object {
         return true;
     }
 
+    function debugFactory(bytes32 _factoryType) public returns (bool) {
+        bytes32 factoryType = 0;
+        uint factoryIndex = 0;
+        bool factoryExists = false;
+        uint elementCount = 0;
+        bytes32 elementName = 0;
+
+        // check sender
+        checkDelegate(msg.sender, 1);
+
+        // check param
+        require(bytes32(0) != _factoryType);
+
+        if (!checkFactoryExist(_factoryType)) {
+            return false;
+        }
+
+        if (0 == factoryCount_) {
+            return false;
+        }
+
+        // debug factory
+        factoryIndex = factoryIndexs_[_factoryType];
+        factoryType = factoryNames_[factoryIndex];
+        factoryExists = factoryExists_[_factoryType];
+        require(_factoryType == factoryType);
+        require(_factoryType == factorys_[_factoryType].type_);
+
+        elementCount = factorys_[_factoryType].elementCount_;
+
+        // layer, index, name, exist, subcount
+        if (factoryExists) {
+            log4(0xF1, bytes32(factoryIndex), _factoryType, 1, bytes32(elementCount));
+        } else {
+            log4(0xF1, bytes32(factoryIndex), _factoryType, 0, bytes32(elementCount));
+        }
+
+        // debug all elements of factory
+        if (0 < elementCount) {
+            for (uint i=0; i<elementCount; i++) {
+                elementName = factorys_[_factoryType].elementNames_[i];
+                debugElement(_factoryType, elementName);
+            }
+        }
+
+        return true;
+    }
+
     function checkFactoryExist(bytes32 _factoryType) private view returns (bool) {
         // check sender
         checkDelegate(msg.sender, 1);
