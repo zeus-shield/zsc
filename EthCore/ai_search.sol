@@ -224,6 +224,23 @@ contract AISearch is Object {
         return true;
     }
 
+    function debugAll() public returns (bool) {
+        bytes32 factoryType = 0;
+    
+        // check sender
+        checkDelegate(msg.sender, 1);
+
+        // remove all factorys
+        if (0 < factoryCount_) {
+            for (uint i=0; i<factoryCount_; i++) {
+                factoryType = factoryNames_[i];
+                debugFactory(factoryType);
+            }
+        }
+
+        return true;
+    }
+
     function checkFactoryExist(bytes32 _factoryType) private view returns (bool) {
         // check sender
         checkDelegate(msg.sender, 1);
