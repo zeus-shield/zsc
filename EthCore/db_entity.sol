@@ -14,10 +14,6 @@ contract DBEntity is DBNode {
     mapping(bytes32 => bool) private parameterExist_;
     mapping(bytes32 => bool) private fundamentalParas_;
 
-    uint walletNos_;
-    mapping(uint => bytes32) private walletsIndice_;
-    mapping(bytes32 => address) private wallets_;
-
     // Constructor
     function DBEntity(bytes32 _name) public DBNode(_name) {
         paraNos_ = 0;
@@ -28,32 +24,6 @@ contract DBEntity is DBNode {
     function initEntity() public {
         checkDelegate(msg.sender, 1);
         initParameters();
-    }
-
-    function numWallets() public returns (uint) {
-        checkDelegate(msg.sender, 1);
-        return walletNos_;
-    }
-
-    function addWallet(bytes32 _symbol, address _adr) public {
-        checkDelegate(msg.sender, 1);
-        require(wallets_[_symbol] == address(0));
-
-        walletsIndice_[walletNos_] = _symbol;
-        wallets_[_symbol] = _adr;
-        walletNos_++;
-    }
-
-    function getWalletByName(bytes32 _symbol) public returns (address) {
-        checkDelegate(msg.sender, 1);
-        require(wallets_[_symbol] != address(0));
-        return  wallets_[_symbol];
-    }
-
-    function getWalletByIndex(uint _index) public returns (address) {
-        checkDelegate(msg.sender, 1);
-        require(_index < walletNos_);
-        return  wallets_[walletsIndice_[_index]];
     }
     
     function __addParameter(bytes32 _parameter) private {
