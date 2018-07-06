@@ -130,6 +130,7 @@ contract AISearch is Object {
         bytes32 elementName = 0;
         uint elementIndex = 0;
         bool elementExists = false;
+        address elementAddress = 0;
         uint parameterCount = 0;
         bytes32 parameterName = 0;
 
@@ -153,6 +154,7 @@ contract AISearch is Object {
         elementIndex = factorys_[_factoryType].elementIndexs_[_elementName];
         elementName = factorys_[_factoryType].elementNames_[elementIndex];
         elementExists = factorys_[_factoryType].elementExists_[_elementName];
+        elementAddress = factorys_[_factoryType].elements_[_elementName].addr_;
         require(_elementName == elementName);
         require(_factoryType == factorys_[_factoryType].elements_[_elementName].type_);
 
@@ -160,9 +162,9 @@ contract AISearch is Object {
 
         // layer, index, name, exist, subcount
         if (elementExists) {
-            log4(0xF2, bytes32(elementIndex), _elementName, 1, bytes32(parameterCount));
+            log4(0xF2, bytes32(elementIndex), _elementName, bytes32(elementAddress), bytes32(parameterCount));
         } else {
-            log4(0xF2, bytes32(elementIndex), _elementName, 0, bytes32(parameterCount));
+            //log4(0xF2, bytes32(elementIndex), _elementName, 0, bytes32(elementAddress), bytes32(parameterCount));
         }
 
         // debug all parameters of element
