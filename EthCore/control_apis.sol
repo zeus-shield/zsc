@@ -132,7 +132,7 @@ contract ControlApis is ControlBase {
 
         require(getUserWalletAddress(_userName, "ZSC") == address(0));
 
-        address walletAdr = enableZSCWallet(_userName, userAdr);
+        address walletAdr = enableZSCWallet(_userName, userAdr, userAdr);
         require(userAdr != 0);
 
         address tokenAddress = getZSCTokenAddress();
@@ -420,7 +420,7 @@ contract ControlApis is ControlBase {
 
         require(getUserWalletAddress(_userName, "wat") == address(0));
 
-        address walletAdr = enableWallet(_userName, userAdr);
+        address walletAdr = enableWallet(_userName, userAdr, userAdr);
         require(walletAdr != 0);
 
         return walletAdr;
