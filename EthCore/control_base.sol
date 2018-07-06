@@ -10,6 +10,7 @@ import "./control_info.sol";
 contract DBNode {
     function getNodeType() public constant returns (bytes32);
     function getBlance() public constant returns (uint256);
+    function getBlance(address _adr) public constant returns (uint256);
 
     function addParameter(bytes32 _parameter) public returns (bool);
     //function removeParameter(bytes32 _parameter) public returns (bool);
@@ -65,6 +66,10 @@ contract DBDatabase {
     function _addNode(address _node) public ;
 }
 
+contract DBDModule {
+    function getTokenAddress(bytes32 _symbol) public view returns (address);
+}
+
 contract ControlBase is ControlInfo {   
     address public systemOL_;
     address public zscTokenAddress_;
@@ -74,6 +79,7 @@ contract ControlBase is ControlInfo {
 
     mapping(bytes32 => address) public databases_;
     mapping(bytes32 => address) public factories_;
+    mapping(bytes32 => address) public modules_;
 
     function ControlBase(bytes32 _name) public ControlInfo(_name) {
     }
@@ -114,7 +120,10 @@ contract ControlBase is ControlInfo {
             mapFactoryDatabase(_adr, dbName_, 1);
         } else if (_type == "database") {
             require(databases_[_name] == address(0));
-            databases_[_name] = _adr;        
+            databases_[_name] = _adr;       
+        } else if (_type == "module") {
+            require(modules_[_name] == address(0));
+            modules_[_name] = _adr;       
         } else {
             revert();
         }
@@ -126,6 +135,8 @@ contract ControlBase is ControlInfo {
             return factories_[_name];
         } else if (_type == "database") {
             return databases_[_name];
+        } else if (_type == "module") {
+            return modules_[_name];
         } else {
             revert();
         }
@@ -137,6 +148,10 @@ contract ControlBase is ControlInfo {
 
     function getDBDatabase(bytes32 _name) internal constant returns (DBDatabase) {
         return DBDatabase(getComponent("database", _name));
+    }
+
+    function getDBModule(bytes32 _name) internal constant returns (DBModule) {
+        return DBModule(getComponent("module", _name));
     }
 
     function getDBNode(bytes32 _db, bytes32 _nodeName) internal constant returns (DBNode) {
@@ -209,6 +224,15 @@ contract ControlBase is ControlInfo {
     function enableZSCWallet(bytes32 _enName, address _enAdr) internal returns (address) {
         bytes32 walletNmae = formatWalletName(_enName, "ZSC");
         address walletAdr  = getDBFactory("wallet-erc20").createNode(walletNmae, _enAdr);
+
+        require(walletAdr != 0);
+        DBNode(walletAdr).setERC20TokenAddress(zscTokenAddress_); 
+        return walletAdr;
+    }
+
+    function enableWallet(bytes32 _enName, address _enAdr) internal returns (address) {
+        bytes32 walletNmae = formatWalletName(_enName, "wat");
+        address walletAdr  = getDBFactory("wallet-adv").createNode(walletNmae, _enAdr);
 
         require(walletAdr != 0);
         DBNode(walletAdr).setERC20TokenAddress(zscTokenAddress_); 
@@ -463,6 +487,32 @@ contract ControlBase is ControlInfo {
         str = PlatString.append(str, "adr=",         PlatString.addressToString(tokenAdr),    "&");
         return str;
     }
+
+    /*------2018-07-06: new verstion: YYA------  */
+    function prepareTokenBalanceInfoBySymbol(bytes32 _enName, bytes32 _symbol) internal constant returns (string) { 
+        bytes32 status;
+        bytes32 tokenSymbol;
+        address walletAdr;
+        bytes32 walletName;
+        address tokenContractAdr;
+        uint tokenBalance;
+
+        walletName   = formatWalletName(_enName, "wat");
+        walletAdr     = address(getDBNode(dbName_, walletName));
+
+        require(walletAdr != address(0));
+
+        tokenContractAdr = getDBModule("token").getTokenAddress(_symbol);
+        tokenBalance = DBNode(walletAdr).getBlance(tokenContractAdr).div(1 ether);
+        
+        string memory str ="";
+        str = PlatString.append(str, "info?status=", PlatString.bytes32ToString(status),      "&");
+        str = PlatString.append(str, "symbol=",      PlatString.bytes32ToString(tokenSymbol), "&");
+        str = PlatString.append(str, "balance=",     PlatString.uintToString(tokenBalance),   "&");
+        str = PlatString.append(str, "adr=",         PlatString.addressToString(tokenAdr),    "&");
+        return str;
+    }
+    /*------2018-07-06: new verstion: END------  */
 
     function prepareTransationfoByIndex(bytes32 _walletName, uint _index) internal constant returns (string) {
         address walletAdr = getDBNode(dbName_, _walletName);
