@@ -4,9 +4,9 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./delegate.sol";
+import "./db_entity.sol";
 
-contract WalletBase is Delegated {
+contract WalletBase is DBNode {
     struct Payment {
         uint time_;
         bool isInput_;
@@ -19,7 +19,7 @@ contract WalletBase is Delegated {
     mapping(uint => Payment) private payments_;
 
     // Constructor
-    function WalletBase() public Delegated() {
+    function WalletBase(bytes32 _name) public DBNode(_name) {
     }
 
     function checkBeforeSent(address _dst, uint _amount) internal constant {
