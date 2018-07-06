@@ -125,6 +125,57 @@ contract AISearch is Object {
         return true;
     }
 
+    function debugElement(bytes32 _factoryType, bytes32 _elementName) public returns (bool) {
+        uint elementCount = 0;
+        bytes32 elementName = 0;
+        uint elementIndex = 0;
+        bool elementExists = false;
+        uint parameterCount = 0;
+        bytes32 parameterName = 0;
+
+        // check sender
+        checkDelegate(msg.sender, 1);
+
+        // check param
+        require(bytes32(0) != _factoryType);
+        require(bytes32(0) != _elementName);
+
+        if (!checkElementExist(_factoryType, _elementName)) {
+            return false;
+        }
+
+        elementCount = factorys_[_factoryType].elementCount_;
+        if (0 == elementCount) {
+            return false;
+        }
+
+        // debug element
+        elementIndex = factorys_[_factoryType].elementIndexs_[_elementName];
+        elementName = factorys_[_factoryType].elementNames_[elementIndex];
+        elementExists = factorys_[_factoryType].elementExists_[_elementName];
+        require(_elementName == elementName);
+        require(_factoryType == factorys_[_factoryType].elements_[_elementName].type_);
+
+        parameterCount = factorys_[_factoryType].elements_[_elementName].parameterCount;
+
+        // layer, index, name, exist, subcount
+        if (elementExists) {
+            log4(0xF2, bytes32(elementIndex), _elementName, 1, bytes32(parameterCount));
+        } else {
+            log4(0xF2, bytes32(elementIndex), _elementName, 0, bytes32(parameterCount));
+        }
+
+        // debug all parameters of element
+        if (0 < parameterCount) {
+            for (uint i=0; i<parameterCount; i++) {
+                parameterName = factorys_[_factoryType].elements_[_elementName].parameterNames_[i];
+                debugParameter(_factoryType, _elementName, parameterName);
+            }
+        }
+
+        return true;
+    }
+
     function checkFactoryExist(bytes32 _factoryType) private view returns (bool) {
         // check sender
         checkDelegate(msg.sender, 1);
