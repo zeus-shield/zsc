@@ -10,7 +10,6 @@ contract WalletAdv is DBNode {
     struct Payment {
         uint time_;
         bool isInput_;
-        bytes32 tx_;
         address sender_;
         address receiver_;
         uint256 amount_;
@@ -27,11 +26,13 @@ contract WalletAdv is DBNode {
     }
 
     function recordInput(address _sender, uint _amount) internal {
-        payments_[nos_++] = Payment(now, false, 0x0, _sender, address(this), _amount);
+        payments_[nos_] = Payment(now, false, _sender, address(this), _amount);
+        nos_++;
     }
 
     function recordOut(address _receiver, uint _amount) internal {
-        payments_[nos_++] = Payment(now, true, 0x0, address(this), _receiver, _amount);
+        payments_[nos_] = Payment(now, true, address(this), _receiver, _amount);
+        nos_++;
     }
 
     ////////// public functions /////////////
@@ -56,25 +57,20 @@ contract WalletAdv is DBNode {
     function executeTransaction(address _tokenAdr, address _dest, uint256 _amount) public returns (uint) {
         checkDelegate(msg.sender, 1);
         checkBeforeSent(_tokenAdr, _dest, _amount);    
-
-
-        
+        if (_tokenAdr == address(0)) {
+            if (_dest.call.value(_amount)()) {
+                recordOut(_dest, _amount);
+                return _amount;
+            } else {
+                return 0;
+            }
+        } else {
+            if (ERC20Interface(_erc20TokenAdr).transfer(_dest, _amount)) {
+                recordOut(_dest, _amount);
+                return _amount;
+            } else {
+                return 0;
+            }
+        }        
     }
-
-
-    function getBlance() public constant returns (uint) {
-        checkDelegate(msg.sender, 1);
-        uint total = ERC20Interface(_erc20TokenAdr).balanceOf(address(this));
-        return total;
-    }
-
-    
-    function informTransaction(address _src, uint256 _amount) public {
-        require(_src != address(this));
-        checkDelegate(msg.sender, 1);
-        recordInput(_src, _amount);
-    }
-
-
-
 }
