@@ -84,7 +84,35 @@ contract AISearch is Object {
         super.kill();
     }
 
-    function debugParameter(bytes32 _factoryType, bytes32 _elementName, bytes32 _parameterName) public returns (bool) {
+    function simulateData() public {
+        bool ret = false;
+
+        ret = addParameter(0x11,0x21,0xef55bfac4228981e850936aaf042951f7b146e4f,0x31,0x31);
+        require(ret);
+
+        ret = addParameter(0x11,0x21,0xef55bfac4228981e850936aaf042951f7b146e4d,0x32,0x33);
+        require(ret);
+
+        ret = addParameter(0x11,0x21,0xef55bfac4228981e850936aaf042951f7b146e4e,0x32,0x34);
+        require(ret);
+
+        ret = addParameter(0x11,0x22,0xef55bfac4228981e850936aaf042951f7b146e4d,0x33,0x35);
+        require(ret);
+
+        ret = addParameter(0x18,0x27,0xef55bfac4228981e850936aaf042951f7b146e4a,0x36,0x36);
+        require(ret);
+
+        ret = addParameter(0x18,0x27,0xef55bfac4228981e850936aaf042951f7b146e4b,0x35,0x37);
+        require(ret);
+
+        ret = addParameter(0x18,0x20,0xef55bfac4228981e850936aaf042951f7b146e4c,0x36,0x30);
+        require(ret);
+
+        ret = addParameter(0x11,0x29,0xef55bfac4228981e850936aaf042951f7b146e4a,0x39,0x38);
+        require(ret);
+    }
+
+    function debugParameter(bytes32 _factoryType, bytes32 _elementName, bytes32 _parameterName) private returns (bool) {
         uint count = 0;
         uint index = 0;
         bytes32 name = 0;
@@ -130,7 +158,7 @@ contract AISearch is Object {
         return true;
     }
 
-    function debugElement(bytes32 _factoryType, bytes32 _elementName) public returns (bool) {
+    function debugElement(bytes32 _factoryType, bytes32 _elementName) private returns (bool) {
         uint elementCount = 0;
         bytes32 elementName = 0;
         uint elementIndex = 0;
@@ -179,7 +207,8 @@ contract AISearch is Object {
 
         // debug all parameters of element
         if (0 < parameterCount) {
-            for (uint i=0; i<parameterCount; i++) {
+            // index starting from '1'
+            for (uint i=1; i<=parameterCount; i++) {
                 parameterName = factorys_[_factoryType].elements_[_elementName].parameterNames_[i];
                 debugParameter(_factoryType, _elementName, parameterName);
             }
@@ -188,7 +217,7 @@ contract AISearch is Object {
         return true;
     }
 
-    function debugFactory(bytes32 _factoryType) public returns (bool) {
+    function debugFactory(bytes32 _factoryType) private returns (bool) {
         bytes32 factoryType = 0;
         uint factoryIndex = 0;
         bool factoryExists = false;
@@ -232,7 +261,8 @@ contract AISearch is Object {
 
         // debug all elements of factory
         if (0 < elementCount) {
-            for (uint i=0; i<elementCount; i++) {
+            // index starting from '1'
+            for (uint i=1; i<=elementCount; i++) {
                 elementName = factorys_[_factoryType].elementNames_[i];
                 debugElement(_factoryType, elementName);
             }
@@ -249,7 +279,8 @@ contract AISearch is Object {
 
         // remove all factorys
         if (0 < factoryCount_) {
-            for (uint i=0; i<factoryCount_; i++) {
+            // index starting from '1'
+            for (uint i=1; i<=factoryCount_; i++) {
                 factoryType = factoryNames_[i];
                 debugFactory(factoryType);
             }
@@ -306,7 +337,7 @@ contract AISearch is Object {
         return factorys_[_factoryType].elements_[_elementName].parameterExists_[_parameterName];
     }
 
-    function addFactory(bytes32 _factoryType) public returns (bool) {
+    function addFactory(bytes32 _factoryType) private returns (bool) {
 
         // check sender
         checkDelegate(msg.sender, 1);
@@ -317,8 +348,8 @@ contract AISearch is Object {
         // If there is data, update. If there is no data, add.
         factorys_[_factoryType].type_ = _factoryType;
         if (!checkFactoryExist(_factoryType)) {
-            factoryNames_[factoryCount_] = _factoryType;
-            // index start from '1'
+            // index starting from '1'
+            factoryNames_[factoryCount_ + 1] = _factoryType;
             factoryIndexs_[_factoryType] = factoryCount_ + 1;
             factoryExists_[_factoryType] = true;
             factoryCount_ ++;
@@ -327,7 +358,7 @@ contract AISearch is Object {
         return true;
     }
 
-    function addElement(bytes32 _factoryType, bytes32 _elementName, address _elementAddress) public returns (bool) {
+    function addElement(bytes32 _factoryType, bytes32 _elementName, address _elementAddress) private returns (bool) {
         uint count = 0;
 
         // If there is data, update. If there is no data, add.
@@ -349,8 +380,8 @@ contract AISearch is Object {
         factorys_[_factoryType].elements_[_elementName].name_ = _elementName;
         if (!checkElementExist(_factoryType, _elementName)) {
             count = factorys_[_factoryType].elementCount_;
-            factorys_[_factoryType].elementNames_[count] = _elementName;
-            // index start from '1'
+            // index starting from '1'
+            factorys_[_factoryType].elementNames_[count + 1] = _elementName;
             factorys_[_factoryType].elementIndexs_[_elementName] = count + 1;
             factorys_[_factoryType].elementExists_[_elementName] = true;
             factorys_[_factoryType].elementCount_ ++;
@@ -380,8 +411,8 @@ contract AISearch is Object {
         factorys_[_factoryType].elements_[_elementName].parameters_[_parameterName] = _parameterValue;
         if (!checkParameterExist(_factoryType, _elementName, _parameterName)) {
             count = factorys_[_factoryType].elements_[_elementName].parameterCount;
-            factorys_[_factoryType].elements_[_elementName].parameterNames_[count] = _parameterName;
-            // index start from '1'
+            // index starting from '1'
+            factorys_[_factoryType].elements_[_elementName].parameterNames_[count + 1] = _parameterName;
             factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName] = count + 1;
             factorys_[_factoryType].elements_[_elementName].parameterExists_[_parameterName] = true;
             factorys_[_factoryType].elements_[_elementName].parameterCount ++;
@@ -456,7 +487,8 @@ contract AISearch is Object {
         // remove all parameters of element
         parameterCount = factorys_[_factoryType].elements_[_elementName].parameterCount;
         if (0 < parameterCount) {
-            for (uint i=0; i<parameterCount; i++) {
+            // index starting from '1'
+            for (uint i=1; i<=parameterCount; i++) {
                 parameterName = factorys_[_factoryType].elements_[_elementName].parameterNames_[i];
                 require(removeParameter(_factoryType, _elementName, parameterName));
             }
@@ -504,7 +536,8 @@ contract AISearch is Object {
         // remove all elements of factory
         elementCount = factorys_[_factoryType].elementCount_;
         if (0 < elementCount) {
-            for (uint i=0; i<elementCount; i++) {
+            // index starting from '1'
+            for (uint i=1; i<=elementCount; i++) {
                 elementName = factorys_[_factoryType].elementNames_[i];
                 require(removeElement(_factoryType, elementName));
             }
@@ -537,7 +570,8 @@ contract AISearch is Object {
 
         // remove all factorys
         if (0 < factoryCount_) {
-            for (uint i=0; i<factoryCount_; i++) {
+            // index starting from '1'
+            for (uint i=1; i<=factoryCount_; i++) {
                 factoryType = factoryNames_[i];
                 require(removeFactory(factoryType));
             }
