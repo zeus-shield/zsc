@@ -84,7 +84,7 @@ contract AISearch is Object {
         super.kill();
     }
 
-    function simulateData() public {
+    function simulateData() private {
         bool ret = false;
 
         ret = addParameter(0x11,0x21,0xef55bfac4228981e850936aaf042951f7b146e4f,0x31,0x31);
@@ -96,19 +96,75 @@ contract AISearch is Object {
         ret = addParameter(0x11,0x21,0xef55bfac4228981e850936aaf042951f7b146e4e,0x32,0x34);
         require(ret);
 
-        ret = addParameter(0x11,0x22,0xef55bfac4228981e850936aaf042951f7b146e4d,0x33,0x35);
+        ret = addParameter(0x11,0x22,0xef55bfac4228981e850936aaf042951f7b146e4f,0x33,0x35);
         require(ret);
 
         ret = addParameter(0x18,0x27,0xef55bfac4228981e850936aaf042951f7b146e4a,0x36,0x36);
         require(ret);
 
-        ret = addParameter(0x18,0x27,0xef55bfac4228981e850936aaf042951f7b146e4b,0x35,0x37);
+        ret = addParameter(0x18,0x27,0xef55bfac4228981e850936aaf042951f7b146e4c,0x35,0x37);
         require(ret);
 
         ret = addParameter(0x18,0x20,0xef55bfac4228981e850936aaf042951f7b146e4c,0x36,0x30);
         require(ret);
 
         ret = addParameter(0x11,0x29,0xef55bfac4228981e850936aaf042951f7b146e4a,0x39,0x38);
+        require(ret);
+
+        ret = addParameter(0x18,0x27,0xef55bfac4228981e850936aaf042951f7b146e4b,0x37,0x38);
+        require(ret);
+
+        ret = addParameter(0x11,0x22,0xef55bfac4228981e850936aaf042951f7b146e4d,0x37,0x36);
+        require(ret);
+    }
+
+    function Step1SimulateData() public {
+        simulateData();
+    }
+
+    function Step2TestRemoveParameter() public {
+        bool ret = false;
+
+        ret = removeParameter(0x11,0x21,0x31);
+        require(ret);
+
+        ret = removeParameter(0x18,0x20,0x36);
+        require(ret);
+
+        ret = removeParameter(0x18,0x27,0x36);
+        require(ret);
+    }
+
+    function Step3TestRemoveElement() public {
+        bool ret = false;
+
+        ret = removeElement(0x18,0x20);
+        require(ret);
+
+        ret = removeElement(0x11,0x22);
+        require(ret);
+
+        ret = removeElement(0x11,0x29);
+        require(ret);
+    }
+
+    function Step4SimulateData() public {
+        simulateData();
+    }
+
+    function Step5TestRemoveFactory() public {
+        bool ret = false;
+        ret = removeFactory(0x11);
+        require(ret);
+    }
+
+    function Step6SimulateData() public {
+        simulateData();
+    }
+
+    function Step7TestRemoveAll() public {
+        bool ret = false;
+        ret = removeAll();
         require(ret);
     }
 
