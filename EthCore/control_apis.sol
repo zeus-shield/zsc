@@ -102,7 +102,7 @@ contract ControlApis is ControlBase {
 
         require(address(getDBNode(getCurrentDBName(), _userName)) == 0);
 
-        address ndAdr = createNodeForUser(_factoryType, _userName);
+        address ndAdr = createNodeForUser(_factoryType, _userName, _extraAdr);
         require(ndAdr != address(0));
         registerUserNode(_userName, ndAdr, _extraAdr);
         
