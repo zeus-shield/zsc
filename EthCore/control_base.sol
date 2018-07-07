@@ -52,7 +52,7 @@ contract DBNode {
 
 contract DBFactory {
     function setDatabase(address _adr) public;
-    function createNode(bytes32 _nodeName, address _parent) public returns (address);
+    function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
     function numFactoryNodes() public constant returns (uint);
     function getFactoryNodeNameByIndex(uint _index) public constant returns (bytes32);
 }
@@ -66,7 +66,7 @@ contract DBDatabase {
     function _addNode(address _node) public ;
 }
 
-contract DBDModule {
+contract DBModule {
     function getTokenAddress(bytes32 _symbol) public view returns (address);
 }
 
@@ -180,11 +180,11 @@ contract ControlBase is ControlInfo {
         return true;
     }
 
-    function createNodeForUser(bytes32 _type, bytes32 _nodeName) internal returns (address) {
+    function createNodeForUser(bytes32 _type, bytes32 _nodeName, address _creator) internal returns (address) {
         address ndAdr;
         address parentAdr = getDBDatabase(dbName_).getRootNode();
 
-        ndAdr = getDBFactory(_type).createNode(_nodeName, parentAdr);
+        ndAdr = getDBFactory(_type).createNode(_nodeName, parentAdr, _creator);
         require(ndAdr != 0);
 
         //enableZSCWallet(_nodeName, ndAdr);
@@ -242,12 +242,13 @@ contract ControlBase is ControlInfo {
     function publishZSCAgreement(bytes32 _userName, bytes32 _agrName) internal {
         //string memory temp;
         address agrAdr = address(getDBNode(dbName_, _agrName));
+        address userAdr = address(getDBNode(dbName_, _userName));
         require(agrAdr != 0);
 
         bytes32 status = DBNode(agrAdr).getParameter("status");
         require(status == "CREATED");
 
-        address agrWalletAdr = enableZSCWallet(_agrName, agrAdr);
+        address agrWalletAdr = enableZSCWallet(_agrName, agrAdr, userAdr);
         address userWallet = address(getDBNode(dbName_, formatWalletName(_userName, "ZSC")));
 
         uint lockedAmount = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(agrAdr).getParameter("insurance")));
@@ -509,7 +510,7 @@ contract ControlBase is ControlInfo {
         str = PlatString.append(str, "info?status=", PlatString.bytes32ToString(status),      "&");
         str = PlatString.append(str, "symbol=",      PlatString.bytes32ToString(tokenSymbol), "&");
         str = PlatString.append(str, "balance=",     PlatString.uintToString(tokenBalance),   "&");
-        str = PlatString.append(str, "adr=",         PlatString.addressToString(tokenAdr),    "&");
+        str = PlatString.append(str, "adr=",         PlatString.addressToString(walletAdr),    "&");
         return str;
     }
     /*------2018-07-06: new verstion: END------  */
