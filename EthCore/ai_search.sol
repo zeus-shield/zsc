@@ -303,7 +303,8 @@ contract AISearch is Object {
         factorys_[_factoryType].type_ = _factoryType;
         if (!checkFactoryExist(_factoryType)) {
             factoryNames_[factoryCount_] = _factoryType;
-            factoryIndexs_[_factoryType] = factoryCount_;
+            // index start from '1'
+            factoryIndexs_[_factoryType] = factoryCount_ + 1;
             factoryExists_[_factoryType] = true;
             factoryCount_ ++;
         }
@@ -334,7 +335,8 @@ contract AISearch is Object {
         if (!checkElementExist(_factoryType, _elementName)) {
             count = factorys_[_factoryType].elementCount_;
             factorys_[_factoryType].elementNames_[count] = _elementName;
-            factorys_[_factoryType].elementIndexs_[_elementName] = count;
+            // index start from '1'
+            factorys_[_factoryType].elementIndexs_[_elementName] = count + 1;
             factorys_[_factoryType].elementExists_[_elementName] = true;
             factorys_[_factoryType].elementCount_ ++;
         }
@@ -364,7 +366,8 @@ contract AISearch is Object {
         if (!checkParameterExist(_factoryType, _elementName, _parameterName)) {
             count = factorys_[_factoryType].elements_[_elementName].parameterCount;
             factorys_[_factoryType].elements_[_elementName].parameterNames_[count] = _parameterName;
-            factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName] = count;
+            // index start from '1'
+            factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName] = count + 1;
             factorys_[_factoryType].elements_[_elementName].parameterExists_[_parameterName] = true;
             factorys_[_factoryType].elements_[_elementName].parameterCount ++;
         }
