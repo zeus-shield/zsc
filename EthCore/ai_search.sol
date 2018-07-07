@@ -116,10 +116,15 @@ contract AISearch is Object {
         require(_parameterName == name);
 
         // layer, index, name, exist, subcount
+        /*
         if (exist) {
             log4(0xF3, bytes32(index), _parameterName, 1, value);
         } else {
             log4(0xF3, bytes32(index), _parameterName, 0, value);
+        }
+        */
+        if (exist) {
+            log3(0xF3, bytes32(index), _parameterName, value);
         }
 
         return true;
@@ -161,10 +166,15 @@ contract AISearch is Object {
         parameterCount = factorys_[_factoryType].elements_[_elementName].parameterCount;
 
         // layer, index, name, exist, subcount
+        /*
         if (elementExists) {
             log4(0xF2, bytes32(elementIndex), _elementName, bytes32(elementAddress), bytes32(parameterCount));
         } else {
             //log4(0xF2, bytes32(elementIndex), _elementName, 0, bytes32(elementAddress), bytes32(parameterCount));
+        }
+        */
+        if (elementExists) {
+            log4(0xF2, bytes32(elementIndex), _elementName, bytes32(elementAddress), bytes32(parameterCount));
         }
 
         // debug all parameters of element
@@ -209,10 +219,15 @@ contract AISearch is Object {
         elementCount = factorys_[_factoryType].elementCount_;
 
         // layer, index, name, exist, subcount
+        /*
         if (factoryExists) {
             log4(0xF1, bytes32(factoryIndex), _factoryType, 1, bytes32(elementCount));
         } else {
             log4(0xF1, bytes32(factoryIndex), _factoryType, 0, bytes32(elementCount));
+        }
+        */
+        if (factoryExists) {
+            log3(0xF1, bytes32(factoryIndex), _factoryType, bytes32(elementCount));
         }
 
         // debug all elements of factory
