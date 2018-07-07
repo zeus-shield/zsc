@@ -544,7 +544,7 @@ contract AISearch is Object {
         // remove all elements of factory
         elementCount = factorys_[_factoryType].elementCount_;
         if (0 < elementCount) {
-            // index starting from '1'£¬ index will be restructured after 'removeElement'.
+            // index starting from '1', index will be restructured after 'removeElement'.
             for (uint i=1; i<=elementCount; i++) {
                 elementName = factorys_[_factoryType].elementNames_[1];
                 require(removeElement(_factoryType, elementName));
@@ -576,15 +576,17 @@ contract AISearch is Object {
 
     function removeAll() public returns (bool) {
         bytes32 factoryType = 0;
+        uint count = 0;
 
         // check sender
         checkDelegate(msg.sender, 1);
 
         // remove all factorys
+        count = factoryCount_;
         if (0 < factoryCount_) {
-            // index starting from '1'
-            for (uint i=1; i<=factoryCount_; i++) {
-                factoryType = factoryNames_[i];
+            // index starting from '1', index will be restructured after 'removeFactory'.
+            for (uint i=1; i<=count; i++) {
+                factoryType = factoryNames_[1];
                 require(removeFactory(factoryType));
             }
         }
