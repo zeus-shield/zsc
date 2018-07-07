@@ -48,7 +48,11 @@
     logon, wallet, profile, templates, agreements
     */
     function htmlLoadLogin() {
-        document.getElementById("PageHeader").innerHTML = "";  
+        document.getElementById("PageHeader").innerHTML = ""
+        + "<i>Needs to install MetaMask extension</i><br>" 
+        + "<i>(需要安装MetaMask插件才能显示登录框以其他相关页面)</i><br><br>"
+        + "<i>Both the FireFox and Chrome browsers are recommended</i><br>"
+        + "<i>(推荐使用火狐或者Chrome浏览器)</i><br><br>";  
         document.getElementById("PageBody").innerHTML = "";  
         zscHtml.setHtmlContentIds( "PageHeader", "PageBody");
         zscHtml.loadPageBody("login", "checkUser");
@@ -260,7 +264,7 @@
 </head>
 <body>
     <div class="col-lg-12">
-        <i>Web-client for testing ZSC system</i>
+        <br><i>Web-client for testing ZSC system</i><br><br>
         <div id="PageHeader"></div>
         <div id="PageBody"></div>
     </div>
