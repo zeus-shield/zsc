@@ -444,15 +444,19 @@ contract AISearch is Object {
         }
 
         // remove parameter
+        // index starting from '1'
         index = factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName];
-        name = factorys_[_factoryType].elements_[_elementName].parameterNames_[count-1];
+        name = factorys_[_factoryType].elements_[_elementName].parameterNames_[count];
 
         factorys_[_factoryType].elements_[_elementName].parameterNames_[index] = name;
-        factorys_[_factoryType].elements_[_elementName].parameterNames_[count-1] = _parameterName;
+        factorys_[_factoryType].elements_[_elementName].parameterNames_[count] = _parameterName;
         factorys_[_factoryType].elements_[_elementName].parameterIndexs_[name] = index;
-        factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName] = count-1;
+        factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName] = count;
 
-        delete factorys_[_factoryType].elements_[_elementName].parameterNames_[count-1];
+        delete factorys_[_factoryType].elements_[_elementName].parameterNames_[count];
+        delete factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName]
+        //factorys_[_factoryType].elements_[_elementName].parameterNames_[count] = 0xFF;
+        //factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName] = 0xFF;
         delete factorys_[_factoryType].elements_[_elementName].parameterExists_[_parameterName];
         delete factorys_[_factoryType].elements_[_elementName].parameters_[_parameterName];
 
@@ -496,15 +500,19 @@ contract AISearch is Object {
         require(0 == factorys_[_factoryType].elements_[_elementName].parameterCount);
 
         // remove element
+        // index starting from '1'
         elementIndex = factorys_[_factoryType].elementIndexs_[_elementName];
-        elementName = factorys_[_factoryType].elementNames_[elementCount-1];
+        elementName = factorys_[_factoryType].elementNames_[elementCount];
 
         factorys_[_factoryType].elementNames_[elementIndex] = elementName;
-        factorys_[_factoryType].elementNames_[elementCount-1] = _elementName;
+        factorys_[_factoryType].elementNames_[elementCount] = _elementName;
         factorys_[_factoryType].elementIndexs_[elementName] = elementIndex;
-        factorys_[_factoryType].elementIndexs_[_elementName] = elementCount-1;
+        factorys_[_factoryType].elementIndexs_[_elementName] = elementCount;
 
-        delete factorys_[_factoryType].elementNames_[elementCount-1];
+        delete factorys_[_factoryType].elementNames_[elementCount];
+        delete factorys_[_factoryType].elementIndexs_[_elementName];
+        //factorys_[_factoryType].elementNames_[elementCount] = 0xFF;
+        //factorys_[_factoryType].elementIndexs_[_elementName] = 0xFF;
         delete factorys_[_factoryType].elementExists_[_elementName];
         delete factorys_[_factoryType].elements_[_elementName];
 
@@ -545,15 +553,19 @@ contract AISearch is Object {
         require(0 == factorys_[_factoryType].elementCount_);
 
         // remove factory
+        // index starting from '1'
         factoryIndex = factoryIndexs_[_factoryType];
-        factoryType = factoryNames_[factoryCount_-1];
+        factoryType = factoryNames_[factoryCount_];
 
         factoryNames_[factoryIndex] = factoryType;
-        factoryNames_[factoryCount_-1] = _factoryType;
+        factoryNames_[factoryCount_] = _factoryType;
         factoryIndexs_[factoryType] = factoryIndex;
-        factoryIndexs_[_factoryType] = factoryCount_-1;
+        factoryIndexs_[_factoryType] = factoryCount_;
 
-        delete factoryNames_[factoryCount_-1];
+        delete factoryNames_[factoryCount_];
+        delete factoryIndexs_[_factoryType];
+        //factoryNames_[factoryCount_] = 0xFF;
+        //factoryIndexs_[_factoryType] = 0xFF;
         delete factoryExists_[_factoryType];
         delete factorys_[_factoryType];
 
