@@ -454,7 +454,7 @@ contract AISearch is Object {
         factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName] = count;
 
         delete factorys_[_factoryType].elements_[_elementName].parameterNames_[count];
-        delete factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName]
+        delete factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName];
         //factorys_[_factoryType].elements_[_elementName].parameterNames_[count] = 0xFF;
         //factorys_[_factoryType].elements_[_elementName].parameterIndexs_[_parameterName] = 0xFF;
         delete factorys_[_factoryType].elements_[_elementName].parameterExists_[_parameterName];
@@ -491,9 +491,9 @@ contract AISearch is Object {
         // remove all parameters of element
         parameterCount = factorys_[_factoryType].elements_[_elementName].parameterCount;
         if (0 < parameterCount) {
-            // index starting from '1'
+            // index starting from '1', index will be restructured after 'removeParameter'.
             for (uint i=1; i<=parameterCount; i++) {
-                parameterName = factorys_[_factoryType].elements_[_elementName].parameterNames_[i];
+                parameterName = factorys_[_factoryType].elements_[_elementName].parameterNames_[1];
                 require(removeParameter(_factoryType, _elementName, parameterName));
             }
         }
@@ -544,9 +544,9 @@ contract AISearch is Object {
         // remove all elements of factory
         elementCount = factorys_[_factoryType].elementCount_;
         if (0 < elementCount) {
-            // index starting from '1'
+            // index starting from '1'£¬ index will be restructured after 'removeElement'.
             for (uint i=1; i<=elementCount; i++) {
-                elementName = factorys_[_factoryType].elementNames_[i];
+                elementName = factorys_[_factoryType].elementNames_[1];
                 require(removeElement(_factoryType, elementName));
             }
         }
