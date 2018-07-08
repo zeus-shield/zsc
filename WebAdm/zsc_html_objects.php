@@ -26,6 +26,7 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
             <td align="center"><a href="adm_init_sys_component.php">Init System Component</a></td>
             <td align="center"><a href="adm_add_database.php">Add Database</a></td>
             <td align="center"><a href="adm_add_factory.php">Add Factory</a></td>
+            <td align="center"><a href="adm_add_gm.php">Add Gm Module</a></td>
             <td align="center"><a href="adm_manage_users.php">Manage Users</a></td>
             <td align="center"><a href="adm_show_userdetails.php">User Details</a></td>
             <td align="center"><a href="adm_show_log.php">Show Log</a></td>
@@ -60,21 +61,21 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
         <script type="text/javascript" src="./js/zsc_wallet_management.js"></script>
 
         <script type="text/javascript" src="./js/compiled_zsc_test_token.js"></script>
-
         <script type="text/javascript" src="./js/compiled_loger.js"></script>
         <script type="text/javascript" src="./js/compiled_time_stamp.js"></script>
-        <script type="text/javascript" src="./js/compiled_sys_overlayer.js"></script>
+
         <script type="text/javascript" src="./js/compiled_adm_adv.js"></script>
         <script type="text/javascript" src="./js/compiled_apis_adv.js"></script>
+        <script type="text/javascript" src="./js/control_apis_user.js"></script>
 
         <script type="text/javascript" src="./js/compiled_database.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_pro.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_rec.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_tmp.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_agr.js"></script>
-        <script type="text/javascript" src="./js/compiled_factory_wallet_eth.js"></script>
-        <script type="text/javascript" src="./js/compiled_factory_wallet_erc20.js"></script>
-        <script type="text/javascript" src="./js/control_apis_user.js"></script>
+        <script type="text/javascript" src="./js/compiled_factory_wallet_adv.js"></script>
+        <script type="text/javascript" src="./js/compiled_token_manager.js"></script>
+        <script type="text/javascript" src="./js/compiled_pos_manager.js"></script>
         ';
         return $text;
     }
@@ -89,18 +90,6 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
             $text .=    '<text id = "'.$name.'Adr">'.$name.' address: '.parent::readObjectAddress($name).'</text> <br>';
         }
         $text .= '</div>';
-
-        /*
-        $text = '<div class="well">
-            <text id = "LogRecorderAdr">LogRecorder address: '.parent::readModuleAddress("LogRecorder").'</text> <br>   
-            <text id = "AdmAdvAdr">LogRecorder address: '.parent::readModuleAddress("LogRecorder").'</text> <br>                                   
-            <text id = "DBDatabaseAdr">DBDatabase address: '.parent::readModuleAddress('DBDatabase').'</text> <br>                   
-            <text id = "FactoryProAdr">FactoryPro address: '.parent::readModuleAddress('FactoryPro').'</text> <br>               
-            <text id = "FactoryTmpAdr">FactoryTmpAdr address: '.parent::readModuleAddress('FactoryTmp').'</text> <br>               
-            <text id = "FactoryAgrAdr">FactoryAgrAdr address: '.parent::readModuleAddress('FactoryAgr').'</text> <br>               
-            <text id = "ControlApisAdvAdr">ControlApis address:'.parent::readModuleAddress('ControlApisAdv').'</text>               
-        </div>';
-        */
         return $text;
     }
 
@@ -235,7 +224,7 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
     }
 
     public function loadAddGMs($func) {
-        $gms = ZscBase::getGMArray(); 
+        $gms = ZscBase::getGmArray(); 
         $num = count($gms);
         $text = '';
     
