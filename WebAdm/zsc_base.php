@@ -31,26 +31,20 @@ class ZSCBase {
         fclose($myfile);
     }
 
-    public function getFactoryModuleArray() {
-        return array("FactoryPro", "FactoryRec", "FactoryTmp",  "FactoryAgr", "FactoryWalletErc20"); 
-    }
-    
-    public function getLogedObjectArray() {
-        /*
-        return array("AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "DatabaseManager", "FactoryManager", "SystemOverlayer", "ControlApisAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp",  "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20");
-        */
-        return array("AdmAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp",  "FactoryAgr", "FactoryWalletErc20", "ControlApisAdv");
-    }
-
     public function getObjectArray() {
-        /*
-        return array("TestToken", "LogRecorder", "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "DatabaseManager", "FactoryManager", "SystemOverlayer", "ControlApisAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp",  "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20");
-        */
-        return array("TestToken", "LogRecorder", "TimeStamp", "AdmAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp",  "FactoryAgr",  "FactoryWalletErc20", "ControlApisAdv");
+        return array("TestToken", "LogRecorder", "TimeStamp", "AdmAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp",  "FactoryAgr",  "FactoryWalletAdv", "TokenManager", "PosManager", "ControlApisAdv");
     }
 
-    public function getGMArray() {
-        return array("PosAdv", "WalletManager", "SimulatorManager");
+    public function getLogedObjectArray() {
+        return array("AdmAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp",  "FactoryAgr", "FactoryWalletAdv", "TokenManager", "PosManager",  "ControlApisAdv");
+    }
+
+    public function getFactoryModuleArray() {
+        return array("FactoryPro", "FactoryRec", "FactoryTmp",  "FactoryAgr", "FactoryWalletAdv"); 
+    }
+
+    public function getGmArray() {
+        return array("TokenManager", "PosManager",);
     }
 }
 
