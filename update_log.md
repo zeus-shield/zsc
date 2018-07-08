@@ -21,6 +21,7 @@
 |-- Erc721
 |-- owned
     |-- delegated 
+        |-- pos_proof_power
         |-- Erce721Adv
         |-- log_recorder
         |-- objct 
@@ -35,6 +36,7 @@
             |-- db_database
             |-- db_idmanager
             |-- db_node 
+                |-- wallet_adv
                 |-- wallet_base
                     |-- wallet_multisig
                         |-- wallet_eth
@@ -173,4 +175,5 @@
 2018.06.20-06.22: add files EthCore/erc721_base.sol, EthCore/erc721_adv.sol
 2018.06.23-06.26: add file EthCore/ai_search.sol; update the zsc PoS module
 2018.06.27-07.01: add files WebTest/index.html, WebTest/main.js, WebTest/require.js, WebTest/require.mini.js, WebTest/test_analysis.html, WebTest/test_analysis.js, WebTest/test_search.html, WebTest/test_search.js, WebTest/tool.js
+2018.07.01-07.08: remove files plat_json.sol, simulator_base.sol, zscDatabase.sol; add file pos_proof_power.sol, wallet_adv.sol;
 ```
