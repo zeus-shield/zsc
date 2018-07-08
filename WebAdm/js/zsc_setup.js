@@ -4,45 +4,24 @@ Copyright (c) 2018 ZSC Dev Team
 
 function ZSCSetup(logRecorderAdr, timerAdr, zscTokenAdr, adrs) {
     /*
-    "SystemOverlayer", "ControlApisAdv", "AdmAdv", "PosAdv", "WalletManager", "SimulatorManager", "DatabaseManager", "FactoryManager",
-     "DBDatabase", "FactoryPro", "FactoryRec", "FactoryStaker" , "FactoryTmp",  "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20"
-    */
-    /*
-    this.RecorderAdr = logRecorderAdr;
-    this.AdmAdvAdr = adrs[0];
-    this.PosAdvAdr = adrs[1];
-    this.WalletManagerAdr = adrs[2];
-    this.SimulatorManagerAdr = adrs[3];
-    this.DatabaseManagerAdr  = adrs[4];
-    this.FactoryManagerAdr   = adrs[5];
-    this.SystemOverlayerAdr  = adrs[6];
-    this.ControlApisAdvAdr   = adrs[7];
-    this.DBDatabaseAdr = adrs[8];
-    this.FactoryProAdr = adrs[9];
-    this.FactoryRecAdr = adrs[10];
-    this.FactoryTmpAdr = adrs[11];
-    this.FactoryAgrAdr = adrs[12];
-    this.FactoryWalletEthAdr   = adrs[13];
-    this.FactoryWalletErc20Adr = adrs[14];
-    this.zscTokenAdr = zscTokenAdr;
-    this.account = web3.eth.accounts[0];
-    */
-
-    /*
-    "AdmAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp",  
-    "FactoryAgr",  "FactoryWalletEth", "FactoryWalletErc20", "ControlApisAdv");
+    "AdmAdv",  "DBDatabase", 
+    "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr",  "FactoryWalletAdv",
+    "TokenManager", "PosManager",
+    "ControlApisAdv");
     */
     this.RecorderAdr = logRecorderAdr;
-    this.TimerAdr = timerAdr;
+    this.TimerAdr    = timerAdr;
     this.zscTokenAdr = zscTokenAdr;
-    this.AdmAdvAdr = adrs[0];
+    this.AdmAdvAdr     = adrs[0];
     this.DBDatabaseAdr = adrs[1];
     this.FactoryProAdr = adrs[2];
     this.FactoryRecAdr = adrs[3];
     this.FactoryTmpAdr = adrs[4];
     this.FactoryAgrAdr = adrs[5];
-    this.FactoryWalletErc20Adr = adrs[6];
-    this.ControlApisAdvAdr   = adrs[7];
+    this.FactoryWalletAdvAdr = adrs[6];
+    this.TokenManagerAdr     = adrs[7];
+    this.PosManager          = adrs[8];
+    this.ControlApisAdvAdr   = adrs[9];
     this.account = web3.eth.accounts[0];
     this.gasPrice = cC_getGasPrice(20);
     this.gasLimit = cC_getGasLimit(700);
@@ -84,7 +63,7 @@ ZSCSetup.prototype.initSystemModule = function(module, hashID) {
     } else if (module == "AdmAdv") {
         this.initAdmAdv(hashID);
 
-    } else if (module == "PosAdv") {
+    } else if (module == "PosManager") {
         this.initPosAdv(module, hashID);
 
     } else if (module == "WalletManager") {
@@ -114,8 +93,7 @@ ZSCSetup.prototype.initSystemModule = function(module, hashID) {
         else if (module == "FactoryRec") factoryAdr = this.FactoryRecAdr;
         else if (module == "FactoryTmp") factoryAdr = this.FactoryTmpAdr;
         else if (module == "FactoryAgr") factoryAdr = this.FactoryAgrAdr;
-        else if (module == "FactoryWalletErc20") factoryAdr = this.FactoryWalletErc20Adr;
-        else if (module == "FactoryWalletEth") factoryAdr = this.FactoryWalletEthAdr;
+        else if (module == "FactoryWalletAdv") factoryAdr = this.FactoryWalletAdvAdr;
 
         this.initFactory(module, factoryAdr, hashID);
     }
@@ -171,6 +149,11 @@ ZSCSetup.prototype.addFactoryModule = function(factModule, hashID) {
     } else if (factModule == "FactoryWalletErc20") {
         factoryAdr = this.FactoryWalletErc20Adr;
         factoryType = "wallet-erc20";
+    } else if (factModule == "FactoryWalletAdv") {
+        factoryAdr = this.FactoryWalletAdv;
+        factoryType = "wallet-adv";
+    } else {
+        return;
     }
     this.addFactory(factoryType, factoryAdr, hashID);
 }
@@ -178,15 +161,15 @@ ZSCSetup.prototype.addFactoryModule = function(factModule, hashID) {
 ZSCSetup.prototype.addGMModule = function(gmModule, hashID) {
     var gmAdr;
     var gmType;
-    if (gmModule == "PosAdv") {
-        gmAdr = this.PosAdvAdr;
-        gmType = "pos-gm";
-    } else if (gmModule == "WalletManager") {
+    if (gmModule == "WalletManager") {
         gmAdr = this.WalletManagerAdr;
-        gmType = "wallet-gm";
+        gmType = "gm-wallet";
     } else if (gmModule == "SimulatorManager") {
         gmAdr = this.SimulatorManagerAdr;
-        gmType = "simulator-gm";
+        gmType = "gm-simulator";
+    } else if (gmModule == "PosMnag") {
+        gmAdr = this.SimulatorManagerAdr;
+        gmType = "gm-pos";
     }
     this.addGM(gmType, gmAdr, hashID);
 }
@@ -275,8 +258,8 @@ ZSCSetup.prototype.initControlApis = function(abiName, hashID) {
         });
 } 
 
-/*
-ZSCSetup.prototype.initPosAdv = function(abiName, hashID) {
+
+ZSCSetup.prototype.initPosManager = function(abiName, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var myPosAdv = myContract.at(this.PosAdvAdr);
     myPosAdv.setSysOverlayer(this.SystemOverlayerAdr, {from:web3.eth.accounts[0], gas: 9000000},
@@ -286,7 +269,7 @@ ZSCSetup.prototype.initPosAdv = function(abiName, hashID) {
     });
 }
 
-ZSCSetup.prototype.initWalletManager = function(abiName, hashID) {
+ZSCSetup.prototype.initTokenManager = function(abiName, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var myWalletGM = myContract.at(this.WalletManagerAdr);
     myWalletGM.setSysOverlayer(this.SystemOverlayerAdr, {from:web3.eth.accounts[0], gas: 9000000},
@@ -296,6 +279,7 @@ ZSCSetup.prototype.initWalletManager = function(abiName, hashID) {
     });
 }
 
+/*
 ZSCSetup.prototype.initSimulatorManager = function(abiName, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var mySimulatorGM = myContract.at(this.SimulatorManagerAdr);
