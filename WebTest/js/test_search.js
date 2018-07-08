@@ -58,7 +58,16 @@ export default class TestSearch {
     create() {
         console.log('TestSearch.create()');
         let zsc = new ZSCSearch(this[abi], this[contractAddress]);
-        zsc.addParameter('1', '1', 0x1, '1', '1');
+        zsc.addParameter('0x11', '0x21', '0xef55bfac4228981e850936aaf042951f7b146e4f', '0x31', '0x31');
+        zsc.addParameter('0x11', '0x21', '0xef55bfac4228981e850936aaf042951f7b146e4d', '0x32', '0x33');
+        zsc.addParameter('0x11', '0x21', '0xef55bfac4228981e850936aaf042951f7b146e4e', '0x32', '0x34');
+        zsc.addParameter('0x11', '0x21', '0xef55bfac4228981e850936aaf042951f7b146e4f', '0x33', '0x35');
+    }
+
+    debug() {
+        console.log('TestSearch.debug()');
+        let zsc = new ZSCSearch(this[abi], this[contractAddress]);
+        zsc.debug();
     }
 
     do(operation) {
@@ -69,6 +78,9 @@ export default class TestSearch {
                 break;
             case 'Create':
                 this.create();
+                break;
+            case 'Debug':
+                this.debug();
                 break;
             default:
                 Output(window.outputElement, 'small', 'red', 'Operation Error!');
