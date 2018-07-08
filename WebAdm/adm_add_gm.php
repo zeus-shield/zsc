@@ -28,15 +28,15 @@ $htmlObjects = new ZSCHtmlObjects();
     
     var zscSetup = new ZSCSetup(recorderAdr, timeStampAdr, zscTokenAddress, logedModuleAdrs);
 
-    function addGMModule(module, elementId) {
-        zscSetup.addGMModule(module, elementId);
+    function addGmModule(gmModule, elementId) {
+        zscSetup.addGmModule(gmModule, elementId);
     }
 </script>
 </head>
 <body>
 <?php 
     echo $htmlObjects->loadHeader(); 
-    echo '<div class="page-header"> <font size="5" color="blue" >Add Component - Manager </font></div>';
+    echo '<div class="page-header"> <font size="5" color="blue" >Setup ZSC system in the testing envrioment</font></div>';
 ?>
 
     <div class="well">
