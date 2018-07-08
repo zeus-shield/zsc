@@ -11,29 +11,11 @@ function cC_getContractFullName(contractName) {
     } else if (contractName == 'AdmAdv') {
         return "./zsc/adm_adv.sol:AdmAdv";
 
-    } else if (contractName == 'PosAdv') {
-        return "./zsc/db/EthCore/pos_base.sol:PosBase";
-
     } else if (contractName == 'LogRecorder') {
         return "./zsc/db/EthCore/log_recorder.sol:LogRecorder";
 
     } else if (contractName == 'TimeStamp') {
         return "./zsc/db/EthCore/time_stamp.sol:TimeStamp";
-
-    } else if (contractName == 'DatabaseManager') {
-        return "./zsc/db/EthCore/sys_gm_db.sol:SysGmDb";
-
-    } else if (contractName == 'WalletManager') {
-        return "./zsc/db/EthCore/sys_gm_wallet.sol:SysGmWallet";
-
-    } else if (contractName == 'SystemOverlayer') {
-        return "./zsc/db/EthCore/sys_overlayer.sol:SysOverlayer";
-
-    } else if (contractName == 'SimulatorManager') {
-        return "./zsc/db/EthCore/sys_gm_simulator.sol:SysGmSimulator";
-
-    } else if (contractName == 'FactoryManager') {
-        return "./zsc/db/EthCore/sys_gm_factory.sol:SysGmFactory";
 
     } else if (contractName == 'DBDatabase') {
         return "./zsc/db/EthCore/db_database.sol:DBDatabase";
@@ -53,11 +35,14 @@ function cC_getContractFullName(contractName) {
     } else if (contractName == 'FactoryAgr') {
         return "./zsc/factory_agr.sol:FactoryAgr";
 
-    } else if (contractName == 'FactoryWalletEth') {
-        return "./zsc/factory_wallet_eth.sol:FactoryWalletEth";
+    } else if (contractName == 'FactoryWalletAdv') {
+        return "./zsc/factory_wallet_adv.sol:FactoryWalletAdv";
 
-    } else if (contractName == 'FactoryWalletErc20') {
-        return "./zsc/factory_wallet_erc20.sol:FactoryWalletErc20";
+    } else if (contractName == 'TokenManager') {
+        return "./zsc/factory_agr.sol:FactoryAgr";
+
+    } else if (contractName == 'PosManager') {
+        return "./zsc/db/EthCore/pos_base.sol:PosBase";
 
     } else if (contractName == 'ControlApisAdv') {
         return "./zsc/control_apis_adv.sol:ControlApisAdv";
@@ -70,6 +55,7 @@ function cC_getContractFullName(contractName) {
 function cC_getCompiledFile(contractName) {
     if (contractName == 'TestToken') {
         return compiledZSCTestToken;
+        
     } else if (contractName == "AdmAdv") {
         return compiledAdmAdv;
 
@@ -78,24 +64,6 @@ function cC_getCompiledFile(contractName) {
 
     } else if (contractName == 'TimeStamp') {
         return compiledTimeStamp;
-
-    } else if (contractName == 'PosAdv') {
-        return compiledPosAdv;
-
-    } else if (contractName == 'SystemOverlayer') {
-        return compiledSystemOverlayer;
-
-    } else if (contractName == 'WalletManager') {
-        return compiledWalletManager;
-
-    } else if (contractName == 'SimulatorManager') {
-        return compiledSimulatorManager;
-
-    } else if (contractName == 'FactoryManager') {
-        return compiledFactoryManager;
-
-    } else if (contractName == 'DatabaseManager') {
-        return compiledDatabaseManager;
 
     } else if (contractName == 'DBDatabase') {
         return compiledDatabase;
@@ -115,11 +83,14 @@ function cC_getCompiledFile(contractName) {
     } else if (contractName == 'FactoryAgr') {
         return compiledFactoryAgr;
 
-    } else if (contractName == 'FactoryWalletEth') {
-        return compiledFactoryWalletEth;
+    } else if (contractName == 'FactoryWalletAdv') {
+        return compiledFactoryWalletAdv;
 
-    } else if (contractName == 'FactoryWalletErc20') {
-        return compiledFactoryWalletErc20;
+    } else if (contractName == 'TokenManager') {
+        return compiledTokenManager;
+
+    } else if (contractName == 'PosManager') {
+        return compiledPosAdv;
 
     } else if (contractName == 'ControlApisAdv') {
         return compiledApisAdv;
