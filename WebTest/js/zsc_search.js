@@ -16,14 +16,16 @@ export default class ZSCSearch {
         this[account] = web3.eth.accounts[0];
     }
 
-    addParameter(_factoryType, _elementName, _elementAddress, _parameterName, _parameterValue, func) {
+    addParameter(_factoryType, _elementName, _elementAddress, _parameterName, _parameterValue) {
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
+        // estimate gas
         let gasUsed = contractInstance.addParameter.estimateGas(
             _factoryType, _elementName, _elementAddress, _parameterName, _parameterValue,
             function(error, result) {
                 if(!error) {
-                    alert(result);
+                    //alert(result);
+                    // add parameter
                     contractInstance.addParameter(
                         _factoryType, _elementName, _elementAddress, _parameterName, _parameterValue,
                         {gas: result},
@@ -38,5 +40,26 @@ export default class ZSCSearch {
                     Output(window.outputElement, 'small', 'red', error);
                 }
             });
+    }
+
+    debug() {
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+
+        contractInstance.debugAll(function(error, result) {
+            if(!error) {
+                Output(window.outputElement, 'small', 'red', `[TransactionHash]:${result}`);
+                // get receipt
+                let receipt = web3.eth.getTransactionReceipt(result, function(error, result) {
+                    if(!error) {
+                        console.log(result);
+                        Output(window.outputElement, 'small', 'red', result);
+                    } else {
+                        Output(window.outputElement, 'small', 'red', error);
+                    }
+                });
+            } else {
+                Output(window.outputElement, 'small', 'red', error);
+            }
+        })
     }
 }
