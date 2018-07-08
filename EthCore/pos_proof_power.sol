@@ -7,6 +7,14 @@ pragma solidity ^0.4.21;
 import "./erc721_adv.sol";
 
 contract PosProofPower is Erc721Adv {
+    struct ClaimInfo {
+        uint vpuID_;
+        uint amount_;
+        uint time_;
+    }
+    mapping(address => uint) private claimNos_;
+    mapping(address => mapping(uint => ClaimInfo)) private userClaims_;
+
     struct VirtualPowerUnit {
         bool available_;
         uint price_;
@@ -88,10 +96,18 @@ contract PosProofPower is Erc721Adv {
         }
     }
 
-    function claimRwardFromVPU(address _staker, uint _vpuId) public returns (bool) {
+    function claimRwardFromVPU(address _staker, uint _vpuId) public returns (uint) {
         checkDelegate(msg.sender, 1);
-        vpus_[_vpuId].claimedRewards_ = vpus_[_vpuId].claimedRewards_.add(vpus_[_vpuId].curRewards_);
+
+        uint temp = vpus_[_vpuId].curRewards_;
         vpus_[_vpuId].curRewards_ = 0;
+        vpus_[_vpuId].claimedRewards_ = vpus_[_vpuId].claimedRewards_.add(temp);
+
+        uint index = claimNos_[_staker];
+        claimNos_[_staker]++;
+        userClaims_[_staker][index] = ClaimInfo(_vpuId, temp, now);
+
+        return temp;
     }
 }
 
