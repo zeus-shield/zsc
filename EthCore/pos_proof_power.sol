@@ -18,6 +18,8 @@ contract PosProofPower is Erc721Adv {
     struct VirtualPowerUnit {
         bool available_;
         uint price_;
+        uint level_;
+        uint maxStakerPoint_;
         uint maxRewards_;
         uint totalRewards_;
         uint curRewards_;
@@ -43,18 +45,24 @@ contract PosProofPower is Erc721Adv {
         posGm_ = _posGmAdr;
         setDelegate(posGm_, 1);
     }
-    
-    function createVPUs(uint _number, uint _maxReward, uint _price) public {
-        checkDelegate(msg.sender, 1);
-        require(_number != 0 && _maxReward != 0 && _price != 0);
 
-        uint firstId = totoalSupply();
-        uint lastId = firstId + _number;
-        for (uint i = firstId; i <= lastId; ++i) {
-            _mint(address(this), i);
-            vpus_[i] = VirtualPowerUnit(true, _price, _maxReward, 0, 0, 0);
-            vpuNos_++;
-        }
+    function createVPU(address _owner, uint _maxReward, uint _price) public return (uint) {
+        checkDelegate(msg.sender, 1);
+
+        uint tokenId = lastTokenId() + 1;
+        _mint(_owner, tokenId);
+
+        vpus_[tokenId] = VirtualPowerUnit(true, _price, _maxReward, 0, 0, 0);
+        vpuNos_++;
+        return tokenId;
+    }
+    
+    function destroyVPU(address _owner, uint _vpuId) public {
+        checkDelegate(msg.sender, 1);
+        require(_vpuId < vpuNos_ && vpus_[tokenId].available_);       
+
+        vpus_[tokenId].available_ = false;
+        _burn(_owner, _vpuId);
     }
     
     function getVPUInfo(uint _vpuId) public view returns (bool, uint, uint, uint, uint, uint) {
@@ -66,11 +74,6 @@ contract PosProofPower is Erc721Adv {
                 vpus_[_vpuId].totalRewards_, 
                 vpus_[_vpuId].curRewards_, 
                 vpus_[_vpuId].claimedRewards_);
-    }
-    
-    function purchaseVPU(address _buyerAdr, uint _vpuId) public {
-        checkDelegate(msg.sender, 1);
-        _transfer(address(this), _buyerAdr, _vpuId);
     }
 
     function rewardToVPU(uint _vpuId, uint _rewards) public returns (uint) {
