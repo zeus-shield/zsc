@@ -14,6 +14,10 @@
 |-- WebClient
     |-- web3.js and javascript based implementation
     |-- Compatible with Metamask 
+|-- WebTest
+    |-- web3.js and javascript based implementation
+    |-- Compatible with Metamask 
+    |-- Used by the ZSC Dev. team to do development on new modules and testing work
 ```
 
 ## Smart contract inheritance
@@ -98,10 +102,17 @@
 
 ## WebTest
 ```bash
-|--js
-    |-- test_analysis 
+|--html
     |-- test_search
-    |-- require
+|--js
+    |-- deploy 
+    |-- file
+    |-- main
+    |-- output
+    |-- provider
+    |-- test_search
+    |-- zsc_search
+|--index
 ```
 
 ## Dev update log
