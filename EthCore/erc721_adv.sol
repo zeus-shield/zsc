@@ -4,7 +4,7 @@ Copyright (c) 2018, ZSC Dev Team
 
 pragma solidity ^0.4.21;
 
-import "./plat_math.sol";
+import "./delegate.sol";
 
 /// @title ERC-721 Non-Fungible Token Standard
 /// @dev See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
@@ -12,6 +12,7 @@ contract ERC721 {
     event Transfer(address indexed _from, address indexed _to, uint indexed _tokenId);
     event Approval(address indexed _owner, address indexed _approved, uint indexed _tokenId);
     event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);
+    function totoalSupply() public view returns (uint);
     function balanceOf(address _owner) external view returns (uint);
     function ownerOf(uint _tokenId) external view returns (address);
     //function safeTransferFrom(address _from, address _to, uint _tokenId, bytes data) external;
@@ -27,7 +28,7 @@ contract ERC721 {
  * @title ERC721Adv
  * Generic implementation for the required functionality of the ERC721 standard
  */
-contract Erc721Adv is ERC721 {
+contract Erc721Adv is ERC721, Delegated {
     using SafeMath for uint;
 
     // Total amount of tokens
@@ -50,8 +51,13 @@ contract Erc721Adv is ERC721 {
     function Erc721Adv() public {
     }
 
-    function checkOnlyOwnerOf(uint _tokenId, address _user) private view {
+    function checkOnlyOwnerOf( address _user, uint _tokenId) private view {
         require(tokenOwner_[_tokenId] == _user);
+    }
+
+    function checkCanTransfer(uint256 _tokenId) private view {
+        address owner = tokenOwner_[_tokenId];
+        require(msg.sender == owner || msg.sender == tokenApprovedFor_[_tokenId] || isDelegate[msg.sender]);
     }
 
     function totoalSupply() public view returns (uint) {
@@ -76,14 +82,14 @@ contract Erc721Adv is ERC721 {
         return tokenOwner_[_tokenId];
     }
 
-    
     function safeTransferFrom(address _from, address _to, uint _tokenId) external {
+        checkCanTransfer(_tokenId);
         _transfer(_from, _to, _tokenId);
     }
     
 
     function approve(address _to, uint _tokenId) external {
-        checkOnlyOwnerOf(_tokenId, msg.sender);
+        checkOnlyOwnerOf( msg.sender, _tokenId);
         require(_to != msg.sender);
 
         if(_to != address(0) || tokenApprovedFor_[_tokenId] != address(0)) {
@@ -123,7 +129,7 @@ contract Erc721Adv is ERC721 {
     * @param _tokenId uint ID of the token to be transferred
     */
     function _transfer(address _from, address _to, uint _tokenId) internal {
-        checkOnlyOwnerOf(_tokenId, _from);
+        checkOnlyOwnerOf(_from, _tokenId);
         clearApprovalAndTransfer(_from, _to, _tokenId);
     }
 
@@ -142,13 +148,13 @@ contract Erc721Adv is ERC721 {
     * @dev Burns a specific token
     * @param _tokenId uint ID of the token being burned by the msg.sender
     */
-    function _burn(uint _tokenId) internal {
-        checkOnlyOwnerOf(_tokenId, msg.sender);
+    function _burn(address _from, uint _tokenId) internal {
+        checkOnlyOwnerOf(_from, _tokenId);
         if (tokenApprovedFor_[_tokenId] != 0) {
-            clearApproval(msg.sender, _tokenId);
+            clearApproval(_from, _tokenId);
         }
-        removeToken(msg.sender, _tokenId);
-        Transfer(msg.sender, 0x0, _tokenId);
+        removeToken(_from, _tokenId);
+        Transfer(_from, 0x0, _tokenId);
     }
 
     /**
