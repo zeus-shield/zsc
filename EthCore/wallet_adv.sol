@@ -14,6 +14,8 @@ contract WalletAdv is DBNode {
         address receiver_;
         uint256 amount_;
     }
+    uint private constant MIN_VALUE = (1 ether) / 100;
+
     uint private nos_;
     mapping(uint => Payment) private payments_;
 
@@ -38,11 +40,8 @@ contract WalletAdv is DBNode {
     ////////// public functions /////////////
     function() public payable {        
         // must not less than 0.01 ether
-        if (msg.value < (1 ether) / 100) {
-            revert();
-        } else {
-            recordInput(msg.sender, msg.value);
-        }
+        require(msg.value >= MIN_VALUE);
+        recordInput(msg.sender, msg.value);
     }
 
     function getBlance(address _adr) public constant returns (uint) {
