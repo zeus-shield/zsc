@@ -17,14 +17,16 @@ contract PosProofPower is Erc721Adv {
 
     struct VirtualPowerUnit {
         bool available_;
+        bool activated_;
         uint price_;
         uint level_;
+        uint start_;
+        uint end_;
+        uint curStakerPoint_;
         uint maxStakerPoint_;
-        uint maxRewards_;
-        uint totalRewards_;
-        uint curRewards_;
-        uint claimedRewards_;
+        uint rewards_;
     }
+
     address private posGm_;
     uint private vpuNos_;
     uint private totalPower_;
@@ -33,6 +35,8 @@ contract PosProofPower is Erc721Adv {
     address private previousBlock_ = address(0);
     address private nextBlock_ = address(0);
     uint private blockSizeLimit_ = 0;
+
+    mapping(uint => uint) private levelRewardRatio_;
 
     function PosProofPower() public {
         totalPower_ = 0;
@@ -46,17 +50,34 @@ contract PosProofPower is Erc721Adv {
         setDelegate(posGm_, 1);
     }
 
-    function createVPU(address _owner, uint _maxReward, uint _price) public return (uint) {
+    function setRewardRatio(uint _level, uint _ratio) public {
+        checkDelegate(msg.sender, 1);
+        levelRewardRatio_[_level] = _ratio;
+    }
+
+    function createVPU(address _owner, uint _price) public returns (uint) {
         checkDelegate(msg.sender, 1);
 
         uint tokenId = lastTokenId() + 1;
         _mint(_owner, tokenId);
 
-        vpus_[tokenId] = VirtualPowerUnit(true, _price, _maxReward, 0, 0, 0);
+        vpus_[tokenId] = VirtualPowerUnit(true, false, _price, 0, 0, 1, 0, 0, 0);
         vpuNos_++;
         return tokenId;
     }
     
+    function activeVPU(address _owner, uint _vpuId, uint _durationInDays) public {
+        checkDelegate(msg.sender, 1);
+        require(!vpus_[_vpuId].activated_);
+
+        uint cur = now;
+        uint duraInSecs = _durationInDays.mul(1 day);
+
+        vpus_[_vpuId].activated_ = true;
+        vpus_[_vpuId].start = cur;
+        vpus_[_vpuId].end = cur.add(duraInSecs);
+    }
+
     function destroyVPU(address _owner, uint _vpuId) public {
         checkDelegate(msg.sender, 1);
         require(_vpuId < vpuNos_ && vpus_[tokenId].available_);       
