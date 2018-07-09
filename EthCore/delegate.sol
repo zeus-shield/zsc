@@ -40,6 +40,9 @@ contract Delegated is Owned {
         delegateNos_ = 1;
     }
 
+    // This unnamed function is called whenever someone tries to send ether to it
+    function() public payable { revert(); }
+
     function kill() public {
         checkDelegate(msg.sender, 1);
         selfdestruct(owner); 

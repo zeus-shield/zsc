@@ -36,9 +36,6 @@ contract Object is Delegated {
         name_ = _name;
     }
 
-    // This unnamed function is called whenever someone tries to send ether to it
-    function() public payable { revert(); }
-
     function name() public constant returns (bytes32) { 
         checkDelegate(msg.sender, 1);
         return name_;
