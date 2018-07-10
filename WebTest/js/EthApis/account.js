@@ -19,4 +19,12 @@ export default class Account {
             console.log(data);
         });
     }
+
+    balance(address) {
+        let url = `https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest`;
+
+        this[http].get(url, 10000, function(data) {
+            console.log(data);
+        });
+    }
 }
