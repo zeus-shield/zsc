@@ -19,4 +19,12 @@ export default class Transaction {
             console.log(data);
         });
     }
+
+    gettxreceiptstatus(txhash) {
+        let url = `https://api.etherscan.io/api?module=transaction&action=gettxreceiptstatus&txhash=${txhash}`;
+
+        this[http].get(url, 10000, function(data) {
+            console.log(data);
+        });
+    }
 }
