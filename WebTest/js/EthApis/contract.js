@@ -19,4 +19,14 @@ export default class Contract {
             console.log(data);
         });
     }
+
+    getsourcecode(address) {
+        //let url = `https://api.etherscan.io/api?module=contract&action=getabi&address=${address}`;
+
+        let url = `https://api.etherscan.io/api?module=contract&action=getsourcecode&address=${address}`;
+
+        this[http].get(url, 10000, function(data) {
+            console.log(data);
+        });        
+    }
 }
