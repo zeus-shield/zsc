@@ -28,6 +28,8 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
             <td align="center"><a href="adm_add_factory.php">Add Factory</a></td>
             <td align="center"><a href="adm_add_gm.php">Add Gm Module</a></td>
             <td align="center"><a href="adm_manage_users.php">Manage Users</a></td>
+            <td align="center"><a href="adm_manage_token_contracts.php">Manage Tokens</a></td>
+            <td align="center"><a href="adm_manage_pos.php">Manage Pos</a></td>
             <td align="center"><a href="adm_show_userdetails.php">User Details</a></td>
             <td align="center"><a href="adm_show_log.php">Show Log</a></td>
             <td align="center"><a href="adm_print_abi.php">Print Abi</a></td>
@@ -59,6 +61,7 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
         <script type="text/javascript" src="./js/zsc_show_user_wallets.js"></script>
         <script type="text/javascript" src="./js/zsc_user_management.js"></script>
         <script type="text/javascript" src="./js/zsc_wallet_management.js"></script>
+        <script type="text/javascript" src="./js/zsc_pos_management.js"></script>
 
         <script type="text/javascript" src="./js/compiled_zsc_test_token.js"></script>
         <script type="text/javascript" src="./js/compiled_loger.js"></script>
