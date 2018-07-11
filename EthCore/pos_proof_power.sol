@@ -7,6 +7,24 @@ pragma solidity ^0.4.21;
 import "./erc721_adv.sol";
 
 contract PosProofPower is Erc721Adv {
+   struct VirtualPowerUnit {
+        address owner_;
+        bool buyable_;
+        bool activated_;
+        uint level_;
+        uint price_;
+        uint start_;
+        uint end_;
+        uint curStakerPoint_;
+        uint maxStakerPoint_;
+        uint rewards_;
+    }
+
+    struct VpuLevelInfo {
+        uint rewardRatio_;
+        uint maxStakerPoint_;
+    }
+
     struct ClaimInfo {
         uint vpuID_;
         uint amount_;
@@ -15,28 +33,14 @@ contract PosProofPower is Erc721Adv {
     mapping(address => uint) private claimNos_;
     mapping(address => mapping(uint => ClaimInfo)) private userClaims_;
 
-    struct VirtualPowerUnit {
-        bool available_;
-        bool activated_;
-        uint price_;
-        uint level_;
-        uint start_;
-        uint end_;
-        uint curStakerPoint_;
-        uint maxStakerPoint_;
-        uint rewards_;
-    }
-
     address private posGm_;
     uint private vpuNos_;
     uint private totalPower_;
     mapping(uint => VirtualPowerUnit) private vpus_;
 
-    address private previousBlock_ = address(0);
-    address private nextBlock_ = address(0);
     uint private blockSizeLimit_ = 0;
 
-    mapping(uint => uint) private levelRewardRatio_;
+    mapping(uint => VpuLevelInfo) private vpuLevelInfo_;
 
     function PosProofPower() public {
         totalPower_ = 0;
@@ -50,32 +54,21 @@ contract PosProofPower is Erc721Adv {
         setDelegate(posGm_, 1);
     }
 
-    function setRewardRatio(uint _level, uint _ratio) public {
+    function setRewardRatio(uint _level, uint _ratio, uint _maxStakePoint) public {
         checkDelegate(msg.sender, 1);
-        levelRewardRatio_[_level] = _ratio;
+        vpuLevelInfo_[_level].rewardRatio_ = _ratio;
+        vpuLevelInfo_[_level].maxStakerPoint_ = _maxStakePoint;
     }
 
-    function createVPU(address _owner, uint _price) public returns (uint) {
+    function createVPU(address _owner, uint _level) public returns (uint) {
         checkDelegate(msg.sender, 1);
 
         uint tokenId = lastTokenId() + 1;
         _mint(_owner, tokenId);
 
-        vpus_[tokenId] = VirtualPowerUnit(true, false, _price, 0, 0, 1, 0, 0, 0);
+        vpus_[tokenId] = VirtualPowerUnit(_owner, false, false, 1, 0, 0, 0, 0, 0, 0);
         vpuNos_++;
         return tokenId;
-    }
-    
-    function activeVPU(address _owner, uint _vpuId, uint _durationInDays) public {
-        checkDelegate(msg.sender, 1);
-        require(!vpus_[_vpuId].activated_);
-
-        uint cur = now;
-        uint duraInSecs = _durationInDays.mul(1 day);
-
-        vpus_[_vpuId].activated_ = true;
-        vpus_[_vpuId].start = cur;
-        vpus_[_vpuId].end = cur.add(duraInSecs);
     }
 
     function destroyVPU(address _owner, uint _vpuId) public {
@@ -85,7 +78,21 @@ contract PosProofPower is Erc721Adv {
         vpus_[tokenId].available_ = false;
         _burn(_owner, _vpuId);
     }
-    
+        
+    function activeVPU(address _owner, uint _vpuId, uint _stakePoint, uint _durationInDays) public {
+        checkDelegate(msg.sender, 1);
+        require(!vpus_[_vpuId].activated_);
+        require(!vpus_[_vpuId].buyable_);
+        require(_owner == vpuLevelInfo_[_level].owner_);
+        require(_stakePoint <= vpuLevelInfo_[_level].maxStakerPoint_);
+
+        uint cur = now;
+        uint duraInSecs = _durationInDays.mul(1 day);
+
+        vpus_[_vpuId].start = cur;
+        vpus_[_vpuId].end = cur.add(duraInSecs);
+    }
+
     function getVPUInfo(uint _vpuId) public view returns (bool, uint, uint, uint, uint, uint) {
         checkDelegate(msg.sender, 1);
         require(_vpuId < vpuNos_);
