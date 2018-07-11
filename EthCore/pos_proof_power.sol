@@ -109,40 +109,14 @@ contract PosProofPower is Erc721Adv {
         vpus_[_vpuId].end = cur.add(duraInSecs);
     }
 
-    function rewardToVpu(uint _vpuId, uint _rewards) public returns (uint) {
+    function publishVpu(address _user, uint _vpuId, uint _price) public {
         checkDelegate(msg.sender, 1);
-        
-        if (vpus_[_vpuId].available_ == false) {
-            return _rewards;
-        }
+        checkVpuUser(_user, _vpuId);
 
-        uint sum = vpus_[_vpuId].totalRewards_.add(_rewards);
+        require(!vpus_[_vpuId].activated_);
+        require(!vpus_[_vpuId].buyable_);
 
-        if (sum <= vpus_[_vpuId].maxRewards_) {
-            vpus_[_vpuId].curRewards_   = vpus_[_vpuId].curRewards_.add(_rewards);
-            vpus_[_vpuId].totalRewards_ = sum;
-            return 0;
-        } else {
-            uint delta = sum.sub(vpus_[_vpuId].maxRewards_); 
-            uint input = _rewards.sub(delta);            
-            vpus_[_vpuId].curRewards_   = vpus_[_vpuId].curRewards_.add(input);
-            vpus_[_vpuId].totalRewards_ = vpus_[_vpuId].maxRewards_;
-            vpus_[_vpuId].available_    = false;
-            return delta;
-        }
-    }
-
-    function claimRwardFromVpu(address _staker, uint _vpuId) public returns (uint) {
-        checkDelegate(msg.sender, 1);
-
-        uint temp = vpus_[_vpuId].curRewards_;
-        vpus_[_vpuId].curRewards_ = 0;
-        vpus_[_vpuId].claimedRewards_ = vpus_[_vpuId].claimedRewards_.add(temp);
-
-        uint index = claimNos_[_staker];
-        claimNos_[_staker]++;
-        userClaims_[_staker][index] = ClaimInfo(_vpuId, temp, now);
-
-        return temp;
+        vpus_[_vpuId].buyable_ = true;
+        vpus_[_vpuId].price_ = _price;
     }
 }
