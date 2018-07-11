@@ -8,7 +8,7 @@ import "./erc721_adv.sol";
 
 contract PosProofPower is Erc721Adv {
    struct VirtualPowerUnit {
-        address _user;
+        address user_;
         bool buyable_;
         bool activated_;
         uint level_;
@@ -17,38 +17,21 @@ contract PosProofPower is Erc721Adv {
         uint end_;
         uint curStakerPoint_;
         uint maxStakerPoint_;
-        uint rewards_;
-    }
-
-    struct VpuLevelInfo {
         uint rewardRatio_;
-        uint maxStakerPoint_;
     }
-
-    struct ClaimInfo {
-        uint vpuID_;
-        uint amount_;
-        uint time_;
-    }
-    mapping(address => uint) private claimNos_;
-    mapping(address => mapping(uint => ClaimInfo)) private userClaims_;
 
     address private posGm_;
     uint private vpuNos_;
     uint private totalPower_;
-    mapping(uint => VirtualPowerUnit) private vpus_;
+    mapping(uint => VirtualPowerUnit) internal vpus_;
 
-    uint private blockSizeLimit_ = 0;
-
-    mapping(uint => VpuLevelInfo) private vpuLevelInfo_;
-
-    function PosProofPower() public {
+    function PosProofPower() public Erc721Adv {
         totalPower_ = 0;
         vpuNos_ = 0;
     }
 
     function checkVpuUser(address _user, uint _vpuId) internal view {
-        require(_user == vpuLevelInfo_[_level]._user);
+        require(_user == vpus_[_vpuId]._user);
     }
 
     function initPosProofPower(address _posGmAdr) public {
@@ -58,65 +41,27 @@ contract PosProofPower is Erc721Adv {
         setDelegate(posGm_, 1);
     }
 
-    function setRewardRatio(uint _level, uint _ratio, uint _maxStakePoint) public {
-        checkDelegate(msg.sender, 1);
-        vpuLevelInfo_[_level].rewardRatio_ = _ratio;
-        vpuLevelInfo_[_level].maxStakerPoint_ = _maxStakePoint;
-    }
 
-    function getVPUInfo(uint _vpuId) public view returns (bool, uint, uint, uint, uint, uint) {
+    function getVpuInfo(uint _vpuId) public view returns (address, bool, bool, uint, uint, uint, uint, uint, uint, uint) {
         checkDelegate(msg.sender, 1);
         require(_vpuId < vpuNos_);
-        return (vpus_[_vpuId].available_,
+        return (vpus_[_vpuId].user_,
+                vpus_[_vpuId].buyable_,
+                vpus_[_vpuId].activated_,
+                vpus_[_vpuId].level_,
                 vpus_[_vpuId].price_,
-                vpus_[_vpuId].maxRewards_, 
-                vpus_[_vpuId].totalRewards_, 
-                vpus_[_vpuId].curRewards_, 
-                vpus_[_vpuId].claimedRewards_);
+                vpus_[_vpuId].start_, 
+                vpus_[_vpuId].end_, 
+                vpus_[_vpuId].curStakerPoint_, 
+                vpus_[_vpuId].maxStakerPoint_,
+                vpus_[_vpuId].rewardRatio_);
     }
-
-    function createVpu(address _user, uint _level) public returns (uint) {
-        checkDelegate(msg.sender, 1);
-
-        uint tokenId = lastTokenId() + 1;
-        _mint(_owner, tokenId);
-
-        vpus_[tokenId] = VirtualPowerUnit(_user, false, false, 1, 0, 0, 0, 0, 0, 0);
-        vpuNos_++;
-        return tokenId;
-    }
-
-    function destroyVpu(address _owner, uint _vpuId) public {
-        checkDelegate(msg.sender, 1);
-        require(_vpuId < vpuNos_ && vpus_[tokenId].available_);       
-
-        vpus_[tokenId].available_ = false;
-        _burn(_owner, _vpuId);
-    }
-        
-    function activeVpu(address _user, uint _vpuId, uint _stakePoint, uint _durationInDays) public {
-        checkDelegate(msg.sender, 1);
-        checkVpuUser(_user, _vpuId);
-
-        require(!vpus_[_vpuId].activated_);
-        require(!vpus_[_vpuId].buyable_);
-        require(_stakePoint <= vpuLevelInfo_[_level].maxStakerPoint_);
-
-        uint cur = now;
-        uint duraInSecs = _durationInDays.mul(1 day);
-
-        vpus_[_vpuId].start = cur;
-        vpus_[_vpuId].end = cur.add(duraInSecs);
-    }
-
-    function publishVpu(address _user, uint _vpuId, uint _price) public {
-        checkDelegate(msg.sender, 1);
-        checkVpuUser(_user, _vpuId);
-
-        require(!vpus_[_vpuId].activated_);
-        require(!vpus_[_vpuId].buyable_);
-
-        vpus_[_vpuId].buyable_ = true;
-        vpus_[_vpuId].price_ = _price;
-    }
+    function setRewardRatio(uint _level, uint _ratio, uint _maxStakePoint) public;
+    function createVpu(address _user, uint _level, uint _price) public returns (uint);
+    function destroyVpu(address _owner, uint _vpuId) public;
+    function setRewardRatio(uint _level, uint _ratio, uint _maxStakePoint) public;
+    function publishVpu(address _user, uint _vpuId, uint _price) public;
+    function activeVpu(address _user, uint _vpuId, uint _stakePoint, uint _durationInDays) public;
+    function claimable(address _staker, uint _vpuId) public view returns (bool);
+    function claimRwardFromVpu(address _staker, uint _vpuId) public returns (uint);
 }
