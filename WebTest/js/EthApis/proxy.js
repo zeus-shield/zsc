@@ -19,4 +19,12 @@ export default class Proxy {
             console.log(data);
         });
     }
+
+    eth_getBlockByNumber(tag) {
+        let url = `https://api.etherscan.io/api?module=proxy&action=eth_getBlockByNumber&tag=${tag}&boolean=true`;
+
+        this[http].get(url, 10000, function(data) {
+            console.log(data);
+        });
+    }
 }
