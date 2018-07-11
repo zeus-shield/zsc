@@ -12,16 +12,35 @@ export default class Account {
         this[http] = new Http();
     }
 
-    tockentx(address) {
-        let url = `http://api.etherscan.io/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=999999999&sort=asc`;
+    balance(address) {
+        let url = `https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest`;
 
         this[http].get(url, 10000, function(data) {
             console.log(data);
         });
     }
 
-    balance(address) {
-        let url = `https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest`;
+    balancemulti(address[], num) {
+        let addresses = '';
+        let url = '';
+
+        for(let i=0; i<num; i++) {
+            if (0==i) {
+                addresses = address[0];
+            } else {
+                addresses = `${addresses},${address[i]}`;
+            }
+        }
+
+        url = `https://api.etherscan.io/api?module=account&action=balancemulti&address=${addresses}`;
+
+        this[http].get(url, 10000, function(data) {
+            console.log(data);
+        });
+    }
+
+    tockentx(address) {
+        let url = `http://api.etherscan.io/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=999999999&sort=asc`;
 
         this[http].get(url, 10000, function(data) {
             console.log(data);
