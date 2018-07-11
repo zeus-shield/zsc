@@ -21,7 +21,7 @@ contract PosMinerRobot is Erc721Adv {
     }
 
     address private posGm_;
-    uint private robotNos_;
+    uint internal robotNos_;
     mapping(uint => RobotUnit) internal robots_;
 
     function PosMinerRobot() public Erc721Adv {
@@ -29,7 +29,7 @@ contract PosMinerRobot is Erc721Adv {
     }
 
     function checkRobotUser(address _user, uint _robotId) internal view {
-        require(_user == robots_[_robotId]._user);
+        require(_user == robots_[_robotId].user_);
     }
 
     function initPosVirtualRobot(address _posGmAdr) public {
@@ -39,13 +39,18 @@ contract PosMinerRobot is Erc721Adv {
         setDelegate(posGm_, 1);
     }
 
-    function getRobotInfo(uint _robotId) public view returns (address, bool, bool, uint, uint, uint, uint, uint, uint, uint) {
+    function getRobotStatus(uint _robotId) public view returns (address, bool, bool) {
         checkDelegate(msg.sender, 1);
         require(_robotId < robotNos_);
         return (robots_[_robotId].user_,
                 robots_[_robotId].buyable_,
-                robots_[_robotId].activated_,
-                robots_[_robotId].level_,
+                robots_[_robotId].activated_);
+    }
+    
+    function getRobotInfo(uint _robotId) public view returns (uint, uint, uint, uint, uint, uint, uint) {
+        checkDelegate(msg.sender, 1);
+        require(_robotId < robotNos_);
+        return (robots_[_robotId].level_,
                 robots_[_robotId].price_,
                 robots_[_robotId].start_, 
                 robots_[_robotId].end_, 
