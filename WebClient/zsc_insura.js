@@ -3,21 +3,21 @@ Copyright (c) 2018 ZSC Dev Team
 */
 
 //class zscElement
-function ZSCHtml() {
+function ZSCInsura() {
     this.pageHeaderId;
     this.pageBodyId;
 }
 
-ZSCHtml.prototype.setHtmlContentIds = function(hearderId, bodyId) {
+ZSCInsura.prototype.setHtmlContentIds = function(hearderId, bodyId) {
     this.pageBodyId = bodyId;
     this.pageHeaderId = hearderId;
 }
 
-ZSCHtml.prototype.setHtmlContent = function(elementId, text) {
+ZSCInsura.prototype.setHtmlContent = function(elementId, text) {
     document.getElementById(elementId).innerHTML = text;  
 }
 
-ZSCHtml.prototype.loadPageHeader = function(funcName, userType, doesUserApplied) {
+ZSCInsura.prototype.loadPageHeader = function(funcName, userType, doesUserApplied) {
     var funcPrefix = funcName + "(";
     var funcSuffix = ")";
     var text;
@@ -47,7 +47,7 @@ ZSCHtml.prototype.loadPageHeader = function(funcName, userType, doesUserApplied)
     this.setHtmlContent(this.pageHeaderId, text);  
 }
 
-ZSCHtml.prototype.loadWaitingApproval = function(funcName) {
+ZSCInsura.prototype.loadWaitingApproval = function(funcName) {
     var func;
     var hashLogId;
     var text = '<text>Enable the user in ZSC blockchain system</text>'
@@ -61,7 +61,7 @@ ZSCHtml.prototype.loadWaitingApproval = function(funcName) {
     this.setHtmlContent(this.pageBodyId, text);  
 }
 
-ZSCHtml.prototype.loadPageBody = function(tag, func) {
+ZSCInsura.prototype.loadPageBody = function(tag, func) {
     var text;
     switch(tag) {
         case "login": 
@@ -77,7 +77,7 @@ ZSCHtml.prototype.loadPageBody = function(tag, func) {
     this.setHtmlContent(this.pageBodyId, text);  
 } 
 
-ZSCHtml.prototype.loadLogin = function(funcName) {
+ZSCInsura.prototype.loadLogin = function(funcName) {
     var functionInput = funcName + "('AdmAdvAdr', 'UserName', 'PassWord')";
     text =  '<div class="well">'
     text += '   <text>Login ZSC system </text><br><br>'
@@ -93,7 +93,7 @@ ZSCHtml.prototype.loadLogin = function(funcName) {
     return text;
 }
 
-ZSCHtml.prototype.loadWelcome = function() {
+ZSCInsura.prototype.loadWelcome = function() {
     var text = '<div class="well">'
     text += '   <text>Welcome to the ZSC testing platform</text>'
     text += '</div>'
