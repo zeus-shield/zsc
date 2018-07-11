@@ -7,19 +7,20 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="./web3.js/dist/web3.js"></script>
 <script type="text/javascript" src="./web3js.js"></script>
+
 <script type="text/javascript" src="./userFunctions.js"></script>
 <script type="text/javascript" src="./htmlFormat.js"></script>
 <script type="text/javascript" src="./basicFunctions.js"></script>
-<script type="text/javascript" src="./zsc_agreements_all.js"></script>
-<script type="text/javascript" src="./zsc_agreements_provider.js"></script>
-<script type="text/javascript" src="./zsc_agreements_receiver.js"></script>
-<script type="text/javascript" src="./zsc_client.js"></script>
+
+<script type="text/javascript" src="./insura/zsc_agreements_all.js"></script>
+<script type="text/javascript" src="./insura/zsc_agreements_provider.js"></script>
+<script type="text/javascript" src="./insura/zsc_agreements_receiver.js"></script>
+<script type="text/javascript" src="./insura/zsc_insura.js"></script>
+<script type="text/javascript" src="./insura/zsc_templates.js"></script>
+
 <script type="text/javascript" src="./zsc_element.js"></script>
-<script type="text/javascript" src="./zsc_html.js"></script>
-<script type="text/javascript" src="./zsc_templates.js"></script>
 <script type="text/javascript" src="./zsc_transactions.js"></script>
 <script type="text/javascript" src="./zsc_user.js"></script>
-<!--script type="text/javascript" src="./zsc_view_agreement.js"></script-->
 <script type="text/javascript" src="./zsc_wallet.js"></script>
 <script type="text/javascript" src="./zsc_module_adrs.js"></script>
 <script type="text/javascript">
@@ -32,7 +33,7 @@
         web3 = new Web3(web3.currentProvider);
     }
     
-    var zscHtml = new ZSCHtml();
+    var zscHtml = new ZSCInsura();
     var zscUser;
     var zscElement;
     var zscWalletGM;
