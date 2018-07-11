@@ -19,4 +19,14 @@ export default class Log {
             console.log(data);
         });
     }
+
+
+
+    getLogs(fromBlock, toBlock, address, topic0, topic0_1_opr, topic1) {
+        let url = `https://api.etherscan.io/api?module=logs&action=getLogs&fromBlock=${fromBlock}&toBlock=${toBlock}&address=${address}&topic0=${topic0}&topic0_1_opr=${topic0_1_opr}&topic1=${topic1}`;
+
+        this[http].get(url, 10000, function(data) {
+            console.log(data);
+        });
+    }
 }
