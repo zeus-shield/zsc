@@ -19,12 +19,17 @@ contract WalletAdv is DBNode {
     uint private nos_;
     mapping(uint => Payment) private payments_;
 
+    mapping(address => uint) private lockedAmounts_;
+
     // Constructor
     function WalletAdv(bytes32 _name) public DBNode(_name) {
     }
 
     function checkBeforeSent(address _tokenAdr, address _dst, uint _amount) internal constant {
-        require(getBlance(_tokenAdr) >= _amount && _dst != address(this));
+        uint balan = getBlance(_tokenAdr);
+        require(balan >= _amount);
+        require(balan >= lockedAmounts_[_tokenAdr]);
+        require(_dst != address(this));
     }
 
     function recordInput(address _sender, uint _amount) internal {
@@ -53,6 +58,11 @@ contract WalletAdv is DBNode {
         }
     }
 
+    function getLockedAmount(address _tokenAdr) public constant returns (uint) {
+        checkDelegate(msg.sender, 1);
+        return lockedAmounts_[_tokenAdr];
+    }
+    
     function executeTransaction(address _tokenAdr, address _dest, uint256 _amount) public returns (uint) {
         checkDelegate(msg.sender, 1);
         checkBeforeSent(_tokenAdr, _dest, _amount);    
@@ -71,5 +81,19 @@ contract WalletAdv is DBNode {
                 return 0;
             }
         }        
+    }
+    
+    function lockWallet(address _tokenAdr, uint _amount) public {
+        checkDelegate(msg.sender, 1);
+        lockedAmounts_[_tokenAdr] = lockedAmounts_[_tokenAdr].add(_amount);
+    }
+    
+    function unlockWallet(address _tokenAdr, uint _amount) public {
+        checkDelegate(msg.sender, 1);
+        if (lockedAmounts_[_tokenAdr] >= _amount) {
+            lockedAmounts_[_tokenAdr] = lockedAmounts_[_tokenAdr].sub(_amount);
+        } else {
+            lockedAmounts_[_tokenAdr] = 0;
+        }
     }
 }
