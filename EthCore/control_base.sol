@@ -22,7 +22,7 @@ contract DBNode {
     function setERC20TokenAddress(address _tokenAdr) public;
     //function submitTransaction(address _dest, uint256 _amount, bytes _data, address _user) public returns (uint);
     //function confirmTransaction(address _sigAdr) public returns (uint);    
-    function executeTransaction(address _dest, uint256 _amount) public returns (uint);
+    function executeTransaction(address _tokenAdr, address _dest, uint256 _amount) public returns (uint);
     function informTransaction(address _src, uint256 _amount) public;
     function numTransactions() public constant returns (uint);
     function getTransactionInfoByIndex(uint _index) public constant returns (uint, bool,  bytes32, uint, address, address);
@@ -68,6 +68,7 @@ contract DBDatabase {
 
 contract DBModule {
     function getTokenAddress(bytes32 _symbol) public view returns (address);
+    function purchaseRobot(address _buyer, uint _robotId, uint _price) public returns (address);
 }
 
 contract ControlBase is ControlInfo {   
@@ -260,7 +261,7 @@ contract ControlBase is ControlInfo {
         addLog(PlatString.uintToString(lockedAmount), false);
         */
 
-        DBNode(userWallet).executeTransaction(agrWalletAdr, lockedAmount.mul(1 ether));
+        DBNode(userWallet).executeTransaction(zscTokenAddress_, agrWalletAdr, lockedAmount.mul(1 ether));
         //DBNode(agrWalletAdr).informTransaction(userWallet, lockedAmount);
 
         DBNode(agrAdr).setAgreementStatus("PUBLISHED", "null");
@@ -375,7 +376,7 @@ contract ControlBase is ControlInfo {
         address recWallet   = address(getDBNode(dbName_, formatWalletName(_userName, tokenSymbol)));
         address agrWallet   = address(getDBNode(dbName_, formatWalletName(_agrName, tokenSymbol)));
 
-        uint ret = DBNode(recWallet).executeTransaction(agrWallet, price);
+        uint ret = DBNode(recWallet).executeTransaction(zscTokenAddress_, agrWallet, price);
         //DBNode(agrWallet).informTransaction(recWallet, price);
 
         getDBNode(dbName_, _agrName).setAgreementStatus("PAID", _userName);
@@ -423,8 +424,8 @@ contract ControlBase is ControlInfo {
             return false;
         } else if (ret == 1) {
             //Insurance to receiver
-            DBNode(agrWallet).executeTransaction(proWallet, price);
-            DBNode(agrWallet).executeTransaction(recWallet, lockedAmount);
+            DBNode(agrWallet).executeTransaction(zscTokenAddress_, proWallet, price);
+            DBNode(agrWallet).executeTransaction(zscTokenAddress_, recWallet, lockedAmount);
 
             //DBNode(proWallet).informTransaction(agrWallet, price);
             //DBNode(recWallet).informTransaction(agrWallet, lockedAmount);
@@ -442,7 +443,7 @@ contract ControlBase is ControlInfo {
             */
         } else if (ret == 2) {
             //Paid to provider
-            DBNode(agrWallet).executeTransaction(proWallet, lockedAmount + price);
+            DBNode(agrWallet).executeTransaction(zscTokenAddress_, proWallet, lockedAmount + price);
             //DBNode(proWallet).informTransaction(agrWallet, lockedAmount + price);
 
             /*
@@ -454,7 +455,7 @@ contract ControlBase is ControlInfo {
         }
         return true;
     }
-
+    
     function prepareTokenBalanceInfoByIndex(bytes32 _enName, uint _index) internal constant returns (string) { 
         bytes32 status;
         bytes32 tokenSymbol;
