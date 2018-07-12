@@ -83,7 +83,13 @@ contract Delegated is Owned {
             addDelegate(_adr, _priority);
         }
     }
-
+    
+    function random(uint _min, uint _max) public view returns (uint) {
+        require(_min < _max);
+        uint c = uint(keccak256(block.blockhash(block.number-1), now ))%(_max - _min);
+        return c.add(_min);
+    }
+    
     function isDelegate(address _adr, uint _priority) public constant returns (bool)  {
         if (_adr == address(this)) return true;
         if (!exists_[_adr]) return false;
