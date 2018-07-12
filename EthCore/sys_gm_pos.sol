@@ -16,8 +16,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         uint price_;
         uint start_;
         uint end_;
-        uint curStakerPoint_;
-        uint maxStakerPoint_;
+        uint stakerPoint_;
         uint rewardRatio_;
     }
 
@@ -46,15 +45,14 @@ contract SysGmPos is Erc721Adv, SysGmBase {
                 robots_[_robotId].activated_);
     }
     
-    function getRobotInfo(uint _robotId) public view returns (uint, uint, uint, uint, uint, uint, uint) {
+    function getRobotInfo(uint _robotId) public view returns (uint, uint, uint, uint, uint, uint) {
         checkDelegate(msg.sender, 1);
         require(_robotId < robotNos_);
         return (robots_[_robotId].level_,
                 robots_[_robotId].price_,
                 robots_[_robotId].start_, 
                 robots_[_robotId].end_, 
-                robots_[_robotId].curStakerPoint_, 
-                robots_[_robotId].maxStakerPoint_,
+                robots_[_robotId].stakerPoint_,
                 robots_[_robotId].rewardRatio_);
     }
 }
