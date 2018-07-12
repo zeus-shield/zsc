@@ -68,6 +68,7 @@ contract DBDatabase {
 
 contract DBModule {
     function getTokenAddress(bytes32 _symbol) public view returns (address);
+    function activeRobot(address _user, uint _robotId, uint _stakePoint, uint _durationInDays) public;
     function publishRobot(address _user, uint _robotId, uint _price) public;
     function purchaseRobot(address _buyer, uint _robotId, uint _price) public returns (address);
 }
@@ -456,32 +457,7 @@ contract ControlBase is ControlInfo {
         }
         return true;
     }
-    
-    /*------2018-07-12: new verstion: YYA------  */
-    function conductPurchaseRobot(bytes32 _buyer, uint _robotId, uint _price) internal {
-        bytes32 walletName;
-        address walletBuyerAdr;
-        address walletSellerAdr;
-        
-        walletName      = formatWalletName(_buyer, "wat");
-        walletBuyerAdr  = address(getDBNode(dbName_, walletName));
-        walletSellerAdr = getDBModule("pos").purchaseRobot(walletBuyerAdr, _robotId, _price);
-        
-        uint ret = DBNode(walletBuyerAdr).executeTransaction(address(0), walletSellerAdr, _price);
-        require(ret != 0);
-    }
-
-    function conductPublishRobot(bytes32 _user, uint _robotId, uint _price) internal {
-        bytes32 walletName;
-        address walletAdr;
-        
-        walletName = formatWalletName(_user, "wat");
-        walletAdr  = address(getDBNode(dbName_, walletName));
-        
-        getDBModule("pos").publishRobot(walletAdr, _robotId, _price);
-    }
-    /*------2018-07-12: new verstion: END------  */
-
+ 
     function prepareTokenBalanceInfoByIndex(bytes32 _enName, uint _index) internal constant returns (string) { 
         bytes32 status;
         bytes32 tokenSymbol;
