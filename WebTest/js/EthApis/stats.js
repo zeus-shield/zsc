@@ -18,4 +18,12 @@ export default class Stats {
             console.log(data);
         });
     }
+
+    ethprice() {
+        let url = `https://api.etherscan.io/api?module=stats&action=ethprice`;
+
+        this[http].get(url, 10000, function(data) {
+            console.log(data);
+        });
+    }
 }
