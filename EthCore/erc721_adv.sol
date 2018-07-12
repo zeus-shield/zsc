@@ -66,7 +66,7 @@ contract Erc721Adv is ERC721, Delegated {
         }
     }
 
-    function setTradeableInMarket(bool _tag) public view returns (uint) {
+    function setTradeableInMarket(bool _tag) public {
         checkDelegate(msg.sender, 1);
         tradeable_ = _tag;
     }
@@ -143,7 +143,7 @@ contract Erc721Adv is ERC721, Delegated {
     function _mint(address _to, uint _tokenId) internal {
         require(_to != address(0));
         addToken(_to, _tokenId);
-        Transfer(0x0, _to, _tokenId);
+        Transfer(address(0), _to, _tokenId);
     }
 
     /**
@@ -156,7 +156,7 @@ contract Erc721Adv is ERC721, Delegated {
             clearApproval(_from, _tokenId);
         }
         removeToken(_from, _tokenId);
-        Transfer(_from, 0x0, _tokenId);
+        Transfer(_from, address(0), _tokenId);
     }
 
     /**
@@ -220,7 +220,7 @@ contract Erc721Adv is ERC721, Delegated {
         // be zero. Then we can make sure that we will remove _tokenId from the ownedTokens list since we are first swapping
         // the lastToken to the first position, and then dropping the element placed in the last position of the list
   
-        ownedTokens_[_from].length--;
+        ownedTokens_[_from].length.sub(1);
         ownedTokensIndex_[_tokenId] = 0;
         ownedTokensIndex_[lastToken] = tokenIndex;
         totalTokens_ = totalTokens_.sub(1);
