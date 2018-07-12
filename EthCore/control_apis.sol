@@ -482,11 +482,28 @@ contract ControlApis is ControlBase {
     
     function purchaseMinerRobot(bytes32 _userName, uint _robotId) public {
         checkRegistered(_userName, msg.sender);
-        conductPurchaseRobot(_userName, _robotId, msg.value);
+        
+        bytes32 walletName;
+        address walletBuyerAdr;
+        address walletSellerAdr;
+        
+        walletName      = formatWalletName(_userName, "wat");
+        walletBuyerAdr  = address(getDBNode(getCurrentDBName(), walletName));
+        walletSellerAdr = getDBModule("pos").purchaseRobot(walletBuyerAdr, _robotId, msg.value);
+        
+        uint ret = DBNode(walletBuyerAdr).executeTransaction(address(0), walletSellerAdr, msg.value);
+        require(ret != 0);
     }
     
     function publishMinerRobot(bytes32 _userName, uint _robotId, uint _price) public {
         checkRegistered(_userName, msg.sender);
-        conductPublishRobot(_userName, _robotId, _price);
+        
+        bytes32 walletName;
+        address walletAdr;
+        
+        walletName = formatWalletName(_userName, "wat");
+        walletAdr  = address(getDBNode(dbName_, walletName));
+        
+        getDBModule("pos").publishRobot(walletAdr, _robotId, _price);
     }
 }
