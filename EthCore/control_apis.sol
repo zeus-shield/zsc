@@ -479,26 +479,9 @@ contract ControlApis is ControlBase {
     function getModuleAddresses() public constant returns (string) {
         return prepareModulesAddresses();
     }
-
-    /*
-    function numBlockInfo(bytes32 _userName, uint _poolIndex, bool _isMined) public constant returns (uint) {
+    
+    function purchaseMinerRobot(bytes32 _userName, uint _robotId) public {
         checkRegistered(_userName, msg.sender);
-        return getPosManager().numBlockInfo(_poolIndex, _isMined);
+        conductPurchaseRobot(_userName, _robotId, msg.value);
     }
-
-    function getBlockInfoByIndex(bytes32 _userName, uint _poolIndex, uint _blockIndex) public constant returns (string) {
-        checkRegistered(_userName, msg.sender);
-        return prepareBlockInfoByIndex(_poolIndex, _blockIndex);
-    }
-
-    function numStakerMining(bytes32 _userName, bool _isReward) public constant returns (uint) {
-        checkRegistered(_userName, msg.sender);
-        return getDBNode(_userName).numMiningInfo(_isReward);
-    }
-
-    function getStakerMiningInfoByIndex(bytes32 _userName, bool _isReward, uint _index) public constant returns (string) {
-        checkRegistered(_userName, msg.sender);
-        return prepareMiningInfoByIndex(_userName, _isReward, _index);
-    }
-    */
 }
