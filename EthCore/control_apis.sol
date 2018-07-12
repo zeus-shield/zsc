@@ -480,6 +480,20 @@ contract ControlApis is ControlBase {
         return prepareModulesAddresses();
     }
     
+    function activeMinerRobot(bytes32 _userName, uint _robotId, uint _rewardType) public {
+        checkRegistered(_userName, msg.sender);
+        
+        bytes32 walletName;
+        address walletAdr;
+        
+        walletName = formatWalletName(_userName, "wat");
+        walletAdr  = address(getDBNode(dbName_, walletName));
+        
+       uint lockedAmount = getDBModule("pos").activeRobot(walletAdr, _robotId, _rewardType);
+       
+       DBNode(walletAdr).lockWallet(getZSCTokenAddress(), lockedAmount);
+    }    
+    
     function purchaseMinerRobot(bytes32 _userName, uint _robotId) public {
         checkRegistered(_userName, msg.sender);
         
