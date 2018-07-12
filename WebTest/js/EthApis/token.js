@@ -19,4 +19,12 @@ export default class Token {
             console.log(data);
         });
     }
+
+    tokenbalance(contractaddress, address) {
+        let url = `https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=${contractaddress}&address=${address}&tag=latest`;
+
+        this[http].get(url, 10000, function(data) {
+            console.log(data);
+        });
+    }
 }
