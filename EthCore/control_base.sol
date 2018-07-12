@@ -26,7 +26,9 @@ contract DBNode {
     function informTransaction(address _src, uint256 _amount) public;
     function numTransactions() public constant returns (uint);
     function getTransactionInfoByIndex(uint _index) public constant returns (uint, bool,  bytes32, uint, address, address);
-
+    function lockWallet(address _tokenAdr, uint _amount) public;
+    function unlockWallet(address _tokenAdr, uint _amount) public;
+   
     function setAgreementStatus(bytes32 _tag, bytes32 receiver) public returns (bool);
     //function configureHandlers() public returns (bool);
     //function getHandler(bytes32 _type) public constant returns (address);
@@ -68,7 +70,7 @@ contract DBDatabase {
 
 contract DBModule {
     function getTokenAddress(bytes32 _symbol) public view returns (address);
-    function activeRobot(address _user, uint _robotId, uint _stakePoint, uint _durationInDays) public;
+    function activeRobot(address _user, uint _robotId, uint _rewardType) public returns (uint);
     function publishRobot(address _user, uint _robotId, uint _price) public;
     function purchaseRobot(address _buyer, uint _robotId, uint _price) public returns (address);
 }
