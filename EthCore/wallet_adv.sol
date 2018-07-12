@@ -44,12 +44,12 @@ contract WalletAdv is DBNode {
         recordInput(msg.sender, msg.value);
     }
 
-    function getBlance(address _adr) public constant returns (uint) {
+    function getBlance(address _tokenAdr) public constant returns (uint) {
         checkDelegate(msg.sender, 1);
-        if (_adr == address(0)) {
+        if (_tokenAdr == address(0)) {
             return address(this).balance;
         } else {
-            return ERC20Interface(_erc20TokenAdr).balanceOf(address(this));
+            return ERC20Interface(_tokenAdr).balanceOf(address(this));
         }
     }
 
@@ -64,7 +64,7 @@ contract WalletAdv is DBNode {
                 return 0;
             }
         } else {
-            if (ERC20Interface(_erc20TokenAdr).transfer(_dest, _amount)) {
+            if (ERC20Interface(_tokenAdr).transfer(_dest, _amount)) {
                 recordOut(_dest, _amount);
                 return _amount;
             } else {
