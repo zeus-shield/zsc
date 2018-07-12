@@ -262,7 +262,7 @@ contract ControlApis is ControlBase {
         require(walletAdr != address(0));
 
         uint amount = 0;
-        amount = DBNode(walletAdr).executeTransaction(_dest, _amount);
+        amount = DBNode(walletAdr).executeTransaction(getZSCTokenAddress(), _dest, _amount);
 
         /*
         if (getDBDatabase(getCurrentDBName()).checkeNodeByAddress(_dest)) {
@@ -483,5 +483,10 @@ contract ControlApis is ControlBase {
     function purchaseMinerRobot(bytes32 _userName, uint _robotId) public {
         checkRegistered(_userName, msg.sender);
         conductPurchaseRobot(_userName, _robotId, msg.value);
+    }
+    
+    function publishMinerRobot(bytes32 _userName, uint _robotId, uint _price) public {
+        checkRegistered(_userName, msg.sender);
+        conductPublishRobot(_userName, _robotId, _price);
     }
 }
