@@ -443,8 +443,6 @@ contract ControlApis is ControlBase {
     }
     /*------2018-07-06: new verstion: END-----  */
 
-
-
     //Disabled during alpha-test
     /*
     function getUserWalletAddress(bytes32 _userName, bytes32 _tokenSymbol) public constant returns (address) {
@@ -495,6 +493,35 @@ contract ControlApis is ControlBase {
        
         DBNode(walletAdr).lockWallet(getZSCTokenAddress(), lockedAmount);
     }    
+    
+    function auctionMinerRobot(bytes32 _userName, uint _robotId, uint _price) public payable {
+        checkRegistered(_userName, msg.sender);
+        
+        address walletBuyerAdr;
+        address preWalletAdr;
+        uint prePrice;
+        uint newPrice;
+
+        walletBuyerAdr  = getWalletAddress(_userName);
+        (preWalletAdr, prePrice, newPricew) = getDBModule("pos").auctionRobot(walletBuyerAdr, _robotId, _price);
+
+        if (prePrice != 0) {
+            DBNode(preWalletAdr).unLockWallet(getZSCTokenAddress(), prePrice);
+        }
+        DBNode(walletBuyerAdr).lockWallet(getZSCTokenAddress(), _price);
+    }
+
+    function trytakeMinerRobot(bytes32 _userName, uint _robotId) public payable {
+        checkRegistered(_userName, msg.sender);
+
+        address walletBuyerAdr;
+        address seller;
+        address endBuyer;
+        uint endPrice;
+        
+        walletBuyerAdr  = getWalletAddress(_userName);
+        (seller, endBuyer, endPrice) = getDBModule("pos").tryTakeRobot(walletBuyerAdr, _robotId);
+    }
     
     function publishMinerRobot(bytes32 _userName, uint _robotId, uint _price) public {
         checkRegistered(_userName, msg.sender);
