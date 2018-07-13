@@ -71,11 +71,12 @@ contract DBDatabase {
 contract DBModule {
     function getTokenAddress(bytes32 _symbol) public view returns (address);
     function createRobot(address _user, uint _level) public returns (uint);
-    function activeRobot(address _user, uint _robotId, uint _rewardType) public returns (uint);    
+    function activeRobot(address _user, uint _robotId, uint _rewardType) public returns (uint);
     function enhanceRobot(address _user, uint _robotA, uint _robotB) public returns (uint);
-    function publishRobot(address _seller, uint _robotId, uint _price, uint _durationInDays) public;    
-    function auctionRobot(address _buyer, uint _robotId, uint _price) public returns (uint);
-    function tryTakeRobot(address _buyer, uint _robotId) public returns (address, uint, uint);
+    function publishRobot(address _seller, uint _robotId, uint _price, uint _durationInDays) public;
+    function cancelAuction(address _seller, uint _robotId) public returns (address buyer, uint price);
+    function auctionRobot(address _buyer, uint _robotId, uint _price) public returns (address preBuyer, uint prePrice, uint newPrice);
+    function tryTakeRobot(address _buyer, uint _robotId) public returns (address, address, uint);
     function claimable(address _user, uint _robotId) public view returns (bool);
     function claimReward(address _user, uint _robotId) public returns (uint);
 }
@@ -188,6 +189,13 @@ contract ControlBase is ControlInfo {
             DBNode(_nodeDstAdr).setParameter(tempPara, tempValue);
         }
         return true;
+    }
+
+    function getWalletAddress(bytes32 _enName) internal pure returns (address) {
+        bytes32 walletName;
+        
+        walletName = formatWalletName(_enName, "wat");
+        return address(getDBNode(dbName_, walletName)); 
     }
 
     function createNodeForUser(bytes32 _type, bytes32 _nodeName, address _creator) internal returns (address) {
