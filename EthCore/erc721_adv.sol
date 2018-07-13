@@ -13,8 +13,8 @@ contract ERC721 {
     event Approval(address indexed _owner, address indexed _approved, uint indexed _tokenId);
     event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);
     function totoalSupply() public view returns (uint);
-    function balanceOf(address _owner) external view returns (uint);
-    function ownerOf(uint _tokenId) external view returns (address);
+    function balanceOf(address _owner) public view returns (uint);
+    function ownerOf(uint _tokenId) public view returns (address);
     //function safeTransferFrom(address _from, address _to, uint _tokenId, bytes data) external;
     function safeTransferFrom(address _from, address _to, uint _tokenId) external;
     //function transferFrom(address _from, address _to, uint _tokenId) external;
@@ -75,13 +75,13 @@ contract Erc721Adv is ERC721, Delegated {
         return totalTokens_;
     }
 
-    function balanceOf(address _owner) external view returns (uint) {
+    function balanceOf(address _owner) public view returns (uint) {
         require(_owner != address(0));
         return ownedTokens_[_owner].length;
     }
 
-    function ownerOf(uint _tokenId) external view returns (address) {
-        require(tokenOwner_[_tokenId] != address(0));
+    function ownerOf(uint _tokenId) public view returns (address) {
+        //require(tokenOwner_[_tokenId] != address(0));
         return tokenOwner_[_tokenId];
     }
 
