@@ -9,14 +9,13 @@ import "./erc721_adv.sol";
 
 contract SysGmPos is Erc721Adv, SysGmBase {
     struct RobotUnit {
-        address user_;
         bool buyable_;
         bool activated_;
         uint level_;
+        uint stakePoint_;
+        uint rewardRatio_;
         uint mineStart_;
         uint mineEnd_;
-        uint stakerPoint_;
-        uint rewardRatio_;
         uint auctionStart_;
         uint auctionEnd_;
         uint startPrice_;
@@ -37,13 +36,13 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     function getRobotPrice(uint _robotId) public view returns (uint) {
         checkDelegate(msg.sender, 1);
         require(_robotId < robotNos_);
-        return robots_[_robotId].price_;
+        return robots_[_robotId].endPrice_;
     }
 
     function getRobotStatus(uint _robotId) public view returns (address, bool, bool) {
         checkDelegate(msg.sender, 1);
         require(_robotId < robotNos_);
-        return (robots_[_robotId].user_,
+        return (ownerOf(_robotId),
                 robots_[_robotId].buyable_,
                 robots_[_robotId].activated_);
     }
@@ -54,7 +53,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return (robots_[_robotId].level_,
                 robots_[_robotId].mineStart_, 
                 robots_[_robotId].mineEnd_, 
-                robots_[_robotId].stakerPoint_,
+                robots_[_robotId].stakePoint_,
                 robots_[_robotId].rewardRatio_);
     }
 
