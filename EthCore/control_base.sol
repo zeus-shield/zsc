@@ -70,9 +70,14 @@ contract DBDatabase {
 
 contract DBModule {
     function getTokenAddress(bytes32 _symbol) public view returns (address);
-    function activeRobot(address _user, uint _robotId, uint _rewardType) public returns (uint);
-    function publishRobot(address _user, uint _robotId, uint _price) public;
-    function purchaseRobot(address _buyer, uint _robotId, uint _price) public returns (address);
+    function createRobot(address _user, uint _level) public returns (uint);
+    function activeRobot(address _user, uint _robotId, uint _rewardType) public returns (uint);    
+    function enhanceRobot(address _user, uint _robotA, uint _robotB) public returns (uint);
+    function publishRobot(address _seller, uint _robotId, uint _price, uint _durationInDays) public;    
+    function auctionRobot(address _buyer, uint _robotId, uint _price) public returns (uint);
+    function tryTakeRobot(address _buyer, uint _robotId) public returns (address, uint, uint);
+    function claimable(address _user, uint _robotId) public view returns (bool);
+    function claimReward(address _user, uint _robotId) public returns (uint);
 }
 
 contract ControlBase is ControlInfo {   
