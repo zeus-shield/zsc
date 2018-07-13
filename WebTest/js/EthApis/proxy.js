@@ -35,4 +35,12 @@ export default class Proxy {
             console.log(data);
         });
     }
+
+    eth_getBlockTransactionCountByNumber(tag) {
+        let url = `https://api.etherscan.io/api?module=proxy&action=eth_getBlockTransactionCountByNumber&tag=${tag}`;
+
+        this[http].get(url, 10000, function(data) {
+            console.log(data);
+        });
+    }
 }
