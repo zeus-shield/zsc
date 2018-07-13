@@ -20,6 +20,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         uint auctionEnd_;
         uint startPrice_;
         uint endPrice_;
+        address buyer_;
     }
 
     uint internal robotNos_;
@@ -57,10 +58,11 @@ contract SysGmPos is Erc721Adv, SysGmBase {
                 robots_[_robotId].rewardRatio_);
     }
 
-    function getRobotAuctionInfo(uint _robotId) public view returns (uint, uint, uint, uint) {
+    function getRobotAuctionInfo(uint _robotId) public view returns (address, uint, uint, uint, uint) {
         checkDelegate(msg.sender, 1);
         require(_robotId < robotNos_);
-        return (robots_[_robotId].auctionStart_,
+        return (robots_[_robotId].buyer_,
+                robots_[_robotId].auctionStart_,
                 robots_[_robotId].auctionEnd_, 
                 robots_[_robotId].startPrice_,
                 robots_[_robotId].endPrice_);
