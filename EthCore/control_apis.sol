@@ -483,52 +483,23 @@ contract ControlApis is ControlBase {
     function createMinerRobot(bytes32 _userName) public {
         checkRegistered(_userName, msg.sender);
         
-        bytes32 walletName;
-        address walletAdr;
-        
-        walletName = formatWalletName(_userName, "wat");
-        walletAdr  = address(getDBNode(dbName_, walletName));
-        getDBModule("pos").createRobot(walletAdr, 0, 0);
+        address walletAdr = getWalletAddress(_userName);
+        getDBModule("pos").createRobot(walletAdr, 0);
     }
     
     function activeMinerRobot(bytes32 _userName, uint _robotId, uint _rewardType) public {
         checkRegistered(_userName, msg.sender);
         
-        bytes32 walletName;
-        address walletAdr;
-        
-        walletName = formatWalletName(_userName, "wat");
-        walletAdr  = address(getDBNode(dbName_, walletName));
-        
-       uint lockedAmount = getDBModule("pos").activeRobot(walletAdr, _robotId, _rewardType);
+        address walletAdr = getWalletAddress(_userName);
+        uint lockedAmount = getDBModule("pos").activeRobot(walletAdr, _robotId, _rewardType);
        
-       DBNode(walletAdr).lockWallet(getZSCTokenAddress(), lockedAmount);
+        DBNode(walletAdr).lockWallet(getZSCTokenAddress(), lockedAmount);
     }    
-    
-    function purchaseMinerRobot(bytes32 _userName, uint _robotId) public payable {
-        checkRegistered(_userName, msg.sender);
-        
-        bytes32 walletName;
-        address walletBuyerAdr;
-        address walletSellerAdr;
-        
-        walletName      = formatWalletName(_userName, "wat");
-        walletBuyerAdr  = address(getDBNode(getCurrentDBName(), walletName));
-        walletSellerAdr = getDBModule("pos").purchaseRobot(walletBuyerAdr, _robotId, msg.value);
-        
-        uint ret = DBNode(walletBuyerAdr).executeTransaction(address(0), walletSellerAdr, msg.value);
-        require(ret != 0);
-    }
     
     function publishMinerRobot(bytes32 _userName, uint _robotId, uint _price) public {
         checkRegistered(_userName, msg.sender);
         
-        bytes32 walletName;
-        address walletAdr;
-        
-        walletName = formatWalletName(_userName, "wat");
-        walletAdr  = address(getDBNode(dbName_, walletName));
-        
+        address walletAdr = getWalletAddress(_userName);
         getDBModule("pos").publishRobot(walletAdr, _robotId, _price);
     }
 }
