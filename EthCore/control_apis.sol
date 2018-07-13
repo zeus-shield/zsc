@@ -479,6 +479,17 @@ contract ControlApis is ControlBase {
     function getModuleAddresses() public constant returns (string) {
         return prepareModulesAddresses();
     }
+   
+    function createMinerRobot(bytes32 _userName) public {
+        checkRegistered(_userName, msg.sender);
+        
+        bytes32 walletName;
+        address walletAdr;
+        
+        walletName = formatWalletName(_userName, "wat");
+        walletAdr  = address(getDBNode(dbName_, walletName));
+        getDBModule("pos").createRobot(walletAdr, 0, 0);
+    }
     
     function activeMinerRobot(bytes32 _userName, uint _robotId, uint _rewardType) public {
         checkRegistered(_userName, msg.sender);
@@ -494,7 +505,7 @@ contract ControlApis is ControlBase {
        DBNode(walletAdr).lockWallet(getZSCTokenAddress(), lockedAmount);
     }    
     
-    function purchaseMinerRobot(bytes32 _userName, uint _robotId) public {
+    function purchaseMinerRobot(bytes32 _userName, uint _robotId) public payable {
         checkRegistered(_userName, msg.sender);
         
         bytes32 walletName;
