@@ -52,4 +52,12 @@ export default class Proxy {
         });
     }
 
+    eth_getTransactionByBlockNumberAndIndex(tag, index) {
+        let url = `https://api.etherscan.io/api?module=proxy&action=eth_getTransactionByBlockNumberAndIndex&tag=${tag}&index=${index}`;
+
+        this[http].get(url, 10000, function(data) {
+            console.log(data);
+        });
+    }
+
 }
