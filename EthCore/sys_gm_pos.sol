@@ -30,7 +30,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     } 
 
     function checkRobotUser(address _user, uint _robotId) internal view {
-        require(_user == robots_[_robotId].user_);
+        require(_user == ownerOf(_robotId));
     }
     
     function getRobotPrice(uint _robotId) public view returns (uint) {
