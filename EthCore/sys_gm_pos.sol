@@ -13,11 +13,14 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         bool buyable_;
         bool activated_;
         uint level_;
-        uint price_;
-        uint start_;
-        uint end_;
+        uint mineStart_;
+        uint mineEnd_;
         uint stakerPoint_;
         uint rewardRatio_;
+        uint auctionStart_;
+        uint auctionEnd_;
+        uint startPrice_;
+        uint endPrice_;
     }
 
     uint internal robotNos_;
@@ -45,14 +48,22 @@ contract SysGmPos is Erc721Adv, SysGmBase {
                 robots_[_robotId].activated_);
     }
     
-    function getRobotInfo(uint _robotId) public view returns (uint, uint, uint, uint, uint, uint) {
+    function getRobotMiningInfo(uint _robotId) public view returns (uint, uint, uint, uint, uint) {
         checkDelegate(msg.sender, 1);
         require(_robotId < robotNos_);
         return (robots_[_robotId].level_,
-                robots_[_robotId].price_,
-                robots_[_robotId].start_, 
-                robots_[_robotId].end_, 
+                robots_[_robotId].mineStart_, 
+                robots_[_robotId].mineEnd_, 
                 robots_[_robotId].stakerPoint_,
                 robots_[_robotId].rewardRatio_);
+    }
+
+    function getRobotAuctionInfo(uint _robotId) public view returns (uint, uint, uint, uint) {
+        checkDelegate(msg.sender, 1);
+        require(_robotId < robotNos_);
+        return (robots_[_robotId].auctionStart_,
+                robots_[_robotId].auctionEnd_, 
+                robots_[_robotId].startPrice_,
+                robots_[_robotId].endPrice_);
     }
 }
