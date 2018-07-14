@@ -5,18 +5,24 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="./web3.js/dist/web3.js"></script>
-<script type="text/javascript" src="./web3js.js"></script>
+<script type="text/javascript" src=".././web3.js/dist/web3.js"></script>
+<script type="text/javascript" src="../web3js.js"></script>
 
-<script type="text/javascript" src="./userFunctions.js"></script>
-<script type="text/javascript" src="./htmlFormat.js"></script>
-<script type="text/javascript" src="./basicFunctions.js"></script>
+<script type="text/javascript" src="../userFunctions.js"></script>
+<script type="text/javascript" src="../basicFunctions.js"></script>
 
-<script type="text/javascript" src="./zsc_element.js"></script>
-<script type="text/javascript" src="./zsc_transactions.js"></script>
-<script type="text/javascript" src="./zsc_user.js"></script>
-<script type="text/javascript" src="./zsc_wallet.js"></script>
-<script type="text/javascript" src="./zsc_module_adrs.js"></script>
+<script type="text/javascript" src="../zsc_element.js"></script>
+<script type="text/javascript" src="../zsc_transactions.js"></script>
+<script type="text/javascript" src="../zsc_user.js"></script>
+<script type="text/javascript" src="../zsc_wallet.js"></script>
+<script type="text/javascript" src="../zsc_module_adrs.js"></script>
+
+<script type="text/javascript" src="./js/zsc_element.js"></script>
+<script type="text/javascript" src="./js/zsc_transactions.js"></script>
+<script type="text/javascript" src="./js/zsc_user.js"></script>
+<script type="text/javascript" src="./js/zsc_wallet.js"></script>
+<script type="text/javascript" src="./js/zsc_module_adrs.js"></script>
+
 <script type="text/javascript">
 
     var web3;
