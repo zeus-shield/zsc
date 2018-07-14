@@ -8,7 +8,6 @@ import "./object.sol";
 
 contract ControlApis {
     function createUserNode(bytes32 _factoryType, bytes32 _userName, address _extraAdr) public returns (address);
-    function getUserWalletAddress(bytes32 _userName, bytes32 _tokenSymbol) public constant returns (address);
     function setUserStatus(bytes32 _user, bool _tag) public returns (bool);
     function getUserStatus(bytes32 _user) public constant returns (bool);
 }
@@ -130,7 +129,6 @@ contract AdmBase is Object {
         //createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr)
         testUsers_[index].nodeAdr_ = ControlApis(controlApisAdr_).createUserNode(_type, userName, msg.sender);
 
-        //address userZSCWalletAdr = ControlApis(controlApisAdr_).getUserWalletAddress(userName, "ZSC");
         return;
 
         /*
