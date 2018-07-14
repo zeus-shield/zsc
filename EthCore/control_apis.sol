@@ -15,9 +15,10 @@ contract ControlApis is ControlBase {
     function setUserStatus(bytes32 _user, bool _tag) public returns (bool);
     function getUserStatus(bytes32 _user) public constant returns (bool);
 
-    function setZSCAmountToUser(uint _allocatedZSC) public { 
+    function setPreallocateAmountToTester(uint _allocatedETH, uint _allocatedZSC) public { 
         checkDelegate(msg.sender, 1);
-        allocatedZSC_ = _allocatedZSC * 1 ether;
+        allocatedETH_ = _allocatedETH.mul(1 ether);
+        allocatedZSC_ = _allocatedZSC.mul(1 ether);
     }
 
     /// @dev Set the zsc adm address
@@ -98,15 +99,6 @@ contract ControlApis is ControlBase {
         return walletAdr;
     }
 
-    /// @dev Get the element by its address
-    /// @param _adr The address of the existing element
-    function getElementNameByAddress(bytes32 _userName, address _adr) public constant returns (bytes32) {
-        checkRegistered(_userName, msg.sender);
-
-        require (getDBDatabase(getCurrentDBName()).checkeNodeByAddress(_adr));
-        return Object(_adr).name();
-    }
-
     /// @dev Get the type of an element
     /// @param _enName The name of the element belonging to the user
     function getElementType(bytes32 _userName, bytes32 _enName) public constant returns (bytes32) {
@@ -128,7 +120,6 @@ contract ControlApis is ControlBase {
         return getDBNode(getCurrentDBName(), _enName).addParameter(_parameter);
     }
 
-
     /// @dev Get the value of a paramter of an element
     /// @param _enName The name of the element
     /// @param _parameter The name of the existing parameter
@@ -139,7 +130,6 @@ contract ControlApis is ControlBase {
         if (ndType != "agreement") {
             //checkMatched(_userName, _enName, msg.sender);
         }
-
         return getDBNode(getCurrentDBName(), _enName).getParameter(_parameter);
     }
 
@@ -162,10 +152,7 @@ contract ControlApis is ControlBase {
         if (ndType != "agreement") {
             checkMatched(_userName, _enName, msg.sender);
         }
-
-        bytes32 walletName = formatWalletName(_enName, _symbol);
-        address walletAdr = address(getDBNode(getCurrentDBName(), walletName));
-        require(walletAdr != address(0));
+        address walletAdr = getWalletAddress(_enName);
 
         return DBNode(walletAdr).getBlance().div(1 ether);
     }
