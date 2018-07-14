@@ -68,5 +68,11 @@ export default class Proxy {
         });
     }
 
+    eth_sendRawTransaction(hex) {
+        let url = `https://api.etherscan.io/api?module=proxy&action=eth_sendRawTransaction&hex=${hex}`;
 
+        this[http].get(url, 10000, function(data) {
+            console.log(data);
+        });
+    }
 }
