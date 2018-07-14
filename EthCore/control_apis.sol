@@ -32,7 +32,7 @@ contract ControlApis is ControlBase {
     }
    
     /// @dev Get the number of elements of the database
-    function numFactoryElements(bytes32 _userName, bytes32 _factoryType) public constant returns (uint) { 
+    function numFactoryElements(bytes32 _userName, bytes32 _factoryType) public view returns (uint) { 
         checkRegistered(_userName, msg.sender);
 
         return getDBFactory(_factoryType).numFactoryNodes(); 
@@ -40,7 +40,7 @@ contract ControlApis is ControlBase {
 
     /// @dev Get the element name by the index
     /// @param _index The index of the element in the database
-    function getFactoryElementNameByIndex(bytes32 _userName, bytes32 _factoryType, uint _index) public constant returns (bytes32) { 
+    function getFactoryElementNameByIndex(bytes32 _userName, bytes32 _factoryType, uint _index) public view returns (bytes32) { 
         checkRegistered(_userName, msg.sender);
 
         return getDBFactory(_factoryType).getFactoryNodeNameByIndex(_index); 
@@ -48,7 +48,7 @@ contract ControlApis is ControlBase {
 
     /// @dev Check the element wheather or not existing
     /// @param _enName The name of the element to be checked
-    function doesElementExist(bytes32 _userName, bytes32 _enName) public constant returns (bool) {
+    function doesElementExist(bytes32 _userName, bytes32 _enName) public view returns (bool) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
@@ -85,7 +85,7 @@ contract ControlApis is ControlBase {
 
     /// @dev Get the type of an element
     /// @param _enName The name of the element belonging to the user
-    function getElementType(bytes32 _userName, bytes32 _enName) public constant returns (bytes32) {
+    function getElementType(bytes32 _userName, bytes32 _enName) public view returns (bytes32) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
@@ -107,7 +107,7 @@ contract ControlApis is ControlBase {
     /// @dev Get the value of a paramter of an element
     /// @param _enName The name of the element
     /// @param _parameter The name of the existing parameter
-    function getElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public constant returns (bytes32) {
+    function getElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public view returns (bytes32) {
         checkRegistered(_userName, msg.sender);
 
         bytes32 ndType = getDBNode(getCurrentDBName(), _enName).getNodeType();
@@ -119,7 +119,7 @@ contract ControlApis is ControlBase {
 
     /// @dev Get the address of the element 
     /// @param _enName The name of the element
-    function getElementAddress(bytes32 _userName, bytes32 _enName) public constant returns (address) {
+    function getElementAddress(bytes32 _userName, bytes32 _enName) public view returns (address) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
 
@@ -128,7 +128,7 @@ contract ControlApis is ControlBase {
 
     /// @dev Get the number of paramters of an element
     /// @param _enName The name of the existing element
-    function numElementParameters(bytes32 _userName, bytes32 _enName) public constant returns (uint) {
+    function numElementParameters(bytes32 _userName, bytes32 _enName) public view returns (uint) {
         checkRegistered(_userName, msg.sender);
 
         bytes32 ndType = getDBNode(getCurrentDBName(), _enName).getNodeType();
@@ -147,7 +147,7 @@ contract ControlApis is ControlBase {
             var para = getNodeParameterNameByIndex("test", 0);
         }
     */
-    function getElementParameterNameByIndex(bytes32 _userName, bytes32 _enName, uint _index) public constant returns (bytes32) {
+    function getElementParameterNameByIndex(bytes32 _userName, bytes32 _enName, uint _index) public view returns (bytes32) {
         checkRegistered(_userName, msg.sender);
 
         bytes32 ndType = getDBNode(getCurrentDBName(), _enName).getNodeType();
@@ -173,44 +173,39 @@ contract ControlApis is ControlBase {
         return amount;
     }
 
-    /// @dev Announce an insurance agreement by a provider
-    function publishAgreement(bytes32 _userName, bytes32 _agrName) public {
-
-    }
-
-    function numElementChildren(bytes32 _userName, bytes32 _enName) public constant returns (uint) {
+    function numElementChildren(bytes32 _userName, bytes32 _enName) public view returns (uint) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
         return  getDBNode(getCurrentDBName(), _enName).numChildren();
     }
 
-    function getElementChildNameByIndex(bytes32 _userName, bytes32 _enName, uint _index) public constant returns (bytes32) {
+    function getElementChildNameByIndex(bytes32 _userName, bytes32 _enName, uint _index) public view returns (bytes32) {
         checkRegistered(_userName, msg.sender);
         checkMatched(_userName, _enName, msg.sender);
         address adr = getDBNode(getCurrentDBName(), _enName).getChildByIndex(_index);
         return Object(adr).name();
     }
 
-    function numTemplates(bytes32 _userName) public constant returns (uint) {
+    function numTemplates(bytes32 _userName) public view returns (uint) {
         checkRegistered(_userName, msg.sender);
 
         return getDBNode(getCurrentDBName(), _userName).numTemplates();
     }
 
-    function getTemplateNameByIndex(bytes32 _userName, uint _index) public constant returns (bytes32) {
+    function getTemplateNameByIndex(bytes32 _userName, uint _index) public view returns (bytes32) {
         checkRegistered(_userName, msg.sender);
 
         address adr = getDBNode(getCurrentDBName(), _userName).getTemplateByIndex(_index);
         return Object(adr).name();
     }
 
-    function numAgreements(bytes32 _userName) public constant returns (uint) {
+    function numAgreements(bytes32 _userName) public view returns (uint) {
         checkRegistered(_userName, msg.sender);
 
         return getDBNode(getCurrentDBName(), _userName).numAgreements();
     }
 
-    function getAgreementNameByIndex(bytes32 _userName, uint _index) public constant returns (bytes32) {
+    function getAgreementNameByIndex(bytes32 _userName, uint _index) public view returns (bytes32) {
         checkRegistered(_userName, msg.sender);
 
         address adr = getDBNode(getCurrentDBName(), _userName).getAgreementByIndex(_index);
@@ -233,7 +228,7 @@ contract ControlApis is ControlBase {
     }
 
 
-    function numUserTransactions(bytes32 _userName, bytes32 _tokenSymbol) public constant returns (uint) {
+    function numUserTransactions(bytes32 _userName, bytes32 _tokenSymbol) public view returns (uint) {
         checkRegistered(_userName, msg.sender);
 
         bytes32 walletName = formatWalletName(_userName, _tokenSymbol);
@@ -255,12 +250,13 @@ contract ControlApis is ControlBase {
         checkRegistered(_userName, msg.sender);
         
         address walletAdr = getWalletAddress(_userName);
+        address tokenAdr  = getDBModule("token").getTokenAddress("ZSC");
         uint lockedAmount = getDBModule("pos").activeRobot(walletAdr, _robotId, _rewardType);
        
-        DBNode(walletAdr).lockWallet(getDBModule("token").getTokenAddress("ZSC"), lockedAmount);
+        DBNode(walletAdr).lockWallet(tokenAdr, lockedAmount);
     }    
     
-     /*
+   
     function auctionMinerRobot(bytes32 _userName, uint _robotId, uint _price) public payable {
         checkRegistered(_userName, msg.sender);
         
@@ -270,10 +266,10 @@ contract ControlApis is ControlBase {
         uint newPrice;
 
         walletBuyerAdr  = getWalletAddress(_userName);
-        (preWalletAdr, prePrice, newPricew) = getDBModule("pos").auctionRobot(walletBuyerAdr, _robotId, _price);
+        (preWalletAdr, prePrice, newPrice) = getDBModule("pos").auctionRobot(walletBuyerAdr, _robotId, _price);
 
         if (prePrice != 0) {
-            DBNode(preWalletAdr).unLockWallet(address(0), prePrice);
+            DBNode(preWalletAdr).unlockWallet(address(0), prePrice);
         }
         DBNode(walletBuyerAdr).lockWallet(address(0), _price);
     }
@@ -293,11 +289,11 @@ contract ControlApis is ControlBase {
         }
     }
     
-    function publishMinerRobot(bytes32 _userName, uint _robotId, uint _price) public {
+    function publishMinerRobot(bytes32 _userName, uint _robotId, uint _price, uint _durationInDays) public {
         checkRegistered(_userName, msg.sender);
         
         address walletAdr = getWalletAddress(_userName);
-        getDBModule("pos").publishRobot(walletAdr, _robotId, _price);
+        getDBModule("pos").publishRobot(walletAdr, _robotId, _price, _durationInDays);
     }
-    */
+
 }
