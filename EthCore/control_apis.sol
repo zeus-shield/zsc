@@ -59,7 +59,7 @@ contract ControlApis is ControlBase {
         return (adr != address(0));
     }
 
-    /// @dev Creat an element
+    /// @dev Create an user
     function createUserNode(bytes32 _factoryType, bytes32 _userName, address _extraAdr) public returns (address) {
         checkDelegate(msg.sender, 1);
 
@@ -142,21 +142,6 @@ contract ControlApis is ControlBase {
         return address(getDBNode(getCurrentDBName(), _enName));
     }
 
-    //Disabled during alpha-test
-    /// @dev Get the eth balance of the element
-    /// @param _enName The name of the element
-    function getElementBalance(bytes32 _userName, bytes32 _enName, bytes32 _symbol) public constant returns (uint) {
-        checkRegistered(_userName, msg.sender);
-
-        bytes32 ndType = getDBNode(getCurrentDBName(), _enName).getNodeType();
-        if (ndType != "agreement") {
-            checkMatched(_userName, _enName, msg.sender);
-        }
-        address walletAdr = getWalletAddress(_enName);
-
-        return DBNode(walletAdr).getBlance().div(1 ether);
-    }
-
     /// @dev Get the number of paramters of an element
     /// @param _enName The name of the existing element
     function numElementParameters(bytes32 _userName, bytes32 _enName) public constant returns (uint) {
@@ -166,7 +151,6 @@ contract ControlApis is ControlBase {
         if (ndType != "agreement") {
             checkMatched(_userName, _enName, msg.sender);
         }
-
         return  getDBNode(getCurrentDBName(), _enName).numParameters();
     }
 
@@ -197,12 +181,11 @@ contract ControlApis is ControlBase {
         require(_amount > 0);
         checkRegistered(_userName, msg.sender);
 
-        bytes32 walletName = formatWalletName(_userName, _tokenSymbol);
-        address walletAdr = address(getDBNode(getCurrentDBName(), walletName));
-
+        address walletAdr = getWalletAddress(_userName);
         require(walletAdr != address(0));
 
-        uint amount = DBNode(walletAdr).executeTransaction(getZSCTokenAddress(), _dest, _amount);
+        address tokenContractAdr = getDBModule("token").getTokenAddress("ZSC");
+        uint amount = DBNode(walletAdr).executeTransaction(tokenContractAdr, _dest, _amount);
         return amount;
     }
 
@@ -253,16 +236,6 @@ contract ControlApis is ControlBase {
         return Object(adr).name();
     }
 
-    //Disabled during alpha-test
-    /*
-    function deleteAgreementByIndex(bytes32 _userName, uint _index) public returns (bool) {
-        checkRegistered(_userName, msg.sender);
-
-        address adr = getDBNode(getCurrentDBName(), _userName).getAgreementByIndex(_index);
-        return deleteAgreement( Object(adr).name());
-    }
-    */
-
     /// @dev Buy an insurance agreement from a provider
     function purchaseAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
         checkRegistered(_userName, msg.sender);
@@ -279,14 +252,7 @@ contract ControlApis is ControlBase {
         return conductZSCClaimInsurance(_userName, _agrName);
     }
 
-    function getTokenBalanceInfoByIndex(bytes32 _userName, uint _index) public constant returns (string) {
-        checkRegistered(_userName, msg.sender);
-
-        return prepareTokenBalanceInfoByIndex(_userName, _index);
-    }
-
     /*------2018-07-06: new verstion: YYA------  */
-
     function enableUserWallet(bytes32 _userName) public returns (address) {
         checkRegistered(_userName, msg.sender);
 
@@ -301,10 +267,16 @@ contract ControlApis is ControlBase {
         return walletAdr;
     }
 
+    function getTokenBalanceInfoByIndex(bytes32 _userName, uint _index) public constant returns (string) {
+        checkRegistered(_userName, msg.sender);
+
+        return prepareTokenBalanceInfo(true, _userName, _index, "null");
+    }
+
     function getTokenBalanceInfoBySymbol(bytes32 _userName, bytes32 _symbol) public constant returns (string) {
         checkRegistered(_userName, msg.sender);
 
-        return prepareTokenBalanceInfoBySymbol(_userName, _symbol);
+        return prepareTokenBalanceInfo(false, _userName, 0, _symbol);
     }
     /*------2018-07-06: new verstion: END-----  */
 
