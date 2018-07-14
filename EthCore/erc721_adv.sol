@@ -95,7 +95,7 @@ contract Erc721Adv is ERC721, Delegated {
         require(_to != msg.sender);
 
         if(_to != address(0) || tokenApprovedFor_[_tokenId] != address(0)) {
-            Approval(msg.sender, _to, _tokenId);
+            emit Approval(msg.sender, _to, _tokenId);
         }
         tokenApprovedFor_[_tokenId] = _to;
     }
@@ -143,7 +143,7 @@ contract Erc721Adv is ERC721, Delegated {
     function _mint(address _to, uint _tokenId) internal {
         require(_to != address(0));
         addToken(_to, _tokenId);
-        Transfer(address(0), _to, _tokenId);
+        emit Transfer(address(0), _to, _tokenId);
     }
 
     /**
@@ -156,7 +156,7 @@ contract Erc721Adv is ERC721, Delegated {
             clearApproval(_from, _tokenId);
         }
         removeToken(_from, _tokenId);
-        Transfer(_from, address(0), _tokenId);
+        emit Transfer(_from, address(0), _tokenId);
     }
 
     /**
@@ -173,7 +173,7 @@ contract Erc721Adv is ERC721, Delegated {
         clearApproval(_from, _tokenId);
         removeToken(_from, _tokenId);
         addToken(_to, _tokenId);
-        Transfer(_from, _to, _tokenId);
+        emit Transfer(_from, _to, _tokenId);
     }
 
     /**
@@ -183,7 +183,7 @@ contract Erc721Adv is ERC721, Delegated {
     function clearApproval(address _owner, uint _tokenId) private {
         require(tokenOwner_[_tokenId] == _owner);
         tokenApprovedFor_[_tokenId] = 0;
-        Approval(_owner, 0, _tokenId);
+        emit Approval(_owner, 0, _tokenId);
     }
 
     /**
