@@ -15,7 +15,7 @@ contract AbisForUserControlApis {
     function doesElementExist(bytes32 _userName, bytes32 _enName) public constant returns (bool);
     function addSignatureAdr(bytes32 _userName, address _sigAdr) public returns (bool);
     function createUserNode(bytes32 _factoryType, bytes32 _userName, address _extraAdr) public returns (address);
-    function enableUserZSCWallet(bytes32 _userName) public returns (address);
+    function enableUserWallet(bytes32 _userName) public returns (address);
     function createElementNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName, bytes32 _extraInfo) public returns (address);
     function publishAgreement(bytes32 _userName, bytes32 _agrName) public;
     function getElementNameByAddress(bytes32 _userName, address _adr) public constant returns (bytes32);
@@ -35,7 +35,6 @@ contract AbisForUserControlApis {
     function getAgreementNameByIndex(bytes32 _userName, uint _index) public constant returns (bytes32);
     function purchaseAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint);
     function claimInsurance(bytes32 _userName, bytes32 _agrName) public returns (bool) ;
-    function getUserWalletAddress(bytes32 _userName, bytes32 _tokenSymbol) public constant returns (address);
     function getTokenBalanceInfoByIndex(bytes32 _userName, uint _index) public constant returns (string);
     function numUserTransactions(bytes32 _userName, bytes32 _tokenSymbol) public constant returns (uint);
     function getUserTransactionByIndex(bytes32 _userName, bytes32 _tokenSymbol, uint _index) public constant returns (string);
