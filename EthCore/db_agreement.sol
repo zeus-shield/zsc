@@ -78,7 +78,7 @@ contract DBAgreement is DBEntity {
     }
 
     /*
-    function getAgreementInfo() public constant returns (bytes32, bytes32, uint, uint, bytes32, uint) {
+    function getAgreementInfo() public view returns (bytes32, bytes32, uint, uint, bytes32, uint) {
         checkDelegate(msg.sender, 1);
 
         uint price = PlatString.stringToUint(PlatString.bytes32ToString(getParameter("price")));

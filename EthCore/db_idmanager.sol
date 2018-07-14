@@ -16,7 +16,7 @@ contract IDManager is Object {
     function IDManager(bytes32 _name) public Object(_name) {
     }
 
-    function numIds() public constant returns (uint) {
+    function numIds() public view returns (uint) {
         checkDelegate(msg.sender, 1);
         return ids_.length;
     }
@@ -50,7 +50,7 @@ contract IDManager is Object {
         return true;
     }
 
-    function getId(bytes32 _name, uint _index) public constant returns (address) {
+    function getId(bytes32 _name, uint _index) public view returns (address) {
         checkDelegate(msg.sender, 1);
         require(exists_[_name]);
 

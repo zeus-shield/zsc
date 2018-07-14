@@ -22,7 +22,7 @@ contract WalletBase is DBNode {
     function WalletBase(bytes32 _name) public DBNode(_name) {
     }
 
-    function checkBeforeSent(address _dst, uint _amount) internal constant {
+    function checkBeforeSent(address _dst, uint _amount) internal view {
         require(getBlance() >= _amount && _dst != address(this));
     }
 
@@ -35,15 +35,15 @@ contract WalletBase is DBNode {
     }
 
     ////////// public functions /////////////
-    function getBlance() public constant returns (uint);
+    function getBlance() public view returns (uint);
     function executeTransaction(address _dest, uint256 _amount) public returns (uint);
 
-    function numTransactions() public constant returns (uint) {
+    function numTransactions() public view returns (uint) {
         checkDelegate(msg.sender, 1);
         return nos_;
     }
 
-    function getTransactionInfoByIndex(uint _index) public constant returns (uint, bool, bytes32, uint, address, address) {
+    function getTransactionInfoByIndex(uint _index) public view returns (uint, bool, bytes32, uint, address, address) {
         checkDelegate(msg.sender, 1);
         
         require(_index < nos_);

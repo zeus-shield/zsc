@@ -8,8 +8,8 @@ import "./object.sol";
 
 contract SysCom {
     function addAdr(bytes32 _name, address _database) public returns (bool);
-    function getAdr(bytes32 _name) public constant returns (address);
-    function numAdrs() public constant returns (uint);
+    function getAdr(bytes32 _name) public view returns (address);
+    function numAdrs() public view returns (uint);
     function setDatabase(address _adr) public;
     function delegateObject( address _objectAdr, uint _priority) public;
 }
@@ -133,7 +133,7 @@ contract SysOverlayer is Object {
         return ret;
     }
 
-    function getComponent(bytes32 _type, bytes32 _name) public constant returns (address) {
+    function getComponent(bytes32 _type, bytes32 _name) public view returns (address) {
         checkDelegate(msg.sender, 1);
         if (_type == "factory") {
             if (_name == "gm") {

@@ -19,7 +19,7 @@ contract WalletErc20 is WalletBase {
         _erc20TokenAdr = _tokenAdr;
     }
 
-    function getBlance() public constant returns (uint) {
+    function getBlance() public view returns (uint) {
         checkDelegate(msg.sender, 1);
         uint total = ERC20Interface(_erc20TokenAdr).balanceOf(address(this));
         return total;

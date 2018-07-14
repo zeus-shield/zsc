@@ -20,7 +20,7 @@ contract SysGmSimulator is SysComModule {
         simulationNos_ = 0;
     }
 
-    function formatSimulationName() private constant returns (bytes32) {
+    function formatSimulationName() private view returns (bytes32) {
         string memory str = PlatString.uintToString(SafeMath.add(1000, simulationTempNos_));
         return PlatString.tobytes32(str);
     }
@@ -46,7 +46,7 @@ contract SysGmSimulator is SysComModule {
         return runName;
     }
 
-    function checkSimulationRunByIndex(uint _index) private constant returns (bool) {
+    function checkSimulationRunByIndex(uint _index) private view returns (bool) {
         require(_index < simulationNos_);
         address sim = simulationRuns_[_index];
         return (rewarded_[sim] == false &&  SimulatorBase(sim).doesFinished());

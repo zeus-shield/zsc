@@ -19,7 +19,7 @@ contract SysComGroup is SysComBase {
     function SysComGroup(bytes32 _name) public SysComBase(_name) {
     }
 
-    function numAdrs() public constant returns (uint) {
+    function numAdrs() public view returns (uint) {
         checkDelegate(msg.sender, 1);
         return adrNos_;
     }
@@ -61,7 +61,7 @@ contract SysComGroup is SysComBase {
         return true;
     }
 
-    function getAdr(bytes32 _name) public constant returns (address) {
+    function getAdr(bytes32 _name) public view returns (address) {
         checkDelegate(msg.sender, 1);
         require(exists_[_name]);
         return adrs_[indice_[_name]];

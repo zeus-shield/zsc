@@ -25,7 +25,7 @@ contract WalletAdv is DBNode {
     function WalletAdv(bytes32 _name) public DBNode(_name) {
     }
 
-    function checkBeforeSent(address _tokenAdr, address _dst, uint _amount) internal constant {
+    function checkBeforeSent(address _tokenAdr, address _dst, uint _amount) internal view {
         uint balan = getBlance(_tokenAdr);
         require(balan >= _amount);
         require(balan >= lockedAmounts_[_tokenAdr]);
@@ -49,7 +49,7 @@ contract WalletAdv is DBNode {
         recordInput(msg.sender, msg.value);
     }
 
-    function getBlance(address _tokenAdr) public constant returns (uint) {
+    function getBlance(address _tokenAdr) public view returns (uint) {
         checkDelegate(msg.sender, 1);
         if (_tokenAdr == address(0)) {
             return address(this).balance;
@@ -58,7 +58,7 @@ contract WalletAdv is DBNode {
         }
     }
 
-    function getLockedAmount(address _tokenAdr) public constant returns (uint) {
+    function getLockedAmount(address _tokenAdr) public view returns (uint) {
         checkDelegate(msg.sender, 1);
         return lockedAmounts_[_tokenAdr];
     }

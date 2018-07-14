@@ -17,7 +17,7 @@ contract LogRecorder is Delegated {
 
     function LogRecorder() public Delegated() {}
 
-    function checkListener(address _adr) internal constant {
+    function checkListener(address _adr) internal view {
         require(listeners_[_adr]);
     }
 
@@ -42,7 +42,7 @@ contract LogRecorder is Delegated {
         }
     }
 
-    function printLog(address _adr, uint _index) public constant returns (string) {
+    function printLog(address _adr, uint _index) public view returns (string) {
         checkDelegate(msg.sender, 1);
         checkListener(_adr);
 

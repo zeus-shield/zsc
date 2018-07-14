@@ -24,7 +24,7 @@ contract WalletMultiSig is WalletBase {
     function executeTransaction(address _dest, uint256 _amount) public returns (uint);
 
     ////////// internal functions /////////////
-    function checkAllowedSignature(address _sigAdr) internal constant returns (bool) {
+    function checkAllowedSignature(address _sigAdr) internal view returns (bool) {
         require(sigAdrExists_[_sigAdr]);
     }
 

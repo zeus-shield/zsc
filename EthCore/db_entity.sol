@@ -80,18 +80,18 @@ contract DBEntity is DBNode {
         return true;
     }
 
-    function getParameter(bytes32 _parameter) public constant returns (bytes32) {
+    function getParameter(bytes32 _parameter) public view returns (bytes32) {
         checkDelegate(msg.sender, 1);
         require(parameterExist_[_parameter] == true);
         return parameterValues_[parameterIndice_[_parameter]];
     }
     
-    function numParameters() public constant returns (uint) {
+    function numParameters() public view returns (uint) {
         checkDelegate(msg.sender, 1);
         return paraNos_;
     }
 
-    function getParameterNameByIndex(uint _index) public constant returns (bytes32) {
+    function getParameterNameByIndex(uint _index) public view returns (bytes32) {
         checkDelegate(msg.sender, 1);
         require(_index < paraNos_);
         return parameterNames_[_index];

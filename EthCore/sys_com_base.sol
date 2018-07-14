@@ -27,7 +27,7 @@ contract SysComBase is Object {
         }
     }
 
-    function getControlApiAdr() internal constant returns (address) {
+    function getControlApiAdr() internal view returns (address) {
         require(controlApiAdr_ != address(0));
         return controlApiAdr_;
     }

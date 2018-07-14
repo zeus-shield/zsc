@@ -71,27 +71,27 @@ contract DBDatabase is Object {
         super.kill();
     }
     
-    function getRootNode() public constant returns (address) { 
+    function getRootNode() public view returns (address) { 
         checkDelegate(msg.sender, 1);
         return rootNode_; 
     }
 
-    function getNode(bytes32 _name) public constant returns (address) { 
+    function getNode(bytes32 _name) public view returns (address) { 
         checkDelegate(msg.sender, 1);
         return nodeAddress_[_name]; 
     }
 
-    function checkeNodeByAddress(address _adr) public constant returns (bool) { 
+    function checkeNodeByAddress(address _adr) public view returns (bool) { 
         checkDelegate(msg.sender, 1);
         return nodeExists_[_adr]; 
     }
 
-    function numNodes() public constant returns (uint) { 
+    function numNodes() public view returns (uint) { 
         checkDelegate(msg.sender, 1);
         return nodes_.length; 
     }
 
-    function getNodeByIndex(uint _index) public constant returns (address) { 
+    function getNodeByIndex(uint _index) public view returns (address) { 
         checkDelegate(msg.sender, 1);
 
         if (_index >= nodes_.length) return 0;

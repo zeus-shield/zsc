@@ -8,7 +8,7 @@ import "./plat_math.sol";
 import "./object.sol";
 
 contract CBDBDatabase is Object {
-    function getNode(bytes32 _name) public constant returns (address);
+    function getNode(bytes32 _name) public view returns (address);
     function destroyNode(address _node) public returns (bool);
     function _addNode(address _node) public ;
 }
@@ -34,7 +34,7 @@ contract DBNode is Object {
         super.kill();
     }
 
-    function getNodeType() public constant returns (bytes32) {
+    function getNodeType() public view returns (bytes32) {
         checkDelegate(msg.sender, 1);
         return nodeType_;
     }
@@ -44,7 +44,7 @@ contract DBNode is Object {
         ethWalletId_ = _ethWalletiId;
     }
 
-    function getId() public constant returns (address) {
+    function getId() public view returns (address) {
         checkDelegate(msg.sender, 1);
         return ethWalletId_;
     }
@@ -57,7 +57,7 @@ contract DBNode is Object {
         CBDBDatabase(database_)._addNode(this);
     }
 
-    function numChildren() public constant returns(uint) {
+    function numChildren() public view returns(uint) {
         checkDelegate(msg.sender, 1);
         return children_.length;
     }
@@ -72,7 +72,7 @@ contract DBNode is Object {
         }
     }
 
-    function getParent() public constant returns(address) {
+    function getParent() public view returns(address) {
         checkDelegate(msg.sender, 1);
         return parent_; 
     }
@@ -106,14 +106,14 @@ contract DBNode is Object {
         return _node;
     }
 
-    function getChild(bytes32 _name) public constant returns(address) {
+    function getChild(bytes32 _name) public view returns(address) {
         checkDelegate(msg.sender, 1);
 
         require(childMap_[_name] != 0);
         return childMap_[_name];
     }
     
-    function getChildByIndex(uint _index) public constant returns(address) {
+    function getChildByIndex(uint _index) public view returns(address) {
         checkDelegate(msg.sender, 1);
 
         require(_index < children_.length);

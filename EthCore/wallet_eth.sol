@@ -24,7 +24,7 @@ contract WalletEth is WalletBase {
         }
     }
 
-    function getBlance() public constant returns (uint) {
+    function getBlance() public view returns (uint) {
         checkDelegate(msg.sender, 1);
         return address(this).balance;
     }

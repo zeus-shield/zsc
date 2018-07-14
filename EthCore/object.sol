@@ -13,7 +13,7 @@ import "./delegate.sol";
 // ----------------------------------------------------------------------------
 contract ERC20Interface {
     function transfer(address to, uint tokens) public returns (bool success);
-    function balanceOf(address _owner) public constant returns (uint balance);
+    function balanceOf(address _owner) public view returns (uint balance);
 }
 
 contract Recorder {
@@ -36,7 +36,7 @@ contract Object is Delegated {
         name_ = _name;
     }
 
-    function name() public constant returns (bytes32) { 
+    function name() public view returns (bytes32) { 
         checkDelegate(msg.sender, 1);
         return name_;
     }

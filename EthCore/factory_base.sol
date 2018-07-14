@@ -41,12 +41,12 @@ contract FactoryBase is Object {
         factoryNodeNos_--;
     }
 
-    function numFactoryNodes() public constant returns (uint) {
+    function numFactoryNodes() public view returns (uint) {
         checkDelegate(msg.sender, 1);
         return factoryNodeNos_;
     }
 
-    function getFactoryNodeNameByIndex(uint _index) public constant returns (bytes32) {
+    function getFactoryNodeNameByIndex(uint _index) public view returns (bytes32) {
         checkDelegate(msg.sender, 1);
         require(_index < factoryNodeNos_);
         return factoryNodes_[_index];
@@ -59,7 +59,7 @@ contract FactoryBase is Object {
         bindedDB_ = _adr;
     } 
 
-    function getDatabase() public constant returns (address) { 
+    function getDatabase() public view returns (address) { 
         checkDelegate(msg.sender, 1);
 
         require(bindedDB_ != address(0));

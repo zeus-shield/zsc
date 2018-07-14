@@ -50,7 +50,7 @@ contract DBProvider is DBEntity {
     }
     */
     
-    function numTemplates() public constant returns (uint) {
+    function numTemplates() public view returns (uint) {
         checkDelegate(msg.sender, 1);
 
         uint nos = 0;
@@ -64,7 +64,7 @@ contract DBProvider is DBEntity {
         return nos;
     }
 
-    function getTemplateByIndex(uint _index) public constant returns (address) {
+    function getTemplateByIndex(uint _index) public view returns (address) {
         checkDelegate(msg.sender, 1);
 
         uint total = numChildren();
@@ -83,12 +83,12 @@ contract DBProvider is DBEntity {
         return address(0);
     }
 
-    function numAgreements() public constant returns (uint) {
+    function numAgreements() public view returns (uint) {
         checkDelegate(msg.sender, 1);
         return 0;
     }
 
-    function getAgreementByIndex(uint _index) public constant returns (address) {
+    function getAgreementByIndex(uint _index) public view returns (address) {
         checkDelegate(msg.sender, 1);
         return address(_index - _index);
     }

@@ -26,11 +26,11 @@ contract AdmBase is Object {
         controlApisFullAib_ = _fullAbi; 
     }
 
-    function getControlApisFullAbi() public constant returns (string) { 
+    function getControlApisFullAbi() public view returns (string) { 
         return controlApisFullAib_; 
     }
 
-    function getControlApisAdr() public constant returns (address) { 
+    function getControlApisAdr() public view returns (address) { 
         return controlApisAdr_; 
     }
 }

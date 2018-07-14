@@ -42,23 +42,23 @@ contract DBReceiver is DBEntity {
         return super.addParameter(_parameter);
     }
 
-    function numAgreements() public constant returns (uint) {
+    function numAgreements() public view returns (uint) {
         checkDelegate(msg.sender, 1);
         return agrNos_;
     }
 
-    function getAgreementByIndex(uint _index) public constant returns (address) {
+    function getAgreementByIndex(uint _index) public view returns (address) {
         checkDelegate(msg.sender, 1);
         require(_index < agrNos_);
         return agreements_[_index];
     }
 
-    function numTemplates() public constant returns (uint) {
+    function numTemplates() public view returns (uint) {
         checkDelegate(msg.sender, 1);
         return 0;
     }
 
-    function getTemplateByIndex(uint _index) public constant returns (address) {
+    function getTemplateByIndex(uint _index) public view returns (address) {
         checkDelegate(msg.sender, 1);
         return address(_index - _index);
     }

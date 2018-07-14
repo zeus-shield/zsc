@@ -47,12 +47,12 @@ contract PosBlock is Object {
         nextBlock_ = _next;
     }
 
-    function getPreviousBlock() public constant returns (address) {
+    function getPreviousBlock() public view returns (address) {
         checkDelegate(msg.sender, 1);
         return previousBlock_;
     }
 
-    function getNextBlock() public constant returns (address) {
+    function getNextBlock() public view returns (address) {
         checkDelegate(msg.sender, 1);
         return nextBlock_;
     }
@@ -62,12 +62,12 @@ contract PosBlock is Object {
         minedStatus_ = true;
     }
 
-    function doesMined() public constant returns (bool) {
+    function doesMined() public view returns (bool) {
         checkDelegate(msg.sender, 1);
         return minedStatus_;
     }
 
-    function checkIsFull(uint _gasUsage) public constant returns (bool) {
+    function checkIsFull(uint _gasUsage) public view returns (bool) {
         checkDelegate(msg.sender, 1);
 
         require(blockSizeLimit_ != 0);
@@ -90,7 +90,7 @@ contract PosBlock is Object {
         return true;
     }
 
-    function getTxInfoByIndex(uint _index) public constant returns (address, uint, uint) {
+    function getTxInfoByIndex(uint _index) public view returns (address, uint, uint) {
         checkDelegate(msg.sender, 1);
 
         require(_index < txNos_);
@@ -98,17 +98,17 @@ contract PosBlock is Object {
         return (txInfos_[_index].sender_, txInfos_[_index].gasUsage_, txInfos_[_index].reigsterTime_);
     }
     
-    function getBlockLimit() public constant returns (uint) {
+    function getBlockLimit() public view returns (uint) {
         checkDelegate(msg.sender, 1);
         return sizeLimit_;
     }
 
-    function numTxInfos() public constant returns (uint) {
+    function numTxInfos() public view returns (uint) {
         checkDelegate(msg.sender, 1);
         return txNos_;
     }
 
-    function getCurrentSize() public constant returns (uint) {
+    function getCurrentSize() public view returns (uint) {
         checkDelegate(msg.sender, 1);
         return currentSize_;
     }

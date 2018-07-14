@@ -28,7 +28,7 @@ contract SysGmBase is Object {
         }
     }
 
-    function getControlApiAdr() internal constant returns (address) {
+    function getControlApiAdr() internal view returns (address) {
         require(controlApiAdr_ != address(0));
         return controlApiAdr_;
     }
@@ -41,7 +41,7 @@ contract SysGmBase is Object {
         bindedDB_ = _adr;
     } 
 
-    function getDatabase() internal constant returns (address) { 
+    function getDatabase() internal view returns (address) { 
         require(bindedDB_ != address(0));
         return bindedDB_;
     }

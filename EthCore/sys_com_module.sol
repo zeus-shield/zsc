@@ -19,7 +19,7 @@ contract SysComModule is SysComBase {
         bindedDB_ = _adr;
     } 
 
-    function getDatabase() internal constant returns (address) { 
+    function getDatabase() internal view returns (address) { 
         require(bindedDB_ != address(0));
         return bindedDB_;
     }

@@ -10,8 +10,8 @@ contract DBStaker {
     function setPoSInfo(uint _divendendDuration, uint _rewardBaseRatio, uint _startTime, uint _endTime) public;
     function claimStakePoint(uint _tokenAmount) public returns (uint);
     function getRemainingStakePoint(uint _tokenAmount) public view returns (uint);
-    function getMiningInfoByIndexs(uint _index) public constant returns (uint, uint);
-    function numMiningInfo() public constant returns (uint);
+    function getMiningInfoByIndexs(uint _index) public view returns (uint, uint);
+    function numMiningInfo() public view returns (uint);
 }
 
 contract PosStakerGroup is Delegated {
