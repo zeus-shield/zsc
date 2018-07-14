@@ -5,7 +5,6 @@ Copyright (c) 2018 ZSC Dev Team
 pragma solidity ^0.4.21;
 
 import "./object.sol";
-import "./control_info.sol";
 
 contract DBNode {
     function getNodeType() public view returns (bytes32);
@@ -83,7 +82,7 @@ contract DBModule {
     function claimReward(address _user, uint _robotId) public returns (uint);
 }
 
-contract ControlBase is ControlInfo {   
+contract ControlBase is Object {   
     address public systemOL_;
     address public bindedAdm_;
 
@@ -96,8 +95,19 @@ contract ControlBase is ControlInfo {
     uint internal allocatedZSC_;
     uint internal allocatedETH_;
 
-    function ControlBase(bytes32 _name) public ControlInfo(_name) {
+    function ControlBase(bytes32 _name) public Object(_name) {
     }
+
+    //////////////////////////////////
+    function allowedUser(bytes32 _userName, address _sender) internal constant returns (bool);
+    function addAllowedUser(bytes32 _userName, address _creator) internal returns (bool);
+    function checkMatched(bytes32 _userName, bytes32 _enName, address _sender) internal view;
+    function checkRegistered(bytes32 _userName, address _sender) internal view;
+    function registerUserNode(bytes32 _userName, address _nodeAdr, address _creator) internal;
+    function registerEntityNode(bytes32 _userName,  bytes32 _enName, address _nodeAdr, address _creator) internal;
+    function setUserStatus(bytes32 _user, bool _tag) public returns (bool);
+    function getUserStatus(bytes32 _user) public view returns (bool);
+    //////////////////////////////////
     
     function getCurrentDBName() internal view returns (bytes32) {
         return dbName_;
@@ -262,8 +272,12 @@ contract ControlBase is ControlInfo {
         return walletAdr;
     }
 
-    function publishZSCAgreement(bytes32 _userName, bytes32 _agrName, address _creator) internal {
-        //string memory temp;
+    //////////////////////////////////////
+    function publishAgreement(bytes32 _userName, bytes32 _agrName) public {
+        checkRegistered(_userName, msg.sender);
+        checkMatched(_userName, _agrName, msg.sender);
+
+        address _creator = msg.sender;
         address agrAdr = address(getDBNode(dbName_, _agrName));
         require(agrAdr != 0);
 
@@ -281,8 +295,11 @@ contract ControlBase is ControlInfo {
         DBNode(agrAdr).setAgreementStatus("PUBLISHED", "null");
     }
 
-    function conductPurchaseZSCAgreement(bytes32 _userName, bytes32 _agrName) internal returns (uint) {
-        bytes32 tokenSymbol = "ZSC"; //DBNode(agrAdr).getParameter("walletSymbol");
+    function purchaseAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
+        checkRegistered(_userName, msg.sender);
+
+        bytes32 userType = getDBNode(getCurrentDBName(), _userName).getNodeType();
+        require(userType == "receiver");
 
         address agrAdr = address(getDBNode(dbName_, _agrName));
         require(agrAdr != address(0));
@@ -294,8 +311,8 @@ contract ControlBase is ControlInfo {
         require(price > 0);
         price = price.mul(1 ether);
 
-        address recWallet   = address(getDBNode(dbName_, formatWalletName(_userName, tokenSymbol)));
-        address agrWallet   = address(getDBNode(dbName_, formatWalletName(_agrName, tokenSymbol)));
+        address recWallet   = getWalletAddress(_userName); 
+        address agrWallet   = getWalletAddress(_agrName);
         address tokenContractAdr = getDBModule("token").getTokenAddress("ZSC");
 
         uint ret = DBNode(recWallet).executeTransaction(tokenContractAdr, agrWallet, price);
@@ -306,12 +323,7 @@ contract ControlBase is ControlInfo {
         bytes32 provider = DBNode(agrAdr).getParameter("provider");
         address proWallet = getWalletAddress(provider);
         DBNode(recWallet).executeTransaction(tokenContractAdr, proWallet, price);
-
-        /*
-        addLog(PlatString.bytes32ToString(_userName), true);
-        addLog(" purchased ", false);
-        addLog(PlatString.bytes32ToString(_agrName), false);
-        */
+        
         return ret;
     }
 
@@ -358,7 +370,7 @@ contract ControlBase is ControlInfo {
     }
  
     function getTokenBalanceInfo(bool _useIndex, bytes32 _enName, uint _index, bytes32 _symbol) public view returns (string) { 
-        checkRegistered(_userName, msg.sender);
+        checkRegistered(_enName, msg.sender);
 
         bytes32 status;
         bytes32 tokenName;
@@ -386,9 +398,11 @@ contract ControlBase is ControlInfo {
         return str;
     }
 
-/*
-    function prepareTransationfoByIndex(bytes32 _walletName, uint _index) internal view returns (string) {
-        address walletAdr = getDBNode(dbName_, _walletName);
+
+    function getUserTransactionByIndex(bytes32 _userName, uint _index) public constant returns (string) {
+        checkRegistered(_userName, msg.sender);
+
+        address walletAdr = getWalletAddress(_userName);
 
         require(_index < DBNode(walletAdr).numTransactions());
         
@@ -414,11 +428,9 @@ contract ControlBase is ControlInfo {
         str = PlatString.append(str, "receiver=",  PlatString.addressToString(receiver), "&");
         return str;
     }
-    */
+ 
 
-    function getModulesAddresses() public view returns (string) {
-        checkRegistered(_userName, msg.sender);
-
+    function getModuleAddresses() public view returns (string) {
         address dbAdr = address(getDBDatabase(dbName_));
         address factoryProAdr = address(getDBFactory("provider"));
         address factoryRecAdr = address(getDBFactory("receiver"));
