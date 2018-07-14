@@ -12,9 +12,6 @@ contract ControlApis is ControlBase {
     function ControlApis(bytes32 _name) public ControlBase(_name) {
     }
 
-    function setUserStatus(bytes32 _user, bool _tag) public returns (bool);
-    function getUserStatus(bytes32 _user) public constant returns (bool);
-
     function setPreallocateAmountToTester(uint _allocatedETH, uint _allocatedZSC) public { 
         checkDelegate(msg.sender, 1);
         allocatedETH_ = _allocatedETH.mul(1 ether);
@@ -84,19 +81,6 @@ contract ControlApis is ControlBase {
         registerEntityNode(_userName, _enName, ndAdr, msg.sender);
         
         return ndAdr;
-    }
-
-    function enableUserWallet(bytes32 _userName) public returns (address) {
-        checkRegistered(_userName, msg.sender);
-
-        require(address(getDBNode(getCurrentDBName(), _userName)) != 0);
-        require(getWalletAddress(_userName, "ZSC") == address(0));
-
-        address walletAdr = enableWallet(_userName, userAdr, userAdr);
-        require(walletAdr != 0);
-        preallocateZSCToTester(walletAdr);
-
-        return walletAdr;
     }
 
     /// @dev Get the type of an element
@@ -191,10 +175,7 @@ contract ControlApis is ControlBase {
 
     /// @dev Announce an insurance agreement by a provider
     function publishAgreement(bytes32 _userName, bytes32 _agrName) public {
-        checkRegistered(_userName, msg.sender);
-        checkMatched(_userName, _agrName, msg.sender);
 
-        publishZSCAgreement(_userName, _agrName, msg.sender);
     }
 
     function numElementChildren(bytes32 _userName, bytes32 _enName) public constant returns (uint) {
@@ -236,49 +217,21 @@ contract ControlApis is ControlBase {
         return Object(adr).name();
     }
 
-    /// @dev Buy an insurance agreement from a provider
-    function purchaseAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
-        checkRegistered(_userName, msg.sender);
-
-        bytes32 userType = getDBNode(getCurrentDBName(), _userName).getNodeType();
-        require(userType == "receiver");
-
-        return conductPurchaseZSCAgreement(_userName, _agrName); 
-    }
-
-    function claimInsurance(bytes32 _userName, bytes32 _agrName) public returns (bool) {
-        checkRegistered(_userName, msg.sender);
-
-        return conductZSCClaimInsurance(_userName, _agrName);
-    }
-
-    /*------2018-07-06: new verstion: YYA------  */
+    //------2018-07-06: new verstion: YYA------ 
     function enableUserWallet(bytes32 _userName) public returns (address) {
         checkRegistered(_userName, msg.sender);
 
         address userAdr = address(getDBNode(getCurrentDBName(), _userName));
         require(userAdr != 0);
 
-        require(getWalletAddress(_userName, "wat") == address(0));
-
-        address walletAdr = enableWallet(_userName, userAdr, userAdr);
+        address walletAdr = enableWallet(_userName, userAdr, msg.sender);
         require(walletAdr != 0);
+
+        preallocateZSCToTester(walletAdr);
 
         return walletAdr;
     }
 
-    function getTokenBalanceInfoByIndex(bytes32 _userName, uint _index) public constant returns (string) {
-        checkRegistered(_userName, msg.sender);
-
-        return prepareTokenBalanceInfo(true, _userName, _index, "null");
-    }
-
-    function getTokenBalanceInfoBySymbol(bytes32 _userName, bytes32 _symbol) public constant returns (string) {
-        checkRegistered(_userName, msg.sender);
-
-        return prepareTokenBalanceInfo(false, _userName, 0, _symbol);
-    }
-    /*------2018-07-06: new verstion: END-----  */
 
     function numUserTransactions(bytes32 _userName, bytes32 _tokenSymbol) public constant returns (uint) {
         checkRegistered(_userName, msg.sender);
@@ -291,17 +244,6 @@ contract ControlApis is ControlBase {
         return DBNode(walletAdr).numTransactions();
     }
 
-    function getUserTransactionByIndex(bytes32 _userName, bytes32 _tokenSymbol, uint _index) public constant returns (string) {
-        checkRegistered(_userName, msg.sender);
-
-        bytes32 walletName = formatWalletName(_userName, _tokenSymbol);
-        return prepareTransationfoByIndex(walletName, _index);
-    }
-
-    function getModuleAddresses() public constant returns (string) {
-        return prepareModulesAddresses();
-    }
-   
     function createMinerRobot(bytes32 _userName) public {
         checkRegistered(_userName, msg.sender);
         
@@ -318,6 +260,7 @@ contract ControlApis is ControlBase {
         DBNode(walletAdr).lockWallet(getDBModule("token").getTokenAddress("ZSC"), lockedAmount);
     }    
     
+     /*
     function auctionMinerRobot(bytes32 _userName, uint _robotId, uint _price) public payable {
         checkRegistered(_userName, msg.sender);
         
@@ -356,4 +299,5 @@ contract ControlApis is ControlBase {
         address walletAdr = getWalletAddress(_userName);
         getDBModule("pos").publishRobot(walletAdr, _robotId, _price);
     }
+    */
 }
