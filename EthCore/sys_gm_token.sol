@@ -112,10 +112,6 @@ contract SysGmToken is SysGmBase {
         /* check delegate */
         checkDelegate(msg.sender, 1);
 
-        if (_symbol == "ETH") {
-            return 0x0;
-        }
-
         /* check exist */
         require(true == exists_[_symbol]);
 
