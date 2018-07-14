@@ -8,45 +8,45 @@ import "./object.sol";
 import "./control_info.sol";
 
 contract DBNode {
-    function getNodeType() public constant returns (bytes32);
-    function getBlance(address _adr) public constant returns (uint256);
+    function getNodeType() public view returns (bytes32);
+    function getBlance(address _adr) public view returns (uint256);
 
     function addParameter(bytes32 _parameter) public returns (bool);
     //function removeParameter(bytes32 _parameter) public returns (bool);
     function setParameter(bytes32 _parameter, bytes32 _value) public returns (bool);
-    function getParameter(bytes32 _parameter) public constant returns (bytes32);
-    function numParameters() public constant returns (uint);
-    function getParameterNameByIndex(uint _index) public constant returns (bytes32);
+    function getParameter(bytes32 _parameter) public view returns (bytes32);
+    function numParameters() public view returns (uint);
+    function getParameterNameByIndex(uint _index) public view returns (bytes32);
 
     function setERC20TokenAddress(address _tokenAdr) public;
     //function submitTransaction(address _dest, uint256 _amount, bytes _data, address _user) public returns (uint);
     //function confirmTransaction(address _sigAdr) public returns (uint);    
     function executeTransaction(address _tokenAdr, address _dest, uint256 _amount) public returns (uint);
     function informTransaction(address _src, uint256 _amount) public;
-    function numTransactions() public constant returns (uint);
-    function getTransactionInfoByIndex(uint _index) public constant returns (uint, bool,  bytes32, uint, address, address);
+    function numTransactions() public view returns (uint);
+    function getTransactionInfoByIndex(uint _index) public view returns (uint, bool,  bytes32, uint, address, address);
     function lockWallet(address _tokenAdr, uint _amount) public;
     function unlockWallet(address _tokenAdr, uint _amount) public;
    
     function setAgreementStatus(bytes32 _tag, bytes32 receiver) public returns (bool);
     //function configureHandlers() public returns (bool);
-    //function getHandler(bytes32 _type) public constant returns (address);
+    //function getHandler(bytes32 _type) public view returns (address);
 
     function bindAgreement(address _adr) public;
-    function numAgreements() public constant returns (uint);
-    function numTemplates() public constant returns (uint);
-    function getAgreementByIndex(uint _index) public constant returns (address);
-    function getTemplateByIndex(uint _index) public constant returns (address);
+    function numAgreements() public view returns (uint);
+    function numTemplates() public view returns (uint);
+    function getAgreementByIndex(uint _index) public view returns (address);
+    function getTemplateByIndex(uint _index) public view returns (address);
 
-    function numChildren() public constant returns(uint);
-    function getChildByIndex(uint _index) public  constant returns(address);
+    function numChildren() public view returns(uint);
+    function getChildByIndex(uint _index) public  view returns(address);
     function addChild(address _node) public returns (address);
 
-    //function getMiningInfoByIndex(bool _isReward, uint _index) public constant returns (uint, uint);
-    //function numMiningInfo(bool _isReward) public constant returns (uint);
+    //function getMiningInfoByIndex(bool _isReward, uint _index) public view returns (uint, uint);
+    //function numMiningInfo(bool _isReward) public view returns (uint);
 
     //function addSignature(address _sigAdr) public returns (bool);
-    //function getAgreementInfo() public constant returns (bytes32, bytes32, uint, uint, bytes32, uint);
+    //function getAgreementInfo() public view returns (bytes32, bytes32, uint, uint, bytes32, uint);
 
     function simulatePayforInsurance() public returns (uint);
 }
@@ -54,22 +54,23 @@ contract DBNode {
 contract DBFactory {
     function setDatabase(address _adr) public;
     function createNode(bytes32 _nodeName, address _parent, address _creator) public returns (address);
-    function numFactoryNodes() public constant returns (uint);
-    function getFactoryNodeNameByIndex(uint _index) public constant returns (bytes32);
+    function numFactoryNodes() public view returns (uint);
+    function getFactoryNodeNameByIndex(uint _index) public view returns (bytes32);
 }
 
 contract DBDatabase {
     function delegateFactory(address _adr, uint _priority) public;
-    function getNode(bytes32 _name) public constant returns (address);
-    function getRootNode() public constant returns (address);
+    function getNode(bytes32 _name) public view returns (address);
+    function getRootNode() public view returns (address);
     function destroyNode(address _node) public returns (bool);
-    function checkeNodeByAddress(address _adr) public constant returns (bool);
+    function checkeNodeByAddress(address _adr) public view returns (bool);
     function _addNode(address _node) public ;
 }
 
 contract DBModule {
     function getTokenAddress(bytes32 _symbol) public view returns (address);
     function getTokenInfoByIndex(uint _index) public view returns (bytes32, bytes32, bytes32, uint, address);
+    function getTokenInfoBySymbol(bytes32 _symbol) public view returns (bytes32, bytes32, bytes32, uint, address);
 
     function createRobot(address _user, uint _level) public returns (uint);
     function activeRobot(address _user, uint _robotId, uint _rewardType) public returns (uint);
@@ -98,7 +99,7 @@ contract ControlBase is ControlInfo {
     function ControlBase(bytes32 _name) public ControlInfo(_name) {
     }
     
-    function getCurrentDBName() internal constant returns (bytes32) {
+    function getCurrentDBName() internal view returns (bytes32) {
         return dbName_;
     }
 
@@ -109,18 +110,18 @@ contract ControlBase is ControlInfo {
         addLog("initControlApisAdrs ", true);
     }
 
-    function preallocateZSCToTester(bytes32 _userWalletAdr) internal {
+    function preallocateZSCToTester(address _userWalletAdr) internal {
         address tokenContractAdr = getDBModule("token").getTokenAddress("ZSC");
 
         if (allocatedZSC_ == 0) {
-            uint remaingZSC = ERC20Interface(tokenAddress).balanceOf(address(this));
-            if (emaingZSC > allocatedZSC_) {
+            uint remaingZSC = ERC20Interface(tokenContractAdr).balanceOf(address(this));
+            if (remaingZSC > allocatedZSC_) {
                 ERC20Interface(tokenContractAdr).transfer(_userWalletAdr, allocatedZSC_);
             }
         }
 
         if (allocatedETH_ > 0) {
-            uint remaingETH = balanceOf(address(this));
+            uint remaingETH = address(this).balance;
             if (remaingETH > allocatedETH_) {
                 require(_userWalletAdr.call.value(allocatedETH_)());
             }
@@ -155,7 +156,7 @@ contract ControlBase is ControlInfo {
         return ret;
     }
 
-    function getComponent(bytes32 _type, bytes32 _name) internal constant returns (address) {
+    function getComponent(bytes32 _type, bytes32 _name) internal view returns (address) {
         if (_type == "factory") {
             return factories_[_name];
         } else if (_type == "database") {
@@ -167,19 +168,19 @@ contract ControlBase is ControlInfo {
         }
     }
 
-    function getDBFactory(bytes32 _name) internal constant returns (DBFactory) {
+    function getDBFactory(bytes32 _name) internal view returns (DBFactory) {
         return DBFactory(getComponent("factory", _name));
     }
 
-    function getDBDatabase(bytes32 _name) internal constant returns (DBDatabase) {
+    function getDBDatabase(bytes32 _name) internal view returns (DBDatabase) {
         return DBDatabase(getComponent("database", _name));
     }
 
-    function getDBModule(bytes32 _name) internal constant returns (DBModule) {
+    function getDBModule(bytes32 _name) internal view returns (DBModule) {
         return DBModule(getComponent("module", _name));
     }
 
-    function getDBNode(bytes32 _db, bytes32 _nodeName) internal constant returns (DBNode) {
+    function getDBNode(bytes32 _db, bytes32 _nodeName) internal view returns (DBNode) {
         return DBNode(getDBDatabase(_db).getNode(_nodeName));
     }
 
@@ -205,7 +206,7 @@ contract ControlBase is ControlInfo {
         return true;
     }
 
-    function getWalletAddress(bytes32 _enName) internal pure returns (address) {
+    function getWalletAddress(bytes32 _enName) internal view returns (address) {
         bytes32 walletName;
         
         walletName = formatWalletName(_enName, "wat");
@@ -254,6 +255,8 @@ contract ControlBase is ControlInfo {
 
     function enableWallet(bytes32 _enName, address _enAdr, address _creator) internal returns (address) {
         bytes32 walletNmae = formatWalletName(_enName, "wat");
+        require(address(getDBNode(dbName_, walletNmae)) != 0);
+
         address walletAdr  = getDBFactory("wallet-adv").createNode(walletNmae, _enAdr, _creator);
         require(walletAdr != 0);
         return walletAdr;
@@ -262,7 +265,6 @@ contract ControlBase is ControlInfo {
     function publishZSCAgreement(bytes32 _userName, bytes32 _agrName, address _creator) internal {
         //string memory temp;
         address agrAdr = address(getDBNode(dbName_, _agrName));
-        address userAdr = address(getDBNode(dbName_, _userName));
         require(agrAdr != 0);
 
         bytes32 status = DBNode(agrAdr).getParameter("status");
@@ -301,6 +303,10 @@ contract ControlBase is ControlInfo {
         getDBNode(dbName_, _agrName).setAgreementStatus("PAID", _userName);
         getDBNode(dbName_, _userName).bindAgreement(agrAdr);
 
+        bytes32 provider = DBNode(agrAdr).getParameter("provider");
+        address proWallet = getWalletAddress(provider);
+        DBNode(recWallet).executeTransaction(tokenContractAdr, proWallet, price);
+
         /*
         addLog(PlatString.bytes32ToString(_userName), true);
         addLog(" purchased ", false);
@@ -310,7 +316,9 @@ contract ControlBase is ControlInfo {
     }
 
 
-    function conductZSCClaimInsurance(bytes32 _userName, bytes32 _agrName) internal returns (bool) {
+    function claimInsurance(bytes32 _userName, bytes32 _agrName) public returns (bool) {
+        checkRegistered(_userName, msg.sender);
+
         bytes32 agrName = _agrName;
 
         address agrAdr = address(getDBNode(dbName_, agrName));
@@ -321,21 +329,18 @@ contract ControlBase is ControlInfo {
         bytes32 receiver = DBNode(agrAdr).getParameter("receiver");
         require(_userName == provider || _userName == receiver);
 
-        address proWallet = address(getDBNode(dbName_, formatWalletName(provider, "ZSC")));
-        address recWallet = address(getDBNode(dbName_, formatWalletName(receiver, "ZSC")));
-        address agrWallet = address(getDBNode(dbName_, formatWalletName(agrName, "ZSC")));
+        address proWallet = getWalletAddress(provider);/// address(getDBNode(dbName_, formatWalletName(provider, "ZSC")));
+        address recWallet = getWalletAddress(receiver);// address(getDBNode(dbName_, formatWalletName(receiver, "ZSC")));
+        address agrWallet = getWalletAddress(receiver);// address(getDBNode(dbName_, formatWalletName(agrName, "ZSC")));
         address tokenContractAdr = getDBModule("token").getTokenAddress("ZSC");
 
-        string memory temp;
         uint lockedAmount;
         uint price;
 
-        temp = PlatString.bytes32ToString(DBNode(agrAdr).getParameter("insurance"));
-        lockedAmount = PlatString.stringToUint(temp);
+        lockedAmount = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(agrAdr).getParameter("insurance")));
         lockedAmount = lockedAmount.mul(1 ether);
 
-        temp = PlatString.bytes32ToString(DBNode(agrAdr).getParameter("price"));
-        price = PlatString.stringToUint(temp);
+        price = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(agrAdr).getParameter("price")));
         price = price.mul(1 ether);
 
         uint ret = DBNode(agrAdr).simulatePayforInsurance();
@@ -344,20 +349,21 @@ contract ControlBase is ControlInfo {
             return false;
         } else if (ret == 1) {
             //Insurance to receiver
-            DBNode(agrWallet).executeTransaction(tokenContractAdr, proWallet, price);
             DBNode(agrWallet).executeTransaction(tokenContractAdr, recWallet, lockedAmount);
         } else if (ret == 2) {
             //Paid to provider
-            DBNode(agrWallet).executeTransaction(tokenContractAdr, proWallet, lockedAmount + price);
+            DBNode(agrWallet).executeTransaction(tokenContractAdr, proWallet, lockedAmount);
         }
         return true;
     }
  
-    function prepareTokenBalanceInfo(bool _useIndex, bytes32 _enName, uint _index, bytes32 _symbol) internal constant returns (string) { 
+    function getTokenBalanceInfo(bool _useIndex, bytes32 _enName, uint _index, bytes32 _symbol) public view returns (string) { 
+        checkRegistered(_userName, msg.sender);
+
         bytes32 status;
         bytes32 tokenName;
         bytes32 tokenSymbol;
-        bytes32 tokenDecimals;
+        uint tokenDecimals;
         address tokenAdr;
         address userWalletAdr;
         uint tokenBalance;
@@ -366,8 +372,8 @@ contract ControlBase is ControlInfo {
 
         if (_useIndex) {
             (status, tokenName, tokenSymbol, tokenDecimals, tokenAdr) = getDBModule("token").getTokenInfoByIndex(_index);
-        } esle {
-            (status, tokenName, tokenSymbol, tokenDecimals, tokenAdr) = getDBModule("token").getTokenInfoBySymbo(_symbol);
+        } else {
+            (status, tokenName, tokenSymbol, tokenDecimals, tokenAdr) = getDBModule("token").getTokenInfoBySymbol(_symbol);
         }
         
         tokenBalance = DBNode(userWalletAdr).getBlance(tokenAdr);
@@ -380,7 +386,8 @@ contract ControlBase is ControlInfo {
         return str;
     }
 
-    function prepareTransationfoByIndex(bytes32 _walletName, uint _index) internal constant returns (string) {
+/*
+    function prepareTransationfoByIndex(bytes32 _walletName, uint _index) internal view returns (string) {
         address walletAdr = getDBNode(dbName_, _walletName);
 
         require(_index < DBNode(walletAdr).numTransactions());
@@ -407,8 +414,11 @@ contract ControlBase is ControlInfo {
         str = PlatString.append(str, "receiver=",  PlatString.addressToString(receiver), "&");
         return str;
     }
+    */
 
-    function prepareModulesAddresses() internal constant returns (string) {
+    function getModulesAddresses() public view returns (string) {
+        checkRegistered(_userName, msg.sender);
+
         address dbAdr = address(getDBDatabase(dbName_));
         address factoryProAdr = address(getDBFactory("provider"));
         address factoryRecAdr = address(getDBFactory("receiver"));
