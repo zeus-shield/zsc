@@ -61,10 +61,18 @@ export default class Account {
         this[http].get(url, 10000, function(data) {
             console.log(data);
         });
+    }
+
+    txlistinternal(address, startblock, endblock) {
+        let url = `http://api.etherscan.io/api?module=account&action=txlistinternal&address=${address}&startblock=${startblock}&endblock=${endblock}&sort=asc`;
+
+        this[http].get(url, 10000, function(data) {
+            console.log(data);
+        });
     }   
 
-    tockentx(address) {
-        let url = `http://api.etherscan.io/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=999999999&sort=asc`;
+    txlistinternal(address, startblock, endblock, page, offset) {
+        let url = `https://api.etherscan.io/api?module=account&action=txlistinternal&address=${address}&startblock=${startblock}&endblock=${endblock}&page=${page}&offset=${offset}&sort=asc`;
 
         this[http].get(url, 10000, function(data) {
             console.log(data);
