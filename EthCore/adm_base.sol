@@ -8,63 +8,39 @@ import "./object.sol";
 
 contract ControlApis {
     function createUserNode(bytes32 _factoryType, bytes32 _userName, address _extraAdr) public returns (address);
+    function getUserWalletAddress(bytes32 _userName, bytes32 _tokenSymbol) public constant returns (address);
     function setUserStatus(bytes32 _user, bool _tag) public returns (bool);
     function getUserStatus(bytes32 _user) public constant returns (bool);
 }
 
 contract AdmBase is Object {
-    struct TestUserInfo {
-        bytes32 name_ ;
-        bytes32 pass_ ;
-        bytes32 email_;
+    struct UserInfo {
+        bytes32 name_;
         bytes32 status_ ; //0: not exist; 1: added; 2: applied; 3: approved;  4: locked
         bytes32 type_;    //1: provider; 2: receiver; 3: staker
-        bytes32 actived_;
-        address id_   ;
-        address nodeAdr_ ;
+        address nodeAdr_;
         address ethAdr_ ;
-        address zscAdr_ ;
     }
     uint public userNos_ = 0;
 
-    mapping(bytes32 => bool) private userExist_;
-    mapping(bytes32 => uint) private userIndex_;
-    mapping(uint => TestUserInfo) private testUsers_;
+    mapping(address => bytes32) private userNames_;
+    mapping(address => uint) private userIndex_;
+    mapping(uint => TestUserInfo) private userInfos_;
 
-    address public zscTestTokenAddress_;
     address public controlApisAdr_;
     string public controlApisFullAib_;
-    uint public allocatedZSC_;
 
-    function checkAdded(bytes32 _hexx) internal constant {
-        uint index = getUserIndex(_hexx);
-        bytes32 status = testUsers_[index].status_;
-
-        require(status == "added" || status == "applied");
-    }
-    
-    function AdmBase(bytes32 _name) public Object(_name) {}
-
-    function toHexx(bytes32 _value) internal constant returns (bytes32);
-
-    function prepareRandomCharacters() internal;
-
-    function getUserIndex(bytes32 _hexx) internal constant returns (uint) { 
-        return userIndex_[_hexx]; 
+    function AdmBase(bytes32 _name) public Object(_name) {
     }
 
     function initAdm(address _zscTokenAdr, address _controlApisAdr) public { 
         checkDelegate(msg.sender, 1);
-
-        zscTestTokenAddress_ = _zscTokenAdr; 
         controlApisAdr_ = _controlApisAdr;
-
         prepareRandomCharacters();
     }
 
     function setControlApisFullAbi(string _fullAbi) public { 
         checkDelegate(msg.sender, 1);
-
         controlApisFullAib_ = _fullAbi; 
     }
 
@@ -76,69 +52,23 @@ contract AdmBase is Object {
         return controlApisAdr_; 
     }
 
-    function addUser(bytes32 _user, bytes32 _pass) public {
-        checkDelegate(msg.sender, 1);
+    function activeByUser(bytes32 _type) public {
+        require(!userExist_[msg.sender]);
 
-        addLog("add a User - ", true);
-        addLog(PlatString.bytes32ToString(_user), false);
+        bytes32 userName = PlatString.tobytes32(PlatString.uintToString(userNos_));
+        userExist_[msg.sender] = true;
 
-        require(userExist_[_user] == false);
-        userExist_[_user] = true;
-
-        userIndex_[toHexx(_user)] = userNos_;
-        testUsers_[userNos_] = TestUserInfo(_user, _pass, "null", "added", 0, "false", address(0), address(0), address(0), address(0));
-        userNos_++;
-    }
-    
-    function createAccount(bytes32 _user, bytes32 _pass, bytes32 _email) public {
-        addUser(_user, _pass);
-        testUsers_[userNos_ - 1].email_ = _email;
-    }
-    
-    function changePass(bytes32 _user, bytes32 _oldPass, bytes32 _newPass) public {
-        checkAdded(toHexx(_user));
-        
-        uint index = userIndex_[toHexx(_user)];
-        require(testUsers_[index].pass_ == _oldPass);
-        
-        testUsers_[index].pass_ = _newPass;
-    }
-    
-    function addUserRandom(bytes32 _prefix, uint _nameLenght, uint _passLength) public;
-
-    function addUserRandom(uint _number, bytes32 _prefix, uint _nameLenght, uint _passLength) public {
-        checkDelegate(msg.sender, 1);
-        require(_number > 0); 
-
-        for (uint i = 0; i < _number; ++i) {
-            addUserRandom(_prefix, _nameLenght, _passLength);
-        }
-    }
-
-    function activeByUser(bytes32 _hexx, bytes32 _type) public {
-        checkAdded(_hexx);
-
-        uint index = getUserIndex(_hexx);
-        testUsers_[index].status_ = "applied";
-        testUsers_[index].type_ = _type;
-        testUsers_[index].actived_ = "true";
-        testUsers_[index].id_ = msg.sender;
-
-        bytes32 userName = testUsers_[index].name_;
-
-        //createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr)
-        testUsers_[index].nodeAdr_ = ControlApis(controlApisAdr_).createUserNode(_type, userName, msg.sender);
-
-        return;
-
-        /*
-        addLog("activeByUser - ", true);
-        addLog(PlatString.bytes32ToString(userName), false);
-        addLog("| address - ", false);
-        addLog(PlatString.addressToString(msg.sender), false);
-
-        //ControlApis(controlApisAdr_).setUserStatus(userName, true);
+        /* 
+            name_;
+            status_ ; //0: applied; 1: locked
+            type_;    //1: provider; 2: receiver; 3: staker
+            nodeAdr_;
+            ethAdr_ ;
         */
+        userInfos_[msg.sender] = UserInfo(userName, "applied", _type, address(0), msg.sender));
+        userNos_++;
+
+        userInfos_[msg.sender].nodeAdr_ = ControlApis(controlApisAdr_).createUserNode(_type, userName, msg.sender);
     }
 
     function setUserActiveState(bytes32 _user, bool _tag) public {
