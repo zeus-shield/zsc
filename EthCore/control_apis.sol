@@ -227,7 +227,6 @@ contract ControlApis is ControlBase {
         return walletAdr;
     }
 
-
     function numUserTransactions(bytes32 _userName, bytes32 _tokenSymbol) public view returns (uint) {
         checkRegistered(_userName, msg.sender);
 
@@ -238,62 +237,4 @@ contract ControlApis is ControlBase {
         
         return DBNode(walletAdr).numTransactions();
     }
-
-    function createMinerRobot(bytes32 _userName) public {
-        checkRegistered(_userName, msg.sender);
-        
-        address walletAdr = getWalletAddress(_userName);
-        getDBModule("pos").createRobot(walletAdr, 0);
-    }
-    
-    function activeMinerRobot(bytes32 _userName, uint _robotId, uint _rewardType) public {
-        checkRegistered(_userName, msg.sender);
-        
-        address walletAdr = getWalletAddress(_userName);
-        address tokenAdr  = getDBModule("token").getTokenAddress("ZSC");
-        uint lockedAmount = getDBModule("pos").activeRobot(walletAdr, _robotId, _rewardType);
-       
-        DBNode(walletAdr).lockWallet(tokenAdr, lockedAmount);
-    }    
-    
-   
-    function auctionMinerRobot(bytes32 _userName, uint _robotId, uint _price) public payable {
-        checkRegistered(_userName, msg.sender);
-        
-        address walletBuyerAdr;
-        address preWalletAdr;
-        uint prePrice;
-        uint newPrice;
-
-        walletBuyerAdr  = getWalletAddress(_userName);
-        (preWalletAdr, prePrice, newPrice) = getDBModule("pos").auctionRobot(walletBuyerAdr, _robotId, _price);
-
-        if (prePrice != 0) {
-            DBNode(preWalletAdr).unlockWallet(address(0), prePrice);
-        }
-        DBNode(walletBuyerAdr).lockWallet(address(0), _price);
-    }
-
-    function trytakeMinerRobot(bytes32 _userName, uint _robotId) public payable {
-        checkRegistered(_userName, msg.sender);
-
-        address walletBuyerAdr;
-        address seller;
-        address endBuyer;
-        uint endPrice;
-        
-        walletBuyerAdr  = getWalletAddress(_userName);
-        (seller, endBuyer, endPrice) = getDBModule("pos").tryTakeRobot(walletBuyerAdr, _robotId);
-        if (endPrice != 0) {
-            DBNode(endBuyer).executeTransaction(address(0), seller, endPrice);
-        }
-    }
-    
-    function publishMinerRobot(bytes32 _userName, uint _robotId, uint _price, uint _durationInDays) public {
-        checkRegistered(_userName, msg.sender);
-        
-        address walletAdr = getWalletAddress(_userName);
-        getDBModule("pos").publishRobot(walletAdr, _robotId, _price, _durationInDays);
-    }
-
 }
