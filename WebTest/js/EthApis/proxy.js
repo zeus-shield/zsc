@@ -60,4 +60,13 @@ export default class Proxy {
         });
     }
 
+    eth_getTransactionCount(address, tag) {
+        let url = `https://api.etherscan.io/api?module=proxy&action=eth_getTransactionCount&address=${address}&tag=${tag}`;
+
+        this[http].get(url, 10000, function(data) {
+            console.log(data);
+        });
+    }
+
+
 }
