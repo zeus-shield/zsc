@@ -9,7 +9,6 @@ import "./control_info.sol";
 
 contract DBNode {
     function getNodeType() public constant returns (bytes32);
-    function getBlance() public constant returns (uint256);
     function getBlance(address _adr) public constant returns (uint256);
 
     function addParameter(bytes32 _parameter) public returns (bool);
@@ -354,32 +353,25 @@ contract ControlBase is ControlInfo {
         return true;
     }
  
-    function prepareTokenBalanceInfoByIndex(bytes32 _enName, uint _index) internal constant returns (string) { 
+    function prepareTokenBalanceInfo(bool _useIndex, bytes32 _enName, uint _index, bytes32 _symbol) internal constant returns (string) { 
         bytes32 status;
+        bytes32 tokenName;
         bytes32 tokenSymbol;
+        bytes32 tokenDecimals;
         address tokenAdr;
+        address userWalletAdr;
         uint tokenBalance;
-        bytes32 walletName;
 
-        status = "true";
-        if (_index == 0) {
-            tokenSymbol = "ETH";
-        } else if (_index == 1) {
-            tokenSymbol = "ZSC";
-        } else {
-            revert();
+        userWalletAdr = getWalletAddress(_enName);
+
+        if (_useIndex) {
+            (status, tokenName, tokenSymbol, tokenDecimals, tokenAdr) = getDBModule("token").getTokenInfoByIndex(_index);
+        } esle {
+            (status, tokenName, tokenSymbol, tokenDecimals, tokenAdr) = getDBModule("token").getTokenInfoBySymbo(_symbol);
         }
-
-        walletName   = formatWalletName(_enName, tokenSymbol);
-        tokenAdr     = address(getDBNode(dbName_, walletName));
-
-        if (tokenAdr == address(0)) {
-            status = "false";
-            tokenBalance = 0;
-        } else {
-           tokenBalance = DBNode(tokenAdr).getBlance().div(1 ether);
-        }
-
+        
+        tokenBalance = DBNode(userWalletAdr).getBlance(tokenAdr);
+        
         string memory str ="";
         str = PlatString.append(str, "info?status=", PlatString.bytes32ToString(status),      "&");
         str = PlatString.append(str, "symbol=",      PlatString.bytes32ToString(tokenSymbol), "&");
@@ -387,32 +379,6 @@ contract ControlBase is ControlInfo {
         str = PlatString.append(str, "adr=",         PlatString.addressToString(tokenAdr),    "&");
         return str;
     }
-
-    /*------2018-07-06: new verstion: YYA------  */
-    function prepareTokenBalanceInfoBySymbol(bytes32 _enName, bytes32 _symbol) internal constant returns (string) { 
-        bytes32 status;
-        bytes32 tokenSymbol;
-        address walletAdr;
-        bytes32 walletName;
-        address tokenContractAdr;
-        uint tokenBalance;
-
-        walletName   = formatWalletName(_enName, "wat");
-        walletAdr     = address(getDBNode(dbName_, walletName));
-
-        require(walletAdr != address(0));
-
-        tokenContractAdr = getDBModule("token").getTokenAddress(_symbol);
-        tokenBalance = DBNode(walletAdr).getBlance(tokenContractAdr).div(1 ether);
-        
-        string memory str ="";
-        str = PlatString.append(str, "info?status=", PlatString.bytes32ToString(status),      "&");
-        str = PlatString.append(str, "symbol=",      PlatString.bytes32ToString(tokenSymbol), "&");
-        str = PlatString.append(str, "balance=",     PlatString.uintToString(tokenBalance),   "&");
-        str = PlatString.append(str, "adr=",         PlatString.addressToString(walletAdr),    "&");
-        return str;
-    }
-    /*------2018-07-06: new verstion: END------  */
 
     function prepareTransationfoByIndex(bytes32 _walletName, uint _index) internal constant returns (string) {
         address walletAdr = getDBNode(dbName_, _walletName);
