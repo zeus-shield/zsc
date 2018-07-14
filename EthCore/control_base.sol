@@ -72,10 +72,10 @@ contract DBModule {
     function getTokenInfoBySymbol(bytes32 _symbol) public view returns (bytes32, bytes32, bytes32, uint, address);
 
     function createRobot(address _user, uint _level) public returns (uint);
-    function activeRobot(address _user, uint _robotId, uint _rewardType) public returns (uint);
+    function activeRobot(address _user, uint _robotId, uint _rewardType) public returns (uint);    
     function enhanceRobot(address _user, uint _robotA, uint _robotB) public returns (uint);
     function publishRobot(address _seller, uint _robotId, uint _price, uint _durationInDays) public;
-    function cancelAuction(address _seller, uint _robotId) public returns (address buyer, uint price);
+    function cancelAuction(address _seller, uint _robotId) public returns;
     function auctionRobot(address _buyer, uint _robotId, uint _price) public returns (address preBuyer, uint prePrice, uint newPrice);
     function tryTakeRobot(address _buyer, uint _robotId) public returns (address seller, address endBuyer, uint endPrice);
     function claimable(address _user, uint _robotId) public view returns (bool);
@@ -327,23 +327,21 @@ contract ControlBase is Object {
         return ret;
     }
 
-
     function claimInsurance(bytes32 _userName, bytes32 _agrName) public returns (bool) {
         checkRegistered(_userName, msg.sender);
 
         bytes32 agrName = _agrName;
-
-        address agrAdr = address(getDBNode(dbName_, agrName));
-        bytes32 status = DBNode(agrAdr).getParameter("status");
+        address agrAdr  = address(getDBNode(dbName_, agrName));
+        bytes32 status  = DBNode(agrAdr).getParameter("status");
         require(status == "PAID");
 
         bytes32 provider = DBNode(agrAdr).getParameter("provider");
         bytes32 receiver = DBNode(agrAdr).getParameter("receiver");
         require(_userName == provider || _userName == receiver);
 
-        address proWallet = getWalletAddress(provider);/// address(getDBNode(dbName_, formatWalletName(provider, "ZSC")));
-        address recWallet = getWalletAddress(receiver);// address(getDBNode(dbName_, formatWalletName(receiver, "ZSC")));
-        address agrWallet = getWalletAddress(receiver);// address(getDBNode(dbName_, formatWalletName(agrName, "ZSC")));
+        address proWallet = getWalletAddress(provider);
+        address recWallet = getWalletAddress(receiver);
+        address agrWallet = getWalletAddress(receiver);
         address tokenContractAdr = getDBModule("token").getTokenAddress("ZSC");
 
         uint lockedAmount;
@@ -398,7 +396,6 @@ contract ControlBase is Object {
         return str;
     }
 
-
     function getUserTransactionByIndex(bytes32 _userName, uint _index) public constant returns (string) {
         checkRegistered(_userName, msg.sender);
 
@@ -429,7 +426,6 @@ contract ControlBase is Object {
         return str;
     }
  
-
     function getModuleAddresses() public view returns (string) {
         address dbAdr = address(getDBDatabase(dbName_));
         address factoryProAdr = address(getDBFactory("provider"));
@@ -451,6 +447,5 @@ contract ControlBase is Object {
         str = PlatString.append(str, "factory-agreement=",   PlatString.addressToString(factoryAgrAdr),    "&");
         str = PlatString.append(str, "factory-wallet-erc20=",PlatString.addressToString(factoryErc20Adr),  "&");
         return str;
-    }
-    
+    }   
 }
