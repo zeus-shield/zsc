@@ -508,7 +508,7 @@ contract ControlApis is ControlBase {
         if (prePrice != 0) {
             DBNode(preWalletAdr).unLockWallet(getZSCTokenAddress(), prePrice);
         }
-        DBNode(walletBuyerAdr).lockWallet(getZSCTokenAddress(), _price);
+        DBNode(walletBuyerAdr).lockWallet(address(0), _price);
     }
 
     function trytakeMinerRobot(bytes32 _userName, uint _robotId) public payable {
@@ -521,6 +521,9 @@ contract ControlApis is ControlBase {
         
         walletBuyerAdr  = getWalletAddress(_userName);
         (seller, endBuyer, endPrice) = getDBModule("pos").tryTakeRobot(walletBuyerAdr, _robotId);
+        if (endPrice != 0) {
+            DBNode(endBuyer).executeTransaction(address(0), seller, endPrice);
+        }
     }
     
     function publishMinerRobot(bytes32 _userName, uint _robotId, uint _price) public {
