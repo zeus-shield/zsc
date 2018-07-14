@@ -6,7 +6,7 @@ Copyright (c) 2018 ZSC Dev Team
 
 <?php
 include("adm_header.php");
-$htmlObjects = new ZSChtmlObjects();
+$htmlObjects = new ZSCHtmlObjects();
 ?>
 
 <html>
