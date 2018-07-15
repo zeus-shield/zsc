@@ -18,8 +18,6 @@ function ZSCWallet(nm, abi, adr) {
     this.gasLimit = bF_getGasLimit(700);
 }
 
-ZSCWallet.prototype = new ZSCClient();
-
 ZSCWallet.prototype.getUserName = function() {return this.userName;}
 
 ZSCWallet.prototype.setUserName = function(nm) {this.userName = nm; }
