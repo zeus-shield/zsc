@@ -34,30 +34,51 @@ class ZSCInclude {
         <script type="text/javascript" src="./pos/pos_robot_enhance.js"></script>
         <script type="text/javascript" src="./pos/pos_robot_gen0.js"></script>
         <script type="text/javascript" src="./pos/pos_robot_owned.js"></script>
-        <script type="text/javascript" src="./pos/pos_staker_info.js"></script>
+        ';
+        return $text;
+    }
+
+    public function loadWeb3() {
+        $text='
+        var web3;
+        var zscUser = new ZSCUser();
+        if (doesLocalWeb3js()) { web3 = setupWeb3js();} 
+        else { web3 = new Web3(web3.currentProvider);} //Metamask
+        ';
+        return $text;
+    }
+
+    public function checkUserLogin() {
+        $text='
+        zscUser.tryLogin(function(ret) {
+            var textBody;
+            if(!ret) {
+                window.location.href = "index.php"; 
+            } 
+        });
         ';
         return $text;
     }
 
     public function loadAlert() {
-        $text="'".
+        $text=
         "<i>Needs to install MetaMask extension</i><br>". 
         "<i>(需要安装MetaMask插件才能显示登录框以其他相关页面)</i><br><br>".
         "<i>Both the FireFox and Chrome browsers are recommended</i><br>".
         "<i>(推荐使用火狐或者Chrome浏览器)</i>";  
         return $text;
     }
-    
+
     public function loadPosHeader() {
-        $text="'".
+        $text=
         '<table align="center" style="width:600px">'.
         ' <tr>'.
-        '  <td align="center"><a href="pos_staker_info.php">User Profile</a></td>'.
+        '  <td align="center"><a href="user_profile.php">User Profile</a></td>'.
         '  <td align="center"><a href="pos_robot_gen0.php">Create Gen0 Robot</a></td>'.
         '  <td align="center"><a href="pos_robot_owned.php">Owned Market</a></td>'.
         '  <td align="center"><a href="pos_robot_market.php">Robot Market</a></td>'.
         ' </tr>'.
-        '</table>'."'";
+        '</table>';
         return $text;
     }
 }
