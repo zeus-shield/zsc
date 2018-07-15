@@ -78,4 +78,12 @@ export default class Account {
             console.log(data);
         });
     }
+
+    tokentx(address, startblock, endblock) {
+        let url = `http://api.etherscan.io/api?module=account&action=tokentx&address=${address}&startblock=${startblock}&endblock=${endblock}&sort=asc`;
+
+        this[http].get(url, 10000, function(data) {
+            console.log(data);
+        });
+    }
 }
