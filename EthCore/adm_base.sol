@@ -15,10 +15,9 @@ contract AdmBase is Object {
 
     function activeByUser(bytes32 _type) public;
 
-    function initAdm(address _zscTokenAdr, address _controlApisAdr) public { 
+    function initAdm(address _controlApisAdr) public { 
         checkDelegate(msg.sender, 1);
         controlApisAdr_ = _controlApisAdr;
-        prepareRandomCharacters();
     }
 
     function setControlApisFullAbi(string _fullAbi) public { 
