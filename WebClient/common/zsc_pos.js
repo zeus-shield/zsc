@@ -13,8 +13,6 @@ function ZSCPos(nm, abi, adr) {
     this.myControlApi = web3.eth.contract(abi).at(adr);
 }
 
-ZSCPos.prototype = new ZSCClient();
-
 ZSCPos.prototype.getUserName = function() {return this.userName;}
 
 ZSCPos.prototype.getRewardNos = function() {return this.rewardNos;}
