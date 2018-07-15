@@ -19,10 +19,14 @@ $htmlObjects = new ZSCInclude();
         <div class="well" id="PageAlert"></div>
         <div class="well" id="PageHeader"></div>
         <div class="well" id="PageBody">
-            <button type="button" onClick="applyForZSCUser('provider', 'ApplyForProviderHash')">Apply for provider</button> <br><br>
-            <button type="button" onClick="applyForZSCUser('receiver', 'ApplyForProviderHash')">Apply for receiver</button> <br><br>
-            <button type="button" onClick="applyForZSCUser('staker',   'ApplyForProviderHash')">Apply for receiver</button> <br><br>
-            <text id="ApplyForUserHash"></text>
+            <table align="center">
+                <tr><td>
+                    <button type="button" onClick="applyForZSCUser('provider', 'ApplyForProviderHash')">Apply for provider</button> <br><br>
+                    <button type="button" onClick="applyForZSCUser('receiver', 'ApplyForProviderHash')">Apply for receiver</button> <br><br>
+                    <button type="button" onClick="applyForZSCUser('staker',   'ApplyForProviderHash')">Apply for staker</button> <br>
+                    <text id="ApplyForUserHash"></text>
+                </td></tr>
+            </table>
         </div>
     </div>
 <script type="text/javascript">
@@ -38,27 +42,24 @@ $htmlObjects = new ZSCInclude();
     var zscModuleAdrGM;
 
     function htmlLoadLogin() {
-        document.getElementById("PageAlert").innerHTML = ""
-        + "<i>Needs to install MetaMask extension</i><br>" 
-        + "<i>(需要安装MetaMask插件才能显示登录框以其他相关页面)</i><br><br>"
-        + "<i>Both the FireFox and Chrome browsers are recommended</i><br>"
-        + "<i>(推荐使用火狐或者Chrome浏览器)</i>";  
+        document.getElementById("PageAlert").innerHTML = <?php echo $htmlObjects->loadAlert(); ?>;  
         document.getElementById("PageHeader").innerHTML = <?php echo $htmlObjects->loadPosHeader(); ?>;  
     }
 
     function checkUser(adrId) { 
-        zscUser = new ZSCUser(admAdr);
         zscUser.tryLogin(function(ret) {
             if(ret) {
-                document.getElementById("PageBody").innerHTML = "<br><br><i>Welcome! Need to </i><br><br>";  
-            } else {
-                
-            }
+                document.getElementById("PageBody").innerHTML = "<br><br><i>Welcome!</i><br><br>";  
+            } 
         });
     }
 
+    function applyForZSCUser(userType, hashId) {
+        zscUser.activeByUser(userType, hashId);
+    }
 
     htmlLoadLogin();
+    checkUser();
 </script>
 
 </body>
