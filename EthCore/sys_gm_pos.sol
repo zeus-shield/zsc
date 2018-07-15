@@ -9,18 +9,12 @@ import "./erc721_adv.sol";
 
 contract SysGmPos is Erc721Adv, SysGmBase {
     struct RobotUnit {
-        bool buyable_;
-        bool activated_;
         uint level_;
         uint stakePoint_;
         uint rewardRatio_;
         uint mineStart_;
         uint mineEnd_;
-        uint auctionStart_;
-        uint auctionEnd_;
-        uint startPrice_;
-        uint endPrice_;
-        address buyer_;
+        uint price_;
     }
 
     uint internal robotNos_;
@@ -33,38 +27,24 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     function checkRobotUser(address _user, uint _robotId) internal view {
         require(_user == ownerOf(_robotId));
     }
-    
-    function getRobotPrice(uint _robotId) public view returns (uint) {
-        checkDelegate(msg.sender, 1);
-        require(_robotId < robotNos_);
-        return robots_[_robotId].endPrice_;
+
+    function isActivated(uint _robotId) internal view returns (bool) {
+        return (robots_[_robotId].mineStart_ != 0);
     }
 
-    function getRobotStatus(uint _robotId) public view returns (address, bool, bool) {
+    function isBuyable(uint _robotId) internal view returns (bool) {
+        return (robots_[_robotId].price_ != 0);
+    }
+
+    function getRobotInfo(uint _robotId) public view returns (address, bool, bool) {
         checkDelegate(msg.sender, 1);
         require(_robotId < robotNos_);
         return (ownerOf(_robotId),
-                robots_[_robotId].buyable_,
-                robots_[_robotId].activated_);
-    }
-    
-    function getRobotMiningInfo(uint _robotId) public view returns (uint, uint, uint, uint, uint) {
-        checkDelegate(msg.sender, 1);
-        require(_robotId < robotNos_);
-        return (robots_[_robotId].level_,
+                robots_[_robotId].level_,
                 robots_[_robotId].mineStart_, 
                 robots_[_robotId].mineEnd_, 
                 robots_[_robotId].stakePoint_,
-                robots_[_robotId].rewardRatio_);
-    }
-
-    function getRobotAuctionInfo(uint _robotId) public view returns (address, uint, uint, uint, uint) {
-        checkDelegate(msg.sender, 1);
-        require(_robotId < robotNos_);
-        return (robots_[_robotId].buyer_,
-                robots_[_robotId].auctionStart_,
-                robots_[_robotId].auctionEnd_, 
-                robots_[_robotId].startPrice_,
-                robots_[_robotId].endPrice_);
+                robots_[_robotId].rewardRatio_
+                robots_[_robotId].price_);
     }
 }
