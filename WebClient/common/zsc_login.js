@@ -1,29 +1,28 @@
 /*
 Copyright (c) 2018 ZSC Dev Team
 */
-function ZSCUser() {
-    this.admAdr = "0x2d14d4d58b56407e8057bf96a36f3d9954506052";
+function ZSCLogin(adr, abi) {
+    this.admAdr = adr;
     this.userStatus;
     this.userType;
-    this.controlApisAdr;
-    this.controlApisFullAbi;
+    this.contractAdr = adr;
+    this.contractAbi = abi;
     this.account = web3.eth.coinbase;
-    this.myAdmAdv = web3.eth.contract(this.getLoginAbi()).at(this.admAdr);
     this.gasPrice = bF_getGasPrice();
     this.gasLimit = bF_getGasLimit(700);
 }
 
-ZSCUser.prototype.getUserName = function() { return this.userName; }
-ZSCUser.prototype.getUserNameHr = function() { return this.userNameHr; }
-ZSCUser.prototype.getUserStatus = function() { return this.userStatus; }
-ZSCUser.prototype.getUserType = function() { return this.userType; }
-ZSCUser.prototype.getControlApisAdr = function() { return this.controlApisAdr; }
-ZSCUser.prototype.getControlApisFullAbi = function() { return this.controlApisFullAbi; }
-ZSCUser.prototype.getLoginAbi = function() { 
-    return [{"constant":false,"inputs":[{"name":"_type","type":"bytes32"}],"name":"activeByUser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getUserType","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisFullAbi","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisAdr","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tryLogin","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getUserStatus","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}];
+ZSCLogin.prototype.getUserName = function() { return this.userName; }
+ZSCLogin.prototype.getUserNameHr = function() { return this.userNameHr; }
+ZSCLogin.prototype.getUserStatus = function() { return this.userStatus; }
+ZSCLogin.prototype.getUserType = function() { return this.userType; }
+ZSCLogin.prototype.getControlApisAdr = function() { return this.controlApisAdr; }
+ZSCLogin.prototype.getControlApisFullAbi = function() { return this.controlApisFullAbi; }
+ZSCLogin.prototype.getLoginAbi = function() { 
+    return this.contractAbi;
 }
 
-ZSCUser.prototype.tryLogin = function(func){
+ZSCLogin.prototype.tryLogin = function(func){
     var gm = this;
     var callBack = func;
     var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
@@ -44,7 +43,7 @@ ZSCUser.prototype.tryLogin = function(func){
     });
 }
 
-ZSCUser.prototype.getAdr = function(gm, func){
+ZSCLogin.prototype.getAdr = function(gm, func){
     var callBack = func;
     var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
 
@@ -58,7 +57,7 @@ ZSCUser.prototype.getAdr = function(gm, func){
     } );
 }
 
-ZSCUser.prototype.getFullAbi = function(gm, adr, func){
+ZSCLogin.prototype.getFullAbi = function(gm, adr, func){
     var callBack = func;
     var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
 
@@ -73,7 +72,7 @@ ZSCUser.prototype.getFullAbi = function(gm, adr, func){
     } );
 }
 
-ZSCUser.prototype.activeByUser = function(type, hashLogId){
+ZSCLogin.prototype.activeByUser = function(type, hashLogId){
     var gm = this;
     var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
 
@@ -89,7 +88,7 @@ ZSCUser.prototype.activeByUser = function(type, hashLogId){
     } );
 }
 
-ZSCUser.prototype.getUserStatusFromAdm = function(func) {
+ZSCLogin.prototype.getUserStatusFromAdm = function(func) {
     var gm = this;
     var callBack = func;
     var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
@@ -105,7 +104,7 @@ ZSCUser.prototype.getUserStatusFromAdm = function(func) {
         } );
 }
 
-ZSCUser.prototype.getUserTypeFromAdm = function(func){
+ZSCLogin.prototype.getUserTypeFromAdm = function(func){
     var gm = this;
     var callBack = func;
     var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
