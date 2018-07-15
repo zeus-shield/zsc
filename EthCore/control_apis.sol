@@ -32,26 +32,24 @@ contract ControlApis is ControlBase {
     }
    
     /// @dev Get the number of elements of the database
-    function numFactoryElements(bytes32 _userName, bytes32 _factoryType) public view returns (uint) { 
-        checkRegistered(_userName, msg.sender);
+    function numFactoryElements(bytes32 _factoryType) public view returns (uint) { 
+        checkUserAllowed(msg.sender);
 
         return getDBFactory(_factoryType).numFactoryNodes(); 
     }
 
     /// @dev Get the element name by the index
     /// @param _index The index of the element in the database
-    function getFactoryElementNameByIndex(bytes32 _userName, bytes32 _factoryType, uint _index) public view returns (bytes32) { 
-        checkRegistered(_userName, msg.sender);
+    function getFactoryElementNameByIndex(bytes32 _factoryType, uint _index) public view returns (bytes32) { 
+        checkUserAllowed(msg.sender);
 
         return getDBFactory(_factoryType).getFactoryNodeNameByIndex(_index); 
     }
 
     /// @dev Check the element wheather or not existing
     /// @param _enName The name of the element to be checked
-    function doesElementExist(bytes32 _userName, bytes32 _enName) public view returns (bool) {
-        checkRegistered(_userName, msg.sender);
-        checkMatched(_userName, _enName, msg.sender);
-
+    function doesElementExist(bytes32 _enName) public view returns (bool) {
+        checkRegistered(msg.sender, _enName);
         address adr = address(getDBNode(getCurrentDBName(), _enName));
         return (adr != address(0));
     }
@@ -65,29 +63,28 @@ contract ControlApis is ControlBase {
 
         address ndAdr = createNodeForUser(_factoryType, _userName, _extraAdr);
         require(ndAdr != address(0));
-        registerUserNode(_userName, ndAdr, _extraAdr);
+        registerUserNode(_extraAdr, _userName);
         
         return ndAdr;
     }
 
-    function createElementNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName, bytes32 _extraInfo) public returns (address) {
-        checkRegistered(_userName, msg.sender);
+    function createElementNode(bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo) public returns (address) {
+        bytes32 userName = checkUserAllowed(msg.sender);
 
         require(_factoryType == "template" || _factoryType == "agreement");
         require(address(getDBNode(getCurrentDBName(), _enName)) == address(0));
         
-        address ndAdr = createNodeForElement(_factoryType, _userName, _enName, _extraInfo);
+        address ndAdr = createNodeForElement(_factoryType, userName, _enName, _extraInfo);
         require(ndAdr != address(0));
-        registerEntityNode(_userName, _enName, ndAdr, msg.sender);
+        registerEntityNode(msg.sender, _enName);
         
         return ndAdr;
     }
 
     /// @dev Get the type of an element
     /// @param _enName The name of the element belonging to the user
-    function getElementType(bytes32 _userName, bytes32 _enName) public view returns (bytes32) {
-        checkRegistered(_userName, msg.sender);
-        checkMatched(_userName, _enName, msg.sender);
+    function getElementType(bytes32 _enName) public view returns (bytes32) {
+        checkRegistered(msg.sender, _enName);
 
         DBNode nd = getDBNode(getCurrentDBName(), _enName);
         require(address(nd) != address(0));
@@ -97,9 +94,8 @@ contract ControlApis is ControlBase {
     /// @dev Add a paramter to an element
     /// @param _enName The name of the existing element
     /// @param _parameter The name of the added parameter
-    function addElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public returns (bool) {
-        checkRegistered(_userName, msg.sender);
-        checkMatched(_userName, _enName, msg.sender);
+    function addElementParameter(bytes32 _enName, bytes32 _parameter) public returns (bool) {
+        checkRegistered(msg.sender, _enName);
 
         return getDBNode(getCurrentDBName(), _enName).addParameter(_parameter);
     }
@@ -107,8 +103,8 @@ contract ControlApis is ControlBase {
     /// @dev Get the value of a paramter of an element
     /// @param _enName The name of the element
     /// @param _parameter The name of the existing parameter
-    function getElementParameter(bytes32 _userName, bytes32 _enName, bytes32 _parameter) public view returns (bytes32) {
-        checkRegistered(_userName, msg.sender);
+    function getElementParameter(bytes32 _enName, bytes32 _parameter) public view returns (bytes32) {
+        checkRegistered(msg.sender, _enName);
 
         bytes32 ndType = getDBNode(getCurrentDBName(), _enName).getNodeType();
         if (ndType != "agreement") {
@@ -119,22 +115,22 @@ contract ControlApis is ControlBase {
 
     /// @dev Get the address of the element 
     /// @param _enName The name of the element
-    function getElementAddress(bytes32 _userName, bytes32 _enName) public view returns (address) {
-        checkRegistered(_userName, msg.sender);
-        checkMatched(_userName, _enName, msg.sender);
+    function getElementAddress(bytes32 _enName) public view returns (address) {
+        checkRegistered(msg.sender, _enName);
 
         return address(getDBNode(getCurrentDBName(), _enName));
     }
 
     /// @dev Get the number of paramters of an element
     /// @param _enName The name of the existing element
-    function numElementParameters(bytes32 _userName, bytes32 _enName) public view returns (uint) {
-        checkRegistered(_userName, msg.sender);
+    function numElementParameters(bytes32 _enName) public view returns (uint) {
+        checkUserAllowed(msg.sender);
 
         bytes32 ndType = getDBNode(getCurrentDBName(), _enName).getNodeType();
-        if (ndType != "agreement") {
-            checkMatched(_userName, _enName, msg.sender);
+        if (ndType != "agreement") { 
+            checkRegistered(msg.sender, _enName);
         }
+
         return  getDBNode(getCurrentDBName(), _enName).numParameters();
     }
 
@@ -147,12 +143,12 @@ contract ControlApis is ControlBase {
             var para = getNodeParameterNameByIndex("test", 0);
         }
     */
-    function getElementParameterNameByIndex(bytes32 _userName, bytes32 _enName, uint _index) public view returns (bytes32) {
-        checkRegistered(_userName, msg.sender);
+    function getElementParameterNameByIndex(bytes32 _enName, uint _index) public view returns (bytes32) {
+        checkUserAllowed(msg.sender);
 
         bytes32 ndType = getDBNode(getCurrentDBName(), _enName).getNodeType();
         if (ndType != "agreement") {
-            checkMatched(_userName, _enName, msg.sender);
+            checkRegistered(msg.sender, _enName);
         }
 
         return getDBNode(getCurrentDBName(), _enName).getParameterNameByIndex(_index);
@@ -161,65 +157,57 @@ contract ControlApis is ControlBase {
     /// @dev Transfer a particular amount from a user wallet to the destination address
     /// @param _dest The destination address
     /// @param _amount The amount to be transferred
-    function submitTransfer(bytes32 _userName, bytes32 _tokenSymbol, address _dest, uint256 _amount) public returns (uint) {
+    function submitTransfer(bytes32 _tokenSymbol, address _dest, uint256 _amount) public returns (uint) {
         require(_amount > 0);
-        checkRegistered(_userName, msg.sender);
-
-        address walletAdr = getWalletAddress(_userName);
+        bytes32 userName = checkUserAllowed(msg.sender);
+        address walletAdr = getWalletAddress(userName);
         require(walletAdr != address(0));
 
-        address tokenContractAdr = getDBModule("token").getTokenAddress("ZSC");
+        address tokenContractAdr = getDBModule("token").getTokenAddress(_tokenSymbol);
         uint amount = DBNode(walletAdr).executeTransaction(tokenContractAdr, _dest, _amount);
         return amount;
     }
 
-    function numElementChildren(bytes32 _userName, bytes32 _enName) public view returns (uint) {
-        checkRegistered(_userName, msg.sender);
-        checkMatched(_userName, _enName, msg.sender);
+    function numElementChildren(bytes32 _enName) public view returns (uint) {
+        checkRegistered(msg.sender, _enName);
         return  getDBNode(getCurrentDBName(), _enName).numChildren();
     }
 
-    function getElementChildNameByIndex(bytes32 _userName, bytes32 _enName, uint _index) public view returns (bytes32) {
-        checkRegistered(_userName, msg.sender);
-        checkMatched(_userName, _enName, msg.sender);
+    function getElementChildNameByIndex(bytes32 _enName, uint _index) public view returns (bytes32) {
+        checkRegistered(msg.sender, _enName);
         address adr = getDBNode(getCurrentDBName(), _enName).getChildByIndex(_index);
         return Object(adr).name();
     }
 
-    function numTemplates(bytes32 _userName) public view returns (uint) {
-        checkRegistered(_userName, msg.sender);
-
-        return getDBNode(getCurrentDBName(), _userName).numTemplates();
+    function numTemplates() public view returns (uint) {
+        bytes32 userName = checkUserAllowed(msg.sender);
+        return getDBNode(getCurrentDBName(), userName).numTemplates();
     }
 
-    function getTemplateNameByIndex(bytes32 _userName, uint _index) public view returns (bytes32) {
-        checkRegistered(_userName, msg.sender);
-
-        address adr = getDBNode(getCurrentDBName(), _userName).getTemplateByIndex(_index);
+    function getTemplateNameByIndex(uint _index) public view returns (bytes32) {
+        bytes32 userName = checkUserAllowed(msg.sender);
+        address adr = getDBNode(getCurrentDBName(), userName).getTemplateByIndex(_index);
         return Object(adr).name();
     }
 
-    function numAgreements(bytes32 _userName) public view returns (uint) {
-        checkRegistered(_userName, msg.sender);
-
-        return getDBNode(getCurrentDBName(), _userName).numAgreements();
+    function numAgreements() public view returns (uint) {
+        bytes32 userName = checkUserAllowed(msg.sender);
+        return getDBNode(getCurrentDBName(), userName).numAgreements();
     }
 
-    function getAgreementNameByIndex(bytes32 _userName, uint _index) public view returns (bytes32) {
-        checkRegistered(_userName, msg.sender);
-
-        address adr = getDBNode(getCurrentDBName(), _userName).getAgreementByIndex(_index);
+    function getAgreementNameByIndex(uint _index) public view returns (bytes32) {
+        bytes32 userName = checkUserAllowed(msg.sender);
+        address adr = getDBNode(getCurrentDBName(), userName).getAgreementByIndex(_index);
         return Object(adr).name();
     }
 
     //------2018-07-06: new verstion: YYA------ 
-    function enableUserWallet(bytes32 _userName) public returns (address) {
-        checkRegistered(_userName, msg.sender);
-
-        address userAdr = address(getDBNode(getCurrentDBName(), _userName));
+    function enableUserWallet() public returns (address) {
+        bytes32 userName = checkUserAllowed(msg.sender);
+        address userAdr = address(getDBNode(getCurrentDBName(), userName));
         require(userAdr != 0);
 
-        address walletAdr = enableWallet(_userName, userAdr, msg.sender);
+        address walletAdr = enableWallet(userName, userAdr, msg.sender);
         require(walletAdr != 0);
 
         preallocateZSCToTester(walletAdr);
@@ -227,12 +215,9 @@ contract ControlApis is ControlBase {
         return walletAdr;
     }
 
-    function numUserTransactions(bytes32 _userName, bytes32 _tokenSymbol) public view returns (uint) {
-        checkRegistered(_userName, msg.sender);
-
-        bytes32 walletName = formatWalletName(_userName, _tokenSymbol);
-        address walletAdr = address(getDBNode(getCurrentDBName(), walletName));
-
+    function numUserTransactions() public view returns (uint) {
+        bytes32 userName = checkUserAllowed(msg.sender);
+        address walletAdr = getWalletAddress(userName);
         require(walletAdr != address(0));
         
         return DBNode(walletAdr).numTransactions();
