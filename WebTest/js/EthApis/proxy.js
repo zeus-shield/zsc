@@ -75,4 +75,12 @@ export default class Proxy {
             console.log(data);
         });
     }
+
+    eth_getTransactionReceipt(txhash) {
+        let url = `https://api.etherscan.io/api?module=proxy&action=eth_getTransactionReceipt&txhash=${txhash}`
+
+        this[http].get(url, 10000, function(data) {
+            console.log(data);
+        });
+    }
 }
