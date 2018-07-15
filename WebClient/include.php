@@ -13,21 +13,6 @@ class PosInc {
 
     public  function __destruct() {
     }
-
-    public function loadHeader() {
-        $text='<br><br>
-        <div align="center">
-        <table align="center" style="width:800px">
-           <tr>
-            <td align="center"><a href="pos_staker_profile.php">Create contract</a></td>
-            <td align="center"><a href="pos_robot_gen0.php">Init System Component</a></td>
-            <td align="center"><a href="pos_robot_owned.php">Configure LogRecorder</a></td>
-            <td align="center"><a href="pos_robot_market.php">Add Database</a></td>
-          </tr>
-        </table>
-        </div>';
-        return $text;
-    }
     
     public function loadScriptFiles() {
         $text = '
