@@ -1,30 +1,18 @@
+<?php 
+/*
+Copyright (c) 2018 ZSC Dev Team
+*/
+?>
+
+<?php
+include("adm_header.php");
+$htmlObjects = new ZSCHtmlObjects();
+?>
+
 <html>
-
 <head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script type="text/javascript" src=".././web3.js/dist/web3.js"></script>
-<script type="text/javascript" src="../web3js.js"></script>
-
-<script type="text/javascript" src="../userFunctions.js"></script>
-<script type="text/javascript" src="../basicFunctions.js"></script>
-
-<script type="text/javascript" src="../zsc_element.js"></script>
-<script type="text/javascript" src="../zsc_transactions.js"></script>
-<script type="text/javascript" src="../zsc_user.js"></script>
-<script type="text/javascript" src="../zsc_wallet.js"></script>
-<script type="text/javascript" src="../zsc_module_adrs.js"></script>
-
-<script type="text/javascript" src="./js/zsc_element.js"></script>
-<script type="text/javascript" src="./js/zsc_transactions.js"></script>
-<script type="text/javascript" src="./js/zsc_user.js"></script>
-<script type="text/javascript" src="./js/zsc_wallet.js"></script>
-<script type="text/javascript" src="./js/zsc_module_adrs.js"></script>
-
+<?php echo $htmlObjects->loadScriptFiles(); ?>
 <script type="text/javascript">
-
     var web3;
     if (doesLocalWeb3js()) {
         web3 = setupWeb3js();
@@ -33,7 +21,15 @@
         web3 = new Web3(web3.currentProvider);
     }
     
-    var zscHtml = new ZSCInsura();
+</script>
+</head>
+<body>
+
+<?php     
+echo $htmlObjects->loadHeader(); 
+?>
+
+<script type="text/javascript">
     var zscUser;
     var zscElement;
     var zscWalletGM;
@@ -51,38 +47,21 @@
         + "<i>Both the FireFox and Chrome browsers are recommended</i><br>"
         + "<i>(推荐使用火狐或者Chrome浏览器)</i><br><br>";  
         document.getElementById("PageBody").innerHTML = "";  
-        zscHtml.setHtmlContentIds( "PageHeader", "PageBody");
-        zscHtml.loadPageBody("login", "checkUser");
     }
 
-    function checkUser(adrId, userId, passId){
-        var admAdr = document.getElementById(adrId).value; 
-        var user = document.getElementById(userId).value; 
-        var password = document.getElementById(passId).value; 
-
+    function checkUser(adrId) { 
         zscUser = new ZSCUser(admAdr);
-        zscUser.tryLogin(user, password, function(ret) {
+        zscUser.tryLogin(function(ret) {
             if(ret) {
-                var userName = zscUser.getUserName();
-                var fullAbi = zscUser.getControlApisFullAbi();
-                var controlApisAdvAdr = zscUser.getControlApisAdr();
-                zscElement   = new ZSCElement(userName, fullAbi, controlApisAdvAdr);
-                zscWalletGM  = new ZSCWallet(userName, fullAbi, controlApisAdvAdr);
-                zscTransGM  = new ZSCTransactions(userName, fullAbi, controlApisAdvAdr);
-                zscModuleAdrGM = new ZSCModuleAdrs(userName, fullAbi, controlApisAdvAdr);
-                loadHtmlPageBody("welecome");
+                document.getElementById("PageBody").innerHTML = "<br><br><i>Welcome " + zscUser.getUserName() + "</i><br><br>";  
             } else {
-                alert("User name or password wrong!!");
+                
             }
         });
     }
 
     function applyForUser(type, hashLogId) {
         zscUser.activeByUser(type, hashLogId);
-    }
-
-    function reFresh() {
-        loadHtmlPageBody("apply");
     }
 
     function submitTransferValue(tokenSymbol, destAddressId, amountId, logId) {
