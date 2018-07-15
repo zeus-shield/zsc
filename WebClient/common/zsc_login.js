@@ -2,12 +2,12 @@
 Copyright (c) 2018 ZSC Dev Team
 */
 function ZSCUser() {
-    this.admAdr = "0xba9839d63da95b86ef21202740d02a364ac701fc";
+    this.admAdr = "0x2d14d4d58b56407e8057bf96a36f3d9954506052";
     this.userStatus;
     this.userType;
     this.controlApisAdr;
     this.controlApisFullAbi;
-    this.account = web3.eth.accounts[0];
+    this.account = web3.eth.coinbase;
     this.myAdmAdv = web3.eth.contract(this.getLoginAbi()).at(this.admAdr);
     this.gasPrice = bF_getGasPrice();
     this.gasLimit = bF_getGasLimit(700);
@@ -27,8 +27,10 @@ ZSCUser.prototype.tryLogin = function(func){
     var gm = this;
     var callBack = func;
     var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
-
-    myAdmAdv.tryLogin(function(error, result) {
+    var account =  web3.eth.accounts[0];
+    console.log(account);
+    myAdmAdv.tryLogin({from: account},
+        function(error, result) {
         if(!error) {
             if (result == false) {
                 callBack(false);
@@ -36,6 +38,7 @@ ZSCUser.prototype.tryLogin = function(func){
                 gm.getAdr(gm, callBack);
             }
         } else { 
+            callBack(false);
             console.log("error: " + error);
         }
     });
@@ -45,7 +48,8 @@ ZSCUser.prototype.getAdr = function(gm, func){
     var callBack = func;
     var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
 
-    myAdmAdv.getControlApisAdr(function(error, adr) {
+    myAdmAdv.getControlApisAdr({from: gm.account},
+        function(error, adr) {
         if(!error) { 
             gm.getFullAbi(gm, adr, callBack);
         } else {
@@ -117,25 +121,5 @@ ZSCUser.prototype.getUserTypeFromAdm = function(func){
         } );
 }
 
-ZSCUser.prototype.loadWelcome = function(tagId) {
-    var text = '<div class="well">'
-    text += '   <text>Welcome to the ZSC testing platform</text>'
-    text += '</div>'
-    document.getElementById(tagId) = text; 
-}
-
-ZSCUser.prototype.loadUserApplication = function(funcName, tagId) {
-    var funcPrefix = funcName + "(";
-    var funcSuffix = ")";
-    var text;
-
-    text = '<div class="well">'
-    text += '   <button type="button" onClick="' + funcPrefix + "'provider', 'ApplyForProviderHash' " + funcSuffix + '">Apply for provider</button> <br><br>'
-    text += '   <button type="button" onClick="' + funcPrefix + "'receiver', 'ApplyForProviderHash' " + funcSuffix + '">Apply for receiver</button> <br>'
-    text += '   <button type="button" onClick="' + funcPrefix + "'staker', 'ApplyForProviderHash' " + funcSuffix + '">Apply for receiver</button> <br>'
-    text += '   <br><text id="ApplyForProviderHash"></text>'
-    text += '</div>'
-    document.getElementById(tagId) = text; 
-}
 
 
