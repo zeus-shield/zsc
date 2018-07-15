@@ -2,7 +2,7 @@
 Copyright (c) 2018 ZSC Dev Team
 */
 function ZSCUser() {
-    this.admAdr = "0x295459c5ba2e760daacb57e0ac455456227df223";
+    this.admAdr = "0xba9839d63da95b86ef21202740d02a364ac701fc";
     this.userStatus;
     this.userType;
     this.controlApisAdr;
@@ -20,7 +20,7 @@ ZSCUser.prototype.getUserType = function() { return this.userType; }
 ZSCUser.prototype.getControlApisAdr = function() { return this.controlApisAdr; }
 ZSCUser.prototype.getControlApisFullAbi = function() { return this.controlApisFullAbi; }
 ZSCUser.prototype.getLoginAbi = function() { 
-    return [{"constant":true,"inputs":[],"name":"getControlApisFullAbi","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisAdr","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"bytes32"},{"name":"_pass","type":"bytes32"}],"name":"tryLogin","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_hexx","type":"bytes32"},{"name":"_type","type":"bytes32"}],"name":"activeByUser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_hexx","type":"bytes32"}],"name":"getUserType","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_user","type":"bytes32"},{"name":"_hexx","type":"bytes32"}],"name":"keepOnline","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_hexx","type":"bytes32"}],"name":"getUserStatus","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}];
+    return [{"constant":false,"inputs":[{"name":"_type","type":"bytes32"}],"name":"activeByUser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getUserType","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisFullAbi","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisAdr","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tryLogin","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getUserStatus","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}];
 }
 
 ZSCUser.prototype.tryLogin = function(func){
@@ -33,7 +33,7 @@ ZSCUser.prototype.tryLogin = function(func){
             if (result == false) {
                 callBack(false);
             } else {
-                gm.getAdr(gm, func);
+                gm.getAdr(gm, callBack);
             }
         } else { 
             console.log("error: " + error);
@@ -54,7 +54,7 @@ ZSCUser.prototype.getAdr = function(gm, func){
     } );
 }
 
-ZSCUser.prototype.getFullAbi = function(gm, userName, adr, func){
+ZSCUser.prototype.getFullAbi = function(gm, adr, func){
     var callBack = func;
     var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
 
