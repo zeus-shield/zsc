@@ -3,8 +3,7 @@ Copyright (c) 2018 ZSC Dev Team
 */
 
 //class zscElement
-function ZSCElement(userName, controlApisAdvAbi, controlApisAdvAdr) {
-    this.userName = userName;
+function ZSCElement(controlApisAdvAbi, controlApisAdvAdr) {
     this.userType;
     this.enName;
     this.parameNos = 0;
@@ -62,7 +61,7 @@ ZSCElement.prototype.doesElementExisit = function(func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.doesElementExist(gm.userName, gm.enName, 
+    myControlApi.doesElementExist(gm.enName, 
         function(error, ret){ 
             if(!error) callBack(ret);  
             else  console.log("error: " + error);
@@ -88,7 +87,7 @@ ZSCElement.prototype.numParameters = function(gm, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.numElementParameters(gm.userName, gm.enName, 
+    myControlApi.numElementParameters(gm.enName, 
         {from: gm.account},
         function(error, num){ 
             if(!error) { 
@@ -119,7 +118,7 @@ ZSCElement.prototype.loadParameterNameByIndex = function(gm, index, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.getElementParameterNameByIndex(gm.userName, gm.enName, index, 
+    myControlApi.getElementParameterNameByIndex(gm.enName, index, 
         {from: gm.account},
         function(error, para){ 
             if(!error) {
@@ -146,7 +145,7 @@ ZSCElement.prototype.loadParameterValueByIndex = function(gm, index, func){
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.getElementParameter(gm.userName, gm.enName, gm.parameterNames[index], 
+    myControlApi.getElementParameter(gm.enName, gm.parameterNames[index], 
         {from: gm.account},
         function(error, value){ 
             if(!error) {
@@ -179,7 +178,7 @@ ZSCElement.prototype.setElementParameter = function(logID, func) {
     }
 
     if (count > 0) {
-        myControlApi.setElementMultipleParameters(gm.userName, gm.enName, info,  
+        myControlApi.setElementMultipleParameters(gm.enName, info,  
             {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
             function(error, result){ 
                 if(!error) bF_showHashResult(logID, result, callBack);
