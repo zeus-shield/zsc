@@ -27,35 +27,13 @@ class ZSCInclude {
         
         <script type="text/javascript" src="./common/zsc_element.js"></script>
         <script type="text/javascript" src="./common/zsc_transactions.js"></script>
-        <script type="text/javascript" src="./common/zsc_user.js"></script>
+        <script type="text/javascript" src="./common/zsc_login.js"></script>
         <script type="text/javascript" src="./common/zsc_wallet.js"></script>
         <script type="text/javascript" src="./common/zsc_module_adrs.js"></script>
         
         <script type="text/javascript" src="./pos/pos_robot_enhance.js"></script>
         <script type="text/javascript" src="./pos/pos_robot_gen0.js"></script>
         <script type="text/javascript" src="./pos/pos_robot_owned.js"></script>
-        ';
-        return $text;
-    }
-
-    public function loadWeb3() {
-        $text='
-        var web3;
-        var zscUser = new ZSCUser();
-        if (doesLocalWeb3js()) { web3 = setupWeb3js();} 
-        else { web3 = new Web3(web3.currentProvider);} //Metamask
-        ';
-        return $text;
-    }
-
-    public function checkUserLogin() {
-        $text='
-        zscUser.tryLogin(function(ret) {
-            var textBody;
-            if(!ret) {
-                window.location.href = "index.php"; 
-            } 
-        });
         ';
         return $text;
     }
@@ -79,6 +57,16 @@ class ZSCInclude {
         '  <td align="center"><a href="pos_robot_market.php">Robot Market</a></td>'.
         ' </tr>'.
         '</table>';
+        return $text;
+    }
+
+    public function getAdmAdr() {
+        $text = "'0x2d14d4d58b56407e8057bf96a36f3d9954506052'";
+        return $text;
+    } 
+
+    public function getAdmAbi() {
+        $text = '[{"constant":false,"inputs":[{"name":"_type","type":"bytes32"}],"name":"activeByUser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getUserType","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisFullAbi","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisAdr","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tryLogin","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getUserStatus","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}];';
         return $text;
     }
 }
