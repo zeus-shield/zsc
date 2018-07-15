@@ -74,10 +74,9 @@ contract DBModule {
     function createRobot(address _user, uint _level) public returns (uint);
     function activeRobot(address _user, uint _robotId, uint _rewardType) public returns (uint);    
     function enhanceRobot(address _user, uint _robotA, uint _robotB) public returns (uint);
-    function publishRobot(address _seller, uint _robotId, uint _price, uint _durationInDays) public;
-    function cancelAuction(address _seller, uint _robotId) public returns;
-    function auctionRobot(address _buyer, uint _robotId, uint _price) public returns (address preBuyer, uint prePrice, uint newPrice);
-    function tryTakeRobot(address _buyer, uint _robotId) public returns (address seller, address endBuyer, uint endPrice);
+    function publishRobot(address _seller, uint _robotId, uint _price) public;
+    function cancelAuction(address _seller, uint _robotId) public;
+    function purchaseRobot(address _buyer, uint _robotId) public returns (address, uint);
     function claimable(address _user, uint _robotId) public view returns (bool);
     function claimReward(address _user, uint _robotId) public returns (uint);
 }
@@ -99,14 +98,10 @@ contract ControlBase is Object {
     }
 
     //////////////////////////////////
-    function allowedUser(bytes32 _userName, address _sender) internal constant returns (bool);
-    function addAllowedUser(bytes32 _userName, address _creator) internal returns (bool);
-    function checkMatched(bytes32 _userName, bytes32 _enName, address _sender) internal view;
-    function checkRegistered(bytes32 _userName, address _sender) internal view;
-    function registerUserNode(bytes32 _userName, address _nodeAdr, address _creator) internal;
-    function registerEntityNode(bytes32 _userName,  bytes32 _enName, address _nodeAdr, address _creator) internal;
-    function setUserStatus(bytes32 _user, bool _tag) public returns (bool);
-    function getUserStatus(bytes32 _user) public view returns (bool);
+    function registerUserNode(address _creator, bytes32 _userName) internal;
+    function registerEntityNode(address _creator, bytes32 _endName) internal;
+    function checkUserAllowed(address _sender) internal view returns (bytes32);
+    function checkRegistered(address _sender, bytes32 _enName) internal view;
     //////////////////////////////////
     
     function getCurrentDBName() internal view returns (bytes32) {
@@ -273,9 +268,8 @@ contract ControlBase is Object {
     }
 
     //////////////////////////////////////
-    function publishAgreement(bytes32 _userName, bytes32 _agrName) public {
-        checkRegistered(_userName, msg.sender);
-        checkMatched(_userName, _agrName, msg.sender);
+    function publishAgreement(bytes32 _agrName) public {
+        bytes32 userName = checkUserAllowed(msg.sender);
 
         address _creator = msg.sender;
         address agrAdr = address(getDBNode(dbName_, _agrName));
@@ -285,7 +279,7 @@ contract ControlBase is Object {
         require(status == "CREATED");
 
         address agrWalletAdr     = enableWallet(_agrName, agrAdr, _creator);
-        address userWallet       = getWalletAddress(_userName);
+        address userWallet       = getWalletAddress(userName);
         address tokenContractAdr = getDBModule("token").getTokenAddress("ZSC");
 
         uint lockedAmount = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(agrAdr).getParameter("insurance")));
@@ -295,10 +289,10 @@ contract ControlBase is Object {
         DBNode(agrAdr).setAgreementStatus("PUBLISHED", "null");
     }
 
-    function purchaseAgreement(bytes32 _userName, bytes32 _agrName) public returns (uint) {
-        checkRegistered(_userName, msg.sender);
+    function purchaseAgreement(bytes32 _agrName) public returns (uint) {
+        bytes32 userName = checkUserAllowed(msg.sender);
 
-        bytes32 userType = getDBNode(getCurrentDBName(), _userName).getNodeType();
+        bytes32 userType = getDBNode(getCurrentDBName(), userName).getNodeType();
         require(userType == "receiver");
 
         address agrAdr = address(getDBNode(dbName_, _agrName));
@@ -311,14 +305,14 @@ contract ControlBase is Object {
         require(price > 0);
         price = price.mul(1 ether);
 
-        address recWallet   = getWalletAddress(_userName); 
+        address recWallet   = getWalletAddress(userName); 
         address agrWallet   = getWalletAddress(_agrName);
         address tokenContractAdr = getDBModule("token").getTokenAddress("ZSC");
 
         uint ret = DBNode(recWallet).executeTransaction(tokenContractAdr, agrWallet, price);
 
-        getDBNode(dbName_, _agrName).setAgreementStatus("PAID", _userName);
-        getDBNode(dbName_, _userName).bindAgreement(agrAdr);
+        getDBNode(dbName_, _agrName).setAgreementStatus("PAID", userName);
+        getDBNode(dbName_, userName).bindAgreement(agrAdr);
 
         bytes32 provider = DBNode(agrAdr).getParameter("provider");
         address proWallet = getWalletAddress(provider);
@@ -327,8 +321,8 @@ contract ControlBase is Object {
         return ret;
     }
 
-    function claimInsurance(bytes32 _userName, bytes32 _agrName) public returns (bool) {
-        checkRegistered(_userName, msg.sender);
+    function claimInsurance(bytes32 _agrName) public returns (bool) {
+        bytes32 userName = checkUserAllowed(msg.sender);
 
         bytes32 agrName = _agrName;
         address agrAdr  = address(getDBNode(dbName_, agrName));
@@ -337,7 +331,7 @@ contract ControlBase is Object {
 
         bytes32 provider = DBNode(agrAdr).getParameter("provider");
         bytes32 receiver = DBNode(agrAdr).getParameter("receiver");
-        require(_userName == provider || _userName == receiver);
+        require(userName == provider || userName == receiver);
 
         address proWallet = getWalletAddress(provider);
         address recWallet = getWalletAddress(receiver);
@@ -367,8 +361,8 @@ contract ControlBase is Object {
         return true;
     }
  
-    function getTokenBalanceInfo(bool _useIndex, bytes32 _enName, uint _index, bytes32 _symbol) public view returns (string) { 
-        checkRegistered(_enName, msg.sender);
+    function getTokenBalanceInfo(bool _useIndex, uint _index, bytes32 _symbol) public view returns (string) { 
+        bytes32 userName = checkUserAllowed(msg.sender);
 
         bytes32 status;
         bytes32 tokenName;
@@ -378,7 +372,7 @@ contract ControlBase is Object {
         address userWalletAdr;
         uint tokenBalance;
 
-        userWalletAdr = getWalletAddress(_enName);
+        userWalletAdr = getWalletAddress(userName);
 
         if (_useIndex) {
             (status, tokenName, tokenSymbol, tokenDecimals, tokenAdr) = getDBModule("token").getTokenInfoByIndex(_index);
@@ -396,10 +390,9 @@ contract ControlBase is Object {
         return str;
     }
 
-    function getUserTransactionByIndex(bytes32 _userName, uint _index) public constant returns (string) {
-        checkRegistered(_userName, msg.sender);
-
-        address walletAdr = getWalletAddress(_userName);
+    function getUserTransactionByIndex(uint _index) public constant returns (string) {
+        bytes32 userName = checkUserAllowed(msg.sender);
+        address walletAdr = getWalletAddress(userName);
 
         require(_index < DBNode(walletAdr).numTransactions());
         
