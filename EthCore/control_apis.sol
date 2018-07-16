@@ -144,7 +144,7 @@ contract ControlApis is ControlBase {
         address walletAdr = getWalletAddress(userName);
         require(walletAdr != address(0));
 
-        address tokenContractAdr = getDBModule("token").getTokenAddress(_tokenSymbol);
+        address tokenContractAdr = getDBModule("gm-token").getTokenAddress(_tokenSymbol);
         uint amount = DBNode(walletAdr).executeTransaction(tokenContractAdr, _dest, _amount);
         return amount;
     }
@@ -194,6 +194,11 @@ contract ControlApis is ControlBase {
         preallocateZSCToTester(walletAdr);
 
         return walletAdr;
+    }
+
+    function numOfTokens() public view returns (uint) {
+        checkUserAllowed(msg.sender);
+        return getDBModule("pos-token").numOfTokens();
     }
 
     function numUserTransactions() public view returns (uint) {
