@@ -21,12 +21,16 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
         <div align="center">
         <table align="center" style="width:800px">
            <tr>
-            <td align="center"><a href="adm_create_contract.php">Create contract</a></td>
-            <td align="center"><a href="adm_configure_logrecorder.php">Configure LogRecorder</a></td>
-            <td align="center"><a href="adm_init_sys_component.php">Init System Component</a></td>
-            <td align="center"><a href="adm_add_database.php">Add Database</a></td>
-            <td align="center"><a href="adm_add_factory.php">Add Factory</a></td>
-            <td align="center"><a href="adm_add_gm.php">Add Gm Module</a></td>
+            <td align="center"><a href="adm_create_contract.php">[Create contract]</a></td>
+            <td align="center"><a href="adm_configure_logrecorder.php">[Config. LogRecorder]</a></td>
+            <td align="center"><a href="adm_init_sys_component.php">[Init Component]</a></td>
+            <td align="center"><a href="adm_add_database.php">[Add Database]</a></td>
+            <td align="center"><a href="adm_add_factory.php">[Add Factory]</a></td>
+            <td align="center"><a href="adm_add_gm.php">[Add Moduele]</a></td>
+          </tr>
+        </table><br>
+        <table align="center" style="width:800px">
+           <tr>
             <td align="center"><a href="adm_manage_users.php">Manage Users</a></td>
             <td align="center"><a href="adm_manage_token_contracts.php">Manage Tokens</a></td>
             <td align="center"><a href="adm_manage_pos.php">Manage Pos</a></td>
@@ -77,8 +81,8 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
         <script type="text/javascript" src="./js/compiled_factory_tmp.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_agr.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_wallet_adv.js"></script>
-        <script type="text/javascript" src="./js/compiled_token_manager.js"></script>
-        <script type="text/javascript" src="./js/compiled_pos_manager.js"></script>
+        <script type="text/javascript" src="./js/compiled_sys_gm_token.js"></script>
+        <script type="text/javascript" src="./js/compiled_sys_gm_pos.js"></script>
         ';
         return $text;
     }
