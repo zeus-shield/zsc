@@ -3,9 +3,8 @@ Copyright (c) 2018 ZSC Dev Team
 */
 
 //class zscElement
-function ZSCElement(controlApisAdvAbi, controlApisAdvAdr) {
-    this.userType;
-    this.enName;
+function ZSCElement(acount, en, controlApisAdvAbi, controlApisAdvAdr) {
+    this.enName = en;
     this.parameNos = 0;
     this.ethBalance = 0;
     this.nodeAddress = 0;
@@ -13,18 +12,17 @@ function ZSCElement(controlApisAdvAbi, controlApisAdvAdr) {
     this.parameterValues = [];
     this.nameTags = [];
     this.valueTags = [];
-    this.account = web3.eth.accounts[0];
+    this.account = acount;
     this.contractAdr = controlApisAdvAdr;
     this.contractAbi = JSON.parse(controlApisAdvAbi);
     this.gasPrice = bF_getGasPrice();
     this.gasLimit = bF_getGasLimit(700);
 }
 
-ZSCElement.prototype.setUserType = function(type) {this.userType = type;}
-
-ZSCElement.prototype.setElementName = function(nm) {this.enName = nm;}
-
 ZSCElement.prototype.getElementName = function() { return this.enName;}
+ZSCElement.prototype.numParameters = function() { return this.parameNos;}
+ZSCElement.prototype.getParameter = function(index) { return this.parameterNames[index];}
+ZSCElement.prototype.getValue = function(index) { return this.parameterValues[index];}
 
 ZSCElement.prototype.resetAllNameTags = function(gm) {
     for (var i = 0; i < gm.parameNos; ++i) {
