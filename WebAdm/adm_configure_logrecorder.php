@@ -92,15 +92,10 @@ recordSystemObjectAdrs($htmlObjects);
 <body>
 <?php
     echo '<div class="page-header"> <font size="5" color="blue" >Setup ZSC system in the testing envrioment</font></div>';
-    
-    echo $htmlObjects->loadAllAdrs();
+
     echo $htmlObjects->loadRegisterLogRecorderHtml('registerToLogRecorder');
     
     echo $htmlObjects->loadSetLogRecorderHtml('setLogRecorderToListener');
-
-    echo '<div class="well">
-        <button type="button" onClick="window.location.href=\'./adm_control_apis_adv.php\'">Next: go to control page</button>
-    </div>';
 ?>
 </body>
 </html>
