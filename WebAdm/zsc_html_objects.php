@@ -31,10 +31,9 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
         </table><br>
         <table align="center" style="width:800px">
            <tr>
-            <td align="center"><a href="adm_manage_users.php">Manage Users</a></td>
             <td align="center"><a href="adm_manage_token_contracts.php">Manage Tokens</a></td>
+            <td align="center"><a href="adm_manage_users.php">Manage Users</a></td>
             <td align="center"><a href="adm_manage_pos.php">Manage Pos</a></td>
-            <td align="center"><a href="adm_show_userdetails.php">User Details</a></td>
             <td align="center"><a href="adm_show_log.php">Show Log</a></td>
             <td align="center"><a href="adm_print_abi.php">Print Abi</a></td>
             <td align="center"><a href="adm_uninstall_system.php">Uninstall System</a></td>
@@ -52,7 +51,7 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
         <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="../WebClient/web3.js/dist/web3.js"></script>
-        <script type="text/javascript" src="../WebClient/web3js.js"></script>
+        <script type="text/javascript" src="../WebClient/common/web3js.js"></script>
         <script type="text/javascript" src="./js/createContract.js"></script>
         <script type="text/javascript" src="./js/setupFunctions.js"></script>
         <script type="text/javascript" src="./js/zsc_js_base.js"></script>
@@ -92,11 +91,14 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
         $num = count($modules);
 
         $text  = '<div class="well">';
+        $text .= '<table align="center" style="width:600px;min-height:30px">';
+        $text .= '<tr><td><text>Name</td><td><text>Address</text> </td></tr>';
+
         for ($x = 0; $x < $num; $x++) {
             $name = $modules[$x];
-            $text .=    '<text id = "'.$name.'Adr">'.$name.' address: '.parent::readObjectAddress($name).'</text> <br>';
+            $text .=    '<tr><td><text id = "'.$name.'Adr">'.$name.'</td><td>'.parent::readObjectAddress($name).'</text> </td></tr>';
         }
-        $text .= '</div>';
+        $text .= '</table></div>';
         return $text;
     }
 
