@@ -11,25 +11,6 @@ contract ControlApis is ControlBase {
     /// @param _name The name of the controller
     function ControlApis(bytes32 _name) public ControlBase(_name) {
     }
-
-    function setPreallocateAmountToTester(uint _allocatedETH, uint _allocatedZSC) public { 
-        checkDelegate(msg.sender, 1);
-        allocatedETH_ = _allocatedETH.mul(1 ether);
-        allocatedZSC_ = _allocatedZSC.mul(1 ether);
-    }
-
-    /// @dev Set the zsc adm address
-    /// @param _adm The address of the zsc adm 
-    function initControlApis(address _adm) public {
-        checkDelegate(msg.sender, 1);
-        initControlApisAdrs(_adm);
-    }
-
-    function addSystemComponent(bytes32 _type, bytes32 _name, address _adr) public returns (bool) {
-        checkDelegate(msg.sender, 1);
-        require(_adr != address(0));
-        return addComponent(_type, _name, _adr);
-    }
    
     /// @dev Get the number of elements of the database
     function numFactoryElements(bytes32 _factoryType) public view returns (uint) { 
@@ -63,7 +44,7 @@ contract ControlApis is ControlBase {
 
         address ndAdr = createNodeForUser(_factoryType, _userName, _extraAdr);
         require(ndAdr != address(0));
-        registerUserNode(_extraAdr, _userName);
+        registerUserNode(_extraAdr, _userName, _factoryType);
         
         return ndAdr;
     }
