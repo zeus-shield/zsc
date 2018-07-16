@@ -67,6 +67,7 @@ contract DBDatabase {
 }
 
 contract DBModule {
+    function numOfTokens() public view returns (uint);
     function getTokenAddress(bytes32 _symbol) public view returns (address);
     function getTokenInfoByIndex(uint _index) public view returns (bytes32, bytes32, bytes32, uint, address);
     function getTokenInfoBySymbol(bytes32 _symbol) public view returns (bytes32, bytes32, bytes32, uint, address);
@@ -109,7 +110,7 @@ contract ControlBase is Object {
     }
 
     function preallocateZSCToTester(address _userWalletAdr) internal {
-        address tokenContractAdr = getDBModule("token").getTokenAddress("ZSC");
+        address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
 
         if (allocatedZSC_ == 0) {
             uint remaingZSC = ERC20Interface(tokenContractAdr).balanceOf(address(this));
@@ -130,28 +131,6 @@ contract ControlBase is Object {
         address dbAdr = databases_[_dbName];
         DBFactory(_factoryAdr).setDatabase(dbAdr);
         DBDatabase(dbAdr).delegateFactory(_factoryAdr, _priority);
-    }
-
-    function addComponent(bytes32 _type, bytes32 _name, address _adr) internal returns (bool) {
-        bool ret = false;
-        addLog("addComponent ", true);
-        addLog(PlatString.bytes32ToString(_type), false);
-        addLog(PlatString.bytes32ToString(_name), false);
-
-        if (_type == "factory") {
-            require(factories_[_name] == address(0));
-            factories_[_name] = _adr;
-            mapFactoryDatabase(_adr, dbName_, 1);
-        } else if (_type == "database") {
-            require(databases_[_name] == address(0));
-            databases_[_name] = _adr;       
-        } else if (_type == "module") {
-            require(modules_[_name] == address(0));
-            modules_[_name] = _adr;       
-        } else {
-            revert();
-        }
-        return ret;
     }
 
     function getComponent(bytes32 _type, bytes32 _name) internal view returns (address) {
@@ -262,7 +241,7 @@ contract ControlBase is Object {
 
     //////////////////////////////////////
     //////////////////////////////////////
-    function initControlApis(address _adm) internal {
+    function initControlApis(address _adm) public {
         checkDelegate(msg.sender, 1);
 
         require (_adm != 0);     
@@ -277,10 +256,31 @@ contract ControlBase is Object {
         allocatedZSC_ = _allocatedZSC.mul(1 ether);
     }
 
+
     function addSystemComponent(bytes32 _type, bytes32 _name, address _adr) public returns (bool) {
+        bool ret = false;
         checkDelegate(msg.sender, 1);
         require(_adr != address(0));
-        return addComponent(_type, _name, _adr);
+
+        addLog("addComponent ", true);
+        addLog(PlatString.bytes32ToString(_type), false);
+        addLog(" ", false);
+        addLog(PlatString.bytes32ToString(_name), false);
+
+        if (_type == "factory") {
+            require(factories_[_name] == address(0));
+            factories_[_name] = _adr;
+            mapFactoryDatabase(_adr, dbName_, 1);
+        } else if (_type == "database") {
+            require(databases_[_name] == address(0));
+            databases_[_name] = _adr;       
+        } else if (_type == "module") {
+            require(modules_[_name] == address(0));
+            modules_[_name] = _adr;       
+        } else {
+            revert();
+        }
+        return ret;
     }
 
     //////////////////////////////////////
@@ -299,7 +299,7 @@ contract ControlBase is Object {
 
         address agrWalletAdr     = enableWallet(_agrName, agrAdr, _creator);
         address userWallet       = getWalletAddress(userName);
-        address tokenContractAdr = getDBModule("token").getTokenAddress("ZSC");
+        address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
 
         uint lockedAmount = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(agrAdr).getParameter("insurance")));
 
@@ -326,7 +326,7 @@ contract ControlBase is Object {
 
         address recWallet   = getWalletAddress(userName); 
         address agrWallet   = getWalletAddress(_agrName);
-        address tokenContractAdr = getDBModule("token").getTokenAddress("ZSC");
+        address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
 
         uint ret = DBNode(recWallet).executeTransaction(tokenContractAdr, agrWallet, price);
 
@@ -355,7 +355,7 @@ contract ControlBase is Object {
         address proWallet = getWalletAddress(provider);
         address recWallet = getWalletAddress(receiver);
         address agrWallet = getWalletAddress(receiver);
-        address tokenContractAdr = getDBModule("token").getTokenAddress("ZSC");
+        address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
 
         uint lockedAmount;
         uint price;
@@ -394,9 +394,9 @@ contract ControlBase is Object {
         userWalletAdr = getWalletAddress(userName);
 
         if (_useIndex) {
-            (status, tokenName, tokenSymbol, tokenDecimals, tokenAdr) = getDBModule("token").getTokenInfoByIndex(_index);
+            (status, tokenName, tokenSymbol, tokenDecimals, tokenAdr) = getDBModule("gm-token").getTokenInfoByIndex(_index);
         } else {
-            (status, tokenName, tokenSymbol, tokenDecimals, tokenAdr) = getDBModule("token").getTokenInfoBySymbol(_symbol);
+            (status, tokenName, tokenSymbol, tokenDecimals, tokenAdr) = getDBModule("gm-token").getTokenInfoBySymbol(_symbol);
         }
         
         tokenBalance = DBNode(userWalletAdr).getBlance(tokenAdr);
@@ -445,7 +445,7 @@ contract ControlBase is Object {
         address factoryTmpAdr = address(getDBFactory("template"));
         address factoryAgrAdr = address(getDBFactory("agreement"));
         address factoryErc20Adr = address(getDBFactory("wallet-erc20"));
-        address tokenContractAdr = getDBModule("token").getTokenAddress("ZSC");
+        address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
 
         string memory str ="adrs?";
         str = PlatString.append(str, "testZSC=",      PlatString.addressToString(tokenContractAdr), "&");
