@@ -51,15 +51,29 @@ function sF_setLogRecorderToListener(logRecorderAdr, listener,listenerName, hash
 }  
 
 function sF_initSystemModule(module, extra, adrs, zscTokenAdr, hashID) {
+    /*
+      this.AdmAdvAdr     = adrs[0];
+    this.DBDatabaseAdr = adrs[1];
+    this.FactoryProAdr = adrs[2];
+    this.FactoryRecAdr = adrs[3];
+    this.FactoryTmpAdr = adrs[4];
+    this.FactoryAgrAdr = adrs[5];
+    this.FactoryWalletAdvAdr = adrs[6];
+    this.TokenManagerAdr     = adrs[7];
+    this.PosManagerAdr       = adrs[8];
+    this.ControlApisAdvAdr   = adrs[9];
+    */
+
     var AdmAdvAdr = adrs[0];
-    var PosAdvAdr = adrs[1];
-    var WalletManagerAdr = adrs[2];
-    var DBDatabaseAdr = adrs[3];
-    var FactoryProAdr = adrs[4];
-    var FactoryRecAdr = adrs[5];
-    var FactoryTmpAdr = adrs[6];
-    var FactoryAgrAdr = adrs[7];
-    var ControlApisAdr = adrs[8];
+    var DBDatabaseAdr = adrs[1];
+    var FactoryProAdr = adrs[2];
+    var FactoryRecAdr = adrs[3];
+    var FactoryTmpAdr = adrs[4];
+    var FactoryAgrAdr = adrs[5];
+    var FactoryWalletAdr = adrs[6];
+    var TokenManagerAdr = adrs[7];
+    var PosAdvAdr = adrs[8];
+    var ControlApisAdr = adrs[9];
 
     if (module == "AdmAdv") {
 
