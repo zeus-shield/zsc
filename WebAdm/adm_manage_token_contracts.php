@@ -22,10 +22,11 @@ echo $htmlObjects->loadScriptFiles();
     }
     
     var ControlApisAdvAdr = "<?php echo $htmlObjects->readObjectAddress('ControlApisAdv')?>";
-    var walletManager = new ZSCWalletMangement(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'));
+    var TokenManagerAdr = "<?php echo $htmlObjects->readObjectAddress('TokenManager')?>";
+    var walletManager = new ZSCWalletMangement(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'), TokenManagerAdr, cC_getContractAbi('TokenManager'));
 
-    function addTokenContract(nameId, symbolId, decimalsId, adrId, hashId) {
-        walletManager.addTokenContractInfo(nameId, symbolId, decimalsId, adrId, hashId, function() {
+    function addTokenContract(nameId, symbolId, decimalsId, adrId) {
+        walletManager.addTokenContractInfo(nameId, symbolId, decimalsId, adrId, "AddUserHash", function() {
         	window.location.reload(true);
         });
     }
