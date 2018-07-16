@@ -12,9 +12,6 @@ contract DBStaker is DBEntity {
     // Constructor
     function DBStaker(bytes32 _name) public DBEntity(_name) {
         nodeType_ = "staker";
-        rewardNos_ = 0;
-        lastStoreTime_ = now;
-        lastRewardTime_ = lastStoreTime_;
     }
 
     function initParameters() internal {
