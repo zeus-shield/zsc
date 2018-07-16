@@ -91,14 +91,11 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
         $num = count($modules);
 
         $text  = '<div class="well">';
-        $text .= '<table align="center" style="width:600px;min-height:30px">';
-        $text .= '<tr><td><text>Name</td><td><text>Address</text> </td></tr>';
-
         for ($x = 0; $x < $num; $x++) {
             $name = $modules[$x];
-            $text .=    '<tr><td><text id = "'.$name.'Adr">'.$name.'</td><td>'.parent::readObjectAddress($name).'</text> </td></tr>';
+            $text .=    '<text id = "'.$name.'Adr">'.$name.' address: '.parent::readObjectAddress($name).'</text> <br>';
         }
-        $text .= '</table></div>';
+        $text .= '</div>';
         return $text;
     }
 
