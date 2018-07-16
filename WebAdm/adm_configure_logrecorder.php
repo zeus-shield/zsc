@@ -55,22 +55,14 @@ recordSystemObjectAdrs($htmlObjects);
 
         else if (module == "DBDatabase") adr = "<?php echo $htmlObjects->readObjectAddress('DBDatabase')?>";
         else if (module == "AdmAdv") adr = "<?php echo $htmlObjects->readObjectAddress('AdmAdv')?>";        
-        else if (module == "PosAdv") adr = "<?php echo $htmlObjects->readObjectAddress('PosAdv')?>";
-        else if (module == "WalletManager") adr = "<?php echo $htmlObjects->readObjectAddress('WalletManager')?>";
-        else if (module == "SimulatorManager") adr = "<?php echo $htmlObjects->readObjectAddress('SimulatorManager')?>";
-        else if (module == "DatabaseManager") adr = "<?php echo $htmlObjects->readObjectAddress('DatabaseManager')?>";
-        else if (module == "FactoryManager") adr = "<?php echo $htmlObjects->readObjectAddress('FactoryManager')?>";
-        else if (module == "SystemOverlayer") adr = "<?php echo $htmlObjects->readObjectAddress('SystemOverlayer')?>";
+        else if (module == "TokenManager") adr = "<?php echo $htmlObjects->readObjectAddress('TokenManager')?>";
+        else if (module == "PosManager") adr = "<?php echo $htmlObjects->readObjectAddress('PosManager')?>";
         else if (module == "ControlApisAdv") adr = "<?php echo $htmlObjects->readObjectAddress('ControlApisAdv')?>";
-
-
         else if (module == "FactoryPro") adr = "<?php echo $htmlObjects->readObjectAddress('FactoryPro')?>";
         else if (module == "FactoryRec") adr = "<?php echo $htmlObjects->readObjectAddress('FactoryRec')?>";
         else if (module == "FactoryTmp") adr = "<?php echo $htmlObjects->readObjectAddress('FactoryTmp')?>";
         else if (module == "FactoryAgr") adr = "<?php echo $htmlObjects->readObjectAddress('FactoryAgr')?>";
-
-        else if (module == "FactoryWalletEth") adr = "<?php echo $htmlObjects->readObjectAddress('FactoryWalletEth')?>";
-        else if (module == "FactoryWalletErc20") adr = "<?php echo $htmlObjects->readObjectAddress('FactoryWalletErc20')?>";
+        else if (module == "FactoryWalletAdv") adr = "<?php echo $htmlObjects->readObjectAddress('FactoryWalletAdv')?>";
 
         return adr;
     }
@@ -98,9 +90,10 @@ recordSystemObjectAdrs($htmlObjects);
 
 </head>
 <body>
-<?php echo $htmlObjects->loadAllAdrs();
+<?php
     echo '<div class="page-header"> <font size="5" color="blue" >Setup ZSC system in the testing envrioment</font></div>';
-
+    
+    echo $htmlObjects->loadAllAdrs();
     echo $htmlObjects->loadRegisterLogRecorderHtml('registerToLogRecorder');
     
     echo $htmlObjects->loadSetLogRecorderHtml('setLogRecorderToListener');
