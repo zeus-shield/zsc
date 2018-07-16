@@ -39,10 +39,10 @@ function cC_getContractFullName(contractName) {
         return "./zsc/factory_wallet_adv.sol:FactoryWalletAdv";
 
     } else if (contractName == 'TokenManager') {
-        return "./zsc/factory_agr.sol:FactoryAgr";
+        return "./zsc/db/EthCore/sys_gm_token.sol:SysGmToken";
 
     } else if (contractName == 'PosManager') {
-        return "./zsc/db/EthCore/pos_base.sol:PosBase";
+        return "./zsc/sys_gm_pos_adv.sol:SysGmPosAdv";
 
     } else if (contractName == 'ControlApisAdv') {
         return "./zsc/control_apis_adv.sol:ControlApisAdv";
@@ -90,7 +90,7 @@ function cC_getCompiledFile(contractName) {
         return compiledTokenManager;
 
     } else if (contractName == 'PosManager') {
-        return compiledPosAdv;
+        return compiledPosManager;
 
     } else if (contractName == 'ControlApisAdv') {
         return compiledApisAdv;
