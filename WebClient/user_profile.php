@@ -32,10 +32,47 @@ session_start();
         userLogin = new ZSCLogin(account);
         userLogin.tryLogin(function(ret) { if(!ret) { window.location.href = "index.php";} });
 
-        userProfile = new ZSCElement(account, userLogin.getUserName(), userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
+        userProfile = new ZSCElement(account, "null", userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
+        loadUserProfile();
     });
     /////////////////////////////
 
+    function loadHtml(elementId, funcName) {
+        var functionInput = funcName + "('ButtonActiveHash')";
+    
+        var titlle;
+        titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
+       
+        var text ="";
+        text += '<div class="well"> <text>' + titlle + ' </text></div>';
+        text += '<div class="well">';
+        text += '<table align="center" style="width:600px;min-height:30px">'
+    
+        var paraName;
+    
+        for (var i = 0; i < profile.numParameters(); ++i) {
+            text += '<tr>'
+            text += '  <td> <text>' + paraName + ': </text> </td>'
+            text += '  <td> <input type="text" id="' + profile.getParameter(i) + '" value="' + profile.getValue(i) + '"></input> </td>'
+            text += '</tr>'
+        }
+        text += '<div>'
+        text += '   <button type="button" onClick="' + functionInput + '">Submit Changes</button>'
+        text += '   <text id="ButtonActiveHash"></text>'
+        text += '</div>'
+
+        document.getElementById(elementId).innerHTML = text;  
+    }
+
+    function submitParameterProfileChanges(logID) {
+        zscElement.setElementParameter(logID, function(){});
+    }
+
+    function loadUserProfile() {
+        userProfile.loadParameterNamesAndvalues(function() {
+            loadHtml("PageBody", "submitParameterProfileChanges");
+        });
+    }
 
 </script>
 
