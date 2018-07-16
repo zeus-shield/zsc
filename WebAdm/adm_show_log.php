@@ -29,10 +29,7 @@ $htmlObjects = new ZSCHtmlObjects();
 echo $htmlObjects->loadHeader(); 
 ?>
 
-<div class="page-header"><font size="5" color="blue" >ZSC Alpha-test Adm: show log</font></div>
- <?php     
-echo $htmlObjects->loadAllAdrs();
-?>   
+<div class="page-header"><font size="5" color="blue" >ZSC Alpha-test Adm: show log</font></div>  
 
 <text>Log:</text>
 <div class="well">

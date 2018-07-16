@@ -37,9 +37,6 @@ echo $htmlObjects->loadScriptFiles();
 <?php echo $htmlObjects->loadHeader();?>
 
 <div class="page-header"><font size="5" color="blue" >Manage Token Contracts</font></div>
-
-<?php echo $htmlObjects->loadAllAdrs();?>
-
     <div class="well">
         <text>Name</text>  <input type="text" id="TokenName" value="test"></input> <br>
         <text>Symbol</text>  <input type="text" id="TokenSymbol" value="test"></input> <br>

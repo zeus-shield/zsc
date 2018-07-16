@@ -30,7 +30,6 @@ include("adm_header.php");
     echo $htmlObjects->loadHeader();
 
     echo '<div class="page-header"> <font size="5" color="blue" >Setup ZSC system in the testing envrioment</font></div>';
-    echo $htmlObjects->loadAllAdrs();
 
     echo $htmlObjects->killContract('cC_killContract');
 ?>
