@@ -39,10 +39,10 @@ echo $htmlObjects->loadScriptFiles();
 
 <div class="page-header"><font size="5" color="blue" >Manage Token Contracts</font></div>
     <div class="well">
-        <text>Name</text>  <input type="text" id="TokenName" value="test"></input> <br>
-        <text>Symbol</text>  <input type="text" id="TokenSymbol" value="test"></input> <br>
-        <text>Decimals</text>  <input type="text" id="TokenDecimals" value="test"></input> <br>
-        <text>Address</text>  <input type="text" id="TokenAddress" value="test"></input> <br>
+        <text>Name</text>  <input type="text" id="TokenName" value="Ethereum"></input> <br>
+        <text>Symbol</text>  <input type="text" id="TokenSymbol" value="ETH"></input> <br>
+        <text>Decimals</text>  <input type="text" id="TokenDecimals" value="18"></input> <br>
+        <text>Address</text>  <input type="text" id="TokenAddress" value="0x0"></input> <br>
         <button type="button" onClick="addTokenContract('TokenName', 'TokenSymbol', 'TokenDecimals', 'TokenAddress')">Add a token contract</button> <br>
         <text id="AddUserHash"></text>
     </div>
