@@ -5,7 +5,7 @@ Copyright (c) 2018 ZSC Dev Team
 //class zscWallet
 function ZSCWallet(acount, abi, adr) {
     this.userType;
-    this.tokenNos = 1;
+    this.tokenNos = 0;
     this.tokenSymbol = [];
     this.tokenAddress = [];
     this.tokenBalance = [];
@@ -17,8 +17,9 @@ function ZSCWallet(acount, abi, adr) {
     this.gasLimit = bF_getGasLimit(700);
 }
 
-
-ZSCWallet.prototype.setUserType = function(type) {this.userType = type;}
+ZSCWallet.prototype.nomTokens = function() { return this.tokenNos;}
+ZSCWallet.prototype.getTokenSymbol = function(index) { return this.tokenSymbol[index];}
+ZSCWallet.prototype.getTokenBalance = function(index) { return this.tokenBalance[index];}
 
 ZSCWallet.prototype.submitTransferValue = function(tokenSymbol, destAddress, amount, logId, func) {  
     var gm = this;
@@ -43,7 +44,7 @@ ZSCWallet.prototype.loadTokenWallets = function(func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    //gm.numTokenWallets(gm, function(gm) {
+    gm.numTokenWallets(gm, function(gm) {
         for (var i = 0; i < gm.tokenNos; ++i) {
             gm.loadTokenInfoByIndex(gm, i, function(gm, index) {
                 if (indx == gm.tokenNos - 1) {
@@ -51,11 +52,9 @@ ZSCWallet.prototype.loadTokenWallets = function(func) {
                 }
             });
         }
-    //});
+    });
 }
 
-//Disabled during alpha-test
-/*
 ZSCWallet.prototype.numTokenWallets = function(gm, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
@@ -72,7 +71,6 @@ ZSCWallet.prototype.numTokenWallets = function(gm, func) {
             }
         });
 }
-*/
 
 ZSCWallet.prototype.loadTokenInfoByIndex = function(index, func) {
     var gm = this;
