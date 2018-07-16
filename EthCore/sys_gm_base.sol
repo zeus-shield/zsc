@@ -16,9 +16,10 @@ contract SysGmBase is Object {
 
     function initSysGm(address _controlAdr) public {
         checkDelegate(msg.sender, 1);
-
         require(_controlAdr != address(0));
         
+        addLog("initiated ", true);
+
         if (controlApiAdr_ != _controlAdr) {
            if (controlApiAdr_ != address(0)) {
                setDelegate(controlApiAdr_, 0);
