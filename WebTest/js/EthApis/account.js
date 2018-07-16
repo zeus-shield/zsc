@@ -102,4 +102,12 @@ export default class Account {
             console.log(data);
         });
     }
+
+    getminedblocks(address) {
+        let url = `https://api.etherscan.io/api?module=account&action=getminedblocks&address=${address}&blocktype=blocks`;
+
+        this[http].get(url, 10000, function(data) {
+            console.log(data);
+        });
+    }
 }
