@@ -122,4 +122,22 @@ contract SysGmToken is SysGmBase {
 
         return tokens_[indexs_[_symbol]].address_;
     }
+
+    function getTokenInfoStrByIndex(uint _index) public view returns (string) {
+        checkDelegate(msg.sender, 1);
+
+        bytes32 status = tokens_[_index].status_;
+        bytes32 tokenName = tokens_[_index].name_;
+        bytes32 tokenSymbol = tokens_[_index].symbol_;
+        uint tokenDecimals = tokens_[_index].decimals_;
+        address tokenAdr = tokens_[_index].address_;
+
+        string memory str ="";
+        str = PlatString.append(str, "info?status=", PlatString.bytes32ToString(status),      "&");
+        str = PlatString.append(str, "name=",        PlatString.bytes32ToString(tokenName), "&");
+        str = PlatString.append(str, "symbol=",      PlatString.bytes32ToString(tokenSymbol), "&");
+        str = PlatString.append(str, "balance=",     PlatString.uintToString(tokenDecimals),   "&");
+        str = PlatString.append(str, "adr=",         PlatString.addressToString(tokenAdr),    "&");
+        return str;
+    }
 }
