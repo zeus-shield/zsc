@@ -140,10 +140,7 @@ ZSCUserManagement.prototype.parserUserInfo = function(index, info) {
     this.userZscAdr[index]  = "0x" + userZscAdr.split("=")[1];
 }
 
-ZSCUserManagement.prototype.loadUserManagementHtml = function(showDetails, setStatus, elementId) {
-    var showPrefix = showDetails + "('"; 
-    var showSuffix = "')";
-
+ZSCUserManagement.prototype.loadUserManagementHtml = function(setStatus, elementId) {
     var setStatusPrefix = setStatus + "('"; 
     var setStatusSuffix = "')";
     var hashId = "ButtonHashId";
@@ -151,9 +148,9 @@ ZSCUserManagement.prototype.loadUserManagementHtml = function(showDetails, setSt
     var text = ' <text id="ButtonHashId"> </text>'
     text += '<table id="ZSCUserInfoBody" align="center" style="width:800px;min-height:30px">'
     text += '<tr>'
-    text += '   <td>index </td> <td>name</td> <td>pass</td> <td>actived</td> <td>type</td> <td>status</td>  <td>active</td>  <td>deactive</td>  <td>detail</td> '
+    text += '   <td>index </td> <td>name</td> <td>pass</td> <td>actived</td> <td>type</td> <td>status</td>  <td>active</td>  <td>deactive</td> '
     text += '</tr> '
-    text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td>  </tr>'
+    text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td>   </tr>'
 
     for (var i = 0; i < this.userNos; ++i) {
         text += '<tr>';
@@ -165,7 +162,6 @@ ZSCUserManagement.prototype.loadUserManagementHtml = function(showDetails, setSt
         text += '   <td><text> ' + this.userStatus[i]  + ' </text></td>'
         text += '   <td><button type="button" onClick="' + setStatusPrefix + this.userName[i] + "', 'true', '"  + hashId + setStatusSuffix + '">Active</button></td>'
         text += '   <td><button type="button" onClick="' + setStatusPrefix + this.userName[i] + "', 'false', '" + hashId + setStatusSuffix + '">Deactive</button></td>'
-        text += '   <td><button type="button" onClick="' + showPrefix + showSuffix + '">Details</button></td>'
         text += '</tr> '
     }
     text += '</table>';
