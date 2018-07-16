@@ -40,7 +40,7 @@ $htmlObjects = new ZSCHtmlObjects();
 ?>
 
     <div class="well">
-        <?php echo $htmlObjects->loadAddGMs('addGMModule');?>
+        <?php echo $htmlObjects->loadAddGMs('addGmModule');?>
     </div>
 
 </body>
