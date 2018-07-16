@@ -37,9 +37,9 @@ $htmlObjects = new ZSChtmlObjects();
         zscSetup.setControlAbisAdvAbi(elementId);
     }
 
-    function setTestZSCToUser(amountId, elementId) {
+    function setTestZSCToUser(ethAmountId, zscAmountId, elementId) {
         var adr = "<?php echo $htmlObjects->readObjectAddress('ControlApisAdv')?>";
-        zscSetup.setZSCAmountToUser(document.getElementById(amountId).value, elementId);
+        zscSetup.setZSCAmountToUser(document.getElementById(ethAmountId).value, document.getElementById(zscAmountId).value, elementId);
     }
 
 </script>
@@ -57,9 +57,10 @@ $htmlObjects = new ZSChtmlObjects();
 
 
         <text>Step - 0 - 2</text>
-        <input type="text" id="AllocatedAmount" value="50000"></input> <br> 
-        <button type="button" onClick="setTestZSCToUser('AllocatedAmount', 'setTestZSCToUserHash')">Set Amount of TestZSC allocated to alpha-test user</button> <br>
-        <text id="setTestZSCToUserHash"></text> <br>
+        <button type="button" onClick="setTestZSCToUser('AllocatedEthAmount', 'AllocatedZscAmount', 'setTestZSCToUserHash')">Pre-allocate ETH & ZSC to tester</button> <br>
+        ETH Amount: <input type="text" id="AllocatedEthAmount" value="0"></input> <br> 
+        ZSC Amount: <input type="text" id="AllocatedZscAmount" value="50000"></input> <br> 
+        <text id="setTestZSCToUserHash"></text> <br><br>
 
 
         <?php echo $htmlObjects->loadInitObjects('initSystemComponent');?>
