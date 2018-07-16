@@ -98,7 +98,7 @@ contract ControlBase is Object {
     }
 
     //////////////////////////////////
-    function registerUserNode(address _creator, bytes32 _userName) internal;
+    function registerUserNode(address _creator, bytes32 _userName, bytes32 _type) internal;
     function registerEntityNode(address _creator, bytes32 _endName) internal;
     function checkUserAllowed(address _sender) internal view returns (bytes32);
     function checkRegistered(address _sender, bytes32 _enName) internal view;
@@ -106,13 +106,6 @@ contract ControlBase is Object {
     
     function getCurrentDBName() internal view returns (bytes32) {
         return dbName_;
-    }
-
-    function initControlApisAdrs(address _adm) internal {
-        require (_adm != 0);     
-        bindedAdm_ = _adm;
-        setDelegate(bindedAdm_, 1);
-        addLog("initControlApisAdrs ", true);
     }
 
     function preallocateZSCToTester(address _userWalletAdr) internal {
@@ -267,6 +260,32 @@ contract ControlBase is Object {
         return walletAdr;
     }
 
+    //////////////////////////////////////
+    //////////////////////////////////////
+    function initControlApis(address _adm) internal {
+        checkDelegate(msg.sender, 1);
+
+        require (_adm != 0);     
+        bindedAdm_ = _adm;
+        setDelegate(bindedAdm_, 1);
+        addLog("initControlApis ", true);
+    }
+
+    function setPreallocateAmountToTester(uint _allocatedETH, uint _allocatedZSC) public { 
+        checkDelegate(msg.sender, 1);
+        allocatedETH_ = _allocatedETH.mul(1 ether);
+        allocatedZSC_ = _allocatedZSC.mul(1 ether);
+    }
+
+    function addSystemComponent(bytes32 _type, bytes32 _name, address _adr) public returns (bool) {
+        checkDelegate(msg.sender, 1);
+        require(_adr != address(0));
+        return addComponent(_type, _name, _adr);
+    }
+
+    //////////////////////////////////////
+    //////////////////////////////////////
+    //////////////////////////////////////
     //////////////////////////////////////
     function publishAgreement(bytes32 _agrName) public {
         bytes32 userName = checkUserAllowed(msg.sender);
