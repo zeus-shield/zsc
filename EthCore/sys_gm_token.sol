@@ -53,6 +53,11 @@ contract SysGmToken is SysGmBase {
         /* check exist */
         require(false == exists_[_symbol]);
 
+        addLog("addToken ", true);
+        addLog(PlatString.bytes32ToString(_symbol), false);
+        addLog(" : 0x", false);
+        addLog(PlatString.addressToString(_address), false);
+
         exists_[_symbol] = true;
         indexs_[_symbol] = number_;
         tokens_[number_] = TokenInfo("true", _name, _symbol, _decimals, _address);
