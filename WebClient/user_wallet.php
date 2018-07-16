@@ -33,8 +33,23 @@ session_start();
         userLogin.tryLogin(function(ret) { if(!ret) { window.location.href = "index.php";} });
 
         userWallet = new ZSCWallet(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
+        userWallet.loadTokenWallets();
     });
     /////////////////////////////
+
+    function loadHtml(elementId, func1, func2, func3) {
+       
+    }
+
+    function submitParameterProfileChanges(logID) {
+        zscElement.setElementParameter(logID, function(){});
+    }
+
+    function loadTokenWallets() {
+        userWallet.loadTokenWallets(function() {
+            loadHtml("PageBody", "enableTransfer", "submitTransfer");
+        });
+    }
     
 </script>
 
