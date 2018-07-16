@@ -38,10 +38,9 @@ session_start();
     /////////////////////////////
 
     function loadHtml(elementId, funcName) {
-        var functionInput = funcName + "('ButtonActiveHash')";
+        var functionInput = funcName + "('UpdateParameterHash')";
     
-        var titlle;
-        titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
+        var titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
        
         var text ="";
         text += '<div class="well"> <text>' + titlle + ' </text></div>';
@@ -50,15 +49,15 @@ session_start();
     
         var paraName;
     
-        for (var i = 0; i < profile.numParameters(); ++i) {
+        for (var i = 0; i < userProfile.numParameters(); ++i) {
             text += '<tr>'
             text += '  <td> <text>' + paraName + ': </text> </td>'
-            text += '  <td> <input type="text" id="' + profile.getParameter(i) + '" value="' + profile.getValue(i) + '"></input> </td>'
+            text += '  <td> <input type="text" id="' + userProfile.getParameter(i) + '" value="' + userProfile.getValue(i) + '"></input> </td>'
             text += '</tr>'
         }
         text += '<div>'
         text += '   <button type="button" onClick="' + functionInput + '">Submit Changes</button>'
-        text += '   <text id="ButtonActiveHash"></text>'
+        text += '   <text id="UpdateParameterHash"></text>'
         text += '</div>'
 
         document.getElementById(elementId).innerHTML = text;  
