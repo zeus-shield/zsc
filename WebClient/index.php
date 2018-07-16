@@ -2,37 +2,50 @@
 /*
 Copyright (c) 2018 ZSC Dev Team
 */
+
+session_start();
+$_SESSION["userType"] = "staker";
 ?>
 
 <html>
 <head>
 <?php 
 include("include.php");
-$htmlObjects = new ZSCInclude();
+$htmlObjects = new ZSCInclude($_SESSION["userType"]);
 echo $htmlObjects->loadScriptFiles(); 
 ?>
+
 </head>
 <body>
     <div class="col-lg-12">
         <br><i>Web-client for testing ZSC system on the Rinkeby</i><br><br>
         <div class="well" id="PageAlert"><?php echo $htmlObjects->loadAlert(); ?></div>
-        <div class="well" id="PageHeader"><?php echo $htmlObjects->loadPosHeader(); ?></div>
+        <div class="well" id="PageHeader"><?php echo $htmlObjects->loadHeader(); ?></div>
         <div class="well" id="PageBody"></div>
     </div>
 
 <script type="text/javascript">
-    var web3;
-    var zscUser = new ZSCUser();
-    if (doesLocalWeb3js()) { web3 = setupWeb3js();} 
-    else { web3 = new Web3(web3.currentProvider);} //Metamask
+    /////////////////////////////
+    <?php echo $htmlObjects->loadWeb3();?>
+    var checkeWeb3Account = <?php echo $htmlObjects->checkWeb3Account();?>;
+    var userLogin;
+
+    checkeWeb3Account(function(account) {
+        userLogin = new ZSCLogin(account);
+        checkUser();
+    });
+    /////////////////////////////
+    
+    function applyForZSCUser(userType, hashId) {
+        userLogin.activeByUser(userType, hashId);
+    }
 
     function checkUser(adrId) { 
-        zscUser.tryLogin(function(ret) {
+        userLogin.tryLogin(function(ret) {
             var textBody;
             if(ret) {
                 textBody = '<table align="center"> <tr><td><i>Welcome!</i> </td></tr></table>'; 
             } else {
-                document.getElementById("PageHeader").innerHTML = '<table align="center"> <tr><td><i>Apply one of the following user types!</i> </td></tr></table>'; 
                 textBody = ''
                 + '<table align="center"><tr><td>'
                 + '   <button type="button" onClick="applyForZSCUser('+ "'staker', 'ApplyForUserHash')" + ' ">Apply for staker</button> <br><br>'
@@ -43,11 +56,7 @@ echo $htmlObjects->loadScriptFiles();
         });
     }
 
-    function applyForZSCUser(userType, hashId) {
-        zscUser.activeByUser(userType, hashId);
-    }
-
-    checkUser();
+    
 </script>
 
 </body>
