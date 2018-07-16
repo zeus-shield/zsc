@@ -7,12 +7,28 @@ Copyright (c) 2018, ZSC Dev Team
 <?php
 
 class ZSCInclude {
-    public function __construct(){
+    private $g_userType;
+
+    public function __construct($type){
+         $this->$g_userType = $type;
     }
 
     public  function __destruct() {
     }
     
+    private function loadPosHeader() {
+        $text=
+        '<table align="center" style="width:600px">'.
+        ' <tr>'.
+        '  <td align="center"><a href="user_profile.php">User Profile</a></td>'.
+        '  <td align="center"><a href="pos_robot_gen0.php">Create Gen0 Robot</a></td>'.
+        '  <td align="center"><a href="pos_robot_owned.php">Owned Market</a></td>'.
+        '  <td align="center"><a href="pos_robot_market.php">Robot Market</a></td>'.
+        ' </tr>'.
+        '</table>';
+        return $text;
+    }
+
     public function loadScriptFiles() {
         $text = '
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -47,28 +63,51 @@ class ZSCInclude {
         return $text;
     }
 
-    public function loadPosHeader() {
-        $text=
-        '<table align="center" style="width:600px">'.
-        ' <tr>'.
-        '  <td align="center"><a href="user_profile.php">User Profile</a></td>'.
-        '  <td align="center"><a href="pos_robot_gen0.php">Create Gen0 Robot</a></td>'.
-        '  <td align="center"><a href="pos_robot_owned.php">Owned Market</a></td>'.
-        '  <td align="center"><a href="pos_robot_market.php">Robot Market</a></td>'.
-        ' </tr>'.
-        '</table>';
+    public function loadHeader() {
+        if ($this->$g_userType == "staker") {
+            return $this->loadPosHeader();
+        } else {
+            return $this->$g_userType;
+        }
+    }
+
+
+    public function loadWeb3() {
+        $text='
+    var web3;
+    if (doesLocalWeb3js()) { 
+        web3 = setupWeb3js();
+    } else { 
+        web3 = new Web3(web3.currentProvider);
+    } //Metamask
+        ';
         return $text;
     }
 
-    public function getAdmAdr() {
-        $text = "'0x2d14d4d58b56407e8057bf96a36f3d9954506052'";
-        return $text;
-    } 
-
-    public function getAdmAbi() {
-        $text = '[{"constant":false,"inputs":[{"name":"_type","type":"bytes32"}],"name":"activeByUser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getUserType","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisFullAbi","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisAdr","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tryLogin","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getUserStatus","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}];';
+    public function checkWeb3Account() {
+        $text='
+    function(callback){
+        var userAccount = web3.eth.coinbase;
+        var tag = true;
+        if (userAccount == "null" || userAccount == null) {
+            tag = false;
+        } 
+    
+       if(tag){
+            console.log(userAccount);
+            callback(userAccount);
+        } else {
+            console.log(userAccount);
+            var wait_callback = function(){
+                checkeWeb3Account(callback);
+            };
+            setTimeout(wait_callback, 200);
+        }
+    }
+    ';
         return $text;
     }
+
 }
 ?>
 
