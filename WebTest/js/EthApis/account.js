@@ -94,4 +94,12 @@ export default class Account {
             console.log(data);
         });
     }
+
+    tokentx(contractaddress, address, page, offset) {
+        let url = `https://api.etherscan.io/api?module=account&action=tokentx&contractaddress=${contractaddress}&address=${address}&page=${page}&offset=${offset}&sort=asc`;
+
+        this[http].get(url, 10000, function(data) {
+            console.log(data);
+        });
+    }
 }
