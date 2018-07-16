@@ -99,4 +99,12 @@ export default class Proxy {
             console.log(data);
         });
     }
+
+    eth_getStorageAt(address, position) {
+        let url = `https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=${address}&position=${position}&tag=latest`;
+
+        this[http].get(url, 10000, function(data) {
+            console.log(data);
+        });
+    }
 }
