@@ -1,13 +1,14 @@
 /*
 Copyright (c) 2018 ZSC Dev Team
 */
-function ZSCLogin(adr, abi) {
-    this.admAdr = adr;
+function ZSCLogin(userAccount) {
+    this.admAdr = "0xad502b21c77e0db767867a92fcd90a452f689646";
     this.userStatus;
     this.userType;
-    this.contractAdr = adr;
-    this.contractAbi = abi;
-    this.account = web3.eth.coinbase;
+    this.controlApisAdr;
+    this.controlApisFullAbi;
+    this.account = userAccount;
+    this.myAdmAdv = web3.eth.contract(this.getLoginAbi()).at(this.admAdr);
     this.gasPrice = bF_getGasPrice();
     this.gasLimit = bF_getGasLimit(700);
 }
@@ -19,16 +20,16 @@ ZSCLogin.prototype.getUserType = function() { return this.userType; }
 ZSCLogin.prototype.getControlApisAdr = function() { return this.controlApisAdr; }
 ZSCLogin.prototype.getControlApisFullAbi = function() { return this.controlApisFullAbi; }
 ZSCLogin.prototype.getLoginAbi = function() { 
-    return this.contractAbi;
+    return [{"constant":false,"inputs":[{"name":"_type","type":"bytes32"}],"name":"activeByUser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getUserType","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisFullAbi","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisAdr","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tryLogin","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getUserStatus","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}];
 }
 
 ZSCLogin.prototype.tryLogin = function(func){
     var gm = this;
     var callBack = func;
     var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
-    var account =  web3.eth.accounts[0];
-    console.log(account);
-    myAdmAdv.tryLogin({from: account},
+    console.log(gm.account);
+
+    myAdmAdv.tryLogin({from: gm.account},
         function(error, result) {
         if(!error) {
             if (result == false) {
