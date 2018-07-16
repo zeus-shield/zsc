@@ -84,9 +84,6 @@ ZSCSetup.prototype.initSystemModule = function(module, hashID) {
     } else if (module == "ControlApisAdv") {
         this.initControlApis(module, hashID);
 
-    } else if (module == "SystemOverlayer") {
-        this.initSystemOverlayer(module, hashID);
-
     } else {
         var factoryAdr;
         if (module == "FactoryPro") factoryAdr = this.FactoryProAdr;
@@ -113,11 +110,11 @@ ZSCSetup.prototype.setControlAbisAdvAbi = function(hashID) {
     });
 }  
 
-ZSCSetup.prototype.setZSCAmountToUser = function(amount, hashID) {
+ZSCSetup.prototype.setZSCAmountToUser = function(ethAmount, zscAmount, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
     var myControlApi = myContract.at(this.ControlApisAdvAdr);
 
-    myControlApi.setZSCAmountToUser(amount, 
+    myControlApi.setPreallocateAmountToTester(ethAmount, zscAmount,
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result) { 
             if(!error) cC_showHashResultTest(hashID, result, function(){console.log("ok");});
@@ -190,7 +187,7 @@ ZSCSetup.prototype.initAdmAdv = function(hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("AdmAdv"));
     var myAdmAdv = myContract.at(this.AdmAdvAdr);
 
-    myAdmAdv.initAdm(this.zscTokenAdr, this.ControlApisAdvAdr, 
+    myAdmAdv.initAdm(this.ControlApisAdvAdr, 
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){});
@@ -250,7 +247,7 @@ ZSCSetup.prototype.initControlApis = function(abiName, hashID) {
     var myControlApi= myContract.at(this.ControlApisAdvAdr);
 
     //setSystemModules(address _adm, address _posGM, address _systemOverlayer, address _zscToken) public {
-    myControlApi.initControlApis(this.zscTokenAdr, this.AdmAdvAdr, 
+    myControlApi.initControlApis(this.AdmAdvAdr, 
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){});
@@ -262,7 +259,7 @@ ZSCSetup.prototype.initControlApis = function(abiName, hashID) {
 ZSCSetup.prototype.initPosManager = function(abiName, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var myPosAdv = myContract.at(this.PosAdvAdr);
-    myPosAdv.setSysOverlayer(this.SystemOverlayerAdr, {from:web3.eth.accounts[0], gas: 9000000},
+    myPosAdv.setSysOverlayer(this.ControlApisAdvAdr, {from:web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
         if(!error) cC_showHashResultTest(hashID, result, function(){});
         else console.log("error: " + error);
@@ -272,7 +269,7 @@ ZSCSetup.prototype.initPosManager = function(abiName, hashID) {
 ZSCSetup.prototype.initTokenManager = function(abiName, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi(abiName));
     var myWalletGM = myContract.at(this.WalletManagerAdr);
-    myWalletGM.setSysOverlayer(this.SystemOverlayerAdr, {from:web3.eth.accounts[0], gas: 9000000},
+    myWalletGM.setSysOverlayer(this.ControlApisAdvAdr, {from:web3.eth.accounts[0], gas: 9000000},
     function(error, result){ 
         if(!error) cC_showHashResultTest(hashID, result, function(){});
         else console.log("error: " + error);
