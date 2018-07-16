@@ -3,24 +3,20 @@ Copyright (c) 2018 ZSC Dev Team
 */
 
 //class zscWallet
-function ZSCWallet(nm, abi, adr) {
-    this.userName = nm;
+function ZSCWallet(acount, abi, adr) {
     this.userType;
     this.tokenNos = 1;
     this.tokenSymbol = [];
     this.tokenAddress = [];
     this.tokenBalance = [];
     this.tokenStatus = [];
-    this.account = web3.eth.accounts[0];
+    this.account = acount;
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
     this.gasPrice = bF_getGasPrice();
     this.gasLimit = bF_getGasLimit(700);
 }
 
-ZSCWallet.prototype.getUserName = function() {return this.userName;}
-
-ZSCWallet.prototype.setUserName = function(nm) {this.userName = nm; }
 
 ZSCWallet.prototype.setUserType = function(type) {this.userType = type;}
 
@@ -30,7 +26,7 @@ ZSCWallet.prototype.submitTransferValue = function(tokenSymbol, destAddress, amo
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
     if (destAddress != 0 && amount > 0) {
-        myControlApi.submitTransfer(gm.userName, tokenSymbol, destAddress, web3.toWei(amount, 'ether') , 
+        myControlApi.submitTransfer(tokenSymbol, destAddress, web3.toWei(amount, 'ether') , 
             {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
             function(error, result){ 
             if(!error) {
@@ -41,52 +37,6 @@ ZSCWallet.prototype.submitTransferValue = function(tokenSymbol, destAddress, amo
         });
     }
 }
-
-//Disabled during alpha-test
-/*
-ZSCWallet.prototype.confirmTransferValue = function(tokenSymbol, logId, func) {  
-    this.myControlApi.confirmTransfer(this.userName, tokenSymbol, 
-        {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
-        function(error, result){ 
-        if(!error) {
-            if (result > 0) {
-                this.informTransfer(srcAddress, destAddress, result);
-            } else {
-                func();
-            }
-        } else {
-            console.log("error: " + error);
-        }
-    });
-}
-
-ZSCWallet.prototype.informTransfer = function(srcAddress, destAddress, amount, func) { 
-    if (amount > 0) {
-        this.myControlApi.elementInformTransfer(this.userName, srcAddress, destAddress, web3.toWei(amount, 'ether') , 
-            {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
-            function(error, result){ 
-            if(!error) {
-                func();
-            } else {
-                console.log("error: " + error);
-            }
-        });
-    }
-} 
-
-ZSCWallet.prototype.enableWallet = function(tokenSymbol, elementId, func) {
-    this.myControlApi.enableElementWallet(this.userName, tokenSymbol, 0, 
-        {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
-        function(error, result){ 
-            if(!error) {
-                bF_showHashResult(elementId, result, function(){});
-                func();
-            } else {
-                console.log("error: " + error);
-            }
-        });
-}
-*/
 
 ZSCWallet.prototype.loadTokenWallets = function(func) {
     var gm = this;
@@ -129,7 +79,7 @@ ZSCWallet.prototype.loadTokenInfoByIndex = function(index, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(this.contractAbi).at(this.contractAdr);
 
-    myControlApi.getTokenBalanceInfoByIndex(gm.userName, index + 1,
+    myControlApi.getTokenBalanceInfoByIndex(index,
         {from: gm.account},
         function(error, result){ 
             if(!error) {
@@ -146,7 +96,7 @@ ZSCWallet.prototype.enableUserWallet = function(hashId, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(this.contractAbi).at(this.contractAdr);
 
-    myControlApi.enableUserZSCWallet(gm.userName,
+    myControlApi.enableUserZSCWallet(
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) {
