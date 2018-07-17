@@ -3,7 +3,7 @@ Copyright (c) 2018 ZSC Dev Team
 */
 
 //class zscElement
-function ZSCElement(acount, en, controlApisAdvAbi, controlApisAdvAdr) {
+function ZSCElement(acount, en, controlApisAdvAdr, controlApisAdvAbi) {
     this.enName = en;
     this.parameNos = 0;
     this.ethBalance = 0;
@@ -81,7 +81,26 @@ ZSCElement.prototype.loadParameterNamesAndvalues = function(func) {
     });
 }
 
+ZSCElement.prototype.getRegisteredUserName = function(func) {
+    var gm = this;
+
+        var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.getUserName(  {from: gm.account},
+        function(error, result){ 
+            if(!error) { 
+                var ret =  web3.toUtf8(result);
+                func();
+            } else {
+                console.log("error: " + error);
+            }
+         });
+}
+
+
 ZSCElement.prototype.numParameters = function(gm, func) {
+    var gm = this;
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
@@ -90,7 +109,7 @@ ZSCElement.prototype.numParameters = function(gm, func) {
         function(error, num){ 
             if(!error) { 
                 gm.parameNos = num.toString(10); 
-                func(gm);
+                callBack(gm);
             } else {
                 console.log("error: " + error);
             }
