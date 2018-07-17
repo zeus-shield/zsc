@@ -60,6 +60,7 @@ recordSystemObjectAdrs($htmlObjects);
         else if (module == "ControlApisAdv") adr = "<?php echo $htmlObjects->readObjectAddress('ControlApisAdv')?>";
         else if (module == "FactoryPro") adr = "<?php echo $htmlObjects->readObjectAddress('FactoryPro')?>";
         else if (module == "FactoryRec") adr = "<?php echo $htmlObjects->readObjectAddress('FactoryRec')?>";
+        else if (module == "FactoryStaker") adr = "<?php echo $htmlObjects->readObjectAddress('FactoryStaker')?>";
         else if (module == "FactoryTmp") adr = "<?php echo $htmlObjects->readObjectAddress('FactoryTmp')?>";
         else if (module == "FactoryAgr") adr = "<?php echo $htmlObjects->readObjectAddress('FactoryAgr')?>";
         else if (module == "FactoryWalletAdv") adr = "<?php echo $htmlObjects->readObjectAddress('FactoryWalletAdv')?>";
