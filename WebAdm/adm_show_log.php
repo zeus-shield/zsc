@@ -37,6 +37,7 @@ echo $htmlObjects->loadHeader();
     <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("DBDatabase")."')"?>">DBDatabase</button> 
     <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("FactoryPro")."')"?>">FactoryPro</button> 
     <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("FactoryRec")."')"?>">FactoryRec</button> 
+    <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("FactoryStaker")."')"?>">FactoryStaker</button> 
     <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("FactoryTmp")."')"?>">FactoryTmp</button> 
     <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("FactoryAgr")."')"?>">FactoryAgr</button> 
     <button type="button" onClick="<?php echo "sF_changeLogerModule('".$htmlObjects->readObjectAddress("FactoryWalletAdv")."')"?>">FactoryWalletAdv</button> 
@@ -53,6 +54,7 @@ echo $htmlObjects->loadHeader();
     <text id = "SystemLog7"></text>
     <text id = "SystemLog8"></text> 
     <text id = "SystemLog9"></text> 
+    <text id = "SystemLog10"></text> 
 </div>
 <script type="text/javascript">
 	var logedModuleAdrs = <?php echo $htmlObjects->getLogedObjectAddressArrayInString()?>;
