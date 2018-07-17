@@ -36,7 +36,7 @@ class ZSCInclude {
         <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="./web3.js/dist/web3.js"></script>
-        <script type="text/javascript" src="./web3js.js"></script>
+        <script type="text/javascript" src="./common/web3js.js"></script>
         
         <script type="text/javascript" src="./common/userFunctions.js"></script>
         <script type="text/javascript" src="./common/basicFunctions.js"></script>
@@ -70,7 +70,6 @@ class ZSCInclude {
             return $this->$g_userType;
         }
     }
-
 
     public function loadWeb3() {
         $text='
