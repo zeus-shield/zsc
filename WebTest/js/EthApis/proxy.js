@@ -115,4 +115,12 @@ export default class Proxy {
             console.log(data);
         });
     }
+
+    eth_estimateGas(to, value, gasPrice, gas) {
+        let url = `https://api.etherscan.io/api?module=proxy&action=eth_estimateGas&to=${to}&value=${value}&gasPrice=${gasPrice}&gas=${gas}`;
+ 
+        this[http].get(url, 10000, function(data) {
+            console.log(data);
+        });
+    }
 }
