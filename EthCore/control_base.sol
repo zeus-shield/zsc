@@ -99,9 +99,10 @@ contract ControlBase is Object {
     }
 
     //////////////////////////////////
+    function getRegisteredUserName(address _sender) internal view returns (bytes32);
     function registerUserNode(address _creator, bytes32 _userName, bytes32 _type) internal;
     function registerEntityNode(address _creator, bytes32 _endName) internal;
-    function checkUserAllowed(address _sender) internal view returns (bytes32);
+    function checkUserAllowed(address _sender) internal view;
     function checkRegistered(address _sender, bytes32 _enName) internal view;
     //////////////////////////////////
     
@@ -193,7 +194,6 @@ contract ControlBase is Object {
         address ndAdr;
         address parentAdr = getDBDatabase(dbName_).getRootNode();
 
-        return 0;
         ndAdr = getDBFactory(_type).createNode(_nodeName, parentAdr, _creator);
         require(ndAdr != 0);
 
@@ -288,7 +288,8 @@ contract ControlBase is Object {
     //////////////////////////////////////
     //////////////////////////////////////
     function publishAgreement(bytes32 _agrName) public {
-        bytes32 userName = checkUserAllowed(msg.sender);
+        checkUserAllowed(msg.sender);
+        bytes32 userName = getRegisteredUserName(msg.sender);
 
         address _creator = msg.sender;
         address agrAdr = address(getDBNode(dbName_, _agrName));
@@ -309,7 +310,8 @@ contract ControlBase is Object {
     }
 
     function purchaseAgreement(bytes32 _agrName) public returns (uint) {
-        bytes32 userName = checkUserAllowed(msg.sender);
+        checkUserAllowed(msg.sender);
+        bytes32 userName = getRegisteredUserName(msg.sender);
 
         bytes32 userType = getDBNode(getCurrentDBName(), userName).getNodeType();
         require(userType == "receiver");
@@ -341,7 +343,8 @@ contract ControlBase is Object {
     }
 
     function claimInsurance(bytes32 _agrName) public returns (bool) {
-        bytes32 userName = checkUserAllowed(msg.sender);
+        checkUserAllowed(msg.sender);
+        bytes32 userName = getRegisteredUserName(msg.sender);
 
         bytes32 agrName = _agrName;
         address agrAdr  = address(getDBNode(dbName_, agrName));
@@ -383,7 +386,8 @@ contract ControlBase is Object {
    
  
     function getTokenBalanceInfo(bool _useIndex, uint _index, bytes32 _symbol) public view returns (string) { 
-        bytes32 userName = checkUserAllowed(msg.sender);
+        checkUserAllowed(msg.sender);
+        bytes32 userName = getRegisteredUserName(msg.sender);
 
         bytes32 status;
         bytes32 tokenName;
@@ -412,7 +416,8 @@ contract ControlBase is Object {
     }
 
     function getUserTransactionByIndex(uint _index) public constant returns (string) {
-        bytes32 userName = checkUserAllowed(msg.sender);
+        checkUserAllowed(msg.sender);
+        bytes32 userName = getRegisteredUserName(msg.sender);
         address walletAdr = getWalletAddress(userName);
 
         require(_index < DBNode(walletAdr).numTransactions());
