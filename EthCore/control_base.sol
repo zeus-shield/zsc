@@ -8,7 +8,7 @@ import "./object.sol";
 
 contract DBNode {
     function getNodeType() public view returns (bytes32);
-    function getBlance(address _adr) public view returns (uint256);
+    function getBalance(address _adr) public view returns (uint256);
 
     function addParameter(bytes32 _parameter) public returns (bool);
     //function removeParameter(bytes32 _parameter) public returns (bool);
@@ -73,8 +73,8 @@ contract DBModule {
     function getTokenInfoBySymbol(bytes32 _symbol) public view returns (bytes32, bytes32, bytes32, uint, address);
 
     function createRobot(address _user, uint _level) public returns (uint);
-    function activeRobot(address _user, uint _robotId, uint _rewardType) public returns (uint);    
-    function enhanceRobot(address _user, uint _robotA, uint _robotB) public returns (uint);
+    function activeRobot(address _user, uint _robotId, uint _durationInDays, uint _totalZSC) public returns (uint);
+    function enhanceRobot(address _user, uint _robotId) public returns (uint);
     function publishRobot(address _seller, uint _robotId, uint _price) public;
     function cancelAuction(address _seller, uint _robotId) public;
     function purchaseRobot(address _buyer, uint _robotId) public returns (address, uint);
@@ -405,7 +405,7 @@ contract ControlBase is Object {
             (status, tokenName, tokenSymbol, tokenDecimals, tokenAdr) = getDBModule("gm-token").getTokenInfoBySymbol(_symbol);
         }
         
-        tokenBalance = DBNode(userWalletAdr).getBlance(tokenAdr);
+        tokenBalance = DBNode(userWalletAdr).getBalance(tokenAdr);
         
         string memory str ="";
         str = PlatString.append(str, "info?status=", PlatString.bytes32ToString(status),      "&");
