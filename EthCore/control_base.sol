@@ -110,9 +110,8 @@ contract ControlBase is Object {
     }
 
     function preallocateZSCToTester(address _userWalletAdr) internal {
-        address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
-
-        if (allocatedZSC_ == 0) {
+        if (allocatedZSC_ > 0) {
+            address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
             uint remaingZSC = ERC20Interface(tokenContractAdr).balanceOf(address(this));
             if (remaingZSC > allocatedZSC_) {
                 ERC20Interface(tokenContractAdr).transfer(_userWalletAdr, allocatedZSC_);
@@ -194,6 +193,7 @@ contract ControlBase is Object {
         address ndAdr;
         address parentAdr = getDBDatabase(dbName_).getRootNode();
 
+        return 0;
         ndAdr = getDBFactory(_type).createNode(_nodeName, parentAdr, _creator);
         require(ndAdr != 0);
 
@@ -379,6 +379,8 @@ contract ControlBase is Object {
         }
         return true;
     }
+    
+   
  
     function getTokenBalanceInfo(bool _useIndex, uint _index, bytes32 _symbol) public view returns (string) { 
         bytes32 userName = checkUserAllowed(msg.sender);
