@@ -2,7 +2,7 @@
 Copyright (c) 2018 ZSC Dev Team
 */
 function ZSCLogin(userAccount) {
-    this.admAdr = "0xad502b21c77e0db767867a92fcd90a452f689646";
+    this.admAdr = "0x106d93cfeca100680627d2b6b96ae19dc559225a";
     this.userStatus;
     this.userType;
     this.controlApisAdr;
@@ -20,7 +20,7 @@ ZSCLogin.prototype.getUserType = function() { return this.userType; }
 ZSCLogin.prototype.getControlApisAdr = function() { return this.controlApisAdr; }
 ZSCLogin.prototype.getControlApisFullAbi = function() { return this.controlApisFullAbi; }
 ZSCLogin.prototype.getLoginAbi = function() { 
-    return [{"constant":false,"inputs":[{"name":"_type","type":"bytes32"}],"name":"activeByUser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getUserType","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisFullAbi","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisAdr","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tryLogin","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getUserStatus","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}];
+    return [{"constant":false,"inputs":[{"name":"_type","type":"string"}],"name":"activeByUser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getUserType","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisFullAbi","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisAdr","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tryLogin","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getUserStatus","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}];
 }
 
 ZSCLogin.prototype.tryLogin = function(func){
