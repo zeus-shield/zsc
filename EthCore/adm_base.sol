@@ -13,7 +13,7 @@ contract AdmBase is Object {
     function AdmBase(bytes32 _name) public Object(_name) {
     }
 
-    function activeByUser(bytes32 _type) public;
+    function activeByUser(string _type) public;
 
     function initAdm(address _controlApisAdr) public { 
         checkDelegate(msg.sender, 1);
