@@ -32,15 +32,15 @@ class ZSCBase {
     }
 
     public function getObjectArray() {
-        return array("TestToken", "LogRecorder", "TimeStamp", "AdmAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp",  "FactoryAgr",  "FactoryWalletAdv", "TokenManager", "PosManager", "ControlApisAdv");
+        return array("TestToken", "LogRecorder", "TimeStamp", "AdmAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryStaker", "FactoryTmp",  "FactoryAgr",  "FactoryWalletAdv", "TokenManager", "PosManager", "ControlApisAdv");
     }
 
     public function getLogedObjectArray() {
-        return array("AdmAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryTmp",  "FactoryAgr", "FactoryWalletAdv", "TokenManager", "PosManager",  "ControlApisAdv");
+        return array("AdmAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryStaker", "FactoryTmp",  "FactoryAgr", "FactoryWalletAdv", "TokenManager", "PosManager",  "ControlApisAdv");
     }
 
     public function getFactoryModuleArray() {
-        return array("FactoryPro", "FactoryRec", "FactoryTmp",  "FactoryAgr", "FactoryWalletAdv"); 
+        return array("FactoryPro", "FactoryRec", "FactoryStaker", "FactoryTmp",  "FactoryAgr", "FactoryWalletAdv"); 
     }
 
     public function getGmArray() {
