@@ -30,10 +30,16 @@ session_start();
 
     checkeWeb3Account(function(account) {
         userLogin = new ZSCLogin(account);
-        userLogin.tryLogin(function(ret) { if(!ret) { window.location.href = "index.php";} });
+        userLogin.tryLogin(function(ret) { 
+            if(!ret) { 
+                window.location.href = "index.php";
+            } else {
+                userProfile = new ZSCElement(account, "null", userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
+                loadUserProfile();
+            }
+        });
 
-        userProfile = new ZSCElement(account, "null", userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
-        loadUserProfile();
+        
     });
     /////////////////////////////
 
@@ -64,13 +70,15 @@ session_start();
     }
 
     function submitParameterProfileChanges(logID) {
-        zscElement.setElementParameter(logID, function(){});
+        userProfile.setElementParameter(logID, function(){});
     }
 
     function loadUserProfile() {
+        userProfile.getRegisteredUserName(function() {
         userProfile.loadParameterNamesAndvalues(function() {
             loadHtml("PageBody", "submitParameterProfileChanges");
         });
+      });
     }
 
 </script>
