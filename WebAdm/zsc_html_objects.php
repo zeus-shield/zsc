@@ -77,6 +77,7 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
         <script type="text/javascript" src="./js/compiled_database.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_pro.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_rec.js"></script>
+        <script type="text/javascript" src="./js/compiled_factory_staker.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_tmp.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_agr.js"></script>
         <script type="text/javascript" src="./js/compiled_factory_wallet_adv.js"></script>
