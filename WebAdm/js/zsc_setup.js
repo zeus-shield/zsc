@@ -16,13 +16,14 @@ function ZSCSetup(logRecorderAdr, timerAdr, zscTokenAdr, adrs) {
     this.DBDatabaseAdr = adrs[1];
     this.FactoryProAdr = adrs[2];
     this.FactoryRecAdr = adrs[3];
-    this.FactoryTmpAdr = adrs[4];
-    this.FactoryAgrAdr = adrs[5];
-    this.FactoryWalletAdvAdr = adrs[6];
-    this.TokenManagerAdr     = adrs[7];
-    this.PosManagerAdr       = adrs[8];
-    this.ControlApisAdvAdr   = adrs[9];
-    this.account = web3.eth.accounts[0];
+    this.FactoryStakerAdr = adrs[4];
+    this.FactoryTmpAdr = adrs[5];
+    this.FactoryAgrAdr = adrs[6];
+    this.FactoryWalletAdvAdr = adrs[7];
+    this.TokenManagerAdr     = adrs[8];
+    this.PosManagerAdr       = adrs[9];
+    this.ControlApisAdvAdr   = adrs[10];
+    this.account = web3.eth.accounts[11];
     this.gasPrice = cC_getGasPrice(20);
     this.gasLimit = cC_getGasLimit(700);
 }
@@ -85,6 +86,7 @@ ZSCSetup.prototype.initSystemModule = function(module, hashID) {
         var factoryAdr;
         if (module == "FactoryPro") factoryAdr = this.FactoryProAdr;
         else if (module == "FactoryRec") factoryAdr = this.FactoryRecAdr;
+        else if (module == "FactoryStaker") factoryAdr = this.FactoryStakerAdr;
         else if (module == "FactoryTmp") factoryAdr = this.FactoryTmpAdr;
         else if (module == "FactoryAgr") factoryAdr = this.FactoryAgrAdr;
         else if (module == "FactoryWalletAdv") factoryAdr = this.FactoryWalletAdvAdr;
@@ -129,7 +131,7 @@ ZSCSetup.prototype.addFactoryModule = function(factModule, hashID) {
         factoryAdr = this.FactoryRecAdr;
         factoryType = "receiver";
     } else if (factModule == "FactoryStaker") {
-        factoryAdr = this.FactoryRecAdr;
+        factoryAdr = this.FactoryStakerAdr;
         factoryType = "staker";
     } else if (factModule == "FactoryTmp") {
         factoryAdr = this.FactoryTmpAdr;
