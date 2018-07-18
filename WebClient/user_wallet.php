@@ -62,34 +62,37 @@ session_start();
         var userWallet = userWalletGM.getWalletAddress();
     
         //var titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
-        var titlle = "user wallet address: " + userWallet;
-    
-        text = '<div class="well"> <text> ' + titlle + ' </text></div>';
+        var titlle = 'user wallet address: <text> <a href="https://rinkeby.etherscan.io/address/0x' + userWallet + '#tokentxns" target="_blank" >0x' + userWallet + '</a></text>'
+
+        text = '<div class="well">' + titlle + '</div>';
         text += '<div class="well">';
 
         if (userWallet == 0x0) {
             text += '<button type="button" onClick="' + enableWalletPrefix + '">Enable  Wallet</button><br>'
             text += '<text id="EnableWalletHash" value = "log:"> </text> <br>';
         } else {
-    
+            text += '<table align="center" style="width:600px;min-height:30px">'
+            text += '<tr> <td>Symbol</td> <td>Balance</td> <td>Dest-adr</td> <td>Amount</td> <td>Transfer</td></tr> '
+            text += '<tr> <td>------</td> <td>------</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
             for (var i = 0; i < tokenNos; ++i) {
-                symbol  = userWalletGM.getTokenSymbol[i];
-                balance = userWalletGM.getTokenBalance[i];
+                symbol  = userWalletGM.getTokenSymbol(i);
+                balance = userWalletGM.getTokenBalance(i);
                 hashId  = symbol + "Hash";
                 sentoId = symbol + "Dest";
                 amountId= symbol + "Amount";
-        
-                text += '---------------</text><br>'
     
-                text += 'Symbol: <text>Test' + symbol + '</text><br>'
-                text += 'Address: <text> <a href="https://rinkeby.etherscan.io/address/0x' + adr + '#tokentxns" target="_blank" >0x' + adr + '</a></text><br>'
-                text += 'Balance: <text>' + balance + '</text><br><br>'
-                text += '---------------</text><br>'
-                text += 'Dest-adr<input id="' + sentoId + '"></input> <br> Amount:<input id="' + amountId + '"></input> <br>'
-                text += '  <button type="button" onClick="' + transPrefix + symbol + "', '" + sentoId + "', '" + amountId + "', '" + hashId + transSuffix + '    ">  Transfer  </button> <br>'
-                text += '<text id="'+ hashId + '" value = "log:"> </text> <br>';
-                text += '<text>---------------</text><br>'
+                text += '<tr>'
+                text += '   <td><text>' + symbol + '</text></td>'
+                text += '   <td><text>' + balance + '</text></td>'
+                text += '   <td><input id="' + sentoId + '"></input></td>'
+                text += '   <td><input id="' + amountId + '"></input></td>'
+                text += '   <td><button type="button" onClick="' + transPrefix + symbol + "', '" + sentoId + "', '" + amountId + "', '" + hashId + transSuffix + '">  Transfer  </button></td>'
+                text += '</tr>'
+                text += '<tr><text id="'+ hashId + '" value = "log:"> </text> <tr>';
+                text += '<tr></tr>'
+                text += '<tr> <td>------</td> <td>------</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
             }
+            text += '</table>'
         }
         text += '</div>'
     
