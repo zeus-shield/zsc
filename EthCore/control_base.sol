@@ -99,10 +99,9 @@ contract ControlBase is Object {
     }
 
     //////////////////////////////////
-    function getRegisteredUserName(address _sender) internal view returns (bytes32);
     function registerUserNode(address _creator, bytes32 _userName, bytes32 _type) internal;
     function registerEntityNode(address _creator, bytes32 _endName) internal;
-    function checkUserAllowed(address _sender) internal view;
+    function checkAllowed(address _sender, bytes32 _enName) internal view returns (bytes32);
     function checkRegistered(address _sender, bytes32 _enName) internal view;
     //////////////////////////////////
     
