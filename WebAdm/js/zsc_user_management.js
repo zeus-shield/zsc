@@ -120,24 +120,16 @@ ZSCUserManagement.prototype.parserUserInfo = function(index, info) {
     var newsids    = newsidinfo.split("&");
 
     var userName    = newsids[0];
-    var userPass    = newsids[1];
-    var userActived = newsids[2];
-    var userStatus  = newsids[3];
-    var userType    = newsids[4];
-    var userId      = newsids[5];
-    var userNodeAdr = newsids[6];
-    var userEthAdr  = newsids[7];
-    var userZscAdr  = newsids[8];
+    var userStatus  = newsids[1];
+    var userType    = newsids[2];
+    var userNodeAdr = newsids[3];
+    var userEthAdr  = newsids[4];
 
     this.userName[index]    = userName.split("=")[1];
-    this.userPass[index]    = userPass.split("=")[1];
-    this.userActived[index] = userActived.split("=")[1];
     this.userStatus[index]  = userStatus.split("=")[1];
     this.userType[index]    = userType.split("=")[1];
-    this.userId[index]      = "0x" + userId.split("=")[1];
     this.userNodeAdr[index] = "0x" + userNodeAdr.split("=")[1];
     this.userEthAdr[index]  = "0x" + userEthAdr.split("=")[1];
-    this.userZscAdr[index]  = "0x" + userZscAdr.split("=")[1];
 }
 
 ZSCUserManagement.prototype.loadUserManagementHtml = function(setStatus, elementId) {
@@ -148,18 +140,20 @@ ZSCUserManagement.prototype.loadUserManagementHtml = function(setStatus, element
     var text = ' <text id="ButtonHashId"> </text>'
     text += '<table id="ZSCUserInfoBody" align="center" style="width:800px;min-height:30px">'
     text += '<tr>'
-    text += '   <td>index </td> <td>name</td> <td>pass</td> <td>actived</td> <td>type</td> <td>status</td>  <td>active</td>  <td>deactive</td> '
+    text += '   <td>index </td> <td>name</td> <td>type</td> <td>status</td> <td>node/creator</td> <td>active</td>  <td>deactive</td> '
     text += '</tr> '
-    text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td>   </tr>'
+    text += '<tr> <td>---------</td> <td>---------</td> <td>---------</td> <td>---------</td>'
+    text += '<td>------------------------------------------------------------</td>'
+    text += '<td>---</td> <td>---</td>   </tr>'
 
     for (var i = 0; i < this.userNos; ++i) {
         text += '<tr>';
         text += '   <td><text> ' + i + '</text></td>'
         text += '   <td><text> ' + this.userName[i]    + '</text></td>'
-        text += '   <td><text> ' + this.userPass[i] + ' </text></td>'
-        text += '   <td><text> ' + this.userActived[i] + ' </text></td>'
         text += '   <td><text> ' + this.userType[i]    + ' </text></td>'
         text += '   <td><text> ' + this.userStatus[i]  + ' </text></td>'
+        text += '   <td><text>' + this.userNodeAdr[i]  + ' </text><br>'
+        text += '       <text>' + this.userEthAdr[i]  + ' </text></td>'
         text += '   <td><button type="button" onClick="' + setStatusPrefix + this.userName[i] + "', 'true', '"  + hashId + setStatusSuffix + '">Active</button></td>'
         text += '   <td><button type="button" onClick="' + setStatusPrefix + this.userName[i] + "', 'false', '" + hashId + setStatusSuffix + '">Deactive</button></td>'
         text += '</tr> '
