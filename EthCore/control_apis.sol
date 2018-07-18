@@ -38,7 +38,7 @@ contract ControlApis is ControlBase {
     /// @dev Create an user
     function createUserNode(bytes32 _factoryType, bytes32 _userName, address _extraAdr) public returns (address) {
         checkDelegate(msg.sender, 1);     
-          
+
         require(_factoryType == "staker" || _factoryType == "provider" || _factoryType == "receiver");
         require(address(getDBNode(getCurrentDBName(), _userName)) == 0);
 
@@ -94,7 +94,7 @@ contract ControlApis is ControlBase {
     }
 
     function getUserName() public view returns (bytes32) {
-        return getRegisteredUserName(msg.sender);
+        return checkAllowed(msg.sender, "null");
     } 
 
     /// @dev Get the number of paramters of an element
@@ -103,7 +103,7 @@ contract ControlApis is ControlBase {
         bytes32 en = checkAllowed(msg.sender, _enName);
         bytes32 ndType = getDBNode(getCurrentDBName(), en).getNodeType();
         if (ndType != "agreement") { 
-            checkAllowed(msg.sender, en);
+            checkMatched(msg.sender, en);
         }
 
         return  getDBNode(getCurrentDBName(), en).numParameters();
@@ -119,18 +119,13 @@ contract ControlApis is ControlBase {
         }
     */
     function getElementParameterNameByIndex(bytes32 _enName, uint _index) public view returns (bytes32) {
-        checkUserAllowed(msg.sender);
-        bytes32 enName = _enName;
-        if (enName == "null") {
-            enName = getRegisteredUserName(msg.sender);
-        }
-        
-        bytes32 ndType = getDBNode(getCurrentDBName(), enName).getNodeType();
+        bytes32 en = checkAllowed(msg.sender, _enName);
+        bytes32 ndType = getDBNode(getCurrentDBName(), en).getNodeType();
         if (ndType != "agreement") {
-            checkAllowed(msg.sender, enName);
+            checkAllowed(msg.sender, en);
         }
 
-        return getDBNode(getCurrentDBName(), enName).getParameterNameByIndex(_index);
+        return getDBNode(getCurrentDBName(), en).getParameterNameByIndex(_index);
     }
 
     /// @dev Transfer a particular amount from a user wallet to the destination address
@@ -138,8 +133,7 @@ contract ControlApis is ControlBase {
     /// @param _amount The amount to be transferred
     function submitTransfer(bytes32 _tokenSymbol, address _dest, uint256 _amount) public returns (uint) {
         require(_amount > 0);
-        checkUserAllowed(msg.sender);
-        bytes32 userName = getRegisteredUserName(msg.sender);
+        bytes32 userName = checkAllowed(msg.sender, "null");
         address walletAdr = getWalletAddress(userName);
         require(walletAdr != address(0));
 
@@ -149,46 +143,41 @@ contract ControlApis is ControlBase {
     }
 
     function numElementChildren(bytes32 _enName) public view returns (uint) {
-        checkAllowed(msg.sender, _enName);
-        return  getDBNode(getCurrentDBName(), _enName).numChildren();
+        bytes32 en = checkAllowed(msg.sender, _enName);
+        return  getDBNode(getCurrentDBName(), en).numChildren();
     }
 
     function getElementChildNameByIndex(bytes32 _enName, uint _index) public view returns (bytes32) {
-        checkAllowed(msg.sender, _enName);
-        address adr = getDBNode(getCurrentDBName(), _enName).getChildByIndex(_index);
+        bytes32 en = checkAllowed(msg.sender, _enName);
+        address adr = getDBNode(getCurrentDBName(), en).getChildByIndex(_index);
         return Object(adr).name();
     }
 
     function numTemplates() public view returns (uint) {
-        checkUserAllowed(msg.sender);
-        bytes32 userName = getRegisteredUserName(msg.sender);
-        return getDBNode(getCurrentDBName(), userName).numTemplates();
+        bytes32 en = checkAllowed(msg.sender, "null");
+        return getDBNode(getCurrentDBName(), en).numTemplates();
     }
 
     function getTemplateNameByIndex(uint _index) public view returns (bytes32) {
-        checkUserAllowed(msg.sender);
-        bytes32 userName = getRegisteredUserName(msg.sender);
-        address adr = getDBNode(getCurrentDBName(), userName).getTemplateByIndex(_index);
+        bytes32 en = checkAllowed(msg.sender, "null");
+        address adr = getDBNode(getCurrentDBName(), en).getTemplateByIndex(_index);
         return Object(adr).name();
     }
 
     function numAgreements() public view returns (uint) {
-        checkUserAllowed(msg.sender);
-        bytes32 userName = getRegisteredUserName(msg.sender);
-        return getDBNode(getCurrentDBName(), userName).numAgreements();
+        bytes32 en = checkAllowed(msg.sender, "null");
+        return getDBNode(getCurrentDBName(), en).numAgreements();
     }
 
     function getAgreementNameByIndex(uint _index) public view returns (bytes32) {
-        checkUserAllowed(msg.sender);
-        bytes32 userName = getRegisteredUserName(msg.sender);
-        address adr = getDBNode(getCurrentDBName(), userName).getAgreementByIndex(_index);
+        bytes32 en = checkAllowed(msg.sender, "null");
+        address adr = getDBNode(getCurrentDBName(), en).getAgreementByIndex(_index);
         return Object(adr).name();
     }
 
     //------2018-07-06: new verstion: YYA------ 
     function enableUserWallet() public returns (address) {
-        checkUserAllowed(msg.sender);
-        bytes32 userName = getRegisteredUserName(msg.sender);
+        bytes32 userName = checkAllowed(msg.sender, "null");
         address userAdr = address(getDBNode(getCurrentDBName(), userName));
         require(userAdr != 0);
 
@@ -201,13 +190,12 @@ contract ControlApis is ControlBase {
     }
 
     function numOfTokens() public view returns (uint) {
-        checkUserAllowed(msg.sender);
+        checkAllowed(msg.sender, "null");
         return getDBModule("pos-token").numOfTokens();
     }
 
     function numUserTransactions() public view returns (uint) {
-        checkUserAllowed(msg.sender);
-        bytes32 userName = getRegisteredUserName(msg.sender);
+        bytes32 userName = checkAllowed(msg.sender, "null");
         address walletAdr = getWalletAddress(userName);
         require(walletAdr != address(0));
         
