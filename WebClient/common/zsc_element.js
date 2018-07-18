@@ -20,9 +20,9 @@ function ZSCElement(acount, en, controlApisAdvAdr, controlApisAdvAbi) {
 }
 
 ZSCElement.prototype.getElementName = function() { return this.enName;}
-ZSCElement.prototype.numParameters = function() { return this.parameNos;}
-ZSCElement.prototype.getParameter = function(index) { return this.parameterNames[index];}
-ZSCElement.prototype.getValue = function(index) { return this.parameterValues[index];}
+ZSCElement.prototype.getParaNos = function() { return this.parameNos;}
+ZSCElement.prototype.getParaName = function(index) { return this.parameterNames[index];}
+ZSCElement.prototype.getParaValue = function(index) { return this.parameterValues[index];}
 
 ZSCElement.prototype.resetAllNameTags = function(gm) {
     for (var i = 0; i < gm.parameNos; ++i) {
