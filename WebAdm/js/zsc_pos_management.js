@@ -5,7 +5,12 @@ Copyright (c) 2018 ZSC Dev Team
 function ZSCPosManagement(adr, abi) {
     this.levelNos = 0;
     this.robotNos = 0;
-    this.levels = [];
+    this.levelTags = [];
+    this.levelMaxSP = [];
+    this.levelEnhanceProb = [];
+    this.levelPriceToEnhance = [];
+    this.levelPriceToCreate = [];
+
     this.itemTags = [];
     this.account = web3.eth.accounts[0];
     this.myPosManager = web3.eth.contract(abi).at(adr);
@@ -40,8 +45,8 @@ ZSCPosManagement.prototype.setRewardRatio = function(hashID,  durationInDays, ra
         });
 } 
 
-ZSCPosManagement.prototype.setMaxStakerPoint = function(hashID, level, maxStakePoint, enhanceProb) {
-    this.myPosManager.setMaxStakerPoint(level, maxStakePoint, enhanceProb, 
+ZSCPosManagement.prototype.setLevelInfo = function(hashID, level, maxStakePoint, enhanceProb, priceToEnhance, priceToCreate) {
+    this.myPosManager.setLevelInfo(level, maxStakePoint, enhanceProb, priceToEnhance, priceToCreate,
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){});
@@ -65,24 +70,23 @@ ZSCPosManagement.prototype.checkAllItemTags = function(gm) {
     return true;
 }
 
-
-ZSCUserManagement.prototype.loadLevelInfos = function(phpFunc) {
+ZSCPosManagement.prototype.loadLevelInfos = function(func) {
     var gm = this;
-    var callback = phpFunc;
+    var callback = func;
 
     gm.numLevels(gm, function(gm) {
         gm.resetAllItemTags(gm);
-       if (gm.userNos == 0) {
+       if (gm.levelNos == 0) {
             callbackk();
         } else {
-            gm.loadLevels();
+            gm.loadLevels(gm);
         }
     });
 }
 
-ZSCUserManagement.prototype.numLevels = function(gm, func) {
-    this.myPosManager.numLevels(
-        {from: this.account},
+ZSCPosManagement.prototype.numLevels = function(gm, func) {
+    gm.myPosManager.numLevels(
+        {from: gm.account},
         function(error, num){ 
             if(!error) { 
                 gm.levelNos = num.toString(10); 
@@ -93,6 +97,46 @@ ZSCUserManagement.prototype.numLevels = function(gm, func) {
          });
 }
 
-ZSCUserManagement.prototype.loadLevels = function() {
-
+ZSCPosManagement.prototype.loadLevels = function(gm) {
+    for (var i = 0; i < gm.levelNos; ++i) {
+        gm.loadUserInfoByIndex(gm, i, function(gm, index, userInfo) {
+            gm.parserUserInfo(index, userInfo);
+            if (gm.checkAllItemTags(gm) == true) {
+                gm.phpCallback();
+            }
+        });
+    } 
 } 
+
+ZSCPosManagement.prototype.loadUserInfoByIndex = function(gm, index, func) {
+    gm.myPosManager.getLevleInfoByIndex(index, 
+        {from: gm.account},
+        function(error, para){ 
+            if(!error) {
+                var ret = para;
+                gm.itemTags[index] = true;
+                func(gm, index, ret);  
+            } else { 
+                console.log("error: " + error);
+            }
+        });
+}
+
+ZSCPosManagement.prototype.parserLevelInfo = function(gm, index, info) {
+    var len        = info.length;
+    var offset     = info.indexOf("?");
+    var newsidinfo = info.substr(offset,len)
+    var newsids    = newsidinfo.split("&");
+
+    var levelTags           = newsids[0];
+    var levelMaxSP          = newsids[1];
+    var levelEnhanceProb    = newsids[2];
+    var levelPriceToEnhance = newsids[3];
+    var levelPriceToCreate  = newsids[4];
+
+    gm.levelTags[index]           = levelTags.split("=")[1];
+    gm.levelMaxSP[index]          = levelMaxSP.split("=")[1];
+    gm.levelEnhanceProb[index]    = levelEnhanceProb.split("=")[1];
+    gm.levelPriceToEnhance[index] = levelPriceToEnhance.split("=")[1];
+    gm.levelPriceToCreate[index]  = levelPriceToCreate.split("=")[1];
+}
