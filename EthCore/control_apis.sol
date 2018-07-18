@@ -175,6 +175,12 @@ contract ControlApis is ControlBase {
         return Object(adr).name();
     }
 
+    //------2018-07-18: new verstion: YYA------ 
+    function getUserWalletAddress() public view returns (address) {
+        bytes32 userName = checkAllowed(msg.sender, "null");
+        return getWalletAddress(userName); 
+    }
+
     //------2018-07-06: new verstion: YYA------ 
     function enableUserWallet() public returns (address) {
         bytes32 userName = checkAllowed(msg.sender, "null");
@@ -184,14 +190,14 @@ contract ControlApis is ControlBase {
         address walletAdr = enableWallet(userName, userAdr, msg.sender);
         require(walletAdr != 0);
 
-        preallocateZSCToTester(walletAdr);
+        //preallocateZSCToTester(walletAdr);
 
         return walletAdr;
     }
 
     function numOfTokens() public view returns (uint) {
         checkAllowed(msg.sender, "null");
-        return getDBModule("pos-token").numOfTokens();
+        return getDBModule("gm-token").numOfTokens();
     }
 
     function numUserTransactions() public view returns (uint) {
