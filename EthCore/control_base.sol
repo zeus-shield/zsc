@@ -70,7 +70,6 @@ contract DBModule {
     function numOfTokens() public view returns (uint);
     function getTokenAddress(bytes32 _symbol) public view returns (address);
     function getTokenInfoByIndex(uint _index) public view returns (bytes32, bytes32, bytes32, uint, address);
-    function getTokenInfoBySymbol(bytes32 _symbol) public view returns (bytes32, bytes32, bytes32, uint, address);
 
     function createRobot(address _user, uint _level) public returns (uint);
     function activeRobot(address _user, uint _robotId, uint _durationInDays, uint _totalZSC) public returns (uint);
@@ -379,7 +378,7 @@ contract ControlBase is Object {
         return true;
     }
  
-    function getTokenBalanceInfo(bool _useIndex, uint _index, bytes32 _symbol) public view returns (string) { 
+    function getTokenBalanceInfoByIndex(uint _index) public view returns (string) { 
         bytes32 userName = checkAllowed(msg.sender, "null");
 
         bytes32 status;
@@ -390,16 +389,10 @@ contract ControlBase is Object {
         address userWalletAdr;
         uint tokenBalance;
 
-        userWalletAdr = getWalletAddress(userName);
-
-        if (_useIndex) {
-            (status, tokenName, tokenSymbol, tokenDecimals, tokenAdr) = getDBModule("gm-token").getTokenInfoByIndex(_index);
-        } else {
-            (status, tokenName, tokenSymbol, tokenDecimals, tokenAdr) = getDBModule("gm-token").getTokenInfoBySymbol(_symbol);
-        }
-        
+        userWalletAdr = getWalletAddress(userName);        
         tokenBalance = DBNode(userWalletAdr).getBalance(tokenAdr);
-        
+        (status, tokenName, tokenSymbol, tokenDecimals, tokenAdr) = getDBModule("gm-token").getTokenInfoByIndex(_index);
+
         string memory str ="";
         str = PlatString.append(str, "info?status=", PlatString.bytes32ToString(status),      "&");
         str = PlatString.append(str, "symbol=",      PlatString.bytes32ToString(tokenSymbol), "&");

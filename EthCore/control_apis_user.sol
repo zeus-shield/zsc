@@ -32,7 +32,7 @@ contract AbisForUserControlApis {
 
     function getUserWalletAddress() public view returns (address);
     function numOfTokens() public view returns (uint);
-    function getTokenBalanceInfo(bool _useIndex, uint _index, bytes32 _symbol) public view returns (string);
+    function getTokenBalanceInfoByIndex(uint _index) public view returns (string);
     function getUserTransactionByIndex(uint _index) public constant returns (string);
     function getModuleAddresses() public view returns (string);
     
