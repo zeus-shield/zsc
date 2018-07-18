@@ -7,6 +7,7 @@ function ZSCRobotOwned(acount, adr, abi) {
     this.userType;
     this.robotNos = 0;
     this.robotIds = [];
+    this.itemTags = [];
     this.account = acount;
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
@@ -15,8 +16,23 @@ function ZSCRobotOwned(acount, adr, abi) {
 }
 
 ZSCRobotOwned.prototype.getUserName = function() {return this.userName;}
-
 ZSCRobotOwned.prototype.getRobotId = function(index) { return this.robotIds[index];}
+
+
+ZSCRobotOwned.prototype.resetAllItemTags = function(gm) {
+    for (var i = 0; i < gm.userNos; ++i) {
+        gm.itemTags[i] = false;
+    }
+}
+
+ZSCRobotOwned.prototype.checkAllItemTags = function(gm) {
+    for (var i = 0; i < gm.userNos; ++i) {
+        if (gm.itemTags[i] == false) {
+            return false;
+        }
+    }
+    return true;
+}
 
 ZSCRobotOwned.prototype.createGen0Robot = function(func) { 
     var callBack = func;
@@ -59,5 +75,12 @@ ZSCRobotOwned.prototype.activeMinerRobot = function(robotId, rewardType, func) {
             }
         });
 }
+
+
+
+
+
+
+
 
   
