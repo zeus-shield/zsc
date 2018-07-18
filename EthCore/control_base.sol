@@ -102,7 +102,7 @@ contract ControlBase is Object {
     function registerUserNode(address _creator, bytes32 _userName, bytes32 _type) internal;
     function registerEntityNode(address _creator, bytes32 _endName) internal;
     function checkAllowed(address _sender, bytes32 _enName) internal view returns (bytes32);
-    function checkRegistered(address _sender, bytes32 _enName) internal view;
+    function checkMatched(address _sender, bytes32 _enName) internal view;
     //////////////////////////////////
     
     function getCurrentDBName() internal view returns (bytes32) {
@@ -287,8 +287,7 @@ contract ControlBase is Object {
     //////////////////////////////////////
     //////////////////////////////////////
     function publishAgreement(bytes32 _agrName) public {
-        checkUserAllowed(msg.sender);
-        bytes32 userName = getRegisteredUserName(msg.sender);
+        bytes32 userName = checkAllowed(msg.sender, "null");
 
         address _creator = msg.sender;
         address agrAdr = address(getDBNode(dbName_, _agrName));
@@ -309,8 +308,7 @@ contract ControlBase is Object {
     }
 
     function purchaseAgreement(bytes32 _agrName) public returns (uint) {
-        checkUserAllowed(msg.sender);
-        bytes32 userName = getRegisteredUserName(msg.sender);
+        bytes32 userName = checkAllowed(msg.sender, "null");
 
         bytes32 userType = getDBNode(getCurrentDBName(), userName).getNodeType();
         require(userType == "receiver");
@@ -342,8 +340,7 @@ contract ControlBase is Object {
     }
 
     function claimInsurance(bytes32 _agrName) public returns (bool) {
-        checkUserAllowed(msg.sender);
-        bytes32 userName = getRegisteredUserName(msg.sender);
+        bytes32 userName = checkAllowed(msg.sender, "null");
 
         bytes32 agrName = _agrName;
         address agrAdr  = address(getDBNode(dbName_, agrName));
@@ -385,8 +382,7 @@ contract ControlBase is Object {
    
  
     function getTokenBalanceInfo(bool _useIndex, uint _index, bytes32 _symbol) public view returns (string) { 
-        checkUserAllowed(msg.sender);
-        bytes32 userName = getRegisteredUserName(msg.sender);
+        bytes32 userName = checkAllowed(msg.sender, "null");
 
         bytes32 status;
         bytes32 tokenName;
@@ -415,8 +411,7 @@ contract ControlBase is Object {
     }
 
     function getUserTransactionByIndex(uint _index) public constant returns (string) {
-        checkUserAllowed(msg.sender);
-        bytes32 userName = getRegisteredUserName(msg.sender);
+        bytes32 userName = checkAllowed(msg.sender, "null");
         address walletAdr = getWalletAddress(userName);
 
         require(_index < DBNode(walletAdr).numTransactions());
