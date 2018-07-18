@@ -52,7 +52,7 @@ ZSCWallet.prototype.loadTokenWallets = function(func) {
             gm.numTokenWallets(gm, function(gm) {
                 for (var i = 0; i < gm.tokenNos; ++i) {
                     gm.loadTokenInfoByIndex(gm, i, function(gm, index) {
-                        if (indx == gm.tokenNos - 1) {
+                        if (index == gm.tokenNos - 1) {
                             func();
                         }
                     });
@@ -60,6 +60,27 @@ ZSCWallet.prototype.loadTokenWallets = function(func) {
             });
         }
     });
+}
+
+ZSCWallet.prototype.getUserWalletAddress = function(gm, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.getUserWalletAddress(
+        {from: gm.account},
+        function(error, result){ 
+            if(!error) {
+                gm.tokenAddress = result;
+                if (result == 0x0) {
+                    callBack(true);
+                } else {
+                    gm.isActivated = true;
+                    callBack(false)
+                }
+            } else {
+                console.log("error: " + error);
+            }
+        });
 }
 
 ZSCWallet.prototype.numTokenWallets = function(gm, func) {
@@ -78,17 +99,16 @@ ZSCWallet.prototype.numTokenWallets = function(gm, func) {
         });
 }
 
-ZSCWallet.prototype.loadTokenInfoByIndex = function(index, func) {
-    var gm = this;
+ZSCWallet.prototype.loadTokenInfoByIndex = function(gm, index, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(this.contractAbi).at(this.contractAdr);
 
-    myControlApi.getTokenBalanceInfo(true, index, "null", 
+    myControlApi.getTokenBalanceInfoByIndex(Number(index), 
         {from: gm.account},
         function(error, result){ 
             if(!error) {
                 gm.parserTokenBalanceInfoByIndex(gm, result, index);
-                callBack();
+                callBack(gm, index);
             } else {
                 console.log("error: " + error);
             }
@@ -128,66 +148,11 @@ ZSCWallet.prototype.parserTokenBalanceInfoByIndex = function(gm, urlinfo, index)
     var statusInfo   = newsids[0];
     var symbolInfo   = newsids[1];
     var balanceInfo  = newsids[2];
-    var adrInfo      = newsids[3];
 
     gm.tokenStatus[index]  = statusInfo.split("=")[1];
     gm.tokenSymbol[index]  = symbolInfo.split("=")[1];
-    gm.tokenAddress[index] = adrInfo.split("=")[1];
     gm.tokenBalance[index] = balanceInfo.split("=")[1];
     return true;
-}
-
-ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2, func3)  {
-    var transPrefix = func1 + "('"; 
-    var transSuffix = "')";
-
-    var showTransPrefix = func2 + "('";
-    var showTransSuffix = "')";
-
-    var enableWalletPrefix = func3 + "('";
-    var enableWalletSuffix = "')";
-
-    var symbol;
-    var adr;
-    var balance;
-    var hashId;
-
-    var titlle = this.userType + " [" + this.userName + "] - wallet info"
-
-    text = '<div class="well"> <text> ' + titlle + ' </text></div>';
-
-    text += '<div class="well">';
-
-    for (var i = 0; i < this.tokenNos; ++i) {
-        symbol = this.tokenSymbol[i];
-        adr = this.tokenAddress[i];
-        balance = this.tokenBalance[i];
-        hashId = symbol + "Hash";
-        sentoId = symbol + "Dest";
-        amountId = symbol + "Amount";
-
-        text += '---------------</text><br>'
-        if (this.tokenStatus[i] == "false") {
-            text += '<button type="button" onClick="' + enableWalletPrefix + 'EnableZSCWalletHash' + "', '" + hashId + enableWalletSuffix + '">Enable TestZSC Wallet</button><br>'
-            text += '<text id="EnableZSCWalletHash" value = "log:"> </text> <br>';
-            text += '<text>---------------</text><br>'
-        } else {
-            text += 'Symbol: <text>Test' + symbol + '</text><br>'
-            text += 'Address: <text> <a href="https://rinkeby.etherscan.io/address/0x' + adr + '#tokentxns" target="_blank" >0x' + adr + '</a></text><br>'
-            text += 'Balance: <text>' + balance + '</text><br><br>'
-            //text += '---------------</text><br>'
-            //text += '  <button type="button" onClick="' + showTransPrefix + symbol + "', '" + hashId + showTransSuffix + '">Show Transactions</button><br><br>'
-            text += '---------------</text><br>'
-            text += 'Dest-adr<input id="' + sentoId + '"></input> <br> Amount:<input id="' + amountId + '"></input> <br>'
-            text += '  <button type="button" onClick="' + transPrefix + symbol + "', '" + sentoId + "', '" + amountId + "', '" + hashId + transSuffix + '">  Transfer  </button> <br>'
-            text += '<text id="'+ hashId + '" value = "log:"> </text> <br>';
-            text += '<text>---------------</text><br>'
-        }
-
-    }
-    text += '</div>'
-
-    document.getElementById(elementId).innerHTML = text;  
 }
 
 
