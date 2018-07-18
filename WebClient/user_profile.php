@@ -46,21 +46,27 @@ session_start();
     function loadHtml(elementId, funcName) {
         var functionInput = funcName + "('UpdateParameterHash')";
     
-        var titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
+        //var titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
+        var titlle = "User profile:"; 
        
         var text ="";
         text += '<div class="well"> <text>' + titlle + ' </text></div>';
         text += '<div class="well">';
         text += '<table align="center" style="width:600px;min-height:30px">'
     
-        var paraName;
+        var paraNos, paraName, paraValue;
+        paraNos = userProfile.getParaNos();
     
-        for (var i = 0; i < userProfile.numParameters(); ++i) {
+        for (var i = 0; i < paraNos; ++i) {
+            paraName  = userProfile.getParaName(i);
+            paraValue = userProfile.getParaValue(i);
             text += '<tr>'
             text += '  <td> <text>' + paraName + ': </text> </td>'
-            text += '  <td> <input type="text" id="' + userProfile.getParameter(i) + '" value="' + userProfile.getValue(i) + '"></input> </td>'
+            text += '  <td> <input type="text" id="' + paraName + '" value="' + paraValue + '"></input> </td>'
             text += '</tr>'
         }
+        text += '</table></div>'
+
         text += '<div>'
         text += '   <button type="button" onClick="' + functionInput + '">Submit Changes</button>'
         text += '   <text id="UpdateParameterHash"></text>'
@@ -70,7 +76,7 @@ session_start();
     }
 
     function submitParameterProfileChanges(logID) {
-        userProfile.setElementParameter(logID, function(){});
+        userProfile.setElementParameter(logID, function(){ window.location.reload(true); });
     }
 
     function loadUserProfile() {
