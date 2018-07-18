@@ -3,13 +3,13 @@ Copyright (c) 2018 ZSC Dev Team
 */
 
 //class zscWallet
-function ZSCWallet(acount, abi, adr) {
+function ZSCWallet(acount, adr, abi) {
     this.userType;
     this.tokenNos = 0;
     this.tokenSymbol = [];
-    this.tokenAddress = [];
     this.tokenBalance = [];
     this.tokenStatus = [];
+    this.tokenAddress;
     this.account = acount;
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
@@ -17,7 +17,8 @@ function ZSCWallet(acount, abi, adr) {
     this.gasLimit = bF_getGasLimit(700);
 }
 
-ZSCWallet.prototype.nomTokens = function() { return this.tokenNos;}
+ZSCWallet.prototype.getWalletAddress = function() { return this.tokenAddress;}
+ZSCWallet.prototype.getTokenNos = function() { return this.tokenNos;}
 ZSCWallet.prototype.getTokenSymbol = function(index) { return this.tokenSymbol[index];}
 ZSCWallet.prototype.getTokenBalance = function(index) { return this.tokenBalance[index];}
 
@@ -44,11 +45,17 @@ ZSCWallet.prototype.loadTokenWallets = function(func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    gm.numTokenWallets(gm, function(gm) {
-        for (var i = 0; i < gm.tokenNos; ++i) {
-            gm.loadTokenInfoByIndex(gm, i, function(gm, index) {
-                if (indx == gm.tokenNos - 1) {
-                    func();
+    gm.getUserWalletAddress(gm, function(ret) {
+        if (ret) {
+            callBack();
+        } else {
+            gm.numTokenWallets(gm, function(gm) {
+                for (var i = 0; i < gm.tokenNos; ++i) {
+                    gm.loadTokenInfoByIndex(gm, i, function(gm, index) {
+                        if (indx == gm.tokenNos - 1) {
+                            func();
+                        }
+                    });
                 }
             });
         }
@@ -59,9 +66,8 @@ ZSCWallet.prototype.numTokenWallets = function(gm, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.numRegisteredErc20Tokens(
-        gm.userName,
-        {from: gm.account, gas: 9000000},
+    myControlApi.numOfTokens(
+        {from: gm.account},
         function(error, result){ 
             if(!error) {
                 gm.tokenNos = result.toString(10);
@@ -77,7 +83,7 @@ ZSCWallet.prototype.loadTokenInfoByIndex = function(index, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(this.contractAbi).at(this.contractAdr);
 
-    myControlApi.getTokenBalanceInfoByIndex(index,
+    myControlApi.getTokenBalanceInfo(true, index, "null", 
         {from: gm.account},
         function(error, result){ 
             if(!error) {
@@ -94,7 +100,7 @@ ZSCWallet.prototype.enableUserWallet = function(hashId, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(this.contractAbi).at(this.contractAdr);
 
-    myControlApi.enableUserZSCWallet(
+    myControlApi.enableUserWallet(
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) {
