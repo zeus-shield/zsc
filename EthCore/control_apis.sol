@@ -14,7 +14,7 @@ contract ControlApis is ControlBase {
    
     /// @dev Get the number of elements of the database
     function numFactoryElements(bytes32 _factoryType) public view returns (uint) { 
-        checkUserAllowed(msg.sender);
+        checkAllowed(msg.sender, "null");
 
         return getDBFactory(_factoryType).numFactoryNodes(); 
     }
@@ -22,7 +22,7 @@ contract ControlApis is ControlBase {
     /// @dev Get the element name by the index
     /// @param _index The index of the element in the database
     function getFactoryElementNameByIndex(bytes32 _factoryType, uint _index) public view returns (bytes32) { 
-        checkUserAllowed(msg.sender);
+        checkAllowed(msg.sender, "null");
 
         return getDBFactory(_factoryType).getFactoryNodeNameByIndex(_index); 
     }
@@ -30,14 +30,15 @@ contract ControlApis is ControlBase {
     /// @dev Check the element wheather or not existing
     /// @param _enName The name of the element to be checked
     function doesElementExist(bytes32 _enName) public view returns (bool) {
-        checkRegistered(msg.sender, _enName);
-        address adr = address(getDBNode(getCurrentDBName(), _enName));
+        bytes32 en = checkAllowed(msg.sender, _enName);
+        address adr = address(getDBNode(getCurrentDBName(), en));
         return (adr != address(0));
     }
 
     /// @dev Create an user
     function createUserNode(bytes32 _factoryType, bytes32 _userName, address _extraAdr) public returns (address) {
-        checkDelegate(msg.sender, 1);       
+        checkDelegate(msg.sender, 1);     
+          
         require(_factoryType == "staker" || _factoryType == "provider" || _factoryType == "receiver");
         require(address(getDBNode(getCurrentDBName(), _userName)) == 0);
 
@@ -49,8 +50,7 @@ contract ControlApis is ControlBase {
     }
 
     function createElementNode(bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo) public returns (address) {
-        checkUserAllowed(msg.sender);
-        bytes32 userName = getRegisteredUserName(msg.sender);
+        bytes32 userName = checkAllowed(msg.sender, _enName);
         
         require(_factoryType == "template" || _factoryType == "agreement");
         require(address(getDBNode(getCurrentDBName(), _enName)) == address(0));
@@ -65,41 +65,32 @@ contract ControlApis is ControlBase {
     /// @dev Get the type of an element
     /// @param _enName The name of the element belonging to the user
     function getElementType(bytes32 _enName) public view returns (bytes32) {
-        checkRegistered(msg.sender, _enName);
+        bytes32 en = checkAllowed(msg.sender, _enName);
 
-        DBNode nd = getDBNode(getCurrentDBName(), _enName);
+        DBNode nd = getDBNode(getCurrentDBName(), en);
         require(address(nd) != address(0));
         return nd.getNodeType();
-    }
-
-    /// @dev Add a paramter to an element
-    /// @param _enName The name of the existing element
-    /// @param _parameter The name of the added parameter
-    function addElementParameter(bytes32 _enName, bytes32 _parameter) public returns (bool) {
-        checkRegistered(msg.sender, _enName);
-
-        return getDBNode(getCurrentDBName(), _enName).addParameter(_parameter);
     }
 
     /// @dev Get the value of a paramter of an element
     /// @param _enName The name of the element
     /// @param _parameter The name of the existing parameter
     function getElementParameter(bytes32 _enName, bytes32 _parameter) public view returns (bytes32) {
-        checkRegistered(msg.sender, _enName);
+        bytes32 en = checkAllowed(msg.sender, _enName);
 
-        bytes32 ndType = getDBNode(getCurrentDBName(), _enName).getNodeType();
+        bytes32 ndType = getDBNode(getCurrentDBName(), en).getNodeType();
         if (ndType != "agreement") {
             //checkMatched(_userName, _enName, msg.sender);
         }
-        return getDBNode(getCurrentDBName(), _enName).getParameter(_parameter);
+        return getDBNode(getCurrentDBName(), en).getParameter(_parameter);
     }
 
     /// @dev Get the address of the element 
     /// @param _enName The name of the element
     function getElementAddress(bytes32 _enName) public view returns (address) {
-        checkRegistered(msg.sender, _enName);
+        bytes32 en = checkAllowed(msg.sender, _enName);
 
-        return address(getDBNode(getCurrentDBName(), _enName));
+        return address(getDBNode(getCurrentDBName(), en));
     }
 
     function getUserName() public view returns (bytes32) {
@@ -109,18 +100,13 @@ contract ControlApis is ControlBase {
     /// @dev Get the number of paramters of an element
     /// @param _enName The name of the existing element
     function numElementParameters(bytes32 _enName) public view returns (uint) {
-        checkUserAllowed(msg.sender);
-        bytes32 enName = _enName;
-        if (enName == "null") {
-            enName = getRegisteredUserName(msg.sender);
-        }
-
-        bytes32 ndType = getDBNode(getCurrentDBName(), enName).getNodeType();
+        bytes32 en = checkAllowed(msg.sender, _enName);
+        bytes32 ndType = getDBNode(getCurrentDBName(), en).getNodeType();
         if (ndType != "agreement") { 
-            checkRegistered(msg.sender, enName);
+            checkAllowed(msg.sender, en);
         }
 
-        return  getDBNode(getCurrentDBName(), enName).numParameters();
+        return  getDBNode(getCurrentDBName(), en).numParameters();
     }
 
     /// @dev Get the number of paramters of an element
@@ -141,7 +127,7 @@ contract ControlApis is ControlBase {
         
         bytes32 ndType = getDBNode(getCurrentDBName(), enName).getNodeType();
         if (ndType != "agreement") {
-            checkRegistered(msg.sender, enName);
+            checkAllowed(msg.sender, enName);
         }
 
         return getDBNode(getCurrentDBName(), enName).getParameterNameByIndex(_index);
@@ -163,12 +149,12 @@ contract ControlApis is ControlBase {
     }
 
     function numElementChildren(bytes32 _enName) public view returns (uint) {
-        checkRegistered(msg.sender, _enName);
+        checkAllowed(msg.sender, _enName);
         return  getDBNode(getCurrentDBName(), _enName).numChildren();
     }
 
     function getElementChildNameByIndex(bytes32 _enName, uint _index) public view returns (bytes32) {
-        checkRegistered(msg.sender, _enName);
+        checkAllowed(msg.sender, _enName);
         address adr = getDBNode(getCurrentDBName(), _enName).getChildByIndex(_index);
         return Object(adr).name();
     }
