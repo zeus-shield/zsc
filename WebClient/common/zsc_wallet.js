@@ -20,7 +20,7 @@ function ZSCWallet(acount, adr, abi) {
 ZSCWallet.prototype.getWalletAddress = function() { return this.tokenAddress;}
 ZSCWallet.prototype.getTokenNos = function() { return this.tokenNos;}
 ZSCWallet.prototype.getTokenSymbol = function(index) { return this.tokenSymbol[index];}
-ZSCWallet.prototype.getTokenBalance = function(index) { return this.tokenBalance[index];}
+ZSCWallet.prototype.getTokenBalance = function(index) { return web3.fromWei(this.tokenBalance[index], 'ether');}
 
 ZSCWallet.prototype.submitTransferValue = function(tokenSymbol, destAddress, amount, logId, func) {  
     var gm = this;
