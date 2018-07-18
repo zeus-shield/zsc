@@ -231,7 +231,7 @@ contract ControlBase is Object {
 
     function enableWallet(bytes32 _enName, address _enAdr, address _creator) internal returns (address) {
         bytes32 walletNmae = formatWalletName(_enName, "wat");
-        require(address(getDBNode(dbName_, walletNmae)) != 0);
+        require(address(getDBNode(dbName_, walletNmae)) == 0);
 
         address walletAdr  = getDBFactory("wallet-adv").createNode(walletNmae, _enAdr, _creator);
         require(walletAdr != 0);
@@ -378,8 +378,6 @@ contract ControlBase is Object {
         }
         return true;
     }
-    
-   
  
     function getTokenBalanceInfo(bool _useIndex, uint _index, bytes32 _symbol) public view returns (string) { 
         bytes32 userName = checkAllowed(msg.sender, "null");
