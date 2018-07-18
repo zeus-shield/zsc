@@ -3,11 +3,11 @@ Copyright (c) 2018 ZSC Dev Team
 */
 
 //class 
-function ZSCRobotOwned(nm, abi, adr) {
-    this.userName = nm;
+function ZSCRobotOwned(acount, adr, abi) {
+    this.userType;
     this.robotNos = 0;
     this.robotIds = [];
-    this.account = web3.eth.accounts[0];
+    this.account = acount;
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
     this.gasPrice = bF_getGasPrice();
@@ -18,3 +18,46 @@ ZSCRobotOwned.prototype.getUserName = function() {return this.userName;}
 
 ZSCRobotOwned.prototype.getRobotId = function(index) { return this.robotIds[index];}
 
+ZSCRobotOwned.prototype.createGen0Robot = function(func) { 
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    myControlApi.createMinerRobot(
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
+        function(error, result){ 
+            if(!error) {
+                func();
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
+
+ZSCRobotOwned.prototype.enhanceMinerRobot = function(robotId, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    myControlApi.enhanceMinerRobot(robotId,
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
+        function(error, result){ 
+            if(!error) {
+                func();
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
+    
+ZSCRobotOwned.prototype.activeMinerRobot = function(robotId, rewardType, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    myControlApi.activeMinerRobot(robotId, rewardType,
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
+        function(error, result){ 
+            if(!error) {
+                func();
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
+
+  
