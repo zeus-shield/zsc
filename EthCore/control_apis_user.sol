@@ -24,6 +24,7 @@ contract AbisForUserControlApis {
     function getAgreementNameByIndex(uint _index) public view returns (bytes32);
     function enableUserWallet() public returns (address);
     function numUserTransactions() public view returns (uint);
+    function setElementMultipleParameters(bytes32 _enName, string _info) public;
 
     function publishAgreement(bytes32 _agrName) public;
     function purchaseAgreement(bytes32 _agrName) public returns (uint);
