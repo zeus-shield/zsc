@@ -26,7 +26,7 @@ session_start();
     <?php echo $htmlObjects->loadWeb3();?>
     var checkeWeb3Account = <?php echo $htmlObjects->checkWeb3Account();?>;
     var userLogin;
-    var userWallet;
+    var userWalletGM;
 
     checkeWeb3Account(function(account) {
         userLogin = new ZSCLogin(account);
@@ -34,44 +34,50 @@ session_start();
             if(!ret) { 
                 window.location.href = "index.php";
             } else {
-                userWallet = new ZSCWallet(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
-            userWallet.loadTokenWallets();
+                userWalletGM = new ZSCWallet(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
+                userWalletGM.loadTokenWallets(function() {
+                    loadHtml("PageBody", "enableUserWallet", "submitTransfer");
+                });
             }
         });
     });
     /////////////////////////////
+    function enableUserWallet(hashId) {
+        userWalletGM.enableUserWallet(hashId, function() {                
+            window.location.reload(true);
+        });
+    }
 
-    function loadHtml(elementId, func1, func3) {
-        var transPrefix = func1 + "('"; 
+    function loadHtml(elementId, func1, func2) {
+        var enableWalletPrefix = func1 + "('EnableWalletHash')";
+ 
+        var transPrefix = func2 + "('"; 
         var transSuffix = "')";
-    
-        var enableWalletPrefix = func3 + "('";
-        var enableWalletSuffix = "')";
-    
+
         var symbol;
         var adr;
         var balance;
         var hashId;
-        var tokenNos = userWallet.nomTokens();
+        var tokenNos = userWalletGM.getTokenNos();
+        var userWallet = userWalletGM.getWalletAddress();
     
-        var titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
+        //var titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
+        var titlle = "user wallet address: " + userWallet;
     
         text = '<div class="well"> <text> ' + titlle + ' </text></div>';
         text += '<div class="well">';
 
-        if (userWallet.activated() == false) {
-            text += '<button type="button" onClick="' + enableWalletPrefix + 'EnableWalletHash' + "', '" + hashId + enableWalletSuffix + '">Enable  Wallet</button><br>'
+        if (userWallet == 0x0) {
+            text += '<button type="button" onClick="' + enableWalletPrefix + '">Enable  Wallet</button><br>'
             text += '<text id="EnableWalletHash" value = "log:"> </text> <br>';
-            text += '<text>---------------</text><br>'
         } else {
     
-            for (var i = 0; i < userWallet.tokenNos; ++i) {
-                symbol = userWallet.tokenSymbol[i];
-                adr = userWallet.tokenAddress[i];
-                balance = userWallet.tokenBalance[i];
-                hashId = symbol + "Hash";
+            for (var i = 0; i < tokenNos; ++i) {
+                symbol  = userWalletGM.getTokenSymbol[i];
+                balance = userWalletGM.getTokenBalance[i];
+                hashId  = symbol + "Hash";
                 sentoId = symbol + "Dest";
-                amountId = symbol + "Amount";
+                amountId= symbol + "Amount";
         
                 text += '---------------</text><br>'
     
@@ -88,16 +94,6 @@ session_start();
         text += '</div>'
     
         document.getElementById(elementId).innerHTML = text;  
-    }
-
-    function submitParameterProfileChanges(logID) {
-        zscElement.setElementParameter(logID, function(){});
-    }
-
-    function loadTokenWallets() {
-        userWallet.loadTokenWallets(function() {
-            loadHtml("PageBody", "enableTransfer", "submitTransfer");
-        });
     }
     
 </script>
