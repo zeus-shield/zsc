@@ -9,6 +9,7 @@ import "./object.sol";
 contract DBNode {
     function getNodeType() public view returns (bytes32);
     function getBalance(address _adr) public view returns (uint256);
+    function getLockedAmount(address _tokenAdr) public view returns (uint);
 
     function addParameter(bytes32 _parameter) public returns (bool);
     //function removeParameter(bytes32 _parameter) public returns (bool);
@@ -84,7 +85,7 @@ contract DBModule {
     function cancelAuction(address _seller, uint _robotId) public;
     function purchaseRobot(address _buyer, uint _robotId) public returns (address, uint);
     function claimable(address _user, uint _robotId) public view returns (bool);
-    function claimReward(address _user, uint _robotId) public returns (uint);
+    function claimReward(address _user, uint _robotId) public returns (uint, uint);
     /*ERC721 for miner robot end*/
 }
 
@@ -257,10 +258,14 @@ contract ControlBase is Object {
 
     function setPreallocateAmountToTester(uint _allocatedETH, uint _allocatedZSC) public { 
         checkDelegate(msg.sender, 1);
-        allocatedETH_ = _allocatedETH.mul(1 ether);
-        allocatedZSC_ = _allocatedZSC.mul(1 ether);
+        if (_allocatedETH > 0) { allocatedETH_ = _allocatedETH.mul(1 ether);}
+        if (_allocatedZSC > 0) { allocatedZSC_ = _allocatedZSC.mul(1 ether); }
     }
 
+    function getPreallocateAmountToTester() public view returns (uint, uint) { 
+        checkDelegate(msg.sender, 1);
+        return (allocatedETH_, allocatedZSC_);
+    }
 
     function addSystemComponent(bytes32 _type, bytes32 _name, address _adr) public returns (bool) {
         bool ret = false;
@@ -395,20 +400,26 @@ contract ControlBase is Object {
         address tokenAdr;
         address userWalletAdr;
         uint tokenBalance;
+        uint lockedAmount;
 
-        userWalletAdr = getWalletAddress(userName);        
+        userWalletAdr = getWalletAddress(userName);
+
         (status, tokenName, tokenSymbol, tokenDecimals, tokenAdr) = getDBModule("gm-token").getTokenInfoByIndex(_index);
+
         tokenBalance = DBNode(userWalletAdr).getBalance(tokenAdr);
+        lockedAmount = DBNode(userWalletAdr).getLockedAmount(tokenAdr);
 
         string memory str ="";
         str = PlatString.append(str, "info?status=", PlatString.bytes32ToString(status),      "&");
         str = PlatString.append(str, "symbol=",      PlatString.bytes32ToString(tokenSymbol), "&");
         str = PlatString.append(str, "balance=",     PlatString.uintToString(tokenBalance),   "&");
+        str = PlatString.append(str, "locked=",      PlatString.uintToString(lockedAmount),   "&");
         str = PlatString.append(str, "adr=",         PlatString.addressToString(tokenAdr),    "&");
         return str;
     }
-
-    function getUserTransactionByIndex(uint _index) public constant returns (string) {
+    
+    /*
+    function getUserTransactionByIndex(uint _index) public view returns (string) {
         bytes32 userName = checkAllowed(msg.sender, "null");
         address walletAdr = getWalletAddress(userName);
 
@@ -436,6 +447,7 @@ contract ControlBase is Object {
         str = PlatString.append(str, "receiver=",  PlatString.addressToString(receiver), "&");
         return str;
     }
+    */
  
     function getModuleAddresses() public view returns (string) {
         address dbAdr = address(getDBDatabase(dbName_));
