@@ -51,7 +51,7 @@ ZSCPosManagement.prototype.setRewardRatio = function(hashID,  durationInDays, ra
 } 
 
 ZSCPosManagement.prototype.setLevelInfo = function(hashID, level, maxStakePoint, enhanceProb, priceToEnhance, priceToCreate) {
-    this.myPosManager.setLevelInfo(level, maxStakePoint, enhanceProb, priceToEnhance, priceToCreate,
+    this.myPosManager.setLevelInfo(level, maxStakePoint, enhanceProb, web3.toWei(priceToEnhance, 'ether'), web3.toWei(priceToCreate, 'ether'),
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){window.location.reload(true);});
