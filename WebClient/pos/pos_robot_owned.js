@@ -6,6 +6,7 @@ Copyright (c) 2018 ZSC Dev Team
 function ZSCRobotOwned(acount, adr, abi) {
     this.userType;
     this.robotNos = 0;
+    this.itemTags = [];
     this.robotIds = [];
     this.robotLevs = [];
     this.robotMaxSP = [];
@@ -16,7 +17,6 @@ function ZSCRobotOwned(acount, adr, abi) {
     this.robotPrceToEnhance = [];
     this.robotPrceToCreate = [];
     this.robotPrceForSale = [];
-    this.itemTags = [];
     this.account = acount;
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
@@ -37,13 +37,13 @@ ZSCRobotOwned.prototype.getPrceToCreate = function(index) { return this.robotPrc
 ZSCRobotOwned.prototype.getPrceForSale = function(index) { return this.robotPrceForSale[index];}
 
 ZSCRobotOwned.prototype.resetAllItemTags = function(gm) {
-    for (var i = 0; i < gm.userNos; ++i) {
+    for (var i = 0; i < gm.robotNos; ++i) {
         gm.itemTags[i] = false;
     }
 }
 
 ZSCRobotOwned.prototype.checkAllItemTags = function(gm) {
-    for (var i = 0; i < gm.userNos; ++i) {
+    for (var i = 0; i < gm.robotNos; ++i) {
         if (gm.itemTags[i] == false) {
             return false;
         }
@@ -51,31 +51,25 @@ ZSCRobotOwned.prototype.checkAllItemTags = function(gm) {
     return true;
 }
 
-ZSCRobotOwned.prototype.createGen0Robot = function(func) { 
+ZSCRobotOwned.prototype.createGen0Robot = function(hashId, func) { 
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     myControlApi.createMinerRobot(
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
-            if(!error) {
-                func();
-            } else {
-                console.log("error: " + error);
-            }
+            if(!error) cC_showHashResultTest(hashId, result, function() {window.location.reload(true);});
+            else console.log("error: " + error);
         });
 }
 
-ZSCRobotOwned.prototype.enhanceMinerRobot = function(robotId, func) {
+ZSCRobotOwned.prototype.enhanceMinerRobot = function(hashId, robotId, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     myControlApi.enhanceMinerRobot(robotId,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
-            if(!error) {
-                func();
-            } else {
-                console.log("error: " + error);
-            }
+            if(!error) cC_showHashResultTest(hashId, result, function() {window.location.reload(true);});
+            else console.log("error: " + error);
         });
 }
     
@@ -93,10 +87,26 @@ ZSCRobotOwned.prototype.activeMinerRobot = function(robotId, rewardType, func) {
         });
 }
 
-ZSCRobotOwned.prototype.loadUsers = function(phpFunc) {
-    this.phpCallback = phpFunc;
-    this.numUsers(this, function(gm) {
-        gm.resetAllItemTags(gm);
+ZSCRobotOwned.prototype.loadUserRobots = function(func) {
+    var gm = this;
+    var callback = func;
+
+    gm.numUsers(gm, function(gm) {
+        if (gm.robotNos == 0) {
+            callback();
+        } else {
+            gm.resetAllItemTags(gm);
+            for (var i = 0; i < this.userNos; ++i) {
+                this.loadUserInfoByIndex(this, i, function(gm, index, userInfo) {
+                    gm.parserUserInfo(index, userInfo);
+                    if (gm.checkAllItemTags(gm) == true) {
+                        gm.phpCallback();
+                    }
+                });
+            } 
+        }
+
+        
        if (gm.userNos == 0) {
             gm.phpCallback();
         } else {
