@@ -71,6 +71,12 @@ contract DBModule {
     function getTokenAddress(bytes32 _symbol) public view returns (address);
     function getTokenInfoByIndex(uint _index) public view returns (bytes32, bytes32, bytes32, uint, address);
 
+    /*ERC721 for miner robot begin*/
+    function balanceOf(address _owner) public view returns (uint);
+    function tokenIDOfOwnerByIndex(address _owner, uint _index) public view returns (uint);
+    function getRobotInfo(uint _robotId) public view returns (uint, uint, uint, uint, uint, uint);
+    function getLevelInfo(uint _index) public view returns (uint, uint, uint, uint);
+
     function createRobot(address _user, uint _level) public returns (uint);
     function activeRobot(address _user, uint _robotId, uint _durationInDays, uint _totalZSC) public returns (uint);
     function enhanceRobot(address _user, uint _robotId) public returns (uint);
@@ -79,6 +85,7 @@ contract DBModule {
     function purchaseRobot(address _buyer, uint _robotId) public returns (address, uint);
     function claimable(address _user, uint _robotId) public view returns (bool);
     function claimReward(address _user, uint _robotId) public returns (uint);
+    /*ERC721 for miner robot end*/
 }
 
 contract ControlBase is Object {   
@@ -390,8 +397,8 @@ contract ControlBase is Object {
         uint tokenBalance;
 
         userWalletAdr = getWalletAddress(userName);        
-        tokenBalance = DBNode(userWalletAdr).getBalance(tokenAdr);
         (status, tokenName, tokenSymbol, tokenDecimals, tokenAdr) = getDBModule("gm-token").getTokenInfoByIndex(_index);
+        tokenBalance = DBNode(userWalletAdr).getBalance(tokenAdr);
 
         string memory str ="";
         str = PlatString.append(str, "info?status=", PlatString.bytes32ToString(status),      "&");
