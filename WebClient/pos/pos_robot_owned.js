@@ -18,6 +18,7 @@ function ZSCRobotOwned(acount, adr, abi) {
     this.robotPrceToCreate = [];
     this.robotPrceForSale = [];
     this.robotRewardRatio = [];
+    this.robotRewards = [];
     this.account = acount;
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
@@ -37,6 +38,7 @@ ZSCRobotOwned.prototype.getPrceToEnhance = function(index) { return this.robotPr
 ZSCRobotOwned.prototype.getPrceToCreate = function(index) { return this.robotPrceToCreate[index];}
 ZSCRobotOwned.prototype.getPrceForSale = function(index) { return this.robotPrceForSale[index];}
 ZSCRobotOwned.prototype.getRewardRatio = function(index) { return this.robotRewardRatio[index];}
+ZSCRobotOwned.prototype.getRewards = function(index) { return this.robotRewards[index];}
 
 ZSCRobotOwned.prototype.resetAllItemTags = function(gm) {
     for (var i = 0; i < gm.robotNos; ++i) {
@@ -81,6 +83,20 @@ ZSCRobotOwned.prototype.activeMinerRobot = function(robotId, rewardType, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     myControlApi.activeMinerRobot(robotId, rewardType,
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
+        function(error, result){ 
+            if(!error) {
+                func();
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
+
+ZSCRobotOwned.prototype.claimReward = function(robotId, rewardType, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    myControlApi.claimReward(robotId,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) {
