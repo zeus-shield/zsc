@@ -4,7 +4,6 @@ Copyright (c) 2018 ZSC Dev Team
 
 function ZSCPosManagement(adr, abi) {
     this.levelNos = 0;
-    this.robotNos = 0;
     this.levelTags = [];
     this.levelMaxSP = [];
     this.levelEnhanceProb = [];
@@ -17,6 +16,12 @@ function ZSCPosManagement(adr, abi) {
     this.gasPrice = cC_getGasPrice(20);
     this.gasLimit = cC_getGasLimit(700);
 }
+
+ZSCPosManagement.prototype.getLevelNos = function() {return this.levelNos;}
+ZSCPosManagement.prototype.getLevelMaxSP = function(index) {return this.levelMaxSP[index];}
+ZSCPosManagement.prototype.getLevelEnhanceProb = function(index) {return this.levelEnhanceProb[index];}
+ZSCPosManagement.prototype.getLevelPriceToEnhance = function(index) {return web3.fromWei(this.levelPriceToEnhance[index], 'ether');}
+ZSCPosManagement.prototype.getLevelPriceToCreate = function(index) {return web3.fromWei(this.levelPriceToCreate[index], 'ether');}
 
 ZSCPosManagement.prototype.downscaledDay = function(hashID, scale) {
     this.myPosManager.downscaledDay(scale, 
@@ -49,7 +54,7 @@ ZSCPosManagement.prototype.setLevelInfo = function(hashID, level, maxStakePoint,
     this.myPosManager.setLevelInfo(level, maxStakePoint, enhanceProb, priceToEnhance, priceToCreate,
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
-            if(!error) cC_showHashResultTest(hashID, result, function(){});
+            if(!error) cC_showHashResultTest(hashID, result, function(){window.location.reload(true);});
             else console.log("error: " + error);
         });
 } 
@@ -77,9 +82,11 @@ ZSCPosManagement.prototype.loadLevelInfos = function(func) {
     gm.numLevels(gm, function(gm) {
         gm.resetAllItemTags(gm);
        if (gm.levelNos == 0) {
-            callbackk();
+            callback();
         } else {
-            gm.loadLevels(gm);
+            gm.loadLevels(gm, function(){
+                callback();
+            });
         }
     });
 }
@@ -97,19 +104,20 @@ ZSCPosManagement.prototype.numLevels = function(gm, func) {
          });
 }
 
-ZSCPosManagement.prototype.loadLevels = function(gm) {
+ZSCPosManagement.prototype.loadLevels = function(gm, func) {
+    var callback = func;
     for (var i = 0; i < gm.levelNos; ++i) {
         gm.loadUserInfoByIndex(gm, i, function(gm, index, userInfo) {
-            gm.parserUserInfo(index, userInfo);
+            gm.parserLevelInfo(gm, index, userInfo);
             if (gm.checkAllItemTags(gm) == true) {
-                gm.phpCallback();
+                func();
             }
         });
     } 
 } 
 
 ZSCPosManagement.prototype.loadUserInfoByIndex = function(gm, index, func) {
-    gm.myPosManager.getLevleInfoByIndex(index, 
+    gm.myPosManager.getLevelInfoByIndex(index, 
         {from: gm.account},
         function(error, para){ 
             if(!error) {
