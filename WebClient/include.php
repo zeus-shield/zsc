@@ -58,10 +58,10 @@ class ZSCInclude {
 
     public function loadAlert() {
         $text=
-        "<i>Needs to install MetaMask extension</i><br>". 
-        "<i>(需要安装MetaMask插件才能显示登录框以其他相关页面)</i><br><br>".
-        "<i>Both the FireFox and Chrome browsers are recommended</i><br>".
-        "<i>(推荐使用火狐或者Chrome浏览器)</i>";  
+        "<i>Needs to install MetaMask extension</i>". 
+        "<i> (需要安装MetaMask插件才能显示登录框以及其他相关页面)</i><br>>".
+        "<i>Both the FireFox and Chrome browsers are recommended</i>".
+        "<i> (推荐使用火狐或者Chrome浏览器)</i>";  
         return $text;
     }
 
