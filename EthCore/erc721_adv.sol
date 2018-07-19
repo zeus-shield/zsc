@@ -15,13 +15,13 @@ contract ERC721 {
     function totoalSupply() public view returns (uint);
     function balanceOf(address _owner) public view returns (uint);
     function ownerOf(uint _tokenId) public view returns (address);
-    //function safeTransferFrom(address _from, address _to, uint _tokenId, bytes data) external;
-    function safeTransferFrom(address _from, address _to, uint _tokenId) external;
-    //function transferFrom(address _from, address _to, uint _tokenId) external;
-    function approve(address _approved, uint _tokenId) external;
-    //function setApprovalForAll(address _operator, bool _approved) external;
-    function getApproved(uint _tokenId) external view returns (address);
-    //function isApprovedForAll(address _owner, address _operator) external view returns (bool);
+    //function safeTransferFrom(address _from, address _to, uint _tokenId, bytes data) public;
+    function safeTransferFrom(address _from, address _to, uint _tokenId) public;
+    //function transferFrom(address _from, address _to, uint _tokenId) public;
+    function approve(address _approved, uint _tokenId) public;
+    //function setApprovalForAll(address _operator, bool _approved) public;
+    function getApproved(uint _tokenId) public view returns (address);
+    //function isApprovedForAll(address _owner, address _operator) public view returns (bool);
 }
 
 /**
@@ -46,10 +46,10 @@ contract Erc721Adv is ERC721, Delegated {
     // Mapping from token ID to index of the owner tokens list
     mapping(uint => uint) private ownedTokensIndex_;
     
-    bool public tradeable_ = false;
-
     function Erc721Adv() public {
     }
+
+    function checkTradeAble(uint256 _tokenId) internal view returns (bool);
 
     function checkOnlyOwnerOf( address _user, uint _tokenId) private view {
         require(tokenOwner_[_tokenId] == _user);
@@ -59,18 +59,11 @@ contract Erc721Adv is ERC721, Delegated {
         address owner = tokenOwner_[_tokenId];
         if (isDelegate(msg.sender, 1)) return;
         
-        if (!tradeable_) {
-            checkDelegate(_sender, 1);
-        } else {
+        if (checkTradeAble(_tokenId)) {
             require(_sender == owner || msg.sender == tokenApprovedFor_[_tokenId]);
         }
     }
 
-    function setTradeableInMarket(bool _tag) public {
-        checkDelegate(msg.sender, 1);
-        tradeable_ = _tag;
-    }
-    
     function totoalSupply() public view returns (uint) {
         return totalTokens_;
     }
@@ -85,12 +78,12 @@ contract Erc721Adv is ERC721, Delegated {
         return tokenOwner_[_tokenId];
     }
 
-    function safeTransferFrom(address _from, address _to, uint _tokenId) external {
+    function safeTransferFrom(address _from, address _to, uint _tokenId) public {
         checkCanTransfer(msg.sender, _tokenId);
         _transfer(_from, _to, _tokenId);
     }
     
-    function approve(address _to, uint _tokenId) external {
+    function approve(address _to, uint _tokenId) public {
         checkOnlyOwnerOf( msg.sender, _tokenId);
         require(_to != msg.sender);
 
@@ -100,7 +93,7 @@ contract Erc721Adv is ERC721, Delegated {
         tokenApprovedFor_[_tokenId] = _to;
     }
 
-    function getApproved(uint _tokenId) external view returns (address) {
+    function getApproved(uint _tokenId) public view returns (address) {
         return tokenApprovedFor_[_tokenId];
     }
 
@@ -110,7 +103,7 @@ contract Erc721Adv is ERC721, Delegated {
     * @param _index uint for the n-th token in the list of tokens owned by this owner
     * @return uint representing the ID of the token
     */
-    function tokenIDOfOwnerByIndex(address _owner, uint _index) external view returns (uint) {
+    function tokenIDOfOwnerByIndex(address _owner, uint _index) public view returns (uint) {
         require(_owner != address(0));
         require(_index < ownedTokens_[_owner].length);
         return ownedTokens_[_owner][_index];
@@ -120,7 +113,7 @@ contract Erc721Adv is ERC721, Delegated {
     * @dev Claims the ownership of a given token ID
     * @param _tokenId uint ID of the token being claimed by the msg.sender
     */
-    function takeOwnership(uint _tokenId) external { 
+    function takeOwnership(uint _tokenId) public { 
         checkCanTransfer(msg.sender, _tokenId);
         require(tokenApprovedFor_[_tokenId] == msg.sender);
         clearApprovalAndTransfer(tokenOwner_[_tokenId], msg.sender, _tokenId);
