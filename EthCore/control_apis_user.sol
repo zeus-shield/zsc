@@ -37,15 +37,15 @@ contract AbisForUserControlApis {
     function getModuleAddresses() public view returns (string);
     
     /*ERC721 for miner robot begin*/
-    function totoalSupply() external view returns (uint);
-    function balanceOf(address _owner) external view returns (uint);
-    function ownerOf(uint _tokenId) external view returns (address);
-    function safeTransferFrom(address _from, address _to, uint _tokenId) external;
-    function approve(address _approved, uint _tokenId) external;
-    function getApproved(uint _tokenId) external view returns (address);
+    function numUserMinerRobot() public view returns (uint);
+    function getUserMinerRobotInfoByIndex(uint _index) public view returns (string);
+    function createMinerRobot() public;
+    function enhanceMinerRobot(uint _robotId) public;
+    function activeMinerRobot( uint _robotId, uint _rewardType) public;
+    function publishMinerRobot(uint _robotId, uint _price) public;
+    function cancalSellingMinerRobot(uint _robotId) public;
+    function purchaseMinerRobot(uint _robotId) public;
+    function claimReward(uint _robotId) public;
     /*ERC721 for miner robot end*/
-
-    function purchaseMinerRobot(bytes32 _userName, uint _robotId) public;
-    function publishMinerRobot(bytes32 _userName, uint _robotId, uint _price) public;
 }
 
