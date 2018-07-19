@@ -17,6 +17,7 @@ function ZSCRobotOwned(acount, adr, abi) {
     this.robotPrceToEnhance = [];
     this.robotPrceToCreate = [];
     this.robotPrceForSale = [];
+    this.robotRewardRatio = [];
     this.account = acount;
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
@@ -35,6 +36,7 @@ ZSCRobotOwned.prototype.getMineEnd = function(index) { return this.robotMineEnd[
 ZSCRobotOwned.prototype.getPrceToEnhance = function(index) { return this.robotPrceToEnhance[index];}
 ZSCRobotOwned.prototype.getPrceToCreate = function(index) { return this.robotPrceToCreate[index];}
 ZSCRobotOwned.prototype.getPrceForSale = function(index) { return this.robotPrceForSale[index];}
+ZSCRobotOwned.prototype.getRewardRatio = function(index) { return this.robotRewardRatio[index];}
 
 ZSCRobotOwned.prototype.resetAllItemTags = function(gm) {
     for (var i = 0; i < gm.robotNos; ++i) {
@@ -52,23 +54,25 @@ ZSCRobotOwned.prototype.checkAllItemTags = function(gm) {
 }
 
 ZSCRobotOwned.prototype.createGen0Robot = function(hashId, func) { 
+    var gm = this;
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     myControlApi.createMinerRobot(
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
-            if(!error) cC_showHashResultTest(hashId, result, function() {window.location.reload(true);});
+            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
             else console.log("error: " + error);
         });
 }
 
 ZSCRobotOwned.prototype.enhanceMinerRobot = function(hashId, robotId, func) {
+    var gm = this;
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     myControlApi.enhanceMinerRobot(robotId,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
-            if(!error) cC_showHashResultTest(hashId, result, function() {window.location.reload(true);});
+            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
             else console.log("error: " + error);
         });
 }
@@ -97,22 +101,26 @@ ZSCRobotOwned.prototype.loadUserRobots = function(func) {
         } else {
             gm.resetAllItemTags(gm);
             for (var i = 0; i < gm.robotNos; ++i) {
-                gm.loadRobotInfoByIndex(this, i, function(gm, index, userInfo) {
-                    gm.parserUserInfo(index, userInfo);
+                gm.loadRobotInfoByIndex(gm, i, function(gm, index, robotInfo) {
+                    gm.parserRobotInfo(gm, index, robotInfo);
                     if (gm.checkAllItemTags(gm) == true) {
                         callback();
                     }
                 });
             } 
         }
+    });
 }
 
 ZSCRobotOwned.prototype.numRobots = function(gm, func) {
-    gm.myAdmAdv.numUsers(
-        {from: this.account},
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.numUserMinerRobot(
+        {from: gm.account},
         function(error, num){ 
             if(!error) { 
-                gm.userNos = num.toString(10); 
+                gm.robotNos = num.toString(10); 
                 func(gm);
             } else {
                 console.log("error: " + error);
@@ -121,37 +129,50 @@ ZSCRobotOwned.prototype.numRobots = function(gm, func) {
 }
 
 ZSCRobotOwned.prototype.loadRobotInfoByIndex = function(gm, index, func) {
-    var gm = this;
-    gm.myAdmAdv.getUserInfoByIndex(index, 
-        {from: this.account},
-        function(error, para){ 
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.getUserMinerRobotInfoByIndex(index, 
+        {from: gm.account},
+        function(error, robotInfo){ 
             if(!error) {
-                var ret = para;
                 gm.itemTags[index] = true;
-                func(gm, index, ret);  
+                func(gm, index, robotInfo);  
             } else { 
                 console.log("error: " + error);
             }
         });
 }
 
-ZSCRobotOwned.prototype.parserUserInfo = function(index, info) {
+ZSCRobotOwned.prototype.parserRobotInfo = function(gm, index, info) {
     var len        = info.length;
     var offset     = info.indexOf("?");
     var newsidinfo = info.substr(offset,len)
     var newsids    = newsidinfo.split("&");
 
-    var userName    = newsids[0];
-    var userStatus  = newsids[1];
-    var userType    = newsids[2];
-    var userNodeAdr = newsids[3];
-    var userEthAdr  = newsids[4];
+    var robotId        = newsids[0];
+    var lev            = newsids[1];
+    var mineStart      = newsids[2];
+    var mineEnd        = newsids[3];
+    var curSP          = newsids[4];
+    var rewardRatio    = newsids[5];
+    var priceForSale   = newsids[6];
+    var maxSP          = newsids[7];
+    var enhanceProb    = newsids[8];
+    var priceToEnhance = newsids[9];
+    var priceToCreate  = newsids[10];
 
-    this.userName[index]    = userName.split("=")[1];
-    this.userStatus[index]  = userStatus.split("=")[1];
-    this.userType[index]    = userType.split("=")[1];
-    this.userNodeAdr[index] = "0x" + userNodeAdr.split("=")[1];
-    this.userEthAdr[index]  = "0x" + userEthAdr.split("=")[1];
+    gm.robotIds[index]           = robotId.split("=")[1];
+    gm.robotLevs[index]          = lev.split("=")[1];
+    gm.robotMineStart[index]     = mineStart.split("=")[1];
+    gm.robotMineEnd[index]       = mineEnd.split("=")[1];
+    gm.robotCurSP[index]         = curSP.split("=")[1];
+    gm.robotRewardRatio[index]   = rewardRatio.split("=")[1];
+    gm.robotPrceForSale[index]   = priceForSale.split("=")[1];
+    gm.robotMaxSP[index]         = maxSP.split("=")[1];
+    gm.robotEnhanceProb[index]   = enhanceProb.split("=")[1];
+    gm.robotPrceToEnhance[index] = priceToEnhance.split("=")[1];
+    gm.robotPrceToCreate[index]  = priceToCreate.split("=")[1];
 }
 
   
