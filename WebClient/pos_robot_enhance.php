@@ -42,14 +42,77 @@ session_start();
 
     /////////////////////////////
     function loadUserRobots() {
-    }
-
-    function createGen0Robot(hashId) {
-        userRobotGM.createGen0Robot(hashId, function() {                
-            window.location.reload(true);
+        userRobotGM.loadUserRobots(function() {
+            loadHtml("PageBody", "createGen0Robot", "enhanceRobot");
         });
     }
 
+    function createGen0Robot(hashId) {
+        userRobotGM.createGen0Robot(hashId, function(){});
+    }
+
+    function enhanceRobot(hashId, robotId) {
+        userRobotGM.enhanceMinerRobot(hashId, robotId, function(){});
+    }
+
+    function loadHtml(elementId, createGen0, enhance) {
+        var createGen0Func = createGen0 + "('OperationHash')"; 
+        var enhancePrefix = enhance + "('OperationHash', '"; 
+        var enhanceSuffix = "')";
+
+        var symbol;
+        var adr;
+        var balance;
+        var hashId;
+        var robotNos = userRobotGM.getRobotNos();
+    
+        var titlle = "user owned robots: " 
+
+        text  = '<div class="well">' + titlle + '<br>';
+        text  = '<text id="OperationHash" value = "log:"> </text> </div>';
+
+        text += '<div class="well">'
+        text += '   <button type="button" onClick="' + createGen0Func + '">  Create Gen0 ZSC miner robot </button> <br>'
+        text += '</div>';
+
+        text += '<div class="well">';
+        text += '<table align="center" style="width:600px;min-height:30px">'
+        text += '   <tr> <td>Robot ID</td> <td>Status</td> <td>Level</td> <td>Max SP</td> <td>Enhance (Suc. Prob.) </td> </tr> '
+        text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> </tr>'
+
+        for (var i = 0; i < robotNos; ++i) {
+            var robotId = userRobotGM.getRobotId(i);
+            var status = "Idle"; 
+            if (userRobotGM.getMineStart(i) > 0) {
+                status = "Mining";
+            } else {
+                if (userRobotGM.getPrceForSale(i) > 0) {
+                    status = "Selling";
+                } 
+            }
+
+            hashId  = symbol + "Hash";
+            sentoId = symbol + "Dest";
+            amountId= symbol + "Amount";
+    
+            text += '<tr>'
+            text += '   <td><text>' + robotId + '</text></td>'
+            text += '   <td><text>' + status + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotLev(i) + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getMaxSP(i) + '</text></td>'
+            if (status == "Idle") {
+                text += '   <td><button type="button" onClick="' + enhancePrefix + robotId + enhanceSuffix + '"> Submit (' + userRobotGM.getEnhanceProb(i) + '%)</button></td>'
+            } else {
+                text += '   <td><button type="button">Not Available</button></td>'
+            }
+            text += '</tr>'
+            text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> </tr>'
+        }
+        text += '</table>'
+        text += '</div>'
+    
+        document.getElementById(elementId).innerHTML = text;  
+    }
 
 </script>
 
