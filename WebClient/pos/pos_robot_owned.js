@@ -91,28 +91,67 @@ ZSCRobotOwned.prototype.loadUserRobots = function(func) {
     var gm = this;
     var callback = func;
 
-    gm.numUsers(gm, function(gm) {
+    gm.numRobots(gm, function(gm) {
         if (gm.robotNos == 0) {
             callback();
         } else {
             gm.resetAllItemTags(gm);
-            for (var i = 0; i < this.userNos; ++i) {
-                this.loadUserInfoByIndex(this, i, function(gm, index, userInfo) {
+            for (var i = 0; i < gm.robotNos; ++i) {
+                gm.loadRobotInfoByIndex(this, i, function(gm, index, userInfo) {
                     gm.parserUserInfo(index, userInfo);
                     if (gm.checkAllItemTags(gm) == true) {
-                        gm.phpCallback();
+                        callback();
                     }
                 });
             } 
         }
+}
 
-        
-       if (gm.userNos == 0) {
-            gm.phpCallback();
-        } else {
-            gm.loadUserInfos();
-        }
-    });
+ZSCRobotOwned.prototype.numRobots = function(gm, func) {
+    gm.myAdmAdv.numUsers(
+        {from: this.account},
+        function(error, num){ 
+            if(!error) { 
+                gm.userNos = num.toString(10); 
+                func(gm);
+            } else {
+                console.log("error: " + error);
+            }
+         });
+}
+
+ZSCRobotOwned.prototype.loadRobotInfoByIndex = function(gm, index, func) {
+    var gm = this;
+    gm.myAdmAdv.getUserInfoByIndex(index, 
+        {from: this.account},
+        function(error, para){ 
+            if(!error) {
+                var ret = para;
+                gm.itemTags[index] = true;
+                func(gm, index, ret);  
+            } else { 
+                console.log("error: " + error);
+            }
+        });
+}
+
+ZSCRobotOwned.prototype.parserUserInfo = function(index, info) {
+    var len        = info.length;
+    var offset     = info.indexOf("?");
+    var newsidinfo = info.substr(offset,len)
+    var newsids    = newsidinfo.split("&");
+
+    var userName    = newsids[0];
+    var userStatus  = newsids[1];
+    var userType    = newsids[2];
+    var userNodeAdr = newsids[3];
+    var userEthAdr  = newsids[4];
+
+    this.userName[index]    = userName.split("=")[1];
+    this.userStatus[index]  = userStatus.split("=")[1];
+    this.userType[index]    = userType.split("=")[1];
+    this.userNodeAdr[index] = "0x" + userNodeAdr.split("=")[1];
+    this.userEthAdr[index]  = "0x" + userEthAdr.split("=")[1];
 }
 
   
