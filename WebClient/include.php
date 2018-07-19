@@ -22,8 +22,9 @@ class ZSCInclude {
         ' <tr>'.
         '  <td align="center"><a href="user_profile.php">User Profile</a></td>'.
         '  <td align="center"><a href="user_wallet.php">User Wallet</a></td>'.
-        '  <td align="center"><a href="pos_robot_gen0.php">Create Gen0 Robot</a></td>'.
-        '  <td align="center"><a href="pos_robot_owned.php">Owned Robots</a></td>'.
+        '  <td align="center"><a href="pos_robot_enhance.php">Manage Robot</a></td>'.
+        '  <td align="center"><a href="pos_robot_sell.php">Mine ZSC</a></td>'.
+        '  <td align="center"><a href="pos_robot_mine.php">Mine ZSC</a></td>'.
         '  <td align="center"><a href="pos_robot_market.php">Robot Market</a></td>'.
         ' </tr>'.
         '</table>';
