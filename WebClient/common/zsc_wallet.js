@@ -9,6 +9,7 @@ function ZSCWallet(acount, adr, abi) {
     this.tokenSymbol = [];
     this.tokenBalance = [];
     this.tokenStatus = [];
+    this.tokenLocked = [];
     this.tokenAddress;
     this.account = acount;
     this.contractAdr = adr;
@@ -21,6 +22,7 @@ ZSCWallet.prototype.getWalletAddress = function() { return this.tokenAddress;}
 ZSCWallet.prototype.getTokenNos = function() { return this.tokenNos;}
 ZSCWallet.prototype.getTokenSymbol = function(index) { return this.tokenSymbol[index];}
 ZSCWallet.prototype.getTokenBalance = function(index) { return web3.fromWei(this.tokenBalance[index], 'ether');}
+ZSCWallet.prototype.getTokenLocked = function(index) { return web3.fromWei(this.tokenLocked[index], 'ether');}
 
 ZSCWallet.prototype.submitTransferValue = function(tokenSymbol, destAddress, amount, logId, func) {  
     var gm = this;
@@ -148,10 +150,12 @@ ZSCWallet.prototype.parserTokenBalanceInfoByIndex = function(gm, urlinfo, index)
     var statusInfo   = newsids[0];
     var symbolInfo   = newsids[1];
     var balanceInfo  = newsids[2];
+    var lockedInfo  = newsids[3];
 
     gm.tokenStatus[index]  = statusInfo.split("=")[1];
     gm.tokenSymbol[index]  = symbolInfo.split("=")[1];
     gm.tokenBalance[index] = balanceInfo.split("=")[1];
+    gm.tokenLocked[index]  = lockedInfo.split("=")[1];
     return true;
 }
 
