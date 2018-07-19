@@ -72,11 +72,12 @@ session_start();
             text += '<text id="EnableWalletHash" value = "log:"> </text> <br>';
         } else {
             text += '<table align="center" style="width:600px;min-height:30px">'
-            text += '<tr> <td>Symbol</td> <td>Balance</td> <td>Dest-adr</td> <td>Amount</td> <td>Transfer</td></tr> '
-            text += '<tr> <td>------</td> <td>------</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
+            text += '<tr> <td>Symbol</td> <td>Balance</td> <td>Locked </td> <td>Dest-adr</td> <td>Amount</td> <td>Transfer</td></tr> '
+            text += '<tr> <td>------</td> <td>------</td> <td>------</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
             for (var i = 0; i < tokenNos; ++i) {
                 symbol  = userWalletGM.getTokenSymbol(i);
                 balance = userWalletGM.getTokenBalance(i);
+                locked  = userWalletGM.getTokenLocked(i);
                 hashId  = symbol + "Hash";
                 sentoId = symbol + "Dest";
                 amountId= symbol + "Amount";
@@ -84,13 +85,14 @@ session_start();
                 text += '<tr>'
                 text += '   <td><text>' + symbol + '</text></td>'
                 text += '   <td><text>' + balance + '</text></td>'
+                text += '   <td><text>' + locked + '</text></td>'
                 text += '   <td><input id="' + sentoId + '"></input></td>'
                 text += '   <td><input id="' + amountId + '"></input></td>'
                 text += '   <td><button type="button" onClick="' + transPrefix + symbol + "', '" + sentoId + "', '" + amountId + "', '" + hashId + transSuffix + '">  Transfer  </button></td>'
                 text += '</tr>'
                 text += '<tr><text id="'+ hashId + '" value = "log:"> </text> <tr>';
                 text += '<tr></tr>'
-                text += '<tr> <td>------</td> <td>------</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
+                text += '<tr> <td>------</td> <td>------</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
             }
             text += '</table>'
         }
