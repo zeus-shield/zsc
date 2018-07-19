@@ -136,13 +136,12 @@ ZSCPosManagement.prototype.parserLevelInfo = function(gm, index, info) {
     var newsidinfo = info.substr(offset,len)
     var newsids    = newsidinfo.split("&");
 
-    var levelTags           = newsids[0];
-    var levelMaxSP          = newsids[1];
-    var levelEnhanceProb    = newsids[2];
-    var levelPriceToEnhance = newsids[3];
-    var levelPriceToCreate  = newsids[4];
+    var levelMaxSP          = newsids[0];
+    var levelEnhanceProb    = newsids[1];
+    var levelPriceToEnhance = newsids[2];
+    var levelPriceToCreate  = newsids[3];
 
-    gm.levelTags[index]           = levelTags.split("=")[1];
+    gm.levelTags[index]           = index;
     gm.levelMaxSP[index]          = levelMaxSP.split("=")[1];
     gm.levelEnhanceProb[index]    = levelEnhanceProb.split("=")[1];
     gm.levelPriceToEnhance[index] = levelPriceToEnhance.split("=")[1];
