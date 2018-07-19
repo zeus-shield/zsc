@@ -117,7 +117,7 @@ ZSCPosManagement.prototype.loadLevels = function(gm, func) {
 } 
 
 ZSCPosManagement.prototype.loadUserInfoByIndex = function(gm, index, func) {
-    gm.myPosManager.getLevelInfoByIndex(index, 
+    gm.myPosManager.getLevelInfoStr(index, 
         {from: gm.account},
         function(error, para){ 
             if(!error) {
