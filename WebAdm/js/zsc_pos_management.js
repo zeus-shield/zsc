@@ -22,11 +22,15 @@ function ZSCPosManagement(adr, abi) {
     this.gasLimit = cC_getGasLimit(700);
 }
 
-ZSCPosManagement.prototype.getLevelNos = function() {return this.levelNos;}
-ZSCPosManagement.prototype.getLevelMaxSP = function(index) {return this.levelMaxSP[index];}
-ZSCPosManagement.prototype.getLevelEnhanceProb = function(index) {return this.levelEnhanceProb[index];}
-ZSCPosManagement.prototype.getLevelPriceToEnhance = function(index) {return web3.fromWei(this.levelPriceToEnhance[index], 'ether');}
-ZSCPosManagement.prototype.getLevelPriceToCreate = function(index) {return web3.fromWei(this.levelPriceToCreate[index], 'ether');}
+ZSCPosManagement.prototype.getLevelNos = function() {return this.levelNos;}
+ZSCPosManagement.prototype.getLevelMaxSP = function(index) {return web3.fromWei(this.levelMaxSP[index], 'ether');}
+ZSCPosManagement.prototype.getLevelEnhanceProb = function(index) {return this.levelEnhanceProb[index];}
+ZSCPosManagement.prototype.getLevelPriceToEnhance = function(index) {return web3.fromWei(this.levelPriceToEnhance[index], 'ether');}
+ZSCPosManagement.prototype.getLevelPriceToCreate = function(index) {return web3.fromWei(this.levelPriceToCreate[index], 'ether');}
+
+ZSCPosManagement.prototype.getRatioNos = function() {return this.ratioNos;}
+ZSCPosManagement.prototype.getRatioType = function(index) {return this.ratioType[index];}
+ZSCPosManagement.prototype.getRatioValue = function(index) {return this.ratioValue[index];}
 
 ZSCPosManagement.prototype.downscaledDay = function(hashID, scale) {
     this.myPosManager.downscaledDay(scale, 
@@ -56,7 +60,9 @@ ZSCPosManagement.prototype.setRewardRatio = function(hashID,  durationInDays, ra
 } 
 
 ZSCPosManagement.prototype.setLevelInfo = function(hashID, level, maxStakePoint, enhanceProb, priceToEnhance, priceToCreate) {
-    this.myPosManager.setLevelInfo(level, maxStakePoint, enhanceProb, web3.toWei(priceToEnhance, 'ether'), web3.toWei(priceToCreate, 'ether'),
+    this.myPosManager.setLevelInfo(
+        level, web3.toWei(maxStakePoint, 'ether'), enhanceProb, 
+        web3.toWei(priceToEnhance, 'ether'), web3.toWei(priceToCreate, 'ether'),
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){window.location.reload(true);});
@@ -135,7 +141,6 @@ ZSCPosManagement.prototype.loadLevelInfoByIndex = function(gm, index, func) {
         });
 }
 
-
 ZSCPosManagement.prototype.parserLevelInfo = function(gm, index, info) {
     var len        = info.length;
     var offset     = info.indexOf("?");
@@ -174,9 +179,9 @@ ZSCPosManagement.prototype.loadRatioInfos = function(func) {
     var gm = this;
     var callback = func;
 
-    gm.numLevels(gm, function(gm) {
+    gm.numRatios(gm, function(gm) {
         gm.resetAllRatioTags(gm);
-       if (gm.levelNos == 0) {
+       if (gm.ratioNos == 0) {
             callback();
         } else {
             gm.loadRatios(gm, function(){
@@ -186,12 +191,12 @@ ZSCPosManagement.prototype.loadRatioInfos = function(func) {
     });
 }
 
-ZSCPosManagement.prototype.loadRatios = function(gm, func) {
+ZSCPosManagement.prototype.numRatios = function(gm, func) {
     gm.myPosManager.numRatios(
         {from: gm.account},
         function(error, num){ 
             if(!error) { 
-                gm.levelNos = num.toString(10); 
+                gm.ratioNos = num.toString(10); 
                 func(gm);
             } else {
                 console.log("error: " + error);
@@ -201,10 +206,10 @@ ZSCPosManagement.prototype.loadRatios = function(gm, func) {
 
 ZSCPosManagement.prototype.loadRatios = function(gm, func) {
     var callback = func;
-    for (var i = 0; i < gm.levelNos; ++i) {
+    for (var i = 0; i < gm.ratioNos; ++i) {
         gm.loadRatioInfoByIndex(gm, i, function(gm, index, userInfo) {
             gm.parserRatioInfo(gm, index, userInfo);
-            if (gm.checkAllItemTags(gm) == true) {
+            if (gm.checkAllRatioTags(gm) == true) {
                 func();
             }
         });
@@ -217,10 +222,23 @@ ZSCPosManagement.prototype.loadRatioInfoByIndex = function(gm, index, func) {
         function(error, para){ 
             if(!error) {
                 var ret = para;
-                gm.itemTags[index] = true;
+                gm.ratioTags[index] = true;
                 func(gm, index, ret);  
             } else { 
                 console.log("error: " + error);
             }
         });
+}
+
+ZSCPosManagement.prototype.parserRatioInfo = function(gm, index, info) {
+    var len        = info.length;
+    var offset     = info.indexOf("?");
+    var newsidinfo = info.substr(offset,len)
+    var newsids    = newsidinfo.split("&");
+
+    var ratioType          = newsids[0];
+    var ratioValue    = newsids[1];
+
+    gm.ratioType[index]  = ratioType.split("=")[1];
+    gm.ratioValue[index] = ratioValue.split("=")[1];
 }
