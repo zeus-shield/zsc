@@ -40,3 +40,8 @@ function bF_showHashResult(elementID, hash, func) {
         }
     });
 }
+
+function bF_fixedNumberFromWei(value, n) {
+    var num = web3.fromWei(value, 'ether');
+    return Number(num).toFixed(4);
+}
