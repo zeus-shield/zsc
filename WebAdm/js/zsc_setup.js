@@ -109,11 +109,11 @@ ZSCSetup.prototype.setControlAbisAdvAbi = function(hashID) {
     });
 }  
 
-ZSCSetup.prototype.setZSCAmountToUser = function(ethAmount, zscAmount, hashID) {
+ZSCSetup.prototype.setZSCAmountToUser = function(ethAmount, tokenSymbol, tokenAmount, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
     var myControlApi = myContract.at(this.ControlApisAdvAdr);
 
-    myControlApi.setPreallocateAmountToTester(ethAmount, zscAmount,
+    myControlApi.setPreallocateAmountToTester(ethAmount, tokenSymbol, tokenAmount,
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result) { 
             if(!error) cC_showHashResultTest(hashID, result, function(){console.log("ok");});
