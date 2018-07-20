@@ -99,7 +99,8 @@ contract ControlBase is Object {
     mapping(bytes32 => address) public factories_;
     mapping(bytes32 => address) public modules_;
 
-    uint internal allocatedZSC_;
+    bytes32 internal allocatedTokenSymbol_;
+    uint internal allocatedToken_;
     uint internal allocatedETH_;
 
     function ControlBase(bytes32 _name) public Object(_name) {
@@ -117,11 +118,11 @@ contract ControlBase is Object {
     }
 
     function preallocateZSCToTester(address _userWalletAdr) internal {
-        if (allocatedZSC_ > 0) {
-            address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
+        if (allocatedToken_ > 0) {
+            address tokenContractAdr = getDBModule("gm-token").getTokenAddress(allocatedTokenSymbol_);
             uint remaingZSC = ERC20Interface(tokenContractAdr).balanceOf(address(this));
-            if (remaingZSC > allocatedZSC_) {
-                ERC20Interface(tokenContractAdr).transfer(_userWalletAdr, allocatedZSC_);
+            if (remaingZSC > allocatedToken_) {
+                ERC20Interface(tokenContractAdr).transfer(_userWalletAdr, allocatedToken_);
             }
         }
 
@@ -256,15 +257,11 @@ contract ControlBase is Object {
         addLog("initControlApis ", true);
     }
 
-    function setPreallocateAmountToTester(uint _allocatedETH, uint _allocatedZSC) public { 
+    function setPreallocateAmountToTester(uint _ethAmount, bytes32 _tokenSymbol, uint _tokenAmount) public { 
         checkDelegate(msg.sender, 1);
-        if (_allocatedETH > 0) { allocatedETH_ = _allocatedETH.mul(1 ether);}
-        if (_allocatedZSC > 0) { allocatedZSC_ = _allocatedZSC.mul(1 ether); }
-    }
-
-    function getPreallocateAmountToTester() public view returns (uint, uint) { 
-        checkDelegate(msg.sender, 1);
-        return (allocatedETH_, allocatedZSC_);
+        allocatedTokenSymbol_ = _tokenSymbol;
+        if (_ethAmount > 0) { allocatedETH_ = _ethAmount.mul(1 ether);}
+        if (_tokenAmount > 0) { allocatedToken_ = _tokenAmount.mul(1 ether); }
     }
 
     function addSystemComponent(bytes32 _type, bytes32 _name, address _adr) public returns (bool) {
