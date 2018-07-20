@@ -52,6 +52,8 @@ class ZSCInclude {
         <script type="text/javascript" src="./pos/pos_robot_enhance.js"></script>
         <script type="text/javascript" src="./pos/pos_robot_gen0.js"></script>
         <script type="text/javascript" src="./pos/pos_robot_owned.js"></script>
+        <script type="text/javascript" src="./pos/pos_robot_market.js"></script>
+        <script type="text/javascript" src="./pos/pos_staker_info.js"></script>
         ';
         return $text;
     }
