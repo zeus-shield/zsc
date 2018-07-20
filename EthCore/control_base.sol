@@ -84,7 +84,7 @@ contract DBModule {
     function publishRobot(address _seller, uint _robotId, uint _price) public;
     function cancelAuction(address _seller, uint _robotId) public;
     function purchaseRobot(address _buyer, uint _robotId) public returns (address, uint);
-    function claimable(address _user, uint _robotId) public view returns (bool);
+    function getReward(address _user, uint _robotId) public view returns (uint);
     function claimReward(address _user, uint _robotId) public returns (uint, uint);
     /*ERC721 for miner robot end*/
 }
