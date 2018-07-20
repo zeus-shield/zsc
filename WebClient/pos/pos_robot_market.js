@@ -3,21 +3,26 @@ Copyright (c) 2018 ZSC Dev Team
 */
 
 //class 
-function ZSCRobotMarket(nm, abi, adr) {
-    this.userName = nm;
+function ZSCRobotMarket(account, adr, abi) {
     this.robotNos = 0;
     this.robotIds = [];
+    this.robotLevs = [];
+    this.robotMaxSP = [];
+    this.robotPrceForSale = [];
+   
     this.itemTags = [];
-    this.account = web3.eth.accounts[0];
+    this.account = account;
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
     this.gasPrice = bF_getGasPrice();
     this.gasLimit = bF_getGasLimit(700);
 }
 
-ZSCRobotMarket.prototype.getUserName = function() {return this.userName;}
-
-ZSCRobotMarket.prototype.getRobotId = function(index) { return this.robotIds[index];}
+ZSCRobotOwned.prototype.getRobotNos = function() { return this.robotNos;}
+ZSCRobotOwned.prototype.getRobotId  = function(index) { return this.robotIds[index];}
+ZSCRobotOwned.prototype.getRobotLev = function(index) { return this.robotLevs[index];}
+ZSCRobotOwned.prototype.getMaxSP = function(index) { return web3.fromWei(this.robotMaxSP[index], 'ether');}
+ZSCRobotOwned.prototype.getPrceForSale = function(index) { return web3.fromWei(this.robotPrceForSale[index], 'ether');}
 
 ZSCRobotMarket.prototype.resetAllItemTags = function(gm) {
     for (var i = 0; i < gm.robotNos; ++i) {
@@ -39,7 +44,7 @@ ZSCRobotMarket.prototype.loadRobotsInMarket = function(func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     
-    gm.numAllRobotsInMarket(gm, function(gm) {
+    gm.numSellingMinerRobot(gm, function(gm) {
        if (gm.robotNos == 0) {
             callBack();
         } else {
