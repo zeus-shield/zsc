@@ -37,6 +37,11 @@ $htmlObjects = new ZSChtmlObjects();
         zscSetup.setControlAbisAdvAbi(elementId);
     }
 
+    function setPosPaymentReceiver(hash, receiverId) {
+        var receiver = document.getElementById(receiverId).value;
+        zscSetup.setPosPaymentReceiver(hash, receiver);
+    }
+
     function setTestZSCToUser(ethAmountId, tokenSymbolId, tokenAmountId, elementId) {
         var adr = "<?php echo $htmlObjects->readObjectAddress('ControlApisAdv')?>";
         var ethAmount = document.getElementById(ethAmountId).value;
@@ -58,6 +63,10 @@ $htmlObjects = new ZSChtmlObjects();
         <button type="button" onClick="setControlApisAdvAbi('ControlApisAdvAbiHash')">Set ControlApisAdv Abi</button> <br>
         <text id="ControlApisAdvAbiHash"></text> <br>
 
+        <text>Step - 0 - 2 </text>
+        <button type="button" onClick="setPosPaymentReceiver('paymentReceiverHash', 'PaymentReceiver')">Set receiver</button> <br>
+        <text>Pos-payment receiver</text>  <input type="text" id="PaymentReceiver" value="0x0"></input> 
+        <text id="paymentReceiverHash"></text> <br><br>
 
         <text>Step - 0 - 2</text>
         <button type="button" onClick="setTestZSCToUser('AllocatedEthAmount', 'AllocatedTokenSymbol', 'AllocatedTokenAmount', 'setTestZSCToUserHash')">Pre-allocate ETH & ZSC to tester</button> <br>
