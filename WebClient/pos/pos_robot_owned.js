@@ -29,16 +29,16 @@ function ZSCRobotOwned(acount, adr, abi) {
 ZSCRobotOwned.prototype.getRobotNos = function() { return this.robotNos;}
 ZSCRobotOwned.prototype.getRobotId  = function(index) { return this.robotIds[index];}
 ZSCRobotOwned.prototype.getRobotLev = function(index) { return this.robotLevs[index];}
-ZSCRobotOwned.prototype.getMaxSP = function(index) { return web3.fromWei(this.robotMaxSP[index], 'ether');}
-ZSCRobotOwned.prototype.getCurSP = function(index) { return web3.fromWei(this.robotCurSP[index], 'ether');}
+ZSCRobotOwned.prototype.getMaxSP = function(index) { return bF_fixedNumberFromWei(this.robotMaxSP[index], 4);}
+ZSCRobotOwned.prototype.getCurSP = function(index) { return bF_fixedNumberFromWei(this.robotCurSP[index], 4);}
 ZSCRobotOwned.prototype.getEnhanceProb = function(index) { return this.robotEnhanceProb[index];}
 ZSCRobotOwned.prototype.getMineStart = function(index) { return this.secondsToDate(this.robotMineStart[index]);}
 ZSCRobotOwned.prototype.getMineEnd = function(index) { return this.secondsToDate(this.robotMineEnd[index]);}
-ZSCRobotOwned.prototype.getPrceToEnhance = function(index) { return web3.fromWei(this.robotPrceToEnhance[index], 'ether');}
-ZSCRobotOwned.prototype.getPrceToCreate = function(index) { return web3.fromWei(this.robotPrceToCreate[index], 'ether');}
-ZSCRobotOwned.prototype.getPrceForSale = function(index) { return web3.fromWei(this.robotPrceForSale[index], 'ether');}
+ZSCRobotOwned.prototype.getPriceToEnhance = function(index) { return bF_fixedNumberFromWei(this.robotPrceToEnhance[index], 4); }
+ZSCRobotOwned.prototype.getPriceToCreate = function(index) { return bF_fixedNumberFromWei(this.robotPrceToCreate[index], 4); }
+ZSCRobotOwned.prototype.getPriceForSale = function(index) { return bF_fixedNumberFromWei(this.robotPrceForSale[index], 4);}
 ZSCRobotOwned.prototype.getRewardRatio = function(index) { return this.robotRewardRatio[index];}
-ZSCRobotOwned.prototype.getRewards = function(index) { return web3.fromWei(this.robotRewards[index], 'ether');}
+ZSCRobotOwned.prototype.getRewards = function(index) { return bF_fixedNumberFromWei(this.robotRewards[index], 4);}
 ZSCRobotOwned.prototype.miningable = function(index) { return (this.robotMineStart[index] == 0);}
 
 ZSCRobotOwned.prototype.resetAllItemTags = function(gm) {
@@ -80,6 +80,30 @@ ZSCRobotOwned.prototype.enhanceMinerRobot = function(hashId, robotId, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     myControlApi.enhanceMinerRobot(robotId,
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
+        function(error, result){ 
+            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
+            else console.log("error: " + error);
+        });
+}
+
+ZSCRobotOwned.prototype.publishMinerRobot = function(hashId, robotId, price, func) {
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    myControlApi.publishMinerRobot(robotId, web3.toWei(price, 'ether'), 
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
+        function(error, result){ 
+            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
+            else console.log("error: " + error);
+        });
+}
+
+ZSCRobotOwned.prototype.cancalSellingMinerRobot = function(hashId, robotId, func) {
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    myControlApi.cancalSellingMinerRobot(robotId,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
