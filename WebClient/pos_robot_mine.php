@@ -72,11 +72,11 @@ session_start();
         var hashId;
         var robotNos = userRobotGM.getRobotNos();
 
-        var tokenType = '<td><select id = "TokenType" style="width:60px">'
+        var tokenType = '<td><select id = "TokenType" style="width:80px">'
         tokenType += '<option value ="TestZSC">TestZSC </option>'
         tokenType += '</select></td>'
 
-        var posType = '<td><select id = "PosType" style="width:60px">'
+        var posType = '<td><select id = "PosType" style="width:80px">'
         posType += '<option value ="7">7 Days (3%) </option>'
         posType += '<option value ="30">30 Days (3.5%)</option>'
         posType += '<option value="90">90 Days (4%)</option>'
@@ -90,22 +90,22 @@ session_start();
         text += '<text id="OperationHash" value = "log:"> </text> </div>';
 
         text += '<div class="well">';
-        text += '<table align="center" style="width:800px;min-height:30px">'
-        text += '   <tr> <td>Robot ID</td> <td>Level</td> <td>Cur./Max SP </td> <td> Pos Ratio </td> <td>Start/End</td> <td>Token Type</td> <td>Pos Type</td> <td>Mining</td> <td> Rewards</td> </tr> '
+        text += '<table align="center" style="width:900px;min-height:30px">'
+        text += '   <tr> <td>Rob.ID</td> <td>Level</td> <td>Cur./Max SP </td> <td> Pos Ratio </td> <td>Start/End</td> <td>Token Type</td> <td>Pos Type</td> <td>Mining</td> <td> Rewards</td> </tr> '
         text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td>  <td>------</td> <td>------</td> <td>------</td> </tr>'
 
         for (var i = 0; i < robotNos; ++i) {
             var robotId = userRobotGM.getRobotId(i);
             var status = "Idle"; 
-            if (userRobotGM.getMineStart(i) > 0) {
+            if (!userRobotGM.miningable(i)) {
                 status = "Mining";
             } else {
-                if (userRobotGM.getPrceForSale(i) > 0) {
+                if (userRobotGM.getPriceForSale(i) > 0) {
                     status = "Selling";
                 } 
             }
 
-            if (status != "selling") {
+            if (status != "Selling") {
                 text += '<tr>'
                 text += '   <td><text>' + robotId + '</text></td>'
                 text += '   <td><text>' + userRobotGM.getRobotLev(i) + '</text></td>'
@@ -117,13 +117,13 @@ session_start();
                 if (status == "Idle") {
                     text += '   <td><button type="button" onClick="' + miningPrefix + robotId + miningSuffix + '"> Start </button></td>'
                 } else {
-                    text += '   <td><text>Not Available</text></td>'
+                    text += '   <td><text>~</text></td>'
                 }
 
                 if (status == "Mining") {
                     text += '   <td><button type="button" onClick="' + claimPrefix + robotId + claimSuffix + '"> Claim (' + userRobotGM.getRewards(i) + ')</button></td>'
                 } else {
-                    text += '   <td><text>Not Available</text></td>'
+                    text += '   <td><text>~</text></td>'
                 }
                 text += '</tr>'
                 text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td>  <td>------</td> <td>------</td> <td>------</td> </tr>'
