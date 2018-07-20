@@ -83,10 +83,10 @@ session_start();
         for (var i = 0; i < robotNos; ++i) {
             var robotId = userRobotGM.getRobotId(i);
             var status = "Idle"; 
-            if (userRobotGM.getMineStart(i) > 0) {
+            if (!userRobotGM.miningable(i)) {
                 status = "Mining";
             } else {
-                if (userRobotGM.getPrceForSale(i) > 0) {
+                if (userRobotGM.getPriceForSale(i) > 0) {
                     status = "Selling";
                 } 
             }
@@ -100,7 +100,7 @@ session_start();
             text += '   <td><text>' + status + '</text></td>'
             text += '   <td><text>' + userRobotGM.getRobotLev(i) + '</text></td>'
             text += '   <td><text>' + userRobotGM.getMaxSP(i) + '</text></td>'
-            text += '   <td><text>' + userRobotGM.getPrceToEnhance(i) + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getPriceToEnhance(i) + '</text></td>'
             if (status == "Idle") {
                 text += '   <td><button type="button" onClick="' + enhancePrefix + robotId + enhanceSuffix + '"> Submit (' + userRobotGM.getEnhanceProb(i) + '%)</button></td>'
             } else {
