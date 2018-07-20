@@ -86,22 +86,22 @@ contract DBModule {
     function purchaseRobot(address _buyer, uint _robotId) public returns (address, uint);
     function getReward(address _user, uint _robotId) public view returns (uint);
     function claimReward(address _user, uint _robotId) public returns (uint, uint);
+    function numSellingRobots() public view returns (uint);
+    function getSellingRobotByIndex(uint _index) public view returns (uint, uint, uint, uint, address);
     /*ERC721 for miner robot end*/
 }
 
 contract ControlBase is Object {   
-    address public systemOL_;
-    address public bindedAdm_;
+    address private bindedAdm_;
+    bytes32 internal dbName_ = "zsc";
 
-    bytes32 public dbName_ = "zsc";
+    mapping(bytes32 => address) private databases_;
+    mapping(bytes32 => address) private factories_;
+    mapping(bytes32 => address) private modules_;
 
-    mapping(bytes32 => address) public databases_;
-    mapping(bytes32 => address) public factories_;
-    mapping(bytes32 => address) public modules_;
-
-    bytes32 internal allocatedTokenSymbol_;
-    uint internal allocatedToken_;
-    uint internal allocatedETH_;
+    bytes32 private allocatedTokenSymbol_;
+    uint private allocatedToken_;
+    uint private allocatedETH_;
 
     function ControlBase(bytes32 _name) public Object(_name) {
     }
@@ -112,10 +112,6 @@ contract ControlBase is Object {
     function checkAllowed(address _sender, bytes32 _enName) internal view returns (bytes32);
     function checkMatched(address _sender, bytes32 _enName) internal view;
     //////////////////////////////////
-    
-    function getCurrentDBName() internal view returns (bytes32) {
-        return dbName_;
-    }
 
     function preallocateZSCToTester(address _userWalletAdr) internal {
         if (allocatedToken_ > 0) {
@@ -195,16 +191,6 @@ contract ControlBase is Object {
         
         walletName = formatWalletName(_enName, "wat");
         return address(getDBNode(dbName_, walletName)); 
-    }
-
-    function createNodeForUser(bytes32 _type, bytes32 _nodeName, address _creator) internal returns (address) {
-        address ndAdr;
-        address parentAdr = getDBDatabase(dbName_).getRootNode();
-
-        ndAdr = getDBFactory(_type).createNode(_nodeName, parentAdr, _creator);
-        require(ndAdr != 0);
-
-        return ndAdr;
     }
 
     function createNodeForElement(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra) internal returns (address) {
@@ -294,6 +280,22 @@ contract ControlBase is Object {
     //////////////////////////////////////
     //////////////////////////////////////
     //////////////////////////////////////
+    /// @dev Create an user
+    function createUserNode(bytes32 _factoryType, bytes32 _userName, address _extraAdr) public returns (address) {
+        checkDelegate(msg.sender, 1);     
+
+        require(_factoryType == "staker" || _factoryType == "provider" || _factoryType == "receiver");
+        require(address(getDBNode(dbName_, _userName)) == 0);
+
+        address creator = _extraAdr;
+        address parentAdr = getDBDatabase(dbName_).getRootNode();
+        address ndAdr = getDBFactory(_factoryType).createNode(_userName, parentAdr, creator); 
+        require(ndAdr != address(0));
+        registerUserNode(creator, _userName, _factoryType);
+        
+        return ndAdr;
+    }
+
     function publishAgreement(bytes32 _agrName) public {
         bytes32 userName = checkAllowed(msg.sender, "null");
 
@@ -318,7 +320,7 @@ contract ControlBase is Object {
     function purchaseAgreement(bytes32 _agrName) public returns (uint) {
         bytes32 userName = checkAllowed(msg.sender, "null");
 
-        bytes32 userType = getDBNode(getCurrentDBName(), userName).getNodeType();
+        bytes32 userType = getDBNode(dbName_, userName).getNodeType();
         require(userType == "receiver");
 
         address agrAdr = address(getDBNode(dbName_, _agrName));
@@ -444,7 +446,7 @@ contract ControlBase is Object {
         str = PlatString.append(str, "receiver=",  PlatString.addressToString(receiver), "&");
         return str;
     }
-    */
+  
  
     function getModuleAddresses() public view returns (string) {
         address dbAdr = address(getDBDatabase(dbName_));
@@ -468,4 +470,5 @@ contract ControlBase is Object {
         str = PlatString.append(str, "factory-wallet-erc20=",PlatString.addressToString(factoryErc20Adr),  "&");
         return str;
     }   
+      */
 }
