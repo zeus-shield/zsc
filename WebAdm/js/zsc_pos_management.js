@@ -9,8 +9,13 @@ function ZSCPosManagement(adr, abi) {
     this.levelEnhanceProb = [];
     this.levelPriceToEnhance = [];
     this.levelPriceToCreate = [];
-
     this.itemTags = [];
+
+    this.ratioNos = 0;
+    this.ratioType = [];
+    this.ratioValue = [];
+    this.ratioTags = [];
+
     this.account = web3.eth.accounts[0];
     this.myPosManager = web3.eth.contract(abi).at(adr);
     this.gasPrice = cC_getGasPrice(20);
@@ -45,7 +50,7 @@ ZSCPosManagement.prototype.setRewardRatio = function(hashID,  durationInDays, ra
     this.myPosManager.setRewardRatio(durationInDays, ratio_0_10000,
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
-            if(!error) cC_showHashResultTest(hashID, result, function(){});
+            if(!error) cC_showHashResultTest(hashID, result, function(){window.location.reload(true);});
             else console.log("error: " + error);
         });
 } 
@@ -61,13 +66,13 @@ ZSCPosManagement.prototype.setLevelInfo = function(hashID, level, maxStakePoint,
 
 //////////////
 ZSCPosManagement.prototype.resetAllItemTags = function(gm) {
-    for (var i = 0; i < gm.userNos; ++i) {
+    for (var i = 0; i < gm.levelNos; ++i) {
         gm.itemTags[i] = false;
     }
 }
 
 ZSCPosManagement.prototype.checkAllItemTags = function(gm) {
-    for (var i = 0; i < gm.userNos; ++i) {
+    for (var i = 0; i < gm.levelNos; ++i) {
         if (gm.itemTags[i] == false) {
             return false;
         }
@@ -130,6 +135,7 @@ ZSCPosManagement.prototype.loadUserInfoByIndex = function(gm, index, func) {
         });
 }
 
+
 ZSCPosManagement.prototype.parserLevelInfo = function(gm, index, info) {
     var len        = info.length;
     var offset     = info.indexOf("?");
@@ -147,3 +153,36 @@ ZSCPosManagement.prototype.parserLevelInfo = function(gm, index, info) {
     gm.levelPriceToEnhance[index] = levelPriceToEnhance.split("=")[1];
     gm.levelPriceToCreate[index]  = levelPriceToCreate.split("=")[1];
 }
+
+////////////////////////////
+ZSCPosManagement.prototype.resetAllRatioTags = function(gm) {
+    for (var i = 0; i < gm.ratioNos; ++i) {
+        gm.ratioTags[i] = false;
+    }
+}
+
+ZSCPosManagement.prototype.checkAllItemTags = function(gm) {
+    for (var i = 0; i < gm.ratioNos; ++i) {
+        if (gm.ratioTags[i] == false) {
+            return false;
+        }
+    }
+    return true;
+}
+
+ZSCPosManagement.prototype.loadRatioInfos = function(func) {
+    var gm = this;
+    var callback = func;
+
+    gm.numLevels(gm, function(gm) {
+        gm.resetAllItemTags(gm);
+       if (gm.levelNos == 0) {
+            callback();
+        } else {
+            gm.loadRatios(gm, function(){
+                callback();
+            });
+        }
+    });
+}
+
