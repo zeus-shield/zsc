@@ -77,7 +77,7 @@ session_start();
 
         text += '<div class="well">';
         text += '<table align="center" style="width:600px;min-height:30px">'
-        text += '   <tr> <td>Robot ID</td> <td>Status</td> <td>Level</td> <td>Max SP</td> <td>Enhance (Suc. Prob.) </td> </tr> '
+        text += '   <tr> <td>Robot ID</td> <td>Status</td> <td>Level</td> <td>Max SP</td> <td> Cost (ETH) </td> <td>Enhance (Suc. Prob.) </td> </tr> '
         text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> </tr>'
 
         for (var i = 0; i < robotNos; ++i) {
@@ -100,6 +100,7 @@ session_start();
             text += '   <td><text>' + status + '</text></td>'
             text += '   <td><text>' + userRobotGM.getRobotLev(i) + '</text></td>'
             text += '   <td><text>' + userRobotGM.getMaxSP(i) + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getPrceToEnhance(i) + '</text></td>'
             if (status == "Idle") {
                 text += '   <td><button type="button" onClick="' + enhancePrefix + robotId + enhanceSuffix + '"> Submit (' + userRobotGM.getEnhanceProb(i) + '%)</button></td>'
             } else {

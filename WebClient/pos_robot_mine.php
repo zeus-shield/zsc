@@ -110,7 +110,7 @@ session_start();
                 text += '   <td><text>' + robotId + '</text></td>'
                 text += '   <td><text>' + userRobotGM.getRobotLev(i) + '</text></td>'
                 text += '   <td><text>' + userRobotGM.getCurSP(i) + '<br>'  + userRobotGM.getMaxSP(i) + '</text></td>'
-                text += '   <td><text>' + userRobotGM.getRewardRatio(i) + '%</text></td>'
+                text += '   <td><text>' + userRobotGM.getRewardRatio(i) / 100 + '%</text></td>'
                 text += '   <td><text>' + userRobotGM.getMineStart(i) + '<br>'  + userRobotGM.getMineEnd(i) + '</text></td>'
                 text += tokenType;
                 text += posType;
@@ -120,7 +120,7 @@ session_start();
                     text += '   <td><text>Not Available</text></td>'
                 }
 
-                if (status == "mining") {
+                if (status == "Mining") {
                     text += '   <td><button type="button" onClick="' + claimPrefix + robotId + claimSuffix + '"> Claim (' + userRobotGM.getRewards(i) + ')</button></td>'
                 } else {
                     text += '   <td><text>Not Available</text></td>'
