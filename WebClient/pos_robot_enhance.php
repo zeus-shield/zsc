@@ -103,7 +103,7 @@ session_start();
             if (status == "Idle") {
                 text += '   <td><button type="button" onClick="' + enhancePrefix + robotId + enhanceSuffix + '"> Submit (' + userRobotGM.getEnhanceProb(i) + '%)</button></td>'
             } else {
-                text += '   <td><button type="button">Not Available</button></td>'
+                text += '   <td><text>Not Available</text></td>'
             }
             text += '</tr>'
             text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> </tr>'
