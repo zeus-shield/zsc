@@ -79,11 +79,11 @@ ZSCRobotOwned.prototype.enhanceMinerRobot = function(hashId, robotId, func) {
         });
 }
     
-ZSCRobotOwned.prototype.activeMinerRobot = function(hashId, robotId, rewardType, func) {
+ZSCRobotOwned.prototype.activeMinerRobot = function(hashId, robotId, tokenType, rewardType, func) {
     var callBack = func;
     var gm = this;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-    myControlApi.activeMinerRobot(robotId, rewardType,
+    myControlApi.activeMinerRobot(robotId, tokenType, rewardType,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
@@ -91,18 +91,15 @@ ZSCRobotOwned.prototype.activeMinerRobot = function(hashId, robotId, rewardType,
         });
 }
 
-ZSCRobotOwned.prototype.claimReward = function(robotId, rewardType, func) {
+ZSCRobotOwned.prototype.claimReward = function(hashId, robotId, tokenType, func) {
     var callBack = func;
     var gm = this;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-    myControlApi.claimReward(robotId,
+    myControlApi.claimReward(robotId, tokenType,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
-            if(!error) {
-                func();
-            } else {
-                console.log("error: " + error);
-            }
+            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
+            else console.log("error: " + error);
         });
 }
 
