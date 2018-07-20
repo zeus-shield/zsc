@@ -112,7 +112,7 @@ ZSCPosManagement.prototype.numLevels = function(gm, func) {
 ZSCPosManagement.prototype.loadLevels = function(gm, func) {
     var callback = func;
     for (var i = 0; i < gm.levelNos; ++i) {
-        gm.loadUserInfoByIndex(gm, i, function(gm, index, userInfo) {
+        gm.loadLevelInfoByIndex(gm, i, function(gm, index, userInfo) {
             gm.parserLevelInfo(gm, index, userInfo);
             if (gm.checkAllItemTags(gm) == true) {
                 func();
@@ -121,7 +121,7 @@ ZSCPosManagement.prototype.loadLevels = function(gm, func) {
     } 
 } 
 
-ZSCPosManagement.prototype.loadUserInfoByIndex = function(gm, index, func) {
+ZSCPosManagement.prototype.loadLevelInfoByIndex = function(gm, index, func) {
     gm.myPosManager.getLevelInfoStr(index, 
         {from: gm.account},
         function(error, para){ 
@@ -161,7 +161,7 @@ ZSCPosManagement.prototype.resetAllRatioTags = function(gm) {
     }
 }
 
-ZSCPosManagement.prototype.checkAllItemTags = function(gm) {
+ZSCPosManagement.prototype.checkAllRatioTags = function(gm) {
     for (var i = 0; i < gm.ratioNos; ++i) {
         if (gm.ratioTags[i] == false) {
             return false;
@@ -175,7 +175,7 @@ ZSCPosManagement.prototype.loadRatioInfos = function(func) {
     var callback = func;
 
     gm.numLevels(gm, function(gm) {
-        gm.resetAllItemTags(gm);
+        gm.resetAllRatioTags(gm);
        if (gm.levelNos == 0) {
             callback();
         } else {
@@ -186,3 +186,41 @@ ZSCPosManagement.prototype.loadRatioInfos = function(func) {
     });
 }
 
+ZSCPosManagement.prototype.loadRatios = function(gm, func) {
+    gm.myPosManager.numRatios(
+        {from: gm.account},
+        function(error, num){ 
+            if(!error) { 
+                gm.levelNos = num.toString(10); 
+                func(gm);
+            } else {
+                console.log("error: " + error);
+            }
+         });
+}
+
+ZSCPosManagement.prototype.loadRatios = function(gm, func) {
+    var callback = func;
+    for (var i = 0; i < gm.levelNos; ++i) {
+        gm.loadRatioInfoByIndex(gm, i, function(gm, index, userInfo) {
+            gm.parserRatioInfo(gm, index, userInfo);
+            if (gm.checkAllItemTags(gm) == true) {
+                func();
+            }
+        });
+    } 
+} 
+
+ZSCPosManagement.prototype.loadRatioInfoByIndex = function(gm, index, func) {
+    gm.myPosManager.getRatioInfoStr(index, 
+        {from: gm.account},
+        function(error, para){ 
+            if(!error) {
+                var ret = para;
+                gm.itemTags[index] = true;
+                func(gm, index, ret);  
+            } else { 
+                console.log("error: " + error);
+            }
+        });
+}
