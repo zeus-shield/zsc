@@ -42,9 +42,48 @@ session_start();
 
     /////////////////////////////
     function loadRobotsInMarket() {
-        userRobotGM.loadRobotsInMarket(function() {
-            loadHtml("PageBody", "purchaseRobot");
+        robotMarketGM.loadRobotsInMarket(function() {
+            loadHtml("PageBody", "purchaseSellingRobot");
         });
+    }
+
+    function purchaseSellingRobot(hashId, robotId) {
+        robotMarketGM.purchaseSellingRobot(hashId, robotId, function() {                
+        });
+    }
+
+    function loadHtml(elementId, purchase) {
+        var purchasePrefix = purchase + "('OperationHash', '"; 
+        var purchaseSuffix = "')";
+
+        var robotNos = robotMarketGM.getRobotNos();
+    
+        var titlle = "Robot markets: " 
+
+        text  = '<div class="well">' + titlle + '<br>';
+        text  = '<text id="OperationHash" value = "log:"> </text> </div>';
+
+        text += '<div class="well">';
+        text += '<table align="center" style="width:600px;min-height:30px">'
+        text += '   <tr> <td>Robot ID</td> <td>Level</td> <td>Max SP</td> <td> Price (ETH) </td> <td> Purchase </td> </tr> '
+        text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> </tr>'
+
+        for (var i = 0; i < robotNos; ++i) {
+            var robotId = robotMarketGM.getRobotId(i);
+
+            text += '<tr>'
+            text += '   <td><text>' + robotId + '</text></td>'
+            text += '   <td><text>' + robotMarketGM.getRobotLev(i) + '</text></td>'
+            text += '   <td><text>' + robotMarketGM.getMaxSP(i) + '</text></td>'
+            text += '   <td><text>' + robotMarketGM.getPriceForSale(i) + '</text></td>'
+            text += '   <td><button type="button" onClick="' + purchasePrefix + robotId + purchaseSuffix + '"> Purchase </button></td>'
+            text += '</tr>'
+            text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> </tr>'
+        }
+        text += '</table>'
+        text += '</div>'
+    
+        document.getElementById(elementId).innerHTML = text;  
     }
 
 </script>
