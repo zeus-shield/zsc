@@ -47,21 +47,23 @@ session_start();
         });
     }
 
-    function activeMining(hashId, posTypeId, robotId) {
+    function activeMining(hashId, tokenTypeId, posTypeId, robotId) {
+        var tokenType = document.getElementById(tokenTypeId).value;
         var posType = document.getElementById(posTypeId).value;
-        userRobotGM.activeMinerRobot(hashId, robotId, posType, function() {                
+        userRobotGM.activeMinerRobot(hashId, robotId, tokenType, posType, function() {                
         });
     }
 
-    function claimReward(hashId, robotId) {
-        userRobotGM.claimReward(hashId, function() {                
+    function claimReward(hashId, tokenTypeId, robotId) {
+        var tokenType = document.getElementById(tokenTypeId).value;
+        userRobotGM.claimReward(hashId, robotId, tokenType, function() {                
         });
     }
 
     function loadHtml(elementId, mining, claim) {
-        var miningPrefix = mining + "('OperationHash', 'PosType', '"; 
+        var miningPrefix = mining + "('OperationHash', 'TokenType', 'PosType', '"; 
         var miningSuffix = "')"; 
-        var claimPrefix = claim + "('OperationHash', '"; 
+        var claimPrefix = claim + "('OperationHash', 'TokenType', '"; 
         var claimSuffix = "')";
 
         var symbol;
@@ -69,6 +71,10 @@ session_start();
         var balance;
         var hashId;
         var robotNos = userRobotGM.getRobotNos();
+
+        var tokenType = '<td><select id = "TokenType" style="width:60px">'
+        tokenType += '<option value ="TestZSC">TestZSC </option>'
+        tokenType += '</select></td>'
 
         var posType = '<td><select id = "PosType" style="width:60px">'
         posType += '<option value ="7">7 Days (3%) </option>'
@@ -85,8 +91,8 @@ session_start();
 
         text += '<div class="well">';
         text += '<table align="center" style="width:800px;min-height:30px">'
-        text += '   <tr> <td>Robot ID</td> <td>Level</td> <td>Cur./Max SP </td> <td> Reward Ratio </td> <td>Start/End</td> <td>Type</td> <td>Mining</td> <td> Rewards</td> </tr> '
-        text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td>  <td>------</td> <td>------</td> <td>------</td> </tr>'
+        text += '   <tr> <td>Robot ID</td> <td>Level</td> <td>Cur./Max SP </td> <td> Pos Ratio </td> <td>Start/End</td> <td>Token Type</td> <td>Pos Type</td> <td>Mining</td> <td> Rewards</td> </tr> '
+        text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td>  <td>------</td> <td>------</td> <td>------</td> </tr>'
 
         for (var i = 0; i < robotNos; ++i) {
             var robotId = userRobotGM.getRobotId(i);
@@ -106,11 +112,11 @@ session_start();
                 text += '   <td><text>' + userRobotGM.getCurSP(i) + '<br>'  + userRobotGM.getMaxSP(i) + '</text></td>'
                 text += '   <td><text>' + userRobotGM.getRewardRatio(i) + '%</text></td>'
                 text += '   <td><text>' + userRobotGM.getMineStart(i) + '<br>'  + userRobotGM.getMineEnd(i) + '</text></td>'
+                text += tokenType;
+                text += posType;
                 if (status == "Idle") {
-                    text += posType;
                     text += '   <td><button type="button" onClick="' + miningPrefix + robotId + miningSuffix + '"> Start </button></td>'
                 } else {
-                    text += '   <td><text>Not Available</text></td>'
                     text += '   <td><text>Not Available</text></td>'
                 }
 
@@ -120,7 +126,7 @@ session_start();
                     text += '   <td><text>Not Available</text></td>'
                 }
                 text += '</tr>'
-                text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td>  <td>------</td> <td>------</td> <td>------</td> </tr>'
+                text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td>  <td>------</td> <td>------</td> <td>------</td> </tr>'
             }
         }
         text += '</table>'
