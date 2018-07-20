@@ -79,22 +79,21 @@ ZSCRobotOwned.prototype.enhanceMinerRobot = function(hashId, robotId, func) {
         });
 }
     
-ZSCRobotOwned.prototype.activeMinerRobot = function(robotId, rewardType, func) {
+ZSCRobotOwned.prototype.activeMinerRobot = function(hashId, robotId, rewardType, func) {
     var callBack = func;
+    var gm = this;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     myControlApi.activeMinerRobot(robotId, rewardType,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
-            if(!error) {
-                func();
-            } else {
-                console.log("error: " + error);
-            }
+            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
+            else console.log("error: " + error);
         });
 }
 
 ZSCRobotOwned.prototype.claimReward = function(robotId, rewardType, func) {
     var callBack = func;
+    var gm = this;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     myControlApi.claimReward(robotId,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
