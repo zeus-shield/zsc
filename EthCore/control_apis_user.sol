@@ -44,7 +44,7 @@ contract AbisForUserControlApis {
     function publishMinerRobot(uint _robotId, uint _price) public;
     function cancalSellingMinerRobot(uint _robotId) public;
     function purchaseMinerRobot(uint _robotId) public;
-    function claimReward(uint _robotId) public;
+    function claimReward(uint _robotId, bytes32 _tokenType) public;
     /*ERC721 for miner robot end*/
 }
 
