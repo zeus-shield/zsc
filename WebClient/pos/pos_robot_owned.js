@@ -32,13 +32,14 @@ ZSCRobotOwned.prototype.getRobotLev = function(index) { return this.robotLevs[in
 ZSCRobotOwned.prototype.getMaxSP = function(index) { return web3.fromWei(this.robotMaxSP[index], 'ether');}
 ZSCRobotOwned.prototype.getCurSP = function(index) { return web3.fromWei(this.robotCurSP[index], 'ether');}
 ZSCRobotOwned.prototype.getEnhanceProb = function(index) { return this.robotEnhanceProb[index];}
-ZSCRobotOwned.prototype.getMineStart = function(index) { return this.robotMineStart[index];}
-ZSCRobotOwned.prototype.getMineEnd = function(index) { return this.robotMineEnd[index];}
+ZSCRobotOwned.prototype.getMineStart = function(index) { return this.secondsToDate(this.robotMineStart[index]);}
+ZSCRobotOwned.prototype.getMineEnd = function(index) { return this.secondsToDate(this.robotMineEnd[index]);}
 ZSCRobotOwned.prototype.getPrceToEnhance = function(index) { return web3.fromWei(this.robotPrceToEnhance[index], 'ether');}
 ZSCRobotOwned.prototype.getPrceToCreate = function(index) { return web3.fromWei(this.robotPrceToCreate[index], 'ether');}
 ZSCRobotOwned.prototype.getPrceForSale = function(index) { return web3.fromWei(this.robotPrceForSale[index], 'ether');}
 ZSCRobotOwned.prototype.getRewardRatio = function(index) { return this.robotRewardRatio[index];}
 ZSCRobotOwned.prototype.getRewards = function(index) { return web3.fromWei(this.robotRewards[index], 'ether');}
+ZSCRobotOwned.prototype.miningable = function(index) { return (this.robotMineStart[index] == 0);}
 
 ZSCRobotOwned.prototype.resetAllItemTags = function(gm) {
     for (var i = 0; i < gm.robotNos; ++i) {
@@ -53,6 +54,13 @@ ZSCRobotOwned.prototype.checkAllItemTags = function(gm) {
         }
     }
     return true;
+}
+
+ZSCRobotOwned.prototype.secondsToDate = function(secs) {
+    if (secs == 0) return "~";
+    var curdate = new Date(null);
+    curdate.setTime(secs * 1000);
+    return (curdate.toLocaleString());
 }
 
 ZSCRobotOwned.prototype.createGen0Robot = function(hashId, func) { 
