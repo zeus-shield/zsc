@@ -18,14 +18,14 @@ class ZSCInclude {
     
     private function loadPosHeader() {
         $text=
-        '<table align="center" style="width:600px">'.
+        '<table align="center" style="width:650px">'.
         ' <tr>'.
-        '  <td align="center"><a href="user_profile.php">User Profile</a></td>'.
-        '  <td align="center"><a href="user_wallet.php">User Wallet</a></td>'.
-        '  <td align="center"><a href="pos_robot_enhance.php">Manage Robot</a></td>'.
-        '  <td align="center"><a href="pos_robot_sell.php">Mine ZSC</a></td>'.
-        '  <td align="center"><a href="pos_robot_mine.php">Mine ZSC</a></td>'.
-        '  <td align="center"><a href="pos_robot_market.php">Robot Market</a></td>'.
+        '  <td align="center"><a href="user_profile.php"> [User-profile] </a></td>'.
+        '  <td align="center"><a href="user_wallet.php"> [User-wallet] </a></td>'.
+        '  <td align="center"><a href="pos_robot_enhance.php"> [Manage-robot]</a></td>'.
+        '  <td align="center"><a href="pos_robot_mine.php"> [PoS-mining] </a></td>'.
+        '  <td align="center"><a href="pos_robot_selling.php"> [Selling-robot] </a></td>'.
+        '  <td align="center"><a href="pos_robot_market.php"> [Robot-market] </a></td>'.
         ' </tr>'.
         '</table>';
         return $text;
