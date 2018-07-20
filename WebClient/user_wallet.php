@@ -52,7 +52,7 @@ session_start();
         var enableWalletPrefix = func1 + "('EnableWalletHash')";
  
         var transPrefix = func2 + "('"; 
-        var transSuffix = "')";
+        var transSuffix = "','TrasferHash')";
 
         var symbol;
         var adr;
@@ -62,7 +62,7 @@ session_start();
         var userWallet = userWalletGM.getWalletAddress();
     
         //var titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
-        var titlle = 'user wallet address: <text> <a href="https://rinkeby.etherscan.io/address/0x' + userWallet + '#tokentxns" target="_blank" >0x' + userWallet + '</a></text>'
+        var titlle = 'user wallet address: <text> <a href="https://rinkeby.etherscan.io/address/0x' + userWallet + '#tokentxns" target="_blank" >' + userWallet + '</a></text>'
 
         text = '<div class="well">' + titlle + '</div>';
         text += '<div class="well">';
@@ -72,8 +72,9 @@ session_start();
             text += '<text id="EnableWalletHash" value = "log:"> </text> <br>';
         } else {
             text += '<table align="center" style="width:600px;min-height:30px">'
-            text += '<tr> <td>Symbol</td> <td>Balance</td> <td>Locked </td> <td>Dest-adr</td> <td>Amount</td> <td>Transfer</td></tr> '
-            text += '<tr> <td>------</td> <td>------</td> <td>------</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
+            text += '<tr><text id="TrasferHash" value = "log:"> </text> <tr>';
+            text += '<tr> <td>Token</td> <td>Balance</td> <td>Locked </td> <td>Dest-adr/Amount</td> <td>Transfer</td></tr> '
+            text += '<tr> <td>------</td> <td>------</td> <td>------</td> <td>---</td> <td>---</td> </tr>'
             for (var i = 0; i < tokenNos; ++i) {
                 symbol  = userWalletGM.getTokenSymbol(i);
                 balance = userWalletGM.getTokenBalance(i);
@@ -86,13 +87,11 @@ session_start();
                 text += '   <td><text>' + symbol + '</text></td>'
                 text += '   <td><text>' + balance + '</text></td>'
                 text += '   <td><text>' + locked + '</text></td>'
-                text += '   <td><input id="' + sentoId + '"></input></td>'
-                text += '   <td><input id="' + amountId + '"></input></td>'
-                text += '   <td><button type="button" onClick="' + transPrefix + symbol + "', '" + sentoId + "', '" + amountId + "', '" + hashId + transSuffix + '">  Transfer  </button></td>'
+                text += '   <td>DestAdr: <input style="width:100px" id="' + sentoId + '"></input><br>'
+                text += '       Amount: <input style="width:100px" id="' + amountId + '"></input></td>'
+                text += '   <td><button type="button" onClick="' + transPrefix + symbol + "', '" + sentoId + "', '" + amountId + transSuffix + '">  Transfer  </button></td>'
                 text += '</tr>'
-                text += '<tr><text id="'+ hashId + '" value = "log:"> </text> <tr>';
-                text += '<tr></tr>'
-                text += '<tr> <td>------</td> <td>------</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
+                text += '<tr> <td>------</td> <td>------</td> <td>---</td> <td>---</td>  <td>---</td> </tr>'
             }
             text += '</table>'
         }
