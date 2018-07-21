@@ -10,7 +10,6 @@ contract AbisForUserControlApis {
     function doesElementExist(bytes32 _enName) public view returns (bool);
     function createElementNode(bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo) public returns (address);
     function getElementType(bytes32 _enName) public view returns (bytes32);
-    function getUserName() public view returns (bytes32);
     function getElementParameter(bytes32 _enName, bytes32 _parameter) public view returns (bytes32);
     function getElementAddress(bytes32 _enName) public view returns (address);
     function numElementParameters(bytes32 _enName) public view returns (uint);
