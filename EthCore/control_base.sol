@@ -113,6 +113,8 @@ contract ControlBase is Object {
     function registerEntityNode(address _creator, bytes32 _endName) internal;
     function checkAllowed(address _sender, bytes32 _enName) internal view returns (bytes32);
     function checkMatched(address _sender, bytes32 _enName) internal view;
+    
+    function submitTransfer(bytes32 _tokenSymbol, address _dest, uint256 _amount) public returns (uint);
     //////////////////////////////////
 
     function preallocateZSCToTester(address _userWalletAdr) internal {
@@ -166,12 +168,6 @@ contract ControlBase is Object {
         return DBNode(getDBDatabase(_db).getNode(_nodeName));
     }
 
-    function formatWalletName(bytes32 _userName, bytes32 _tokenSymbol) internal pure returns (bytes32) {
-        string memory str;
-        str = PlatString.append(_userName, "-", _tokenSymbol);
-        return PlatString.tobytes32(str);
-    }
-
     function duplicateNode(address _nodeSrcAdr, address _nodeDstAdr) internal returns (bool) {
         //require(_nodeSrcAdr != address(0) && _nodeDstAdr != address(0));
         bytes32 tempPara;
@@ -188,52 +184,18 @@ contract ControlBase is Object {
         return true;
     }
 
+    function formatWalletName(bytes32 _userName, bytes32 _tokenSymbol) internal pure returns (bytes32) {
+        string memory str;
+        str = PlatString.append(_userName, "-", _tokenSymbol);
+        return PlatString.tobytes32(str);
+    }
+
     function getWalletAddress(bytes32 _enName) internal view returns (address) {
         bytes32 walletName;
         
         walletName = formatWalletName(_enName, "wat");
         return address(getDBNode(dbName_, walletName)); 
     }
-
-    function createNodeForElement(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra) internal returns (address) {
-        address ndAdr;
-        address parentAdr;
-
-        if (_type == "template") {
-            parentAdr = address(getDBNode(dbName_, _userName));
-        } else if (_type == "agreement") {
-            parentAdr = address(getDBNode(dbName_, _extra));
-        }
-
-        ndAdr = getDBFactory(_type).createNode(_nodeName, parentAdr, 0x0);
-        require(ndAdr != 0);
-
-        if (_type == "template") {
-            DBNode(ndAdr).setParameter("provider", _userName);
-        } else if (_type == "agreement") {
-            duplicateNode(getDBNode(dbName_, _extra),  ndAdr);
-             uint lockedAmount;
-             uint price;
-             uint duration;
-     
-             lockedAmount = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(ndAdr).getParameter("insurance")));
-             price        = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(ndAdr).getParameter("price")));
-             duration     = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(ndAdr).getParameter("duration")));
-
-             require(lockedAmount > 0 && price > 0 && duration >= 60);
-        }
-        return ndAdr;
-    }
-
-    function enableWallet(bytes32 _enName, address _enAdr, address _creator) internal returns (address) {
-        bytes32 walletNmae = formatWalletName(_enName, "wat");
-        require(address(getDBNode(dbName_, walletNmae)) == 0);
-
-        address walletAdr  = getDBFactory("wallet-adv").createNode(walletNmae, _enAdr, _creator);
-        require(walletAdr != 0);
-        return walletAdr;
-    }
-
     //////////////////////////////////////
     //////////////////////////////////////
     function initControlApis(address _adm) public {
@@ -304,19 +266,6 @@ contract ControlBase is Object {
         return (adr != address(0));
     }
 
-    function createElementNode(bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo) public returns (address) {
-        bytes32 userName = checkAllowed(msg.sender, _enName);
-        
-        require(_factoryType == "template" || _factoryType == "agreement");
-        require(address(getDBNode(dbName_, _enName)) == address(0));
-        
-        address ndAdr = createNodeForElement(_factoryType, userName, _enName, _extraInfo);
-        require(ndAdr != address(0));
-        registerEntityNode(msg.sender, _enName);
-        
-        return ndAdr;
-    }
-
     function getElementType(bytes32 _enName) public view returns (bytes32) {
         bytes32 en = checkAllowed(msg.sender, _enName);
 
@@ -370,53 +319,6 @@ contract ControlBase is Object {
         }
 
         return getDBNode(dbName_, en).getParameterNameByIndex(_index);
-    }
-
-    function submitTransfer(bytes32 _tokenSymbol, address _dest, uint256 _amount) public returns (uint) {
-        require(_amount > 0);
-        bytes32 userName = checkAllowed(msg.sender, "null");
-        address walletAdr = getWalletAddress(userName);
-        require(walletAdr != address(0));
-
-        address tokenContractAdr = getDBModule("gm-token").getTokenAddress(_tokenSymbol);
-        uint amount = DBNode(walletAdr).executeTransaction(tokenContractAdr, _dest, _amount);
-        return amount;
-    }
-
-    //------2018-07-18: new verstion: YYA------ 
-    function getUserWalletAddress() public view returns (address) {
-        bytes32 userName = checkAllowed(msg.sender, "null");
-        return getWalletAddress(userName); 
-    }
-
-    //------2018-07-06: new verstion: YYA------ 
-    function enableUserWallet() public returns (address) {
-        bytes32 userName = checkAllowed(msg.sender, "null");
-        address userAdr = address(getDBNode(dbName_, userName));
-        require(userAdr != 0);
-
-        address walletAdr = enableWallet(userName, userAdr, msg.sender);
-        require(walletAdr != 0);
-
-        preallocateZSCToTester(walletAdr);
-
-        return walletAdr;
-    }
-
-    /// @dev Create an user
-    function createUserNode(bytes32 _factoryType, bytes32 _userName, address _extraAdr) public returns (address) {
-        checkDelegate(msg.sender, 1);     
-
-        require(_factoryType == "staker" || _factoryType == "provider" || _factoryType == "receiver");
-        require(address(getDBNode(dbName_, _userName)) == 0);
-
-        address creator = _extraAdr;
-        address parentAdr = getDBDatabase(dbName_).getRootNode();
-        address ndAdr = getDBFactory(_factoryType).createNode(_userName, parentAdr, creator); 
-        require(ndAdr != address(0));
-        registerUserNode(creator, _userName, _factoryType);
-        
-        return ndAdr;
     }
  
     function numOfTokens() public view returns (uint) {
