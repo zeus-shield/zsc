@@ -6,80 +6,10 @@ pragma solidity ^0.4.21;
 
 import "./control_base.sol";
 
-contract ControlApis is ControlBase {
+contract ControlInsura is ControlBase {
     /// @dev Constructor
     /// @param _name The name of the controller
-    function ControlApis(bytes32 _name) public ControlBase(_name) {
-    }
-   
-    /// @dev Get the number of elements of the database
-    function numFactoryElements(bytes32 _factoryType) public view returns (uint) { 
-        checkAllowed(msg.sender, "null");
-
-        return getDBFactory(_factoryType).numFactoryNodes(); 
-    }
-
-    /// @dev Get the element name by the index
-    /// @param _index The index of the element in the database
-    function getFactoryElementNameByIndex(bytes32 _factoryType, uint _index) public view returns (bytes32) { 
-        checkAllowed(msg.sender, "null");
-
-        return getDBFactory(_factoryType).getFactoryNodeNameByIndex(_index); 
-    }
-
-    /// @dev Check the element wheather or not existing
-    /// @param _enName The name of the element to be checked
-    function doesElementExist(bytes32 _enName) public view returns (bool) {
-        bytes32 en = checkAllowed(msg.sender, _enName);
-        address adr = address(getDBNode(dbName_, en));
-        return (adr != address(0));
-    }
-
-    function createElementNode(bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo) public returns (address) {
-        bytes32 userName = checkAllowed(msg.sender, _enName);
-        
-        require(_factoryType == "template" || _factoryType == "agreement");
-        require(address(getDBNode(dbName_, _enName)) == address(0));
-        
-        address ndAdr = createNodeForElement(_factoryType, userName, _enName, _extraInfo);
-        require(ndAdr != address(0));
-        registerEntityNode(msg.sender, _enName);
-        
-        return ndAdr;
-    }
-
-    /// @dev Get the type of an element
-    /// @param _enName The name of the element belonging to the user
-    function getElementType(bytes32 _enName) public view returns (bytes32) {
-        bytes32 en = checkAllowed(msg.sender, _enName);
-
-        DBNode nd = getDBNode(dbName_, en);
-        require(address(nd) != address(0));
-        return nd.getNodeType();
-    }
-
-
-    /// @dev Get the address of the element 
-    /// @param _enName The name of the element
-    function getElementAddress(bytes32 _enName) public view returns (address) {
-        bytes32 en = checkAllowed(msg.sender, _enName);
-
-        return address(getDBNode(dbName_, en));
-    }
-
-    function getUserName() public view returns (bytes32) {
-        return checkAllowed(msg.sender, "null");
-    } 
-
-    function numElementChildren(bytes32 _enName) public view returns (uint) {
-        bytes32 en = checkAllowed(msg.sender, _enName);
-        return  getDBNode(dbName_, en).numChildren();
-    }
-
-    function getElementChildNameByIndex(bytes32 _enName, uint _index) public view returns (bytes32) {
-        bytes32 en = checkAllowed(msg.sender, _enName);
-        address adr = getDBNode(dbName_, en).getChildByIndex(_index);
-        return Object(adr).name();
+    function ControlInsura(bytes32 _name) public ControlBase(_name) {
     }
 
     function numTemplates() public view returns (uint) {
@@ -197,7 +127,7 @@ contract ControlApis is ControlBase {
         }
         return true;
     }
-    
+
     function numUserTransactions() public view returns (uint) {
         bytes32 userName = checkAllowed(msg.sender, "null");
         address walletAdr = getWalletAddress(userName);
