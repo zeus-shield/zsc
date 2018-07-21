@@ -23,7 +23,7 @@ function ZSCSetup(logRecorderAdr, timerAdr, zscTokenAdr, adrs) {
     this.TokenManagerAdr     = adrs[8];
     this.PosManagerAdr       = adrs[9];
     this.ControlApisAdvAdr   = adrs[10];
-    this.account = web3.eth.accounts[11];
+    this.account = web3.eth.accounts[0];
     this.gasPrice = cC_getGasPrice(20);
     this.gasLimit = cC_getGasLimit(700);
 }
