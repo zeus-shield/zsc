@@ -58,18 +58,6 @@ contract ControlApis is ControlBase {
         return nd.getNodeType();
     }
 
-    /// @dev Get the value of a paramter of an element
-    /// @param _enName The name of the element
-    /// @param _parameter The name of the existing parameter
-    function getElementParameter(bytes32 _enName, bytes32 _parameter) public view returns (bytes32) {
-        bytes32 en = checkAllowed(msg.sender, _enName);
-
-        bytes32 ndType = getDBNode(dbName_, en).getNodeType();
-        if (ndType != "agreement") {
-            //checkMatched(_userName, _enName, msg.sender);
-        }
-        return getDBNode(dbName_, en).getParameter(_parameter);
-    }
 
     /// @dev Get the address of the element 
     /// @param _enName The name of the element
@@ -82,51 +70,6 @@ contract ControlApis is ControlBase {
     function getUserName() public view returns (bytes32) {
         return checkAllowed(msg.sender, "null");
     } 
-
-    /// @dev Get the number of paramters of an element
-    /// @param _enName The name of the existing element
-    function numElementParameters(bytes32 _enName) public view returns (uint) {
-        bytes32 en = checkAllowed(msg.sender, _enName);
-        bytes32 ndType = getDBNode(dbName_, en).getNodeType();
-        if (ndType != "agreement") { 
-            checkMatched(msg.sender, en);
-        }
-
-        return  getDBNode(dbName_, en).numParameters();
-    }
-
-    /// @dev Get the number of paramters of an element
-    /// @param _enName The name of the existing element
-    /// @param _index The index of the parameter
-    /* Example:
-        var num = numNodeParameters("test");
-        if (num > 0) {
-            var para = getNodeParameterNameByIndex("test", 0);
-        }
-    */
-    function getElementParameterNameByIndex(bytes32 _enName, uint _index) public view returns (bytes32) {
-        bytes32 en = checkAllowed(msg.sender, _enName);
-        bytes32 ndType = getDBNode(dbName_, en).getNodeType();
-        if (ndType != "agreement") {
-            checkAllowed(msg.sender, en);
-        }
-
-        return getDBNode(dbName_, en).getParameterNameByIndex(_index);
-    }
-
-    /// @dev Transfer a particular amount from a user wallet to the destination address
-    /// @param _dest The destination address
-    /// @param _amount The amount to be transferred
-    function submitTransfer(bytes32 _tokenSymbol, address _dest, uint256 _amount) public returns (uint) {
-        require(_amount > 0);
-        bytes32 userName = checkAllowed(msg.sender, "null");
-        address walletAdr = getWalletAddress(userName);
-        require(walletAdr != address(0));
-
-        address tokenContractAdr = getDBModule("gm-token").getTokenAddress(_tokenSymbol);
-        uint amount = DBNode(walletAdr).executeTransaction(tokenContractAdr, _dest, _amount);
-        return amount;
-    }
 
     function numElementChildren(bytes32 _enName) public view returns (uint) {
         bytes32 en = checkAllowed(msg.sender, _enName);
@@ -161,31 +104,100 @@ contract ControlApis is ControlBase {
         return Object(adr).name();
     }
 
-    //------2018-07-18: new verstion: YYA------ 
-    function getUserWalletAddress() public view returns (address) {
+
+    function publishAgreement(bytes32 _agrName) public {
         bytes32 userName = checkAllowed(msg.sender, "null");
-        return getWalletAddress(userName); 
+
+        address _creator = msg.sender;
+        address agrAdr = address(getDBNode(dbName_, _agrName));
+        require(agrAdr != 0);
+
+        bytes32 status = DBNode(agrAdr).getParameter("status");
+        require(status == "CREATED");
+
+        address agrWalletAdr     = enableWallet(_agrName, agrAdr, _creator);
+        address userWallet       = getWalletAddress(userName);
+        address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
+
+        uint lockedAmount = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(agrAdr).getParameter("insurance")));
+
+        DBNode(userWallet).executeTransaction(tokenContractAdr, agrWalletAdr, lockedAmount.mul(1 ether));
+
+        DBNode(agrAdr).setAgreementStatus("PUBLISHED", "null");
     }
 
-    //------2018-07-06: new verstion: YYA------ 
-    function enableUserWallet() public returns (address) {
+    function purchaseAgreement(bytes32 _agrName) public returns (uint) {
         bytes32 userName = checkAllowed(msg.sender, "null");
-        address userAdr = address(getDBNode(dbName_, userName));
-        require(userAdr != 0);
 
-        address walletAdr = enableWallet(userName, userAdr, msg.sender);
-        require(walletAdr != 0);
+        bytes32 userType = getDBNode(dbName_, userName).getNodeType();
+        require(userType == "receiver");
 
-        preallocateZSCToTester(walletAdr);
+        address agrAdr = address(getDBNode(dbName_, _agrName));
+        require(agrAdr != address(0));
 
-        return walletAdr;
+        bytes32 status = DBNode(agrAdr).getParameter("status");
+        require(status == "PUBLISHED");
+
+        uint price     = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(agrAdr).getParameter("price")));
+        require(price > 0);
+        price = price.mul(1 ether);
+
+        address recWallet   = getWalletAddress(userName); 
+        address agrWallet   = getWalletAddress(_agrName);
+        address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
+
+        uint ret = DBNode(recWallet).executeTransaction(tokenContractAdr, agrWallet, price);
+
+        getDBNode(dbName_, _agrName).setAgreementStatus("PAID", userName);
+        getDBNode(dbName_, userName).bindAgreement(agrAdr);
+
+        bytes32 provider = DBNode(agrAdr).getParameter("provider");
+        address proWallet = getWalletAddress(provider);
+        DBNode(recWallet).executeTransaction(tokenContractAdr, proWallet, price);
+        
+        return ret;
     }
 
-    function numOfTokens() public view returns (uint) {
-        checkAllowed(msg.sender, "null");
-        return getDBModule("gm-token").numOfTokens();
-    }
+    function claimInsurance(bytes32 _agrName) public returns (bool) {
+        bytes32 userName = checkAllowed(msg.sender, "null");
 
+        bytes32 agrName = _agrName;
+        address agrAdr  = address(getDBNode(dbName_, agrName));
+        bytes32 status  = DBNode(agrAdr).getParameter("status");
+        require(status == "PAID");
+
+        bytes32 provider = DBNode(agrAdr).getParameter("provider");
+        bytes32 receiver = DBNode(agrAdr).getParameter("receiver");
+        require(userName == provider || userName == receiver);
+
+        address proWallet = getWalletAddress(provider);
+        address recWallet = getWalletAddress(receiver);
+        address agrWallet = getWalletAddress(receiver);
+        address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
+
+        uint lockedAmount;
+        uint price;
+
+        lockedAmount = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(agrAdr).getParameter("insurance")));
+        lockedAmount = lockedAmount.mul(1 ether);
+
+        price = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(agrAdr).getParameter("price")));
+        price = price.mul(1 ether);
+
+        uint ret = DBNode(agrAdr).simulatePayforInsurance();
+
+        if (ret == 0) {
+            return false;
+        } else if (ret == 1) {
+            //Insurance to receiver
+            DBNode(agrWallet).executeTransaction(tokenContractAdr, recWallet, lockedAmount);
+        } else if (ret == 2) {
+            //Paid to provider
+            DBNode(agrWallet).executeTransaction(tokenContractAdr, proWallet, lockedAmount);
+        }
+        return true;
+    }
+    
     function numUserTransactions() public view returns (uint) {
         bytes32 userName = checkAllowed(msg.sender, "null");
         address walletAdr = getWalletAddress(userName);
