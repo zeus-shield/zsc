@@ -80,11 +80,9 @@ session_start();
     }
 
     function loadUserProfile() {
-        userProfile.getRegisteredUserName(function() {
         userProfile.loadParameterNamesAndvalues(function() {
             loadHtml("PageBody", "submitParameterProfileChanges");
         });
-      });
     }
 
 </script>
