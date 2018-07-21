@@ -103,6 +103,8 @@ contract ControlBase is Object {
     uint private allocatedToken_;
     uint private allocatedETH_;
 
+    address internal paymentReceiver_;
+
     function ControlBase(bytes32 _name) public Object(_name) {
     }
 
@@ -243,6 +245,12 @@ contract ControlBase is Object {
         addLog("initControlApis ", true);
     }
 
+    function setPaymentReceiver(address _receiver) public {
+        checkDelegate(msg.sender, 1);
+        require(_receiver != address(0));
+        paymentReceiver_ = _receiver;
+    }
+
     function setPreallocateAmountToTester(uint _ethAmount, bytes32 _tokenSymbol, uint _tokenAmount) public { 
         checkDelegate(msg.sender, 1);
         allocatedTokenSymbol_ = _tokenSymbol;
@@ -278,13 +286,62 @@ contract ControlBase is Object {
 
     //////////////////////////////////////
     //////////////////////////////////////
-    //////////////////////////////////////
-    //////////////////////////////////////
+    function numFactoryElements(bytes32 _factoryType) public view returns (uint) { 
+        checkAllowed(msg.sender, "null");
 
+        return getDBFactory(_factoryType).numFactoryNodes(); 
+    }
 
-    /// @dev Get the value of a paramter of an element
-    /// @param _enName The name of the element
-    /// @param _parameter The name of the existing parameter
+    function getFactoryElementNameByIndex(bytes32 _factoryType, uint _index) public view returns (bytes32) { 
+        checkAllowed(msg.sender, "null");
+
+        return getDBFactory(_factoryType).getFactoryNodeNameByIndex(_index); 
+    }
+
+    function doesElementExist(bytes32 _enName) public view returns (bool) {
+        bytes32 en = checkAllowed(msg.sender, _enName);
+        address adr = address(getDBNode(dbName_, en));
+        return (adr != address(0));
+    }
+
+    function createElementNode(bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo) public returns (address) {
+        bytes32 userName = checkAllowed(msg.sender, _enName);
+        
+        require(_factoryType == "template" || _factoryType == "agreement");
+        require(address(getDBNode(dbName_, _enName)) == address(0));
+        
+        address ndAdr = createNodeForElement(_factoryType, userName, _enName, _extraInfo);
+        require(ndAdr != address(0));
+        registerEntityNode(msg.sender, _enName);
+        
+        return ndAdr;
+    }
+
+    function getElementType(bytes32 _enName) public view returns (bytes32) {
+        bytes32 en = checkAllowed(msg.sender, _enName);
+
+        DBNode nd = getDBNode(dbName_, en);
+        require(address(nd) != address(0));
+        return nd.getNodeType();
+    }
+
+    function getElementAddress(bytes32 _enName) public view returns (address) {
+        bytes32 en = checkAllowed(msg.sender, _enName);
+
+        return address(getDBNode(dbName_, en));
+    }
+
+    function numElementChildren(bytes32 _enName) public view returns (uint) {
+        bytes32 en = checkAllowed(msg.sender, _enName);
+        return  getDBNode(dbName_, en).numChildren();
+    }
+
+    function getElementChildNameByIndex(bytes32 _enName, uint _index) public view returns (bytes32) {
+        bytes32 en = checkAllowed(msg.sender, _enName);
+        address adr = getDBNode(dbName_, en).getChildByIndex(_index);
+        return Object(adr).name();
+    }
+
     function getElementParameter(bytes32 _enName, bytes32 _parameter) public view returns (bytes32) {
         bytes32 en = checkAllowed(msg.sender, _enName);
 
@@ -295,8 +352,6 @@ contract ControlBase is Object {
         return getDBNode(dbName_, en).getParameter(_parameter);
     }
 
-    /// @dev Get the number of paramters of an element
-    /// @param _enName The name of the existing element
     function numElementParameters(bytes32 _enName) public view returns (uint) {
         bytes32 en = checkAllowed(msg.sender, _enName);
         bytes32 ndType = getDBNode(dbName_, en).getNodeType();
@@ -307,15 +362,6 @@ contract ControlBase is Object {
         return  getDBNode(dbName_, en).numParameters();
     }
 
-    /// @dev Get the number of paramters of an element
-    /// @param _enName The name of the existing element
-    /// @param _index The index of the parameter
-    /* Example:
-        var num = numNodeParameters("test");
-        if (num > 0) {
-            var para = getNodeParameterNameByIndex("test", 0);
-        }
-    */
     function getElementParameterNameByIndex(bytes32 _enName, uint _index) public view returns (bytes32) {
         bytes32 en = checkAllowed(msg.sender, _enName);
         bytes32 ndType = getDBNode(dbName_, en).getNodeType();
@@ -326,9 +372,6 @@ contract ControlBase is Object {
         return getDBNode(dbName_, en).getParameterNameByIndex(_index);
     }
 
-    /// @dev Transfer a particular amount from a user wallet to the destination address
-    /// @param _dest The destination address
-    /// @param _amount The amount to be transferred
     function submitTransfer(bytes32 _tokenSymbol, address _dest, uint256 _amount) public returns (uint) {
         require(_amount > 0);
         bytes32 userName = checkAllowed(msg.sender, "null");
@@ -339,7 +382,6 @@ contract ControlBase is Object {
         uint amount = DBNode(walletAdr).executeTransaction(tokenContractAdr, _dest, _amount);
         return amount;
     }
-
 
     //------2018-07-18: new verstion: YYA------ 
     function getUserWalletAddress() public view returns (address) {
@@ -361,11 +403,6 @@ contract ControlBase is Object {
         return walletAdr;
     }
 
-    function numOfTokens() public view returns (uint) {
-        checkAllowed(msg.sender, "null");
-        return getDBModule("gm-token").numOfTokens();
-    }
-
     /// @dev Create an user
     function createUserNode(bytes32 _factoryType, bytes32 _userName, address _extraAdr) public returns (address) {
         checkDelegate(msg.sender, 1);     
@@ -382,6 +419,11 @@ contract ControlBase is Object {
         return ndAdr;
     }
  
+    function numOfTokens() public view returns (uint) {
+        checkAllowed(msg.sender, "null");
+        return getDBModule("gm-token").numOfTokens();
+    }
+
     function getTokenBalanceInfoByIndex(uint _index) public view returns (string) { 
         bytes32 userName = checkAllowed(msg.sender, "null");
 
@@ -410,7 +452,6 @@ contract ControlBase is Object {
         return str;
     }
     
-    /*
     function getUserTransactionByIndex(uint _index) public view returns (string) {
         bytes32 userName = checkAllowed(msg.sender, "null");
         address walletAdr = getWalletAddress(userName);
@@ -439,7 +480,6 @@ contract ControlBase is Object {
         str = PlatString.append(str, "receiver=",  PlatString.addressToString(receiver), "&");
         return str;
     }
-  
  
     function getModuleAddresses() public view returns (string) {
         address dbAdr = address(getDBDatabase(dbName_));
@@ -463,5 +503,4 @@ contract ControlBase is Object {
         str = PlatString.append(str, "factory-wallet-erc20=",PlatString.addressToString(factoryErc20Adr),  "&");
         return str;
     }   
-      */
 }
