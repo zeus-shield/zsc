@@ -81,24 +81,6 @@ ZSCElement.prototype.loadParameterNamesAndvalues = function(func) {
     });
 }
 
-ZSCElement.prototype.getRegisteredUserName = function(func) {
-    var gm = this;
-
-        var callBack = func;
-    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-
-    myControlApi.getUserName(  {from: gm.account},
-        function(error, result){ 
-            if(!error) { 
-                var ret =  web3.toUtf8(result);
-                func();
-            } else {
-                console.log("error: " + error);
-            }
-         });
-}
-
-
 ZSCElement.prototype.numParameters = function(gm, func) {
     var gm = this;
     var callBack = func;
