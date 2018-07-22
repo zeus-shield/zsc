@@ -11,6 +11,8 @@ function ZSCWallet(acount, adr, abi) {
     this.tokenStatus = [];
     this.tokenLocked = [];
     this.tokenAddress;
+
+    this.itemTags = [];
     this.account = acount;
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
@@ -24,7 +26,22 @@ ZSCWallet.prototype.getTokenSymbol = function(index) { return this.tokenSymbol[i
 ZSCWallet.prototype.getTokenBalance = function(index) { return web3.fromWei(this.tokenBalance[index], 'ether');}
 ZSCWallet.prototype.getTokenLocked = function(index) { return web3.fromWei(this.tokenLocked[index], 'ether');}
 
-ZSCWallet.prototype.submitTransferValue = function(tokenSymbol, destAddress, amount, logId, func) {  
+ZSCWallet.prototype.resetAllItemTags = function(gm) {
+    for (var i = 0; i < gm.robotNos; ++i) {
+        gm.itemTags[i] = false;
+    }
+}
+
+ZSCWallet.prototype.checkAllItemTags = function(gm) {
+    for (var i = 0; i < gm.robotNos; ++i) {
+        if (gm.itemTags[i] == false) {
+            return false;
+        }
+    }
+    return true;
+}
+
+ZSCWallet.prototype.submitTransferValue = function(tokenSymbol, destAddress, amount, hashId, func) {  
     var gm = this;
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
@@ -34,7 +51,7 @@ ZSCWallet.prototype.submitTransferValue = function(tokenSymbol, destAddress, amo
             {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
             function(error, result){ 
             if(!error) {
-                bF_showHashResult(logId, result, callBack);
+                bF_showHashResult(hashId, result, callBack);
             } else {
                 console.log("error: " + error);
             }
@@ -52,17 +69,21 @@ ZSCWallet.prototype.loadTokenWallets = function(func) {
             callBack();
         } else {
             gm.numTokenWallets(gm, function(gm) {
-                for (var i = 0; i < gm.tokenNos; ++i) {
-                    gm.loadTokenInfoByIndex(gm, i, function(gm, index) {
-                        if (index == gm.tokenNos - 1) {
-                            func();
-                        }
-                    });
+                if (gm.tokenNos == 0) {
+                    callback();
+                } else {
+                    for (var i = 0; i < gm.tokenNos; ++i) {
+                        gm.loadTokenInfoByIndex(gm, i, function(gm, index) {
+                            if (gm.checkAllItemTags(gm) == true) {
+                                callBack();
+                            }
+                        });
+                    }
                 }
             });
         }
     });
-}
+}              
 
 ZSCWallet.prototype.getUserWalletAddress = function(gm, func) {
     var callBack = func;
