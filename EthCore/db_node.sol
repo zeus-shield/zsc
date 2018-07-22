@@ -30,7 +30,7 @@ contract DBNode is Object {
 
     function kill() public { 
         checkDelegate(msg.sender, 1);
-        removeAndDestroyAllChildren(); 
+        //removeAndDestroyAllChildren(); 
         super.kill();
     }
 
