@@ -48,6 +48,12 @@ session_start();
         });
     }
 
+    function submitTransferValue(hashId, tokenSymbol, sentoId, amountId) {
+        var sendto = document.getElementById(sentoId).value;
+        var amount = document.getElementById(amountId).value;
+        userWalletGM.submitTransferValue(tokenSymbol, sendto, amount, hashId);
+    }
+
     function loadHtml(elementId, func1, func2) {
         var enableWalletPrefix = func1 + "('EnableWalletHash')";
  
