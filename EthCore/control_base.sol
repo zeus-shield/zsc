@@ -111,9 +111,10 @@ contract ControlBase is Object {
     //////////////////////////////////
     function registerUserNode(address _creator, bytes32 _userName, bytes32 _type) internal;
     function registerEntityNode(address _creator, bytes32 _endName) internal;
-    function checkAllowed(address _sender, bytes32 _enName) internal view returns (bytes32);
+    function checkAllowed(address _sender) internal view;
     function checkMatched(address _sender, bytes32 _enName) internal view;
-    
+    function getMappedName(address _sender) internal view returns (bytes32);
+
     function submitTransfer(bytes32 _tokenSymbol, address _dest, uint256 _amount) public returns (uint);
     //////////////////////////////////
 
@@ -249,86 +250,56 @@ contract ControlBase is Object {
     //////////////////////////////////////
     //////////////////////////////////////
     function numFactoryElements(bytes32 _factoryType) public view returns (uint) { 
-        checkAllowed(msg.sender, "null");
-
         return getDBFactory(_factoryType).numFactoryNodes(); 
     }
 
     function getFactoryElementNameByIndex(bytes32 _factoryType, uint _index) public view returns (bytes32) { 
-        checkAllowed(msg.sender, "null");
-
         return getDBFactory(_factoryType).getFactoryNodeNameByIndex(_index); 
     }
 
     function doesElementExist(bytes32 _enName) public view returns (bool) {
-        bytes32 en = checkAllowed(msg.sender, _enName);
         address adr = address(getDBNode(dbName_, en));
         return (adr != address(0));
     }
 
     function getElementType(bytes32 _enName) public view returns (bytes32) {
-        bytes32 en = checkAllowed(msg.sender, _enName);
-
-        DBNode nd = getDBNode(dbName_, en);
+        DBNode nd = getDBNode(dbName_, _enName);
         require(address(nd) != address(0));
         return nd.getNodeType();
     }
 
     function getElementAddress(bytes32 _enName) public view returns (address) {
-        bytes32 en = checkAllowed(msg.sender, _enName);
-
-        return address(getDBNode(dbName_, en));
+        return address(getDBNode(dbName_, _enName));
     }
 
     function numElementChildren(bytes32 _enName) public view returns (uint) {
-        bytes32 en = checkAllowed(msg.sender, _enName);
-        return  getDBNode(dbName_, en).numChildren();
+        return  getDBNode(dbName_, _enName).numChildren();
     }
 
     function getElementChildNameByIndex(bytes32 _enName, uint _index) public view returns (bytes32) {
-        bytes32 en = checkAllowed(msg.sender, _enName);
-        address adr = getDBNode(dbName_, en).getChildByIndex(_index);
+        address adr = getDBNode(dbName_, _enName).getChildByIndex(_index);
+        require(adr != address(0));
         return Object(adr).name();
     }
 
     function getElementParameter(bytes32 _enName, bytes32 _parameter) public view returns (bytes32) {
-        bytes32 en = checkAllowed(msg.sender, _enName);
-
-        bytes32 ndType = getDBNode(dbName_, en).getNodeType();
-        if (ndType != "agreement") {
-            //checkMatched(_userName, _enName, msg.sender);
-        }
-        return getDBNode(dbName_, en).getParameter(_parameter);
+        return getDBNode(dbName_, _enName).getParameter(_parameter);
     }
 
     function numElementParameters(bytes32 _enName) public view returns (uint) {
-        bytes32 en = checkAllowed(msg.sender, _enName);
-        bytes32 ndType = getDBNode(dbName_, en).getNodeType();
-        if (ndType != "agreement") { 
-            checkMatched(msg.sender, en);
-        }
-
         return  getDBNode(dbName_, en).numParameters();
     }
 
     function getElementParameterNameByIndex(bytes32 _enName, uint _index) public view returns (bytes32) {
-        bytes32 en = checkAllowed(msg.sender, _enName);
-        bytes32 ndType = getDBNode(dbName_, en).getNodeType();
-        if (ndType != "agreement") {
-            checkAllowed(msg.sender, en);
-        }
-
         return getDBNode(dbName_, en).getParameterNameByIndex(_index);
     }
  
     function numOfTokens() public view returns (uint) {
-        checkAllowed(msg.sender, "null");
         return getDBModule("gm-token").numOfTokens();
     }
 
     function getTokenBalanceInfoByIndex(uint _index) public view returns (string) { 
-        bytes32 userName = checkAllowed(msg.sender, "null");
-
+        bytes32 userName = getMappedName(msg.sender);
         bytes32 status;
         bytes32 tokenName;
         bytes32 tokenSymbol;
