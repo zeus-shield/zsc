@@ -114,8 +114,9 @@ contract ControlBase is Object {
     function checkAllowed(address _sender) internal view;
     function checkMatched(address _sender, bytes32 _enName) internal view;
     function getMappedName(address _sender) internal view returns (bytes32);
+    function getBindedWalletAddress(bytes32 _enName) internal view returns (address);
 
-    function submitTransfer(bytes32 _tokenSymbol, address _dest, uint256 _amount) public returns (uint);
+    function createUserNode(bytes32 _factoryType, bytes32 _userName, address _extraAdr) public returns (address);
     //////////////////////////////////
 
     function preallocateZSCToTester(address _userWalletAdr) internal {
@@ -185,17 +186,18 @@ contract ControlBase is Object {
         return true;
     }
 
-    function formatWalletName(bytes32 _userName, bytes32 _tokenSymbol) internal pure returns (bytes32) {
+    function formatWalletName(bytes32 _userName) internal pure returns (bytes32) {
         string memory str;
-        str = PlatString.append(_userName, "-", _tokenSymbol);
+        str = PlatString.append(_userName, "-wat");
         return PlatString.tobytes32(str);
     }
 
-    function getWalletAddress(bytes32 _enName) internal view returns (address) {
-        bytes32 walletName;
-        
-        walletName = formatWalletName(_enName, "wat");
-        return address(getDBNode(dbName_, walletName)); 
+    function enableWallet(bytes32 _walletName, address _enAdr, address _creator) internal returns (address) {
+        require(address(getDBNode(dbName_, _walletName)) == 0);
+
+        address walletAdr  = getDBFactory("wallet-adv").createNode(_walletName, _enAdr, _creator);
+        require(walletAdr != 0);
+        return walletAdr;
     }
     //////////////////////////////////////
     //////////////////////////////////////
@@ -249,6 +251,26 @@ contract ControlBase is Object {
 
     //////////////////////////////////////
     //////////////////////////////////////
+    function submitTransfer(bytes32 _tokenSymbol, address _dest, uint256 _amount) public returns (uint) {
+        checkAllowed(msg.sender);
+        require(_amount > 0);
+
+        bytes32 userName = getMappedName(msg.sender);
+        address walletAdr = getBindedWalletAddress(userName);
+        require(walletAdr != address(0));
+
+        address tokenContractAdr = getDBModule("gm-token").getTokenAddress(_tokenSymbol);
+        uint amount = DBNode(walletAdr).executeTransaction(tokenContractAdr, _dest, _amount);
+        return amount;
+    }
+
+    //------2018-07-18: new verstion: YYA------ 
+    function getUserWalletAddress() public view returns (address) {
+        checkAllowed(msg.sender);
+        bytes32 userName = getMappedName(msg.sender);
+        return getBindedWalletAddress(userName); 
+    }
+
     function numFactoryElements(bytes32 _factoryType) public view returns (uint) { 
         return getDBFactory(_factoryType).numFactoryNodes(); 
     }
@@ -258,7 +280,7 @@ contract ControlBase is Object {
     }
 
     function doesElementExist(bytes32 _enName) public view returns (bool) {
-        address adr = address(getDBNode(dbName_, en));
+        address adr = address(getDBNode(dbName_, _enName));
         return (adr != address(0));
     }
 
@@ -287,18 +309,20 @@ contract ControlBase is Object {
     }
 
     function numElementParameters(bytes32 _enName) public view returns (uint) {
-        return  getDBNode(dbName_, en).numParameters();
+        return  getDBNode(dbName_, _enName).numParameters();
     }
 
     function getElementParameterNameByIndex(bytes32 _enName, uint _index) public view returns (bytes32) {
-        return getDBNode(dbName_, en).getParameterNameByIndex(_index);
+        return getDBNode(dbName_, _enName).getParameterNameByIndex(_index);
     }
  
     function numOfTokens() public view returns (uint) {
         return getDBModule("gm-token").numOfTokens();
     }
 
-    function getTokenBalanceInfoByIndex(uint _index) public view returns (string) { 
+    function getTokenBalanceInfoByIndex(uint _index) public view returns (string) {
+        checkAllowed(msg.sender);
+
         bytes32 userName = getMappedName(msg.sender);
         bytes32 status;
         bytes32 tokenName;
@@ -309,7 +333,7 @@ contract ControlBase is Object {
         uint tokenBalance;
         uint lockedAmount;
 
-        userWalletAdr = getWalletAddress(userName);
+        userWalletAdr = getBindedWalletAddress(userName);
 
         (status, tokenName, tokenSymbol, tokenDecimals, tokenAdr) = getDBModule("gm-token").getTokenInfoByIndex(_index);
 
@@ -326,8 +350,10 @@ contract ControlBase is Object {
     }
     
     function getUserTransactionByIndex(uint _index) public view returns (string) {
-        bytes32 userName = checkAllowed(msg.sender, "null");
-        address walletAdr = getWalletAddress(userName);
+        checkAllowed(msg.sender);
+        
+        bytes32 userName = getMappedName(msg.sender);
+        address walletAdr = getBindedWalletAddress(userName);
 
         require(_index < DBNode(walletAdr).numTransactions());
         
@@ -360,8 +386,10 @@ contract ControlBase is Object {
         address factoryRecAdr = address(getDBFactory("receiver"));
         address factoryTmpAdr = address(getDBFactory("template"));
         address factoryAgrAdr = address(getDBFactory("agreement"));
-        address factoryErc20Adr = address(getDBFactory("wallet-erc20"));
+        address factoryWalletAdv = address(getDBFactory("wallet-adv"));
         address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
+        address tokenManager = address(getDBModule("gm-token"));
+        address posManager = address(getDBModule("gm-pos"));
 
         string memory str ="adrs?";
         str = PlatString.append(str, "testZSC=",      PlatString.addressToString(tokenContractAdr), "&");
@@ -373,7 +401,9 @@ contract ControlBase is Object {
         str = PlatString.append(str, "factory-receiver=",    PlatString.addressToString(factoryRecAdr),    "&");
         str = PlatString.append(str, "factory-template=",    PlatString.addressToString(factoryTmpAdr),    "&");
         str = PlatString.append(str, "factory-agreement=",   PlatString.addressToString(factoryAgrAdr),    "&");
-        str = PlatString.append(str, "factory-wallet-erc20=",PlatString.addressToString(factoryErc20Adr),  "&");
+        str = PlatString.append(str, "factory-wallet-adv=",  PlatString.addressToString(factoryWalletAdv),  "&");
+        str = PlatString.append(str, "token-manager=",  PlatString.addressToString(tokenManager),  "&");
+        str = PlatString.append(str, "po-manager=",  PlatString.addressToString(posManager),  "&");
         return str;
     }   
 }
