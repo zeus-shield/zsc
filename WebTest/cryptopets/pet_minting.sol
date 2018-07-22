@@ -4,5 +4,9 @@
 
 pragma solidity ^0.4.21;
 
-contract PetMinting {
+import "./pet_auction.sol";
+
+contract PetMinting is PetAuction {
+
+    function PetMinting() public PetAuction() {}
 }
