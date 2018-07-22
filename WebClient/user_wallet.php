@@ -36,7 +36,7 @@ session_start();
             } else {
                 userWalletGM = new ZSCWallet(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
                 userWalletGM.loadTokenWallets(function() {
-                    loadHtml("PageBody", "enableUserWallet", "submitTransfer");
+                    loadHtml("PageBody", "enableUserWallet", "submitTransferValue");
                 });
             }
         });
@@ -48,17 +48,19 @@ session_start();
         });
     }
 
-    function submitTransferValue(hashId, tokenSymbol, sentoId, amountId) {
+    function submitTransferValue(tokenSymbol, sentoId, amountId, hashId) {
         var sendto = document.getElementById(sentoId).value;
         var amount = document.getElementById(amountId).value;
-        userWalletGM.submitTransferValue(tokenSymbol, sendto, amount, hashId);
+        userWalletGM.submitTransferValue(tokenSymbol, sendto, amount, hashId, function() {
+            window.location.reload(true);
+        });
     }
 
     function loadHtml(elementId, func1, func2) {
         var enableWalletPrefix = func1 + "('EnableWalletHash')";
  
         var transPrefix = func2 + "('"; 
-        var transSuffix = "','TrasferHash')";
+        var transSuffix = "','EnableWalletHash')";
 
         var symbol;
         var adr;
@@ -70,12 +72,13 @@ session_start();
         //var titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
         var titlle = 'user wallet address: <text> <a href="https://rinkeby.etherscan.io/address/0x' + userWallet + '#tokentxns" target="_blank" >' + userWallet + '</a></text>'
 
-        text = '<div class="well" align="center" >' + titlle + '</div>';
+        text = '<div class="well" align="center" >' + titlle ;
+        text += '<br> <br> <text id="EnableWalletHash" value = "log:"> </text> <br> </div>';
+
         text += '<div class="well">';
 
         if (userWallet == 0x0) {
             text += '<button type="button" onClick="' + enableWalletPrefix + '">Enable  Wallet</button><br>'
-            text += '<text id="EnableWalletHash" value = "log:"> </text> <br>';
         } else {
             text += '<table align="center" style="width:600px;min-height:30px">'
             text += '<tr><text id="TrasferHash" value = "log:"> </text> <tr>';
@@ -93,8 +96,8 @@ session_start();
                 text += '   <td><text>' + symbol + '</text></td>'
                 text += '   <td><text>' + balance + '</text></td>'
                 text += '   <td><text>' + locked + '</text></td>'
-                text += '   <td>DestAdr: <input style="width:100px" id="' + sentoId + '"></input><br>'
-                text += '       Amount: <input style="width:100px" id="' + amountId + '"></input></td>'
+                text += '   <td>DestAdr: <input style="width:120px" id="' + sentoId + '"></input><br>'
+                text += '       Amount: <input style="width:120px" id="' + amountId + '"></input></td>'
                 text += '   <td><button type="button" onClick="' + transPrefix + symbol + "', '" + sentoId + "', '" + amountId + transSuffix + '">  Transfer  </button></td>'
                 text += '</tr>'
                 text += '<tr> <td>------</td> <td>------</td> <td>---</td> <td>---</td>  <td>---</td> </tr>'
