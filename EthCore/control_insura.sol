@@ -46,7 +46,7 @@ contract ControlInsura is ControlBase {
         require(status == "CREATED");
 
         address agrWalletAdr     = enableWallet(_agrName, agrAdr, _creator);
-        address userWallet       = getWalletAddress(userName);
+        address userWallet       = getBindedWalletAddress(userName);
         address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
 
         uint lockedAmount = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(agrAdr).getParameter("insurance")));
@@ -72,8 +72,8 @@ contract ControlInsura is ControlBase {
         require(price > 0);
         price = price.mul(1 ether);
 
-        address recWallet   = getWalletAddress(userName); 
-        address agrWallet   = getWalletAddress(_agrName);
+        address recWallet   = getBindedWalletAddress(userName); 
+        address agrWallet   = getBindedWalletAddress(_agrName);
         address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
 
         uint ret = DBNode(recWallet).executeTransaction(tokenContractAdr, agrWallet, price);
@@ -82,7 +82,7 @@ contract ControlInsura is ControlBase {
         getDBNode(dbName_, userName).bindAgreement(agrAdr);
 
         bytes32 provider = DBNode(agrAdr).getParameter("provider");
-        address proWallet = getWalletAddress(provider);
+        address proWallet = getBindedWalletAddress(provider);
         DBNode(recWallet).executeTransaction(tokenContractAdr, proWallet, price);
         
         return ret;
@@ -100,9 +100,9 @@ contract ControlInsura is ControlBase {
         bytes32 receiver = DBNode(agrAdr).getParameter("receiver");
         require(userName == provider || userName == receiver);
 
-        address proWallet = getWalletAddress(provider);
-        address recWallet = getWalletAddress(receiver);
-        address agrWallet = getWalletAddress(receiver);
+        address proWallet = getBindedWalletAddress(provider);
+        address recWallet = getBindedWalletAddress(receiver);
+        address agrWallet = getBindedWalletAddress(receiver);
         address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
 
         uint lockedAmount;
@@ -130,7 +130,7 @@ contract ControlInsura is ControlBase {
 
     function numUserTransactions() public view returns (uint) {
         bytes32 userName = checkAllowed(msg.sender, "null");
-        address walletAdr = getWalletAddress(userName);
+        address walletAdr = getBindedWalletAddress(userName);
         require(walletAdr != address(0));
         
         return DBNode(walletAdr).numTransactions();
