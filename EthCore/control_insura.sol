@@ -12,6 +12,89 @@ contract ControlInsura is ControlBase {
     function ControlInsura(bytes32 _name) public ControlBase(_name) {
     }
 
+    function getBindedWalletAddress(bytes32 _enName) internal view returns (address) {
+        bytes32 walletName;
+        
+        walletName = formatWalletName(_enName);
+        return address(getDBNode(dbName_, walletName)); 
+    }
+
+    function createNodeForElement(bytes32 _type, bytes32 _userName, bytes32 _nodeName, bytes32 _extra) internal returns (address) {
+        address ndAdr;
+        address parentAdr;
+
+        if (_type == "template") {
+            parentAdr = address(getDBNode(dbName_, _userName));
+        } else if (_type == "agreement") {
+            parentAdr = address(getDBNode(dbName_, _extra));
+        }
+
+        ndAdr = getDBFactory(_type).createNode(_nodeName, parentAdr, 0x0);
+        require(ndAdr != 0);
+
+        if (_type == "template") {
+            DBNode(ndAdr).setParameter("provider", _userName);
+        } else if (_type == "agreement") {
+            duplicateNode(getDBNode(dbName_, _extra),  ndAdr);
+             uint lockedAmount;
+             uint price;
+             uint duration;
+     
+             lockedAmount = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(ndAdr).getParameter("insurance")));
+             price        = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(ndAdr).getParameter("price")));
+             duration     = PlatString.stringToUint(PlatString.bytes32ToString(DBNode(ndAdr).getParameter("duration")));
+
+             require(lockedAmount > 0 && price > 0 && duration >= 60);
+        }
+        return ndAdr;
+    }
+
+    /////////////////////////////
+    
+    function createElementNode(bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo) public returns (address) {
+        bytes32 userName = checkAllowed(msg.sender, _enName);
+        
+        require(_factoryType == "template" || _factoryType == "agreement");
+        require(address(getDBNode(dbName_, _enName)) == address(0));
+        
+        address ndAdr = createNodeForElement(_factoryType, userName, _enName, _extraInfo);
+        require(ndAdr != address(0));
+        registerEntityNode(msg.sender, _enName);
+        
+        return ndAdr;
+    }
+
+    //------2018-07-06: new verstion: YYA------ 
+    function enableUserWallet() public returns (address) {
+        bytes32 userName = checkAllowed(msg.sender, "null");
+        address userAdr = address(getDBNode(dbName_, userName));
+        require(userAdr != 0);
+
+        bytes32 walletName = formatWalletName(userName);
+        address walletAdr  = enableWallet(walletName, userAdr, msg.sender);
+        require(walletAdr != 0);
+
+        preallocateZSCToTester(walletAdr);
+
+        return walletAdr;
+    }
+
+    /// @dev Create an user
+    function createUserNode(bytes32 _factoryType, bytes32 _userName, address _extraAdr) public returns (address) {
+        checkDelegate(msg.sender, 1);     
+
+        require(_factoryType == "staker" || _factoryType == "provider" || _factoryType == "receiver");
+        require(address(getDBNode(dbName_, _userName)) == 0);
+
+        address creator = _extraAdr;
+        address parentAdr = getDBDatabase(dbName_).getRootNode();
+        address ndAdr = getDBFactory(_factoryType).createNode(_userName, parentAdr, creator); 
+        require(ndAdr != address(0));
+        registerUserNode(creator, _userName, _factoryType);
+        
+        return ndAdr;
+    }
+
     function numTemplates() public view returns (uint) {
         bytes32 en = checkAllowed(msg.sender, "null");
         return getDBNode(dbName_, en).numTemplates();
@@ -45,7 +128,8 @@ contract ControlInsura is ControlBase {
         bytes32 status = DBNode(agrAdr).getParameter("status");
         require(status == "CREATED");
 
-        address agrWalletAdr     = enableWallet(_agrName, agrAdr, _creator);
+        bytes32 agrWalletName    = formatWalletName(_agrName);
+        address agrWalletAdr     = enableWallet(agrWalletName, agrAdr, _creator);
         address userWallet       = getBindedWalletAddress(userName);
         address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
 
