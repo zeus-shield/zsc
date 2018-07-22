@@ -90,8 +90,10 @@ ZSCRobotOwned.prototype.enhanceMinerRobot = function(hashId, robotId, func) {
 ZSCRobotOwned.prototype.publishMinerRobot = function(hashId, robotId, price, func) {
     var gm = this;
     var callBack = func;
+
+    var priceInEther = web3.toWei(price, 'ether');
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-    myControlApi.publishMinerRobot(robotId, web3.toWei(price, 'ether'), 
+    myControlApi.publishMinerRobot(robotId, priceInEther, 
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
