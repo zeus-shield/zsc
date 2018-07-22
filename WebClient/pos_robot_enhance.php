@@ -66,12 +66,12 @@ session_start();
         var hashId;
         var robotNos = userRobotGM.getRobotNos();
     
-        var titlle = "user owned robots: " 
+        var titlle = "User owned robots" 
 
-        text  = '<div class="well">' + titlle + '<br>';
+        text  = '<div class="well" align="center" >' + titlle + '<br>';
         text  = '<text id="OperationHash" value = "log:"> </text> </div>';
 
-        text += '<div class="well">'
+        text += '<div class="well" align="center" >'
         text += '   <button type="button" onClick="' + createGen0Func + '">  Create Gen0 ZSC miner robot </button> <br>'
         text += '</div>';
 

@@ -58,9 +58,9 @@ session_start();
 
         var robotNos = robotMarketGM.getRobotNos();
     
-        var titlle = "Robot markets: " 
+        var titlle = "Robot markets" 
 
-        text  = '<div class="well">' + titlle + '<br>';
+        text  = '<div class="well" align="center" >' + titlle + '<br>';
         text  = '<text id="OperationHash" value = "log:"> </text> </div>';
 
         text += '<div class="well">';

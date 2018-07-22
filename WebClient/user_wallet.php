@@ -64,7 +64,7 @@ session_start();
         //var titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
         var titlle = 'user wallet address: <text> <a href="https://rinkeby.etherscan.io/address/0x' + userWallet + '#tokentxns" target="_blank" >' + userWallet + '</a></text>'
 
-        text = '<div class="well">' + titlle + '</div>';
+        text = '<div class="well" align="center" >' + titlle + '</div>';
         text += '<div class="well">';
 
         if (userWallet == 0x0) {
