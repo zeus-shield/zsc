@@ -20,7 +20,6 @@ class ZSCInclude {
         $text=
         '<table align="center" style="width:650px">'.
         ' <tr>'.
-        '  <td align="center"><a href="user_profile.php"> [User-profile] </a></td>'.
         '  <td align="center"><a href="user_wallet.php"> [User-wallet] </a></td>'.
         '  <td align="center"><a href="pos_robot_enhance.php"> [Manage-robot]</a></td>'.
         '  <td align="center"><a href="pos_robot_mine.php"> [PoS-mining] </a></td>'.
