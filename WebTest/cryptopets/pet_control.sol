@@ -5,4 +5,6 @@
 pragma solidity ^0.4.21;
 
 contract PetControl {
+
+    function PetControl() public {}
 }
