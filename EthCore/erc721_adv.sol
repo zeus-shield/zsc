@@ -31,6 +31,8 @@ contract ERC721 {
 contract Erc721Adv is ERC721, Delegated {
     using SafeMath for uint;
 
+    uint private generatedTokenNos_;
+
     // Total amount of tokens
     uint private totalTokens_;
 
@@ -51,6 +53,10 @@ contract Erc721Adv is ERC721, Delegated {
 
     function checkTradeAble(uint256 _tokenId) internal view returns (bool);
 
+    function generatedTokenNos() internal view returns (uint) {
+        return generatedTokenNos_;
+    }
+    
     function checkOnlyOwnerOf( address _user, uint _tokenId) private view {
         require(tokenOwner_[_tokenId] == _user);
     }
