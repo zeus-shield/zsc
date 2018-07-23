@@ -4,7 +4,7 @@ Copyright (c) 2018 ZSC Dev Team
 */
 
 session_start();
-$_SESSION["userType"] = "staker";
+$_SESSION["userType"] = $_GET['type'];
 ?>
 
 <html>
@@ -28,6 +28,7 @@ echo $htmlObjects->loadScriptFiles();
     /////////////////////////////
     <?php echo $htmlObjects->loadWeb3();?>
     var checkeWeb3Account = <?php echo $htmlObjects->checkWeb3Account();?>;
+    var userType = <?php echo "'".$_SESSION["userType"]."'";?>;
     var userLogin;
 
     checkeWeb3Account(function(account) {
@@ -37,11 +38,11 @@ echo $htmlObjects->loadScriptFiles();
     /////////////////////////////
     
     function applyForZSCUser(userType, hashId) {
-        userLogin.activeByUser(hashId);
+        userLogin.activeByUser(userType, hashId);
     }
 
     function checkUser(adrId) { 
-        userLogin.tryLogin(function(ret) {
+        userLogin.tryLogin(userType, function(ret) {
             var textBody;
             if(ret) {
                 textBody = '<table align="center"> <tr><td><i>Welcome!</i> </td></tr></table>'; 
