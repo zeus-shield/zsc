@@ -21,7 +21,23 @@ echo $htmlObjects->loadScriptFiles();
     </div>
 
 <script type="text/javascript">
+    loadIndexPageBody();
+    
+    function gotoLoin(type) {
+        var href = "index_login.php?type=" + type;
+        window.location.href = href;
+    }
 
+    function loadIndexPageBody() { 
+        var funcPrefix = "gotoLoin('" 
+        var funcSuffix = "')"
+
+        var text = ''
+        text += '<button type="button" onClick="' + funcPrefix + "provider" + funcSuffix + '">For provider </button> <br><br>'
+        text += '<button type="button" onClick="' + funcPrefix + "receiver" + funcSuffix + '">For receiver </button> <br><br>'
+        text += '<button type="button" onClick="' + funcPrefix + "staker" + funcSuffix + '">For staker </button> <br><br>'
+        document.getElementById("PageBody").innerHTML = text;
+    }
 </script>
 
 </body>
