@@ -37,7 +37,7 @@ echo $htmlObjects->loadScriptFiles();
     /////////////////////////////
     
     function applyForZSCUser(userType, hashId) {
-        userLogin.activeByUser(userType, hashId);
+        userLogin.activeByUser(hashId);
     }
 
     function checkUser(adrId) { 
