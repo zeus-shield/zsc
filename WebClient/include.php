@@ -20,11 +20,41 @@ class ZSCInclude {
         $text=
         '<table align="center" style="width:650px">'.
         ' <tr>'.
+        '  <td align="center"><a href="index.php"> [Home] </a></td>'.
         '  <td align="center"><a href="user_wallet.php"> [User-wallet] </a></td>'.
         '  <td align="center"><a href="pos_robot_enhance.php"> [Manage-robot]</a></td>'.
         '  <td align="center"><a href="pos_robot_mine.php"> [PoS-mining] </a></td>'.
         '  <td align="center"><a href="pos_robot_selling.php"> [Selling-robot] </a></td>'.
         '  <td align="center"><a href="pos_robot_market.php"> [Robot-market] </a></td>'.
+        ' </tr>'.
+        '</table>';
+        return $text;
+    }
+
+    private function loadInsuraProviderHeader() {
+        $text=
+        '<table align="center" style="width:650px">'.
+        ' <tr>'.
+        '  <td align="center"><a href="index.php"> [Home] </a></td>'.
+        '  <td align="center"><a href="user_profile.php"> [User-profile] </a></td>'.
+        '  <td align="center"><a href="user_wallet.php"> [User-wallet] </a></td>'.
+        '  <td align="center"><a href="insura_tmp.php"> [Templats]</a></td>'.
+        '  <td align="center"><a href="insura_agr_provider.php"> [Agreements]</a></td>'.
+        '  <td align="center"><a href="insura_agr_all.php"> [Market]</a></td>'.
+        ' </tr>'.
+        '</table>';
+        return $text;
+    }
+
+    private function loadInsuraReceiverHeader() {
+        $text=
+        '<table align="center" style="width:650px">'.
+        ' <tr>'.
+        '  <td align="center"><a href="index.php"> [Home] </a></td>'.
+        '  <td align="center"><a href="user_profile.php"> [User-profile] </a></td>'.
+        '  <td align="center"><a href="user_wallet.php"> [User-wallet] </a></td>'.
+        '  <td align="center"><a href="insura_agr_receiver.php"> [Agreements]</a></td>'.
+        '  <td align="center"><a href="insura_agr_all.php"> [Market]</a></td>'.
         ' </tr>'.
         '</table>';
         return $text;
@@ -67,10 +97,17 @@ class ZSCInclude {
     }
 
     public function loadHeader() {
-        if ($this->$g_userType == "staker") {
+        if ($this->$g_userType == "provider") {
+            return $this->loadInsuraProviderHeader();
+
+        } else if ($this->$g_userType == "receiver") {
+            return $this->loadInsuraReceiverHeader();
+
+        } else if ($this->$g_userType == "staker") {
             return $this->loadPosHeader();
+
         } else {
-            return $this->$g_userType;
+            return 'user type:'.$this->$g_userType;
         }
     }
 
