@@ -25,12 +25,13 @@ session_start();
     /////////////////////////////
     <?php echo $htmlObjects->loadWeb3();?>
     var checkeWeb3Account = <?php echo $htmlObjects->checkWeb3Account();?>;
+    var userType = <?php echo "'".$_SESSION["userType"]."'";?>;
     var userLogin;
     var userWalletGM;
 
     checkeWeb3Account(function(account) {
         userLogin = new ZSCLogin(account);
-        userLogin.tryLogin(function(ret) { 
+        userLogin.tryLogin(userType, function(ret) {
             if(!ret) { 
                 window.location.href = "index.php";
             } else {
