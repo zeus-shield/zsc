@@ -20,16 +20,16 @@ ZSCLogin.prototype.getUserType = function() { return this.userType; }
 ZSCLogin.prototype.getControlApisAdr = function() { return this.controlApisAdr; }
 ZSCLogin.prototype.getControlApisFullAbi = function() { return this.controlApisFullAbi; }
 ZSCLogin.prototype.getLoginAbi = function() { 
-    return [{"constant":false,"inputs":[{"name":"_type","type":"string"}],"name":"activeByUser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getUserType","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisFullAbi","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisAdr","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tryLogin","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getUserStatus","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}];
+    return [{"constant":true,"inputs":[],"name":"getUserType","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisFullAbi","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisAdr","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_type","type":"bytes32"}],"name":"tryLogin","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_type","type":"string"}],"name":"activeByUser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getUserStatus","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}];
 }
 
-ZSCLogin.prototype.tryLogin = function(func){
+ZSCLogin.prototype.tryLogin = function(userType, func){
     var gm = this;
     var callBack = func;
     var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
     console.log(gm.account);
 
-    myAdmAdv.tryLogin({from: gm.account},
+    myAdmAdv.tryLogin(userType, {from: gm.account},
         function(error, result) {
         if(!error) {
             if (result == false) {
