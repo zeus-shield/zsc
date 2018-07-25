@@ -19,5 +19,7 @@ contract PetBase is PetControl {
         uint16 generation_;
     }
 
+    PetInfo[] pets_;
+
     function PetBase() public PetControl() {}
 }

@@ -10,4 +10,8 @@ pragma solidity ^0.4.21;
 contract PetERC721 is PetBase, ERC721 {
 
     function PetERC721() public PetBase() {}
+
+    function totalSupply() public view returns (uint256) {
+        return pets_.length - 1;
+    }
 }
