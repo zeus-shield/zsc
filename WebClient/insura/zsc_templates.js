@@ -3,20 +3,17 @@ Copyright (c) 2018 ZSC Dev Team
 */
 
 //class zscWallet
-function ZSCTemplate(nm, abi, adr) {
-    this.userName = nm;
+function ZSCTemplate(account, adr, abi) {
     this.userType;
     this.tmpNos = 0;
     this.tmpNames = [];
     this.tmpChildrenNos = [];
-    this.account = web3.eth.accounts[0];
+    this.account = account;
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
     this.gasPrice = bF_getGasPrice();
     this.gasLimit = bF_getGasLimit(700);
 }
-
-ZSCTemplate.prototype.getUserName = function() {return this.userName;}
 
 ZSCTemplate.prototype.getTmpName = function(index) { return this.tmpName[index];}
 
@@ -48,7 +45,7 @@ ZSCTemplate.prototype.numTemplates= function(gm, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.numTemplates(gm.userName,
+    myControlApi.numTemplates(
         {from: gm.account},
         function(error, result){ 
             if(!error) {
@@ -64,7 +61,7 @@ ZSCTemplate.prototype.getTmpNameByIndex = function(gm, index, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     
-    myControlApi.getTemplateNameByIndex(gm.userName, index,
+    myControlApi.getTemplateNameByIndex(index,
         {from: gm.account},
         function(error, result){ 
             if(!error) {
@@ -80,7 +77,7 @@ ZSCTemplate.prototype.numTmpChildrenNos = function(gm, index, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     
-    myControlApi.numElementChildren(gm.userName, gm.tmpNames[index],
+    myControlApi.numElementChildren(gm.tmpNames[index],
         {from: gm.account},
         function(error, result){ 
             if(!error) {
@@ -101,7 +98,7 @@ ZSCTemplate.prototype.creatNewTemplate = function(logId, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    var tmpName = gm.userName + "-tmp-" + this.tmpNos
+    var tmpName = "-tmp-" + this.tmpNos
     
     //createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
     myControlApi.createElementNode("template", gm.userName, tmpName, "null", 
@@ -149,7 +146,7 @@ ZSCTemplate.prototype.loadTemplatesHtml = function(elementId, funcCreateTmp, fun
 
     var text ="";
 
-    var titlle = this.userType + " [" + this.userName + "] - templates info"
+    var titlle = this.userType + " - templates info"
 
     text += '<div class="well"> <text>' + titlle + ' </text></div>';
 
