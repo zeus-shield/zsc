@@ -3,23 +3,25 @@ Copyright (c) 2018 ZSC Dev Team
 */
 
 //class zscWallet
-function ZSCAgreementAll(nm, abi, adr) {
-    this.userName = nm;
+function ZSCAgreementAll(account, adr, abi) {
     this.userType;
     this.allAgrNos = 0;
     this.allAgrNames = [];
     this.allAgrStatus = [];
     this.itemTags = [];
-    this.account = web3.eth.accounts[0];
+    this.account = account;
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
     this.gasPrice = bF_getGasPrice();
     this.gasLimit = bF_getGasLimit(700);
 }
 
-ZSCAgreementAll.prototype.getUserName = function() {return this.userName;}
+ZSCAgreementAll.prototype.numAgrs = function() {return this.allAgrNos;}
+ZSCAgreementAll.prototype.getAgrName = function(index) {return this.allAgrNames[index];}
+ZSCAgreementAll.prototype.getAgrStatus = function(index) {return this.allAgrStatus[index];}
 
 ZSCAgreementAll.prototype.setUserType = function(type) {this.userType = type;}
+ZSCAgreementAll.prototype.getUserType = function(type) {return this.userType;}
 
 ZSCAgreementAll.prototype.resetAllItemTags = function(gm) {
     for (var i = 0; i < gm.agrNos; ++i) {
@@ -63,7 +65,7 @@ ZSCAgreementAll.prototype.numAllAgreements= function(gm, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
         
-    myControlApi.numFactoryElements(gm.userName, "agreement", 
+    myControlApi.numFactoryElements("agreement", 
         {from: gm.account},
         function(error, result){ 
             if(!error) {
@@ -79,7 +81,7 @@ ZSCAgreementAll.prototype.getAllAgreementNameByIndex = function(gm, index, func)
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.getFactoryElementNameByIndex(gm.userName, "agreement", index,
+    myControlApi.getFactoryElementNameByIndex("agreement", index,
         {from: gm.account},
         function(error, result){ 
             if(!error) {
@@ -95,7 +97,7 @@ ZSCAgreementAll.prototype.getAllAgreementStatus = function(gm, index, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.getElementParameter(gm.userName, gm.allAgrNames[index], "status",
+    myControlApi.getElementParameter(gm.allAgrNames[index], "status",
         {from: gm.account},
         function(error, result){ 
             if(!error) {
@@ -113,7 +115,7 @@ ZSCAgreementAll.prototype.submitPurchaseAgreement = function(elementName, func) 
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.purchaseAgreement(gm.userName, elementName,
+    myControlApi.purchaseAgreement(elementName,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) {
