@@ -10,4 +10,9 @@ contract Ownable {
     function Ownable() public {
         owner_ = msg.sender;
     }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner);
+        _;
+  }
 }
