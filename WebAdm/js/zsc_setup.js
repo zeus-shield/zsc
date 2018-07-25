@@ -24,8 +24,8 @@ function ZSCSetup(logRecorderAdr, timerAdr, zscTokenAdr, adrs) {
     this.PosManagerAdr       = adrs[9];
     this.ControlApisAdvAdr   = adrs[10];
     this.account = web3.eth.accounts[0];
-    this.gasPrice = cC_getGasPrice(20);
-    this.gasLimit = cC_getGasLimit(700);
+    this.gasPrice = cC_getGasPrice();
+    this.gasLimit = cC_getGasLimit();
 }
 
 ZSCSetup.prototype = new ZSCJsBase();
