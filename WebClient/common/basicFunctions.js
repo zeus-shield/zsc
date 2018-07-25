@@ -11,7 +11,7 @@ function bF_getEthAccount() {
 }
 
 function bF_getGasPrice() {
-    return 10 * 1000000000; //30 * gwei
+    return 20 * 1000000000; //30 * gwei
 }
 
 function bF_getGasLimit() {

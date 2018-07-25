@@ -71,7 +71,7 @@ session_start();
         var userWallet = userWalletGM.getWalletAddress();
     
         //var titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
-        var titlle = 'user wallet address: <text> <a href="https://rinkeby.etherscan.io/address/0x' + userWallet + '#tokentxns" target="_blank" >' + userWallet + '</a></text>'
+        var titlle = 'user wallet address: <text> <a href="https://rinkeby.etherscan.io/address/' + userWallet + '#tokentxns" target="_blank" >' + userWallet + '</a></text>'
 
         text = '<div class="well" align="center" >' + titlle ;
         text += '<br> <br> <text id="EnableWalletHash" value = "log:"> </text> <br> </div>';
