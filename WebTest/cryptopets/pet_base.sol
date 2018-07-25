@@ -20,10 +20,10 @@ contract PetBase is PetControl {
     }
 
     PetInfo[] pets_;
-    mapping (uint256 => address) indexToOwner;
-    mapping (address => uint256) ownerToCount;
-    mapping (uint256 => address) indexToApproved;
-    mapping (uint256 => address) indexToSireApproved;
+    mapping (uint256 => address) indexToOwner_;
+    mapping (address => uint256) ownerToCount_;
+    mapping (uint256 => address) indexToApproved_;
+    mapping (uint256 => address) indexToSireApproved_;
 
     function PetBase() public PetControl() {}
 }

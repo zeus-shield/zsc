@@ -14,4 +14,8 @@ contract PetERC721 is PetBase, ERC721 {
     function totalSupply() public view returns (uint256) {
         return pets_.length - 1;
     }
+
+    function balanceOf(address _owner) public view returns (uint256) {
+        return ownerToCount_[_owner];
+    }
 }
