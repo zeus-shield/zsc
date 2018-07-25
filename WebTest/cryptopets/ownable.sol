@@ -14,5 +14,11 @@ contract Ownable {
     modifier onlyOwner() {
         require(msg.sender == owner_);
         _;
-  }
+    }
+
+    function transferOwnership(address _newOwner) public onlyOwner {
+        if (address(0) != _newOwner) {
+          owner = _newOwner;
+        }
+    }
 }
