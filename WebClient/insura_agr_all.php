@@ -27,7 +27,7 @@ session_start();
     var checkeWeb3Account = <?php echo $htmlObjects->checkWeb3Account();?>;
     var userType = <?php echo "'".$_SESSION["userType"]."'";?>;
     var userLogin;
-    var allAgreementGM;
+    var allAgrGM;
 
     checkeWeb3Account(function(account) {
         userLogin = new ZSCLogin(account);
@@ -35,7 +35,8 @@ session_start();
             if(!ret) {  
                 window.location.href = "index.php";
             } else {
-                allAgreementGM = new ZSCAgreementAll(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
+                allAgrGM = new ZSCAgreementAll(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
+                allAgrGM.setUserType(userType);
                 loadAllAgreements();
             }
         });
@@ -43,7 +44,32 @@ session_start();
 
     /////////////////////////////
     function loadAllAgreements() {
+        templateGM.loadTempates(function() {
+            loadAllAgreementsHtml("showAgreementParameters", "submitPurchaseAgreement");
+        });
     }
+
+    function showAgreementParameters(tmpName) {
+        var temp = tmpName;
+        paraGM = new ZSCElement(account, tmpName, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
+        paraGM.loadParameterNamesAndvalues(function() {
+            loadParametersHtml(temp, "loadTemplates");
+        });
+    }
+
+    function submitPurchaseAgreement(elementName) {
+        allAgrGM.submitPurchaseAgreement(elementName, function() {
+            loadAllAgreements();
+        });
+    }
+
+    function loadAllAgreementsHtml(showFunc, purchaseFunc) {
+       
+    }
+
+    function loadParametersHtml(tmpName, funcName) {
+    }
+
 
 </script>
 
