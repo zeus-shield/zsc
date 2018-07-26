@@ -36,8 +36,7 @@ contract Object is Delegated {
         name_ = _name;
     }
 
-    function name() public view returns (bytes32) { 
-        checkDelegate(msg.sender, 1);
+    function objName() public view returns (bytes32) { 
         return name_;
     }
 
