@@ -12,8 +12,8 @@ function ZSCWalletMangement(controlApiAdr, controlApiAbi, tokenManagerAdr, token
     this.account = web3.eth.accounts[0];
     this.myControlApi = web3.eth.contract(controlApiAbi).at(controlApiAdr);
     this.myTokenManager= web3.eth.contract(tokenManagerAbi).at(tokenManagerAdr);
-    this.gasPrice = cC_getGasPrice(20);
-    this.gasLimit = cC_getGasLimit(700);
+    this.gasPrice = cC_getGasPrice();
+    this.gasLimit = cC_getGasLimit();
 }
 
 ZSCWalletMangement.prototype.addTokenContractInfo = function(nameId, symbolId, decimalsId, adrId, hashId, func) {

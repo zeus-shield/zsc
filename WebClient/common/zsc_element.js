@@ -16,7 +16,7 @@ function ZSCElement(acount, en, controlApisAdvAdr, controlApisAdvAbi) {
     this.contractAdr = controlApisAdvAdr;
     this.contractAbi = JSON.parse(controlApisAdvAbi);
     this.gasPrice = bF_getGasPrice();
-    this.gasLimit = bF_getGasLimit(700);
+    this.gasLimit = bF_getGasLimit();
 }
 
 ZSCElement.prototype.getElementName = function() { return this.enName;}

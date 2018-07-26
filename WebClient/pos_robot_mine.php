@@ -78,14 +78,14 @@ session_start();
         tokenType += '</select></td>'
 
         var posType = '<td><select id = "PosType" style="width:80px">'
-        posType += '<option value ="7">7 Days (3%) </option>'
-        posType += '<option value ="30">30 Days (3.5%)</option>'
-        posType += '<option value="90">90 Days (4%)</option>'
-        posType += '<option value="180">180 Days (5%)</option>'
-        posType += '<option value="360">360 Days (6%)</option>'
+        posType += '<option value ="7">7 Days (1.0%) </option>'
+        posType += '<option value ="30">30 Days (2.0%)</option>'
+        posType += '<option value="90">90 Days (3.5%)</option>'
+        posType += '<option value="180">180 Days (5.0%)</option>'
+        posType += '<option value="360">360 Days (7.5%)</option>'
         posType += '</select></td>'
 
-        var titlle = "user mining (TestZSC) status: " 
+        var titlle = "user mining (TestZSC) status - [1 day <=> 1 minute]: " 
 
         text  = '<div class="well">' + titlle + '<br>';
         text += '<text id="OperationHash" value = "log:"> </text> </div>';
@@ -111,7 +111,11 @@ session_start();
                 text += '   <td><text>' + robotId + '</text></td>'
                 text += '   <td><text>' + userRobotGM.getRobotLev(i) + '</text></td>'
                 text += '   <td><text>' + userRobotGM.getCurSP(i) + '<br>'  + userRobotGM.getMaxSP(i) + '</text></td>'
-                text += '   <td><text>' + userRobotGM.getRewardRatio(i) / 100 + '%</text></td>'
+                if (status == "Mining") {
+                    text += '   <td><text>' + userRobotGM.getRewardRatio(i) / 100 + '%</text></td>'
+                } else {
+                    text += '   <td><text> ~%</text></td>'
+                }
                 text += '   <td><text>' + userRobotGM.getMineStart(i) + '<br>'  + userRobotGM.getMineEnd(i) + '</text></td>'
                 text += tokenType;
                 text += posType;

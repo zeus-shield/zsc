@@ -17,8 +17,8 @@ function ZSCUserManagement(admAdr, abi) {
     this.userNos = 0;
     this.account = web3.eth.accounts[0];
     this.myAdmAdv = web3.eth.contract(abi).at(admAdr);
-    this.gasPrice = cC_getGasPrice(20);
-    this.gasLimit = cC_getGasLimit(700);
+    this.gasPrice = cC_getGasPrice();
+    this.gasLimit = cC_getGasLimit();
 }
 
 ZSCUserManagement.prototype = new ZSCJsBase();

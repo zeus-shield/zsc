@@ -73,12 +73,12 @@ session_start();
         text  = '<text id="OperationHash" value = "log:"> </text> </div>';
 
         text += '<div class="well" align="center" >'
-        text += '   <button type="button" onClick="' + createGen0Func + '">  Create Gen0 ZSC miner robot </button> <br>'
+        text += '   <button type="button" onClick="' + createGen0Func + '">  Create Lev0 ZSC miner robot (Cost 0.01ETH) </button> <br>'
         text += '</div>';
 
         text += '<div class="well">';
         text += '<table align="center" style="width:600px;min-height:30px">'
-        text += '   <tr> <td>Robot ID</td> <td>Status</td> <td>Level</td> <td>Max SP</td> <td> Cost (ETH) </td> <td>Enhance (Suc. Prob.) </td> </tr> '
+        text += '   <tr> <td>Robot ID</td> <td>Status</td> <td>Level</td> <td>Max SP</td> <td> Cost (ETH) </td> <td>Upgrade (Up. Prob.) </td> </tr> '
         text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> </tr>'
 
         for (var i = 0; i < robotNos; ++i) {
@@ -103,7 +103,7 @@ session_start();
             text += '   <td><text>' + userRobotGM.getMaxSP(i) + '</text></td>'
             text += '   <td><text>' + userRobotGM.getPriceToEnhance(i) + '</text></td>'
             if (status == "Idle") {
-                text += '   <td><button type="button" onClick="' + enhancePrefix + robotId + enhanceSuffix + '"> Submit (' + userRobotGM.getEnhanceProb(i) + '%)</button></td>'
+                text += '   <td><button type="button" onClick="' + enhancePrefix + robotId + enhanceSuffix + '"> Up. (' + userRobotGM.getEnhanceProb(i) + '%)</button></td>'
             } else {
                 text += '   <td><text>Not Available</text></td>'
             }

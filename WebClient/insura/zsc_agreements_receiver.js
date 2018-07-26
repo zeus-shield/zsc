@@ -15,7 +15,7 @@ function ZSCAgreementReceiver(nm, abi, adr) {
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
     this.gasPrice = bF_getGasPrice();
-    this.gasLimit = bF_getGasLimit(700);
+    this.gasLimit = bF_getGasLimit();
 }
 
 ZSCAgreementReceiver.prototype.getUserName = function() {return this.userName;}

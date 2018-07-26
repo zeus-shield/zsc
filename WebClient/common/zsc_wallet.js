@@ -17,7 +17,7 @@ function ZSCWallet(acount, adr, abi) {
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
     this.gasPrice = bF_getGasPrice();
-    this.gasLimit = bF_getGasLimit(700);
+    this.gasLimit = bF_getGasLimit();
 }
 
 ZSCWallet.prototype.getWalletAddress = function() { return this.tokenAddress;}

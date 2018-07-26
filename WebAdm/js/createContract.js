@@ -179,11 +179,13 @@ function cC_killContract(contractName, adr) {
         });
 }
 
-function cC_getGasPrice(limit) {
+function cC_getGasPrice() {
+    var limit = 10;
     return limit * 1000000000; //limits * gwei
 }
 
-function cC_getGasLimit(limit) {
+function cC_getGasLimit() {
+    var limit = 700;
     return limit * 10**4; //limits * 1 million
 }
 

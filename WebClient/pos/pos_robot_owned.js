@@ -23,7 +23,7 @@ function ZSCRobotOwned(acount, adr, abi) {
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
     this.gasPrice = bF_getGasPrice();
-    this.gasLimit = bF_getGasLimit(700);
+    this.gasLimit = bF_getGasLimit();
 }
 
 ZSCRobotOwned.prototype.getRobotNos = function() { return this.robotNos;}

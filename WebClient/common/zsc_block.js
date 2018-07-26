@@ -12,7 +12,7 @@ function ZSCBlock(nm, abi, adr) {
     this.minedStatus = [];
     this.myControlApi = web3.eth.contract(abi).at(adr);
     this.gasPrice = bF_getGasPrice();
-    this.gasLimit = bF_getGasLimit(700);
+    this.gasLimit = bF_getGasLimit();
 }
 
 ZSCBlock.prototype = new ZSCClient();

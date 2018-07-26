@@ -28,6 +28,7 @@ session_start();
     var userType = <?php echo "'".$_SESSION["userType"]."'";?>;
     var userLogin;
     var templateGM;
+    var paraGM;
 
     checkeWeb3Account(function(account) {
         userLogin = new ZSCLogin(account);
@@ -43,7 +44,26 @@ session_start();
 
     /////////////////////////////
     function loadTemplates() {
+        templateGM.loadTempates(function() {
+            loadHtml("showTemplateParameters", "purchaseAgreement");
+        });
     }
+
+    function showTemplateParameters(tmpName) {
+        var temp = tmpName;
+        paraGM = new ZSCElement(account, tmpName, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
+        paraGM.loadParameterNamesAndvalues(function() {
+            loadParametersHtml(temp, "loadTemplates");
+        });
+    }
+
+    function submitPurchaseAgreement(elementName) {
+        zscAgrsAllGM.submitPurchaseAgreement(elementName, function(result) {
+            loadHtmlPageBody("agreement-all")
+        });
+    }
+
+    
 
 </script>
 
