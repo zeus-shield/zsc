@@ -74,7 +74,7 @@ contract DBModule {
 
     /*ERC721 for miner robot begin*/
     function balanceOf(address _owner) public view returns (uint);
-    function tokenIDOfOwnerByIndex(address _owner, uint _index) public view returns (uint);
+    function tokenOfOwnerByIndex(address _owner, uint _index) public view returns (uint);
     function getRobotInfo(uint _robotId) public view returns (uint, uint, uint, uint, uint, uint);
     function getLevelInfo(uint _index) public view returns (uint, uint, uint, uint);
 
@@ -88,6 +88,7 @@ contract DBModule {
     function claimReward(address _user, uint _robotId) public returns (uint, uint);
     function numSellingRobots() public view returns (uint);
     function getSellingRobotByIndex(uint _index) public view returns (uint, uint, uint, uint, address);
+    function safeTransferFrom(address _from, address _to, uint _tokenId) public;
     /*ERC721 for miner robot end*/
 }
 
@@ -234,14 +235,14 @@ contract ControlBase is Object {
         addLog(PlatString.bytes32ToString(_name), false);
 
         if (_type == "factory") {
-            require(factories_[_name] == address(0));
+            //require(factories_[_name] == address(0));
             factories_[_name] = _adr;
             mapFactoryDatabase(_adr, dbName_, 1);
         } else if (_type == "database") {
-            require(databases_[_name] == address(0));
+            //require(databases_[_name] == address(0));
             databases_[_name] = _adr;       
         } else if (_type == "module") {
-            require(modules_[_name] == address(0));
+            //require(modules_[_name] == address(0));
             modules_[_name] = _adr;       
         } else {
             revert();
@@ -301,7 +302,7 @@ contract ControlBase is Object {
     function getElementChildNameByIndex(bytes32 _enName, uint _index) public view returns (bytes32) {
         address adr = getDBNode(dbName_, _enName).getChildByIndex(_index);
         require(adr != address(0));
-        return Object(adr).name();
+        return Object(adr).objName();
     }
 
     function getElementParameter(bytes32 _enName, bytes32 _parameter) public view returns (bytes32) {
