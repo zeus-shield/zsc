@@ -34,4 +34,13 @@ contract PetERC721 is PetBase, ERC721 {
 
         return owner;
     }
+
+    function approve(address _to, uint256 _tokenId) external whenNotPaused {
+
+        require(_owns(msg.sender, _tokenId));
+
+        _approve(_tokenId, _to);
+
+        Approval(msg.sender, _to, _tokenId);
+    }
 }
