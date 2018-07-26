@@ -35,7 +35,7 @@ contract AbisForUserControlApis {
     function getModuleAddresses() public view returns (string);
     
     /*ERC721 for miner robot begin*/
-    function numUserMinerRobot() public view returns (uint);
+    function numUserMinerRobot(bool _fromSystemWallet) public view returns (uint);
     function getUserMinerRobotInfoByIndex(uint _index) public view returns (string);
     function numSellingMinerRobot() public view returns (uint);
     function getSellingMinerRobotInfoByIndex(uint _index) public view returns (string);
@@ -48,5 +48,8 @@ contract AbisForUserControlApis {
     function purchaseMinerRobot(uint _robotId) public;
     function claimReward(uint _robotId, bytes32 _tokenType) public;
     /*ERC721 for miner robot end*/
+
+    function takeOutToOwner(uint256 _tokenId) public;
+    function transferToOther(address _dest, uint256 _tokenId) public;
 }
 
