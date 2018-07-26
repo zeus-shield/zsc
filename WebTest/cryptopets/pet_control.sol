@@ -10,6 +10,8 @@ contract PetControl {
     address cfoAddress_;
     address cooAddress_;
 
+    bool paused_ = false;
+
     modifier onlyCEO() {
         require(msg.sender == ceoAddress_);
         _;
@@ -30,6 +32,16 @@ contract PetControl {
             || msg.sender == ceoAddress_
             || msg.sender == cfoAddress_
         );
+        _;
+    }
+
+    modifier whenNotPaused() {
+        require(!paused_);
+        _;
+    }
+
+    modifier whenPaused {
+        require(paused_);
         _;
     }
 
