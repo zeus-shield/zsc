@@ -80,7 +80,7 @@ contract DBNode is Object {
     function removeFromParent() public {
         checkDelegate(msg.sender, 1);
         if (parent_ != address(0)) {
-            DBNode(parent_).removeChild(name());
+            DBNode(parent_).removeChild(objName());
         }
         parent_ = address(0);
     }
@@ -102,7 +102,7 @@ contract DBNode is Object {
         DBNode(_node).setDatabase(database_);
 
         children_.push(_node);
-        childMap_[DBNode(_node).name()] = _node;
+        childMap_[DBNode(_node).objName()] = _node;
         return _node;
     }
 
@@ -127,7 +127,7 @@ contract DBNode is Object {
 
         address nd;
         for (uint i = 0; i < children_.length; ++i) {
-            if (DBNode(children_[i]).name() == _name) {
+            if (DBNode(children_[i]).objName() == _name) {
                 nd = children_[i];
                 children_[i] = children_[children_.length - 1];
                 break;
@@ -150,7 +150,7 @@ contract DBNode is Object {
 
         for (uint i = 0; i < children_.length; ++i) {
             CBDBDatabase(database_).destroyNode(children_[i]);
-            delete childMap_[DBNode(children_[i]).name()];
+            delete childMap_[DBNode(children_[i]).objName()];
         }
         children_.length = 0;
     }  
