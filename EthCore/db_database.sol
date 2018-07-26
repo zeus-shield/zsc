@@ -29,7 +29,7 @@ contract DBDatabase is Object {
         addLog("initDatabase", true);
 
         if (rootNode_ == 0) {
-            rootNode_ = new DBNode(name());
+            rootNode_ = new DBNode(objName());
             require(rootNode_ != address(0));
             setDelegate(rootNode_, 1);
             DBNode(rootNode_).setDelegate(_controlApi, 1);
@@ -101,7 +101,7 @@ contract DBDatabase is Object {
     function _addNode(address _node) public {
         checkDelegate(msg.sender, 1);
 
-        bytes32 ndName = Object(_node).name();
+        bytes32 ndName = Object(_node).objName();
         require(nodeExists_[_node] == false);
         require(nodeAddress_[ndName] == address(0));
 
@@ -121,7 +121,7 @@ contract DBDatabase is Object {
             if (nodes_[i] == _node) {
                 address parent = DBNode(nodes_[i]).getParent();
                 if (parent != 0) {
-                    DBNode(parent).removeChild(DBNode(nodes_[i]).name());
+                    DBNode(parent).removeChild(DBNode(nodes_[i]).objName());
                     DBNode(nodes_[i]).removeAndDestroyAllChildren();
                 }
                 nodes_[i] = nodes_[nodes_.length - 1];
@@ -134,7 +134,7 @@ contract DBDatabase is Object {
         delete nodes_[nodes_.length - 1];
         nodes_.length--;
             
-        delete nodeAddress_[DBNode(_node).name()];
+        delete nodeAddress_[DBNode(_node).objName()];
         delete nodeExists_[_node];
         setDelegate(_node, 0);
 
