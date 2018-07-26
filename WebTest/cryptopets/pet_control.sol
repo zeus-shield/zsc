@@ -65,4 +65,7 @@ contract PetControl {
         cooAddress_ = _newCOO;
     }
 
+    function pause() external onlyCLevel whenNotPaused {
+        paused_ = true;
+    }
 }
