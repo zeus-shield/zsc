@@ -35,4 +35,22 @@ contract PetControl {
 
     function PetControl() public {}
 
+    function setCEO(address _newCEO) external onlyCEO {
+        require(address(0) != _newCEO);
+
+        ceoAddress_ = _newCEO;
+    }
+
+    function setCFO(address _newCFO) external onlyCEO {
+        require(address(0) != _newCFO);
+
+        cfoAddress_ = _newCFO;
+    }
+
+    function setCOO(address _newCOO) external onlyCEO {
+        require(address(0) != _newCOO);
+
+        cooAddress_ = _newCOO;
+    }
+
 }
