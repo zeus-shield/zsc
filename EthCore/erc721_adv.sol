@@ -12,15 +12,18 @@ contract ERC721 {
     event Transfer(address indexed _from, address indexed _to, uint indexed _tokenId);
     event Approval(address indexed _owner, address indexed _approved, uint indexed _tokenId);
     event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);
-    function totoalSupply() public view returns (uint);
+    function totalSupply() public view returns (uint);
     function balanceOf(address _owner) public view returns (uint);
     function ownerOf(uint _tokenId) public view returns (address);
+    function transfer(address _to, uint256 _tokenId) public;
     //function safeTransferFrom(address _from, address _to, uint _tokenId, bytes data) public;
     function safeTransferFrom(address _from, address _to, uint _tokenId) public;
     //function transferFrom(address _from, address _to, uint _tokenId) public;
     function approve(address _approved, uint _tokenId) public;
     //function setApprovalForAll(address _operator, bool _approved) public;
     function getApproved(uint _tokenId) public view returns (address);
+    function takeOwnership(uint _tokenId) public;
+    function tokenOfOwnerByIndex(address _owner, uint _index) public view returns (uint);
     //function isApprovedForAll(address _owner, address _operator) public view returns (bool);
 }
 
@@ -47,11 +50,16 @@ contract Erc721Adv is ERC721, Delegated {
 
     // Mapping from token ID to index of the owner tokens list
     mapping(uint => uint) private ownedTokensIndex_;
+
+    string public symbol = "VMB";
+    
+    string public name = "Virtual Miner Robot";
     
     function Erc721Adv() public {
     }
 
     function checkTradeAble(uint256 _tokenId) internal view returns (bool);
+    function tokenURI(uint _tokenId) public view returns (string);
 
     function generatedTokenNos() internal view returns (uint) {
         return generatedTokenNos_;
@@ -70,7 +78,7 @@ contract Erc721Adv is ERC721, Delegated {
         }
     }
 
-    function totoalSupply() public view returns (uint) {
+    function totalSupply() public view returns (uint) {
         return totalTokens_;
     }
 
@@ -84,11 +92,16 @@ contract Erc721Adv is ERC721, Delegated {
         return tokenOwner_[_tokenId];
     }
 
+    function transfer(address _to, uint _tokenId) public {
+        checkCanTransfer(msg.sender, _tokenId);
+        _transfer(msg.sender, _to, _tokenId);
+    }
+
     function safeTransferFrom(address _from, address _to, uint _tokenId) public {
         checkCanTransfer(msg.sender, _tokenId);
         _transfer(_from, _to, _tokenId);
     }
-    
+
     function approve(address _to, uint _tokenId) public {
         checkOnlyOwnerOf( msg.sender, _tokenId);
         require(_to != msg.sender);
@@ -109,7 +122,7 @@ contract Erc721Adv is ERC721, Delegated {
     * @param _index uint for the n-th token in the list of tokens owned by this owner
     * @return uint representing the ID of the token
     */
-    function tokenIDOfOwnerByIndex(address _owner, uint _index) public view returns (uint) {
+    function tokenOfOwnerByIndex(address _owner, uint _index) public view returns (uint) {
         require(_owner != address(0));
         require(_index < ownedTokens_[_owner].length);
         return ownedTokens_[_owner][_index];
