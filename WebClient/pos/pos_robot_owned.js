@@ -24,6 +24,8 @@ function ZSCRobotOwned(acount, adr, abi) {
     this.contractAbi = JSON.parse(abi);
     this.gasPrice = bF_getGasPrice();
     this.gasLimit = bF_getGasLimit();
+
+    this.fromSystemWalletTag = true;
 }
 
 ZSCRobotOwned.prototype.getRobotNos = function() { return this.robotNos;}
@@ -38,8 +40,12 @@ ZSCRobotOwned.prototype.getPriceToEnhance = function(index) { return bF_fixedNum
 ZSCRobotOwned.prototype.getPriceToCreate = function(index) { return bF_fixedNumberFromWei(this.robotPrceToCreate[index], 4); }
 ZSCRobotOwned.prototype.getPriceForSale = function(index) { return bF_fixedNumberFromWei(this.robotPrceForSale[index], 4);}
 ZSCRobotOwned.prototype.getRewardRatio = function(index) { return this.robotRewardRatio[index];}
-ZSCRobotOwned.prototype.getRewards = function(index) { return bF_fixedNumberFromWei(this.robotRewards[index], 4);}
 ZSCRobotOwned.prototype.miningable = function(index) { return (this.robotMineStart[index] == 0);}
+ZSCRobotOwned.prototype.setFromSystemWalletTag = function(tag) { return (this.fromSystemWalletTag = tag);}
+
+ZSCRobotOwned.prototype.getRewards = function(index) { 
+    return bF_fixedNumberFromWei(this.robotRewards[index], 4);
+}
 
 ZSCRobotOwned.prototype.resetAllItemTags = function(gm) {
     for (var i = 0; i < gm.robotNos; ++i) {
@@ -61,6 +67,32 @@ ZSCRobotOwned.prototype.secondsToDate = function(secs) {
     var curdate = new Date(null);
     curdate.setTime(secs * 1000);
     return (curdate.toLocaleString());
+}
+
+ZSCRobotOwned.prototype.takeOutToOwner = function(hashId, roobtId, func) { 
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.takeOutToOwner(roobtId,
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
+        function(error, result){ 
+            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
+            else console.log("error: " + error);
+        });
+}
+
+ZSCRobotOwned.prototype.transferToOther = function(hashId, dest, roobtId, func) { 
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.transferToOther(dest, roobtId,
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
+        function(error, result){ 
+            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
+            else console.log("error: " + error);
+        });
 }
 
 ZSCRobotOwned.prototype.createGen0Robot = function(hashId, func) { 
@@ -140,6 +172,7 @@ ZSCRobotOwned.prototype.claimReward = function(hashId, robotId, tokenType, func)
 ZSCRobotOwned.prototype.loadUserRobots = function(func) {
     var gm = this;
     var callback = func;
+    var gm.loadTag,
 
     gm.numRobots(gm, function(gm) {
         if (gm.robotNos == 0) {
@@ -162,7 +195,7 @@ ZSCRobotOwned.prototype.numRobots = function(gm, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.numUserMinerRobot(
+    myControlApi.numUserMinerRobot(gm.fromSystemWalletTag,
         {from: gm.account},
         function(error, num){ 
             if(!error) { 
