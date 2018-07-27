@@ -69,9 +69,8 @@ ZSCRobotOwned.prototype.secondsToDate = function(secs) {
     return (curdate.toLocaleString());
 }
 
-ZSCRobotOwned.prototype.takeOutToOwner = function(hashId, roobtId, func) { 
+ZSCRobotOwned.prototype.takeOutToOwner = function(hashId, roobtId) { 
     var gm = this;
-    var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
     myControlApi.takeOutToOwner(roobtId,
@@ -82,9 +81,8 @@ ZSCRobotOwned.prototype.takeOutToOwner = function(hashId, roobtId, func) {
         });
 }
 
-ZSCRobotOwned.prototype.transferToOther = function(hashId, dest, roobtId, func) { 
+ZSCRobotOwned.prototype.transferToOther = function(hashId, dest, roobtId) { 
     var gm = this;
-    var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
     myControlApi.transferToOther(dest, roobtId,
@@ -172,7 +170,6 @@ ZSCRobotOwned.prototype.claimReward = function(hashId, robotId, tokenType, func)
 ZSCRobotOwned.prototype.loadUserRobots = function(func) {
     var gm = this;
     var callback = func;
-    var gm.loadTag,
 
     gm.numRobots(gm, function(gm) {
         if (gm.robotNos == 0) {
@@ -211,7 +208,7 @@ ZSCRobotOwned.prototype.loadRobotInfoByIndex = function(gm, index, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.getUserMinerRobotInfoByIndex(Number(index), 
+    myControlApi.getUserMinerRobotInfoByIndex(gm.fromSystemWalletTag, Number(index), 
         {from: gm.account},
         function(error, robotInfo){ 
             if(!error) {
