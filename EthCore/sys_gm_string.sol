@@ -6,8 +6,10 @@ pragma solidity ^0.4.21;
 
 import "./sys_gm_base.sol";
 
+/** @title String manager. */
 contract SysGmString is SysGmBase {
 
+    // Parameter mapping string
     struct ParameterValues {
         uint count_;
         // index => parameter
@@ -20,6 +22,7 @@ contract SysGmString is SysGmBase {
         mapping(bytes32 => string) strings_;
     }
 
+    // User holder info
     struct UserHolderInfo {
         address holder_;
         mapping(address => bool) multisig_;
@@ -28,10 +31,13 @@ contract SysGmString is SysGmBase {
     // database name => user name => entity name => parameter value
     mapping(bytes32 => mapping(bytes32 => mapping(bytes32 => ParameterValues))) private entitys_;
 
+    // database name => user name => holder
     mapping(bytes32 => mapping(bytes32 => UserHolderInfo)) private userHolders_;
 
+    // constructor
     function SysGmString(bytes32 _name) public SysGmBase(_name) {}
 
+    // Check holder.
     function checkHolder(bytes32 _dbName, bytes32 _userName, address _holder) internal view {
         require(_holder == userHolders_[_dbName][_userName].holder_);
     }
@@ -40,7 +46,7 @@ contract SysGmString is SysGmBase {
       * @param _dbName(bytes32): Name of the database.
       * @param _userName(bytes32): Name of the user.
       * @param _holder(address): Address of the holder.
-      * @return none:
+      * @return none.
       */
     function registerHolder(bytes32 _dbName, bytes32 _userName, address _holder) public {
         checkDelegate(msg.sender, 1);
