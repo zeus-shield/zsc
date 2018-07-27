@@ -118,6 +118,12 @@ session_start();
        
         var text ="";
         text += '<div class="well"> <text>' + titlle + ' </text></div>';
+
+        text += '<div>'
+        text += '   <button type="button" onClick="' + functionInput + '">Back</button>'
+        text += '   <text id="Back"></text>'
+        text += '</div>'
+        
         text += '<div class="well">';
         text += '<table align="center" style="width:600px;min-height:30px">'
     
@@ -133,10 +139,6 @@ session_start();
             text += '</tr>'
         }
         text += '</table></div>'
-        text += '<div>'
-        text += '   <button type="button" onClick="' + functionInput + '">Submit Changes</button>'
-        text += '   <text id="Back"></text>'
-        text += '</div>'
 
         document.getElementById(elementId).innerHTML = text;  
     }
