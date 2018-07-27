@@ -38,7 +38,7 @@ contract SysGmString is SysGmBase {
     function SysGmString(bytes32 _name) public SysGmBase(_name) {}
 
     // check holder.
-    function checkHolder(bytes32 _dbName, bytes32 _userName, address _holder) internal view {
+    function _checkHolder(bytes32 _dbName, bytes32 _userName, address _holder) private view {
         require(_holder == userHolders_[_dbName][_userName].holder_);
     }
 
@@ -64,7 +64,7 @@ contract SysGmString is SysGmBase {
         bytes32 _dbName, bytes32 _userName,
         bytes32 _enName, bytes32 _parameter) external returns (bool) {
         // check holder
-        checkHolder(_dbName, _userName, msg.sender);
+        _checkHolder(_dbName, _userName, msg.sender);
 
         // check register
         if(true == entitys_[_dbName][_userName][_enName].registers_[_parameter]) {
@@ -92,7 +92,7 @@ contract SysGmString is SysGmBase {
         bytes32 _dbName, bytes32 _userName,
         bytes32 _enName, bytes32 _parameter, string _value) external returns (bool) {
         // check holder
-        checkHolder(_dbName, _userName, msg.sender);
+        _checkHolder(_dbName, _userName, msg.sender);
 
         // check register
         if(false == entitys_[_dbName][_userName][_enName].registers_[_parameter]) {
@@ -114,7 +114,7 @@ contract SysGmString is SysGmBase {
         bytes32 _dbName, bytes32 _userName,
         bytes32 _enName) external view returns (uint) {
         // check holder
-        checkHolder(_dbName, _userName, msg.sender);
+        _checkHolder(_dbName, _userName, msg.sender);
 
         return  entitys_[_dbName][_userName][_enName].count_;
     }
@@ -130,7 +130,7 @@ contract SysGmString is SysGmBase {
         bytes32 _dbName, bytes32 _userName,
         bytes32 _enName, bytes32 _parameter) external view returns (string) {
         // check holder
-        checkHolder(_dbName, _userName, msg.sender);
+        _checkHolder(_dbName, _userName, msg.sender);
 
         // check register
         require(entitys_[_dbName][_userName][_enName].registers_[_parameter]);
@@ -151,7 +151,7 @@ contract SysGmString is SysGmBase {
         bytes32 _dbName, bytes32 _userName,
         bytes32 _enName, uint _index) external view returns (bytes32) {
         // check holder
-        checkHolder(_dbName, _userName, msg.sender);
+        _checkHolder(_dbName, _userName, msg.sender);
 
         // check param
         require(entitys_[_dbName][_userName][_enName].count_ >= (_index  + 1));
@@ -175,7 +175,7 @@ contract SysGmString is SysGmBase {
         bytes32 _dbName, bytes32 _userName,
         bytes32 _enName, bytes32 _parameter) external returns (bool) {
         // check holder
-        checkHolder(_dbName, _userName, msg.sender);
+        _checkHolder(_dbName, _userName, msg.sender);
 
         // check register
         require(entitys_[_dbName][_userName][_enName].registers_[_parameter]);
@@ -201,7 +201,7 @@ contract SysGmString is SysGmBase {
         bytes32 _dbName, bytes32 _userName,
         bytes32 _enName, uint _index) external returns (bool) {
         // check holder
-        checkHolder(_dbName, _userName, msg.sender);
+        _checkHolder(_dbName, _userName, msg.sender);
 
         // check param
         require(entitys_[_dbName][_userName][_enName].count_ >= (_index  + 1));
