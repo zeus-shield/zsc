@@ -46,6 +46,17 @@ contract PetBase is PetControl {
 
     function PetBase() public PetControl() {}
 
+    function _transfer(address _from, address _to, uint256 _tokenId) internal {
+        
+    }
+
+    function _createPet(
+        uint256 _matronId, uint256 _sireId,
+        uint256 _generation, uint256 _genes, 
+        address _owner) internal returns (uint) {
+
+    }
+
     function setSecondsPerBlock(uint256 _secs) external onlyCLevel {
         require(_secs < cooldowns_[0]);
         secondsPerBlock_ = _secs;
