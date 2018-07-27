@@ -9,7 +9,7 @@ import "./sys_gm_base.sol";
 /** @title String manager. */
 contract SysGmString is SysGmBase {
 
-    // Parameter mapping string
+    // parameter mapping string
     struct ParameterValues {
         uint count_;
         // index => parameter
@@ -22,7 +22,7 @@ contract SysGmString is SysGmBase {
         mapping(bytes32 => string) strings_;
     }
 
-    // User holder info
+    // user holder info
     struct UserHolderInfo {
         address holder_;
         mapping(address => bool) multisig_;
@@ -37,7 +37,7 @@ contract SysGmString is SysGmBase {
     // constructor
     function SysGmString(bytes32 _name) public SysGmBase(_name) {}
 
-    // Check holder.
+    // check holder.
     function checkHolder(bytes32 _dbName, bytes32 _userName, address _holder) internal view {
         require(_holder == userHolders_[_dbName][_userName].holder_);
     }
