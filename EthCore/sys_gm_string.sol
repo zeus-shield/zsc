@@ -48,7 +48,7 @@ contract SysGmString is SysGmBase {
       * @param _holder(address): Address of the holder.
       * @return none.
       */
-    function registerHolder(bytes32 _dbName, bytes32 _userName, address _holder) public {
+    function registerHolder(bytes32 _dbName, bytes32 _userName, address _holder) external {
         checkDelegate(msg.sender, 1);
         userHolders_[_dbName][_userName].holder_ = _holder;
     }
@@ -60,7 +60,9 @@ contract SysGmString is SysGmBase {
       * @param _parameter(bytes32): Name of parameter.
       * @return (bool): The result(true/false).
       */
-    function addEntityParameter(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public returns (bool) {
+    function addEntityParameter(
+        bytes32 _dbName, bytes32 _userName,
+        bytes32 _enName, bytes32 _parameter) external returns (bool) {
         // check holder
         checkHolder(_dbName, _userName, msg.sender);
 
@@ -86,7 +88,9 @@ contract SysGmString is SysGmBase {
       * @param _value(string): Value of string.
       * @return (bool): The result(true/false).
       */
-    function setEntityParameterValue(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter, string _value) public returns (bool) {
+    function setEntityParameterValue(
+        bytes32 _dbName, bytes32 _userName,
+        bytes32 _enName, bytes32 _parameter, string _value) external returns (bool) {
         // check holder
         checkHolder(_dbName, _userName, msg.sender);
 
@@ -106,7 +110,9 @@ contract SysGmString is SysGmBase {
       * @param _enName(bytes32): Name of the entity.
       * @return (uint): Number of string.
       */
-    function numEntityParameters(bytes32 _dbName, bytes32 _userName, bytes32 _enName) public view returns (uint) {
+    function numEntityParameters(
+        bytes32 _dbName, bytes32 _userName,
+        bytes32 _enName) external view returns (uint) {
         // check holder
         checkHolder(_dbName, _userName, msg.sender);
 
@@ -120,7 +126,9 @@ contract SysGmString is SysGmBase {
       * @param _parameter(bytes32): Name of parameter.
       * @return (string): Value of string.
       */
-    function getEntityParameterValue(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public view returns (string) {
+    function getEntityParameterValue(
+        bytes32 _dbName, bytes32 _userName,
+        bytes32 _enName, bytes32 _parameter) external view returns (string) {
         // check holder
         checkHolder(_dbName, _userName, msg.sender);
 
@@ -139,7 +147,9 @@ contract SysGmString is SysGmBase {
       * @param _index(uint): index of parameter.
       * @return (bytes32): Name of parameter.
       */
-    function getEntityParameterByIndex(bytes32 _dbName, bytes32 _userName, bytes32 _enName, uint _index) public view returns (bytes32) {
+    function getEntityParameterByIndex(
+        bytes32 _dbName, bytes32 _userName,
+        bytes32 _enName, uint _index) external view returns (bytes32) {
         // check holder
         checkHolder(_dbName, _userName, msg.sender);
 
@@ -161,7 +171,9 @@ contract SysGmString is SysGmBase {
       * @param _parameter(bytes32): Name of parameter.
       * @return (bool): The result(true/false).
       */
-    function removeEntityParameterValue(bytes32 _dbName, bytes32 _userName, bytes32 _enName, bytes32 _parameter) public returns (bool) {
+    function removeEntityParameterValue(
+        bytes32 _dbName, bytes32 _userName,
+        bytes32 _enName, bytes32 _parameter) external returns (bool) {
         // check holder
         checkHolder(_dbName, _userName, msg.sender);
 
@@ -185,7 +197,9 @@ contract SysGmString is SysGmBase {
       * @param _index(uint): Index of parameter.
       * @return (bool): The result(true/false).
       */
-    function removeEntityParameterValueByIndex(bytes32 _dbName, bytes32 _userName, bytes32 _enName, uint _index) public returns (bool) {
+    function removeEntityParameterValueByIndex(
+        bytes32 _dbName, bytes32 _userName,
+        bytes32 _enName, uint _index) external returns (bool) {
         // check holder
         checkHolder(_dbName, _userName, msg.sender);
 
