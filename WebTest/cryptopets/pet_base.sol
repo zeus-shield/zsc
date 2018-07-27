@@ -19,15 +19,7 @@ contract PetBase is PetControl {
         uint16 generation_;
     }
 
-    PetInfo[] pets_;
-    mapping (uint256 => address) indexToOwner_;
-    mapping (address => uint256) ownerToCount_;
-    mapping (uint256 => address) indexToApproved_;
-    mapping (uint256 => address) indexToSireApproved_;
-
-    uint256 secondsPerBlock_ = 15;
-
-    uint32[14] public cooldowns_ = [
+   uint32[14] public cooldowns_ = [
         uint32(1 minutes),
         uint32(2 minutes),
         uint32(5 minutes),
@@ -43,6 +35,19 @@ contract PetBase is PetControl {
         uint32(4 days),
         uint32(7 days)
     ];
+
+
+    uint256 secondsPerBlock_ = 15;
+
+    PetInfo[] pets_;
+    mapping (uint256 => address) indexToOwner_;
+    mapping (address => uint256) ownerToCount_;
+    mapping (uint256 => address) indexToApproved_;
+    mapping (uint256 => address) indexToSireApproved_;
+
+    SaleClockAuction saleAuction;
+
+    SiringClockAuction siringAuction;
 
     function PetBase() public PetControl() {}
 
