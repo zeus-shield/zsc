@@ -44,8 +44,15 @@ contract PetERC721 is PetBase, ERC721 {
         Approval(msg.sender, _to, _tokenId);
     }
 
-    function transfer(address _to, uint256 _tokenId) external {
+    function transfer(address _to, uint256 _tokenId) external whenNotPaused {
+ 
+        require(_to != address(0));
+        require(_to != address(this));
+        require(_to != address(saleAuction));
+        require(_to != address(siringAuction));
+        require(_owns(msg.sender, _tokenId));
 
+        _transfer(msg.sender, _to, _tokenId);
     }
 
     function transferFrom(address _from, address _to, uint256 _tokenId) external {
