@@ -9,6 +9,9 @@ pragma solidity ^0.4.21;
 
 contract PetERC721 is PetBase, ERC721 {
 
+    string constant name = "CryptoPets";
+    string constant symbol = "CP";
+
     function PetERC721() public PetBase() {}
 
     function _owns(address _owner, uint256 _tokenId) internal view returns (bool) {
