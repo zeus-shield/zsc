@@ -8,5 +8,10 @@ pragma solidity ^0.4.21;
 
 contract PetBreeding is PetERC721 {
 
+    uint256 autoBirthFee = 2 finney;
+    uint256 pregnantPets;
+
     function PetBreeding() public PetERC721() {}
+
+
 }
