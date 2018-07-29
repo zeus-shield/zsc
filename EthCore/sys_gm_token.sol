@@ -51,7 +51,7 @@ contract SysGmToken is SysGmBase {
         checkDelegate(msg.sender, 1);
 
         /* check exist */
-        require(false == exists_[_symbol]);
+        //require(false == exists_[_symbol]);
 
         addLog("addToken ", true);
         addLog(PlatString.bytes32ToString(_symbol), false);
