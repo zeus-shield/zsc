@@ -34,7 +34,7 @@ contract LogManager is Delegated {
       * @param none.
       * @return none.
       */
-    function kill() public {
+    function kill() external {
         // check delegate
         checkDelegate(msg.sender, 1);
 
@@ -59,7 +59,7 @@ contract LogManager is Delegated {
       * @param _name(bytes32): Module name.
       * @return none.
       */
-    function registerListener(uint _type, address _addr, bytes32 _name) public {
+    function registerListener(uint _type, address _addr, bytes32 _name) external {
         address instance = address(0);
 
         // check param
@@ -102,7 +102,7 @@ contract LogManager is Delegated {
       * @param _newLine(bool): If new line or not.
       * @return none.
       */
-    function addLog(string _log, bool _newLine) public {
+    function addLog(string _log, bool _newLine) external {
 
         // check registered
         require(listeners_[msg.sender].registered_);
@@ -118,7 +118,7 @@ contract LogManager is Delegated {
       * @param _index(uint): Index of the log.
       * @return none.
       */
-    function printLog(address _addr, uint _index) public view returns (string) {
+    function printLog(address _addr, uint _index) external view returns (string) {
         // check param
         require(0 != _addr);
 
@@ -140,7 +140,7 @@ contract LogManager is Delegated {
       * @param _endTime(uint): End time of the log.
       * @return none.
       */
-    function printLogByTime(address _addr, uint _startTime, uint _endTime) public view returns (string) {
+    function printLogByTime(address _addr, uint _startTime, uint _endTime) external view returns (string) {
         // check param
         require(0 != _addr);
 
