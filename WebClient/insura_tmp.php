@@ -63,7 +63,78 @@ session_start();
         });
     }
 
+    function loadTemplatsHtml(showFunc, purchaseFunc) {
+        var showPrefix = showFunc + "('"; 
+        var showSuffix = "')";
     
+        var purchasePrefix = purchaseFunc + "('"; 
+        var purchaseSuffix = "')";
+    
+        var titlle = "All published agreements: "
+    
+        var text ="";
+        text += '<div class="well"> <text>' + titlle + ' </text></div>';
+        text += '<div class="well">';
+        text += '<table align="center" style="width:600px;min-height:30px">'
+    
+        text += '<div class="well">';
+        text += '<text> Purchase agreement: </text> <text id="PurchaseAgreementHash"> </text>'
+        text += '</div>';
+    
+        text += '<tr>'
+        text += '   <td>Index</td> <td>Name</td> <td>Status</td> <td> Details </td> <td> Purchase </td>'
+        text += '</tr>'
+        text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td> </tr>'
+    
+        for (var i = 0; i < this.allAgrNos; ++i) {
+            if (this.allAgrStatus[i] == "PUBLISHED") {
+                text += '<tr>'
+                text += '   <td><text>' + i + '</text></td>'
+                text += '   <td><text>' + this.allAgrNames[i] + '</text></td>'
+                text += '   <td><text>' + this.allAgrStatus[i] + '</text></td>'
+                text += '   <td><button type="button" onClick="' + showPrefix + this.allAgrNames[i] + showSuffix + '">Details</button></td>'
+                if (this.userType == "receiver") {
+                    text += '   <td><button type="button" onClick="' + purchasePrefix + this.allAgrNames[i] + purchaseSuffix + '">Purchase</button></td>'
+                }
+                text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td></tr>'
+                text += '</tr>'
+            }
+        }
+        text += '</table></div>'
+    
+        document.getElementById(elementId).innerHTML = text;  
+    }
+
+    function loadParametersHtml(tmpName, funcName) {
+        var functionInput = funcName + "()";
+    
+        //var titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
+        var titlle = "Template: " + tmpName; 
+       
+        var text ="";
+        text += '<div class="well"> <text>' + titlle + ' </text></div>';
+        text += '<div class="well">';
+        text += '<table align="center" style="width:600px;min-height:30px">'
+    
+        var paraNos, paraName, paraValue;
+        paraNos = userProfile.getParaNos();
+    
+        for (var i = 0; i < paraNos; ++i) {
+            paraName  = paraGM.getParaName(i);
+            paraValue = paraGM.getParaValue(i);
+            text += '<tr>'
+            text += '  <td> <text>' + paraName + ': </text> </td>'
+            text += '  <td> <input type="text" id="' + paraName + '" value="' + paraValue + '"></input> </td>'
+            text += '</tr>'
+        }
+        text += '</table></div>'
+        text += '<div>'
+        text += '   <button type="button" onClick="' + functionInput + '">Submit Changes</button>'
+        text += '   <text id="Back"></text>'
+        text += '</div>'
+
+        document.getElementById(elementId).innerHTML = text;  
+    }
 
 </script>
 
