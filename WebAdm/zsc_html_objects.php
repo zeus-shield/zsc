@@ -33,7 +33,8 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
            <tr>
             <td align="center"><a href="adm_manage_token_contracts.php">Manage Tokens</a></td>
             <td align="center"><a href="adm_manage_users.php">Manage Users</a></td>
-            <td align="center"><a href="adm_manage_pos.php">Manage Pos</a></td>
+            <td align="center"><a href="adm_manage_pos_1.php">Pos-A</a></td>
+            <td align="center"><a href="adm_manage_pos_2.php">Pos-B</a></td>
             <td align="center"><a href="adm_show_log.php">Show Log</a></td>
             <td align="center"><a href="adm_print_abi.php">Print Abi</a></td>
             <td align="center"><a href="adm_uninstall_system.php">Uninstall System</a></td>
