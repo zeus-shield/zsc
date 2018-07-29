@@ -114,7 +114,7 @@ contract LogManager is Delegated {
     }
 
     /** @dev Print log.
-      * @param _addr(address): Address of the listener..
+      * @param _addr(address): Address of the listener.
       * @param _index(uint): Index of the log.
       * @return none.
       */
@@ -135,7 +135,7 @@ contract LogManager is Delegated {
     }
 
     /** @dev Print log by time.
-      * @param _addr(address): Address of the listener..
+      * @param _addr(address): Address of the listener.
       * @param _startTime(uint): Start time of the log.
       * @param _endTime(uint): End time of the log.
       * @return none.
