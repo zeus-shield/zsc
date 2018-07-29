@@ -49,6 +49,9 @@ contract PetBase is PetControl {
 
     SiringClockAuction siringAuction;
 
+    event Birth(address _owner, uint256 _petId, uint256 _matronId, uint256 _sireId, uint256 _genes);
+    event Transfer(address _from, address _to, uint256 _tokenId);
+
     function PetBase() public PetControl() {}
 
     function _transfer(address _from, address _to, uint256 _tokenId) internal {
