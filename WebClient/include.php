@@ -21,10 +21,12 @@ class ZSCInclude {
         '<table align="center" style="width:650px">'.
         ' <tr>'.
         '  <td align="center"><a href="index.php"> [Home] </a></td>'.
-        '  <td align="center"><a href="user_wallet.php"> [User-wallet] </a></td>'.
-        '  <td align="center"><a href="pos_robot_enhance.php"> [Manage-robot]</a></td>'.
-        '  <td align="center"><a href="pos_robot_mine.php"> [PoS-mining] </a></td>'.
-        '  <td align="center"><a href="pos_robot_selling.php"> [Selling-robot] </a></td>'.
+        '  <td align="center"><a href="user_wallet.php"> [Wallet] </a></td>'.
+        '  <td align="center"><a href="pos_robot_enhance.php"> [Robots]</a></td>'.
+        '  <td align="center"><a href="pos_robot_takeout.php"> [Take-out]</a></td>'.
+        '  <td align="center"><a href="pos_robot_transfer.php"> [Transfer]</a></td>'.
+        '  <td align="center"><a href="pos_robot_mine.php"> [PoS] </a></td>'.
+        '  <td align="center"><a href="pos_robot_selling.php"> [Selling] </a></td>'.
         '  <td align="center"><a href="pos_robot_market.php"> [Robot-market] </a></td>'.
         ' </tr>'.
         '</table>';
@@ -90,7 +92,7 @@ class ZSCInclude {
     public function loadAlert() {
         $text=
         "<i>Needs to install MetaMask extension</i>". 
-        "<i> (需要安装MetaMask插件才能显示登录框以及其他相关页面)</i><br>>".
+        "<i> (需要安装MetaMask插件才能显示登录框以及其他相关页面)</i><br>".
         "<i>Both the FireFox and Chrome browsers are recommended</i>".
         "<i> (推荐使用火狐或者Chrome浏览器)</i>";  
         return $text;
