@@ -111,7 +111,7 @@ contract ZSCTestToken is ERC20Interface, Owned {
         symbol = "ZSCTest";
         name = "ZSCTest Token";
         decimals = 18;
-        _totalSupply = 100 * 1000 * 1000 * 10**uint(decimals);
+        _totalSupply = 100 * 1000 * 1000 * 1000 * 10**uint(decimals);
 
         balances[owner] = _totalSupply;
     }
