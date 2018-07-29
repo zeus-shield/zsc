@@ -55,7 +55,18 @@ contract PetBase is PetControl {
     function PetBase() public PetControl() {}
 
     function _transfer(address _from, address _to, uint256 _tokenId) internal {
-        
+
+        ownerToCount_[_to]++;
+
+        indexToOwner_[_tokenId] = _to;
+
+        if (address(0) != _from) {
+            ownerToCount_[_from]--;
+            delete indexToSireApproved_[_tokenId];
+            delete indexToApproved_[_tokenId];
+        }
+
+        Transfer(_from, _to, _tokenId);
     }
 
     function _createPet(
