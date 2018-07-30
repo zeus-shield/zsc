@@ -74,6 +74,34 @@ contract PetBase is PetControl {
         uint256 _generation, uint256 _genes, 
         address _owner) internal returns (uint) {
 
+        require(_matronId == uint256(uint32(_matronId)));
+        require(_sireId == uint256(uint32(_sireId)));
+        require(_generation == uint256(uint16(_generation)));
+
+        uint16 cooldownIndex = uint16(_generation / 2);
+        if (cooldownIndex > 13) {
+            cooldownIndex = 13;
+        }
+
+        PetInfo memory _pet = PetInfo({
+            genes_: _genes,
+            birthTime_: uint64(now),
+            cooldownEndBlock_: 0,
+            matronId_: uint32(_matronId),
+            sireId_: uint32(_sireId),
+            siringWithId_: 0,
+            cooldownIndex_: cooldownIndex,
+            generation_: uint16(_generation)
+        });
+        uint256 newPetId = pets_.push(_pet) - 1;
+
+        require(newPetId == uint256(uint32(newPetId)));
+
+        Birth(_owner, newPetId, uint256(_pet.matronId), uint256(_pet.sireId), _pet.genes);
+
+        _transfer(0, _owner, newPetId);
+
+        return newPetId;
     }
 
     function setSecondsPerBlock(uint256 _secs) external onlyCLevel {
