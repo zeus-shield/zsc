@@ -26,7 +26,7 @@ contract LogTransaction is LogBase {
     // constructor
     function LogTransaction() public LogBase() {}
 
-    function initLog(bytes32 _name) public {
+    function initLog(bytes32 _name) external {
         // check sender
         checkDelegate(msg.sender, 1);
 
@@ -34,7 +34,7 @@ contract LogTransaction is LogBase {
         nos_ = 0;
     }
 
-    function addLog(string _log, bool _newLine) public {
+    function addLog(string _log, bool _newLine) external {
         // check sender
         checkDelegate(msg.sender, 1);
 
@@ -48,7 +48,7 @@ contract LogTransaction is LogBase {
         log_[nos_].now_ = now;
     }
     
-    function printLog(uint _index) public view returns (string) {
+    function printLog(uint _index) external view returns (string) {
         // check sender
         checkDelegate(msg.sender, 1);
 
@@ -61,7 +61,7 @@ contract LogTransaction is LogBase {
         return str;
     }
 
-    function printLogByTime(uint _startTime, uint _endTime) public view returns (string) {
+    function printLogByTime(uint _startTime, uint _endTime) external view returns (string) {
         // check param
         checkDelegate(msg.sender, 1);
 
