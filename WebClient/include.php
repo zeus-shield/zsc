@@ -10,7 +10,7 @@ class ZSCInclude {
     private $g_userType;
 
     public function __construct($type){
-         $this->$g_userType = $type;
+         $this->g_userType = $type;
     }
 
     public  function __destruct() {
@@ -99,17 +99,17 @@ class ZSCInclude {
     }
 
     public function loadHeader() {
-        if ($this->$g_userType == "provider") {
+        if ($this->g_userType == "provider") {
             return $this->loadInsuraProviderHeader();
 
-        } else if ($this->$g_userType == "receiver") {
+        } else if ($this->g_userType == "receiver") {
             return $this->loadInsuraReceiverHeader();
 
-        } else if ($this->$g_userType == "staker") {
+        } else if ($this->g_userType == "staker") {
             return $this->loadPosHeader();
 
         } else {
-            return 'user type:'.$this->$g_userType;
+            return 'user type:'.$this->g_userType;
         }
     }
 
