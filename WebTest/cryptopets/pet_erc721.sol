@@ -12,10 +12,10 @@ contract PetERC721 is PetBase, ERC721 {
     string constant name = "CryptoPets";
     string constant symbol = "CP";
 
-    bytes4 constant InterfaceSignature_ERC165 =
+    bytes4 constant InterfaceSignature_ERC165_ =
         bytes4(keccak256('supportsInterface(bytes4)'));
 
-    bytes4 constant InterfaceSignature_ERC721 =
+    bytes4 constant InterfaceSignature_ERC721_ =
         bytes4(keccak256('name()')) ^
         bytes4(keccak256('symbol()')) ^
         bytes4(keccak256('totalSupply()')) ^
@@ -88,6 +88,6 @@ contract PetERC721 is PetBase, ERC721 {
     }
 
     function supportsInterface(bytes4 _interfaceID) external view returns (bool) {
-        
+        return ((_interfaceID == InterfaceSignature_ERC165_) || (_interfaceID == InterfaceSignature_ERC721_));
     }
 }
