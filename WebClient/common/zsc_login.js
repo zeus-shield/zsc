@@ -2,7 +2,7 @@
 Copyright (c) 2018 ZSC Dev Team
 */
 function ZSCLogin(userAccount) {
-    this.admAdr = "0x106d93cfeca100680627d2b6b96ae19dc559225a";
+    this.admAdr = "0x162b40e67f72a8ffc13b24b4f15ac7b98d92e454";
     this.userStatus;
     this.userType;
     this.controlApisAdr;
@@ -10,7 +10,7 @@ function ZSCLogin(userAccount) {
     this.account = userAccount;
     this.myAdmAdv = web3.eth.contract(this.getLoginAbi()).at(this.admAdr);
     this.gasPrice = bF_getGasPrice();
-    this.gasLimit = bF_getGasLimit(700);
+    this.gasLimit = bF_getGasLimit();
 }
 
 ZSCLogin.prototype.getUserName = function() { return this.userName; }
