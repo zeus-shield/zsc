@@ -49,11 +49,9 @@ session_start();
         });
     }
 
-    function showAgreementParameters(tmpName) {
-        var temp = tmpName;
-        paraGM = new ZSCElement(account, tmpName, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
+    function showAgreementParameters(agrName) {
+        paraGM = new ZSCElement(account, agrName, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
         paraGM.loadParameterNamesAndvalues(function() {
-            loadParametersHtml(temp, "loadTemplates");
         });
     }
 
@@ -110,11 +108,8 @@ session_start();
         document.getElementById(elementId).innerHTML = text;  
     }
 
-    function loadParametersHtml(tmpName, funcName) {
-        var functionInput = funcName + "()";
-    
-        //var titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
-        var titlle = "Template: " + tmpName; 
+    function loadParametersHtml(agrName) {    
+        var titlle = "Agreement: " + agrName; 
        
         var text ="";
         text += '<div class="well"> <text>' + titlle + ' </text></div>';
@@ -135,7 +130,7 @@ session_start();
             paraValue = paraGM.getParaValue(i);
             text += '<tr>'
             text += '  <td> <text>' + paraName + ': </text> </td>'
-            text += '  <td> <input type="text" id="' + paraName + '" value="' + paraValue + '"></input> </td>'
+            text += '  <td> <text>' + paraValue + ': </text> </td>'
             text += '</tr>'
         }
         text += '</table></div>'
