@@ -8,6 +8,7 @@ function ZSCTemplate(account, adr, abi) {
     this.tmpNos = 0;
     this.tmpNames = [];
     this.tmpChildrenNos = [];
+    this.itemTags = [];
     this.account = account;
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
@@ -16,12 +17,24 @@ function ZSCTemplate(account, adr, abi) {
 }
 
 ZSCTemplate.prototype.getTmpName = function(index) { return this.tmpName[index];}
-
 ZSCTemplate.prototype.getTmpChildrenNos = function(index) { return this.tmpChildrenNos[index];}
-
 ZSCTemplate.prototype.setUserType = function(type) {this.userType = type;}
-
 ZSCTemplate.prototype.getTmpNos = function(type) { return this.tmpNos;}
+
+ZSCTemplate.prototype.resetAllItemTags = function(gm) {
+    for (var i = 0; i < gm.agrNos; ++i) {
+        gm.itemTags[i] = false;
+    }
+}
+
+ZSCTemplate.prototype.checkAllItemTags = function(gm) {
+    for (var i = 0; i < gm.agrNos; ++i) {
+        if (gm.itemTags[i] == false) {
+            return false;
+        }
+    }
+    return true;
+}
 
 ZSCTemplate.prototype.loadTempates = function(func) {
     var gm = this;
@@ -32,10 +45,11 @@ ZSCTemplate.prototype.loadTempates = function(func) {
         if (gm.tmpNos == 0) {
             callBack();
         } else {
+            gm.resetAllItemTags(gm);
             for (var i = 0; i < gm.tmpNos; ++i) {
                 gm.getTmpNameByIndex(gm, i, function(gm, j){
                     gm.numTmpChildrenNos(gm, j, function(gm, index) {
-                        if (index == gm.tmpNos - 1) {
+                        if (gm.checkAllItemTags(gm) == true) {
                             callBack();
                         }
                     });
@@ -54,6 +68,7 @@ ZSCTemplate.prototype.numTemplates= function(gm, func) {
         function(error, result){ 
             if(!error) {
                 gm.tmpNos = result.toString(10);
+                gm.itemTags[index] = true;
                 callBack(gm);
             } else {
                 console.log("error: " + error);
@@ -134,57 +149,5 @@ ZSCTemplate.prototype.enableAsAgreement = function(tmpIndex, func) {
                 console.log("error: " + error);
             }
         });
-}
-
-ZSCTemplate.prototype.loadTemplatesHtml = function(elementId, funcCreateTmp, funcPublish, funcSetPara, showAgrs)  {
-    var funcCreateTmpFull = funcCreateTmp + "('CreateNewTemplateHash')"; 
-
-    var funcSetParaPrefix = funcSetPara + "('"; 
-    var funcSetParaSuffix = "')";
-
-    var funcPublishPrefix = funcPublish + "('";
-    var funcPublishSuffix = "')";
-
-    var showAgrsPrefix = showAgrs + "('";
-    var showAgrsSuffix = "')";
-
-    var text ="";
-
-    var titlle = this.userType + " - templates info"
-
-    text += '<div class="well"> <text>' + titlle + ' </text></div>';
-
-    text += '<div class="well">';
-    text += '   <td><button type="button" onClick="' + funcCreateTmpFull + '">Create New Template</button></td> <br>'
-    text += '   <text id="CreateNewTemplateHash"> </text>'
-    text += '</div>';
-
-  
-
-    text += '<div class="well">';
-    text += '   <div class="well">';
-    text += '      <text> Note - 1: "Adding" is to create one insurance agreement from a template. </text><br>'
-    text += '      <text> Note - 2: Due to the confirmation time on the (Rinkeby) Ethereum platform, need to add one by one. </text><br>'
-    text += '      <text> Adding agreement: </text> <text id="CreateNewAgreementHash"> </text>'
-    text += '   </div>';
-    text += '<table align="center" style="width:700px;min-height:30px">'
-    text += '<tr>'
-    text += '   <td>Name</td> <td>Details</td> <td>Add as Agreement </td>   <td>Added Nos. </td>  <td>  </td> '
-    text += '</tr>'
-    text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
-
-    for (var i = 0; i < this.tmpNos; ++i) {
-        text += '<tr>'
-        text += '   <td><text>' + this.tmpNames[i]  + '</text></td>'
-        text += '   <td><button type="button" onClick="' + funcSetParaPrefix + this.tmpNames[i] + funcSetParaSuffix + '">Edit</button></td>'
-        text += '   <td><button type="button" onClick="' + funcPublishPrefix + i + funcPublishSuffix + '">Add</button></td>'
-        text += '   <td><text>' + this.tmpChildrenNos[i]  + '</text></td>'
-        text += '   <td><button type="button" onClick="' + showAgrsPrefix + this.tmpNames[i] + showAgrsSuffix + '">List</button></td>'
-        text += '</tr>'
-        text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
-    }
-    text += '</table></div>'
-
-    document.getElementById(elementId).innerHTML = text;  
 }
 
