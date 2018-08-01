@@ -58,47 +58,61 @@ session_start();
     }
 
     function submitPurchaseAgreement(elementName) {
-        zscAgrsAllGM.submitPurchaseAgreement(elementName, function(result) {
+        templateGM.submitPurchaseAgreement(elementName, function(result) {
             loadHtmlPageBody("agreement-all")
         });
     }
 
-    function loadTemplatsHtml(showFunc, purchaseFunc) {
-        var showPrefix = showFunc + "('"; 
-        var showSuffix = "')";
+    function loadTemplatsHtml(showAgrs, funcCreateTmp, funcSetPara, funcPublish) {
+        var showAgrsPrefix = showAgrs + "('";
+        var showAgrsSuffix = "')";
+
+        var funcCreateTmpFull = funcCreateTmp + "('CreateNewTemplateHash')"; 
+
+        var funcSetParaPrefix = funcSetPara + "('"; 
+        var funcSetParaSuffix = "')";
     
-        var purchasePrefix = purchaseFunc + "('"; 
-        var purchaseSuffix = "')";
-    
-        var titlle = "All published agreements: "
+        var funcPublishPrefix = funcPublish + "('";
+        var funcPublishSuffix = "')";
     
         var text ="";
+    
+        var titlle = "Templates info"
+    
         text += '<div class="well"> <text>' + titlle + ' </text></div>';
-        text += '<div class="well">';
-        text += '<table align="center" style="width:600px;min-height:30px">'
     
         text += '<div class="well">';
-        text += '<text> Purchase agreement: </text> <text id="PurchaseAgreementHash"> </text>'
+        text += '   <td><button type="button" onClick="' + funcCreateTmpFull + '">Create New Template</button></td> <br>'
+        text += '   <text id="CreateNewTemplateHash"> </text>'
         text += '</div>';
     
+        text += '<div class="well">';
+        text += '   <div class="well">';
+        text += '      <text> Note - 1: "Adding" is to create one insurance agreement from a template. </text><br>'
+        text += '      <text> Note - 2: Due to the confirmation time on the (Rinkeby) Ethereum platform, need to add one by one. </text><br>'
+        text += '      <text> Adding agreement: </text> <text id="CreateNewAgreementHash"> </text>'
+        text += '   </div>';
+        text += '<table align="center" style="width:700px;min-height:30px">'
         text += '<tr>'
-        text += '   <td>Index</td> <td>Name</td> <td>Status</td> <td> Details </td> <td> Purchase </td>'
+        text += '   <td>Name</td> <td>Details</td> <td>Add as Agreement </td>   <td>Added Nos. </td>  <td>  </td> '
         text += '</tr>'
-        text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td> </tr>'
-    
-        for (var i = 0; i < this.allAgrNos; ++i) {
-            if (this.allAgrStatus[i] == "PUBLISHED") {
-                text += '<tr>'
-                text += '   <td><text>' + i + '</text></td>'
-                text += '   <td><text>' + this.allAgrNames[i] + '</text></td>'
-                text += '   <td><text>' + this.allAgrStatus[i] + '</text></td>'
-                text += '   <td><button type="button" onClick="' + showPrefix + this.allAgrNames[i] + showSuffix + '">Details</button></td>'
-                if (this.userType == "receiver") {
-                    text += '   <td><button type="button" onClick="' + purchasePrefix + this.allAgrNames[i] + purchaseSuffix + '">Purchase</button></td>'
-                }
-                text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td></tr>'
-                text += '</tr>'
-            }
+        text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
+
+        var tmpName;
+        var childrenNos;
+
+        for (var i = 0; i < templateGM.getTemplateNos(); ++i) {
+            tmpName = templateGM.getTmpName(i);
+            childrenNos = templateGM.getTmpChildrenNos(i);
+
+            text += '<tr>'
+            text += '   <td><text>' + tmpName + '</text></td>'
+            text += '   <td><button type="button" onClick="' + funcSetParaPrefix + tmpName + funcSetParaSuffix + '">Edit</button></td>'
+            text += '   <td><button type="button" onClick="' + funcPublishPrefix + i + funcPublishSuffix + '">Add</button></td>'
+            text += '   <td><text>' + childrenNos  + '</text></td>'
+            text += '   <td><button type="button" onClick="' + showAgrsPrefix + tmpName + showAgrsSuffix + '">List</button></td>'
+            text += '</tr>'
+            text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
         }
         text += '</table></div>'
     
