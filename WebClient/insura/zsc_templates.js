@@ -17,7 +17,11 @@ function ZSCTemplate(account, adr, abi) {
 
 ZSCTemplate.prototype.getTmpName = function(index) { return this.tmpName[index];}
 
+ZSCTemplate.prototype.getTmpChildrenNos = function(index) { return this.tmpChildrenNos[index];}
+
 ZSCTemplate.prototype.setUserType = function(type) {this.userType = type;}
+
+ZSCTemplate.prototype.getTmpNos = function(type) { return this.tmpNos;}
 
 ZSCTemplate.prototype.loadTempates = function(func) {
     var gm = this;
