@@ -25,18 +25,19 @@ session_start();
     /////////////////////////////
     <?php echo $htmlObjects->loadWeb3();?>
     var checkeWeb3Account = <?php echo $htmlObjects->checkWeb3Account();?>;
-    var userType = <?php echo "'".$_SESSION["userType"]."'";?>;
-    var userLogin;
-    var templateGM;
-    var paraGM;
+    var zscUserType = <?php echo "'".$_SESSION["userType"]."'";?>;
+    var zscUserLogin;
+    var zscTmpGM;
+    var zscParaGM;
 
     checkeWeb3Account(function(account) {
-        userLogin = new ZSCLogin(account);
-        userLogin.tryLogin(userType, function(ret) {
+        zscUserLogin = new ZSCLogin(account);
+        zscUserLogin.tryLogin(zscUserType, function(ret) {
             if(!ret) { 
                 window.location.href = "index.php";
             } else {
-                templateGM = new ZSCTemplate(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
+                zscParaGM = new ZSCElement(account, zscUserLogin.getControlApisAdr(), zscUserLogin.getControlApisFullAbi());
+                zscTmpGM = new ZSCTemplate(account, zscUserLogin.getControlApisAdr(), zscUserLogin.getControlApisFullAbi());
                 loadTemplates();
             }
         });
@@ -44,29 +45,35 @@ session_start();
 
     /////////////////////////////
     function loadTemplates() {
-        templateGM.loadTempates(function() {
-            loadHtml("showTemplateParameters", "purchaseAgreement");
+        zscTmpGM.loadTempates(function() {
+            loadTemplatesHtml("creatNewTmp", "showRelatedAgrs", "showTmpParas", "enableAsAgr");
         });
     }
 
-    function showTemplateParameters(tmpName) {
-        var temp = tmpName;
-        paraGM = new ZSCElement(account, tmpName, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
-        paraGM.loadParameterNamesAndvalues(function() {
-            loadParametersHtml(temp, "loadTemplates");
+    function creatNewTmp(logId) {
+        zscTmpsGM.creatNewTemplate(logId, function(){
+            loadTemplates();
         });
     }
 
-    function submitPurchaseAgreement(elementName) {
-        templateGM.submitPurchaseAgreement(elementName, function(result) {
-            loadHtmlPageBody("agreement-all")
+    function showRelatedAgrs(tmpName) {
+        window.location.href = "insura_agr_provider.php?tmp=" + tmpName;
+    }
+
+    function showTmpParas(tmpName) {
+        zscParaGM.setElementName(tmpName);
+        zscParaGM.loadParameterNamesAndvalues(function() {
+            loadTmpParametersHtml(tmpName, "loadTemplates");
         });
     }
 
-    function loadTemplatsHtml(showAgrs, funcCreateTmp, funcSetPara, funcPublish) {
-        var showAgrsPrefix = showAgrs + "('";
-        var showAgrsSuffix = "')";
+    function enableAsAgr(index) {
+        zscTmpGM.enableAsAgreement(index, function() {
+            loadHtmlPageBody("template");
+        });
+    }
 
+    function loadTemplatesHtml(funcCreateTmp, funcSetPara, funcPublish, showAgrs) {
         var funcCreateTmpFull = funcCreateTmp + "('CreateNewTemplateHash')"; 
 
         var funcSetParaPrefix = funcSetPara + "('"; 
@@ -74,7 +81,10 @@ session_start();
     
         var funcPublishPrefix = funcPublish + "('";
         var funcPublishSuffix = "')";
-    
+
+        var showAgrsPrefix = showAgrs + "('";
+        var showAgrsSuffix = "')";
+
         var text ="";
     
         var titlle = "Templates info"
@@ -101,9 +111,9 @@ session_start();
         var tmpName;
         var childrenNos;
 
-        for (var i = 0; i < templateGM.getTemplateNos(); ++i) {
-            tmpName = templateGM.getTmpName(i);
-            childrenNos = templateGM.getTmpChildrenNos(i);
+        for (var i = 0; i < zscTmpGM.getTemplateNos(); ++i) {
+            tmpName = zscTmpGM.getTmpName(i);
+            childrenNos = zscTmpGM.getTmpChildrenNos(i);
 
             text += '<tr>'
             text += '   <td><text>' + tmpName + '</text></td>'
@@ -119,10 +129,10 @@ session_start();
         document.getElementById(elementId).innerHTML = text;  
     }
 
-    function loadParametersHtml(tmpName, funcName) {
+    function loadTmpParametersHtml(tmpName, funcName) {
         var functionInput = funcName + "()";
     
-        //var titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
+        //var titlle = zscUserLogin.getzscUserType() + " [" + zscUserLogin.getUserName() + "] - profile: " 
         var titlle = "Template: " + tmpName; 
        
         var text ="";
@@ -134,8 +144,8 @@ session_start();
         paraNos = userProfile.getParaNos();
     
         for (var i = 0; i < paraNos; ++i) {
-            paraName  = paraGM.getParaName(i);
-            paraValue = paraGM.getParaValue(i);
+            paraName  = zscParaGM.getParaName(i);
+            paraValue = zscParaGM.getParaValue(i);
             text += '<tr>'
             text += '  <td> <text>' + paraName + ': </text> </td>'
             text += '  <td> <input type="text" id="' + paraName + '" value="' + paraValue + '"></input> </td>'
