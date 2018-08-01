@@ -3,7 +3,7 @@ Copyright (c) 2018 ZSC Dev Team
 */
 
 //class zscElement
-function ZSCElement(acount, en, controlApisAdvAdr, controlApisAdvAbi) {
+function ZSCElement(acount, controlApisAdvAdr, controlApisAdvAbi) {
     this.enName = en;
     this.parameNos = 0;
     this.ethBalance = 0;
@@ -19,6 +19,7 @@ function ZSCElement(acount, en, controlApisAdvAdr, controlApisAdvAbi) {
     this.gasLimit = bF_getGasLimit();
 }
 
+ZSCElement.prototype.setElementName = function(nm) { this.enName = nm;}
 ZSCElement.prototype.getElementName = function() { return this.enName;}
 ZSCElement.prototype.getParaNos = function() { return this.parameNos;}
 ZSCElement.prototype.getParaName = function(index) { return this.parameterNames[index];}
