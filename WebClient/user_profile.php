@@ -25,18 +25,19 @@ session_start();
     /////////////////////////////
     <?php echo $htmlObjects->loadWeb3();?>
     var checkeWeb3Account = <?php echo $htmlObjects->checkWeb3Account();?>;
-    var userType = <?php echo "'".$_SESSION["userType"]."'";?>;
-    var userLogin;
-    var userProfile;
+    var zscUserType = <?php echo "'".$_SESSION["userType"]."'";?>;
+    var zscUserLogin;
+    var zscUserProf;
 
     checkeWeb3Account(function(account) {
-        userLogin = new ZSCLogin(account);
-        userLogin.tryLogin(userType, function(ret) {
+        zscUserLogin = new ZSCLogin(account);
+        zscUserLogin.tryLogin(zscUserType, function(ret) {
             if(!ret) { 
                 window.location.href = "index.php";
             } else {
-                userProfile = new ZSCElement(account, "null", userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
-                loadUserProfile();
+                zscUserProf = new ZSCElement(account, zscUserLogin.getControlApisAdr(), zscUserLogin.getControlApisFullAbi());
+                zscUserProf.setElementName("null");
+                loadzscUserProf();
             }
         });
 
@@ -47,7 +48,7 @@ session_start();
     function loadHtml(elementId, funcName) {
         var functionInput = funcName + "('UpdateParameterHash')";
     
-        //var titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
+        //var titlle = zscUserLogin.getzscUserType() + " [" + zscUserLogin.getUserName() + "] - profile: " 
         var titlle = "User profile:"; 
        
         var text ="";
@@ -56,11 +57,11 @@ session_start();
         text += '<table align="center" style="width:600px;min-height:30px">'
     
         var paraNos, paraName, paraValue;
-        paraNos = userProfile.getParaNos();
+        paraNos = zscUserProf.getParaNos();
     
         for (var i = 0; i < paraNos; ++i) {
-            paraName  = userProfile.getParaName(i);
-            paraValue = userProfile.getParaValue(i);
+            paraName  = zscUserProf.getParaName(i);
+            paraValue = zscUserProf.getParaValue(i);
             text += '<tr>'
             text += '  <td> <text>' + paraName + ': </text> </td>'
             text += '  <td> <input type="text" id="' + paraName + '" value="' + paraValue + '"></input> </td>'
@@ -77,11 +78,11 @@ session_start();
     }
 
     function submitParameterProfileChanges(logID) {
-        userProfile.setElementParameter(logID, function(){ window.location.reload(true); });
+        zscUserProf.setElementParameter(logID, function(){ window.location.reload(true); });
     }
 
-    function loadUserProfile() {
-        userProfile.loadParameterNamesAndvalues(function() {
+    function loadzscUserProf() {
+        zscUserProf.loadParameterNamesAndvalues(function() {
             loadHtml("PageBody", "submitParameterProfileChanges");
         });
     }
