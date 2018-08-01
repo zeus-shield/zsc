@@ -26,8 +26,10 @@ session_start();
     <?php echo $htmlObjects->loadWeb3();?>
     var checkeWeb3Account = <?php echo $htmlObjects->checkWeb3Account();?>;
     var userType = <?php echo "'".$_SESSION["userType"]."'";?>;
+    var tmpName = <?php echo "'".$_GET["tmpName"]."'";?>;
     var userLogin;
-    var providerAgreementGM;
+    var providerAgrGM;
+    var paraGM;
 
     checkeWeb3Account(function(account) {
         userLogin = new ZSCLogin(account);
@@ -35,21 +37,34 @@ session_start();
             if(!ret) {  
                 window.location.href = "index.php";
             } else {
-                providerAgreementGM = new ZSCAgreementProvider(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
-                loadPublishedAgreements();
+                paraGM = new ZSCElement(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
+                providerAgrGM = new ZSCAgreementProvider(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
+                providerAgrGM.setTmpName(tmpName);
+                loadPublishedAgrs();
             }
         });
     });
 
     /////////////////////////////
-    function loadPublishedAgreements(funcSetPara, funcPublish) {
+    function loadPublishedAgrs() {
+
+    }
+
+    function showTemplateParameters(name) {
+        paraGM.setElementName(name);
+        paraGM.loadParameterNamesAndvalues(function() {
+            loadParametersHtml(temp, "loadTemplates");
+        });
+    }
+
+    function loadPublishedAgrsHtml(funcSetPara, funcPublish) {
         var funcSetParaPrefix = funcSetPara + "('"; 
         var funcSetParaSuffix = "')";
     
         var funcPublishPrefix = funcPublish + "('"; 
         var funcPublishSuffix = "')";
     
-        var titlle = "provider - published agreements: "
+        var titlle = "provider's [tmp: " + tmpName + "] agreements: "
     
         var text ="";
         text += '<div class="well"> <text>' + titlle + ' </text></div>';
@@ -63,19 +78,58 @@ session_start();
         text += '   <td>Name</td> <td>Balance </td> <td>Status </td>  <td>Publish </td> <td>Details </td>'
         text += '</tr>'
         text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td>  </tr>'
+
+        var nos = providerAgrGM.getAgrNos();
+        var agrName, agrBalance, agrStatus;
     
-        for (var i = 0; i < this.agrNos; ++i) {
+        for (var i = 0; i < nos; ++i) {
+            agrName = providerAgrGM.getAgrName(i);
+            agrBalance = providerAgrGM.getAgrBalance(i);
+            agrStatus  = providerAgrGM.getAgrStatus(i);
+
             text += '<tr>'
-            text += '   <td><text>' + this.agrNames[i]  + '</text></td>'
-            text += '   <td><text>' + this.balance[i]  + '</text></td>'
-            text += '   <td><text>' + this.status[i]  + '</text></td>'
-            text += '   <td><button type="button" onClick="' + funcPublishPrefix + this.agrNames[i] + funcPublishSuffix + '    ">Publish</button></td>'
-            text += '   <td><button type="button" onClick="' + funcSetParaPrefix + this.agrNames[i] + funcSetParaSuffix + '    ">Show</button></td>'
+            text += '   <td><text>' + agrName + '</text></td>'
+            text += '   <td><text>' + agrBalance + '</text></td>'
+            text += '   <td><text>' + agrStatus + '</text></td>'
+            text += '   <td><button type="button" onClick="' + funcPublishPrefix + agrName + funcPublishSuffix + ' ">Publish</button></td>'
+            text += '   <td><button type="button" onClick="' + funcSetParaPrefix + agrName + funcSetParaSuffix + ' ">Show</button></td>'
             text += '</tr>'
             text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td>  </tr>'
         }
         text += '</table></div>'
     
+        document.getElementById(elementId).innerHTML = text;  
+    }
+
+
+    function loadAgrParametersHtml(agrName, funcName) {
+        var functionInput = funcName + "()";
+    
+        //var titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
+        var titlle = "Agreement: " + agrName; 
+       
+        var text ="";
+        text += '<div class="well"> <text>' + titlle + ' </text></div>';
+        text += '<div class="well">';
+        text += '<table align="center" style="width:600px;min-height:30px">'
+    
+        var paraNos, paraName, paraValue;
+        paraNos = userProfile.getParaNos();
+    
+        for (var i = 0; i < paraNos; ++i) {
+            paraName  = paraGM.getParaName(i);
+            paraValue = paraGM.getParaValue(i);
+            text += '<tr>'
+            text += '  <td> <text>' + paraName + ': </text> </td>'
+            text += '  <td> <input type="text" id="' + paraName + '" value="' + paraValue + '"></input> </td>'
+            text += '</tr>'
+        }
+        text += '</table></div>'
+        text += '<div>'
+        text += '   <button type="button" onClick="' + functionInput + '">Submit Changes</button>'
+        text += '   <text id="Back"></text>'
+        text += '</div>'
+
         document.getElementById(elementId).innerHTML = text;  
     }
 
