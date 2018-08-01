@@ -4,7 +4,6 @@ Copyright (c) 2018 ZSC Dev Team
 
 //class zscWallet
 function ZSCAgreementProvider(nm, abi, adr) {
-    this.userName = nm;
     this.tmpName;
     this.agrNos = 0;
     this.agrNames = [];
@@ -18,9 +17,12 @@ function ZSCAgreementProvider(nm, abi, adr) {
     this.gasLimit = bF_getGasLimit();
 }
 
-ZSCAgreementProvider.prototype.getUserName = function() {return this.userName;}
-
-ZSCAgreementProvider.prototype.setTemplateName = function(name) {this.tmpName = name;}
+ZSCAgreementProvider.prototype.setTmpName = function(name) {this.tmpName = name;}
+ZSCAgreementProvider.prototype.getTmpName = function() {return this.tmpName;}
+ZSCAgreementProvider.prototype.getAgrNos = function() {return this.agrNos;}
+ZSCAgreementProvider.prototype.getAgrName = function(index) {return this.agrNames[index];}
+ZSCAgreementProvider.prototype.getAgrBalance = function(index) {return this.balance[index];}
+ZSCAgreementProvider.prototype.getAgrStatus = function(index) {return this.status[index];}
 
 ZSCAgreementProvider.prototype.resetAllItemTags = function(gm) {
     for (var i = 0; i < gm.agrNos; ++i) {
@@ -48,9 +50,9 @@ ZSCAgreementProvider.prototype.loadAgreements = function(func) {
         } else {
             gm.resetAllItemTags(gm);
             for (var i = 0; i < gm.agrNos; ++i) {
-                gm.getAgrNameByIndex(gm, i, function(gm, j){
-                    gm.getAgrBalance(gm, j, function(gm, index) {
-                        gm.getAgrStatus(gm, j, function(gm, index) {
+                gm.getAgreementNameByIndex(gm, i, function(gm, j){
+                    gm.getAgreementBalance(gm, j, function(gm, index) {
+                        gm.getAgreementStatus(gm, j, function(gm, index) {
                             if (gm.checkAllItemTags(gm) == true) {
                                 callBack()
                             }
@@ -84,7 +86,7 @@ ZSCAgreementProvider.prototype.numAgreements = function(gm, func) {
         });
 }
 
-ZSCAgreementProvider.prototype.getAgrNameByIndex = function(gm, index, func) {
+ZSCAgreementProvider.prototype.getAgreementNameByIndex = function(gm, index, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     
@@ -100,7 +102,7 @@ ZSCAgreementProvider.prototype.getAgrNameByIndex = function(gm, index, func) {
         });
 }
 
-ZSCAgreementProvider.prototype.getAgrBalance = function(gm, index, func) {
+ZSCAgreementProvider.prototype.getAgreementBalance = function(gm, index, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     
@@ -116,7 +118,7 @@ ZSCAgreementProvider.prototype.getAgrBalance = function(gm, index, func) {
         });
 }
 
-ZSCAgreementProvider.prototype.getAgrStatus = function(gm, index, func) {
+ZSCAgreementProvider.prototype.getAgreementStatus = function(gm, index, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
