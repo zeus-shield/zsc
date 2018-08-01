@@ -25,18 +25,18 @@ session_start();
     /////////////////////////////
     <?php echo $htmlObjects->loadWeb3();?>
     var checkeWeb3Account = <?php echo $htmlObjects->checkWeb3Account();?>;
-    var userType = <?php echo "'".$_SESSION["userType"]."'";?>;
-    var userLogin;
-    var userWalletGM;
+    var zscUserType = <?php echo "'".$_SESSION["userType"]."'";?>;
+    var zscUserLogin;
+    var zscUserWalletGM;
 
     checkeWeb3Account(function(account) {
-        userLogin = new ZSCLogin(account);
-        userLogin.tryLogin(userType, function(ret) {
+        zscUserLogin = new ZSCLogin(account);
+        zscUserLogin.tryLogin(zscUserType, function(ret) {
             if(!ret) { 
                 window.location.href = "index.php";
             } else {
-                userWalletGM = new ZSCWallet(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
-                userWalletGM.loadTokenWallets(function() {
+                zscUserWalletGM = new ZSCWallet(account, zscUserLogin.getControlApisAdr(), zscUserLogin.getControlApisFullAbi());
+                zscUserWalletGM.loadTokenWallets(function() {
                     loadHtml("PageBody", "enableUserWallet", "submitTransferValue");
                 });
             }
@@ -44,7 +44,7 @@ session_start();
     });
     /////////////////////////////
     function enableUserWallet(hashId) {
-        userWalletGM.enableUserWallet(hashId, function() {                
+        zscUserWalletGM.enableUserWallet(hashId, function() {                
             window.location.reload(true);
         });
     }
@@ -52,7 +52,7 @@ session_start();
     function submitTransferValue(tokenSymbol, sentoId, amountId, hashId) {
         var sendto = document.getElementById(sentoId).value;
         var amount = document.getElementById(amountId).value;
-        userWalletGM.submitTransferValue(tokenSymbol, sendto, amount, hashId, function() {
+        zscUserWalletGM.submitTransferValue(tokenSymbol, sendto, amount, hashId, function() {
             window.location.reload(true);
         });
     }
@@ -67,10 +67,10 @@ session_start();
         var adr;
         var balance;
         var hashId;
-        var tokenNos = userWalletGM.getTokenNos();
-        var userWallet = userWalletGM.getWalletAddress();
+        var tokenNos = zscUserWalletGM.getTokenNos();
+        var userWallet = zscUserWalletGM.getWalletAddress();
     
-        //var titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
+        //var titlle = zscUserLogin.getzscUserType() + " [" + zscUserLogin.getUserName() + "] - profile: " 
         var titlle = 'user wallet address: <text> <a href="https://rinkeby.etherscan.io/address/' + userWallet + '#tokentxns" target="_blank" >' + userWallet + '</a></text>'
 
         text = '<div class="well" align="center" >' + titlle ;
@@ -86,9 +86,9 @@ session_start();
             text += '<tr> <td>Token</td> <td>Balance</td> <td>Locked </td> <td>Dest-adr/Amount</td> <td>Transfer</td></tr> '
             text += '<tr> <td>------</td> <td>------</td> <td>------</td> <td>---</td> <td>---</td> </tr>'
             for (var i = 0; i < tokenNos; ++i) {
-                symbol  = userWalletGM.getTokenSymbol(i);
-                balance = userWalletGM.getTokenBalance(i);
-                locked  = userWalletGM.getTokenLocked(i);
+                symbol  = zscUserWalletGM.getTokenSymbol(i);
+                balance = zscUserWalletGM.getTokenBalance(i);
+                locked  = zscUserWalletGM.getTokenLocked(i);
                 hashId  = symbol + "Hash";
                 sentoId = symbol + "Dest";
                 amountId= symbol + "Amount";
