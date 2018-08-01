@@ -41,7 +41,6 @@ class ZSCInclude {
         '  <td align="center"><a href="user_profile.php"> [User-profile] </a></td>'.
         '  <td align="center"><a href="user_wallet.php"> [User-wallet] </a></td>'.
         '  <td align="center"><a href="insura_tmp.php"> [Templats]</a></td>'.
-        '  <td align="center"><a href="insura_agr_provider.php"> [Agreements]</a></td>'.
         '  <td align="center"><a href="insura_agr_all.php"> [Market]</a></td>'.
         ' </tr>'.
         '</table>';
