@@ -27,13 +27,13 @@ ZSCWallet.prototype.getTokenBalance = function(index) { return web3.fromWei(this
 ZSCWallet.prototype.getTokenLocked = function(index) { return web3.fromWei(this.tokenLocked[index], 'ether');}
 
 ZSCWallet.prototype.resetAllItemTags = function(gm) {
-    for (var i = 0; i < gm.robotNos; ++i) {
+    for (var i = 0; i < gm.tokenNos; ++i) {
         gm.itemTags[i] = false;
     }
 }
 
 ZSCWallet.prototype.checkAllItemTags = function(gm) {
-    for (var i = 0; i < gm.robotNos; ++i) {
+    for (var i = 0; i < gm.tokenNos; ++i) {
         if (gm.itemTags[i] == false) {
             return false;
         }
@@ -72,6 +72,7 @@ ZSCWallet.prototype.loadTokenWallets = function(func) {
                 if (gm.tokenNos == 0) {
                     callback();
                 } else {
+                    gm.resetAllItemTags(gm);
                     for (var i = 0; i < gm.tokenNos; ++i) {
                         gm.loadTokenInfoByIndex(gm, i, function(gm, index) {
                             if (gm.checkAllItemTags(gm) == true) {
@@ -130,6 +131,7 @@ ZSCWallet.prototype.loadTokenInfoByIndex = function(gm, index, func) {
         {from: gm.account},
         function(error, result){ 
             if(!error) {
+                gm.itemTags[index] = true;
                 gm.parserTokenBalanceInfoByIndex(gm, result, index);
                 callBack(gm, index);
             } else {
