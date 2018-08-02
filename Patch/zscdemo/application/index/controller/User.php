@@ -12,10 +12,9 @@ use app\common\controller\Fornt;
 use think\Cookie;
 use think\Cache;
 use think\Db;
-
 class User extends Fornt{
 
-protected $model;
+	protected $model;
 
 	protected $field;
 
@@ -32,5 +31,32 @@ protected $model;
 			$this->error($account);
 		}
 	}
+	/**
+	 * 登录
+	 * @return [type] [description]
+	 */
+	public function login()
+	{
+		$data = input('post.');
 
+		//登录方式(手机号,邮箱)
+		$res = $this->model->userLogin($data);
+		if($res===true){
+			//查询被保人信息
+			$this->assign('list',$this->model->recognizeeList());
+
+			if(preg_match("/^1[34578]\d{9}$/", $data['account'])){
+				return $this->personManage();
+			}else{
+				return action('company/companyInfo');
+			}
+
+		}elseif($res==-1){
+			$this->error('没有该用户',url('/'));
+		}elseif($res==-2){
+			$this->error('您的企业认证还未通过,如有疑问请联系13888888888',url('/'));
+		}else{
+			$this->error('密码错误',url('/'));
+		}
+	}
 }
