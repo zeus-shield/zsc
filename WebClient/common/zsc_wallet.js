@@ -27,13 +27,13 @@ ZSCWallet.prototype.getTokenBalance = function(index) { return web3.fromWei(this
 ZSCWallet.prototype.getTokenLocked = function(index) { return web3.fromWei(this.tokenLocked[index], 'ether');}
 
 ZSCWallet.prototype.resetAllItemTags = function(gm) {
-    for (var i = 0; i < gm.robotNos; ++i) {
+    for (var i = 0; i < gm.tokenNos; ++i) {
         gm.itemTags[i] = false;
     }
 }
 
 ZSCWallet.prototype.checkAllItemTags = function(gm) {
-    for (var i = 0; i < gm.robotNos; ++i) {
+    for (var i = 0; i < gm.tokenNos; ++i) {
         if (gm.itemTags[i] == false) {
             return false;
         }
