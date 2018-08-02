@@ -44,7 +44,7 @@ session_start();
 
     /////////////////////////////
     function loadUserRobots() {
-        userRobotGM.setFromSystemWalletTag(false);
+        userRobotGM.setFromSystemWalletTag(fromSystemWallet);
         userRobotGM.loadUserRobots(function() {
             loadHtml("PageBody", "transferToOther");
         });
