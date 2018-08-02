@@ -24,7 +24,7 @@ class ZSCInclude {
         '  <td align="center"><a href="user_wallet.php"> [Wallet] </a></td>'.
         '  <td align="center"><a href="pos_robot_enhance.php"> [Robots]</a></td>'.
         '  <td align="center"><a href="pos_robot_takeout.php"> [Take-out]</a></td>'.
-        '  <td align="center"><a href="pos_robot_transfer.php"> [Transfer]</a></td>'.
+        '  <td align="center"><a href="pos_robot_transfer.php?fromSystemWallet=false"> [Transfer]</a></td>'.
         '  <td align="center"><a href="pos_robot_mine.php"> [PoS] </a></td>'.
         '  <td align="center"><a href="pos_robot_selling.php"> [Selling] </a></td>'.
         '  <td align="center"><a href="pos_robot_market.php"> [Robot-market] </a></td>'.

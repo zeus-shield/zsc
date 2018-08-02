@@ -44,7 +44,8 @@ session_start();
 
     /////////////////////////////
     function loadUserRobots() {
-        userRobotGM.setFromSystemWalletTag(false);
+        let tag = fromSystemWallet ==="false" ? false : true;
+        userRobotGM.setFromSystemWalletTag(tag);
         userRobotGM.loadUserRobots(function() {
             loadHtml("PageBody", "transferToOther");
         });
@@ -70,7 +71,7 @@ session_start();
         text += '<div class="well">';
         text += '<table align="center" style="width:600px;min-height:30px">'
 
-        if (fromSystemWallet) {
+        if ("true" === fromSystemWallet) {
             text += '   <tr> <td>Robot ID</td> <td>Status</td> <td>Level</td> <td>Max SP</td> <td>Take out to MetaMask</td> </tr> '
         } else {
             text += '   <tr> <td>Robot ID</td> <td>Status</td> <td>Level</td> <td>Max SP</td> <td>Transfer from MetaMask</td> </tr> '
