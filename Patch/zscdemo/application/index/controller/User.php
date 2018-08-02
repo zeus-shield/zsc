@@ -32,4 +32,5 @@ protected $model;
 			$this->error($account);
 		}
 	}
+
 }
