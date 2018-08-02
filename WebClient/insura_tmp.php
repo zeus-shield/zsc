@@ -57,19 +57,25 @@ session_start();
     }
 
     function showRelatedAgrs(tmpName) {
-        window.location.href = "insura_agr_provider.php?tmp=" + tmpName;
+        window.location.href = "insura_agr_provider.php?tmpName=" + tmpName;
     }
 
     function showTmpParas(tmpName) {
         zscParaGM.setElementName(tmpName);
         zscParaGM.loadParameterNamesAndvalues(function() {
-            loadTmpParametersHtml(tmpName, "loadTemplates");
+            loadTmpParametersHtml(tmpName, "submitParaChanges", "loadTemplates", "loadTemplates");
         });
     }
 
     function enableAsAgr(index) {
         zscTmpGM.enableAsAgreement(index, function() {
-            loadHtmlPageBody("template");
+            loadTemplates();
+        });
+    }
+
+    function submitParaChanges(logID) {
+        zscElement.setElementParameter(logID, function() {
+            showTmpParas();
         });
     }
 
@@ -129,14 +135,20 @@ session_start();
         document.getElementById(elementId).innerHTML = text;  
     }
 
-    function loadTmpParametersHtml(tmpName, funcName) {
-        var functionInput = funcName + "()";
+    function loadTmpParametersHtml(tmpName, submitChanges, backToTmp) {
+        var submitFunc = submitChanges + "(SubmitChangesHash)";
+        var backFunc = backToTmp + "()";
     
         //var titlle = zscUserLogin.getzscUserType() + " [" + zscUserLogin.getUserName() + "] - profile: " 
         var titlle = "Template: " + tmpName; 
        
         var text ="";
         text += '<div class="well"> <text>' + titlle + ' </text></div>';
+
+        text += '<div>'
+        text += '   <button type="button" onClick="' + backFunc + '">Back</button>'
+        text += '</div>'
+
         text += '<div class="well">';
         text += '<table align="center" style="width:600px;min-height:30px">'
     
@@ -153,8 +165,8 @@ session_start();
         }
         text += '</table></div>'
         text += '<div>'
-        text += '   <button type="button" onClick="' + functionInput + '">Submit Changes</button>'
-        text += '   <text id="Back"></text>'
+        text += '   <button type="button" onClick="' + submitFunc + '">Submit Changes</button>'
+        text += '   <text id="SubmitChangesHash"></text>'
         text += '</div>'
 
         document.getElementById(elementId).innerHTML = text;  
