@@ -15,4 +15,21 @@ use think\Db;
 
 class User extends Fornt{
 
+protected $model;
+
+	protected $field;
+
+	public function _initialize()
+	{
+		parent::_initialize();
+
+		$this->model = model('user');
+		$this->field  = $this->model->recognList;
+
+		$account = Cookie::get('account');
+
+		if(!preg_match("/^1[34578]\d{9}$/", $account) && $account!=null && $this->url!='index/user/loginout' && $this->url!='index/user/login' && $this->url!='index/user/register' && $this->url!='index/user/getCode'){
+			$this->error($account);
+		}
+	}
 }
