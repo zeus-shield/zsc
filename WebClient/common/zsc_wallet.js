@@ -72,6 +72,7 @@ ZSCWallet.prototype.loadTokenWallets = function(func) {
                 if (gm.tokenNos == 0) {
                     callback();
                 } else {
+                    gm.resetAllItemTags(gm);
                     for (var i = 0; i < gm.tokenNos; ++i) {
                         gm.loadTokenInfoByIndex(gm, i, function(gm, index) {
                             if (gm.checkAllItemTags(gm) == true) {
@@ -130,6 +131,7 @@ ZSCWallet.prototype.loadTokenInfoByIndex = function(gm, index, func) {
         {from: gm.account},
         function(error, result){ 
             if(!error) {
+                gm.itemTags[index] = true;
                 gm.parserTokenBalanceInfoByIndex(gm, result, index);
                 callBack(gm, index);
             } else {
