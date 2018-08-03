@@ -43,6 +43,7 @@ session_start();
 
     /////////////////////////////
     function loadUserRobots() {
+        userRobotGM.setFromSystemWalletTag(true);
         userRobotGM.loadUserRobots(function() {
             loadHtml("PageBody", "takeOutToOwner");
         });
