@@ -59,4 +59,20 @@ class User extends Fornt{
 			$this->error('密码错误',url('/'));
 		}
 	}
+// /**
+	//  * 获取用户身份
+	//  * @return [type] [json]
+	//  */
+	// public function getUserType()
+	// {
+	// 	$account = input('post.account');
+
+	// 	$r = Db::name('user')->where('account',$account)->find();
+
+	// 	if(!empty($r)){
+	// 		return $this->jsonSuc('获取成功',$r);
+	// 	}else{
+	// 		return $this->jsonSuc('没有该用户');
+	// 	}
+	// }
 }
