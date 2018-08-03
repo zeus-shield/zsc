@@ -17,5 +17,6 @@ class Zsc extends Fornt{
 	public function ZscTestLogin() {
 		
 		return $this->fetch();
-    }
+	}
+	
 }
