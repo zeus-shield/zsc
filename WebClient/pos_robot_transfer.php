@@ -26,7 +26,6 @@ session_start();
     <?php echo $htmlObjects->loadWeb3();?>
     var checkeWeb3Account = <?php echo $htmlObjects->checkWeb3Account();?>;
     var userType = <?php echo "'".$_SESSION["userType"]."'";?>;
-    var fromSystemWallet = <?php echo "'".$_GET["fromSystemWallet"]."'";?>;
     var userLogin;
     var userRobotGM;
 
@@ -44,8 +43,6 @@ session_start();
 
     /////////////////////////////
     function loadUserRobots() {
-        let tag = fromSystemWallet ==="false" ? false : true;
-        userRobotGM.setFromSystemWalletTag(tag);
         userRobotGM.loadUserRobots(function() {
             loadHtml("PageBody", "transferToOther");
         });
