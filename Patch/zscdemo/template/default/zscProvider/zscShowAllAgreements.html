@@ -1,0 +1,100 @@
+{extend name="public/base" /} {block name="body"}
+<div class="banner2">
+
+	<br>
+	<i>Web-client for testing ZSC system</i>
+	<br>
+	<br>
+	<script type="text/javascript">
+		getInfo();
+
+	</script>
+	<div class="wall">
+		<button type="button" onClick="initClass('wallet')">Wallat</button>
+		<button type="button" onClick="initClass('parameter-profile')">Profile</button>
+		{if condition="$Think.cookie.type eq 1"}
+		<button type="button" onClick="initClass('template')">Templates</button>
+		{else /}
+		<button type="button" onClick="initClass('agreement-receiver')">Agreements</button>
+		{/if}
+		<button type="button" onClick="initClass('agreement-all')">Show All Agreements</button>
+		<button type="button" onClick="initClass('module-adrs')">Show Module Adrs</button>
+	</div>
+	<div>
+		<br>
+		<b>测试首页</b>
+		<br>
+		<i>Welcome to the ZSC testing platform</i>
+		<br>
+	</div>
+
+	<div id="PageBody">
+		<div class="well">
+			<text>All published agreements: </text>
+		</div>
+		<div class="well">
+			<div class="well">
+				<text> Purchase agreement: </text>
+				<text id="PurchaseAgreementHash"> </text>
+			</div>
+			<table align="center" style="width:600px;min-height:30px">
+				<tbody>
+					<tr>
+						<td>Index</td>
+						<td>Name</td>
+						<td>Status</td>
+						<td> Details </td>
+						<td> </td>
+					</tr>
+					<tr>
+						<td>---</td>
+						<td>---</td>
+						<td>---</td>
+						<td>---</td>
+					</tr>
+					<tr>
+						<td>
+							<text>7</text>
+						</td>
+						<td>
+							<text>ddt-02-tmp-0-agr-1</text>
+						</td>
+						<td>
+							<text>PUBLISHED</text>
+						</td>
+						<td>
+							<button type="button" onclick="showAllAgrParameters('ddt-02-tmp-0-agr-1')">Details</button>
+						</td>
+					</tr>
+					<tr>
+						<td>---</td>
+						<td>---</td>
+						<td>---</td>
+						<td>---</td>
+					</tr>
+					<tr>
+						<td>
+							<text>32</text>
+						</td>
+						<td>
+							<text>zsc-aHgu-tmp-0-agr-0</text>
+						</td>
+						<td>
+							<text>PUBLISHED</text>
+						</td>
+						<td>
+							<button type="button" onclick="showAllAgrParameters('zsc-aHgu-tmp-0-agr-0')">Details</button>
+						</td>
+					</tr>
+					<tr>
+						<td>---</td>
+						<td>---</td>
+						<td>---</td>
+						<td>---</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+{/block}
