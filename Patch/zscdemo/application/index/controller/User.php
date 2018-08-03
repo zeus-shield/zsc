@@ -107,4 +107,32 @@ class User extends Fornt{
 				break;
 		}
 	}
+
+	/**
+	 * 重置密码
+	 * @return [type] [description]
+	 */
+	public function rePwd()
+	{
+		$data 	= input('post.');
+		$result = $this->model->rePwd($data);
+
+		switch ($result) {
+			case 1:
+				return $this->jsonSuc('重置成功',url('/'));
+				break;
+			case -1:
+				return $this->jsonErr('验证码错误!');
+				break;
+			case -1.1:
+				return $this->jsonErr('验证码过期!');
+				break;
+			case -1.2:
+				return $this->jsonErr('验证码已经使用!');
+				break;
+			case -2:
+				return $this->jsonErr('重置失败,网络错误!');
+				break;
+		}
+	}
 }
