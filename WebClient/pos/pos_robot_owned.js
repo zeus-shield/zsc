@@ -25,7 +25,7 @@ function ZSCRobotOwned(acount, adr, abi) {
     this.gasPrice = bF_getGasPrice();
     this.gasLimit = bF_getGasLimit();
 
-    this.fromSystemWalletTag = true;
+    this.fromSystemWalletTag = false;
 }
 
 ZSCRobotOwned.prototype.getRobotNos = function() { return this.robotNos;}
