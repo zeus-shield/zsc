@@ -1,5 +1,164 @@
 {extend name="public/base" /} {block name="body"}
 <div class="banner2">
-    
+
+	<br>
+	<i>Web-client for testing ZSC system</i>
+	<br>
+	<br>
+	<script type="text/javascript">
+		getInfo();
+
+	</script>
+	<div class="wall">
+		<button type="button" onClick="initClass('wallet')">Wallat</button>
+		<button type="button" onClick="initClass('parameter-profile')">Profile</button>
+		{if condition="$Think.cookie.type eq 1"}
+		<button type="button" onClick="initClass('template')">Templates</button>
+		{else /}
+		<button type="button" onClick="initClass('agreement-receiver')">Agreements</button>
+		{/if}
+		<button type="button" onClick="initClass('agreement-all')">Show All Agreements</button>
+		<button type="button" onClick="initClass('module-adrs')">Show Module Adrs</button>
+	</div>
+	<div>
+		<br>
+		<b>测试首页</b>
+		<br>
+		<i>Welcome to the ZSC testing platform</i>
+		<br>
+	</div>
+
+	<div id="PageBody">
+		<div class="well">
+			<text> provider [ddt-02] - wallet info </text>
+		</div>
+
+		<div class="well">
+			<table align="center" style="width:600px;min-height:30px">
+				<tbody>
+					<tr>
+						<td>ZSC Module Name</td>
+						<td> Address </td>
+					</tr>
+
+					<tr>
+						<td>---</td>
+						<td>---</td>
+					</tr>
+
+					<tr>
+						<td>
+							<text>TestZSC-Token</text>
+						</td>
+						<td>
+							<text>
+								<a href="https://rinkeby.etherscan.io/address/0x791e2a47464b8ad2676d735f96c3d16792578d95" target="_blank">0x791e2a47464b8ad2676d735f96c3d16792578d95</a>
+							</text>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<text>log-becorder</text>
+						</td>
+						<td>
+							<text>
+								<a href="https://rinkeby.etherscan.io/address/0xffe14663dcf15553fa9c2ecc9d059c4bede31f04" target="_blank">0xffe14663dcf15553fa9c2ecc9d059c4bede31f04</a>
+							</text>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<text>adm-base</text>
+						</td>
+						<td>
+							<text>
+								<a href="https://rinkeby.etherscan.io/address/0x295459c5ba2e760daacb57e0ac455456227df223" target="_blank">0x295459c5ba2e760daacb57e0ac455456227df223</a>
+							</text>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<text>control-apis</text>
+						</td>
+						<td>
+							<text>
+								<a href="https://rinkeby.etherscan.io/address/0x4db165d24c21ce45f854c301fb439db665cfe85e" target="_blank">0x4db165d24c21ce45f854c301fb439db665cfe85e</a>
+							</text>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<text>database</text>
+						</td>
+						<td>
+							<text>
+								<a href="https://rinkeby.etherscan.io/address/0xd71f69f7c1c369318c0194bf48a9e2f750e2fcfe" target="_blank">0xd71f69f7c1c369318c0194bf48a9e2f750e2fcfe</a>
+							</text>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<text>factory-provider</text>
+						</td>
+						<td>
+							<text>
+								<a href="https://rinkeby.etherscan.io/address/0x0e3114acdbe4c9d068d0e3d22030f72279f8bbe2" target="_blank">0x0e3114acdbe4c9d068d0e3d22030f72279f8bbe2</a>
+							</text>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<text>factory-receiver</text>
+						</td>
+						<td>
+							<text>
+								<a href="https://rinkeby.etherscan.io/address/0xf675e8c55b13208a65a75c91333695fea0e5a28a" target="_blank">0xf675e8c55b13208a65a75c91333695fea0e5a28a</a>
+							</text>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<text>factory-template</text>
+						</td>
+						<td>
+							<text>
+								<a href="https://rinkeby.etherscan.io/address/0x804ec73545f7d05917668be43695ad34b350ce7d" target="_blank">0x804ec73545f7d05917668be43695ad34b350ce7d</a>
+							</text>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<text>factory-agreement</text>
+						</td>
+						<td>
+							<text>
+								<a href="https://rinkeby.etherscan.io/address/0x921e316833e0f244599292b1d2a39251f26a6bbe" target="_blank">0x921e316833e0f244599292b1d2a39251f26a6bbe</a>
+							</text>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<text>factory-wallet-erc20</text>
+						</td>
+						<td>
+							<text>
+								<a href="https://rinkeby.etherscan.io/address/0x523d2096cdf150900ed87a5645f53d84f9046531" target="_blank">0x523d2096cdf150900ed87a5645f53d84f9046531</a>
+							</text>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>
 {/block}
+
