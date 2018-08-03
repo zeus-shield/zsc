@@ -29,39 +29,64 @@
 	</div>
 
 	<div id="PageBody">
-
 		<div class="well">
-			<text>provider [ddt-02] - templates info </text>
+			<text>All published agreements: </text>
 		</div>
-
-		<div class="well">
-			<button type="button" onclick="creatNewTemplate('CreateNewTemplateHash')">Create New Template</button>
-			<br>
-			<text id="CreateNewTemplateHash"> </text>
-		</div>
-
 		<div class="well">
 			<div class="well">
-				<text> Note - 1: "Adding" is to create an insurance agreement from a template. </text>
-				<br>
-				<text> Note - 2: Due to the confirmation time on the (Rinkeby) Ethereum platform, need to add one by one. </text>
-				<br>
-				<text> Adding agreement: </text>
-				<text id="CreateNewAgreementHash"> </text>
+				<text> Purchase agreement: </text>
+				<text id="PurchaseAgreementHash"> </text>
 			</div>
-
-			<table align="center" style="width:700px;min-height:30px">
+			<table align="center" style="width:600px;min-height:30px">
 				<tbody>
 					<tr>
+						<td>Index</td>
 						<td>Name</td>
-						<td>Details</td>
-						<td>Add as Agreement </td>
-						<td>Added Nos. </td>
+						<td>Status</td>
+						<td> Details </td>
 						<td> </td>
 					</tr>
-
 					<tr>
 						<td>---</td>
+						<td>---</td>
+						<td>---</td>
+						<td>---</td>
+					</tr>
+					<tr>
+						<td>
+							<text>7</text>
+						</td>
+						<td>
+							<text>ddt-02-tmp-0-agr-1</text>
+						</td>
+						<td>
+							<text>PUBLISHED</text>
+						</td>
+						<td>
+							<button type="button" onclick="showAllAgrParameters('ddt-02-tmp-0-agr-1')">Details</button>
+						</td>
+					</tr>
+					<tr>
+						<td>---</td>
+						<td>---</td>
+						<td>---</td>
+						<td>---</td>
+					</tr>
+					<tr>
+						<td>
+							<text>32</text>
+						</td>
+						<td>
+							<text>zsc-aHgu-tmp-0-agr-0</text>
+						</td>
+						<td>
+							<text>PUBLISHED</text>
+						</td>
+						<td>
+							<button type="button" onclick="showAllAgrParameters('zsc-aHgu-tmp-0-agr-0')">Details</button>
+						</td>
+					</tr>
+					<tr>
 						<td>---</td>
 						<td>---</td>
 						<td>---</td>
@@ -73,4 +98,3 @@
 	</div>
 </div>
 {/block}
-

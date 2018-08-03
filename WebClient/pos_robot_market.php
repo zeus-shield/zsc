@@ -65,9 +65,9 @@ session_start();
         text  = '<text id="OperationHash" value = "log:"> </text> </div>';
 
         text += '<div class="well">';
-        text += '<table align="center" style="width:600px;min-height:30px">'
-        text += '   <tr> <td>Robot ID</td> <td>Level</td> <td>Max SP</td> <td> Price (ETH) </td> <td> Purchase </td> </tr> '
-        text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> </tr>'
+        text += '<table align="center" style="width:800px;min-height:30px">'
+        text += '   <tr><td>Robot ID</td><td>Level</td><td>Max SP</td><td>Price (ETH)</td><td>Owner</td><td>Purchase</td></tr> '
+        text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> </tr>'
 
         for (var i = 0; i < robotNos; ++i) {
             var robotId = robotMarketGM.getRobotId(i);
@@ -77,6 +77,7 @@ session_start();
             text += '   <td><text>' + robotMarketGM.getRobotLev(i) + '</text></td>'
             text += '   <td><text>' + robotMarketGM.getMaxSP(i) + '</text></td>'
             text += '   <td><text>' + robotMarketGM.getPriceForSale(i) + '</text></td>'
+            text += '   <td><text>' + robotMarketGM.getRobotSeller(i) + '</text></td>'
             text += '   <td><button type="button" onClick="' + purchasePrefix + robotId + purchaseSuffix + '"> Purchase </button></td>'
             text += '</tr>'
             text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> </tr>'

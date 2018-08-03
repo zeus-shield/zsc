@@ -272,51 +272,6 @@ contract ControlBase is Object {
         return getBindedWalletAddress(userName); 
     }
 
-    function numFactoryElements(bytes32 _factoryType) public view returns (uint) { 
-        return getDBFactory(_factoryType).numFactoryNodes(); 
-    }
-
-    function getFactoryElementNameByIndex(bytes32 _factoryType, uint _index) public view returns (bytes32) { 
-        return getDBFactory(_factoryType).getFactoryNodeNameByIndex(_index); 
-    }
-
-    function doesElementExist(bytes32 _enName) public view returns (bool) {
-        address adr = address(getDBNode(dbName_, _enName));
-        return (adr != address(0));
-    }
-
-    function getElementType(bytes32 _enName) public view returns (bytes32) {
-        DBNode nd = getDBNode(dbName_, _enName);
-        require(address(nd) != address(0));
-        return nd.getNodeType();
-    }
-
-    function getElementAddress(bytes32 _enName) public view returns (address) {
-        return address(getDBNode(dbName_, _enName));
-    }
-
-    function numElementChildren(bytes32 _enName) public view returns (uint) {
-        return  getDBNode(dbName_, _enName).numChildren();
-    }
-
-    function getElementChildNameByIndex(bytes32 _enName, uint _index) public view returns (bytes32) {
-        address adr = getDBNode(dbName_, _enName).getChildByIndex(_index);
-        require(adr != address(0));
-        return Object(adr).objName();
-    }
-
-    function getElementParameter(bytes32 _enName, bytes32 _parameter) public view returns (bytes32) {
-        return getDBNode(dbName_, _enName).getParameter(_parameter);
-    }
-
-    function numElementParameters(bytes32 _enName) public view returns (uint) {
-        return  getDBNode(dbName_, _enName).numParameters();
-    }
-
-    function getElementParameterNameByIndex(bytes32 _enName, uint _index) public view returns (bytes32) {
-        return getDBNode(dbName_, _enName).getParameterNameByIndex(_index);
-    }
- 
     function numOfTokens() public view returns (uint) {
         return getDBModule("gm-token").numOfTokens();
     }
