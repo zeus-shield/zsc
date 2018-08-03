@@ -141,4 +141,54 @@ class User extends Base{
 			}
 		}
 	}
+
+	/**
+	 * 重置密码
+	 * @param  [type] $data [description]
+	 * @return [type]       [description]
+	 */
+	public function rePwd($data)
+	{
+		//手机用户重置密码
+		if($data['code']!=1){
+			$codeInfo = Db::name('code')->where('mobile',$data['account'])->order('createTime desc')->find();
+
+			if($codeInfo['code'] != $data['code'] || empty($codeInfo['code'])){
+					return -1;//验证码错误
+			}elseif (time()>($codeInfo['createTime']+60*10)) {
+				return -1.1;//验证码过期
+			}elseif ($codeInfo['status']) {
+				return -1.2;//验证码已经使用
+			}
+		}
+
+		$data['salt'] = $this->salt();//加密随机数
+
+		$data['password'] = $this->pwdEncrypt($data['password'],$data['salt']);//密码加密
+
+		$result = $this->where('account',$data['account'])->update($data);//修改密码
+
+		$uid    = $this->where('account',$data['account'])->value('uid');
+
+		//验证码改为已经使用
+		if($data['code']!=1){
+			Db::name('code')->where('mobile',$data['account'])->where('code',$data['code'])->update(['status'=>1]);
+		}
+
+		if($result){
+			//自动登录用户
+			$info = $this->where('uid',$uid)->find();
+			Cookie::set("uid",$info['uid'],60*60*30);//默认保存时间为一个月
+ 			Cookie::set("account",$info['account'],60*60*30);
+
+ 			if(preg_match("/^1[34578]\d{9}$/", $data['account'])){
+				Cookie::set('type',0,60*60*30);//个人用户登录
+ 			}else{
+				Cookie::set('type',1,60*60*30);//企业用户登录
+ 			}
+			return 1;//重置密码成功
+		}else{
+			return -2;//修改失败
+		}
+	}
 }
