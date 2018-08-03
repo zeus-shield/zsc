@@ -75,4 +75,36 @@ class User extends Fornt{
 	// 		return $this->jsonSuc('没有该用户');
 	// 	}
 	// }
+
+	/**
+	 * 个人注册,公司注册
+	 * @return [type] [json]
+	 */
+	public function register()
+	{
+		$data   = input('post.');
+
+		$result = $this->model->userReg($data);
+
+		switch ($result) {
+			case 1:
+				return $this->jsonSuc('注册成功');
+				break;
+			case -1:
+				return $this->jsonErr('验证码错误!');
+				break;
+			case -1.1:
+				return $this->jsonErr('验证码过期!');
+				break;
+			case -1.2:
+				return $this->jsonErr('验证码已经使用!');
+				break;
+			case -2:
+				return $this->jsonErr('重置失败,网络错误!');
+				break;
+			case -3:
+				return $this->jsonErr('帐号已经注册!');
+				break;
+		}
+	}
 }
