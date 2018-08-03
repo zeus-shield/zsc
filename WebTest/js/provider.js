@@ -8,6 +8,7 @@ export default function provider(injected) {
     let Web3 = require('web3');
     let provider;
     let type = '';
+    let account;
 
     if(web3.currentProvider && !window.injectedWeb3) {
         window.injectedWeb3 = web3.currentProvider;
@@ -31,12 +32,13 @@ export default function provider(injected) {
 
     web3 = new Web3(provider);
     //web3.setProvider(provider);
-    
+    account = web3.eth.coinbase;
+
     type = (injected)?'injected':'localhost';
     if(!web3.isConnected()) {
-        Output(window.outputElement, 'small', 'red', `Web3(${type}) do not connected!`);
+        Output(window.outputElement, 'small', 'red', `Web3(${type}, ${account}) do not connected!`);
     } else {
-        Output(window.outputElement, 'small', 'red', `Web3(${type}) connected!`);
+        Output(window.outputElement, 'small', 'red', `Web3(${type}, ${account}) connected!`);
     }
 
     web3.eth.defaultAccount = web3.eth.coinbase;
