@@ -47,22 +47,21 @@ session_start();
 
     /////////////////////////////
     function loadPublishedAgrs() {
-
+        providerAgrGM.loadAgreements(function() {
+            loadPublishedAgrsHtml();
+        });
     }
 
     function showTemplateParameters(name) {
         paraGM.setElementName(name);
         paraGM.loadParameterNamesAndvalues(function() {
-            loadParametersHtml(temp, "loadTemplates");
+            loadAgrParametersHtml(temp, "loadPublishedAgrs");
         });
     }
 
-    function loadPublishedAgrsHtml(funcSetPara, funcPublish) {
-        var funcSetParaPrefix = funcSetPara + "('"; 
-        var funcSetParaSuffix = "')";
-    
-        var funcPublishPrefix = funcPublish + "('"; 
-        var funcPublishSuffix = "')";
+    function loadPublishedAgrsHtml(funcShowPara) {
+        var funcShowParaPrefix = funcShowPara + "('"; 
+        var funcShowParaSuffix = "')";
     
         var titlle = "provider's [tmp: " + tmpName + "] agreements: "
     
@@ -75,7 +74,7 @@ session_start();
     
         text += '<table align="center" style="width:600px;min-height:30px">'
         text += '<tr>'
-        text += '   <td>Name</td> <td>Balance </td> <td>Status </td>  <td>Publish </td> <td>Details </td>'
+        text += '   <td>Name</td> <td>Balance </td> <td>Status </td>  <td>Details </td>'
         text += '</tr>'
         text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td>  </tr>'
 
@@ -91,8 +90,7 @@ session_start();
             text += '   <td><text>' + agrName + '</text></td>'
             text += '   <td><text>' + agrBalance + '</text></td>'
             text += '   <td><text>' + agrStatus + '</text></td>'
-            text += '   <td><button type="button" onClick="' + funcPublishPrefix + agrName + funcPublishSuffix + ' ">Publish</button></td>'
-            text += '   <td><button type="button" onClick="' + funcSetParaPrefix + agrName + funcSetParaSuffix + ' ">Show</button></td>'
+            text += '   <td><button type="button" onClick="' + funcShowParaPrefix + agrName + funcShowParaSuffix + ' ">Show</button></td>'
             text += '</tr>'
             text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td>  </tr>'
         }
@@ -102,8 +100,8 @@ session_start();
     }
 
 
-    function loadAgrParametersHtml(agrName, funcName) {
-        var functionInput = funcName + "()";
+    function loadAgrParametersHtml(agrName, backFunc) {
+        var functionInput = backFunc + "()";
     
         //var titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
         var titlle = "Agreement: " + agrName; 
