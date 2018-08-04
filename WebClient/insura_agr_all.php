@@ -35,6 +35,7 @@ session_start();
             if(!ret) {  
                 window.location.href = "index.php";
             } else {
+                paraGM = new ZSCElement(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
                 allAgrGM = new ZSCAgreementAll(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
                 allAgrGM.setUserType(userType);
                 loadAllAgreements();
@@ -50,8 +51,9 @@ session_start();
     }
 
     function showAgreementParameters(agrName) {
-        paraGM = new ZSCElement(account, agrName, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
+        zscParaGM.setElementName(agrName);
         paraGM.loadParameterNamesAndvalues(function() {
+            loadParametersHtml(agrName, "loadAllAgreements");
         });
     }
 
@@ -108,7 +110,8 @@ session_start();
         document.getElementById(elementId).innerHTML = text;  
     }
 
-    function loadParametersHtml(agrName) {    
+    function loadParametersHtml(agrName, backFunc) {    
+        var functionInput = backFunc + "'()'";
         var titlle = "Agreement: " + agrName; 
        
         var text ="";
