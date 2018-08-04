@@ -1,5 +1,60 @@
 {extend name="public/base" /} {block name="body"}
 <div class="banner2">
-    
+
+	<br>
+	<i>Web-client for testing ZSC system</i>
+	<br>
+	<br>
+	<script type="text/javascript">
+		getInfo();
+
+	</script>
+	<div class="wall">
+		<button type="button" onClick="initClass('wallet')">Wallat</button>
+		<button type="button" onClick="initClass('parameter-profile')">Profile</button>
+		{if condition="$Think.cookie.type eq 1"}
+		<button type="button" onClick="initClass('template')">Templates</button>
+		{else /}
+		<button type="button" onClick="initClass('agreement-receiver')">Agreements</button>
+		{/if}
+		<button type="button" onClick="initClass('agreement-all')">Show All Agreements</button>
+		<button type="button" onClick="initClass('module-adrs')">Show Module Adrs</button>
+	</div>
+	<div>
+		<br>
+		<b>测试首页</b>
+		<br>
+		<i>Welcome to the ZSC testing platform</i>
+		<br>
+	</div>
+
+	<div id="PageBody">
+		<div class="well">
+			<text> provider [zsc-yTXD] - wallet info </text>
+		</div>
+		<div class="well">
+			---------------
+			<br> Symbol:
+			<text>TestZSC</text>
+			<br> Address:
+			<text>
+				<a href="https://rinkeby.etherscan.io/address/0x0d9e1e2b1a7d8c9004658f444711fe03df24fd32#tokentxns" target="_blank">0x0d9e1e2b1a7d8c9004658f444711fe03df24fd32</a>
+			</text>
+			<br> Balance:
+			<text>50000</text>
+			<br>
+			<br> ---------------
+			<br> Dest-adr
+			<input id="ZSCDest">
+			<br> Amount:
+			<input id="ZSCAmount">
+			<br>
+			<button type="button" onclick="submitTransferValue('ZSC', 'ZSCDest', 'ZSCAmount', 'ZSCHash')"> Transfer </button>
+			<br>
+			<text id="ZSCHash" value="log:"> </text>
+			<br>
+			<text>---------------</text>
+			<br>
+		</div>
+	</div>
 </div>
-{/block}
