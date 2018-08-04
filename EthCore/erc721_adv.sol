@@ -51,9 +51,9 @@ contract Erc721Adv is ERC721, Delegated {
     // Mapping from token ID to index of the owner tokens list
     mapping(uint => uint) private ownedTokensIndex_;
 
-    string public symbol = "VMB";
+    string private symbol = "VMB";
     
-    string public name = "Virtual Miner Robot";
+    string private name = "Virtual Miner Robot";
     
     function Erc721Adv() public {
     }
@@ -61,10 +61,6 @@ contract Erc721Adv is ERC721, Delegated {
     function checkTradeAble(uint256 _tokenId) internal view returns (bool);
     function tokenURI(uint _tokenId) public view returns (string);
 
-    function generatedTokenNos() internal view returns (uint) {
-        return generatedTokenNos_;
-    }
-    
     function checkOnlyOwnerOf( address _user, uint _tokenId) private view {
         require(tokenOwner_[_tokenId] == _user);
     }
@@ -76,6 +72,25 @@ contract Erc721Adv is ERC721, Delegated {
         if (checkTradeAble(_tokenId)) {
             require(_sender == owner || msg.sender == tokenApprovedFor_[_tokenId]);
         }
+    }
+
+    function setTokenNameInfo(string _name, string _symbole) public {
+        checkDelegate(msg.sender, 1);
+        tokenName_ = _name;
+        tokenSymbol_ = _symbole;
+    }
+
+    function getGeneratedTokenNos() public view returns (uint) {
+        return generatedTokenNos_;
+    }
+
+    ////////////////////////
+    function name() public view returns (string) { 
+        return tokenName_; 
+    }
+    
+    function symbol() public view returns (string) {
+        return tokenSymbol_;
     }
 
     function totalSupply() public view returns (uint) {
