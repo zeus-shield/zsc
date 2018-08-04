@@ -27,7 +27,8 @@ session_start();
     var checkeWeb3Account = <?php echo $htmlObjects->checkWeb3Account();?>;
     var userType = <?php echo "'".$_SESSION["userType"]."'";?>;
     var userLogin;
-    var receiverAgreementGM;
+    var revAgrGM;
+    var paraGM;
 
     checkeWeb3Account(function(account) {
         userLogin = new ZSCLogin(account);
@@ -35,15 +36,78 @@ session_start();
             if(!ret) { 
                 window.location.href = "index.php";
             } else {
-                receiverAgreementGM = new ZSCAgreementReceiver(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
+                revAgrGM = new ZSCAgreementReceiver(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
                 loadPurchasedAgreements();
             }
         });
     });
 
     /////////////////////////////
-    function loadPurchasedAgreements() {
+    function loadPurchasedAgrs() {
         
+    }
+
+    function loadPurchasedAgrsHtml(funcShowPara) {
+        var funcShowParaPrefix = funcShowPara + "('"; 
+        var funcShowParaPrefix = "')";
+    
+        var titlle = "Purchased agreements: "
+
+        var text ="";
+        text += '<div class="well"> <text>' + titlle + ' </text></div>';
+        text += '<div class="well">';
+
+        text += '<table align="center" style="width:600px;min-height:30px">'
+        text += '<tr><td>Name</td> <td>Balance </td> <td>Details </td></tr>'
+        text += '<tr> <td>---</td> <td>---</td> <td>---</td> </tr>'
+
+        var agrName;
+        for (var i = 0; i < this.agrNos; ++i) {
+            agrName = revAgrGM.getAgrName(i);
+            text += '<tr>'
+            text += '   <td><text>' + agrName + '</text></td>'
+            text += '   <td><text>' + revAgrGM.getAgrBalance(i)  + '</text></td>'
+            text += '   <td><text>' + revAgrGM.getAgrStatus(i)  + '</text></td>'
+            text += '   <td><button type="button" onClick="' + funcShowParaPrefix + agrName + funcShowParaSuffix + '">Show</button></td>'
+            text += '</tr>'
+            text += '<tr> <td>---</td> <td>---</td> <td>---</td>  </tr>'
+        }
+        text += '</table></div>'
+        document.getElementById(elementId).innerHTML = text;  
+    }
+
+    function loadPurchasedAgrParasHtml(agrName, funcName, backToAgr) {
+        var functionInput = funcName + "()";
+        var backFunc = backToAgr + "()";
+
+        var titlle = "Agreement: " + agrName; 
+       
+        var text ="";
+        text += '<div class="well"> <text>' + titlle + ' </text></div>';
+
+        text += '<div><button type="button" onClick="' + backFunc + '">Back</button></div>'
+
+        text += '<div class="well">';
+        text += '<table align="center" style="width:600px;min-height:30px">'
+    
+        var paraNos, paraName, paraValue;
+        paraNos = userProfile.getParaNos();
+    
+        for (var i = 0; i < paraNos; ++i) {
+            paraName  = paraGM.getParaName(i);
+            paraValue = paraGM.getParaValue(i);
+            text += '<tr>'
+            text += '  <td> <text>' + paraName + ': </text> </td>'
+            text += '  <td> <input type="text" id="' + paraName + '" value="' + paraValue + '"></input> </td>'
+            text += '</tr>'
+        }
+        text += '</table></div>'
+        text += '<div>'
+        text += '   <button type="button" onClick="' + functionInput + '">Claim reward</button>'
+        text += '   <text id="Back"></text>'
+        text += '</div>'
+
+        document.getElementById(elementId).innerHTML = text;  
     }
 
 </script>

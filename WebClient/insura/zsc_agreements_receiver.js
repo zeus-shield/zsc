@@ -3,24 +3,22 @@ Copyright (c) 2018 ZSC Dev Team
 */
 
 //class zscWallet
-function ZSCAgreementReceiver(nm, abi, adr) {
-    this.userName = nm;
-    this.tmpName;
+function ZSCAgreementReceiver(account, adr, abi) {
     this.agrNos = 0;
     this.agrNames = [];
     this.balance = [];
     this.status = [];
     this.itemTags = [];
-    this.account = web3.eth.accounts[0];
+    this.account = account;
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
     this.gasPrice = bF_getGasPrice();
     this.gasLimit = bF_getGasLimit();
 }
-
-ZSCAgreementReceiver.prototype.getUserName = function() {return this.userName;}
-
-ZSCAgreementReceiver.prototype.setTemplateName = function(name) {this.tmpName = name;}
+ZSCAgreementReceiver.prototype.getAgrNos = function() {return this.agrNos;}
+ZSCAgreementReceiver.prototype.getAgrName = function(index) {return this.agrNames[index];}
+ZSCAgreementReceiver.prototype.getAgrBalance = function(index) {return this.balance[index];}
+ZSCAgreementReceiver.prototype.getAgrStatus = function(index) {return this.status[index];}
 
 ZSCAgreementReceiver.prototype.resetAllItemTags = function(gm) {
     for (var i = 0; i < gm.agrNos; ++i) {
