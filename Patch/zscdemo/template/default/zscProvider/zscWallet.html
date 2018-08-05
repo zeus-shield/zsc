@@ -58,4 +58,16 @@
 		</div>
 	</div>
 </div>
-{/block}
+{/block} {block name="script"}
+<script type="text/javascript">
+	function submitTransferValue(tokenSymbol, destAddressId, amountId, logId) {
+		// relogin();
+		var destAddress = document.getElementById(destAddressId).value;
+		var amount = document.getElementById(amountId).value;
+
+		zscWalletGM.submitTransferValue(tokenSymbol, destAddress, amount, logId, function () {
+			loadHtmlPageBody("wallet");
+		});
+	}
+    
+</script> {/block}
