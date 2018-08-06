@@ -101,4 +101,30 @@
         }
     }
 
+	function loadWalletHtml() {
+		var adr;
+		var balance;
+
+		for (var i = 0; i < zscWalletGM.tokenNos; ++i) {
+			symbol = zscWalletGM.tokenSymbol[i];
+			adr = zscWalletGM.tokenAddress[i];
+			balance = zscWalletGM.tokenBalance[i];
+		}
+
+		i = i - 1;
+
+		document.getElementById('info').innerHTML =
+			zscWalletGM.getUserType() + " - [" + zscWalletGM.getUserName() + "] - wallet info";
+
+		document.getElementById('walletSymbol').innerHTML =
+			symbol;
+
+		document.getElementById("walletAddress").innerHTML =
+			"<a href='https://rinkeby.etherscan.io/address/0x" + adr + "#tokentxns' target='_blank'>0x" + adr + "</a>";
+
+		document.getElementById("walletBalance").innerHTML =
+			balance;
+	}
+
+
 </script> {/block}
