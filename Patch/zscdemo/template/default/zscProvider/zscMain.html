@@ -1,6 +1,34 @@
 {extend name="public/base" /} {block name="body"}
 <div class="banner2">
-    
+    <br>
+    <i>Web-client for testing ZSC system</i>
+    <br>
+    <br>
+    <script type="text/javascript">
+        getInfo();
+        
+    </script>
+    <div class="wall">
+        <button type="button" onClick="initClass('wallet')">Wallat</button>
+        <button type="button" onClick="initClass('parameter-profile')">Profile</button>
+        {if condition="$Think.cookie.type eq 1"}
+        <button type="button" onClick="initClass('template')">Templates</button>
+        {else /}
+        <button type="button" onClick="initClass('agreement-receiver')">Agreements</button>
+        {/if}
+        <button type="button" onClick="initClass('agreement-all')">Show All Agreements</button>
+        <button type="button" onClick="initClass('module-adrs')">Show Module Adrs</button>
+    </div>
+    <div>
+        <br>
+        <b>测试首页</b>
+        <br>
+        <i>Welcome to the ZSC testing platform</i>
+        <br>
+    </div>
+
+
 </div>
-{/block} {block name="script"}
+{/block} 
+
 
