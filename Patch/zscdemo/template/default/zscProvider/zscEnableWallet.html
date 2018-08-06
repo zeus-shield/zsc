@@ -6,19 +6,21 @@
 	<br>
 	<br>
 	<script type="text/javascript">
-		getInfo();
+		getInfo(function(){
+			loadEnableWallet();
+		});
 
 	</script>
 	<div class="wall">
-		<button type="button" onClick="initClass('wallet')">Wallat</button>
-		<button type="button" onClick="initClass('parameter-profile')">Profile</button>
-		{if condition="$Think.cookie.type eq 1"}
-		<button type="button" onClick="initClass('template')">Templates</button>
-		{else /}
-		<button type="button" onClick="initClass('agreement-receiver')">Agreements</button>
-		{/if}
-		<button type="button" onClick="initClass('agreement-all')">Show All Agreements</button>
-		<button type="button" onClick="initClass('module-adrs')">Show Module Adrs</button>
+		<button type="button" onClick="indexjump('zscwallet')">Wallat</button>
+        <button type="button" onClick="indexjump('zscprofile')">Profile</button>
+        {if condition="$Think.cookie.type eq 1"}
+        <button type="button" onClick="indexjump('zscTemplates')">Templates</button>
+        {else /}
+        <button type="button" onClick="indexjump('agreement-receiver')">Agreements</button>
+        {/if}
+        <button type="button" onClick="indexjump('zscShowallagreements')">Show All Agreements</button>
+        <button type="button" onClick="indexjump('zscshowMAdr')">Show Module Adrs</button>
 	</div>
 	<div>
 		<br>
@@ -30,11 +32,13 @@
 
 	<div id="PageBody">
 		<div class="well">
-			<text> provider [zsc-yTXD] - wallet info </text>
+			<text id = "info">loading。。。</text>
 		</div>
 		<div class="well">---------------
 			<br>
-			<button type="button" onclick="enableTestZSCWallet('EnableZSCWalletHash', 'ZSCHash')">Enable TestZSC Wallet</button>
+			<text>第一次使用钱包需启用钱包</text>
+			<br>
+			<button type="button" onclick="enableTestZSCWalletDemo('EnableZSCWalletHash', 'ZSCHash')">Enable TestZSC Wallet</button>
 			<br>
 			<text id="EnableZSCWalletHash" value="log:"> </text>
 			<br>
