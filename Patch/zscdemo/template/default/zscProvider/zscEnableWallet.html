@@ -84,8 +84,12 @@
                 window.location.href = "{:url('index/zscprovider/zscEnableWallet')}";
                 break;
 
-           
-        }
-    }
+		}
+	}
+	
+	function loadEnableWallet() {
+	document.getElementById('info').innerHTML =
+			zscWalletGM.getUserType() + " - [" + zscWalletGM.getUserName() + "] - wallet info";
+	}
 
 </script> {/block}
