@@ -31,18 +31,18 @@
 
 	<div id="PageBody">
 		<div class="well">
-			<text> provider [zsc-yTXD] - wallet info </text>
+			<text id="info">loading。。。(长时间未跳出界面请检查是否成功登录matemask)</text>
 		</div>
 		<div class="well">
 			---------------
 			<br> Symbol:
-			<text>TestZSC</text>
+			<text id ="walletSymbol"></text>
 			<br> Address:
-			<text>
-				<a href="https://rinkeby.etherscan.io/address/0x0d9e1e2b1a7d8c9004658f444711fe03df24fd32#tokentxns" target="_blank">0x0d9e1e2b1a7d8c9004658f444711fe03df24fd32</a>
+			<text id="walletAddress">
+
 			</text>
 			<br> Balance:
-			<text>50000</text>
+			<text id="walletBalance"></text>
 			<br>
 			<br> ---------------
 			<br> Dest-adr
@@ -50,7 +50,7 @@
 			<br> Amount:
 			<input id="ZSCAmount">
 			<br>
-			<button type="button" onclick="submitTransferValue('ZSC', 'ZSCDest', 'ZSCAmount', 'ZSCHash')"> Transfer </button>
+			<button type="button" onclick="submitTransferValueDemo('ZSC', 'ZSCDest', 'ZSCAmount', 'ZSCHash')"> Transfer </button>
 			<br>
 			<text id="ZSCHash" value="log:"> </text>
 			<br>
@@ -61,8 +61,7 @@
 </div>
 {/block} {block name="script"}
 <script type="text/javascript">
-	function submitTransferValue(tokenSymbol, destAddressId, amountId, logId) {
-		// relogin();
+	function submitTransferValueDemo(tokenSymbol, destAddressId, amountId, logId) {
 		var destAddress = document.getElementById(destAddressId).value;
 		var amount = document.getElementById(amountId).value;
 
