@@ -74,38 +74,71 @@
 {/block} {block name="script"}
 
 <script type="text/javascript">
-    
 
-   
+	function indexjump(tag) {
+		switch (tag) {
+			case "zscShowMAdr":
+				window.location.href = "{:url('index/zscprovider/zscShowMAdr')}";
+				break;
 
-    function indexjump(tag) {
-        switch(tag) {
-            case "zscShowMAdr":
-                window.location.href = "{:url('index/zscprovider/zscShowMAdr')}";
-                break;
-            
-            case "zscShowAllAgreements":
-                window.location.href = "{:url('index/zscprovider/zscShowAllAgreements')}";   
-                break;
+			case "zscShowAllAgreements":
+				window.location.href = "{:url('index/zscprovider/zscShowAllAgreements')}";
+				break;
 
-            case "zscProfile":
-                window.location.href = "{:url('index/zscprovider/zscProfile')}";
-                break;
+			case "zscProfile":
+				window.location.href = "{:url('index/zscprovider/zscProfile')}";
+				break;
 
-             case "zscTemplates":
-                window.location.href = "{:url('index/zscprovider/zscTemplates')}";
-                break;
+			case "zscTemplates":
+				window.location.href = "{:url('index/zscprovider/zscTemplates')}";
+				break;
 
-            case "zscWallet":
-                window.location.href = "{:url('index/zscprovider/zscWallet')}";
-                break;
+			case "zscWallet":
+				window.location.href = "{:url('index/zscprovider/zscWallet')}";
+				break;
 
-            case "zscEnableWallet":
-                window.location.href = "{:url('index/zscprovider/zscEnableWallet')}";
-                break;
+			case "zscEnableWallet":
+				window.location.href = "{:url('index/zscprovider/zscEnableWallet')}";
+				break;
 
-           
-        }
-    }
+			case "zscShowAllAgrsDetail":
+				window.location.href = "{:url('index/zscprovider/zscShowAllAgrsDetail')}";
+				break;
+
+		}
+	}
+
+	function loadShowAllAgreementsHtml() {
+
+		var text = "";
+		var showPrefix = "showAllAgrParametersDemo" + "('";
+		var showSuffix = "')";
+
+		var purchasePrefix = "submitPurchaseAgreement" + "('";
+		var purchaseSuffix = "')";
+
+		for (var i = 0; i < zscAgrsAllGM.allAgrNos; ++i) {
+			if (zscAgrsAllGM.allAgrStatus[i] == "PUBLISHED") {
+				text += '<tr>'
+				text += '   <td><text>' + i + '</text></td>'
+				text += '   <td><text>' + zscAgrsAllGM.allAgrNames[i] + '</text></td>'
+				text += '   <td><text>' + zscAgrsAllGM.allAgrStatus[i] + '</text></td>'
+				text += '   <td><button type="button" onClick="' + showPrefix + zscAgrsAllGM.allAgrNames[i] + showSuffix + '">Details</button></td>'
+				if (zscAgrsAllGM.userType == "receiver") {
+					text += '   <td><button type="button" onClick="' + purchasePrefix + zscAgrsAllGM.allAgrNames[i] + purchaseSuffix + '">Purchase</button></td>'
+				}
+				text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td></tr>'
+				text += '</tr>'
+			}
+		}
+
+		document.getElementById('allAgreementsList').innerHTML =
+			text;
+	}
+
+	function showAllAgrParametersDemo(elementName) {
+		setCookie("elementName", elementName);
+		indexjump("zscShowAllAgrsDetail");
+	}
 
 </script> {/block}
