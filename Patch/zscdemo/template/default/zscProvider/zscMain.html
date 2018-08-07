@@ -9,15 +9,15 @@
         
     </script>
     <div class="wall">
-        <button type="button" onClick="initClass('wallet')">Wallat</button>
-        <button type="button" onClick="initClass('parameter-profile')">Profile</button>
+        <button type="button" onClick="indexjump('zscwallet')">Wallat</button>
+        <button type="button" onClick="indexjump('zscprofile')">Profile</button>
         {if condition="$Think.cookie.type eq 1"}
-        <button type="button" onClick="initClass('template')">Templates</button>
+        <button type="button" onClick="indexjump('zscTemplates')">Templates</button>
         {else /}
-        <button type="button" onClick="initClass('agreement-receiver')">Agreements</button>
+        <button type="button" onClick="indexjump('agreement-receiver')">Agreements</button>
         {/if}
-        <button type="button" onClick="initClass('agreement-all')">Show All Agreements</button>
-        <button type="button" onClick="initClass('module-adrs')">Show Module Adrs</button>
+        <button type="button" onClick="indexjump('zscShowallagreements')">Show All Agreements</button>
+        <button type="button" onClick="indexjump('zscshowMAdr')">Show Module Adrs</button>
     </div>
     <div>
         <br>
