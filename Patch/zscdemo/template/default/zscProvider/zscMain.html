@@ -26,9 +26,39 @@
         <i>Welcome to the ZSC testing platform</i>
         <br>
     </div>
-
-
 </div>
-{/block} 
+{/block} {block name="script"}
 
+<script type="text/javascript">
 
+    function indexjump(tag) {
+        switch(tag) {
+            case "zscshowMAdr":
+                window.location.href = "{:url('index/zscprovider/zscShowMAdr')}";
+                break;
+            
+            case "zscShowallagreements":
+                window.location.href = "{:url('index/zscprovider/zscShowAllAgreements')}";   
+                break;
+
+            case "zscprofile":
+                window.location.href = "{:url('index/zscprovider/zscProfile')}";
+                break;
+
+             case "zscTemplates":
+                window.location.href = "{:url('index/zscprovider/zscTemplates')}";
+                break;
+
+            case "zscwallet":
+                window.location.href = "{:url('index/zscprovider/zscWallet')}";
+                break;
+
+            case "zscenablewallet":
+                window.location.href = "{:url('index/zscprovider/zscEnableWallet')}";
+                break;
+
+           
+        }
+    }
+
+</script> {/block}
