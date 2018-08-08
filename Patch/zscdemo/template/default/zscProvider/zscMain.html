@@ -9,15 +9,15 @@
         
     </script>
     <div class="wall">
-        <button type="button" onClick="indexjump('zscwallet')">Wallat</button>
-        <button type="button" onClick="indexjump('zscprofile')">Profile</button>
+        <button type="button" onClick="indexjump('zscWallet')">Wallat</button>
+        <button type="button" onClick="indexjump('zscProfile')">Profile</button>
         {if condition="$Think.cookie.type eq 1"}
         <button type="button" onClick="indexjump('zscTemplates')">Templates</button>
         {else /}
-        <button type="button" onClick="indexjump('agreement-receiver')">Agreements</button>
+        <button type="button" onClick="indexjump('zscAgreement')">Agreements</button>
         {/if}
-        <button type="button" onClick="indexjump('zscShowallagreements')">Show All Agreements</button>
-        <button type="button" onClick="indexjump('zscshowMAdr')">Show Module Adrs</button>
+        <button type="button" onClick="indexjump('zscShowAllAgreements')">Show All Agreements</button>
+        <button type="button" onClick="indexjump('zscShowMAdr')">Show Module Adrs</button>
     </div>
     <div>
         <br>
@@ -33,15 +33,15 @@
 
     function indexjump(tag) {
         switch(tag) {
-            case "zscshowMAdr":
+            case "zscShowMAdr":
                 window.location.href = "{:url('index/zscprovider/zscShowMAdr')}";
                 break;
             
-            case "zscShowallagreements":
+            case "zscShowAllAgreements":
                 window.location.href = "{:url('index/zscprovider/zscShowAllAgreements')}";   
                 break;
 
-            case "zscprofile":
+            case "zscProfile":
                 window.location.href = "{:url('index/zscprovider/zscProfile')}";
                 break;
 
@@ -49,16 +49,20 @@
                 window.location.href = "{:url('index/zscprovider/zscTemplates')}";
                 break;
 
-            case "zscwallet":
+            case "zscWallet":
                 window.location.href = "{:url('index/zscprovider/zscWallet')}";
                 break;
 
-            case "zscenablewallet":
+            case "zscEnableWallet":
                 window.location.href = "{:url('index/zscprovider/zscEnableWallet')}";
                 break;
 
-           
+            case "zscAgreement":
+                window.location.href = "{:url('index/zscprovider/zscAgreement')}";
+                break;
+ 
         }
     }
+
 
 </script> {/block}
