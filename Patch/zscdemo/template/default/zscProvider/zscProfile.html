@@ -6,19 +6,21 @@
 	<br>
 	<br>
 	<script type="text/javascript">
-		getInfo();
+		getInfo(function () {
+			loadHtmlPageBody("parameter-profile");
+		});
 
 	</script>
 	<div class="wall">
-		<button type="button" onClick="initClass('wallet')">Wallat</button>
-		<button type="button" onClick="initClass('parameter-profile')">Profile</button>
-		{if condition="$Think.cookie.type eq 1"}
-		<button type="button" onClick="initClass('template')">Templates</button>
-		{else /}
-		<button type="button" onClick="initClass('agreement-receiver')">Agreements</button>
-		{/if}
-		<button type="button" onClick="initClass('agreement-all')">Show All Agreements</button>
-		<button type="button" onClick="initClass('module-adrs')">Show Module Adrs</button>
+		<button type="button" onClick="indexjump('zscWallet')">Wallat</button>
+        <button type="button" onClick="indexjump('zscProfile')">Profile</button>
+        {if condition="$Think.cookie.type eq 1"}
+        <button type="button" onClick="indexjump('zscTemplates')">Templates</button>
+        {else /}
+        <button type="button" onClick="indexjump('zscAgreement')">Agreements</button>
+        {/if}
+        <button type="button" onClick="indexjump('zscShowAllAgreements')">Show All Agreements</button>
+        <button type="button" onClick="indexjump('zscShowMAdr')">Show Module Adrs</button>
 	</div>
 	<div>
 		<br>
@@ -29,152 +31,34 @@
 	</div>
 
 	<div id="PageBody">
-		<div class="well">
-			<text>provider [zsc-yTXD] - profile: </text>
+		<div id="PageBody">
+			<div class="well">
+				<text id="info">loading。。。(长时间未跳出界面请检查是否成功登录matemask)</text>
+			</div>
+			<div class="well">
+				<table align="center" style="width:600px;min-height:30px">
+					<tbody id="parameter-profile">
+
+					</tbody>
+				</table>
+			</div>
+			<div>
+				<button type="button" onclick="submitParameterProfileChanges('ButtonActiveHash')">Submit Changes</button>
+				<text id="ButtonActiveHash"></text>
+			</div>
 		</div>
-		<div class="well">
-			<table align="center" style="width:600px;min-height:30px">
-				<tbody>
-					<tr>
-						<td>
-							<text>assurerType: </text>
-						</td>
-						<td>
-							<input type="text" id="assurerType" value="provider">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<text>assurerName: </text>
-						</td>
-						<td>
-							<input type="text" id="assurerName" value="healthcare">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<text>principalFirstName: </text>
-						</td>
-						<td>
-							<input type="text" id="principalFirstName" value="Alex">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<text>principalLastName: </text>
-						</td>
-						<td>
-							<input type="text" id="principalLastName" value="Guo">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<text>principalIdentific: </text>
-						</td>
-						<td>
-							<input type="text" id="principalIdentific" value="00000">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<text>principalPhone: </text>
-						</td>
-						<td>
-							<input type="text" id="principalPhone" value="021000000">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<text>principalEmail:
-							</text>
-						</td>
-						<td>
-							<input type="text" id="principalEmail" value="alex@test.com">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<text>principalNationality: </text>
-						</td>
-						<td>
-							<input type="text" id="principalNationality" value="China">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<text>companyName: </text>
-						</td>
-						<td>
-							<input type="text" id="companyName" value="Deduotech">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<text>companyId: </text>
-						</td>
-						<td>
-							<input type="text" id="companyId" value="000">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<text>companyNationality: </text>
-						</td>
-						<td>
-							<input type="text" id="companyNationality" value="Sweden">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<text>companyPhone: </text>
-						</td>
-						<td>
-							<input type="text" id="companyPhone" value="0045888">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<text>companyEmail: </text>
-						</td>
-						<td>
-							<input type="text" id="companyEmail" value="guo@test.se">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<text>claimEmail: </text>
-						</td>
-						<td>
-							<input type="text" id="claimEmail" value="guo@test.se">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<text>claimPhone: </text>
-						</td>
-						<td>
-							<input type="text" id="claimPhone" value="0045888">
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div>
-			<button type="button" onclick="submitParameterProfileChanges('ButtonActiveHash')">Submit Changes</button>
-			<text id="ButtonActiveHash"></text>
-		</div>
+
 	</div>
 </div>
-{/block}
-
-{block name="script"}
+{/block} {block name="script"}
 
 <script type="text/javascript">
-   
 
-   
+	function submitParameterProfileChangesDemo(logID) {
+		zscElement.setElementParameter(logID, function () { });
+	}
 
-    function indexjump(tag) {
+	function indexjump(tag) {
         switch(tag) {
             case "zscShowMAdr":
                 window.location.href = "{:url('index/zscprovider/zscShowMAdr')}";
