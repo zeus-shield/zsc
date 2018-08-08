@@ -17,7 +17,7 @@
         {if condition="$Think.cookie.type eq 1"}
         <button type="button" onClick="indexjump('zscTemplates')">Templates</button>
         {else /}
-        <button type="button" onClick="indexjump('agreement-receiver')">Agreements</button>
+        <button type="button" onClick="indexjump('zscAgreement')">Agreements</button>
         {/if}
         <button type="button" onClick="indexjump('zscShowAllAgreements')">Show All Agreements</button>
         <button type="button" onClick="indexjump('zscShowMAdr')">Show Module Adrs</button>
@@ -84,6 +84,10 @@
             case "zscEnableWallet":
                 window.location.href = "{:url('index/zscprovider/zscEnableWallet')}";
 				break;
+
+			case "zscAgreement":
+                window.location.href = "{:url('index/zscprovider/zscAgreement')}";
+                break;
 				
         }
     }
