@@ -27,6 +27,19 @@ class Company extends Base{
     {
         return strtotime($value);
     }
-  
+
+    /**
+	 * 企业信息查询
+	 * @return [type] [array]
+	 */
+	public function companyInfo($uid=null)
+	{
+		$result = Db::table('user a')
+					->join('company b','b.uid=a.uid',"LEFT")
+					->where('a.uid',$uid)
+					// ->where('b.status',1)
+					->find();
+		return $result;
+	}
 
 }
