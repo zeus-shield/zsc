@@ -42,4 +42,32 @@ class Company extends Base{
 		return $result;
 	}
 
+    protected function setUidAttr($value)
+    {
+    	return Cookie::get('uid')?Cookie::get('uid'):$value;
+    }
+
+    // protected function setPapersTypeAttr($value)
+    // {
+    // 	return "身份证";
+    // }
+    /**
+     * 营业执照
+     */
+    protected function getLicenseAttr($value, $data){
+		return get_cover($value,'path');
+	}
+	protected function getPapersImgyAttr($value, $data){
+		return get_cover($value,'path');
+	}
+	//正面照
+	protected function getPapersImgxAttr($value, $data){
+		return get_cover($value,'path');
+	}
+
+
+
+
+
+
 }
