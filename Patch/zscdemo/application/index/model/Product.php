@@ -19,5 +19,37 @@ class Product extends Base{
     {
         return strtotime($value);
     }
-    
+
+    /*上架时间*/
+    protected function getAddedTimeAttr($value)
+    {
+        return date('Y-m-d H:i:s',$value);
+    }
+    /*特色*/
+    protected function getTraitAttr($value)
+    {
+    	return explode(",",$value);
+    }
+
+    /*图片*/
+	protected function getImageAttr($value, $data){
+		return get_cover($value,'path');
+	}
+
+	/*分类人群*/
+	protected function getClassifyAttr($value){
+
+		$classify = config('classify');
+
+       	return $classify[$value];
+	}
+
+	/*险种*/
+	protected function getCoverageAttr($value){
+
+		$coverage = config('coverage');
+
+       	return $coverage[$value];
+	}
+
 }
