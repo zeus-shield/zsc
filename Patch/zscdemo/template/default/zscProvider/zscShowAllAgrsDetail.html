@@ -78,5 +78,34 @@
 		}
 	}
 
+	function loadShowAllAgreementsListHtml() {
+
+		var text = "";
+
+		for (var i = 0; i < zscElement.parameNos; ++i) {
+			paraName = zscElement.parameterNames[i];
+			if (paraName == "duration") {
+				paraName += " (seconds) [>=60]";
+			} else if (paraName == "price") {
+				paraName += " [>0]";
+			} else if (paraName == "insurance") {
+				paraName += " (locked for claim) [>0]";
+			}
+			text += '<tr>'
+			text += '  <td> <text>' + paraName + ': </text> </td>'
+			text += '  <td> <input type="text" id="' + zscElement.parameterNames[i] + '" value="' + zscElement.parameterValues[i] + '"></input> </td>'
+			text += '</tr>'
+		}
+
+		document.getElementById('info').innerHTML =
+			"entity [" + zscElement.enName + "] details: ";
+
+		document.getElementById('agreementDetail').innerHTML =
+			text;
+	}
+
+	function bakcToAllAgrDemo() {
+		indexjump("zscShowAllAgreements");
+	}
 
 </script> {/block}
