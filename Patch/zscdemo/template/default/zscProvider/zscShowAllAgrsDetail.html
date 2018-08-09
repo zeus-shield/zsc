@@ -1,6 +1,29 @@
 {extend name="public/base" /} {block name="body"}
 <div class="banner2">
 
+	<br>
+	<i>Web-client for testing ZSC system</i>
+	<br>
+	<br>
+	<script type="text/javascript">
+
+		getInfo(function () {
+			let elementName = getCookie("elementName");
+			showAllAgrParameters(elementName);
+		});
+
+	</script>
+	<div class="wall">
+		<button type="button" onClick="indexjump('zscWallet')">Wallat</button>
+		<button type="button" onClick="indexjump('zscProfile')">Profile</button>
+		{if condition="$Think.cookie.type eq 1"}
+		<button type="button" onClick="indexjump('zscTemplates')">Templates</button>
+		{else /}
+		<button type="button" onClick="indexjump('zscAgreement')">Agreements</button>
+		{/if}
+		<button type="button" onClick="indexjump('zscShowAllAgreements')">Show All Agreements</button>
+		<button type="button" onClick="indexjump('zscShowMAdr')">Show Module Adrs</button>
+	</div>
 
 
 </script> {/block}
