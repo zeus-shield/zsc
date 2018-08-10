@@ -15,7 +15,6 @@ $htmlObjects = new ZSCHtmlObjects();
 <script type="text/javascript">
     var recorderAdr = "<?php echo $htmlObjects->readObjectAddress('LogRecorder')?>";
     var zscTokenAddress = "<?php echo $htmlObjects->readObjectAddress('TestToken')?>";
-    var timeStampAdr = "<?php echo $htmlObjects->readObjectAddress('TimeStamp')?>";
     var logedModuleAdrs = <?php echo $htmlObjects->getLogedObjectAddressArrayInString()?>;
 
     var web3;
@@ -26,7 +25,7 @@ $htmlObjects = new ZSCHtmlObjects();
         web3 = new Web3(web3.currentProvider);
     }
 
-    var zscSetup = new ZSCSetup(recorderAdr, timeStampAdr, zscTokenAddress, logedModuleAdrs);
+    var zscSetup = new ZSCSetup(recorderAdr, zscTokenAddress, logedModuleAdrs);
 
     function addFactoryModule(factModule, elementId) {
         zscSetup.addFactoryModule(factModule, elementId);

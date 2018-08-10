@@ -42,11 +42,10 @@ recordSystemObjectAdrs($htmlObjects);
     }
     
     var recorderAdr = "<?php echo $htmlObjects->readObjectAddress('LogRecorder')?>";
-    var timeStampAdr = "<?php echo $htmlObjects->readObjectAddress('TimeStamp')?>";
     var zscTokenAddress = "<?php echo $htmlObjects->readObjectAddress('TestToken')?>";
     var logedModuleAdrs = <?php echo $htmlObjects->getLogedObjectAddressArrayInString()?>;
 
-    var zscSetup = new ZSCSetup(recorderAdr, timeStampAdr, zscTokenAddress, logedModuleAdrs);
+    var zscSetup = new ZSCSetup(recorderAdr, zscTokenAddress, logedModuleAdrs);
 
     function getObjectAdr(module) {
         var adr;

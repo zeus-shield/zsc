@@ -14,7 +14,6 @@ $htmlObjects = new ZSCHtmlObjects();
 <?php echo $htmlObjects->loadScriptFiles(); ?>
 <script type="text/javascript">
     var recorderAdr = "<?php echo $htmlObjects->readObjectAddress('LogRecorder')?>";
-    var timeStampAdr = "<?php echo $htmlObjects->readObjectAddress('TimeStamp')?>";
     var zscTokenAddress = "<?php echo $htmlObjects->readObjectAddress('TestToken')?>";
     var logedModuleAdrs = <?php echo $htmlObjects->getLogedObjectAddressArrayInString()?>;
 
@@ -26,7 +25,7 @@ $htmlObjects = new ZSCHtmlObjects();
         web3 = new Web3(web3.currentProvider);
     }
     
-    var zscSetup = new ZSCSetup(recorderAdr, timeStampAdr, zscTokenAddress, logedModuleAdrs);
+    var zscSetup = new ZSCSetup(recorderAdr, zscTokenAddress, logedModuleAdrs);
 
     function printAbi(module) {
         document.getElementById("AbiString").innerText = cC_getContractAbiString(module);  
