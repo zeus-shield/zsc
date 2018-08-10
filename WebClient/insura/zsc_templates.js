@@ -16,7 +16,7 @@ function ZSCTemplate(account, adr, abi) {
     this.gasLimit = bF_getGasLimit();
 }
 
-ZSCTemplate.prototype.getTmpName = function(index) { return this.tmpName[index];}
+ZSCTemplate.prototype.getTmpName = function(index) { return this.tmpNames[index];}
 ZSCTemplate.prototype.getTmpChildrenNos = function(index) { return this.tmpChildrenNos[index];}
 ZSCTemplate.prototype.setUserType = function(type) {this.userType = type;}
 ZSCTemplate.prototype.getTmpNos = function(type) { return this.tmpNos;}
@@ -68,7 +68,6 @@ ZSCTemplate.prototype.numTemplates= function(gm, func) {
         function(error, result){ 
             if(!error) {
                 gm.tmpNos = result.toString(10);
-                gm.itemTags[index] = true;
                 callBack(gm);
             } else {
                 console.log("error: " + error);
@@ -101,6 +100,7 @@ ZSCTemplate.prototype.numTmpChildrenNos = function(gm, index, func) {
         function(error, result){ 
             if(!error) {
                 gm.tmpChildrenNos[index] = result.toString(10);
+                gm.itemTags[index] = true;
                 func(gm, index);
             } else {
                 console.log("error: " + error);
