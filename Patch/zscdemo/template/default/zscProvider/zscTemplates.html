@@ -6,19 +6,21 @@
 	<br>
 	<br>
 	<script type="text/javascript">
-		getInfo();
+		getInfo(function () {
+			loadHtmlPageBody("template");
+		});
 
 	</script>
 	<div class="wall">
-		<button type="button" onClick="initClass('wallet')">Wallat</button>
-		<button type="button" onClick="initClass('parameter-profile')">Profile</button>
+		<button type="button" onClick="indexjump('zscWallet')">Wallat</button>
+		<button type="button" onClick="indexjump('zscProfile')">Profile</button>
 		{if condition="$Think.cookie.type eq 1"}
-		<button type="button" onClick="initClass('template')">Templates</button>
+		<button type="button" onClick="indexjump('zscTemplates')">Templates</button>
 		{else /}
-		<button type="button" onClick="initClass('agreement-receiver')">Agreements</button>
+		<button type="button" onClick="indexjump('zscAgreement')">Agreements</button>
 		{/if}
-		<button type="button" onClick="initClass('agreement-all')">Show All Agreements</button>
-		<button type="button" onClick="initClass('module-adrs')">Show Module Adrs</button>
+		<button type="button" onClick="indexjump('zscShowAllAgreements')">Show All Agreements</button>
+		<button type="button" onClick="indexjump('zscShowMAdr')">Show Module Adrs</button>
 	</div>
 	<div>
 		<br>
@@ -31,14 +33,16 @@
 	<div id="PageBody">
 
 		<div class="well">
-			<text>provider [ddt-02] - templates info </text>
+			<text id="info">load。。。(长时间未跳出界面请检查是否成功登录matemask)</text>
 		</div>
 
+		{if condition="$Think.cookie.type eq 1"}
 		<div class="well">
 			<button type="button" onclick="creatNewTemplate('CreateNewTemplateHash')">Create New Template</button>
 			<br>
 			<text id="CreateNewTemplateHash"> </text>
 		</div>
+		{/if}
 
 		<div class="well">
 			<div class="well">
@@ -57,7 +61,7 @@
 						<td>Details</td>
 						<td>Add as Agreement </td>
 						<td>Added Nos. </td>
-						<td> </td>
+						<td>List </td>
 					</tr>
 
 					<tr>
@@ -67,14 +71,15 @@
 						<td>---</td>
 						<td>---</td>
 					</tr>
+					<tbody id="templateList">
+
+					</tbody>
 				</tbody>
 			</table>
 		</div>
 	</div>
 </div>
-{/block}
-
-{block name="script"}
+{/block} {block name="script"}
 
 <script type="text/javascript">
    
