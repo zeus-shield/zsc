@@ -4,7 +4,6 @@ Copyright (c) 2018 ZSC Dev Team
 
 //class zscElement
 function ZSCElement(acount, controlApisAdvAdr, controlApisAdvAbi) {
-    this.enName = en;
     this.parameNos = 0;
     this.ethBalance = 0;
     this.nodeAddress = 0;
@@ -187,73 +186,5 @@ ZSCElement.prototype.setElementParameter = function(logID, func) {
     }
 } 
 
-
-ZSCElement.prototype.loadParametersHtml = function(elementId, type, funcName, backFuncName) {
-    var functionInput = funcName + "('ButtonActiveHash')";
-
-    var functionBack = backFuncName + "()";
-
-    var titlle;
-
-    if (type == "profile") {
-        titlle = this.userType + " [" + this.userName + "] - profile: "
-    } else {
-        titlle = "entity [" + this.enName + "] details: "
-    }
-   
-    var text ="";
-    text += '<div class="well"> <text>' + titlle + ' </text></div>';
-    text += '<div class="well">';
-    text += '<table align="center" style="width:600px;min-height:30px">'
-
-    var paraName;
-
-    for (var i = 0; i < this.parameNos; ++i) {
-        paraName = this.parameterNames[i];
-        if (paraName == "duration") {
-            paraName += " (seconds) [>=60]";
-        } else if (paraName == "price") {
-            paraName += " [>0]";
-        } else if (paraName == "insurance") {
-            paraName += " (locked for claim) [>0]";
-        }
-        text += '<tr>'
-        text += '  <td> <text>' + paraName + ': </text> </td>'
-        text += '  <td> <input type="text" id="' + this.parameterNames[i] + '" value="' + this.parameterValues[i] + '"></input> </td>'
-        text += '</tr>'
-    }
-    text += '</table></div>'
-    if (type == "profile") {
-        text += '<div>'
-        text += '   <button type="button" onClick="' + functionInput + '">Submit Changes</button>'
-        text += '   <text id="ButtonActiveHash"></text>'
-        text += '</div>'
-    } else if (type == "template") {
-        text += '<div>'
-        text += '   <button type="button" onClick="' + functionInput + '">Submit Changes</button>'
-        text += '   <button type="button" onClick="' + functionBack + '">Back</button>'
-        text += '   <text id="ButtonActiveHash"></text>'
-        text += '</div>'
-    } else if (type == "agreement-provider") {
-        text += '<div>'
-        text += '   <button type="button" onClick="' + functionBack + '">Back</button>'
-        text += '   <button type="button" onClick="' + functionInput + '">Claim Reward</button>'
-        text += '   <text id="ButtonActiveHash"></text>'
-        text += '</div>'
-    } else if (type == "agreement-receiver") {
-        text += '<div>'
-        text += '   <button type="button" onClick="' + functionBack + '">Back</button>'
-        text += '   <button type="button" onClick="' + functionInput + '">Claim Insurance</button>'
-        text += '   <text id="ButtonActiveHash"></text>'
-        text += '</div>'
-    } else if (type == "agreement-all") {
-        text += '<div>'
-        text += '   <button type="button" onClick="' + functionBack + '">Back</button>'
-        text += '</div>'
-    } else {
-    }
-
-    document.getElementById(elementId).innerHTML = text;  
-}
 
 
