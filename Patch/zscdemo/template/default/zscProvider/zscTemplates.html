@@ -124,4 +124,33 @@
 		}
 	}
 
+	function loadTemplatesHtml() {
+
+		var funcSetParaPrefix = "showTemplateParametersDemo" + "('";
+		var funcSetParaSuffix = "')";
+
+		var funcPublishPrefix = "enableAsAgreement" + "('";
+		var funcPublishSuffix = "')";
+
+		var showAgrsPrefix = "showProvidersAgreementsDemo" + "('";
+		var showAgrsSuffix = "')";
+
+		var text = "";
+		for (var i = 0; i < zscTmpsGM.tmpNos; ++i) {
+			text += '<tr>'
+			text += '   <td><text>' + zscTmpsGM.tmpNames[i] + '</text></td>'
+			text += '   <td><button type="button" onClick="' + funcSetParaPrefix + zscTmpsGM.tmpNames[i] + funcSetParaSuffix + '">Edit</button></td>'
+			text += '   <td><button type="button" onClick="' + funcPublishPrefix + i + funcPublishSuffix + '">Add</button></td>'
+			text += '   <td><text>' + zscTmpsGM.tmpChildrenNos[i] + '</text></td>'
+			text += '   <td><button type="button" onClick="' + showAgrsPrefix + zscTmpsGM.tmpNames[i] + showAgrsSuffix + '">List</button></td>'
+			text += '</tr>'
+			text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
+		}
+
+		document.getElementById('info').innerHTML =
+			zscUser.getUserType() + " - [" + zscUser.getUserName() + "] - Templates Info";
+
+		document.getElementById('templateList').innerHTML =
+			text;
+	}
 </script> {/block}
