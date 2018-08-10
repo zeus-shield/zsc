@@ -10,8 +10,8 @@ function ZSCSetup(logRecorderAdr, zscTokenAdr, adrs) {
     "ControlApisAdv");
     */
     this.RecorderAdr = logRecorderAdr;
-    this.TimerAdr    = timerAdr;
     this.zscTokenAdr = zscTokenAdr;
+    this.TimerAdr = 0x0;
     this.AdmAdvAdr     = adrs[0];
     this.DBDatabaseAdr = adrs[1];
     this.FactoryProAdr = adrs[2];
