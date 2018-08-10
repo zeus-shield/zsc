@@ -32,7 +32,7 @@ class ZSCBase {
     }
 
     public function getObjectArray() {
-        return array("TestToken", "LogRecorder", "TimeStamp", "AdmAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryStaker", "FactoryTmp",  "FactoryAgr",  "FactoryWalletAdv", "TokenManager", "PosManager", "ControlApisAdv");
+        return array("TestToken", "LogRecorder", "AdmAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryStaker", "FactoryTmp",  "FactoryAgr",  "FactoryWalletAdv", "TokenManager", "PosManager", "ControlApisAdv");
     }
 
     public function getLogedObjectArray() {
