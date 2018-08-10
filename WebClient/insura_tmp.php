@@ -46,12 +46,12 @@ session_start();
     /////////////////////////////
     function loadTemplates() {
         zscTmpGM.loadTempates(function() {
-            loadTemplatesHtml("creatNewTmp", "showRelatedAgrs", "showTmpParas", "enableAsAgr");
+            loadTemplatesHtml("creatNewTmp", "showTmpParas", "showRelatedAgrs", "enableAsAgr");
         });
     }
 
     function creatNewTmp(logId) {
-        zscTmpsGM.creatNewTemplate(logId, function(){
+        zscTmpGM.creatNewTemplate(logId, function(){
             loadTemplates();
         });
     }
@@ -63,7 +63,7 @@ session_start();
     function showTmpParas(tmpName) {
         zscParaGM.setElementName(tmpName);
         zscParaGM.loadParameterNamesAndvalues(function() {
-            loadTmpParametersHtml(tmpName, "submitParaChanges", "loadTemplates", "loadTemplates");
+            loadTmpParametersHtml(tmpName, "submitParaChanges", "loadTemplates");
         });
     }
 
@@ -73,23 +73,25 @@ session_start();
         });
     }
 
-    function submitParaChanges(logID) {
-        zscElement.setElementParameter(logID, function() {
-            showTmpParas();
+    function submitParaChanges(tmpNm, logID) {
+        var tmpName = tmpNm;
+        zscParaGM.setElementParameter(logID, function() {
+            //showTmpParas(tmpName);
         });
     }
 
-    function loadTemplatesHtml(funcCreateTmp, funcSetPara, funcPublish, showAgrs) {
+    function loadTemplatesHtml(funcCreateTmp, funcSetPara, showAgrs, funcPublish) {
         var funcCreateTmpFull = funcCreateTmp + "('CreateNewTemplateHash')"; 
 
         var funcSetParaPrefix = funcSetPara + "('"; 
         var funcSetParaSuffix = "')";
-    
-        var funcPublishPrefix = funcPublish + "('";
-        var funcPublishSuffix = "')";
 
         var showAgrsPrefix = showAgrs + "('";
         var showAgrsSuffix = "')";
+
+    
+        var funcPublishPrefix = funcPublish + "('";
+        var funcPublishSuffix = "')";
 
         var text ="";
     
@@ -117,7 +119,7 @@ session_start();
         var tmpName;
         var childrenNos;
 
-        for (var i = 0; i < zscTmpGM.getTemplateNos(); ++i) {
+        for (var i = 0; i < zscTmpGM.getTmpNos(); ++i) {
             tmpName = zscTmpGM.getTmpName(i);
             childrenNos = zscTmpGM.getTmpChildrenNos(i);
 
@@ -132,11 +134,11 @@ session_start();
         }
         text += '</table></div>'
     
-        document.getElementById(elementId).innerHTML = text;  
+        document.getElementById("PageBody").innerHTML = text;  
     }
 
     function loadTmpParametersHtml(tmpName, submitChanges, backToTmp) {
-        var submitFunc = submitChanges + "(SubmitChangesHash)";
+        var submitFunc = submitChanges + "('" + tmpName + "', 'SubmitChangesHash')";
         var backFunc = backToTmp + "()";
     
         //var titlle = zscUserLogin.getzscUserType() + " [" + zscUserLogin.getUserName() + "] - profile: " 
@@ -152,14 +154,24 @@ session_start();
         text += '<div class="well">';
         text += '<table align="center" style="width:600px;min-height:30px">'
     
-        var paraNos, paraName, paraValue;
-        paraNos = userProfile.getParaNos();
+        var paraNos, paraName, fullParaName, paraValue;
+        paraNos = zscParaGM.getParaNos();
     
         for (var i = 0; i < paraNos; ++i) {
             paraName  = zscParaGM.getParaName(i);
             paraValue = zscParaGM.getParaValue(i);
+
+            if (paraName == "duration") {
+                fullParaName = paraName + " (seconds) [>=60]";
+            } else if (paraName == "price") {
+                fullParaName = paraName + " (ETH) [> 0]";
+            } else if (paraName == "insurance") {
+                fullParaName = paraName +  " (locked for claim) [>0]";
+            } else {
+                fullParaName = paraName;
+            }
             text += '<tr>'
-            text += '  <td> <text>' + paraName + ': </text> </td>'
+            text += '  <td> <text>' + fullParaName + ': </text> </td>'
             text += '  <td> <input type="text" id="' + paraName + '" value="' + paraValue + '"></input> </td>'
             text += '</tr>'
         }
@@ -169,7 +181,7 @@ session_start();
         text += '   <text id="SubmitChangesHash"></text>'
         text += '</div>'
 
-        document.getElementById(elementId).innerHTML = text;  
+        document.getElementById("PageBody").innerHTML = text;  
     }
 
 </script>
