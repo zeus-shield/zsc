@@ -2,7 +2,7 @@
 Copyright (c) 2018 ZSC Dev Team
 */
 
-function ZSCSetup(logRecorderAdr, timerAdr, zscTokenAdr, adrs) {
+function ZSCSetup(logRecorderAdr, zscTokenAdr, adrs) {
     /*
     "AdmAdv",  "DBDatabase", 
     "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr",  "FactoryWalletAdv",
