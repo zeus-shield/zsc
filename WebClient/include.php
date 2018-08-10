@@ -83,6 +83,12 @@ class ZSCInclude {
         <script type="text/javascript" src="./pos/pos_robot_owned.js"></script>
         <script type="text/javascript" src="./pos/pos_robot_market.js"></script>
         <script type="text/javascript" src="./pos/pos_staker_info.js"></script>
+
+        <script type="text/javascript" src="./insura/zsc_agreements.js"></script>
+        <script type="text/javascript" src="./insura/zsc_agreements_all.js"></script>
+        <script type="text/javascript" src="./insura/zsc_agreements_provider.js"></script>
+        <script type="text/javascript" src="./insura/zsc_agreements_receiver.js"></script>
+        <script type="text/javascript" src="./insura/zsc_templates.js"></script>
         ';
         return $text;
     }
