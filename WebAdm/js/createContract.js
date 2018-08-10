@@ -180,12 +180,20 @@ function cC_killContract(contractName, adr) {
 }
 
 function cC_getGasPrice() {
-    var limit = 10;
+    var limit = 50;
     return limit * 1000000000; //limits * gwei
 }
 
 function cC_getGasLimit() {
     var limit = 700;
+    return limit * 10**4; //limits * 1 million
+}
+
+function cC_getGasPriceFix(limit) {
+    return limit * 1000000000; //limits * gwei
+}
+
+function cC_getGasLimitFix(limit) {
     return limit * 10**4; //limits * 1 million
 }
 
