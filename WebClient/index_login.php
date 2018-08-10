@@ -37,19 +37,20 @@ echo $htmlObjects->loadScriptFiles();
     });
     /////////////////////////////
     
-    function applyForZSCUser(userType, hashId) {
+    function applyForZSCUser(hashId) {
         userLogin.activeByUser(userType, hashId);
     }
 
     function checkUser(adrId) { 
         userLogin.tryLogin(userType, function(ret) {
             var textBody;
+            var userTypeFunc = "applyForZSCUser('ApplyForUserHash')";
             if(ret) {
                 textBody = '<table align="center"> <tr><td><i>Welcome!</i> </td></tr></table>'; 
             } else {
                 textBody = ''
                 + '<table align="center"><tr><td>'
-                + '   <button type="button" onClick="applyForZSCUser('+ "'staker', 'ApplyForUserHash')" + ' ">Apply for staker</button> <br><br>'
+                + '   <button type="button" onClick="' + userTypeFunc + '">Apply for ' + userType + '</button> <br><br>'
                 + '   <text id="ApplyForUserHash"></text>'
                 + '</td></tr></table>'
             }
