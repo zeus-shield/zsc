@@ -71,6 +71,7 @@ contract DBModule {
     function numOfTokens() public view returns (uint);
     function getTokenAddress(bytes32 _symbol) public view returns (address);
     function getTokenInfoByIndex(uint _index) public view returns (bytes32, bytes32, bytes32, uint, address);
+    function getTokenInfoBySymbol(bytes32 _symbol) public view returns (bytes32, bytes32, bytes32, uint, address);
 
     /*ERC721 for miner robot begin*/
     function balanceOf(address _owner) public view returns (uint);
@@ -274,6 +275,35 @@ contract ControlBase is Object {
 
     function numOfTokens() public view returns (uint) {
         return getDBModule("gm-token").numOfTokens();
+    }
+
+    function getTokenBalanceInfoBySymbol(bytes32 _symbol) public view returns (string) {
+        checkAllowed(msg.sender);
+
+        bytes32 userName = getMappedName(msg.sender);
+        bytes32 status;
+        bytes32 tokenName;
+        bytes32 tokenSymbol;
+        uint tokenDecimals;
+        address tokenAdr;
+        address userWalletAdr;
+        uint tokenBalance;
+        uint lockedAmount;
+
+        userWalletAdr = getBindedWalletAddress(userName);
+
+        (status, tokenName, tokenSymbol, tokenDecimals, tokenAdr) = getDBModule("gm-token").getTokenInfoBySymbol(_symbol);
+
+        tokenBalance = DBNode(userWalletAdr).getBalance(tokenAdr);
+        lockedAmount = DBNode(userWalletAdr).getLockedAmount(tokenAdr);
+
+        string memory str ="";
+        str = PlatString.append(str, "info?status=", PlatString.bytes32ToString(status),      "&");
+        str = PlatString.append(str, "symbol=",      PlatString.bytes32ToString(tokenSymbol), "&");
+        str = PlatString.append(str, "balance=",     PlatString.uintToString(tokenBalance),   "&");
+        str = PlatString.append(str, "locked=",      PlatString.uintToString(lockedAmount),   "&");
+        str = PlatString.append(str, "adr=",         PlatString.addressToString(tokenAdr),    "&");
+        return str;
     }
 
     function getTokenBalanceInfoByIndex(uint _index) public view returns (string) {
