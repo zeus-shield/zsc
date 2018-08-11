@@ -48,12 +48,18 @@ session_start();
     /////////////////////////////
     function loadPublishedAgrs() {
         providerAgrGM.loadAgreements(function() {
-            loadPublishedAgrsHtml("loadTemplatesPage", "showAgrParameters");
+            loadPublishedAgrsHtml("loadTemplatesPage", "showAgrParameters", "loadPublishOperation");
         });
     }
 
     function loadTemplatesPage() {
         window.location.href = "insura_tmp.php";
+    }
+
+    function loadPublishOperation(logId, agrName) {
+        providerAgrGM.publishAgreement(logId, agrName, function() {
+            loadPublishedAgrs();
+        });
     }
 
     function showAgrParameters(name) {
@@ -63,11 +69,14 @@ session_start();
         });
     }
 
-    function loadPublishedAgrsHtml(backFunc, funcShowPara) {
+    function loadPublishedAgrsHtml(backFunc, funcShowPara, publishFunc) {
         var funcShowParaPrefix = funcShowPara + "('"; 
         var funcShowParaSuffix = "')";
     
         var backFuncFull = backFunc + "()";
+
+        var publishPrefix = publishFunc + "('PublishAgreementHash', '";
+        var publishSuffix = "')";
 
         var titlle = "provider's [tmp: " + providerAgrGM.getTmpName() + "] agreements: "
     
@@ -84,9 +93,9 @@ session_start();
    
         text += '<table align="center" style="width:600px;min-height:30px">'
         text += '<tr>'
-        text += '   <td>Name</td> <td>Balance </td> <td>Status </td>  <td>Details </td>'
+        text += '   <td>Name</td> <td>Balance </td> <td>Status </td>  <td>Details </td> <td>Publish </td>'
         text += '</tr>'
-        text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td>  </tr>'
+        text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td> <td>---</td>  </tr>'
 
         var nos = providerAgrGM.getAgrNos();
         var agrName, agrBalance, agrStatus;
@@ -101,6 +110,7 @@ session_start();
             text += '   <td><text>' + agrBalance + '</text></td>'
             text += '   <td><text>' + agrStatus + '</text></td>'
             text += '   <td><button type="button" onClick="' + funcShowParaPrefix + agrName + funcShowParaSuffix + ' ">Show</button></td>'
+            text += '   <td><button type="button" onClick="' + publishPrefix + agrName + publishSuffix + ' ">Publish</button></td>'
             text += '</tr>'
             text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td>  </tr>'
         }
@@ -112,8 +122,6 @@ session_start();
 
     function loadAgrParametersHtml(backFunc) {
         var functionInput = backFunc + "()";
-        var publishPrefix = publishFunc + "('";
-        var publishSuffix = "')";
 
         //var titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
         var titlle = "Agreement: " + paraGM.getElementName(); 
