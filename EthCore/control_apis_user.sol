@@ -17,6 +17,7 @@ contract AbisForUserControlApis {
     function submitTransfer(bytes32 _tokenSymbol, address _dest, uint256 _amount) public returns (uint);
     function numElementChildren(bytes32 _enName) public view returns (uint);
     function getElementChildNameByIndex(bytes32 _enName, uint _index) public view returns (bytes32);
+    function getElementBalance(bytes32 _enName, bytes32 _symbol) public view returns (uint);
     function numTemplates() public view returns (uint);
     function getTemplateNameByIndex(uint _index) public view returns (bytes32);
     function numAgreements() public view returns (uint);
@@ -25,13 +26,14 @@ contract AbisForUserControlApis {
     function numUserTransactions() public view returns (uint);
     function setElementMultipleParameters(bytes32 _enName, string _info) public;
 
-    function publishAgreement(bytes32 _agrName) public;
-    function purchaseAgreement(bytes32 _agrName) public returns (uint);
-    function claimInsurance(bytes32 _agrName) public returns (bool);
+    function publishAgreement(bytes32 _agrName, bytes32 _symbol) public;
+    function purchaseAgreement(bytes32 _agrName, bytes32 _symbol) public returns (uint);
+    function claimInsurance(bytes32 _agrName, bytes32 _symbol) public returns (bool);
 
     function getUserWalletAddress() public view returns (address);
     function numOfTokens() public view returns (uint);
     function getTokenBalanceInfoByIndex(uint _index) public view returns (string);
+    function getTokenBalanceInfoBySymbol(bytes32 _symbol) public view returns (string);
     function getModuleAddresses() public view returns (string);
     
     /*ERC721 for miner robot begin*/
