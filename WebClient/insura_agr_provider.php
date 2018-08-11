@@ -48,30 +48,40 @@ session_start();
     /////////////////////////////
     function loadPublishedAgrs() {
         providerAgrGM.loadAgreements(function() {
-            loadPublishedAgrsHtml();
+            loadPublishedAgrsHtml("loadTemplatesPage", "showAgrParameters");
         });
     }
 
-    function showTemplateParameters(name) {
+    function loadTemplatesPage() {
+        window.location.href = "insura_tmp.php";
+    }
+
+    function showAgrParameters(name) {
         paraGM.setElementName(name);
         paraGM.loadParameterNamesAndvalues(function() {
-            loadAgrParametersHtml(temp, "loadPublishedAgrs");
+            loadAgrParametersHtml("loadPublishedAgrs");
         });
     }
 
-    function loadPublishedAgrsHtml(funcShowPara) {
+    function loadPublishedAgrsHtml(backFunc, funcShowPara) {
         var funcShowParaPrefix = funcShowPara + "('"; 
         var funcShowParaSuffix = "')";
     
-        var titlle = "provider's [tmp: " + tmpName + "] agreements: "
+        var backFuncFull = backFunc + "()";
+
+        var titlle = "provider's [tmp: " + providerAgrGM.getTmpName() + "] agreements: "
     
         var text ="";
         text += '<div class="well"> <text>' + titlle + ' </text></div>';
-        text += '<div class="well">';    
+
         text += '<div class="well">';
-        text += '<text> Publish agreement: </text> <text id="PublishAgreementHash"> </text>'
-        text += '</div>';
-    
+        text += '   <button align="center" type="button" onClick="' + backFuncFull + '">Back</button>'
+        text += '   <text id="Back"></text>'
+        text += '</div>'
+
+        text += '<div class="well">';
+        text += '<text> Publishing agreement: </text> <text id="PublishAgreementHash"> </text> <br>'
+   
         text += '<table align="center" style="width:600px;min-height:30px">'
         text += '<tr>'
         text += '   <td>Name</td> <td>Balance </td> <td>Status </td>  <td>Details </td>'
@@ -96,23 +106,31 @@ session_start();
         }
         text += '</table></div>'
     
-        document.getElementById(elementId).innerHTML = text;  
+        document.getElementById("PageBody").innerHTML = text;  
     }
 
 
-    function loadAgrParametersHtml(agrName, backFunc) {
+    function loadAgrParametersHtml(backFunc) {
         var functionInput = backFunc + "()";
-    
+        var publishPrefix = publishFunc + "('";
+        var publishSuffix = "')";
+
         //var titlle = userLogin.getUserType() + " [" + userLogin.getUserName() + "] - profile: " 
-        var titlle = "Agreement: " + agrName; 
+        var titlle = "Agreement: " + paraGM.getElementName(); 
        
         var text ="";
         text += '<div class="well"> <text>' + titlle + ' </text></div>';
+
+        text += '<div class="well">';
+        text += '   <button align="center" type="button" onClick="' + functionInput + '">Back</button>'
+        text += '   <text id="Back"></text>'
+        text += '</div>'
+
         text += '<div class="well">';
         text += '<table align="center" style="width:600px;min-height:30px">'
     
         var paraNos, paraName, paraValue;
-        paraNos = userProfile.getParaNos();
+        paraNos = paraGM.getParaNos();
     
         for (var i = 0; i < paraNos; ++i) {
             paraName  = paraGM.getParaName(i);
@@ -123,12 +141,9 @@ session_start();
             text += '</tr>'
         }
         text += '</table></div>'
-        text += '<div>'
-        text += '   <button type="button" onClick="' + functionInput + '">Submit Changes</button>'
-        text += '   <text id="Back"></text>'
-        text += '</div>'
 
-        document.getElementById(elementId).innerHTML = text;  
+
+        document.getElementById("PageBody").innerHTML = text;  
     }
 
 </script>
