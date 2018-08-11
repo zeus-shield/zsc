@@ -3,14 +3,14 @@ Copyright (c) 2018 ZSC Dev Team
 */
 
 //class zscWallet
-function ZSCAgreementProvider(nm, abi, adr) {
+function ZSCAgreementProvider(account, adr, abi) {
     this.tmpName;
     this.agrNos = 0;
     this.agrNames = [];
     this.balance = [];
     this.status = [];
     this.itemTags = [];
-    this.account = web3.eth.accounts[0];
+    this.account = account;
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
     this.gasPrice = bF_getGasPrice();
@@ -21,7 +21,7 @@ ZSCAgreementProvider.prototype.setTmpName = function(name) {this.tmpName = name;
 ZSCAgreementProvider.prototype.getTmpName = function() {return this.tmpName;}
 ZSCAgreementProvider.prototype.getAgrNos = function() {return this.agrNos;}
 ZSCAgreementProvider.prototype.getAgrName = function(index) {return this.agrNames[index];}
-ZSCAgreementProvider.prototype.getAgrBalance = function(index) {return this.balance[index];}
+ZSCAgreementProvider.prototype.getAgrBalance = function(index) {return bF_fixedNumberFromWei(this.balance[index], 4); }
 ZSCAgreementProvider.prototype.getAgrStatus = function(index) {return this.status[index];}
 
 ZSCAgreementProvider.prototype.resetAllItemTags = function(gm) {
@@ -74,7 +74,7 @@ ZSCAgreementProvider.prototype.numAgreements = function(gm, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.numElementChildren(gm.userName, gm.tmpName,
+    myControlApi.numElementChildren(gm.tmpName,
         {from: gm.account},
         function(error, result){ 
             if(!error) {
@@ -90,7 +90,7 @@ ZSCAgreementProvider.prototype.getAgreementNameByIndex = function(gm, index, fun
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     
-    myControlApi.getElementChildNameByIndex(gm.userName, gm.tmpName, index,
+    myControlApi.getElementChildNameByIndex(gm.tmpName, index,
         {from: gm.account},
         function(error, result){ 
             if(!error) {
@@ -106,7 +106,7 @@ ZSCAgreementProvider.prototype.getAgreementBalance = function(gm, index, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     
-    myControlApi.getElementBalance(gm.userName, gm.agrNames[index], "ZSC",
+    myControlApi.getElementBalance(gm.agrNames[index], "TestZSC",
         {from: gm.account},
         function(error, result){ 
             if(!error) {
@@ -122,7 +122,7 @@ ZSCAgreementProvider.prototype.getAgreementStatus = function(gm, index, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.getElementParameter(gm.userName, gm.agrNames[index], "status",
+    myControlApi.getElementParameter(gm.agrNames[index], "status",
         {from: gm.account},
         function(error, result){ 
             if(!error) {
@@ -135,17 +135,17 @@ ZSCAgreementProvider.prototype.getAgreementStatus = function(gm, index, func) {
         });
 }
 
-ZSCAgreementProvider.prototype.publishAgreement = function(agrName, func) {
+ZSCAgreementProvider.prototype.publishAgreement = function(logId, agrName, func) {
     var gm = this;
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
     //createElementNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
-    myControlApi.publishAgreement(gm.userName, agrName,
+    myControlApi.publishAgreement(agrName, "TestZSC",
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) {
-                bF_showHashResult("PublishAgreementHash", result, callBack);
+                bF_showHashResult(logId, result, callBack);
             } else {
                 console.log("error: " + error);
             }
@@ -158,7 +158,7 @@ ZSCAgreementProvider.prototype.claimReward = function(hashLogId, elementName, fu
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     
-    myControlApi.claimInsurance(gm.userName, elementName,
+    myControlApi.claimInsurance(elementName, "TestZSC",
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) {
