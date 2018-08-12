@@ -116,11 +116,9 @@ ZSCTemplate.prototype.creatNewTemplate = function(logId, func) {
     var gm = this;
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-
-    var tmpName = "-tmp-" + this.tmpNos
     
     //createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
-    myControlApi.createElementNode("template", gm.userName, tmpName, "null", 
+    myControlApi.createElementNode("template", "null", 
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) {
@@ -136,11 +134,10 @@ ZSCTemplate.prototype.enableAsAgreement = function(tmpIndex, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    var agrName = gm.tmpNames[tmpIndex] + "-agr-" + gm.tmpChildrenNos[tmpIndex];
     var extra = gm.tmpNames[tmpIndex];
 
     //createElementNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
-    myControlApi.createElementNode("agreement", gm.userName, agrName, extra,
+    myControlApi.createElementNode("agreement", extra,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) {
