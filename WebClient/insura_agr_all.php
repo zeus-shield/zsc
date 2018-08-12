@@ -28,6 +28,7 @@ session_start();
     var userType = <?php echo "'".$_SESSION["userType"]."'";?>;
     var userLogin;
     var allAgrGM;
+    var zscParaGM;
 
     checkeWeb3Account(function(account) {
         userLogin = new ZSCLogin(account);
@@ -35,7 +36,7 @@ session_start();
             if(!ret) {  
                 window.location.href = "index.php";
             } else {
-                paraGM = new ZSCElement(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
+                zscParaGM = new ZSCElement(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
                 allAgrGM = new ZSCAgreementAll(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
                 allAgrGM.setUserType(userType);
                 loadAllAgreements();
@@ -45,14 +46,14 @@ session_start();
 
     /////////////////////////////
     function loadAllAgreements() {
-        templateGM.loadTempates(function() {
+        allAgrGM.loadAllAgreements(function() {
             loadAllAgreementsHtml("showAgreementParameters", "submitPurchaseAgreement");
         });
     }
 
     function showAgreementParameters(agrName) {
         zscParaGM.setElementName(agrName);
-        paraGM.loadParameterNamesAndvalues(function() {
+        zscParaGM.loadParameterNamesAndvalues(function() {
             loadParametersHtml(agrName, "loadAllAgreements");
         });
     }
@@ -75,12 +76,9 @@ session_start();
         var text ="";
         text += '<div class="well"> <text>' + titlle + ' </text></div>';
         text += '<div class="well">';
+        text += '<text> Purchase agreement: </text> <text id="PurchaseAgreementHash"> </text> <br><br>'
+
         text += '<table align="center" style="width:600px;min-height:30px">'
-    
-        text += '<div class="well">';
-        text += '<text> Purchase agreement: </text> <text id="PurchaseAgreementHash"> </text>'
-        text += '</div>';
-    
         text += '<tr>'
         text += '   <td>Index</td> <td>Name</td> <td>Status</td> <td> Details </td> <td> Purchase </td>'
         text += '</tr>'
@@ -100,6 +98,8 @@ session_start();
                 text += '   <td><button type="button" onClick="' + showPrefix + agrName + showSuffix + '">Details</button></td>'
                 if (allAgrGM.getUserType() == "receiver") {
                     text += '   <td><button type="button" onClick="' + purchasePrefix + agrName + purchaseSuffix + '">Purchase</button></td>'
+                } else {
+                    text += '   <td><text> Not available</text></td>'
                 }
                 text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td></tr>'
                 text += '</tr>'
@@ -107,17 +107,17 @@ session_start();
         }
         text += '</table></div>'
     
-        document.getElementById(elementId).innerHTML = text;  
+        document.getElementById("PageBody").innerHTML = text;  
     }
 
     function loadParametersHtml(agrName, backFunc) {    
-        var functionInput = backFunc + "'()'";
+        var functionInput = backFunc + "()";
         var titlle = "Agreement: " + agrName; 
        
         var text ="";
         text += '<div class="well"> <text>' + titlle + ' </text></div>';
 
-        text += '<div>'
+        text += '<div class="well">'
         text += '   <button type="button" onClick="' + functionInput + '">Back</button>'
         text += '   <text id="Back"></text>'
         text += '</div>'
@@ -126,19 +126,19 @@ session_start();
         text += '<table align="center" style="width:600px;min-height:30px">'
     
         var paraNos, paraName, paraValue;
-        paraNos = userProfile.getParaNos();
+        paraNos = zscParaGM.getParaNos();
     
         for (var i = 0; i < paraNos; ++i) {
-            paraName  = paraGM.getParaName(i);
-            paraValue = paraGM.getParaValue(i);
+            paraName  = zscParaGM.getParaName(i);
+            paraValue = zscParaGM.getParaValue(i);
             text += '<tr>'
             text += '  <td> <text>' + paraName + ': </text> </td>'
-            text += '  <td> <text>' + paraValue + ': </text> </td>'
+            text += '  <td> <text>' + paraValue + ' </text> </td>'
             text += '</tr>'
         }
         text += '</table></div>'
 
-        document.getElementById(elementId).innerHTML = text;  
+        document.getElementById("PageBody").innerHTML = text;  
     }
 
 
