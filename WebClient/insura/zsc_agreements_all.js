@@ -115,7 +115,7 @@ ZSCAgreementAll.prototype.submitPurchaseAgreement = function(elementName, func) 
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.purchaseAgreement(elementName,
+    myControlApi.purchaseAgreement(elementName, "TestZSC",
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) {
