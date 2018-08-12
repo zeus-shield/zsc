@@ -37,14 +37,23 @@ session_start();
                 window.location.href = "index.php";
             } else {
                 revAgrGM = new ZSCAgreementReceiver(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
-                loadPurchasedAgreements();
+                loadPurchasedAgrs();
             }
         });
     });
 
     /////////////////////////////
     function loadPurchasedAgrs() {
-        
+        revAgrGM.loadAgreements(function() {
+            loadPurchasedAgrsHtml("showPurchasedAgrParameters");
+        });        
+    }
+
+    function showAgrParameters(name) {
+        paraGM.setElementName(name);
+        paraGM.loadParameterNamesAndvalues(function() {
+            loadPurchasedAgrParasHtml("loadPurchasedAgrs");
+        });
     }
 
     function loadPurchasedAgrsHtml(funcShowPara) {
@@ -73,11 +82,11 @@ session_start();
             text += '<tr> <td>---</td> <td>---</td> <td>---</td>  </tr>'
         }
         text += '</table></div>'
-        document.getElementById(elementId).innerHTML = text;  
+        document.getElementById("PageBody").innerHTML = text;  
     }
 
-    function loadPurchasedAgrParasHtml(agrName, funcName, backToAgr) {
-        var functionInput = funcName + "()";
+    function loadPurchasedAgrParasHtml(claimFunc, backToAgr) {
+        var claimInput = claimFunc + "()";
         var backFunc = backToAgr + "()";
 
         var titlle = "Agreement: " + agrName; 
@@ -103,11 +112,11 @@ session_start();
         }
         text += '</table></div>'
         text += '<div>'
-        text += '   <button type="button" onClick="' + functionInput + '">Claim reward</button>'
+        text += '   <button type="button" onClick="' + claimInput + '">Claim reward</button>'
         text += '   <text id="Back"></text>'
         text += '</div>'
 
-        document.getElementById(elementId).innerHTML = text;  
+        document.getElementById("PageBody").innerHTML = text;  
     }
 
 </script>
