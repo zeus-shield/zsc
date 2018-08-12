@@ -8,7 +8,7 @@ contract AbisForUserControlApis {
     function numFactoryElements(bytes32 _factoryType) public view returns (uint);
     function getFactoryElementNameByIndex(bytes32 _factoryType, uint _index) public view returns (bytes32);
     function doesElementExist(bytes32 _enName) public view returns (bool);
-    function createElementNode(bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo) public returns (address);
+    function createElementNode(bytes32 _factoryType, bytes32 _extraInfo) public returns (address);
     function getElementType(bytes32 _enName) public view returns (bytes32);
     function getElementParameter(bytes32 _enName, bytes32 _parameter) public view returns (bytes32);
     function getElementAddress(bytes32 _enName) public view returns (address);
