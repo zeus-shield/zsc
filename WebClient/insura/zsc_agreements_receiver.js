@@ -67,7 +67,7 @@ ZSCAgreementReceiver.prototype.numAgreements= function(gm, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.numAgreements(gm.userName, 
+    myControlApi.numAgreements(
         {from: gm.account},
         function(error, result){ 
             if(!error) {
@@ -83,7 +83,7 @@ ZSCAgreementReceiver.prototype.getAgrNameByIndex = function(gm, index, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     
-    myControlApi.getAgreementNameByIndex(gm.userName,  index,
+    myControlApi.getAgreementNameByIndex(index,
         {from: gm.account},
         function(error, result){ 
             if(!error) {
@@ -99,7 +99,7 @@ ZSCAgreementReceiver.prototype.getAgrBalance = function(gm, index, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     
-    myControlApi.getElementBalance(gm.userName, gm.agrNames[index], "ZSC",
+    myControlApi.getElementBalance(gm.agrNames[index], "ZSC",
         {from: gm.account},
         function(error, result){ 
             if(!error) {
@@ -116,7 +116,7 @@ ZSCAgreementReceiver.prototype.getAgrStatus = function(gm, index, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.getElementParameter(gm.userName, gm.agrNames[index], "status",
+    myControlApi.getElementParameter(gm.agrNames[index], "status",
         {from: gm.account},
         function(error, result){ 
             if(!error) {
@@ -134,7 +134,7 @@ ZSCAgreementReceiver.prototype.claimInsurance = function(hashLogId, elementName,
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     
-    myControlApi.claimInsurance(gm.userName, elementName,
+    myControlApi.claimInsurance( elementName,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) {
