@@ -39,5 +39,59 @@ class Company extends Fornt{
 		}
 	}
 	
+	public function companyOrder()
+	{
+		$type = input('type');
+
+		$title = input('title');
+
+		$where = '';
+
+		$wheres = '';
+
+		if($type==1){
+			$where = "a.status=0";
+		}else if($type==2){
+			$where = "a.endTime>".time()." and a.status=2";
+		}else if($type==3){
+			$where = "a.status=3";
+		}else if($type==4){
+			$where = "a.endTime<".time()." and a.status=2";
+		}
+
+		if($title){
+			$wheres = "a.pid like '%$title%' or a.orderNo like '%$title%'";
+		}
+
+		
+		$list = Db::table('order a')
+		        ->join('product b','a.pid=b.pid')
+		        ->join('user c','b.uid=c.uid')
+		        ->join('recognizee d','d.rid=a.rid')
+		        ->where('c.uid='.$this->uid.'')
+		        ->where($where)
+				->where($wheres)
+		        ->field('d.name as rName,b.name,b.money,a.payTime,a.oid,a.status,a.orderNo')
+		        ->paginate(10);
+
+		
+		$noPay  = Db::table('order a')
+			        ->join('product b','a.pid=b.pid')
+			        ->join('user c','b.uid=c.uid')
+		        	->join('recognizee d','d.rid=a.rid')
+			        ->where('c.uid='.$this->uid.' and a.status=0')
+			        ->count();
+
+		$data = [
+			'list'=>$list,
+			'page'=>$list->render()
+		];
+
+		$this->assign($data);
+		$this->assign('type',$type);
+		$this->assign('noPay',$noPay);
+
+		return $this->fetch('company/company_order');
+	}
 
 }
