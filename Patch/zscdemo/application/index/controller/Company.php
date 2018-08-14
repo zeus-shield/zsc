@@ -94,4 +94,45 @@ class Company extends Fornt{
 		return $this->fetch('company/company_order');
 	}
 
+	/**
+	 * 公司资料,信息
+	 * @return [type] [description]
+	 */
+	public function companyInfo()
+	{
+		return $this->fetch('company/company_info');
+	}
+
+
+	/**
+	 * 险种管理
+	 */
+	public function companyProType()
+	{
+		$name = input('name');
+
+		if(!empty($name)){
+			$list = model('Product')->where('uid',$this->uid)->where('name','like',"%$name%")->paginate(10);
+
+		}else{
+			$list = model('Product')->where('uid',$this->uid)->paginate(10);
+		}
+
+		//销售数量统计
+		$lists = $list->all();
+
+		foreach ($lists as $k => $v) {
+
+			$lists[$k]['salesNum'] = model('Order')->where('pid',$lists[$k]['pid'])->where('status',1)->count();
+		}
+
+		$data = [
+			'list'=>$lists,
+			'page'=>$list->render()
+		];
+
+		$this->assign($data);//企业信息
+
+		return $this->fetch('company/company_pro_type');
+	}
 }
