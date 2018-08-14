@@ -32,17 +32,17 @@ class User extends Fornt{
 		}
 	}
 	/**
-	 * µÇÂ¼
+	 * ç™»å½•
 	 * @return [type] [description]
 	 */
 	public function login()
 	{
 		$data = input('post.');
 
-		//µÇÂ¼·½Ê½(ÊÖ»úºÅ,ÓÊÏä)
+		//ç™»å½•æ–¹å¼(æ‰‹æœºå·,é‚®ç®±)
 		$res = $this->model->userLogin($data);
 		if($res===true){
-			//²éÑ¯±»±£ÈËĞÅÏ¢
+			//æŸ¥è¯¢è¢«ä¿äººä¿¡æ¯
 			$this->assign('list',$this->model->recognizeeList());
 
 			if(preg_match("/^1[34578]\d{9}$/", $data['account'])){
@@ -52,15 +52,16 @@ class User extends Fornt{
 			}
 
 		}elseif($res==-1){
-			$this->error('Ã»ÓĞ¸ÃÓÃ»§',url('/'));
+			$this->error('æ²¡æœ‰è¯¥ç”¨æˆ·',url('/'));
 		}elseif($res==-2){
-			$this->error('ÄúµÄÆóÒµÈÏÖ¤»¹Î´Í¨¹ı,ÈçÓĞÒÉÎÊÇëÁªÏµ13888888888',url('/'));
+			$this->error('æ‚¨çš„ä¼ä¸šè®¤è¯è¿˜æœªé€šè¿‡,å¦‚æœ‰ç–‘é—®è¯·è”ç³»13888888888',url('/'));
 		}else{
-			$this->error('ÃÜÂë´íÎó',url('/'));
+			$this->error('å¯†ç é”™è¯¯',url('/'));
 		}
 	}
-// /**
-	//  * »ñÈ¡ÓÃ»§Éí·İ
+
+	// /**
+	//  * è·å–ç”¨æˆ·èº«ä»½
 	//  * @return [type] [json]
 	//  */
 	// public function getUserType()
@@ -70,14 +71,14 @@ class User extends Fornt{
 	// 	$r = Db::name('user')->where('account',$account)->find();
 
 	// 	if(!empty($r)){
-	// 		return $this->jsonSuc('»ñÈ¡³É¹¦',$r);
+	// 		return $this->jsonSuc('è·å–æˆåŠŸ',$r);
 	// 	}else{
-	// 		return $this->jsonSuc('Ã»ÓĞ¸ÃÓÃ»§');
+	// 		return $this->jsonSuc('æ²¡æœ‰è¯¥ç”¨æˆ·');
 	// 	}
 	// }
 
 	/**
-	 * ¸öÈË×¢²á,¹«Ë¾×¢²á
+	 * ä¸ªäººæ³¨å†Œ,å…¬å¸æ³¨å†Œ
 	 * @return [type] [json]
 	 */
 	public function register()
@@ -88,28 +89,28 @@ class User extends Fornt{
 
 		switch ($result) {
 			case 1:
-				return $this->jsonSuc('×¢²á³É¹¦');
+				return $this->jsonSuc('æ³¨å†ŒæˆåŠŸ');
 				break;
 			case -1:
-				return $this->jsonErr('ÑéÖ¤Âë´íÎó!');
+				return $this->jsonErr('éªŒè¯ç é”™è¯¯!');
 				break;
 			case -1.1:
-				return $this->jsonErr('ÑéÖ¤Âë¹ıÆÚ!');
+				return $this->jsonErr('éªŒè¯ç è¿‡æœŸ!');
 				break;
 			case -1.2:
-				return $this->jsonErr('ÑéÖ¤ÂëÒÑ¾­Ê¹ÓÃ!');
+				return $this->jsonErr('éªŒè¯ç å·²ç»ä½¿ç”¨!');
 				break;
 			case -2:
-				return $this->jsonErr('ÖØÖÃÊ§°Ü,ÍøÂç´íÎó!');
+				return $this->jsonErr('é‡ç½®å¤±è´¥,ç½‘ç»œé”™è¯¯!');
 				break;
 			case -3:
-				return $this->jsonErr('ÕÊºÅÒÑ¾­×¢²á!');
+				return $this->jsonErr('å¸å·å·²ç»æ³¨å†Œ!');
 				break;
 		}
 	}
 
 	/**
-	 * ÖØÖÃÃÜÂë
+	 * é‡ç½®å¯†ç 
 	 * @return [type] [description]
 	 */
 	public function rePwd()
@@ -119,20 +120,259 @@ class User extends Fornt{
 
 		switch ($result) {
 			case 1:
-				return $this->jsonSuc('ÖØÖÃ³É¹¦',url('/'));
+				return $this->jsonSuc('é‡ç½®æˆåŠŸ',url('/'));
 				break;
 			case -1:
-				return $this->jsonErr('ÑéÖ¤Âë´íÎó!');
+				return $this->jsonErr('éªŒè¯ç é”™è¯¯!');
 				break;
 			case -1.1:
-				return $this->jsonErr('ÑéÖ¤Âë¹ıÆÚ!');
+				return $this->jsonErr('éªŒè¯ç è¿‡æœŸ!');
 				break;
 			case -1.2:
-				return $this->jsonErr('ÑéÖ¤ÂëÒÑ¾­Ê¹ÓÃ!');
+				return $this->jsonErr('éªŒè¯ç å·²ç»ä½¿ç”¨!');
 				break;
 			case -2:
-				return $this->jsonErr('ÖØÖÃÊ§°Ü,ÍøÂç´íÎó!');
+				return $this->jsonErr('é‡ç½®å¤±è´¥,ç½‘ç»œé”™è¯¯!');
 				break;
 		}
 	}
+
+	/**
+	 * è·å–éªŒè¯ç 
+	 * @return [type] [json]
+	 */
+	public function getCode()
+	{
+		$account = input('post.account');
+
+		$type    = input('post.type');//0æ³¨å†Œ,1å¿˜è®°å¯†ç 
+
+		$userInfo = $this->model->where('account',$account)->find();
+
+		if($type){
+			if(empty($userInfo)){
+				return $this->jsonErr('è¯¥å¸å·æœªæ³¨å†Œ!');
+			}
+		}else{
+			if(!empty($userInfo)){
+				return $this->jsonErr('è¯¥å¸å·å·²ç»æ³¨å†Œ!');
+			}
+		}
+
+
+
+		if(getCode($account)){
+			return $this->jsonSuc('è·å–æˆåŠŸ');
+		}else{
+			return $this->jsonErr('è·å–å¤±è´¥');
+		};
+	}
+
+	/**
+	 * é€€å‡ºç™»å½•
+	 * @return [type] [description]
+	 */
+	public function loginOut()
+	{
+		Cookie::delete('uid');
+		Cookie::delete('account');
+		Cookie::delete('zscAccount');
+		Cookie::delete('zscPassword');
+		$this->success('é€€å‡ºæˆåŠŸ',url('/'));
+	}
+
+
+
+	/**
+	 * è¢«ä¿äººèµ„æ–™æäº¤å®¡æ ¸
+	 * @return [type] [description]
+	 */
+	public function userAudit()
+	{
+		$data = input('post.');
+
+		$data['uid'] = $this->uid;
+
+		$data['papersType'] = 'èº«ä»½è¯';
+
+		if(!empty($data['rid'])){
+			$data['papersImgx'] 	  = $data['epapersImgx'];
+			$data['papersImgy'] 	  = $data['epapersImgy'];
+			$data['handIdentityImg']  = $data['ehandIdentityImg'];
+
+			//æ”¯ä»˜è®¢å•æ·»åŠ è”ç³»äºº
+			if($data['rid']=='addInfo'){
+				$result = model('Recognizee')->allowField(true)->save($data);
+			}else{
+				$data['papersTime'] = strtotime($data['papersTime']);
+				$result = model('Recognizee')->where('rid',$data['rid'])->update($data);
+			}
+		}else{
+			$result = model('Recognizee')->allowField(true)->save($data);
+
+		}
+
+		// name=db&sex=0&epapersImgx=322&epapersImgy=323&papersTime=2018-03-10&ehandIdentityImg=324&rid=addInfo
+
+		if($result===false){
+			return $this->jsonErr('æ“ä½œå¤±è´¥');
+		}
+
+		if($result>0){
+			return $this->jsonSuc('æ“ä½œæˆåŠŸ');
+		}else{
+			return $this->jsonSuc('æœªä¿®æ”¹æ•°æ®,æ“ä½œæˆåŠŸ');
+		}
+
+	}
+
+	/**
+	 * è¢«ä¿äººä¿¡æ¯
+	 * @return [type] [description]
+	 */
+	public function recognizeeInfo()
+	{
+		$rid  = input('post.rid');
+
+		$info = model('Recognizee')->get($rid);
+
+		/*ç¼–è¾‘å­—æ®µé‡æ–°å®šä¹‰*/
+		$info['epapersImgx'] 	  = $info['papersImgx'];
+		$info['epapersImgy'] 	  = $info['papersImgy'];
+		$info['ehandIdentityImg'] = $info['handIdentityImg'];
+
+
+		$info['epapersImgxUrl'] 	  = get_cover($info['papersImgx'],'path');
+		$info['epapersImgyUrl'] 	  = get_cover($info['papersImgy'],'path');
+		$info['ehandIdentityImgUrl']  = get_cover($info['handIdentityImg'],'path');
+
+
+		return $this->jsonSuc('è·å–æˆåŠŸ',$info);
+	}
+
+	/**
+	 * è¢«ä¿äººåˆ é™¤
+	 * @return [type] [description]
+	 */
+	public function userDelete($rid)
+	{
+		if(model('Recognizee')->where('uid',$this->uid)->delete($rid)){
+			$this->success('åˆ é™¤æˆåŠŸ',url('index/user/personmanage'));
+		}else{
+			$this->error('åˆ é™¤å¤±è´¥',url('index/user/personmanage'));
+		}
+	}
+
+	/**
+	 * ä¸ªäººä¸­å¿ƒé¡µé¢
+	 * @return [type] [description]
+	 */
+	public function personManage()
+	{
+		$this->assign('field',$this->field);
+
+		// $this->assign('bcbc',[]);
+
+		$this->assign('list',$this->model->recognizeeList());
+
+		return $this->fetch('person_manage');
+	}
+
+
+	/**
+	 * æˆ‘çš„è®¢å•é¡µé¢
+	 * @return [type] [description]
+	 */
+	public function mine()
+	{
+		// $list = model('order')->select();
+		$where = '';
+		$wheres = '';
+
+		$type = input('type');
+
+		$title = input('title');
+
+		if($type==1){
+			$where = "a.status=0 and a.uid=".$this->uid."";//æœªæ”¯ä»˜
+		}else if($type==2){
+			$where = "a.endTime>".time()." and a.status=2 and a.uid=".$this->uid."";//ä¿éšœä¸­
+		}else if($type==3){
+			$where = "a.status=3";//ç†èµ”ä¸­
+		}else if($type==4){
+			$where = "a.endTime<".time()." and a.status=2 and a.uid=".$this->uid."";//å·²åˆ°æœŸ
+		}else{
+			$where = 'a.uid='.$this->uid.'';
+		}
+
+		if($title){
+			$wheres = "a.pid like '%$title%' or a.orderNo like '%$title%' and a.uid=".$this->uid."";//å·²åˆ°æœŸ
+		}
+
+		$list = Db::table('order a')
+				->join('recognizee b',"a.rid=b.rid")
+				->join('product c',"a.pid=c.pid")
+				->field('a.startProtect,a.createTime,a.oid,a.orderNo,a.status,a.endTime,b.name,c.name as cName,c.image,c.money,c.pid as cpid')
+				->order('a.createTime desc')
+				->where($where)
+				->where($wheres)
+				->paginate(10);
+
+		$lists = $list->all();
+		//ä¿®æ”¹æ—¶é—´ä»£æ›¿è¯„ä»·é€‰æ‹©
+		foreach ($lists as $k => $v) {
+
+			$comment = Db::name('comment')->where(['uid'=>$this->uid,'pid'=>$lists[$k]['cpid'],'oid'=>$lists[$k]['oid']])->find();
+
+			if(!empty($comment)){
+				$lists[$k]['comment'] = 1;
+			}else{
+				$lists[$k]['comment'] = 0;
+			}
+		}
+
+		// $noPay = model('order')->where('status',0)->where('uid',$this->uid)->count();
+		//æœªæ”¯ä»˜ä¸ªæ•°
+		$noPay = Db::table('order a')
+			        ->join('product b','a.pid=b.pid')
+			        ->join('user c','b.uid=c.uid')
+		        	->join('recognizee d','d.rid=a.rid')
+			        ->where('a.uid='.$this->uid.' and a.status=0')
+			        ->count();
+
+		$data = array(
+			'list' => $lists,
+			'page' => $list->render(),
+		);
+
+		$this->assign($data);
+		$this->assign('noPay',$noPay);//æœªæ”¯ä»˜ä¸ªæ•°
+		$this->assign('type',$type);//ç‚¹å‡»ç­›é€‰
+		// $this->assign('comment',$comment);//æ˜¯å¦æ”¯ä»˜
+		return $this->fetch('mine');
+	}
+
+
+	/**
+	 * æˆ‘çš„æ”¶è—
+	 * @return [type] [description]
+	 */
+	public function favorite()
+	{
+		$list = Db::table('collect a')
+					->join('product b','a.pid=b.pid')
+					->field('b.name,b.money,b.image,b.pid')
+					->where('a.uid='.$this->uid.'')
+					->paginate(10);
+
+		$data = array(
+			'list' => $list,
+			'page' => $list->render(),
+		);
+
+		$this->assign($data);
+
+		return $this->fetch('favorite');
+	}
+
 }
