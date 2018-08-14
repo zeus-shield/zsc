@@ -12,18 +12,60 @@ use app\common\controller\Fornt;
 use think\Db;
 class Order extends Fornt{
 
-	 public function _initialize()
-	 {
-	 	parent::_initialize();
-		if(empty($this->uid) || empty($this->account)){
-	 		echo "<script>alert('请先登录')</script>";
-	 		return $this->fetch('Order/settment2');
-	 	}
-	 }
+	// public function _initialize()
+	// {
+	// 	parent::_initialize();
+	// 	if(empty($this->uid) || empty($this->account)){
+	// 		echo "<script>alert('请先登录')</script>";
+	// 		return $this->fetch('Order/settment2');
+	// 	}
+	// }
 	/**
 	 * 订单列表(公司,个人)
 	 * @return [type] [array]
 	 */
+	public function lists()
+	{
+		return $this->fetch('Order/list');
+	}
+
+
+	/**
+	 * 填写投保信息
+	 * @return [type] [description]
+	 */
+	public function settment()
+	{
+
+		$data = [
+			'name'	  	   => input('name'),//投保金额
+			'sex'		   => input('sex'),
+			'insureMoney'  => input('insureMoney'),//投保金额
+			'securityTime' => input('securityTime'),//保障时间
+			'year'	   	   => input('year'),//交费年限
+			'medical'      => input('medical'),//附加长期医疗  0 不投保
+			'payType'  	   => input('payType'),//0:季交, 年交
+			'startProtect' => input('startProtect'),//起保时间
+			'pid' 		   => input('pid'),//产品id
+		];
+
+		$list = model('Recognizee')->where('uid',$this->uid)->select();
+
+		//添加和编辑模式区分
+		$this->info = ['epapersImgx'=>0,'epapersImgy'=>0,'ehandIdentityImg'=>0];
+		// $sex 		  = input('sex');
+		// $insureMoney  = input('insureMoney');
+		// $securityTime = input('securityTime');
+		// $year 		  = input('year');
+		// $medical 	  = input('medical');
+		// $payType      = input('payType');
+		// $startProtect 	  = input('startProtect');
+		$this->assign('data',$data);
+		$this->assign('list',$list);
+		$this->assign('info',$this->info);
+
+		return $this->fetch('Order/settment');
+	}
 
 /*添加订单信息*/
 	public function addOrder()
