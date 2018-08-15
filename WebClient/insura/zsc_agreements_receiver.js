@@ -145,32 +145,3 @@ ZSCAgreementReceiver.prototype.claimInsurance = function(hashLogId, elementName,
         });
 }
 
-ZSCAgreementReceiver.prototype.loadAgreementsHtml = function(elementId, funcShowPara)  {
-    var funcShowParaPrefix = funcShowPara + "('"; 
-    var funcShowParaSuffix = "')";
-
-    var titlle = "receiver [" + this.userName + "] - purchased agreements: "
-
-    var text ="";
-    text += '<div class="well"> <text>' + titlle + ' </text></div>';
-    text += '<div class="well">';
-    text += '<table align="center" style="width:600px;min-height:30px">'
-    text += '<tr>'
-    text += '   <td>Name</td> <td>Balance </td> <td>Details </td>'
-    text += '</tr>'
-    text += '<tr> <td>---</td> <td>---</td> <td>---</td> </tr>'
-
-    for (var i = 0; i < this.agrNos; ++i) {
-        text += '<tr>'
-        text += '   <td><text>' + this.agrNames[i]  + '</text></td>'
-        text += '   <td><text>' + this.balance[i]  + '</text></td>'
-        text += '   <td><text>' + this.status[i]  + '</text></td>'
-        text += '   <td><button type="button" onClick="' + funcShowParaPrefix + this.agrNames[i] + funcShowParaSuffix + '">Show</button></td>'
-        text += '</tr>'
-        text += '<tr> <td>---</td> <td>---</td> <td>---</td>  </tr>'
-    }
-    text += '</table></div>'
-
-    document.getElementById(elementId).innerHTML = text;  
-}
-
