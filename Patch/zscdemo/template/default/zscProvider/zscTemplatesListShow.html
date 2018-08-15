@@ -1,2 +1,14 @@
 {extend name="public/base" /} {block name="body"}
+<div class="banner2">
+
+	<br>
+	<i>Web-client for testing ZSC system</i>
+	<br>
+	<br>
+	<script type="text/javascript">
+
+		getInfo(function () {
+			let elementName = getCookie("listElementName");
+			showProAgrParameters(elementName);
+		});
 {/block}
