@@ -131,4 +131,53 @@ class Product extends Fornt{
 		$this->assign('page',$page);//评价分页
 		return $this->fetch('Product/product_detail');
 	}
+
+
+	public function collect()
+	{
+		$pid   = input('post.pid');
+
+		if(empty($pid)){
+			return $this->jsonErr('数据不足');
+		}
+
+		//多选删除
+		if(strlen($pid)>1){
+			$res = Db::name('collect')->where('pid','in',$pid)->where(['uid'=>$this->uid])->delete();
+
+			if($res){
+				return $this->jsonSuc('取消收藏成功');
+			}else{
+				return $this->jsonErr('取消收藏失败');
+			}
+		//单个收藏和取消
+		}elseif(strlen($pid)==1){
+			$info = Db::name('collect')->where(['pid'=>$pid,'uid'=>$this->uid])->find();
+
+			if(!empty($info)){
+				$res = Db::name('collect')->where(['pid'=>$pid,'uid'=>$this->uid])->delete();
+
+				if($res){
+					return $this->jsonSuc('取消收藏成功');
+				}else{
+					return $this->jsonErr('取消收藏失败');
+				}
+			}else{
+				$data = [
+					'uid'		=> $this->uid,
+					'pid'		=> $pid,
+					'createTime'=> time()
+				];
+
+				$res = Db::name('collect')->insert($data);
+
+				if($res){
+					return $this->jsonSuc('收藏成功');
+				}else{
+					return $this->jsonErr('收藏失败');
+				}
+			}
+		}
+	}
+
 }
