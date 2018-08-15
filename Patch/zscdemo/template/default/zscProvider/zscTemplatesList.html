@@ -28,7 +28,7 @@
 
 	<div id="PageBody">
 		<div class="well">
-			<text id="info">load。。。(长时间未跳出界面请检查是否成功登录matemask)</text>
+			<text id="info">load???(?????????????????matemask)</text>
 		</div>
 		<div class="well">
 			<div class="well">
@@ -98,5 +98,38 @@
                 window.location.href = "{:url('index/zscprovider/zscAgreement')}";
                 break;
 		}
+	}
+
+	function loadTemplateListHtml() {
+
+		var funcSetParaPrefix = "showProAgrParametersDemo" + "('";
+		var funcSetParaSuffix = "')";
+
+		var funcPublishPrefix = "publishAgreement" + "('";
+		var funcPublishSuffix = "')";
+
+
+
+		var text = "";
+
+
+		for (var i = 0; i < zscAgrsProGM.agrNos; ++i) {
+			text += '<tr>'
+			text += '   <td><text>' + zscAgrsProGM.agrNames[i] + '</text></td>'
+			text += '   <td><text>' + zscAgrsProGM.balance[i] + '</text></td>'
+			text += '   <td><text>' + zscAgrsProGM.status[i] + '</text></td>'
+			text += '   <td><button type="button" onClick="' + funcPublishPrefix + zscAgrsProGM.agrNames[i] + funcPublishSuffix + '">Publish</button></td>'
+			text += '   <td><button type="button" onClick="' + funcSetParaPrefix + zscAgrsProGM.agrNames[i] + funcSetParaSuffix + '">Show</button></td>'
+			text += '</tr>'
+			text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td>  </tr>'
+		}
+
+
+		document.getElementById('info').innerHTML =
+			zscUser.getUserType() + " - [" + zscUser.getUserName() + "] - published agreements:";
+
+		document.getElementById('templatesList').innerHTML =
+			text;
+
 	}
 {/block}
