@@ -28,7 +28,7 @@
 
 	<div id="PageBody">
 		<div class="well">
-			<text id="info">load???(?????????????????matemask)</text>
+			<text id="info">load。。。(长时间未跳出界面请检查是否成功登录matemask)</text>
 		</div>
 		<div class="well">
 			<div class="well">
@@ -132,4 +132,10 @@
 			text;
 
 	}
-{/block}
+
+	function showProAgrParametersDemo(elementName) {
+		setCookie("listElementName", elementName);
+		indexjump("zscTemplateListShow");
+	}
+
+</script> {/block}
