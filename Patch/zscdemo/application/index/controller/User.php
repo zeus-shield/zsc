@@ -375,4 +375,22 @@ class User extends Fornt{
 		return $this->fetch('favorite');
 	}
 
+
+	/**
+	 * 我的钱包
+	 * @return [type] [description]
+	 */
+	public function myWallet()
+	{
+		return $this->fetch('my_wallet');
+	}
+
+	/**
+	 * 我的消息
+	 * @return [type] [description]
+	 */
+	public function message()
+	{
+		return $this->fetch('message');
+	}
 }
