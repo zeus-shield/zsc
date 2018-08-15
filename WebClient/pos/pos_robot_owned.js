@@ -19,6 +19,8 @@ function ZSCRobotOwned(acount, adr, abi) {
     this.robotPrceForSale = [];
     this.robotRewardRatio = [];
     this.robotRewards = [];
+    this.robotExtraSP = [];
+    this.robotExtraProb = [];
     this.account = acount;
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
@@ -40,6 +42,8 @@ ZSCRobotOwned.prototype.getPriceToEnhance = function(index) { return bF_fixedNum
 ZSCRobotOwned.prototype.getPriceToCreate = function(index) { return bF_fixedNumberFromWei(this.robotPrceToCreate[index], 4); }
 ZSCRobotOwned.prototype.getPriceForSale = function(index) { return bF_fixedNumberFromWei(this.robotPrceForSale[index], 4);}
 ZSCRobotOwned.prototype.getRewardRatio = function(index) { return this.robotRewardRatio[index];}
+ZSCRobotOwned.prototype.getExtraSP = function(index) { return this.robotExtraSP[index];}
+ZSCRobotOwned.prototype.getExtraProb = function(index) { return this.robotExtraProb[index];}
 ZSCRobotOwned.prototype.miningable = function(index) { return (this.robotMineStart[index] == 0);}
 ZSCRobotOwned.prototype.setFromSystemWalletTag = function(tag) { return (this.fromSystemWalletTag = tag);}
 
@@ -238,6 +242,8 @@ ZSCRobotOwned.prototype.parserRobotInfo = function(gm, index, info) {
     var priceToEnhance = newsids[9];
     var priceToCreate  = newsids[10];
     var rewards        = newsids[11];
+    //var extraSp        = newsids[12];
+    //var extraProb      = newsids[13];
 
     gm.robotIds[index]           = robotId.split("=")[1];
     gm.robotLevs[index]          = lev.split("=")[1];
@@ -250,7 +256,8 @@ ZSCRobotOwned.prototype.parserRobotInfo = function(gm, index, info) {
     gm.robotEnhanceProb[index]   = enhanceProb.split("=")[1];
     gm.robotPrceToEnhance[index] = priceToEnhance.split("=")[1];
     gm.robotPrceToCreate[index]  = priceToCreate.split("=")[1];
-    gm.robotRewards[index]        = rewards.split("=")[1];
+    //gm.robotRewards[index]       = extraSp.split("=")[1];
+    //gm.robotExtraProb[index]     = extraProb.split("=")[1];
 }
 
   

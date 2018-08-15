@@ -77,6 +77,7 @@ contract DBModule {
     function balanceOf(address _owner) public view returns (uint);
     function tokenOfOwnerByIndex(address _owner, uint _index) public view returns (uint);
     function getRobotInfo(uint _robotId) public view returns (uint, uint, uint, uint, uint, uint);
+    function getExtraEffect(uint _robotId) public view returns (uint _extraSp, uint _extraUpgradProb);
     function getLevelInfo(uint _index) public view returns (uint, uint, uint, uint);
 
     function createRobot(address _user, uint _level) public returns (uint);

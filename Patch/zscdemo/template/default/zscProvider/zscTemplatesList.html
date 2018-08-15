@@ -1,2 +1,102 @@
 {extend name="public/base" /} {block name="body"}
+<div class="banner2">
+
+	<br>
+	<i>Web-client for testing ZSC system</i>
+	<br>
+	<br>
+	<script type="text/javascript">
+
+		getInfo(function () {
+			let elementName = getCookie("elementName");
+			showProvidersAgreements(elementName);
+		});
+
+
+	</script>
+	<div class="wall">
+		<button type="button" onClick="indexjump('zscWallet')">Wallat</button>
+		<button type="button" onClick="indexjump('zscProfile')">Profile</button>
+		{if condition="$Think.cookie.zscType eq 1"}
+		<button type="button" onClick="indexjump('zscTemplates')">Templates</button>
+		{else /}
+		<button type="button" onClick="indexjump('zscAgreement')">Agreements</button>
+		{/if}
+		<button type="button" onClick="indexjump('zscShowAllAgreements')">Show All Agreements</button>
+		<button type="button" onClick="indexjump('zscShowMAdr')">Show Module Adrs</button>
+	</div>
+
+	<div id="PageBody">
+		<div class="well">
+			<text id="info">load。。。(长时间未跳出界面请检查是否成功登录matemask)</text>
+		</div>
+		<div class="well">
+			<div class="well">
+				<text> Publish agreement: </text>
+				<text id="PublishAgreementHash"> </text>
+			</div>
+			<table align="center" style="width:600px;min-height:30px">
+				<tbody>
+					<tr>
+						<td>Name</td>
+						<td>Balance </td>
+						<td>Status </td>
+						<td>Publish </td>
+						<td>Details </td>
+					</tr>
+
+					<tr>
+						<td>---</td>
+						<td>---</td>
+						<td>---</td>
+						<td>---</td>
+					</tr>
+				</tbody>
+
+				<tbody id="templatesList">
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+{/block}{block name="script"}
+
+<script type="text/javascript">
+
+	function indexjump(tag) {
+		switch (tag) {
+			case "zscShowMAdr":
+				window.location.href = "{:url('index/zscprovider/zscShowMAdr')}";
+				break;
+
+			case "zscShowAllAgreements":
+				window.location.href = "{:url('index/zscprovider/zscShowAllAgreements')}";
+				break;
+
+			case "zscProfile":
+				window.location.href = "{:url('index/zscprovider/zscProfile')}";
+				break;
+
+			case "zscTemplates":
+				window.location.href = "{:url('index/zscprovider/zscTemplates')}";
+				break;
+
+			case "zscWallet":
+				window.location.href = "{:url('index/zscprovider/zscWallet')}";
+				break;
+
+			case "zscEnableWallet":
+				window.location.href = "{:url('index/zscprovider/zscEnableWallet')}";
+				break;
+
+			case "zscTemplateListShow":
+				window.location.href = "{:url('index/zscprovider/zscTemplatesListShow')}";
+				break;
+
+			case "zscAgreement":
+                window.location.href = "{:url('index/zscprovider/zscAgreement')}";
+                break;
+		}
+	}
 {/block}
