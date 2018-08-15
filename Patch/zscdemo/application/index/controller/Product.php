@@ -83,4 +83,52 @@ class Product extends Fornt{
 		$this->assign($data);
 		return $this->fetch('Product/index');
 	}
+
+	/**
+	 * 产品详情页
+	 */
+	public function ProductDetail()
+	{
+		//进入详情查看次数+1
+		$pid = input('pid');
+
+		model('product')->where('pid',$pid)->setInc('look');
+
+		//产品信息
+		$info = model('product')->where('pid',$pid)->find();
+
+		//收藏判断
+		$collect = Db::name('collect')->where(['pid'=>$pid,'uid'=>$this->uid])->find();
+
+		//评价信息
+		$comment = Db::table('comment a')
+					   ->join('user b','a.uid=b.uid')
+					   ->where('pid='.$pid.'')
+					   ->field('a.content,a.star,a.createTime,b.account')
+					   ->paginate(10);
+
+		// Db::name('comment')->where(['pid'=>$pid])->paginate(10);
+
+		// foreach ($comment as $k => $v) {
+		// 	$comment[$k]['account'] = Db::name('user')->where('uid',$comment[$k]['uid'])->value('account');//电话号码
+		// }
+
+		if(!empty($collect)){
+			$info['collect'] = 1;//已经收藏产品
+		}else{
+			$info['collect'] = 0;//已经收藏产品
+		}
+
+
+		$page['currentPage'] = $comment->currentPage();
+		$page['lastPage'] 	 = $comment->lastPage();
+		$page['total'] 	     = $comment->total();
+		$page['listRows']    = $comment->listRows();
+
+		$this->assign('uid',$this->uid);//用户id
+		$this->assign('info',$info);//产品信息
+		$this->assign('comment',$comment);//评价内容
+		$this->assign('page',$page);//评价分页
+		return $this->fetch('Product/product_detail');
+	}
 }
