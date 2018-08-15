@@ -393,4 +393,41 @@ class User extends Fornt{
 	{
 		return $this->fetch('message');
 	}
+
+	/**
+	 * 忘记密码
+	 * @return [type] [description]
+	 */
+	public function forgotPassword()
+	{
+		$account = input('account');
+
+		$parm    = input('parm');
+
+		$userInfo = $this->model->where('account',$account)->find();
+
+		if(!preg_match("/^1[34578]\d{9}$/", $account)){
+
+			if(md5(md5($account."cdzsds"))!=$parm){
+				$this->error('验证失败!');
+			}
+		}
+
+		$userInfo = $this->model->where('account',$account)->find();
+
+		if(empty($userInfo)){
+			$this->error('帐号未注册!');
+		}
+
+		//区分邮箱和手机
+		if(!preg_match("/^1[34578]\d{9}$/", $account)){
+			$this->assign('type',1);
+		}else{
+			$this->assign('type',0);
+		}
+		$this->assign('account',$account);
+		return $this->fetch('forgotPassword');
+	}
+
+
 }
