@@ -135,4 +135,23 @@ class Company extends Fornt{
 
 		return $this->fetch('company/company_pro_type');
 	}
+
+
+		public function myWallet()
+	{
+
+
+	    return $this->fetch('company/my_wallet');
+	}
+
+	/**
+	 * 我的消息
+	 * @return [type] [description]
+	 */
+	public function message()
+	{
+
+
+	    return $this->fetch('company/message');
+	}
 }
