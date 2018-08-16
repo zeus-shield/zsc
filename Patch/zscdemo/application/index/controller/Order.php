@@ -113,4 +113,28 @@ class Order extends Fornt{
 			return $this->jsonSuc('未修改数据,操作成功');
 		}
 	}
+	/**
+	 * 订单详情
+	 * @return [type] [description]
+	 */
+	public function orderInfo($oid='')
+	{
+
+		if(!empty($oid)){
+			$result = Db::table('order a')
+				->join('recognizee b',"a.rid=b.rid")
+				->join('product c',"a.pid=c.pid")
+				->field('a.startProtect,a.oid,a.orderNo,a.status,b.name,c.name as cName,c.image,c.money,c.pid as cpid')
+				->order('a.createTime desc')
+				->where('a.oid='.$oid.'')
+				->find();
+			$result['image'] = get_cover($result['image'],'path');
+		}
+
+		if($result){
+			return $this->jsonSuc('获取成功',$result);
+		}else{
+			return $this->jsonSuc('没有数据');
+		}
+	}
 }
