@@ -16,7 +16,7 @@
 	<div class="wall">
 		<button type="button" onClick="indexjump('zscWallet')">Wallat</button>
 		<button type="button" onClick="indexjump('zscProfile')">Profile</button>
-		{if condition="$Think.cookie.type eq 1"}
+		{if condition="$Think.cookie.zscType eq 1"}
 		<button type="button" onClick="indexjump('zscTemplates')">Templates</button>
 		{else /}
 		<button type="button" onClick="indexjump('zscAgreement')">Agreements</button>
