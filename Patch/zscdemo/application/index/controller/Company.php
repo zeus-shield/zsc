@@ -154,4 +154,71 @@ class Company extends Fornt{
 
 	    return $this->fetch('company/message');
 	}
+
+	/**
+	 * 企业注册
+	 * @return [type] [description]
+	 */
+	public function companyReg($email=null,$cCode=null)
+	{
+		$info = model('user')->where('account',$email)->find();
+
+		if($cCode==1){
+			if(empty($info)){
+				return $this->jsonErr('邮箱还未注册');
+			}
+		}else{
+			$this->checkVerify($cCode);
+			if(!empty($info)){
+				return $this->jsonErr('邮箱已经被注册');
+			}
+		}
+
+		//所有邮箱跳转连接
+		$emailAll = [
+		    '@yahoo.com'  => 'https://login.yahoo.com/',
+		    '@msn.com'    => 'https://login.live.com/',
+		    '@hotmail.com'=> 'https://outlook.live.com/owa/',
+		    '@live.com'   => 'https://qiye.aliyun.com/',
+		    '@qq.com'	  => 'https://mail.qq.com/',
+		    '@163.com'    => 'http://reg.163.com/',
+		    '@163.net'    => 'http://mail.tom.com/',
+		    '@263.net'    => 'http://mail.263.net/',
+		    '@yeah'       => 'https://mail.yeah.net/'
+		];
+
+		//邮箱连接对应跳转连接
+		$fen = explode("@",$email);
+
+		$fen[1] = "@".$fen[1];
+
+		$emailUrl = $emailAll[$fen[1]];
+
+		//跳转连接加密(发送邮件)
+		if ($cCode==1) {
+			$skipUrl = ''.config('web_site_url').'/index/user/forgotPassword.html?account='.$email.'&parm='.md5(md5($email."cdzsds"));
+
+			$to   = $email?$email:config('mail_resave_address');//发送邮箱地址
+			$body ='请点击连接完成验证,进行修改密码!<br>';
+			$body.='<br>'.$skipUrl.'';
+		}else{
+			$skipUrl = ''.config('web_site_url').'/index/company/companyreg2.html?email='.$email.'&time='.time();
+
+			$get = "?email=".$email."&time=".time();
+
+			// $skipUrl = urlencode($skipUrl);
+
+			$to   = $email?$email:config('mail_resave_address');//发送邮箱地址
+			$body ='请在24小时内点击邮件中的链接继续完成注册,过期自动失效!<br>';
+			$body.='<br>'.$skipUrl.'';
+		}
+
+		$r=send_mail($to,'宙斯盾企业用户注册验证',$body);
+
+		if($r){
+			return $this->jsonSuc('发送成功',['email'=>$email,'emailUrl'=>$emailUrl]);
+		}else{
+			return $this->jsonErr('发送失败',$r);
+		}
+	}
 }
