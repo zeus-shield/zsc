@@ -15,7 +15,7 @@ function bF_getGasPrice() {
 }
 
 function bF_getGasLimit(limit) {
-    return limit * 10**4; //limits * 1 million
+    return 600 * 10**4; //limits * 1 million
 }
 
 function bF_showHashResult(elementID, hash, func) {
