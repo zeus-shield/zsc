@@ -28,7 +28,7 @@
 
 	<div id="PageBody">
 		<div class="well">
-			<text id="info">load¡£¡£¡£(³¤Ê±¼äÎ´Ìø³ö½çÃæÇë¼ì²éÊÇ·ñ³É¹¦µÇÂ¼matemask)</text>
+			<text id="info">loadã€‚ã€‚ã€‚(é•¿æ—¶é—´æœªè·³å‡ºç•Œé¢è¯·æ£€æŸ¥æ˜¯å¦æˆåŠŸç™»å½•matemask)</text>
 		</div>
 		<div class="well">
 			<table align="center" style="width:600px;min-height:30px">
@@ -45,4 +45,46 @@
 	</div>
 </div>
 {/block}{block name="script"}
+
+<script type="text/javascript">
+
+	function indexjump(tag) {
+		switch (tag) {
+			case "zscShowMAdr":
+				window.location.href = "{:url('index/zscprovider/zscShowMAdr')}";
+				break;
+
+			case "zscShowAllAgreements":
+				window.location.href = "{:url('index/zscprovider/zscShowAllAgreements')}";
+				break;
+
+			case "zscProfile":
+				window.location.href = "{:url('index/zscprovider/zscProfile')}";
+				break;
+
+			case "zscTemplates":
+				window.location.href = "{:url('index/zscprovider/zscTemplates')}";
+				break;
+
+			case "zscWallet":
+				window.location.href = "{:url('index/zscprovider/zscWallet')}";
+				break;
+
+			case "zscEnableWallet":
+				window.location.href = "{:url('index/zscprovider/zscEnableWallet')}";
+				break;
+
+			case "zscTemplateList":
+				window.location.href = "{:url('index/zscprovider/zscTemplatesList')}";
+				break;
+
+			case "zscTemplateListShow":
+				window.location.href = "{:url('index/zscprovider/zscTemplatesListShow')}";
+				break;
+
+			case "zscAgreement":
+                window.location.href = "{:url('index/zscprovider/zscAgreement')}";
+                break;
+		}
+	}
 {/block}
