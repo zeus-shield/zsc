@@ -10,6 +10,14 @@ contract DBNode {
     function getNodeType() public view returns (bytes32);
     function getBalance(address _adr) public view returns (uint256);
     function getLockedAmount(address _tokenAdr) public view returns (uint);
+    function getFrozenAmount(address _tokenAdr) public view returns (uint);
+    function getTransactionInfoByIndex(uint _index) public view returns (uint, uint, bytes32, uint, address, address);
+    function executeTransaction(address _tokenAdr, address _dest, uint _amount) public returns (uint);
+    function freezeWallet(address _tokenAdr, uint _amount) public;
+    function setERC20TokenAddress(address _tokenAdr) public;
+    function numTransactions() public view returns (uint);
+    function lockWallet(address _tokenAdr, uint _amount) public;
+    function unlockWallet(address _tokenAdr, uint _amount) public;
 
     function addParameter(bytes32 _parameter) public returns (bool);
     //function removeParameter(bytes32 _parameter) public returns (bool);
@@ -18,16 +26,6 @@ contract DBNode {
     function numParameters() public view returns (uint);
     function getParameterNameByIndex(uint _index) public view returns (bytes32);
 
-    function setERC20TokenAddress(address _tokenAdr) public;
-    //function submitTransaction(address _dest, uint256 _amount, bytes _data, address _user) public returns (uint);
-    //function confirmTransaction(address _sigAdr) public returns (uint);    
-    function executeTransaction(address _tokenAdr, address _dest, uint256 _amount) public returns (uint);
-    function informTransaction(address _src, uint256 _amount) public;
-    function numTransactions() public view returns (uint);
-    function getTransactionInfoByIndex(uint _index) public view returns (uint, bool,  bytes32, uint, address, address);
-    function lockWallet(address _tokenAdr, uint _amount) public;
-    function unlockWallet(address _tokenAdr, uint _amount) public;
-   
     function setAgreementStatus(bytes32 _tag, bytes32 receiver) public returns (bool);
     //function configureHandlers() public returns (bool);
     //function getHandler(bytes32 _type) public view returns (address);
