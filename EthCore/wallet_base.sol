@@ -9,12 +9,12 @@ import "./db/EthCore/db_entity.sol";
 contract WalletBase is DBNode {
     struct Payment {
         uint time_;
-        bool isInput_;
-        bytes32 tx_;
+        uint isInput_;
+        uint amount_;
         address sender_;
         address receiver_;
-        uint256 amount_;
     }
+    uint private constant MIN_VALUE = (1 ether) / 100;
     uint private nos_;
     mapping(uint => Payment) private payments_;
 
@@ -27,11 +27,13 @@ contract WalletBase is DBNode {
     }
 
     function recordInput(address _sender, uint _amount) internal {
-        payments_[nos_++] = Payment(now, false, 0x0, _sender, address(this), _amount);
+        payments_[nos_] = Payment(now, 1, _amount, _sender, address(this));
+        nos_++;
     }
 
     function recordOut(address _receiver, uint _amount) internal {
-        payments_[nos_++] = Payment(now, true, 0x0, address(this), _receiver, _amount);
+        payments_[nos_] = Payment(now, 0, _amount, address(this), _receiver);
+        nos_++;
     }
 
     ////////// public functions /////////////
@@ -43,14 +45,11 @@ contract WalletBase is DBNode {
         return nos_;
     }
 
-    function getTransactionInfoByIndex(uint _index) public view returns (uint, bool, bytes32, uint, address, address) {
-        checkDelegate(msg.sender, 1);
-        
+    function getTransactionInfoByIndex(uint _index) public view returns (uint, uint, bytes32, uint, address, address) {
         require(_index < nos_);
         
         return (payments_[_index].time_,
                 payments_[_index].isInput_,
-                payments_[_index].tx_,
                 payments_[_index].amount_,
                 payments_[_index].sender_, 
                 payments_[_index].receiver_);
