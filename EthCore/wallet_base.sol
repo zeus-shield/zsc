@@ -36,10 +36,13 @@ contract WalletBase is DBNode {
         nos_++;
     }
 
+    function safeTransferToken(address _tokenAdr, address _dest, uint _amount) internal;
+
     ////////// public functions /////////////
     function getBlance() public view returns (uint);
     function executeTransaction(address _dest, uint256 _amount) public returns (uint);
-
+    function burnFrozenToken(address _tokenAdr, address _dest) public;
+        
     function numTransactions() public view returns (uint) {
         checkDelegate(msg.sender, 1);
         return nos_;
