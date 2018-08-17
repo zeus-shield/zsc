@@ -11,7 +11,7 @@ contract DBNode {
     function getBalance(address _adr) public view returns (uint256);
     function getLockedAmount(address _tokenAdr) public view returns (uint);
     function getFrozenAmount(address _tokenAdr) public view returns (uint);
-    function getTransactionInfoByIndex(uint _index) public view returns (uint, uint, bytes32, uint, address, address);
+    function getTransactionInfoByIndex(uint _index) public view returns (uint, uint, uint, address, address);
     function executeTransaction(address _tokenAdr, address _dest, uint _amount) public returns (uint);
     function freezeWallet(address _tokenAdr, uint _amount) public;
     function setERC20TokenAddress(address _tokenAdr) public;
@@ -276,6 +276,17 @@ contract ControlBase is Object {
         return getDBModule("gm-token").numOfTokens();
     }
 
+    function freezeWallet(address _userWalletAdr, uint _amount) public {
+        checkDelegate(msg.sender, 1);
+        address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
+        DBNode(_userWalletAdr).freezeWallet(_amount);
+    }
+
+    function getFrozenAmount(address _userWalletAdr) public view returns (uint) {
+        checkDelegate(msg.sender, 1);
+        return DBNode(_userWalletAdr).getFrozenAmount();
+    }
+
     function getTokenBalanceInfoBySymbol(bytes32 _symbol) public view returns (string) {
         checkAllowed(msg.sender);
 
@@ -343,29 +354,52 @@ contract ControlBase is Object {
         require(_index < DBNode(walletAdr).numTransactions());
         
         uint tranTime;
-        bool isInput;
-        bytes32 txHash;
+        uint isInput;
         uint amount;
         address sender;
         address receiver;
         bytes32 inputTag;
 
-        (tranTime, isInput, txHash, amount, sender, receiver) =  DBNode(walletAdr).getTransactionInfoByIndex(_index);
+        (tranTime, isInput, amount, sender, receiver) =  DBNode(walletAdr).getTransactionInfoByIndex(_index);
 
-        if (isInput) inputTag = "true";
+        if (isInput == 1) inputTag = "true";
         else inputTag = "false";
 
         string memory str ="";
         str = PlatString.append(str, "info?time=", PlatString.uintToString(tranTime),    "&");
         str = PlatString.append(str, "input=",     PlatString.bytes32ToString(inputTag), "&");
-        str = PlatString.append(str, "tx=",        PlatString.bytes32ToString(txHash),   "&");
         str = PlatString.append(str, "amout=",     PlatString.uintToString(amount),      "&");
         str = PlatString.append(str, "sender=",    PlatString.addressToString(sender),   "&");
         str = PlatString.append(str, "receiver=",  PlatString.addressToString(receiver), "&");
         return str;
     }
  
-    function getModuleAddresses() public view returns (string) {
+    function getZSCModuleAddresses() public view returns (string) {
+        address dbAdr = address(getDBDatabase(dbName_));
+        address factoryProAdr = address(getDBFactory("provider"));
+        address factoryRecAdr = address(getDBFactory("receiver"));
+        address factoryTmpAdr = address(getDBFactory("template"));
+        address factoryAgrAdr = address(getDBFactory("agreement"));
+        address factoryWalletAdv = address(getDBFactory("wallet-adv"));
+        address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
+        address tokenManager = address(getDBModule("gm-token"));
+
+        string memory str ="adrs?";
+        str = PlatString.append(str, "token-adr=",      PlatString.addressToString(tokenContractAdr), "&");
+        str = PlatString.append(str, "log-recorder=", PlatString.addressToString(logRecorder_),     "&");
+        str = PlatString.append(str, "adm-base=",     PlatString.addressToString(bindedAdm_),       "&");
+        str = PlatString.append(str, "control-apis=", PlatString.addressToString(address(this)),    "&");
+        str = PlatString.append(str, "database=",     PlatString.addressToString(dbAdr),            "&");
+        str = PlatString.append(str, "factory-provider=",    PlatString.addressToString(factoryProAdr),    "&");
+        str = PlatString.append(str, "factory-receiver=",    PlatString.addressToString(factoryRecAdr),    "&");
+        str = PlatString.append(str, "factory-template=",    PlatString.addressToString(factoryTmpAdr),    "&");
+        str = PlatString.append(str, "factory-agreement=",   PlatString.addressToString(factoryAgrAdr),    "&");
+        str = PlatString.append(str, "wallet-adv=",     PlatString.addressToString(factoryWalletAdv),  "&");
+        str = PlatString.append(str, "token-manager=",  PlatString.addressToString(tokenManager),  "&");
+        return str;
+    }   
+
+    function getPoSModuleAddresses() public view returns (string) {
         address dbAdr = address(getDBDatabase(dbName_));
         address factoryProAdr = address(getDBFactory("provider"));
         address factoryRecAdr = address(getDBFactory("receiver"));
@@ -377,18 +411,14 @@ contract ControlBase is Object {
         address posManager = address(getDBModule("gm-pos"));
 
         string memory str ="adrs?";
-        str = PlatString.append(str, "testZSC=",      PlatString.addressToString(tokenContractAdr), "&");
-        str = PlatString.append(str, "log-decorder=", PlatString.addressToString(logRecorder_),     "&");
-        str = PlatString.append(str, "adm-base=",     PlatString.addressToString(bindedAdm_),       "&");
-        str = PlatString.append(str, "control-apis=", PlatString.addressToString(address(this)),    "&");
-        str = PlatString.append(str, "database=",     PlatString.addressToString(dbAdr),            "&");
-        str = PlatString.append(str, "factory-provider=",    PlatString.addressToString(factoryProAdr),    "&");
-        str = PlatString.append(str, "factory-receiver=",    PlatString.addressToString(factoryRecAdr),    "&");
-        str = PlatString.append(str, "factory-template=",    PlatString.addressToString(factoryTmpAdr),    "&");
-        str = PlatString.append(str, "factory-agreement=",   PlatString.addressToString(factoryAgrAdr),    "&");
-        str = PlatString.append(str, "factory-wallet-adv=",  PlatString.addressToString(factoryWalletAdv),  "&");
+        str = PlatString.append(str, "token-adr=",      PlatString.addressToString(tokenContractAdr), "&");
+        str = PlatString.append(str, "log-recorder=",   PlatString.addressToString(logRecorder_),     "&");
+        str = PlatString.append(str, "adm-base=",       PlatString.addressToString(bindedAdm_),       "&");
+        str = PlatString.append(str, "control-apis=",   PlatString.addressToString(address(this)),    "&");
+        str = PlatString.append(str, "database=",       PlatString.addressToString(dbAdr),            "&");
+        str = PlatString.append(str, "wallet-adv=",     PlatString.addressToString(factoryWalletAdv),  "&");
         str = PlatString.append(str, "token-manager=",  PlatString.addressToString(tokenManager),  "&");
-        str = PlatString.append(str, "po-manager=",  PlatString.addressToString(posManager),  "&");
+        str = PlatString.append(str, "pos-manager=",    PlatString.addressToString(posManager),  "&");
         return str;
     }   
 }
