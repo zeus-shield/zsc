@@ -18,6 +18,7 @@ contract DBNode {
     function numTransactions() public view returns (uint);
     function lockWallet(address _tokenAdr, uint _amount) public;
     function unlockWallet(address _tokenAdr, uint _amount) public;
+    function burnFrozenToken(address _tokenAdr, address _dest) public;
 
     function addParameter(bytes32 _parameter) public returns (bool);
     //function removeParameter(bytes32 _parameter) public returns (bool);
@@ -250,6 +251,24 @@ contract ControlBase is Object {
         return ret;
     }
 
+    function freezeWallet(bytes32 _tokenSymbol, address _userWalletAdr, uint _amount) public {
+        checkDelegate(msg.sender, 1);
+        address tokenContractAdr = getDBModule("gm-token").getTokenAddress(_tokenSymbol);
+        DBNode(_userWalletAdr).freezeWallet(tokenContractAdr, _amount);
+    }
+
+    function burnFrozenToken(bytes32 _tokenSymbol, address _userWalletAdr) public {
+        checkDelegate(msg.sender, 1);
+        address tokenContractAdr = getDBModule("gm-token").getTokenAddress(_tokenSymbol);
+        DBNode(_userWalletAdr).burnFrozenToken(tokenContractAdr, address(this));
+    }
+    
+    function getFrozenAmount(bytes32 _tokenSymbol, address _userWalletAdr) public view returns (uint) {
+        checkDelegate(msg.sender, 1);
+        address tokenContractAdr = getDBModule("gm-token").getTokenAddress(_tokenSymbol);
+        return DBNode(_userWalletAdr).getFrozenAmount(tokenContractAdr);
+    }
+
     //////////////////////////////////////
     //////////////////////////////////////
     function submitTransfer(bytes32 _tokenSymbol, address _dest, uint256 _amount) public returns (uint) {
@@ -274,17 +293,6 @@ contract ControlBase is Object {
 
     function numOfTokens() public view returns (uint) {
         return getDBModule("gm-token").numOfTokens();
-    }
-
-    function freezeWallet(address _userWalletAdr, uint _amount) public {
-        checkDelegate(msg.sender, 1);
-        address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
-        DBNode(_userWalletAdr).freezeWallet(_amount);
-    }
-
-    function getFrozenAmount(address _userWalletAdr) public view returns (uint) {
-        checkDelegate(msg.sender, 1);
-        return DBNode(_userWalletAdr).getFrozenAmount();
     }
 
     function getTokenBalanceInfoBySymbol(bytes32 _symbol) public view returns (string) {
@@ -401,10 +409,6 @@ contract ControlBase is Object {
 
     function getPoSModuleAddresses() public view returns (string) {
         address dbAdr = address(getDBDatabase(dbName_));
-        address factoryProAdr = address(getDBFactory("provider"));
-        address factoryRecAdr = address(getDBFactory("receiver"));
-        address factoryTmpAdr = address(getDBFactory("template"));
-        address factoryAgrAdr = address(getDBFactory("agreement"));
         address factoryWalletAdv = address(getDBFactory("wallet-adv"));
         address tokenContractAdr = getDBModule("gm-token").getTokenAddress("ZSC");
         address tokenManager = address(getDBModule("gm-token"));
