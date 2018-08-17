@@ -221,4 +221,25 @@ class Company extends Fornt{
 			return $this->jsonErr('发送失败',$r);
 		}
 	}
+
+		/**
+	 * 账户信息
+	 * @return [type] [description]
+	 */
+	public function companyReg2()
+	{
+		$time = input('time','');
+
+		$outTime = $time+(60*60*24);
+
+		if(time()>$outTime){
+			return $this->error('验证失败,邮件已经过期请重新获取',url('index/company/companyReg'));
+		}elseif($time==''){
+			return $this->error('验证失败,请先获取邮件后注册',url('index/company/companyReg'));
+		}
+
+
+		$this->assign('email',input('get.email'));
+		return $this->fetch('company/company_reg2');
+	}
 }
