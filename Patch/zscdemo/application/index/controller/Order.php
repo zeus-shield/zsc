@@ -137,4 +137,25 @@ class Order extends Fornt{
 			return $this->jsonSuc('没有数据');
 		}
 	}
+	/**
+	 * 添加评价信息
+	 */
+	public function addComent()
+	{
+
+		$data = input('post.');
+
+		$data['uid'] = $this->uid;
+
+		$data['createTime'] = time();
+
+		$result = Db::name('comment')->insert($data);
+
+		if($result){
+			return $this->jsonSuc('评价成功');
+		}else{
+			return $this->jsonSuc('网络错误');
+		}
+
+	}
 }
