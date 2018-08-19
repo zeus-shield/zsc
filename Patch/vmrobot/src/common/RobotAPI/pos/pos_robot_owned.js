@@ -8,4 +8,8 @@ import {
 export default class ZSCRobotOwned {
     constructor(acount, adr, abi) {
     }
+    getRobotNos() {
+    }
+    getRobotId(index) {
+    }
 }
