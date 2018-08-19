@@ -9,5 +9,7 @@ import ZSCRobotMarket from '../pos/pos_robot_market';
 const ETHModule = {
     LoadModule(acount, module) {
     },
+    GetDealRobot(acount, RobotId, wallet) {
+    },
 }
 export default ETHModule;
