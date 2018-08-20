@@ -158,4 +158,37 @@ class Order extends Fornt{
 		}
 
 	}
+	/**
+	 * 确认保单
+	 */
+	public function settment2()
+	{
+		$oid   = input('oid');
+
+		$info  = model('Order')->find($oid);
+
+		// if(strtotime(date("Y-m-d 23:59:59",strtotime($info['createTime'])))<time()){
+		// 	$this->error('订单已失效,请重新购买!');
+		// }
+
+		// $infos = Db::name('Order')->find($oid);
+		// $time = explode("-",$info['startProtect']);
+
+		// $info['endTime'] = $time[0]+$info['securityTime']."-".$time[1]."-".$time[2];//保单终止时间
+
+		$Recognizee  = model('Recognizee')->find($info['rid']);//被保护人信息
+
+		$Recognizee['account'] = model('user')->where('uid',$info['uid'])->value('account');
+
+		// $productUser = Db::table('product a')
+		// 		->join('company b',"b.uid=a.uid")
+		// 		->where('a.pid='.$infos['pid'].'')
+		// 		->field('b.*')
+		// 		->find();
+
+		$this->assign('info',$info);
+		$this->assign('Recognizee',$Recognizee);
+
+		return $this->fetch('Order/settment2');
+	}
 }
