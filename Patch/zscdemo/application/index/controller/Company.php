@@ -242,4 +242,60 @@ class Company extends Fornt{
 		$this->assign('email',input('get.email'));
 		return $this->fetch('company/company_reg2');
 	}
+	/**
+	 * 企业认证
+	 * @return [type] [description]
+	 */
+	public function companyReg3()
+	{
+		if(IS_POST){
+			$data = [
+				'account'   => input('post.email'),
+				'password'  => input('post.password')
+			];
+
+			//企业用户注册
+			$result = model('user')->userReg($data,1);
+
+			$companyInfo = input('post.');
+
+			if($result>=1){
+				$res = 1;
+			}
+
+			switch ($res) {
+				case 1:
+					$companyInfo['uid'] = $result;
+					$this->model->allowField(true)->save($companyInfo);
+					return $this->jsonSuc('注册成功');
+					break;
+				case -1:
+					return json(['code'=>-1,'msg'=>'验证码错误','data'=>[]]);
+					break;
+				case -2:
+					return json(['code'=>-2,'msg'=>'注册失败,网络错误','data'=>[]]);
+					break;
+				case -3:
+					return json(['code'=>-3,'msg'=>'帐号重复','data'=>[]]);
+					break;
+			}
+
+		}else{
+			$parm = input('get.');
+
+			$info = [];//添加默认为空.编辑查询详细数据
+			/**
+			 * 所有字段数组处理
+			 * @var [type]
+			 */
+			$this->assign('field',$this->field);
+
+			$this->assign('parm',$parm);
+			$this->assign('info',$info);
+
+			return $this->fetch('company/company_reg3');
+		}
+
+	}
+
 }
