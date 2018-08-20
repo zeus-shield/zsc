@@ -36,7 +36,7 @@
 			<text id="info">load。。。(长时间未跳出界面请检查是否成功登录matemask)</text>
 		</div>
 
-		{if condition="$Think.cookie.type eq 1"}
+		{if condition="$Think.cookie.zscType eq 1"}
 		<div class="well">
 			<button type="button" onclick="creatNewTemplate('CreateNewTemplateHash')">Create New Template</button>
 			<br>
@@ -158,4 +158,10 @@
 		setCookie("elementName", elementName);
 		indexjump("zscTemplateEdit");
 	}
+
+	function showProvidersAgreementsDemo(elementName) {
+		setCookie("elementName", elementName);
+		indexjump("zscTemplateList");
+	}
+
 </script> {/block}
