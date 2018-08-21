@@ -51,9 +51,9 @@ contract Erc721Adv is ERC721, Delegated {
     // Mapping from token ID to index of the owner tokens list
     mapping(uint => uint) private ownedTokensIndex_;
 
-    string private tokenSymbol_ = "VMB";
+    string private tokenSymbol_ = "DFT";
     
-    string private tokenName_ = "Virtual Miner Robot";
+    string private tokenName_ = "Default Name";
     
     function Erc721Adv() public {
     }
