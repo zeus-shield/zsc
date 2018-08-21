@@ -75,7 +75,7 @@ contract DBModule {
     /*ERC721 for miner robot begin*/
     function balanceOf(address _owner) public view returns (uint);
     function tokenOfOwnerByIndex(address _owner, uint _index) public view returns (uint);
-    function getRobotInfo(uint _robotId) public view returns (uint, uint, uint, uint, uint, uint);
+    function getRobotInfo(uint _robotId) public view returns (bytes32, uint, uint, uint, uint, uint, uint);
     function getExtraEffect(uint _robotId) public view returns (uint _extraSp, uint _extraUpgradProb);
     function getLevelInfo(uint _index) public view returns (uint, uint, uint, uint);
 
@@ -252,19 +252,18 @@ contract ControlBase is Object {
     }
 
     function freezeWallet(bytes32 _tokenSymbol, address _userWalletAdr, uint _amount) public {
-        checkDelegate(msg.sender, 1);
+        checkDelegate(msg.sender, 5);
         address tokenContractAdr = getDBModule("gm-token").getTokenAddress(_tokenSymbol);
         DBNode(_userWalletAdr).freezeWallet(tokenContractAdr, _amount);
     }
 
     function burnFrozenToken(bytes32 _tokenSymbol, address _userWalletAdr) public {
-        checkDelegate(msg.sender, 1);
+        checkDelegate(msg.sender, 5);
         address tokenContractAdr = getDBModule("gm-token").getTokenAddress(_tokenSymbol);
         DBNode(_userWalletAdr).burnFrozenToken(tokenContractAdr, address(this));
     }
     
     function getFrozenAmount(bytes32 _tokenSymbol, address _userWalletAdr) public view returns (uint) {
-        checkDelegate(msg.sender, 1);
         address tokenContractAdr = getDBModule("gm-token").getTokenAddress(_tokenSymbol);
         return DBNode(_userWalletAdr).getFrozenAmount(tokenContractAdr);
     }
