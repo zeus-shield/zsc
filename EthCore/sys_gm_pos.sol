@@ -9,6 +9,7 @@ import "./erc721_adv.sol";
 
 contract SysGmPos is Erc721Adv, SysGmBase {
     struct RobotUnit {
+        bytes32 status_;
         uint level_;
         uint stakePoint_;
         uint rewardRatio_;
@@ -28,6 +29,14 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         require(_user == ownerOf(_robotId));
     }
 
+    function setRobotStatus(uint _robotId, bytes32 _status) internal {
+        robots_[_robotId].status_ = _status;
+    }
+
+    function getRobotStatus(uint _robotId) internal view returns (bytes32) {
+        return robots_[_robotId].status_;
+    }
+
     function isActivated(uint _robotId) internal view returns (bool) {
         return (robots_[_robotId].mineStart_ != 0);
     }
@@ -36,11 +45,16 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return (robots_[_robotId].price_ != 0);
     }
 
-    function getRobotInfo(uint _robotId) public view returns (uint, uint, uint, uint, uint, uint) {
+    function numRobots() public view returns (uint) {
+        return robotNos_;  
+    }
+
+    function getRobotInfo(uint _robotId) public view returns (bytes32, uint, uint, uint, uint, uint, uint) {
         checkDelegate(msg.sender, 1);
         require(_robotId < robotNos_);
         
-        return (robots_[_robotId].level_,
+        return (robots_[_robotId].status_,
+                robots_[_robotId].level_,
                 robots_[_robotId].mineStart_, 
                 robots_[_robotId].mineEnd_, 
                 robots_[_robotId].stakePoint_,
