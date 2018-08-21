@@ -191,4 +191,39 @@ class Order extends Fornt{
 
 		return $this->fetch('Order/settment2');
 	}
+	/**
+	 * 订单详情
+	 * @return [type] [description]
+	 */
+	public function orderDetail()
+	{
+		$oid = input('oid');
+
+		$info = Db::table('order a')
+		        ->join('product b','a.pid=b.pid')
+		        ->join('user c','b.uid=c.uid')
+		        ->join('recognizee d','d.rid=a.rid')
+		        ->where('a.uid='.$this->uid.' and a.oid='.$oid.'')
+		        ->field('d.name as rName,d.sex,d.papers,d.papersType,d.papersImgx,d.papersImgy,d.handIdentityImg,b.name,b.money,b.image,a.*')
+		        ->find();
+		$comment = Db::name('comment')->where(['uid'=>$this->uid,'pid'=>$info['pid'],'oid'=>$info['oid']])->find();
+
+		if(!empty($comment)){
+			$info['comment'] = 1;
+		}else{
+			$info['comment'] = 0;
+		}
+
+		if($info['status']==0){
+			$this->error('请先支付订单!');
+		}
+		// var_dump($info);
+		// die;
+		//联系方式
+		$info['account'] = model('user')->where('uid',$info['uid'])->value('account');
+
+		$this->assign('info',$info);
+
+		return $this->fetch('Order/order_detail');
+	}
 }
