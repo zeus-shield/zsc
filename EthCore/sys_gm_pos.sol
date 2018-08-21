@@ -37,20 +37,11 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return robots_[_robotId].status_;
     }
 
-    function isActivated(uint _robotId) internal view returns (bool) {
-        return (robots_[_robotId].mineStart_ != 0);
-    }
-
-    function isBuyable(uint _robotId) internal view returns (bool) {
-        return (robots_[_robotId].price_ != 0);
-    }
-
     function numRobots() public view returns (uint) {
         return robotNos_;  
     }
 
     function getRobotInfo(uint _robotId) public view returns (bytes32, uint, uint, uint, uint, uint, uint) {
-        checkDelegate(msg.sender, 1);
         require(_robotId < robotNos_);
         
         return (robots_[_robotId].status_,
