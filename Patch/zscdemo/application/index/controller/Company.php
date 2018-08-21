@@ -297,5 +297,13 @@ class Company extends Fornt{
 		}
 
 	}
+/**
+	 * 认证成功
+	 * @return [type] [description]
+	 */
+	public function companyReg4()
+	{
+		return $this->fetch('company/company_reg4');
+	}
 
 }
