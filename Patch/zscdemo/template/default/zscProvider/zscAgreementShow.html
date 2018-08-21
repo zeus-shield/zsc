@@ -52,4 +52,39 @@
     </div>
 </div>
 {/block} {block name="script"}
+
+<script type="text/javascript">
+
+    function indexjump(tag) {
+        switch (tag) {
+            case "zscShowMAdr":
+                window.location.href = "{:url('index/zscprovider/zscShowMAdr')}";
+                break;
+
+            case "zscShowAllAgreements":
+                window.location.href = "{:url('index/zscprovider/zscShowAllAgreements')}";
+                break;
+
+            case "zscProfile":
+                window.location.href = "{:url('index/zscprovider/zscProfile')}";
+                break;
+
+            case "zscTemplates":
+                window.location.href = "{:url('index/zscprovider/zscTemplates')}";
+                break;
+
+            case "zscWallet":
+                window.location.href = "{:url('index/zscprovider/zscWallet')}";
+                break;
+
+            case "zscEnableWallet":
+                window.location.href = "{:url('index/zscprovider/zscEnableWallet')}";
+                break;
+
+            case "zscAgreement":
+                window.location.href = "{:url('index/zscprovider/zscAgreement')}";
+                break;
+
+        }
+    }
 </script> {/block}
