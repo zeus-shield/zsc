@@ -12,13 +12,13 @@
 	</script>
 	<div class="wall">
 		<button type="button" onClick="indexjump('zscWallet')">Wallat</button>
-        <button type="button" onClick="indexjump('zscProfile')">Profile</button>
-        {if condition="$Think.cookie.zscType eq 1"}
-        <button type="button" onClick="indexjump('zscTemplates')">Templates</button>
-        {else /}
-        <button type="button" onClick="indexjump('zscAgreement')">Agreements</button>
-        {/if}
-        <button type="button" onClick="indexjump('zscShowAllAgreements')">Show All Agreements</button>
+		<button type="button" onClick="indexjump('zscProfile')">Profile</button>
+		{if condition="$Think.cookie.zscType eq 1"}
+		<button type="button" onClick="indexjump('zscTemplates')">Templates</button>
+		{else /}
+		<button type="button" onClick="indexjump('zscAgreement')">Agreements</button>
+		{/if}
+		<button type="button" onClick="indexjump('zscShowAllAgreements')">Show All Agreements</button>
 		<button type="button" onClick="indexjump('zscShowMAdr')">Show Module Adrs</button>
 		<!-- <button type="button" onClick="addUserTest()">测试</button> -->
 	</div>
@@ -37,7 +37,7 @@
 		<div class="well">
 			---------------
 			<br> Symbol:
-			<text id ="walletSymbol"></text>
+			<text id="walletSymbol"></text>
 			<br> Address:
 			<text id="walletAddress">
 
@@ -72,38 +72,38 @@
 	}
 
 
-    function indexjump(tag) {
-        switch(tag) {
-            case "zscShowMAdr":
-                window.location.href = "{:url('index/zscprovider/zscShowMAdr')}";
-                break;
-            
-            case "zscShowAllAgreements":
-                window.location.href = "{:url('index/zscprovider/zscShowAllAgreements')}";   
-                break;
-
-            case "zscProfile":
-                window.location.href = "{:url('index/zscprovider/zscProfile')}";
-                break;
-
-             case "zscTemplates":
-                window.location.href = "{:url('index/zscprovider/zscTemplates')}";
-                break;
-
-            case "zscWallet":
-                window.location.href = "{:url('index/zscprovider/zscWallet')}";
-                break;
-
-            case "zscEnableWallet":
-                window.location.href = "{:url('index/zscprovider/zscEnableWallet')}";
+	function indexjump(tag) {
+		switch (tag) {
+			case "zscShowMAdr":
+				window.location.href = "{:url('index/zscprovider/zscShowMAdr')}";
 				break;
-				
-			case "zscAgreement":
-                window.location.href = "{:url('index/zscprovider/zscAgreement')}";
-                break;
 
-        }
-    }
+			case "zscShowAllAgreements":
+				window.location.href = "{:url('index/zscprovider/zscShowAllAgreements')}";
+				break;
+
+			case "zscProfile":
+				window.location.href = "{:url('index/zscprovider/zscProfile')}";
+				break;
+
+			case "zscTemplates":
+				window.location.href = "{:url('index/zscprovider/zscTemplates')}";
+				break;
+
+			case "zscWallet":
+				window.location.href = "{:url('index/zscprovider/zscWallet')}";
+				break;
+
+			case "zscEnableWallet":
+				window.location.href = "{:url('index/zscprovider/zscEnableWallet')}";
+				break;
+
+			case "zscAgreement":
+				window.location.href = "{:url('index/zscprovider/zscAgreement')}";
+				break;
+
+		}
+	}
 
 	function loadWalletHtml() {
 		var adr;
