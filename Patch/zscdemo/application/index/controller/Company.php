@@ -305,5 +305,22 @@ class Company extends Fornt{
 	{
 		return $this->fetch('company/company_reg4');
 	}
+/*产品详情*/
+	public function companyOrderDetail()
+	{
+		$oid = input('oid');
 
+		$info = Db::table('order a')
+		        ->join('product b','a.pid=b.pid')
+		        ->join('user c','b.uid=c.uid')
+		        ->join('recognizee d','d.rid=a.rid')
+		        ->where('c.uid='.$this->uid.' and a.oid='.$oid.'')
+		        ->field('d.name as rName,d.sex,d.papers,d.papersType,d.papersImgx,d.papersImgy,d.handIdentityImg,b.name,b.money,b.image,a.*')
+		        ->find();
+		//联系方式
+		$info['account'] = model('user')->where('uid',$info['uid'])->value('account');
+
+		$this->assign('info',$info);
+		return $this->fetch('company/company_order_detail');
+	}
 }
