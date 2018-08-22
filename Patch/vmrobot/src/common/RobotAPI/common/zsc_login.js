@@ -16,4 +16,8 @@ export default class ZSCLogin {
         this.gasPrice = bF.bF_getGasPrice();
         this.gasLimit = bF.bF_getGasLimit();
     }
+    getUserName() {
+    }
+    getUserNameHr() {
+    }
 }
