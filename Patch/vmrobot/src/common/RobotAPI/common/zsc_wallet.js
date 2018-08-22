@@ -21,4 +21,8 @@ export default class ZSCWallet {
         this.gasPrice = bF.bF_getGasPrice();
         this.gasLimit = bF.bF_getGasLimit();
     }
+    getWalletAddress() {
+    }
+    getTokenNos() {
+    }
 }
