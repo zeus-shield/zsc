@@ -13,4 +13,9 @@ export const bF = {
     bF_getGasPrice() {
         return 20 * 1000000000; //30 * gwei
     },
+
+    bF_getGasLimit() {
+    },
+    bF_fixedNumberFromWei(value, n) {
+    }
 }
