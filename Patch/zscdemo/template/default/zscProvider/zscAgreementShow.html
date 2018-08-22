@@ -25,7 +25,7 @@
     </div>
     <div id="PageBody">
         <div class="well">
-            <text id="info">load¡£¡£¡£(³¤Ê±¼äÎ´Ìø³ö½çÃæÇë¼ì²éÊÇ·ñ³É¹¦µÇÂ¼matemask)</text>
+            <text id="info">loadã€‚ã€‚ã€‚(é•¿æ—¶é—´æœªè·³å‡ºç•Œé¢è¯·æ£€æŸ¥æ˜¯å¦æˆåŠŸç™»å½•matemask)</text>
         </div>
         <div class="well">
             <table align="center" style="width:600px;min-height:30px">
@@ -108,5 +108,12 @@
             text += '  <td> <input type="text" id="' + zscElement.parameterNames[i] + '" value="' + zscElement.parameterValues[i] + '"></input> </td>'
             text += '</tr>'
         }
-}
+
+
+        document.getElementById('info').innerHTML =
+            zscUser.getUserType() + " - [" + zscUser.getUserName() + "] - purchased agreements:";
+
+        document.getElementById('agreementsShow').innerHTML =
+            text;
+    }
 </script> {/block}
