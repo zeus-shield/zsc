@@ -21,7 +21,9 @@ export default class ZSCRobotMarket {
         this.gasLimit = bF.bF_getGasLimit();
     }
     getRobotNos() {
+        return this.robotNos;
     }
     getRobotId(index) {
+        return this.robotIds[index];
     }
 }
