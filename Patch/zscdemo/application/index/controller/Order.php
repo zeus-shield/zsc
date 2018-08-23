@@ -230,18 +230,32 @@ class Order extends Fornt{
 	 * 拒绝产品
 	 * @return [type] [description]
 	 */
-	public function refuse()
+	// public function refuse()
+	// {
+	// 	$oid 	= input('post.oid');
+	// 	$refuse = input('post.refuse');
+
+	// 	$result = model('Order')->where('oid',$oid)->update(['refuse'=>$refuse,'status'=>4]);
+
+	// 	if($result){
+	// 		return $this->jsonSuc('操作成功');
+	// 	}else{
+	// 		return $this->jsonSuc('网络错误');
+	// 	}
+
+	// }
+		/**
+	 * 支付订单
+	 * @return [type] [description]
+	 */
+	public function pay()
 	{
-		$oid 	= input('post.oid');
-		$refuse = input('post.refuse');
+		$oid   = input('oid');
+		$info  = model('Order')->find($oid);
 
-		$result = model('Order')->where('oid',$oid)->update(['refuse'=>$refuse,'status'=>4]);
-
-		if($result){
-			return $this->jsonSuc('操作成功');
-		}else{
-			return $this->jsonSuc('网络错误');
+		if(strtotime(date("Y-m-d 23:59:59",strtotime($info['createTime'])))<time()){
+			$this->error('订单已失效,请重新购买!');
 		}
-
+		return $this->fetch('order/pay');
 	}
 }
