@@ -35,4 +35,8 @@ export default class ZSCRobotOwned {
     getRobotId(index) {
         return this.robotIds[index];
     }
+    getRobotLev(index) {
+    }
+    getMaxSP(index) {
+    }
 }
