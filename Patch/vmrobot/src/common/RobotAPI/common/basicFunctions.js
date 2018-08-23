@@ -1,7 +1,12 @@
 /*
 Copyright (c) 2018 ZSC Dev Team
 */
-
+import axios from 'axios';
+import Template from '../../template';
+import {
+    getLanguageCookie,
+    Web3Util,
+} from '../../util';
 export const bF = {
     bF_getEthAccount() {
         //console.log(web3.eth.accounts[0])
