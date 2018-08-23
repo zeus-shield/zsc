@@ -178,6 +178,7 @@ class User extends Fornt{
 		Cookie::delete('account');
 		Cookie::delete('zscAccount');
 		Cookie::delete('zscPassword');
+		Cookie::delete('type');
 		$this->success('退出成功',url('/'));
 	}
 
