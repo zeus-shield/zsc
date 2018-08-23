@@ -17,7 +17,9 @@ export default class ZSCLogin {
         this.gasLimit = bF.bF_getGasLimit();
     }
     getUserName() {
+        return this.userName;
     }
     getUserNameHr() {
+        return this.userNameHr;
     }
 }
