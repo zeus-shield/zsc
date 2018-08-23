@@ -104,5 +104,10 @@
             text += '</tr>'
             text += '<tr> <td>---</td> <td>---</td> <td>---</td>  </tr>'
         }
-}
+        document.getElementById('info').innerHTML =
+            zscUser.getUserType() + " - [" + zscUser.getUserName() + "] - purchased agreements:";
+
+        document.getElementById('agreements').innerHTML =
+            text;
+    }
 </script> {/block}
