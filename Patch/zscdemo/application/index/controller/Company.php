@@ -323,4 +323,22 @@ class Company extends Fornt{
 		$this->assign('info',$info);
 		return $this->fetch('company/company_order_detail');
 	}
+	/**
+	 * 拒绝产品
+	 * @return [type] [description]
+	 */
+	public function refuse()
+	{
+		$oid 	= input('post.oid');
+		$refuse = input('post.refuse');
+
+		$result = model('Order')->where('oid',$oid)->update(['refuse'=>$refuse,'status'=>4]);
+
+		if($result){
+			return $this->jsonSuc('操作成功');
+		}else{
+			return $this->jsonSuc('网络错误');
+		}
+
+	}
 }
