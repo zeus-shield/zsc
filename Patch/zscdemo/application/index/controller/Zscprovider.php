@@ -74,4 +74,23 @@ class Zscprovider extends Fornt{
 	public function zscAgreementShow() {
 		return $this->fetch();
 	}
+
+	/**
+	 * 获取用户身份
+	 * @return [type] [json]
+	 */
+	public function getUserType()
+	{
+		$account = input('post.account');
+		
+
+		$r = Db::name('user')->where('account',$account)->find();
+
+		if(!empty($r)){
+			return $this->jsonSuc('获取成功',$r);
+		}else{
+			return $this->jsonErr('没有该用户');
+		}
+	}
+
 }
