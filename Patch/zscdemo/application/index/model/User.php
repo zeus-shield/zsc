@@ -9,7 +9,7 @@ use think\Db;
 */
 class User extends Base{
 
-/**
+	/**
 	 * 被保人图片处理
 	 * @var array
 	 */
@@ -33,7 +33,7 @@ class User extends Base{
 		$sex = [0=>'男',1=>'女',2=>"未设置"];
        	return $sex[$value];
 	}
-/**
+	/**
 	 * 用户登录
 	 * @param  [type] $data [登录参数]
 	 * @return [type]       [boole]
@@ -56,6 +56,7 @@ class User extends Base{
 			Cookie::set("account",$userInfo['account'],60*60*30);
 			Cookie::set("zscAccount",$userInfo['account'],60*60*30);//默认保存时间为一个月
 			Cookie::set("zscPassword",$data['password'],60*60*30);
+			Cookie::set("zscType",$userInfo['type'],60*60*30);
 	
 
      		if(preg_match("/^1[34578]\d{9}$/", $data['account'])){
@@ -70,7 +71,8 @@ class User extends Base{
 			Cookie::set("account",$userInfo['account']);
 			Cookie::set("zscAccount",$userInfo['account']);//默认保存时间为一个月
 			Cookie::set("zscPassword",$data['password']);
-		
+			Cookie::set("zscType",$userInfo['type'],60*60*30);
+	
 
      		if(preg_match("/^1[34578]\d{9}$/", $data['account'])){
 				Cookie::set('type',0);//个人用户登录
