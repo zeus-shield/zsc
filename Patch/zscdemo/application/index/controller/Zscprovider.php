@@ -76,7 +76,7 @@ class Zscprovider extends Fornt{
 	}
 
 	/**
-	 * »ñÈ¡ÓÃ»§Éí·Ý
+	 * èŽ·å–ç”¨æˆ·èº«ä»½
 	 * @return [type] [json]
 	 */
 	public function getUserType()
@@ -87,9 +87,9 @@ class Zscprovider extends Fornt{
 		$r = Db::name('user')->where('account',$account)->find();
 
 		if(!empty($r)){
-			return $this->jsonSuc('»ñÈ¡³É¹¦',$r);
+			return $this->jsonSuc('èŽ·å–æˆåŠŸ',$r);
 		}else{
-			return $this->jsonErr('Ã»ÓÐ¸ÃÓÃ»§');
+			return $this->jsonErr('æ²¡æœ‰è¯¥ç”¨æˆ·');
 		}
 	}
 
