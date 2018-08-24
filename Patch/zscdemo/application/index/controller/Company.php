@@ -38,7 +38,11 @@ class Company extends Fornt{
 			$this->error('非法操作');
 		}
 	}
-	
+	/**
+	/**
+	 * 公司订单
+	 * @return [type] [description]
+	 */
 	public function companyOrder()
 	{
 		$type = input('type');
@@ -50,20 +54,20 @@ class Company extends Fornt{
 		$wheres = '';
 
 		if($type==1){
-			$where = "a.status=0";
+			$where = "a.status=0";//未支付
 		}else if($type==2){
-			$where = "a.endTime>".time()." and a.status=2";
+			$where = "a.endTime>".time()." and a.status=2";//保障中
 		}else if($type==3){
-			$where = "a.status=3";
+			$where = "a.status=3";//理赔中
 		}else if($type==4){
-			$where = "a.endTime<".time()." and a.status=2";
+			$where = "a.endTime<".time()." and a.status=2";//已到期
 		}
 
 		if($title){
-			$wheres = "a.pid like '%$title%' or a.orderNo like '%$title%'";
+			$wheres = "a.pid like '%$title%' or a.orderNo like '%$title%'";//已到期
 		}
 
-		
+		/*企业订单数据*/
 		$list = Db::table('order a')
 		        ->join('product b','a.pid=b.pid')
 		        ->join('user c','b.uid=c.uid')
@@ -74,7 +78,7 @@ class Company extends Fornt{
 		        ->field('d.name as rName,b.name,b.money,a.payTime,a.oid,a.status,a.orderNo')
 		        ->paginate(10);
 
-		
+		/*未支付个数*/
 		$noPay  = Db::table('order a')
 			        ->join('product b','a.pid=b.pid')
 			        ->join('user c','b.uid=c.uid')
@@ -88,8 +92,8 @@ class Company extends Fornt{
 		];
 
 		$this->assign($data);
-		$this->assign('type',$type);
-		$this->assign('noPay',$noPay);
+		$this->assign('type',$type);//点击筛选
+		$this->assign('noPay',$noPay);//未支付个数
 
 		return $this->fetch('company/company_order');
 	}
@@ -136,8 +140,11 @@ class Company extends Fornt{
 		return $this->fetch('company/company_pro_type');
 	}
 
-
-		public function myWallet()
+	/**
+	 * 我的钱包
+	 * @return [type] [description]
+	 */
+	public function myWallet()
 	{
 
 
@@ -222,7 +229,7 @@ class Company extends Fornt{
 		}
 	}
 
-		/**
+	/**
 	 * 账户信息
 	 * @return [type] [description]
 	 */
@@ -242,6 +249,7 @@ class Company extends Fornt{
 		$this->assign('email',input('get.email'));
 		return $this->fetch('company/company_reg2');
 	}
+
 	/**
 	 * 企业认证
 	 * @return [type] [description]
@@ -297,7 +305,8 @@ class Company extends Fornt{
 		}
 
 	}
-/**
+
+	/**
 	 * 认证成功
 	 * @return [type] [description]
 	 */
@@ -305,7 +314,8 @@ class Company extends Fornt{
 	{
 		return $this->fetch('company/company_reg4');
 	}
-/*产品详情*/
+
+	/*产品详情*/
 	public function companyOrderDetail()
 	{
 		$oid = input('oid');
@@ -323,6 +333,7 @@ class Company extends Fornt{
 		$this->assign('info',$info);
 		return $this->fetch('company/company_order_detail');
 	}
+
 	/**
 	 * 拒绝产品
 	 * @return [type] [description]
@@ -341,4 +352,24 @@ class Company extends Fornt{
 		}
 
 	}
+
+	/**
+	 * 拒绝产品
+	 * @return [type] [description]
+	 */
+	public function accept()
+	{
+		$oid 	= input('post.oid');
+
+		$result = model('Order')->where('oid',$oid)->update(['status'=>2]);
+
+		if($result){
+			return $this->jsonSuc('操作成功');
+		}else{
+			return $this->jsonSuc('网络错误');
+		}
+
+	}
+
+
 }
