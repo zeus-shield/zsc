@@ -67,7 +67,7 @@ class Order extends Fornt{
 		return $this->fetch('Order/settment');
 	}
 
-/*添加订单信息*/
+	/*添加订单信息*/
 	public function addOrder()
 	{
 		$data = input('post.');
@@ -113,6 +113,7 @@ class Order extends Fornt{
 			return $this->jsonSuc('未修改数据,操作成功');
 		}
 	}
+
 	/**
 	 * 订单详情
 	 * @return [type] [description]
@@ -137,6 +138,7 @@ class Order extends Fornt{
 			return $this->jsonSuc('没有数据');
 		}
 	}
+
 	/**
 	 * 添加评价信息
 	 */
@@ -158,6 +160,8 @@ class Order extends Fornt{
 		}
 
 	}
+
+
 	/**
 	 * 确认保单
 	 */
@@ -191,6 +195,7 @@ class Order extends Fornt{
 
 		return $this->fetch('Order/settment2');
 	}
+
 	/**
 	 * 订单详情
 	 * @return [type] [description]
@@ -226,25 +231,8 @@ class Order extends Fornt{
 
 		return $this->fetch('Order/order_detail');
 	}
+
 	/**
-	 * 拒绝产品
-	 * @return [type] [description]
-	 */
-	// public function refuse()
-	// {
-	// 	$oid 	= input('post.oid');
-	// 	$refuse = input('post.refuse');
-
-	// 	$result = model('Order')->where('oid',$oid)->update(['refuse'=>$refuse,'status'=>4]);
-
-	// 	if($result){
-	// 		return $this->jsonSuc('操作成功');
-	// 	}else{
-	// 		return $this->jsonSuc('网络错误');
-	// 	}
-
-	// }
-		/**
 	 * 支付订单
 	 * @return [type] [description]
 	 */
@@ -258,4 +246,23 @@ class Order extends Fornt{
 		}
 		return $this->fetch('order/pay');
 	}
+
+	/**
+	 * 支付成功
+	 * @return [type] [description]
+	 */
+	public function paySuccess()
+	{
+		return $this->fetch('order/pay_success');
+	}
+
+	/**
+	 * 支付失败
+	 * @return [type] [description]
+	 */
+	public function payFail()
+	{
+		$this->fetch('order/pay_fail');
+	}
+
 }
