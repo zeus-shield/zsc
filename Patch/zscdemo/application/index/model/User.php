@@ -193,4 +193,35 @@ class User extends Base{
 			return -2;//修改失败
 		}
 	}
+
+	//密码加密参数
+	public function salt()
+	{
+		$str  = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
+
+		$salt = substr($str,mt_rand(1,55),6);
+
+		return $salt;
+	}
+
+	/**
+	 * 被保人信息
+	 * @return [type] [description]
+	 */
+	public function recognizeeList()
+	{
+		$list = Db::table('user a')
+			->join('recognizee b','b.uid = a.uid')
+			->field('b.name,b.papersType,b.papers,b.sex,b.rid')
+			->where('a.uid',Cookie::get('uid'))
+			// ->where('b.status=1')
+			->select();
+
+		//性别中文转换
+		foreach ($list as $k => $v) {
+			$list[$k]['sex'] = $this->getSexAttr($list[$k]['sex']);
+		}
+
+		return $list;
+	}
 }
