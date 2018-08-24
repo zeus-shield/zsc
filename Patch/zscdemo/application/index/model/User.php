@@ -224,4 +224,18 @@ class User extends Base{
 
 		return $list;
 	}
+
+	/**
+	 * 用户图片上传接口
+	 * @return [type] [description]
+	 */
+	public function userUpload()
+	{
+
+	}
+
+	public function pwdEncrypt($pwd,$salt)
+	{
+		return md5(md5($pwd.$salt));
+	}
 }
