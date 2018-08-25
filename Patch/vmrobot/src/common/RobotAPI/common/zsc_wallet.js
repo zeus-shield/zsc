@@ -27,4 +27,8 @@ export default class ZSCWallet {
     getTokenNos() {
         return this.tokenNos;
     }
+    getTokenSymbol(index) {
+    }
+    getTokenBalance(index) {
+    }
 }
