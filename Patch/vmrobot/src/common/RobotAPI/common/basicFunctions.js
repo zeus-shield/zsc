@@ -20,6 +20,8 @@ export const bF = {
     },
 
     bF_getGasLimit() {
+        var limit = 700;
+        return limit * 10 ** 4; //limits * 1 million
     },
     bF_fixedNumberFromWei(value, n) {
     }
