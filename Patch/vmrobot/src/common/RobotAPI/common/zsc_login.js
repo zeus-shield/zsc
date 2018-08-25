@@ -22,4 +22,8 @@ export default class ZSCLogin {
     getUserNameHr() {
         return this.userNameHr;
     }
+    getUserStatus() {
+    }
+    getUserType() {
+    }
 }
