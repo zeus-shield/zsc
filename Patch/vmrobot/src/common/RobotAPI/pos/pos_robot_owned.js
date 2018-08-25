@@ -36,7 +36,9 @@ export default class ZSCRobotOwned {
         return this.robotIds[index];
     }
     getRobotLev(index) {
+        return this.robotLevs[index];
     }
     getMaxSP(index) {
+        return bF.bF_fixedNumberFromWei(this.robotMaxSP[index], 4);
     }
 }
