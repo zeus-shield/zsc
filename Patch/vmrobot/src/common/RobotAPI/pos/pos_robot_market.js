@@ -27,7 +27,9 @@ export default class ZSCRobotMarket {
         return this.robotIds[index];
     }
     getRobotLev(index) {
+        return this.robotLevs[index];
     }
     getRobotSeller(index) {
+        return this.robotSeller[index];
     }
 }
