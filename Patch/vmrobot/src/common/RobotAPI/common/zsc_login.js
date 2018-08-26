@@ -26,4 +26,8 @@ export default class ZSCLogin {
     }
     getUserType() {
     }
+    getControlApisAdr() {
+    }
+    getControlApisFullAbi() {
+    }
 }
