@@ -32,4 +32,8 @@ export default class ZSCRobotMarket {
     getRobotSeller(index) {
         return this.robotSeller[index];
     }
+    getMaxSP(index) {
+    }
+    getPriceForSale(index) {
+    }
 }
