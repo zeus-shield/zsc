@@ -28,7 +28,9 @@ export default class ZSCWallet {
         return this.tokenNos;
     }
     getTokenSymbol(index) {
+        return this.tokenSymbol[index];
     }
     getTokenBalance(index) {
+        return web3.fromWei(this.tokenBalance[index], 'ether');
     }
 }
