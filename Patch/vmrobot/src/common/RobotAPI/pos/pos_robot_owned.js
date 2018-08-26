@@ -41,4 +41,8 @@ export default class ZSCRobotOwned {
     getMaxSP(index) {
         return bF.bF_fixedNumberFromWei(this.robotMaxSP[index], 4);
     }
+    getCurSP(index) {
+    }
+    getEnhanceProb(index) {
+    }
 }
