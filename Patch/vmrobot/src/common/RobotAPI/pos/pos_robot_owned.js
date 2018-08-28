@@ -42,7 +42,9 @@ export default class ZSCRobotOwned {
         return bF.bF_fixedNumberFromWei(this.robotMaxSP[index], 4);
     }
     getCurSP(index) {
+        return bF.bF_fixedNumberFromWei(this.robotCurSP[index], 4);
     }
     getEnhanceProb(index) {
+        return this.robotEnhanceProb[index];
     }
 }
