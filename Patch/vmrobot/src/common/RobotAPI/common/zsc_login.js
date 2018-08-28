@@ -23,8 +23,10 @@ export default class ZSCLogin {
         return this.userNameHr;
     }
     getUserStatus() {
+        return this.userStatus;
     }
     getUserType() {
+        return this.userType;
     }
     getControlApisAdr() {
     }
