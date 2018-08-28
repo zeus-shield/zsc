@@ -15,3 +15,7 @@ function ZSCAgreement(nm, abi, adr) {
     this.gasPrice = bF_getGasPrice();
     this.gasLimit = bF_getGasLimit(700);
 }
+
+ZSCAgreement.prototype.getUserName = function() {return this.userName;}
+
+ZSCAgreement.prototype.setTemplateName = function(name) {this.tmpName = name;}
