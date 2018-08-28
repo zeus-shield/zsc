@@ -33,7 +33,9 @@ export default class ZSCRobotMarket {
         return this.robotSeller[index];
     }
     getMaxSP(index) {
+        return bF.bF_fixedNumberFromWei(this.robotMaxSP[index], 4);
     }
     getPriceForSale(index) {
+        return bF.bF_fixedNumberFromWei(this.robotPrceForSale[index], 4);
     }
 }
