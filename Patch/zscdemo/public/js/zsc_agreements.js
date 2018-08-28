@@ -59,3 +59,21 @@ ZSCAgreement.prototype.numAgreements= function(gm, func) {
             }
         });
 }
+
+ZSCAgreement.prototype.getAgrNameByIndex = function(gm, index, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    
+    myControlApi.getElementChildNameByIndex(gm.tmpName, index,
+        {from: gm.account},
+        function(error, result){ 
+            if(!error) {
+                gm.agrNames[index] = web3.toUtf8(result);
+                if (index == gm.agrNos - 1) {
+                    callBack(gm, index);
+                }
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
