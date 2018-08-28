@@ -23,6 +23,9 @@ export const bF = {
         var limit = 700;
         return limit * 10 ** 4; //limits * 1 million
     },
+
+    bF_showHashResult(elementID, hash, func) {
+    },
     bF_fixedNumberFromWei(value, n) {
         var num = web3.fromWei(value, 'ether');
         return Number(num).toFixed(4);
