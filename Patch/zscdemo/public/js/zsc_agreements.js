@@ -19,3 +19,26 @@ function ZSCAgreement(nm, abi, adr) {
 ZSCAgreement.prototype.getUserName = function() {return this.userName;}
 
 ZSCAgreement.prototype.setTemplateName = function(name) {this.tmpName = name;}
+
+ZSCAgreement.prototype.loadAgreements = function(func) {
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    gm.numAgreements(gm, function(gm) {
+        if (gm.agrNos == 0) {
+            callBack();
+        } else {
+            for (var i = 0; i < gm.agrNos; ++i) {
+                gm.getAgrNameByIndex(gm, i, function(gm, j){
+                    callBack();
+                    gm.getAgrBalance(gm, j, function(gm, index) {
+                        if (index == gm.agrNos - 1) {
+                            callBack();
+                        }
+                    });
+                });
+            }
+        }
+    });
+}
