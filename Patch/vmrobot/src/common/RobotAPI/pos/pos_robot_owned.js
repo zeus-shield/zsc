@@ -47,4 +47,8 @@ export default class ZSCRobotOwned {
     getEnhanceProb(index) {
         return this.robotEnhanceProb[index];
     }
+    getMineStart(index) {
+    }
+    getMineEnd(index) {
+    }
 }
