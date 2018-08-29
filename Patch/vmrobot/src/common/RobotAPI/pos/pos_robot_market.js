@@ -38,4 +38,8 @@ export default class ZSCRobotMarket {
     getPriceForSale(index) {
         return bF.bF_fixedNumberFromWei(this.robotPrceForSale[index], 4);
     }
+    resetAllItemTags(gm) {
+    }
+    checkAllItemTags(gm) {
+    }
 }
