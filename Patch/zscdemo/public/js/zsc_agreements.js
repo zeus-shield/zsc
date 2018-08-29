@@ -105,3 +105,32 @@ ZSCAgreement.prototype.confirmPublishAgreement = function(index, func) {
             }
         });
 }
+
+ZSCAgreement.prototype.loadAgreementsHtml = function(elementId, tag, func1)  {
+    var funcSetParaPrefix = funcSetPara + "('"; 
+    var funcSetParaSuffix = "')";
+
+    var titlle = "provider [" + this.userName + "] - published agreements: "
+
+    var text ="";
+    text += '<div class="well"> <text>' + titlle + ' </text></div>';
+
+    text += '<div class="well">';
+    text += '<table align="center" style="width:700px;min-height:30px">'
+    text += '<tr>'
+    text += '   <td>Name</td> <td>Details</td> <td>Balance</td>'
+    text += '</tr>'
+    text += '<tr> <td>---</td> <td>---</td> <td>---</td> </tr>'
+
+    for (var i = 0; i < this.agrNos; ++i) {
+        text += '<tr>'
+        text += '   <td><text>' + this.agrNames[i]  + '</text></td>'
+        text += '   <td><text>' + this.balance[i]  + '</text></td>'
+        text += '   <td><button type="button" onClick="' + funcSetParaPrefix + this.agrNames[i] + funcSetParaSuffix + '">Edit</button></td>'
+        text += '</tr>'
+        text += '<tr> <td>---</td> <td>---</td> <td>---</td>  </tr>'
+    }
+    text += '</table></div>'
+
+    document.getElementById(elementId).innerHTML = text;  
+}
