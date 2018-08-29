@@ -29,7 +29,9 @@ export default class ZSCLogin {
         return this.userType;
     }
     getControlApisAdr() {
+        return this.controlApisAdr;
     }
     getControlApisFullAbi() {
+        return this.controlApisFullAbi;
     }
 }
