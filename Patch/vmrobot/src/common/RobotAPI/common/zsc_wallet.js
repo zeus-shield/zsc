@@ -34,7 +34,11 @@ export default class ZSCWallet {
         return web3.fromWei(this.tokenBalance[index], 'ether');
     }
     getTokenLocked(index) {
+        return web3.fromWei(this.tokenLocked[index], 'ether');
     }
     resetAllItemTags(gm) {
+        for (var i = 0; i < gm.tokenNos; ++i) {
+            gm.itemTags[i] = false;
+        }
     }
 }
