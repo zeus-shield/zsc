@@ -17,3 +17,6 @@ function ZSCAgreementAll(nm, abi, adr) {
     this.gasLimit = bF_getGasLimit(700);
 }
 
+ZSCAgreementAll.prototype.getUserName = function() {return this.userName;}
+
+ZSCAgreementAll.prototype.setUserType = function(type) {this.userType = type;}
