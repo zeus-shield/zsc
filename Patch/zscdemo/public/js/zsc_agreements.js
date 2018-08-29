@@ -93,3 +93,15 @@ ZSCAgreement.prototype.getAgrBalance = function(gm, index, func) {
             }
         });
 }
+
+ZSCAgreement.prototype.confirmPublishAgreement = function(index, func) {
+    this.myControlApi.confirmPublishAgreement(this.userName, this.agrNames[index] ,
+        {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
+        function(error, result){ 
+            if(!error) {
+                func(result);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
