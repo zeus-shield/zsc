@@ -20,3 +20,9 @@ function ZSCAgreementAll(nm, abi, adr) {
 ZSCAgreementAll.prototype.getUserName = function() {return this.userName;}
 
 ZSCAgreementAll.prototype.setUserType = function(type) {this.userType = type;}
+
+ZSCAgreementAll.prototype.resetAllItemTags = function(gm) {
+    for (var i = 0; i < gm.agrNos; ++i) {
+        gm.itemTags[i] = false;
+    }
+}
