@@ -35,3 +35,26 @@ ZSCAgreementAll.prototype.checkAllItemTags = function(gm) {
     }
     return true;
 }
+
+ZSCAgreementAll.prototype.loadAllAgreements = function(func) {
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    
+    gm.numAllAgreements(gm, function(gm) {
+       if (gm.agrNos == 0) {
+            callBack();
+        } else {
+            gm.resetAllItemTags(gm);
+            for (var i = 0; i < gm.allAgrNos; ++i) {
+                gm.getAllAgreementNameByIndex(gm, i, function(gm, index) {
+                    gm.getAllAgreementStatus(gm, index, function(gm, index) {
+                        if (gm.checkAllItemTags(gm) == true) {
+                            callBack();
+                        }
+                    });
+                });
+            }
+        }
+    });
+}
