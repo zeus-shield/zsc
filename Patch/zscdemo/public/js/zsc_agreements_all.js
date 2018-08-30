@@ -90,3 +90,20 @@ ZSCAgreementAll.prototype.getAllAgreementNameByIndex = function(gm, index, func)
             }
         });
 }
+
+ZSCAgreementAll.prototype.getAllAgreementStatus = function(gm, index, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.getElementParameter(gm.userName, gm.allAgrNames[index], "status",
+        {from: gm.account},
+        function(error, result){ 
+            if(!error) {
+                gm.allAgrStatus[index] = web3.toUtf8(result);
+                gm.itemTags[index] = true;
+                func(gm, index);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
