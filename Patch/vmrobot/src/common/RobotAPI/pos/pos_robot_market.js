@@ -39,6 +39,9 @@ export default class ZSCRobotMarket {
         return bF.bF_fixedNumberFromWei(this.robotPrceForSale[index], 4);
     }
     resetAllItemTags(gm) {
+        for (var i = 0; i < gm.robotNos; ++i) {
+            gm.itemTags[i] = false;
+        }
     }
     checkAllItemTags(gm) {
     }
