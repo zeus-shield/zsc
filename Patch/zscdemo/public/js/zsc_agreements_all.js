@@ -58,3 +58,19 @@ ZSCAgreementAll.prototype.loadAllAgreements = function(func) {
         }
     });
 }
+
+ZSCAgreementAll.prototype.numAllAgreements= function(gm, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+        
+    myControlApi.numFactoryElements(gm.userName, "agreement", 
+        {from: gm.account},
+        function(error, result){ 
+            if(!error) {
+                gm.allAgrNos = result.toString(10); 
+                callBack(gm);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
