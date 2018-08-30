@@ -41,4 +41,11 @@ export default class ZSCWallet {
             gm.itemTags[i] = false;
         }
     }
+    enableUserWallet(hashId, func) {
+    }
+    /*
+    "info?status=", "symbol=", "adr=", "balance=",
+    */
+    parserTokenBalanceInfoByIndex(gm, urlinfo, index) {
+    }
 }
