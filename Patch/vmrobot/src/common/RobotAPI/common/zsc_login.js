@@ -34,4 +34,8 @@ export default class ZSCLogin {
     getControlApisFullAbi() {
         return this.controlApisFullAbi;
     }
+    getLoginAbi() {
+    }
+    tryLogin(userType, func) {
+    }
 }
