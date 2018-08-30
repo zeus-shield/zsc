@@ -48,7 +48,9 @@ export default class ZSCRobotOwned {
         return this.robotEnhanceProb[index];
     }
     getMineStart(index) {
+        return this.secondsToDate(this.robotMineStart[index]);
     }
     getMineEnd(index) {
+        return this.secondsToDate(this.robotMineEnd[index]);
     }
 }
