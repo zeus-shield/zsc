@@ -41,6 +41,10 @@ export default class ZSCWallet {
             gm.itemTags[i] = false;
         }
     }
+    checkAllItemTags(gm) {
+    }
+    submitTransferValue(tokenSymbol, destAddress, amount, hashId, func) {
+    }
     enableUserWallet(hashId, func) {
     }
     /*
