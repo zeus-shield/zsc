@@ -26,3 +26,9 @@ ZSCElement.prototype.setUserType = function(type) {this.userType = type;}
 ZSCElement.prototype.setElementName = function(nm) {this.enName = nm;}
 
 ZSCElement.prototype.getElementName = function() { return this.enName;}
+
+ZSCElement.prototype.resetAllNameTags = function(gm) {
+    for (var i = 0; i < gm.parameNos; ++i) {
+        gm.nameTags[i] = false;
+    }
+}
