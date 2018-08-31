@@ -32,3 +32,12 @@ ZSCElement.prototype.resetAllNameTags = function(gm) {
         gm.nameTags[i] = false;
     }
 }
+
+ZSCElement.prototype.checkAllNameTags = function(gm) {
+    for (var i = 0; i < gm.parameNos; ++i) {
+        if (gm.nameTags[i] == false) {
+            return false;
+        }
+    }
+    return true;
+}
