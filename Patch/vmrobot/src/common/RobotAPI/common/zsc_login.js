@@ -35,6 +35,76 @@ export default class ZSCLogin {
         return this.controlApisFullAbi;
     }
     getLoginAbi() {
+        return [{
+            "constant": true,
+            "inputs": [],
+            "name": "getUserType",
+            "outputs": [{
+                "name": "",
+                "type": "bytes32"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "getControlApisFullAbi",
+            "outputs": [{
+                "name": "",
+                "type": "string"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "getControlApisAdr",
+            "outputs": [{
+                "name": "",
+                "type": "address"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "name": "_type",
+                "type": "bytes32"
+            }],
+            "name": "tryLogin",
+            "outputs": [{
+                "name": "",
+                "type": "bool"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "name": "_type",
+                "type": "string"
+            }],
+            "name": "activeByUser",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "getUserStatus",
+            "outputs": [{
+                "name": "",
+                "type": "bytes32"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }];
     }
     tryLogin(userType, func) {
     }
