@@ -44,5 +44,11 @@ export default class ZSCRobotMarket {
         }
     }
     checkAllItemTags(gm) {
+        for (var i = 0; i < gm.robotNos; ++i) {
+            if (gm.itemTags[i] == false) {
+                return false;
+            }
+        }
+        return true;
     }
 }
