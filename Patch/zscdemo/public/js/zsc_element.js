@@ -20,3 +20,9 @@ function ZSCElement(userName, controlApisAdvAbi, controlApisAdvAdr) {
     this.gasPrice = bF_getGasPrice();
     this.gasLimit = bF_getGasLimit(700);
 }
+
+ZSCElement.prototype.setUserType = function(type) {this.userType = type;}
+
+ZSCElement.prototype.setElementName = function(nm) {this.enName = nm;}
+
+ZSCElement.prototype.getElementName = function() { return this.enName;}
