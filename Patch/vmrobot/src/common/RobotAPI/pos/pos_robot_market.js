@@ -51,4 +51,8 @@ export default class ZSCRobotMarket {
         }
         return true;
     }
+    purchaseSellingRobot(hashId, robotId, func) {
+    }
+    loadRobotsInMarket(func) {
+    }
 }
