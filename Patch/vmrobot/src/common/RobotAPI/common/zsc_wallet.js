@@ -42,6 +42,12 @@ export default class ZSCWallet {
         }
     }
     checkAllItemTags(gm) {
+        for (var i = 0; i < gm.tokenNos; ++i) {
+            if (gm.itemTags[i] == false) {
+                return false;
+            }
+        }
+        return true;
     }
     submitTransferValue(tokenSymbol, destAddress, amount, hashId, func) {
     }
