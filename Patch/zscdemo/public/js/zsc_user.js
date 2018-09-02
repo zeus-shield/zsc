@@ -14,4 +14,9 @@ function ZSCUser(admAdr) {
     this.gasPrice = bF_getGasPrice();
     this.gasLimit = bF_getGasLimit(700);
 }
-
+ZSCUser.prototype.getUserName = function () { return this.userName; }
+ZSCUser.prototype.getUserNameHr = function () { return this.userNameHr; }
+ZSCUser.prototype.getUserStatus = function () { return this.userStatus; }
+ZSCUser.prototype.getUserType = function () { return this.userType; }
+ZSCUser.prototype.getControlApisAdr = function () { return this.controlApisAdr; }
+ZSCUser.prototype.getControlApisFullAbi = function () { return this.controlApisFullAbi; }
