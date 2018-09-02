@@ -1,4 +1,4 @@
-var web3;
+﻿var web3;
 if (doesLocalWeb3js()) {
     web3 = setupWeb3js();
 } else {
@@ -30,4 +30,36 @@ function htmlLoadLogin() {
     document.getElementById("PageBody").innerHTML = "";
     zscHtml.setHtmlContentIds("PageHeader", "PageBody");
     zscHtml.loadPageBody("login", "checkUser");
+}
+function checkUser(adrId, userId, passId) {
+    var admAdr = "0x295459c5ba2e760daacb57e0ac455456227df223";
+    var user = document.getElementById(userId).value;
+    var password = document.getElementById(passId).value;
+
+    zscUser = new ZSCUser(admAdr);
+    zscUser.tryLogin(user, password, function (ret) {
+        if (ret) {
+            var userName = zscUser.getUserName();
+            var fullAbi = zscUser.getControlApisFullAbi();
+            var controlApisAdvAdr = zscUser.getControlApisAdr();
+            zscElement = new ZSCElement(userName, fullAbi, controlApisAdvAdr);
+            zscWalletGM = new ZSCWallet(userName, fullAbi, controlApisAdvAdr);
+            zscTmpsGM = new ZSCTemplate(userName, fullAbi, controlApisAdvAdr);
+            zscAgrsProGM = new ZSCAgreementProvider(userName, fullAbi, controlApisAdvAdr);
+            zscAgrsRecGM = new ZSCAgreementReceiver(userName, fullAbi, controlApisAdvAdr);
+            zscAgrsAllGM = new ZSCAgreementAll(userName, fullAbi, controlApisAdvAdr);
+            zscTransGM = new ZSCTransactions(userName, fullAbi, controlApisAdvAdr);
+            zscModuleAdrGM = new ZSCModuleAdrs(userName, fullAbi, controlApisAdvAdr);
+            //
+            //zscViewAgrsGM = new ZSCViewAgreement(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+            /*
+            zscBlockGM  = new ZSCBlock(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+            zscPosGM    = new ZSCPos(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+            zscWalletGM = new ZSCWallet(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+            */
+            loadHtmlPageBody("welecome");
+        } else {
+            alert("User name or password wrong!!");
+        }
+    });
 }
