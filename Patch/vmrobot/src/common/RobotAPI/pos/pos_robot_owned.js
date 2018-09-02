@@ -53,6 +53,10 @@ export default class ZSCRobotOwned {
     getMineEnd(index) {
         return this.secondsToDate(this.robotMineEnd[index]);
     }
+    getPriceToEnhance(index) {
+    }
+    getPriceToCreate(index) {
+    }
     loadRobotInfoByIndex(gm, index, func) {
     }
     parserRobotInfo(gm, index, info) {
