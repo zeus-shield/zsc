@@ -108,4 +108,8 @@ export default class ZSCLogin {
     }
     tryLogin(userType, func) {
     }
+    getUserStatusFromAdm(func) {
+    }
+    getUserTypeFromAdm(func) {
+    }
 }
