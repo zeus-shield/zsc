@@ -56,3 +56,15 @@ ZSCElement.prototype.checkAllValueTags = function(gm) {
     }
     return true;
 }
+
+ZSCElement.prototype.doesElementExisit = function(func) {
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.doesElementExist(gm.userName, gm.enName, 
+        function(error, ret){ 
+            if(!error) callBack(ret);  
+            else  console.log("error: " + error);
+        });
+}
