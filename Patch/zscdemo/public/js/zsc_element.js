@@ -47,3 +47,12 @@ ZSCElement.prototype.resetAllValueTags = function(gm) {
         gm.valueTags[i] = false;
     }
 }
+
+ZSCElement.prototype.checkAllValueTags = function(gm) {
+    for (var i = 0; i < gm.parameNos; ++i) {
+        if (gm.valueTags[i] == false) {
+            return false;
+        }
+    }
+    return true;
+}
