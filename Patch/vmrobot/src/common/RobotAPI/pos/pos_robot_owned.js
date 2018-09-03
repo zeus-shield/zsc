@@ -57,6 +57,10 @@ export default class ZSCRobotOwned {
     }
     getPriceToCreate(index) {
     }
+    getPriceForSale(index) {
+    }
+    getRewardRatio(index) {
+    }
     loadRobotInfoByIndex(gm, index, func) {
     }
     parserRobotInfo(gm, index, info) {
