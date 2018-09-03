@@ -51,6 +51,10 @@ export default class ZSCWallet {
     }
     submitTransferValue(tokenSymbol, destAddress, amount, hashId, func) {
     }
+    loadTokenWallets(func) {
+    }
+    getUserWalletAddress(gm, func) {
+    }
     enableUserWallet(hashId, func) {
     }
     /*
