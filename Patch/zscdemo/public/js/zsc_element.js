@@ -83,3 +83,19 @@ ZSCElement.prototype.loadParameterNamesAndvalues = function(func) {
         }); 
     });
 }
+
+ZSCElement.prototype.numParameters = function(gm, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.numElementParameters(gm.userName, gm.enName, 
+        {from: gm.account},
+        function(error, num){ 
+            if(!error) { 
+                gm.parameNos = num.toString(10); 
+                func(gm);
+            } else {
+                console.log("error: " + error);
+            }
+         });
+}
