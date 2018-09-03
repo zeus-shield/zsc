@@ -63,3 +63,11 @@ function checkUser(adrId, userId, passId) {
         }
     });
 }
+
+function applyForUser(type, hashLogId) {
+    zscUser.activeByUser(type, hashLogId);
+}
+
+function reFresh() {
+    loadHtmlPageBody("apply");
+}
