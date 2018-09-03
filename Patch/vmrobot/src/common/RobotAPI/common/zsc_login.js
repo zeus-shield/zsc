@@ -108,6 +108,10 @@ export default class ZSCLogin {
     }
     tryLogin(userType, func) {
     }
+    getAdr(gm, func) {
+    }
+    getFullAbi(gm, adr, func) {
+    }
     getUserStatusFromAdm(func) {
     }
     getUserTypeFromAdm(func) {
