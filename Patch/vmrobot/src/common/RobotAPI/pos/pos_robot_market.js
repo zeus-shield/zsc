@@ -55,4 +55,8 @@ export default class ZSCRobotMarket {
     }
     loadRobotsInMarket(func) {
     }
+    numRobotsInMarket(gm, func) {
+    }
+    loadSellingRobots(gm, func) {
+    }
 }
