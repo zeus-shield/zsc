@@ -68,3 +68,18 @@ ZSCElement.prototype.doesElementExisit = function(func) {
             else  console.log("error: " + error);
         });
 }
+
+ZSCElement.prototype.loadParameterNamesAndvalues = function(func) {
+    var gm = this;
+    var callBack = func;
+
+    gm.numParameters(gm, function() {
+        gm.resetAllNameTags(gm);
+        gm.resetAllValueTags(gm);
+        gm.loadParameterNames(gm, function(gm) {
+            gm.loadParameterValues(gm, function(gm, index){
+                callBack();
+            });
+        }); 
+    });
+}
