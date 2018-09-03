@@ -41,3 +41,9 @@ ZSCElement.prototype.checkAllNameTags = function(gm) {
     }
     return true;
 }
+
+ZSCElement.prototype.resetAllValueTags = function(gm) {
+    for (var i = 0; i < gm.parameNos; ++i) {
+        gm.valueTags[i] = false;
+    }
+}
