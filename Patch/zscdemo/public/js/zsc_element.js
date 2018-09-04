@@ -141,3 +141,20 @@ ZSCElement.prototype.loadParameterValues = function(gm, func) {
         });
     } 
 } 
+
+ZSCElement.prototype.loadParameterValueByIndex = function(gm, index, func){ 
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.getElementParameter(gm.userName, gm.enName, gm.parameterNames[index], 
+        {from: gm.account},
+        function(error, value){ 
+            if(!error) {
+                gm.parameterValues[index] = web3.toUtf8(value);
+                gm.valueTags[index] = true;
+                callBack(gm, index);
+            } else { 
+                console.log("error: " + error);
+            }
+        });
+}
