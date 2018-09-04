@@ -47,3 +47,21 @@ ZSCUser.prototype.getLoginAbi = function () {
     } 
     ];
 }
+
+ZSCUser.prototype.tryLogin = function (user, pass, func) {
+    var gm = this;
+    var callBack = func;
+    var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
+
+    myAdmAdv.tryLogin(user, pass, function (error, hexx) {
+        if (!error) {
+            if (hexx == 0x0) {
+                callBack(false);
+            } else {
+                gm.getAdr(gm, user, hexx, func);
+            }
+        } else {
+            console.log("error: " + error);
+        }
+    });
+}
