@@ -71,3 +71,12 @@ function applyForUser(type, hashLogId) {
 function reFresh() {
     loadHtmlPageBody("apply");
 }
+
+function submitTransferValue(tokenSymbol, destAddressId, amountId, logId) {
+    var destAddress = document.getElementById(destAddressId).value;
+    var amount = document.getElementById(amountId).value;
+
+    zscWalletGM.submitTransferValue(tokenSymbol, destAddress, amount, logId, function () {
+        loadHtmlPageBody("wallet");
+    });
+}
