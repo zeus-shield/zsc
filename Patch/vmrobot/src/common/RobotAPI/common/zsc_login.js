@@ -115,5 +115,8 @@ export default class ZSCLogin {
     getUserStatusFromAdm(func) {
     }
     getUserTypeFromAdm(func) {
+        var gm = this;
+        var callBack = func;
+        var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
     }
 }
