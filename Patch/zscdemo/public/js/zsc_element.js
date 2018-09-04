@@ -99,3 +99,18 @@ ZSCElement.prototype.numParameters = function(gm, func) {
             }
          });
 }
+
+ZSCElement.prototype.loadParameterNames = function(gm, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    for (var i = 0; i < gm.parameNos; ++i) {
+        gm.loadParameterNameByIndex(gm, i, function(index, para) {
+            gm.parameterNames[index] = para;
+            gm.nameTags[index] = true;
+            if (gm.checkAllNameTags(gm)) {
+                callBack(gm, index);
+            }
+        });
+    } 
+} 
