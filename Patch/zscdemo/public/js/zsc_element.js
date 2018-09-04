@@ -130,3 +130,14 @@ ZSCElement.prototype.loadParameterNameByIndex = function(gm, index, func) {
             }
         });
 }
+
+ZSCElement.prototype.loadParameterValues = function(gm, func) {
+    var callBack = func;
+    for (var i = 0; i < gm.parameNos; ++i) {
+        gm.loadParameterValueByIndex(gm, i, function(gm, index) {
+            if (gm.checkAllValueTags(gm)) {
+                callBack(gm, index);
+            }
+        });
+    } 
+} 
