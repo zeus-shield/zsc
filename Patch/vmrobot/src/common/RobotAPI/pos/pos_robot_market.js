@@ -59,4 +59,8 @@ export default class ZSCRobotMarket {
     }
     loadSellingRobots(gm, func) {
     }
+    loadSellingRobotInfoByIndex(gm, index, func) {
+    }
+    parserSellingRobotInfo(gm, index, info) {
+    }
 }
