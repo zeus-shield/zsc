@@ -45,3 +45,21 @@ ZSCWallet.prototype.submitTransferValue = function(tokenSymbol, destAddress, amo
         });
     }
 }
+
+//Disabled during alpha-test
+/*
+ZSCWallet.prototype.confirmTransferValue = function(tokenSymbol, logId, func) {  
+    this.myControlApi.confirmTransfer(this.userName, tokenSymbol, 
+        {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
+        function(error, result){ 
+        if(!error) {
+            if (result > 0) {
+                this.informTransfer(srcAddress, destAddress, result);
+            } else {
+                func();
+            }
+        } else {
+            console.log("error: " + error);
+        }
+    });
+}
