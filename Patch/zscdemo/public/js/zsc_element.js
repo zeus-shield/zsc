@@ -114,3 +114,19 @@ ZSCElement.prototype.loadParameterNames = function(gm, func) {
         });
     } 
 } 
+
+ZSCElement.prototype.loadParameterNameByIndex = function(gm, index, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.getElementParameterNameByIndex(gm.userName, gm.enName, index, 
+        {from: gm.account},
+        function(error, para){ 
+            if(!error) {
+                var ret = web3.toUtf8(para);
+                func(index, ret);  
+            } else { 
+                console.log("error: " + error);
+            }
+        });
+}
