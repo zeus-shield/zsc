@@ -158,3 +158,32 @@ ZSCElement.prototype.loadParameterValueByIndex = function(gm, index, func){
             }
         });
 }
+
+
+ZSCElement.prototype.setElementParameter = function(logID, func) {
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    var info = "";
+    var count = 0;
+    console.log(gm);
+    for (var i = 0; i < gm.parameNos; ++i) {
+        var value = document.getElementById(gm.parameterNames[i]).value;
+        if (value != gm.parameterValues[i]) {
+            count ++;
+            gm.parameterValues[i] = value;
+
+            info += "{<" + gm.parameterNames[i] + ">" + "<" + value + ">}";
+        }
+    }
+
+    if (count > 0) {
+        myControlApi.setElementMultipleParameters(gm.userName, gm.enName, info,  
+            {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
+            function(error, result){ 
+                if(!error) bF_showHashResult(logID, result, callBack);
+                else console.log("error: " + error);
+        });
+    }
+} 
