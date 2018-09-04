@@ -54,8 +54,10 @@ export default class ZSCRobotOwned {
         return this.secondsToDate(this.robotMineEnd[index]);
     }
     getPriceToEnhance(index) {
+        return bF.bF_fixedNumberFromWei(this.robotPrceToEnhance[index], 4);
     }
     getPriceToCreate(index) {
+        return bF.bF_fixedNumberFromWei(this.robotPrceToCreate[index], 4);
     }
     getPriceForSale(index) {
     }
