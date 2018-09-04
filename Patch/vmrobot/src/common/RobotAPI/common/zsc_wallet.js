@@ -61,5 +61,22 @@ export default class ZSCWallet {
     "info?status=", "symbol=", "adr=", "balance=",
     */
     parserTokenBalanceInfoByIndex(gm, urlinfo, index) {
+        var found1 = urlinfo.indexOf("?");
+        var found2 = urlinfo.indexOf("=");
+        if (found1 == -1 || found2 == -1)
+            return false;
+        var len = urlinfo.length;
+        var offset = urlinfo.indexOf("?");
+        var newsidinfo = urlinfo.substr(offset, len);
+        var newsids = newsidinfo.split("&");
+        var statusInfo = newsids[0];
+        var symbolInfo = newsids[1];
+        var balanceInfo = newsids[2];
+        var lockedInfo = newsids[3];
+        gm.tokenStatus[index] = statusInfo.split("=")[1];
+        gm.tokenSymbol[index] = symbolInfo.split("=")[1];
+        gm.tokenBalance[index] = balanceInfo.split("=")[1];
+        gm.tokenLocked[index] = lockedInfo.split("=")[1];
+        return true;
     }
 }
