@@ -206,4 +206,54 @@ ZSCElement.prototype.loadParametersHtml = function(elementId, type, funcName, ba
     text += '<div class="well"> <text>' + titlle + ' </text></div>';
     text += '<div class="well">';
     text += '<table align="center" style="width:600px;min-height:30px">'
+
+    var paraName;
+
+    for (var i = 0; i < this.parameNos; ++i) {
+        paraName = this.parameterNames[i];
+        if (paraName == "duration") {
+            paraName += " (seconds) [>=60]";
+        } else if (paraName == "price") {
+            paraName += " [>0]";
+        } else if (paraName == "insurance") {
+            paraName += " (locked for claim) [>0]";
+        }
+        text += '<tr>'
+        text += '  <td> <text>' + paraName + ': </text> </td>'
+        text += '  <td> <input type="text" id="' + this.parameterNames[i] + '" value="' + this.parameterValues[i] + '"></input> </td>'
+        text += '</tr>'
+    }
+    text += '</table></div>'
+    if (type == "profile") {
+        text += '<div>'
+        text += '   <button type="button" onClick="' + functionInput + '">Submit Changes</button>'
+        text += '   <text id="ButtonActiveHash"></text>'
+        text += '</div>'
+    } else if (type == "template") {
+        text += '<div>'
+        text += '   <button type="button" onClick="' + functionInput + '">Submit Changes</button>'
+        text += '   <button type="button" onClick="' + functionBack + '">Back</button>'
+        text += '   <text id="ButtonActiveHash"></text>'
+        text += '</div>'
+    } else if (type == "agreement-provider") {
+        text += '<div>'
+        text += '   <button type="button" onClick="' + functionBack + '">Back</button>'
+        text += '   <button type="button" onClick="' + functionInput + '">Claim Reward</button>'
+        text += '   <text id="ButtonActiveHash"></text>'
+        text += '</div>'
+    } else if (type == "agreement-receiver") {
+        text += '<div>'
+        text += '   <button type="button" onClick="' + functionBack + '">Back</button>'
+        text += '   <button type="button" onClick="' + functionInput + '">Claim Insurance</button>'
+        text += '   <text id="ButtonActiveHash"></text>'
+        text += '</div>'
+    } else if (type == "agreement-all") {
+        text += '<div>'
+        text += '   <button type="button" onClick="' + functionBack + '">Back</button>'
+        text += '</div>'
+    } else {
+    }
+
+    document.getElementById(elementId).innerHTML = text;  
 }
+
