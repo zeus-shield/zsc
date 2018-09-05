@@ -10,17 +10,25 @@ import "./erc721_adv.sol";
 contract SysGmPos is Erc721Adv, SysGmBase {
     struct RobotUnit {
         bytes32 status_;
+        mapping(bytes32 => uint) paras_;
+        /*
         uint level_;
         uint stakePoint_;
         uint rewardRatio_;
         uint mineStart_;
         uint mineEnd_;
         uint price_;
+        */
     }
 
     uint internal robotNos_;
     mapping(uint => RobotUnit) internal robots_;
     
+    uint public paraNos_;
+    mapping(uint => bytes32) public paraNames_;
+    mapping(bytes32 => uint) private paraIndice_;
+    mapping(bytes32 => bool) private paraExists_;
+
     // Constructor
     function SysGmPos(bytes32 _name) public SysGmBase(_name) {
     } 
