@@ -16,3 +16,18 @@ function ZSCModuleAdrs(nm, abi, adr) {
 ZSCModuleAdrs.prototype.setUserName = function(nm) {this.userName = nm; }
 
 ZSCModuleAdrs.prototype.setUserType = function(type) {this.userType = type;}
+
+ZSCModuleAdrs.prototype.getModuleAdrs = function(func) {  
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    myControlApi.getModuleAddresses({from: gm.account},
+        function(error, result){ 
+        if(!error) {
+            gm.parserAdrInfo(gm, result);
+            callBack();
+        } else {
+            console.log("error: " + error);
+        }
+    });
+}
