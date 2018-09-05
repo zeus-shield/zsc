@@ -187,3 +187,23 @@ ZSCElement.prototype.setElementParameter = function(logID, func) {
         });
     }
 } 
+
+
+ZSCElement.prototype.loadParametersHtml = function(elementId, type, funcName, backFuncName) {
+    var functionInput = funcName + "('ButtonActiveHash')";
+
+    var functionBack = backFuncName + "()";
+
+    var titlle;
+
+    if (type == "profile") {
+        titlle = this.userType + " [" + this.userName + "] - profile: "
+    } else {
+        titlle = "entity [" + this.enName + "] details: "
+    }
+   
+    var text ="";
+    text += '<div class="well"> <text>' + titlle + ' </text></div>';
+    text += '<div class="well">';
+    text += '<table align="center" style="width:600px;min-height:30px">'
+}
