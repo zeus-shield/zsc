@@ -63,3 +63,16 @@ ZSCWallet.prototype.confirmTransferValue = function(tokenSymbol, logId, func) {
         }
     });
 }
+ZSCWallet.prototype.enableWallet = function(tokenSymbol, elementId, func) {
+    this.myControlApi.enableElementWallet(this.userName, tokenSymbol, 0, 
+        {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
+        function(error, result){ 
+            if(!error) {
+                bF_showHashResult(elementId, result, function(){});
+                func();
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
+*/
