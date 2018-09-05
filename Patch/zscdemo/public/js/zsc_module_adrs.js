@@ -31,3 +31,17 @@ ZSCModuleAdrs.prototype.getModuleAdrs = function(func) {
         }
     });
 }
+
+ZSCModuleAdrs.prototype.parserAdrInfo = function(gm, info) {
+    var len        = info.length;
+    var offset     = info.indexOf("?");
+    var newsidinfo = info.substr(offset,len)
+    var newsids    = newsidinfo.split("&");
+
+    for (var i = 0; i < 10; ++i) {
+        gm.adrName[i]  = newsids[i].split("=")[0];
+        gm.adrValue[i] = "0x" + newsids[i].split("=")[1];
+    }
+    gm.adrName[0] = "TestZSC-Token";
+    gm.adrName[1] = "log-recorder";
+}
