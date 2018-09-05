@@ -8,7 +8,7 @@ import "./object.sol";
 
 contract DBContract is Object {
     struct ParaInfo {
-        string name_;
+        string paraName_;
         mapping(uint => string) private values_;
     }
 
@@ -33,7 +33,7 @@ contract DBContract is Object {
         require(!paraExists_[_para]);
         paraExists_[_para] = true;
         paraIndice_[_para] = paraNos_;
-        paras_[paraNos_].name_ = _para;
+        paras_[paraNos_].paraName_ = _para;
         paraNos_++;
     }
 
@@ -49,7 +49,7 @@ contract DBContract is Object {
         paras_[paraIndice_[_para]].values_[_userIndex] = _value;
     }
 
-    function getParameter(uint _userIndex, string _para) public view returns (string) {
+    function getParameter(uint _userIndex, string _para) internal view returns (string) {
         require(paraExists_[_para]);
         return paras_[paraIndice_[_para]].values_[_userIndex];
     }
@@ -60,6 +60,6 @@ contract DBContract is Object {
 
     function getParameterNameByIndex(uint _index) public view returns (string) {
         require(_index < paraNos_);
-        return paras_[_index].name_;
+        return paras_[_index].paraName_;
     }
 }
