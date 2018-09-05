@@ -78,3 +78,20 @@ ZSCUser.prototype.getAdr = function (gm, user, hexx, func) {
         }
     });
 }
+
+ZSCUser.prototype.getFullAbi = function (gm, user, hexx, adr, func) {
+    var callBack = func;
+    var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
+
+    myAdmAdv.getControlApisFullAbi(function (error, fullAbi) {
+        if (!error) {
+            gm.userName = user;
+            gm.userNameHr = hexx;
+            gm.controlApisAdr = adr;
+            gm.controlApisFullAbi = fullAbi;
+            callBack(true);
+        } else {
+            console.log("error: " + error);
+        }
+    });
+}
