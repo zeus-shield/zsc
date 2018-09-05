@@ -49,6 +49,24 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return robotNos_;  
     }
 
+    function numRobotParameter() public view returns (uint) {
+        return paraNos_;
+    }
+
+    function getRobotParameterNameByIndex(uint _index) public view returns (bytes32) {
+        require(_index < paraNos_);
+        return paraNames_[_index];
+    }
+
+    function getRobotParameterValue(uint _robotId, bytes32 _para) public view returns (bytes32) {
+        require(_robotId < robotNos_);
+        require(paraExists_[_para]);
+
+        uint paraIndex = paraIndice_[_para];
+        return robots_[_robotId].paras_[paraNames_[index]];
+    }
+
+    /*
     function getRobotInfo(uint _robotId) public view returns (bytes32, uint, uint, uint, uint, uint, uint) {
         require(_robotId < robotNos_);
         
@@ -60,4 +78,5 @@ contract SysGmPos is Erc721Adv, SysGmBase {
                 robots_[_robotId].rewardRatio_,
                 robots_[_robotId].price_);
     }
+    */
 }
