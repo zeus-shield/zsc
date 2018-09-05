@@ -12,3 +12,7 @@ function ZSCModuleAdrs(nm, abi, adr) {
     this.contractAdr = adr;
     this.contractAbi = JSON.parse(abi);
 }
+
+ZSCModuleAdrs.prototype.setUserName = function(nm) {this.userName = nm; }
+
+ZSCModuleAdrs.prototype.setUserType = function(type) {this.userType = type;}
