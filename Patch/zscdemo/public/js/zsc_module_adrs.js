@@ -45,3 +45,16 @@ ZSCModuleAdrs.prototype.parserAdrInfo = function(gm, info) {
     gm.adrName[0] = "TestZSC-Token";
     gm.adrName[1] = "log-recorder";
 }
+
+ZSCModuleAdrs.prototype.loadModuleAdrsHtml = function(elementId)  {
+    var titlle = this.userType + " [" + this.userName + "] - wallet info"
+
+    text = '<div class="well"> <text> ' + titlle + ' </text></div>';
+
+    text += '<div class="well">';
+    text += '<table align="center" style="width:600px;min-height:30px">'
+    text += '<tr>'
+    text += '   <td>ZSC Module Name</td> <td> Address </td> '
+    text += '</tr>'
+    text += '<tr> <td>---</td> <td>---</td></tr>'
+}
