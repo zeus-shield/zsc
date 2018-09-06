@@ -76,3 +76,19 @@ ZSCWallet.prototype.enableWallet = function(tokenSymbol, elementId, func) {
         });
 }
 */
+
+ZSCWallet.prototype.loadTokenWallets = function(func) {
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    //gm.numTokenWallets(gm, function(gm) {
+        for (var i = 0; i < gm.tokenNos; ++i) {
+            gm.loadTokenInfoByIndex(gm, i, function(gm, index) {
+                if (indx == gm.tokenNos - 1) {
+                    func();
+                }
+            });
+        }
+    //});
+}
