@@ -98,7 +98,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         paraNames_[paraNos_] = _para;
         paraNos_++;
     }
-
+    
 
     function getRobotParameterNameByIndex(uint _index) public view returns (bytes32) {
         require(_index < paraNos_);
@@ -120,7 +120,15 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         uint paraIndex = paraIndice_[_para];
         robots_[_robotId].paras_[paraNames_[paraIndex]] = _value;
     }
-    ////////////////////
+    /////////////////////
+
+    function addRobotCtg(bytes32 _para) public {
+        require(!paraExists_[_para]);
+        paraExists_[_para] = true;
+        paraIndice_[_para] = paraNos_;
+        paraNames_[paraNos_] = _para;
+        paraNos_++;
+    }
 
     /*
     function getRobotInfo(uint _robotId) public view returns (bytes32, uint, uint, uint, uint, uint, uint) {
