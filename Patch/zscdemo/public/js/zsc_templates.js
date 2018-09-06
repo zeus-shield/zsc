@@ -15,3 +15,5 @@ function ZSCTemplate(nm, abi, adr) {
     this.gasPrice = bF_getGasPrice();
     this.gasLimit = bF_getGasLimit(700);
 }
+
+ZSCTemplate.prototype.getUserName = function() {return this.userName;}
