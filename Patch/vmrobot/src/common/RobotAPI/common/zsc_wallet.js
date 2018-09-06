@@ -56,6 +56,9 @@ export default class ZSCWallet {
     getUserWalletAddress(gm, func) {
     }
     enableUserWallet(hashId, func) {
+        var gm = this;
+        var callBack = func;
+        var myControlApi = web3.eth.contract(this.contractAbi).at(this.contractAdr);
     }
     /*
     "info?status=", "symbol=", "adr=", "balance=",
