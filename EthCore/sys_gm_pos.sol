@@ -9,17 +9,18 @@ import "./erc721_adv.sol";
 
 contract SysGmPos is Erc721Adv, SysGmBase {
     struct RobotCtg {
-        bytes32 type_; 
-        uint prob_; // (0, 10000)
+        bytes32 ctgName_; 
         mapping(bytes32 => uint) paras_;
     }
     uint private ctgNos_;
-    mapping(uint => RobotUnit) private ctgNos_;
+    mapping(uint => RobotUnit) private ctgs_;
+    mapping(bytes32 => uint) private ctgIndice_;
+    mapping(bytes32 => bool) private ctgExists_;
     /////////////////////
 
     struct RobotUnit {
         bytes32 status_;
-        bytes32 name_;
+        bytes32 ctgName_;
         mapping(bytes32 => uint) paras_;
     }
     uint private robotNos_;
@@ -53,16 +54,11 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return robots_[_robotId].status_;
     }
 
-    function setRobotName(uint _robotId, bytes32 _name) internal {
-        robots_[_robotId].name_ = _name;
-    }
-
     function getRobotName(uint _robotId) internal view returns (bytes32) {
-        return robots_[_robotId].name_;
+        return robots_[_robotId].ctgName_;
     }
+    
     /////////////////////
-
-
     function numRobotParameter() public view returns (uint) {
         return paraNos_;
     }
@@ -89,17 +85,24 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
         paraNos_--;
     }
+
     /////////////////////
-
-    function addRobotCtg(bytes32 _para) public {
-        require(!paraExists_[_para]);
-        paraExists_[_para] = true;
-        paraIndice_[_para] = paraNos_;
-        paraNames_[paraNos_] = _para;
-        paraNos_++;
+    function addRobotCtg(bytes32 _ctg) public {
+        require(!ctgExists_[_ctg]);
+        ctgExists_[_ctg] = true;
+        ctgIndice_[_ctg] = ctgNos_;
+        ctgs_[ctgNos_].ctgName_ = _ctg;
+        ctgNos_++;
     }
-    
 
+    function setRobotCategoryValue(bytes32 _ctg, bytes32 _para, uint _value) internal {
+        require(ctgExists_[_ctg]);
+
+        uint ctgIndex = ctgIndice_[_ctg];
+        ctgs_[ctgIndex].paras_[_para] = _value;
+    }
+
+    /////////////////////
     function getRobotParameterNameByIndex(uint _index) public view returns (bytes32) {
         require(_index < paraNos_);
         return paraNames_[_index];
