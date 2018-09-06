@@ -80,3 +80,9 @@ function submitTransferValue(tokenSymbol, destAddressId, amountId, logId) {
         loadHtmlPageBody("wallet");
     });
 }
+
+function creatNewTemplate(logId) {
+    zscTmpsGM.creatNewTemplate(logId, function () {
+        loadHtmlPageBody("template");
+    });
+}
