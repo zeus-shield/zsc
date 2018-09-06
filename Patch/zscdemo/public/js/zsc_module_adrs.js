@@ -57,4 +57,17 @@ ZSCModuleAdrs.prototype.loadModuleAdrsHtml = function(elementId)  {
     text += '   <td>ZSC Module Name</td> <td> Address </td> '
     text += '</tr>'
     text += '<tr> <td>---</td> <td>---</td></tr>'
+
+    for (var i = 0; i < 10; ++i) {
+        text += '<tr>'
+        text += '   <td><text>' + this.adrName[i]  + '</text></td>'
+        text += '   <td><text> <a href="https://rinkeby.etherscan.io/address/' + this.adrValue[i] + '" target="_blank" >' + this.adrValue[i] + '</a></text></td>'
+        text += '</tr>'
+    }
+    text += '</table></div>'
+    text += '</div>'
+
+    document.getElementById(elementId).innerHTML = text;  
 }
+
+
