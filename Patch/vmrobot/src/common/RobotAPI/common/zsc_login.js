@@ -118,5 +118,13 @@ export default class ZSCLogin {
         var gm = this;
         var callBack = func;
         var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
+        myAdmAdv.getUserType(function (error, ret) {
+            if (!error) {
+                gm.userType = web3.toUtf8(ret);
+                callBack(gm.userType);
+            } else {
+                console.log("error: " + error);
+            }
+        });
     }
 }
