@@ -62,5 +62,14 @@ export default class ZSCRobotMarket {
     loadSellingRobotInfoByIndex(gm, index, func) {
     }
     parserSellingRobotInfo(gm, index, info) {
+        var len = info.length;
+        var offset = info.indexOf("?");
+        var newsidinfo = info.substr(offset, len);
+        var newsids = newsidinfo.split("&");
+        var robotId = newsids[0];
+        var lev = newsids[1];
+        var maxSP = newsids[2];
+        var price = newsids[3];
+        var seller = newsids[4];
     }
 }
