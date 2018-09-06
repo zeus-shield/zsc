@@ -17,3 +17,25 @@ function ZSCTemplate(nm, abi, adr) {
 }
 
 ZSCTemplate.prototype.getUserName = function() {return this.userName;}
+
+ZSCTemplate.prototype.loadTempates = function(func) {
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    gm.numTemplates(gm, function(gm) {
+        if (gm.tmpNos == 0) {
+            callBack();
+        } else {
+            for (var i = 0; i < gm.tmpNos; ++i) {
+                gm.getTmpNameByIndex(gm, i, function(gm, j){
+                    gm.numTmpChildrenNos(gm, j, function(gm, index) {
+                        if (index == gm.tmpNos - 1) {
+                            callBack();
+                        }
+                    });
+                });
+            }
+        }
+    });
+}
