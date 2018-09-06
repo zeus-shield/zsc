@@ -95,3 +95,14 @@ ZSCUser.prototype.getFullAbi = function (gm, user, hexx, adr, func) {
         }
     });
 }
+
+ZSCUser.prototype.keepOnline = function (func) {
+    var callBack = func;
+    var gm = this;
+    var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
+
+    myAdmAdv.keepOnline(gm.userName, gm.userNameHr, function (error, ret) {
+        if (!error) callBack(ret);
+        else console.log("error: " + error);
+    });
+}
