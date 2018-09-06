@@ -60,8 +60,10 @@ export default class ZSCRobotOwned {
         return bF.bF_fixedNumberFromWei(this.robotPrceToCreate[index], 4);
     }
     getPriceForSale(index) {
+        return bF.bF_fixedNumberFromWei(this.robotPrceForSale[index], 4);
     }
     getRewardRatio(index) {
+        return this.robotRewardRatio[index];
     }
     loadRobotInfoByIndex(gm, index, func) {
     }
