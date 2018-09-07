@@ -106,3 +106,18 @@ ZSCUser.prototype.keepOnline = function (func) {
         else console.log("error: " + error);
     });
 }
+ZSCUser.prototype.activeByUser = function (type, hashLogId) {
+    var gm = this;
+    var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
+
+    myAdmAdv.activeByUser(gm.userNameHr, type,
+        { from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit },
+        function (error, ret) {
+            if (!error) {
+                gm.type = type;
+                bF_showHashResult(hashLogId, ret, function () { window.location.reload(true); });
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
