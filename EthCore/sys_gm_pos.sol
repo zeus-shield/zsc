@@ -59,19 +59,22 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
     
     /////////////////////
-    function numRobotParameter() public view returns (uint) {
+    function numParameters() public view returns (uint) {
         return paraNos_;
     }
 
-    function addRobotParameter(bytes32 _para) public {
+    function addParameter(bytes32 _para) public {
+        checkDelegate(msg.sender, 5);
         require(!paraExists_[_para]);
+
         paraExists_[_para] = true;
         paraIndice_[_para] = paraNos_;
         paraNames_[paraNos_] = _para;
         paraNos_++;
     }
 
-    function removeRobotParameter(bytes32 _para) public {
+    function removeParameter(bytes32 _para) public {
+        checkDelegate(msg.sender, 5);
         require(paraExists_[_para]);
 
         uint index = paraIndice_[_para];
@@ -86,64 +89,57 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         paraNos_--;
     }
 
+    function getParameterNameByIndex(uint _index) public view returns (bytes32) {
+        require(_index < paraNos_);
+        return paraNames_[_index];
+    }
+
     /////////////////////
-    function addRobotCtg(bytes32 _ctg) public {
+    function numCategories() public view returns (uint) {
+        return ctgNos_;
+    }
+
+    function addCategory(bytes32 _ctg) public {
+        checkDelegate(msg.sender, 5);
         require(!ctgExists_[_ctg]);
+
         ctgExists_[_ctg] = true;
         ctgIndice_[_ctg] = ctgNos_;
         ctgs_[ctgNos_].ctgName_ = _ctg;
         ctgNos_++;
     }
 
-    function setRobotCategoryValue(bytes32 _ctg, bytes32 _para, uint _value) internal {
+    function getCategoryNameByIndex(uint _index) public view returns (bytes32) {
+        require(_index < ctgNos_);
+        return ctgs_[_index].ctgName_;
+    }
+
+    /////////////////////
+    function getCategoryParameterValue(bytes32 _ctg, bytes32 _para) public returns (uint) {
+        require(ctgExists_[_ctg]);
+
+        uint ctgIndex = ctgIndice_[_ctg];
+        return ctgs_[ctgIndex].paras_[_para];
+    }
+
+    function setCategoryParameterValue(bytes32 _ctg, bytes32 _para, uint _value) internal {
         require(ctgExists_[_ctg]);
 
         uint ctgIndex = ctgIndice_[_ctg];
         ctgs_[ctgIndex].paras_[_para] = _value;
     }
 
-    /////////////////////
-    function getRobotParameterNameByIndex(uint _index) public view returns (bytes32) {
-        require(_index < paraNos_);
-        return paraNames_[_index];
-    }
-
-    function getRobotParameterValue(uint _robotId, bytes32 _para) public view returns (uint) {
+    function getRobotParameterValue(uint _robotId, bytes32 _para, uint _value) public returns (uint) {
         require(_robotId < robotNos_);
         require(paraExists_[_para]);
 
-        uint paraIndex = paraIndice_[_para];
-        return robots_[_robotId].paras_[paraNames_[paraIndex]];
+        return robots_[_robotId].paras_[_para] = _value;
     }
 
     function setRobotParameterValue(uint _robotId, bytes32 _para, uint _value) internal {
         require(_robotId < robotNos_);
         require(paraExists_[_para]);
 
-        uint paraIndex = paraIndice_[_para];
-        robots_[_robotId].paras_[paraNames_[paraIndex]] = _value;
+        robots_[_robotId].paras_[_para] = _value;
     }
-    /////////////////////
-
-    function addRobotCtg(bytes32 _para) public {
-        require(!paraExists_[_para]);
-        paraExists_[_para] = true;
-        paraIndice_[_para] = paraNos_;
-        paraNames_[paraNos_] = _para;
-        paraNos_++;
-    }
-
-    /*
-    function getRobotInfo(uint _robotId) public view returns (bytes32, uint, uint, uint, uint, uint, uint) {
-        require(_robotId < robotNos_);
-        
-        return (robots_[_robotId].status_,
-                robots_[_robotId].level_,
-                robots_[_robotId].mineStart_, 
-                robots_[_robotId].mineEnd_, 
-                robots_[_robotId].stakePoint_,
-                robots_[_robotId].rewardRatio_,
-                robots_[_robotId].price_);
-    }
-    */
 }
