@@ -8,6 +8,15 @@ pragma solidity ^0.4.21;
 import "./plat_string.sol";
 import "./plat_math.sol";
 
+// ----------------------------------------------------------------------------
+// ERC Token Standard #20 Interface
+// https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20-token-standard.md
+// ----------------------------------------------------------------------------
+contract ERC20Interface {
+    function transfer(address to, uint tokens) public returns (bool success);
+    function balanceOf(address _owner) public view returns (uint balance);
+}
+
 contract Owned {
     address owner;
 
@@ -18,7 +27,7 @@ contract Owned {
         owner = newOwner;
     }       
 
-    function checkOwner(address _account) internal constant { 
+    function checkOwner(address _account) internal view { 
         require(_account == owner); 
     }
 }
@@ -64,16 +73,16 @@ contract Delegated is Owned {
         }
     }
 
-    function numDelegates() internal constant returns (uint) {
+    function numDelegates() internal view returns (uint) {
         return delegateNos_;
     }
 
-    function getDelegateInfoByIndex(uint _index) internal constant returns (address, uint) {
+    function getDelegateInfoByIndex(uint _index) internal view returns (address, uint) {
         require(_index < delegateNos_);
         return (adrs_[_index], priorities_[_index]);
     }
 
-    function checkDelegate(address _adr, uint _priority) internal constant {
+    function checkDelegate(address _adr, uint _priority) internal view {
         require(isDelegate(_adr, _priority));
     }
 
@@ -90,11 +99,19 @@ contract Delegated is Owned {
         return c.add(_min);
     }
     
-    function isDelegate(address _adr, uint _priority) public constant returns (bool)  {
+    function isDelegate(address _adr, uint _priority) public view returns (bool)  {
         if (_adr == address(this)) return true;
         if (!exists_[_adr]) return false;
 
         uint index = indice_[_adr];
         return (priorities_[index] != 0 && priorities_[index] <= _priority);
     }
+
+    // ------------------------------------------------------------------------
+    // Owner can transfer out any accidentally sent ERC20 tokens
+    // ------------------------------------------------------------------------
+    function transferAnyERC20Token(address tokenAddress, uint tokens) public returns (bool success) {
+        checkOwner(msg.sender);
+        return ERC20Interface(tokenAddress).transfer(msg.sender, tokens);
+    }  
 }
