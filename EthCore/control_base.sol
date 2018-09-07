@@ -10,15 +10,12 @@ contract DBNode {
     function getNodeType() public view returns (bytes32);
     function getBalance(address _adr) public view returns (uint256);
     function getLockedAmount(address _tokenAdr) public view returns (uint);
-    function getFrozenAmount(address _tokenAdr) public view returns (uint);
     function getTransactionInfoByIndex(uint _index) public view returns (uint, uint, uint, address, address);
     function executeTransaction(address _tokenAdr, address _dest, uint _amount) public returns (uint);
-    function freezeWallet(address _tokenAdr, uint _amount) public;
     function setERC20TokenAddress(address _tokenAdr) public;
     function numTransactions() public view returns (uint);
     function lockWallet(address _tokenAdr, uint _amount) public;
     function unlockWallet(address _tokenAdr, uint _amount) public;
-    function burnFrozenToken(address _tokenAdr, address _dest) public;
 
     function addParameter(bytes32 _parameter) public returns (bool);
     //function removeParameter(bytes32 _parameter) public returns (bool);
@@ -73,22 +70,23 @@ contract DBModule {
     function getTokenInfoBySymbol(bytes32 _symbol) public view returns (bytes32, bytes32, bytes32, uint, address);
 
     /*ERC721 for miner robot begin*/
-    //function balanceOf(address _owner) public view returns (uint);
-    //function tokenOfOwnerByIndex(address _owner, uint _index) public view returns (uint);
-    //function getRobotInfo(uint _robotId) public view returns (bytes32, uint, uint, uint, uint, uint, uint);
-    //function getExtraEffect(uint _robotId) public view returns (uint _extraSp, uint _extraUpgradProb);
-    //function getLevelInfo(uint _index) public view returns (uint, uint, uint, uint);
+    function balanceOf(address _owner) public view returns (uint);
+    function tokenOfOwnerByIndex(address _owner, uint _index) public view returns (uint);
+    function getRobotInfo(uint _robotId) public view returns (bytes32, uint, uint, uint, uint, uint, uint);
+    function getExtraEffect(uint _robotId) public view returns (uint _extraSp, uint _extraUpgradProb);
+    function getLevelInfo(uint _index) public view returns (uint, uint, uint, uint);
 
-    //function createRobot(address _user, uint _level) public returns (uint);
-    //function activeRobot(address _user, uint _robotId, uint _durationInDays, uint _totalZSC) public returns (uint);
-    //function publishRobot(address _seller, uint _robotId, uint _price) public;
-    //function cancelAuction(address _seller, uint _robotId) public;
-    //function purchaseRobot(address _buyer, uint _robotId) public returns (address, uint);
-    //function getReward(address _user, uint _robotId) public view returns (uint);
-    //function claimReward(address _user, uint _robotId) public returns (uint, uint);
-    //function numSellingRobots() public view returns (uint);
-    //function getSellingRobotByIndex(uint _index) public view returns (uint, uint, uint, uint, address);
-    //function safeTransferFrom(address _from, address _to, uint _tokenId) public;
+    function createRobot(address _user, uint _level) public returns (uint);
+    function activeRobot(address _user, uint _robotId, uint _durationInDays, uint _totalZSC) public returns (uint);
+    function enhanceRobot(address _user, uint _robotId) public returns (uint);
+    function publishRobot(address _seller, uint _robotId, uint _price) public;
+    function cancelAuction(address _seller, uint _robotId) public;
+    function purchaseRobot(address _buyer, uint _robotId) public returns (address, uint);
+    function getReward(address _user, uint _robotId) public view returns (uint);
+    function claimReward(address _user, uint _robotId) public returns (uint, uint);
+    function numSellingRobots() public view returns (uint);
+    function getSellingRobotByIndex(uint _index) public view returns (uint, uint, uint, uint, address);
+    function safeTransferFrom(address _from, address _to, uint _tokenId) public;
     /*ERC721 for miner robot end*/
 }
 
@@ -235,12 +233,14 @@ contract ControlBase is Object {
         addLog(PlatString.bytes32ToString(_name), false);
 
         if (_type == "factory") {
+            //require(factories_[_name] == address(0));
             factories_[_name] = _adr;
             mapFactoryDatabase(_adr, dbName_, 1);
         } else if (_type == "database") {
+            //require(databases_[_name] == address(0));
             databases_[_name] = _adr;       
         } else if (_type == "module") {
-            setDelegate(_adr, 1);
+            //require(modules_[_name] == address(0));
             modules_[_name] = _adr;       
         } else {
             revert();
