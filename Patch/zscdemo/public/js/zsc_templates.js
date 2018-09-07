@@ -20,6 +20,8 @@ ZSCTemplate.prototype.getUserName = function() {return this.userName;}
 
 ZSCTemplate.prototype.getTmpName = function(index) { return this.tmpName[index];}
 
+ZSCTemplate.prototype.setUserType = function(type) {this.userType = type;}
+
 ZSCTemplate.prototype.loadTempates = function(func) {
     var gm = this;
     var callBack = func;
