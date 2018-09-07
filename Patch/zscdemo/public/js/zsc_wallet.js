@@ -92,3 +92,20 @@ ZSCWallet.prototype.loadTokenWallets = function(func) {
         }
     //});
 }
+
+ZSCWallet.prototype.numTokenWallets = function(gm, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.numRegisteredErc20Tokens(
+        gm.userName,
+        {from: gm.account, gas: 9000000},
+        function(error, result){ 
+            if(!error) {
+                gm.tokenNos = result.toString(10);
+                func(gm);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
