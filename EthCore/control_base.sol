@@ -236,36 +236,17 @@ contract ControlBase is Object {
         addLog(PlatString.bytes32ToString(_name), false);
 
         if (_type == "factory") {
-            //require(factories_[_name] == address(0));
             factories_[_name] = _adr;
             mapFactoryDatabase(_adr, dbName_, 1);
         } else if (_type == "database") {
-            //require(databases_[_name] == address(0));
             databases_[_name] = _adr;       
         } else if (_type == "module") {
-            //require(modules_[_name] == address(0));
+            setDelegate(_adr, 1);
             modules_[_name] = _adr;       
         } else {
             revert();
         }
         return ret;
-    }
-
-    function freezeWallet(bytes32 _tokenSymbol, address _userWalletAdr, uint _amount) public {
-        checkDelegate(msg.sender, 5);
-        address tokenContractAdr = getDBModule("gm-token").getTokenAddress(_tokenSymbol);
-        DBNode(_userWalletAdr).freezeWallet(tokenContractAdr, _amount);
-    }
-
-    function burnFrozenToken(bytes32 _tokenSymbol, address _userWalletAdr) public {
-        checkDelegate(msg.sender, 5);
-        address tokenContractAdr = getDBModule("gm-token").getTokenAddress(_tokenSymbol);
-        DBNode(_userWalletAdr).burnFrozenToken(tokenContractAdr, address(this));
-    }
-    
-    function getFrozenAmount(bytes32 _tokenSymbol, address _userWalletAdr) public view returns (uint) {
-        address tokenContractAdr = getDBModule("gm-token").getTokenAddress(_tokenSymbol);
-        return DBNode(_userWalletAdr).getFrozenAmount(tokenContractAdr);
     }
 
     //////////////////////////////////////
