@@ -43,3 +43,19 @@ ZSCTemplate.prototype.loadTempates = function(func) {
         }
     });
 }
+
+ZSCTemplate.prototype.numTemplates= function(gm, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.numTemplates(gm.userName,
+        {from: gm.account},
+        function(error, result){ 
+            if(!error) {
+                gm.tmpNos = result.toString(10);
+                callBack(gm);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
