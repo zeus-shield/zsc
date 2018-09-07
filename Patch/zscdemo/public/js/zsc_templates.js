@@ -59,3 +59,19 @@ ZSCTemplate.prototype.numTemplates= function(gm, func) {
             }
         });
 }
+
+ZSCTemplate.prototype.getTmpNameByIndex = function(gm, index, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    
+    myControlApi.getTemplateNameByIndex(gm.userName, index,
+        {from: gm.account},
+        function(error, result){ 
+            if(!error) {
+                gm.tmpNames[index] = web3.toUtf8(result);
+                func(gm, index);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
