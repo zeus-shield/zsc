@@ -41,7 +41,6 @@ contract WalletBase is DBNode {
     ////////// public functions /////////////
     function getBlance() public view returns (uint);
     function executeTransaction(address _dest, uint256 _amount) public returns (uint);
-    function burnFrozenToken(address _tokenAdr, address _dest) public;
         
     function numTransactions() public view returns (uint) {
         checkDelegate(msg.sender, 1);
