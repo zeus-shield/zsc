@@ -91,3 +91,26 @@ ZSCTemplate.prototype.numTmpChildrenNos = function(gm, index, func) {
             }
         });
 }
+
+/* zsc API:
+   function createElement(bytes32 _userName, uint _typeInUint, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) 
+*/
+
+ZSCTemplate.prototype.creatNewTemplate = function(logId, func) {
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    var tmpName = gm.userName + "-tmp-" + this.tmpNos
+    
+    //createElement(bytes32 _userName, bytes32 _factoryType, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
+    myControlApi.createElementNode("template", gm.userName, tmpName, "null", 
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
+        function(error, result){ 
+            if(!error) {
+                bF_showHashResult(logId, result, callBack);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
