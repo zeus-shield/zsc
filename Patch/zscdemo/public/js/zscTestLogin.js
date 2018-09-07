@@ -86,3 +86,19 @@ function creatNewTemplate(logId) {
         loadHtmlPageBody("template");
     });
 }
+
+//Disable during alpha-test
+/*
+function confirmTransferValue(tokenSymbol, logId) {
+    ZSCWalletGM.confirmTransferValue(tokenSymbol, logId, function(){
+        loadHtmlPageBody("wallet");
+    });
+}
+*/
+
+function showErc20Tokens(destAddressId, amountId, logId) {
+    var destAddress = document.getElementById(destAddressId).value;
+    var amount = document.getElementById(amountId).value;
+
+    zscElement.transferEth(destAddress, amount, logId);
+}
