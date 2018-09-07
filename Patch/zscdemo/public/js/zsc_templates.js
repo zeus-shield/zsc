@@ -75,3 +75,19 @@ ZSCTemplate.prototype.getTmpNameByIndex = function(gm, index, func) {
             }
         });
 }
+
+ZSCTemplate.prototype.numTmpChildrenNos = function(gm, index, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    
+    myControlApi.numElementChildren(gm.userName, gm.tmpNames[index],
+        {from: gm.account},
+        function(error, result){ 
+            if(!error) {
+                gm.tmpChildrenNos[index] = result.toString(10);
+                func(gm, index);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
