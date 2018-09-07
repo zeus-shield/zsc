@@ -7,15 +7,6 @@ pragma solidity ^0.4.21;
 
 import "./delegate.sol";
 
-// ----------------------------------------------------------------------------
-// ERC Token Standard #20 Interface
-// https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20-token-standard.md
-// ----------------------------------------------------------------------------
-contract ERC20Interface {
-    function transfer(address to, uint tokens) public returns (bool success);
-    function balanceOf(address _owner) public view returns (uint balance);
-}
-
 contract Recorder {
     function addLog(string _log, bool _newLine) public;
 }
@@ -60,13 +51,5 @@ contract Object is Delegated {
         if (logRecorder_ != 0) {
             Recorder(logRecorder_).addLog(_log, _newLine);
         }
-    }
-
-    // ------------------------------------------------------------------------
-    // Owner can transfer out any accidentally sent ERC20 tokens
-    // ------------------------------------------------------------------------
-    function transferAnyERC20Token(address tokenAddress, uint tokens) public returns (bool success) {
-        checkOwner(msg.sender);
-        return ERC20Interface(tokenAddress).transfer(msg.sender, tokens);
-    }    
+    }  
 }
