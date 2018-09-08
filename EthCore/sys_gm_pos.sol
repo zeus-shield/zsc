@@ -10,46 +10,76 @@ import "./erc721_adv.sol";
 contract SysGmPos is Erc721Adv, SysGmBase {
     struct RobotUnit {
         bytes32 status_;
-        uint level_;
-        uint stakePoint_;
-        uint rewardRatio_;
+        bytes32 name_;
+        uint spLev_;
+        uint spBase_;
+        uint rrLev_;
+        uint rrBase_;
         uint mineStart_;
         uint mineEnd_;
-        uint price_;
     }
 
-    uint internal robotNos_;
-    mapping(uint => RobotUnit) internal robots_;
+    uint private robotNos_;
+    mapping(uint => RobotUnit) private robots_;
     
     // Constructor
     function SysGmPos(bytes32 _name) public SysGmBase(_name) {
     } 
 
-    function checkRobotUser(address _user, uint _robotId) internal view {
+    function mintUnit() internal returns (uint) {
+        uint index = robotNos_;
+        robotNos_++;
+        _mint(_user, index);
+        setRobotStatus(index, "idle");
+        return index;
+    }
+
+    function checkUnittUser(address _user, uint _robotId) internal view {
         require(_user == ownerOf(_robotId));
     }
 
-    function setRobotStatus(uint _robotId, bytes32 _status) internal {
+    function setUnitStatus(uint _robotId, bytes32 _status) internal {
         robots_[_robotId].status_ = _status;
     }
 
-    function getRobotStatus(uint _robotId) internal view returns (bytes32) {
-        return robots_[_robotId].status_;
-    }
-
-    function numRobots() public view returns (uint) {
+    //////////////////////
+    function numUnits() public view returns (uint) {
         return robotNos_;  
     }
 
-    function getRobotInfo(uint _robotId) public view returns (bytes32, uint, uint, uint, uint, uint, uint) {
-        require(_robotId < robotNos_);
-        
-        return (robots_[_robotId].status_,
-                robots_[_robotId].level_,
-                robots_[_robotId].mineStart_, 
-                robots_[_robotId].mineEnd_, 
-                robots_[_robotId].stakePoint_,
-                robots_[_robotId].rewardRatio_,
-                robots_[_robotId].price_);
+    function getUnitStatus(uint _robotId) public view returns (bytes32) {
+        return robots_[_robotId].status_;
+    }
+
+    function getUnitName(uint _robotId) public view returns (bytes32) {
+        return robots_[_robotId].name_;
+    }
+
+    function getUnitName(uint _robotId) public view returns (bytes32) {
+        return robots_[_robotId].name_;
+    }
+
+    function getUnitSPBase(uint _robotId) public view returns (uint) {
+        return robots_[_robotId].spBase_;
+    }
+
+    function getUnitSPLev(uint _robotId) public view returns (uint) {
+        return robots_[_robotId].spLev_;
+    }
+
+    function getUnitSPExtra(uint _robotId) public view returns (uint) {
+        return 0;
+    }
+
+    function getUnitRRBase(uint _robotId) public view returns (uint) {
+        return robots_[_robotId].rrBase_;
+    }
+
+    function getUnitRRLev(uint _robotId) public view returns (uint) {
+        return robots_[_robotId].rrLev_;
+    }
+
+    function getUnitRRExtra(uint _robotId) public view returns (uint) {
+        return 0;
     }
 }
