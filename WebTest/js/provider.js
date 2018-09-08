@@ -10,7 +10,10 @@ export default function provider(injected) {
     let type = '';
     let account;
 
-    if(web3.currentProvider && !window.injectedWeb3) {
+    // Open MetaMask and Ganache( or Geth) at the same time.
+    if(typeof web3 !== 'undefined' 
+        && typeof window.injectedWeb3 == 'undefined'
+        && web3.currentProvider) {
         window.injectedWeb3 = web3.currentProvider;
     }
 
