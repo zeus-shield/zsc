@@ -7,6 +7,12 @@ pragma solidity ^0.4.21;
 import "./sys_gm_base.sol";
 import "./erc721_adv.sol";
 
+contract SysGmPosEffect {
+    function getExtraStakePoint(uint _robotId) public view returns (uint);
+    function getExtraRewardRatio(uint _robotId) public view returns (uint);
+    function getExtraUpgradeProbability(uint _robotId) public view returns (uint);
+}
+
 contract SysGmPos is Erc721Adv, SysGmBase {
     struct RobotUnit {
         bytes32 status_;
@@ -21,6 +27,10 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     uint private robotNos_;
     mapping(uint => RobotUnit) private robots_;
+
+    function SysGmPosAdv(bytes32 _name) public SysGmPos(_name) {
+        dayInSeconds_ = DAY_IN_SECONDS;
+    }
     
     // Constructor
     function SysGmPos(bytes32 _name) public SysGmBase(_name) {
@@ -34,12 +44,12 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return index;
     }
 
-    function checkUnittUser(address _user, uint _robotId) internal view {
-        require(_user == ownerOf(_robotId));
+    function checkUnittUser(address _user, uint _unitId) internal view {
+        require(_user == ownerOf(_unitId));
     }
 
-    function setUnitStatus(uint _robotId, bytes32 _status) internal {
-        robots_[_robotId].status_ = _status;
+    function setUnitStatus(uint _unitId, bytes32 _status) internal {
+        robots_[_unitId].status_ = _status;
     }
 
     //////////////////////
@@ -47,39 +57,39 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return robotNos_;  
     }
 
-    function getUnitStatus(uint _robotId) public view returns (bytes32) {
-        return robots_[_robotId].status_;
+    function getUnitStatus(uint _unitId) public view returns (bytes32) {
+        return robots_[_unitId].status_;
     }
 
-    function getUnitName(uint _robotId) public view returns (bytes32) {
-        return robots_[_robotId].name_;
+    function getUnitName(uint _unitId) public view returns (bytes32) {
+        return robots_[_unitId].name_;
     }
 
-    function getUnitName(uint _robotId) public view returns (bytes32) {
-        return robots_[_robotId].name_;
+    function getUnitName(uint _unitId) public view returns (bytes32) {
+        return robots_[_unitId].name_;
     }
 
-    function getUnitSPBase(uint _robotId) public view returns (uint) {
-        return robots_[_robotId].spBase_;
+    function getUnitSPBase(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].spBase_;
     }
 
-    function getUnitSPLev(uint _robotId) public view returns (uint) {
-        return robots_[_robotId].spLev_;
+    function getUnitSPLev(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].spLev_;
     }
 
-    function getUnitSPExtra(uint _robotId) public view returns (uint) {
-        return 0;
+    function getUnitSPExtra(uint _unitId) public view returns (uint) {
+        return SysGmPosEffect(extraEffectObj_).getExtraStakePoint(_unitId);
     }
 
-    function getUnitRRBase(uint _robotId) public view returns (uint) {
-        return robots_[_robotId].rrBase_;
+    function getUnitRRBase(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].rrBase_;
     }
 
-    function getUnitRRLev(uint _robotId) public view returns (uint) {
-        return robots_[_robotId].rrLev_;
+    function getUnitRRLev(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].rrLev_;
     }
 
-    function getUnitRRExtra(uint _robotId) public view returns (uint) {
-        return 0;
+    function getUnitRRExtra(uint _unitId) public view returns (uint) {
+        return SysGmPosEffect(extraEffectObj_).getExtraRewardRatio(_unitId);
     }
 }
