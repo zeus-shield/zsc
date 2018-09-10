@@ -93,6 +93,8 @@ ZSCWallet.prototype.loadTokenWallets = function(func) {
     //});
 }
 
+//Disabled during alpha-test
+/*
 ZSCWallet.prototype.numTokenWallets = function(gm, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
@@ -104,6 +106,24 @@ ZSCWallet.prototype.numTokenWallets = function(gm, func) {
             if(!error) {
                 gm.tokenNos = result.toString(10);
                 func(gm);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
+*/
+
+ZSCWallet.prototype.loadTokenInfoByIndex = function(index, func) {
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(this.contractAbi).at(this.contractAdr);
+
+    myControlApi.getTokenBalanceInfoByIndex(gm.userName, index + 1,
+        {from: gm.account},
+        function(error, result){ 
+            if(!error) {
+                gm.parserTokenBalanceInfoByIndex(gm, result, index);
+                callBack();
             } else {
                 console.log("error: " + error);
             }
