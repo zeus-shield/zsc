@@ -134,3 +134,29 @@ ZSCTemplate.prototype.enableAsAgreement = function(tmpIndex, func) {
             }
         });
 }
+
+ZSCTemplate.prototype.loadTemplatesHtml = function(elementId, funcCreateTmp, funcPublish, funcSetPara, showAgrs)  {
+    var funcCreateTmpFull = funcCreateTmp + "('CreateNewTemplateHash')"; 
+
+    var funcSetParaPrefix = funcSetPara + "('"; 
+    var funcSetParaSuffix = "')";
+
+    var funcPublishPrefix = funcPublish + "('";
+    var funcPublishSuffix = "')";
+
+    var showAgrsPrefix = showAgrs + "('";
+    var showAgrsSuffix = "')";
+
+    var text ="";
+
+    var titlle = this.userType + " [" + this.userName + "] - templates info"
+
+    text += '<div class="well"> <text>' + titlle + ' </text></div>';
+
+    text += '<div class="well">';
+    text += '   <td><button type="button" onClick="' + funcCreateTmpFull + '">Create New Template</button></td> <br>'
+    text += '   <text id="CreateNewTemplateHash"> </text>'
+    text += '</div>';
+
+  
+}
