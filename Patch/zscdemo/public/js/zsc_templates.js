@@ -171,3 +171,18 @@ ZSCTemplate.prototype.loadTemplatesHtml = function(elementId, funcCreateTmp, fun
     text += '   <td>Name</td> <td>Details</td> <td>Add as Agreement </td>   <td>Added Nos. </td>  <td>  </td> '
     text += '</tr>'
     text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
+
+    for (var i = 0; i < this.tmpNos; ++i) {
+        text += '<tr>'
+        text += '   <td><text>' + this.tmpNames[i]  + '</text></td>'
+        text += '   <td><button type="button" onClick="' + funcSetParaPrefix + this.tmpNames[i] + funcSetParaSuffix + '">Edit</button></td>'
+        text += '   <td><button type="button" onClick="' + funcPublishPrefix + i + funcPublishSuffix + '">Add</button></td>'
+        text += '   <td><text>' + this.tmpChildrenNos[i]  + '</text></td>'
+        text += '   <td><button type="button" onClick="' + showAgrsPrefix + this.tmpNames[i] + showAgrsSuffix + '">List</button></td>'
+        text += '</tr>'
+        text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td> </tr>'
+    }
+    text += '</table></div>'
+
+    document.getElementById(elementId).innerHTML = text;  
+}
