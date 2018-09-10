@@ -10,6 +10,7 @@ require.config({
 require(['test_search', 'test_analysis'], function (){});
 */
 import TestSearch from './test_search.js';
+import TestRaw from './test_raw.js';
 import TestAnalysis from './test_analysis.js';
 
 export default function main(module, operation) {
@@ -26,6 +27,16 @@ export default function main(module, operation) {
                 test = window.testSearchClass;
             }
             test.setContractName('AISearch');
+            break;
+        }
+        case 'Raw': {
+            if('undefined' == typeof window.testRawClass) {
+                test = new TestRaw();
+                window.testRawClass = test;
+            } else {
+                test = window.testRawClass;
+            }
+            test.setContractName('Sample');
             break;
         }
         case 'Analysis': {
