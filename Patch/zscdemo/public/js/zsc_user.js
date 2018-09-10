@@ -121,3 +121,18 @@ ZSCUser.prototype.activeByUser = function (type, hashLogId) {
             }
         });
 }
+ZSCUser.prototype.getUserStatusFromAdm = function (func) {
+    var gm = this;
+    var callBack = func;
+    var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
+
+    myAdmAdv.getUserStatus(gm.userNameHr,
+        function (error, ret) {
+            if (!error) {
+                gm.userStatus = web3.toUtf8(ret);
+                callBack(gm.userStatus);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
