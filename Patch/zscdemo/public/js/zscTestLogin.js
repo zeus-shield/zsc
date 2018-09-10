@@ -102,3 +102,13 @@ function showErc20Tokens(destAddressId, amountId, logId) {
 
     zscElement.transferEth(destAddress, amount, logId);
 }
+
+function submitParameterProfileChanges(logID) {
+    zscElement.setElementParameter(logID, function () { });
+}
+
+function submitParameterTemplateChanges(logID) {
+    zscElement.setElementParameter(logID, function () {
+        loadHtmlPageBody("template");
+    });
+}
