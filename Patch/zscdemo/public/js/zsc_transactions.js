@@ -19,3 +19,5 @@ function ZSCTransactions(nm, abi, adr) {
     this.gasPrice = bF_getGasPrice();
     this.gasLimit = bF_getGasLimit(700);
 }
+
+ZSCTransactions.prototype.getUserName = function() {return this.userName;}
