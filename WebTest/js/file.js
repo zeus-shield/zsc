@@ -1,5 +1,6 @@
 
 import TestSearch from './test_search.js';
+import TestRaw from './test_raw.js';
 import TestAnalysis from './test_analysis.js';
 import Output from './output.js';
 
@@ -22,6 +23,15 @@ export default function file(module, input) {
                         window.testSearchClass = test;
                     } else {
                         test = window.testSearchClass;
+                    }
+                    break;
+                }
+                case 'Raw': {
+                    if('undefined' == typeof window.testRawClass) {
+                        test = new TestRaw();
+                        window.testRawClass = test;
+                    } else {
+                        test = window.testRawClass;
                     }
                     break;
                 }
