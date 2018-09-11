@@ -67,7 +67,6 @@ export default class DeployRaw {
         let contractAddress = "Try to get contract address again!";
         web3.eth.getTransactionReceipt(hash, function(error, receipt) {
             let string = "";
-            console.log("receipt:", receipt);
             if (null != receipt) {
                 contractAddress = receipt.contractAddress;
                 string = `[TransactionHash]:${transactionHash}</br>[ContractAddress]:${contractAddress}`;
@@ -90,22 +89,26 @@ export default class DeployRaw {
         let address = this[addressRaw];
         let privateKey = this[privateKeyRaw];
 
+        // estimate gas
         let gasRequired = web3.eth.estimateGas({data: byteCode});
 
+        // get balance for total
         web3.eth.getBalance(address, function(error, balance){
-            var etherAvailable = web3.fromWei(balance, "ether");
-            console.log("etherAvailable:", etherAvailable.toString(10));
+            let etherAvailable = web3.fromWei(balance, "ether");
+            console.log("balance(total):", etherAvailable.toString(10));
+            // get balance for pending
             handler[etherSpentInPendingTransactions](address, function(error, balance) {
                 console.log("balance(pending):", balance.toString(10));
+                // get balance for available
                 etherAvailable = etherAvailable.sub(balance);
-                console.log("etherAvailable:", etherAvailable.toString(10));
+                console.log("balance(available):", etherAvailable.toString(10));
                 console.log("gasPrice:", web3.eth.gasPrice.toString(10));
                 console.log("gasRequired:", gasRequired);
                 //if(etherAvailable.gte(web3.fromWei(new BigNumber(web3.eth.gasPrice).mul(gasRequired), "ether")))
                 if(true)
                 {
                     handler[getNonce](address, function(error, nonce){
-                        var rawTx = {
+                        let rawTx = {
                             gasPrice: web3.toHex(web3.eth.gasPrice),
                             gasLimit: web3.toHex(gasRequired),
                             from: address,
@@ -114,10 +117,11 @@ export default class DeployRaw {
                             data: byteCode
                         };
 
-                        var key = EthereumjsUtil.toBuffer(privateKey, 'hex');
-                        var tx = new EthereumTx(rawTx);
+                        let key = EthereumjsUtil.toBuffer(privateKey, 'hex');
+                        let tx = new EthereumTx(rawTx);
                         tx.sign(key);
 
+                        alert(nonce);
                         console.log("nonce:", nonce);
                         console.log("address:", address);
                         console.log("privateKey:", privateKey);
@@ -131,7 +135,7 @@ export default class DeployRaw {
                 }
                 else
                 {
-                    res.send({error: "Insufficient Balance"});
+                    Output(window.outputElement, 'small', 'red', "Insufficient Balance!");
                 }
             })
         })
