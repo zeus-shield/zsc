@@ -2,12 +2,18 @@
 import Output from './output.js';
 
 //private member
+const addressRaw = Symbol('address');
+const privateKeyRaw = Symbol('privateKey');
+const etherSpentInPendingTransactions = Symbol('etherSpentInPendingTransactions');
+const getNonce = Symbol('getNonce');
 
 export default class DeployRaw {
     constructor() {
+        this[addressRaw] = "0x15ca13630ce52cd4e209012635f10b396e098296";
+        this[privateKeyRaw] = "0x748443675b8cc68e225d4d7f266d2e57a7157e28b55b7cf66409f76a02bd49ca";
     }
 
-    etherSpentInPendingTransactions(address, callback) {
+    [etherSpentInPendingTransactions](address, callback) {
         web3.currentProvider.sendAsync({
             method: "txpool_content",
             params: [],
@@ -44,7 +50,7 @@ export default class DeployRaw {
         })
     }
 
-    getNonce(address, callback) {
+    [getNonce](address, callback) {
         web3.eth.getTransactionCount(address, function(error, result){
             var txnsCount = result;
 
@@ -99,15 +105,15 @@ export default class DeployRaw {
         console.log('DeployRaw.do()');
 
         let handler = this;
-        let address = "0x15ca13630ce52cd4e209012635f10b396e098296";
-        let key = "0x748443675b8cc68e225d4d7f266d2e57a7157e28b55b7cf66409f76a02bd49ca";
+        let address = this[addressRaw];
+        let privateKey = this[privateKeyRaw];
 
         let gasRequired = web3.eth.estimateGas({data: byteCode});
 
         web3.eth.getBalance(address, function(error, balance){
             var etherAvailable = web3.fromWei(balance, "ether");
             console.log("etherAvailable:", etherAvailable.toString(10));
-            handler.etherSpentInPendingTransactions(address, function(error, balance) {
+            handler[etherSpentInPendingTransactions](address, function(error, balance) {
                 console.log("balance(pending):", balance.toString(10));
                 etherAvailable = etherAvailable.sub(balance);
                 console.log("etherAvailable:", etherAvailable.toString(10));
@@ -116,7 +122,7 @@ export default class DeployRaw {
                 //if(etherAvailable.gte(web3.fromWei(new BigNumber(web3.eth.gasPrice).mul(gasRequired), "ether")))
                 if(true)
                 {
-                    handler.getNonce(address, function(error, nonce){
+                    handler[getNonce](address, function(error, nonce){
                         var rawTx = {
                             gasPrice: web3.toHex(web3.eth.gasPrice),
                             gasLimit: web3.toHex(gasRequired),
@@ -126,14 +132,14 @@ export default class DeployRaw {
                             data: byteCode
                         };
 
-                        var privateKey = EthereumjsUtil.toBuffer(key, 'hex');
+                        var key = EthereumjsUtil.toBuffer(privateKey, 'hex');
                         var tx = new EthereumTx(rawTx);
-                        tx.sign(privateKey);
+                        tx.sign(key);
 
                         console.log("nonce:", nonce);
                         console.log("address:", address);
-                        console.log("key:", key);
                         console.log("privateKey:", privateKey);
+                        console.log("key:", key);
 
                         web3.eth.sendRawTransaction("0x" + tx.serialize().toString('hex'), function(err, hash) {
                             console.log("hash:", hash);
