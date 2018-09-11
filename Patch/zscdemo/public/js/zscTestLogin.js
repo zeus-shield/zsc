@@ -112,3 +112,8 @@ function submitParameterTemplateChanges(logID) {
         loadHtmlPageBody("template");
     });
 }
+function claimReward(logId) {
+    zscAgrsProGM.claimReward(logId, zscElement.getElementName(), function () {
+        loadHtmlPageBody("template");
+    });
+}
