@@ -22,6 +22,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         uint spEft_;
         uint spCur_;
         uint spMax_;
+        uint rrCur_;
         uint mineStart_;
         uint mineEnd_;
     }
@@ -61,6 +62,17 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         robotNos_++;
         _mint(_user, index);
 
+        bytes32 ctgName = getRandomUnitCategory();
+        uint ctgIndex = ctgIndice_[ctgName];
+        robots_[index].status_ = "idle";
+        robots_[index].name_   = ctgName;
+        robots_[index].rare_   = ctgs_[ctgIndex].rare_;
+        robots_[index].spLev_  = 0;
+        robots_[index].spEft_  = random(ctgs_[ctgIndex].spEftMin_, ctgs_[ctgIndex].spEftMax_);
+        robots_[index].spCur_     = 0;
+        robots_[index].spMax_     = 0;
+        robots_[index].mineStart_ = 0;
+        robots_[index].mineEnd_   = 0;
         return index;
     }
 
@@ -82,6 +94,10 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     function setUnitSPCur(uint _unitId, uint _cur) internal {
         robots_[_unitId].spCur_ = _cur;
+    }
+
+    function setUnitRRCur(uint _unitId, uint _cur) internal {
+        robots_[_unitId].rrCur_ = _cur;
     }
 
     function setUnitMineStart(uint _unitId, uint _tm) internal {
@@ -115,7 +131,39 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         checkDelegate(msg.sender, 1);
         extraEffectObj_ = _adr;
     }
+
+    function setRareThreshold(uint _R, uint _S, uint _SR, uint _SSR) public {
+        checkDelegate(msg.sender, 1);
+        rareProb_[0] = _SSR;
+        rareProb_[1] = _SR;
+        rareProb_[2] = _S;
+        rareProb_[3] = _R;
+    }
+
+    function setUnitCategory(bytes32 _name, uint _rare, uint _spEftMin, uint _spEftMax) public {
+        checkDelegate(msg.sender, 1);
+        require(_rare < 4);
+        uint index;
+
+        if (!ctgExits_[_name]) {
+            index = ctgNos_;
+            ctgNos_++;
     
+            ctgExits_[_name] = true;
+            ctgIndice_[_name] = index;
+
+            uint ctgIndex = ares_[_rare].size_;
+            rares_[_rare].size_++;
+            rares_[_rare].ctgs_[ctgIndex] = _name;
+        } else {
+            index = ctgIndice_[_name];
+        }
+
+        ctgs_[index].rare_     = _rare;
+        ctgs_[index].spEftMin_ = _spEftMin;
+        ctgs_[index].spEftMax_ = _spEftMax;
+    }
+
     function numUnits() public view returns (uint) {
         return robotNos_;  
     }
@@ -144,11 +192,19 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return robots_[_unitId].spMax_;
     }
 
+    function getUnitRRCur(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].rrCur_;
+    }
+
     function getUnitSPExtra(uint _unitId) public view returns (uint) {
         return SysGmPosEffect(extraEffectObj_).getExtraStakePoint(_unitId);
     }
 
     function getUnitRRExtra(uint _unitId) public view returns (uint) {
         return SysGmPosEffect(extraEffectObj_).getExtraRewardRatio(_unitId);
+    }
+
+    function getUnitUPExtra(uint _unitId) public view returns (uint) {
+        return SysGmPosEffect(extraEffectObj_).getExtraUpgradeProbability(_unitId);
     }
 }
