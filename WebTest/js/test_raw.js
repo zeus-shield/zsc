@@ -1,5 +1,5 @@
 
-import Deploy from './deploy.js';
+import Deploy from './deploy_raw.js';
 import Output from './output.js';
 import ZSCRaw from './zsc_raw.js';
 
@@ -49,7 +49,7 @@ export default class TestSearch {
         this[abi] = JSON.parse(this[compiledJson].contracts[name].abi);
         parameter = 'tester';
 
-        deploy = new Deploy()
+        deploy = new Deploy();
         if('undefined' != typeof deploy) {
             deploy.do(byteCode, this[abi], parameter, this, this[deployFunc]);
         }
