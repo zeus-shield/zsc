@@ -136,3 +136,18 @@ ZSCUser.prototype.getUserStatusFromAdm = function (func) {
             }
         });
 }
+ZSCUser.prototype.getUserTypeFromAdm = function (func) {
+    var gm = this;
+    var callBack = func;
+    var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
+
+    myAdmAdv.getUserType(gm.userNameHr,
+        function (error, ret) {
+            if (!error) {
+                gm.userType = web3.toUtf8(ret);
+                callBack(gm.userType);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
