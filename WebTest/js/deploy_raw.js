@@ -38,9 +38,9 @@ export default class DeployRaw {
         })
     }
 
-    [getNonce](address, callback) {
-        web3.eth.getTransactionCount(address, function(error, result){
-            var txnsCount = result;
+    [getNonce](address, func) {
+        web3.eth.getTransactionCount(address, function(error, result) {
+            let txnsCount = result;
 
             web3.currentProvider.sendAsync({
                 method: "txpool_content",
@@ -48,21 +48,15 @@ export default class DeployRaw {
                 jsonrpc: "2.0",
                 id: new Date().getTime()
             }, function (error, result) {
-                if(result.result.pending)
-                {
-                    if(result.result.pending[address])
-                    {
+                if(result.result.pending) {
+                    if(result.result.pending[address]) {
                         txnsCount = txnsCount + Object.keys(result.result.pending[address]).length;
-                        callback(null, txnsCount);
+                        func(null, txnsCount);
+                    } else {
+                        func(null, txnsCount);
                     }
-                    else
-                    {
-                        callback(null, txnsCount);
-                    }
-                }
-                else
-                {
-                    callback(null, txnsCount);
+                } else {
+                    func(null, txnsCount);
                 }
             })
         })
