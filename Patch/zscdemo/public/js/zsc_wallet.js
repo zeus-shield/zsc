@@ -129,3 +129,19 @@ ZSCWallet.prototype.loadTokenInfoByIndex = function(index, func) {
             }
         });
 }
+
+ZSCWallet.prototype.enableUserWallet = function(hashId, func) {
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(this.contractAbi).at(this.contractAdr);
+
+    myControlApi.enableUserZSCWallet(gm.userName,
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
+        function(error, result){ 
+            if(!error) {
+                bF_showHashResult(hashId, result, callBack);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
