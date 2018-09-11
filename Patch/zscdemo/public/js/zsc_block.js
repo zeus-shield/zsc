@@ -15,3 +15,10 @@ function ZSCBlock(nm, abi, adr) {
     this.gasLimit = bF_getGasLimit(700);
 }
 
+ZSCBlock.prototype = new ZSCClient();
+
+ZSCBlock.prototype.getUserName = function() {return this.userName;}
+
+ZSCBlock.prototype.getTotalBlockNos = function() {return this.totalBlockNos;}
+
+ZSCBlock.prototype.getMinedBlockNos = function() {return this.minedBlockNos;}
