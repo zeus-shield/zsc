@@ -60,3 +60,19 @@ ZSCTransactions.prototype.numTransactions = function(gm, func) {
             }
         });
 }
+
+ZSCTransactions.prototype.loadTransactionInfoByIndex = function(gm, index, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.getUserTransactionByIndex(gm.userName, gm.tokenSymbol, index,
+        {from: gm.account, gas: gm.gas},
+        function(error, result){ 
+            if(!error) {
+                gm.parserTransactionInfoByIndex(gm, result, index)
+                callBack(index);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
