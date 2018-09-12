@@ -44,3 +44,19 @@ ZSCTransactions.prototype.loadTransactions = function(func) {
         }
     });
 }
+
+ZSCTransactions.prototype.numTransactions = function(gm, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.numUserTransactions(gm.userName, gm.tokenSymbol, 
+        {from: gm.account},
+        function(error, result){ 
+            if(!error) {
+                gm.transNos = result.toString(10);
+                callBack(gm);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
