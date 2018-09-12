@@ -6,7 +6,7 @@ import Output from './output.js';
 
 //private member
 const constractAbi = Symbol('abi');
-const constractAddress = Symbol('address');
+const constractAddress = Symbol('constractAddress');
 const addressRaw = Symbol('addressRaw');
 const privateKeyRaw = Symbol('privateKeyRaw');
 
@@ -55,18 +55,19 @@ export default class ZSCRaw {
         });
     }
 
-    setRaw(_index, _data) {
+    setRaw(_index, string, func) {
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
                    
-        let address = this[rawAddress];
-        let key = this[privateKey];
+        let address = this[addressRaw];
+        let key = this[privateKeyRaw];
+        let handler = this;
 
-        web3.eth.getTransactionCount(this[rawAddress], function(error, nonce) {
+        web3.eth.getTransactionCount(this[addressRaw], function(error, nonce) {
             // get function data
-            let data = contractInstance.set.getData(_index, _data);
+            let data = contractInstance.set.getData(_index, string);
 
             // estimate gas
-            contractInstance.set.estimateGas(_index, _data, {data: data},
+            contractInstance.set.estimateGas(_index, string, {data: data},
                 function(error, gasLimit) {
                     if(!error) {
                         // get gas price
@@ -75,14 +76,13 @@ export default class ZSCRaw {
                                 let rawTx = {
                                     gasPrice: web3.toHex(gasPrice),
                                     gasLimit: web3.toHex(gasLimit),
-                                    from: address,
+                                    to: handler[constractAddress],
                                     nonce: web3.toHex(nonce),
                                     data: data  
                                 };
 
                                 let privateKey = EthereumjsUtil.toBuffer(key, 'hex');
-                                // let privateKey = key;
-
+     
                                 const tx = new EthereumTx(rawTx);
 
                                 tx.sign(privateKey);
@@ -92,6 +92,10 @@ export default class ZSCRaw {
                                 web3.eth.sendRawTransaction("0x" + serializedTx.toString('hex'), function(err, hash) {
                                     console.log("hash:", hash);
                                     Output(window.outputElement, 'small', 'red', `[TransactionHash]:${hash}`);
+                                    if(null != func) {
+                                        func(hash);
+                                    }
+                                    
                                 });
                             } else {
                                 Output(window.outputElement, 'small', 'red', error);
