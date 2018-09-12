@@ -171,3 +171,39 @@ ZSCWallet.prototype.parserTokenBalanceInfoByIndex = function(gm, urlinfo, index)
     gm.tokenBalance[index] = balanceInfo.split("=")[1];
     return true;
 }
+
+ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2, func3)  {
+    var transPrefix = func1 + "('"; 
+    var transSuffix = "')";
+
+    var showTransPrefix = func2 + "('";
+    var showTransSuffix = "')";
+
+    var enableWalletPrefix = func3 + "('";
+    var enableWalletSuffix = "')";
+
+    var symbol;
+    var adr;
+    var balance;
+    var hashId;
+
+    var titlle = this.userType + " [" + this.userName + "] - wallet info"
+
+    text = '<div class="well"> <text> ' + titlle + ' </text></div>';
+
+    text += '<div class="well">';
+
+    for (var i = 0; i < this.tokenNos; ++i) {
+        symbol = this.tokenSymbol[i];
+        adr = this.tokenAddress[i];
+        balance = this.tokenBalance[i];
+        hashId = symbol + "Hash";
+        sentoId = symbol + "Dest";
+        amountId = symbol + "Amount";
+
+        text += '---------------</text><br>'
+        
+
+    document.getElementById(elementId).innerHTML = text;  
+    
+}
