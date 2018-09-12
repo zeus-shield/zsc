@@ -63,6 +63,21 @@ ZSCWallet.prototype.confirmTransferValue = function(tokenSymbol, logId, func) {
         }
     });
 }
+
+ZSCWallet.prototype.informTransfer = function(srcAddress, destAddress, amount, func) { 
+    if (amount > 0) {
+        this.myControlApi.elementInformTransfer(this.userName, srcAddress, destAddress, web3.toWei(amount, 'ether') , 
+            {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
+            function(error, result){ 
+            if(!error) {
+                func();
+            } else {
+                console.log("error: " + error);
+            }
+        });
+    }
+} 
+
 ZSCWallet.prototype.enableWallet = function(tokenSymbol, elementId, func) {
     this.myControlApi.enableElementWallet(this.userName, tokenSymbol, 0, 
         {from: this.getAccount(), gasPrice: this.getGasPrice(1), gas : this.getGasLimit(20)}, 
@@ -202,11 +217,7 @@ ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2, func3)  
         amountId = symbol + "Amount";
 
         text += '---------------</text><br>'
-        
-
-    document.getElementById(elementId).innerHTML = text;  
-    
-}if (this.tokenStatus[i] == "false") {
+        if (this.tokenStatus[i] == "false") {
             text += '<button type="button" onClick="' + enableWalletPrefix + 'EnableZSCWalletHash' + "', '" + hashId + enableWalletSuffix + '">Enable TestZSC Wallet</button><br>'
             text += '<text id="EnableZSCWalletHash" value = "log:"> </text> <br>';
             text += '<text>---------------</text><br>'
@@ -225,3 +236,25 @@ ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2, func3)  
 
     }
     text += '</div>'
+
+    document.getElementById(elementId).innerHTML = text;  
+    
+}
+
+ZSCWallet.prototype.loadWalletsHtmldemo = function()  { 
+
+    for (var i = 0; i < this.tokenNos; ++i) {
+        symbol = this.tokenSymbol[i];
+        adr = this.tokenAddress[i];
+        balance = this.tokenBalance[i];
+    }
+    i = i - 1;
+    // if (this.tokenStatus[i] = "false" ) {
+    if (adr == 0x00 ) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+
