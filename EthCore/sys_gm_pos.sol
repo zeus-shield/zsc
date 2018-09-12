@@ -42,22 +42,18 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     struct RareGroup {
         uint size_;
-        mapping(uint => bytes32) private ctgs_;
+        mapping(uint => bytes32) ctgs_;
     }
     mapping(uint => RareGroup) private rares_;
     mapping(uint => uint) private rareProb_;
 
     address public extraEffectObj_;
 
-    function SysGmPosAdv(bytes32 _name) public SysGmPos(_name) {
-        dayInSeconds_ = DAY_IN_SECONDS;
-    }
-    
     // Constructor
     function SysGmPos(bytes32 _name) public SysGmBase(_name) {
     } 
 
-    function mintUnit() internal returns (uint) {
+    function mintUnit(address _user) internal returns (uint) {
         uint index = robotNos_;
         robotNos_++;
         _mint(_user, index);
@@ -152,7 +148,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
             ctgExits_[_name] = true;
             ctgIndice_[_name] = index;
 
-            uint ctgIndex = ares_[_rare].size_;
+            uint ctgIndex = rares_[_rare].size_;
             rares_[_rare].size_++;
             rares_[_rare].ctgs_[ctgIndex] = _name;
         } else {
@@ -194,6 +190,14 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     function getUnitRRCur(uint _unitId) public view returns (uint) {
         return robots_[_unitId].rrCur_;
+    }
+
+    function getUnitMineStart(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].mineStart_;
+    }
+
+    function getUnitMineEnd(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].mineEnd_;
     }
 
     function getUnitSPExtra(uint _unitId) public view returns (uint) {
