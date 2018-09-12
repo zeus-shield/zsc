@@ -25,3 +25,22 @@ ZSCTransactions.prototype.getUserName = function() {return this.userName;}
 ZSCTransactions.prototype.setTokenSymbol = function(symbol) {this.tokenSymbol = symbol;}
 
 ZSCTransactions.prototype.getTokenSymbol = function() { return this.tokenSymbol;}
+
+ZSCTransactions.prototype.loadTransactions = function(func) {
+    var gm = this;
+    var callBack = func;
+
+    gm.numTransactions(gm, function(gm) {
+        if (gm.transNos == 0) {
+            callBack();
+        } else {
+            for (var i = 0; i < gm.transNos; ++i) {
+                gm.loadTransactionInfoByIndex(gm, i, function(index){
+                    if (index == gm.transNos - 1) {
+                        callBack();
+                    }
+                });
+            }
+        }
+    });
+}
