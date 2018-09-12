@@ -4,8 +4,11 @@ import Output from './output.js';
 //private member
 const addressRaw = Symbol('address');
 const privateKeyRaw = Symbol('privateKey');
+
+//private function
 const etherSpentInPendingTransactions = Symbol('etherSpentInPendingTransactions');
 const getNonce = Symbol('getNonce');
+const getTransactionReceipt = Symbol('getTransactionReceipt');
 
 export default class DeployRaw {
     constructor() {
@@ -82,7 +85,7 @@ export default class DeployRaw {
         })
     }
 
-    getTransactionReceipt(handler, hash, timeout, caller, func) {
+    [getTransactionReceipt](handler, hash, timeout, caller, func) {
         let transactionHash = hash;
         let contractAddress = "Try to get contract address again!";
         let string = "";
@@ -105,7 +108,7 @@ export default class DeployRaw {
                 string = `[TransactionHash]:${transactionHash}</br>[ContractAddress]:${contractAddress}</br>[Timeout]:${timeout}(s)`;
                 Output(window.outputElement, 'small', 'red', string);
                 setTimeout(function() {
-                    handler.getTransactionReceipt(handler, hash, timeout, caller, func);
+                    handler[getTransactionReceipt](handler, hash, timeout, caller, func);
                 }, 1000);
             }
         });
@@ -157,7 +160,7 @@ export default class DeployRaw {
                                             let tx = new EthereumTx(rawTx);
                                             tx.sign(key);
 
-                                            alert(nonce);
+                                            //alert(nonce);
                                             console.log("nonce:", nonce);
                                             console.log("address:", address);
                                             console.log("privateKey:", privateKey);
@@ -165,7 +168,7 @@ export default class DeployRaw {
 
                                             web3.eth.sendRawTransaction("0x" + tx.serialize().toString('hex'), function(err, hash) {
                                                 console.log("hash:", hash);
-                                                handler.getTransactionReceipt(handler, hash, 0, caller, func);
+                                                handler[getTransactionReceipt](handler, hash, 0, caller, func);
                                             });
                                         })
                                     } else {
