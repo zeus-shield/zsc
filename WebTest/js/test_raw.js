@@ -65,7 +65,24 @@ export default class TestSearch {
         // zsc.set(4, "(4) hello");
         // zsc.set(5, "(5) hello");
         
-        zsc.setRaw(2, "(2) hello");
+        // should make sure that nonce is not the same
+        zsc.setRaw(1, "(1) hello", function(hash) {
+            if (undefined != hash) {
+                zsc.setRaw(2, "(2) hello", function(hash) {
+                    if (undefined != hash) {
+                        zsc.setRaw(3, "(3) hello", function(hash) {
+                            if (undefined != hash) {
+                                zsc.setRaw(4, "(4) hello", function(hash) {
+                                    if (undefined != hash) {
+                                        zsc.setRaw(5, "(5) hello", null);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
     get() {
