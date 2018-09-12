@@ -206,4 +206,22 @@ ZSCWallet.prototype.loadWalletsHtml = function(elementId, func1, func2, func3)  
 
     document.getElementById(elementId).innerHTML = text;  
     
-}
+}if (this.tokenStatus[i] == "false") {
+            text += '<button type="button" onClick="' + enableWalletPrefix + 'EnableZSCWalletHash' + "', '" + hashId + enableWalletSuffix + '">Enable TestZSC Wallet</button><br>'
+            text += '<text id="EnableZSCWalletHash" value = "log:"> </text> <br>';
+            text += '<text>---------------</text><br>'
+        } else {
+            text += 'Symbol: <text>Test' + symbol + '</text><br>'
+            text += 'Address: <text> <a href="https://rinkeby.etherscan.io/address/0x' + adr + '#tokentxns" target="_blank" >0x' + adr + '</a></text><br>'
+            text += 'Balance: <text>' + balance + '</text><br><br>'
+            //text += '---------------</text><br>'
+            //text += '  <button type="button" onClick="' + showTransPrefix + symbol + "', '" + hashId + showTransSuffix + '">Show Transactions</button><br><br>'
+            text += '---------------</text><br>'
+            text += 'Dest-adr<input id="' + sentoId + '"></input> <br> Amount:<input id="' + amountId + '"></input> <br>'
+            text += '  <button type="button" onClick="' + transPrefix + symbol + "', '" + sentoId + "', '" + amountId + "', '" + hashId + transSuffix + '">  Transfer  </button> <br>'
+            text += '<text id="'+ hashId + '" value = "log:"> </text> <br>';
+            text += '<text>---------------</text><br>'
+        }
+
+    }
+    text += '</div>'
