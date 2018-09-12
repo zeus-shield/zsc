@@ -151,3 +151,30 @@ ZSCUser.prototype.getUserTypeFromAdm = function (func) {
             }
         });
 }
+ZSCUser.prototype.tryLoginDemo = function () {
+    var gm = this;
+    var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
+    var account = "0xba5e96003825010641ef5ef921a2e6e5976d0d1c";
+
+    myAdmAdv.numUsers(
+        { from: account },
+        function (error, ret) {
+            if (!error) {
+                console.log(ret);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+    for (var i = 0; i < 212; i++) {
+        myAdmAdv.getUserInfoByIndex(i,
+            { from: account },
+            function (error, ret) {
+                if (!error) {
+                    console.log(ret);
+                } else {
+                    console.log("error: " + error);
+                }
+            });
+    }
+
+}
