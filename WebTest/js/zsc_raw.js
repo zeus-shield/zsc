@@ -10,6 +10,9 @@ const constractAddress = Symbol('constractAddress');
 const addressRaw = Symbol('addressRaw');
 const privateKeyRaw = Symbol('privateKeyRaw');
 
+//private function
+const getTransactionReceipt = Symbol('getTransactionReceipt');
+
 export default class ZSCRaw {
     constructor(abi, address) {
         let isMetaMask = web3.currentProvider.isMetaMask;
@@ -24,6 +27,40 @@ export default class ZSCRaw {
             //this[addressRaw] = "0x15ca13630ce52cd4e209012635f10b396e098296";
             this[privateKeyRaw] = "0x748443675b8cc68e225d4d7f266d2e57a7157e28b55b7cf66409f76a02bd49ca";
         }
+    }
+
+    [getTransactionReceipt](handler, hash, timeout, caller, func) {
+        let transactionHash = hash;
+        let status  = "Try to get status again!";
+        let string = "";
+
+        if (undefined == hash) {
+            string = `[TransactionHash]:${transactionHash}</br>[Status]:${status}`;
+            Output(window.outputElement, 'small', 'red', string);
+            return;
+        }
+
+        web3.eth.getTransactionReceipt(hash, function(error, receipt) {
+            if (null != receipt) {
+                if ("0x1" == receipt.status) {
+                    status  = "succeeded";
+                } else {
+                    status  = "failure";
+                }
+                string = `[TransactionHash]:${transactionHash}</br>[Status]:${status}`;
+                Output(window.outputElement, 'small', 'red', string);
+                if (null != func) {
+                    func(receipt.status);
+                }
+            } else {
+                timeout ++;
+                string = `[TransactionHash]:${transactionHash}</br>[Status]:${status}</br>[Timeout]:${timeout}(s)`;
+                Output(window.outputElement, 'small', 'red', string);
+                setTimeout(function() {
+                    handler[getTransactionReceipt](handler, hash, timeout, null, func);
+                }, 1000);
+            }
+        });
     }
 
     set(_index, _data) {
@@ -63,6 +100,9 @@ export default class ZSCRaw {
         let handler = this;
 
         web3.eth.getTransactionCount(this[addressRaw], function(error, nonce) {
+
+            //alert(nonce);
+
             // get function data
             let data = contractInstance.set.getData(_index, string);
 
@@ -91,11 +131,8 @@ export default class ZSCRaw {
 
                                 web3.eth.sendRawTransaction("0x" + serializedTx.toString('hex'), function(err, hash) {
                                     console.log("hash:", hash);
-                                    Output(window.outputElement, 'small', 'red', `[TransactionHash]:${hash}`);
-                                    if(null != func) {
-                                        func(hash);
-                                    }
-                                    
+                                    // get receipt
+                                    handler[getTransactionReceipt](handler, hash, 0, handler, func);                                   
                                 });
                             } else {
                                 Output(window.outputElement, 'small', 'red', error);
