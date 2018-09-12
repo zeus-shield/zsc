@@ -23,3 +23,5 @@ function ZSCTransactions(nm, abi, adr) {
 ZSCTransactions.prototype.getUserName = function() {return this.userName;}
 
 ZSCTransactions.prototype.setTokenSymbol = function(symbol) {this.tokenSymbol = symbol;}
+
+ZSCTransactions.prototype.getTokenSymbol = function() { return this.tokenSymbol;}
