@@ -11,6 +11,7 @@ require(['test_search', 'test_analysis'], function (){});
 */
 import TestSearch from './test_search.js';
 import TestRaw from './test_raw.js';
+import TestLogistics from './test_logistics.js';
 import TestAnalysis from './test_analysis.js';
 
 export default function main(module, operation) {
@@ -37,6 +38,16 @@ export default function main(module, operation) {
                 test = window.testRawClass;
             }
             test.setContractName('Sample');
+            break;
+        }
+        case 'Logistics': {
+            if('undefined' == typeof window.testLogisticsClass) {
+                test = new TestLogistics();
+                window.testLogisticsClass = test;
+            } else {
+                test = window.testLogisticsClass;
+            }
+            test.setContractName('Logistics');
             break;
         }
         case 'Analysis': {
