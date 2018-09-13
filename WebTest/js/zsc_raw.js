@@ -95,7 +95,7 @@ export default class ZSCRaw {
     setRaw(_index, string, func) {
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
                    
-        let address = this[addressRaw];
+        //let address = this[addressRaw];
         let key = this[privateKeyRaw];
         let handler = this;
 

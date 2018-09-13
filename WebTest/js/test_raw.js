@@ -10,7 +10,7 @@ const abi = Symbol('abi');
 const contractAddress = Symbol('contractAddress');
 const deployFunc = Symbol('deployFunc');
 
-export default class TestSearch {
+export default class TestRaw {
 
     constructor() {
         this[contractName] = '';
