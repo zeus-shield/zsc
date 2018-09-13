@@ -126,4 +126,20 @@ ZSCTransactions.prototype.loadTransactionsHtml = function(elementId)  {
     text += '   <td><text>Time</text></td> <td><text>Does Input</text></td>  <td><text>Amount</text></td>  <td><text>Sender/Receiver</text></td>'
     text += '</tr>'
     text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td>  </tr>'
-}
+
+    for (var i = 0; i < this.transNos; ++i) {
+        timeMoment = this.timeMoments[i];
+        inputTag   = this.inputTags[i];
+        amount     = web3.fromWei(this.amounts[i], 'ether');
+        sender     = this.senders[i];
+        receiver   = this.receivers[i];
+
+        text += '<tr>'
+        text += '   <td><text>' + timeMoment + '</text></td>'
+        text += '   <td><text>' + inputTag + '</text></td>'
+        text += '   <td><text>' + amount  + '</text></td>'
+        text += '   <td><text>Sender:   0x' + sender  + '</text><br>'
+        text += '       <text>Receiver: 0x' + receiver  + '</text></td>'
+        text += '</tr>' 
+        text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td>  </tr>'
+    }
