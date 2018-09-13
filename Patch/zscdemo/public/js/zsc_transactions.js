@@ -95,4 +95,19 @@ ZSCTransactions.prototype.parserTransactionInfoByIndex = function(gm, urlinfo, i
     var offset = urlinfo.indexOf("?");
     var newsidinfo = urlinfo.substr(offset,len)
     var newsids = newsidinfo.split("&");
+
+    var timeInfo     = newsids[0];
+    var inputInfo    = newsids[1];
+    var txInfo       = newsids[2];
+    var amountInfo   = newsids[3];
+    var senderInfo   = newsids[4];
+    var receiverInfo = newsids[5];
+
+    gm.timeMoments[index] = timeInfo.split("=")[1];
+    gm.inputTags[index]   = inputInfo.split("=")[1];
+    gm.txHash[index]      = txInfo.split("=")[1];
+    gm.amounts[index]     = amountInfo.split("=")[1];
+    gm.senders[index]     = senderInfo.split("=")[1];
+    gm.receivers[index]   = receiverInfo.split("=")[1];
+    return true;
 }
