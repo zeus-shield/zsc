@@ -143,3 +143,8 @@ ZSCTransactions.prototype.loadTransactionsHtml = function(elementId)  {
         text += '</tr>' 
         text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td>  </tr>'
     }
+    text += '</table></div>'
+
+    document.getElementById(elementId).innerHTML = text;  
+}
+
