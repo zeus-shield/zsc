@@ -123,3 +123,11 @@ function claimInsurance(logId) {
         loadHtmlPageBody("agreement-receiver");
     });
 }
+
+function dealwithShowAgreementForAll(elementName, type) {
+    if (type == "provider") {
+        loadHtmlPageBody("agreement-all");
+    } else if (type == "receiver") {
+        loadHtmlPageBody("agreement-all");
+    }
+}
