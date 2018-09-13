@@ -117,3 +117,9 @@ function claimReward(logId) {
         loadHtmlPageBody("template");
     });
 }
+
+function claimInsurance(logId) {
+    zscAgrsRecGM.claimInsurance(logId, zscElement.getElementName(), function () {
+        loadHtmlPageBody("agreement-receiver");
+    });
+}
