@@ -140,3 +140,8 @@ function enableWallet(tokenSymbol, elementId) {
     });
     */
 }
+
+function showProvidersAgreements(templateName) {
+    zscAgrsProGM.setTemplateName(templateName);
+    loadHtmlPageBody("agreement-provider");
+}
