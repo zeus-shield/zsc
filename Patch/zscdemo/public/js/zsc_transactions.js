@@ -76,3 +76,23 @@ ZSCTransactions.prototype.loadTransactionInfoByIndex = function(gm, index, func)
             }
         });
 }
+
+/*
+"info?time=",
+"input=",    
+"tx=",       
+"amout=",    
+"sender=",   
+"receiver=", 
+*/
+ZSCTransactions.prototype.parserTransactionInfoByIndex = function(gm, urlinfo, index) {
+    var found1 = urlinfo.indexOf("?");
+    var found2 = urlinfo.indexOf("=");
+
+    if (found1 == -1 || found2 == -1) return false;
+
+    var len = urlinfo.length;
+    var offset = urlinfo.indexOf("?");
+    var newsidinfo = urlinfo.substr(offset,len)
+    var newsids = newsidinfo.split("&");
+}
