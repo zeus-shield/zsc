@@ -145,3 +145,8 @@ function showProvidersAgreements(templateName) {
     zscAgrsProGM.setTemplateName(templateName);
     loadHtmlPageBody("agreement-provider");
 }
+
+function showTransactions(tokenSymbol) {
+    zscTransGM.setTokenSymbol(tokenSymbol);
+    loadHtmlPageBody("transaction");
+}
