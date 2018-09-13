@@ -131,3 +131,12 @@ function dealwithShowAgreementForAll(elementName, type) {
         loadHtmlPageBody("agreement-all");
     }
 }
+
+function enableWallet(tokenSymbol, elementId) {
+    //Disable during alpha-test
+    /*
+    ZSCWalletGM.enableWallet(tokenSymbol, elementId, function() {
+       loadHtmlPageBody("wallet");
+    });
+    */
+}
