@@ -1,6 +1,7 @@
 
 import TestSearch from './test_search.js';
 import TestRaw from './test_raw.js';
+import TestLogistics from './test_logistics.js';
 import TestAnalysis from './test_analysis.js';
 import Output from './output.js';
 
@@ -23,6 +24,15 @@ export default function file(module, input) {
                         window.testSearchClass = test;
                     } else {
                         test = window.testSearchClass;
+                    }
+                    break;
+                }
+                case 'Logistics': {
+                    if('undefined' == typeof window.testLogisticsClass) {
+                        test = new TestLogistics();
+                        window.testLogisticsClass = test;
+                    } else {
+                        test = window.testLogisticsClass;
                     }
                     break;
                 }
