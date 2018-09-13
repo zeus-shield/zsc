@@ -150,3 +150,8 @@ function showTransactions(tokenSymbol) {
     zscTransGM.setTokenSymbol(tokenSymbol);
     loadHtmlPageBody("transaction");
 }
+
+function showTemplateParameters(elementName) {
+    zscElement.setElementName(elementName);
+    loadHtmlPageBody("parameter-template")
+}
