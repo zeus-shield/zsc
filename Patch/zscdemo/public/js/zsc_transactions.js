@@ -111,3 +111,19 @@ ZSCTransactions.prototype.parserTransactionInfoByIndex = function(gm, urlinfo, i
     gm.receivers[index]   = receiverInfo.split("=")[1];
     return true;
 }
+
+ZSCTransactions.prototype.loadTransactionsHtml = function(elementId)  {
+    var timeMoment;
+    var inputTag;
+    var amount;
+    var sender;
+    var receiver;
+
+    var text ="";
+    text += '<div class="well">';
+    text += '<table align="center" style="width:800px;min-height:30px">'
+    text += '<tr>'
+    text += '   <td><text>Time</text></td> <td><text>Does Input</text></td>  <td><text>Amount</text></td>  <td><text>Sender/Receiver</text></td>'
+    text += '</tr>'
+    text += '<tr> <td>---</td> <td>---</td> <td>---</td> <td>---</td> <td>---</td>  </tr>'
+}
