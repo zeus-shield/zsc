@@ -155,3 +155,8 @@ function showTemplateParameters(elementName) {
     zscElement.setElementName(elementName);
     loadHtmlPageBody("parameter-template")
 }
+
+function showProAgrParameters(elementName) {
+    zscElement.setElementName(elementName);
+    loadHtmlPageBody("parameter-agreement-provider")
+}
