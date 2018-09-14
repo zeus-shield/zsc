@@ -170,3 +170,9 @@ function showAllAgrParameters(elementName) {
     zscElement.setElementName(elementName);
     loadHtmlPageBody("parameter-agreement-all")
 }
+
+function enableAsAgreement(index) {
+    zscTmpsGM.enableAsAgreement(index, function () {
+        loadHtmlPageBody("template");
+    });
+}
