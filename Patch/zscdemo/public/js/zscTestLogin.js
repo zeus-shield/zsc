@@ -176,3 +176,9 @@ function enableAsAgreement(index) {
         loadHtmlPageBody("template");
     });
 }
+
+function submitPurchaseAgreement(elementName) {
+    zscAgrsAllGM.submitPurchaseAgreement(elementName, function (result) {
+        loadHtmlPageBody("agreement-all")
+    });
+}
