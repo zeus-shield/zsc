@@ -160,3 +160,8 @@ function showProAgrParameters(elementName) {
     zscElement.setElementName(elementName);
     loadHtmlPageBody("parameter-agreement-provider")
 }
+
+function showRecAgrParameters(elementName) {
+    zscElement.setElementName(elementName);
+    loadHtmlPageBody("parameter-agreement-receiver")
+}
