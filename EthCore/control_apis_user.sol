@@ -55,3 +55,25 @@ contract AbisForUserControlApis {
     function transferToOther(address _dest, uint256 _tokenId) public;
 }
 
+contract AbisForPosControlApis {
+    function submitTransfer(bytes32 _tokenSymbol, address _dest, uint256 _amount) public returns (uint);
+    function getUserWalletAddress() public view returns (address);
+    function numOfTokens() public view returns (uint);
+    function getTokenBalanceInfoBySymbol(bytes32 _symbol) public view returns (string);
+    function getTokenBalanceInfoByIndex(uint _index) public view returns (string);
+    function getUserTransactionByIndex(uint _index) public view returns (string);
+    function getPoSModuleAddresses() public view returns (string);
+
+    function createRobot() public returns (uint);
+    function activeUnit(uint _robotId, bytes32 _tokenType, uint _durationInDays, uint _totalZSC) public;
+    function upgradeUnitSpLev(uint _robotId) public;
+    function publishUnit(uint _robotId, uint _price) public;
+    function cancelAuction(address _seller, uint _robotId) public;
+    function purchaseUnit(uint _robotId) public;
+    function claimReward(uint _robotId, bytes32 _tokenType) public;
+    function numSellUnits() public view returns (uint);
+    function getSellUnitByIndex(uint _index) public view returns (string);
+    function numUserUnits() public view returns (uint);
+    function getUserUnitByIndex(uint _index) public view returns (string);
+}
+
