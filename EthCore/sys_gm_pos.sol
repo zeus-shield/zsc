@@ -28,6 +28,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         uint spMax_;
         uint mineStart_;
         uint mineEnd_;
+        bool specific_;
     }
     uint private robotNos_;
     mapping(uint => RobotUnit) private robots_;
@@ -132,10 +133,9 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         robots_[_robotId].mineEnd_   = 0;
     }
 
-    function getRandomUnitCategory() private returns (bytes32) {
+    function getRandomUnitCategory() private view returns (bytes32) {
         uint ran = random(0, 100);
         uint rareLev;
-        uint category;
         if (ran <= rareProb_[0]) {
             rareLev = 0;
         } else if (ran >rareProb_[0] && ran <= rareProb_[1]) {
@@ -147,7 +147,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         }
 
         ran = random(0, rares_[rareLev].size_);
-        return rares_.ctgs_[ran];
+        return rares_[rareLev].ctgs_[ran];
     }
 
     //////////////////////
@@ -214,10 +214,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return robotNos_;  
     }
 
-    function isMineStoppable(uint _unitId) public view returns (bool) {
-        return robots_[_unitId].stoppable_;
-    }
-
     function getUnitName(uint _unitId) public view returns (bytes32) {
         return robots_[_unitId].name_;
     }
@@ -226,7 +222,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return robots_[_unitId].status_;
     }
 
-    function getUnitRare(uint _unitId) public view returns (bytes32) {
+    function getUnitRare(uint _unitId) public view returns (uint) {
         return robots_[_unitId].rare_;
     }
 
@@ -235,7 +231,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
 
     function getUnitSPEft(uint _unitId) public view returns (uint) {
-        return robots_[_unitId].spBase_;
+        return robots_[_unitId].spEft_;
     }
 
     function getUnitSPCur(uint _unitId) public view returns (uint) {
@@ -244,10 +240,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     function getUnitSPMax(uint _unitId) public view returns (uint) {
         return robots_[_unitId].spMax_;
-    }
-
-    function getUnitRRCur(uint _unitId) public view returns (uint) {
-        return robots_[_unitId].rrCur_;
     }
 
     function getUnitMineStart(uint _unitId) public view returns (uint) {
