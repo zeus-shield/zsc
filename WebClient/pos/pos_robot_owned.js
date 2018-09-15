@@ -26,8 +26,6 @@ function ZSCRobotOwned(acount, adr, abi) {
     this.contractAbi = JSON.parse(abi);
     this.gasPrice = bF_getGasPrice();
     this.gasLimit = bF_getGasLimit();
-
-    this.fromSystemWalletTag = false;
 }
 
 ZSCRobotOwned.prototype.getRobotNos = function() { return this.robotNos;}
@@ -45,7 +43,6 @@ ZSCRobotOwned.prototype.getRewardRatio = function(index) { return this.robotRewa
 ZSCRobotOwned.prototype.getExtraSP = function(index) { return this.robotExtraSP[index];}
 ZSCRobotOwned.prototype.getExtraProb = function(index) { return this.robotExtraProb[index];}
 ZSCRobotOwned.prototype.miningable = function(index) { return (this.robotMineStart[index] == 0);}
-ZSCRobotOwned.prototype.setFromSystemWalletTag = function(tag) { return (this.fromSystemWalletTag = tag);}
 
 ZSCRobotOwned.prototype.getRewards = function(index) { 
     return bF_fixedNumberFromWei(this.robotRewards[index], 4);
@@ -196,7 +193,7 @@ ZSCRobotOwned.prototype.numRobots = function(gm, func) {
     var callBack = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.numUserMinerRobot(gm.fromSystemWalletTag,
+    myControlApi.numUserMinerRobot(
         {from: gm.account},
         function(error, num){ 
             if(!error) { 
