@@ -6,6 +6,7 @@ function ZSCLogin(userAccount) {
     this.userStatus;
     this.userType;
     this.controlApisAdr;
+    this.erc721Adr;
     this.controlApisFullAbi;
     this.account = userAccount;
     this.myAdmAdv = web3.eth.contract(this.getLoginAbi()).at(this.admAdr);
@@ -17,6 +18,7 @@ ZSCLogin.prototype.getUserName = function() { return this.userName; }
 ZSCLogin.prototype.getUserNameHr = function() { return this.userNameHr; }
 ZSCLogin.prototype.getUserStatus = function() { return this.userStatus; }
 ZSCLogin.prototype.getUserType = function() { return this.userType; }
+ZSCLogin.prototype.getErc721Adr = function() { return this.erc721Adr; }
 ZSCLogin.prototype.getControlApisAdr = function() { return this.controlApisAdr; }
 ZSCLogin.prototype.getControlApisFullAbi = function() { return this.controlApisFullAbi; }
 ZSCLogin.prototype.getLoginAbi = function() { 
@@ -35,7 +37,7 @@ ZSCLogin.prototype.tryLogin = function(userType, func){
             if (result == false) {
                 callBack(false);
             } else {
-                gm.getAdr(gm, callBack);
+                gm.getControlApisInfo(gm, callBack);
             }
         } else { 
             callBack(false);
@@ -44,33 +46,44 @@ ZSCLogin.prototype.tryLogin = function(userType, func){
     });
 }
 
-ZSCLogin.prototype.getAdr = function(gm, func){
+ZSCLogin.prototype.getControlApisInfo = function(gm, func) {
     var callBack = func;
     var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
 
     myAdmAdv.getControlApisAdr({from: gm.account},
-        function(error, adr) {
+        function(error, info) {
         if(!error) { 
-            gm.getFullAbi(gm, adr, callBack);
+            gm.parserControlApisInfo(gm, info);
+            callBack(true);
         } else {
             console.log("error: " + error);
         }
     } );
 }
 
-ZSCLogin.prototype.getFullAbi = function(gm, adr, func){
-    var callBack = func;
-    var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
+/*
+"info?abi=",
+"sysAdr=",    
+"erc721Adr=",  
+*/
+ZSCLogin.prototype.parserControlApisInfo = function(gm, info) {
+    var found1 = urlinfo.indexOf("?");
+    var found2 = urlinfo.indexOf("=");
 
-    myAdmAdv.getControlApisFullAbi(function(error, fullAbi) {
-        if(!error) { 
-            gm.controlApisAdr = adr;
-            gm.controlApisFullAbi = fullAbi;
-            callBack(true);
-        } else {
-            console.log("error: " + error);
-        }
-    } );
+    if (found1 == -1 || found2 == -1) return false;
+
+    var len = urlinfo.length;
+    var offset = urlinfo.indexOf("?");
+    var newsidinfo = urlinfo.substr(offset,len)
+    var newsids = newsidinfo.split("&");
+
+    var abi       = newsids[0];
+    var sysAdr    = newsids[1];
+    var erc721Adr = newsids[2];
+
+    gm.controlApisFullAbi = timeInfo.split("=")[1];
+    gm.controlApisAdr     = inputInfo.split("=")[1];
+    gm.erc721Adr          = "0x" + txInfo.split("=")[1];
 }
 
 ZSCLogin.prototype.activeByUser = function(type, hashLogId){
