@@ -260,6 +260,10 @@ contract ControlBase is Object {
         return amount;
     }
 
+    function getModuleAdress(bytes32 _name) public view returns (address) {
+        return modules_[_name];
+    }
+
     //------2018-07-18: new verstion: YYA------ 
     function getUserWalletAddress() public view returns (address) {
         checkAllowed(msg.sender);
