@@ -34,8 +34,6 @@ contract ERC721 {
 contract Erc721Adv is ERC721, Delegated {
     using SafeMath for uint;
 
-    uint private generatedTokenNos_;
-
     // Total amount of tokens
     uint private totalTokens_;
 
@@ -51,7 +49,7 @@ contract Erc721Adv is ERC721, Delegated {
     // Mapping from token ID to index of the owner tokens list
     mapping(uint => uint) private ownedTokensIndex_;
 
-    string private tokenSymbol_ = "DFT";
+    string private tokenSymbol_ = "DFN";
     
     string private tokenName_ = "Default Name";
     
@@ -66,9 +64,7 @@ contract Erc721Adv is ERC721, Delegated {
     }
 
     function checkCanTransfer(address _sender, uint256 _tokenId) private view {
-        address owner = tokenOwner_[_tokenId];
-        if (isDelegate(msg.sender, 1)) return;
-        
+        address owner = tokenOwner_[_tokenId];        
         if (checkTradeAble(_tokenId)) {
             require(_sender == owner || msg.sender == tokenApprovedFor_[_tokenId]);
         }
@@ -78,10 +74,6 @@ contract Erc721Adv is ERC721, Delegated {
         checkDelegate(msg.sender, 1);
         tokenName_ = _name;
         tokenSymbol_ = _symbole;
-    }
-
-    function getGeneratedTokenNos() public view returns (uint) {
-        return generatedTokenNos_;
     }
 
     ////////////////////////
