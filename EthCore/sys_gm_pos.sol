@@ -14,6 +14,10 @@ contract SysGmPosEffect {
 }
 
 contract SysGmPos is Erc721Adv, SysGmBase {
+    uint internal constant DAY_IN_SECONDS = 86400;
+    uint internal constant MAX_RATIO_VALUE = 10000;
+    uint public dayInSeconds_;
+
     struct RobotUnit {
         bytes32 status_;
         bytes32 name_;
@@ -22,7 +26,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         uint spEft_;
         uint spCur_;
         uint spMax_;
-        uint rrCur_;
         uint mineStart_;
         uint mineEnd_;
     }
@@ -36,7 +39,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         uint spEftMax_;
     }
     uint private ctgNos_;
-    mapping(uint => RobotUnit) private ctgs_;
+    mapping(uint => CtgUnit) private ctgs_;
     mapping(bytes32 => bool) private ctgExits_;
     mapping(bytes32 => uint) private ctgIndice_;
 
@@ -51,7 +54,20 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     // Constructor
     function SysGmPos(bytes32 _name) public SysGmBase(_name) {
+        dayInSeconds_ = DAY_IN_SECONDS;
     } 
+
+    function downscaledDay(uint ratio) public {
+        checkDelegate(msg.sender, 1);
+
+        require(ratio > 0 && ratio <= DAY_IN_SECONDS);
+        dayInSeconds_ = DAY_IN_SECONDS;
+        dayInSeconds_ = dayInSeconds_.div(ratio);   
+
+        addLog("downscaledDay 1 days = ", true);
+        addLog(PlatString.uintToString(dayInSeconds_), false);
+        addLog( "seconds", false);
+    }
 
     function mintUnit(address _user) internal returns (uint) {
         uint index = robotNos_;
@@ -69,11 +85,21 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         robots_[index].spMax_     = 0;
         robots_[index].mineStart_ = 0;
         robots_[index].mineEnd_   = 0;
+        robots_[index].specific_  = false;
         return index;
     }
 
     function checkUnitUser(address _user, uint _unitId) internal view {
         require(_user == ownerOf(_unitId));
+    }
+
+    function checkSpecificUnit(uint _unitId) internal {
+        if (robots_[_unitId].specific_ == false) {
+            return;
+        }
+
+        require(now < robots_[_unitId].mineEnd_);
+        robots_[_unitId].specific_ = false;
     }
 
     function setUnitStatus(uint _unitId, bytes32 _status) internal {
@@ -92,16 +118,18 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         robots_[_unitId].spCur_ = _cur;
     }
 
-    function setUnitRRCur(uint _unitId, uint _cur) internal {
-        robots_[_unitId].rrCur_ = _cur;
-    }
-
     function setUnitMineStart(uint _unitId, uint _tm) internal {
         robots_[_unitId].mineStart_ = _tm;
     }
 
     function setUnitMineEnd(uint _unitId, uint _tm) internal {
         robots_[_unitId].mineEnd_ = _tm;
+    }
+
+    function resetUnitMineInfo(uint _robotId) internal {
+        robots_[_robotId].spCur_     = 0;
+        robots_[_robotId].mineStart_ = 0;
+        robots_[_robotId].mineEnd_   = 0;
     }
 
     function getRandomUnitCategory() private returns (bytes32) {
@@ -123,6 +151,28 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
 
     //////////////////////
+    function mintUnitSpec(address _user, bytes32 _ctgName, uint _spMax, uint _durationInDays) public {
+        checkDelegate(msg.sender, 1);
+
+        uint cur = now;
+        uint index = robotNos_;
+        uint secs = _durationInDays.mul(dayInSeconds_);
+        robotNos_++;
+        _mint(_user, index);
+
+        uint ctgIndex = ctgIndice_[_ctgName];
+        robots_[index].status_ = "mining";
+        robots_[index].name_   = _ctgName;
+        robots_[index].rare_   = ctgs_[ctgIndex].rare_;
+        robots_[index].spLev_  = 0;
+        robots_[index].spEft_  = random(ctgs_[ctgIndex].spEftMin_, ctgs_[ctgIndex].spEftMax_);
+        robots_[index].spCur_     = _spMax;
+        robots_[index].spMax_     = 0;
+        robots_[index].specific_  = true;
+        robots_[index].mineStart_ = cur;
+        robots_[index].mineEnd_   = cur.add(secs);
+    }
+
     function setExtraEffectObj(address _adr) public {
         checkDelegate(msg.sender, 1);
         extraEffectObj_ = _adr;
@@ -164,6 +214,10 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return robotNos_;  
     }
 
+    function isMineStoppable(uint _unitId) public view returns (bool) {
+        return robots_[_unitId].stoppable_;
+    }
+
     function getUnitName(uint _unitId) public view returns (bytes32) {
         return robots_[_unitId].name_;
     }
@@ -174,6 +228,10 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     function getUnitRare(uint _unitId) public view returns (bytes32) {
         return robots_[_unitId].rare_;
+    }
+
+    function getUnitSPLev(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].spLev_;
     }
 
     function getUnitSPEft(uint _unitId) public view returns (uint) {
