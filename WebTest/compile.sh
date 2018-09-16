@@ -5,6 +5,7 @@ CORE="sol"
 
 SOURCES=(
 sample
+logistics
 )
 
 for((i=0;i<${#SOURCES[@]};i++));
