@@ -43,7 +43,7 @@ export default class Http {
             request = new ActiveXObject("Microsoft.XMLHTTP");
         }
         */
-        request = this.[_getXmlHttpObject];
+        request = this[_getXmlHttpObject]();
 
         timer = setTimeout(function() {
             timeout = true;
