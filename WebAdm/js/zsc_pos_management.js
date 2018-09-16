@@ -33,7 +33,7 @@ ZSCPosManagement.prototype.getRatioType = function(index) {return this.ratioType
 ZSCPosManagement.prototype.getRatioValue = function(index) {return this.ratioValue[index];}
 
 ZSCPosManagement.prototype.setTradeableInMarket = function(hashID, tag) {
-    this.myPosManager.setPublicTradeable_(tag, 
+    this.myPosManager.setPublicTradeable(tag, 
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){});
@@ -52,15 +52,6 @@ ZSCPosManagement.prototype.setCommonTokenUrl = function(hashID, url) {
 
 ZSCPosManagement.prototype.downscaledDay = function(hashID, scale) {
     this.myPosManager.downscaledDay(scale, 
-        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
-        function(error, result){ 
-            if(!error) cC_showHashResultTest(hashID, result, function(){});
-            else console.log("error: " + error);
-        });
-} 
-
-ZSCPosManagement.prototype.setGen0RobotMaxNos = function(hashID, nos) {
-    this.myPosManager.setGen0RobotNos(nos, 
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){});
