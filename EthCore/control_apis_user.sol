@@ -68,12 +68,13 @@ contract AbisForPosControlApis {
     function activeUnit(uint _robotId, bytes32 _tokenType, uint _durationInDays, uint _totalZSC) public;
     function upgradeUnitSpLev(uint _robotId) public;
     function publishUnit(uint _robotId, uint _price) public;
-    function cancelAuction(address _seller, uint _robotId) public;
+    function cancelSell(uint _robotId) public;
     function purchaseUnit(uint _robotId) public;
     function claimReward(uint _robotId, bytes32 _tokenType) public;
     function numSellUnits() public view returns (uint);
     function getSellUnitByIndex(uint _index) public view returns (string);
     function numUserUnits() public view returns (uint);
     function getUserUnitByIndex(uint _index) public view returns (string);
+    function transfer(address _to, uint _tokenId) public;
 }
 
