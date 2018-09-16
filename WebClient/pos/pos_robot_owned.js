@@ -70,23 +70,11 @@ ZSCRobotOwned.prototype.secondsToDate = function(secs) {
     return (curdate.toLocaleString());
 }
 
-ZSCRobotOwned.prototype.takeOutToOwner = function(hashId, roobtId) { 
-    var gm = this;
-    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-
-    myControlApi.takeOutToOwner(roobtId,
-        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
-        function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
-            else console.log("error: " + error);
-        });
-}
-
 ZSCRobotOwned.prototype.transferToOther = function(hashId, dest, roobtId) { 
     var gm = this;
-    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    var myErc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.transferToOther(dest, roobtId,
+    erc721Api.transfer(dest, roobtId,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
@@ -97,8 +85,8 @@ ZSCRobotOwned.prototype.transferToOther = function(hashId, dest, roobtId) {
 ZSCRobotOwned.prototype.createGen0Robot = function(hashId, func) { 
     var gm = this;
     var callBack = func;
-    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-    myControlApi.createMinerRobot(
+    var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    erc721Api.createRobot(
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
@@ -109,8 +97,8 @@ ZSCRobotOwned.prototype.createGen0Robot = function(hashId, func) {
 ZSCRobotOwned.prototype.enhanceMinerRobot = function(hashId, robotId, func) {
     var gm = this;
     var callBack = func;
-    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-    myControlApi.enhanceMinerRobot(robotId,
+    var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    erc721Api.upgradeUnitSpLev(robotId,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
@@ -123,8 +111,8 @@ ZSCRobotOwned.prototype.publishMinerRobot = function(hashId, robotId, price, fun
     var callBack = func;
 
     var priceInEther = web3.toWei(price, 'ether');
-    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-    myControlApi.publishMinerRobot(robotId, priceInEther, 
+    var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    erc721Api.publishUnit(robotId, priceInEther, 
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
@@ -132,11 +120,11 @@ ZSCRobotOwned.prototype.publishMinerRobot = function(hashId, robotId, price, fun
         });
 }
 
-ZSCRobotOwned.prototype.cancalSellingMinerRobot = function(hashId, robotId, func) {
+ZSCRobotOwned.prototype.cancelSellingMinerRobot = function(hashId, robotId, func) {
     var gm = this;
     var callBack = func;
-    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-    myControlApi.cancalSellingMinerRobot(robotId,
+    var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    erc721Api.cancelSell(robotId,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
@@ -147,8 +135,8 @@ ZSCRobotOwned.prototype.cancalSellingMinerRobot = function(hashId, robotId, func
 ZSCRobotOwned.prototype.activeMinerRobot = function(hashId, robotId, tokenType, rewardType, func) {
     var callBack = func;
     var gm = this;
-    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-    myControlApi.activeMinerRobot(robotId, tokenType, rewardType,
+    var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    erc721Api.activeUnit(robotId, tokenType, rewardType,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
@@ -159,8 +147,8 @@ ZSCRobotOwned.prototype.activeMinerRobot = function(hashId, robotId, tokenType, 
 ZSCRobotOwned.prototype.claimReward = function(hashId, robotId, tokenType, func) {
     var callBack = func;
     var gm = this;
-    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-    myControlApi.claimReward(robotId, tokenType,
+    var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    erc721Api.claimReward(robotId, tokenType,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
@@ -191,9 +179,9 @@ ZSCRobotOwned.prototype.loadUserRobots = function(func) {
 
 ZSCRobotOwned.prototype.numRobots = function(gm, func) {
     var callBack = func;
-    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.numUserMinerRobot(
+    erc721Api.numUserMinerRobot(
         {from: gm.account},
         function(error, num){ 
             if(!error) { 
@@ -207,9 +195,9 @@ ZSCRobotOwned.prototype.numRobots = function(gm, func) {
 
 ZSCRobotOwned.prototype.loadRobotInfoByIndex = function(gm, index, func) {
     var callBack = func;
-    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    myControlApi.getUserMinerRobotInfoByIndex(gm.fromSystemWalletTag, Number(index), 
+    erc721Api.getUserMinerRobotInfoByIndex(gm.fromSystemWalletTag, Number(index), 
         {from: gm.account},
         function(error, robotInfo){ 
             if(!error) {
