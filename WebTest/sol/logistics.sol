@@ -67,6 +67,10 @@ contract Logistics {
         return str;
     }
  
+    function allocTracks(bytes32 _num, uint length) internal {
+        infos_[_num].tracks_.length = length;
+    }
+
     function updateTrack(bytes32 _num, uint index, string _track) public {
         bytes32 type32 = bytes32(0);
         bytes32 time = bytes32(0);
@@ -77,47 +81,51 @@ contract Logistics {
         string  memory desc = "";
         bytes32 actionCode = bytes32(0);
 
+        if (index >= infos_[_num].tracks_.length) {
+            return;
+        }
+
         if (_track.keyExists("type")) {
             type32 = PlatString.tobytes32(_track.getStringValueByKey("type"));
             infos_[_num].tracks_[index].type_ = type32;
         }
         if (_track.keyExists("time")) {
             time = PlatString.tobytes32(_track.getStringValueByKey("time"));
-            //infos_[_num].tracks_[index].time_ = time;
+            infos_[_num].tracks_[index].time_ = time;
         }
         if (_track.keyExists("country")) {
             country = PlatString.tobytes32(_track.getStringValueByKey("country"));
-            //infos_[_num].tracks_[index].country_ = country;
+            infos_[_num].tracks_[index].country_ = country;
         }
         if (_track.keyExists("city")) {
             city = PlatString.tobytes32(_track.getStringValueByKey("city"));
-            //infos_[_num].tracks_[index].city_ = city;
+            infos_[_num].tracks_[index].city_ = city;
         }
         if (_track.keyExists("facilityName")) {
             facilityName = PlatString.tobytes32(_track.getStringValueByKey("facilityName"));
-            //infos_[_num].tracks_[index].facilityName_ = facilityName;
+            infos_[_num].tracks_[index].facilityName_ = facilityName;
         }
         if (_track.keyExists("timeZone")) {
             timeZone = PlatString.tobytes32(_track.getStringValueByKey("timeZone"));
-            //infos_[_num].tracks_[index].timeZone_ = timeZone;
+            infos_[_num].tracks_[index].timeZone_ = timeZone;
         }
         if (_track.keyExists("desc")) {
             desc = _track.getStringValueByKey("desc");
-            //infos_[_num].tracks_[index].desc_ = desc;
+            infos_[_num].tracks_[index].desc_ = desc;
         }
         if (_track.keyExists("actionCode")) {
             actionCode = PlatString.tobytes32(_track.getStringValueByKey("actionCode"));
-            //infos_[_num].tracks_[index].actionCode_ = actionCode;
+            infos_[_num].tracks_[index].actionCode_ = actionCode;
         }
 
-        log0(type32);
-        log0(time);
-        log0(country);
-        log0(city);
-        log0(facilityName);
-        log0(timeZone);
-        log0(PlatString.tobytes32(desc));
-        log0(actionCode);
+        // log0(type32);
+        // log0(time);
+        // log0(country);
+        // log0(city);
+        // log0(facilityName);
+        // log0(timeZone);
+        // log0(PlatString.tobytes32(desc));
+        // log0(actionCode);
     }
 
     function updateAll() public {
@@ -139,29 +147,29 @@ contract Logistics {
 
         if (_info.keyExists("transNum")) {
             transNum = PlatString.tobytes32(_info.getStringValueByKey("transNum"));
-            //infos_[num].transNum_ = transNum;
+            infos_[num].transNum_ = transNum;
         }
 
         if (_info.keyExists("model")) {
             model = PlatString.tobytes32(_info.getStringValueByKey("model"));
-            //infos_[num].model_ = model;
+            infos_[num].model_ = model;
         }
 
         if (_info.keyExists("destinationCountry")) {
             destinationCountry = PlatString.tobytes32(_info.getStringValueByKey("destinationCountry"));
-            //infos_[num].destinationCountry_ = destinationCountry;
+            infos_[num].destinationCountry_ = destinationCountry;
         }
 
         if (_info.keyExists("lastStatus")) {
             lastStatus = PlatString.tobytes32(_info.getStringValueByKey("lastStatus"));
-            //infos_[num].lastStatus_ = lastStatus;
+            infos_[num].lastStatus_ = lastStatus;
         }
 
-        log0(num);
-        log0(transNum);
-        log0(model);
-        log0(destinationCountry);
-        log0(lastStatus);
+        // log0(num);
+        // log0(transNum);
+        // log0(model);
+        // log0(destinationCountry);
+        // log0(lastStatus);
 
         // delete all tracks at first
 
@@ -170,6 +178,10 @@ contract Logistics {
              string memory tracks = _info.getArrayValueByKey("trackElementList");
              if (bytes(tracks).length > 0) {
                 tracks.split("&", tracks_);
+                
+                //alloc tracks
+                allocTracks(num, tracks_.length);
+                
                 for (uint i=0; i<tracks_.length; i++) {
                     updateTrack(num, i, tracks_[i]);
                 }
