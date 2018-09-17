@@ -250,3 +250,24 @@ function loadLocalPageHeader() {
 //         applyForUser("receiver", "ApplyForReceiverHash");
 
 //     } else {
+//         switch (tag) {
+//             case "logout":
+//                 window.location.reload(true);
+//                 break;
+
+//             case "module-adrs":
+//                 zscModuleAdrGM.setUserType(zscUser.getUserType());
+//                 zscModuleAdrGM.setUserName(zscUser.getUserName());
+//                 zscModuleAdrGM.getModuleAdrs(function () {
+//                     zscModuleAdrGM.loadModuleAdrsHtml("PageBody");
+//                 });
+//                 break;
+
+//             case "wallet":
+//                 zscWalletGM.setUserType(zscUser.getUserType());
+//                 zscWalletGM.setUserName(zscUser.getUserName());
+//                 zscWalletGM.loadTokenInfoByIndex(0, function () {
+//                     zscWalletGM.loadWalletsHtml("PageBody", "submitTransferValue", "showTransactions", "enableTestZSCWallet");
+//                 });
+
+//                 break;
