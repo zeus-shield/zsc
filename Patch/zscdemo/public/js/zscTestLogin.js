@@ -209,3 +209,10 @@ function backToProTmp() {
     loadHtmlPageBody("template");
 }
 
+function backToRecAgr() {
+    loadHtmlPageBody("agreement-receiver");
+}
+
+function bakcToAllAgr() {
+    loadHtmlPageBody("agreement-all");
+}
