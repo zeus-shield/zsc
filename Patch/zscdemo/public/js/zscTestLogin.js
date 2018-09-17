@@ -299,3 +299,28 @@ function loadLocalPageHeader() {
 //                     zscElement.loadParametersHtml("PageBody", "agreement-provider", "claimReward", "backToProTmp");
 //                 });
 //                 break;
+
+//             case "parameter-agreement-receiver":
+//                 zscElement.loadParameterNamesAndvalues(function () {
+//                     zscElement.loadParametersHtml("PageBody", "agreement-receiver", "claimInsurance", "backToRecAgr");
+//                 });
+//                 break;
+
+//             case "parameter-agreement-all":
+//                 zscElement.setUserType(zscUser.getUserType());
+//                 zscElement.loadParameterNamesAndvalues(function () {
+//                     zscElement.loadParametersHtml("PageBody", "agreement-all", "null", "bakcToAllAgr");
+//                 });
+//                 break;
+
+//             case "agreement-provider":
+//                 zscAgrsProGM.loadAgreements(function () {
+//                     zscAgrsProGM.loadAgreementsHtml("PageBody", "publishAgreement", "showProAgrParameters");
+//                 });
+//                 break;
+
+//             case "agreement-receiver":
+//                 zscAgrsRecGM.loadAgreements(function () {
+//                     zscAgrsRecGM.loadAgreementsHtml("PageBody", "showRecAgrParameters");
+//                 });
+//                 break;
