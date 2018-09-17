@@ -324,3 +324,22 @@ function loadLocalPageHeader() {
 //                     zscAgrsRecGM.loadAgreementsHtml("PageBody", "showRecAgrParameters");
 //                 });
 //                 break;
+
+//             case "agreement-all":
+//                 zscAgrsAllGM.setUserType(zscUser.getUserType());
+//                 zscAgrsAllGM.loadAllAgreements(function () {
+//                     zscAgrsAllGM.loadAllAgreementsHtml("PageBody", "showAllAgrParameters", "submitPurchaseAgreement");
+//                 });
+//                 break;
+
+//             case "transaction":
+//                 zscTransGM.loadTransactions(function () {
+//                     zscTransGM.loadTransactionsHtml("PageBody");
+//                 });
+//                 break;
+
+//             default:
+//                 break;
+//         }
+//     }
+// }
