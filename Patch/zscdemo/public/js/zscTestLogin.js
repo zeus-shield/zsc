@@ -271,3 +271,31 @@ function loadLocalPageHeader() {
 //                 });
 
 //                 break;
+
+//             case "template":
+//                 zscTmpsGM.setUserType(zscUser.getUserType());
+//                 zscTmpsGM.loadTempates(function () {
+//                     //elementId, funcCreateTmp, funcSetPara, funcPublish
+//                     zscTmpsGM.loadTemplatesHtml("PageBody", "creatNewTemplate", "enableAsAgreement", "showTemplateParameters", "showProvidersAgreements");
+//                 });
+//                 break;
+
+//             case "parameter-profile":
+//                 zscElement.setElementName(zscUser.getUserName());
+//                 zscElement.setUserType(zscUser.getUserType());
+//                 zscElement.loadParameterNamesAndvalues(function () {
+//                     zscElement.loadParametersHtml("PageBody", "profile", "submitParameterProfileChanges");
+//                 });
+//                 break;
+
+//             case "parameter-template":
+//                 zscElement.loadParameterNamesAndvalues(function () {
+//                     zscElement.loadParametersHtml("PageBody", "template", "submitParameterTemplateChanges", "backToProTmp");
+//                 });
+//                 break;
+
+//             case "parameter-agreement-provider":
+//                 zscElement.loadParameterNamesAndvalues(function () {
+//                     zscElement.loadParametersHtml("PageBody", "agreement-provider", "claimReward", "backToProTmp");
+//                 });
+//                 break;
