@@ -182,3 +182,10 @@ function submitPurchaseAgreement(elementName) {
         loadHtmlPageBody("agreement-all")
     });
 }
+
+
+function confirmPurchaseAgreement(index) {
+    zscViewAgrsGM.confirmPurchaseAgreement(index, function(result) {
+        loadHtmlPageBody("view-agreement")
+    });
+}
