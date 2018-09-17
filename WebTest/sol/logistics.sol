@@ -4,60 +4,176 @@
 */
 
 pragma solidity ^0.4.21;
+//pragma experimental ABIEncoderV2;
 
 import "./plat_string.sol";
+import "./utillib/LibString.sol";
 
 contract Logistics {
 
+    using LibString for *;
+
     struct Track {
-        string type_;
-        string time_;
-        string country_;
-        string city_;
-        string facilityName_;
-        string timeZone_;
-        string desc_;
-        string actionCode_;
+        bytes32 type_;
+        bytes32 time_;
+        bytes32 country_;
+        bytes32 city_;
+        bytes32 facilityName_;
+        bytes32 timeZone_;
+        string  desc_;
+        bytes32 actionCode_;
     }
 
-    struct Brief {
+    struct Info {
         bytes32 num_;
         bytes32 transNum_;
         bytes32 model_;
         bytes32 destinationCountry_;
         bytes32 lastStatus_;
-        Track lastTrack_;
-    }
 
-    struct Detail {
         Track[] tracks_;
     }
 
-    mapping(bytes32 => Brief) private briefs_;
-    mapping(bytes32 => Detail) private details_;
+    uint private count_;
+    mapping(bytes32 => Info) private infos_;
+
+    string[] tracks_;
 
     // Constructor
-    function Logistics() public { 
+    function Logistics() public {
+        count_ = 0;
     }
 
-    function setBrief(bytes32 _num, bytes32 _transNum, 
+    function setBriefInfo(bytes32 _num, bytes32 _transNum, 
                       bytes32 _model, bytes32 _destinationCountry,
                       bytes32 _lastStatus) public {
-        briefs_[_num].num_                = _num;
-        briefs_[_num].transNum_           = _transNum;
-        briefs_[_num].model_              = _model;
-        briefs_[_num].destinationCountry_ = _destinationCountry;
-        briefs_[_num].lastStatus_         = _lastStatus;
+        infos_[_num].num_                = _num;
+        infos_[_num].transNum_           = _transNum;
+        infos_[_num].model_              = _model;
+        infos_[_num].destinationCountry_ = _destinationCountry;
+        infos_[_num].lastStatus_         = _lastStatus;
+
+        count_ ++;
     }
 
-    function getBrief(bytes32 _num) public view returns (string) {
+    function getBriefInfo(bytes32 _num) public view returns (string) {
         // json formart
         string memory str ="{";
         str = PlatString.append(str, '"num":"', PlatString.bytes32ToString(_num), '",');
-        str = PlatString.append(str, '"model":"', PlatString.bytes32ToString(briefs_[_num].model_), '",');
-        str = PlatString.append(str, '"destinationCountry":"', PlatString.bytes32ToString(briefs_[_num].destinationCountry_), '",');
-        str = PlatString.append(str, '"transNum":"', PlatString.bytes32ToString(briefs_[_num].transNum_), '",');
-        str = PlatString.append(str, '"lastStatus":"', PlatString.bytes32ToString(briefs_[_num].lastStatus_), '"}');
+        str = PlatString.append(str, '"model":"', PlatString.bytes32ToString(infos_[_num].model_), '",');
+        str = PlatString.append(str, '"destinationCountry":"', PlatString.bytes32ToString(infos_[_num].destinationCountry_), '",');
+        str = PlatString.append(str, '"transNum":"', PlatString.bytes32ToString(infos_[_num].transNum_), '",');
+        str = PlatString.append(str, '"lastStatus":"', PlatString.bytes32ToString(infos_[_num].lastStatus_), '"}');
         return str;
+    }
+ 
+    function updateTrack(bytes32 _num, uint index, string _track) public {
+        bytes32 type32 = bytes32(0);
+        bytes32 time = bytes32(0);
+        bytes32 country = bytes32(0);
+        bytes32 city = bytes32(0);
+        bytes32 facilityName = bytes32(0);
+        bytes32 timeZone = bytes32(0);
+        string  memory desc = "";
+        bytes32 actionCode = bytes32(0);
+
+        if (_track.keyExists("type")) {
+            type32 = PlatString.tobytes32(_track.getStringValueByKey("type"));
+            infos_[_num].tracks_[index].type_ = type32;
+        }
+        if (_track.keyExists("time")) {
+            time = PlatString.tobytes32(_track.getStringValueByKey("time"));
+            //infos_[_num].tracks_[index].time_ = time;
+        }
+        if (_track.keyExists("country")) {
+            country = PlatString.tobytes32(_track.getStringValueByKey("country"));
+            //infos_[_num].tracks_[index].country_ = country;
+        }
+        if (_track.keyExists("city")) {
+            city = PlatString.tobytes32(_track.getStringValueByKey("city"));
+            //infos_[_num].tracks_[index].city_ = city;
+        }
+        if (_track.keyExists("facilityName")) {
+            facilityName = PlatString.tobytes32(_track.getStringValueByKey("facilityName"));
+            //infos_[_num].tracks_[index].facilityName_ = facilityName;
+        }
+        if (_track.keyExists("timeZone")) {
+            timeZone = PlatString.tobytes32(_track.getStringValueByKey("timeZone"));
+            //infos_[_num].tracks_[index].timeZone_ = timeZone;
+        }
+        if (_track.keyExists("desc")) {
+            desc = _track.getStringValueByKey("desc");
+            //infos_[_num].tracks_[index].desc_ = desc;
+        }
+        if (_track.keyExists("actionCode")) {
+            actionCode = PlatString.tobytes32(_track.getStringValueByKey("actionCode"));
+            //infos_[_num].tracks_[index].actionCode_ = actionCode;
+        }
+
+        log0(type32);
+        log0(time);
+        log0(country);
+        log0(city);
+        log0(facilityName);
+        log0(timeZone);
+        log0(PlatString.tobytes32(desc));
+        log0(actionCode);
+    }
+
+    function updateAll() public {
+        string memory _info = "{\"error\":null,\"num\":\"JNTCU0600046683YQ\",\"transNum\":\"MSK0000027695\",\"model\":\"MOSEXP\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"§¡§â§Ş§Ñ§Ó§Ú§â\",\"timeZone\":\"+3\",\"desc\":\"§´§à§Ó§Ñ§â §Ò§í§İ §å§ã§á§Ö§ê§ß§à §Õ§à§ã§ä§Ñ§Ó§İ§Ö§ß §á§à§İ§å§é§Ñ§ä§Ö§İ§ğ. §³§á§Ñ§ã§Ú§Ò§à §é§ä§à §Ó§à§ã§á§à§İ§î§Ù§à§Ó§Ñ§İ§Ú§ã§î §ß§Ñ§ê§Ú§Ş§Ú §å§ã§İ§å§Ô§Ñ§Ş§Ú\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
+        bytes32 num = bytes32(0);
+        bytes32 transNum = bytes32(0);
+        bytes32 model = bytes32(0);
+        bytes32 destinationCountry = bytes32(0);
+        bytes32 lastStatus = bytes32(0);
+
+        if (_info.keyExists("num")) {
+            num = PlatString.tobytes32(_info.getStringValueByKey("num"));
+            infos_[num].num_ = num;
+        }
+
+        if (bytes32(0) == num) {
+            return;
+        }
+
+        if (_info.keyExists("transNum")) {
+            transNum = PlatString.tobytes32(_info.getStringValueByKey("transNum"));
+            //infos_[num].transNum_ = transNum;
+        }
+
+        if (_info.keyExists("model")) {
+            model = PlatString.tobytes32(_info.getStringValueByKey("model"));
+            //infos_[num].model_ = model;
+        }
+
+        if (_info.keyExists("destinationCountry")) {
+            destinationCountry = PlatString.tobytes32(_info.getStringValueByKey("destinationCountry"));
+            //infos_[num].destinationCountry_ = destinationCountry;
+        }
+
+        if (_info.keyExists("lastStatus")) {
+            lastStatus = PlatString.tobytes32(_info.getStringValueByKey("lastStatus"));
+            //infos_[num].lastStatus_ = lastStatus;
+        }
+
+        log0(num);
+        log0(transNum);
+        log0(model);
+        log0(destinationCountry);
+        log0(lastStatus);
+
+        // delete all tracks at first
+
+        // update tracks
+        if (_info.keyExists("trackElementList")) {
+             string memory tracks = _info.getArrayValueByKey("trackElementList");
+             if (bytes(tracks).length > 0) {
+                tracks.split("&", tracks_);
+                for (uint i=0; i<tracks_.length; i++) {
+                    updateTrack(num, i, tracks_[i]);
+                }
+             }
+        }
     }
 }
