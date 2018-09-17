@@ -204,3 +204,8 @@ function publishAgreement(agrName) {
         loadHtmlPageBody("agreement-provider")
     });
 }
+
+function backToProTmp() {
+    loadHtmlPageBody("template");
+}
+
