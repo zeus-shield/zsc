@@ -198,3 +198,9 @@ function enableTestZSCWallet(hashId) {
         loadHtmlPageBody("wallet")
     });
 }
+
+function publishAgreement(agrName) {
+    zscAgrsProGM.publishAgreement(agrName, function (result) {
+        loadHtmlPageBody("agreement-provider")
+    });
+}
