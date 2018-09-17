@@ -233,3 +233,20 @@ function loadLocalPageHeader() {
         }
     });
 }
+
+// function loadHtmlPageBody(tag) {
+//     if (tag == "welecome") {
+//         // zscHtml.loadPageBody("welecome");
+//         loadLocalPageHeaderDemo();
+
+//     } else if (tag == "apply-provider") {
+//         document.getElementById("PageHeader").innerHTML = "Applying... <br> Need to reload once succeeded";
+//         document.getElementById("PageBody").innerHTML = '<div class="well"> <text id="ApplyForProviderHash"></text> </div>';
+//         applyForUser("provider", "ApplyForProviderHash");
+
+//     } else if (tag == "apply-receiver") {
+//         document.getElementById("PageHeader").innerHTML = "Applying... <br> Need to reload once succeeded";
+//         document.getElementById("PageBody").innerHTML = '<div class="well"> <text id="ApplyForReceiverHash"></text> </div>';
+//         applyForUser("receiver", "ApplyForReceiverHash");
+
+//     } else {
