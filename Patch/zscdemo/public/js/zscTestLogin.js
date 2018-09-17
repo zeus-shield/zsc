@@ -31,6 +31,7 @@ function htmlLoadLogin() {
     zscHtml.setHtmlContentIds("PageHeader", "PageBody");
     zscHtml.loadPageBody("login", "checkUser");
 }
+
 function checkUser(adrId, userId, passId) {
     var admAdr = "0x295459c5ba2e760daacb57e0ac455456227df223";
     var user = document.getElementById(userId).value;
@@ -87,6 +88,7 @@ function creatNewTemplate(logId) {
     });
 }
 
+
 //Disable during alpha-test
 /*
 function confirmTransferValue(tokenSymbol, logId) {
@@ -112,6 +114,7 @@ function submitParameterTemplateChanges(logID) {
         loadHtmlPageBody("template");
     });
 }
+
 function claimReward(logId) {
     zscAgrsProGM.claimReward(logId, zscElement.getElementName(), function () {
         loadHtmlPageBody("template");
@@ -183,7 +186,6 @@ function submitPurchaseAgreement(elementName) {
     });
 }
 
-
 //Disable during alpha-test
 /*
 function confirmPurchaseAgreement(index) {
@@ -215,4 +217,19 @@ function backToRecAgr() {
 
 function bakcToAllAgr() {
     loadHtmlPageBody("agreement-all");
+}
+
+function loadLocalPageHeader() {
+    zscUser.getUserStatusFromAdm(function (status) {
+        if (status == 0) {
+            //Should not happen 
+        } else if (status == "added") {
+            zscHtml.loadPageHeader("loadHtmlPageBody", "null", false);
+        } else if (status == "applied") {
+            zscUser.getUserTypeFromAdm(function (type) {
+                zscHtml.loadPageHeader("loadHtmlPageBody", type, true);
+                loadHtmlPageBody("applied");
+            });
+        }
+    });
 }
