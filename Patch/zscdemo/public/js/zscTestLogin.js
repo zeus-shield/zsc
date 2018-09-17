@@ -184,8 +184,17 @@ function submitPurchaseAgreement(elementName) {
 }
 
 
+//Disable during alpha-test
+/*
 function confirmPurchaseAgreement(index) {
     zscViewAgrsGM.confirmPurchaseAgreement(index, function(result) {
         loadHtmlPageBody("view-agreement")
+    });
+}
+*/
+
+function enableTestZSCWallet(hashId) {
+    zscWalletGM.enableUserWallet(hashId, function () {
+        loadHtmlPageBody("wallet")
     });
 }
