@@ -21,14 +21,17 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     struct RobotUnit {
         bytes32 status_;
         bytes32 name_;
+        bool specific_;
         uint rare_;
         uint spLev_;
-        uint spEft_;
         uint spCur_;
         uint spMax_;
         uint mineStart_;
         uint mineEnd_;
-        bool specific_;
+
+        uint spEft_;
+        uint rrEft_;
+        uint upProbEft_;
     }
     uint private robotNos_;
     mapping(uint => RobotUnit) private robots_;
@@ -38,6 +41,10 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         uint rare_;
         uint spEftMin_;
         uint spEftMax_;
+        uint rrEftMin_;
+        uint rrEftMax_;
+        uint upProbEftMin_;
+        uint upProbEftMax_;
     }
     uint private ctgNos_;
     mapping(uint => CtgUnit) private ctgs_;
@@ -77,16 +84,35 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
         bytes32 ctgName = getRandomUnitCategory();
         uint ctgIndex = ctgIndice_[ctgName];
+
+        robots_[index].specific_  = false;
         robots_[index].status_ = "idle";
         robots_[index].name_   = ctgName;
         robots_[index].rare_   = ctgs_[ctgIndex].rare_;
         robots_[index].spLev_  = 0;
-        robots_[index].spEft_  = random(ctgs_[ctgIndex].spEftMin_, ctgs_[ctgIndex].spEftMax_);
         robots_[index].spCur_     = 0;
         robots_[index].spMax_     = 0;
         robots_[index].mineStart_ = 0;
         robots_[index].mineEnd_   = 0;
-        robots_[index].specific_  = false;
+
+        if (ctgs_[ctgIndex].spEftMin_ == ctgs_[ctgIndex].spEftMax_) {
+            robots_[index].spEft_ = ctgs_[ctgIndex].spEftMin_;
+        } else {
+            robots_[index].spEft_  = random(ctgs_[ctgIndex].spEftMin_, ctgs_[ctgIndex].spEftMax_);
+        }
+
+        if (ctgs_[ctgIndex].rrEftMin_ == ctgs_[ctgIndex].rrEftMax_) {
+            robots_[index].rrEft_ = ctgs_[ctgIndex].rrEftMin_;
+        } else {
+            robots_[index].rrEft_  = random(ctgs_[ctgIndex].rrEftMin_, ctgs_[ctgIndex].rrEftMax_);
+        }
+
+        if (ctgs_[ctgIndex].upProbEftMin_ == ctgs_[ctgIndex].upProbEftMax_) {
+            robots_[index].upProbEft_ = ctgs_[ctgIndex].upProbEftMin_;
+        } else {
+            robots_[index].upProbEft_  = random(ctgs_[ctgIndex].upProbEftMin_, ctgs_[ctgIndex].upProbEftMax_);
+        }
+
         return index;
     }
 
@@ -161,16 +187,19 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         _mint(_user, index);
 
         uint ctgIndex = ctgIndice_[_ctgName];
+
+        robots_[index].specific_  = true;
         robots_[index].status_ = "mining";
         robots_[index].name_   = _ctgName;
         robots_[index].rare_   = ctgs_[ctgIndex].rare_;
         robots_[index].spLev_  = 0;
-        robots_[index].spEft_  = random(ctgs_[ctgIndex].spEftMin_, ctgs_[ctgIndex].spEftMax_);
         robots_[index].spCur_     = _spMax;
         robots_[index].spMax_     = 0;
-        robots_[index].specific_  = true;
         robots_[index].mineStart_ = cur;
         robots_[index].mineEnd_   = cur.add(secs);
+
+        robots_[index].spEft_  = random(ctgs_[ctgIndex].spEftMin_, ctgs_[ctgIndex].spEftMax_);
+
     }
 
     function setExtraEffectObj(address _adr) public {
@@ -186,7 +215,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         rareProb_[3] = _R;
     }
 
-    function setUnitCategory(bytes32 _name, uint _rare, uint _spEftMin, uint _spEftMax) public {
+    function setUnitCategory(bytes32 _name, uint _rare, uint _spEftMin, uint _spEftMax, uint _rrEftMin, uint _rrEftMax, uint _upProbEftMin, uint _upProbEftMax) public {
         checkDelegate(msg.sender, 1);
         require(_rare < 4);
         uint index;
@@ -208,6 +237,10 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         ctgs_[index].rare_     = _rare;
         ctgs_[index].spEftMin_ = _spEftMin;
         ctgs_[index].spEftMax_ = _spEftMax;
+        ctgs_[index].rrEftMin_ = _rrEftMin;
+        ctgs_[index].rrEftMax_ = _rrEftMax;
+        ctgs_[index].upProbEftMin_ = _upProbEftMin;
+        ctgs_[index].upProbEftMax_ = _upProbEftMax;
     }
 
     function numUnits() public view returns (uint) {
