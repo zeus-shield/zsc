@@ -78,7 +78,7 @@ contract Logistics {
         infos_[_num].tracks_.length = 0;
     }
 
-    function updateTrack(bytes32 _num, uint index, string _track) public {
+    function updateTrack(bytes32 _num, uint index, string _track) internal {
         bytes32 type32 = bytes32(0);
         bytes32 time = bytes32(0);
         bytes32 country = bytes32(0);
@@ -158,6 +158,30 @@ contract Logistics {
         // log0(actionCode);
     }
 
+    function updateTracks(bytes32 _num, string _tracks) internal {
+
+        if ((bytes32(0) == _num) || _tracks.equals("")) {
+            return;
+        }
+
+        if (_tracks.keyExists("trackElementList")) {
+
+            // delete all tracks at first
+            deleteTracks(_num);
+
+            string memory tracks = _tracks.getArrayValueByKey("trackElementList");
+                if (bytes(tracks).length > 0) {
+                tracks.split("&", tracks_);
+
+                //alloc tracks
+                allocTracks(_num, tracks_.length);
+
+                for (uint i=0; i<tracks_.length; i++) {
+                    updateTrack(_num, i, tracks_[i]);
+                }
+            }
+        }
+    }
     function updateAll() public {
         string memory _info = "{\"error\":null,\"num\":\"JNTCU0600046683YQ\",\"transNum\":\"MSK0000027695\",\"model\":\"MOSEXP\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"§¡§â§Þ§Ñ§Ó§Ú§â\",\"timeZone\":\"+3\",\"desc\":\"§´§à§Ó§Ñ§â §Ò§í§Ý §å§ã§á§Ö§ê§ß§à §Õ§à§ã§ä§Ñ§Ó§Ý§Ö§ß §á§à§Ý§å§é§Ñ§ä§Ö§Ý§ð. §³§á§Ñ§ã§Ú§Ò§à §é§ä§à §Ó§à§ã§á§à§Ý§î§Ù§à§Ó§Ñ§Ý§Ú§ã§î §ß§Ñ§ê§Ú§Þ§Ú §å§ã§Ý§å§Ô§Ñ§Þ§Ú\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
         bytes32 num = bytes32(0);
@@ -210,22 +234,6 @@ contract Logistics {
         // log0(lastStatus);
 
         // update tracks
-        if (_info.keyExists("trackElementList")) {
-
-            // delete all tracks at first
-            deleteTracks(num);
-
-            string memory tracks = _info.getArrayValueByKey("trackElementList");
-                if (bytes(tracks).length > 0) {
-                tracks.split("&", tracks_);
-
-                //alloc tracks
-                allocTracks(num, tracks_.length);
-
-                for (uint i=0; i<tracks_.length; i++) {
-                    updateTrack(num, i, tracks_[i]);
-                }
-            }
-        }
+        updateTracks(num, _info);
     }
 }
