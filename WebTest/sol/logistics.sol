@@ -364,7 +364,34 @@ contract Logistics {
         delete infos_[_num];
     }
 
-    function getBrief(bytes32 _num) public view returns (string) {
+    function getBrief(bytes32 _num) public view returns (string, string, string, string, string) {
+        uint index = 0;
+        bool found = false;
+        string[5] memory str = ["", "", "", "", ""];
+
+        _num = PlatString.tobytes32("JNTCU0600046683YQ");
+
+        // check param
+        if (bytes32(0) == _num) {
+            return (str[0], str[1], str[2], str[3], str[4]);
+        }
+
+        // find num
+        (found, index) = findNum(_num);
+        if (!found) {
+            return (str[0], str[1], str[2], str[3], str[4]);
+        }
+
+        str[0] = PlatString.bytes32ToString(_num);
+        str[1] = PlatString.bytes32ToString(infos_[_num].transNum_);
+        str[2] = PlatString.bytes32ToString(infos_[_num].model_);
+        str[3] = PlatString.bytes32ToString(infos_[_num].destinationCountry_);
+        str[4] = PlatString.bytes32ToString(infos_[_num].lastStatus_);
+
+        return (str[0], str[1], str[2], str[3], str[4]);
+    }
+
+    function getBriefEx(bytes32 _num) public view returns (string) {
         uint index = 0;
         bool found = false;
         string memory str = "";
@@ -383,9 +410,9 @@ contract Logistics {
         }
 
         str = str.concat("{", PlatString.bytes32ToString(_num).toKeyValue("num"), ",");
+        str = str.concat(PlatString.bytes32ToString(infos_[_num].transNum_).toKeyValue("transNum"), ",");
         str = str.concat(PlatString.bytes32ToString(infos_[_num].model_).toKeyValue("model"), ",");
         str = str.concat(PlatString.bytes32ToString(infos_[_num].destinationCountry_).toKeyValue("destinationCountry"), ",");
-        str = str.concat(PlatString.bytes32ToString(infos_[_num].transNum_).toKeyValue("transNum"), ",");
         str = str.concat(PlatString.bytes32ToString(infos_[_num].lastStatus_).toKeyValue("lastStatus"), "}");
 
         return str;
