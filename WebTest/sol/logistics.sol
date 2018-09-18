@@ -71,6 +71,13 @@ contract Logistics {
         infos_[_num].tracks_.length = length;
     }
 
+    function deleteTracks(bytes32 _num) internal {
+        for (uint i=0; i<infos_[_num].tracks_.length; i++) {
+            delete infos_[_num].tracks_[i];
+        }
+        infos_[_num].tracks_.length = 0;
+    }
+
     function updateTrack(bytes32 _num, uint index, string _track) public {
         bytes32 type32 = bytes32(0);
         bytes32 time = bytes32(0);
