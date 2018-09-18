@@ -34,26 +34,14 @@ contract Logistics {
         Track[] tracks_;
     }
 
-    uint private count_;
+    bytes32[] private nums_;
     mapping(bytes32 => Info) private infos_;
 
     string[] private tracks_;
 
     // Constructor
     function Logistics() public {
-        count_ = 0;
-    }
-
-    function setBriefInfo(bytes32 _num, bytes32 _transNum, 
-                      bytes32 _model, bytes32 _destinationCountry,
-                      bytes32 _lastStatus) public {
-        infos_[_num].num_                = _num;
-        infos_[_num].transNum_           = _transNum;
-        infos_[_num].model_              = _model;
-        infos_[_num].destinationCountry_ = _destinationCountry;
-        infos_[_num].lastStatus_         = _lastStatus;
-
-        count_ ++;
+        nums_.length = 0;
     }
 
     function getBriefInfo(bytes32 _num) public view returns (string) {
@@ -71,7 +59,7 @@ contract Logistics {
         infos_[_num].tracks_.length += length;
     }
 
-    function deleteTracks(bytes32 _num) internal {
+    function removeTracks(bytes32 _num) internal {
         for (uint i=0; i<infos_[_num].tracks_.length; i++) {
             delete infos_[_num].tracks_[i];
         }
@@ -175,7 +163,7 @@ contract Logistics {
 
                 if (uint(0) == _updateType) {
                     // delete all tracks at first
-                    deleteTracks(_num);
+                    removeTracks(_num);
                 }
 
                 startIndex = infos_[_num].tracks_.length;
@@ -291,18 +279,45 @@ contract Logistics {
         }
     }
 
-    function delete(bytes32 _num) public {
-        
+    function findNum(bytes32 _num) internal returns (bool, uint) {
+        uint i = 0;
+        bool found = false;
+
+        if (0 == nums_.length) {
+            return (found, i);
+        }
+
+        for (i=0; i<nums_.length; i++) {
+            if (nums_[i] == _num) {
+                found = true;
+                break;
+            }
+        }
+
+        return (found, i);
+    }
+
+    function remove(bytes32 _num) public {
+        uint index = 0;
+        bool found = false;
+
+        // check param
         if (bytes32(0) == _num) {
             return;
         }
 
-        // delete tracks at first
-        deleteTracks(_num);
+        (found, index) = findNum(_num);
+        if (!found) {
+            return;
+        }
+
+        // remove num
+        //removeNum(index);
+
+        // remove tracks at first
+        removeTracks(_num);
 
         // delete brief
         delete infos_[_num];
-
-        count_ --;
     }
 }
