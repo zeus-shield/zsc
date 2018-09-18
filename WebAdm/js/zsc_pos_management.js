@@ -11,6 +11,13 @@ function ZSCPosManagement(adr, abi) {
     this.levelPriceToCreate = [];
     this.itemTags = [];
 
+    this.tradeTag;
+    this.dayInSecs;  
+    this.createPrice; 
+    this.minePerDay;  
+    this.rewardPerDay;
+    this.tokenUri;    
+
     this.mineTypeNos = 0;
     this.mineTypeDuration = [];
     this.mineTypeActived = [];
@@ -32,6 +39,14 @@ ZSCPosManagement.prototype.getMineTypeNos = function() {return this.mineTypeNos;
 ZSCPosManagement.prototype.getMineTypeDuration = function(index) {return this.mineTypeDuration[index];}
 ZSCPosManagement.prototype.getMineTypeActived = function(index) {return this.mineTypeActived[index];}
 
+ZSCPosManagement.prototype.getTradeTag = function() {return (this.tradeTag == 1);}
+ZSCPosManagement.prototype.getDayInSeconds = function() {return this.dayInSecs;}
+ZSCPosManagement.prototype.getCreatePrice = function() {return web3.fromWei(this.createPrice, 'ether');}
+ZSCPosManagement.prototype.getMinePerDay = function() {return this.minePerDay/100;}
+ZSCPosManagement.prototype.getRewardPerDay = function() {return this.rewardPerDay/100;}
+ZSCPosManagement.prototype.getTokenUri = function() {return this.tokenUri;}
+
+
 ZSCPosManagement.prototype.setTradeableInMarket = function(hashID, tag) {
     this.myPosManager.setPublicTradeable(tag, 
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
@@ -51,7 +66,7 @@ ZSCPosManagement.prototype.setCommonTokenUrl = function(hashID, url) {
 } 
 
 ZSCPosManagement.prototype.setCreatePrice = function(hashID, createPrice) {
-    this.myPosManager.setCreatePrice(url, 
+    this.myPosManager.setCreatePrice(web3.toWei(createPrice, 'ether'), 
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){});
@@ -78,7 +93,7 @@ ZSCPosManagement.prototype.setMineType = function(hashID,  durationInDays, tag) 
 } 
 
 ZSCPosManagement.prototype.setPosRatio = function(hashID, mineRatio, rewardRatio) {
-    this.myPosManager.setPosRatio(mineRatio, rewardRatio,
+    this.myPosManager.setPosRatio(mineRatio * 100, rewardRatio * 100,
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){window.location.reload(true);});
@@ -98,6 +113,13 @@ ZSCPosManagement.prototype.setLevelInfo = function(hashID, level, maxStakePoint,
             else console.log("error: " + error);
         });
 } 
+
+//////////////
+ZSCPosManagement.prototype.loadBaseSettings = function(func) {
+}
+
+ZSCPosManagement.prototype.parserBaseSettingsStr = function(gm, info) {   
+}
 
 //////////////
 ZSCPosManagement.prototype.resetAllItemTags = function(gm) {
