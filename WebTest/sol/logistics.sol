@@ -34,15 +34,13 @@ contract Logistics {
         Track[] tracks_;
     }
 
-    uint private count_;
+    uint private count_ = 0;
     mapping(bytes32 => Info) private infos_;
 
     string[] tracks_;
 
     // Constructor
-    function Logistics() public {
-        count_ = 0;
-    }
+    function Logistics() public {}
 
     function setBriefInfo(bytes32 _num, bytes32 _transNum, 
                       bytes32 _model, bytes32 _destinationCountry,
@@ -182,56 +180,88 @@ contract Logistics {
             }
         }
     }
-    function updateAll() public {
-        string memory _info = "{\"error\":null,\"num\":\"JNTCU0600046683YQ\",\"transNum\":\"MSK0000027695\",\"model\":\"MOSEXP\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"§¡§â§Þ§Ñ§Ó§Ú§â\",\"timeZone\":\"+3\",\"desc\":\"§´§à§Ó§Ñ§â §Ò§í§Ý §å§ã§á§Ö§ê§ß§à §Õ§à§ã§ä§Ñ§Ó§Ý§Ö§ß §á§à§Ý§å§é§Ñ§ä§Ö§Ý§ð. §³§á§Ñ§ã§Ú§Ò§à §é§ä§à §Ó§à§ã§á§à§Ý§î§Ù§à§Ó§Ñ§Ý§Ú§ã§î §ß§Ñ§ê§Ú§Þ§Ú §å§ã§Ý§å§Ô§Ñ§Þ§Ú\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
-        bytes32 num = bytes32(0);
+
+    function updataBrief(bytes32 _num, string _brief) internal {
         bytes32 transNum = bytes32(0);
         bytes32 model = bytes32(0);
         bytes32 destinationCountry = bytes32(0);
         bytes32 lastStatus = bytes32(0);
 
+        if ((bytes32(0) == _num) || _brief.equals("")) {
+            return;
+        }
+
+        infos_[_num].num_ = _num;
+
+        if (_brief.keyExists("transNum")) {
+            transNum = PlatString.tobytes32(_brief.getStringValueByKey("transNum"));
+            if (bytes32(0) != transNum) {
+                infos_[_num].transNum_ = transNum;
+            }
+        }
+
+        if (_brief.keyExists("model")) {
+            model = PlatString.tobytes32(_brief.getStringValueByKey("model"));
+            if (bytes32(0) != model) {
+                infos_[_num].model_ = model;
+            }
+        }
+
+        if (_brief.keyExists("destinationCountry")) {
+            destinationCountry = PlatString.tobytes32(_brief.getStringValueByKey("destinationCountry"));
+            if (bytes32(0) != destinationCountry) {
+                infos_[_num].destinationCountry_ = destinationCountry;
+            }
+        }
+
+        if (_brief.keyExists("lastStatus")) {
+            lastStatus = PlatString.tobytes32(_brief.getStringValueByKey("lastStatus"));
+            if (bytes32(0) != destinationCountry) {
+                infos_[_num].lastStatus_ = lastStatus;
+            }
+        }
+
+        // log0(_num);
+        // log0(transNum);
+        // log0(model);
+        // log0(destinationCountry);
+        // log0(lastStatus);
+    }
+
+    function updateAll(bytes32 _num, bytes32 _transNum, 
+                       bytes32 _model, bytes32 _destinationCountry,
+                       bytes32 _lastStatus, string _tracks) public {
+
+        if ((bytes32(0) == _num) || (bytes32(0) == _transNum) || (bytes32(0) == _model)
+            || (bytes32(0) == _destinationCountry) || (bytes32(0) == _lastStatus)) {
+            return;
+        }
+
+        infos_[_num].num_                = _num;
+        infos_[_num].transNum_           = _transNum;
+        infos_[_num].model_              = _model;
+        infos_[_num].destinationCountry_ = _destinationCountry;
+        infos_[_num].lastStatus_         = _lastStatus;
+    }
+
+    function updateAll() public {
+        string memory _info = "{\"error\":null,\"num\":\"JNTCU0600046683YQ\",\"transNum\":\"MSK0000027695\",\"model\":\"MOSEXP\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"§¡§â§Þ§Ñ§Ó§Ú§â\",\"timeZone\":\"+3\",\"desc\":\"§´§à§Ó§Ñ§â §Ò§í§Ý §å§ã§á§Ö§ê§ß§à §Õ§à§ã§ä§Ñ§Ó§Ý§Ö§ß §á§à§Ý§å§é§Ñ§ä§Ö§Ý§ð. §³§á§Ñ§ã§Ú§Ò§à §é§ä§à §Ó§à§ã§á§à§Ý§î§Ù§à§Ó§Ñ§Ý§Ú§ã§î §ß§Ñ§ê§Ú§Þ§Ú §å§ã§Ý§å§Ô§Ñ§Þ§Ú\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
+        bytes32 num = bytes32(0);
+
+        if (_info.equals("")) {
+            return;
+        }
+
         if (_info.keyExists("num")) {
             num = PlatString.tobytes32(_info.getStringValueByKey("num"));
-            infos_[num].num_ = num;
         }
 
         if (bytes32(0) == num) {
             return;
         }
 
-        if (_info.keyExists("transNum")) {
-            transNum = PlatString.tobytes32(_info.getStringValueByKey("transNum"));
-            if (bytes32(0) != transNum) {
-                infos_[num].transNum_ = transNum;
-            }
-        }
-
-        if (_info.keyExists("model")) {
-            model = PlatString.tobytes32(_info.getStringValueByKey("model"));
-            if (bytes32(0) != model) {
-                infos_[num].model_ = model;
-            }
-        }
-
-        if (_info.keyExists("destinationCountry")) {
-            destinationCountry = PlatString.tobytes32(_info.getStringValueByKey("destinationCountry"));
-            if (bytes32(0) != destinationCountry) {
-                infos_[num].destinationCountry_ = destinationCountry;
-            }
-        }
-
-        if (_info.keyExists("lastStatus")) {
-            lastStatus = PlatString.tobytes32(_info.getStringValueByKey("lastStatus"));
-            if (bytes32(0) != destinationCountry) {
-                infos_[num].lastStatus_ = lastStatus;
-            }
-        }
-
-        // log0(num);
-        // log0(transNum);
-        // log0(model);
-        // log0(destinationCountry);
-        // log0(lastStatus);
+        // update brief
+        updataBrief(num, _info);
 
         // update tracks
         updateTracks(num, _info);
