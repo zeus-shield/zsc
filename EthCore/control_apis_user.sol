@@ -64,6 +64,8 @@ contract AbisForUserControlApis {
     function getUserTransactionByIndex(uint _index) public view returns (string);
     function getPoSModuleAddresses() public view returns (string);
 
+    function transfer(address _to, uint _tokenId) public; //Erc721;
+
     function createRobot() public returns (uint);
     function activeUnit(uint _robotId, bytes32 _tokenType, uint _durationInDays, uint _totalZSC) public;
     function upgradeUnitSpLev(uint _robotId) public;
@@ -71,10 +73,36 @@ contract AbisForUserControlApis {
     function cancelSell(uint _robotId) public;
     function purchaseUnit(uint _robotId) public;
     function claimReward(uint _robotId, bytes32 _tokenType) public;
+
     function numSellUnits() public view returns (uint);
-    function getSellUnitByIndex(uint _index) public view returns (string);
     function numUserUnits() public view returns (uint);
-    function getUserUnitByIndex(uint _index) public view returns (string);
-    function transfer(address _to, uint _tokenId) public;
+    function getSellUnitIdByIndex(uint _index) public view returns (uint);
+    function getUserUnitIdByIndex(uint _index) public view returns (uint);
+    function getUnitMineSP(bool _ifBase, uint _unitId) public view returns (uint);
+    function getSellUnitInfoByIndex(uint _index, bytes32[] _paras) public view returns (string);
+    function getUserUnitInfoByIndex(uint _index, bytes32[] _paras) public view returns (string);
+
+    function numUnits() public view returns (uint);
+    function isUnitSpecial(uint _unitId) public view returns (uint);
+    function getUnitSPMinedPerday() public view returns (uint);
+    function getUnitSPRewardPerday() public view returns (uint);
+    function getUnitName(uint _unitId) public view returns (bytes32);
+    function getUnitStatus(uint _unitId) public view returns (bytes32);
+    function getUnitSPBase(uint _unitId) public view returns (uint);
+    function getUnitRare(uint _unitId) public view returns (uint);
+    function getUnitSPLev(uint _unitId) public view returns (uint);
+    function getUnitSPEft(uint _unitId) public view returns (uint);
+    function getUnitRREft(uint _unitId) public view returns (uint);
+    function getUnitUPBase(uint _unitId) public view returns (uint);
+    function getUnitUPEft(uint _unitId) public view returns (uint);
+    function getUnitSPCur(uint _unitId) public view returns (uint);
+    function getUnitSPMax(uint _unitId) public view returns (uint);
+    function getUnitMineStart(uint _unitId) public view returns (uint);
+    function getUnitMineEnd(uint _unitId) public view returns (uint);
+    function getUnitSPExtra(uint _unitId) public view returns (uint);
+    function getUnitRRExtra(uint _unitId) public view returns (uint);
+    function getUnitUPExtra(uint _unitId) public view returns (uint);
+    function getUnitSeller(uint _unitId) public view returns (address);
+    function getUnitSellPrice(uint _unitId) public view returns (uint);
 }
 
