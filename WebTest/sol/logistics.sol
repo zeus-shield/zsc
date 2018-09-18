@@ -55,6 +55,43 @@ contract Logistics {
         return str;
     }
  
+    function findNum(bytes32 _num) internal returns (bool, uint) {
+        uint i = 0;
+        bool found = false;
+
+        if (0 == nums_.length) {
+            return (found, i);
+        }
+
+        for (i=0; i<nums_.length; i++) {
+            if (nums_[i] == _num) {
+                found = true;
+                break;
+            }
+        }
+
+        return (found, i);
+    }
+
+    function removeNum(uint index) internal {
+        uint leftCount = 0;
+
+        //check param
+        if (nums_.length <= index) {
+            return;
+        }
+
+        leftCount = nums_.length - index - 1;
+        for (uint i=0; i<leftCount; i++) {
+            nums_[index] = nums_[index+1];
+            index ++;
+        }
+
+        delete nums_[index];
+
+        nums_.length -= 1;
+    }
+ 
     function allocTracks(bytes32 _num, uint length) internal {
         infos_[_num].tracks_.length += length;
     }
@@ -76,7 +113,7 @@ contract Logistics {
         string  memory desc = "";
         bytes32 actionCode = bytes32(0);
 
-        if (index >= infos_[_num].tracks_.length) {
+        if (infos_[_num].tracks_.length <= index) {
             return;
         }
 
@@ -162,7 +199,7 @@ contract Logistics {
                 tracks.split("&", tracks_);
 
                 if (uint(0) == _updateType) {
-                    // delete all tracks at first
+                    // remove all tracks at first
                     removeTracks(_num);
                 }
 
@@ -279,24 +316,6 @@ contract Logistics {
         }
     }
 
-    function findNum(bytes32 _num) internal returns (bool, uint) {
-        uint i = 0;
-        bool found = false;
-
-        if (0 == nums_.length) {
-            return (found, i);
-        }
-
-        for (i=0; i<nums_.length; i++) {
-            if (nums_[i] == _num) {
-                found = true;
-                break;
-            }
-        }
-
-        return (found, i);
-    }
-
     function remove(bytes32 _num) public {
         uint index = 0;
         bool found = false;
@@ -312,7 +331,7 @@ contract Logistics {
         }
 
         // remove num
-        //removeNum(index);
+        removeNum(index);
 
         // remove tracks at first
         removeTracks(_num);
