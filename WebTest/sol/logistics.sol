@@ -59,6 +59,11 @@ contract Logistics {
         uint i = 0;
         bool found = false;
 
+        // check param
+        if (bytes32(0) == _num) {
+            return;
+        }
+
         if (0 == nums_.length) {
             return (found, i);
         }
@@ -184,11 +189,19 @@ contract Logistics {
     }
 
     // _updateType: 0 means overwrite, 1 means add
-    function updateTracks(bytes32 _num, string _tracks, uint _updateType) internal {
-
+    function updateTracks(bytes32 _num, string _tracks, uint _updateType) public {
+        uint index = 0;
+        bool found = false;
         uint startIndex = uint(0);
 
+        // check param
         if ((bytes32(0) == _num) || _tracks.equals("")) {
+            return;
+        }
+
+        // find num
+        (found, index) = findNum(_num);
+        if (!found) {
             return;
         }
 
@@ -215,18 +228,24 @@ contract Logistics {
         }
     }
 
-    function addTrack(bytes32 _num, string _tracks) public {
-        updateTracks(_num, _tracks, uint(1));
-    }
-
     function updateBrief(bytes32 _num, string _brief) public {
+        uint index = 0;
+        bool found = false;
         bytes32 transNum = bytes32(0);
         bytes32 model = bytes32(0);
         bytes32 destinationCountry = bytes32(0);
         bytes32 lastStatus = bytes32(0);
 
+        // check param
         if ((bytes32(0) == _num) || _brief.equals("")) {
             return;
+        }
+
+        // find num
+        (found, index) = findNum(_num);
+        if (!found) {
+            // add num
+            nums_.push(_num);
         }
 
         infos_[_num].num_ = _num;
@@ -268,9 +287,21 @@ contract Logistics {
 
     function updateBrief(bytes32 _num, bytes32 _transNum, bytes32 _model,
                          bytes32 _destinationCountry, bytes32 _lastStatus) public {
+        
+        uint index = 0;
+        bool found = false;
+
+        // check param
         if ((bytes32(0) == _num) || (bytes32(0) == _transNum) || (bytes32(0) == _model)
             || (bytes32(0) == _destinationCountry) || (bytes32(0) == _lastStatus)) {
             return;
+        }
+
+        // find num
+        (found, index) = findNum(_num);
+        if (!found) {
+            // add num
+            nums_.push(_num);
         }
 
         // update brief
@@ -285,6 +316,7 @@ contract Logistics {
         string memory _info = "{\"error\":null,\"num\":\"JNTCU0600046683YQ\",\"transNum\":\"MSK0000027695\",\"model\":\"MOSEXP\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"§¡§â§Þ§Ñ§Ó§Ú§â\",\"timeZone\":\"+3\",\"desc\":\"§´§à§Ó§Ñ§â §Ò§í§Ý §å§ã§á§Ö§ê§ß§à §Õ§à§ã§ä§Ñ§Ó§Ý§Ö§ß §á§à§Ý§å§é§Ñ§ä§Ö§Ý§ð. §³§á§Ñ§ã§Ú§Ò§à §é§ä§à §Ó§à§ã§á§à§Ý§î§Ù§à§Ó§Ñ§Ý§Ú§ã§î §ß§Ñ§ê§Ú§Þ§Ú §å§ã§Ý§å§Ô§Ñ§Þ§Ú\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
         bytes32 num = bytes32(0);
 
+        // check param
         if (_info.equals("")) {
             return;
         }
@@ -308,6 +340,7 @@ contract Logistics {
                     bytes32 _model, bytes32 _destinationCountry,
                     bytes32 _lastStatus, string _tracks) public {
 
+        // update brief
         updateBrief(_num, _transNum, _model, _destinationCountry, _lastStatus);
 
         // update tracks from json(similar to)
@@ -325,6 +358,7 @@ contract Logistics {
             return;
         }
 
+        // find num
         (found, index) = findNum(_num);
         if (!found) {
             return;
