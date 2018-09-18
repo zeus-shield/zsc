@@ -11,9 +11,9 @@ function ZSCPosManagement(adr, abi) {
     this.levelPriceToCreate = [];
     this.itemTags = [];
 
-    this.ratioNos = 0;
-    this.ratioType = [];
-    this.ratioValue = [];
+    this.mineTypeNos = 0;
+    this.mineTypeDuration = [];
+    this.mineTypeActived = [];
     this.ratioTags = [];
 
     this.account = web3.eth.accounts[0];
@@ -28,9 +28,9 @@ ZSCPosManagement.prototype.getLevelEnhanceProb = function(index) {return this.le
 ZSCPosManagement.prototype.getLevelPriceToEnhance = function(index) {return web3.fromWei(this.levelPriceToEnhance[index], 'ether');}
 ZSCPosManagement.prototype.getLevelPriceToCreate = function(index) {return web3.fromWei(this.levelPriceToCreate[index], 'ether');}
 
-ZSCPosManagement.prototype.getRatioNos = function() {return this.ratioNos;}
-ZSCPosManagement.prototype.getRatioType = function(index) {return this.ratioType[index];}
-ZSCPosManagement.prototype.getRatioValue = function(index) {return this.ratioValue[index];}
+ZSCPosManagement.prototype.getMineTypeNos = function() {return this.mineTypeNos;}
+ZSCPosManagement.prototype.getMineDuration = function(index) {return this.mineTypeDuration[index];}
+ZSCPosManagement.prototype.getRatioActived = function(index) {return this.mineTypeActived[index];}
 
 ZSCPosManagement.prototype.setTradeableInMarket = function(hashID, tag) {
     this.myPosManager.setPublicTradeable(tag, 
@@ -59,8 +59,8 @@ ZSCPosManagement.prototype.downscaledDay = function(hashID, scale) {
         });
 } 
 
-ZSCPosManagement.prototype.setRewardRatio = function(hashID,  durationInDays, ratio_0_10000) {
-    this.myPosManager.setRewardRatio(durationInDays, ratio_0_10000,
+ZSCPosManagement.prototype.setMineType = function(hashID,  durationInDays, tag) {
+    this.myPosManager.setMineType(durationInDays, tag,
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){window.location.reload(true);});
@@ -68,7 +68,7 @@ ZSCPosManagement.prototype.setRewardRatio = function(hashID,  durationInDays, ra
         });
 } 
 
-ZSCPosManagement.prototype.setLevelInfo = function(hashID, level, maxStakePoint, enhanceProb, priceToEnhance, priceToCreate) {
+ZSCPosManagement.prototype.setLevelInfo = function(hashID, level, maxStakePoint, priceToEnhance, enhanceProb) {
     this.myPosManager.setLevelInfo(
         level, web3.toWei(maxStakePoint, 'ether'), enhanceProb, 
         web3.toWei(priceToEnhance, 'ether'), web3.toWei(priceToCreate, 'ether'),
@@ -170,13 +170,13 @@ ZSCPosManagement.prototype.parserLevelInfo = function(gm, index, info) {
 
 ////////////////////////////
 ZSCPosManagement.prototype.resetAllRatioTags = function(gm) {
-    for (var i = 0; i < gm.ratioNos; ++i) {
+    for (var i = 0; i < gm.mineTypeNos; ++i) {
         gm.ratioTags[i] = false;
     }
 }
 
 ZSCPosManagement.prototype.checkAllRatioTags = function(gm) {
-    for (var i = 0; i < gm.ratioNos; ++i) {
+    for (var i = 0; i < gm.mineTypeNos; ++i) {
         if (gm.ratioTags[i] == false) {
             return false;
         }
@@ -184,13 +184,13 @@ ZSCPosManagement.prototype.checkAllRatioTags = function(gm) {
     return true;
 }
 
-ZSCPosManagement.prototype.loadRatioInfos = function(func) {
+ZSCPosManagement.prototype.loadMineTypesInfo = function(func) {
     var gm = this;
     var callback = func;
 
-    gm.numRatios(gm, function(gm) {
+    gm.numMineTypes(gm, function(gm) {
         gm.resetAllRatioTags(gm);
-       if (gm.ratioNos == 0) {
+       if (gm.mineTypeNos == 0) {
             callback();
         } else {
             gm.loadRatios(gm, function(){
@@ -200,12 +200,12 @@ ZSCPosManagement.prototype.loadRatioInfos = function(func) {
     });
 }
 
-ZSCPosManagement.prototype.numRatios = function(gm, func) {
-    gm.myPosManager.numRatios(
+ZSCPosManagement.prototype.numMineTypes = function(gm, func) {
+    gm.myPosManager.numMineTypes(
         {from: gm.account},
         function(error, num){ 
             if(!error) { 
-                gm.ratioNos = num.toString(10); 
+                gm.mineTypeNos = num.toString(10); 
                 func(gm);
             } else {
                 console.log("error: " + error);
@@ -213,11 +213,11 @@ ZSCPosManagement.prototype.numRatios = function(gm, func) {
          });
 }
 
-ZSCPosManagement.prototype.loadRatios = function(gm, func) {
+ZSCPosManagement.prototype.loadMineTypes = function(gm, func) {
     var callback = func;
-    for (var i = 0; i < gm.ratioNos; ++i) {
-        gm.loadRatioInfoByIndex(gm, i, function(gm, index, userInfo) {
-            gm.parserRatioInfo(gm, index, userInfo);
+    for (var i = 0; i < gm.mineTypeNos; ++i) {
+        gm.loadMineTypeByIndex(gm, i, function(gm, index, userInfo) {
+            gm.parserMineTypeStr(gm, index, userInfo);
             if (gm.checkAllRatioTags(gm) == true) {
                 func();
             }
@@ -225,8 +225,8 @@ ZSCPosManagement.prototype.loadRatios = function(gm, func) {
     } 
 } 
 
-ZSCPosManagement.prototype.loadRatioInfoByIndex = function(gm, index, func) {
-    gm.myPosManager.getRatioInfoStr(index, 
+ZSCPosManagement.prototype.loadMineTypeByIndex = function(gm, index, func) {
+    gm.myPosManager.getMineTypeStr(index, 
         {from: gm.account},
         function(error, para){ 
             if(!error) {
@@ -239,15 +239,15 @@ ZSCPosManagement.prototype.loadRatioInfoByIndex = function(gm, index, func) {
         });
 }
 
-ZSCPosManagement.prototype.parserRatioInfo = function(gm, index, info) {
+ZSCPosManagement.prototype.parserMineTypeStr = function(gm, index, info) {
     var len        = info.length;
     var offset     = info.indexOf("?");
     var newsidinfo = info.substr(offset,len)
     var newsids    = newsidinfo.split("&");
 
-    var ratioType          = newsids[0];
-    var ratioValue    = newsids[1];
+    var mineDuration          = newsids[0];
+    var mineTypeActived    = newsids[1];
 
-    gm.ratioType[index]  = ratioType.split("=")[1];
-    gm.ratioValue[index] = ratioValue.split("=")[1];
+    gm.mineDuration[index]  = mineDuration.split("=")[1];
+    gm.mineTypeActived[index] = mineTypeActived.split("=")[1];
 }
