@@ -2,7 +2,7 @@
 Copyright (c) 2018 ZSC Dev Team
 */
 
-function ZSCSetup(logRecorderAdr, zscTokenAdr, adrs) {
+function ZSCSetup(logRecorderAdr, testTokenAdr, adrs) {
     /*
     "AdmAdv",  "DBDatabase", 
     "FactoryPro", "FactoryRec", "FactoryTmp", "FactoryAgr",  "FactoryWalletAdv",
@@ -10,19 +10,19 @@ function ZSCSetup(logRecorderAdr, zscTokenAdr, adrs) {
     "ControlApisAdv");
     */
     this.RecorderAdr = logRecorderAdr;
-    this.zscTokenAdr = zscTokenAdr;
+    this.testTokenAdr = testTokenAdr;
     this.TimerAdr = 0x0;
     this.AdmAdvAdr     = adrs[0];
     this.DBDatabaseAdr = adrs[1];
-    this.FactoryProAdr = adrs[2];
-    this.FactoryRecAdr = adrs[3];
-    this.FactoryStakerAdr = adrs[4];
-    this.FactoryTmpAdr = adrs[5];
-    this.FactoryAgrAdr = adrs[6];
-    this.FactoryWalletAdvAdr = adrs[7];
-    this.TokenManagerAdr     = adrs[8];
-    this.PosManagerAdr       = adrs[9];
-    this.ControlApisAdvAdr   = adrs[10];
+    //this.FactoryProAdr = adrs[2];
+    //this.FactoryRecAdr = adrs[3];
+    //this.FactoryStakerAdr = adrs[4];
+    //this.FactoryTmpAdr = adrs[5];
+    //this.FactoryAgrAdr = adrs[6];
+    this.FactoryWalletAdvAdr = adrs[2];
+    this.TokenManagerAdr     = adrs[3];
+    this.PosManagerAdr       = adrs[4];
+    this.ControlApisAdvAdr   = adrs[5];
     this.account = web3.eth.accounts[0];
     this.gasPrice = cC_getGasPrice();
     this.gasLimit = cC_getGasLimit();
@@ -59,7 +59,7 @@ ZSCSetup.prototype.setLogRecorderToListener = function(listener,listenerName, ha
 
 ZSCSetup.prototype.initSystemModule = function(module, hashID) {
     if (module == "TestToken") {
-        this.initTestZSCToken(hashID);
+        this.initTestToken(hashID);
 
     } else if (module == "AdmAdv") {
         this.initAdmAdv(hashID);
@@ -184,9 +184,9 @@ ZSCSetup.prototype.addGmModule = function(gmModule, hashID) {
 
 }
 
-ZSCSetup.prototype.initTestZSCToken = function(hashID) {
+ZSCSetup.prototype.initTestToken = function(hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("TestToken"));
-    var myTestToken = myContract.at(this.zscTokenAdr);
+    var myTestToken = myContract.at(this.testTokenAdr);
 
     myTestToken.allocate(this.ControlApisAdvAdr, 100 * 1000 * 1000 * Math.pow(10, 18), 
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
