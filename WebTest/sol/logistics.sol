@@ -256,7 +256,7 @@ contract Logistics {
         infos_[_num].lastStatus_         = _lastStatus;
     }
 
-    function updateAll() public {
+    function update() public {
         string memory _info = "{\"error\":null,\"num\":\"JNTCU0600046683YQ\",\"transNum\":\"MSK0000027695\",\"model\":\"MOSEXP\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"§¡§â§Þ§Ñ§Ó§Ú§â\",\"timeZone\":\"+3\",\"desc\":\"§´§à§Ó§Ñ§â §Ò§í§Ý §å§ã§á§Ö§ê§ß§à §Õ§à§ã§ä§Ñ§Ó§Ý§Ö§ß §á§à§Ý§å§é§Ñ§ä§Ö§Ý§ð. §³§á§Ñ§ã§Ú§Ò§à §é§ä§à §Ó§à§ã§á§à§Ý§î§Ù§à§Ó§Ñ§Ý§Ú§ã§î §ß§Ñ§ê§Ú§Þ§Ú §å§ã§Ý§å§Ô§Ñ§Þ§Ú\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
         bytes32 num = bytes32(0);
 
@@ -279,9 +279,9 @@ contract Logistics {
         updateTracks(num, _info, uint(0));
     }
 
-    function updateAll(bytes32 _num, bytes32 _transNum, 
-                       bytes32 _model, bytes32 _destinationCountry,
-                       bytes32 _lastStatus, string _tracks) public {
+    function update(bytes32 _num, bytes32 _transNum, 
+                    bytes32 _model, bytes32 _destinationCountry,
+                    bytes32 _lastStatus, string _tracks) public {
 
         updateBrief(_num, _transNum, _model, _destinationCountry, _lastStatus);
 
@@ -289,5 +289,20 @@ contract Logistics {
         if (!_tracks.equals("")) {
             updateTracks(_num, _tracks, uint(0));
         }
+    }
+
+    function delete(bytes32 _num) public {
+        
+        if (bytes32(0) == _num) {
+            return;
+        }
+
+        // delete tracks at first
+        deleteTracks(_num);
+
+        // delete brief
+        delete infos_[_num];
+
+        count_ --;
     }
 }
