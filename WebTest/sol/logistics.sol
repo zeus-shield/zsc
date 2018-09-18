@@ -42,20 +42,10 @@ contract Logistics {
     // Constructor
     function Logistics() public {
         nums_.length = 0;
+        tracks_.length = 0;
     }
 
-    function getBriefInfo(bytes32 _num) public view returns (string) {
-        // json formart
-        string memory str ="{";
-        str = PlatString.append(str, '"num":"', PlatString.bytes32ToString(_num), '",');
-        str = PlatString.append(str, '"model":"', PlatString.bytes32ToString(infos_[_num].model_), '",');
-        str = PlatString.append(str, '"destinationCountry":"', PlatString.bytes32ToString(infos_[_num].destinationCountry_), '",');
-        str = PlatString.append(str, '"transNum":"', PlatString.bytes32ToString(infos_[_num].transNum_), '",');
-        str = PlatString.append(str, '"lastStatus":"', PlatString.bytes32ToString(infos_[_num].lastStatus_), '"}');
-        return str;
-    }
- 
-    function findNum(bytes32 _num) internal returns (bool, uint) {
+    function findNum(bytes32 _num) internal view returns (bool, uint) {
         uint i = 0;
         bool found = false;
 
@@ -372,5 +362,32 @@ contract Logistics {
 
         // delete brief
         delete infos_[_num];
+    }
+
+    function getBrief(bytes32 _num) public view returns (string) {
+        uint index = 0;
+        bool found = false;
+        string memory str = "";
+
+        _num = PlatString.tobytes32("JNTCU0600046683YQ");
+
+        // check param
+        if (bytes32(0) == _num) {
+            return str;
+        }
+
+        // find num
+        (found, index) = findNum(_num);
+        if (!found) {
+            return str;
+        }
+
+        str = str.concat("{", PlatString.bytes32ToString(_num).toKeyValue("num"), ",");
+        str = str.concat(PlatString.bytes32ToString(infos_[_num].model_).toKeyValue("model"), ",");
+        str = str.concat(PlatString.bytes32ToString(infos_[_num].destinationCountry_).toKeyValue("destinationCountry"), ",");
+        str = str.concat(PlatString.bytes32ToString(infos_[_num].transNum_).toKeyValue("transNum"), ",");
+        str = str.concat(PlatString.bytes32ToString(infos_[_num].lastStatus_).toKeyValue("lastStatus"), "}");
+
+        return str;
     }
 }
