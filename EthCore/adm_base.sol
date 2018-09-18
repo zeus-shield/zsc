@@ -31,10 +31,13 @@ contract AdmBase is Object {
         controlApisFullAib_ = _fullAbi; 
     }
 
-    function getControlApisInfo() public view returns (string) {
+    function getControlApisFullAbi() public view returns (string) {
+        return controlApisFullAib_;
+    }
+
+    function getControlApisAdrs() public view returns (string) {
         address Erc721Adr = ControlApis(controlApisAdr_).getModuleAdress("gm-pos");
         string memory str ="info?";
-        str = PlatString.append(str, "abi=",       controlApisFullAib_,    "&");
         str = PlatString.append(str, "sysAdr=",    PlatString.addressToString(controlApisAdr_),  "&");
         str = PlatString.append(str, "erc721Adr=", PlatString.addressToString(Erc721Adr),        "&");
         str = PlatString.append(str, "end");
