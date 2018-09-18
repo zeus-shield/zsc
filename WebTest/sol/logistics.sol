@@ -94,35 +94,58 @@ contract Logistics {
 
         if (_track.keyExists("type")) {
             type32 = PlatString.tobytes32(_track.getStringValueByKey("type"));
-            infos_[_num].tracks_[index].type_ = type32;
+            if (bytes32(0) != type32) {
+                infos_[_num].tracks_[index].type_ = type32;
+            }
         }
+
         if (_track.keyExists("time")) {
             time = PlatString.tobytes32(_track.getStringValueByKey("time"));
-            infos_[_num].tracks_[index].time_ = time;
+            if (bytes32(0) != time) {
+                infos_[_num].tracks_[index].time_ = time;
+            }
         }
+
         if (_track.keyExists("country")) {
             country = PlatString.tobytes32(_track.getStringValueByKey("country"));
-            infos_[_num].tracks_[index].country_ = country;
+            if (bytes32(0) != country) {
+                infos_[_num].tracks_[index].country_ = country;
+            }
         }
+
         if (_track.keyExists("city")) {
             city = PlatString.tobytes32(_track.getStringValueByKey("city"));
-            infos_[_num].tracks_[index].city_ = city;
+            if (bytes32(0) != city) {
+                infos_[_num].tracks_[index].city_ = city;
+            }
         }
+
         if (_track.keyExists("facilityName")) {
             facilityName = PlatString.tobytes32(_track.getStringValueByKey("facilityName"));
-            infos_[_num].tracks_[index].facilityName_ = facilityName;
+            if (bytes32(0) != facilityName) {
+                infos_[_num].tracks_[index].facilityName_ = facilityName;
+            }
         }
+
         if (_track.keyExists("timeZone")) {
             timeZone = PlatString.tobytes32(_track.getStringValueByKey("timeZone"));
-            infos_[_num].tracks_[index].timeZone_ = timeZone;
+            if (bytes32(0) != timeZone) {
+                infos_[_num].tracks_[index].timeZone_ = timeZone;
+            }
         }
+
         if (_track.keyExists("desc")) {
             desc = _track.getStringValueByKey("desc");
-            infos_[_num].tracks_[index].desc_ = desc;
+            if (!desc.equals("")) {
+                infos_[_num].tracks_[index].desc_ = desc;
+            }
         }
+
         if (_track.keyExists("actionCode")) {
             actionCode = PlatString.tobytes32(_track.getStringValueByKey("actionCode"));
-            infos_[_num].tracks_[index].actionCode_ = actionCode;
+            if (bytes32(0) != actionCode) {
+                infos_[_num].tracks_[index].actionCode_ = actionCode;
+            }
         }
 
         // log0(type32);
