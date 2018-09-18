@@ -31,6 +31,7 @@ class ZSCBase {
         fclose($myfile);
     }
 
+    /*
     public function getObjectArray() {
         return array("TestToken", "LogRecorder", "AdmAdv", "DBDatabase", "FactoryPro", "FactoryRec", "FactoryStaker", "FactoryTmp",  "FactoryAgr",  "FactoryWalletAdv", "TokenManager", "PosManager", "ControlApisAdv");
     }
@@ -41,6 +42,19 @@ class ZSCBase {
 
     public function getFactoryModuleArray() {
         return array("FactoryPro", "FactoryRec", "FactoryStaker", "FactoryTmp",  "FactoryAgr", "FactoryWalletAdv"); 
+    }
+    */
+
+    public function getObjectArray() {
+        return array("TestToken", "LogRecorder", "AdmAdv", "DBDatabase", "FactoryWalletAdv", "TokenManager", "PosManager", "ControlApisAdv");
+    }
+
+    public function getLogedObjectArray() {
+        return array("AdmAdv", "DBDatabase", "FactoryWalletAdv", "TokenManager", "PosManager",  "ControlApisAdv");
+    }
+
+    public function getFactoryModuleArray() {
+        return array("FactoryWalletAdv"); 
     }
 
     public function getGmArray() {
