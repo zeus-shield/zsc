@@ -14,7 +14,7 @@ function ZSCPosManagement(adr, abi) {
     this.mineTypeNos = 0;
     this.mineTypeDuration = [];
     this.mineTypeActived = [];
-    this.ratioTags = [];
+    this.mineTypeTags = [];
 
     this.account = web3.eth.accounts[0];
     this.myPosManager = web3.eth.contract(abi).at(adr);
@@ -24,13 +24,13 @@ function ZSCPosManagement(adr, abi) {
 
 ZSCPosManagement.prototype.getLevelNos = function() {return this.levelNos;}
 ZSCPosManagement.prototype.getLevelMaxSP = function(index) {return web3.fromWei(this.levelMaxSP[index], 'ether');}
-ZSCPosManagement.prototype.getLevelEnhanceProb = function(index) {return this.levelEnhanceProb[index];}
-ZSCPosManagement.prototype.getLevelPriceToEnhance = function(index) {return web3.fromWei(this.levelPriceToEnhance[index], 'ether');}
-ZSCPosManagement.prototype.getLevelPriceToCreate = function(index) {return web3.fromWei(this.levelPriceToCreate[index], 'ether');}
+ZSCPosManagement.prototype.getLevelUpProb = function(index) {return this.levelEnhanceProb[index];}
+ZSCPosManagement.prototype.getLevelUpPrice= function(index) {return web3.fromWei(this.levelPriceToEnhance[index], 'ether');}
+ZSCPosManagement.prototype.getLevelCreatePrice = function(index) {return web3.fromWei(this.levelPriceToCreate[index], 'ether');}
 
 ZSCPosManagement.prototype.getMineTypeNos = function() {return this.mineTypeNos;}
-ZSCPosManagement.prototype.getMineDuration = function(index) {return this.mineTypeDuration[index];}
-ZSCPosManagement.prototype.getRatioActived = function(index) {return this.mineTypeActived[index];}
+ZSCPosManagement.prototype.getMineTypeDuration = function(index) {return this.mineTypeDuration[index];}
+ZSCPosManagement.prototype.getMineTypeActived = function(index) {return this.mineTypeActived[index];}
 
 ZSCPosManagement.prototype.setTradeableInMarket = function(hashID, tag) {
     this.myPosManager.setPublicTradeable(tag, 
@@ -43,6 +43,15 @@ ZSCPosManagement.prototype.setTradeableInMarket = function(hashID, tag) {
 
 ZSCPosManagement.prototype.setCommonTokenUrl = function(hashID, url) {
     this.myPosManager.setCommenTokenURI(url, 
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
+        function(error, result){ 
+            if(!error) cC_showHashResultTest(hashID, result, function(){});
+            else console.log("error: " + error);
+        });
+} 
+
+ZSCPosManagement.prototype.setCreatePrice = function(hashID, createPrice) {
+    this.myPosManager.setCreatePrice(url, 
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){});
@@ -68,10 +77,21 @@ ZSCPosManagement.prototype.setMineType = function(hashID,  durationInDays, tag) 
         });
 } 
 
-ZSCPosManagement.prototype.setLevelInfo = function(hashID, level, maxStakePoint, priceToEnhance, enhanceProb) {
+ZSCPosManagement.prototype.setPosRatio = function(hashID, mineRatio, rewardRatio) {
+    this.myPosManager.setPosRatio(mineRatio, rewardRatio,
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
+        function(error, result){ 
+            if(!error) cC_showHashResultTest(hashID, result, function(){window.location.reload(true);});
+            else console.log("error: " + error);
+        });
+} 
+
+ZSCPosManagement.prototype.setLevelInfo = function(hashID, level, maxStakePoint, enhanceProb, priceToEnhance) {
     this.myPosManager.setLevelInfo(
-        level, web3.toWei(maxStakePoint, 'ether'), enhanceProb, 
-        web3.toWei(priceToEnhance, 'ether'), web3.toWei(priceToCreate, 'ether'),
+        level, 
+        web3.toWei(maxStakePoint, 'ether'), 
+        enhanceProb, 
+        web3.toWei(priceToEnhance, 'ether'), 
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){window.location.reload(true);});
@@ -169,27 +189,27 @@ ZSCPosManagement.prototype.parserLevelInfo = function(gm, index, info) {
 }
 
 ////////////////////////////
-ZSCPosManagement.prototype.resetAllRatioTags = function(gm) {
+ZSCPosManagement.prototype.resetAllMineTypeTags = function(gm) {
     for (var i = 0; i < gm.mineTypeNos; ++i) {
-        gm.ratioTags[i] = false;
+        gm.mineTypeTags[i] = false;
     }
 }
 
-ZSCPosManagement.prototype.checkAllRatioTags = function(gm) {
+ZSCPosManagement.prototype.checkAllMineTypeTags = function(gm) {
     for (var i = 0; i < gm.mineTypeNos; ++i) {
-        if (gm.ratioTags[i] == false) {
+        if (gm.mineTypeTags[i] == false) {
             return false;
         }
     }
     return true;
 }
 
-ZSCPosManagement.prototype.loadMineTypesInfo = function(func) {
+ZSCPosManagement.prototype.loadMineTypeInfos = function(func) {
     var gm = this;
     var callback = func;
 
     gm.numMineTypes(gm, function(gm) {
-        gm.resetAllRatioTags(gm);
+        gm.resetAllMineTypeTags(gm);
        if (gm.mineTypeNos == 0) {
             callback();
         } else {
@@ -218,7 +238,7 @@ ZSCPosManagement.prototype.loadMineTypes = function(gm, func) {
     for (var i = 0; i < gm.mineTypeNos; ++i) {
         gm.loadMineTypeByIndex(gm, i, function(gm, index, userInfo) {
             gm.parserMineTypeStr(gm, index, userInfo);
-            if (gm.checkAllRatioTags(gm) == true) {
+            if (gm.checkAllMineTypeTags(gm) == true) {
                 func();
             }
         });
@@ -231,7 +251,7 @@ ZSCPosManagement.prototype.loadMineTypeByIndex = function(gm, index, func) {
         function(error, para){ 
             if(!error) {
                 var ret = para;
-                gm.ratioTags[index] = true;
+                gm.mineTypeTags[index] = true;
                 func(gm, index, ret);  
             } else { 
                 console.log("error: " + error);
@@ -245,9 +265,10 @@ ZSCPosManagement.prototype.parserMineTypeStr = function(gm, index, info) {
     var newsidinfo = info.substr(offset,len)
     var newsids    = newsidinfo.split("&");
 
-    var mineDuration          = newsids[0];
+    var mineTypeDuration   = newsids[0];
     var mineTypeActived    = newsids[1];
 
-    gm.mineDuration[index]  = mineDuration.split("=")[1];
-    gm.mineTypeActived[index] = mineTypeActived.split("=")[1];
+    gm.mineTypeDuration[index] = mineTypeDuration.split("=")[1];
+    gm.mineTypeActived[index]  = mineTypeActived.split("=")[1];
 }
+
