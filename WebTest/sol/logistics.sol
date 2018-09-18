@@ -68,7 +68,7 @@ contract Logistics {
     }
  
     function allocTracks(bytes32 _num, uint length) internal {
-        infos_[_num].tracks_.length = length;
+        infos_[_num].tracks_.length += length;
     }
 
     function deleteTracks(bytes32 _num) internal {
@@ -158,7 +158,10 @@ contract Logistics {
         // log0(actionCode);
     }
 
-    function updateTracks(bytes32 _num, string _tracks) internal {
+    // _updateType: 0 means overwrite, 1 means add
+    function updateTracks(bytes32 _num, string _tracks, uint _updateType) internal {
+
+        uint startIndex = uint(0);
 
         if ((bytes32(0) == _num) || _tracks.equals("")) {
             return;
@@ -166,18 +169,22 @@ contract Logistics {
 
         if (_tracks.keyExists("trackElementList")) {
 
-            // delete all tracks at first
-            deleteTracks(_num);
-
             string memory tracks = _tracks.getArrayValueByKey("trackElementList");
-                if (bytes(tracks).length > 0) {
+            if (!tracks.equals("")) {
                 tracks.split("&", tracks_);
+
+                if (uint(0) == _updateType) {
+                    // delete all tracks at first
+                    deleteTracks(_num);
+                }
+
+                startIndex = infos_[_num].tracks_.length;
 
                 //alloc tracks
                 allocTracks(_num, tracks_.length);
 
                 for (uint i=0; i<tracks_.length; i++) {
-                    updateTrack(_num, i, tracks_[i]);
+                    updateTrack(_num, startIndex+i, tracks_[i]);
                 }
             }
         }
@@ -265,7 +272,7 @@ contract Logistics {
         updateBrief(num, _info);
 
         // update tracks from json(similar to)
-        updateTracks(num, _info);
+        updateTracks(num, _info, uint(0));
     }
 
     function updateAll(bytes32 _num, bytes32 _transNum, 
@@ -276,7 +283,7 @@ contract Logistics {
 
         // update tracks from json(similar to)
         if (!_tracks.equals("")) {
-            updateTracks(_num, _tracks);
+            updateTracks(_num, _tracks, uint(0));
         }
     }
 }
