@@ -26,6 +26,8 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         uint spLev_;
         uint spCur_;
         uint spMax_;
+        uint spBase_;
+        uint upBase_;
         uint mineStart_;
         uint mineEnd_;
 
@@ -60,6 +62,9 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     address public extraEffectObj_;
 
+    uint public minePerDay_;
+    uint public rewardPerDay_;
+
     // Constructor
     function SysGmPos(bytes32 _name) public SysGmBase(_name) {
         dayInSeconds_ = DAY_IN_SECONDS;
@@ -77,6 +82,13 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         addLog( "seconds", false);
     }
 
+    function setPosRatio(uint _mineRaioPerDay, uint _rewardRatioPerDay) public {
+        checkDelegate(msg.sender, 1);
+
+        minePerDay_ = _mineRaioPerDay;
+        rewardPerDay_ = _rewardRatioPerDay;
+    }
+
     function mintUnit(address _user) internal returns (uint) {
         uint index = robotNos_;
         robotNos_++;
@@ -92,8 +104,10 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         robots_[index].spLev_  = 0;
         robots_[index].spCur_     = 0;
         robots_[index].spMax_     = 0;
+        robots_[index].spBase_    = 0;
         robots_[index].mineStart_ = 0;
         robots_[index].mineEnd_   = 0;
+        robots_[index].upBase_    = 0;
 
         if (ctgs_[ctgIndex].spEftMin_ == ctgs_[ctgIndex].spEftMax_) {
             robots_[index].spEft_ = ctgs_[ctgIndex].spEftMin_;
@@ -137,11 +151,19 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         robots_[_unitId].spLev_ = _lev;
     }
 
+    function setUnitSPBase(uint _unitId, uint _base) internal {
+        robots_[_unitId].spBase_ = _base;
+    }
+
     function setUnitSPMax(uint _unitId, uint _max) internal {
         robots_[_unitId].spMax_ = _max;
     }
 
     function setUnitSPCur(uint _unitId, uint _cur) internal {
+        robots_[_unitId].spCur_ = _cur;
+    }
+
+    function setUnitUpBase(uint _unitId, uint _base) internal {
         robots_[_unitId].spCur_ = _cur;
     }
 
@@ -155,6 +177,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     function resetUnitMineInfo(uint _robotId) internal {
         robots_[_robotId].spCur_     = 0;
+        robots_[_robotId].spMax_     = 0; 
         robots_[_robotId].mineStart_ = 0;
         robots_[_robotId].mineEnd_   = 0;
     }
@@ -177,7 +200,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
 
     //////////////////////
-    function mintUnitSpec(address _user, bytes32 _ctgName, uint _spMax, uint _durationInDays) public {
+    function mintUnitSpec(address _user, bytes32 _ctgName, uint _spMax, uint _durationInDays) internal returns (uint) {
         checkDelegate(msg.sender, 1);
 
         uint cur = now;
@@ -190,16 +213,21 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
         robots_[index].specific_  = true;
         robots_[index].status_ = "mining";
-        robots_[index].name_   = _ctgName;
+        robots_[index].name_   = ctgName;
         robots_[index].rare_   = ctgs_[ctgIndex].rare_;
         robots_[index].spLev_  = 0;
+        robots_[index].spBase_    = 0;
         robots_[index].spCur_     = _spMax;
-        robots_[index].spMax_     = 0;
+        robots_[index].spMax_     = _spMax;
         robots_[index].mineStart_ = cur;
         robots_[index].mineEnd_   = cur.add(secs);
+        robots_[index].upBase_    = 0;
 
-        robots_[index].spEft_  = random(ctgs_[ctgIndex].spEftMin_, ctgs_[ctgIndex].spEftMax_);
+        robots_[index].spEft_     = ctgs_[ctgIndex].spEftMin_;
+        robots_[index].rrEft_     = ctgs_[ctgIndex].rrEftMin_;
+        robots_[index].upProbEft_ = ctgs_[ctgIndex].upProbEftMin_;
 
+        return 
     }
 
     function setExtraEffectObj(address _adr) public {
@@ -247,12 +275,24 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return robotNos_;  
     }
 
+    function getUnitSPMinedPerday() public view returns (uint) {
+        return minePerDay_;
+    }
+
+    function getUnitSPRewardPerday() public view returns (uint) {
+        return rewardPerDay_;
+    }
+
     function getUnitName(uint _unitId) public view returns (bytes32) {
         return robots_[_unitId].name_;
     }
 
     function getUnitStatus(uint _unitId) public view returns (bytes32) {
         return robots_[_unitId].status_;
+    }
+
+    function getUnitSPBase(uint _unitId) public view returns (uint) {
+
     }
 
     function getUnitRare(uint _unitId) public view returns (uint) {
@@ -265,6 +305,14 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     function getUnitSPEft(uint _unitId) public view returns (uint) {
         return robots_[_unitId].spEft_;
+    }
+
+    function getUnitRREft(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].rrEft_;
+    }
+
+    function getUnitUPEft(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].upProbEft_;
     }
 
     function getUnitSPCur(uint _unitId) public view returns (uint) {
