@@ -190,6 +190,10 @@ contract Logistics {
         }
     }
 
+    function addTrack(bytes32 _num, string _tracks) public {
+        updateTracks(_num, _tracks, uint(1));
+    }
+
     function updateBrief(bytes32 _num, string _brief) public {
         bytes32 transNum = bytes32(0);
         bytes32 model = bytes32(0);
