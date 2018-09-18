@@ -34,13 +34,15 @@ contract Logistics {
         Track[] tracks_;
     }
 
-    uint private count_ = 0;
+    uint private count_;
     mapping(bytes32 => Info) private infos_;
 
-    string[] tracks_;
+    string[] private tracks_;
 
     // Constructor
-    function Logistics() public {}
+    function Logistics() public {
+        count_ = 0;
+    }
 
     function setBriefInfo(bytes32 _num, bytes32 _transNum, 
                       bytes32 _model, bytes32 _destinationCountry,
@@ -181,7 +183,7 @@ contract Logistics {
         }
     }
 
-    function updataBrief(bytes32 _num, string _brief) internal {
+    function updateBrief(bytes32 _num, string _brief) public {
         bytes32 transNum = bytes32(0);
         bytes32 model = bytes32(0);
         bytes32 destinationCountry = bytes32(0);
@@ -228,15 +230,14 @@ contract Logistics {
         // log0(lastStatus);
     }
 
-    function updateAll(bytes32 _num, bytes32 _transNum, 
-                       bytes32 _model, bytes32 _destinationCountry,
-                       bytes32 _lastStatus, string _tracks) public {
-
+    function updateBrief(bytes32 _num, bytes32 _transNum, bytes32 _model,
+                         bytes32 _destinationCountry, bytes32 _lastStatus) public {
         if ((bytes32(0) == _num) || (bytes32(0) == _transNum) || (bytes32(0) == _model)
             || (bytes32(0) == _destinationCountry) || (bytes32(0) == _lastStatus)) {
             return;
         }
 
+        // update brief
         infos_[_num].num_                = _num;
         infos_[_num].transNum_           = _transNum;
         infos_[_num].model_              = _model;
@@ -260,10 +261,22 @@ contract Logistics {
             return;
         }
 
-        // update brief
-        updataBrief(num, _info);
+        // update brief from json(similar to)
+        updateBrief(num, _info);
 
-        // update tracks
+        // update tracks from json(similar to)
         updateTracks(num, _info);
+    }
+
+    function updateAll(bytes32 _num, bytes32 _transNum, 
+                       bytes32 _model, bytes32 _destinationCountry,
+                       bytes32 _lastStatus, string _tracks) public {
+
+        updateBrief(_num, _transNum, _model, _destinationCountry, _lastStatus);
+
+        // update tracks from json(similar to)
+        if (!_tracks.equals("")) {
+            updateTracks(_num, _tracks);
+        }
     }
 }
