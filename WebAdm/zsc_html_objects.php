@@ -31,13 +31,14 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
         </table><br>
         <table align="center" style="width:800px">
            <tr>
-            <td align="center"><a href="adm_manage_token_contracts.php">Manage Tokens</a></td>
-            <td align="center"><a href="adm_manage_users.php">Manage Users</a></td>
-            <td align="center"><a href="adm_manage_pos_1.php">Pos-A</a></td>
-            <td align="center"><a href="adm_manage_pos_2.php">Pos-B</a></td>
-            <td align="center"><a href="adm_show_log.php">Show Log</a></td>
-            <td align="center"><a href="adm_print_abi.php">Print Abi</a></td>
-            <td align="center"><a href="adm_uninstall_system.php">Uninstall System</a></td>
+            <td align="center"><a href="adm_manage_token_contracts.php">[Mag. Tokens]</a></td>
+            <td align="center"><a href="adm_manage_users.php">[Mag. Users]</a></td>
+            <td align="center"><a href="adm_manage_pos_0.php">[PoS Sets]</a></td>
+            <td align="center"><a href="adm_manage_pos_1.php">[PoS Ratio]</a></td>
+            <td align="center"><a href="adm_manage_pos_2.php">[PoS Level]</a></td>
+            <td align="center"><a href="adm_show_log.php">[Show Log]</a></td>
+            <td align="center"><a href="adm_print_abi.php">[Print Abi]</a></td>
+            <td align="center"><a href="adm_uninstall_system.php">[Unins. Sys.]</a></td>
           </tr>
         </table>
         </div>';
