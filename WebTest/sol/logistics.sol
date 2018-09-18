@@ -154,22 +154,30 @@ contract Logistics {
 
         if (_info.keyExists("transNum")) {
             transNum = PlatString.tobytes32(_info.getStringValueByKey("transNum"));
-            infos_[num].transNum_ = transNum;
+            if (bytes32(0) != transNum) {
+                infos_[num].transNum_ = transNum;
+            }
         }
 
         if (_info.keyExists("model")) {
             model = PlatString.tobytes32(_info.getStringValueByKey("model"));
-            infos_[num].model_ = model;
+            if (bytes32(0) != model) {
+                infos_[num].model_ = model;
+            }
         }
 
         if (_info.keyExists("destinationCountry")) {
             destinationCountry = PlatString.tobytes32(_info.getStringValueByKey("destinationCountry"));
-            infos_[num].destinationCountry_ = destinationCountry;
+            if (bytes32(0) != destinationCountry) {
+                infos_[num].destinationCountry_ = destinationCountry;
+            }
         }
 
         if (_info.keyExists("lastStatus")) {
             lastStatus = PlatString.tobytes32(_info.getStringValueByKey("lastStatus"));
-            infos_[num].lastStatus_ = lastStatus;
+            if (bytes32(0) != destinationCountry) {
+                infos_[num].lastStatus_ = lastStatus;
+            }
         }
 
         // log0(num);
@@ -178,21 +186,23 @@ contract Logistics {
         // log0(destinationCountry);
         // log0(lastStatus);
 
-        // delete all tracks at first
-
         // update tracks
         if (_info.keyExists("trackElementList")) {
-             string memory tracks = _info.getArrayValueByKey("trackElementList");
-             if (bytes(tracks).length > 0) {
+
+            // delete all tracks at first
+            deleteTracks(num);
+
+            string memory tracks = _info.getArrayValueByKey("trackElementList");
+                if (bytes(tracks).length > 0) {
                 tracks.split("&", tracks_);
-                
+
                 //alloc tracks
                 allocTracks(num, tracks_.length);
-                
+
                 for (uint i=0; i<tracks_.length; i++) {
                     updateTrack(num, i, tracks_[i]);
                 }
-             }
+            }
         }
     }
 }
