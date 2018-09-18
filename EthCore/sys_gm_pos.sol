@@ -27,13 +27,16 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         uint spCur_;
         uint spMax_;
         uint spBase_;
-        uint upBase_;
         uint mineStart_;
         uint mineEnd_;
 
         uint spEft_;
         uint rrEft_;
+        uint upProbBase_;
         uint upProbEft_;
+
+        uint sellPrice_;
+        address seller_;
     }
     uint private robotNos_;
     mapping(uint => RobotUnit) private robots_;
@@ -107,7 +110,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         robots_[index].spBase_    = 0;
         robots_[index].mineStart_ = 0;
         robots_[index].mineEnd_   = 0;
-        robots_[index].upBase_    = 0;
+        robots_[index].upProbBase_   = 0;
 
         if (ctgs_[ctgIndex].spEftMin_ == ctgs_[ctgIndex].spEftMax_) {
             robots_[index].spEft_ = ctgs_[ctgIndex].spEftMin_;
@@ -129,6 +132,38 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
         return index;
     }
+
+
+    function mintUnitSpec(address _user, bytes32 _ctgName, uint _spMax, uint _durationInDays) internal returns (uint) {
+        checkDelegate(msg.sender, 1);
+
+        uint cur = now;
+        uint index = robotNos_;
+        uint secs = _durationInDays.mul(dayInSeconds_);
+        robotNos_++;
+        _mint(_user, index);
+
+        uint ctgIndex = ctgIndice_[_ctgName];
+
+        robots_[index].specific_  = true;
+        robots_[index].status_ = "mining";
+        robots_[index].name_   = _ctgName;
+        robots_[index].rare_   = ctgs_[ctgIndex].rare_;
+        robots_[index].spLev_  = 0;
+        robots_[index].spBase_    = 0;
+        robots_[index].spCur_     = _spMax;
+        robots_[index].spMax_     = _spMax;
+        robots_[index].mineStart_ = cur;
+        robots_[index].mineEnd_   = cur.add(secs);
+        robots_[index].upProbBase_   = 0;
+
+        robots_[index].spEft_     = ctgs_[ctgIndex].spEftMin_;
+        robots_[index].rrEft_     = ctgs_[ctgIndex].rrEftMin_;
+        robots_[index].upProbEft_ = ctgs_[ctgIndex].upProbEftMin_;
+
+        return index;
+    }
+
 
     function checkUnitUser(address _user, uint _unitId) internal view {
         require(_user == ownerOf(_unitId));
@@ -164,7 +199,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
 
     function setUnitUpBase(uint _unitId, uint _base) internal {
-        robots_[_unitId].spCur_ = _cur;
+        robots_[_unitId].upProbBase_ = _base;
     }
 
     function setUnitMineStart(uint _unitId, uint _tm) internal {
@@ -173,6 +208,14 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     function setUnitMineEnd(uint _unitId, uint _tm) internal {
         robots_[_unitId].mineEnd_ = _tm;
+    }
+
+    function setUnitSeller(uint _unitId, address _seller) internal {
+        robots_[_unitId].seller_ = _seller;
+    }
+
+    function setUnitSellPrice(uint _unitId, uint _price) internal {
+        robots_[_unitId].sellPrice_ = _price;
     }
 
     function resetUnitMineInfo(uint _robotId) internal {
@@ -200,36 +243,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
 
     //////////////////////
-    function mintUnitSpec(address _user, bytes32 _ctgName, uint _spMax, uint _durationInDays) internal returns (uint) {
-        checkDelegate(msg.sender, 1);
-
-        uint cur = now;
-        uint index = robotNos_;
-        uint secs = _durationInDays.mul(dayInSeconds_);
-        robotNos_++;
-        _mint(_user, index);
-
-        uint ctgIndex = ctgIndice_[_ctgName];
-
-        robots_[index].specific_  = true;
-        robots_[index].status_ = "mining";
-        robots_[index].name_   = ctgName;
-        robots_[index].rare_   = ctgs_[ctgIndex].rare_;
-        robots_[index].spLev_  = 0;
-        robots_[index].spBase_    = 0;
-        robots_[index].spCur_     = _spMax;
-        robots_[index].spMax_     = _spMax;
-        robots_[index].mineStart_ = cur;
-        robots_[index].mineEnd_   = cur.add(secs);
-        robots_[index].upBase_    = 0;
-
-        robots_[index].spEft_     = ctgs_[ctgIndex].spEftMin_;
-        robots_[index].rrEft_     = ctgs_[ctgIndex].rrEftMin_;
-        robots_[index].upProbEft_ = ctgs_[ctgIndex].upProbEftMin_;
-
-        return 
-    }
-
     function setExtraEffectObj(address _adr) public {
         checkDelegate(msg.sender, 1);
         extraEffectObj_ = _adr;
@@ -275,6 +288,14 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return robotNos_;  
     }
 
+    function isUnitSpecial(uint _unitId) public view returns (uint) {
+        if (robots_[_unitId].specific_) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     function getUnitSPMinedPerday() public view returns (uint) {
         return minePerDay_;
     }
@@ -292,7 +313,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
 
     function getUnitSPBase(uint _unitId) public view returns (uint) {
-
+        return robots_[_unitId].spBase_;
     }
 
     function getUnitRare(uint _unitId) public view returns (uint) {
@@ -309,6 +330,10 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     function getUnitRREft(uint _unitId) public view returns (uint) {
         return robots_[_unitId].rrEft_;
+    }
+
+    function getUnitUPBase(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].upProbBase_;
     }
 
     function getUnitUPEft(uint _unitId) public view returns (uint) {
@@ -341,5 +366,13 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     function getUnitUPExtra(uint _unitId) public view returns (uint) {
         return SysGmPosEffect(extraEffectObj_).getExtraUpgradeProbability(_unitId);
+    }
+
+    function getUnitSeller(uint _unitId) public view returns (address) {
+        return robots_[_unitId].seller_;
+    }
+
+    function getUnitSellPrice(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].sellPrice_;
     }
 }
