@@ -1,13 +1,16 @@
 /*
 Copyright (c) 2018 ZSC Dev Team
 */
+
+var g_controlApisFullAbi;
+
 function ZSCLogin(userAccount) {
     this.admAdr = "0x162b40e67f72a8ffc13b24b4f15ac7b98d92e454";
-    this.userStatus;
-    this.userType;
     this.controlApisAdr;
     this.erc721Adr;
-    this.controlApisFullAbi;
+    this.userStatus;
+    this.userType;
+    this.controlApisFullAbi = g_controlApisFullAbi;
     this.account = userAccount;
     this.myAdmAdv = web3.eth.contract(this.getLoginAbi()).at(this.admAdr);
     this.gasPrice = bF_getGasPrice();
@@ -37,7 +40,8 @@ ZSCLogin.prototype.tryLogin = function(userType, func){
             if (result == false) {
                 callBack(false);
             } else {
-                gm.getControlApisInfo(gm, callBack);
+                callBack(true);
+                //gm.getControlApisInfo(gm, callBack);
             }
         } else { 
             callBack(false);
@@ -77,13 +81,13 @@ ZSCLogin.prototype.parserControlApisInfo = function(gm, info) {
     var newsidinfo = urlinfo.substr(offset,len)
     var newsids = newsidinfo.split("&");
 
-    var abi       = newsids[0];
-    var sysAdr    = newsids[1];
-    var erc721Adr = newsids[2];
+    var sysAdr    = newsids[0];
+    var erc721Adr = newsids[1];
+    var abi       = newsids[2];
 
-    gm.controlApisFullAbi = timeInfo.split("=")[1];
-    gm.controlApisAdr     = inputInfo.split("=")[1];
-    gm.erc721Adr          = "0x" + txInfo.split("=")[1];
+    gm.controlApisAdr     = "0x" + sysAdr.split("=")[1];
+    gm.erc721Adr          = "0x" + erc721Adr.split("=")[1];
+    gm.controlApisFullAbi = abi.split("=")[1];
 }
 
 ZSCLogin.prototype.activeByUser = function(type, hashLogId){
@@ -94,7 +98,7 @@ ZSCLogin.prototype.activeByUser = function(type, hashLogId){
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, ret) {
             if(!error) { 
-                gm.type = type;
+                gm.userType = type;
                 bF_showHashResult(hashLogId, ret, function(){window.location.reload(true);});
             } else { 
                 console.log("error: " + error);

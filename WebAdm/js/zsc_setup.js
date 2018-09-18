@@ -122,7 +122,7 @@ ZSCSetup.prototype.setPosPaymentReceiver = function(hashID, receiver) {
         });
 } 
 
-ZSCSetup.prototype.setZSCAmountToUser = function(ethAmount, tokenSymbol, tokenAmount, hashID) {
+ZSCSetup.prototype.setTokenAmountToUser = function(ethAmount, tokenSymbol, tokenAmount, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
     var myControlApi = myContract.at(this.ControlApisAdvAdr);
 

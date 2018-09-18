@@ -43,4 +43,14 @@ contract AdmBase is Object {
         str = PlatString.append(str, "end");
         return str;
     }
+
+    function getControlApisInfo() public view returns (string) {
+        address Erc721Adr = ControlApis(controlApisAdr_).getModuleAdress("gm-pos");
+        string memory str ="info?";
+        str = PlatString.append(str, "sysAdr=",    PlatString.addressToString(controlApisAdr_),  "&");
+        str = PlatString.append(str, "erc721Adr=", PlatString.addressToString(Erc721Adr),        "&");
+        str = PlatString.append(str, "fullAbi=",   controlApisFullAib_,        "&");
+        str = PlatString.append(str, "end");
+        return str;
+    }
 }

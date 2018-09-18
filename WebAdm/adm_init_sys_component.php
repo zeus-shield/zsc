@@ -41,12 +41,12 @@ $htmlObjects = new ZSChtmlObjects();
         zscSetup.setPosPaymentReceiver(hash, receiver);
     }
 
-    function setTestZSCToUser(ethAmountId, tokenSymbolId, tokenAmountId, elementId) {
+    function setTestTokenToUser(ethAmountId, tokenSymbolId, tokenAmountId, elementId) {
         var adr = "<?php echo $htmlObjects->readObjectAddress('ControlApisAdv')?>";
         var ethAmount = document.getElementById(ethAmountId).value;
         var tokenSymbol = document.getElementById(tokenSymbolId).value;
         var tokenAmount = document.getElementById(tokenAmountId).value;
-        zscSetup.setZSCAmountToUser(ethAmount, tokenSymbol, tokenAmount, elementId);
+        zscSetup.setTokenAmountToUser(ethAmount, tokenSymbol, tokenAmount, elementId);
     }
 
 </script>
@@ -68,11 +68,11 @@ $htmlObjects = new ZSChtmlObjects();
         <text id="paymentReceiverHash"></text> <br><br>
 
         <text>Step - 0 - 2</text>
-        <button type="button" onClick="setTestZSCToUser('AllocatedEthAmount', 'AllocatedTokenSymbol', 'AllocatedTokenAmount', 'setTestZSCToUserHash')">Pre-allocate ETH & ZSC to tester</button> <br>
+        <button type="button" onClick="setTestTokenToUser('AllocatedEthAmount', 'AllocatedTokenSymbol', 'AllocatedTokenAmount', 'setTestTokenToUserHash')">Pre-allocate ETH & Token to tester</button> <br>
         ETH Amount: <input type="text" id="AllocatedEthAmount" value="0"></input> <br> 
         Token Symbol: <input type="text" id="AllocatedTokenSymbol" value="TestZSC"></input> <br> 
         Token Amount: <input type="text" id="AllocatedTokenAmount" value="50000"></input> <br> 
-        <text id="setTestZSCToUserHash"></text> <br><br>
+        <text id="setTestTokenToUserHash"></text> <br><br>
 
 
         <?php echo $htmlObjects->loadInitObjects('initSystemComponent');?>
