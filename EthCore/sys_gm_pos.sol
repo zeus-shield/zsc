@@ -72,7 +72,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     uint public minePerDay_;
     uint public rewardPerDay_;
 
-    uint public rootPri_ = 1;
     uint public admPri_ = 5;
     uint public subPri_ = 10;
 
@@ -157,9 +156,14 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     //////////////////////////
     function setPriorityValue(uint _adm, uint _sub) public {
-        checkDelegate(msg.sender, rootPri_);
+        checkDelegate(msg.sender, 1);
         admPri_ = _adm;
         subPri_ = _sub;
+    }
+
+    function setPublicTradeable_(bool _tag) public {
+        checkDelegate(msg.sender, 1);
+        publicTradeable_ = _tag;
     }
 
     function setCommenTokenURI(string _uri) public {
