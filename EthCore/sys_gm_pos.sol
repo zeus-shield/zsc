@@ -79,10 +79,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         require(ratio > 0 && ratio <= DAY_IN_SECONDS);
         dayInSeconds_ = DAY_IN_SECONDS;
         dayInSeconds_ = dayInSeconds_.div(ratio);   
-
-        addLog("downscaledDay 1 days = ", true);
-        addLog(PlatString.uintToString(dayInSeconds_), false);
-        addLog( "seconds", false);
     }
 
     function setPosRatio(uint _mineRaioPerDay, uint _rewardRatioPerDay) public {
@@ -92,17 +88,34 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         rewardPerDay_ = _rewardRatioPerDay;
     }
 
-    function mintUnit(address _user) internal returns (uint) {
+    function getRandomUnitCategory() internal view returns (bytes32) {
+        uint ran = random(0, 100);
+        uint rareLev;
+        if (ran <= rareProb_[0]) {
+            rareLev = 0;
+        } else if (ran >rareProb_[0] && ran <= rareProb_[1]) {
+            rareLev = 1;
+        } else if (ran >rareProb_[1] && ran <= rareProb_[2]) {
+            rareLev = 2;
+        } else {
+            rareLev = 3;
+        }
+
+        ran = random(0, rares_[rareLev].size_);
+        return rares_[rareLev].ctgs_[ran];
+    }
+
+    function mintUnit(address _user, bytes32 _ctgName) internal returns (uint) {
         uint index = robotNos_;
         robotNos_++;
         _mint(_user, index);
 
-        bytes32 ctgName = getRandomUnitCategory();
-        uint ctgIndex = ctgIndice_[ctgName];
+        //bytes32 ctgName = getRandomUnitCategory();
+        uint ctgIndex = ctgIndice_[_ctgName];
 
         robots_[index].specific_  = false;
         robots_[index].status_ = "idle";
-        robots_[index].name_   = ctgName;
+        robots_[index].name_   = _ctgName;
         robots_[index].rare_   = ctgs_[ctgIndex].rare_;
         robots_[index].spLev_  = 0;
         robots_[index].spCur_     = 0;
@@ -133,7 +146,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return index;
     }
 
-
+/*
     function mintUnitSpec(address _user, bytes32 _ctgName, uint _spMax, uint _durationInDays) internal returns (uint) {
         checkDelegate(msg.sender, 1);
 
@@ -163,99 +176,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
         return index;
     }
-
-
-    function checkUnitUser(address _user, uint _unitId) internal view {
-        require(_user == ownerOf(_unitId));
-    }
-
-    function checkSpecificUnit(uint _unitId) internal {
-        if (robots_[_unitId].specific_ == false) {
-            return;
-        }
-
-        require(now < robots_[_unitId].mineEnd_);
-        robots_[_unitId].specific_ = false;
-    }
-
-    function setUnitStatus(uint _unitId, bytes32 _status) internal {
-        robots_[_unitId].status_ = _status;
-    }
-
-    function setUnitSPLev(uint _unitId, uint _lev) internal {
-        robots_[_unitId].spLev_ = _lev;
-    }
-
-    function setUnitSPBase(uint _unitId, uint _base) internal {
-        robots_[_unitId].spBase_ = _base;
-    }
-
-    function setUnitSPMax(uint _unitId, uint _max) internal {
-        robots_[_unitId].spMax_ = _max;
-    }
-
-    function setUnitSPCur(uint _unitId, uint _cur) internal {
-        robots_[_unitId].spCur_ = _cur;
-    }
-
-    function setUnitUpBase(uint _unitId, uint _base) internal {
-        robots_[_unitId].upProbBase_ = _base;
-    }
-
-    function setUnitMineStart(uint _unitId, uint _tm) internal {
-        robots_[_unitId].mineStart_ = _tm;
-    }
-
-    function setUnitMineEnd(uint _unitId, uint _tm) internal {
-        robots_[_unitId].mineEnd_ = _tm;
-    }
-
-    function setUnitSeller(uint _unitId, address _seller) internal {
-        robots_[_unitId].seller_ = _seller;
-    }
-
-    function setUnitSellPrice(uint _unitId, uint _price) internal {
-        robots_[_unitId].sellPrice_ = _price;
-    }
-
-    function resetUnitMineInfo(uint _robotId) internal {
-        robots_[_robotId].spCur_     = 0;
-        robots_[_robotId].spMax_     = 0; 
-        robots_[_robotId].mineStart_ = 0;
-        robots_[_robotId].mineEnd_   = 0;
-    }
-
-    function getRandomUnitCategory() private view returns (bytes32) {
-        uint ran = random(0, 100);
-        uint rareLev;
-        if (ran <= rareProb_[0]) {
-            rareLev = 0;
-        } else if (ran >rareProb_[0] && ran <= rareProb_[1]) {
-            rareLev = 1;
-        } else if (ran >rareProb_[1] && ran <= rareProb_[2]) {
-            rareLev = 2;
-        } else {
-            rareLev = 3;
-        }
-
-        ran = random(0, rares_[rareLev].size_);
-        return rares_[rareLev].ctgs_[ran];
-    }
-
-    //////////////////////
-    function setExtraEffectObj(address _adr) public {
-        checkDelegate(msg.sender, 1);
-        extraEffectObj_ = _adr;
-    }
-
-    function setRareThreshold(uint _R, uint _S, uint _SR, uint _SSR) public {
-        checkDelegate(msg.sender, 1);
-        rareProb_[0] = _SSR;
-        rareProb_[1] = _SR;
-        rareProb_[2] = _S;
-        rareProb_[3] = _R;
-    }
-
+*/   
     function setUnitCategory(bytes32 _name, uint _rare, uint _spEftMin, uint _spEftMax, uint _rrEftMin, uint _rrEftMax, uint _upProbEftMin, uint _upProbEftMax) public {
         checkDelegate(msg.sender, 1);
         require(_rare < 4);
@@ -283,6 +204,84 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         ctgs_[index].upProbEftMin_ = _upProbEftMin;
         ctgs_[index].upProbEftMax_ = _upProbEftMax;
     }
+
+    function checkUnitUser(address _user, uint _unitId) internal view {
+        require(_user == ownerOf(_unitId));
+    }
+
+    function checkSpecificUnit(uint _unitId) internal {
+        if (robots_[_unitId].specific_ == false) {
+            return;
+        }
+
+        require(now < robots_[_unitId].mineEnd_);
+        robots_[_unitId].specific_ = false;
+    }
+
+    function setUnitSpec(uint _unitId, bool _tag) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].specific_ = _tag;
+    }
+
+    function setUnitStatus(uint _unitId, bytes32 _status) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].status_ = _status;
+    }
+
+    function setUnitSPLev(uint _unitId, uint _lev) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].spLev_ = _lev;
+    }
+
+    function setUnitSPBase(uint _unitId, uint _base) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].spBase_ = _base;
+    }
+
+    function setUnitSPMax(uint _unitId, uint _max) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].spMax_ = _max;
+    }
+
+    function setUnitSPCur(uint _unitId, uint _cur) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].spCur_ = _cur;
+    }
+
+    function setUnitUpBase(uint _unitId, uint _base) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].upProbBase_ = _base;
+    }
+
+    function setUnitMineStart(uint _unitId, uint _tm) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].mineStart_ = _tm;
+    }
+
+    function setUnitMineEnd(uint _unitId, uint _tm) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].mineEnd_ = _tm;
+    }
+
+    function setUnitSeller(uint _unitId, address _seller) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].seller_ = _seller;
+    }
+
+    function setUnitSellPrice(uint _unitId, uint _price) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].sellPrice_ = _price;
+    }
+
+    function resetUnitMineInfo(uint _robotId) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_robotId].spCur_     = 0;
+        robots_[_robotId].spMax_     = 0; 
+        robots_[_robotId].mineStart_ = 0;
+        robots_[_robotId].mineEnd_   = 0;
+    }
+
+    //////////////////////
 
     function numUnits() public view returns (uint) {
         return robotNos_;  
