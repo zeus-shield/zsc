@@ -8,7 +8,6 @@ function ZSCPosManagement(adr, abi) {
     this.levelMaxSP = [];
     this.levelEnhanceProb = [];
     this.levelPriceToEnhance = [];
-    this.levelPriceToCreate = [];
     this.itemTags = [];
 
     this.tradeTag;
@@ -23,6 +22,17 @@ function ZSCPosManagement(adr, abi) {
     this.mineTypeActived = [];
     this.mineTypeTags = [];
 
+    this.unitCtgNos = 0;
+    this.unitCtgNames = [];
+    this.unitCtgRares = [];
+    this.unitCtgSPEftMin = [];
+    this.unitCtgSPEftMax = [];
+    this.unitCtgRREftMin = [];
+    this.unitCtgRREftMax = [];
+    this.unitCtgUPEftMin = [];
+    this.unitCtgUPEftMax = [];
+    this.unitCtgTags = [];
+
     this.account = web3.eth.accounts[0];
     this.myPosManager = web3.eth.contract(abi).at(adr);
     this.gasPrice = cC_getGasPrice();
@@ -33,11 +43,13 @@ ZSCPosManagement.prototype.getLevelNos = function() {return this.levelNos;}
 ZSCPosManagement.prototype.getLevelMaxSP = function(index) {return web3.fromWei(this.levelMaxSP[index], 'ether');}
 ZSCPosManagement.prototype.getLevelUpProb = function(index) {return this.levelEnhanceProb[index];}
 ZSCPosManagement.prototype.getLevelUpPrice= function(index) {return web3.fromWei(this.levelPriceToEnhance[index], 'ether');}
-ZSCPosManagement.prototype.getLevelCreatePrice = function(index) {return web3.fromWei(this.levelPriceToCreate[index], 'ether');}
 
 ZSCPosManagement.prototype.getMineTypeNos = function() {return this.mineTypeNos;}
 ZSCPosManagement.prototype.getMineTypeDuration = function(index) {return this.mineTypeDuration[index];}
-ZSCPosManagement.prototype.getMineTypeActived = function(index) {return this.mineTypeActived[index];}
+ZSCPosManagement.prototype.getMineTypeActivated = function(index) {return (this.mineTypeActived[index] == 1);}
+
+ZSCPosManagement.prototype.getCtgNos = function() {return this.unitCtgNos;}
+
 
 ZSCPosManagement.prototype.getTradeTag = function() {return (this.tradeTag == 1);}
 ZSCPosManagement.prototype.getDayInSeconds = function() {return this.dayInSecs;}
@@ -101,12 +113,12 @@ ZSCPosManagement.prototype.setPosRatio = function(hashID, mineRatio, rewardRatio
         });
 } 
 
-ZSCPosManagement.prototype.setLevelInfo = function(hashID, level, maxStakePoint, enhanceProb, priceToEnhance) {
+ZSCPosManagement.prototype.setLevelInfo = function(hashID, level, maxStakePoint, priceToEnhance, enhanceProb) {
     this.myPosManager.setLevelInfo(
         level, 
         web3.toWei(maxStakePoint, 'ether'), 
-        enhanceProb, 
         web3.toWei(priceToEnhance, 'ether'), 
+        enhanceProb, 
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){window.location.reload(true);});
@@ -114,11 +126,55 @@ ZSCPosManagement.prototype.setLevelInfo = function(hashID, level, maxStakePoint,
         });
 } 
 
-//////////////
-ZSCPosManagement.prototype.loadBaseSettings = function(func) {
+ZSCPosManagement.prototype.setUnitCategory = function(hashID, ctgName, rare, spEftMin, spEftMax, rrEftMin, rrEftMax, upProbEftMin, upProbEftMax) {
+    this.myPosManager.setUnitCategory(
+        ctgName, rare, 
+        spEftMin, spEftMin,
+        rrEftMin * 100, rrEftMax * 100,
+        upProbEftMin, upProbEftMax,
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
+        function(error, result){ 
+            if(!error) cC_showHashResultTest(hashID, result, function(){window.location.reload(true);});
+            else console.log("error: " + error);
+        });
 }
 
-ZSCPosManagement.prototype.parserBaseSettingsStr = function(gm, info) {   
+//////////////
+ZSCPosManagement.prototype.loadBaseSettings = function(func) {
+    var gm = this;
+    var callback = func;
+
+    gm.myPosManager.getBaseSettings(
+        {from: gm.account},
+        function(error, info){ 
+            if(!error) {
+                gm.parserBaseSettingsStr(gm, info);  
+                callback();
+            } else { 
+                console.log("error: " + error);
+            }
+        });
+}
+
+ZSCPosManagement.prototype.parserBaseSettingsStr = function(gm, info) {
+    var len        = info.length;
+    var offset     = info.indexOf("?");
+    var newsidinfo = info.substr(offset,len)
+    var newsids    = newsidinfo.split("&");
+
+    var tradeTag      = newsids[0];
+    var dayInSecs     = newsids[1];
+    var createPrice   = newsids[2];
+    var minePerDay    = newsids[3];
+    var rewardPerDay  = newsids[4];
+    var tokenUri      = newsids[5];
+
+    gm.tradeTag     = tradeTag.split("=")[1];
+    gm.dayInSecs    = dayInSecs.split("=")[1]; 
+    gm.createPrice  = createPrice.split("=")[1];
+    gm.minePerDay   = minePerDay.split("=")[1];;  
+    gm.rewardPerDay = rewardPerDay.split("=")[1];;
+    gm.tokenUri     = tokenUri.split("=")[1];;    
 }
 
 //////////////
@@ -201,13 +257,11 @@ ZSCPosManagement.prototype.parserLevelInfo = function(gm, index, info) {
     var levelMaxSP          = newsids[0];
     var levelEnhanceProb    = newsids[1];
     var levelPriceToEnhance = newsids[2];
-    var levelPriceToCreate  = newsids[3];
 
     gm.levelTags[index]           = index;
     gm.levelMaxSP[index]          = levelMaxSP.split("=")[1];
     gm.levelEnhanceProb[index]    = levelEnhanceProb.split("=")[1];
     gm.levelPriceToEnhance[index] = levelPriceToEnhance.split("=")[1];
-    gm.levelPriceToCreate[index]  = levelPriceToCreate.split("=")[1];
 }
 
 ////////////////////////////
@@ -235,7 +289,7 @@ ZSCPosManagement.prototype.loadMineTypeInfos = function(func) {
        if (gm.mineTypeNos == 0) {
             callback();
         } else {
-            gm.loadRatios(gm, function(){
+            gm.loadMineTypes(gm, function(){
                 callback();
             });
         }
@@ -287,10 +341,106 @@ ZSCPosManagement.prototype.parserMineTypeStr = function(gm, index, info) {
     var newsidinfo = info.substr(offset,len)
     var newsids    = newsidinfo.split("&");
 
-    var mineTypeDuration   = newsids[0];
-    var mineTypeActived    = newsids[1];
+    var mineTypeActived  = newsids[0];
+    var mineTypeDuration = newsids[1];
 
-    gm.mineTypeDuration[index] = mineTypeDuration.split("=")[1];
     gm.mineTypeActived[index]  = mineTypeActived.split("=")[1];
+    gm.mineTypeDuration[index] = mineTypeDuration.split("=")[1];
 }
 
+////////////////////////////
+ZSCPosManagement.prototype.resetAllCtgTags = function(gm) {
+    for (var i = 0; i < gm.unitCtgNos; ++i) {
+        gm.unitCtgTags[i] = false;
+    }
+}
+
+ZSCPosManagement.prototype.checkllCtgTags = function(gm) {
+    for (var i = 0; i < gm.unitCtgNos; ++i) {
+        if (gm.unitCtgTags[i] == false) {
+            return false;
+        }
+    }
+    return true;
+}
+
+ZSCPosManagement.prototype.loadUnitCategoryInfos = function(func) {
+    var gm = this;
+    var callback = func;
+
+    gm.numUnitCtgs(gm, function(gm) {
+        gm.resetAllCtgTags(gm);
+       if (gm.unitCtgNos == 0) {
+            callback();
+        } else {
+            gm.loadUnitCtgs(gm, function(){
+                callback();
+            });
+        }
+    });
+}
+
+ZSCPosManagement.prototype.numUnitCtgs = function(gm, func) {
+    gm.myPosManager.numUnitCatetories(
+        {from: gm.account},
+        function(error, num){ 
+            if(!error) { 
+                gm.unitCtgNos = num.toString(10); 
+                func(gm);
+            } else {
+                console.log("error: " + error);
+            }
+         });
+}
+
+ZSCPosManagement.prototype.loadUnitCtgs = function(gm, func) {
+    var callback = func;
+    for (var i = 0; i < gm.unitCtgNos; ++i) {
+        gm.loadUnitCtgByIndex(gm, i, function(gm, index, info) {
+            gm.parserUnitCtgStr(gm, index, info);
+            if (gm.checkllCtgTags(gm) == true) {
+                func();
+            }
+        });
+    } 
+} 
+
+ZSCPosManagement.prototype.loadUnitCtgByIndex = function(gm, index, func) {
+    gm.myPosManager.getUnitCategoryByIndex(index, 
+        {from: gm.account},
+        function(error, para){ 
+            if(!error) {
+                var ret = para;
+                gm.unitCtgTags[index] = true;
+                func(gm, index, ret);  
+            } else { 
+                console.log("error: " + error);
+            }
+        });
+}
+
+ZSCPosManagement.prototype.parserUnitCtgStr = function(gm, index, info) {
+    var len        = info.length;
+    var offset     = info.indexOf("?");
+    var newsidinfo = info.substr(offset,len)
+    var newsids    = newsidinfo.split("&");
+
+    var unitCtgNames    = newsids[0];
+    var unitCtgRares    = newsids[1];
+    var unitCtgSPEftMin = newsids[2];
+    var unitCtgSPEftMax = newsids[3];
+    var unitCtgRREftMin = newsids[4];
+    var unitCtgRREftMax = newsids[5];
+    var unitCtgUPEftMin = newsids[6];
+    var unitCtgUPEftMax = newsids[7];
+
+
+    gm.unitCtgNames[index]    = unitCtgNames.split("=")[1];
+    gm.unitCtgRares[index]    = unitCtgRares.split("=")[1];
+    gm.unitCtgSPEftMin[index] = unitCtgSPEftMin.split("=")[1];
+    gm.unitCtgSPEftMax[index] = unitCtgSPEftMax.split("=")[1];
+    gm.unitCtgRREftMin[index] = unitCtgRREftMin.split("=")[1];
+    gm.unitCtgRREftMax[index] = unitCtgRREftMax.split("=")[1];
+    gm.unitCtgUPEftMin[index] = unitCtgUPEftMin.split("=")[1];
+    gm.unitCtgUPEftMax[index] = unitCtgUPEftMax.split("=")[1];
+}
