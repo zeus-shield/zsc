@@ -404,3 +404,14 @@ function getInfo(func) {
     let callBack = func;
     checkUserDemo(account, password,callBack);
 }
+
+function getType() {
+    let type = getCookie('type');
+    if (type == 0) {
+        return ("apply-receiver");
+    } else if (type == 1) {
+        return ("apply-provider");
+    } else {
+
+    }
+}
