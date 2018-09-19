@@ -49,7 +49,14 @@ ZSCPosManagement.prototype.getMineTypeDuration = function(index) {return this.mi
 ZSCPosManagement.prototype.getMineTypeActivated = function(index) {return (this.mineTypeActived[index] == 1);}
 
 ZSCPosManagement.prototype.getCtgNos = function() {return this.unitCtgNos;}
-
+ZSCPosManagement.prototype.getCtgName = function(index) {return this.unitCtgNames[index]}    
+ZSCPosManagement.prototype.getCtgRare = function(index) {return this.unitCtgRares[index]}    
+ZSCPosManagement.prototype.getCtgSPEftMin = function(index) {return this.unitCtgSPEftMin[index]} 
+ZSCPosManagement.prototype.getCtgSPEftMax = function(index) {return this.unitCtgSPEftMax[index]} 
+ZSCPosManagement.prototype.getCtgRREftMin = function(index) {return this.unitCtgRREftMin[index]} 
+ZSCPosManagement.prototype.getCtgRREftMax = function(index) {return this.unitCtgRREftMax[index]} 
+ZSCPosManagement.prototype.getCtgUPEftMin = function(index) {return this.unitCtgUPEftMin[index]} 
+ZSCPosManagement.prototype.getCtgUPEftMax = function(index) {return this.unitCtgUPEftMax[index]} 
 
 ZSCPosManagement.prototype.getTradeTag = function() {return (this.tradeTag == 1);}
 ZSCPosManagement.prototype.getDayInSeconds = function() {return this.dayInSecs;}
@@ -129,9 +136,9 @@ ZSCPosManagement.prototype.setLevelInfo = function(hashID, level, maxStakePoint,
 ZSCPosManagement.prototype.setUnitCategory = function(hashID, ctgName, rare, spEftMin, spEftMax, rrEftMin, rrEftMax, upProbEftMin, upProbEftMax) {
     this.myPosManager.setUnitCategory(
         ctgName, rare, 
-        spEftMin, spEftMin,
+        spEftMin, spEftMax,
         rrEftMin * 100, rrEftMax * 100,
-        upProbEftMin, upProbEftMax,
+        upProbEftMin * 100, upProbEftMax * 100,
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){window.location.reload(true);});
@@ -439,8 +446,8 @@ ZSCPosManagement.prototype.parserUnitCtgStr = function(gm, index, info) {
     gm.unitCtgRares[index]    = unitCtgRares.split("=")[1];
     gm.unitCtgSPEftMin[index] = unitCtgSPEftMin.split("=")[1];
     gm.unitCtgSPEftMax[index] = unitCtgSPEftMax.split("=")[1];
-    gm.unitCtgRREftMin[index] = unitCtgRREftMin.split("=")[1];
-    gm.unitCtgRREftMax[index] = unitCtgRREftMax.split("=")[1];
-    gm.unitCtgUPEftMin[index] = unitCtgUPEftMin.split("=")[1];
-    gm.unitCtgUPEftMax[index] = unitCtgUPEftMax.split("=")[1];
+    gm.unitCtgRREftMin[index] = unitCtgRREftMin.split("=")[1] / 100;
+    gm.unitCtgRREftMax[index] = unitCtgRREftMax.split("=")[1] / 100;
+    gm.unitCtgUPEftMin[index] = unitCtgUPEftMin.split("=")[1] / 100;
+    gm.unitCtgUPEftMax[index] = unitCtgUPEftMax.split("=")[1] / 100;
 }
