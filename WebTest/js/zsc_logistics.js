@@ -152,9 +152,7 @@ export default class ZSCLogistics {
                         // call 'Logistics.getTrack(bytes32)'
                         contractInstance.getTrack(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                Output(window.outputElement, 'small', 'red', `[TransactionHash]:${result}`);
-                                let receipt = new Receipt();
-                                receipt.getReceipt(result, 0, 1000, null);
+                                Output(window.outputElement, 'small', 'red', `[Track]:${result}`);
                             } else {
                                 Output(window.outputElement, 'small', 'red', error);
                             }
@@ -190,9 +188,7 @@ export default class ZSCLogistics {
                         // call 'Logistics.getBrief(bytes32)'
                         contractInstance.getBrief(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                Output(window.outputElement, 'small', 'red', `[TransactionHash]:${result}`);
-                                let receipt = new Receipt();
-                                receipt.getReceipt(result, 0, 1000, null);
+                                Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
                             } else {
                                 Output(window.outputElement, 'small', 'red', error);
                             }
