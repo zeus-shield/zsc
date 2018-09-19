@@ -2,6 +2,7 @@
  Copyright (c) 2018 ZSC Dev Team
 */
 
+import Receipt from './receipt.js';
 import Output from './output.js';
 
 //private member
@@ -16,30 +17,42 @@ export default class ZSCLogistics {
         this[account] = web3.eth.accounts[0];
     }
 
-    setBrief(_num, _transNum, _model, _destinationCountry, _lastStatus) {
+    update(_info) {
+        let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
         // estimate gas
-        let gasUsed = contractInstance.setBrief.estimateGas(
-            _num, _transNum, _model, _destinationCountry, _lastStatus,
-            function(error, result) {
-                if(!error) {
-                    //alert(result);
-                    // add parameter
-                    contractInstance.setBrief(
-                        _num, _transNum, _model, _destinationCountry, _lastStatus,
-                        {gas: result},
-                        function(error, result) { 
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.update.estimateGas(_info, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("=== Logistics.update(string) ==========================");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result);
+                        console.log("=======================================================");
+                        // call 'Logistics.update(string)'
+                        contractInstance.update(_info, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 Output(window.outputElement, 'small', 'red', `[TransactionHash]:${result}`);
+                                let receipt = new Receipt();
+                                receipt.getReceipt(result, 0, 1000, null);
                             } else {
                                 Output(window.outputElement, 'small', 'red', error);
                             }
                         });
-                } else {
-                    Output(window.outputElement, 'small', 'red', error);
-                }
-            });
+                    } else {
+                        Output(window.outputElement, 'small', 'red', error);
+                    }
+                });
+            } else {
+                Output(window.outputElement, 'small', 'red', error);
+            }
+        });
     }
 
     getBrief(_num) {
