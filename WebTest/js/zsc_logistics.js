@@ -34,7 +34,7 @@ export default class ZSCLogistics {
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result);
-                        console.log("===========================================================================");
+                        console.log("=============================================================================");
                         // call 'Logistics.update(bytes32, bytes32, bytes32, bytes32, bytes32, string)'
                         contractInstance.update(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
@@ -68,13 +68,51 @@ export default class ZSCLogistics {
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("=== Logistics.updateEx(string) ==========================");
+                        console.log("============== Logistics.updateEx(string) ==============");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result);
+                        console.log("========================================================");
+                        // call 'Logistics.updateEx(string)'
+                        contractInstance.updateEx(_info, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                Output(window.outputElement, 'small', 'red', `[TransactionHash]:${result}`);
+                                let receipt = new Receipt();
+                                receipt.getReceipt(result, 0, 1000, null);
+                            } else {
+                                Output(window.outputElement, 'small', 'red', error);
+                            }
+                        });
+                    } else {
+                        Output(window.outputElement, 'small', 'red', error);
+                    }
+                });
+            } else {
+                Output(window.outputElement, 'small', 'red', error);
+            }
+        });
+    }
+
+    remove(_num) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.remove.estimateGas(_num, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("============== Logistics.remove(bytes32) ==============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result);
                         console.log("=======================================================");
-                        // call 'Logistics.updateEx(string)'
-                        contractInstance.updateEx(_info, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        // call 'Logistics.remove(bytes32)'
+                        contractInstance.remove(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 Output(window.outputElement, 'small', 'red', `[TransactionHash]:${result}`);
                                 let receipt = new Receipt();
