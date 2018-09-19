@@ -302,8 +302,8 @@ contract Logistics {
         infos_[_num].lastStatus_         = _lastStatus;
     }
 
-    function update() public {
-        string memory _info = "{\"error\":null,\"num\":\"JNTCU0600046683YQ\",\"transNum\":\"MSK0000027695\",\"model\":\"MOSEXP\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"§¡§â§Þ§Ñ§Ó§Ú§â\",\"timeZone\":\"+3\",\"desc\":\"§´§à§Ó§Ñ§â §Ò§í§Ý §å§ã§á§Ö§ê§ß§à §Õ§à§ã§ä§Ñ§Ó§Ý§Ö§ß §á§à§Ý§å§é§Ñ§ä§Ö§Ý§ð. §³§á§Ñ§ã§Ú§Ò§à §é§ä§à §Ó§à§ã§á§à§Ý§î§Ù§à§Ó§Ñ§Ý§Ú§ã§î §ß§Ñ§ê§Ú§Þ§Ú §å§ã§Ý§å§Ô§Ñ§Þ§Ú\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
+    function update(string _info) public {
+        // string memory _info = "{\"error\":null,\"num\":\"JNTCU0600046683YQ\",\"transNum\":\"MSK0000027695\",\"model\":\"MOSEXP\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"???????\",\"timeZone\":\"+3\",\"desc\":\"????? ??? ??????? ????????? ??????????. ??????? ??? ??????????????? ?????? ????????\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
         bytes32 num = bytes32(0);
 
         // check param
@@ -369,7 +369,7 @@ contract Logistics {
         bool found = false;
         string[5] memory str = ["", "", "", "", ""];
 
-        _num = PlatString.tobytes32("JNTCU0600046683YQ");
+        // _num = PlatString.tobytes32("JNTCU0600046683YQ");
 
         // check param
         if (bytes32(0) == _num) {
@@ -396,7 +396,7 @@ contract Logistics {
         bool found = false;
         string memory str = "";
 
-        _num = PlatString.tobytes32("JNTCU0600046683YQ");
+        // _num = PlatString.tobytes32("JNTCU0600046683YQ");
 
         // check param
         if (bytes32(0) == _num) {
@@ -423,7 +423,7 @@ contract Logistics {
         bool found = false;
         string memory str = "";
 
-        _num = PlatString.tobytes32("JNTCU0600046683YQ");
+        // _num = PlatString.tobytes32("JNTCU0600046683YQ");
 
         // check param
         if (bytes32(0) == _num) {
