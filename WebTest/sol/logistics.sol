@@ -51,7 +51,7 @@ contract Logistics {
 
         // check param
         if (bytes32(0) == _num) {
-            return;
+            return (found, i);
         }
 
         if (0 == nums_.length) {
@@ -414,6 +414,44 @@ contract Logistics {
         str = str.concat(PlatString.bytes32ToString(infos_[_num].model_).toKeyValue("model"), ",");
         str = str.concat(PlatString.bytes32ToString(infos_[_num].destinationCountry_).toKeyValue("destinationCountry"), ",");
         str = str.concat(PlatString.bytes32ToString(infos_[_num].lastStatus_).toKeyValue("lastStatus"), "}");
+
+        return str;
+    }
+
+    function getTrack(bytes32 _num) public view returns (string) {
+        uint index = 0;
+        bool found = false;
+        string memory str = "";
+
+        _num = PlatString.tobytes32("JNTCU0600046683YQ");
+
+        // check param
+        if (bytes32(0) == _num) {
+            return str;
+        }
+
+        // find num
+        (found, index) = findNum(_num);
+        if (!found) {
+            return str;
+        }
+
+        str = "[";
+        for (uint i=0; i<infos_[_num].tracks_.length; i++) {
+            str = str.concat("{", PlatString.bytes32ToString(infos_[_num].tracks_[i].type_).toKeyValue("type"), ",");
+            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].time_).toKeyValue("time"), ",");
+            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].country_).toKeyValue("country"), ",");
+            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].city_).toKeyValue("city"), ",");
+            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].facilityName_).toKeyValue("facilityName"), ",");
+            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].timeZone_).toKeyValue("timeZone"), ",");
+            str = str.concat(infos_[_num].tracks_[i].desc_.toKeyValue("desc"), ",");
+            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].actionCode_).toKeyValue("actionCode"), "}");
+
+            if (infos_[_num].tracks_.length != (i+1)) {
+                str = str.concat(",");
+            }
+        }
+        str = str.concat("]");
 
         return str;
     }
