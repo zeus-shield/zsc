@@ -36,6 +36,7 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
             <td align="center"><a href="adm_manage_pos_0.php">[PoS Sets]</a></td>
             <td align="center"><a href="adm_manage_pos_1.php">[PoS Ratio]</a></td>
             <td align="center"><a href="adm_manage_pos_2.php">[PoS Level]</a></td>
+            <td align="center"><a href="adm_manage_pos_3.php">[PoS Ctg]</a></td>
             <td align="center"><a href="adm_show_log.php">[Show Log]</a></td>
             <td align="center"><a href="adm_print_abi.php">[Print Abi]</a></td>
             <td align="center"><a href="adm_uninstall_system.php">[Unins. Sys.]</a></td>
