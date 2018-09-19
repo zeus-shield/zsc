@@ -361,3 +361,39 @@ function loadLocalPageHeaderDemo(func) {
         }
     });
 }
+
+function checkUserDemo(account, password,func) {
+
+    var admAdr = "0x295459c5ba2e760daacb57e0ac455456227df223";
+    var user = account;
+    var password = password;
+    var callBack = func;
+
+    zscUser = new ZSCUser(admAdr);
+    zscUser.tryLogin(user, password ,function (ret) {
+        if (true) {
+            var userName = zscUser.getUserName();
+            var fullAbi = zscUser.getControlApisFullAbi();
+            var controlApisAdvAdr = zscUser.getControlApisAdr();
+            zscElement = new ZSCElement(userName, fullAbi, controlApisAdvAdr);
+            zscWalletGM = new ZSCWallet(userName, fullAbi, controlApisAdvAdr);
+            zscTmpsGM = new ZSCTemplate(userName, fullAbi, controlApisAdvAdr);
+            zscAgrsProGM = new ZSCAgreementProvider(userName, fullAbi, controlApisAdvAdr);
+            zscAgrsRecGM = new ZSCAgreementReceiver(userName, fullAbi, controlApisAdvAdr);
+            zscAgrsAllGM = new ZSCAgreementAll(userName, fullAbi, controlApisAdvAdr);
+            zscTransGM = new ZSCTransactions(userName, fullAbi, controlApisAdvAdr);
+            zscModuleAdrGM = new ZSCModuleAdrs(userName, fullAbi, controlApisAdvAdr);
+            
+            //zscViewAgrsGM = new ZSCViewAgreement(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+            /*
+            zscBlockGM  = new ZSCBlock(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+            zscPosGM    = new ZSCPos(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+            zscWalletGM = new ZSCWallet(zscUser.getUserName(), fullAbi, controlApisAdvAdr);
+            */
+            console.log("用户名密码登录ok");
+            loadLocalPageHeaderDemo(callBack);
+        } else {
+            alert("User name or password wrong!!");
+        }
+    });
+}
