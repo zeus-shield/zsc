@@ -397,3 +397,10 @@ function checkUserDemo(account, password,func) {
         }
     });
 }
+
+function getInfo(func) {
+    let account = getCookie("zscAccount");
+    let password = getCookie("zscPassword");
+    let callBack = func;
+    checkUserDemo(account, password,callBack);
+}
