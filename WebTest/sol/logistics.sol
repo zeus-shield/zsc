@@ -316,7 +316,7 @@ contract Logistics {
     }
 
     function updateEx(string _info) public {
-        // string memory _info = "{\"error\":null,\"num\":\"JNTCU0600046683YQ\",\"transNum\":\"MSK0000027695\",\"model\":\"MOSEXP\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"§¡§â§Þ§Ñ§Ó§Ú§â\",\"timeZone\":\"+3\",\"desc\":\"§´§à§Ó§Ñ§â §Ò§í§Ý §å§ã§á§Ö§ê§ß§à §Õ§à§ã§ä§Ñ§Ó§Ý§Ö§ß §á§à§Ý§å§é§Ñ§ä§Ö§Ý§ð. §³§á§Ñ§ã§Ú§Ò§à §é§ä§à §Ó§à§ã§á§à§Ý§î§Ù§à§Ó§Ñ§Ý§Ú§ã§î §ß§Ñ§ê§Ú§Þ§Ú §å§ã§Ý§å§Ô§Ñ§Þ§Ú\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
+        // string memory _info = "{\"error\":null,\"num\":\"JNTCU0600046683YQ\",\"transNum\":\"MSK0000027695\",\"model\":\"MOSEXP\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"???????\",\"timeZone\":\"+3\",\"desc\":\"????? ??? ??????? ????????? ??????????. ??????? ??? ??????????????? ?????? ????????\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
         bytes32 num = bytes32(0);
 
         // check param
@@ -362,6 +362,44 @@ contract Logistics {
 
         // delete brief
         delete infos_[_num];
+    }
+
+    function getTrack(bytes32 _num) public view returns (string) {
+        uint index = 0;
+        bool found = false;
+        string memory str = "";
+
+        // _num = PlatString.tobytes32("JNTCU0600046683YQ");
+
+        // check param
+        if (bytes32(0) == _num) {
+            return str;
+        }
+
+        // find num
+        (found, index) = findNum(_num);
+        if (!found) {
+            return str;
+        }
+
+        str = "[";
+        for (uint i=0; i<infos_[_num].tracks_.length; i++) {
+            str = str.concat("{", PlatString.bytes32ToString(infos_[_num].tracks_[i].type_).toKeyValue("type"), ",");
+            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].time_).toKeyValue("time"), ",");
+            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].country_).toKeyValue("country"), ",");
+            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].city_).toKeyValue("city"), ",");
+            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].facilityName_).toKeyValue("facilityName"), ",");
+            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].timeZone_).toKeyValue("timeZone"), ",");
+            str = str.concat(infos_[_num].tracks_[i].desc_.toKeyValue("desc"), ",");
+            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].actionCode_).toKeyValue("actionCode"), "}");
+
+            if (infos_[_num].tracks_.length != (i+1)) {
+                str = str.concat(",");
+            }
+        }
+        str = str.concat("]");
+
+        return str;
     }
 
     function getBrief(bytes32 _num) public view returns (string, string, string, string, string) {
@@ -414,44 +452,6 @@ contract Logistics {
         str = str.concat(PlatString.bytes32ToString(infos_[_num].model_).toKeyValue("model"), ",");
         str = str.concat(PlatString.bytes32ToString(infos_[_num].destinationCountry_).toKeyValue("destinationCountry"), ",");
         str = str.concat(PlatString.bytes32ToString(infos_[_num].lastStatus_).toKeyValue("lastStatus"), "}");
-
-        return str;
-    }
-
-    function getTrack(bytes32 _num) public view returns (string) {
-        uint index = 0;
-        bool found = false;
-        string memory str = "";
-
-        // _num = PlatString.tobytes32("JNTCU0600046683YQ");
-
-        // check param
-        if (bytes32(0) == _num) {
-            return str;
-        }
-
-        // find num
-        (found, index) = findNum(_num);
-        if (!found) {
-            return str;
-        }
-
-        str = "[";
-        for (uint i=0; i<infos_[_num].tracks_.length; i++) {
-            str = str.concat("{", PlatString.bytes32ToString(infos_[_num].tracks_[i].type_).toKeyValue("type"), ",");
-            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].time_).toKeyValue("time"), ",");
-            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].country_).toKeyValue("country"), ",");
-            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].city_).toKeyValue("city"), ",");
-            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].facilityName_).toKeyValue("facilityName"), ",");
-            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].timeZone_).toKeyValue("timeZone"), ",");
-            str = str.concat(infos_[_num].tracks_[i].desc_.toKeyValue("desc"), ",");
-            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].actionCode_).toKeyValue("actionCode"), "}");
-
-            if (infos_[_num].tracks_.length != (i+1)) {
-                str = str.concat(",");
-            }
-        }
-        str = str.concat("]");
 
         return str;
     }
