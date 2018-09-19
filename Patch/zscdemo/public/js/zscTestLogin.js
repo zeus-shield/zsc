@@ -415,3 +415,11 @@ function getType() {
 
     }
 }
+
+function initClass(tag) {
+    if (zscModuleAdrGM != null) {
+        loadHtmlPageBody(tag);
+    } else {
+        alert("请不要点击过快");
+    }
+}
