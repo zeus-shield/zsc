@@ -161,7 +161,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         subPri_ = _sub;
     }
 
-    function setPublicTradeable_(bool _tag) public {
+    function setPublicTradeable(bool _tag) public {
         checkDelegate(msg.sender, 1);
         publicTradeable_ = _tag;
     }
@@ -231,6 +231,26 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         ctgs_[index].rrEftMax_ = _rrEftMax;
         ctgs_[index].upProbEftMin_ = _upProbEftMin;
         ctgs_[index].upProbEftMax_ = _upProbEftMax;
+    }
+    
+    function numUnitCatetories() public view returns (uint) {
+        return ctgNos_;
+    }
+
+    function getUnitCategoryByIndex(uint _index) public view returns (string) {
+        require(_index < ctgNos_);
+        string memory str ="info?";
+
+        str = PlatString.append(str, "name=",          PlatString.bytes32ToString(ctgs_[_index].name_), "&");
+        str = PlatString.append(str, "rare_=",         PlatString.uintToString(ctgs_[_index].rare_), "&");
+        str = PlatString.append(str, "spEftMin_=",     PlatString.uintToString(ctgs_[_index].spEftMin_), "&");
+        str = PlatString.append(str, "spEftMax_=",     PlatString.uintToString(ctgs_[_index].spEftMax_), "&");
+        str = PlatString.append(str, "rrEftMin_=",     PlatString.uintToString(ctgs_[_index].rrEftMin_), "&");
+        str = PlatString.append(str, "rrEftMax_=",     PlatString.uintToString(ctgs_[_index].rrEftMax_), "&");
+        str = PlatString.append(str, "upProbEftMin_=", PlatString.uintToString(ctgs_[_index].upProbEftMin_), "&");
+        str = PlatString.append(str, "upProbEftMax_=", PlatString.uintToString(ctgs_[_index].upProbEftMax_), "&");
+        
+        return str;
     }
 
     ///////////////
