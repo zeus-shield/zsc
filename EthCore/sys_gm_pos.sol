@@ -205,10 +205,11 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         rareProb_["SSR"] = _SSR;
     }
    
-    function setUnitCategory(bytes32 _name, uint _rare, uint _spEftMin, uint _spEftMax, uint _rrEftMin, uint _rrEftMax, uint _upProbEftMin, uint _upProbEftMax) public {
+    function setUnitCategory(string _nameStr, uint _rare, uint _spEftMin, uint _spEftMax, uint _rrEftMin, uint _rrEftMax, uint _upProbEftMin, uint _upProbEftMax) public {
         checkDelegate(msg.sender, subPri_);
         require(_rare < 4);
         uint index;
+        bytes32 _name = PlatString.tobytes32(_nameStr);
 
         if (!ctgExits_[_name]) {
             index = ctgNos_;
@@ -223,7 +224,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         } else {
             index = ctgIndice_[_name];
         }
-
+        ctgs_[index].name_     = _name;
         ctgs_[index].rare_     = _rare;
         ctgs_[index].spEftMin_ = _spEftMin;
         ctgs_[index].spEftMax_ = _spEftMax;
