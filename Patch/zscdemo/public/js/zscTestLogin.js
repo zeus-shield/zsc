@@ -343,3 +343,21 @@ function loadLocalPageHeader() {
 //         }
 //     }
 // }
+
+function loadLocalPageHeaderDemo(func) {
+    var callBack = func;
+    zscUser.getUserStatusFromAdm(function (status) {
+        if (status == 0) {
+            //Should not happen 
+        } else if (status == "added") {
+            res = getType();
+            loadHtmlPageBody(res);
+        } else if (status == "applied") {
+            zscUser.getUserTypeFromAdm(function (type) {
+                // zscHtml.loadPageHeader("loadHtmlPageBody", type, true);
+                callBack();
+                // loadHtmlPageBody("applied");
+            });
+        }
+    });
+}
