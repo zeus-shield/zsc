@@ -17,26 +17,26 @@ export default class ZSCLogistics {
         this[account] = web3.eth.accounts[0];
     }
 
-    update(_info) {
+    update(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.update.estimateGas(_info, function(error, result) {
+        contractInstance.update.estimateGas(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("=== Logistics.update(string) ==========================");
+                        console.log("=== Logistics.update(bytes32, bytes32, bytes32, bytes32, bytes32, string) ===");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result);
-                        console.log("=======================================================");
-                        // call 'Logistics.update(string)'
-                        contractInstance.update(_info, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        console.log("===========================================================================");
+                        // call 'Logistics.update(bytes32, bytes32, bytes32, bytes32, bytes32, string)'
+                        contractInstance.update(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 Output(window.outputElement, 'small', 'red', `[TransactionHash]:${result}`);
                                 let receipt = new Receipt();
@@ -55,15 +55,41 @@ export default class ZSCLogistics {
         });
     }
 
-    getBrief(_num) {
+    updateEx(_info) {
+        let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
-        contractInstance.getBrief(_num, function(error, result) {
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.updateEx.estimateGas(_info, function(error, result) {
             if(!error) {
-                Output(window.outputElement, 'small', 'red', `[Logistics]: ${result}`);
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("=== Logistics.updateEx(string) ==========================");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result);
+                        console.log("=======================================================");
+                        // call 'Logistics.updateEx(string)'
+                        contractInstance.updateEx(_info, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                Output(window.outputElement, 'small', 'red', `[TransactionHash]:${result}`);
+                                let receipt = new Receipt();
+                                receipt.getReceipt(result, 0, 1000, null);
+                            } else {
+                                Output(window.outputElement, 'small', 'red', error);
+                            }
+                        });
+                    } else {
+                        Output(window.outputElement, 'small', 'red', error);
+                    }
+                });
             } else {
                 Output(window.outputElement, 'small', 'red', error);
             }
-        })
+        });
     }
 }
