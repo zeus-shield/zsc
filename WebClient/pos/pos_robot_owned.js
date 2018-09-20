@@ -25,12 +25,12 @@ function ZSCRobotOwned(acount, adr, abi) {
 
 ZSCRobotOwned.prototype.getRobotNos = function() { return this.robotNos;}
 
-ZSCRobotOwned.prototype.getRobotParaBriefValue  = function(para, isFromWei, index) { 
-    if (isFromWei) {
-        return bF_fixedNumberFromWei(this.robotParaBriefValues[index].get(para, 4);
-    } else {
-        return this.robotParaBriefValues[index].get(para);
-    }
+ZSCRobotOwned.prototype.getRobotParaBriefValue  = function(para, robotId, tag) { 
+    return bF_robotParaValue(this.robotParaBriefValues[robotId].get(para), tag);
+}
+
+ZSCRobotOwned.prototype.getRobotParaDetailValue  = function(para, tag) { 
+    return bF_robotParaValue(this.robotParaDetailValues.get(para), tag);
 }
 
 ZSCRobotOwned.prototype.resetAllItemTags = function(gm) {
@@ -46,13 +46,6 @@ ZSCRobotOwned.prototype.checkAllItemTags = function(gm) {
         }
     }
     return true;
-}
-
-ZSCRobotOwned.prototype.secondsToDate = function(secs) {
-    if (secs == 0) return "~";
-    var curdate = new Date(null);
-    curdate.setTime(secs * 1000);
-    return (curdate.toLocaleString());
 }
 
 ZSCRobotOwned.prototype.transferToOther = function(hashId, dest, roobtId) { 
@@ -141,7 +134,6 @@ ZSCRobotOwned.prototype.claimReward = function(hashId, robotId, tokenType, func)
         });
 }
 
-
 ////////////////////////
 ZSCRobotOwned.prototype.loadUserAllRobotBriefs = function(func) {
     var gm = this;
@@ -181,7 +173,7 @@ ZSCRobotOwned.prototype.numRobots = function(gm, func) {
          });
 }
 
-ZSCRobotOwned.prototype.loadRobotBrieInfoByIndex = function(gm, isBrief, index, func) {
+ZSCRobotOwned.prototype.loadRobotBrieInfoByIndex = function(gm, index, func) {
     var callBack = func;
     var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
@@ -224,7 +216,7 @@ ZSCRobotOwned.prototype.loadUserSingleRobotDetail = function(index, func) {
         function(error, robotInfo) { 
             if(!error) {
                 gm.parserSingleRobotDetailInfo(gm, info);
-                callback(); 
+                callback(index); 
             } else { 
                 console.log("error: " + error);
             }
