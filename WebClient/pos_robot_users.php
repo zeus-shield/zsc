@@ -46,7 +46,7 @@ session_start();
         if (isAllRobots) {
             loadUserAllRobotHtml("PageBody", "loadUserRobotDetails", "createGen0Robot");
         } else {
-            loadUserRobotDetailsHtml("PageBody", "loadUserAllRobots", "enhanceRobot");
+            loadUserRobotDetailsHtml("PageBody", "loadUserAllRobots", "upgradeRobot", "activeMining", "claimReward", "sellRobot", "cancelSelling");
         }
     }
     function loadUserAllRobots() {
@@ -69,7 +69,7 @@ session_start();
     }
 
     /////////////////////////
-    function enhanceRobot(hashId, robotId) {
+    function upgradeRobot(hashId, robotId) {
         userRobotGM.enhanceMinerRobot(hashId, robotId, function(){
             loadHtml(false);
         });
@@ -106,19 +106,14 @@ session_start();
         });
     }
 
-    /////////////////////////
+    /////////////////////////    
     function loadUserAllRobotHtml(elementId, createGen0, showRobot) {
         var createGen0Func = createGen0 + "('OperationHash')"; 
 
         var showPrefix = showRobot + "('OperationHash', '"; 
         var showSuffix = "')";
 
-        var symbol;
-        var adr;
-        var balance;
-        var hashId;
         var robotNos = userRobotGM.getRobotNos();
-    
         var titlle = "User owned robots" 
 
         text  = '<div class="well" align="center" >' + titlle + '<br>';
@@ -136,22 +131,49 @@ session_start();
         for (var i = 0; i < robotNos; ++i) {
             //default paras: "id", "status", "rare", "spLev", 
             //this.robotParaBrief = ["spMax"];
-            hashId  = symbol + "Hash";
-            sentoId = symbol + "Dest";
-            amountId= symbol + "Amount";
-    
             text += '<tr>'
-            text += '   <td><text>' + userRobotGM.getRobotPara("id",      false, i) + '</text></td>'
-            text += '   <td><text>' + userRobotGM.getRobotPara("status",  false, i) + '</text></td>'
-            text += '   <td><text>' + userRobotGM.getRobotPara("rare",    false, i) + '</text></td>'
-            text += '   <td><text>' + userRobotGM.getRobotPara("spLev",   false, i) + '</text></td>'
-            text += '   <td><text>' + userRobotGM.getRobotPara("spMax",   false, i) + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotParaBriefValue("id",     i, "null") + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotParaBriefValue("status", i, "null") + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotParaBriefValue("rare",   i, "null") + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotParaBriefValue("spLev",  i, "null") + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotParaBriefValue("spMax",  i, "FromWei") + '</text></td>'
             text += '   <td><button type="button" onClick="' + showPrefix + robotId + showSuffix + '"> Show </button></td>'
             text += '</tr>'
             text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> td>------</td>  </tr>'
         }
         text += '</table>'
         text += '</div>'
+        document.getElementById(elementId).innerHTML = text;  
+    }
+
+    function loadUserRobotDetailsHtml(elementId, loadUserAllRobots, upgradeRobot, activeMining, claimReward, sellRobot, cancelSelling) {
+        var loadUserAllRobotsFunc = loadUserAllRobots + "()"; 
+
+        var upgradeRobotPrefix = enhance + "('OperationHash', '"; 
+        var upgradeRobotSuffix = "')";
+
+        var activeMiningPrefix = enhance + "('OperationHash', '"; 
+        var activeMiningSuffix = "')";
+
+        var claimRewardPrefix = enhance + "('OperationHash', '"; 
+        var claimRewardSuffix = "')";
+
+        var sellRobotPrefix = enhance + "('OperationHash', '"; 
+        var sellRobotSuffix = "')";
+
+        var cancelSellingPrefix = enhance + "('OperationHash', '"; 
+        var cancelSellingSuffix = "')";     
+    
+        var titlle = "User owned robots" 
+
+        text  = '<div class="well" align="center" >' + titlle + '<br>';
+        text  = '<text id="OperationHash" value = "log:"> </text> </div>';
+
+        text += '<div class="well" align="center" >'
+        text += '   <button type="button" onClick="' + createGen0Func + '">  Create Lev0 ZSC miner robot (Cost 0.01ETH) </button> <br>'
+        text += '</div>';
+
+    
         document.getElementById(elementId).innerHTML = text;  
     }
 
