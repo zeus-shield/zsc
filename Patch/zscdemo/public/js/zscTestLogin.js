@@ -445,7 +445,11 @@ function loadHtmlPageBody(tag) {
 
     } else {
         switch (tag) {
-          
+
+            case "logout":
+                window.location.reload(true);
+                break;
+		          
 
             default:
                 break;
