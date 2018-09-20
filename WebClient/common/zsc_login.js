@@ -5,7 +5,7 @@ Copyright (c) 2018 ZSC Dev Team
 var g_controlApisFullAbi;
 
 function ZSCLogin(userAccount) {
-    this.admAdr = "0x162b40e67f72a8ffc13b24b4f15ac7b98d92e454";
+    this.admAdr = "0xc7e03da56e2be02cbdca9e7a7cf6148df7eaae97";
     this.controlApisAdr;
     this.erc721Adr;
     this.userStatus;
@@ -25,7 +25,7 @@ ZSCLogin.prototype.getErc721Adr = function() { return this.erc721Adr; }
 ZSCLogin.prototype.getControlApisAdr = function() { return this.controlApisAdr; }
 ZSCLogin.prototype.getControlApisFullAbi = function() { return this.controlApisFullAbi; }
 ZSCLogin.prototype.getLoginAbi = function() { 
-    return [{"constant":true,"inputs":[],"name":"getUserType","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisFullAbi","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisAdr","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_type","type":"bytes32"}],"name":"tryLogin","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_type","type":"string"}],"name":"activeByUser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getUserStatus","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}];
+    return [{"constant":true,"inputs":[],"name":"getControlApisAdrs","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getUserType","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisFullAbi","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_type","type":"bytes32"}],"name":"tryLogin","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getControlApisInfo","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_type","type":"string"}],"name":"activeByUser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getUserStatus","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"}];
 }
 
 ZSCLogin.prototype.tryLogin = function(userType, func){
@@ -40,8 +40,8 @@ ZSCLogin.prototype.tryLogin = function(userType, func){
             if (result == false) {
                 callBack(false);
             } else {
-                callBack(true);
-                //gm.getControlApisInfo(gm, callBack);
+                //callBack(true);
+                gm.getControlApisInfo(gm, callBack);
             }
         } else { 
             callBack(false);
@@ -54,7 +54,7 @@ ZSCLogin.prototype.getControlApisInfo = function(gm, func) {
     var callBack = func;
     var myAdmAdv = web3.eth.contract(gm.getLoginAbi()).at(gm.admAdr);
 
-    myAdmAdv.getControlApisAdr({from: gm.account},
+    myAdmAdv.getControlApisInfo({from: gm.account},
         function(error, info) {
         if(!error) { 
             gm.parserControlApisInfo(gm, info);
@@ -70,7 +70,7 @@ ZSCLogin.prototype.getControlApisInfo = function(gm, func) {
 "sysAdr=",    
 "erc721Adr=",  
 */
-ZSCLogin.prototype.parserControlApisInfo = function(gm, info) {
+ZSCLogin.prototype.parserControlApisInfo = function(gm, urlinfo) {
     var found1 = urlinfo.indexOf("?");
     var found2 = urlinfo.indexOf("=");
 
