@@ -36,6 +36,8 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         uint upProbBase_;
         uint upProbEft_;
 
+        uint upPrice_;
+
         uint sellPrice_;
         address seller_;
     }
@@ -299,6 +301,11 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         robots_[_unitId].upProbBase_ = _base;
     }
 
+    function setUnitUpPrice(uint _unitId, uint _price) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].upPrice_ = _price;
+    }
+
     function setUnitMineStart(uint _unitId, uint _tm) public {
         checkDelegate(msg.sender, 1);
         robots_[_unitId].mineStart_ = _tm;
@@ -413,6 +420,10 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     function getUnitUPEft(uint _unitId) public view returns (uint) {
         return robots_[_unitId].upProbEft_;
+    }
+
+    function getUnitUpPrice(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].upPrice_;
     }
 
     function getUnitSPCur(uint _unitId) public view returns (uint) {
