@@ -69,7 +69,9 @@ export default class TestLogistics {
     get() {
         console.log('TestLogistics.get()');
         let zsc = new ZSCLogistics(this[abi], this[contractAddress]);
-        zsc.getBrief("JNTCU0600046686YQ");
+        //zsc.getBrief("JNTCU0600046689YQ");
+        //zsc.getBriefEx("JNTCU0600046688YQ");
+        zsc.getTracks("JNTCU0600046685YQ");
     }
 
     do(operation) {
