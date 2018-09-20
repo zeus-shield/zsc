@@ -131,7 +131,7 @@ export default class ZSCLogistics {
         });
     }
 
-    update(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks) {
+    update(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
@@ -154,7 +154,7 @@ export default class ZSCLogistics {
                             if(!error) {
                                 Output(window.outputElement, 'small', 'red', `[TransactionHash]:${result}`);
                                 let receipt = new Receipt();
-                                receipt.getReceipt(result, 0, 1000, null);
+                                receipt.getReceipt(result, 0, 1000, func);
                             } else {
                                 Output(window.outputElement, 'small', 'red', error);
                             }
@@ -169,7 +169,7 @@ export default class ZSCLogistics {
         });
     }
 
-    updateEx(_info) {
+    updateEx(_info, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
@@ -192,7 +192,7 @@ export default class ZSCLogistics {
                             if(!error) {
                                 Output(window.outputElement, 'small', 'red', `[TransactionHash]:${result}`);
                                 let receipt = new Receipt();
-                                receipt.getReceipt(result, 0, 1000, null);
+                                receipt.getReceipt(result, 0, 1000, func);
                             } else {
                                 Output(window.outputElement, 'small', 'red', error);
                             }
