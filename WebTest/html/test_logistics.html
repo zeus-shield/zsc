@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <h4>Logistics Module</h4>
+        <script type="text/javascript" src="../js/web3.js-0.20.6/dist/web3.js"></script>
+        <!-- <script type="text/javascript" src="../../WebClient/web3.js/dist/web3.js"></script> -->
+        <!--script type="text/javascript" src="require.mini.js" defer async="true" ></script-->
+        <!--script type="text/javascript" src="require.mini.js" data-main="main"></script-->
+        <script type="module" src="../js/main.js"></script>
+        <script type="module" src="../js/file.js"></script>
+        <script type="module" src="../js/provider.js"></script>
+        <style>
+            label {
+                width: 60px;
+                height: 15px;
+                line-height: 15px;
+                text-align: center;
+                display: block;
+                background: #ccc;
+                border: 5px solid #ccc;
+            }
+            input {
+                display: none;
+            }
+        </style>
+        <script type="text/javascript">
+            window.onload = function () {
+                window.outputElement = 'output';
+                provider(false);
+                document.getElementById('provider').addEventListener('change',function(){
+                     if('injected' == this.value) {
+                        provider(true);
+                     } else {
+                        provider(false);
+                     }
+                },false);
+            }
+        </script>
+    </head>
+    <body id="test_logistics">
+        <div id="logistics">
+            <a href="../index.html" title="Back">Back</a></br></br>
+            <text>Please compile solidity file and upload compiled json file at first!</text>
+            <label for="file">Upload</label>
+            <input type="file" id="file" onchange="file('Logistics', this)" /></br>
+            <text>Please select web3 provider:</text></br>
+            <select id="provider">
+              <option value ="local">Localhost</option>
+              <option value ="injected">Injected Web3</option>
+            </select>
+            </br>
+            </br>
+            <button type="button" id="deploy" onclick="main('Logistics', 'Deploy')">Deploy</button>
+            <button type="button" id="create" onclick="main('Logistics', 'Create')">Create</button>
+            <button type="button" id="update" onclick="main('Logistics', 'Update')">Update</button>
+            <button type="button" id="get" onclick="main('Logistics', 'Get')">Get</button>
+            <p id="output"></p>
+        </div>
+    </body>
+</html>
