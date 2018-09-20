@@ -83,6 +83,8 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     } 
 
     //////////////////////////
+    function getPosedSP(uint _robotId, uint _curTime) internal view returns (uint, uint);
+
     function checkTradeAble(uint256 _unitId) internal view returns (bool) {
         require(robots_[_unitId].status_ == "idle");
         return publicTradeable_;
@@ -93,7 +95,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return url;
     }
 
-    //////////////////////////
+    //////////////////////////    
     function checkUnitUser(address _user, uint _unitId) internal view {
         require(_user == ownerOf(_unitId));
     }
@@ -226,11 +228,12 @@ contract SysGmPos is Erc721Adv, SysGmBase {
             rares_[_rare].size_++;
             rares_[_rare].ctgs_[ctgIndex] = _ctg;
         } else {
-            index = ctgIndice_[_name];
+            index = ctgIndice_[_ctg];
+            require(ctgs_[index].rare_ == _rare);
         }
+
         ctgs_[index].ctg_      = _ctg;
         ctgs_[index].name_     = _name;
-        ctgs_[index].rare_     = _rare;
         ctgs_[index].spEftMin_ = _spEftMin;
         ctgs_[index].spEftMax_ = _spEftMax;
         ctgs_[index].rrEftMin_ = _rrEftMin;
@@ -247,15 +250,15 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         require(_index < ctgNos_);
         string memory str ="info?";
 
-        str = PlatString.append(str, "ctg=",           PlatString.bytes32ToString(ctgs_[_index].ctg_), "&");
-        str = PlatString.append(str, "name=",          PlatString.bytes32ToString(ctgs_[_index].name_), "&");
-        str = PlatString.append(str, "rare_=",         PlatString.uintToString(ctgs_[_index].rare_), "&");
-        str = PlatString.append(str, "spEftMin_=",     PlatString.uintToString(ctgs_[_index].spEftMin_), "&");
-        str = PlatString.append(str, "spEftMax_=",     PlatString.uintToString(ctgs_[_index].spEftMax_), "&");
-        str = PlatString.append(str, "rrEftMin_=",     PlatString.uintToString(ctgs_[_index].rrEftMin_), "&");
-        str = PlatString.append(str, "rrEftMax_=",     PlatString.uintToString(ctgs_[_index].rrEftMax_), "&");
-        str = PlatString.append(str, "upProbEftMin_=", PlatString.uintToString(ctgs_[_index].upProbEftMin_), "&");
-        str = PlatString.append(str, "upProbEftMax_=", PlatString.uintToString(ctgs_[_index].upProbEftMax_), "&");
+        str = PlatString.append(str, "ctg=",          PlatString.bytes32ToString(ctgs_[_index].ctg_), "&");
+        str = PlatString.append(str, "name=",         PlatString.bytes32ToString(ctgs_[_index].name_), "&");
+        str = PlatString.append(str, "rare=",         PlatString.uintToString(ctgs_[_index].rare_), "&");
+        str = PlatString.append(str, "spEftMin=",     PlatString.uintToString(ctgs_[_index].spEftMin_), "&");
+        str = PlatString.append(str, "spEftMax=",     PlatString.uintToString(ctgs_[_index].spEftMax_), "&");
+        str = PlatString.append(str, "rrEftMin=",     PlatString.uintToString(ctgs_[_index].rrEftMin_), "&");
+        str = PlatString.append(str, "rrEftMax=",     PlatString.uintToString(ctgs_[_index].rrEftMax_), "&");
+        str = PlatString.append(str, "upProbEftMin=", PlatString.uintToString(ctgs_[_index].upProbEftMin_), "&");
+        str = PlatString.append(str, "upProbEftMax=", PlatString.uintToString(ctgs_[_index].upProbEftMax_), "&");
         
         return str;
     }
@@ -346,10 +349,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return dayInSeconds_;
     }
     
-    function getUnitSpec(uint _unitId) public view returns (bool) {
-        return (robots_[_unitId].specific_);
-    }
-
     function getUnitSPMinedPerday() public view returns (uint) {
         return minePerDay_;
     }
@@ -364,6 +363,24 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     function getCategoryName(uint _unitId) public view returns (bytes32) {
         return robots_[_unitId].ctg_;
+    }
+
+    function getUnitSpec(uint _unitId) public view returns (bool) {
+        return (robots_[_unitId].specific_);
+    }
+
+    function getPosMinedSP(uint _unitId) public view returns (uint) {
+        uint mined;
+        uint rewards;
+        (mined, rewards) = getPosedSP(_unitId, now);
+        return mined;
+    }
+
+    function getPosRewardSP(uint _unitId) public view returns (uint) {
+        uint mined;
+        uint rewards;
+        (mined, rewards) = getPosedSP(_unitId, now);
+        return rewards;
     }
 
     function getUnitStatus(uint _unitId) public view returns (bytes32) {
