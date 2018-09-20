@@ -8,12 +8,12 @@ function ZSCRobotOwned(acount, adr, abi) {
     this.robotNos = 0;
     this.itemTags = [];
 
-    //default paras: "id", "ctg", "status", "rare", "spLev", "createPrice", "upPrice"
-    //others: "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spEft", "spExtra", "rrEft", "rrExtra", "upProb", "upEft", "upExtra", "price", "seller"     
+    //default paras: "id", "status", "rare", "spLev"
+    //others: "ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spEft", "spExtra", "rrEft", "rrExtra", "upProb", "upEft", "upExtra", "upPrice", "price", "seller"     
     this.isBriefParas   = true;
     this.robotParas     = [];
     this.robotParaBrief = ["spMax"];
-    this.robotParaAll   = ["name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spEft", "spExtra", "rrEft", "rrExtra", "upProb", "upEft", "upExtra", "price", "seller"];
+    this.robotParaAll   = ["ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spEft", "spExtra", "rrEft", "rrExtra", "upProb", "upEft", "upExtra", "upPrice", "price", "seller"];
 
     this.account = acount;
     this.contractAdr = adr;
