@@ -423,3 +423,7 @@ function initClass(tag) {
         alert("请不要点击过快");
     }
 }
+
+function addUserTest() {
+    zscUser.tryLoginDemo();
+}
