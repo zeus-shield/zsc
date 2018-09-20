@@ -449,7 +449,15 @@ function loadHtmlPageBody(tag) {
             case "logout":
                 window.location.reload(true);
                 break;
-		          
+
+            case "module-adrs":
+                zscModuleAdrGM.setUserType(zscUser.getUserType());
+                zscModuleAdrGM.setUserName(zscUser.getUserName());
+                zscModuleAdrGM.getModuleAdrs(function () {
+                    // zscModuleAdrGM.loadModuleAdrsHtml("PageBody");
+                    loadModuleAdrHtml();
+                });
+                break;		          
 
             default:
                 break;
