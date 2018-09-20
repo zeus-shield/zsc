@@ -2,6 +2,7 @@
 import TestSearch from './test_search.js';
 import TestRaw from './test_raw.js';
 import TestLogistics from './test_logistics.js';
+import TestLogisticsRaw from './test_logistics_raw.js';
 import TestAnalysis from './test_analysis.js';
 import Output from './output.js';
 
@@ -27,6 +28,15 @@ export default function file(module, input) {
                     }
                     break;
                 }
+                case 'Raw': {
+                    if('undefined' == typeof window.testRawClass) {
+                        test = new TestRaw();
+                        window.testRawClass = test;
+                    } else {
+                        test = window.testRawClass;
+                    }
+                    break;
+                }
                 case 'Logistics': {
                     if('undefined' == typeof window.testLogisticsClass) {
                         test = new TestLogistics();
@@ -36,12 +46,12 @@ export default function file(module, input) {
                     }
                     break;
                 }
-                case 'Raw': {
-                    if('undefined' == typeof window.testRawClass) {
-                        test = new TestRaw();
-                        window.testRawClass = test;
+                case 'LogisticsRaw': {
+                    if('undefined' == typeof window.testLogisticsRawClass) {
+                        test = new TestLogisticsRaw();
+                        window.testLogisticsRawClass = test;
                     } else {
-                        test = window.testRawClass;
+                        test = window.testLogisticsRawClass;
                     }
                     break;
                 }
