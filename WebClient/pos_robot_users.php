@@ -42,40 +42,51 @@ session_start();
     });
 
     /////////////////////////////
-    function loadUserRobots() {
+    function loadHtml(isAllRobots) {
+        if (isAllRobots) {
+            loadUserAllRobotHtml("PageBody", "loadUserRobotDetails", "createGen0Robot");
+        } else {
+            loadUserRobotDetailsHtml("PageBody", "loadUserAllRobots", "enhanceRobot");
+        }
+    }
+    function loadUserAllRobots() {
         userRobotGM.loadUserRobots(true, function() {
-            loadAllRobotHtml("PageBody", "createGen0Robot", "showRobotDetails");
+            loadHtml(true);
         });
     }
 
     function createGen0Robot(hashId) {
         userRobotGM.createGen0Robot(hashId, function(){
-            loadAllRobotHtml("PageBody", "createGen0Robot", "showRobotDetails");
+            loadHtml(true);
         });
     }
 
-    function showRobotDetails(hashId, robotIndex) {
+    /////////////////////////
+    function loadUserRobotDetails(index) {
         userRobotGM.loadUserRobots(false, function() {
-            loadHtml("PageBody", "loadUserRobots", "enhanceRobot");
+            loadHtml(false);
         });
     }
 
     /////////////////////////
     function enhanceRobot(hashId, robotId) {
         userRobotGM.enhanceMinerRobot(hashId, robotId, function(){
-            loadHtml("PageBody", "loadUserRobots", "enhanceRobot");
+            loadHtml(false);
         });
     }
 
     /////////////////////////
     function sellRobot(hashId, robotId, priceId) {
         var price = document.getElementById(priceId).value;
-        userRobotGM.publishMinerRobot(hashId, robotId, price, function() {                
+        userRobotGM.publishMinerRobot(hashId, robotId, price, function() {  
+            loadHtml(false);
+              
         });
     }
 
     function cancelSelling(hashId, robotId) {
-        userRobotGM.cancalSellingMinerRobot(hashId, robotId, function() {                
+        userRobotGM.cancalSellingMinerRobot(hashId, robotId, function() {
+            loadHtml(false);                
         });
     }
 
@@ -83,18 +94,20 @@ session_start();
     function activeMining(hashId, tokenTypeId, posTypeId, robotId) {
         var tokenType = document.getElementById(tokenTypeId).value;
         var posType = document.getElementById(posTypeId).value;
-        userRobotGM.activeMinerRobot(hashId, robotId, tokenType, posType, function() {                
+        userRobotGM.activeMinerRobot(hashId, robotId, tokenType, posType, function() {      
+            loadHtml(false);          
         });
     }
 
     function claimReward(hashId, tokenTypeId, robotId) {
         var tokenType = document.getElementById(tokenTypeId).value;
-        userRobotGM.claimReward(hashId, robotId, tokenType, function() {                
+        userRobotGM.claimReward(hashId, robotId, tokenType, function() { 
+            loadHtml(false);       
         });
     }
 
     /////////////////////////
-    function loadAllRobotHtml(elementId, createGen0, showRobot) {
+    function loadUserAllRobotHtml(elementId, createGen0, showRobot) {
         var createGen0Func = createGen0 + "('OperationHash')"; 
 
         var showPrefix = showRobot + "('OperationHash', '"; 
