@@ -457,8 +457,21 @@ function loadHtmlPageBody(tag) {
                     // zscModuleAdrGM.loadModuleAdrsHtml("PageBody");
                     loadModuleAdrHtml();
                 });
-                break;		          
-
+                break;
+		          
+            case "wallet":
+                zscWalletGM.setUserType(zscUser.getUserType());
+                zscWalletGM.setUserName(zscUser.getUserName());
+                zscWalletGM.loadTokenInfoByIndex(0, function () {
+                    zscWalletGM.loadWalletsHtmldemo("PageBody", "submitTransferValue", "showTransactions", "enableTestZSCWallet");
+                    var status = zscWalletGM.loadWalletsHtmldemo();
+                    if (status == true) {
+                        loadWalletHtml();
+                    } else {
+                        indexjump("zscEnableWallet");
+                    }
+                });
+                break;
             default:
                 break;
         }
