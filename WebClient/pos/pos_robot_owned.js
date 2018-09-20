@@ -8,23 +8,9 @@ function ZSCRobotOwned(acount, adr, abi) {
     this.robotNos = 0;
     this.itemTags = [];
 
-    this.robotIds = [];
-    this.robotLevs = [];
-    this.robotMaxSP = [];
-    this.robotCurSP = [];
-    this.robotEnhanceProb = [];
-    this.robotMineStart = [];
-    this.robotMineEnd = [];
-    this.robotPrceToEnhance = [];
-    this.robotPrceToCreate = [];
-    this.robotPrceForSale = [];
-    this.robotRewardRatio = [];
-    this.robotRewards = [];
-    this.robotExtraSP = [];
-    this.robotExtraProb = [];
-
     //default paras: "id", "ctg", "status", "rare", "spLev", "createPrice", "upPrice"
     //others: "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spEft", "spExtra", "rrEft", "rrExtra", "upProb", "upEft", "upExtra", "price", "seller"     
+    this.isBriefParas   = true;
     this.robotParas     = [];
     this.robotParaBrief = ["spMax"];
     this.robotParaAll   = ["name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spEft", "spExtra", "rrEft", "rrExtra", "upProb", "upEft", "upExtra", "price", "seller"];
@@ -43,12 +29,6 @@ ZSCRobotOwned.prototype.getRobotPara  = function(para, isFromWei, index) {
     } else {
         return this.robotParas[index].get(para);
     }
-}
-
-ZSCRobotOwned.prototype.miningable = function(index) { return (this.robotMineStart[index] == 0);}
-
-ZSCRobotOwned.prototype.getRewards = function(index) { 
-    return bF_fixedNumberFromWei(this.robotRewards[index], 4);
 }
 
 ZSCRobotOwned.prototype.resetAllItemTags = function(gm) {
@@ -159,18 +139,21 @@ ZSCRobotOwned.prototype.claimReward = function(hashId, robotId, tokenType, func)
         });
 }
 
-ZSCRobotOwned.prototype.loadUserRobots = function(func, isBrief) {
+
+////////////////////////
+ZSCRobotOwned.prototype.loadUserRobots = function(isBrief, func) {
     var gm = this;
     var callback = func;
 
+    gm.isBriefParas = isBrief;
     gm.numRobots(gm, function(gm) {
         if (gm.robotNos == 0) {
             callback();
         } else {
             gm.resetAllItemTags(gm);
             for (var i = 0; i < gm.robotNos; ++i) {
-                gm.loadRobotInfoByIndex(gm, isBrief, i, function(gm, index, robotInfo) {
-                    gm.parserRobotInfo(gm, isBrief, index, robotInfo);
+                gm.loadRobotInfoByIndex(gm, i, function(gm, index, robotInfo) {
+                    gm.parserRobotInfo(gm, index, robotInfo);
                     if (gm.checkAllItemTags(gm) == true) {
                         callback();
                     }
@@ -201,11 +184,12 @@ ZSCRobotOwned.prototype.loadRobotInfoByIndex = function(gm, isBrief, index, func
     var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
     var inputPara;
 
-    if (isBrief) {
+    if (gm.isBriefParas) {
         inputPara = gm.robotParaBrief;
     } else {
         inputPara = gm.robotParaAll;
     }
+
     erc721Api.getUserUnitInfoByIndex(Number(index), inputPara, 
         {from: gm.account},
         function(error, robotInfo){ 
@@ -225,11 +209,11 @@ ZSCRobotOwned.prototype.parserRobotInfo = function(gm, index, info) {
     var newsids    = newsidinfo.split("&");
     var paraNos    = newsids.length;
 
- = new Map()
+    gm.robotParas[index] = new Map()
 
     for (var i = 0; i < paraNos; ++i) {
         var pair = newsids[i]
-        gm.robotParas.set(pair.split("=")[0], pair.split("=")[1]);
+        gm.robotParas[index].set(pair.split("=")[0], pair.split("=")[1]);
     }
 }
 
