@@ -364,7 +364,7 @@ contract Logistics {
         delete infos_[_num];
     }
 
-    function getTrack(bytes32 _num) public view returns (string) {
+    function getTracks(bytes32 _num) public view returns (string) {
         uint index = 0;
         bool found = false;
         string memory str = "";
