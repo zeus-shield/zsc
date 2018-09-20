@@ -11,11 +11,11 @@ function bF_getEthAccount() {
 }
 
 function bF_getGasPrice() {
-    return 20 * 1000000000; //30 * gwei
+    return 20 * 1000000000; //20 * gwei
 }
 
 function bF_getGasLimit() {
-    var limit = 700;
+    var limit = 600;
     return limit * 10**4; //limits * 1 million
 }
 
@@ -45,4 +45,21 @@ function bF_showHashResult(elementID, hash, func) {
 function bF_fixedNumberFromWei(value, n) {
     var num = web3.fromWei(value, 'ether');
     return Number(num).toFixed(4);
+}
+
+function bF_scondsToDate(secs) {
+    if (secs == 0) return "~";
+    var curdate = new Date(null);
+    curdate.setTime(secs * 1000);
+    return (curdate.toLocaleString());
+}
+
+function bF_robotParaValue = function(value, tag) { 
+    if (tag == "FromWei") {
+        return bF_fixedNumberFromWei(value, 4);
+    } else if (tag = "Time") {
+        return bF_secondsToDate(value)
+    } else {
+        return value;
+    }
 }
