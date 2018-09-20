@@ -20,6 +20,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     struct RobotUnit {
         bytes32 status_;
+        bytes32 ctg_;
         bytes32 name_;
         bool specific_;
         uint rare_;
@@ -42,6 +43,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     mapping(uint => RobotUnit) private robots_;
 
     struct CtgUnit {
+        bytes32 ctg_;
         bytes32 name_;
         uint rare_;
         uint spEftMin_;
@@ -113,17 +115,18 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return rares_[rareLev].ctgs_[ran];
     }
 
-    function mintUnit(address _user, bytes32 _ctgName) internal returns (uint) {
+    function mintUnit(address _user, bytes32 _ctg) internal returns (uint) {
         uint index = robotNos_;
         robotNos_++;
         _mint(_user, index);
 
         //bytes32 ctgName = getRandomUnitCategory();
-        uint ctgIndex = ctgIndice_[_ctgName];
+        uint ctgIndex = ctgIndice_[_ctg];
 
         robots_[index].specific_  = false;
         robots_[index].status_ = "idle";
-        robots_[index].name_   = _ctgName;
+        robots_[index].ctg_    = _ctg;
+        robots_[index].name_   = ctgs_[ctgIndex].name_;
         robots_[index].rare_   = ctgs_[ctgIndex].rare_;
         robots_[index].spLev_  = 0;
         robots_[index].spCur_     = 0;
@@ -205,25 +208,27 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         rareProb_["SSR"] = _SSR;
     }
    
-    function setUnitCategory(string _nameStr, uint _rare, uint _spEftMin, uint _spEftMax, uint _rrEftMin, uint _rrEftMax, uint _upProbEftMin, uint _upProbEftMax) public {
+    function setUnitCategory(string _ctgStr, string _nameStr, uint _rare, uint _spEftMin, uint _spEftMax, uint _rrEftMin, uint _rrEftMax, uint _upProbEftMin, uint _upProbEftMax) public {
         checkDelegate(msg.sender, subPri_);
         require(_rare < 4);
         uint index;
         bytes32 _name = PlatString.tobytes32(_nameStr);
+        bytes32 _ctg  = PlatString.tobytes32(_ctgStr);
 
-        if (!ctgExits_[_name]) {
+        if (!ctgExits_[_ctg]) {
             index = ctgNos_;
             ctgNos_++;
     
-            ctgExits_[_name] = true;
-            ctgIndice_[_name] = index;
+            ctgExits_[_ctg] = true;
+            ctgIndice_[_ctg] = index;
 
             uint ctgIndex = rares_[_rare].size_;
             rares_[_rare].size_++;
-            rares_[_rare].ctgs_[ctgIndex] = _name;
+            rares_[_rare].ctgs_[ctgIndex] = _ctg;
         } else {
             index = ctgIndice_[_name];
         }
+        ctgs_[index].ctg_      = _ctg;
         ctgs_[index].name_     = _name;
         ctgs_[index].rare_     = _rare;
         ctgs_[index].spEftMin_ = _spEftMin;
@@ -242,6 +247,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         require(_index < ctgNos_);
         string memory str ="info?";
 
+        str = PlatString.append(str, "ctg=",           PlatString.bytes32ToString(ctgs_[_index].ctg_), "&");
         str = PlatString.append(str, "name=",          PlatString.bytes32ToString(ctgs_[_index].name_), "&");
         str = PlatString.append(str, "rare_=",         PlatString.uintToString(ctgs_[_index].rare_), "&");
         str = PlatString.append(str, "spEftMin_=",     PlatString.uintToString(ctgs_[_index].spEftMin_), "&");
@@ -354,6 +360,10 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     function getUnitName(uint _unitId) public view returns (bytes32) {
         return robots_[_unitId].name_;
+    }
+
+    function getCategoryName(uint _unitId) public view returns (bytes32) {
+        return robots_[_unitId].ctg_;
     }
 
     function getUnitStatus(uint _unitId) public view returns (bytes32) {
