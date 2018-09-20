@@ -78,8 +78,11 @@ export default class TestLogistics {
             case 'Deploy':
                 this.deploy();
                 break;
-            case 'Set':
-                this.set();
+            case 'Create':
+                this.create();
+                break;
+            case 'Update':
+                this.update();
                 break;
             case 'Get':
                 this.get();
