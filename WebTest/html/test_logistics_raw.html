@@ -1,6 +1,6 @@
 <html>
     <head>
-        <h4>Logistics Module</h4>
+        <h4>Logistics(Raw) Module</h4>
         <script type="text/javascript" src="../js/web3.js-0.20.6/dist/web3.js"></script>
         <!-- <script type="text/javascript" src="../../WebClient/web3.js/dist/web3.js"></script> -->
         <!--script type="text/javascript" src="require.mini.js" defer async="true" ></script-->
@@ -36,12 +36,12 @@
             }
         </script>
     </head>
-    <body id="test_logistics">
-        <div id="logistics">
+    <body id="test_logistics_raw">
+        <div id="logistics_raw">
             <a href="../index.html" title="Back">Back</a></br></br>
             <text>Please compile solidity file and upload compiled json file at first!</text>
             <label for="file">Upload</label>
-            <input type="file" id="file" onchange="file('Logistics', this)" /></br>
+            <input type="file" id="file" onchange="file('LogisticsRaw', this)" /></br>
             <text>Please select web3 provider:</text></br>
             <select id="provider">
               <option value ="local">Localhost</option>
@@ -49,10 +49,10 @@
             </select>
             </br>
             </br>
-            <button type="button" id="deploy" onclick="main('Logistics', 'Deploy')">Deploy</button>
-            <button type="button" id="create" onclick="main('Logistics', 'Create')">Create</button>
-            <button type="button" id="update" onclick="main('Logistics', 'Update')">Update</button>
-            <button type="button" id="get" onclick="main('Logistics', 'Get')">Get</button>
+            <button type="button" id="deploy" onclick="main('LogisticsRaw', 'Deploy')">Deploy</button>
+            <button type="button" id="create" onclick="main('LogisticsRaw', 'Create')">Create</button>
+            <button type="button" id="update" onclick="main('LogisticsRaw', 'Update')">Update</button>
+            <button type="button" id="get" onclick="main('LogisticsRaw', 'Get')">Get</button>
             <p id="output"></p>
         </div>
     </body>
