@@ -10,10 +10,11 @@ function ZSCRobotOwned(acount, adr, abi) {
 
     //default paras: "id", "status", "rare", "spLev"
     //others: "ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spEft", "spExtra", "rrEft", "rrExtra", "upProb", "upEft", "upExtra", "upPrice", "price", "seller"     
-    this.isBriefParas   = true;
-    this.robotParas     = [];
     this.robotParaBrief = ["spMax"];
     this.robotParaAll   = ["ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spEft", "spExtra", "rrEft", "rrExtra", "upProb", "upEft", "upExtra", "upPrice", "price", "seller"];
+
+    this.robotParaBriefValues = [];
+    this.robotParaDetailValues = [];
 
     this.account = acount;
     this.contractAdr = adr;
@@ -23,11 +24,12 @@ function ZSCRobotOwned(acount, adr, abi) {
 }
 
 ZSCRobotOwned.prototype.getRobotNos = function() { return this.robotNos;}
-ZSCRobotOwned.prototype.getRobotPara  = function(para, isFromWei, index) { 
+
+ZSCRobotOwned.prototype.getRobotParaBriefValue  = function(para, isFromWei, index) { 
     if (isFromWei) {
-        return bF_fixedNumberFromWei(this.robotParas[index].get(para, 4);
+        return bF_fixedNumberFromWei(this.robotParaBriefValues[index].get(para, 4);
     } else {
-        return this.robotParas[index].get(para);
+        return this.robotParaBriefValues[index].get(para);
     }
 }
 
@@ -141,7 +143,7 @@ ZSCRobotOwned.prototype.claimReward = function(hashId, robotId, tokenType, func)
 
 
 ////////////////////////
-ZSCRobotOwned.prototype.loadUserRobots = function(isBrief, func) {
+ZSCRobotOwned.prototype.loadUserAllRobotBriefs = function(func) {
     var gm = this;
     var callback = func;
 
@@ -152,8 +154,8 @@ ZSCRobotOwned.prototype.loadUserRobots = function(isBrief, func) {
         } else {
             gm.resetAllItemTags(gm);
             for (var i = 0; i < gm.robotNos; ++i) {
-                gm.loadRobotInfoByIndex(gm, i, function(gm, index, robotInfo) {
-                    gm.parserRobotInfo(gm, index, robotInfo);
+                gm.loadRobotBrieInfoByIndex(gm, i, function(gm, index, robotInfo) {
+                    gm.parserRobotBrieInfo(gm, index, robotInfo);
                     if (gm.checkAllItemTags(gm) == true) {
                         callback();
                     }
@@ -179,18 +181,11 @@ ZSCRobotOwned.prototype.numRobots = function(gm, func) {
          });
 }
 
-ZSCRobotOwned.prototype.loadRobotInfoByIndex = function(gm, isBrief, index, func) {
+ZSCRobotOwned.prototype.loadRobotBrieInfoByIndex = function(gm, isBrief, index, func) {
     var callBack = func;
     var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-    var inputPara;
 
-    if (gm.isBriefParas) {
-        inputPara = gm.robotParaBrief;
-    } else {
-        inputPara = gm.robotParaAll;
-    }
-
-    erc721Api.getUserUnitInfoByIndex(Number(index), inputPara, 
+    erc721Api.getUserUnitInfoByIndex(Number(index), gm.robotParaBrief, 
         {from: gm.account},
         function(error, robotInfo){ 
             if(!error) {
@@ -202,18 +197,53 @@ ZSCRobotOwned.prototype.loadRobotInfoByIndex = function(gm, isBrief, index, func
         });
 }
 
-ZSCRobotOwned.prototype.parserRobotInfo = function(gm, index, info) {
+ZSCRobotOwned.prototype.parserRobotBrieInfo = function(gm, index, info) {
     var len        = info.length;
     var offset     = info.indexOf("?");
     var newsidinfo = info.substr(offset,len)
     var newsids    = newsidinfo.split("&");
     var paraNos    = newsids.length;
 
-    gm.robotParas[index] = new Map()
+    gm.robotParaBriefValues[index] = new Map()
 
     for (var i = 0; i < paraNos; ++i) {
         var pair = newsids[i]
-        gm.robotParas[index].set(pair.split("=")[0], pair.split("=")[1]);
+        gm.robotParaBriefValues[index].set(pair.split("=")[0], pair.split("=")[1]);
+    }
+}
+
+////////////////////////
+ZSCRobotOwned.prototype.loadUserSingleRobotDetail = function(index, func) {
+    var gm = this;
+    var callback = func;
+    var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    erc721Api.getUserUnitInfoByIndex(
+        Number(index), gm.robotParaAll, 
+        {from: gm.account},
+        function(error, robotInfo) { 
+            if(!error) {
+                gm.parserSingleRobotDetailInfo(gm, info);
+                callback(); 
+            } else { 
+                console.log("error: " + error);
+            }
+        }
+    );
+}
+
+ZSCRobotOwned.prototype.parserSingleRobotDetailInfo = function(gm, info) {
+    var len        = info.length;
+    var offset     = info.indexOf("?");
+    var newsidinfo = info.substr(offset,len)
+    var newsids    = newsidinfo.split("&");
+    var paraNos    = newsids.length;
+
+    gm.robotParaDetailValues = new Map()
+
+    for (var i = 0; i < paraNos; ++i) {
+        var pair = newsids[i]
+        gm.robotParaDetailValues.set(pair.split("=")[0], pair.split("=")[1]);
     }
 }
 
