@@ -31,7 +31,7 @@ export default class Receipt {
                 string = `[TransactionHash]:${hash}</br>[Status]:${status}`;
                 Output(window.outputElement, 'small', 'red', string);
                 if (null != func) {
-                    func(result.status);
+                    func(null, result.status);
                 }
             } else {
                 tryTimes ++;
