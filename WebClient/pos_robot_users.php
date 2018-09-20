@@ -35,7 +35,7 @@ session_start();
             if(!ret) { 
                 window.location.href = "index.php";
             } else {
-                userRobotGM = new ZSCRobotOwned(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
+                userRobotGM = new ZSCRobotOwned(account, userLogin.getErc721Adr(), userLogin.getControlApisFullAbi());
                 loadUserRobots();
             }
         });
