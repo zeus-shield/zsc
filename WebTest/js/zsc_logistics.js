@@ -17,6 +17,44 @@ export default class ZSCLogistics {
         this[account] = web3.eth.accounts[0];
     }
 
+    updateBrief(_num, _transNum, _model, _destinationCountry, _lastStatus) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.updateBrief.estimateGas(_num, _transNum, _model, _destinationCountry, _lastStatus, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("=== Logistics.updateBrief(bytes32, bytes32, bytes32, bytes32, bytes32, string) ===");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result);
+                        console.log("==================================================================================");
+                        // call 'Logistics.updateBrief(bytes32, bytes32, bytes32, bytes32, bytes32, string)'
+                        contractInstance.updateBrief(_num, _transNum, _model, _destinationCountry, _lastStatus, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                Output(window.outputElement, 'small', 'red', `[TransactionHash]:${result}`);
+                                let receipt = new Receipt();
+                                receipt.getReceipt(result, 0, 1000, null);
+                            } else {
+                                Output(window.outputElement, 'small', 'red', error);
+                            }
+                        });
+                    } else {
+                        Output(window.outputElement, 'small', 'red', error);
+                    }
+                });
+            } else {
+                Output(window.outputElement, 'small', 'red', error);
+            }
+        });
+    }
+
     updateBriefEx(_num, _brief) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
