@@ -17,7 +17,7 @@ export default class ZSCLogistics {
         this[account] = web3.eth.accounts[0];
     }
 
-    updateTracks(_num, _tracks, _updateType) {
+    updateTracks(_num, _tracks, _updateType, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
@@ -36,11 +36,11 @@ export default class ZSCLogistics {
                         console.log("gasPrice:", result);
                         console.log("===========================================================");
                         // call 'Logistics.updateTracks(bytes32, string, uint)'
-                        contractInstance.updateTracks(_num, _brief, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        contractInstance.updateTracks(_num, _tracks, _updateType, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 Output(window.outputElement, 'small', 'red', `[TransactionHash]:${result}`);
                                 let receipt = new Receipt();
-                                receipt.getReceipt(result, 0, 1000, null);
+                                receipt.getReceipt(result, 0, 1000, func);
                             } else {
                                 Output(window.outputElement, 'small', 'red', error);
                             }
@@ -55,7 +55,7 @@ export default class ZSCLogistics {
         });
     }
 
-    updateBrief(_num, _transNum, _model, _destinationCountry, _lastStatus) {
+    updateBrief(_num, _transNum, _model, _destinationCountry, _lastStatus, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
@@ -78,7 +78,7 @@ export default class ZSCLogistics {
                             if(!error) {
                                 Output(window.outputElement, 'small', 'red', `[TransactionHash]:${result}`);
                                 let receipt = new Receipt();
-                                receipt.getReceipt(result, 0, 1000, null);
+                                receipt.getReceipt(result, 0, 1000, func);
                             } else {
                                 Output(window.outputElement, 'small', 'red', error);
                             }
@@ -93,30 +93,30 @@ export default class ZSCLogistics {
         });
     }
 
-    updateBriefEx(_num, _brief) {
+    updateBriefEx(_brief, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.updateBriefEx.estimateGas(_num, _brief, function(error, result) {
+        contractInstance.updateBriefEx.estimateGas(_brief, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("====== Logistics.updateBriefEx(bytes32, string) ======");
+                        console.log("====== Logistics.updateBriefEx(string) ======");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result);
                         console.log("======================================================");
-                        // call 'Logistics.updateBriefEx(bytes32, string)'
-                        contractInstance.updateBriefEx(_num, _brief, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        // call 'Logistics.updateBriefEx(string)'
+                        contractInstance.updateBriefEx(_brief, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 Output(window.outputElement, 'small', 'red', `[TransactionHash]:${result}`);
                                 let receipt = new Receipt();
-                                receipt.getReceipt(result, 0, 1000, null);
+                                receipt.getReceipt(result, 0, 1000, func);
                             } else {
                                 Output(window.outputElement, 'small', 'red', error);
                             }
@@ -245,26 +245,26 @@ export default class ZSCLogistics {
         });
     }
 
-    getTrack(_num) {
+    getTracks(_num) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getTrack.estimateGas(_num, function(error, result) {
+        contractInstance.getTracks.estimateGas(_num, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============= Logistics.getTrack(bytes32) =============");
+                        console.log("============= Logistics.getTracks(bytes32) =============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result);
-                        console.log("=======================================================");
-                        // call 'Logistics.getTrack(bytes32)'
-                        contractInstance.getTrack(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        console.log("========================================================");
+                        // call 'Logistics.getTracks(bytes32)'
+                        contractInstance.getTracks(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 Output(window.outputElement, 'small', 'red', `[Track]:${result}`);
                             } else {
