@@ -121,15 +121,16 @@ export default class DeployRaw {
         let address = this[addressRaw];
         let privateKey = this[privateKeyRaw];
 
-        // get gas price
-        web3.eth.getGasPrice(function(error, result) {
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        web3.eth.estimateGas({data: byteCode}, function(error, result) {
             if (!error) {
-                let gasPrice = result;
-
-                // estimate gas
-                web3.eth.estimateGas({data: byteCode}, function(error, result) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
                     if (!error) {
-                        let gasRequired = result;
+                        let gasPrice = result;
                         // get balance for total
                         web3.eth.getBalance(address, function(error, balance) {
                             if (!error) {
