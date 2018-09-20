@@ -423,3 +423,57 @@ function initClass(tag) {
         alert("请不要点击过快");
     }
 }
+
+function addUserTest() {
+    zscUser.tryLoginDemo();
+}
+
+function loadHtmlPageBody(tag) {
+    if (tag == "welecome") {
+        // zscHtml.loadPageBody("welecome");
+        loadLocalPageHeaderDemo();
+
+    } else if (tag == "apply-provider") {
+        document.getElementById("PageHeader").innerHTML = "Applying... <br> Need to reload once succeeded";
+        document.getElementById("PageBody").innerHTML = '<div class="well"> <text id="ApplyForProviderHash"></text> </div>';
+        applyForUser("provider", "ApplyForProviderHash");
+
+    } else if (tag == "apply-receiver") {
+        document.getElementById("PageHeader").innerHTML = "Applying... <br> Need to reload once succeeded";
+        document.getElementById("PageBody").innerHTML = '<div class="well"> <text id="ApplyForReceiverHash"></text> </div>';
+        applyForUser("receiver", "ApplyForReceiverHash");
+
+    } else {
+        switch (tag) {
+
+            case "logout":
+                window.location.reload(true);
+                break;
+
+            case "module-adrs":
+                zscModuleAdrGM.setUserType(zscUser.getUserType());
+                zscModuleAdrGM.setUserName(zscUser.getUserName());
+                zscModuleAdrGM.getModuleAdrs(function () {
+                    // zscModuleAdrGM.loadModuleAdrsHtml("PageBody");
+                    loadModuleAdrHtml();
+                });
+                break;
+		          
+            case "wallet":
+                zscWalletGM.setUserType(zscUser.getUserType());
+                zscWalletGM.setUserName(zscUser.getUserName());
+                zscWalletGM.loadTokenInfoByIndex(0, function () {
+                    zscWalletGM.loadWalletsHtmldemo("PageBody", "submitTransferValue", "showTransactions", "enableTestZSCWallet");
+                    var status = zscWalletGM.loadWalletsHtmldemo();
+                    if (status == true) {
+                        loadWalletHtml();
+                    } else {
+                        indexjump("zscEnableWallet");
+                    }
+                });
+                break;
+            default:
+                break;
+        }
+    }
+}

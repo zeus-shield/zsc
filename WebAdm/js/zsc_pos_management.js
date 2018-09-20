@@ -23,6 +23,7 @@ function ZSCPosManagement(adr, abi) {
     this.mineTypeTags = [];
 
     this.unitCtgNos = 0;
+    this.unitCtgTypes = [];
     this.unitCtgNames = [];
     this.unitCtgRares = [];
     this.unitCtgSPEftMin = [];
@@ -49,6 +50,7 @@ ZSCPosManagement.prototype.getMineTypeDuration = function(index) {return this.mi
 ZSCPosManagement.prototype.getMineTypeActivated = function(index) {return (this.mineTypeActived[index] == 1);}
 
 ZSCPosManagement.prototype.getCtgNos = function() {return this.unitCtgNos;}
+ZSCPosManagement.prototype.getCtgType = function(index) {return this.unitCtgTypes[index]}    
 ZSCPosManagement.prototype.getCtgName = function(index) {return this.unitCtgNames[index]}    
 ZSCPosManagement.prototype.getCtgRare = function(index) {return this.unitCtgRares[index]}    
 ZSCPosManagement.prototype.getCtgSPEftMin = function(index) {return this.unitCtgSPEftMin[index]} 
@@ -133,9 +135,9 @@ ZSCPosManagement.prototype.setLevelInfo = function(hashID, level, maxStakePoint,
         });
 } 
 
-ZSCPosManagement.prototype.setUnitCategory = function(hashID, ctgName, rare, spEftMin, spEftMax, rrEftMin, rrEftMax, upProbEftMin, upProbEftMax) {
+ZSCPosManagement.prototype.setUnitCategory = function(hashID, ctgName, unitName, rare, spEftMin, spEftMax, rrEftMin, rrEftMax, upProbEftMin, upProbEftMax) {
     this.myPosManager.setUnitCategory(
-        ctgName, rare, 
+        ctgName, unitName, rare, 
         spEftMin, spEftMax,
         rrEftMin * 100, rrEftMax * 100,
         upProbEftMin * 100, upProbEftMax * 100,
@@ -432,16 +434,18 @@ ZSCPosManagement.prototype.parserUnitCtgStr = function(gm, index, info) {
     var newsidinfo = info.substr(offset,len)
     var newsids    = newsidinfo.split("&");
 
-    var unitCtgNames    = newsids[0];
-    var unitCtgRares    = newsids[1];
-    var unitCtgSPEftMin = newsids[2];
-    var unitCtgSPEftMax = newsids[3];
-    var unitCtgRREftMin = newsids[4];
-    var unitCtgRREftMax = newsids[5];
-    var unitCtgUPEftMin = newsids[6];
-    var unitCtgUPEftMax = newsids[7];
+    var unitCtgTypes    = newsids[0];
+    var unitCtgNames    = newsids[1];
+    var unitCtgRares    = newsids[2];
+    var unitCtgSPEftMin = newsids[3];
+    var unitCtgSPEftMax = newsids[4];
+    var unitCtgRREftMin = newsids[5];
+    var unitCtgRREftMax = newsids[6];
+    var unitCtgUPEftMin = newsids[7];
+    var unitCtgUPEftMax = newsids[8];
 
 
+    gm.unitCtgTypes[index]    = unitCtgTypes.split("=")[1];
     gm.unitCtgNames[index]    = unitCtgNames.split("=")[1];
     gm.unitCtgRares[index]    = unitCtgRares.split("=")[1];
     gm.unitCtgSPEftMin[index] = unitCtgSPEftMin.split("=")[1];
