@@ -43,23 +43,20 @@ session_start();
 
     /////////////////////////////
     function loadUserRobots() {
-        userRobotGM.loadUserRobots(function() {
-            loadHtml("PageBody", "createGen0Robot", "enhanceRobot");
+        userRobotGM.loadUserRobots(true, function() {
+            loadAllRobotHtml("PageBody", "showRobotDetails");
         });
     }
 
-    function createGen0Robot(hashId) {
-        userRobotGM.createGen0Robot(hashId, function(){});
+    function showRobotDetails(hashId, robotIndex) {
+        userRobotGM.loadUserRobots(false, function() {
+            loadHtml("PageBody", "loadUserRobots", "createGen0Robot", "enhanceRobot");
+        });
     }
 
-    function enhanceRobot(hashId, robotId) {
-        userRobotGM.enhanceMinerRobot(hashId, robotId, function(){});
-    }
-
-    function loadHtml(elementId, createGen0, enhance) {
-        var createGen0Func = createGen0 + "('OperationHash')"; 
-        var enhancePrefix = enhance + "('OperationHash', '"; 
-        var enhanceSuffix = "')";
+    function loadAllRobotHtml(elementId, showRobot) {
+        var showPrefix = showRobot + "('OperationHash', '"; 
+        var showSuffix = "')";
 
         var symbol;
         var adr;
@@ -73,46 +70,39 @@ session_start();
         text  = '<text id="OperationHash" value = "log:"> </text> </div>';
 
         text += '<div class="well" align="center" >'
-        text += '   <button type="button" onClick="' + createGen0Func + '">  Create Lev0 ZSC miner robot (Cost 0.01ETH) </button> <br>'
+        text += '   <button type="button" onClick="' + createGen0Func + '">  Create Lev0 miner robot (Cost 0.01ETH) </button> <br>'
         text += '</div>';
 
         text += '<div class="well">';
         text += '<table align="center" style="width:600px;min-height:30px">'
-        text += '   <tr> <td>Robot ID</td> <td>Status</td> <td>Level</td> <td>Max SP</td> <td> Cost (ETH) </td> <td>Upgrade (Up. Prob.) </td> </tr> '
-        text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> </tr>'
+        text += '   <tr> <td>id</td> <td>ctg</td> <td>status</td> <td>rare</td> <td>spLev</td> <td>upPrice</td> <td> Details </td></tr> '
+        text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> </tr>'
 
         for (var i = 0; i < robotNos; ++i) {
-            var robotId = userRobotGM.getRobotId(i);
-            var status = "Idle"; 
-            if (!userRobotGM.miningable(i)) {
-                status = "Mining";
-            } else {
-                if (userRobotGM.getPriceForSale(i) > 0) {
-                    status = "Selling";
-                } 
-            }
+            //default paras: "id", "ctg", "status", "rare", "spLev", "createPrice", "upPrice"
+            //this.robotParaBrief = ["spMax"];
+            var robotId = userRobotGM.getRobotPara("id", false, i);
+            var ctg = userRobotGM.getRobotPara("status", false, i); 
+            var status = userRobotGM.getRobotPara("status", false, i); 
 
             hashId  = symbol + "Hash";
             sentoId = symbol + "Dest";
             amountId= symbol + "Amount";
     
             text += '<tr>'
-            text += '   <td><text>' + robotId + '</text></td>'
-            text += '   <td><text>' + status + '</text></td>'
-            text += '   <td><text>' + userRobotGM.getRobotLev(i) + '</text></td>'
-            text += '   <td><text>' + userRobotGM.getMaxSP(i) + '</text></td>'
-            text += '   <td><text>' + userRobotGM.getPriceToEnhance(i) + '</text></td>'
-            if (status == "Idle") {
-                text += '   <td><button type="button" onClick="' + enhancePrefix + robotId + enhanceSuffix + '"> Up. (' + userRobotGM.getEnhanceProb(i) + '%)</button></td>'
-            } else {
-                text += '   <td><text>Not Available</text></td>'
-            }
+            text += '   <td><text>' + userRobotGM.getRobotPara("id",      false, i) + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotPara("ctg",     false, i) + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotPara("status",  false, i) + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotPara("rare",    false, i) + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotPara("spLev",   false, i) + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotPara("upPrice", false, i) + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotPara("spMax",   false, i) + '</text></td>'
+            text += '   <td><button type="button" onClick="' + showPrefix + robotId + showSuffix + '"> Show </button></td>'
             text += '</tr>'
-            text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> </tr>'
+            text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> td>------</td> td>------</td> </tr>'
         }
         text += '</table>'
         text += '</div>'
-    
         document.getElementById(elementId).innerHTML = text;  
     }
 
