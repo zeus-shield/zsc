@@ -58,7 +58,9 @@ function bF_robotParaValue = function(value, tag) {
     if (tag == "FromWei") {
         return bF_fixedNumberFromWei(value, 4);
     } else if (tag = "Time") {
-        return bF_secondsToDate(value)
+        return bF_secondsToDate(value);
+    } else if (tag = "Prob") {
+        return (value / 100 + "%");
     } else {
         return value;
     }
