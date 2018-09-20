@@ -75,12 +75,15 @@ contract AbisForUserControlApis {
     function claimReward(uint _robotId, bytes32 _tokenType) public;
     function numSellUnits() public view returns (uint);
     function numUserUnits() public view returns (uint);
+    function numHolderUnits(address _holder) public view returns (uint);
     function getSellUnitInfoByIndex(uint _index, bytes32[] _paras) public view returns (string);
-    function getUserUnitInfoByIndex(uint _index, bytes32[] _paras) public view returns (string);
+    function getHolderUnitInfoByIndex(address _holder, uint _index, bytes32[] _paras) public view returns (string);
+    function getUnitInfoByIndex(uint _robotId, bytes32[] _paras) public view returns (string);
 
     function numUnits() public view returns (uint);
     function getSellUnitIdByIndex(uint _index) public view returns (uint);
     function getUserUnitIdByIndex(uint _index) public view returns (uint);
+    function getHolderUnitIdByIndex(address _holder, uint _index) public view returns (uint);
     function getCreatePrice() public view returns (uint);
     function getPublicTradeableTag() public view returns (uint);
     function getDayInSeconds() public view returns (uint);
