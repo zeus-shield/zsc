@@ -164,12 +164,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
 
     //////////////////////////
-    function setPriorityValue(uint _adm, uint _sub) public {
-        checkDelegate(msg.sender, 1);
-        admPri_ = _adm;
-        subPri_ = _sub;
-    }
-
     function setPublicTradeable(bool _tag) public {
         checkDelegate(msg.sender, 1);
         publicTradeable_ = _tag;
@@ -349,7 +343,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
 
     //////////////////////
-    function numUnits() public view returns (uint) {
+    function numAllUnits() public view returns (uint) {
         return robotNos_;  
     }
 
