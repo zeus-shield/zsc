@@ -29,17 +29,17 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         uint spCur_;
         uint spMax_;
         uint spBase_;
-        uint spEft_;
+        uint spBirth_;
 
         uint mineStart_;
         uint mineEnd_;
 
         uint rrType_; //days
-        uint rrEft_;  //xx&
+        uint rrBirth_;  //xx&
         uint rrLevEft_; //xx%
 
         uint upProbBase_;
-        uint upProbEft_;
+        uint upProbBirth_;
         uint upPrice_;
 
         uint sellPrice_;
@@ -52,12 +52,12 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         bytes32 ctg_;
         bytes32 name_;
         uint rare_;
-        uint spEftMin_;
-        uint spEftMax_;
-        uint rrEftMin_;
-        uint rrEftMax_;
-        uint upProbEftMin_;
-        uint upProbEftMax_;
+        uint spBirthMin_;
+        uint spBirthMax_;
+        uint rrBirthMin_;
+        uint rrBirthMax_;
+        uint upProbBirthMin_;
+        uint upProbBirthMax_;
     }
     uint private ctgNos_;
     mapping(uint => CtgUnit) private ctgs_;
@@ -142,22 +142,22 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         robots_[index].mineEnd_   = 0;
         robots_[index].upProbBase_   = 0;
 
-        if (ctgs_[ctgIndex].spEftMin_ == ctgs_[ctgIndex].spEftMax_) {
-            robots_[index].spEft_ = ctgs_[ctgIndex].spEftMin_;
+        if (ctgs_[ctgIndex].spBirthMin_ == ctgs_[ctgIndex].spBirthMax_) {
+            robots_[index].spBirth_ = ctgs_[ctgIndex].spBirthMin_;
         } else {
-            robots_[index].spEft_  = random(ctgs_[ctgIndex].spEftMin_, ctgs_[ctgIndex].spEftMax_);
+            robots_[index].spBirth_  = random(ctgs_[ctgIndex].spBirthMin_, ctgs_[ctgIndex].spBirthMax_);
         }
 
-        if (ctgs_[ctgIndex].rrEftMin_ == ctgs_[ctgIndex].rrEftMax_) {
-            robots_[index].rrEft_ = ctgs_[ctgIndex].rrEftMin_;
+        if (ctgs_[ctgIndex].rrBirthMin_ == ctgs_[ctgIndex].rrBirthMax_) {
+            robots_[index].rrBirth_ = ctgs_[ctgIndex].rrBirthMin_;
         } else {
-            robots_[index].rrEft_  = random(ctgs_[ctgIndex].rrEftMin_, ctgs_[ctgIndex].rrEftMax_);
+            robots_[index].rrBirth_  = random(ctgs_[ctgIndex].rrBirthMin_, ctgs_[ctgIndex].rrBirthMax_);
         }
 
-        if (ctgs_[ctgIndex].upProbEftMin_ == ctgs_[ctgIndex].upProbEftMax_) {
-            robots_[index].upProbEft_ = ctgs_[ctgIndex].upProbEftMin_;
+        if (ctgs_[ctgIndex].upProbBirthMin_ == ctgs_[ctgIndex].upProbBirthMax_) {
+            robots_[index].upProbBirth_ = ctgs_[ctgIndex].upProbBirthMin_;
         } else {
-            robots_[index].upProbEft_  = random(ctgs_[ctgIndex].upProbEftMin_, ctgs_[ctgIndex].upProbEftMax_);
+            robots_[index].upProbBirth_  = random(ctgs_[ctgIndex].upProbBirthMin_, ctgs_[ctgIndex].upProbBirthMax_);
         }
 
         return index;
@@ -208,7 +208,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         rareProb_["SSR"] = _SSR;
     }
    
-    function setUnitCategory(string _ctgStr, string _nameStr, uint _rare, uint _spEftMin, uint _spEftMax, uint _rrEftMin, uint _rrEftMax, uint _upProbEftMin, uint _upProbEftMax) public {
+    function setUnitCategory(string _ctgStr, string _nameStr, uint _rare, uint _spBirthMin, uint _spBirthMax, uint _rrBirthMin, uint _rrBirthMax, uint _upProbBirthMin, uint _upProbBirthMax) public {
         checkDelegate(msg.sender, subPri_);
         require(_rare < 4);
         uint index;
@@ -232,12 +232,12 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
         ctgs_[index].ctg_      = _ctg;
         ctgs_[index].name_     = _name;
-        ctgs_[index].spEftMin_ = _spEftMin;
-        ctgs_[index].spEftMax_ = _spEftMax;
-        ctgs_[index].rrEftMin_ = _rrEftMin;
-        ctgs_[index].rrEftMax_ = _rrEftMax;
-        ctgs_[index].upProbEftMin_ = _upProbEftMin;
-        ctgs_[index].upProbEftMax_ = _upProbEftMax;
+        ctgs_[index].spBirthMin_ = _spBirthMin;
+        ctgs_[index].spBirthMax_ = _spBirthMax;
+        ctgs_[index].rrBirthMin_ = _rrBirthMin;
+        ctgs_[index].rrBirthMax_ = _rrBirthMax;
+        ctgs_[index].upProbBirthMin_ = _upProbBirthMin;
+        ctgs_[index].upProbBirthMax_ = _upProbBirthMax;
     }
     
     function numUnitCatetories() public view returns (uint) {
@@ -251,12 +251,12 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         str = PlatString.append(str, "ctg=",          PlatString.bytes32ToString(ctgs_[_index].ctg_), "&");
         str = PlatString.append(str, "name=",         PlatString.bytes32ToString(ctgs_[_index].name_), "&");
         str = PlatString.append(str, "rare=",         PlatString.uintToString(ctgs_[_index].rare_), "&");
-        str = PlatString.append(str, "spEftMin=",     PlatString.uintToString(ctgs_[_index].spEftMin_), "&");
-        str = PlatString.append(str, "spEftMax=",     PlatString.uintToString(ctgs_[_index].spEftMax_), "&");
-        str = PlatString.append(str, "rrEftMin=",     PlatString.uintToString(ctgs_[_index].rrEftMin_), "&");
-        str = PlatString.append(str, "rrEftMax=",     PlatString.uintToString(ctgs_[_index].rrEftMax_), "&");
-        str = PlatString.append(str, "upProbEftMin=", PlatString.uintToString(ctgs_[_index].upProbEftMin_), "&");
-        str = PlatString.append(str, "upProbEftMax=", PlatString.uintToString(ctgs_[_index].upProbEftMax_), "&");
+        str = PlatString.append(str, "spBirthMin=",     PlatString.uintToString(ctgs_[_index].spBirthMin_), "&");
+        str = PlatString.append(str, "spBirthMax=",     PlatString.uintToString(ctgs_[_index].spBirthMax_), "&");
+        str = PlatString.append(str, "rrBirthMin=",     PlatString.uintToString(ctgs_[_index].rrBirthMin_), "&");
+        str = PlatString.append(str, "rrBirthMax=",     PlatString.uintToString(ctgs_[_index].rrBirthMax_), "&");
+        str = PlatString.append(str, "upProbBirthMin=", PlatString.uintToString(ctgs_[_index].upProbBirthMin_), "&");
+        str = PlatString.append(str, "upProbBirthMax=", PlatString.uintToString(ctgs_[_index].upProbBirthMax_), "&");
         
         return str;
     }
@@ -265,6 +265,13 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     function setUnitSpec(uint _unitId, bool _tag) public {
         checkDelegate(msg.sender, 1);
         robots_[_unitId].specific_ = _tag;
+    }
+
+    function setUnitBirthValue(uint _unitId, uint _sp, uint _rr, uint _up) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].spBirth_ = _sp;
+        robots_[_unitId].rrBirth_ = _rr;
+        robots_[_unitId].upProbBirth_ = _up;
     }
 
     function setUnitStatus(uint _unitId, bytes32 _status) public {
@@ -292,12 +299,12 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         robots_[_unitId].spCur_ = _cur;
     }
 
-    function setUnitUpBase(uint _unitId, uint _base) public {
+    function setUnitUPBase(uint _unitId, uint _base) public {
         checkDelegate(msg.sender, 1);
         robots_[_unitId].upProbBase_ = _base;
     }
 
-    function setUnitUpPrice(uint _unitId, uint _price) public {
+    function setUnitUPPrice(uint _unitId, uint _price) public {
         checkDelegate(msg.sender, 1);
         robots_[_unitId].upPrice_ = _price;
     }
@@ -399,16 +406,16 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return robots_[_unitId].spLev_;
     }
 
-    function getUnitSPEft(uint _unitId) public view returns (uint) {
-        return robots_[_unitId].spEft_;
+    function getUnitSPBirth(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].spBirth_;
     }
 
     function getUnitRRType(uint _unitId) public view returns (uint) {
         return robots_[_unitId].rrType_;
     }
 
-    function getUnitRREft(uint _unitId) public view returns (uint) {
-        return robots_[_unitId].rrEft_;
+    function getUnitRRBirth(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].rrBirth_;
     }
 
     function getUnitRRLevEft(uint _unitId) public view returns (uint) {
@@ -419,8 +426,8 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return robots_[_unitId].upProbBase_;
     }
 
-    function getUnitUPEft(uint _unitId) public view returns (uint) {
-        return robots_[_unitId].upProbEft_;
+    function getUnitUPBirth(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].upProbBirth_;
     }
 
     function getUnitUpPrice(uint _unitId) public view returns (uint) {
