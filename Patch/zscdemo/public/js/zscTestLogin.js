@@ -480,6 +480,15 @@ function loadHtmlPageBody(tag) {
                     loadTemplatesHtml();
                 });
                 break;
+
+            case "parameter-profile":
+                zscElement.setElementName(zscUser.getUserName());
+                zscElement.setUserType(zscUser.getUserType());
+                zscElement.loadParameterNamesAndvalues(function () {
+                    //zscElement.loadParametersHtml("PageBody", "profile", "submitParameterProfileChanges");
+                    loadProfileHtml();
+                });
+                break;
             default:
                 break;
         }
