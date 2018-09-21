@@ -53,60 +53,10 @@ export default class ZSCLogistics {
                 Output(window.outputElement, 'small', 'red', error);
             }
         });
-
-
-        // //let address = this[addressRaw];
-        // let key = this[privateKeyRaw];
-        // let handler = this;
-
-        // web3.eth.getTransactionCount(this[addressRaw], function(error, nonce) {
-
-        //     //alert(nonce);
-
-        //     // get function data
-        //     let data = contractInstance.update.getData(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks);
-
-        //     // estimate gas
-        //     contractInstance.update.estimateGas(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks, {data: data},
-        //         function(error, gasLimit) {
-        //             if(!error) {
-        //                 // get gas price
-        //                 web3.eth.getGasPrice(function(error, gasPrice){
-        //                     if(!error) {
-        //                         let rawTx = {
-        //                             gasPrice: web3.toHex(gasPrice),
-        //                             gasLimit: web3.toHex(gasLimit),
-        //                             to: handler[constractAddress],
-        //                             nonce: web3.toHex(nonce),
-        //                             data: data  
-        //                         };
-
-        //                         let privateKey = EthereumjsUtil.toBuffer(key, 'hex');
-     
-        //                         const tx = new EthereumTx(rawTx);
-
-        //                         tx.sign(privateKey);
-
-        //                         let serializedTx = tx.serialize();
-
-        //                         web3.eth.sendRawTransaction("0x" + serializedTx.toString('hex'), function(err, hash) {
-        //                             console.log("hash:", hash);
-        //                             // get receipt
-        //                             let receipt = new Receipt();
-        //                             receipt.getReceipt(hash, 0, 1000, func);                      
-        //                         });
-        //                     } else {
-        //                         Output(window.outputElement, 'small', 'red', error);
-        //                     }
-        //                 });
-        //             } else {
-        //                 Output(window.outputElement, 'small', 'red', error);
-        //             }
-        //         });
-        // });
     }
 
     updateEx(_info, func) {
+        let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
         let data = contractInstance.updateEx.getData(_info);
 
@@ -114,7 +64,7 @@ export default class ZSCLogistics {
             if (!error) {
                 let deploy = new Deploy();
                 if('undefined' != typeof deploy) {
-                    deploy.do("transaction", data, result, null, func);
+                    deploy.do("transaction", data, result, handler[constractAddress], null, func);
                 }
             } else {
                 Output(window.outputElement, 'small', 'red', error);
