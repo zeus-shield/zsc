@@ -468,4 +468,22 @@ contract Logistics {
     function number() public view returns (uint) {
         return nums_.length;
     }
+
+    function numberOfTracks(bytes32 _num) public view returns (uint) {
+        uint index = 0;
+        bool found = false;
+
+        // check param
+        if (bytes32(0) == _num) {
+            return 0;
+        }
+
+        // find num
+        (found, index) = findNum(_num);
+        if (!found) {
+            return 0;
+        }
+
+        return infos_[_num].tracks_.length;
+    }
 }
