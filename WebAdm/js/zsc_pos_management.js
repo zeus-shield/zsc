@@ -19,6 +19,7 @@ function ZSCPosManagement(adr, abi) {
 
     this.mineTypeNos = 0;
     this.mineTypeDuration = [];
+    this.mineTypeRRLevEft = [];
     this.mineTypeActived = [];
     this.mineTypeTags = [];
 
@@ -47,6 +48,7 @@ ZSCPosManagement.prototype.getLevelUpPrice= function(index) {return web3.fromWei
 
 ZSCPosManagement.prototype.getMineTypeNos = function() {return this.mineTypeNos;}
 ZSCPosManagement.prototype.getMineTypeDuration = function(index) {return this.mineTypeDuration[index];}
+ZSCPosManagement.prototype.getMineTypeRRLevEft = function(index) {return this.mineTypeRRLevEft/100;}
 ZSCPosManagement.prototype.getMineTypeActivated = function(index) {return (this.mineTypeActived[index] == 1);}
 
 ZSCPosManagement.prototype.getCtgNos = function() {return this.unitCtgNos;}
@@ -104,8 +106,8 @@ ZSCPosManagement.prototype.downscaledDay = function(hashID, scale) {
         });
 } 
 
-ZSCPosManagement.prototype.setMineType = function(hashID,  durationInDays, tag) {
-    this.myPosManager.setMineType(durationInDays, tag,
+ZSCPosManagement.prototype.setMineType = function(hashID,  durationInDays, rrLevEft, tag) {
+    this.myPosManager.setMineType(durationInDays, rrLevEft, tag,
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){window.location.reload(true);});
@@ -352,9 +354,11 @@ ZSCPosManagement.prototype.parserMineTypeStr = function(gm, index, info) {
 
     var mineTypeActived  = newsids[0];
     var mineTypeDuration = newsids[1];
+    var mineTypeRRLevEft = newsids[1];
 
     gm.mineTypeActived[index]  = mineTypeActived.split("=")[1];
     gm.mineTypeDuration[index] = mineTypeDuration.split("=")[1];
+    gm.mineTypeRRLevEft[index] = mineTypeRRLevEft.split("=")[1];
 }
 
 ////////////////////////////
