@@ -496,6 +496,12 @@ function loadHtmlPageBody(tag) {
                     loadTemplateEditHtml();
                 });
                 break;
+            case "parameter-agreement-provider":
+                zscElement.loadParameterNamesAndvalues(function () {
+                    // zscElement.loadParametersHtml("PageBody", "agreement-provider", "claimReward", "backToProTmp");
+                    loadTemplateListShowHtml();
+                });
+                break;
             default:
                 break;
         }
