@@ -472,6 +472,14 @@ function loadHtmlPageBody(tag) {
                     }
                 });
                 break;
+            case "template":
+                zscTmpsGM.setUserType(zscUser.getUserType());
+                zscTmpsGM.loadTempates(function () {
+                    //elementId, funcCreateTmp, funcSetPara, funcPublish
+                    //zscTmpsGM.loadTemplatesHtml("PageBody", "creatNewTemplate", "enableAsAgreement", "showTemplateParameters", "showProvidersAgreements");
+                    loadTemplatesHtml();
+                });
+                break;
             default:
                 break;
         }
