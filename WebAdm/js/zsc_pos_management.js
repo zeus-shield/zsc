@@ -27,12 +27,14 @@ function ZSCPosManagement(adr, abi) {
     this.unitCtgTypes = [];
     this.unitCtgNames = [];
     this.unitCtgRares = [];
-    this.unitCtgSPEftMin = [];
-    this.unitCtgSPEftMax = [];
-    this.unitCtgRREftMin = [];
-    this.unitCtgRREftMax = [];
-    this.unitCtgUPEftMin = [];
-    this.unitCtgUPEftMax = [];
+    this.unitCtgProbWeights = [];
+
+    this.unitCtgSPBirthMin = [];
+    this.unitCtgSPBirthMax = [];
+    this.unitCtgRRBirthMin = [];
+    this.unitCtgRRBirthMax = [];
+    this.unitCtgUPBirthMin = [];
+    this.unitCtgUPBirthMax = [];
     this.unitCtgTags = [];
 
     this.account = web3.eth.accounts[0];
@@ -54,13 +56,15 @@ ZSCPosManagement.prototype.getMineTypeActivated = function(index) {return (this.
 ZSCPosManagement.prototype.getCtgNos = function() {return this.unitCtgNos;}
 ZSCPosManagement.prototype.getCtgType = function(index) {return this.unitCtgTypes[index]}    
 ZSCPosManagement.prototype.getCtgName = function(index) {return this.unitCtgNames[index]}    
-ZSCPosManagement.prototype.getCtgRare = function(index) {return this.unitCtgRares[index]}    
-ZSCPosManagement.prototype.getCtgSPEftMin = function(index) {return this.unitCtgSPEftMin[index]} 
-ZSCPosManagement.prototype.getCtgSPEftMax = function(index) {return this.unitCtgSPEftMax[index]} 
-ZSCPosManagement.prototype.getCtgRREftMin = function(index) {return this.unitCtgRREftMin[index]} 
-ZSCPosManagement.prototype.getCtgRREftMax = function(index) {return this.unitCtgRREftMax[index]} 
-ZSCPosManagement.prototype.getCtgUPEftMin = function(index) {return this.unitCtgUPEftMin[index]} 
-ZSCPosManagement.prototype.getCtgUPEftMax = function(index) {return this.unitCtgUPEftMax[index]} 
+ZSCPosManagement.prototype.getCtgRare = function(index) {return this.unitCtgRares[index]}   
+ZSCPosManagement.prototype.getCtgProbWeight = function(index) {return this.unitCtgProbWeights[index]}   
+
+ZSCPosManagement.prototype.getCtgSPBirthMin = function(index) {return this.unitCtgSPBirthMin[index]} 
+ZSCPosManagement.prototype.getCtgSPBirthMax = function(index) {return this.unitCtgSPBirthMax[index]} 
+ZSCPosManagement.prototype.getCtgRRBirthMin = function(index) {return this.unitCtgRRBirthMin[index]} 
+ZSCPosManagement.prototype.getCtgRRBirthMax = function(index) {return this.unitCtgRRBirthMax[index]} 
+ZSCPosManagement.prototype.getCtgUPBirthMin = function(index) {return this.unitCtgUPBirthMin[index]} 
+ZSCPosManagement.prototype.getCtgUPBirthMax = function(index) {return this.unitCtgUPBirthMax[index]} 
 
 ZSCPosManagement.prototype.getTradeTag = function() {return (this.tradeTag == 1);}
 ZSCPosManagement.prototype.getDayInSeconds = function() {return this.dayInSecs;}
@@ -107,7 +111,7 @@ ZSCPosManagement.prototype.downscaledDay = function(hashID, scale) {
 } 
 
 ZSCPosManagement.prototype.setMineType = function(hashID,  durationInDays, rrLevEft, tag) {
-    this.myPosManager.setMineType(durationInDays, rrLevEft, tag,
+    this.myPosManager.setMineType(durationInDays, rrLevEft * 100, tag,
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){window.location.reload(true);});
@@ -137,12 +141,12 @@ ZSCPosManagement.prototype.setLevelInfo = function(hashID, level, maxStakePoint,
         });
 } 
 
-ZSCPosManagement.prototype.setUnitCategory = function(hashID, ctgName, unitName, rare, spEftMin, spEftMax, rrEftMin, rrEftMax, upProbEftMin, upProbEftMax) {
+ZSCPosManagement.prototype.setUnitCategory = function(hashID, ctgName, unitName, rareValue, probWeight, spBirthMin, spBirthMax, rrBirthMin, rrBirthMax, upProbBirthMin, upProbBirthMax) {
     this.myPosManager.setUnitCategory(
-        ctgName, unitName, rare, 
-        spEftMin, spEftMax,
-        rrEftMin * 100, rrEftMax * 100,
-        upProbEftMin * 100, upProbEftMax * 100,
+        ctgName, unitName, rareValue, probWeight,
+        spBirthMin, spBirthMax,
+        rrBirthMin * 100, rrBirthMax * 100,
+        upProbBirthMin * 100, upProbBirthMax * 100,
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){window.location.reload(true);});
@@ -354,7 +358,7 @@ ZSCPosManagement.prototype.parserMineTypeStr = function(gm, index, info) {
 
     var mineTypeActived  = newsids[0];
     var mineTypeDuration = newsids[1];
-    var mineTypeRRLevEft = newsids[1];
+    var mineTypeRRLevEft = newsids[2];
 
     gm.mineTypeActived[index]  = mineTypeActived.split("=")[1];
     gm.mineTypeDuration[index] = mineTypeDuration.split("=")[1];
@@ -438,24 +442,26 @@ ZSCPosManagement.prototype.parserUnitCtgStr = function(gm, index, info) {
     var newsidinfo = info.substr(offset,len)
     var newsids    = newsidinfo.split("&");
 
-    var unitCtgTypes    = newsids[0];
-    var unitCtgNames    = newsids[1];
-    var unitCtgRares    = newsids[2];
-    var unitCtgSPEftMin = newsids[3];
-    var unitCtgSPEftMax = newsids[4];
-    var unitCtgRREftMin = newsids[5];
-    var unitCtgRREftMax = newsids[6];
-    var unitCtgUPEftMin = newsids[7];
-    var unitCtgUPEftMax = newsids[8];
+    var unitCtgTypes       = newsids[0];
+    var unitCtgNames       = newsids[1];
+    var unitCtgRares       = newsids[2];
+    var unitCtgProbWeights = newsids[3];
+    var unitCtgSPBirthMin    = newsids[4];
+    var unitCtgSPBirthMax    = newsids[5];
+    var unitCtgRRBirthMin    = newsids[6];
+    var unitCtgRRBirthMax    = newsids[7];
+    var unitCtgUPBirthMin    = newsids[8];
+    var unitCtgUPBirthMax    = newsids[9];
 
 
-    gm.unitCtgTypes[index]    = unitCtgTypes.split("=")[1];
-    gm.unitCtgNames[index]    = unitCtgNames.split("=")[1];
-    gm.unitCtgRares[index]    = unitCtgRares.split("=")[1];
-    gm.unitCtgSPEftMin[index] = unitCtgSPEftMin.split("=")[1];
-    gm.unitCtgSPEftMax[index] = unitCtgSPEftMax.split("=")[1];
-    gm.unitCtgRREftMin[index] = unitCtgRREftMin.split("=")[1] / 100;
-    gm.unitCtgRREftMax[index] = unitCtgRREftMax.split("=")[1] / 100;
-    gm.unitCtgUPEftMin[index] = unitCtgUPEftMin.split("=")[1] / 100;
-    gm.unitCtgUPEftMax[index] = unitCtgUPEftMax.split("=")[1] / 100;
+    gm.unitCtgTypes[index]        = unitCtgTypes.split("=")[1];
+    gm.unitCtgNames[index]        = unitCtgNames.split("=")[1];
+    gm.unitCtgRares[index]        = unitCtgRares.split("=")[1];
+    gm.unitCtgProbWeights[index]  = unitCtgProbWeights.split("=")[1];
+    gm.unitCtgSPBirthMin[index]     = unitCtgSPBirthMin.split("=")[1];
+    gm.unitCtgSPBirthMax[index]     = unitCtgSPBirthMax.split("=")[1];
+    gm.unitCtgRRBirthMin[index]     = unitCtgRRBirthMin.split("=")[1] / 100;
+    gm.unitCtgRRBirthMax[index]     = unitCtgRRBirthMax.split("=")[1] / 100;
+    gm.unitCtgUPBirthMin[index]     = unitCtgUPBirthMin.split("=")[1] / 100;
+    gm.unitCtgUPBirthMax[index]     = unitCtgUPBirthMax.split("=")[1] / 100;
 }
