@@ -36,19 +36,26 @@ export default class DeployRaw {
                 jsonrpc: "2.0",
                 id: new Date().getTime()
             }, function (error, result) {
-                if(result.result.pending) {
-                    if(result.result.pending[address]) {
-                        let txns = result.result.pending[address];
-                        let cost = new BigNumber(0);
-                        
-                        for(let txn in txns) {
-                            cost = cost.add((new BigNumber(parseInt(txns[txn].value))).add((new BigNumber(parseInt(txns[txn].gas))).mul(new BigNumber(parseInt(txns[txn].gasPrice)))));
+                // result.error is defined for MetaMask
+                if(!error && undefined == result.error) {
+                    if(result.result.pending) {
+                        if(result.result.pending[address]) {
+                            let txns = result.result.pending[address];
+                            let cost = new BigNumber(0);
+                            
+                            for(let txn in txns) {
+                                cost = cost.add((new BigNumber(parseInt(txns[txn].value))).add((new BigNumber(parseInt(txns[txn].gas))).mul(new BigNumber(parseInt(txns[txn].gasPrice)))));
+                            }
+                            func(null, web3.fromWei(cost, "ether"));
+                        } else {
+                            func(null, "0");
                         }
-                        func(null, web3.fromWei(cost, "ether"));
                     } else {
                         func(null, "0");
                     }
                 } else {
+                    console.log(result.error);
+                    Output(window.outputElement, 'small', 'red', result.error.message);
                     func(null, "0");
                 }
             })
@@ -70,15 +77,22 @@ export default class DeployRaw {
                     jsonrpc: "2.0",
                     id: new Date().getTime()
                 }, function (error, result) {
-                    if(result.result.pending) {
-                        if(result.result.pending[address]) {
-                            txnsCount = txnsCount + Object.keys(result.result.pending[address]).length;
-                            func(null, txnsCount);
+                    // result.error is defined for MetaMask
+                    if(!error && undefined == result.error) {
+                        if(result.result.pending) {
+                            if(result.result.pending[address]) {
+                                txnsCount = txnsCount + Object.keys(result.result.pending[address]).length;
+                                func(null, txnsCount);
+                            } else {
+                                func(null, txnsCount);
+                            }
                         } else {
                             func(null, txnsCount);
                         }
                     } else {
-                        func(null, txnsCount);
+                        console.log(result.error);
+                        Output(window.outputElement, 'small', 'red', result.error.message);
+                        func(null, "0");
                     }
                 })
             }
