@@ -1,4 +1,4 @@
-﻿var web3;
+var web3;
 if (doesLocalWeb3js()) {
     web3 = setupWeb3js();
 } else {
@@ -344,6 +344,8 @@ function loadLocalPageHeader() {
 //     }
 // }
 
+
+//适配demo重写loadLocalPageHeader()
 function loadLocalPageHeaderDemo(func) {
     var callBack = func;
     zscUser.getUserStatusFromAdm(function (status) {
@@ -398,6 +400,9 @@ function checkUserDemo(account, password,func) {
     });
 }
 
+// htmlLoadLogin();
+// getInfo();
+
 function getInfo(func) {
     let account = getCookie("zscAccount");
     let password = getCookie("zscPassword");
@@ -416,6 +421,7 @@ function getType() {
     }
 }
 
+//判断是否初始化
 function initClass(tag) {
     if (zscModuleAdrGM != null) {
         loadHtmlPageBody(tag);
@@ -445,7 +451,6 @@ function loadHtmlPageBody(tag) {
 
     } else {
         switch (tag) {
-
             case "logout":
                 window.location.reload(true);
                 break;
@@ -458,7 +463,7 @@ function loadHtmlPageBody(tag) {
                     loadModuleAdrHtml();
                 });
                 break;
-		          
+
             case "wallet":
                 zscWalletGM.setUserType(zscUser.getUserType());
                 zscWalletGM.setUserName(zscUser.getUserName());
@@ -472,6 +477,7 @@ function loadHtmlPageBody(tag) {
                     }
                 });
                 break;
+
             case "template":
                 zscTmpsGM.setUserType(zscUser.getUserType());
                 zscTmpsGM.loadTempates(function () {
@@ -496,12 +502,57 @@ function loadHtmlPageBody(tag) {
                     loadTemplateEditHtml();
                 });
                 break;
+
             case "parameter-agreement-provider":
                 zscElement.loadParameterNamesAndvalues(function () {
                     // zscElement.loadParametersHtml("PageBody", "agreement-provider", "claimReward", "backToProTmp");
                     loadTemplateListShowHtml();
                 });
                 break;
+
+            case "parameter-agreement-receiver":
+                zscElement.loadParameterNamesAndvalues(function () {
+                    // zscElement.loadParametersHtml("PageBody", "agreement-receiver", "claimInsurance", "backToRecAgr");
+                    loadAgreementShowHtml();
+                });
+                break;
+
+            case "parameter-agreement-all":
+                zscElement.setUserType(zscUser.getUserType());
+                zscElement.loadParameterNamesAndvalues(function () {
+                    // zscElement.loadParametersHtml("PageBody", "agreement-all", "null", "bakcToAllAgr");
+                    loadShowAllAgreementsListHtml();
+                });
+                break;
+
+            case "agreement-provider":
+                zscAgrsProGM.loadAgreements(function () {
+                    // zscAgrsProGM.loadAgreementsHtml("PageBody", "publishAgreement", "showProAgrParameters");
+                    loadTemplateListHtml();
+                });
+                break;
+
+            case "agreement-receiver":
+                zscAgrsRecGM.loadAgreements(function () {
+                    // zscAgrsRecGM.loadAgreementsHtml("PageBody", "showRecAgrParameters");
+                    loadAgreementHtml();
+                });
+                break;
+
+            case "agreement-all":
+                zscAgrsAllGM.setUserType(zscUser.getUserType());
+                zscAgrsAllGM.loadAllAgreements(function () {
+                    //zscAgrsAllGM.loadAllAgreementsHtml("PageBody", "showAllAgrParameters", "submitPurchaseAgreement");
+                    loadShowAllAgreementsHtml();
+                });
+                break;
+
+            case "transaction":
+                zscTransGM.loadTransactions(function () {
+                    zscTransGM.loadTransactionsHtml("PageBody");
+                });
+                break;
+
             default:
                 break;
         }
