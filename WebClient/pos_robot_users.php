@@ -70,23 +70,8 @@ session_start();
 
     /////////////////////////
     function upgradeRobot(hashId, robotId) {
-        userRobotGM.enhanceMinerRobot(hashId, robotId, function(){
+        userRobotGM.upgradeMinerRobot(hashId, robotId, function(){
             loadHtml(false);
-        });
-    }
-
-    /////////////////////////
-    function sellRobot(hashId, robotId, priceId) {
-        var price = document.getElementById(priceId).value;
-        userRobotGM.publishMinerRobot(hashId, robotId, price, function() {  
-            loadHtml(false);
-              
-        });
-    }
-
-    function cancelSelling(hashId, robotId) {
-        userRobotGM.cancalSellingMinerRobot(hashId, robotId, function() {
-            loadHtml(false);                
         });
     }
 
@@ -103,6 +88,21 @@ session_start();
         var tokenType = document.getElementById(tokenTypeId).value;
         userRobotGM.claimReward(hashId, robotId, tokenType, function() { 
             loadHtml(false);       
+        });
+    }
+
+    /////////////////////////
+    function sellRobot(hashId, priceId, robotId) {
+        var price = document.getElementById(priceId).value;
+        userRobotGM.publishMinerRobot(hashId, robotId, price, function() {  
+            loadHtml(false);
+              
+        });
+    }
+
+    function cancelSelling(hashId, robotId) {
+        userRobotGM.cancalSellingMinerRobot(hashId, robotId, function() {
+            loadHtml(false);                
         });
     }
 
@@ -149,16 +149,16 @@ session_start();
     function loadUserRobotDetailsHtml(elementId, loadUserAllRobots, upgradeRobot, activeMining, claimReward, sellRobot, cancelSelling) {
         var loadUserAllRobotsFunc = loadUserAllRobots + "()"; 
 
-        var upgradeRobotPrefix = enhance + "('OperationHash', '"; 
+        var upgradeRobotPrefix = upgradeRobot + "('OperationHash', '"; 
         var upgradeRobotSuffix = "')";
 
-        var activeMiningPrefix = enhance + "('OperationHash', '"; 
+        var activeMiningPrefix = activeMining + "('OperationHash', 'TokenType', 'PosType', '"; 
         var activeMiningSuffix = "')";
 
-        var claimRewardPrefix = enhance + "('OperationHash', '"; 
+        var claimRewardPrefix = enhance + "('OperationHash', 'TokenType', '"; 
         var claimRewardSuffix = "')";
 
-        var sellRobotPrefix = enhance + "('OperationHash', '"; 
+        var sellRobotPrefix = enhance + "('OperationHash', 'SellPrice', '"; 
         var sellRobotSuffix = "')";
 
         var cancelSellingPrefix = enhance + "('OperationHash', '"; 
@@ -166,11 +166,24 @@ session_start();
     
         var titlle = "User owned robots" 
 
+        var tokenType = '<select id = "TokenType" style="width:80px">'
+        tokenType += '<option value ="TestZSC">TestZSC </option>'
+        tokenType += '</select>'
+
+        var posType = '<select id = "PosType" style="width:80px">'
+        posType += '<option value ="7">7 Days (1.0%) </option>'
+        posType += '<option value ="30">30 Days (2.0%)</option>'
+        posType += '<option value="90">90 Days (3.5%)</option>'
+        posType += '<option value="180">180 Days (5.0%)</option>'
+        posType += '<option value="360">360 Days (7.5%)</option>'
+        posType += '</select>'
+
+        var sellPrice = '<input style="width:100px" id="SellPrice></input>'
+
         var robotStatus = userRobotGM.getRobotParaDetailValue("status",      "null");
         var robotId     = userRobotGM.getRobotParaDetailValue("id",          "null");
 
-
-        text  = '<div class="well" align="center" >' + titlle + '<br>';
+        var text  = '<div class="well" align="center" >' + titlle + '<br>';
         text  = '<text id="OperationHash" value = "log:"> </text> </div>';
 
         text += '<div class="well" align="center" >'
@@ -194,11 +207,11 @@ session_start();
             text += '</tr>'
             text += '<tr>'
             text += '   <td><text> Mining </text></td> '
-            text += '   <td><button type="button" onClick="' + activeMiningPrefix + robotId + activeMiningSuffix + '"> Confirm </button></td>'
+            text += '   <td>' + tokenType + posType + '<button type="button" onClick="' + activeMiningPrefix + robotId + activeMiningSuffix + '"> Confirm </button></td>'
             text += '</tr>'
             text += '<tr>'
             text += '   <td><text> Sell </text></td> '
-            text += '   <td><button type="button" onClick="' + sellRobotPrefix + robotId + sellRobotSuffix + '"> Confirm </button></td>'
+            text += '   <td>' + sellPrice + '<button type="button" onClick="' + sellRobotPrefix + robotId + sellRobotSuffix + '"> Confirm </button></td>'
             text += '</tr>'
         } else if (robotStatus == "mining") {
             text += '<tr>'
