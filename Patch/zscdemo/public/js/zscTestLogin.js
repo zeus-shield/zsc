@@ -489,6 +489,13 @@ function loadHtmlPageBody(tag) {
                     loadProfileHtml();
                 });
                 break;
+
+            case "parameter-template":
+                zscElement.loadParameterNamesAndvalues(function () {
+                    // zscElement.loadParametersHtml("PageBody", "template", "submitParameterTemplateChanges", "backToProTmp");
+                    loadTemplateEditHtml();
+                });
+                break;
             default:
                 break;
         }
