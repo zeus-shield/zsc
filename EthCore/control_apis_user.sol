@@ -64,6 +64,7 @@ contract AbisForUserControlApis {
     function getUserTransactionByIndex(uint _index) public view returns (string);
     function getPoSModuleAddresses() public view returns (string);
 
+    function totalSupply() public view returns (uint); //Erc721;
     function transfer(address _to, uint _tokenId) public; //Erc721;
 
     function createUnitRandom() public returns (uint);
@@ -74,16 +75,13 @@ contract AbisForUserControlApis {
     function purchaseUnit(uint _robotId) public;
     function claimReward(uint _robotId, bytes32 _tokenType) public;
     function numUnits(bytes32 _type, address _adr) public view returns (uint);
-    function getUnitIdByIndex(bytes32 _type, uint _index, address _adr) public view returns (uint);
-    function getUnitInfoByIndex(bytes32 _type, uint _index, address _adr, bytes32[] _paras) public view returns (string);
+    function getUnitIdByIndex(bytes32 _type, address _adr, uint _index) public view returns (uint);
+    function getUnitInfoByIndex(bytes32 _type, address _adr, uint _index, bytes32[] _paras) public view returns (string);
     function getUnitInfoById(uint _robotId, bytes32[] _paras) public view returns (string);
 
-    function numAllUnits() public view returns (uint);
-    function getCreatePrice() public view returns (uint);
     function getPublicTradeableTag() public view returns (uint);
-    function getDayInSeconds() public view returns (uint);
-    function getUnitSPMinedPerday() public view returns (uint);
-    function getUnitSPRewardPerday() public view returns (uint);
+    function getPosRatio() public view returns (uint, uint);
+
     function getUnitName(uint _unitId) public view returns (bytes32);
     function getCategoryName(uint _unitId) public view returns (bytes32);
     function getUnitSpec(uint _unitId) public view returns (bool);
