@@ -13,16 +13,9 @@ const account = Symbol('account');
 
 export default class ZSCLogistics {
     constructor(abi, address) {
-        let isMetaMask = web3.currentProvider.isMetaMask;
-
         this[constractAbi] = abi;
         this[constractAddress] = address;
         this[account] = web3.eth.coinbase;
-        if (isMetaMask) {
-            //this[account] = "0xbaa43825f1bda3839c5f3038c65c504cb6d962c8";
-        } else {
-            //this[account] = "0x15ca13630ce52cd4e209012635f10b396e098296";
-        }
     }
 
     updateTracks(_num, _tracks, _updateType, func) {
@@ -108,6 +101,39 @@ export default class ZSCLogistics {
     }
 
     getBrief(_num) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.getBrief.estimateGas(_num, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("============= Logistics.getBrief(bytes32) =============");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result);
+                        console.log("=======================================================");
+                        // call 'Logistics.getBrief(bytes32)'
+                        contractInstance.getBrief.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+                            } else {
+                                Output(window.outputElement, 'small', 'red', error);
+                            }
+                        });
+                    } else {
+                        Output(window.outputElement, 'small', 'red', error);
+                    }
+                });
+            } else {
+                Output(window.outputElement, 'small', 'red', error);
+            }
+        });
     }
 
     getBriefEx(_num) {
