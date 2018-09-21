@@ -15,7 +15,7 @@ function bF_getGasPrice() {
 }
 
 function bF_getGasLimit() {
-    var limit = 600;
+    var limit = 750;
     return limit * 10**4; //limits * 1 million
 }
 
@@ -54,7 +54,7 @@ function bF_scondsToDate(secs) {
     return (curdate.toLocaleString());
 }
 
-function bF_robotParaValue = function(value, tag) { 
+function bF_robotParaValue(value, tag) { 
     if (tag == "FromWei") {
         return bF_fixedNumberFromWei(value, 4);
     } else if (tag = "Time") {
