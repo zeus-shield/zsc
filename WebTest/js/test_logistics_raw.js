@@ -34,10 +34,11 @@ export default class TestLogisticsRaw {
 
     deploy() {
         console.log('TestLogisticsRaw.deploy()');
-        let name = '';
-        let byteCode = '';
-        let parameter = '';
+        let name;
+        let byteCode;
         let deploy;
+        let contract;
+        let data;
 
         for (name in this[compiledJson].contracts) {
             if (name.indexOf(this[contractName]) > 0)
@@ -47,11 +48,13 @@ export default class TestLogisticsRaw {
 
         byteCode = '0x' + this[compiledJson].contracts[name].bin;
         this[abi] = JSON.parse(this[compiledJson].contracts[name].abi);
-        parameter = 'tester';
+
+        contract = web3.eth.contract(this[abi]);
+        data = contract.new.getData({data: byteCode});
 
         deploy = new Deploy();
         if('undefined' != typeof deploy) {
-            deploy.do(byteCode, this[abi], parameter, this, this[deployFunc]);
+            deploy.do(data, this, this[deployFunc]);
         }
     }
 
