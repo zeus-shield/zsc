@@ -36,7 +36,7 @@ session_start();
                 window.location.href = "index.php";
             } else {
                 userRobotGM = new ZSCRobotOwned(account, userLogin.getErc721Adr(), userLogin.getControlApisFullAbi());
-                loadUserRobots();
+                loadUserAllRobotBriefs();
             }
         });
     });
@@ -49,8 +49,8 @@ session_start();
             loadUserRobotDetailsHtml("PageBody", "loadUserAllRobots", "upgradeRobot", "activeMining", "claimReward", "sellRobot", "cancelSelling");
         }
     }
-    function loadUserAllRobots() {
-        userRobotGM.loadUserRobots(true, function() {
+    function loadUserAllRobotBriefs() {
+        userRobotGM.loadUserAllRobotBriefs(function() {
             loadHtml(true);
         });
     }
@@ -199,7 +199,7 @@ session_start();
 
 
         //default paras: "id", "status", "rare", "spLev", 
-        //others: "ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spEft", "spExtra", "rrType" ,"rrEft", "rrExtra", "rrLevEft", "upProb", "upEft", "upExtra", "upPrice", "price", "seller"
+        //others: "ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrType" ,"rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice", "price", "seller"
         if (robotStatus == "idle") {
             text += '<tr>'
             text += '   <td><text> Upgrade </text></td> '
@@ -235,7 +235,7 @@ session_start();
 
         text += '<tr> <td><text> spLev        </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("spLev",       "null") + '</text></td> </tr>'; 
         text += '<tr> <td><text> spBase       </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("spBase",      "FromWei") + '</text></td> </tr>';
-        text += '<tr> <td><text> spEft        </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("spEft",       "FromWei") + '</text></td> </tr>';
+        text += '<tr> <td><text> spBirth      </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("spBirth",     "FromWei") + '</text></td> </tr>';
         text += '<tr> <td><text> spExtra      </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("spExtra",     "FromWei") + '</text></td> </tr>';
         text += '<tr> <td><text> spMax        </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("spMax",       "FromWei") + '</text></td> </tr>';
         text += '   <tr> <td>------</td> <td>------</td> </tr>'
@@ -243,13 +243,13 @@ session_start();
         text += '<tr> <td><text> rrType       </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("rrType",      "null") + '</text></td> </tr>';
         text += '<tr> <td><text> rrMineDay    </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("rrMineDay",   "Prob") + '</text></td> </tr>';
         text += '<tr> <td><text> rrRewardDay  </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("rrRewardDay", "Prob") + '</text></td> </tr>';
-        text += '<tr> <td><text> rrEft        </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("rrEft",       "Prob") + '</text></td> </tr>';
+        text += '<tr> <td><text> rrBirth      </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("rrBirth",     "Prob") + '</text></td> </tr>';
         text += '<tr> <td><text> rrExtra      </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("rrExtra",     "Prob") + '</text></td> </tr>';
         text += '<tr> <td><text> rrLevEft     </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("rrLevEft",    "Prob") + '</text></td> </tr>';
         text += '   <tr> <td>------</td> <td>------</td> </tr>'
 
         text += '<tr> <td><text> upProb       </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("upProb",      "Prob") + '</text></td> </tr>';
-        text += '<tr> <td><text> upProbEft    </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("upEft",       "Prob") + '</text></td> </tr>';
+        text += '<tr> <td><text> upProbBirth  </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("upBirth",     "Prob") + '</text></td> </tr>';
         text += '<tr> <td><text> upProbExtra  </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("upExtra",     "Prob") + '</text></td> </tr>';
         text += '<tr> <td><text> upPrice      </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("upPrice",     "FromWei") + '</text></td> </tr>';
         text += '   <tr> <td>------</td> <td>------</td> </tr>'
