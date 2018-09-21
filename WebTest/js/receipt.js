@@ -43,4 +43,33 @@ export default class Receipt {
             }
         });
     }
+
+    getReceiptForContractAddress(hash, tryTimes, timeout, caller, func) {
+        let handler = this;
+        let contractAddress = "Try to get contract address again!";
+        let string = "";
+
+        if (undefined == hash) {
+            contractAddress = "";
+            string = `[TransactionHash]:${hash}</br>[ContractAddress]:${contractAddress}`;
+            Output(window.outputElement, 'small', 'red', string);
+            return;
+        }
+
+        web3.eth.getTransactionReceipt(hash, function(error, receipt) {
+            if (null != receipt) {
+                contractAddress = receipt.contractAddress;
+                string = `[TransactionHash]:${hash}</br>[ContractAddress]:${contractAddress}`;
+                Output(window.outputElement, 'small', 'red', string);
+                func(caller, contractAddress);
+            } else {
+                tryTimes ++;
+                string = `[TransactionHash]:${hash}</br>[ContractAddress]:${contractAddress}</br>[Try]:${tryTimes}(times)`;
+                Output(window.outputElement, 'small', 'red', string);
+                setTimeout(function() {
+                    handler.getReceiptForContractAddress(hash, tryTimes, timeout, caller, func);
+                }, 1000);
+            }
+        });
+    }
 }
