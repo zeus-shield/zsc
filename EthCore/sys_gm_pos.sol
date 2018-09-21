@@ -24,18 +24,22 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         bytes32 name_;
         bool specific_;
         uint rare_;
+
         uint spLev_;
         uint spCur_;
         uint spMax_;
         uint spBase_;
+        uint spEft_;
+
         uint mineStart_;
         uint mineEnd_;
 
-        uint spEft_;
-        uint rrEft_;
+        uint rrType_; //days
+        uint rrEft_;  //xx&
+        uint rrLevEft_; //xx%
+
         uint upProbBase_;
         uint upProbEft_;
-
         uint upPrice_;
 
         uint sellPrice_;
@@ -85,8 +89,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     } 
 
     //////////////////////////
-    function getPosedSP(uint _robotId, uint _curTime) internal view returns (uint, uint);
-
     function checkTradeAble(uint256 _unitId) internal view returns (bool) {
         require(robots_[_unitId].status_ == "idle");
         return publicTradeable_;
@@ -306,6 +308,16 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         robots_[_unitId].upPrice_ = _price;
     }
 
+    function setUnitRRType(uint _unitId, uint _type) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].rrType_ = _type;
+    }
+
+    function setUnitRRLevEft(uint _unitId, uint _eft) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].rrLevEft_ = _eft;
+    }
+
     function setUnitMineStart(uint _unitId, uint _tm) public {
         checkDelegate(msg.sender, 1);
         robots_[_unitId].mineStart_ = _tm;
@@ -332,10 +344,11 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         robots_[_robotId].spMax_     = 0; 
         robots_[_robotId].mineStart_ = 0;
         robots_[_robotId].mineEnd_   = 0;
+        robots_[_robotId].rrType_    = 0;
+        robots_[_robotId].rrLevEft_  = 0;
     }
 
     //////////////////////
-
     function numUnits() public view returns (uint) {
         return robotNos_;  
     }
@@ -356,11 +369,11 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return dayInSeconds_;
     }
     
-    function getUnitSPMinedPerday() public view returns (uint) {
+    function getUnitRRMinedPerday() public view returns (uint) {
         return minePerDay_;
     }
 
-    function getUnitSPRewardPerday() public view returns (uint) {
+    function getUnitRRRewardPerday() public view returns (uint) {
         return rewardPerDay_;
     }
 
@@ -374,20 +387,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     function getUnitSpec(uint _unitId) public view returns (bool) {
         return (robots_[_unitId].specific_);
-    }
-
-    function getPosMinedSP(uint _unitId) public view returns (uint) {
-        uint mined;
-        uint rewards;
-        (mined, rewards) = getPosedSP(_unitId, now);
-        return mined;
-    }
-
-    function getPosRewardSP(uint _unitId) public view returns (uint) {
-        uint mined;
-        uint rewards;
-        (mined, rewards) = getPosedSP(_unitId, now);
-        return rewards;
     }
 
     function getUnitStatus(uint _unitId) public view returns (bytes32) {
@@ -410,8 +409,16 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return robots_[_unitId].spEft_;
     }
 
+    function getUnitRRType(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].rrType_;
+    }
+
     function getUnitRREft(uint _unitId) public view returns (uint) {
         return robots_[_unitId].rrEft_;
+    }
+
+    function getUnitRRLevEft(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].rrLevEft_;
     }
 
     function getUnitUPBase(uint _unitId) public view returns (uint) {
