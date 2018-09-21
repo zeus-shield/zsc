@@ -145,9 +145,10 @@ export default class DeployRaw {
                                                     nonce: web3.toHex(nonce),
                                                     data: data  
                                                 };  
-                                            } else if ("call" == cmd) {
-
-                                            } else {}
+                                            } else {
+                                                Output(window.outputElement, 'small', 'red', "Command Error!");
+                                                return;
+                                            }
 
                                             let key = EthereumjsUtil.toBuffer(privateKey, 'hex');
                                             let tx = new EthereumTx(rawTx);
@@ -170,9 +171,10 @@ export default class DeployRaw {
                                                     receipt.getReceiptForContractAddress(result, 0, 1000, caller, func);
                                                 } else if ("transaction" == cmd) {
                                                     receipt.getReceipt(result, 0, 1000, func);
-                                                } else if ("call" == cmd) {
-
-                                                } else {}
+                                                } else {
+                                                    Output(window.outputElement, 'small', 'red', "Command Error!");
+                                                    return;
+                                                }
                                             });
 
                                         } else {

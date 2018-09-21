@@ -44,7 +44,6 @@ export default class ZSCLogistics {
                 let deploy = new Deploy();
                 if('undefined' != typeof deploy) {
                     deploy.do("transaction", data, result, handler[constractAddress], null, func);
-                    //deploy.doUpdate(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks, func, contractInstance);
                 }
             } else {
                 Output(window.outputElement, 'small', 'red', error);
