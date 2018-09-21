@@ -1,5 +1,6 @@
 
 import Output from './output.js';
+import Receipt from './receipt.js';
 
 //private member
 const addressRaw = Symbol('address');
@@ -8,7 +9,6 @@ const privateKeyRaw = Symbol('privateKey');
 //private function
 const etherSpentInPendingTransactions = Symbol('etherSpentInPendingTransactions');
 const getNonce = Symbol('getNonce');
-const getTransactionReceipt = Symbol('getTransactionReceipt');
 
 export default class DeployRaw {
     constructor() {
@@ -85,36 +85,7 @@ export default class DeployRaw {
         })
     }
 
-    [getTransactionReceipt](handler, hash, timeout, caller, func) {
-        let transactionHash = hash;
-        let contractAddress = "Try to get contract address again!";
-        let string = "";
-
-        if (undefined == hash) {
-            contractAddress = "";
-            string = `[TransactionHash]:${transactionHash}</br>[ContractAddress]:${contractAddress}`;
-            Output(window.outputElement, 'small', 'red', string);
-            return;
-        }
-
-        web3.eth.getTransactionReceipt(hash, function(error, receipt) {
-            if (null != receipt) {
-                contractAddress = receipt.contractAddress;
-                string = `[TransactionHash]:${transactionHash}</br>[ContractAddress]:${contractAddress}`;
-                Output(window.outputElement, 'small', 'red', string);
-                func(caller, contractAddress);
-            } else {
-                timeout ++;
-                string = `[TransactionHash]:${transactionHash}</br>[ContractAddress]:${contractAddress}</br>[Timeout]:${timeout}(s)`;
-                Output(window.outputElement, 'small', 'red', string);
-                setTimeout(function() {
-                    handler[getTransactionReceipt](handler, hash, timeout, caller, func);
-                }, 1000);
-            }
-        });
-    }
-
-    do(byteCode, abi, parameter, caller, func) {
+    do(data, caller, func) {
         console.log('DeployRaw.do()');
 
         let handler = this;
@@ -123,7 +94,7 @@ export default class DeployRaw {
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        web3.eth.estimateGas({data: byteCode}, function(error, result) {
+        web3.eth.estimateGas({data: data}, function(error, result) {
             if (!error) {
                 let gasRequired = result;
                 // get gas price
@@ -132,48 +103,58 @@ export default class DeployRaw {
                     if (!error) {
                         let gasPrice = result;
                         // get balance for total
-                        web3.eth.getBalance(address, function(error, balance) {
+                        web3.eth.getBalance(address, function(error, result) {
                             if (!error) {
-                                let etherAvailable = web3.fromWei(balance, "ether");
-                                console.log("balance(total):", etherAvailable.toString(10));
+                                let balanceTotal = web3.fromWei(result, "ether");
+                                console.log("balance(total):    ", balanceTotal.toString(10));
                                 // get balance for pending
-                                handler[etherSpentInPendingTransactions](address, function(error, balance) {
-                                    console.log("balance(pending):", balance.toString(10));
-                                    // get balance for available
-                                    etherAvailable = etherAvailable.sub(balance);
-                                    console.log("balance(available):", etherAvailable.toString(10));
-                                    console.log("gasPrice:", gasPrice.toString(10));
-                                    console.log("gasRequired:", gasRequired);
-                                    //if(etherAvailable.gte(web3.fromWei(new BigNumber(web3.eth.gasPrice).mul(gasRequired), "ether")))
-                                    if(true)
-                                    {
-                                        handler[getNonce](address, function(error, nonce) {
-                                            let rawTx = {
-                                                gasPrice: web3.toHex(gasPrice),
-                                                gasLimit: web3.toHex(gasRequired),
-                                                from: address,
-                                                nonce: web3.toHex(nonce),
-                                                //data: "0x" + data
-                                                data: byteCode
-                                            };
+                                handler[etherSpentInPendingTransactions](address, function(error, result) {
+                                    if (!error) {
+                                        console.log("balance(pending):  ", result.toString(10));
+                                        // get balance for available
+                                        let balanceAvailable = balanceTotal.sub(result);
+                                        console.log("balance(available):", balanceAvailable.toString(10));
+                                        //if(balanceAvailable.gte(web3.fromWei(new BigNumber(web3.eth.gasPrice).mul(gasRequired), "ether")))
+                                        if (true)
+                                        {
+                                            handler[getNonce](address, function(error, nonce) {
+                                                if (!error) {
+                                                    let rawTx = {
+                                                        gasPrice: web3.toHex(gasPrice),
+                                                        gasLimit: web3.toHex(gasRequired),
+                                                        from: address,
+                                                        nonce: web3.toHex(nonce),
+                                                        data: data
+                                                    };
 
-                                            let key = EthereumjsUtil.toBuffer(privateKey, 'hex');
-                                            let tx = new EthereumTx(rawTx);
-                                            tx.sign(key);
+                                                    let key = EthereumjsUtil.toBuffer(privateKey, 'hex');
+                                                    let tx = new EthereumTx(rawTx);
+                                                    tx.sign(key);
+                                                    console.log("============================== sendRawTransaction ==============================");
+                                                    console.log("gasPrice:",   gasPrice.toString(10));
+                                                    console.log("gas:",        gasRequired);
+                                                    //alert(nonce);
+                                                    console.log("nonce:",      nonce);
+                                                    console.log("address:",    address);
+                                                    console.log("privateKey:", privateKey);
+                                                    //console.log("key:",                key);
+                                                    console.log("================================================================================");
+                                                    
+                                                    web3.eth.sendRawTransaction("0x" + tx.serialize().toString('hex'), function(err, result) {
+                                                        console.log("hash:", result);
+                                                        let receipt = new Receipt();
+                                                        receipt.getReceiptForContractAddress(result, 0, 1000, caller, func);
+                                                    });
 
-                                            //alert(nonce);
-                                            console.log("nonce:", nonce);
-                                            console.log("address:", address);
-                                            console.log("privateKey:", privateKey);
-                                            console.log("key:", key);
-
-                                            web3.eth.sendRawTransaction("0x" + tx.serialize().toString('hex'), function(err, hash) {
-                                                console.log("hash:", hash);
-                                                handler[getTransactionReceipt](handler, hash, 0, caller, func);
-                                            });
-                                        })
+                                                } else {
+                                                    Output(window.outputElement, 'small', 'red', error);
+                                                }
+                                            })
+                                        } else {
+                                            Output(window.outputElement, 'small', 'red', "Insufficient Balance!");
+                                        }
                                     } else {
-                                        Output(window.outputElement, 'small', 'red', "Insufficient Balance!");
+                                        Output(window.outputElement, 'small', 'red', error);
                                     }
                                 })
                             } else {
@@ -184,7 +165,6 @@ export default class DeployRaw {
                         Output(window.outputElement, 'small', 'red', error);
                     }
                 });
-
             } else {
                 Output(window.outputElement, 'small', 'red', error);
             }
