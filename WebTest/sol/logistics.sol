@@ -464,4 +464,8 @@ contract Logistics {
 
         return str;
     }
+
+    function number() public view returns (uint) {
+        return nums_.length;
+    }
 }
