@@ -52,6 +52,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         bytes32 ctg_;
         bytes32 name_;
         uint rare_;
+        uint probWeight_;
         uint spBirthMin_;
         uint spBirthMax_;
         uint rrBirthMin_;
@@ -66,7 +67,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     struct RareGroup {
         uint size_;
-        mapping(uint => bytes32) ctgs_;
+        mapping(uint => bytes32) ctgTypes_;
     }
     mapping(uint => RareGroup) private rares_;
     mapping(bytes32 => uint) private rareProb_;
@@ -77,8 +78,8 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     bool public publicTradeable_ = true;
     string public tokenUri_;
 
-    uint public minePerDay_;
-    uint public rewardPerDay_;
+    uint public minedRatioPerDay_;
+    uint public rewardRatioPerDay_;
 
     uint public admPri_ = 5;
     uint public subPri_ = 10;
@@ -118,7 +119,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         }
 
         ran = random(0, rares_[rareLev].size_);
-        return rares_[rareLev].ctgs_[ran];
+        return rares_[rareLev].ctgTypes_[ran];
     }
 
     function mintUnit(address _user, bytes32 _ctg) internal returns (uint) {
@@ -196,8 +197,8 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     function setPosRatio(uint _mineRaioPerDay, uint _rewardRatioPerDay) public {
         checkDelegate(msg.sender, admPri_);
 
-        minePerDay_ = _mineRaioPerDay;
-        rewardPerDay_ = _rewardRatioPerDay;
+        minedRatioPerDay_ = _mineRaioPerDay;
+        rewardRatioPerDay_ = _rewardRatioPerDay;
     }
 
     function setRareThreshold(uint _N, uint _R, uint _SR, uint _SSR) public {
@@ -208,30 +209,37 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         rareProb_["SSR"] = _SSR;
     }
    
-    function setUnitCategory(string _ctgStr, string _nameStr, uint _rare, uint _spBirthMin, uint _spBirthMax, uint _rrBirthMin, uint _rrBirthMax, uint _upProbBirthMin, uint _upProbBirthMax) public {
+    function setUnitCategory(string _ctgStr, string _nameStr, uint _rareValue, uint _probWeight, uint _spBirthMin, uint _spBirthMax, uint _rrBirthMin, uint _rrBirthMax, uint _upProbBirthMin, uint _upProbBirthMax) public {
         checkDelegate(msg.sender, subPri_);
-        require(_rare < 4);
-        uint index;
-        bytes32 _name = PlatString.tobytes32(_nameStr);
-        bytes32 _ctg  = PlatString.tobytes32(_ctgStr);
+        require(_probWeight >= 2);
 
-        if (!ctgExits_[_ctg]) {
+        uint index;
+        bytes32 ctgType  = PlatString.tobytes32(_ctgStr);
+
+        if (ctgExits_[ctgType]) {
+            index = ctgIndice_[ctgType];
+            require(ctgs_[index].rare_ == _rareValue);
+            require(ctgs_[index].probWeight_ == _probWeight);
+        } else {
             index = ctgNos_;
             ctgNos_++;
-    
-            ctgExits_[_ctg] = true;
-            ctgIndice_[_ctg] = index;
 
-            uint ctgIndex = rares_[_rare].size_;
-            rares_[_rare].size_++;
-            rares_[_rare].ctgs_[ctgIndex] = _ctg;
-        } else {
-            index = ctgIndice_[_ctg];
-            require(ctgs_[index].rare_ == _rare);
+            ctgExits_[ctgType] = true;
+            ctgIndice_[ctgType] = index;
+
+            ctgs_[index].ctg_ = ctgType;
+            ctgs_[index].rare_ = _rareValue;
+            ctgs_[index].probWeight_  = _probWeight;
         }
 
-        ctgs_[index].ctg_      = _ctg;
-        ctgs_[index].name_     = _name;
+        uint start = rares_[_rareValue].size_;
+        rares_[_rareValue].size_ = rares_[_rareValue].size_.add(_probWeight);
+
+        for (uint i = start; i < rares_[_rareValue].size_; ++i) {
+            rares_[_rareValue].ctgTypes_[i] = ctgType;
+        }
+
+        ctgs_[index].name_       = PlatString.tobytes32(_nameStr);
         ctgs_[index].spBirthMin_ = _spBirthMin;
         ctgs_[index].spBirthMax_ = _spBirthMax;
         ctgs_[index].rrBirthMin_ = _rrBirthMin;
@@ -248,9 +256,10 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         require(_index < ctgNos_);
         string memory str ="info?";
 
-        str = PlatString.append(str, "ctg=",          PlatString.bytes32ToString(ctgs_[_index].ctg_), "&");
-        str = PlatString.append(str, "name=",         PlatString.bytes32ToString(ctgs_[_index].name_), "&");
-        str = PlatString.append(str, "rare=",         PlatString.uintToString(ctgs_[_index].rare_), "&");
+        str = PlatString.append(str, "ctg=",            PlatString.bytes32ToString(ctgs_[_index].ctg_), "&");
+        str = PlatString.append(str, "name=",           PlatString.bytes32ToString(ctgs_[_index].name_), "&");
+        str = PlatString.append(str, "rare=",           PlatString.uintToString(ctgs_[_index].rare_), "&");
+        str = PlatString.append(str, "probWeight=",     PlatString.uintToString(ctgs_[_index].probWeight_), "&");
         str = PlatString.append(str, "spBirthMin=",     PlatString.uintToString(ctgs_[_index].spBirthMin_), "&");
         str = PlatString.append(str, "spBirthMax=",     PlatString.uintToString(ctgs_[_index].spBirthMax_), "&");
         str = PlatString.append(str, "rrBirthMin=",     PlatString.uintToString(ctgs_[_index].rrBirthMin_), "&");
@@ -350,32 +359,8 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
 
     //////////////////////
-    function numAllUnits() public view returns (uint) {
-        return robotNos_;  
-    }
-
-    function getCreatePrice() public view returns (uint) {
-        return priceToCreate_;
-    }
-
-    function getPublicTradeableTag() public view returns (uint) {
-        if (publicTradeable_) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }    
-
-    function getDayInSeconds() public view returns (uint) {
-        return dayInSeconds_;
-    }
-    
-    function getUnitRRMinedPerday() public view returns (uint) {
-        return minePerDay_;
-    }
-
-    function getUnitRRRewardPerday() public view returns (uint) {
-        return rewardPerDay_;
+    function getPosRatio() public view returns (uint, uint) {
+        return (minedRatioPerDay_, rewardRatioPerDay_);
     }
 
     function getUnitName(uint _unitId) public view returns (bytes32) {
