@@ -73,17 +73,12 @@ contract AbisForUserControlApis {
     function cancelSell(uint _robotId) public;
     function purchaseUnit(uint _robotId) public;
     function claimReward(uint _robotId, bytes32 _tokenType) public;
-    function numSellUnits() public view returns (uint);
-    function numUserUnits() public view returns (uint);
-    function numHolderUnits(address _holder) public view returns (uint);
-    function getSellUnitInfoByIndex(uint _index, bytes32[] _paras) public view returns (string);
-    function getHolderUnitInfoByIndex(address _holder, uint _index, bytes32[] _paras) public view returns (string);
-    function getUnitInfoByIndex(uint _robotId, bytes32[] _paras) public view returns (string);
+    function numUnits(bytes32 _type, address _adr) public view returns (uint);
+    function getUnitIdByIndex(bytes32 _type, uint _index, address _adr) public view returns (uint);
+    function getUnitInfoByIndex(bytes32 _type, uint _index, address _adr, bytes32[] _paras) public view returns (string);
+    function getUnitInfoById(uint _robotId, bytes32[] _paras) public view returns (string);
 
-    function numUnits() public view returns (uint);
-    function getSellUnitIdByIndex(uint _index) public view returns (uint);
-    function getUserUnitIdByIndex(uint _index) public view returns (uint);
-    function getHolderUnitIdByIndex(address _holder, uint _index) public view returns (uint);
+    function numAllUnits() public view returns (uint);
     function getCreatePrice() public view returns (uint);
     function getPublicTradeableTag() public view returns (uint);
     function getDayInSeconds() public view returns (uint);
@@ -94,12 +89,15 @@ contract AbisForUserControlApis {
     function getUnitSpec(uint _unitId) public view returns (bool);
     function getPosMinedSP(uint _unitId) public view returns (uint);
     function getPosRewardSP(uint _unitId) public view returns (uint);
+    function getPosLastSP(uint _unitId) public view returns (uint);
     function getUnitStatus(uint _unitId) public view returns (bytes32);
     function getUnitSPBase(uint _unitId) public view returns (uint);
     function getUnitRare(uint _unitId) public view returns (uint);
     function getUnitSPLev(uint _unitId) public view returns (uint);
     function getUnitSPEft(uint _unitId) public view returns (uint);
+    function getUnitRRType(uint _unitId) public view returns (uint);
     function getUnitRREft(uint _unitId) public view returns (uint);
+    function getUnitRRLevEft(uint _unitId) public view returns (uint);
     function getUnitUPBase(uint _unitId) public view returns (uint);
     function getUnitUPEft(uint _unitId) public view returns (uint);
     function getUnitSPCur(uint _unitId) public view returns (uint);
