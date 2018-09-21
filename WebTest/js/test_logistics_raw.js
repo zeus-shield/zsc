@@ -1,5 +1,5 @@
 
-//import Deploy from './deploy.js';
+import Deploy from './deploy_raw.js';
 import Output from './output.js';
 //import ZSCLogistics from './zsc_logistics.js';
 
@@ -34,25 +34,25 @@ export default class TestLogisticsRaw {
 
     deploy() {
         console.log('TestLogisticsRaw.deploy()');
-        // let name = '';
-        // let byteCode = '';
-        // let parameter = '';
-        // let deploy;
+        let name = '';
+        let byteCode = '';
+        let parameter = '';
+        let deploy;
 
-        // for (name in this[compiledJson].contracts) {
-        //     if (name.indexOf(this[contractName]) > 0)
-        //         break;
-        //     //console.log(contractName);
-        // }
+        for (name in this[compiledJson].contracts) {
+            if (name.indexOf(this[contractName]) > 0)
+                break;
+            //console.log(contractName);
+        }
 
-        // byteCode = '0x' + this[compiledJson].contracts[name].bin;
-        // this[abi] = JSON.parse(this[compiledJson].contracts[name].abi);
-        // parameter = 'tester';
+        byteCode = '0x' + this[compiledJson].contracts[name].bin;
+        this[abi] = JSON.parse(this[compiledJson].contracts[name].abi);
+        parameter = 'tester';
 
-        // deploy = new Deploy();
-        // if('undefined' != typeof deploy) {
-        //     deploy.do(byteCode, this[abi], parameter, this, this[deployFunc]);
-        // }
+        deploy = new Deploy();
+        if('undefined' != typeof deploy) {
+            deploy.do(byteCode, this[abi], parameter, this, this[deployFunc]);
+        }
     }
 
     create() {
