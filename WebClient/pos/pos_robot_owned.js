@@ -9,9 +9,9 @@ function ZSCRobotOwned(acount, adr, abi) {
     this.itemTags = [];
 
     //default paras: "id", "status", "rare", "spLev"
-    //others: "ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spEft", "spExtra", "rrEft", "rrExtra", "upProb", "upEft", "upExtra", "upPrice", "price", "seller"     
+    //others: "ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spEft", "spExtra", "rrType" ,"rrEft", "rrExtra", "rrLevEft", "upProb", "upEft", "upExtra", "upPrice", "price", "seller"
     this.robotParaBrief = ["spMax"];
-    this.robotParaAll   = ["ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spEft", "spExtra", "rrEft", "rrExtra", "upProb", "upEft", "upExtra", "upPrice", "price", "seller"];
+    this.robotParaAll   = ["ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spEft", "spExtra", "rrType", "rrEft", "rrExtra", "rrLevEft", "upProb", "upEft", "upExtra", "upPrice", "price", "seller"];
 
     this.robotParaBriefValues = [];
     this.robotParaDetailValues = [];
@@ -72,7 +72,7 @@ ZSCRobotOwned.prototype.createGen0Robot = function(hashId, func) {
         });
 }
 
-ZSCRobotOwned.prototype.enhanceMinerRobot = function(hashId, robotId, func) {
+ZSCRobotOwned.prototype.upgradeMinerRobot = function(hashId, robotId, func) {
     var gm = this;
     var callBack = func;
     var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
@@ -84,7 +84,7 @@ ZSCRobotOwned.prototype.enhanceMinerRobot = function(hashId, robotId, func) {
         });
 }
 
-ZSCRobotOwned.prototype.publishMinerRobot = function(hashId, robotId, price, func) {
+ZSCRobotOwned.prototype.publishMinerRobot = function(hashId, price, robotId, func) {
     var gm = this;
     var callBack = func;
 
