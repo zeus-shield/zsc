@@ -9,7 +9,6 @@ import "./sys_include.sol";
 
 contract SysGmBase is Object {
     address public controlApiAdr_ = address(0);
-    address public bindedDB_ = address(0);
 
     function SysGmBase(bytes32 _name) public Object(_name) {
     }
@@ -19,7 +18,6 @@ contract SysGmBase is Object {
         require(_controlAdr != address(0));
         
         addLog("initiated ", true);
-
         if (controlApiAdr_ != _controlAdr) {
            if (controlApiAdr_ != address(0)) {
                setDelegate(controlApiAdr_, 0);
@@ -32,18 +30,5 @@ contract SysGmBase is Object {
     function getControlApiAdr() internal view returns (address) {
         require(controlApiAdr_ != address(0));
         return controlApiAdr_;
-    }
-
-    function setDatabase(address _adr) public {      
-        checkDelegate(msg.sender, 1);
-        
-        require(_adr != address(0));
-
-        bindedDB_ = _adr;
-    } 
-
-    function getDatabase() internal view returns (address) { 
-        require(bindedDB_ != address(0));
-        return bindedDB_;
     }
 }

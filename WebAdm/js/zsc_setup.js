@@ -11,7 +11,6 @@ function ZSCSetup(logRecorderAdr, testTokenAdr, adrs) {
     */
     this.RecorderAdr = logRecorderAdr;
     this.testTokenAdr = testTokenAdr;
-    this.TimerAdr = 0x0;
     this.AdmAdvAdr     = adrs[0];
     this.DBDatabaseAdr = adrs[1];
     //this.FactoryProAdr = adrs[2];
@@ -49,7 +48,7 @@ ZSCSetup.prototype.setLogRecorderToListener = function(listener,listenerName, ha
     var myContract = web3.eth.contract(cC_getContractAbi(listenerName));
     var myListener = myContract.at(listener);
 
-    myListener.setLogRecorderAndTimer(this.RecorderAdr, this.TimerAdr, 
+    myListener.setLogRecorder(this.RecorderAdr, 
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, func);
