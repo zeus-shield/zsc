@@ -61,7 +61,9 @@ export default class Receipt {
                 contractAddress = receipt.contractAddress;
                 string = `[TransactionHash]:${hash}</br>[ContractAddress]:${contractAddress}`;
                 Output(window.outputElement, 'small', 'red', string);
-                func(caller, contractAddress);
+                if (null != func) {
+                    func(caller, contractAddress);
+                }
             } else {
                 tryTimes ++;
                 string = `[TransactionHash]:${hash}</br>[ContractAddress]:${contractAddress}</br>[Try]:${tryTimes}(times)`;
