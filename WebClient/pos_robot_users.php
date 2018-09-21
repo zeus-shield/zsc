@@ -199,7 +199,7 @@ session_start();
 
 
         //default paras: "id", "status", "rare", "spLev", 
-        //others: "ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spEft", "spExtra", "rrEft", "rrExtra", "upProb", "upEft", "upExtra", "upPrice", "price", "seller"
+        //others: "ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spEft", "spExtra", "rrType" ,"rrEft", "rrExtra", "rrLevEft", "upProb", "upEft", "upExtra", "upPrice", "price", "seller"
         if (robotStatus == "idle") {
             text += '<tr>'
             text += '   <td><text> Upgrade </text></td> '
@@ -240,10 +240,12 @@ session_start();
         text += '<tr> <td><text> spMax        </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("spMax",       "FromWei") + '</text></td> </tr>';
         text += '   <tr> <td>------</td> <td>------</td> </tr>'
 
+        text += '<tr> <td><text> rrType       </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("rrType",      "null") + '</text></td> </tr>';
         text += '<tr> <td><text> rrMineDay    </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("rrMineDay",   "Prob") + '</text></td> </tr>';
         text += '<tr> <td><text> rrRewardDay  </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("rrRewardDay", "Prob") + '</text></td> </tr>';
         text += '<tr> <td><text> rrEft        </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("rrEft",       "Prob") + '</text></td> </tr>';
         text += '<tr> <td><text> rrExtra      </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("rrExtra",     "Prob") + '</text></td> </tr>';
+        text += '<tr> <td><text> rrLevEft     </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("rrLevEft",    "Prob") + '</text></td> </tr>';
         text += '   <tr> <td>------</td> <td>------</td> </tr>'
 
         text += '<tr> <td><text> upProb       </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("upProb",      "Prob") + '</text></td> </tr>';
