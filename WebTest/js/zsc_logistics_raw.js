@@ -209,5 +209,38 @@ export default class ZSCLogistics {
     }
 
     numberOfTracks(_num) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.numberOfTracks.estimateGas(_num, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("============ Logistics.numberOfTracks(bytes32) ============");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result);
+                        console.log("===========================================================");
+                        // call 'Logistics.numberOfTracks(bytes32)'
+                        contractInstance.numberOfTracks.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
+                            } else {
+                                Output(window.outputElement, 'small', 'red', error);
+                            }
+                        });
+                    } else {
+                        Output(window.outputElement, 'small', 'red', error);
+                    }
+                });
+            } else {
+                Output(window.outputElement, 'small', 'red', error);
+            }
+        });
     }
 }
