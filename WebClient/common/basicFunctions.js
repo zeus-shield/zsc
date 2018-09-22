@@ -60,7 +60,12 @@ function bF_robotParaValue(value, tag) {
     } else if (tag == "Time") {
         return bF_secondsToDate(value);
     } else if (tag == "Prob") {
-        return (value / 100 + "%");
+        return (value / 10000 + "%");
+    } else if (tag == "Rare") {
+        if (value == 0) return "R";
+        else if (value == 1) return "SR";
+        else if (value == 2) return "SSR";
+        else return "SPEC";
     } else {
         return value;
     }
