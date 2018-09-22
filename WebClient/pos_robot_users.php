@@ -62,16 +62,16 @@ session_start();
     }
 
     /////////////////////////
-    function loadUserRobotDetails(index) {
-        userRobotGM.loadUserSingleRobotDetail(index, function() {
+    function loadUserRobotDetails(robotId) {
+        userRobotGM.loadUserSingleRobotDetail(robotId, function() {
             loadHtml(false);
         });
     }
 
     /////////////////////////
     function upgradeRobot(hashId, robotId) {
-        userRobotGM.upgradeMinerRobot(hashId, robotId, function(){
-            loadHtml(false);
+        userRobotGM.upgradeMinerRobot(hashId, index, robotId, function(){
+            loadUserRobotDetails(robotId);
         });
     }
 
@@ -80,14 +80,13 @@ session_start();
         var tokenType = document.getElementById(tokenTypeId).value;
         var posType = document.getElementById(posTypeId).value;
         userRobotGM.activeMinerRobot(hashId, robotId, tokenType, posType, function() {      
-            loadHtml(false);          
+            loadUserRobotDetails(robotId);
         });
     }
 
-    function claimReward(hashId, tokenTypeId, robotId) {
-        var tokenType = document.getElementById(tokenTypeId).value;
-        userRobotGM.claimReward(hashId, robotId, tokenType, function() { 
-            loadHtml(false);       
+    function claimReward(hashId, robotId) {
+        userRobotGM.claimReward(hashId, robotId, function() { 
+            loadUserRobotDetails(robotId);
         });
     }
 
@@ -95,14 +94,14 @@ session_start();
     function sellRobot(hashId, priceId, robotId) {
         var price = document.getElementById(priceId).value;
         userRobotGM.publishMinerRobot(hashId, robotId, price, function() {  
-            loadHtml(false);
+            loadUserRobotDetails(robotId);
               
         });
     }
 
     function cancelSelling(hashId, robotId) {
         userRobotGM.cancalSellingMinerRobot(hashId, robotId, function() {
-            loadHtml(false);                
+            loadUserRobotDetails(robotId);
         });
     }
 
@@ -135,7 +134,7 @@ session_start();
             text += '<tr>'
             text += '   <td><text>' + robotId + '</text></td>'
             text += '   <td><text>' + userRobotGM.getRobotParaBriefValue("status", i, "null") + '</text></td>'
-            text += '   <td><text>' + userRobotGM.getRobotParaBriefValue("rare",   i, "null") + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotParaBriefValue("rare",   i, "Rare") + '</text></td>'
             text += '   <td><text>' + userRobotGM.getRobotParaBriefValue("spLev",  i, "null") + '</text></td>'
             text += '   <td><text>' + userRobotGM.getRobotParaBriefValue("spMax",  i, "FromWei") + '</text></td>'
             text += '   <td><button type="button" onClick="' + showPrefix + robotId + showSuffix + '"> Show </button></td>'
@@ -155,7 +154,7 @@ session_start();
         var activeMiningPrefix = activeMining + "('OperationHash', 'TokenType', 'PosType', '"; 
         var activeMiningSuffix = "')";
 
-        var claimRewardPrefix = upgradeRobot + "('OperationHash', 'TokenType', '"; 
+        var claimRewardPrefix = claimReward + "('OperationHash', '"; 
         var claimRewardSuffix = "')";
 
         var sellRobotPrefix = sellRobot + "('OperationHash', 'SellPrice', '"; 
@@ -210,7 +209,7 @@ session_start();
             text += '</tr>'
         } else if (robotStatus == "mining") {
             text += '<tr>'
-            text += '   <td><text> Upgrade </text></td> '
+            text += '   <td><text> Claim SP </text></td> '
             text += '   <td><button type="button" onClick="' + claimRewardPrefix + robotId + claimRewardSuffix + '"> Confirm </button></td>'
             text += '</tr>'
         } else {
