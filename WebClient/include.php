@@ -22,7 +22,7 @@ class ZSCInclude {
         ' <tr>'.
         '  <td align="center"><a href="index.php"> [Home] </a></td>'.
         '  <td align="center"><a href="user_wallet.php"> [Wallet] </a></td>'.
-        '  <td align="center"><a href="pos_robot_enhance.php"> [Robots]</a></td>'.
+        '  <td align="center"><a href="pos_robot_users.php"> [Robots]</a></td>'.
         '  <td align="center"><a href="pos_robot_transfer.php"> [Transfer]</a></td>'.
         '  <td align="center"><a href="pos_robot_mine.php"> [PoS] </a></td>'.
         '  <td align="center"><a href="pos_robot_selling.php"> [Selling] </a></td>'.
