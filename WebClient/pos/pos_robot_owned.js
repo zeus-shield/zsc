@@ -9,10 +9,9 @@ function ZSCRobotOwned(acount, adr, abi) {
     this.itemTags = [];
 
     //default paras: "id", "status", "rare", "spLev"
-    //others: "ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice", "price", "seller"
-    this.robotParaBrief = ["spMax"];
-    //this.robotParaAll = ["ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice", "price", "seller"];
-    this.robotParaAll   = ["ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice", "price", "seller"];
+    this.robotParaBrief = ["name"];
+    //this.robotParaAll = ["name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice", "price", "seller"];
+    this.robotParaAll   = ["name", "posToken", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice", "price", "seller"];
 
     this.robotParaBriefValues = [];
     this.robotParaDetailValues = [];
@@ -80,7 +79,7 @@ ZSCRobotOwned.prototype.upgradeMinerRobot = function(hashId, robotId, func) {
     erc721Api.upgradeUnitSpLev(robotId,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
+            if(!error) bF_showHashResult(hashId, result, callBack);
             else console.log("error: " + error);
         });
 }
@@ -94,7 +93,7 @@ ZSCRobotOwned.prototype.publishMinerRobot = function(hashId, price, robotId, fun
     erc721Api.publishUnit(robotId, priceInEther, 
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
+            if(!error) bF_showHashResult(hashId, result, callBack);
             else console.log("error: " + error);
         });
 }
@@ -106,7 +105,7 @@ ZSCRobotOwned.prototype.cancelSellingMinerRobot = function(hashId, robotId, func
     erc721Api.cancelSell(robotId,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
+            if(!error) bF_showHashResult(hashId, result, callBack);
             else console.log("error: " + error);
         });
 }
@@ -118,19 +117,19 @@ ZSCRobotOwned.prototype.activeMinerRobot = function(hashId, robotId, tokenType, 
     erc721Api.activeUnit(robotId, tokenType, rewardType,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
+            if(!error) bF_showHashResult(hashId, result, callBack);
             else console.log("error: " + error);
         });
 }
 
-ZSCRobotOwned.prototype.claimReward = function(hashId, robotId, tokenType, func) {
+ZSCRobotOwned.prototype.claimReward = function(hashId, robotId, func) {
     var callBack = func;
     var gm = this;
     var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-    erc721Api.claimReward(robotId, tokenType,
+    erc721Api.claimReward(robotId, 
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
+            if(!error) bF_showHashResult(hashId, result, callBack);
             else console.log("error: " + error);
         });
 }
@@ -205,17 +204,17 @@ ZSCRobotOwned.prototype.parserRobotBrieInfo = function(gm, index, info) {
 }
 
 ////////////////////////
-ZSCRobotOwned.prototype.loadUserSingleRobotDetail = function(index, func) {
+ZSCRobotOwned.prototype.loadUserSingleRobotDetail = function(robotId, func) {
     var gm = this;
     var callback = func;
     var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    erc721Api.getUnitInfoByIndex("user", "0x0", Number(index), gm.robotParaAll, 
+    erc721Api.getUnitInfoById(Number(robotId), gm.robotParaAll, 
         {from: gm.account},
         function(error, info) { 
             if(!error) {
                 gm.parserSingleRobotDetailInfo(gm, info);
-                callback(index); 
+                callback(); 
             } else { 
                 console.log("error: " + error);
             }
