@@ -61,7 +61,21 @@ export default class ZSCLogistics {
         });
     }
 
-    remove(_num) {
+    remove(_num, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+        let data = contractInstance.remove.getData(_num);
+
+        contractInstance.remove.estimateGas(_num, function(error, result) {
+            if (!error) {
+                let deploy = new Deploy();
+                if('undefined' != typeof deploy) {
+                    deploy.do("transaction", data, result, handler[constractAddress], null, func);
+                }
+            } else {
+                Output(window.outputElement, 'small', 'red', error);
+            }
+        });       
     }
 
     getTracks(_num) {
