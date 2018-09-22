@@ -73,7 +73,7 @@ contract AbisForUserControlApis {
     function publishUnit(uint _robotId, uint _price) public;
     function cancelSell(uint _robotId) public;
     function purchaseUnit(uint _robotId) public;
-    function claimReward(uint _robotId, bytes32 _tokenType) public;
+    function claimReward(uint _robotId) public;
     function numUnits(bytes32 _type, address _adr) public view returns (uint);
     function getUnitIdByIndex(bytes32 _type, address _adr, uint _index) public view returns (uint);
     function getUnitInfoByIndex(bytes32 _type, address _adr, uint _index, bytes32[] _paras) public view returns (string);
