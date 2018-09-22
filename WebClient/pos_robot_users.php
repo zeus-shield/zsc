@@ -70,7 +70,7 @@ session_start();
 
     /////////////////////////
     function upgradeRobot(hashId, robotId) {
-        userRobotGM.upgradeMinerRobot(hashId, index, robotId, function(){
+        userRobotGM.upgradeMinerRobot(hashId, robotId, function(){
             loadUserRobotDetails(robotId);
         });
     }
@@ -100,7 +100,7 @@ session_start();
     }
 
     function cancelSelling(hashId, robotId) {
-        userRobotGM.cancalSellingMinerRobot(hashId, robotId, function() {
+        userRobotGM.cancelSellingMinerRobot(hashId, robotId, function() {
             loadUserRobotDetails(robotId);
         });
     }
@@ -136,7 +136,7 @@ session_start();
             text += '   <td><text>' + userRobotGM.getRobotParaBriefValue("status", i, "null") + '</text></td>'
             text += '   <td><text>' + userRobotGM.getRobotParaBriefValue("rare",   i, "Rare") + '</text></td>'
             text += '   <td><text>' + userRobotGM.getRobotParaBriefValue("spLev",  i, "null") + '</text></td>'
-            text += '   <td><text>' + userRobotGM.getRobotParaBriefValue("spMax",  i, "FromWei") + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotParaBriefValue("name",   i, "null") + '</text></td>'
             text += '   <td><button type="button" onClick="' + showPrefix + robotId + showSuffix + '"> Show </button></td>'
             text += '</tr>'
         }
@@ -177,13 +177,33 @@ session_start();
         posType += '<option value="360">360 Days (7.5%)</option>'
         posType += '</select>'
 
-        var sellPrice = '<input style="width:100px" id="SellPrice"></input>'
+        var sellPrice = '<input style="width:100px" id="SellPrice" value="0.0"></input>'
 
         var robotStatus = userRobotGM.getRobotParaDetailValue("status",      "null");
         var robotId     = userRobotGM.getRobotParaDetailValue("id",          "null");
 
         var text  = '<div class="well" align="center" >' + titlle + '<br>';
-        text  = '<text id="OperationHash" value = "log:"> </text> </div>';
+        text += '<div class="well">';
+        text += '<table align="center" style="width:600px;min-height:30px">'
+        if (robotStatus == "idle") {
+            text += '<tr>'
+            text += '   <td><button type="button" onClick="' + upgradeRobotPrefix + robotId + upgradeRobotSuffix + '"> Upgrade SP Lev </button></td>'
+            text += '   <td>' + tokenType + posType + '<br><button type="button" onClick="' + activeMiningPrefix + robotId + activeMiningSuffix + '"> Start mining </button></td>'
+            text += '   <td><text> Price (ETH) </text>' + sellPrice + '<br><button type="button" onClick="' + sellRobotPrefix + robotId + sellRobotSuffix + '"> Publish selling </button></td>'
+            text += '</tr>'
+        } else if (robotStatus == "mining") {
+            text += '<tr>'
+            text += '   <td><button type="button" onClick="' + claimRewardPrefix + robotId + claimRewardSuffix + '"> Claim SP </button></td>'
+            text += '</tr>'
+        } else {
+            // robotStatus == "selling"
+            text += '<tr>'
+            text += '   <td><button type="button" onClick="' + cancelSellingPrefix + robotId + cancelSellingSuffix + '"> Cancel selling </button></td>'
+            text += '</tr>'
+        }
+        text += '</table></div>'
+
+        text += '<div class="well"><text id="OperationHash" value = "log:"> </text> </div>';
         text += '<div class="well">';
         text += '<table align="center" style="width:600px;min-height:30px">'
 
@@ -194,33 +214,6 @@ session_start();
 
         //default paras: "id", "status", "rare", "spLev", 
         //others: "ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice", "price", "seller"
-        if (robotStatus == "idle") {
-            text += '<tr>'
-            text += '   <td><text> Upgrade </text></td> '
-            text += '   <td><button type="button" onClick="' + upgradeRobotPrefix + robotId + upgradeRobotSuffix + '"> Confirm </button></td>'
-            text += '</tr>'
-            text += '<tr>'
-            text += '   <td><text> Mining </text></td> '
-            text += '   <td>' + tokenType + posType + '<button type="button" onClick="' + activeMiningPrefix + robotId + activeMiningSuffix + '"> Confirm </button></td>'
-            text += '</tr>'
-            text += '<tr>'
-            text += '   <td><text> Sell </text></td> '
-            text += '   <td>' + sellPrice + '<button type="button" onClick="' + sellRobotPrefix + robotId + sellRobotSuffix + '"> Confirm </button></td>'
-            text += '</tr>'
-        } else if (robotStatus == "mining") {
-            text += '<tr>'
-            text += '   <td><text> Claim SP </text></td> '
-            text += '   <td><button type="button" onClick="' + claimRewardPrefix + robotId + claimRewardSuffix + '"> Confirm </button></td>'
-            text += '</tr>'
-        } else {
-            // robotStatus == "selling"
-            text += '<tr>'
-            text += '   <td><text> Upgrade </text></td> '
-            text += '   <td><button type="button" onClick="' + cancelSellingPrefix + robotId + cancelSellingSuffix + '"> Confirm </button></td>'
-            text += '</tr>'
-        }
-        text += '<tr> <td>------</td> <td>------</td> </tr>'
-
         text += '<tr> <td><text> rare         </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("rare",        "null") + '</text></td> </tr>';
         text += '<tr> <td><text> ctg          </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("ctg",         "null") + '</text></td> </tr>';
         text += '<tr> <td><text> name         </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("name",        "null") + '</text></td> </tr>';
@@ -256,7 +249,7 @@ session_start();
         text += '<tr> <td><text> seller       </text></td> <td><text>0x' + userRobotGM.getRobotParaDetailValue("seller",      "null") + '</text></td> </tr>';
         text += '   <tr> <td>------</td> <td>------</td> </tr>'
 
-        text += '</table>'
+        text += '</table></div>'
         text += '</div>'
     
         document.getElementById(elementId).innerHTML = text;  
