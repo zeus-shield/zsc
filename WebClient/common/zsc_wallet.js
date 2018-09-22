@@ -23,8 +23,8 @@ function ZSCWallet(acount, adr, abi) {
 ZSCWallet.prototype.getWalletAddress = function() { return this.tokenAddress;}
 ZSCWallet.prototype.getTokenNos = function() { return this.tokenNos;}
 ZSCWallet.prototype.getTokenSymbol = function(index) { return this.tokenSymbol[index];}
-ZSCWallet.prototype.getTokenBalance = function(index) { return web3.fromWei(this.tokenBalance[index], 'ether');}
-ZSCWallet.prototype.getTokenLocked = function(index) { return web3.fromWei(this.tokenLocked[index], 'ether');}
+ZSCWallet.prototype.getTokenBalance = function(index) { return bF_robotParaValue(this.tokenBalance[index], "FromWei");}
+ZSCWallet.prototype.getTokenLocked = function(index) { return bF_robotParaValue(this.tokenLocked[index], "FromWei");}
 
 ZSCWallet.prototype.resetAllItemTags = function(gm) {
     for (var i = 0; i < gm.tokenNos; ++i) {
