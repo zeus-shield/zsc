@@ -49,6 +49,13 @@ $htmlObjects = new ZSChtmlObjects();
         zscSetup.setTokenAmountToUser(ethAmount, tokenSymbol, tokenAmount, elementId);
     }
 
+    function setTokenPosable(tokenSymbolId, tagId, elementId) {
+        var adr = "<?php echo $htmlObjects->readObjectAddress('ControlApisAdv')?>";
+        var tokenSymbol = document.getElementById(tokenSymbolId).value;
+        var tag = document.getElementById(tagId).value;
+        zscSetup.setTokenPosable(tokenSymbol, tag, elementId);
+    }
+
 </script>
 </head>
 <body>
@@ -64,16 +71,21 @@ $htmlObjects = new ZSChtmlObjects();
 
         <text>Step - 0 - 2 </text>
         <button type="button" onClick="setPosPaymentReceiver('paymentReceiverHash', 'PaymentReceiver')">Set receiver</button> <br>
-        <text>Pos-payment receiver</text>  <input type="text" id="PaymentReceiver" value="0x0"></input> 
+        <text>Pos-payment receiver</text>  <input type="text" id="PaymentReceiver" value="0xba5e96003825010641ef5ef921a2e6e5976d0d1c"></input> 
         <text id="paymentReceiverHash"></text> <br><br>
 
-        <text>Step - 0 - 2</text>
+        <text>Step - 0 - 3</text>
         <button type="button" onClick="setTestTokenToUser('AllocatedEthAmount', 'AllocatedTokenSymbol', 'AllocatedTokenAmount', 'setTestTokenToUserHash')">Pre-allocate ETH & Token to tester</button> <br>
         ETH Amount: <input type="text" id="AllocatedEthAmount" value="0"></input> <br> 
         Token Symbol: <input type="text" id="AllocatedTokenSymbol" value="TestZSC"></input> <br> 
         Token Amount: <input type="text" id="AllocatedTokenAmount" value="50000"></input> <br> 
         <text id="setTestTokenToUserHash"></text> <br><br>
 
+        <text>Step - 0 - 4</text>
+        <button type="button" onClick="setTokenPosable('PosableTokenSymbol', 'PosableTag', 'setTokenPosableHash')">Set token posable</button> <br>
+        Token Symbol: <input type="text" id="PosableTokenSymbol" value="TestZSC"></input> <br> 
+        Tag: <input type="text" id="PosableTag" value="true"></input> <br> 
+        <text id="setTokenPosableHash"></text> <br><br>
 
         <?php echo $htmlObjects->loadInitObjects('initSystemComponent');?>
 
