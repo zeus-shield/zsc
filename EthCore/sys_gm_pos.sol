@@ -43,6 +43,8 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
         uint sellPrice_;
         address seller_;
+
+        bytes32 posToken_;
     }
     uint private robotNos_;
     mapping(uint => RobotUnit) private robots_;
@@ -328,6 +330,11 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         robots_[_unitId].mineEnd_ = _tm;
     }
 
+    function setUnitPosToken(uint _unitId, bytes32 _token) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].posToken_ = _token;
+    }
+
     function setUnitSeller(uint _unitId, address _seller) public {
         checkDelegate(msg.sender, 1);
         robots_[_unitId].seller_ = _seller;
@@ -418,6 +425,10 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     function getUnitMineEnd(uint _unitId) public view returns (uint) {
         return robots_[_unitId].mineEnd_;
+    }
+
+    function getUnitPosToken(uint _unitId) public view returns (bytes32) {
+        return robots_[_unitId].posToken_;
     }
 
     function getUnitSPExtra(uint _unitId) public view returns (uint) {
