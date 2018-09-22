@@ -108,8 +108,19 @@ ZSCSetup.prototype.setControlAbisAdvAbi = function(hashID) {
     });
 }  
 
+ZSCSetup.prototype.setAdmReadPass = function(readPass, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
+    var myControlApi = myContract.at(this.ControlApisAdvAdr);
 
-ZSCSetup.prototype.setPosPaymentReceiver = function(hashID, receiver) {
+    myControlApi.setReadPass(readPass, 
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
+        function(error, result){ 
+            if(!error) cC_showHashResultTest(hashID, result, function(){console.log("ok");});
+            else console.log("error: " + error);
+        });
+} 
+
+ZSCSetup.prototype.setPosPaymentReceiver = function(receiver, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
     var myControlApi = myContract.at(this.ControlApisAdvAdr);
 
