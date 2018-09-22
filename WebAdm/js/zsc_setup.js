@@ -133,6 +133,18 @@ ZSCSetup.prototype.setTokenAmountToUser = function(ethAmount, tokenSymbol, token
     });
 }  
 
+ZSCSetup.prototype.setTokenPosable = function(tokenSymbol, tag, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
+    var myControlApi = myContract.at(this.ControlApisAdvAdr);
+
+    myControlApi.setTokenPosable(tokenSymbol, tag,
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
+        function(error, result) { 
+            if(!error) cC_showHashResultTest(hashID, result, function(){console.log("ok");});
+            else console.log("error: " + error);
+    });
+}  
+
 ZSCSetup.prototype.addFactoryModule = function(factModule, hashID) {
     var factoryAdr;
     var factoryType;
