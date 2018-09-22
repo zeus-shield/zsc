@@ -34,7 +34,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         uint mineStart_;
         uint mineEnd_;
 
-        uint rrType_; //days
         uint rrBirth_;  //xx&
         uint rrLevEft_; //xx%
 
@@ -160,7 +159,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         } else {
             robots_[index].upProbBirth_  = random(ctgs_[ctgIndex].upProbBirthMin_, ctgs_[ctgIndex].upProbBirthMax_);
         }
-
         return index;
     }
 
@@ -203,10 +201,10 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     function setRareThreshold(uint _N, uint _R, uint _SR, uint _SSR) public {
         checkDelegate(msg.sender, admPri_);
-        rareProb_["N"] = _N;
-        rareProb_["R"] = _R;
-        rareProb_["SR"] = _SR;
-        rareProb_["SSR"] = _SSR;
+        rareProb_["N"]   = _N;
+        rareProb_["R"]   = rareProb_["N"].add(_R);
+        rareProb_["SR"]  = rareProb_["R"].add(_SR);
+        rareProb_["SSR"] = rareProb_["SR"].add(_SSR);
     }
    
     function setUnitCategory(string _ctgStr, string _nameStr, uint _rareValue, uint _probWeight, uint _spBirthMin, uint _spBirthMax, uint _rrBirthMin, uint _rrBirthMax, uint _upProbBirthMin, uint _upProbBirthMax) public {
@@ -318,11 +316,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         robots_[_unitId].upPrice_ = _price;
     }
 
-    function setUnitRRType(uint _unitId, uint _type) public {
-        checkDelegate(msg.sender, 1);
-        robots_[_unitId].rrType_ = _type;
-    }
-
     function setUnitRRLevEft(uint _unitId, uint _eft) public {
         checkDelegate(msg.sender, 1);
         robots_[_unitId].rrLevEft_ = _eft;
@@ -354,7 +347,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         robots_[_robotId].spMax_     = 0; 
         robots_[_robotId].mineStart_ = 0;
         robots_[_robotId].mineEnd_   = 0;
-        robots_[_robotId].rrType_    = 0;
         robots_[_robotId].rrLevEft_  = 0;
     }
 
@@ -395,10 +387,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return robots_[_unitId].spBirth_;
     }
 
-    function getUnitRRType(uint _unitId) public view returns (uint) {
-        return robots_[_unitId].rrType_;
-    }
-
     function getUnitRRBirth(uint _unitId) public view returns (uint) {
         return robots_[_unitId].rrBirth_;
     }
@@ -436,14 +424,20 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
 
     function getUnitSPExtra(uint _unitId) public view returns (uint) {
+        if (extraEffectObj_ == address(0))
+            return 0;
         return SysGmPosEffect(extraEffectObj_).getExtraStakePoint(_unitId);
     }
 
     function getUnitRRExtra(uint _unitId) public view returns (uint) {
+        if (extraEffectObj_ == address(0))
+            return 0;
         return SysGmPosEffect(extraEffectObj_).getExtraRewardRatio(_unitId);
     }
 
     function getUnitUPExtra(uint _unitId) public view returns (uint) {
+        if (extraEffectObj_ == address(0)) 
+            return 0;
         return SysGmPosEffect(extraEffectObj_).getExtraUpgradeProbability(_unitId);
     }
 
