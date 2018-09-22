@@ -19,6 +19,20 @@ export default class ZSCLogistics {
     }
 
     updateTracks(_num, _tracks, _updateType, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+        let data = contractInstance.updateTracks.getData(_num, _tracks, _updateType);
+
+        contractInstance.updateTracks.estimateGas(_num, _tracks, _updateType, function(error, result) {
+            if (!error) {
+                let deploy = new Deploy();
+                if('undefined' != typeof deploy) {
+                    deploy.do("transaction", data, result, handler[constractAddress], null, func);
+                }
+            } else {
+                Output(window.outputElement, 'small', 'red', error);
+            }
+        });
     }
 
     updateBrief(_num, _transNum, _model, _destinationCountry, _lastStatus, func) {
