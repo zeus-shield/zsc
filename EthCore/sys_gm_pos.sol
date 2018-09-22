@@ -15,7 +15,7 @@ contract SysGmPosEffect {
 
 contract SysGmPos is Erc721Adv, SysGmBase {
     uint internal constant DAY_IN_SECONDS = 86400;
-    uint internal constant MAX_RATIO_VALUE = 10000;
+    uint internal constant MAX_RATIO_VALUE = 1000000;
     uint public dayInSeconds_;
 
     struct RobotUnit {
@@ -68,8 +68,8 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         uint size_;
         mapping(uint => bytes32) ctgTypes_;
     }
-    mapping(uint => RareGroup) private rares_;
-    mapping(bytes32 => uint) private rareProb_;
+    mapping(uint => RareGroup) internal rares_;
+    mapping(bytes32 => uint) internal rareProb_;
 
     address public extraEffectObj_;
 
@@ -105,16 +105,14 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
 
     function getRandomUnitCategory() internal view returns (bytes32) {
-        uint ran = random(0, 10000);
+        uint ran = random(0, MAX_RATIO_VALUE);
         uint rareLev;
         if (ran <= rareProb_["R"]) {
             rareLev = 0;
-        } else if (ran >rareProb_["R"] && ran <= rareProb_["SR"]) {
+        } else if (ran > rareProb_["R"] && ran <= rareProb_["SR"]) {
             rareLev = 1;
-        } else if (ran >rareProb_["SR"] && ran <= rareProb_["SSR"]) {
-            rareLev = 2;
         } else {
-            rareLev = 3;
+            rareLev = 2;
         }
 
         ran = random(0, rares_[rareLev].size_);
@@ -199,10 +197,9 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         rewardRatioPerDay_ = _rewardRatioPerDay;
     }
 
-    function setRareThreshold(uint _N, uint _R, uint _SR, uint _SSR) public {
+    function setRareThreshold(uint _R, uint _SR, uint _SSR) public {
         checkDelegate(msg.sender, admPri_);
-        rareProb_["N"]   = _N;
-        rareProb_["R"]   = rareProb_["N"].add(_R);
+        rareProb_["R"]   = _R;
         rareProb_["SR"]  = rareProb_["R"].add(_SR);
         rareProb_["SSR"] = rareProb_["SR"].add(_SSR);
     }
