@@ -45,7 +45,7 @@ function ZSCPosManagement(adr, abi) {
 
 ZSCPosManagement.prototype.getLevelNos = function() {return this.levelNos;}
 ZSCPosManagement.prototype.getLevelMaxSP = function(index) {return web3.fromWei(this.levelMaxSP[index], 'ether');}
-ZSCPosManagement.prototype.getLevelUpProb = function(index) {return this.levelEnhanceProb[index];}
+ZSCPosManagement.prototype.getLevelUpProb = function(index) {return this.levelEnhanceProb[index]/100;}
 ZSCPosManagement.prototype.getLevelUpPrice= function(index) {return web3.fromWei(this.levelPriceToEnhance[index], 'ether');}
 
 ZSCPosManagement.prototype.getMineTypeNos = function() {return this.mineTypeNos;}
@@ -59,8 +59,8 @@ ZSCPosManagement.prototype.getCtgName = function(index) {return this.unitCtgName
 ZSCPosManagement.prototype.getCtgRare = function(index) {return this.unitCtgRares[index]}   
 ZSCPosManagement.prototype.getCtgProbWeight = function(index) {return this.unitCtgProbWeights[index]}   
 
-ZSCPosManagement.prototype.getCtgSPBirthMin = function(index) {return this.unitCtgSPBirthMin[index]} 
-ZSCPosManagement.prototype.getCtgSPBirthMax = function(index) {return this.unitCtgSPBirthMax[index]} 
+ZSCPosManagement.prototype.getCtgSPBirthMin = function(index) {return web3.fromWei(this.unitCtgSPBirthMin[index], 'ether');} 
+ZSCPosManagement.prototype.getCtgSPBirthMax = function(index) {return web3.fromWei(this.unitCtgSPBirthMax[index], 'ether');} 
 ZSCPosManagement.prototype.getCtgRRBirthMin = function(index) {return this.unitCtgRRBirthMin[index]} 
 ZSCPosManagement.prototype.getCtgRRBirthMax = function(index) {return this.unitCtgRRBirthMax[index]} 
 ZSCPosManagement.prototype.getCtgUPBirthMin = function(index) {return this.unitCtgUPBirthMin[index]} 
@@ -133,7 +133,17 @@ ZSCPosManagement.prototype.setLevelInfo = function(hashID, level, maxStakePoint,
         level, 
         web3.toWei(maxStakePoint, 'ether'), 
         web3.toWei(priceToEnhance, 'ether'), 
-        enhanceProb, 
+        enhanceProb * 100, 
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
+        function(error, result){ 
+            if(!error) cC_showHashResultTest(hashID, result, function(){window.location.reload(true);});
+            else console.log("error: " + error);
+        });
+} 
+
+ZSCPosManagement.prototype.setRareThreshold = function(hashID, NThresh, RThresh, SRThresh, SSRThresh) {
+    this.myPosManager.setRareThreshold(
+        NThresh * 100, RThresh * 100, SRThresh * 100, SSRThresh * 100,
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){window.location.reload(true);});
@@ -144,7 +154,7 @@ ZSCPosManagement.prototype.setLevelInfo = function(hashID, level, maxStakePoint,
 ZSCPosManagement.prototype.setUnitCategory = function(hashID, ctgName, unitName, rareValue, probWeight, spBirthMin, spBirthMax, rrBirthMin, rrBirthMax, upProbBirthMin, upProbBirthMax) {
     this.myPosManager.setUnitCategory(
         ctgName, unitName, rareValue, probWeight,
-        spBirthMin, spBirthMax,
+        web3.toWei(spBirthMin, 'ether'), web3.toWei(spBirthMax, 'ether'),
         rrBirthMin * 100, rrBirthMax * 100,
         upProbBirthMin * 100, upProbBirthMax * 100,
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
