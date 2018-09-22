@@ -76,6 +76,7 @@ ZSCUserManagement.prototype.loadUsers = function(phpFunc) {
 
 ZSCUserManagement.prototype.numUsers = function(gm, func) {
     this.myAdmAdv.numUsers(
+        "123456",
         {from: this.account},
         function(error, num){ 
             if(!error) { 
@@ -100,7 +101,9 @@ ZSCUserManagement.prototype.loadUserInfos = function() {
 
 ZSCUserManagement.prototype.loadUserInfoByIndex = function(gm, index, func) {
     var gm = this;
-    gm.myAdmAdv.getUserInfoByIndex(index, 
+    gm.myAdmAdv.getUserInfoByIndex(
+        "123456",
+        index, 
         {from: this.account},
         function(error, para){ 
             if(!error) {
