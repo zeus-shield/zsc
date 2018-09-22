@@ -207,7 +207,7 @@ export default class ZSCLogistics {
         });
     }
 
-    remove(_num) {
+    remove(_num, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
