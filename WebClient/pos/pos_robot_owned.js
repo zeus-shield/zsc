@@ -9,9 +9,10 @@ function ZSCRobotOwned(acount, adr, abi) {
     this.itemTags = [];
 
     //default paras: "id", "status", "rare", "spLev"
-    //others: "ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrType" ,"rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice", "price", "seller"
+    //others: "ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice", "price", "seller"
     this.robotParaBrief = ["spMax"];
-    this.robotParaAll   = ["ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrType", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice", "price", "seller"];
+    //this.robotParaAll = ["ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice", "price", "seller"];
+    this.robotParaAll   = ["ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice", "price", "seller"];
 
     this.robotParaBriefValues = [];
     this.robotParaDetailValues = [];
@@ -25,8 +26,8 @@ function ZSCRobotOwned(acount, adr, abi) {
 
 ZSCRobotOwned.prototype.getRobotNos = function() { return this.robotNos;}
 
-ZSCRobotOwned.prototype.getRobotParaBriefValue  = function(para, robotId, tag) { 
-    return bF_robotParaValue(this.robotParaBriefValues[robotId].get(para), tag);
+ZSCRobotOwned.prototype.getRobotParaBriefValue  = function(para, index, tag) { 
+    return bF_robotParaValue(this.robotParaBriefValues[index].get(para), tag);
 }
 
 ZSCRobotOwned.prototype.getRobotParaDetailValue  = function(para, tag) { 
@@ -64,7 +65,7 @@ ZSCRobotOwned.prototype.createGen0Robot = function(hashId, func) {
     var gm = this;
     var callBack = func;
     var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-    erc721Api.createRobot(
+    erc721Api.createUnitRandom(
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
@@ -139,7 +140,6 @@ ZSCRobotOwned.prototype.loadUserAllRobotBriefs = function(func) {
     var gm = this;
     var callback = func;
 
-    gm.isBriefParas = isBrief;
     gm.numUserAllRobots(gm, function(gm) {
         if (gm.robotNos == 0) {
             callback();
@@ -161,7 +161,7 @@ ZSCRobotOwned.prototype.numUserAllRobots = function(gm, func) {
     var callBack = func;
     var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    erc721Api.numUnits("user", 0x0, 
+    erc721Api.numUnits("user", "0x0", 
         {from: gm.account},
         function(error, num){ 
             if(!error) { 
@@ -177,7 +177,7 @@ ZSCRobotOwned.prototype.loadRobotBrieInfoByIndex = function(gm, index, func) {
     var callBack = func;
     var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    erc721Api.getUnitInfoByIndex("user", 0x0, Number(index), gm.robotParaBrief, 
+    erc721Api.getUnitInfoByIndex("user", "0x0", Number(index), gm.robotParaBrief, 
         {from: gm.account},
         function(error, robotInfo){ 
             if(!error) {
@@ -192,7 +192,7 @@ ZSCRobotOwned.prototype.loadRobotBrieInfoByIndex = function(gm, index, func) {
 ZSCRobotOwned.prototype.parserRobotBrieInfo = function(gm, index, info) {
     var len        = info.length;
     var offset     = info.indexOf("?");
-    var newsidinfo = info.substr(offset,len)
+    var newsidinfo = info.substr(offset + 1, len)
     var newsids    = newsidinfo.split("&");
     var paraNos    = newsids.length;
 
@@ -210,9 +210,9 @@ ZSCRobotOwned.prototype.loadUserSingleRobotDetail = function(index, func) {
     var callback = func;
     var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    erc721Api.getUnitInfoByIndex("user", 0x0, Number(index), gm.robotParaAll, 
+    erc721Api.getUnitInfoByIndex("user", "0x0", Number(index), gm.robotParaAll, 
         {from: gm.account},
-        function(error, robotInfo) { 
+        function(error, info) { 
             if(!error) {
                 gm.parserSingleRobotDetailInfo(gm, info);
                 callback(index); 
@@ -226,7 +226,7 @@ ZSCRobotOwned.prototype.loadUserSingleRobotDetail = function(index, func) {
 ZSCRobotOwned.prototype.parserSingleRobotDetailInfo = function(gm, info) {
     var len        = info.length;
     var offset     = info.indexOf("?");
-    var newsidinfo = info.substr(offset,len)
+    var newsidinfo = info.substr(offset + 1,len)
     var newsids    = newsidinfo.split("&");
     var paraNos    = newsids.length;
 
