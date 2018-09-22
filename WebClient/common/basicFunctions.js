@@ -47,7 +47,7 @@ function bF_fixedNumberFromWei(value, n) {
     return Number(num).toFixed(4);
 }
 
-function bF_scondsToDate(secs) {
+function bF_secondsToDate(secs) {
     if (secs == 0) return "~";
     var curdate = new Date(null);
     curdate.setTime(secs * 1000);
@@ -57,9 +57,9 @@ function bF_scondsToDate(secs) {
 function bF_robotParaValue(value, tag) { 
     if (tag == "FromWei") {
         return bF_fixedNumberFromWei(value, 4);
-    } else if (tag = "Time") {
+    } else if (tag == "Time") {
         return bF_secondsToDate(value);
-    } else if (tag = "Prob") {
+    } else if (tag == "Prob") {
         return (value / 100 + "%");
     } else {
         return value;
