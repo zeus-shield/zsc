@@ -36,9 +36,15 @@ $htmlObjects = new ZSChtmlObjects();
         zscSetup.setControlAbisAdvAbi(elementId);
     }
 
-    function setPosPaymentReceiver(hash, receiverId) {
+    function setAdmReadPass(admReadPassId, elementId) {
+        var adr = "<?php echo $htmlObjects->readObjectAddress('ControlApisAdv')?>";
+        var admReadPass = document.getElementById(admReadPassId).value;
+        zscSetup.setAdmReadPass(admReadPass, elementId);
+    }
+
+    function setPosPaymentReceiver(receiverId, elementId) {
         var receiver = document.getElementById(receiverId).value;
-        zscSetup.setPosPaymentReceiver(hash, receiver);
+        zscSetup.setPosPaymentReceiver(elementId, receiver);
     }
 
     function setTestTokenToUser(ethAmountId, tokenSymbolId, tokenAmountId, elementId) {
@@ -70,18 +76,23 @@ $htmlObjects = new ZSChtmlObjects();
         <text id="ControlApisAdvAbiHash"></text> <br>
 
         <text>Step - 0 - 2 </text>
-        <button type="button" onClick="setPosPaymentReceiver('paymentReceiverHash', 'PaymentReceiver')">Set receiver</button> <br>
+        <button type="button" onClick="setAdmReadPass('setAdmReadPassHash', 'AdmReadPass')">Set receiver</button> <br>
+        <text>Adm readpass</text>  <input type="text" id="AdmReadPass" value="123456"></input> 
+        <text id="setAdmReadPassHash"></text> <br><br>
+
+        <text>Step - 0 - 3 </text>
+        <button type="button" onClick="setPosPaymentReceiver('PaymentReceiver', 'paymentReceiverHash')">Set receiver</button> <br>
         <text>Pos-payment receiver</text>  <input type="text" id="PaymentReceiver" value="0xba5e96003825010641ef5ef921a2e6e5976d0d1c"></input> 
         <text id="paymentReceiverHash"></text> <br><br>
 
-        <text>Step - 0 - 3</text>
+        <text>Step - 0 - 4</text>
         <button type="button" onClick="setTestTokenToUser('AllocatedEthAmount', 'AllocatedTokenSymbol', 'AllocatedTokenAmount', 'setTestTokenToUserHash')">Pre-allocate ETH & Token to tester</button> <br>
         ETH Amount: <input type="text" id="AllocatedEthAmount" value="0"></input> <br> 
         Token Symbol: <input type="text" id="AllocatedTokenSymbol" value="TestZSC"></input> <br> 
         Token Amount: <input type="text" id="AllocatedTokenAmount" value="50000"></input> <br> 
         <text id="setTestTokenToUserHash"></text> <br><br>
 
-        <text>Step - 0 - 4</text>
+        <text>Step - 0 - 5</text>
         <button type="button" onClick="setTokenPosable('PosableTokenSymbol', 'PosableTag', 'setTokenPosableHash')">Set token posable</button> <br>
         Token Symbol: <input type="text" id="PosableTokenSymbol" value="TestZSC"></input> <br> 
         Tag: <input type="text" id="PosableTag" value="true"></input> <br> 
