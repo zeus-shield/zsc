@@ -48,23 +48,11 @@ ZSCRobotOwned.prototype.checkAllItemTags = function(gm) {
     return true;
 }
 
-ZSCRobotOwned.prototype.transferToOther = function(hashId, dest, roobtId) { 
-    var gm = this;
-    var myErc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-
-    erc721Api.transfer(dest, roobtId,
-        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
-        function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
-            else console.log("error: " + error);
-        });
-}
-
 ZSCRobotOwned.prototype.createGen0Robot = function(hashId, func) { 
     var gm = this;
     var callBack = func;
     var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-    erc721Api.createUnitRandom(
+    erc721Api.createUnit(true /*if it is random */, 0x0, 0x0,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
@@ -84,7 +72,20 @@ ZSCRobotOwned.prototype.upgradeMinerRobot = function(hashId, robotId, func) {
         });
 }
 
-ZSCRobotOwned.prototype.publishMinerRobot = function(hashId, price, robotId, func) {
+ZSCRobotOwned.prototype.transferToOther = function(hashId, dest, roobtId, func) { 
+    var gm = this;
+    var callBack = func;
+    var myErc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    erc721Api.transfer(dest, roobtId,
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
+        function(error, result){ 
+            if(!error) bF_showHashResult(hashId, result, callBack);
+            else console.log("error: " + error);
+        });
+}
+
+ZSCRobotOwned.prototype.publishMinerRobot = function(hashId, robotId, price, func) {
     var gm = this;
     var callBack = func;
 
