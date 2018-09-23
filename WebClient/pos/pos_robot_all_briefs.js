@@ -3,17 +3,16 @@ Copyright (c) 2018 ZSC Dev Team
 */
 
 //class 
-function ZSCRobotOwned(acount, adr, abi) {
+function ZSCRobotAllBreifes(acount, adr, abi) {
     this.userType;
+    this.robotOwnerTag; // "user"; "selling"; "holder"
     this.robotNos = 0;
     this.itemTags = [];
 
-    //default paras: "id",  "rare", "spLev"
-    this.robotParaBrief = ["name"];
-    this.robotParaAll   = ["status", "name",  "price", "seller", "posToken", "minedSP", "rewardSP", "lastSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice"];
+    this.robotBriefParaNames ;
+    this.robotBriefParaValues = [];
 
-    this.robotParaBriefValues = [];
-    this.robotParaDetailValues = [];
+    this.otherHolderAdr = 0x0;
 
     this.account = acount;
     this.contractAdr = adr;
@@ -24,12 +23,8 @@ function ZSCRobotOwned(acount, adr, abi) {
 
 ZSCRobotOwned.prototype.getRobotNos = function() { return this.robotNos;}
 
-ZSCRobotOwned.prototype.getRobotParaBriefValue  = function(para, index, tag) { 
-    return bF_robotParaValue(this.robotParaBriefValues[index].get(para), tag);
-}
-
-ZSCRobotOwned.prototype.getRobotParaDetailValue  = function(para, tag) { 
-    return bF_robotParaValue(this.robotParaDetailValues.get(para), tag);
+ZSCRobotOwned.prototype.getRobotBriefParaValue = function(para, index, tag) { 
+    return bF_robotParaValue(this.robotBriefParaValues[index].get(para), tag);
 }
 
 ZSCRobotOwned.prototype.resetAllItemTags = function(gm) {
@@ -47,6 +42,22 @@ ZSCRobotOwned.prototype.checkAllItemTags = function(gm) {
     return true;
 }
 
+ZSCRobotOwned.prototype.setRobotBriefParaNames = function(gm, tag, adr) {
+    gm.robotOwnerTag = tag;
+    gm.otherHolderAdr = adr;
+
+    //default paras: "id",  "rare", "spLev"
+    //extra paras
+    if (tag == "user") {
+        gm.robotBriefParaNames = ["status", "name"];
+    } else if (tag == "selling") {
+        gm.robotBriefParaNames = ["price", "seller"];
+    } else if (tag == "holder") {
+        gm.robotBriefParaNames = ["status", "name"];
+    }
+}
+
+
 ZSCRobotOwned.prototype.createGen0Robot = function(hashId, func) { 
     var gm = this;
     var callBack = func;
@@ -59,87 +70,13 @@ ZSCRobotOwned.prototype.createGen0Robot = function(hashId, func) {
         });
 }
 
-ZSCRobotOwned.prototype.upgradeMinerRobot = function(hashId, robotId, func) {
-    var gm = this;
-    var callBack = func;
-    var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-    erc721Api.upgradeUnitSpLev(robotId,
-        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
-        function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, callBack);
-            else console.log("error: " + error);
-        });
-}
-
-ZSCRobotOwned.prototype.transferToOther = function(hashId, dest, roobtId, func) { 
-    var gm = this;
-    var callBack = func;
-    var myErc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-
-    erc721Api.transfer(dest, roobtId,
-        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
-        function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, callBack);
-            else console.log("error: " + error);
-        });
-}
-
-ZSCRobotOwned.prototype.publishMinerRobot = function(hashId, robotId, price, func) {
-    var gm = this;
-    var callBack = func;
-
-    var priceInEther = web3.toWei(price, 'ether');
-    var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-    erc721Api.publishUnit(robotId, priceInEther, 
-        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
-        function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, callBack);
-            else console.log("error: " + error);
-        });
-}
-
-ZSCRobotOwned.prototype.cancelSellingMinerRobot = function(hashId, robotId, func) {
-    var gm = this;
-    var callBack = func;
-    var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-    erc721Api.cancelSell(robotId,
-        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
-        function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, callBack);
-            else console.log("error: " + error);
-        });
-}
-    
-ZSCRobotOwned.prototype.activeMinerRobot = function(hashId, robotId, tokenType, rewardType, func) {
-    var callBack = func;
-    var gm = this;
-    var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-    erc721Api.activeUnit(robotId, tokenType, rewardType,
-        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
-        function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, callBack);
-            else console.log("error: " + error);
-        });
-}
-
-ZSCRobotOwned.prototype.claimReward = function(hashId, robotId, func) {
-    var callBack = func;
-    var gm = this;
-    var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
-    erc721Api.claimReward(robotId, 
-        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
-        function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, callBack);
-            else console.log("error: " + error);
-        });
-}
-
 ////////////////////////
-ZSCRobotOwned.prototype.loadUserAllRobotBriefs = function(func) {
+ZSCRobotOwned.prototype.loadAllRobotBriefs = function(tag, otherHolderAdr, func) {
     var gm = this;
     var callback = func;
 
-    gm.numUserAllRobots(gm, function(gm) {
+    gm.setRobotBriefParaNames(gm, tag, otherHolderAdr);
+    gm.numRobots(gm, function(gm) {
         if (gm.robotNos == 0) {
             callback();
         } else {
@@ -156,11 +93,11 @@ ZSCRobotOwned.prototype.loadUserAllRobotBriefs = function(func) {
     });
 }
 
-ZSCRobotOwned.prototype.numUserAllRobots = function(gm, func) {
+ZSCRobotOwned.prototype.numRobots = function(gm, func) {
     var callBack = func;
     var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    erc721Api.numUnits("user", "0x0", 
+    erc721Api.numUnits(gm.robotOwnerTag, gm.otherHolderAdr, 
         {from: gm.account},
         function(error, num){ 
             if(!error) { 
@@ -176,7 +113,7 @@ ZSCRobotOwned.prototype.loadRobotBrieInfoByIndex = function(gm, index, func) {
     var callBack = func;
     var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    erc721Api.getUnitInfoByIndex("user", "0x0", Number(index), gm.robotParaBrief, 
+    erc721Api.getUnitInfoByIndex(gm.robotOwnerTag, gm.otherHolderAdr, Number(index), gm.robotBriefParaNames, 
         {from: gm.account},
         function(error, robotInfo){ 
             if(!error) {
@@ -195,46 +132,14 @@ ZSCRobotOwned.prototype.parserRobotBrieInfo = function(gm, index, info) {
     var newsids    = newsidinfo.split("&");
     var paraNos    = newsids.length;
 
-    gm.robotParaBriefValues[index] = new Map()
+    gm.robotBriefParaValues[index] = new Map()
 
     for (var i = 0; i < paraNos; ++i) {
         var pair = newsids[i]
-        gm.robotParaBriefValues[index].set(pair.split("=")[0], pair.split("=")[1]);
+        gm.robotBriefParaValues[index].set(pair.split("=")[0], pair.split("=")[1]);
     }
 }
 
-////////////////////////
-ZSCRobotOwned.prototype.loadUserSingleRobotDetail = function(robotId, func) {
-    var gm = this;
-    var callback = func;
-    var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    erc721Api.getUnitInfoById(Number(robotId), gm.robotParaAll, 
-        {from: gm.account},
-        function(error, info) { 
-            if(!error) {
-                gm.parserSingleRobotDetailInfo(gm, info);
-                callback(); 
-            } else { 
-                console.log("error: " + error);
-            }
-        }
-    );
-}
-
-ZSCRobotOwned.prototype.parserSingleRobotDetailInfo = function(gm, info) {
-    var len        = info.length;
-    var offset     = info.indexOf("?");
-    var newsidinfo = info.substr(offset + 1,len)
-    var newsids    = newsidinfo.split("&");
-    var paraNos    = newsids.length;
-
-    gm.robotParaDetailValues = new Map()
-
-    for (var i = 0; i < paraNos; ++i) {
-        var pair = newsids[i]
-        gm.robotParaDetailValues.set(pair.split("=")[0], pair.split("=")[1]);
-    }
-}
 
   
