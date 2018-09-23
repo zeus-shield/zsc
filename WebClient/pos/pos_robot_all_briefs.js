@@ -8,10 +8,9 @@ function ZSCRobotOwned(acount, adr, abi) {
     this.robotNos = 0;
     this.itemTags = [];
 
-    //default paras: "id", "status", "rare", "spLev"
+    //default paras: "id",  "rare", "spLev"
     this.robotParaBrief = ["name"];
-    //this.robotParaAll = ["name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice", "price", "seller"];
-    this.robotParaAll   = ["name", "posToken", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice", "price", "seller"];
+    this.robotParaAll   = ["status", "name",  "price", "seller", "posToken", "minedSP", "rewardSP", "lastSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice"];
 
     this.robotParaBriefValues = [];
     this.robotParaDetailValues = [];
@@ -55,7 +54,7 @@ ZSCRobotOwned.prototype.createGen0Robot = function(hashId, func) {
     erc721Api.createUnit(true /*if it is random */, 0x0, 0x0,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
+            if(!error) bF_showHashResult(hashId, result, callBack);
             else console.log("error: " + error);
         });
 }
