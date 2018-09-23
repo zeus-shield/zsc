@@ -109,10 +109,10 @@ ZSCSetup.prototype.setControlAbisAdvAbi = function(hashID) {
 }  
 
 ZSCSetup.prototype.setAdmReadPass = function(readPass, hashID) {
-    var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
-    var myControlApi = myContract.at(this.ControlApisAdvAdr);
-
-    myControlApi.setReadPass(readPass, 
+    var myContract = web3.eth.contract(cC_getContractAbi("AdmAdv"));
+    var myAdmAdv = myContract.at(this.AdmAdvAdr);
+    
+    myAdmAdv.setReadPass(readPass, 
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){console.log("ok");});
