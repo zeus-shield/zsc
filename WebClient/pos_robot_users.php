@@ -46,7 +46,7 @@ session_start();
         if (isAllRobots) {
             loadUserAllRobotHtml("PageBody", "loadUserRobotDetails", "createGen0Robot");
         } else {
-            loadUserRobotDetailsHtml("PageBody", "loadUserAllRobots", "upgradeRobot", "activeMining", "claimReward", "sellRobot", "cancelSelling");
+            loadUserRobotDetailsHtml("PageBody", "loadUserAllRobots", "upgradeRobot", "transferToOther", "activeMining", "claimReward", "sellRobot", "cancelSelling");
         }
     }
     function loadUserAllRobotBriefs() {
@@ -71,6 +71,13 @@ session_start();
     /////////////////////////
     function upgradeRobot(hashId, robotId) {
         userRobotGM.upgradeMinerRobot(hashId, robotId, function(){
+            loadUserRobotDetails(robotId);
+        });
+    }
+
+    function transferToOther(hashId, destId, robotId) {
+        var dest = document.getElementById(destId).value;
+        userRobotGM.transferToOther(hashId, dest, robotId, function(){
             loadUserRobotDetails(robotId);
         });
     }
@@ -145,11 +152,14 @@ session_start();
         document.getElementById(elementId).innerHTML = text;  
     }
 
-    function loadUserRobotDetailsHtml(elementId, loadUserAllRobots, upgradeRobot, activeMining, claimReward, sellRobot, cancelSelling) {
+    function loadUserRobotDetailsHtml(elementId, loadUserAllRobots, upgradeRobot, transfer, activeMining, claimReward, sellRobot, cancelSelling) {
         var loadUserAllRobotsFunc = loadUserAllRobots + "()"; 
 
         var upgradeRobotPrefix = upgradeRobot + "('OperationHash', '"; 
         var upgradeRobotSuffix = "')";
+
+        var transferPrifix = transfer + "('OperationHash', 'DestAdr', '"; 
+        var transferSuffix = "')";
 
         var activeMiningPrefix = activeMining + "('OperationHash', 'TokenType', 'PosType', '"; 
         var activeMiningSuffix = "')";
@@ -165,11 +175,11 @@ session_start();
     
         var titlle = "User owned robots" 
 
-        var tokenType = '<select id = "TokenType" style="width:80px">'
+        var tokenType = '<select id = "TokenType" style="width:100px">'
         tokenType += '<option value ="TestZSC">TestZSC </option>'
         tokenType += '</select>'
 
-        var posType = '<select id = "PosType" style="width:80px">'
+        var posType = '<select id = "PosType" style="width:100px">'
         posType += '<option value ="7">7 Days (1.0%) </option>'
         posType += '<option value ="30">30 Days (2.0%)</option>'
         posType += '<option value="90">90 Days (3.5%)</option>'
@@ -191,14 +201,19 @@ session_start();
             text += '   <td>' + tokenType + posType + '<br><button type="button" onClick="' + activeMiningPrefix + robotId + activeMiningSuffix + '"> Start mining </button></td>'
             text += '   <td><text> Price (ETH) </text>' + sellPrice + '<br><button type="button" onClick="' + sellRobotPrefix + robotId + sellRobotSuffix + '"> Publish selling </button></td>'
             text += '</tr>'
+            text += '<tr><td colspan="3">----</td></tr>'
+            text += '<tr>'
+            text += '  <td colspan="3"> <button type="button" onClick="' + transferPrifix + robotId + transferSuffix + '"> transfer to </button>'
+            text += '    <input style="width:400px" id="DestAdr"></input> </td> '
+            text += '</tr>'
         } else if (robotStatus == "mining") {
             text += '<tr>'
-            text += '   <td><button type="button" onClick="' + claimRewardPrefix + robotId + claimRewardSuffix + '"> Claim SP </button></td>'
+            text += '   <td colspan="1"><button type="button" onClick="' + claimRewardPrefix + robotId + claimRewardSuffix + '"> Claim SP </button></td>'
             text += '</tr>'
         } else {
             // robotStatus == "selling"
             text += '<tr>'
-            text += '   <td><button type="button" onClick="' + cancelSellingPrefix + robotId + cancelSellingSuffix + '"> Cancel selling </button></td>'
+            text += '   <td colspan="1"><button type="button" onClick="' + cancelSellingPrefix + robotId + cancelSellingSuffix + '"> Cancel selling </button></td>'
             text += '</tr>'
         }
         text += '</table></div>'
@@ -215,7 +230,6 @@ session_start();
         //default paras: "id", "status", "rare", "spLev", 
         //others: "ctg", "name", "minedSP", "rewardSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice", "price", "seller"
         text += '<tr> <td><text> rare         </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("rare",        "null") + '</text></td> </tr>';
-        text += '<tr> <td><text> ctg          </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("ctg",         "null") + '</text></td> </tr>';
         text += '<tr> <td><text> name         </text></td> <td><text>' + userRobotGM.getRobotParaDetailValue("name",        "null") + '</text></td> </tr>';
         text += '   <tr> <td>------</td> <td>------</td> </tr>'
 
