@@ -44,7 +44,7 @@ $htmlObjects = new ZSChtmlObjects();
 
     function setPosPaymentReceiver(receiverId, elementId) {
         var receiver = document.getElementById(receiverId).value;
-        zscSetup.setPosPaymentReceiver(elementId, receiver);
+        zscSetup.setPosPaymentReceiver(receiver, elementId);
     }
 
     function setTestTokenToUser(ethAmountId, tokenSymbolId, tokenAmountId, elementId) {
@@ -76,7 +76,7 @@ $htmlObjects = new ZSChtmlObjects();
         <text id="ControlApisAdvAbiHash"></text> <br>
 
         <text>Step - 0 - 2 </text>
-        <button type="button" onClick="setAdmReadPass('setAdmReadPassHash', 'AdmReadPass')">Set receiver</button> <br>
+        <button type="button" onClick="setAdmReadPass('AdmReadPass', 'setAdmReadPassHash')">Set receiver</button> <br>
         <text>Adm readpass</text>  <input type="text" id="AdmReadPass" value="123456"></input> 
         <text id="setAdmReadPassHash"></text> <br><br>
 
