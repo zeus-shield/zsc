@@ -21,19 +21,19 @@ function ZSCRobotAllBreifes(acount, adr, abi) {
     this.gasLimit = bF_getGasLimit();
 }
 
-ZSCRobotOwned.prototype.getRobotNos = function() { return this.robotNos;}
+ZSCRobotAllBreifes.prototype.getRobotNos = function() { return this.robotNos;}
 
-ZSCRobotOwned.prototype.getRobotBriefParaValue = function(para, index, tag) { 
+ZSCRobotAllBreifes.prototype.getRobotBriefParaValue = function(para, index, tag) { 
     return bF_robotParaValue(this.robotBriefParaValues[index].get(para), tag);
 }
 
-ZSCRobotOwned.prototype.resetAllItemTags = function(gm) {
+ZSCRobotAllBreifes.prototype.resetAllItemTags = function(gm) {
     for (var i = 0; i < gm.robotNos; ++i) {
         gm.itemTags[i] = false;
     }
 }
 
-ZSCRobotOwned.prototype.checkAllItemTags = function(gm) {
+ZSCRobotAllBreifes.prototype.checkAllItemTags = function(gm) {
     for (var i = 0; i < gm.robotNos; ++i) {
         if (gm.itemTags[i] == false) {
             return false;
@@ -42,7 +42,7 @@ ZSCRobotOwned.prototype.checkAllItemTags = function(gm) {
     return true;
 }
 
-ZSCRobotOwned.prototype.setRobotBriefParaNames = function(gm, tag, adr) {
+ZSCRobotAllBreifes.prototype.setRobotBriefParaNames = function(gm, tag, adr) {
     gm.robotOwnerTag = tag;
     gm.otherHolderAdr = adr;
 
@@ -58,7 +58,7 @@ ZSCRobotOwned.prototype.setRobotBriefParaNames = function(gm, tag, adr) {
 }
 
 
-ZSCRobotOwned.prototype.createGen0Robot = function(hashId, func) { 
+ZSCRobotAllBreifes.prototype.createGen0Robot = function(hashId, func) { 
     var gm = this;
     var callBack = func;
     var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
@@ -71,7 +71,7 @@ ZSCRobotOwned.prototype.createGen0Robot = function(hashId, func) {
 }
 
 ////////////////////////
-ZSCRobotOwned.prototype.loadAllRobotBriefs = function(tag, otherHolderAdr, func) {
+ZSCRobotAllBreifes.prototype.loadAllRobotBriefs = function(tag, otherHolderAdr, func) {
     var gm = this;
     var callback = func;
 
@@ -93,7 +93,7 @@ ZSCRobotOwned.prototype.loadAllRobotBriefs = function(tag, otherHolderAdr, func)
     });
 }
 
-ZSCRobotOwned.prototype.numRobots = function(gm, func) {
+ZSCRobotAllBreifes.prototype.numRobots = function(gm, func) {
     var callBack = func;
     var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
@@ -109,7 +109,7 @@ ZSCRobotOwned.prototype.numRobots = function(gm, func) {
          });
 }
 
-ZSCRobotOwned.prototype.loadRobotBrieInfoByIndex = function(gm, index, func) {
+ZSCRobotAllBreifes.prototype.loadRobotBrieInfoByIndex = function(gm, index, func) {
     var callBack = func;
     var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
@@ -125,7 +125,7 @@ ZSCRobotOwned.prototype.loadRobotBrieInfoByIndex = function(gm, index, func) {
         });
 }
 
-ZSCRobotOwned.prototype.parserRobotBrieInfo = function(gm, index, info) {
+ZSCRobotAllBreifes.prototype.parserRobotBrieInfo = function(gm, index, info) {
     var len        = info.length;
     var offset     = info.indexOf("?");
     var newsidinfo = info.substr(offset + 1, len)
