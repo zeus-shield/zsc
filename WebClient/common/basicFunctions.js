@@ -15,7 +15,7 @@ function bF_getGasPrice() {
 }
 
 function bF_getGasLimit() {
-    var limit = 750;
+    var limit = 700;
     return limit * 10**4; //limits * 1 million
 }
 
@@ -61,6 +61,8 @@ function bF_robotParaValue(value, tag) {
         return bF_secondsToDate(value);
     } else if (tag == "Prob") {
         return (value / 10000 + "%");
+    } else if (tag == "Adr") {
+        return ("0x"+ value);
     } else if (tag == "Rare") {
         if (value == 0) return "R";
         else if (value == 1) return "SR";
