@@ -52,3 +52,16 @@ ZSCBlock.prototype.numAllBlocks = function(func) {
             }
         });
 }
+
+ZSCBlock.prototype.getBlockInfoByIndex = function(blockIndex, func) {
+    this.myControlApi.getBlockInfoByIndex(this.userName, this.poolIndex, blockIndex,
+        {from: this.getAccount()},
+        function(error, result){ 
+            if(!error) {
+                parserBlockInfo(result, blockIndex);
+                func(blockIndex);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
