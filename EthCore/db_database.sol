@@ -72,28 +72,22 @@ contract DBDatabase is Object {
     }
     
     function getRootNode() public view returns (address) { 
-        checkDelegate(msg.sender, 1);
         return rootNode_; 
     }
 
     function getNode(bytes32 _name) public view returns (address) { 
-        checkDelegate(msg.sender, 1);
         return nodeAddress_[_name]; 
     }
 
     function checkeNodeByAddress(address _adr) public view returns (bool) { 
-        checkDelegate(msg.sender, 1);
         return nodeExists_[_adr]; 
     }
 
     function numNodes() public view returns (uint) { 
-        checkDelegate(msg.sender, 1);
         return nodes_.length; 
     }
 
     function getNodeByIndex(uint _index) public view returns (address) { 
-        checkDelegate(msg.sender, 1);
-
         if (_index >= nodes_.length) return 0;
         return nodes_[_index]; 
     }
