@@ -25,7 +25,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         bytes32 status_;
         bytes32 ctg_;
         bytes32 name_;
-        bool specific_;
+        bool spec_;
         uint rare_;
 
         uint spLev_;
@@ -44,7 +44,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         uint upProbBirth_;
         uint upPrice_;
 
-        uint sellPrice_;
+        uint price_;
         address seller_;
 
         bytes32 posToken_;
@@ -134,35 +134,35 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         //bytes32 ctgName = getRandomUnitCategory();
         uint ctgIndex = ctgIndice_[_ctg];
 
-        robots_[index].specific_  = false;
-        robots_[index].status_ = "idle";
-        robots_[index].ctg_    = _ctg;
-        robots_[index].name_   = ctgs_[ctgIndex].name_;
-        robots_[index].rare_   = ctgs_[ctgIndex].rare_;
-        robots_[index].spLev_  = 0;
-        robots_[index].spCur_     = 0;
-        robots_[index].spMax_     = 0;
-        robots_[index].spBase_    = 0;
-        robots_[index].mineStart_ = 0;
-        robots_[index].mineEnd_   = 0;
-        robots_[index].upProbBase_   = 0;
+        robots_[index].paraBool_["spec"] = false;
+        robots_[index].paraBytes32_["status"] = "idle";
+        robots_[index].paraBytes32_["ctg"]    = _ctg;
+        robots_[index].paraBytes32_["name"]   = ctgs_[ctgIndex].name_;
+        robots_[index].paraUint_["rare"]      = ctgs_[ctgIndex].rare_;
+        robots_[index].paraUint_["spLev"]     = 0;
+        robots_[index].paraUint_["spCur"]     = 0;
+        robots_[index].paraUint_["spMax"]     = 0;
+        robots_[index].paraUint_["spBase"]    = 0;
+        robots_[index].paraUint_["mineStart"] = 0;
+        robots_[index].paraUint_["mineEnd"]   = 0;
+        robots_[index].paraUint_["upProbBase"]   = 0;
 
         if (ctgs_[ctgIndex].spBirthMin_ == ctgs_[ctgIndex].spBirthMax_) {
-            robots_[index].spBirth_ = ctgs_[ctgIndex].spBirthMin_;
+            robots_[index].paraUint_["spBirth"] = ctgs_[ctgIndex].spBirthMin_;
         } else {
-            robots_[index].spBirth_  = random(ctgs_[ctgIndex].spBirthMin_, ctgs_[ctgIndex].spBirthMax_);
+            robots_[index].paraUint_["spBirth"]  = random(ctgs_[ctgIndex].spBirthMin_, ctgs_[ctgIndex].spBirthMax_);
         }
 
         if (ctgs_[ctgIndex].rrBirthMin_ == ctgs_[ctgIndex].rrBirthMax_) {
-            robots_[index].rrBirth_ = ctgs_[ctgIndex].rrBirthMin_;
+            robots_[index].paraUint_["rrBirth"] = ctgs_[ctgIndex].rrBirthMin_;
         } else {
-            robots_[index].rrBirth_  = random(ctgs_[ctgIndex].rrBirthMin_, ctgs_[ctgIndex].rrBirthMax_);
+            robots_[index].paraUint_["rrBirth"] = random(ctgs_[ctgIndex].rrBirthMin_, ctgs_[ctgIndex].rrBirthMax_);
         }
 
         if (ctgs_[ctgIndex].upProbBirthMin_ == ctgs_[ctgIndex].upProbBirthMax_) {
-            robots_[index].upProbBirth_ = ctgs_[ctgIndex].upProbBirthMin_;
+            robots_[index].paraUint_["upProbBirth"] = ctgs_[ctgIndex].upProbBirthMin_;
         } else {
-            robots_[index].upProbBirth_  = random(ctgs_[ctgIndex].upProbBirthMin_, ctgs_[ctgIndex].upProbBirthMax_);
+            robots_[index].paraUint_["upProbBirth"]  = random(ctgs_[ctgIndex].upProbBirthMin_, ctgs_[ctgIndex].upProbBirthMax_);
         }
         return index;
     }
@@ -281,47 +281,178 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         robots_[_robotId].paraUint_["rrLevEft"]  = 0;
     }
 
-    function setUintParaBool(bytes32 _para, bool _value) internal {
-        robots_[_unitId].paraBool_[_para] = _tag;
+    function setUintParaBool(uint _unitId, bytes32 _para, bool _value) internal {
+        robots_[_unitId].paraBool_[_para] = _value;
     }
 
-    function setUintParaBytes32(bytes32 _para, bytes32 _value) internal {
-        robots_[_unitId].paraBytes32_[_para] = _tag;
+    function setUintParaBytes32(uint _unitId, bytes32 _para, bytes32 _value) internal {
+        robots_[_unitId].paraBytes32_[_para] = _value;
     }
 
-    function setUintParaAdr(bytes32 _para, address _value) internal {
-        robots_[_unitId].paraAdr_[_para] = _tag;
+    function setUintParaAdr(uint _unitId, bytes32 _para, address _value) internal {
+        robots_[_unitId].paraAdr_[_para] = _value;
     }
 
-    function setUintParaUint(bytes32 _para, uint _value) internal {
+    function setUintParaUint(uint _unitId, bytes32 _para, uint _value) internal {
         robots_[_unitId].paraUint_[_para] = _value;
     }
 
     ////////////////
-    function exsetUintParaBool(bytes32 _para, bool _value) external {
+    function exsetUintParaBool(uint _unitId, bytes32 _para, bool _value) external {
         checkDelegate(msg.sender, 1);
-        robots_[_unitId].paraBool_[_para] = _tag;
+        robots_[_unitId].paraBool_[_para] = _value;
         emit ExternalSetPara(msg.sender, _para);
     }
 
-    function exsetUintParaBytes32(bytes32 _para, bytes32 _value) external {
+    function exsetUintParaBytes32(uint _unitId, bytes32 _para, bytes32 _value) external {
         checkDelegate(msg.sender, 1);
-        robots_[_unitId].paraBytes32_[_para] = _tag;
+        robots_[_unitId].paraBytes32_[_para] = _value;
         emit ExternalSetPara(msg.sender, _para);
     }
 
-    function exsetUintParaAdr(bytes32 _para, address _value) external {
+    function exsetUintParaAdr(uint _unitId, bytes32 _para, address _value) external {
         checkDelegate(msg.sender, 1);
-        robots_[_unitId].paraAdr_[_para] = _tag;
+        robots_[_unitId].paraAdr_[_para] = _value;
         emit ExternalSetPara(msg.sender, _para);
     }
 
-    function exsetUintParaUint(bytes32 _para, uint _value) external {
+    function exsetUintParaUint(uint _unitId, bytes32 _para, uint _value) external {
         checkDelegate(msg.sender, 1);
         robots_[_unitId].paraUint_[_para] = _value;
         emit ExternalSetPara(msg.sender, _para);
     }
 
+    //////////////
+    function getDayInSeconds() public view returns (uint) {
+        return dayInSeconds_;
+    }
+
+    function getPriceToCreate() public view returns (uint) {
+        return priceToCreate_;
+    }
+
+    function getPosMineRatioPerday() public view returns (uint) {
+        return minedRatioPerDay_;
+    }
+
+    function getPosRewardRatioPerday() public view returns (uint) {
+        return rewardRatioPerDay_;
+    }
+
+    function getUintParaBool(uint _unitId, bytes32 _para) public returns (bool) {
+        return robots_[_unitId].paraBool_[_para];
+    }
+
+    function getUintParaBytes32(uint _unitId, bytes32 _para) public returns (bytes32) {
+        return robots_[_unitId].paraBytes32_[_para];
+    }
+
+    function getUintParaAdr(uint _unitId, bytes32 _para) public returns (address) {
+        return robots_[_unitId].paraAdr_[_para];
+    }
+
+    function getUnitParaUint(uint _unitId, bytes32 _para) public returns (uint) {
+        return robots_[_unitId].paraUint_[_para];
+    }
+
+    function getUnitSPExtra(uint _unitId) public view returns (uint) {
+        if (extraEffectObj_ == address(0))
+            return 0;
+        return SysGmPosEffect(extraEffectObj_).getExtraStakePoint(_unitId);
+    }
+
+    function getUnitRRExtra(uint _unitId) public view returns (uint) {
+        if (extraEffectObj_ == address(0))
+            return 0;
+        return SysGmPosEffect(extraEffectObj_).getExtraRewardRatio(_unitId);
+    }
+
+    function getUnitUPExtra(uint _unitId) public view returns (uint) {
+        if (extraEffectObj_ == address(0)) 
+            return 0;
+        return SysGmPosEffect(extraEffectObj_).getExtraUpgradeProbability(_unitId);
+    }
+
+    /*
+    ///////////////////////////
+    function setUnitSpec(uint _unitId, bool _tag) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].specific_ = _tag;
+    }
+
+    function setUnitBirthValue(uint _unitId, uint _sp, uint _rr, uint _up) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].spBirth_ = _sp;
+        robots_[_unitId].rrBirth_ = _rr;
+        robots_[_unitId].upProbBirth_ = _up;
+    }
+
+    function setUnitStatus(uint _unitId, bytes32 _status) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].status_ = _status;
+    }
+
+    function setUnitSPLev(uint _unitId, uint _lev) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].spLev_ = _lev;
+    }
+
+    function setUnitSPBase(uint _unitId, uint _base) public {
+        //checkDelegate(msg.sender, 1);
+
+        addLog(PlatString.addressToString(msg.sender), true);
+        robots_[_unitId].spBase_ = _base;
+    }
+
+    function setUnitSPMax(uint _unitId, uint _max) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].spMax_ = _max;
+    }
+
+    function setUnitSPCur(uint _unitId, uint _cur) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].spCur_ = _cur;
+    }
+
+    function setUnitUPBase(uint _unitId, uint _base) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].upProbBase_ = _base;
+    }
+
+    function setUnitUPPrice(uint _unitId, uint _price) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].upPrice_ = _price;
+    }
+
+    function setUnitRRLevEft(uint _unitId, uint _eft) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].rrLevEft_ = _eft;
+    }
+
+    function setUnitMineStart(uint _unitId, uint _tm) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].mineStart_ = _tm;
+    }
+
+    function setUnitMineEnd(uint _unitId, uint _tm) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].mineEnd_ = _tm;
+    }
+
+    function setUnitPosToken(uint _unitId, bytes32 _token) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].posToken_ = _token;
+    }
+
+    function setUnitSeller(uint _unitId, address _seller) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].seller_ = _seller;
+    }
+
+    function setUnitSellPrice(uint _unitId, uint _price) public {
+        checkDelegate(msg.sender, 1);
+        robots_[_unitId].sellPrice_ = _price;
+    }
 
 
     //////////////////////
@@ -426,4 +557,5 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     function getUnitSellPrice(uint _unitId) public view returns (uint) {
         return robots_[_unitId].sellPrice_;
     }
+    */
 }
