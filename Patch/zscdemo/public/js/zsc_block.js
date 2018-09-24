@@ -22,3 +22,16 @@ ZSCBlock.prototype.getUserName = function() {return this.userName;}
 ZSCBlock.prototype.getTotalBlockNos = function() {return this.totalBlockNos;}
 
 ZSCBlock.prototype.getMinedBlockNos = function() {return this.minedBlockNos;}
+
+ZSCBlock.prototype.loadAllBlocks = function(poolIndex, func) {
+    this.poolIndex = poolIndex;
+    this.numAllBlocks(function() {
+        for (var i = 0; i < this.agrNos; ++i) {
+            this.getBlockInfoByIndex(i, function(index){
+                if (indx == this.agrNos - 1) {
+                    func();
+                }
+            });
+        }
+    });
+}
