@@ -8,24 +8,19 @@ import "./sys_gm_base.sol";
 import "./erc721_adv.sol";
 
 contract SysGmPosEffect {
-    function getExtraStakePoint(uint _robotId) public view returns (uint);
-    function getExtraRewardRatio(uint _robotId) public view returns (uint);
-    function getExtraUpgradeProbability(uint _robotId) public view returns (uint);
+    function getExtraValue(uint _robotId, bytes32 _para) public view returns (uint);
 }
 
 contract SysGmPos is Erc721Adv, SysGmBase {
-    event ExternalSetPara(address indexed _sender, bytes32 _para);
-
     uint internal constant DAY_IN_SECONDS = 86400;
     uint internal constant MAX_RATIO_VALUE = 1000000;
     uint public dayInSeconds_;
 
     struct RobotUnit {
-        /*
         bytes32 status_;
         bytes32 ctg_;
         bytes32 name_;
-        bool spec_;
+        bool specific_;
         uint rare_;
 
         uint spLev_;
@@ -44,19 +39,13 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         uint upProbBirth_;
         uint upPrice_;
 
-        uint price_;
+        uint sellPrice_;
         address seller_;
 
         bytes32 posToken_;
-        */
-
-        mapping(bytes32 => uint)    paraUint_;
-        mapping(bytes32 => bytes32) paraBytes32_;
-        mapping(bytes32 => bool)    paraBool_;
-        mapping(bytes32 => address) paraAdr_;
     }
-    uint private robotNos_;
-    mapping(uint => RobotUnit) private robots_;
+    uint internal robotNos_;
+    mapping(uint => RobotUnit) internal robots_;
 
     struct CtgUnit {
         bytes32 ctg_;
@@ -80,12 +69,11 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         mapping(uint => bytes32) ctgTypes_;
     }
     mapping(uint => RareGroup) internal rares_;
-    mapping(bytes32 => uint) internal rareProb_;
+    mapping(bytes32 => uint) public rareProb_;
 
     address public extraEffectObj_;
 
     uint public priceToCreate_;
-    bool public publicTradeable_ = true;
     string public tokenUri_;
 
     uint public minedRatioPerDay_;
@@ -100,9 +88,8 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     } 
 
     //////////////////////////
-    function checkTradeAble(uint256 _unitId) internal view returns (bool) {
+    function checkTradeAble(uint256 _unitId) internal view {
         require(robots_[_unitId].status_ == "idle");
-        return publicTradeable_;
     }
 
     function tokenURI(uint _tokenId) public view returns (string) {
@@ -110,7 +97,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return url;
     }
 
-    //////////////////////////    
+    //////////////////////////   
     function getRandomUnitCategory() internal view returns (bytes32) {
         uint ran = random(0, MAX_RATIO_VALUE);
         uint rareLev;
@@ -126,6 +113,15 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return rares_[rareLev].ctgTypes_[ran];
     }
 
+    function resetUnitMineInfo(uint _robotId) public {
+        robots_[_robotId].status_    = "idle";
+        robots_[_robotId].spCur_     = 0;
+        robots_[_robotId].spMax_     = 0; 
+        robots_[_robotId].mineStart_ = 0;
+        robots_[_robotId].mineEnd_   = 0;
+        robots_[_robotId].rrLevEft_  = 0;
+    }
+
     function mintUnit(address _user, bytes32 _ctg) internal returns (uint) {
         uint index = robotNos_;
         robotNos_++;
@@ -134,45 +130,40 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         //bytes32 ctgName = getRandomUnitCategory();
         uint ctgIndex = ctgIndice_[_ctg];
 
-        robots_[index].paraBool_["spec"] = false;
-        robots_[index].paraBytes32_["status"] = "idle";
-        robots_[index].paraBytes32_["ctg"]    = _ctg;
-        robots_[index].paraBytes32_["name"]   = ctgs_[ctgIndex].name_;
-        robots_[index].paraUint_["rare"]      = ctgs_[ctgIndex].rare_;
-        robots_[index].paraUint_["spLev"]     = 0;
-        robots_[index].paraUint_["spCur"]     = 0;
-        robots_[index].paraUint_["spMax"]     = 0;
-        robots_[index].paraUint_["spBase"]    = 0;
-        robots_[index].paraUint_["mineStart"] = 0;
-        robots_[index].paraUint_["mineEnd"]   = 0;
-        robots_[index].paraUint_["upProbBase"]   = 0;
+        robots_[index].specific_  = false;
+        robots_[index].status_ = "idle";
+        robots_[index].ctg_    = _ctg;
+        robots_[index].name_   = ctgs_[ctgIndex].name_;
+        robots_[index].rare_   = ctgs_[ctgIndex].rare_;
+        robots_[index].spLev_  = 0;
+        robots_[index].spCur_     = 0;
+        robots_[index].spMax_     = 0;
+        robots_[index].spBase_    = 0;
+        robots_[index].mineStart_ = 0;
+        robots_[index].mineEnd_   = 0;
+        robots_[index].upProbBase_   = 0;
 
         if (ctgs_[ctgIndex].spBirthMin_ == ctgs_[ctgIndex].spBirthMax_) {
-            robots_[index].paraUint_["spBirth"] = ctgs_[ctgIndex].spBirthMin_;
+            robots_[index].spBirth_ = ctgs_[ctgIndex].spBirthMin_;
         } else {
-            robots_[index].paraUint_["spBirth"]  = random(ctgs_[ctgIndex].spBirthMin_, ctgs_[ctgIndex].spBirthMax_);
+            robots_[index].spBirth_  = random(ctgs_[ctgIndex].spBirthMin_, ctgs_[ctgIndex].spBirthMax_);
         }
 
         if (ctgs_[ctgIndex].rrBirthMin_ == ctgs_[ctgIndex].rrBirthMax_) {
-            robots_[index].paraUint_["rrBirth"] = ctgs_[ctgIndex].rrBirthMin_;
+            robots_[index].rrBirth_ = ctgs_[ctgIndex].rrBirthMin_;
         } else {
-            robots_[index].paraUint_["rrBirth"] = random(ctgs_[ctgIndex].rrBirthMin_, ctgs_[ctgIndex].rrBirthMax_);
+            robots_[index].rrBirth_  = random(ctgs_[ctgIndex].rrBirthMin_, ctgs_[ctgIndex].rrBirthMax_);
         }
 
         if (ctgs_[ctgIndex].upProbBirthMin_ == ctgs_[ctgIndex].upProbBirthMax_) {
-            robots_[index].paraUint_["upProbBirth"] = ctgs_[ctgIndex].upProbBirthMin_;
+            robots_[index].upProbBirth_ = ctgs_[ctgIndex].upProbBirthMin_;
         } else {
-            robots_[index].paraUint_["upProbBirth"]  = random(ctgs_[ctgIndex].upProbBirthMin_, ctgs_[ctgIndex].upProbBirthMax_);
+            robots_[index].upProbBirth_  = random(ctgs_[ctgIndex].upProbBirthMin_, ctgs_[ctgIndex].upProbBirthMax_);
         }
         return index;
     }
 
     //////////////////////////
-    function setPublicTradeable(bool _tag) public {
-        checkDelegate(msg.sender, 1);
-        publicTradeable_ = _tag;
-    }
-
     function setCommenTokenURI(string _uri) public {
         checkDelegate(msg.sender, admPri_);
         tokenUri_ = _uri;
@@ -232,13 +223,13 @@ contract SysGmPos is Erc721Adv, SysGmBase {
             ctgs_[index].ctg_ = ctgType;
             ctgs_[index].rare_ = _rareValue;
             ctgs_[index].probWeight_  = _probWeight;
-        }
 
-        uint start = rares_[_rareValue].size_;
-        rares_[_rareValue].size_ = rares_[_rareValue].size_.add(_probWeight);
-
-        for (uint i = start; i < rares_[_rareValue].size_; ++i) {
-            rares_[_rareValue].ctgTypes_[i] = ctgType;
+            uint start = rares_[_rareValue].size_;
+           rares_[_rareValue].size_ = rares_[_rareValue].size_.add(_probWeight);
+   
+           for (uint i = start; i < rares_[_rareValue].size_; ++i) {
+               rares_[_rareValue].ctgTypes_[i] = ctgType;
+           }
         }
 
         ctgs_[index].name_       = PlatString.tobytes32(_nameStr);
@@ -273,108 +264,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
 
     ///////////////
-    function resetUnitMineInfo(uint _robotId) internal {
-        robots_[_robotId].paraUint_["spCur"]     = 0;
-        robots_[_robotId].paraUint_["spMax"]     = 0; 
-        robots_[_robotId].paraUint_["mineStart"] = 0;
-        robots_[_robotId].paraUint_["mineEnd"]   = 0;
-        robots_[_robotId].paraUint_["rrLevEft"]  = 0;
-    }
-
-    function setUintParaBool(uint _unitId, bytes32 _para, bool _value) internal {
-        robots_[_unitId].paraBool_[_para] = _value;
-    }
-
-    function setUintParaBytes32(uint _unitId, bytes32 _para, bytes32 _value) internal {
-        robots_[_unitId].paraBytes32_[_para] = _value;
-    }
-
-    function setUintParaAdr(uint _unitId, bytes32 _para, address _value) internal {
-        robots_[_unitId].paraAdr_[_para] = _value;
-    }
-
-    function setUintParaUint(uint _unitId, bytes32 _para, uint _value) internal {
-        robots_[_unitId].paraUint_[_para] = _value;
-    }
-
-    ////////////////
-    function exsetUintParaBool(uint _unitId, bytes32 _para, bool _value) external {
-        checkDelegate(msg.sender, 1);
-        robots_[_unitId].paraBool_[_para] = _value;
-        emit ExternalSetPara(msg.sender, _para);
-    }
-
-    function exsetUintParaBytes32(uint _unitId, bytes32 _para, bytes32 _value) external {
-        checkDelegate(msg.sender, 1);
-        robots_[_unitId].paraBytes32_[_para] = _value;
-        emit ExternalSetPara(msg.sender, _para);
-    }
-
-    function exsetUintParaAdr(uint _unitId, bytes32 _para, address _value) external {
-        checkDelegate(msg.sender, 1);
-        robots_[_unitId].paraAdr_[_para] = _value;
-        emit ExternalSetPara(msg.sender, _para);
-    }
-
-    function exsetUintParaUint(uint _unitId, bytes32 _para, uint _value) external {
-        checkDelegate(msg.sender, 1);
-        robots_[_unitId].paraUint_[_para] = _value;
-        emit ExternalSetPara(msg.sender, _para);
-    }
-
-    //////////////
-    function getDayInSeconds() public view returns (uint) {
-        return dayInSeconds_;
-    }
-
-    function getPriceToCreate() public view returns (uint) {
-        return priceToCreate_;
-    }
-
-    function getPosMineRatioPerday() public view returns (uint) {
-        return minedRatioPerDay_;
-    }
-
-    function getPosRewardRatioPerday() public view returns (uint) {
-        return rewardRatioPerDay_;
-    }
-
-    function getUintParaBool(uint _unitId, bytes32 _para) public returns (bool) {
-        return robots_[_unitId].paraBool_[_para];
-    }
-
-    function getUintParaBytes32(uint _unitId, bytes32 _para) public returns (bytes32) {
-        return robots_[_unitId].paraBytes32_[_para];
-    }
-
-    function getUintParaAdr(uint _unitId, bytes32 _para) public returns (address) {
-        return robots_[_unitId].paraAdr_[_para];
-    }
-
-    function getUnitParaUint(uint _unitId, bytes32 _para) public returns (uint) {
-        return robots_[_unitId].paraUint_[_para];
-    }
-
-    function getUnitSPExtra(uint _unitId) public view returns (uint) {
-        if (extraEffectObj_ == address(0))
-            return 0;
-        return SysGmPosEffect(extraEffectObj_).getExtraStakePoint(_unitId);
-    }
-
-    function getUnitRRExtra(uint _unitId) public view returns (uint) {
-        if (extraEffectObj_ == address(0))
-            return 0;
-        return SysGmPosEffect(extraEffectObj_).getExtraRewardRatio(_unitId);
-    }
-
-    function getUnitUPExtra(uint _unitId) public view returns (uint) {
-        if (extraEffectObj_ == address(0)) 
-            return 0;
-        return SysGmPosEffect(extraEffectObj_).getExtraUpgradeProbability(_unitId);
-    }
-
-    /*
-    ///////////////////////////
     function setUnitSpec(uint _unitId, bool _tag) public {
         checkDelegate(msg.sender, 1);
         robots_[_unitId].specific_ = _tag;
@@ -398,9 +287,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
 
     function setUnitSPBase(uint _unitId, uint _base) public {
-        //checkDelegate(msg.sender, 1);
-
-        addLog(PlatString.addressToString(msg.sender), true);
+        checkDelegate(msg.sender, 1);
         robots_[_unitId].spBase_ = _base;
     }
 
@@ -453,7 +340,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         checkDelegate(msg.sender, 1);
         robots_[_unitId].sellPrice_ = _price;
     }
-
 
     //////////////////////
     function getPosRatio() public view returns (uint, uint) {
@@ -532,24 +418,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return robots_[_unitId].posToken_;
     }
 
-    function getUnitSPExtra(uint _unitId) public view returns (uint) {
-        if (extraEffectObj_ == address(0))
-            return 0;
-        return SysGmPosEffect(extraEffectObj_).getExtraStakePoint(_unitId);
-    }
-
-    function getUnitRRExtra(uint _unitId) public view returns (uint) {
-        if (extraEffectObj_ == address(0))
-            return 0;
-        return SysGmPosEffect(extraEffectObj_).getExtraRewardRatio(_unitId);
-    }
-
-    function getUnitUPExtra(uint _unitId) public view returns (uint) {
-        if (extraEffectObj_ == address(0)) 
-            return 0;
-        return SysGmPosEffect(extraEffectObj_).getExtraUpgradeProbability(_unitId);
-    }
-
     function getUnitSeller(uint _unitId) public view returns (address) {
         return robots_[_unitId].seller_;
     }
@@ -557,5 +425,10 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     function getUnitSellPrice(uint _unitId) public view returns (uint) {
         return robots_[_unitId].sellPrice_;
     }
-    */
+
+    function getUnitParaExtra(uint _unitId, bytes32 _para) public view returns (uint) {
+        if (extraEffectObj_ == address(0))
+            return 0;
+        return SysGmPosEffect(extraEffectObj_).getExtraValue(_unitId, _para);
+    }
 }
