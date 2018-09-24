@@ -35,7 +35,6 @@ contract DBNode is Object {
     }
 
     function getNodeType() public view returns (bytes32) {
-        checkDelegate(msg.sender, 1);
         return nodeType_;
     }
 
@@ -45,20 +44,17 @@ contract DBNode is Object {
     }
 
     function getId() public view returns (address) {
-        checkDelegate(msg.sender, 1);
         return ethWalletId_;
     }
     
     function setDatabase(address _database) public {
         checkDelegate(msg.sender, 1);
-
         database_  = _database;
         setDelegate(database_, 1);
         CBDBDatabase(database_)._addNode(this);
     }
 
     function numChildren() public view returns(uint) {
-        checkDelegate(msg.sender, 1);
         return children_.length;
     }
     
@@ -73,7 +69,6 @@ contract DBNode is Object {
     }
 
     function getParent() public view returns(address) {
-        checkDelegate(msg.sender, 1);
         return parent_; 
     }
 
@@ -107,15 +102,11 @@ contract DBNode is Object {
     }
 
     function getChild(bytes32 _name) public view returns(address) {
-        checkDelegate(msg.sender, 1);
-
         require(childMap_[_name] != 0);
         return childMap_[_name];
     }
     
     function getChildByIndex(uint _index) public view returns(address) {
-        checkDelegate(msg.sender, 1);
-
         require(_index < children_.length);
         return children_[_index];
     }
