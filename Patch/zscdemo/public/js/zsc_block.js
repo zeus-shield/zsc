@@ -65,3 +65,25 @@ ZSCBlock.prototype.getBlockInfoByIndex = function(blockIndex, func) {
             }
         });
 }
+
+ZSCBlock.prototype.parserBlockInfo = function(info, index) {
+    var found1 = urlinfo.indexOf("?");
+    var found2 = urlinfo.indexOf("=");
+
+    if (found1 == -1 || found2 == -1) return false;
+
+    var len = urlinfo.length;
+    var offset = urlinfo.indexOf("?");
+    var newsidinfo = urlinfo.substr(offset,len)
+    var newsids = newsidinfo.split("&");
+
+    var blockSizeInfo  = newsids[0];
+    var blockTxNosInfo = newsids[1];
+    var minedStatusInfo = newsids[2];
+
+    this.blockSizes[index] = blockSizeInfo.split("=")[1];
+    this.blockTxNos[index] = blockTxNosInfo.split("=")[1];
+    this.minedStatus[index] = minedStatusInfo.split("=")[1];
+
+    return true;
+}
