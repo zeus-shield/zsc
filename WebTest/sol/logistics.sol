@@ -437,9 +437,6 @@ contract Logistics {
         return (str[0], str[1], str[2], str[3], str[4]);
     }
 
-    function getBrief(uint _index) public view returns (string, string, string, string, string) {
-    }
-
     function getBriefEx(bytes32 _num) public view returns (string) {
         uint index = 0;
         bool found = false;
@@ -465,6 +462,25 @@ contract Logistics {
         str = str.concat(infos_[_num].lastStatus_.bytes32ToString().toKeyValue("lastStatus"), "}");
 
         return str;
+    }
+
+    function getBriefByIndex(uint _index) public view returns (string, string, string, string, string) {
+        bytes32 num = 0;
+        string[5] memory str = ["", "", "", "", ""];
+
+        // check param
+        if (nums_.length <= _index) {
+            return (str[0], str[1], str[2], str[3], str[4]);
+        }
+
+        num = nums_[_index];
+        str[0] = num.bytes32ToString();
+        str[1] = infos_[num].transNum_.bytes32ToString();
+        str[2] = infos_[num].model_.bytes32ToString();
+        str[3] = infos_[num].destinationCountry_.bytes32ToString();
+        str[4] = infos_[num].lastStatus_.bytes32ToString();
+
+        return (str[0], str[1], str[2], str[3], str[4]);
     }
 
     function number() public view returns (uint) {
