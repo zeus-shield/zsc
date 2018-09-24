@@ -113,42 +113,42 @@ contract Logistics {
         }
 
         if (_track.keyExists("type")) {
-            type32 = PlatString.tobytes32(_track.getStringValueByKey("type"));
+            type32 = _track.getStringValueByKey("type").toBytes32();
             if (bytes32(0) != type32) {
                 infos_[_num].tracks_[index].type_ = type32;
             }
         }
 
         if (_track.keyExists("time")) {
-            time = PlatString.tobytes32(_track.getStringValueByKey("time"));
+            time = _track.getStringValueByKey("time").toBytes32();
             if (bytes32(0) != time) {
                 infos_[_num].tracks_[index].time_ = time;
             }
         }
 
         if (_track.keyExists("country")) {
-            country = PlatString.tobytes32(_track.getStringValueByKey("country"));
+            country = _track.getStringValueByKey("country").toBytes32();
             if (bytes32(0) != country) {
                 infos_[_num].tracks_[index].country_ = country;
             }
         }
 
         if (_track.keyExists("city")) {
-            city = PlatString.tobytes32(_track.getStringValueByKey("city"));
+            city = _track.getStringValueByKey("city").toBytes32();
             if (bytes32(0) != city) {
                 infos_[_num].tracks_[index].city_ = city;
             }
         }
 
         if (_track.keyExists("facilityName")) {
-            facilityName = PlatString.tobytes32(_track.getStringValueByKey("facilityName"));
+            facilityName = _track.getStringValueByKey("facilityName").toBytes32();
             if (bytes32(0) != facilityName) {
                 infos_[_num].tracks_[index].facilityName_ = facilityName;
             }
         }
 
         if (_track.keyExists("timeZone")) {
-            timeZone = PlatString.tobytes32(_track.getStringValueByKey("timeZone"));
+            timeZone = _track.getStringValueByKey("timeZone").toBytes32();
             if (bytes32(0) != timeZone) {
                 infos_[_num].tracks_[index].timeZone_ = timeZone;
             }
@@ -162,7 +162,7 @@ contract Logistics {
         }
 
         if (_track.keyExists("actionCode")) {
-            actionCode = PlatString.tobytes32(_track.getStringValueByKey("actionCode"));
+            actionCode = _track.getStringValueByKey("actionCode").toBytes32();
             if (bytes32(0) != actionCode) {
                 infos_[_num].tracks_[index].actionCode_ = actionCode;
             }
@@ -174,7 +174,7 @@ contract Logistics {
         // log0(city);
         // log0(facilityName);
         // log0(timeZone);
-        // log0(PlatString.tobytes32(desc));
+        // log0(desc.toBytes32());
         // log0(actionCode);
     }
 
@@ -260,7 +260,7 @@ contract Logistics {
         }
 
         if (_brief.keyExists("num")) {
-            num = PlatString.tobytes32(_brief.getStringValueByKey("num"));
+            num = _brief.getStringValueByKey("num").toBytes32();
         }
 
         if (bytes32(0) == num) {
@@ -277,28 +277,28 @@ contract Logistics {
         infos_[num].num_ = num;
 
         if (_brief.keyExists("transNum")) {
-            transNum = PlatString.tobytes32(_brief.getStringValueByKey("transNum"));
+            transNum = _brief.getStringValueByKey("transNum").toBytes32();
             if (bytes32(0) != transNum) {
                 infos_[num].transNum_ = transNum;
             }
         }
 
         if (_brief.keyExists("model")) {
-            model = PlatString.tobytes32(_brief.getStringValueByKey("model"));
+            model = _brief.getStringValueByKey("model").toBytes32();
             if (bytes32(0) != model) {
                 infos_[num].model_ = model;
             }
         }
 
         if (_brief.keyExists("destinationCountry")) {
-            destinationCountry = PlatString.tobytes32(_brief.getStringValueByKey("destinationCountry"));
+            destinationCountry = _brief.getStringValueByKey("destinationCountry").toBytes32();
             if (bytes32(0) != destinationCountry) {
                 infos_[num].destinationCountry_ = destinationCountry;
             }
         }
 
         if (_brief.keyExists("lastStatus")) {
-            lastStatus = PlatString.tobytes32(_brief.getStringValueByKey("lastStatus"));
+            lastStatus = _brief.getStringValueByKey("lastStatus").toBytes32();
             if (bytes32(0) != destinationCountry) {
                 infos_[num].lastStatus_ = lastStatus;
             }
@@ -325,7 +325,7 @@ contract Logistics {
     }
 
     function updateEx(string _info) public {
-        // string memory _info = "{\"error\":null,\"num\":\"JNTCU0600046683YQ\",\"transNum\":\"MSK0000027695\",\"model\":\"MOSEXP\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"§¡§â§Þ§Ñ§Ó§Ú§â\",\"timeZone\":\"+3\",\"desc\":\"§´§à§Ó§Ñ§â §Ò§í§Ý §å§ã§á§Ö§ê§ß§à §Õ§à§ã§ä§Ñ§Ó§Ý§Ö§ß §á§à§Ý§å§é§Ñ§ä§Ö§Ý§ð. §³§á§Ñ§ã§Ú§Ò§à §é§ä§à §Ó§à§ã§á§à§Ý§î§Ù§à§Ó§Ñ§Ý§Ú§ã§î §ß§Ñ§ê§Ú§Þ§Ú §å§ã§Ý§å§Ô§Ñ§Þ§Ú\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
+        // string memory _info = "{\"error\":null,\"num\":\"JNTCU0600046683YQ\",\"transNum\":\"MSK0000027695\",\"model\":\"MOSEXP\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"???????\",\"timeZone\":\"+3\",\"desc\":\"????? ??? ??????? ????????? ??????????. ??????? ??? ??????????????? ?????? ????????\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
         bytes32 num = bytes32(0);
 
         // check param
@@ -334,7 +334,7 @@ contract Logistics {
         }
 
         if (_info.keyExists("num")) {
-            num = PlatString.tobytes32(_info.getStringValueByKey("num"));
+            num = _info.getStringValueByKey("num").toBytes32();
         }
 
         if (bytes32(0) == num) {
@@ -378,7 +378,7 @@ contract Logistics {
         bool found = false;
         string memory str = "";
 
-        // _num = PlatString.tobytes32("JNTCU0600046683YQ");
+        // _num = "JNTCU0600046683YQ".toBytes32();
 
         // check param
         if (bytes32(0) == _num) {
