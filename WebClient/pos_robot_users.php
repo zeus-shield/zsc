@@ -35,16 +35,16 @@ session_start();
             if(!ret) { 
                 window.location.href = "index.php";
             } else {
-                userRobotGM = new ZSCRobotOwned(account, userLogin.getErc721Adr(), userLogin.getControlApisFullAbi());
-                loadUserAllRobotBriefs();
+                userRobotGM = new ZSCRobotAllBreifes(account, userLogin.getErc721Adr(), userLogin.getControlApisFullAbi());
+                loadAllUserRobotBriefs();
             }
         });
     });
 
     /////////////////////////////
-    function loadUserAllRobotBriefs() {
-        userRobotGM.loadUserAllRobotBriefs(function() {
-            loadUserAllRobotHtml("PageBody", "showUserRobotDetails", "createGen0Robot");
+    function loadAllUserRobotBriefs() {
+        userRobotGM.loadAllRobotBriefs("user", 0x0, function() {
+            loadUserAllRobotHtml("PageBody", "showRobotDetails", "createGen0Robot");
         });
     }
 
@@ -54,7 +54,7 @@ session_start();
         });
     }
 
-    function showUserRobotDetails(robotId) {
+    function showRobotDetails(robotId) {
         window.location.href = "pos_robot_detail.php?robotId=" + robotId;
     }
 
@@ -83,13 +83,13 @@ session_start();
         for (var i = 0; i < robotNos; ++i) {
             //default paras: "id", "status", "rare", "spLev", 
             //this.robotParaBrief = ["spMax"];
-            var robotId = userRobotGM.getRobotParaBriefValue("id",     i, "null");
+            var robotId = userRobotGM.getRobotBriefParaValue("id",     i, "null");
             text += '<tr>'
             text += '   <td><text>' + robotId + '</text></td>'
-            text += '   <td><text>' + userRobotGM.getRobotParaBriefValue("status", i, "null") + '</text></td>'
-            text += '   <td><text>' + userRobotGM.getRobotParaBriefValue("rare",   i, "Rare") + '</text></td>'
-            text += '   <td><text>' + userRobotGM.getRobotParaBriefValue("spLev",  i, "null") + '</text></td>'
-            text += '   <td><text>' + userRobotGM.getRobotParaBriefValue("name",   i, "null") + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotBriefParaValue("status", i, "null") + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotBriefParaValue("rare",   i, "Rare") + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotBriefParaValue("spLev",  i, "null") + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotBriefParaValue("name",   i, "null") + '</text></td>'
             text += '   <td><button type="button" onClick="' + showPrefix + robotId + showSuffix + '"> Show </button></td>'
             text += '</tr>'
         }
