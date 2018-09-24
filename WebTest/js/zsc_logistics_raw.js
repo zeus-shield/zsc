@@ -228,6 +228,41 @@ export default class ZSCLogistics {
         });
     }
 
+    getBriefByIndex(_index) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.getBriefByIndex.estimateGas(_index, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("============== Logistics.getBriefByIndex(uint) ==============");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result);
+                        console.log("=============================================================");
+                        // call 'Logistics.getBriefByIndex(uint)'
+                        contractInstance.getBriefByIndex.call(_index, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+                            } else {
+                                Output(window.outputElement, 'small', 'red', error);
+                            }
+                        });
+                    } else {
+                        Output(window.outputElement, 'small', 'red', error);
+                    }
+                });
+            } else {
+                Output(window.outputElement, 'small', 'red', error);
+            }
+        });
+    }
     number() {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
