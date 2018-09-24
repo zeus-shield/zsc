@@ -27,7 +27,7 @@ session_start();
     var checkeWeb3Account = <?php echo $htmlObjects->checkWeb3Account();?>;
     var userType = <?php echo "'".$_SESSION["userType"]."'";?>;
     var userLogin;
-    var robotMarketGM;
+    var userRobotGM;
 
     checkeWeb3Account(function(account) {
         userLogin = new ZSCLogin(account);
@@ -35,56 +35,60 @@ session_start();
             if(!ret) { 
                 window.location.href = "index.php";
             } else {
-                robotMarketGM = new ZSCRobotMarket(account, userLogin.getControlApisAdr(), userLogin.getControlApisFullAbi());
-                loadRobotsInMarket();
+                userRobotGM = new ZSCRobotAllBreifes(account, userLogin.getErc721Adr(), userLogin.getControlApisFullAbi());
+                loadAllSellingRobotBriefs();
             }
         });
     });
 
     /////////////////////////////
-    function loadRobotsInMarket() {
-        robotMarketGM.loadRobotsInMarket(function() {
-            loadHtml("PageBody", "purchaseSellingRobot");
+    function loadAllSellingRobotBriefs() {
+        userRobotGM.loadAllRobotBriefs("selling", 0x0, function() {
+            loadAllSellingRobotHtml("PageBody", "showRobotDetails", "createGen0Robot");
         });
     }
 
-    function purchaseSellingRobot(hashId, robotId) {
-        robotMarketGM.purchaseSellingRobot(hashId, robotId, function() {                
-        });
+    function showRobotDetails(robotId) {
+        window.location.href = "pos_robot_detail.php?robotId=" + robotId;
     }
 
-    function loadHtml(elementId, purchase) {
-        var purchasePrefix = purchase + "('OperationHash', '"; 
-        var purchaseSuffix = "')";
+    /////////////////////////    
+    function loadAllSellingRobotHtml(elementId, showRobot, createGen0) {
+        var createGen0Func = createGen0 + "('OperationHash')"; 
 
-        var robotNos = robotMarketGM.getRobotNos();
-    
-        var titlle = "Robot markets" 
+        var showPrefix = showRobot + "('"; 
+        var showSuffix = "')";
+
+        var robotNos = userRobotGM.getRobotNos();
+        var titlle = "User owned robots" 
 
         text  = '<div class="well" align="center" >' + titlle + '<br>';
         text  = '<text id="OperationHash" value = "log:"> </text> </div>';
 
+        text += '<div class="well" align="center" >'
+        text += '   <button type="button" onClick="' + createGen0Func + '">  Create Lev0 miner robot (Cost 0.01ETH) </button> <br>'
+        text += '</div>';
+
         text += '<div class="well">';
-        text += '<table align="center" style="width:800px;min-height:30px">'
-        text += '   <tr><td>Robot ID</td><td>Level</td><td>Max SP</td><td>Price (ETH)</td><td>Owner</td><td>Purchase</td></tr> '
-        text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> </tr>'
+        text += '<table align="center" style="width:600px;min-height:30px">'
+        text += '   <tr> <td>id</td> <td>rare</td> <td>spLev</td> <td>name</td> <td>price</td> <td> Details </td></tr> '
+        text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td>  </tr>'
 
         for (var i = 0; i < robotNos; ++i) {
-            var robotId = robotMarketGM.getRobotId(i);
-
+            //default paras: "id", "status", "rare", "spLev", 
+            //this.robotParaBrief = ["spMax"];
+            var robotId = userRobotGM.getRobotBriefParaValue("id",     i, "null");
             text += '<tr>'
             text += '   <td><text>' + robotId + '</text></td>'
-            text += '   <td><text>' + robotMarketGM.getRobotLev(i) + '</text></td>'
-            text += '   <td><text>' + robotMarketGM.getMaxSP(i) + '</text></td>'
-            text += '   <td><text>' + robotMarketGM.getPriceForSale(i) + '</text></td>'
-            text += '   <td><text>' + robotMarketGM.getRobotSeller(i) + '</text></td>'
-            text += '   <td><button type="button" onClick="' + purchasePrefix + robotId + purchaseSuffix + '"> Purchase </button></td>'
+            text += '   <td><text>' + userRobotGM.getRobotBriefParaValue("rare",   i, "Rare") + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotBriefParaValue("spLev",  i, "null") + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotBriefParaValue("name",  i, "null") + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotBriefParaValue("price",  i, "FromWei") + '</text></td>'
+            text += '   <td><button type="button" onClick="' + showPrefix + robotId + showSuffix + '"> Show </button></td>'
             text += '</tr>'
-            text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> </tr>'
         }
         text += '</table>'
         text += '</div>'
-    
         document.getElementById(elementId).innerHTML = text;  
     }
 
