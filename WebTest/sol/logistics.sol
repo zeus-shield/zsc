@@ -437,6 +437,9 @@ contract Logistics {
         return (str[0], str[1], str[2], str[3], str[4]);
     }
 
+    function getBrief(uint _index) public view returns (string, string, string, string, string) {
+    }
+
     function getBriefEx(bytes32 _num) public view returns (string) {
         uint index = 0;
         bool found = false;
