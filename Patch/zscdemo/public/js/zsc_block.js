@@ -35,3 +35,20 @@ ZSCBlock.prototype.loadAllBlocks = function(poolIndex, func) {
         }
     });
 }
+
+ZSCBlock.prototype.numAllBlocks = function(func) {
+    this.myControlApi.numBlockInfo(this.userName, this.poolIndex, false, 
+        {from: this.getAccount()},
+        function(error, result){ 
+            if(!error) {
+                if (isMined) {
+                    this.minedBlockNos = result;
+                } else {
+                    this.totalBlockNos = result;
+                }
+                func();
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
