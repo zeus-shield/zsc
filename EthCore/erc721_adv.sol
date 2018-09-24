@@ -56,20 +56,12 @@ contract Erc721Adv is ERC721, Delegated {
     function Erc721Adv() public {
     }
 
-    function checkTradeAble(uint256 _tokenId) internal view returns (bool);
+    function checkTradeAble(uint256 _tokenId) internal view;
     function tokenURI(uint _tokenId) public view returns (string);
 
     function checkOnlyOwnerOf(address _user, uint _tokenId) internal view {
         require(tokenOwner_[_tokenId] == _user);
     }
-
-    /*
-    function checkCanTransfer(address _sender, uint256 _tokenId) private view {
-        if (checkTradeAble(_tokenId)) {
-            require(_sender == tokenOwner_[_tokenId] || _sender == tokenApprovedFor_[_tokenId]);
-        }
-    }
-    */
 
     function setTokenNameInfo(string _name, string _symbole) public {
         checkDelegate(msg.sender, 1);
