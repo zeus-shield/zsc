@@ -6,7 +6,6 @@
 pragma solidity ^0.4.21;
 //pragma experimental ABIEncoderV2;
 
-import "./plat_string.sol";
 import "./utillib/LibString.sol";
 
 contract Logistics {
@@ -325,7 +324,7 @@ contract Logistics {
     }
 
     function updateEx(string _info) public {
-        // string memory _info = "{\"error\":null,\"num\":\"JNTCU0600046683YQ\",\"transNum\":\"MSK0000027695\",\"model\":\"MOSEXP\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"???????\",\"timeZone\":\"+3\",\"desc\":\"????? ??? ??????? ????????? ??????????. ??????? ??? ??????????????? ?????? ????????\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
+        // string memory _info = "{\"error\":null,\"num\":\"JNTCU0600046683YQ\",\"transNum\":\"MSK0000027695\",\"model\":\"MOSEXP\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"§¡§â§Þ§Ñ§Ó§Ú§â\",\"timeZone\":\"+3\",\"desc\":\"§´§à§Ó§Ñ§â §Ò§í§Ý §å§ã§á§Ö§ê§ß§à §Õ§à§ã§ä§Ñ§Ó§Ý§Ö§ß §á§à§Ý§å§é§Ñ§ä§Ö§Ý§ð. §³§á§Ñ§ã§Ú§Ò§à §é§ä§à §Ó§à§ã§á§à§Ý§î§Ù§à§Ó§Ñ§Ý§Ú§ã§î §ß§Ñ§ê§Ú§Þ§Ú §å§ã§Ý§å§Ô§Ñ§Þ§Ú\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
         bytes32 num = bytes32(0);
 
         // check param
@@ -393,14 +392,14 @@ contract Logistics {
 
         str = "[";
         for (uint i=0; i<infos_[_num].tracks_.length; i++) {
-            str = str.concat("{", PlatString.bytes32ToString(infos_[_num].tracks_[i].type_).toKeyValue("type"), ",");
-            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].time_).toKeyValue("time"), ",");
-            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].country_).toKeyValue("country"), ",");
-            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].city_).toKeyValue("city"), ",");
-            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].facilityName_).toKeyValue("facilityName"), ",");
-            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].timeZone_).toKeyValue("timeZone"), ",");
+            str = str.concat("{", infos_[_num].tracks_[i].type_.bytes32ToString().toKeyValue("type"), ",");
+            str = str.concat(infos_[_num].tracks_[i].time_.bytes32ToString().toKeyValue("time"), ",");
+            str = str.concat(infos_[_num].tracks_[i].country_.bytes32ToString().toKeyValue("country"), ",");
+            str = str.concat(infos_[_num].tracks_[i].city_.bytes32ToString().toKeyValue("city"), ",");
+            str = str.concat(infos_[_num].tracks_[i].facilityName_.bytes32ToString().toKeyValue("facilityName"), ",");
+            str = str.concat(infos_[_num].tracks_[i].timeZone_.bytes32ToString().toKeyValue("timeZone"), ",");
             str = str.concat(infos_[_num].tracks_[i].desc_.toKeyValue("desc"), ",");
-            str = str.concat(PlatString.bytes32ToString(infos_[_num].tracks_[i].actionCode_).toKeyValue("actionCode"), "}");
+            str = str.concat(infos_[_num].tracks_[i].actionCode_.bytes32ToString().toKeyValue("actionCode"), "}");
 
             if (infos_[_num].tracks_.length != (i+1)) {
                 str = str.concat(",");
@@ -416,7 +415,7 @@ contract Logistics {
         bool found = false;
         string[5] memory str = ["", "", "", "", ""];
 
-        // _num = PlatString.tobytes32("JNTCU0600046683YQ");
+        // _num = "JNTCU0600046683YQ".toBytes32();
 
         // check param
         if (bytes32(0) == _num) {
@@ -429,11 +428,11 @@ contract Logistics {
             return (str[0], str[1], str[2], str[3], str[4]);
         }
 
-        str[0] = PlatString.bytes32ToString(_num);
-        str[1] = PlatString.bytes32ToString(infos_[_num].transNum_);
-        str[2] = PlatString.bytes32ToString(infos_[_num].model_);
-        str[3] = PlatString.bytes32ToString(infos_[_num].destinationCountry_);
-        str[4] = PlatString.bytes32ToString(infos_[_num].lastStatus_);
+        str[0] = _num.bytes32ToString();
+        str[1] = infos_[_num].transNum_.bytes32ToString();
+        str[2] = infos_[_num].model_.bytes32ToString();
+        str[3] = infos_[_num].destinationCountry_.bytes32ToString();
+        str[4] = infos_[_num].lastStatus_.bytes32ToString();
 
         return (str[0], str[1], str[2], str[3], str[4]);
     }
@@ -443,7 +442,7 @@ contract Logistics {
         bool found = false;
         string memory str = "";
 
-        // _num = PlatString.tobytes32("JNTCU0600046683YQ");
+        // _num = "JNTCU0600046683YQ".toBytes32();
 
         // check param
         if (bytes32(0) == _num) {
@@ -456,11 +455,11 @@ contract Logistics {
             return str;
         }
 
-        str = str.concat("{", PlatString.bytes32ToString(_num).toKeyValue("num"), ",");
-        str = str.concat(PlatString.bytes32ToString(infos_[_num].transNum_).toKeyValue("transNum"), ",");
-        str = str.concat(PlatString.bytes32ToString(infos_[_num].model_).toKeyValue("model"), ",");
-        str = str.concat(PlatString.bytes32ToString(infos_[_num].destinationCountry_).toKeyValue("destinationCountry"), ",");
-        str = str.concat(PlatString.bytes32ToString(infos_[_num].lastStatus_).toKeyValue("lastStatus"), "}");
+        str = str.concat("{", _num.bytes32ToString().toKeyValue("num"), ",");
+        str = str.concat(infos_[_num].transNum_.bytes32ToString().toKeyValue("transNum"), ",");
+        str = str.concat(infos_[_num].model_.bytes32ToString().toKeyValue("model"), ",");
+        str = str.concat(infos_[_num].destinationCountry_.bytes32ToString().toKeyValue("destinationCountry"), ",");
+        str = str.concat(infos_[_num].lastStatus_.bytes32ToString().toKeyValue("lastStatus"), "}");
 
         return str;
     }
