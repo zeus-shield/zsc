@@ -126,6 +126,8 @@ export default class TestLogisticsRaw {
         let logistics = new Logistics(this[abi], this[contractAddress]);
         //logistics.getBrief("JNTCU0600046689YQ");
         //logistics.getBriefEx("JNTCU0600046688YQ");
+        //logistics.getBriefByIndex(0);
+        //logistics.getBriefExByIndex(4);
         logistics.getTracks("JNTCU0600046685YQ");
     }
 
