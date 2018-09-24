@@ -23,9 +23,6 @@ class ZSCInclude {
         '  <td align="center"><a href="index.php"> [Home] </a></td>'.
         '  <td align="center"><a href="user_wallet.php"> [Wallet] </a></td>'.
         '  <td align="center"><a href="pos_robot_users.php"> [Robots]</a></td>'.
-        '  <td align="center"><a href="pos_robot_transfer.php"> [Transfer]</a></td>'.
-        '  <td align="center"><a href="pos_robot_mine.php"> [PoS] </a></td>'.
-        '  <td align="center"><a href="pos_robot_selling.php"> [Selling] </a></td>'.
         '  <td align="center"><a href="pos_robot_market.php"> [Robot-market] </a></td>'.
         ' </tr>'.
         '</table>';
@@ -78,11 +75,8 @@ class ZSCInclude {
         <script type="text/javascript" src="./common/zsc_wallet.js"></script>
         <script type="text/javascript" src="./common/zsc_module_adrs.js"></script>
         
-        <script type="text/javascript" src="./pos/pos_robot_enhance.js"></script>
-        <script type="text/javascript" src="./pos/pos_robot_gen0.js"></script>
-        <script type="text/javascript" src="./pos/pos_robot_owned.js"></script>
-        <script type="text/javascript" src="./pos/pos_robot_market.js"></script>
-        <script type="text/javascript" src="./pos/pos_staker_info.js"></script>
+        <script type="text/javascript" src="./pos/pos_robot_all_briefs.js"></script>
+        <script type="text/javascript" src="./pos/pos_robot_single_details.js"></script>
 
         <script type="text/javascript" src="./insura/zsc_agreements.js"></script>
         <script type="text/javascript" src="./insura/zsc_agreements_all.js"></script>
