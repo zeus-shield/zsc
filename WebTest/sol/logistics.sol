@@ -483,6 +483,25 @@ contract Logistics {
         return (str[0], str[1], str[2], str[3], str[4]);
     }
 
+    function getBriefExByIndex(uint _index) public view returns (string) {
+        bytes32 num = 0;
+        string memory str = "";
+
+        // check param
+        if (nums_.length <= _index) {
+            return str;
+        }
+
+        num = nums_[_index];
+        str = str.concat("{", num.bytes32ToString().toKeyValue("num"), ",");
+        str = str.concat(infos_[num].transNum_.bytes32ToString().toKeyValue("transNum"), ",");
+        str = str.concat(infos_[num].model_.bytes32ToString().toKeyValue("model"), ",");
+        str = str.concat(infos_[num].destinationCountry_.bytes32ToString().toKeyValue("destinationCountry"), ",");
+        str = str.concat(infos_[num].lastStatus_.bytes32ToString().toKeyValue("lastStatus"), "}");
+
+        return str;
+    }
+
     function number() public view returns (uint) {
         return nums_.length;
     }
