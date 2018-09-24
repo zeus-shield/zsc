@@ -14,11 +14,14 @@ contract SysGmPosEffect {
 }
 
 contract SysGmPos is Erc721Adv, SysGmBase {
+    event ExternalSetPara(address indexed _sender, bytes32 _para);
+
     uint internal constant DAY_IN_SECONDS = 86400;
     uint internal constant MAX_RATIO_VALUE = 1000000;
     uint public dayInSeconds_;
 
     struct RobotUnit {
+        /*
         bytes32 status_;
         bytes32 ctg_;
         bytes32 name_;
@@ -45,6 +48,12 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         address seller_;
 
         bytes32 posToken_;
+        */
+
+        mapping(bytes32 => uint)    paraUint_;
+        mapping(bytes32 => bytes32) paraBytes32_;
+        mapping(bytes32 => bool)    paraBool_;
+        mapping(bytes32 => address) paraAdr_;
     }
     uint private robotNos_;
     mapping(uint => RobotUnit) private robots_;
@@ -102,10 +111,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
 
     //////////////////////////    
-    function checkUnitUser(address _user, uint _unitId) internal view {
-        require(_user == ownerOf(_unitId));
-    }
-
     function getRandomUnitCategory() internal view returns (bytes32) {
         uint ran = random(0, MAX_RATIO_VALUE);
         uint rareLev;
@@ -268,91 +273,56 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
 
     ///////////////
-    function setUnitSpec(uint _unitId, bool _tag) public {
-        checkDelegate(msg.sender, 1);
-        robots_[_unitId].specific_ = _tag;
+    function resetUnitMineInfo(uint _robotId) internal {
+        robots_[_robotId].paraUint_["spCur"]     = 0;
+        robots_[_robotId].paraUint_["spMax"]     = 0; 
+        robots_[_robotId].paraUint_["mineStart"] = 0;
+        robots_[_robotId].paraUint_["mineEnd"]   = 0;
+        robots_[_robotId].paraUint_["rrLevEft"]  = 0;
     }
 
-    function setUnitBirthValue(uint _unitId, uint _sp, uint _rr, uint _up) public {
-        checkDelegate(msg.sender, 1);
-        robots_[_unitId].spBirth_ = _sp;
-        robots_[_unitId].rrBirth_ = _rr;
-        robots_[_unitId].upProbBirth_ = _up;
+    function setUintParaBool(bytes32 _para, bool _value) internal {
+        robots_[_unitId].paraBool_[_para] = _tag;
     }
 
-    function setUnitStatus(uint _unitId, bytes32 _status) public {
-        checkDelegate(msg.sender, 1);
-        robots_[_unitId].status_ = _status;
+    function setUintParaBytes32(bytes32 _para, bytes32 _value) internal {
+        robots_[_unitId].paraBytes32_[_para] = _tag;
     }
 
-    function setUnitSPLev(uint _unitId, uint _lev) public {
-        checkDelegate(msg.sender, 1);
-        robots_[_unitId].spLev_ = _lev;
+    function setUintParaAdr(bytes32 _para, address _value) internal {
+        robots_[_unitId].paraAdr_[_para] = _tag;
     }
 
-    function setUnitSPBase(uint _unitId, uint _base) public {
-        checkDelegate(msg.sender, 1);
-        robots_[_unitId].spBase_ = _base;
+    function setUintParaUint(bytes32 _para, uint _value) internal {
+        robots_[_unitId].paraUint_[_para] = _value;
     }
 
-    function setUnitSPMax(uint _unitId, uint _max) public {
+    ////////////////
+    function exsetUintParaBool(bytes32 _para, bool _value) external {
         checkDelegate(msg.sender, 1);
-        robots_[_unitId].spMax_ = _max;
+        robots_[_unitId].paraBool_[_para] = _tag;
+        emit ExternalSetPara(msg.sender, _para);
     }
 
-    function setUnitSPCur(uint _unitId, uint _cur) public {
+    function exsetUintParaBytes32(bytes32 _para, bytes32 _value) external {
         checkDelegate(msg.sender, 1);
-        robots_[_unitId].spCur_ = _cur;
+        robots_[_unitId].paraBytes32_[_para] = _tag;
+        emit ExternalSetPara(msg.sender, _para);
     }
 
-    function setUnitUPBase(uint _unitId, uint _base) public {
+    function exsetUintParaAdr(bytes32 _para, address _value) external {
         checkDelegate(msg.sender, 1);
-        robots_[_unitId].upProbBase_ = _base;
+        robots_[_unitId].paraAdr_[_para] = _tag;
+        emit ExternalSetPara(msg.sender, _para);
     }
 
-    function setUnitUPPrice(uint _unitId, uint _price) public {
+    function exsetUintParaUint(bytes32 _para, uint _value) external {
         checkDelegate(msg.sender, 1);
-        robots_[_unitId].upPrice_ = _price;
+        robots_[_unitId].paraUint_[_para] = _value;
+        emit ExternalSetPara(msg.sender, _para);
     }
 
-    function setUnitRRLevEft(uint _unitId, uint _eft) public {
-        checkDelegate(msg.sender, 1);
-        robots_[_unitId].rrLevEft_ = _eft;
-    }
 
-    function setUnitMineStart(uint _unitId, uint _tm) public {
-        checkDelegate(msg.sender, 1);
-        robots_[_unitId].mineStart_ = _tm;
-    }
-
-    function setUnitMineEnd(uint _unitId, uint _tm) public {
-        checkDelegate(msg.sender, 1);
-        robots_[_unitId].mineEnd_ = _tm;
-    }
-
-    function setUnitPosToken(uint _unitId, bytes32 _token) public {
-        checkDelegate(msg.sender, 1);
-        robots_[_unitId].posToken_ = _token;
-    }
-
-    function setUnitSeller(uint _unitId, address _seller) public {
-        checkDelegate(msg.sender, 1);
-        robots_[_unitId].seller_ = _seller;
-    }
-
-    function setUnitSellPrice(uint _unitId, uint _price) public {
-        checkDelegate(msg.sender, 1);
-        robots_[_unitId].sellPrice_ = _price;
-    }
-
-    function resetUnitMineInfo(uint _robotId) public {
-        checkDelegate(msg.sender, 1);
-        robots_[_robotId].spCur_     = 0;
-        robots_[_robotId].spMax_     = 0; 
-        robots_[_robotId].mineStart_ = 0;
-        robots_[_robotId].mineEnd_   = 0;
-        robots_[_robotId].rrLevEft_  = 0;
-    }
 
     //////////////////////
     function getPosRatio() public view returns (uint, uint) {
