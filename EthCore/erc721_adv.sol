@@ -59,16 +59,17 @@ contract Erc721Adv is ERC721, Delegated {
     function checkTradeAble(uint256 _tokenId) internal view returns (bool);
     function tokenURI(uint _tokenId) public view returns (string);
 
-    function checkOnlyOwnerOf( address _user, uint _tokenId) private view {
+    function checkOnlyOwnerOf(address _user, uint _tokenId) internal view {
         require(tokenOwner_[_tokenId] == _user);
     }
 
+    /*
     function checkCanTransfer(address _sender, uint256 _tokenId) private view {
-        address owner = tokenOwner_[_tokenId];        
         if (checkTradeAble(_tokenId)) {
-            require(_sender == owner || msg.sender == tokenApprovedFor_[_tokenId]);
+            require(_sender == tokenOwner_[_tokenId] || _sender == tokenApprovedFor_[_tokenId]);
         }
     }
+    */
 
     function setTokenNameInfo(string _name, string _symbole) public {
         checkDelegate(msg.sender, 1);
@@ -90,7 +91,7 @@ contract Erc721Adv is ERC721, Delegated {
     }
 
     function balanceOf(address _owner) public view returns (uint) {
-        require(_owner != address(0));
+        //require(_owner != address(0));
         return ownedTokens_[_owner].length;
     }
 
@@ -100,17 +101,20 @@ contract Erc721Adv is ERC721, Delegated {
     }
 
     function transfer(address _to, uint _tokenId) public {
-        checkCanTransfer(msg.sender, _tokenId);
+        checkTradeAble(_tokenId);
+        //checkCanTransfer(msg.sender, _tokenId);
         _transfer(msg.sender, _to, _tokenId);
     }
 
     function safeTransferFrom(address _from, address _to, uint _tokenId) public {
-        checkCanTransfer(msg.sender, _tokenId);
+        checkTradeAble(_tokenId);
+        //checkCanTransfer(msg.sender, _tokenId);
+        require(tokenApprovedFor_[_tokenId] == msg.sender);
         _transfer(_from, _to, _tokenId);
     }
 
     function approve(address _to, uint _tokenId) public {
-        checkOnlyOwnerOf( msg.sender, _tokenId);
+        checkOnlyOwnerOf(msg.sender, _tokenId);
         require(_to != msg.sender);
 
         if(_to != address(0) || tokenApprovedFor_[_tokenId] != address(0)) {
@@ -130,7 +134,7 @@ contract Erc721Adv is ERC721, Delegated {
     * @return uint representing the ID of the token
     */
     function tokenOfOwnerByIndex(address _owner, uint _index) public view returns (uint) {
-        require(_owner != address(0));
+        //require(_owner != address(0));
         require(_index < ownedTokens_[_owner].length);
         return ownedTokens_[_owner][_index];
     }
@@ -139,8 +143,9 @@ contract Erc721Adv is ERC721, Delegated {
     * @dev Claims the ownership of a given token ID
     * @param _tokenId uint ID of the token being claimed by the msg.sender
     */
-    function takeOwnership(uint _tokenId) public { 
-        checkCanTransfer(msg.sender, _tokenId);
+    function takeOwnership(uint _tokenId) public {
+        checkTradeAble(_tokenId); 
+        //checkCanTransfer(msg.sender, _tokenId);
         require(tokenApprovedFor_[_tokenId] == msg.sender);
         clearApprovalAndTransfer(tokenOwner_[_tokenId], msg.sender, _tokenId);
     }
