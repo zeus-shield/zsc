@@ -124,11 +124,46 @@ export default class TestLogisticsRaw {
     get() {
         console.log('TestLogisticsRaw.get()');
         let logistics = new Logistics(this[abi], this[contractAddress]);
-        //logistics.getBrief("JNTCU0600046689YQ");
-        //logistics.getBriefEx("JNTCU0600046688YQ");
-        //logistics.getBriefByIndex(0);
-        //logistics.getBriefExByIndex(4);
-        logistics.getTracks("JNTCU0600046685YQ");
+
+        // logistics.getBrief("JNTCU0600046689YQ", function(error, result) {
+        //     if (!error) {
+        //         Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+        //     } else {
+        //         Output(window.outputElement, 'small', 'red', error);
+        //     }
+        // });
+
+        // logistics.getBriefEx("JNTCU0600046688YQ", function(error, result) {
+        //     if (!error) {
+        //         Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+        //     } else {
+        //         Output(window.outputElement, 'small', 'red', error);
+        //     }
+        // });
+
+        // logistics.getBriefByIndex(0, function(error, result) {
+        //     if (!error) {
+        //         Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+        //     } else {
+        //         Output(window.outputElement, 'small', 'red', error);
+        //     }
+        // });
+
+        // logistics.getBriefExByIndex(4, function(error, result) {
+        //     if (!error) {
+        //         Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+        //     } else {
+        //         Output(window.outputElement, 'small', 'red', error);
+        //     }
+        // });
+
+        logistics.getTracks("JNTCU0600046685YQ", function(error, result) {
+            if (!error) {
+                Output(window.outputElement, 'small', 'red', `[Track]:${result}`);
+            } else {
+                Output(window.outputElement, 'small', 'red', error);
+            }
+        });
     }
 
     do(operation) {
