@@ -3,7 +3,7 @@
 */
 
 import Receipt from './receipt.js';
-import Output from './output.js';
+// import Output from './output.js';
 import Deploy from './deploy_raw.js';
 
 // private member
@@ -27,10 +27,14 @@ export default class ZSCLogistics {
             if (!error) {
                 let deploy = new Deploy();
                 if('undefined' != typeof deploy) {
-                    deploy.do("transaction", data, result, handler[constractAddress], null, func);
+                    deploy.do("transaction", data, result, handler[constractAddress], func);
                 }
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != func) {
+                    func(error);
+                }
             }
         });
     }
@@ -44,10 +48,14 @@ export default class ZSCLogistics {
             if (!error) {
                 let deploy = new Deploy();
                 if('undefined' != typeof deploy) {
-                    deploy.do("transaction", data, result, handler[constractAddress], null, func);
+                    deploy.do("transaction", data, result, handler[constractAddress], func);
                 }
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != func) {
+                    func(error);
+                }
             }
         });
     }
@@ -61,10 +69,14 @@ export default class ZSCLogistics {
             if (!error) {
                 let deploy = new Deploy();
                 if('undefined' != typeof deploy) {
-                    deploy.do("transaction", data, result, handler[constractAddress], null, func);
+                    deploy.do("transaction", data, result, handler[constractAddress], func);
                 }
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != func) {
+                    func(error);
+                }
             }
         });
     }
@@ -78,10 +90,14 @@ export default class ZSCLogistics {
             if (!error) {
                 let deploy = new Deploy();
                 if('undefined' != typeof deploy) {
-                    deploy.do("transaction", data, result, handler[constractAddress], null, func);
+                    deploy.do("transaction", data, result, handler[constractAddress], func);
                 }
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != func) {
+                    func(error);
+                }
             }
         });
     }
@@ -95,10 +111,14 @@ export default class ZSCLogistics {
             if (!error) {
                 let deploy = new Deploy();
                 if('undefined' != typeof deploy) {
-                    deploy.do("transaction", data, result, handler[constractAddress], null, func);
+                    deploy.do("transaction", data, result, handler[constractAddress], func);
                 }
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != func) {
+                    func(error);
+                }
             }
         });
     }
@@ -112,15 +132,19 @@ export default class ZSCLogistics {
             if (!error) {
                 let deploy = new Deploy();
                 if('undefined' != typeof deploy) {
-                    deploy.do("transaction", data, result, handler[constractAddress], null, func);
+                    deploy.do("transaction", data, result, handler[constractAddress], func);
                 }
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != func) {
+                    func(error);
+                }
             }
         });       
     }
 
-    getTracks(_num) {
+    getTracks(_num, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
@@ -141,22 +165,38 @@ export default class ZSCLogistics {
                         // call 'Logistics.getTracks(bytes32)'
                         contractInstance.getTracks.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                Output(window.outputElement, 'small', 'red', `[Track]:${result}`);
+                                // Output(window.outputElement, 'small', 'red', `[Track]:${result}`);
+                                console.log("[Tracks]:", result);
+                                if (null != func) {
+                                    func(null, result);
+                                }
                             } else {
-                                Output(window.outputElement, 'small', 'red', error);
+                                // Output(window.outputElement, 'small', 'red', error);
+                                console.log(error);
+                                if (null != func) {
+                                    func(error);
+                                }
                             }
                         });
                     } else {
-                        Output(window.outputElement, 'small', 'red', error);
+                        // Output(window.outputElement, 'small', 'red', error);
+                        console.log(error);
+                        if (null != func) {
+                            func(error);
+                        }
                     }
                 });
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != func) {
+                    func(error);
+                }
             }
         });
     }
 
-    getBrief(_num) {
+    getBrief(_num, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
@@ -177,22 +217,38 @@ export default class ZSCLogistics {
                         // call 'Logistics.getBrief(bytes32)'
                         contractInstance.getBrief.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+                                // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+                                console.log("[Brief]:", result);
+                                if (null != func) {
+                                    func(null, result);
+                                }
                             } else {
-                                Output(window.outputElement, 'small', 'red', error);
+                                // Output(window.outputElement, 'small', 'red', error);
+                                console.log(error);
+                                if (null != func) {
+                                    func(error);
+                                }
                             }
                         });
                     } else {
-                        Output(window.outputElement, 'small', 'red', error);
+                        // Output(window.outputElement, 'small', 'red', error);
+                        console.log(error);
+                        if (null != func) {
+                            func(error);
+                        }
                     }
                 });
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != func) {
+                    func(error);
+                }
             }
         });
     }
 
-    getBriefEx(_num) {
+    getBriefEx(_num, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
@@ -213,22 +269,38 @@ export default class ZSCLogistics {
                         // call 'Logistics.getBriefEx(bytes32)'
                         contractInstance.getBriefEx.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+                                // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+                                console.log("[Brief]:", result);
+                                if (null != func) {
+                                    func(null, result);
+                                }
                             } else {
-                                Output(window.outputElement, 'small', 'red', error);
+                                // Output(window.outputElement, 'small', 'red', error);
+                                console.log(error);
+                                if (null != func) {
+                                    func(error);
+                                }
                             }
                         });
                     } else {
-                        Output(window.outputElement, 'small', 'red', error);
+                        // Output(window.outputElement, 'small', 'red', error);
+                        console.log(error);
+                        if (null != func) {
+                            func(error);
+                        }
                     }
                 });
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != func) {
+                    func(error);
+                }
             }
         });
     }
 
-    getBriefByIndex(_index) {
+    getBriefByIndex(_index, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
@@ -249,22 +321,38 @@ export default class ZSCLogistics {
                         // call 'Logistics.getBriefByIndex(uint)'
                         contractInstance.getBriefByIndex.call(_index, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+                                // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+                                console.log("[Brief]:", result);
+                                if (null != func) {
+                                    func(null, result);
+                                }                                
                             } else {
-                                Output(window.outputElement, 'small', 'red', error);
+                                //Output(window.outputElement, 'small', 'red', error);
+                                console.log(error);
+                                if (null != func) {
+                                    func(error);
+                                }
                             }
                         });
                     } else {
-                        Output(window.outputElement, 'small', 'red', error);
+                        // Output(window.outputElement, 'small', 'red', error);
+                        console.log(error);
+                        if (null != func) {
+                            func(error);
+                        }
                     }
                 });
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != func) {
+                    func(error);
+                }
             }
         });
     }
 
-    getBriefExByIndex(_index) {
+    getBriefExByIndex(_index, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
@@ -285,22 +373,38 @@ export default class ZSCLogistics {
                         // call 'Logistics.getBriefExByIndex(uint)'
                         contractInstance.getBriefExByIndex.call(_index, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+                                // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+                                console.log("[Brief]:", result);
+                                if (null != func) {
+                                    func(null, result);
+                                }
                             } else {
-                                Output(window.outputElement, 'small', 'red', error);
+                                // Output(window.outputElement, 'small', 'red', error);
+                                console.log(error);
+                                if (null != func) {
+                                    func(error);
+                                }
                             }
                         });
                     } else {
-                        Output(window.outputElement, 'small', 'red', error);
+                        // Output(window.outputElement, 'small', 'red', error);
+                        console.log(error);
+                        if (null != func) {
+                            func(error);
+                        }
                     }
                 });
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != func) {
+                    func(error);
+                }
             }
         });
     }
 
-    number() {
+    number(func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
@@ -321,22 +425,38 @@ export default class ZSCLogistics {
                         // call 'Logistics.number()'
                         contractInstance.number.call({from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
+                                // Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
+                                console.log("[Number]:", result);
+                                if (null != func) {
+                                    func(null, result);
+                                }
                             } else {
-                                Output(window.outputElement, 'small', 'red', error);
+                                // Output(window.outputElement, 'small', 'red', error);
+                                console.log(error);
+                                if (null != func) {
+                                    func(error);
+                                }
                             }
                         });
                     } else {
-                        Output(window.outputElement, 'small', 'red', error);
+                        // Output(window.outputElement, 'small', 'red', error);
+                        console.log(error);
+                        if (null != func) {
+                            func(error);
+                        }
                     }
                 });
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != func) {
+                    func(error);
+                }
             }
         });
     }
 
-    numberOfTracks(_num) {
+    numberOfTracks(_num, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
@@ -357,17 +477,33 @@ export default class ZSCLogistics {
                         // call 'Logistics.numberOfTracks(bytes32)'
                         contractInstance.numberOfTracks.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
+                                // Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
+                                console.log("[Number]:", result);
+                                if (null != func) {
+                                    func(null, result);
+                                }
                             } else {
-                                Output(window.outputElement, 'small', 'red', error);
+                                // Output(window.outputElement, 'small', 'red', error);
+                                console.log(error);
+                                if (null != func) {
+                                    func(error);
+                                }
                             }
                         });
                     } else {
-                        Output(window.outputElement, 'small', 'red', error);
+                        // Output(window.outputElement, 'small', 'red', error);
+                        console.log(error);
+                        if (null != func) {
+                            func(error);
+                        }
                     }
                 });
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != func) {
+                    func(error);
+                }
             }
         });
     }
