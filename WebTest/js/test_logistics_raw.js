@@ -1,14 +1,15 @@
-
-import Deploy from './deploy_raw.js';
+    
 import Output from './output.js';
-import Logistics from './zsc_logistics_raw.js';
+import Transaction from './transaction_raw.js';
+import Logistics from './logistics_raw.js';
 
 //private member
 const contractName = Symbol('contractName');
 const compiledJson = Symbol('compiledJson');
 const abi = Symbol('abi');
 const contractAddress = Symbol('contractAddress');
-const deployFunc = Symbol('deployFunc');
+
+//private function
 
 export default class TestLogisticsRaw {
 
@@ -25,11 +26,6 @@ export default class TestLogisticsRaw {
 
     setCompiledJson(data) {
         this[compiledJson] = JSON.parse(data);
-    }
-
-    [deployFunc](caller, address) {
-        console.log('TestLogisticsRaw.deployFunc()');
-        caller[contractAddress] = address;
     }
 
     deploy() {
