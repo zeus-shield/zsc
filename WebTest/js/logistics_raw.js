@@ -4,7 +4,7 @@
 
 import Receipt from './receipt.js';
 // import Output from './output.js';
-import Deploy from './deploy_raw.js';
+import Transaction from './transaction_raw.js';
 
 // private member
 const constractAbi = Symbol('abi');
@@ -25,9 +25,9 @@ export default class ZSCLogistics {
 
         contractInstance.updateTracks.estimateGas(_num, _tracks, _updateType, function(error, result) {
             if (!error) {
-                let deploy = new Deploy();
-                if('undefined' != typeof deploy) {
-                    deploy.do("transaction", data, result, handler[constractAddress], func);
+                let transaction = new Transaction();
+                if('undefined' != typeof transaction) {
+                    transaction.do("transaction", data, result, handler[constractAddress], func);
                 }
             } else {
                 // Output(window.outputElement, 'small', 'red', error);
@@ -46,9 +46,9 @@ export default class ZSCLogistics {
 
         contractInstance.updateBrief.estimateGas(_num, _transNum, _model, _destinationCountry, _lastStatus, function(error, result) {
             if (!error) {
-                let deploy = new Deploy();
-                if('undefined' != typeof deploy) {
-                    deploy.do("transaction", data, result, handler[constractAddress], func);
+                let transaction = new Transaction();
+                if('undefined' != typeof transaction) {
+                    transaction.do("transaction", data, result, handler[constractAddress], func);
                 }
             } else {
                 // Output(window.outputElement, 'small', 'red', error);
@@ -67,9 +67,9 @@ export default class ZSCLogistics {
 
         contractInstance.updateBriefEx.estimateGas(_brief, function(error, result) {
             if (!error) {
-                let deploy = new Deploy();
-                if('undefined' != typeof deploy) {
-                    deploy.do("transaction", data, result, handler[constractAddress], func);
+                let transaction = new Transaction();
+                if('undefined' != typeof transaction) {
+                    transaction.do("transaction", data, result, handler[constractAddress], func);
                 }
             } else {
                 // Output(window.outputElement, 'small', 'red', error);
@@ -88,9 +88,9 @@ export default class ZSCLogistics {
 
         contractInstance.update.estimateGas(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks, {data: data}, function(error, result) {
             if (!error) {
-                let deploy = new Deploy();
-                if('undefined' != typeof deploy) {
-                    deploy.do("transaction", data, result, handler[constractAddress], func);
+                let transaction = new Transaction();
+                if('undefined' != typeof transaction) {
+                    transaction.do("transaction", data, result, handler[constractAddress], func);
                 }
             } else {
                 // Output(window.outputElement, 'small', 'red', error);
@@ -109,9 +109,9 @@ export default class ZSCLogistics {
 
         contractInstance.updateEx.estimateGas(_info, function(error, result) {
             if (!error) {
-                let deploy = new Deploy();
-                if('undefined' != typeof deploy) {
-                    deploy.do("transaction", data, result, handler[constractAddress], func);
+                let transaction = new Transaction();
+                if('undefined' != typeof transaction) {
+                    transaction.do("transaction", data, result, handler[constractAddress], func);
                 }
             } else {
                 // Output(window.outputElement, 'small', 'red', error);
@@ -130,9 +130,9 @@ export default class ZSCLogistics {
 
         contractInstance.remove.estimateGas(_num, function(error, result) {
             if (!error) {
-                let deploy = new Deploy();
-                if('undefined' != typeof deploy) {
-                    deploy.do("transaction", data, result, handler[constractAddress], func);
+                let transaction = new Transaction();
+                if('undefined' != typeof transaction) {
+                    transaction.do("transaction", data, result, handler[constractAddress], func);
                 }
             } else {
                 // Output(window.outputElement, 'small', 'red', error);
