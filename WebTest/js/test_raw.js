@@ -1,5 +1,5 @@
 
-import Deploy from './deploy_raw.js';
+import Transaction from './transaction_raw.js';
 import Output from './output.js';
 import ZSCRaw from './zsc_raw.js';
 
@@ -49,9 +49,9 @@ export default class TestRaw {
         this[abi] = JSON.parse(this[compiledJson].contracts[name].abi);
         parameter = 'tester';
 
-        deploy = new Deploy();
-        if('undefined' != typeof deploy) {
-            deploy.do(byteCode, this[abi], parameter, this, this[deployFunc]);
+        transaction = new Transaction();
+        if('undefined' != typeof transaction) {
+            //transaction.do("deploy", data, result, null);
         }
     }
 

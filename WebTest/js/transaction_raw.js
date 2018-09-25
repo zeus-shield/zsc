@@ -3,7 +3,7 @@
 import Receipt from './receipt.js';
 
 //private member
-const addressRaw = Symbol('address');
+const account = Symbol('account');
 const key = Symbol('key');
 
 //private function
@@ -13,7 +13,7 @@ const getNonce = Symbol('getNonce');
 export default class DeployRaw {
     constructor() {
         let isMetaMask = web3.currentProvider.isMetaMask;
-        this[addressRaw] = web3.eth.coinbase;
+        this[account] = web3.eth.coinbase;
         if (isMetaMask) {
         } else {
         }
@@ -99,7 +99,7 @@ export default class DeployRaw {
         console.log('DeployRaw.do()');
 
         let handler = this;
-        let address = this[addressRaw];
+        let address = this[account];
         let privateKey = this[key];
 
         // get gas price
