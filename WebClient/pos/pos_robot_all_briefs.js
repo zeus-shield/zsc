@@ -51,7 +51,7 @@ ZSCRobotAllBreifes.prototype.setRobotBriefParaNames = function(gm, tag, adr) {
     if (tag == "user") {
         gm.robotBriefParaNames = ["status", "name"];
     } else if (tag == "selling") {
-        gm.robotBriefParaNames = ["price", "seller"];
+        gm.robotBriefParaNames = ["sellPrice", "name"];
     } else if (tag == "holder") {
         gm.robotBriefParaNames = ["status", "name"];
     }
