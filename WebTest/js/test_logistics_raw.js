@@ -36,11 +36,10 @@ export default class TestLogisticsRaw {
         console.log('TestLogisticsRaw.deploy()');
         let name;
         let byteCode;
-        let deploy;
+        let transaction;
         let contract;
         let data;
         let handler = this;
-        let func = this[deployFunc];
 
         for (name in this[compiledJson].contracts) {
             if (name.indexOf(this[contractName]) > 0)
@@ -58,9 +57,17 @@ export default class TestLogisticsRaw {
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
         web3.eth.estimateGas({data: data}, function(error, result) {
             if (!error) {
-                deploy = new Deploy();
-                if('undefined' != typeof deploy) {
-                    deploy.do("deploy", data, result, null, handler, func);
+                transaction = new Transaction();
+                if('undefined' != typeof transaction) {
+                    transaction.do("deploy", data, result, null, function(error, result) {
+                        if (!error) {
+                            handler[contractAddress] = result.contractAddress;
+                            let string = `[TransactionHash]:${result.transactionHash}</br>[ContractAddress]:${result.contractAddress}</br>[Try]:${result.tryTimes}(times)`;
+                            Output(window.outputElement, 'small', 'red', string);
+                        } else {
+                            Output(window.outputElement, 'small', 'red', error);
+                        }
+                    });
                 }
             } else {
                 Output(window.outputElement, 'small', 'red', error);
