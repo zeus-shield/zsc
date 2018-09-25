@@ -35,7 +35,7 @@ echo $htmlObjects->loadScriptFiles();
         var text = ''
         text += '<button type="button" onClick="' + funcPrefix + "provider" + funcSuffix + '">For provider </button> <br><br>'
         text += '<button type="button" onClick="' + funcPrefix + "receiver" + funcSuffix + '">For receiver </button> <br><br>'
-        text += '<button type="button" onClick="' + funcPrefix + "staker" + funcSuffix + '">For staker </button> <br><br>'
+        text += '<button type="button" onClick="' + funcPrefix + "staker" + funcSuffix + '">For staker user </button> <br><br>'
         document.getElementById("PageBody").innerHTML = text;
     }
 </script>

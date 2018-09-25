@@ -65,7 +65,7 @@ session_start();
 
         text += '<div class="well">';
         text += '<table align="center" style="width:600px;min-height:30px">'
-        text += '   <tr> <td>id</td> <td>rare</td> <td>spLev</td> <td>name</td> <td>price</td> <td> Details </td></tr> '
+        text += '   <tr> <td>id</td> <td>rare</td> <td>spLev</td> <td>name</td> <td>selling price</td> <td> Details </td></tr> '
         text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td>  </tr>'
 
         for (var i = 0; i < robotNos; ++i) {
@@ -77,7 +77,7 @@ session_start();
             text += '   <td><text>' + userRobotGM.getRobotBriefParaValue("rare",   i, "Rare") + '</text></td>'
             text += '   <td><text>' + userRobotGM.getRobotBriefParaValue("spLev",  i, "null") + '</text></td>'
             text += '   <td><text>' + userRobotGM.getRobotBriefParaValue("name",  i, "null") + '</text></td>'
-            text += '   <td><text>' + userRobotGM.getRobotBriefParaValue("price",  i, "FromWei") + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotBriefParaValue("sellPrice",  i, "FromWei") + '</text></td>'
             text += '   <td><button type="button" onClick="' + showPrefix + robotId + showSuffix + '"> Show </button></td>'
             text += '</tr>'
         }
