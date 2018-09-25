@@ -104,19 +104,78 @@ export default class TestLogisticsRaw {
 
     update() {
         console.log('TestLogisticsRaw.update()');
+
+        let status = "";
+        let string = "";
+
+        // update testing data
         let brief9 = "{\"error\":null,\"num\":\"JNTCU0600046689YQ\",\"transNum\":\"MSK0000027699\",\"model\":\"INFO9\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\"}";
         let newTracks5 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"NewTrack5-1\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"NewTrack5-2\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-2\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
         let logistics = new Logistics(this[abi], this[contractAddress]);
 
-        logistics.updateBrief("JNTCU0600046688YQ", "MSK0000027698", "INFO8", "Russian", "GTMS_SIGNED", function(error, result){
-            if (!error && "0x1" == result) {
-                logistics.updateBriefEx(brief9, function(error, result) {
-                    logistics.updateTracks("JNTCU0600046685YQ", newTracks5, 1, function(error, result) {
-                        if (!error && "0x1" == result) {
-                            console.log("update testing finished.");
+        // updateBrief
+        logistics.updateBrief("JNTCU0600046688YQ", "MSK0000027698", "INFO8", "Russian", "GTMS_SIGNED", function(error, result) {
+            if (!error) {
+                if ("" != result.status) {
+                    if ("0x1" == result.status) {
+                        status = "succeeded";
+                    } else {
+                        status = "failure";
+                    }
+
+                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                    Output(window.outputElement, 'small', 'red', string);
+
+                    // updateBriefEx
+                    logistics.updateBriefEx(brief9, function(error, result) {
+                        if (!error) {
+                            if ("" != result.status) {
+                                if ("0x1" == result.status) {
+                                    status = "succeeded";
+                                } else {
+                                    status = "failure";
+                                }
+
+                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                Output(window.outputElement, 'small', 'red', string);
+
+                                // updateTracks
+                                logistics.updateTracks("JNTCU0600046685YQ", newTracks5, 1, function(error, result) {
+                                    if (!error) {
+                                        if ("" != result.status) {
+                                            if ("0x1" == result.status) {
+                                                status = "succeeded";
+                                            } else {
+                                                status = "failure";
+                                            }
+
+                                            string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                            Output(window.outputElement, 'small', 'red', string);
+                                        } else {
+                                            let status = "Try to get status again!";
+                                            let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                            Output(window.outputElement, 'small', 'red', string);
+                                        }
+                                    } else {
+                                        Output(window.outputElement, 'small', 'red', error);
+                                    }
+                                });
+                            } else {
+                                let status = "Try to get status again!";
+                                let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                Output(window.outputElement, 'small', 'red', string);
+                            }
+                        } else {
+                            Output(window.outputElement, 'small', 'red', error);
                         }
                     });
-                })
+                } else {
+                    let status = "Try to get status again!";
+                    let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                    Output(window.outputElement, 'small', 'red', string);
+                }
+            } else {
+                Output(window.outputElement, 'small', 'red', error);
             }
         });
     }
