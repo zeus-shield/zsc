@@ -4,7 +4,7 @@ import Receipt from './receipt.js';
 
 //private member
 const addressRaw = Symbol('address');
-const privateKeyRaw = Symbol('privateKey');
+const key = Symbol('key');
 
 //private function
 const etherSpentInPendingTransactions = Symbol('etherSpentInPendingTransactions');
@@ -15,11 +15,7 @@ export default class DeployRaw {
         let isMetaMask = web3.currentProvider.isMetaMask;
         this[addressRaw] = web3.eth.coinbase;
         if (isMetaMask) {
-            //this[addressRaw] = "0xbaa43825f1bda3839c5f3038c65c504cb6d962c8";
-            this[privateKeyRaw] = "0x5367874f5f72d3e7554e7df202a4f79e1f4ed591c3bc5a78993390f3becf313f";
         } else {
-            //this[addressRaw] = "0x15ca13630ce52cd4e209012635f10b396e098296";
-            this[privateKeyRaw] = "0x748443675b8cc68e225d4d7f266d2e57a7157e28b55b7cf66409f76a02bd49ca";
         }
     }
 
@@ -104,7 +100,7 @@ export default class DeployRaw {
 
         let handler = this;
         let address = this[addressRaw];
-        let privateKey = this[privateKeyRaw];
+        let privateKey = this[key];
 
         // get gas price
         // MetaMask Web3 object does not support synchronous methods without a callback parameter
