@@ -1,5 +1,5 @@
 
-import Output from './output.js';
+// import Output from './output.js';
 import Receipt from './receipt.js';
 
 //private member
@@ -54,8 +54,8 @@ export default class DeployRaw {
                         func(null, "0");
                     }
                 } else {
+                    // Output(window.outputElement, 'small', 'red', result.error.message);
                     console.log(result.error);
-                    Output(window.outputElement, 'small', 'red', result.error.message);
                     func(null, "0");
                 }
             })
@@ -90,8 +90,8 @@ export default class DeployRaw {
                             func(null, txnsCount);
                         }
                     } else {
+                        // Output(window.outputElement, 'small', 'red', result.error.message);
                         console.log(result.error);
-                        Output(window.outputElement, 'small', 'red', result.error.message);
                         func(null, "0");
                     }
                 })
@@ -99,7 +99,7 @@ export default class DeployRaw {
         })
     }
 
-    do(cmd, data, gasRequired, constractAddress, caller, func) {
+    do(cmd, data, gasRequired, constractAddress, func) {
         console.log('DeployRaw.do()');
 
         let handler = this;
@@ -146,7 +146,11 @@ export default class DeployRaw {
                                                     data: data  
                                                 };  
                                             } else {
-                                                Output(window.outputElement, 'small', 'red', "Command Error!");
+                                                // Output(window.outputElement, 'small', 'red', "Command Error!");
+                                                let error = new Error();
+                                                error.message = "Command Error!";
+                                                console.log(error);
+                                                func(error);
                                                 return;
                                             }
 
@@ -166,34 +170,55 @@ export default class DeployRaw {
                                             
                                             web3.eth.sendRawTransaction("0x" + tx.serialize().toString('hex'), function(err, result) {
                                                 console.log("hash:", result);
-                                                let receipt = new Receipt();
-                                                if ("deploy" == cmd) {
-                                                    receipt.getReceiptForContractAddress(result, 0, 1000, caller, func);
-                                                } else if ("transaction" == cmd) {
-                                                    receipt.getReceipt(result, 0, 1000, func);
+                                                if (undefined != result) {
+                                                    let receipt = new Receipt();
+                                                    if ("deploy" == cmd) {
+                                                        receipt.getReceipt("contractAddress", result, 0, 1000, func);
+                                                    } else if ("transaction" == cmd) {
+                                                        receipt.getReceipt("status", result, 0, 1000, func);
+                                                    } else {
+                                                        // Output(window.outputElement, 'small', 'red', "Command Error!");
+                                                        let error = new Error();
+                                                        error.message = "Command Error!";
+                                                        console.log(error);
+                                                        func(error);
+                                                    }
                                                 } else {
-                                                    Output(window.outputElement, 'small', 'red', "Command Error!");
-                                                    return;
+                                                    let error = new Error();
+                                                    error.message = "TransactionHash Undefined!";
+                                                    console.log(error);
+                                                    func(error);
                                                 }
                                             });
-
                                         } else {
-                                            Output(window.outputElement, 'small', 'red', error);
+                                            // Output(window.outputElement, 'small', 'red', error);
+                                            console.log(error);
+                                            func(error);
                                         }
                                     })
                                 } else {
-                                    Output(window.outputElement, 'small', 'red', "Insufficient Balance!");
+                                    // Output(window.outputElement, 'small', 'red', "Insufficient Balance!");
+                                    let error = new Error();
+                                    error.message = "Insufficient Balance!";
+                                    console.log(error);
+                                    func(error);
                                 }
                             } else {
-                                Output(window.outputElement, 'small', 'red', error);
+                                // Output(window.outputElement, 'small', 'red', error);
+                                console.log(error);
+                                func(error);
                             }
                         })
                     } else {
-                        Output(window.outputElement, 'small', 'red', error);
+                        // Output(window.outputElement, 'small', 'red', error);
+                        console.log(error);
+                        func(error);
                     }
                 })
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                func(error);
             }
         });
     }
