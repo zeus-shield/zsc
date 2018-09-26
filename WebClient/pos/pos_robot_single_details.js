@@ -7,7 +7,7 @@ function ZSCRobotSingleDetails(acount, adr, abi) {
     this.userType;
 
     //default paras: "id",  "rare", "spLev"
-    this.robotDetailParaNames = ["status", "name",  "sellPrice", "seller", "posToken", "minedSP", "rewardSP", "lastSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice"];
+    this.robotDetailParaNames = ["status", "name", "special", "sellPrice", "seller", "posToken", "minedSP", "rewardSP", "lastSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice"];
     this.robotDetailParaValues = [];
 
     this.account = acount;
@@ -32,7 +32,7 @@ ZSCRobotSingleDetails.prototype.upgradeMinerRobot = function(hashId, robotId, fu
     erc721Api.upgradeUnitSpLev(robotId,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
+            if(!error) bF_showHashResult(hashId, result, callBack);
             else console.log("error: " + error);
         });
 }
@@ -45,7 +45,7 @@ ZSCRobotSingleDetails.prototype.transferToOther = function(hashId, dest, roobtId
     erc721Api.transfer(dest, roobtId,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
+            if(!error) bF_showHashResult(hashId, result, callBack);
             else console.log("error: " + error);
         });
 }
@@ -59,7 +59,7 @@ ZSCRobotSingleDetails.prototype.publishMinerRobot = function(hashId, robotId, pr
     erc721Api.publishUnit(robotId, priceInEther, 
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
+            if(!error) bF_showHashResult(hashId, result, callBack);
             else console.log("error: " + error);
         });
 }
@@ -71,7 +71,7 @@ ZSCRobotSingleDetails.prototype.cancelSellingMinerRobot = function(hashId, robot
     erc721Api.cancelSell(robotId,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
+            if(!error) bF_showHashResult(hashId, result, callBack);
             else console.log("error: " + error);
         });
 }
@@ -83,7 +83,7 @@ ZSCRobotSingleDetails.prototype.activeMinerRobot = function(hashId, robotId, tok
     erc721Api.activeUnit(robotId, tokenType, rewardType,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
+            if(!error) bF_showHashResult(hashId, result, callBack);
             else console.log("error: " + error);
         });
 }
@@ -95,7 +95,7 @@ ZSCRobotSingleDetails.prototype.claimReward = function(hashId, robotId, func) {
     erc721Api.claimReward(robotId, 
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
+            if(!error) bF_showHashResult(hashId, result, callBack);
             else console.log("error: " + error);
         });
 }
@@ -107,7 +107,7 @@ ZSCRobotSingleDetails.prototype.purchaseSellingRobot = function(hashId, robotId,
     erc721Api.purchaseUnit(robotId,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
-            if(!error) bF_showHashResult(hashId, result, function() {window.location.reload(true);});
+            if(!error) bF_showHashResult(hashId, result, callBack);
             else console.log("error: " + error);
         });
 }
