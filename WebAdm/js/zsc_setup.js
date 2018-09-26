@@ -111,7 +111,7 @@ ZSCSetup.prototype.setControlAbisAdvAbi = function(hashID) {
 ZSCSetup.prototype.setAdmReadPass = function(readPass, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("AdmAdv"));
     var myAdmAdv = myContract.at(this.AdmAdvAdr);
-    
+
     myAdmAdv.setReadPass(readPass, 
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
@@ -210,7 +210,7 @@ ZSCSetup.prototype.initTestToken = function(hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("TestToken"));
     var myTestToken = myContract.at(this.testTokenAdr);
 
-    myTestToken.allocate(this.ControlApisAdvAdr, 100 * 1000 * 1000 * Math.pow(10, 18), 
+    myTestToken.allocate(this.ControlApisAdvAdr, 1000 * 1000 * 1000 * Math.pow(10, 18), 
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){});

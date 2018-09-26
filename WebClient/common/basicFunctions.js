@@ -15,7 +15,7 @@ function bF_getGasPrice() {
 }
 
 function bF_getGasLimit() {
-    var limit = 700;
+    var limit = 650;
     return limit * 10**4; //limits * 1 million
 }
 
