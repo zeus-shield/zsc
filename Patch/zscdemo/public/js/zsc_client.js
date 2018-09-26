@@ -12,3 +12,7 @@ ZSCClient.prototype.getAccount = function() {
 ZSCClient.prototype.getGasPrice = function(limit) {
     return limit * 1000000000; //limits * gwei
 }
+
+ZSCClient.prototype.getGasLimit = function(limit) {
+    return limit * 1000 * 1000; //limits * 1 million
+}
