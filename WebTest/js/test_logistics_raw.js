@@ -311,6 +311,15 @@ export default class TestLogisticsRaw {
         //     }
         // });
 
+        logistics.getTracks("JNTCU0600046685YQ", function(error, result) {
+            if (!error) {
+                Output(window.outputElement, 'small', 'red', `[Tracks]:</br>${result}`);
+            } else {
+                Output(window.outputElement, 'small', 'red', error);
+            }
+        }); 
+    }
+
     remove() {
         console.log('TestLogisticsRaw.remove()');
         let logistics = new Logistics(this[abi], this[contractAddress]);
