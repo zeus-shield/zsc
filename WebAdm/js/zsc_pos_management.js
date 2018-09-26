@@ -52,7 +52,7 @@ ZSCPosManagement.prototype.getLevelUpPrice= function(index) {return web3.fromWei
 
 ZSCPosManagement.prototype.getMineTypeNos = function() {return this.mineTypeNos;}
 ZSCPosManagement.prototype.getMineTypeDuration = function(index) {return this.mineTypeDuration[index];}
-ZSCPosManagement.prototype.getMineTypeRRLevEft = function(index) {return this.mineTypeRRLevEft/this.multipleValue;}
+ZSCPosManagement.prototype.getMineTypeRRLevEft = function(index) {return this.mineTypeRRLevEft[index]/this.multipleValue;}
 ZSCPosManagement.prototype.getMineTypeActivated = function(index) {return (this.mineTypeActived[index] == 1);}
 
 ZSCPosManagement.prototype.getCtgNos = function() {return this.unitCtgNos;}
@@ -146,6 +146,16 @@ ZSCPosManagement.prototype.setLevelInfo = function(hashID, level, maxStakePoint,
 ZSCPosManagement.prototype.setRareThreshold = function(hashID, RThresh, SRThresh, SSRThresh) {
     this.myPosManager.setRareThreshold(
         RThresh * this.multipleValue, SRThresh * this.multipleValue, SSRThresh * this.multipleValue,
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
+        function(error, result){ 
+            if(!error) cC_showHashResultTest(hashID, result, function(){window.location.reload(true);});
+            else console.log("error: " + error);
+        });
+} 
+
+ZSCPosManagement.prototype.createUnitSpec = function(hashID, userAdr, ctgType, tokenType, spMax, durationInDays) {
+    this.myPosManager.createUnitSpec(
+        userAdr, ctgType, tokenType, web3.toWei(spMax, 'ether'), durationInDays,
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){window.location.reload(true);});
