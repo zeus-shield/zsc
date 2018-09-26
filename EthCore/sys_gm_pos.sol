@@ -43,6 +43,9 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         address seller_;
 
         bytes32 posToken_;
+
+        mapping(uint => address) historyOwners_;
+        uint historyOwnerNos_;
     }
     uint internal robotNos_;
     mapping(uint => RobotUnit) internal robots_;
@@ -94,10 +97,19 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         require(robots_[_unitId].status_ == "idle");
         require(publicTradeable_);
     }
-    
+
     function tokenURI(uint _tokenId) public view returns (string) {
         string memory url = PlatString.append(tokenUri_, PlatString.uintToString(_tokenId));
         return url;
+    }
+
+    function resetUnitMineInfo(uint _robotId) public {
+        robots_[_robotId].status_    = "idle";
+        robots_[_robotId].spCur_     = 0;
+        robots_[_robotId].spMax_     = 0; 
+        robots_[_robotId].mineStart_ = 0;
+        robots_[_robotId].mineEnd_   = 0;
+        robots_[_robotId].rrLevEft_  = 0;
     }
 
     //////////////////////////   
@@ -114,15 +126,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
         ran = random(0, rares_[rareLev].size_);
         return rares_[rareLev].ctgTypes_[ran];
-    }
-
-    function resetUnitMineInfo(uint _robotId) public {
-        robots_[_robotId].status_    = "idle";
-        robots_[_robotId].spCur_     = 0;
-        robots_[_robotId].spMax_     = 0; 
-        robots_[_robotId].mineStart_ = 0;
-        robots_[_robotId].mineEnd_   = 0;
-        robots_[_robotId].rrLevEft_  = 0;
     }
 
     function mintUnit(address _user, bytes32 _ctg) internal returns (uint) {
@@ -166,6 +169,11 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         return index;
     }
 
+    function addUnitHistoryOwner(uint _robotId, address _owner) internal {
+        robots_[_robotId].historyOwners_[robots_[_robotId].historyOwnerNos_] = _owner;
+        robots_[_robotId].historyOwnerNos_++;
+    }
+    
     //////////////////////////
     function setPublicTradeable(bool _tag) public {
         checkDelegate(msg.sender, 1);
@@ -352,6 +360,14 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     //////////////////////
     function getPosRatio() public view returns (uint, uint) {
         return (minedRatioPerDay_, rewardRatioPerDay_);
+    }
+
+    function numUnitHistoryOwner(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].historyOwnerNos_;
+    }
+
+    function getUnitHistoryOwnerByIndex(uint _unitId, uint _index) public view returns (address) {
+        return robots_[_unitId].historyOwners_[_index];
     }
 
     function getUnitName(uint _unitId) public view returns (bytes32) {
