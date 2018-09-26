@@ -327,24 +327,58 @@ export default class TestLogisticsRaw {
 
         // update
         logistics.update("JNTCU0600639867YQ", "MSK0000027694", "INFO4", "Russian", "GTMS_SIGNED", tracks4, function(error, result) {
-            if ("0x1" == result.status) {
-                // getTracks
-                logistics.getTracks("JNTCU0600639867YQ", function(error, result) {
-                    if (!error) {
-                        Output(window.outputElement, 'small', 'red', `[Track]:</br>${result}`);
-                        // remove
-                        logistics.remove("JNTCU0600639867YQ", function(error, result) {
-                            if ("0x1" == result.status) {
-                                // getTracks
-                                logistics.getTracks("JNTCU0600639867YQ", function(error, result) {
-                                    Output(window.outputElement, 'small', 'red', `[Track]:</br>${result}`);
-                                });
-                            }
-                        });
+            if (!error) {
+                if ("" != result.status) {
+                    if ("0x1" == result.status) {
+                        status = "succeeded";
                     } else {
-                        Output(window.outputElement, 'small', 'red', error);
+                        status = "failure";
                     }
-                });
+                    
+                    let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                    Output(window.outputElement, 'small', 'red', string);
+
+                    // getTracks
+                    logistics.getTracks("JNTCU0600639867YQ", function(error, result) {
+                        if (!error) {
+                            Output(window.outputElement, 'small', 'red', `[Track]:</br>${result}`);
+                            // remove
+                            logistics.remove("JNTCU0600639867YQ", function(error, result) {
+                                if (!error) {
+                                    if ("" != result.status) {
+                                        if ("0x1" == result.status) {
+                                            status = "succeeded";
+                                        } else {
+                                            status = "failure";
+                                        }
+                                        // getTracks
+                                        logistics.getTracks("JNTCU0600639867YQ", function(error, result) {
+                                            if (!error) {
+                                                Output(window.outputElement, 'small', 'red', `[Track]:</br>${result}`);
+                                            } else {
+                                                Output(window.outputElement, 'small', 'red', error);
+                                            }
+                                        });
+                                    } else {
+                                        let status = "Try to get status again!";
+                                        let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                        Output(window.outputElement, 'small', 'red', string);
+                                    }
+                                } else {
+                                    Output(window.outputElement, 'small', 'red', error);
+                                }
+                            });
+                        } else {
+                            Output(window.outputElement, 'small', 'red', error);
+                        }
+                    });
+                } else {
+                    let status = "Try to get status again!";
+                    let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                    Output(window.outputElement, 'small', 'red', string);
+                }
+            } else {
+                Output(window.outputElement, 'small', 'red', error);
             }
         });
     }
