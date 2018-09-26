@@ -160,6 +160,11 @@ session_start();
                 text += '<tr>'
                 text += '   <td colspan="1"><button type="button" onClick="' + cancelSellingPrefix + robotId + cancelSellingSuffix + '"> Cancel selling </button></td>'
                 text += '</tr>'
+
+                text += '<tr>'
+                text += '   <td colspan="1"><button type="button" onClick="' + purchaseRobotPrefix + robotId + purchaseRobotSuffix + '"> Purchase robot</button></td>'
+                text += '</tr>'
+                
             } else {
                 text += '<tr>'
                 text += '   <td colspan="1"><button type="button" onClick="' + purchaseRobotPrefix + robotId + purchaseRobotSuffix + '"> Purchase robot</button></td>'
@@ -211,7 +216,7 @@ session_start();
         text += '<tr> <td><text> lastSP       </text></td> <td><text>' + singleRobotGM.getRobotDetailParaValue("lastSP",      "FromWei") + '</text></td> </tr>';
         text += '   <tr> <td>------</td> <td>------</td> </tr>'
 
-        text += '<tr> <td><text> sellPrice    </text></td> <td><text>' + singleRobotGM.getRobotDetailParaValue("price",       "FromWei") + '</text></td> </tr>';
+        text += '<tr> <td><text> sellPrice    </text></td> <td><text>' + singleRobotGM.getRobotDetailParaValue("sellPrice",   "FromWei") + '</text></td> </tr>';
         text += '<tr> <td><text> seller       </text></td> <td><text>' + seller + '</text></td> </tr>';
         text += '   <tr> <td>------</td> <td>------</td> </tr>'
 

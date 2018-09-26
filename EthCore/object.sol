@@ -29,8 +29,7 @@ contract Object is Delegated {
         logRecorder_ = _rocorderAdr;
     }
 
-    function addLog(string _log, bool _newLine) public {
-        checkDelegate(msg.sender, 1);
+    function addLog(string _log, bool _newLine) internal {
         if (logRecorder_ != 0) {
             Recorder(logRecorder_).addLog(_log, _newLine);
         }

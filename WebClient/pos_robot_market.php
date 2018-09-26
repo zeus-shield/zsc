@@ -44,7 +44,7 @@ session_start();
     /////////////////////////////
     function loadAllSellingRobotBriefs() {
         userRobotGM.loadAllRobotBriefs("selling", 0x0, function() {
-            loadAllSellingRobotHtml("PageBody", "showRobotDetails", "createGen0Robot");
+            loadAllSellingRobotHtml("PageBody", "showRobotDetails");
         });
     }
 
@@ -53,9 +53,7 @@ session_start();
     }
 
     /////////////////////////    
-    function loadAllSellingRobotHtml(elementId, showRobot, createGen0) {
-        var createGen0Func = createGen0 + "('OperationHash')"; 
-
+    function loadAllSellingRobotHtml(elementId, showRobot) {
         var showPrefix = showRobot + "('"; 
         var showSuffix = "')";
 
@@ -65,13 +63,9 @@ session_start();
         text  = '<div class="well" align="center" >' + titlle + '<br>';
         text  = '<text id="OperationHash" value = "log:"> </text> </div>';
 
-        text += '<div class="well" align="center" >'
-        text += '   <button type="button" onClick="' + createGen0Func + '">  Create Lev0 miner robot (Cost 0.01ETH) </button> <br>'
-        text += '</div>';
-
         text += '<div class="well">';
         text += '<table align="center" style="width:600px;min-height:30px">'
-        text += '   <tr> <td>id</td> <td>rare</td> <td>spLev</td> <td>name</td> <td>price</td> <td> Details </td></tr> '
+        text += '   <tr> <td>id</td> <td>rare</td> <td>spLev</td> <td>name</td> <td>selling price</td> <td> Details </td></tr> '
         text += '   <tr> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td> <td>------</td>  </tr>'
 
         for (var i = 0; i < robotNos; ++i) {
@@ -83,7 +77,7 @@ session_start();
             text += '   <td><text>' + userRobotGM.getRobotBriefParaValue("rare",   i, "Rare") + '</text></td>'
             text += '   <td><text>' + userRobotGM.getRobotBriefParaValue("spLev",  i, "null") + '</text></td>'
             text += '   <td><text>' + userRobotGM.getRobotBriefParaValue("name",  i, "null") + '</text></td>'
-            text += '   <td><text>' + userRobotGM.getRobotBriefParaValue("price",  i, "FromWei") + '</text></td>'
+            text += '   <td><text>' + userRobotGM.getRobotBriefParaValue("sellPrice",  i, "FromWei") + '</text></td>'
             text += '   <td><button type="button" onClick="' + showPrefix + robotId + showSuffix + '"> Show </button></td>'
             text += '</tr>'
         }

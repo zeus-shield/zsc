@@ -7,7 +7,7 @@ function ZSCRobotSingleDetails(acount, adr, abi) {
     this.userType;
 
     //default paras: "id",  "rare", "spLev"
-    this.robotDetailParaNames = ["status", "name",  "price", "seller", "posToken", "minedSP", "rewardSP", "lastSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice"];
+    this.robotDetailParaNames = ["status", "name",  "sellPrice", "seller", "posToken", "minedSP", "rewardSP", "lastSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice"];
     this.robotDetailParaValues = [];
 
     this.account = acount;

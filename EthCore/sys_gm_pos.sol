@@ -82,6 +82,8 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     uint public admPri_ = 5;
     uint public subPri_ = 10;
 
+    bool public publicTradeable_ = true;
+
     // Constructor
     function SysGmPos(bytes32 _name) public SysGmBase(_name) {
         dayInSeconds_ = DAY_IN_SECONDS;
@@ -90,8 +92,9 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     //////////////////////////
     function checkTradeAble(uint256 _unitId) internal view {
         require(robots_[_unitId].status_ == "idle");
+        require(publicTradeable_);
     }
-
+    
     function tokenURI(uint _tokenId) public view returns (string) {
         string memory url = PlatString.append(tokenUri_, PlatString.uintToString(_tokenId));
         return url;
@@ -164,6 +167,11 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
 
     //////////////////////////
+    function setPublicTradeable(bool _tag) public {
+        checkDelegate(msg.sender, 1);
+        publicTradeable_ = _tag;
+    }
+
     function setCommenTokenURI(string _uri) public {
         checkDelegate(msg.sender, admPri_);
         tokenUri_ = _uri;

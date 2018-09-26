@@ -67,7 +67,7 @@ contract AbisForUserControlApis {
     function totalSupply() public view returns (uint); //Erc721;
     function transfer(address _to, uint _tokenId) public; //Erc721;
 
-    function createUnitRandom() public returns (uint);
+    function createUnit(bool _isRandom, bytes32 _ctgName, address _user) public;
     function activeUnit(uint _robotId, bytes32 _tokenType, uint _durationInDays) public;
     function upgradeUnitSpLev(uint _robotId) public;
     function publishUnit(uint _robotId, uint _price) public;
@@ -102,10 +102,8 @@ contract AbisForUserControlApis {
     function getUnitSPMax(uint _unitId) public view returns (uint);
     function getUnitMineStart(uint _unitId) public view returns (uint);
     function getUnitMineEnd(uint _unitId) public view returns (uint);
-    function getUnitSPExtra(uint _unitId) public view returns (uint);
-    function getUnitRRExtra(uint _unitId) public view returns (uint);
-    function getUnitUPExtra(uint _unitId) public view returns (uint);
     function getUnitSeller(uint _unitId) public view returns (address);
     function getUnitSellPrice(uint _unitId) public view returns (uint);
+    function getUnitParaExtra(uint _unitId, bytes32 _para) public view returns (uint);
 }
 

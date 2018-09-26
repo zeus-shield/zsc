@@ -43,7 +43,7 @@ session_start();
 
     /////////////////////////////
     function loadAllUserRobotBriefs() {
-        userRobotGM.loadAllRobotBriefs("user", 0x0, function() {
+        userRobotGM.loadAllRobotBriefs("user", "0x0", function() {
             loadUserAllRobotHtml("PageBody", "showRobotDetails", "createGen0Robot");
         });
     }
