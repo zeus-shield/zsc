@@ -1,4 +1,4 @@
-    
+
 import Output from './output.js';
 import Transaction from './transaction_raw.js';
 import Logistics from './logistics_raw.js';
@@ -317,7 +317,7 @@ export default class TestLogisticsRaw {
             } else {
                 Output(window.outputElement, 'small', 'red', error);
             }
-        }); 
+        });
     }
 
     remove() {
@@ -383,6 +383,31 @@ export default class TestLogisticsRaw {
         });
     }
 
+    number() {
+        console.log('TestLogisticsRaw.number()');
+        let logistics = new Logistics(this[abi], this[contractAddress]);
+
+        // number
+        logistics.number(function(error, result) {
+            if (!error) {
+                for (let i=0; i<result; i++) {
+                    // getBriefExByIndex
+                    // logistics.getBriefByIndex(i, function(error, result) {
+                    logistics.getBriefExByIndex(i, function(error, result) {
+                        if (!error) {
+                            console.log(result);
+                            Output(window.outputElement, 'small', 'red', `[Brief]:</br>${result}`);
+                        } else {
+                            Output(window.outputElement, 'small', 'red', error);
+                        }
+                    })
+                }
+            } else {
+                Output(window.outputElement, 'small', 'red', error);
+            }
+        })
+    }
+
     do(operation) {
         console.log('TestLogisticsRaw.do(%s)', operation);
         switch(operation) {
@@ -397,6 +422,8 @@ export default class TestLogisticsRaw {
                 break;
             case 'Get':
                 this.get();
+                // this.remove();
+                // this.number();
                 break;
             default:
                 Output(window.outputElement, 'small', 'red', 'Operation Error!');
