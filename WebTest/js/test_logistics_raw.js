@@ -408,6 +408,20 @@ export default class TestLogisticsRaw {
         })
     }
 
+    numberOfTracks() {
+        console.log('TestLogisticsRaw.numberOfTracks()');
+        let logistics = new Logistics(this[abi], this[contractAddress]);
+
+        // number
+        logistics.numberOfTracks("JNTCU0600046685YQ", function(error, result) {
+            if (!error) {
+                Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
+            } else {
+                Output(window.outputElement, 'small', 'red', error);
+            }
+        })
+    }
+
     do(operation) {
         console.log('TestLogisticsRaw.do(%s)', operation);
         switch(operation) {
@@ -424,6 +438,7 @@ export default class TestLogisticsRaw {
                 this.get();
                 // this.remove();
                 // this.number();
+                // this.numberOfTracks();
                 break;
             default:
                 Output(window.outputElement, 'small', 'red', 'Operation Error!');
