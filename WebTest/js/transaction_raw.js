@@ -10,13 +10,10 @@ const key = Symbol('key');
 const etherSpentInPendingTransactions = Symbol('etherSpentInPendingTransactions');
 const getNonce = Symbol('getNonce');
 
-export default class DeployRaw {
-    constructor() {
-        let isMetaMask = web3.currentProvider.isMetaMask;
-        this[account] = web3.eth.coinbase;
-        if (isMetaMask) {
-        } else {
-        }
+export default class TransactionRaw {
+    constructor(address, privateKey) {
+        this[account] = address;
+        this[key] = privateKey;
     }
 
     [etherSpentInPendingTransactions](address, func) {
@@ -96,7 +93,7 @@ export default class DeployRaw {
     }
 
     do(cmd, data, gasRequired, constractAddress, func) {
-        console.log('DeployRaw.do()');
+        console.log('TransactionRaw.do()');
 
         let handler = this;
         let address = this[account];
