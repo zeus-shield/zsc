@@ -2,12 +2,14 @@
 import Output from './output.js';
 import Transaction from './transaction_raw.js';
 import Logistics from './logistics_raw.js';
+import Channel from './channel.js';
 
 //private member
 const contractName = Symbol('contractName');
 const compiledJson = Symbol('compiledJson');
 const abi = Symbol('abi');
 const contractAddress = Symbol('contractAddress');
+const channel = Symbol('channel');
 
 //private function
 
@@ -18,6 +20,12 @@ export default class TestLogisticsRaw {
         this[compiledJson] = '';
         this[abi] = '';
         this[contractAddress] = '';
+
+        this[channel] = new Channel();
+        let isMetaMask = web3.currentProvider.isMetaMask;
+        if (isMetaMask) {
+        } else {
+        }
     }
 
     setContractName(name) {
@@ -30,6 +38,16 @@ export default class TestLogisticsRaw {
 
     deploy() {
         console.log('TestLogisticsRaw.deploy()');
+        let channels = this[channel].get("idle");
+
+        if (0 == channels.length) {
+            Output(window.outputElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = channels[0].account;
+        let key = channels[0].key;
+
         let name;
         let byteCode;
         let transaction;
@@ -53,7 +71,7 @@ export default class TestLogisticsRaw {
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
         web3.eth.estimateGas({data: data}, function(error, result) {
             if (!error) {
-                transaction = new Transaction();
+                transaction = new Transaction(account, key);
                 if('undefined' != typeof transaction) {
                     transaction.do("deploy", data, result, null, function(error, result) {
                         if (!error) {
@@ -73,6 +91,15 @@ export default class TestLogisticsRaw {
 
     create() {
         console.log('TestLogisticsRaw.create()');
+        let channels = this[channel].get("idle");
+
+        if (0 == channels.length) {
+            Output(window.outputElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = channels[0].account;
+        let key = channels[0].key;
 
         let status = "";
         let string = "";
@@ -87,7 +114,7 @@ export default class TestLogisticsRaw {
         let logistics = new Logistics(this[abi], this[contractAddress]);
         
         // updateEx
-        logistics.updateEx(info3, function(error, result) {
+        logistics.updateEx(account, key, info3, function(error, result) {
             if (!error) {
                 if ("" != result.status) {
                     if ("0x1" == result.status) {
@@ -100,7 +127,7 @@ export default class TestLogisticsRaw {
                     Output(window.outputElement, 'small', 'red', string);
 
                     // update
-                    logistics.update("JNTCU0600046684YQ", "MSK0000027694", "INFO4", "Russian", "GTMS_SIGNED", tracks4, function(error, result) {
+                    logistics.update(account, key, "JNTCU0600046684YQ", "MSK0000027694", "INFO4", "Russian", "GTMS_SIGNED", tracks4, function(error, result) {
                         if (!error) {
                             if ("" != result.status) {
                                 if ("0x1" == result.status) {
@@ -113,7 +140,7 @@ export default class TestLogisticsRaw {
                                 Output(window.outputElement, 'small', 'red', string);
 
                                 // update
-                                logistics.update("JNTCU0600046685YQ", "MSK0000027695", "INFO5", "Russian", "GTMS_SIGNED", tracks5, function(error, result) {
+                                logistics.update(account, key, "JNTCU0600046685YQ", "MSK0000027695", "INFO5", "Russian", "GTMS_SIGNED", tracks5, function(error, result) {
                                     if (!error) {
                                         if ("" != result.status) {
                                             if ("0x1" == result.status) {
@@ -126,7 +153,7 @@ export default class TestLogisticsRaw {
                                             Output(window.outputElement, 'small', 'red', string);
 
                                             // updateEx
-                                            logistics.updateEx(info6, function(error, result) {
+                                            logistics.updateEx(account, key, info6, function(error, result) {
                                                 if (!error) {
                                                     if ("" != result.status) {
                                                         if ("0x1" == result.status) {
@@ -139,7 +166,7 @@ export default class TestLogisticsRaw {
                                                         Output(window.outputElement, 'small', 'red', string);
 
                                                         // update
-                                                        logistics.update("JNTCU0600046687YQ", "MSK0000027697", "INFO7", "Russian", "GTMS_SIGNED", tracks7, function(error, result) {
+                                                        logistics.update(account, key, "JNTCU0600046687YQ", "MSK0000027697", "INFO7", "Russian", "GTMS_SIGNED", tracks7, function(error, result) {
                                                             if (!error) {
                                                                 if ("" != result.status) {
                                                                     if ("0x1" == result.status) {
@@ -199,6 +226,15 @@ export default class TestLogisticsRaw {
 
     update() {
         console.log('TestLogisticsRaw.update()');
+        let channels = this[channel].get("idle");
+
+        if (0 == channels.length) {
+            Output(window.outputElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = channels[0].account;
+        let key = channels[0].key;
 
         let status = "";
         let string = "";
@@ -209,7 +245,7 @@ export default class TestLogisticsRaw {
         let logistics = new Logistics(this[abi], this[contractAddress]);
 
         // updateBrief
-        logistics.updateBrief("JNTCU0600046688YQ", "MSK0000027698", "INFO8", "Russian", "GTMS_SIGNED", function(error, result) {
+        logistics.updateBrief(account, key, "JNTCU0600046688YQ", "MSK0000027698", "INFO8", "Russian", "GTMS_SIGNED", function(error, result) {
             if (!error) {
                 if ("" != result.status) {
                     if ("0x1" == result.status) {
@@ -222,7 +258,7 @@ export default class TestLogisticsRaw {
                     Output(window.outputElement, 'small', 'red', string);
 
                     // updateBriefEx
-                    logistics.updateBriefEx(brief9, function(error, result) {
+                    logistics.updateBriefEx(account, key, brief9, function(error, result) {
                         if (!error) {
                             if ("" != result.status) {
                                 if ("0x1" == result.status) {
@@ -235,7 +271,7 @@ export default class TestLogisticsRaw {
                                 Output(window.outputElement, 'small', 'red', string);
 
                                 // updateTracks
-                                logistics.updateTracks("JNTCU0600046685YQ", newTracks5, 1, function(error, result) {
+                                logistics.updateTracks(account, key, "JNTCU0600046685YQ", newTracks5, 1, function(error, result) {
                                     if (!error) {
                                         if ("" != result.status) {
                                             if ("0x1" == result.status) {
