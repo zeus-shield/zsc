@@ -450,6 +450,35 @@ export default class TestLogisticsRaw {
             });
         } else {}
     }
+
+    updateParallel() {
+        console.log('TestLogisticsRaw.updateSync()');
+
+        let channels = this[channel].get("idle");
+        let channelIdleCount = channels.length;
+        let totalCount = 3;
+        let syncCount = 0;
+
+        if (0 == channelIdleCount) {
+            Output(window.outputElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        if (totalCount > channelIdleCount) {
+            syncCount = channelIdleCount;
+            this[nextIndex] = channelIdleCount;
+        } else {
+            syncCount = totalCount;
+            this[nextIndex] = totalCount;
+        }
+
+        for (let index=0; index<syncCount; index++) {
+            let account = channels[index].account;
+            let key = channels[index].key;
+            this.procUpdateParallel(this, account, key, index, totalCount);
+        }
+    }
+
     get() {
         console.log('TestLogisticsRaw.get()');
         let logistics = new Logistics(this[abi], this[contractAddress]);
