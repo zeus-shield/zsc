@@ -310,7 +310,7 @@ export default class TestLogisticsRaw {
         } else {}
     }
 
-    createSync() {
+    createParallel() {
         console.log('TestLogisticsRaw.createAnsync()');
 
         let channels = this[channel].get("idle");
@@ -334,7 +334,7 @@ export default class TestLogisticsRaw {
         for (let index=0; index<syncCount; index++) {
             let account = channels[index].account;
             let key = channels[index].key;
-            this.procCreateSync(this, account, key, index, totalCount);
+            this.procCreateParallel(this, account, key, index, totalCount);
         }
     }
 
@@ -580,10 +580,11 @@ export default class TestLogisticsRaw {
                 break;
             case 'Create':
                 // this.create();
-                this.createSync();
+                this.createParallel();
                 break;
             case 'Update':
-                this.update();
+                // this.update();
+                this.updateParallel();
                 break;
             case 'Get':
                 this.get();
