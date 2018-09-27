@@ -106,7 +106,7 @@ export default class TestLogisticsRaw {
         let status = "";
         let string = "";
 
-        // update testing data
+        // create testing data
         let info3 = "{\"error\":null,\"num\":\"JNTCU0600046683YQ\",\"transNum\":\"MSK0000027693\",\"model\":\"INFO3\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"Армавир\",\"timeZone\":\"+3\",\"desc\":\"Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
         let info6 = "{\"error\":null,\"num\":\"JNTCU0600046686YQ\",\"transNum\":\"MSK0000027696\",\"model\":\"INFO6\",\"destinationCountry\":\"China\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"China\",\"city\":\"HangZhou\",\"facilityName\":\"SF\",\"timeZone\":\"+3\",\"desc\":\"SF is good.\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"China\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"China\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
         let tracks4 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"Track4-1\",\"timeZone\":\"+3\",\"desc\":\"Track4-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Track4-2\",\"timeZone\":\"+3\",\"desc\":\"Track4-2\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
@@ -226,7 +226,7 @@ export default class TestLogisticsRaw {
         });
     }
 
-    procCreateSyncFunc(handler, account, key, index, totalCount, error, result) {
+    procParallelFunc(cmd, handler, account, key, index, totalCount, error, result) {
         if (!error) {
             if ("" != result.status) {
                 if ("0x1" == result.status) {
@@ -242,14 +242,23 @@ export default class TestLogisticsRaw {
                     if (totalCount == handler[nextIndex]) {
                         // nothing to do
                     } else {
-                        handler.procUpdateSync(handler, account, key, handler[nextIndex], totalCount);
+                        if ("create" == cmd) {
+                            handler.procCreateParallel(handler, account, key, handler[nextIndex], totalCount);
+                        } else if ("update" == cmd) {
+                            handler.procUpdateParallel(handler, account, key, handler[nextIndex], totalCount);
+                        } else {}
+                        
                         handler[nextIndex] ++;
                     }
                     // unlock -- DOTO
                 } else {
                     // retry to last transaction
                     status = "failure";
-                    handler.procUpdateSync(handler, account, key, index, totalCount);
+                    if ("create" == cmd) {
+                        handler.procCreateParallel(handler, account, key, index, totalCount);
+                    } else if ("update" == cmd) {
+                        handler.procUpdateParallel(handler, account, key, index, totalCount);
+                    } else {}
                 }
 
                 let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
