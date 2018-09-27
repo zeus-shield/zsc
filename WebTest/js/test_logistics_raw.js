@@ -9,7 +9,9 @@ const contractName = Symbol('contractName');
 const compiledJson = Symbol('compiledJson');
 const abi = Symbol('abi');
 const contractAddress = Symbol('contractAddress');
+
 const channel = Symbol('channel');
+const nextIndex = Symbol('nextIndex');
 
 //private function
 
@@ -224,6 +226,43 @@ export default class TestLogisticsRaw {
         });
     }
 
+    procCreateSyncFunc(handler, account, key, index, totalCount, error, result) {
+        if (!error) {
+            if ("" != result.status) {
+                if ("0x1" == result.status) {
+                    console.log("%cindex=%s(succeeded), account=%s","background:white;color:orange", index, account);
+                } else {
+                    console.log("%cindex=%s(failure), account=%s","background:white;color:red", index, account);
+                }
+
+                if ("0x1" == result.status) {
+                    // try to next transaction
+                    status = "succeeded";
+                    // lock -- DOTO
+                    if (totalCount == handler[nextIndex]) {
+                        // nothing to do
+                    } else {
+                        handler.procUpdateSync(handler, account, key, handler[nextIndex], totalCount);
+                        handler[nextIndex] ++;
+                    }
+                    // unlock -- DOTO
+                } else {
+                    // retry to last transaction
+                    status = "failure";
+                    handler.procUpdateSync(handler, account, key, index, totalCount);
+                }
+
+                let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                Output(window.outputElement, 'small', 'red', string);
+            } else {
+                let status = "Try to get status again!";
+                let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                Output(window.outputElement, 'small', 'red', string);
+            }
+        } else {
+            Output(window.outputElement, 'small', 'red', error);
+        }        
+    }
     update() {
         console.log('TestLogisticsRaw.update()');
         let channels = this[channel].get("idle");
@@ -465,7 +504,8 @@ export default class TestLogisticsRaw {
                 this.deploy();
                 break;
             case 'Create':
-                this.create();
+                // this.create();
+                this.createSync();
                 break;
             case 'Update':
                 this.update();
