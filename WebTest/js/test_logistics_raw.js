@@ -299,6 +299,35 @@ export default class TestLogisticsRaw {
             });
         } else {}
     }
+
+    createSync() {
+        console.log('TestLogisticsRaw.createAnsync()');
+
+        let channels = this[channel].get("idle");
+        let channelIdleCount = channels.length;
+        let totalCount = 5;
+        let syncCount = 0;
+
+        if (0 == channelIdleCount) {
+            Output(window.outputElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        if (totalCount > channelIdleCount) {
+            syncCount = channelIdleCount;
+            this[nextIndex] = channelIdleCount;
+        } else {
+            syncCount = totalCount;
+            this[nextIndex] = totalCount;
+        }
+
+        for (let index=0; index<syncCount; index++) {
+            let account = channels[index].account;
+            let key = channels[index].key;
+            this.procCreateSync(this, account, key, index, totalCount);
+        }
+    }
+
     update() {
         console.log('TestLogisticsRaw.update()');
         let channels = this[channel].get("idle");
