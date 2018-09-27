@@ -273,7 +273,8 @@ export default class TestLogisticsRaw {
         }        
     }
 
-    procCreateSync(handler, account, key, index, totalCount) {
+    procCreateParallel(handler, account, key, index, totalCount) {
+        // create testing data
         let tracks3 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"Track3-1\",\"timeZone\":\"+3\",\"desc\":\"Track3-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Track3-2\",\"timeZone\":\"+3\",\"desc\":\"Track3-2\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
         let info4 = "{\"error\":null,\"num\":\"JNTCU0600046684YQ\",\"transNum\":\"MSK0000027694\",\"model\":\"INFO4\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"Армавир\",\"timeZone\":\"+3\",\"desc\":\"Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
         let tracks5 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"Track5-1\",\"timeZone\":\"+3\",\"desc\":\"Track5-1\",\"actionCode\":\"GTMS_SIGNED\"}}]}";
@@ -288,23 +289,23 @@ export default class TestLogisticsRaw {
 
         if (0 == index) {
             logistics.update(account, key, "JNTCU0600046683YQ", "MSK0000027693", "INFO3", "Russian", "GTMS_SIGNED", tracks3, function(error, result) {
-                handler.procCreateSyncFunc(handler, account, key, index, totalCount, error, result);
+                handler.procParallelFunc("create", handler, account, key, index, totalCount, error, result);
             });
         } else if (1 == index) {
             logistics.updateEx(account, key, info4, function(error, result) {
-                handler.procCreateSyncFunc(handler, account, key, index, totalCount, error, result);
+                handler.procParallelFunc("create", handler, account, key, index, totalCount, error, result);
             });
         } else if (2 == index) {
             logistics.update(account, key, "JNTCU0600046685YQ", "MSK0000027695", "INFO5", "Russian", "GTMS_SIGNED", tracks5, function(error, result) {
-                handler.procCreateSyncFunc(handler, account, key, index, totalCount, error, result);
+                handler.procParallelFunc("create", handler, account, key, index, totalCount, error, result);
             });
         } else if (3 == index) {
             logistics.updateEx(account, key, info6, function(error, result) {
-                handler.procCreateSyncFunc(handler, account, key, index, totalCount, error, result);
+                handler.procParallelFunc("create", handler, account, key, index, totalCount, error, result);
             });
         } else if (4 == index) {
             logistics.update(account, key, "JNTCU0600046687YQ", "MSK0000027697", "INFO7", "Russian", "GTMS_SIGNED", tracks7, function(error, result) {
-                handler.procCreateSyncFunc(handler, account, key, index, totalCount, error, result);                                
+                handler.procParallelFunc("create", handler, account, key, index, totalCount, error, result);                                
             });
         } else {}
     }
