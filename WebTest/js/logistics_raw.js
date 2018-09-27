@@ -11,21 +11,21 @@ const constractAbi = Symbol('abi');
 const constractAddress = Symbol('constractAddress');
 const account = Symbol('account');
 
-export default class ZSCLogistics {
+export default class LogisticsRaw {
     constructor(abi, address) {
         this[constractAbi] = abi;
         this[constractAddress] = address;
         this[account] = web3.eth.coinbase;
     }
 
-    updateTracks(_num, _tracks, _updateType, func) {
+    updateTracks(account, key, _num, _tracks, _updateType, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
         let data = contractInstance.updateTracks.getData(_num, _tracks, _updateType);
 
         contractInstance.updateTracks.estimateGas(_num, _tracks, _updateType, function(error, result) {
             if (!error) {
-                let transaction = new Transaction();
+                let transaction = new Transaction(account, key);
                 if('undefined' != typeof transaction) {
                     transaction.do("transaction", data, result, handler[constractAddress], func);
                 }
@@ -39,14 +39,14 @@ export default class ZSCLogistics {
         });
     }
 
-    updateBrief(_num, _transNum, _model, _destinationCountry, _lastStatus, func) {
+    updateBrief(account, key, _num, _transNum, _model, _destinationCountry, _lastStatus, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
         let data = contractInstance.updateBrief.getData(_num, _transNum, _model, _destinationCountry, _lastStatus);
 
         contractInstance.updateBrief.estimateGas(_num, _transNum, _model, _destinationCountry, _lastStatus, function(error, result) {
             if (!error) {
-                let transaction = new Transaction();
+                let transaction = new Transaction(account, key);
                 if('undefined' != typeof transaction) {
                     transaction.do("transaction", data, result, handler[constractAddress], func);
                 }
@@ -60,14 +60,14 @@ export default class ZSCLogistics {
         });
     }
 
-    updateBriefEx(_brief, func) {
+    updateBriefEx(account, key, _brief, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
         let data = contractInstance.updateBriefEx.getData(_brief);
 
         contractInstance.updateBriefEx.estimateGas(_brief, function(error, result) {
             if (!error) {
-                let transaction = new Transaction();
+                let transaction = new Transaction(account, key);
                 if('undefined' != typeof transaction) {
                     transaction.do("transaction", data, result, handler[constractAddress], func);
                 }
@@ -81,14 +81,14 @@ export default class ZSCLogistics {
         });
     }
 
-    update(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks, func) {
+    update(account, key, _num, _transNum, _model, _destinationCountry, _lastStatus, _tracks, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
         let data = contractInstance.update.getData(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks);
 
         contractInstance.update.estimateGas(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks, {data: data}, function(error, result) {
             if (!error) {
-                let transaction = new Transaction();
+                let transaction = new Transaction(account, key);
                 if('undefined' != typeof transaction) {
                     transaction.do("transaction", data, result, handler[constractAddress], func);
                 }
@@ -102,14 +102,14 @@ export default class ZSCLogistics {
         });
     }
 
-    updateEx(_info, func) {
+    updateEx(account, key, _info, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
         let data = contractInstance.updateEx.getData(_info);
 
         contractInstance.updateEx.estimateGas(_info, function(error, result) {
             if (!error) {
-                let transaction = new Transaction();
+                let transaction = new Transaction(account, key);
                 if('undefined' != typeof transaction) {
                     transaction.do("transaction", data, result, handler[constractAddress], func);
                 }
@@ -123,14 +123,14 @@ export default class ZSCLogistics {
         });
     }
 
-    remove(_num, func) {
+    remove(account, key, _num, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
         let data = contractInstance.remove.getData(_num);
 
         contractInstance.remove.estimateGas(_num, function(error, result) {
             if (!error) {
-                let transaction = new Transaction();
+                let transaction = new Transaction(account, key);
                 if('undefined' != typeof transaction) {
                     transaction.do("transaction", data, result, handler[constractAddress], func);
                 }
