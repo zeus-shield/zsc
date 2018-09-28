@@ -21,3 +21,9 @@ function ZSCAgreementProvider(nm, abi, adr) {
 ZSCAgreementProvider.prototype.getUserName = function() {return this.userName;}
 
 ZSCAgreementProvider.prototype.setTemplateName = function(name) {this.tmpName = name;}
+
+ZSCAgreementProvider.prototype.resetAllItemTags = function(gm) {
+    for (var i = 0; i < gm.agrNos; ++i) {
+        gm.itemTags[i] = false;
+    }
+}
