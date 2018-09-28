@@ -323,27 +323,26 @@ export default class TestLogisticsRaw {
     createParallel() {
         console.log('TestLogisticsRaw.createAnsync()');
 
-        let channels = window.channelClass.get("idle");
-        let channelIdleCount = channels.length;
+        let channelIdles = window.channelClass.get("idle");
         let blockCount = 5;
         let parallelCount = 0;
 
-        if (0 == channelIdleCount) {
+        if (0 == channelIdles.length) {
             Output(window.outputElement, 'small', 'red', "No channnel(idle)!");
             return;
         }
 
-        if (blockCount > channelIdleCount) {
-            parallelCount = channelIdleCount;
-            this[nextIndex] = channelIdleCount;
+        if (blockCount > channelIdles.length) {
+            parallelCount = channelIdles.length;
+            this[nextIndex] = channelIdles.length;
         } else {
             parallelCount = blockCount;
             this[nextIndex] = blockCount;
         }
 
         for (let blockIndex=0; blockIndex<parallelCount; blockIndex++) {
-            let account = channels[blockIndex].account;
-            let key = channels[blockIndex].key;
+            let account = channelIdles[blockIndex].account;
+            let key = channelIdles[blockIndex].key;
             this[openChannel]("create", this, account, key, parallelCount, blockIndex, blockCount);
         }
     }
@@ -438,27 +437,26 @@ export default class TestLogisticsRaw {
     updateParallel() {
         console.log('TestLogisticsRaw.updateSync()');
 
-        let channels = window.channelClass.get("idle");
-        let channelIdleCount = channels.length;
+        let channelIdles = window.channelClass.get("idle");
         let blockCount = 3;
         let parallelCount = 0;
 
-        if (0 == channelIdleCount) {
+        if (0 == channelIdles.length) {
             Output(window.outputElement, 'small', 'red', "No channnel(idle)!");
             return;
         }
 
-        if (blockCount > channelIdleCount) {
-            parallelCount = channelIdleCount;
-            this[nextIndex] = channelIdleCount;
+        if (blockCount > channelIdles.length) {
+            parallelCount = channelIdles.length;
+            this[nextIndex] = channelIdles.length;
         } else {
             parallelCount = blockCount;
             this[nextIndex] = blockCount;
         }
 
         for (let blockIndex=0; blockIndex<parallelCount; blockIndex++) {
-            let account = channels[blockIndex].account;
-            let key = channels[blockIndex].key;
+            let account = channelIdles[blockIndex].account;
+            let key = channelIdles[blockIndex].key;
             this[openChannel]("update", this, account, key, parallelCount, blockIndex, blockCount);
         }
     }
