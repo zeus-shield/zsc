@@ -109,6 +109,16 @@ export default class TransactionRaw {
         }
         return result;
     }
+
+    [getGasRequired](gasRequired) {
+        let result = gasRequired;
+
+        if (result < 470*10**4) {
+            result = 470*10**4;
+        }
+        return result;
+    }
+
     do(cmd, data, gasRequired, constractAddress, func) {
         console.log('TransactionRaw.do()');
 
