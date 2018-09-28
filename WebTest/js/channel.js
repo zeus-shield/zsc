@@ -45,4 +45,10 @@ export default class Channel {
         return this[channel].length;
     }
 
+    clear() {
+        let size = this[channel].length;
+        for (let i=0; i<size; i++) {
+            this[channel].pop();
+        }
+    }
 }
