@@ -9,6 +9,8 @@ const key = Symbol('key');
 //private function
 const etherSpentInPendingTransactions = Symbol('etherSpentInPendingTransactions');
 const getNonce = Symbol('getNonce');
+const getGasPrice = Symbol('getGasPrice');
+const getGasRequired = Symbol('getGasRequired');
 
 export default class TransactionRaw {
     constructor(address, privateKey) {
@@ -92,6 +94,21 @@ export default class TransactionRaw {
         })
     }
 
+    [getGasPrice](gasPrice) {
+        let result = gasPrice;
+        let isMetaMask = web3.currentProvider.isMetaMask;
+
+        if (isMetaMask) {
+            if (result < 20*10**9) {
+                result = 20*10**9;
+            }
+        } else {
+            if (result < 20) {
+                result = 20;
+            }
+        }
+        return result;
+    }
     do(cmd, data, gasRequired, constractAddress, func) {
         console.log('TransactionRaw.do()');
 
