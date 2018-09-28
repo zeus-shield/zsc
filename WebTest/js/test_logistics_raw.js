@@ -12,6 +12,8 @@ const contractAddress = Symbol('contractAddress');
 const nextIndex = Symbol('nextIndex');
 
 //private function
+const openChannelFunc = Symbol('openChannelFunc');
+const openChannel = Symbol('openChannel');
 
 export default class TestLogisticsRaw {
 
@@ -218,7 +220,7 @@ export default class TestLogisticsRaw {
         });
     }
 
-    procParallelFunc(cmd, handler, account, key, parallelCount, blockIndex, blockCount, error, result) {
+    [openChannelFunc](cmd, handler, account, key, parallelCount, blockIndex, blockCount, error, result) {
         if (!error) {
             if ("" != result.status) {
                 if ("0x1" == result.status) {
@@ -238,14 +240,14 @@ export default class TestLogisticsRaw {
                         }
                         return;
                     } else {
-                        handler.procParallel(cmd, handler, account, key, parallelCount, handler[nextIndex], blockCount);
+                        handler[openChannel](cmd, handler, account, key, parallelCount, handler[nextIndex], blockCount);
                         handler[nextIndex] ++;
                     }
                     // unlock -- DOTO
                 } else {
                     // retry to last transaction
                     status = "failure";
-                    handler.procParallel(cmd, handler, account, key, parallelCount, blockIndex, blockCount);
+                    handler[openChannel](cmd, handler, account, key, parallelCount, blockIndex, blockCount);
                 }
 
                 let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
@@ -256,12 +258,12 @@ export default class TestLogisticsRaw {
                 Output(window.outputElement, 'small', 'red', string);
             }
         } else {
-            handler.procParallel(cmd, handler, account, key, parallelCount, blockIndex, blockCount);
+            handler[openChannel](cmd, handler, account, key, parallelCount, blockIndex, blockCount);
             Output(window.outputElement, 'small', 'red', error);
         }        
     }
 
-    procParallel(cmd, handler, account, key, parallelCount, blockIndex, blockCount) {
+    [openChannel](cmd, handler, account, key, parallelCount, blockIndex, blockCount) {
         // testing data(create)
         let tracks3 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"Track3-1\",\"timeZone\":\"+3\",\"desc\":\"Track3-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Track3-2\",\"timeZone\":\"+3\",\"desc\":\"Track3-2\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
         let info4 = "{\"error\":null,\"num\":\"JNTCU0600046684YQ\",\"transNum\":\"MSK0000027694\",\"model\":\"INFO4\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"Армавир\",\"timeZone\":\"+3\",\"desc\":\"Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
@@ -282,37 +284,37 @@ export default class TestLogisticsRaw {
         if ("create" == cmd) {
             if (0 == blockIndex) {
                 logistics.update(account, key, "JNTCU0600046683YQ", "MSK0000027693", "INFO3", "Russian", "GTMS_SIGNED", tracks3, function(error, result) {
-                    handler.procParallelFunc("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
+                    handler[openChannelFunc]("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
                 });
             } else if (1 == blockIndex) {
                 logistics.updateEx(account, key, info4, function(error, result) {
-                    handler.procParallelFunc("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
+                    handler[openChannelFunc]("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
                 });
             } else if (2 == blockIndex) {
                 logistics.update(account, key, "JNTCU0600046685YQ", "MSK0000027695", "INFO5", "Russian", "GTMS_SIGNED", tracks5, function(error, result) {
-                    handler.procParallelFunc("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
+                    handler[openChannelFunc]("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
                 });
             } else if (3 == blockIndex) {
                 logistics.updateEx(account, key, info6, function(error, result) {
-                    handler.procParallelFunc("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
+                    handler[openChannelFunc]("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
                 });
             } else if (4 == blockIndex) {
                 logistics.update(account, key, "JNTCU0600046687YQ", "MSK0000027697", "INFO7", "Russian", "GTMS_SIGNED", tracks7, function(error, result) {
-                    handler.procParallelFunc("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);                                
+                    handler[openChannelFunc]("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);                                
                 });
             } else {}
         } else if ("update" == cmd) {
              if (0 == blockIndex) {
                 logistics.updateBrief(account, key, "JNTCU0600046688YQ", "MSK0000027698", "INFO8", "Russian", "GTMS_SIGNED", function(error, result) {
-                    handler.procParallelFunc("update", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
+                    handler[openChannelFunc]("update", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
                 });
             } else if (1 == blockIndex) {
                 logistics.updateBriefEx(account, key, brief9, function(error, result) {
-                    handler.procParallelFunc("update", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
+                    handler[openChannelFunc]("update", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
                 });
             } else if (2 == blockIndex) {
                 logistics.updateTracks(account, key, "JNTCU0600046685YQ", newTracks5, 1, function(error, result) {
-                    handler.procParallelFunc("update", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
+                    handler[openChannelFunc]("update", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
                 });
             } else {}           
         } else {}
@@ -342,7 +344,7 @@ export default class TestLogisticsRaw {
         for (let blockIndex=0; blockIndex<parallelCount; blockIndex++) {
             let account = channels[blockIndex].account;
             let key = channels[blockIndex].key;
-            this.procParallel("create", this, account, key, parallelCount, blockIndex, blockCount);
+            this[openChannel]("create", this, account, key, parallelCount, blockIndex, blockCount);
         }
     }
 
@@ -457,7 +459,7 @@ export default class TestLogisticsRaw {
         for (let blockIndex=0; blockIndex<parallelCount; blockIndex++) {
             let account = channels[blockIndex].account;
             let key = channels[blockIndex].key;
-            this.procParallel("update", this, account, key, parallelCount, blockIndex, blockCount);
+            this[openChannel]("update", this, account, key, parallelCount, blockIndex, blockCount);
         }
     }
 
