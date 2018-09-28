@@ -58,6 +58,8 @@ export default function provider(injected) {
 
     getAccount(0, 1000, function(account) {
         let type = (injected)?'injected':'localhost';
+        let channel;
+
         if(!web3.isConnected()) {
             Output(window.outputElement, 'small', 'red', `Web3(${type}, ${account}) do not connected!`);
         } else {
@@ -65,6 +67,23 @@ export default function provider(injected) {
         }
 
         web3.eth.defaultAccount = web3.eth.coinbase;
+
+        // import channel
+        if('undefined' == typeof window.channelClass) {
+            channel = new Channel();
+            window.channelClass = channel;
+        } else {
+            channel = window.channelClass;
+        }
+
+        channel.clear();
+
+        if (web3.currentProvider.isMetaMask) {
+            channel.set(web3.eth.accounts[0], "");
+        } else {
+            channel.set(web3.eth.accounts[0], "");
+            channel.set(web3.eth.accounts[1], "");
+        }
     });
 
     return;
