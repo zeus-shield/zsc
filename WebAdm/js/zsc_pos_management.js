@@ -179,6 +179,16 @@ ZSCPosManagement.prototype.setUnitCategory = function(hashID, ctgName, unitName,
         });
 }
 
+ZSCPosManagement.prototype.emergentTransfer = function(hashID, srcAdr, dstAdr, robotId) {
+    this.myPosManager.emergentTransfer(
+        srcAdr, dstAdr, robotId,
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
+        function(error, result){ 
+            if(!error) cC_showHashResultTest(hashID, result, function(){});
+            else console.log("error: " + error);
+        });
+}
+
 //////////////
 ZSCPosManagement.prototype.loadBaseSettings = function(func) {
     var gm = this;
