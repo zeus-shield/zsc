@@ -27,3 +27,12 @@ ZSCAgreementProvider.prototype.resetAllItemTags = function(gm) {
         gm.itemTags[i] = false;
     }
 }
+
+ZSCAgreementProvider.prototype.checkAllItemTags = function(gm) {
+    for (var i = 0; i < gm.agrNos; ++i) {
+        if (gm.itemTags[i] == false) {
+            return false;
+        }
+    }
+    return true;
+}
