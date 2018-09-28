@@ -10,6 +10,7 @@ const abi = Symbol('abi');
 const contractAddress = Symbol('contractAddress');
 
 const nextIndex = Symbol('nextIndex');
+const tick = Symbol('tick');
 
 //private function
 const openChannelFunc = Symbol('openChannelFunc');
@@ -23,6 +24,8 @@ export default class TestLogisticsRaw {
         this[compiledJson] = '';
         this[abi] = '';
         this[contractAddress] = '';
+        this[nextIndex] = 0;
+        this[tick] = 0;
     }
 
     [openChannelFunc](cmd, handler, account, key, parallelCount, blockIndex, blockCount, error, result) {
@@ -39,9 +42,16 @@ export default class TestLogisticsRaw {
                     status = "succeeded";
                     // lock -- DOTO
                     if (blockCount == handler[nextIndex]) {
-                        if (blockIndex+1 == blockCount) {
+                        // no block will proc, close channel
+                        handler[closeChannel](account);
+
+                        // if all the channel is idle, all the block finished
+                        let channels = window.channelClass.get("idle");
+                        if (window.channelClass.size() == channels.length) {
                             // finish the all the block
-                            Output(window.outputElement, 'small', 'red', "Finish all.");
+                            let ticks = (new Date()).valueOf() - handler[tick];
+                            let string = `Finish all(cost: ${ticks}ms).`;
+                            Output(window.outputElement, 'small', 'red', string);
                         }
                         return;
                     } else {
@@ -85,6 +95,14 @@ export default class TestLogisticsRaw {
         if (blockCount < blockIndex) {
             return;
         }
+
+        let index = window.channelClass.find(account);
+        let size = window.channelClass.size();
+        if (size == index) {
+            return;
+        }
+
+        window.channelClass.status(index, "busy");
 
         if ("create" == cmd) {
             if (0 == blockIndex) {
@@ -351,6 +369,9 @@ export default class TestLogisticsRaw {
             this[nextIndex] = blockCount;
         }
 
+        // start tick
+        this[tick] = (new Date()).valueOf();
+
         for (let blockIndex=0; blockIndex<parallelCount; blockIndex++) {
             let account = channelIdles[blockIndex].account;
             let key = channelIdles[blockIndex].key;
@@ -464,6 +485,9 @@ export default class TestLogisticsRaw {
             parallelCount = blockCount;
             this[nextIndex] = blockCount;
         }
+
+        // start tick
+        this[tick] = (new Date()).valueOf();
 
         for (let blockIndex=0; blockIndex<parallelCount; blockIndex++) {
             let account = channelIdles[blockIndex].account;
