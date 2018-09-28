@@ -269,6 +269,11 @@ export default class TestLogisticsRaw {
                 Output(window.outputElement, 'small', 'red', string);
             }
         } else {
+            if ("create" == cmd) {
+                handler.procCreateParallel(handler, account, key, index, totalCount);
+            } else if ("update" == cmd) {
+                handler.procUpdateParallel(handler, account, key, index, totalCount);
+            } else {}
             Output(window.outputElement, 'small', 'red', error);
         }        
     }
