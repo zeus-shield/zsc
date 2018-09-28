@@ -29,8 +29,6 @@ function getAccount(tryTimes, timeout, func) {
 export default function provider(injected) {
     let Web3 = require('web3');
     let provider;
-    let type = '';
-    let account;
 
     // Open MetaMask and Ganache( or Geth) at the same time.
     if(typeof web3 !== 'undefined' 
@@ -57,16 +55,17 @@ export default function provider(injected) {
 
     web3 = new Web3(provider);
     //web3.setProvider(provider);
-    account = web3.eth.coinbase;
 
-    type = (injected)?'injected':'localhost';
-    if(!web3.isConnected()) {
-        Output(window.outputElement, 'small', 'red', `Web3(${type}, ${account}) do not connected!`);
-    } else {
-        Output(window.outputElement, 'small', 'red', `Web3(${type}, ${account}) connected!`);
-    }
+    getAccount(0, 1000, function(account) {
+        let type = (injected)?'injected':'localhost';
+        if(!web3.isConnected()) {
+            Output(window.outputElement, 'small', 'red', `Web3(${type}, ${account}) do not connected!`);
+        } else {
+            Output(window.outputElement, 'small', 'red', `Web3(${type}, ${account}) connected!`);
+        }
 
-    web3.eth.defaultAccount = web3.eth.coinbase;
+        web3.eth.defaultAccount = web3.eth.coinbase;
+    });
 
     return;
 }
