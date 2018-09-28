@@ -2,7 +2,29 @@
  Copyright (c) 2018 ZSC Dev Team
 */
 
+import Channel from './channel.js';
 import Output from './output.js';
+
+function getAccount(tryTimes, timeout, func) {
+    let account = web3.eth.coinbase;
+    let tag = true;
+
+    if ("null" == account || null == account) {
+        tag = false;
+    } 
+
+    tryTimes ++;
+    if(tag){
+        func(account);
+    } else {
+        setTimeout(function(){
+            let status = "Try to get account again!";
+            let string = `[Status]:${status}</br>[Try]:${tryTimes}(times)`;
+            Output(window.outputElement, 'small', 'red', string);
+            getAccount(tryTimes, timeout, func);
+        }, timeout);
+    }
+}
 
 export default function provider(injected) {
     let Web3 = require('web3');
