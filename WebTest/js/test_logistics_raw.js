@@ -14,6 +14,7 @@ const nextIndex = Symbol('nextIndex');
 //private function
 const openChannelFunc = Symbol('openChannelFunc');
 const openChannel = Symbol('openChannel');
+const closeChannel = Symbol('closeChannel');
 
 export default class TestLogisticsRaw {
 
@@ -122,6 +123,16 @@ export default class TestLogisticsRaw {
                 });
             } else {}           
         } else {}
+    }
+
+    [closeChannel](account) {
+        let index = window.channelClass.find(account);
+        let size = window.channelClass.size();
+        if (size == index) {
+            return;
+        }
+
+        window.channelClass.status(index, "idle");
     }
 
     setContractName(name) {
