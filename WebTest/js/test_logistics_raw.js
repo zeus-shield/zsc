@@ -2,7 +2,6 @@
 import Output from './output.js';
 import Transaction from './transaction_raw.js';
 import Logistics from './logistics_raw.js';
-import Channel from './channel.js';
 
 //private member
 const contractName = Symbol('contractName');
@@ -10,7 +9,6 @@ const compiledJson = Symbol('compiledJson');
 const abi = Symbol('abi');
 const contractAddress = Symbol('contractAddress');
 
-const channel = Symbol('channel');
 const nextIndex = Symbol('nextIndex');
 
 //private function
@@ -22,12 +20,6 @@ export default class TestLogisticsRaw {
         this[compiledJson] = '';
         this[abi] = '';
         this[contractAddress] = '';
-
-        this[channel] = new Channel();
-        let isMetaMask = web3.currentProvider.isMetaMask;
-        if (isMetaMask) {
-        } else {
-        }
     }
 
     setContractName(name) {
@@ -40,7 +32,7 @@ export default class TestLogisticsRaw {
 
     deploy() {
         console.log('TestLogisticsRaw.deploy()');
-        let channels = this[channel].get("idle");
+        let channels = window.channelClass.get("idle");
 
         if (0 == channels.length) {
             Output(window.outputElement, 'small', 'red', "No channnel(idle)!");
@@ -93,7 +85,7 @@ export default class TestLogisticsRaw {
 
     create() {
         console.log('TestLogisticsRaw.create()');
-        let channels = this[channel].get("idle");
+        let channels = window.channelClass.get("idle");
 
         if (0 == channels.length) {
             Output(window.outputElement, 'small', 'red', "No channnel(idle)!");
@@ -318,7 +310,7 @@ export default class TestLogisticsRaw {
     createParallel() {
         console.log('TestLogisticsRaw.createAnsync()');
 
-        let channels = this[channel].get("idle");
+        let channels = window.channelClass.get("idle");
         let channelIdleCount = channels.length;
         let totalCount = 5;
         let syncCount = 0;
@@ -345,7 +337,7 @@ export default class TestLogisticsRaw {
 
     update() {
         console.log('TestLogisticsRaw.update()');
-        let channels = this[channel].get("idle");
+        let channels = window.channelClass.get("idle");
 
         if (0 == channels.length) {
             Output(window.outputElement, 'small', 'red', "No channnel(idle)!");
@@ -459,7 +451,7 @@ export default class TestLogisticsRaw {
     updateParallel() {
         console.log('TestLogisticsRaw.updateSync()');
 
-        let channels = this[channel].get("idle");
+        let channels = window.channelClass.get("idle");
         let channelIdleCount = channels.length;
         let totalCount = 3;
         let syncCount = 0;
