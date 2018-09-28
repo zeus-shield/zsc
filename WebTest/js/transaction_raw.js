@@ -149,21 +149,26 @@ export default class TransactionRaw {
                                     handler[getNonce](address, function(error, nonce) {
                                         if (!error) {
                                             let rawTx;
+
+                                            // improve 'gasPrice' and 'gasRequired'
+                                            let gasPriceIm = handler[getGasPrice](gasPrice.toString(10));
+                                            let gasRequiredIm = handler[getGasRequired](gasRequired);
+
                                             if ("deploy" == cmd) {
                                                 rawTx = {
-                                                    gasPrice: web3.toHex(gasPrice),
-                                                    gasLimit: web3.toHex(gasRequired),
+                                                    gasPrice: web3.toHex(gasPriceIm),
+                                                    gasLimit: web3.toHex(gasRequiredIm),
                                                     from: address,
                                                     nonce: web3.toHex(nonce),
                                                     data: data
                                                 };
                                             } else if ("transaction" == cmd) {
                                                 rawTx = {
-                                                    gasPrice: web3.toHex(gasPrice),
-                                                    gasLimit: web3.toHex(gasRequired),
+                                                    gasPrice: web3.toHex(gasPriceIm),
+                                                    gasLimit: web3.toHex(gasRequiredIm),
                                                     to: constractAddress,
                                                     nonce: web3.toHex(nonce),
-                                                    data: data  
+                                                    data: data
                                                 };  
                                             } else {
                                                 // Output(window.outputElement, 'small', 'red', "Command Error!");
@@ -178,14 +183,14 @@ export default class TransactionRaw {
                                             let tx = new EthereumTx(rawTx);
                                             tx.sign(key);
                                             console.log("============================== sendRawTransaction ==============================");
-                                            console.log("cmd:",        cmd);
-                                            console.log("gasPrice:",   gasPrice.toString(10));
-                                            console.log("gas:",        gasRequired);
-                                            //alert(nonce);
-                                            console.log("nonce:",      nonce);
-                                            console.log("address:",    address);
-                                            console.log("privateKey:", privateKey);
-                                            //console.log("key:",                key);
+                                            console.log("cmd:        %s", cmd);
+                                            console.log("gasPrice:   %s(%s)", gasPriceIm, gasPrice.toString(10));
+                                            console.log("gas:        %s(%s)", gasRequiredIm, gasRequired);
+                                            // alert(nonce);
+                                            console.log("nonce:      %s", nonce);
+                                            console.log("address:    %s", address);
+                                            console.log("privateKey: %s", privateKey);
+                                            // console.log("key:        %s", key);
                                             console.log("================================================================================");
                                             
                                             web3.eth.sendRawTransaction("0x" + tx.serialize().toString('hex'), function(err, result) {
