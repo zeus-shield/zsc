@@ -433,32 +433,6 @@ export default class TestLogisticsRaw {
         });
     }
 
-    procUpdateParallel(handler, account, key, parallelCount, blockIndex, blockCount) {
-        // update testing data
-        let brief9 = "{\"error\":null,\"num\":\"JNTCU0600046689YQ\",\"transNum\":\"MSK0000027699\",\"model\":\"INFO9\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\"}";
-        let newTracks5 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"NewTrack5-1\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"NewTrack5-2\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-2\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
-
-        let logistics = new Logistics(this[abi], this[contractAddress]);
-
-        if (blockCount < blockIndex) {
-            return;
-        }
-
-        if (0 == blockIndex) {
-            logistics.updateBrief(account, key, "JNTCU0600046688YQ", "MSK0000027698", "INFO8", "Russian", "GTMS_SIGNED", function(error, result) {
-                handler.procParallelFunc("update", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
-            });
-        } else if (1 == blockIndex) {
-            logistics.updateBriefEx(account, key, brief9, function(error, result) {
-                handler.procParallelFunc("update", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
-            });
-        } else if (2 == blockIndex) {
-            logistics.updateTracks(account, key, "JNTCU0600046685YQ", newTracks5, 1, function(error, result) {
-                handler.procParallelFunc("update", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
-            });
-        } else {}
-    }
-
     updateParallel() {
         console.log('TestLogisticsRaw.updateSync()');
 
