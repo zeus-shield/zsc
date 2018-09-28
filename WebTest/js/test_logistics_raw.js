@@ -218,26 +218,30 @@ export default class TestLogisticsRaw {
         });
     }
 
-    procParallelFunc(cmd, handler, account, key, index, totalCount, error, result) {
+    procParallelFunc(cmd, handler, account, key, parallelCount, blockIndex, blockCount, error, result) {
         if (!error) {
             if ("" != result.status) {
                 if ("0x1" == result.status) {
-                    console.log("%cindex=%s(succeeded), account=%s","background:white;color:orange", index, account);
+                    console.log("%cindex=%s(succeeded), account=%s","background:white;color:orange", blockIndex, account);
                 } else {
-                    console.log("%cindex=%s(failure), account=%s","background:white;color:red", index, account);
+                    console.log("%cindex=%s(failure), account=%s","background:white;color:red", blockIndex, account);
                 }
 
                 if ("0x1" == result.status) {
                     // try to next transaction
                     status = "succeeded";
                     // lock -- DOTO
-                    if (totalCount == handler[nextIndex]) {
-                        // nothing to do
+                    if (blockCount == handler[nextIndex]) {
+                        if (blockIndex+1 == blockCount) {
+                            // finish the all the block
+                            Output(window.outputElement, 'small', 'red', "Finish all.");
+                        }
+                        return;
                     } else {
                         if ("create" == cmd) {
-                            handler.procCreateParallel(handler, account, key, handler[nextIndex], totalCount);
+                            handler.procCreateParallel(handler, account, key, parallelCount, handler[nextIndex], blockCount);
                         } else if ("update" == cmd) {
-                            handler.procUpdateParallel(handler, account, key, handler[nextIndex], totalCount);
+                            handler.procUpdateParallel(handler, account, key, parallelCount, handler[nextIndex], blockCount);
                         } else {}
                         
                         handler[nextIndex] ++;
@@ -247,9 +251,9 @@ export default class TestLogisticsRaw {
                     // retry to last transaction
                     status = "failure";
                     if ("create" == cmd) {
-                        handler.procCreateParallel(handler, account, key, index, totalCount);
+                        handler.procCreateParallel(handler, account, key, parallelCount, blockIndex, blockCount);
                     } else if ("update" == cmd) {
-                        handler.procUpdateParallel(handler, account, key, index, totalCount);
+                        handler.procUpdateParallel(handler, account, key, parallelCount, blockIndex, blockCount);
                     } else {}
                 }
 
@@ -262,15 +266,15 @@ export default class TestLogisticsRaw {
             }
         } else {
             if ("create" == cmd) {
-                handler.procCreateParallel(handler, account, key, index, totalCount);
+                handler.procCreateParallel(handler, account, key, parallelCount, blockIndex, blockCount);
             } else if ("update" == cmd) {
-                handler.procUpdateParallel(handler, account, key, index, totalCount);
+                handler.procUpdateParallel(handler, account, key, parallelCount, blockIndex, blockCount);
             } else {}
             Output(window.outputElement, 'small', 'red', error);
         }        
     }
 
-    procCreateParallel(handler, account, key, index, totalCount) {
+    procCreateParallel(handler, account, key, parallelCount, blockIndex, blockCount) {
         // create testing data
         let tracks3 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"Track3-1\",\"timeZone\":\"+3\",\"desc\":\"Track3-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Track3-2\",\"timeZone\":\"+3\",\"desc\":\"Track3-2\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
         let info4 = "{\"error\":null,\"num\":\"JNTCU0600046684YQ\",\"transNum\":\"MSK0000027694\",\"model\":\"INFO4\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"Армавир\",\"timeZone\":\"+3\",\"desc\":\"Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
@@ -280,29 +284,29 @@ export default class TestLogisticsRaw {
 
         let logistics = new Logistics(this[abi], this[contractAddress]);
 
-        if (totalCount < index) {
+        if (blockCount < blockIndex) {
             return;
         }
 
-        if (0 == index) {
+        if (0 == blockIndex) {
             logistics.update(account, key, "JNTCU0600046683YQ", "MSK0000027693", "INFO3", "Russian", "GTMS_SIGNED", tracks3, function(error, result) {
-                handler.procParallelFunc("create", handler, account, key, index, totalCount, error, result);
+                handler.procParallelFunc("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
             });
-        } else if (1 == index) {
+        } else if (1 == blockIndex) {
             logistics.updateEx(account, key, info4, function(error, result) {
-                handler.procParallelFunc("create", handler, account, key, index, totalCount, error, result);
+                handler.procParallelFunc("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
             });
-        } else if (2 == index) {
+        } else if (2 == blockIndex) {
             logistics.update(account, key, "JNTCU0600046685YQ", "MSK0000027695", "INFO5", "Russian", "GTMS_SIGNED", tracks5, function(error, result) {
-                handler.procParallelFunc("create", handler, account, key, index, totalCount, error, result);
+                handler.procParallelFunc("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
             });
-        } else if (3 == index) {
+        } else if (3 == blockIndex) {
             logistics.updateEx(account, key, info6, function(error, result) {
-                handler.procParallelFunc("create", handler, account, key, index, totalCount, error, result);
+                handler.procParallelFunc("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
             });
-        } else if (4 == index) {
+        } else if (4 == blockIndex) {
             logistics.update(account, key, "JNTCU0600046687YQ", "MSK0000027697", "INFO7", "Russian", "GTMS_SIGNED", tracks7, function(error, result) {
-                handler.procParallelFunc("create", handler, account, key, index, totalCount, error, result);                                
+                handler.procParallelFunc("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);                                
             });
         } else {}
     }
@@ -312,26 +316,26 @@ export default class TestLogisticsRaw {
 
         let channels = window.channelClass.get("idle");
         let channelIdleCount = channels.length;
-        let totalCount = 5;
-        let syncCount = 0;
+        let blockCount = 5;
+        let parallelCount = 0;
 
         if (0 == channelIdleCount) {
             Output(window.outputElement, 'small', 'red', "No channnel(idle)!");
             return;
         }
 
-        if (totalCount > channelIdleCount) {
-            syncCount = channelIdleCount;
+        if (blockCount > channelIdleCount) {
+            parallelCount = channelIdleCount;
             this[nextIndex] = channelIdleCount;
         } else {
-            syncCount = totalCount;
-            this[nextIndex] = totalCount;
+            parallelCount = blockCount;
+            this[nextIndex] = blockCount;
         }
 
-        for (let index=0; index<syncCount; index++) {
-            let account = channels[index].account;
-            let key = channels[index].key;
-            this.procCreateParallel(this, account, key, index, totalCount);
+        for (let blockIndex=0; blockIndex<parallelCount; blockIndex++) {
+            let account = channels[blockIndex].account;
+            let key = channels[blockIndex].key;
+            this.procCreateParallel(this, account, key, parallelCount, blockIndex, blockCount);
         }
     }
 
@@ -422,28 +426,28 @@ export default class TestLogisticsRaw {
         });
     }
 
-    procUpdateParallel(handler, account, key, index, totalCount) {
+    procUpdateParallel(handler, account, key, parallelCount, blockIndex, blockCount) {
         // update testing data
         let brief9 = "{\"error\":null,\"num\":\"JNTCU0600046689YQ\",\"transNum\":\"MSK0000027699\",\"model\":\"INFO9\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\"}";
         let newTracks5 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"NewTrack5-1\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"NewTrack5-2\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-2\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
 
         let logistics = new Logistics(this[abi], this[contractAddress]);
 
-        if (totalCount < index) {
+        if (blockCount < blockIndex) {
             return;
         }
 
-        if (0 == index) {
+        if (0 == blockIndex) {
             logistics.updateBrief(account, key, "JNTCU0600046688YQ", "MSK0000027698", "INFO8", "Russian", "GTMS_SIGNED", function(error, result) {
-                handler.procParallelFunc("update", handler, account, key, index, totalCount, error, result);
+                handler.procParallelFunc("update", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
             });
-        } else if (1 == index) {
+        } else if (1 == blockIndex) {
             logistics.updateBriefEx(account, key, brief9, function(error, result) {
-                handler.procParallelFunc("update", handler, account, key, index, totalCount, error, result);
+                handler.procParallelFunc("update", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
             });
-        } else if (2 == index) {
+        } else if (2 == blockIndex) {
             logistics.updateTracks(account, key, "JNTCU0600046685YQ", newTracks5, 1, function(error, result) {
-                handler.procParallelFunc("update", handler, account, key, index, totalCount, error, result);
+                handler.procParallelFunc("update", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
             });
         } else {}
     }
@@ -453,26 +457,26 @@ export default class TestLogisticsRaw {
 
         let channels = window.channelClass.get("idle");
         let channelIdleCount = channels.length;
-        let totalCount = 3;
-        let syncCount = 0;
+        let blockCount = 3;
+        let parallelCount = 0;
 
         if (0 == channelIdleCount) {
             Output(window.outputElement, 'small', 'red', "No channnel(idle)!");
             return;
         }
 
-        if (totalCount > channelIdleCount) {
-            syncCount = channelIdleCount;
+        if (blockCount > channelIdleCount) {
+            parallelCount = channelIdleCount;
             this[nextIndex] = channelIdleCount;
         } else {
-            syncCount = totalCount;
-            this[nextIndex] = totalCount;
+            parallelCount = blockCount;
+            this[nextIndex] = blockCount;
         }
 
-        for (let index=0; index<syncCount; index++) {
-            let account = channels[index].account;
-            let key = channels[index].key;
-            this.procUpdateParallel(this, account, key, index, totalCount);
+        for (let blockIndex=0; blockIndex<parallelCount; blockIndex++) {
+            let account = channels[blockIndex].account;
+            let key = channels[blockIndex].key;
+            this.procUpdateParallel(this, account, key, parallelCount, blockIndex, blockCount);
         }
     }
 
@@ -638,9 +642,9 @@ export default class TestLogisticsRaw {
                 this.updateParallel();
                 break;
             case 'Get':
-                this.get();
+                // this.get();
                 // this.remove();
-                // this.number();
+                this.number();
                 // this.numberOfTracks();
                 break;
             default:
