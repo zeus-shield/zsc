@@ -41,4 +41,8 @@ export default class Channel {
         return i;
     }
 
+    size() {
+        return this[channel].length;
+    }
+
 }
