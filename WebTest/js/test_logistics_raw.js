@@ -13,6 +13,7 @@ const nextIndex = Symbol('nextIndex');
 const tick = Symbol('tick');
 
 //private function
+const sleep = Symbol('sleep');
 const openChannelFunc = Symbol('openChannelFunc');
 const openChannel = Symbol('openChannel');
 const closeChannel = Symbol('closeChannel');
@@ -26,6 +27,17 @@ export default class TestLogisticsRaw {
         this[contractAddress] = '';
         this[nextIndex] = 0;
         this[tick] = 0;
+    }
+
+    [sleep](ms) { 
+        let now = new Date(); 
+        let end = now.getTime() + ms;
+
+        while (true) { 
+            now = new Date(); 
+            if (now.getTime() > end) 
+            return; 
+        } 
     }
 
     [openChannelFunc](cmd, handler, account, key, parallelCount, blockIndex, blockCount, error, result) {
