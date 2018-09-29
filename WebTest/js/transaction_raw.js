@@ -179,9 +179,9 @@ export default class TransactionRaw {
                                                 return;
                                             }
 
-                                            let key = EthereumjsUtil.toBuffer(privateKey, 'hex');
+                                            let signKey = EthereumjsUtil.toBuffer(privateKey, 'hex');
                                             let tx = new EthereumTx(rawTx);
-                                            tx.sign(key);
+                                            tx.sign(signKey);
                                             console.log("============================== sendRawTransaction ==============================");
                                             console.log("cmd:        %s", cmd);
                                             console.log("gasPrice:   %s(%s)", gasPriceIm, gasPrice.toString(10));
@@ -190,7 +190,7 @@ export default class TransactionRaw {
                                             console.log("nonce:      %s", nonce);
                                             console.log("address:    %s", address);
                                             console.log("privateKey: %s", privateKey);
-                                            // console.log("key:        %s", key);
+                                            // console.log("signKey:    %s", signKey);
                                             console.log("================================================================================");
                                             
                                             web3.eth.sendRawTransaction("0x" + tx.serialize().toString('hex'), function(err, result) {
