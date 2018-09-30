@@ -17,7 +17,7 @@ contract Logistics {
         bytes32 time_;
         bytes32 country_;
         bytes32 city_;
-        bytes32 facilityName_;
+        string  facilityName_;
         bytes32 timeZone_;
         string  desc_;
         bytes32 actionCode_;
@@ -102,7 +102,7 @@ contract Logistics {
         bytes32 time = bytes32(0);
         bytes32 country = bytes32(0);
         bytes32 city = bytes32(0);
-        bytes32 facilityName = bytes32(0);
+        string memory facilityName = "";
         bytes32 timeZone = bytes32(0);
         string  memory desc = "";
         bytes32 actionCode = bytes32(0);
@@ -140,8 +140,8 @@ contract Logistics {
         }
 
         if (_track.keyExists("facilityName")) {
-            facilityName = _track.getStringValueByKey("facilityName").toBytes32();
-            if (bytes32(0) != facilityName) {
+            facilityName = _track.getStringValueByKey("facilityName");
+            if (0 != bytes(facilityName).length) {
                 infos_[_num].tracks_[index].facilityName_ = facilityName;
             }
         }
@@ -171,7 +171,7 @@ contract Logistics {
         // log0(time);
         // log0(country);
         // log0(city);
-        // log0(facilityName);
+        // log0(facilityName.toBytes32());
         // log0(timeZone);
         // log0(desc.toBytes32());
         // log0(actionCode);
@@ -396,7 +396,7 @@ contract Logistics {
             str = str.concat(infos_[_num].tracks_[i].time_.bytes32ToString().toKeyValue("time"), ",");
             str = str.concat(infos_[_num].tracks_[i].country_.bytes32ToString().toKeyValue("country"), ",");
             str = str.concat(infos_[_num].tracks_[i].city_.bytes32ToString().toKeyValue("city"), ",");
-            str = str.concat(infos_[_num].tracks_[i].facilityName_.bytes32ToString().toKeyValue("facilityName"), ",");
+            str = str.concat(infos_[_num].tracks_[i].facilityName_.toKeyValue("facilityName"), ",");
             str = str.concat(infos_[_num].tracks_[i].timeZone_.bytes32ToString().toKeyValue("timeZone"), ",");
             str = str.concat(infos_[_num].tracks_[i].desc_.toKeyValue("desc"), ",");
             str = str.concat(infos_[_num].tracks_[i].actionCode_.bytes32ToString().toKeyValue("actionCode"), "}");
