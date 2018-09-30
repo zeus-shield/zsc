@@ -5,7 +5,8 @@ CORE="sol"
 
 SOURCES=(
 sample
-logistics
+logistics_string
+logistics_string_min
 )
 
 for((i=0;i<${#SOURCES[@]};i++));
