@@ -25,7 +25,7 @@ contract Logistics {
 
     struct Info {
         bytes32 num_;
-        bytes32 transNum_;
+        string  transNum_;
         string  model_;
         string  destinationCountry_;
         bytes32 lastStatus_;
@@ -217,14 +217,14 @@ contract Logistics {
         }
     }
 
-    function updateBrief(bytes32 _num, bytes32 _transNum, string _model,
+    function updateBrief(bytes32 _num, string _transNum, string _model,
                          string _destinationCountry, bytes32 _lastStatus) public {
         
         uint index = 0;
         bool found = false;
 
         // check param
-        if ((bytes32(0) == _num) || (bytes32(0) == _transNum) || (0 == bytes(_model).length)
+        if ((bytes32(0) == _num) || (0 == bytes(_transNum).length) || (0 == bytes(_model).length)
             || (0 == bytes(_destinationCountry).length) || (bytes32(0) == _lastStatus)) {
             return;
         }
@@ -248,7 +248,7 @@ contract Logistics {
         uint index = 0;
         bool found = false;
         bytes32 num = 0;
-        bytes32 transNum = bytes32(0);
+        string memory transNum = "";
         string memory model = "";
         string memory destinationCountry = "";
         bytes32 lastStatus = bytes32(0);
@@ -276,8 +276,8 @@ contract Logistics {
         infos_[num].num_ = num;
 
         if (_brief.keyExists("transNum")) {
-            transNum = _brief.getStringValueByKey("transNum").toBytes32();
-            if (bytes32(0) != transNum) {
+            transNum = _brief.getStringValueByKey("transNum");
+            if (0 != bytes(transNum).length) {
                 infos_[num].transNum_ = transNum;
             }
         }
@@ -304,13 +304,13 @@ contract Logistics {
         }
 
         // log0(num);
-        // log0(transNum);
+        // log0(transNum.toBytes32());
         // log0(model.toBytes32());
         // log0(destinationCountry.toBytes32());
         // log0(lastStatus);
     }
 
-    function update(bytes32 _num, bytes32 _transNum, 
+    function update(bytes32 _num, string _transNum, 
                     string _model, string _destinationCountry,
                     bytes32 _lastStatus, string _tracks) public {
 
@@ -429,7 +429,7 @@ contract Logistics {
         }
 
         str[0] = _num.bytes32ToString();
-        str[1] = infos_[_num].transNum_.bytes32ToString();
+        str[1] = infos_[_num].transNum_;
         str[2] = infos_[_num].model_;
         str[3] = infos_[_num].destinationCountry_;
         str[4] = infos_[_num].lastStatus_.bytes32ToString();
@@ -456,7 +456,7 @@ contract Logistics {
         }
 
         str = str.concat("{", _num.bytes32ToString().toKeyValue("num"), ",");
-        str = str.concat(infos_[_num].transNum_.bytes32ToString().toKeyValue("transNum"), ",");
+        str = str.concat(infos_[_num].transNum_.toKeyValue("transNum"), ",");
         str = str.concat(infos_[_num].model_.toKeyValue("model"), ",");
         str = str.concat(infos_[_num].destinationCountry_.toKeyValue("destinationCountry"), ",");
         str = str.concat(infos_[_num].lastStatus_.bytes32ToString().toKeyValue("lastStatus"), "}");
@@ -475,7 +475,7 @@ contract Logistics {
 
         num = nums_[_index];
         str[0] = num.bytes32ToString();
-        str[1] = infos_[num].transNum_.bytes32ToString();
+        str[1] = infos_[num].transNum_;
         str[2] = infos_[num].model_;
         str[3] = infos_[num].destinationCountry_;
         str[4] = infos_[num].lastStatus_.bytes32ToString();
@@ -494,7 +494,7 @@ contract Logistics {
 
         num = nums_[_index];
         str = str.concat("{", num.bytes32ToString().toKeyValue("num"), ",");
-        str = str.concat(infos_[num].transNum_.bytes32ToString().toKeyValue("transNum"), ",");
+        str = str.concat(infos_[num].transNum_.toKeyValue("transNum"), ",");
         str = str.concat(infos_[num].model_.toKeyValue("model"), ",");
         str = str.concat(infos_[num].destinationCountry_.toKeyValue("destinationCountry"), ",");
         str = str.concat(infos_[num].lastStatus_.bytes32ToString().toKeyValue("lastStatus"), "}");
