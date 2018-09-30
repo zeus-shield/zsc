@@ -90,8 +90,8 @@ export default function provider(injected) {
                 channel.set(web3.eth.accounts[3], "");
             } else {
                 // ganache
-                channel.set("web3.eth.accounts[0]", "");
-                channel.set("web3.eth.accounts[1]", "");
+                channel.set(web3.eth.accounts[0], "");
+                channel.set(web3.eth.accounts[1], "");
             }
  
         }
