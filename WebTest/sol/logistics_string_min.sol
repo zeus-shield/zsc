@@ -16,7 +16,7 @@ contract Logistics {
         bytes32 type_;
         bytes32 time_;
         string  country_;
-        bytes32 city_;
+        string  city_;
         string  facilityName_;
         bytes32 timeZone_;
         string  desc_;
@@ -101,7 +101,7 @@ contract Logistics {
         bytes32 type32 = bytes32(0);
         bytes32 time = bytes32(0);
         string memory country = "";
-        bytes32 city = bytes32(0);
+        string memory city = "";
         string memory facilityName = "";
         bytes32 timeZone = bytes32(0);
         string  memory desc = "";
@@ -133,8 +133,8 @@ contract Logistics {
         }
 
         if (_track.keyExists("city")) {
-            city = _track.getStringValueByKey("city").toBytes32();
-            if (bytes32(0) != city) {
+            city = _track.getStringValueByKey("city");
+            if (0 != bytes(city).length) {
                 infos_[_num].tracks_[index].city_ = city;
             }
         }
@@ -170,7 +170,7 @@ contract Logistics {
         // log0(type32);
         // log0(time);
         // log0(country.toBytes32());
-        // log0(city);
+        // log0(city.toBytes32());
         // log0(facilityName.toBytes32());
         // log0(timeZone);
         // log0(desc.toBytes32());
@@ -395,7 +395,7 @@ contract Logistics {
             str = str.concat("{", infos_[_num].tracks_[i].type_.bytes32ToString().toKeyValue("type"), ",");
             str = str.concat(infos_[_num].tracks_[i].time_.bytes32ToString().toKeyValue("time"), ",");
             str = str.concat(infos_[_num].tracks_[i].country_.toKeyValue("country"), ",");
-            str = str.concat(infos_[_num].tracks_[i].city_.bytes32ToString().toKeyValue("city"), ",");
+            str = str.concat(infos_[_num].tracks_[i].city_.toKeyValue("city"), ",");
             str = str.concat(infos_[_num].tracks_[i].facilityName_.toKeyValue("facilityName"), ",");
             str = str.concat(infos_[_num].tracks_[i].timeZone_.bytes32ToString().toKeyValue("timeZone"), ",");
             str = str.concat(infos_[_num].tracks_[i].desc_.toKeyValue("desc"), ",");
