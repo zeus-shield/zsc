@@ -69,7 +69,7 @@ export default function provider(injected) {
         web3.eth.defaultAccount = web3.eth.coinbase;
 
         // import channel
-        if('undefined' == typeof window.channelClass) {
+        if('undefined' === typeof window.channelClass) {
             channel = new Channel();
             window.channelClass = channel;
         } else {
@@ -80,9 +80,20 @@ export default function provider(injected) {
 
         if (web3.currentProvider.isMetaMask) {
             channel.set(web3.eth.accounts[0], "");
+            channel.set("", "");
         } else {
-            channel.set(web3.eth.accounts[0], "");
-            channel.set(web3.eth.accounts[1], "");
+            // geth
+            if ("http://localhost:8545" === web3.currentProvider.host) {
+                channel.set(web3.eth.accounts[0], "");
+                channel.set(web3.eth.accounts[1], "");
+                channel.set(web3.eth.accounts[2], "");
+                channel.set(web3.eth.accounts[3], "");
+            } else {
+                // ganache
+                channel.set("web3.eth.accounts[0]", "");
+                channel.set("web3.eth.accounts[1]", "");
+            }
+ 
         }
     });
 
