@@ -298,7 +298,7 @@ contract Logistics {
 
         if (_brief.keyExists("lastStatus")) {
             lastStatus = _brief.getStringValueByKey("lastStatus").toBytes32();
-            if (bytes32(0) != destinationCountry) {
+            if (bytes32(0) != lastStatus) {
                 infos_[num].lastStatus_ = lastStatus;
             }
         }

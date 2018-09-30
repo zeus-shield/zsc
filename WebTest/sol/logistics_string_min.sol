@@ -15,7 +15,7 @@ contract Logistics {
     struct Track {
         bytes32 type_;
         bytes32 time_;
-        bytes32 country_;
+        string  country_;
         bytes32 city_;
         string  facilityName_;
         bytes32 timeZone_;
@@ -100,7 +100,7 @@ contract Logistics {
     function updateTrack(bytes32 _num, uint index, string _track) internal {
         bytes32 type32 = bytes32(0);
         bytes32 time = bytes32(0);
-        bytes32 country = bytes32(0);
+        string memory country = "";
         bytes32 city = bytes32(0);
         string memory facilityName = "";
         bytes32 timeZone = bytes32(0);
@@ -126,8 +126,8 @@ contract Logistics {
         }
 
         if (_track.keyExists("country")) {
-            country = _track.getStringValueByKey("country").toBytes32();
-            if (bytes32(0) != country) {
+            country = _track.getStringValueByKey("country");
+            if (0 != bytes(country).length) {
                 infos_[_num].tracks_[index].country_ = country;
             }
         }
@@ -169,7 +169,7 @@ contract Logistics {
 
         // log0(type32);
         // log0(time);
-        // log0(country);
+        // log0(country.toBytes32());
         // log0(city);
         // log0(facilityName.toBytes32());
         // log0(timeZone);
@@ -394,7 +394,7 @@ contract Logistics {
         for (uint i=0; i<infos_[_num].tracks_.length; i++) {
             str = str.concat("{", infos_[_num].tracks_[i].type_.bytes32ToString().toKeyValue("type"), ",");
             str = str.concat(infos_[_num].tracks_[i].time_.bytes32ToString().toKeyValue("time"), ",");
-            str = str.concat(infos_[_num].tracks_[i].country_.bytes32ToString().toKeyValue("country"), ",");
+            str = str.concat(infos_[_num].tracks_[i].country_.toKeyValue("country"), ",");
             str = str.concat(infos_[_num].tracks_[i].city_.bytes32ToString().toKeyValue("city"), ",");
             str = str.concat(infos_[_num].tracks_[i].facilityName_.toKeyValue("facilityName"), ",");
             str = str.concat(infos_[_num].tracks_[i].timeZone_.bytes32ToString().toKeyValue("timeZone"), ",");
