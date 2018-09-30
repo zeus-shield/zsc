@@ -16,6 +16,7 @@ const tick = Symbol('tick');
 const sleep = Symbol('sleep');
 const openChannelFunc = Symbol('openChannelFunc');
 const openChannel = Symbol('openChannel');
+const openNextChannel = Symbol('openNextChannel');
 const closeChannel = Symbol('closeChannel');
 
 export default class TestLogisticsRaw {
@@ -40,6 +41,28 @@ export default class TestLogisticsRaw {
         } 
     }
 
+    [openNextChannel](cmd, handler, account, key, parallelCount, blockIndex, blockCount, error, result) {
+        if (blockCount == handler[nextIndex]) {
+            // no block will proc, close channel
+            handler[closeChannel](account);
+
+            // if all the channel is idle, all the block finished
+            let channels = window.channelClass.get("idle");
+            if (window.channelClass.size() == channels.length) {
+                // finish the all the block
+                let ticks = (new Date()).valueOf() - handler[tick];
+                let string = `Finish all(cost: ${ticks}ms).`;
+                Output(window.outputElement, 'small', 'red', string);
+            }
+            return true;
+        } else {
+            handler[openChannel](cmd, handler, account, key, parallelCount, handler[nextIndex], blockCount);
+            handler[nextIndex] ++;
+        }
+
+        return false;
+    }
+
     [openChannelFunc](cmd, handler, account, key, parallelCount, blockIndex, blockCount, error, result) {
         if (!error) {
             if ("" != result.status) {
@@ -52,29 +75,30 @@ export default class TestLogisticsRaw {
                 if ("0x1" == result.status) {
                     // try to next transaction
                     status = "succeeded";
-                    // lock -- DOTO
-                    if (blockCount == handler[nextIndex]) {
-                        // no block will proc, close channel
-                        handler[closeChannel](account);
 
-                        // if all the channel is idle, all the block finished
-                        let channels = window.channelClass.get("idle");
-                        if (window.channelClass.size() == channels.length) {
-                            // finish the all the block
-                            let ticks = (new Date()).valueOf() - handler[tick];
-                            let string = `Finish all(cost: ${ticks}ms).`;
-                            Output(window.outputElement, 'small', 'red', string);
-                        }
+                    // lock -- DOTO
+                    let finished = handler[openNextChannel](cmd, handler, account, key, parallelCount, blockIndex, blockCount, error, result);
+                    if (finished) {
                         return;
-                    } else {
-                        handler[openChannel](cmd, handler, account, key, parallelCount, handler[nextIndex], blockCount);
-                        handler[nextIndex] ++;
                     }
                     // unlock -- DOTO
                 } else {
                     // retry to last transaction
                     status = "failure";
-                    handler[openChannel](cmd, handler, account, key, parallelCount, blockIndex, blockCount);
+
+                    if ((!web3.currentProvider.isMetaMask)
+                        && ("http://localhost:7545" == web3.currentProvider.host)) {
+                        // ganache (workaround)
+                        // lock -- DOTO
+                        let finished = handler[openNextChannel](cmd, handler, account, key, parallelCount, blockIndex, blockCount, error, result);
+                        if (finished) {
+                            return;
+                        }
+                        // unlock -- DOTO
+                    } else {
+                        // geth or metamask
+                        handler[openChannel](cmd, handler, account, key, parallelCount, blockIndex, blockCount);
+                    }
                 }
 
                 let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
