@@ -40,7 +40,7 @@ ZSCRobotSingleDetails.prototype.upgradeMinerRobot = function(hashId, robotId, fu
 ZSCRobotSingleDetails.prototype.transferToOther = function(hashId, dest, roobtId, func) { 
     var gm = this;
     var callBack = func;
-    var myErc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
     erc721Api.transfer(dest, roobtId,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
