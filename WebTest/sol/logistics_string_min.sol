@@ -98,14 +98,14 @@ contract Logistics {
     }
 
     function updateTrack(bytes32 _num, uint index, string _track) internal {
-        bytes32 type32 = bytes32(0);
-        bytes32 time = bytes32(0);
+        bytes32 type32 = 0;
+        bytes32 time = 0;
         string memory country = "";
         string memory city = "";
         string memory facilityName = "";
-        bytes32 timeZone = bytes32(0);
+        bytes32 timeZone = 0;
         string  memory desc = "";
-        bytes32 actionCode = bytes32(0);
+        bytes32 actionCode = 0;
 
         if (infos_[_num].tracks_.length <= index) {
             return;
@@ -251,7 +251,7 @@ contract Logistics {
         string memory transNum = "";
         string memory model = "";
         string memory destinationCountry = "";
-        bytes32 lastStatus = bytes32(0);
+        bytes32 lastStatus = 0;
 
         // check param
         if (_brief.equals("")) {
@@ -325,7 +325,7 @@ contract Logistics {
 
     function updateEx(string _info) public {
         // string memory _info = "{\"error\":null,\"num\":\"JNTCU0600046683YQ\",\"transNum\":\"MSK0000027695\",\"model\":\"MOSEXP\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"§¡§â§Þ§Ñ§Ó§Ú§â\",\"timeZone\":\"+3\",\"desc\":\"§´§à§Ó§Ñ§â §Ò§í§Ý §å§ã§á§Ö§ê§ß§à §Õ§à§ã§ä§Ñ§Ó§Ý§Ö§ß §á§à§Ý§å§é§Ñ§ä§Ö§Ý§ð. §³§á§Ñ§ã§Ú§Ò§à §é§ä§à §Ó§à§ã§á§à§Ý§î§Ù§à§Ó§Ñ§Ý§Ú§ã§î §ß§Ñ§ê§Ú§Þ§Ú §å§ã§Ý§å§Ô§Ñ§Þ§Ú\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
-        bytes32 num = bytes32(0);
+        bytes32 num = 0;
 
         // check param
         if (_info.equals("")) {
