@@ -155,7 +155,7 @@ contract Logistics {
 
         if (_track.keyExists("desc")) {
             desc = _track.getStringValueByKey("desc");
-            if (!desc.equals("")) {
+            if (0 != bytes(desc).length) {
                 infos_[_num].tracks_[index].desc_ = desc;
             }
         }
@@ -184,7 +184,7 @@ contract Logistics {
         uint startIndex = uint(0);
 
         // check param
-        if ((bytes32(0) == _num) || _tracks.equals("")) {
+        if ((bytes32(0) == _num) || (0 == bytes(_tracks).length)) {
             return;
         }
 
@@ -197,7 +197,7 @@ contract Logistics {
         if (_tracks.keyExists("trackElementList")) {
 
             string memory tracks = _tracks.getArrayValueByKey("trackElementList");
-            if (!tracks.equals("")) {
+            if (0 != bytes(tracks).length) {
                 tracks.split("&", tracks_);
 
                 if (uint(0) == _updateType) {
@@ -254,7 +254,7 @@ contract Logistics {
         bytes32 lastStatus = 0;
 
         // check param
-        if (_brief.equals("")) {
+        if (0 == bytes(_brief).length) {
             return;
         }
 
@@ -318,7 +318,7 @@ contract Logistics {
         updateBrief(_num, _transNum, _model, _destinationCountry, _lastStatus);
 
         // update tracks from json(similar to)
-        if (!_tracks.equals("")) {
+        if (0 != bytes(_tracks).length) {
             updateTracks(_num, _tracks, uint(0));
         }
     }
@@ -328,7 +328,7 @@ contract Logistics {
         bytes32 num = 0;
 
         // check param
-        if (_info.equals("")) {
+        if (0 == bytes(_info).length) {
             return;
         }
 
