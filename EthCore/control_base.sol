@@ -69,6 +69,8 @@ contract DBModule {
     function getTokenInfoByIndex(uint _index) public view returns (bytes32, bytes32, bytes32, uint, address);
     function getTokenInfoBySymbol(bytes32 _symbol) public view returns (bytes32, bytes32, bytes32, uint, address);
 
+    function isTokenPosable(bytes32 _symbol) public view returns (bool);
+    function isTokenTradeable(bytes32 _symbol) public view returns (bool);
     /*ERC721 for miner robot begin*/
     //function balanceOf(address _owner) public view returns (uint);
     //function tokenOfOwnerByIndex(address _owner, uint _index) public view returns (uint);
@@ -109,10 +111,10 @@ contract ControlBase is Object {
     //////////////////////////////////
     function registerUserNode(address _creator, bytes32 _userName, bytes32 _type) internal;
     function registerEntityNode(address _creator, bytes32 _endName) internal;
-    function checkAllowed(address _sender) internal view;
-    function checkMatched(address _sender, bytes32 _enName) internal view;
-    function getMappedName(address _sender) internal view returns (bytes32);
-    function getBindedWalletAddress(bytes32 _enName) internal view returns (address);
+    function checkAllowed(address _sender) public view;
+    function checkMatched(address _sender, bytes32 _enName) public view;
+    function getMappedName(address _sender) public view returns (bytes32);
+    function getBindedWalletAddress(bytes32 _enName) public view returns (address);
 
     function createUserNode(bytes32 _factoryType, bytes32 _userName, address _extraAdr) public returns (address);
     //////////////////////////////////
