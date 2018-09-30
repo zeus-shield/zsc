@@ -14,6 +14,8 @@ contract SysGmToken is SysGmBase {
         bytes32 symbol_ ;
         uint    decimals_;
         address address_;
+        bool    posable_;
+        bool    tradeable_;
     }
 
     /* token number */
@@ -46,7 +48,7 @@ contract SysGmToken is SysGmBase {
         return exists_[_symbol];
     }
 
-    function addToken(bytes32 _name, bytes32 _symbol, uint _decimals, address _address) public returns (bool) {
+    function setToken(bytes32 _name, bytes32 _symbol, uint _decimals, address _address, bool _posable, bool _tradeable) public returns (bool) {
         /* check delegate */
         checkDelegate(msg.sender, 1);
 
@@ -58,10 +60,19 @@ contract SysGmToken is SysGmBase {
         addLog(" : 0x", false);
         addLog(PlatString.addressToString(_address), false);
 
-        exists_[_symbol] = true;
-        indexs_[_symbol] = number_;
-        tokens_[number_] = TokenInfo("true", _name, _symbol, _decimals, _address);
-        number_ ++;
+        if (!exists_[_symbol]) {
+            exists_[_symbol] = true;
+            indexs_[_symbol] = number_;
+            number_ ++;
+        } else {
+            uint index = indexs_[_symbol];
+        }
+        tokens_[index].name_ = _name;
+        tokens_[index].symbol_ = _symbol;
+        tokens_[index].decimals_ = _decimals;
+        tokens_[index].address_ = _address;
+        tokens_[index].posable_ = _posable;
+        tokens_[index].tradeable_ = _tradeable;
 
         return true;
     }
@@ -114,13 +125,21 @@ contract SysGmToken is SysGmBase {
     }
 
     function getTokenAddress(bytes32 _symbol) public view returns (address) {
-        /* check delegate */
-        checkDelegate(msg.sender, 1);
-
         /* check exist */
         require(true == exists_[_symbol]);
-
         return tokens_[indexs_[_symbol]].address_;
+    }
+
+    function isTokenPosable(bytes32 _symbol) public view returns (bool) {
+        /* check exist */
+        require(true == exists_[_symbol]);
+        return tokens_[indexs_[_symbol]].posable_;
+    }
+
+    function isTokenTradeable(bytes32 _symbol) public view returns (bool) {
+        /* check exist */
+        require(true == exists_[_symbol]);
+        return tokens_[indexs_[_symbol]].tradeable_;
     }
 
     function getTokenInfoStrByIndex(uint _index) public view returns (string) {
@@ -131,6 +150,11 @@ contract SysGmToken is SysGmBase {
         bytes32 tokenSymbol = tokens_[_index].symbol_;
         uint tokenDecimals = tokens_[_index].decimals_;
         address tokenAdr = tokens_[_index].address_;
+        uint posableTag = 0;
+        uint tradeableTag = 0;
+
+        if (tokens_[_index].posable_) posableTag = 1;
+        if (tokens_[_index].tradeable_) tradeableTag = 1;
 
         string memory str ="";
         str = PlatString.append(str, "info?status=", PlatString.bytes32ToString(status),      "&");
@@ -138,6 +162,8 @@ contract SysGmToken is SysGmBase {
         str = PlatString.append(str, "symbol=",      PlatString.bytes32ToString(tokenSymbol), "&");
         str = PlatString.append(str, "balance=",     PlatString.uintToString(tokenDecimals),   "&");
         str = PlatString.append(str, "adr=",         PlatString.addressToString(tokenAdr),    "&");
+        str = PlatString.append(str, "posable=",     PlatString.uintToString(posableTag),    "&");
+        str = PlatString.append(str, "tradeable=",   PlatString.uintToString(tradeableTag),    "&");
         return str;
     }
 }
