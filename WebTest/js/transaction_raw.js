@@ -87,7 +87,7 @@ export default class TransactionRaw {
                     } else {
                         // Output(window.outputElement, 'small', 'red', result.error.message);
                         console.log(result.error);
-                        func(null, "0");
+                        func(null, txnsCount);
                     }
                 })
             }
@@ -112,9 +112,16 @@ export default class TransactionRaw {
 
     [getGasRequired](gasRequired) {
         let result = gasRequired;
+        let isMetaMask = web3.currentProvider.isMetaMask;
 
-        if (result < 470*10**4) {
-            result = 470*10**4;
+        if (isMetaMask) {
+            if (result < 6000000) {
+                result = 6000000;
+            } 
+        } else {
+            if (result < 4700000) {
+                result = 4700000;
+            }
         }
         return result;
     }
