@@ -16,16 +16,18 @@ function ZSCWalletMangement(controlApiAdr, controlApiAbi, tokenManagerAdr, token
     this.gasLimit = cC_getGasLimit();
 }
 
-ZSCWalletMangement.prototype.addTokenContractInfo = function(nameId, symbolId, decimalsId, adrId, hashId, func) {
+ZSCWalletMangement.prototype.setTokenContractInfo = function(hashId, nameId, symbolId, decimalsId, adrId, posableId, tradeableId, func) {
     var tokenName    =  document.getElementById(nameId).value;
     var tokenSymbol  =  document.getElementById(symbolId).value;
     var decimals     =  document.getElementById(decimalsId).value;
     var tokenAddress =  document.getElementById(adrId).value;
+    var posable      =  document.getElementById(posableId).value;
+    var tradeable    =  document.getElementById(tradeableId).value;
 
     var callback = func;
     var gm = this;
 
-    gm.myTokenManager.addToken(tokenName, tokenSymbol, decimals, tokenAddress,
+    gm.myTokenManager.setToken(tokenName, tokenSymbol, decimals, tokenAddress, posable, tradeable,
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashId, result, callback);
