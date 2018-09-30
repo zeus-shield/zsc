@@ -25,8 +25,8 @@ echo $htmlObjects->loadScriptFiles();
     var TokenManagerAdr = "<?php echo $htmlObjects->readObjectAddress('TokenManager')?>";
     var walletManager = new ZSCWalletMangement(ControlApisAdvAdr, cC_getContractAbi('ControlApisAdv'), TokenManagerAdr, cC_getContractAbi('TokenManager'));
 
-    function addTokenContract(nameId, symbolId, decimalsId, adrId) {
-        walletManager.addTokenContractInfo(nameId, symbolId, decimalsId, adrId, "AddUserHash", function() {
+    function addTokenContract(nameId, symbolId, decimalsId, adrId, posableTagId, tradeableTagId) {
+        walletManager.setTokenContractInfo("AddUserHash", nameId, symbolId, decimalsId, adrId, posableTagId, tradeableTagId, function() {
         	window.location.reload(true);
         });
     }
@@ -43,7 +43,9 @@ echo $htmlObjects->loadScriptFiles();
         <text>Symbol</text>  <input type="text" id="TokenSymbol" value="ETH"></input> <br>
         <text>Decimals</text>  <input type="text" id="TokenDecimals" value="18"></input> <br>
         <text>Address</text>  <input type="text" id="TokenAddress" value="0x0"></input> <br>
-        <button type="button" onClick="addTokenContract('TokenName', 'TokenSymbol', 'TokenDecimals', 'TokenAddress')">Add a token contract</button> <br>
+        <text>Posable</text>  <input type="text" id="PosableTag" value="false"></input> <br>
+        <text>Tradeable</text>  <input type="text" id="TradableTag" value="false"></input> <br>
+        <button type="button" onClick="addTokenContract('TokenName', 'TokenSymbol', 'TokenDecimals', 'TokenAddress', 'PosableTag', 'TradableTag')">Add a token contract</button> <br>
         <text id="AddUserHash"></text>
     </div>
 
