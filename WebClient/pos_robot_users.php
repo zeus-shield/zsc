@@ -68,7 +68,8 @@ session_start();
         var robotNos = userRobotGM.getRobotNos();
         var titlle = "User owned robots" 
 
-        text  = '<div class="well" align="center" >' + titlle + '<br>';
+        text  = '<div class="well" align="center" >'
+        text  = '<text> ' + titlle + ' - Generate new robot - R: 78%; SR: 20; SSR: 2% </text><br>';
         text  = '<text id="OperationHash" value = "log:"> </text> </div>';
 
         text += '<div class="well" align="center" >'
