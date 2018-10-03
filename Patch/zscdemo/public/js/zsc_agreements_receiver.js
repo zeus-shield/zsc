@@ -21,3 +21,18 @@ function ZSCAgreementReceiver(nm, abi, adr) {
 ZSCAgreementReceiver.prototype.getUserName = function() {return this.userName;}
 
 ZSCAgreementReceiver.prototype.setTemplateName = function(name) {this.tmpName = name;}
+
+ZSCAgreementReceiver.prototype.resetAllItemTags = function(gm) {
+    for (var i = 0; i < gm.agrNos; ++i) {
+        gm.itemTags[i] = false;
+    }
+}
+
+ZSCAgreementReceiver.prototype.checkAllItemTags = function(gm) {
+    for (var i = 0; i < gm.agrNos; ++i) {
+        if (gm.itemTags[i] == false) {
+            return false;
+        }
+    }
+    return true;
+}
