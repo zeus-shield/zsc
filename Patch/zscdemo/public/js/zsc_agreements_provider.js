@@ -132,3 +132,20 @@ ZSCAgreementProvider.prototype.getAgrStatus = function(gm, index, func) {
             }
         });
 }
+
+ZSCAgreementProvider.prototype.publishAgreement = function(agrName, func) {
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    //createElementNode(bytes32 _factoryType, bytes32 _userName, bytes32 _enName, bytes32 _extraInfo, address _extraAdr) public returns (address) {
+    myControlApi.publishAgreement(gm.userName, agrName,
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
+        function(error, result){ 
+            if(!error) {
+                bF_showHashResult("PublishAgreementHash", result, callBack);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
