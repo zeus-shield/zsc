@@ -149,3 +149,19 @@ ZSCAgreementProvider.prototype.publishAgreement = function(agrName, func) {
             }
         });
 }
+
+ZSCAgreementProvider.prototype.claimReward = function(hashLogId, elementName, func) {
+    var gm = this;
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    
+    myControlApi.claimInsurance(gm.userName, elementName,
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
+        function(error, result){ 
+            if(!error) {
+                bF_showHashResult(hashLogId, result, callBack);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
