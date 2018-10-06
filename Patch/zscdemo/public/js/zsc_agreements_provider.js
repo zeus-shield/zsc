@@ -165,3 +165,40 @@ ZSCAgreementProvider.prototype.claimReward = function(hashLogId, elementName, fu
             }
         });
 }
+
+ZSCAgreementProvider.prototype.loadAgreementsHtml = function(elementId, funcPublish, funcSetPara)  {
+    var funcSetParaPrefix = funcSetPara + "('"; 
+    var funcSetParaSuffix = "')";
+
+    var funcPublishPrefix = funcPublish + "('"; 
+    var funcPublishSuffix = "')";
+
+    var titlle = "provider [" + this.userName + "] - published agreements: "
+
+    var text ="";
+    text += '<div class="well"> <text>' + titlle + ' </text></div>';
+    text += '<div class="well">';    
+    text += '<div class="well">';
+    text += '<text> Publish agreement: </text> <text id="PublishAgreementHash"> </text>'
+    text += '</div>';
+
+    text += '<table align="center" style="width:600px;min-height:30px">'
+    text += '<tr>'
+    text += '   <td>Name</td> <td>Balance </td> <td>Status </td>  <td>Publish </td> <td>Details </td>'
+    text += '</tr>'
+    text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td>  </tr>'
+
+    for (var i = 0; i < this.agrNos; ++i) {
+        text += '<tr>'
+        text += '   <td><text>' + this.agrNames[i]  + '</text></td>'
+        text += '   <td><text>' + this.balance[i]  + '</text></td>'
+        text += '   <td><text>' + this.status[i]  + '</text></td>'
+        text += '   <td><button type="button" onClick="' + funcPublishPrefix + this.agrNames[i] + funcPublishSuffix + '">Publish</button></td>'
+        text += '   <td><button type="button" onClick="' + funcSetParaPrefix + this.agrNames[i] + funcSetParaSuffix + '">Show</button></td>'
+        text += '</tr>'
+        text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---</td>  </tr>'
+    }
+    text += '</table></div>'
+
+    document.getElementById(elementId).innerHTML = text;  
+}
