@@ -96,3 +96,20 @@ ZSCAgreementReceiver.prototype.getAgrNameByIndex = function(gm, index, func) {
             }
         });
 }
+
+ZSCAgreementReceiver.prototype.getAgrBalance = function(gm, index, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    
+    myControlApi.getElementBalance(gm.userName, gm.agrNames[index], "ZSC",
+        {from: gm.account},
+        function(error, result){ 
+            if(!error) {
+                gm.balance[index] = result.toString(10);
+                //gm.itemTags[index] = true;
+                callBack(gm, index);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
