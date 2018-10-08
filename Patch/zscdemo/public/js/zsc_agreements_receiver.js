@@ -113,3 +113,20 @@ ZSCAgreementReceiver.prototype.getAgrBalance = function(gm, index, func) {
             }
         });
 }
+
+ZSCAgreementReceiver.prototype.getAgrStatus = function(gm, index, func) {
+    var callBack = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.getElementParameter(gm.userName, gm.agrNames[index], "status",
+        {from: gm.account},
+        function(error, result){ 
+            if(!error) {
+                gm.status[index] = web3.toUtf8(result);
+                gm.itemTags[index] = true;
+                callBack(gm, index);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
