@@ -33,7 +33,9 @@ session_start();
         zscUserLogin = new ZSCLogin(account);
         zscUserLogin.tryLogin(zscUserType, function(ret) {
             if(!ret) { 
-                window.location.href = "index.php";
+                // window.location.href = "index.php";
+                window.location.href = "index_login.php?type=staker";
+                // alert("Please bind account and activate wallet at first!");
             } else {
                 zscUserWalletGM = new ZSCWallet(account, zscUserLogin.getControlApisAdr(), zscUserLogin.getControlApisFullAbi());
                 zscUserWalletGM.loadTokenWallets(function() {
