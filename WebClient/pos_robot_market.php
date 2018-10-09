@@ -31,7 +31,8 @@ session_start();
 
     checkeWeb3Account(function(account) {
         userLogin = new ZSCLogin(account);
-        userLogin.tryLogin(userType, function(ret) {
+        // userLogin.tryLogin(userType, function(ret) {
+        userLogin.getControlApisInfo(userLogin, function(ret) {
             if(!ret) { 
                 window.location.href = "index.php";
             } else {
