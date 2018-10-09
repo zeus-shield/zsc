@@ -134,7 +134,7 @@ session_start();
         var titlle = "User owned robots" 
 
         var tokenType = '<select id = "TokenType" style="width:100px">'
-        tokenType += '<option value ="TestZSC">TestZSC </option>'
+        tokenType += '<option value ="TestMYT">TestMYT</option>'
         tokenType += '</select>'
 
         var posType = '<select id = "PosType" style="width:100px">'
