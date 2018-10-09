@@ -50,7 +50,7 @@ session_start();
     /////////////////////////
     function loadSingleRobotDetails(robotId) {
         singleRobotGM.loadSingleRobotDetails(robotId, function() {
-            loadSingleRobotDetailsHtml("PageBody",  "upgradeRobot", "transferToOther", "activeMining", "claimReward", "sellRobot", "cancelSelling", "purchaseSellingRobot");
+            loadSingleRobotDetailsHtml("PageBody",  "upgradeRobot", "transferToOther", "activeMining", "claimReward", "sellRobot", "cancelSelling", "purchaseSellingRobot", "bindAndActivate");
         });
     }
 
@@ -104,8 +104,12 @@ session_start();
         });
     }
 
+    function bindAndActivate() {
+        window.location.href = "index_login.php?type=staker";
+    }
+
     /////////////////////////
-    function loadSingleRobotDetailsHtml(elementId, upgradeRobot, transfer, activeMining, claimReward, sellRobot, cancelSelling, purchaseRobot) {
+    function loadSingleRobotDetailsHtml(elementId, upgradeRobot, transfer, activeMining, claimReward, sellRobot, cancelSelling, purchaseRobot, bindAndActivate) {
         var upgradeRobotPrefix = upgradeRobot + "('OperationHash', '"; 
         var upgradeRobotSuffix = "')";
 
