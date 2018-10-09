@@ -124,6 +124,22 @@ ZSCRobotAllBreifes.prototype.numRobots = function(gm, func) {
     }
 }
 
+ZSCRobotAllBreifes.prototype.loadRobotBrieInfoById = function(gm, index, func) {
+    var callBack = func;
+    var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    erc721Api.getUnitInfoById(Number(index), gm.robotBriefParaNames, 
+        {from: gm.account},
+        function(error, robotInfo){ 
+            if(!error) {
+                gm.itemTags[index] = true;
+                func(gm, index, robotInfo);  
+            } else { 
+                console.log("error: " + error);
+            }
+        });
+}
+
 ZSCRobotAllBreifes.prototype.loadRobotBrieInfoByIndex = function(gm, index, func) {
     var callBack = func;
     var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
