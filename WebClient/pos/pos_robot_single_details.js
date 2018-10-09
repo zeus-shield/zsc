@@ -25,6 +25,22 @@ ZSCRobotSingleDetails.prototype.getRobotDetailParaValue  = function(para, tag) {
     return bF_robotParaValue(this.robotDetailParaValues.get(para), tag);
 }
 
+ZSCRobotSingleDetails.prototype.getOwner = function(robotId, func) {
+    var gm = this;
+    var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+    
+    erc721Api.ownerOf(robotId,
+        {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
+        function(error, result){ 
+            if (!error) {
+                func(error, result);
+            } else {
+                console.log("error: " + error);
+                func(error, result);
+            }
+        });
+}
+
 ZSCRobotSingleDetails.prototype.upgradeMinerRobot = function(hashId, robotId, func) {
     var gm = this;
     var callBack = func;
