@@ -29,15 +29,20 @@ session_start();
     var userLogin;
     var userRobotGM;
 
+    let binded = false;
+
     checkeWeb3Account(function(account) {
         userLogin = new ZSCLogin(account);
         userLogin.tryLogin(userType, function(ret) {
-            if(!ret) { 
-                window.location.href = "index.php";
-            } else {
-                userRobotGM = new ZSCRobotAllBreifes(account, userLogin.getErc721Adr(), userLogin.getControlApisFullAbi());
-                loadAllUserRobotBriefs();
-            }
+            binded = ret;
+            userLogin.getControlApisInfo(userLogin, function(ret) {
+                if(!ret) { 
+                    window.location.href = "index.php";
+                } else {
+                    userRobotGM = new ZSCRobotAllBreifes(account, userLogin.getErc721Adr(), userLogin.getControlApisFullAbi());
+                    loadAllUserRobotBriefs();
+                }
+            }); 
         });
     });
 
@@ -68,12 +73,17 @@ session_start();
         var robotNos = userRobotGM.getRobotNos();
         var titlle = "User owned robots" 
 
+        // text  = '<div class="well" align="center" >' + titlle + ' | Generate new robot - R: 78%; SR: 20; SSR: 2% <br>';
         text  = '<div class="well" align="center" >'
-        text  = '<text> ' + titlle + ' - Generate new robot - R: 78%; SR: 20; SSR: 2% </text><br>';
-        text  = '<text id="OperationHash" value = "log:"> </text> </div>';
+        text  += '<text> ' + titlle + ' - Generate new robot - R: 78%; SR: 20; SSR: 2% </text><br>';
+        text  += '<text id="OperationHash" value = "log:"> </text> </div>';
 
         text += '<div class="well" align="center" >'
-        text += '   <button type="button" onClick="' + createGen0Func + '">  Create Lev0 miner robot (Cost 0.01ETH) </button> <br>'
+        if (binded) {
+            text += '   <button type="button" onClick="' + createGen0Func + '">  Create Lev0 miner robot (Cost 0.01ETH) </button> <br>'
+        } else {
+            text += '   <button type="button" onClick="'+ bindAndActivate + '()"' + '>Bind account and activate wallet at first, then create Lev0 miner robot (Cost 0.01ETH)</button> <br>'
+        }
         text += '</div>';
 
         text += '<div class="well">';
