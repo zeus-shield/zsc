@@ -17,9 +17,9 @@ function ZSCRobotSingleDetails(acount, adr, abi) {
     this.gasLimit = bF_getGasLimit();
 }
 
-ZSCRobotSingleDetails.prototype.getUserAccount = function() {
-    return this.account;
-}
+// ZSCRobotSingleDetails.prototype.getUserAccount = function() {
+//     return this.account;
+// }
 
 ZSCRobotSingleDetails.prototype.getRobotDetailParaValue  = function(para, tag) { 
     return bF_robotParaValue(this.robotDetailParaValues.get(para), tag);
