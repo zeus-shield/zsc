@@ -49,7 +49,7 @@ session_start();
     /////////////////////////////
     function loadAllUserRobotBriefs() {
         userRobotGM.loadAllRobotBriefs("user", "0x0", function() {
-            loadUserAllRobotHtml("PageBody", "showRobotDetails", "createGen0Robot");
+            loadUserAllRobotHtml("PageBody", "showRobotDetails", "createGen0Robot", "bindAndActivate");
         });
     }
 
@@ -63,8 +63,12 @@ session_start();
         window.location.href = "pos_robot_detail.php?robotId=" + robotId;
     }
 
+    function bindAndActivate() {
+        window.location.href = "index_login.php?type=staker";
+    }
+
     /////////////////////////    
-    function loadUserAllRobotHtml(elementId, showRobot, createGen0) {
+    function loadUserAllRobotHtml(elementId, showRobot, createGen0, bindAndActivate) {
         var createGen0Func = createGen0 + "('OperationHash')"; 
 
         var showPrefix = showRobot + "('"; 
