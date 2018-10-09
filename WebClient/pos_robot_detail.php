@@ -30,15 +30,20 @@ session_start();
     var userLogin;
     var singleRobotGM;
 
+    var binded = false;
+
     checkeWeb3Account(function(account) {
         userLogin = new ZSCLogin(account);
         userLogin.tryLogin(userType, function(ret) {
-            if(!ret) { 
-                window.location.href = "index.php";
-            } else {
-                singleRobotGM = new ZSCRobotSingleDetails(account, userLogin.getErc721Adr(), userLogin.getControlApisFullAbi());
-                loadSingleRobotDetails(robotId);
-            }
+            binded = ret;
+            userLogin.getControlApisInfo(userLogin, function(ret) {
+                if(!ret) { 
+                    window.location.href = "index.php";
+                } else {
+                    singleRobotGM = new ZSCRobotSingleDetails(account, userLogin.getErc721Adr(), userLogin.getControlApisFullAbi());
+                    loadSingleRobotDetails(robotId);
+                }
+            });
         });
     });
 
@@ -59,7 +64,7 @@ session_start();
     function transferToOther(hashId, destId, robotId) {
         var dest = document.getElementById(destId).value;
         singleRobotGM.transferToOther(hashId, dest, robotId, function(){
-           window.location.reload(true);               
+            window.location.reload(true);
         });
     }
 
@@ -117,11 +122,11 @@ session_start();
         var sellRobotSuffix = "')";
 
         var cancelSellingPrefix = cancelSelling + "('OperationHash', '"; 
-        var cancelSellingSuffix = "')";     
+        var cancelSellingSuffix = "')";
 
         var purchaseRobotPrefix = purchaseRobot + "('OperationHash', '"; 
-        var purchaseRobotSuffix = "')";     
-    
+        var purchaseRobotSuffix = "')";
+
         var titlle = "User owned robots" 
 
         var tokenType = '<select id = "TokenType" style="width:100px">'
@@ -168,8 +173,13 @@ session_start();
                 text += '</tr>'
             } else {
                 text += '<tr>'
-                text += '   <td colspan="1"><button type="button" onClick="' + purchaseRobotPrefix + robotId + purchaseRobotSuffix + '"> Purchase robot</button></td>'
-                text += '</tr>'
+                if (binded) {
+                    text += '   <td colspan="1"><button type="button" onClick="' + purchaseRobotPrefix + robotId + purchaseRobotSuffix + '"> Purchase robot</button></td>'
+                    text += '</tr>'
+                } else {
+                    text += '   <td colspan="1"><button type="button" onClick="'+ bindAndActivate + '()"' + '>Bind account and activate wallet at first, then purchase robot</button></td>'
+                    text += '</tr>'
+                }
             }
         }
         text += '</table></div>'
