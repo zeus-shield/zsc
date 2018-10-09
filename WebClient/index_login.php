@@ -50,7 +50,8 @@ echo $htmlObjects->loadScriptFiles();
             } else {
                 textBody = ''
                 + '<table align="center"><tr><td>'
-                + '   <button type="button" onClick="' + userTypeFunc + '">Apply for ' + userType + '</button> <br><br>'
+                // + '   <button type="button" onClick="' + userTypeFunc + '">Apply for ' + userType + '</button> <br><br>'
+                + '   <button type="button" onClick="' + userTypeFunc + '">Bind account and activate wallet for ' + userType + '</button> <br><br>'
                 + '   <text id="ApplyForUserHash"></text>'
                 + '</td></tr></table>'
             }
