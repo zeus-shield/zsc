@@ -86,12 +86,21 @@ ZSCRobotAllBreifes.prototype.loadAllRobotBriefs = function(tag, otherHolderAdr, 
         } else {
             gm.resetAllItemTags(gm);
             for (var i = 0; i < gm.robotNos; ++i) {
-                gm.loadRobotBrieInfoByIndex(gm, i, function(gm, index, robotInfo) {
-                    gm.parserRobotBrieInfo(gm, index, robotInfo);
-                    if (gm.checkAllItemTags(gm) == true) {
-                        callback();
-                    }
-                });
+                if (tag == "all") {
+                    gm.loadRobotBrieInfoById(gm, i, function(gm, index, robotInfo) {
+                        gm.parserRobotBrieInfo(gm, index, robotInfo);
+                        if (gm.checkAllItemTags(gm) == true) {
+                            callback();
+                        }
+                    });
+                } else {
+                    gm.loadRobotBrieInfoByIndex(gm, i, function(gm, index, robotInfo) {
+                        gm.parserRobotBrieInfo(gm, index, robotInfo);
+                        if (gm.checkAllItemTags(gm) == true) {
+                            callback();
+                        }
+                    });
+                }
             } 
         }
     });
