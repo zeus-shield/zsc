@@ -98,19 +98,30 @@ ZSCRobotAllBreifes.prototype.loadAllRobotBriefs = function(tag, otherHolderAdr, 
 }
 
 ZSCRobotAllBreifes.prototype.numRobots = function(gm, func) {
-    var callBack = func;
     var erc721Api = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
-    erc721Api.numUnits(gm.robotOwnerTag, gm.otherHolderAdr, 
-        {from: gm.account},
-        function(error, num){ 
-            if(!error) { 
-                gm.robotNos = num.toString(10); 
-                func(gm);
-            } else {
-                console.log("error: " + error);
-            }
-         });
+    if (gm.robotOwnerTag == "all") {
+        erc721Api.totalSupply({from: gm.account},
+            function(error, num){ 
+                if(!error) { 
+                    gm.robotNos = num.toString(10); 
+                    func(gm);
+                } else {
+                    console.log("error: " + error);
+                }
+            });
+    } else {
+        erc721Api.numUnits(gm.robotOwnerTag, gm.otherHolderAdr, 
+            {from: gm.account},
+            function(error, num){ 
+                if(!error) { 
+                    gm.robotNos = num.toString(10); 
+                    func(gm);
+                } else {
+                    console.log("error: " + error);
+                }
+            });
+    }
 }
 
 ZSCRobotAllBreifes.prototype.loadRobotBrieInfoByIndex = function(gm, index, func) {
