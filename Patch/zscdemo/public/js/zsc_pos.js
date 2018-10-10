@@ -28,3 +28,15 @@ ZSCPos.prototype.getRewardAmount = function(index) {return this.rewardAmounts[in
 ZSCPos.prototype.getSPUsedTime = function(index) {return this.spUsedTimes[index];}
 
 ZSCPos.prototype.getSPUsedAmount = function(index) {return this.spUsedAmounts[index];}
+
+ZSCPos.prototype.loadRewardHistory = function(func) {
+    this.numMiningInfo(true, function() {
+        for (var i = 0; i < this.rewardNos; ++i) {
+            this.getRewardInfo(true, i, function(index){
+                if (indx == this.rewardNos - 1) {
+                    func();
+                }
+            });
+        }
+    });
+}
