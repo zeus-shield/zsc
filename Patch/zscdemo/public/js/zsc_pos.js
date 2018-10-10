@@ -52,3 +52,20 @@ ZSCPos.prototype.loadSpUsedHistory = function(func) {
         }
     });
 }
+
+ZSCPos.prototype.numMiningInfo = function(isReward, func) {
+    this.myControlApi.numStakerMining(this.userName, true, 
+        {from: this.getAccount()},
+        function(error, result){ 
+            if(!error) {
+                if (isReward) {
+                    this.rewardNos = result.toString(10);
+                } else {
+                    this.spUsedNos = result.toString(10);
+                }
+                func();
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
