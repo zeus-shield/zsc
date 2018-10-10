@@ -49,6 +49,8 @@ contract Erc721Adv is ERC721, Delegated {
     // Mapping from token ID to index of the owner tokens list
     mapping(uint => uint) private ownedTokensIndex_;
 
+    mapping (uint => address[]) private tokenHistories_;
+
     string private tokenSymbol_ = "DFN";
     
     string private tokenName_ = "Default Name";
@@ -67,6 +69,15 @@ contract Erc721Adv is ERC721, Delegated {
         checkDelegate(msg.sender, 1);
         tokenName_ = _name;
         tokenSymbol_ = _symbole;
+    }
+
+    function numTokenHistories(uint _tokenId) public view returns (uint) {
+        return tokenHistories_[_tokenId].length;
+    }
+
+    function getTokenHistoryOwnerByIndex(uint _tokenId, uint _index) public view returns (address) {
+        require(_index < tokenHistories_[_tokenId].length);
+        return tokenHistories_[_tokenId][_index];
     }
 
     ////////////////////////
@@ -96,6 +107,7 @@ contract Erc721Adv is ERC721, Delegated {
         checkTradeAble(_tokenId);
         //checkCanTransfer(msg.sender, _tokenId);
         _transfer(msg.sender, _to, _tokenId);
+        addTokenHistory(_tokenId, _to);
     }
 
     function safeTransferFrom(address _from, address _to, uint _tokenId) public {
@@ -240,6 +252,10 @@ contract Erc721Adv is ERC721, Delegated {
         ownedTokensIndex_[_tokenId] = 0;
         ownedTokensIndex_[lastToken] = tokenIndex;
         totalTokens_ = totalTokens_.sub(1);
+    }
+
+    function addTokenHistory(uint _tokenId, address _owner) private {
+        tokenHistories_[_tokenId].push(_owner);
     }
 }
 
