@@ -69,3 +69,16 @@ ZSCPos.prototype.numMiningInfo = function(isReward, func) {
             }
         });
 }
+
+ZSCPos.prototype.getMiningInfoByIndex = function(isReward, index, func) {
+    this.myControlApi.getStakerMiningInfoByIndex(this.userName, true, index,
+        {from: this.getAccount()},
+        function(error, result){ 
+            if(!error) {
+                this.parserMiningInfo(isReward, info, index);
+                func(index);
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
