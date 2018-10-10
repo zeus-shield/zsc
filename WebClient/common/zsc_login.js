@@ -5,7 +5,7 @@ Copyright (c) 2018 ZSC Dev Team
 var g_controlApisFullAbi;
 
 function ZSCLogin(userAccount) {
-    this.admAdr = "0xc7e03da56e2be02cbdca9e7a7cf6148df7eaae97";
+    this.admAdr = "0x8da6e7cfab4dcd01894e368769e5cd3c638747bf";
     this.controlApisAdr;
     this.erc721Adr;
     this.userStatus;
