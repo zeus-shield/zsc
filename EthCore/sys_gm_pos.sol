@@ -43,9 +43,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         address seller_;
 
         bytes32 posToken_;
-
-        mapping(uint => address) historyOwners_;
-        uint historyOwnerNos_;
     }
     uint internal robotNos_;
     mapping(uint => RobotUnit) internal robots_;
@@ -167,11 +164,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
             robots_[index].upProbBirth_  = random(ctgs_[ctgIndex].upProbBirthMin_, ctgs_[ctgIndex].upProbBirthMax_);
         }
         return index;
-    }
-
-    function addUnitHistoryOwner(uint _robotId, address _owner) internal {
-        robots_[_robotId].historyOwners_[robots_[_robotId].historyOwnerNos_] = _owner;
-        robots_[_robotId].historyOwnerNos_++;
     }
     
     //////////////////////////
@@ -360,14 +352,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     //////////////////////
     function getPosRatio() public view returns (uint, uint) {
         return (minedRatioPerDay_, rewardRatioPerDay_);
-    }
-
-    function numUnitHistoryOwner(uint _unitId) public view returns (uint) {
-        return robots_[_unitId].historyOwnerNos_;
-    }
-
-    function getUnitHistoryOwnerByIndex(uint _unitId, uint _index) public view returns (address) {
-        return robots_[_unitId].historyOwners_[_index];
     }
 
     function getUnitName(uint _unitId) public view returns (bytes32) {
