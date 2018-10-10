@@ -40,3 +40,15 @@ ZSCPos.prototype.loadRewardHistory = function(func) {
         }
     });
 }
+
+ZSCPos.prototype.loadSpUsedHistory = function(func) {
+    this.numMiningInfo(false, function() {
+        for (var i = 0; i < this.spUsedNos; ++i) {
+            this.getRewardInfo(false, i, function(index){
+                if (indx == this.spUsedNos - 1) {
+                    func();
+                }
+            });
+        }
+    });
+}
