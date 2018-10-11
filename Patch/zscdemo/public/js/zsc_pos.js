@@ -107,3 +107,40 @@ ZSCPos.prototype.parserMiningInfo = function(isReward, info, index) {
 
     return true;
 }
+
+ZSCPos.prototype.loadPosInfoHtml = function(isReward, elementId)  {
+    var timeMoment;
+    var inputTag;
+    var amount;
+    var sender;
+    var receiver;
+
+    var text ="";
+    text += '<div class="well">';
+    text += '<table align="center" style="width:800px;min-height:30px">'
+
+    if (isReward) {
+        text += '<tr>'
+        text += '   <td>Reward time</td> <td>Reward amount</td>'
+        text += '</tr>'
+        for (var i = 0; i < this.tmpNos; ++i) {
+            text += '<tr>'
+            text += '   <td>' + this.rewardTimes[i] + '</td>'
+            text += '   <td>' + this.rewardAmounts[i]  + '</td>'
+            text += '</tr>'
+        }
+    } else {
+        text += '<tr>'
+        text += '   <td>SP used time</td> <td>SP used amount</td>'
+        text += '</tr>'
+        for (var i = 0; i < this.tmpNos; ++i) {
+            text += '<tr>'
+            text += '   <td>' + this.spUsedTimes[i] + '</td>'
+            text += '   <td>' + this.spUsedAmounts[i]  + '</td>'
+            text += '</tr>'
+        }
+    }
+    text += '</table></div>'
+
+    document.getElementById(elementId).innerHTML = text;  
+}
