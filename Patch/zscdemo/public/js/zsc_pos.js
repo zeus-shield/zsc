@@ -82,3 +82,28 @@ ZSCPos.prototype.getMiningInfoByIndex = function(isReward, index, func) {
             }
         });
 }
+
+ZSCPos.prototype.parserMiningInfo = function(isReward, info, index) {
+    var found1 = urlinfo.indexOf("?");
+    var found2 = urlinfo.indexOf("=");
+
+    if (found1 == -1 || found2 == -1) return false;
+
+    var len = urlinfo.length;
+    var offset = urlinfo.indexOf("?");
+    var newsidinfo = urlinfo.substr(offset,len)
+    var newsids = newsidinfo.split("&");
+
+    var timeInfo  = newsids[0];
+    var amountInfo = newsids[1];
+
+    if (isReward) {
+        this.rewardTimes[index] = timeInfo.split("=")[1];
+        this.rewardAmounts[index] = amountInfo.split("=")[1];
+    } else {
+        this.spUsedTimes[index] = timeInfo.split("=")[1];
+        this.spUsedAmounts[index] = amountInfo.split("=")[1];    
+    }
+
+    return true;
+}
