@@ -28,5 +28,16 @@ function hF_loadButtonForEnablingElement(elementId) {
     document.getElementById(elementId).innerHTML = text;  
 }
 
-
+function hF_loadPageHeader(elementId) {
+    var funcPrefix = "loadPageBody(";
+    var funcSuffix = ")";
+    var text = ''
+    text += '<div class="well">'
+    text += '   <button type="button" onClick="' + funcPrefix + "'wallet'" + funcSuffix + '">Wallate</button>'
+    text += '   <button type="button" onClick="' + funcPrefix + "'profile'" + funcSuffix + '">Profile</button>'
+    text += '   <button type="button" onClick="' + funcPrefix + "'templates'" + funcSuffix + '">Templates</button>'
+    text += '   <button type="button" onClick="' + funcPrefix + "'agreements'" + funcSuffix + '">Agreements</button>'
+    text += '</div>'
+    document.getElementById(elementId).innerHTML = text;  
+}
 
