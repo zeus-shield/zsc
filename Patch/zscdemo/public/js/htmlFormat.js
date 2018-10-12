@@ -41,3 +41,21 @@ function hF_loadPageHeader(elementId) {
     document.getElementById(elementId).innerHTML = text;  
 }
 
+/*tag:
+logon, wallet, profile, templates, agreements
+*/
+function hF_loadPageBody(elementId, tag) {
+    var text;
+    switch(tag) {
+        case "logon": 
+            text = hF_loadWelcome(); 
+            break;
+        case "wallet": 
+            text = hF_loadWallet();
+            break;
+        case "profile": 
+            text = hF_loadParameters("user");
+            break;
+    }
+    document.getElementById(elementId).innerHTML = text; 
+} 
