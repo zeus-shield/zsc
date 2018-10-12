@@ -44,3 +44,13 @@ body {
 	vertical-align: baseline;
 	margin-right: 10px;
 }
+
+.toolbar {
+	background: #f2f2f2;
+	padding: 10px;
+	//border:1px solid #dfe6ec;
+	margin: 10px 0px;
+	.el-form-item {
+		margin-bottom: 10px;
+	}
+}
