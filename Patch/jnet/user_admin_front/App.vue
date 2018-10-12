@@ -34,3 +34,13 @@ body {
 	bottom: 0px;
 	width: 100%;
 }
+
+.el-submenu [class^=fa] {
+	vertical-align: baseline;
+	margin-right: 10px;
+}
+
+.el-menu-item [class^=fa] {
+	vertical-align: baseline;
+	margin-right: 10px;
+}
