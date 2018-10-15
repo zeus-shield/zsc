@@ -4,3 +4,6 @@ let instance = axios.create({
 });
 
 // let base = 'http://localhost:3001';
+//jnet
+
+export const getTrack   = params => { return instance.post(`${base}/user/getTrack`,params).then(res => res.data); };
