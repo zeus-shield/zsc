@@ -124,7 +124,7 @@ export default class TestLogisticsRaw {
 
         // testing data(update)
         let brief9 = "{\"error\":null,\"num\":\"JNTCU0600046689YQ\",\"transNum\":\"MSK0000027699\",\"model\":\"J-NET俄全通INFO9\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\"}";
-        let newTracks5 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"上海德铎泰信息科技\",\"facilityName\":\"NewTrack5-1\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"NewTrack5-2\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-2\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
+        let newTracks5 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"上海德铎泰信息科技有限公司 上海市闵行区宜山路2016号合川大厦6H\",\"facilityName\":\"NewTrack5-1\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"NewTrack5-2\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-2\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
 
         let logistics = new Logistics(this[abi], this[contractAddress]);
 
@@ -164,7 +164,7 @@ export default class TestLogisticsRaw {
             } else {}
         } else if ("update" == cmd) {
              if (0 == blockIndex) {
-                logistics.updateBrief(account, key, "JNTCU0600046688YQ", "MSK0000027698", "上海德铎泰信息科技", "Russian", "GTMS_SIGNED", function(error, result) {
+                logistics.updateBrief(account, key, "JNTCU0600046688YQ", "MSK0000027698", "上海德铎泰信息科技有限公司 上海市闵行区宜山路2016号合川大厦6H", "Russian", "GTMS_SIGNED", function(error, result) {
                     handler[openChannelFunc]("update", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
                 });
             } else if (1 == blockIndex) {
