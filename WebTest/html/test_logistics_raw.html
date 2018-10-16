@@ -83,8 +83,8 @@
 
             <p><h4>2. [Track] Please compile solidity file and upload compiled json file at first, then deploy!</h4></p>
             <p>
-                <label for="file">Upload</label>
-                <input type="file" id="file" onchange="file('LogisticsRaw', this)" />
+                <label for="file_track">Upload</label>
+                <input type="file" id="file_track" onchange="file('LogisticsTrackRaw', this)" />
                 <button type="button" id="deploy" onclick="main('LogisticsRaw', 'DeployTrack')">Deploy</button>
             </p>
             <p id="output_deploy_track"></p>
@@ -104,7 +104,7 @@
                 <button type="button" id="get" onclick="main('LogisticsRaw', 'Get')">Get</button>
             </p>
 
-            <p id="output"></p>
+            <p id="output_operation"></p>
         </div>
 
         <div id="footer">Copyright ? deduotech.com</div>
