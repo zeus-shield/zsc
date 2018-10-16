@@ -47,7 +47,10 @@
 
         <script type="text/javascript">
             window.onload = function () {
-                window.outputElement = 'output';
+                window.outputProviderElement = 'output_provider';
+                window.outputDeployBriefElement = 'output_deploy_brief';
+                window.outputDeployTrackElement = 'output_deploy_track';
+                window.outputOperationElement = 'output_operation';
                 provider(false);
                 document.getElementById('provider').addEventListener('change',function(){
                      if('injected' == this.value) {
@@ -76,7 +79,8 @@
                   <option value ="injected">Injected Web3</option>
                 </select>
             </p>
-            
+            <p id="output_provider"></p>
+
             <p><h4>2. [Brief] Please compile solidity file and upload compiled json file at first, then deploy!</h4></p>
             <p>
                 <label for="file">Upload</label>
