@@ -197,12 +197,19 @@ export default class TestLogisticsRaw {
         this[compiledJson] = JSON.parse(data);
     }
 
-    deploy() {
+    deploy(type) {
         console.log('TestLogisticsRaw.deploy()');
+        let elementId;
         let channels = window.channelClass.get("idle");
 
+        if ('track' == type) {
+            elementId = window.outputDeployTrackElement;
+        } else {
+            elementId = window.outputDeployBriefElement;
+        }
+
         if (0 == channels.length) {
-            Output(window.outputElement, 'small', 'red', "No channnel(idle)!");
+            Output(elementId, 'small', 'red', "No channnel(idle)!");
             return;
         }
 
@@ -238,14 +245,14 @@ export default class TestLogisticsRaw {
                         if (!error) {
                             handler[contractAddress] = result.contractAddress;
                             let string = `[TransactionHash]:${result.transactionHash}</br>[ContractAddress]:${result.contractAddress}</br>[Try]:${result.tryTimes}(times)`;
-                            Output(window.outputElement, 'small', 'red', string);
+                            Output(elementId, 'small', 'red', string);
                         } else {
-                            Output(window.outputElement, 'small', 'red', error);
+                            Output(elementId, 'small', 'red', error);
                         }
                     });
                 }
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                Output(elementId, 'small', 'red', error);
             }
         });
     }
@@ -682,8 +689,8 @@ export default class TestLogisticsRaw {
     do(operation) {
         console.log('TestLogisticsRaw.do(%s)', operation);
         switch(operation) {
-            case 'Deploy':
-                this.deploy();
+            case 'DeployTrack':
+                this.deploy('track');
                 break;
             case 'Create':
                 // this.create();
