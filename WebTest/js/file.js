@@ -15,6 +15,7 @@ export default function file(module, input) {
         reader.readAsText(file);
         reader.onload = function() {
             let test;
+            let elementId;
             //console.log(this.result);
             //alert(this.result);
 
@@ -46,7 +47,18 @@ export default function file(module, input) {
                     }
                     break;
                 }
+                case 'LogisticsTrackRaw': {
+                    elementId = window.outputDeployTrackElement;
+                    if('undefined' == typeof window.testLogisticsRawClass) {
+                        test = new TestLogisticsRaw();
+                        window.testLogisticsRawClass = test;
+                    } else {
+                        test = window.testLogisticsRawClass;
+                    }
+                    break;
+                }
                 case 'LogisticsRaw': {
+                    elementId = window.outputDeployBriefElement;
                     if('undefined' == typeof window.testLogisticsRawClass) {
                         test = new TestLogisticsRaw();
                         window.testLogisticsRawClass = test;
@@ -72,7 +84,7 @@ export default function file(module, input) {
 
             if('undefined' != typeof test) {
                 test.setCompiledJson(this.result);
-                Output('output', 'small', 'red', 'Upload successfully!');
+                Output(elementId, 'small', 'red', 'Upload successfully!');
             }
         }
     } 
