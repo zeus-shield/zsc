@@ -58,7 +58,7 @@ export default function file(module, input) {
                     break;
                 }
                 case 'LogisticsRaw': {
-                    elementId = window.outputDeployBriefElement;
+                    elementId = window.outputDeployElement;
                     if('undefined' == typeof window.testLogisticsRawClass) {
                         test = new TestLogisticsRaw();
                         window.testLogisticsRawClass = test;
