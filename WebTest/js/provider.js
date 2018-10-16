@@ -20,7 +20,7 @@ function getAccount(tryTimes, timeout, func) {
         setTimeout(function(){
             let status = "Try to get account again!";
             let string = `[Status]:${status}</br>[Try]:${tryTimes}(times)`;
-            Output(window.outputElement, 'small', 'red', string);
+            Output(window.outputProviderElement, 'small', 'red', string);
             getAccount(tryTimes, timeout, func);
         }, timeout);
     }
@@ -41,7 +41,7 @@ export default function provider(injected) {
         if(window.injectedWeb3) {
             provider = window.injectedWeb3;
         } else {
-            Output(window.outputElement, 'small', 'red', `Injected Web3 do not exist!`);
+            Output(window.outputProviderElement, 'small', 'red', `Injected Web3 do not exist!`);
             return;
         }
     } else {
@@ -61,9 +61,9 @@ export default function provider(injected) {
         let channel;
 
         if(!web3.isConnected()) {
-            Output(window.outputElement, 'small', 'red', `Web3(${type}, ${account}) do not connected!`);
+            Output(window.outputProviderElement, 'small', 'red', `Web3(${type}, ${account}) do not connected!`);
         } else {
-            Output(window.outputElement, 'small', 'red', `Web3(${type}, ${account}) connected!`);
+            Output(window.outputProviderElement, 'small', 'red', `Web3(${type}, ${account}) connected!`);
         }
 
         web3.eth.defaultAccount = web3.eth.coinbase;
