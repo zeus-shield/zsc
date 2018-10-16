@@ -7,6 +7,7 @@ import Logistics from './logistics_raw.js';
 const contractName = Symbol('contractName');
 const compiledJson = Symbol('compiledJson');
 const abi = Symbol('abi');
+const trackContractAddress = Symbol('trackContractAddress');
 const contractAddress = Symbol('contractAddress');
 
 const nextIndex = Symbol('nextIndex');
@@ -26,6 +27,8 @@ export default class TestLogisticsRaw {
         this[compiledJson] = '';
         this[abi] = '';
         this[contractAddress] = '';
+        // this[abi] = [{"constant":false,"inputs":[{"name":"_num","type":"string"}],"name":"remove","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_info","type":"string"}],"name":"updateEx","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"constant":false,"inputs":[{"name":"_num","type":"string"},{"name":"_transNum","type":"string"},{"name":"_model","type":"string"},{"name":"_destinationCountry","type":"string"},{"name":"_lastStatus","type":"string"},{"name":"_tracks","type":"string"}],"name":"update","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_num","type":"string"},{"name":"_transNum","type":"string"},{"name":"_model","type":"string"},{"name":"_destinationCountry","type":"string"},{"name":"_lastStatus","type":"string"}],"name":"updateBrief","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_brief","type":"string"}],"name":"updateBriefEx","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_num","type":"string"},{"name":"_tracks","type":"string"},{"name":"_updateType","type":"uint256"}],"name":"updateTracks","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_num","type":"string"}],"name":"getBrief","outputs":[{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_index","type":"uint256"}],"name":"getBriefByIndex","outputs":[{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_num","type":"string"}],"name":"getBriefEx","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_index","type":"uint256"}],"name":"getBriefExByIndex","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_num","type":"string"}],"name":"getTracks","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"number","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_num","type":"string"}],"name":"numberOfTracks","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}];
+        // this[contractAddress] = "0x9cb887f15245628f79e9bfdbd719753d7ffa6d86";
         this[nextIndex] = 0;
         this[tick] = 0;
     }
@@ -243,7 +246,11 @@ export default class TestLogisticsRaw {
                 if('undefined' != typeof transaction) {
                     transaction.do("deploy", data, result, null, function(error, result) {
                         if (!error) {
-                            handler[contractAddress] = result.contractAddress;
+                            if ('track' == type) {
+                                handler[contractAddress] = result.contractAddress;
+                            } else {
+                                handler[trackContractAddress] = result.contractAddress;
+                            }
                             let string = `[TransactionHash]:${result.transactionHash}</br>[ContractAddress]:${result.contractAddress}</br>[Try]:${result.tryTimes}(times)`;
                             Output(elementId, 'small', 'red', string);
                         } else {
