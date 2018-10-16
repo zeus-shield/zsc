@@ -32,7 +32,7 @@ contract Logistics {
         trackAddress_ = 0;
     }
 
-    function setTrackAdress(address _address) public {
+    function setTrackContractAdress(address _address) public {
         trackAddress_ = _address;
     }
 
