@@ -247,9 +247,9 @@ export default class TestLogisticsRaw {
                     transaction.do("deploy", data, result, null, function(error, result) {
                         if (!error) {
                             if ('track' == type) {
-                                handler[contractAddress] = result.contractAddress;
-                            } else {
                                 handler[trackContractAddress] = result.contractAddress;
+                            } else {
+                                handler[contractAddress] = result.contractAddress;
                             }
                             let string = `[TransactionHash]:${result.transactionHash}</br>[ContractAddress]:${result.contractAddress}</br>[Try]:${result.tryTimes}(times)`;
                             Output(elementId, 'small', 'red', string);
@@ -266,6 +266,41 @@ export default class TestLogisticsRaw {
 
     setup() {
         console.log('TestLogisticsRaw.setup()');
+
+        let channels = window.channelClass.get("idle");
+
+        if (0 == channels.length) {
+            Output(window.outputOperationElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = channels[0].account;
+        let key = channels[0].key;
+
+        let status = "";
+        let string = "";
+
+        let logistics = new Logistics(this[abi], this[contractAddress]);
+        logistics.setTrackContractAdress(account, key, this[trackContractAddress], function(error, result) {
+            if (!error) {
+                if ("" != result.status) {
+                    if ("0x1" == result.status) {
+                        status = "succeeded";
+                    } else {
+                        status = "failure";
+                    }
+
+                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                    Output(window.outputSetupElement, 'small', 'red', string);
+                } else {
+                    status = "Try to get status again!";
+                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                    Output(window.outputSetupElement, 'small', 'red', string);
+                }
+            } else {
+                Output(window.outputSetupElement, 'small', 'red', error);
+            }
+        });
     }
 
     create() {
