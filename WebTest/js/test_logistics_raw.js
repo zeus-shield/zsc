@@ -692,6 +692,9 @@ export default class TestLogisticsRaw {
             case 'DeployTrack':
                 this.deploy('track');
                 break;
+            case 'DeployBrief':
+                this.deploy('brief');
+                break;
             case 'Create':
                 // this.create();
                 this.createParallel();
