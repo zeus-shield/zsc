@@ -55,6 +55,7 @@ export default function file(module, input) {
                     } else {
                         test = window.testLogisticsRawClass;
                     }
+                    test.setContractName('LogisticsTrack');
                     break;
                 }
                 case 'LogisticsRaw': {
@@ -65,6 +66,7 @@ export default function file(module, input) {
                     } else {
                         test = window.testLogisticsRawClass;
                     }
+                    test.setContractName('Logistics');
                     break;
                 }
                 case 'Analysis': {
