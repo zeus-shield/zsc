@@ -48,8 +48,8 @@
         <script type="text/javascript">
             window.onload = function () {
                 window.outputProviderElement = 'output_provider';
-                window.outputDeployBriefElement = 'output_deploy_brief';
                 window.outputDeployTrackElement = 'output_deploy_track';
+                window.outputDeployBriefElement = 'output_deploy_brief';
                 window.outputOperationElement = 'output_operation';
                 provider(false);
                 document.getElementById('provider').addEventListener('change',function(){
@@ -81,14 +81,15 @@
             </p>
             <p id="output_provider"></p>
 
-            <p><h4>2. [Brief] Please compile solidity file and upload compiled json file at first, then deploy!</h4></p>
+            <p><h4>2. [Track] Please compile solidity file and upload compiled json file at first, then deploy!</h4></p>
             <p>
                 <label for="file">Upload</label>
                 <input type="file" id="file" onchange="file('LogisticsRaw', this)" />
-                <button type="button" id="deploy" onclick="main('LogisticsRaw', 'Deploy')">Deploy</button>
+                <button type="button" id="deploy" onclick="main('LogisticsRaw', 'DeployTrack')">Deploy</button>
             </p>
+            <p id="output_deploy_track"></p>
 
-            <p><h4>3. [Track] Please compile solidity file and upload compiled json file at first, then deploy!</h4></p>
+            <p><h4>3. [Brief] Please compile solidity file and upload compiled json file at first, then deploy!</h4></p>
             <p>
                 <label for="file">Upload</label>
                 <input type="file" id="file" onchange="file('LogisticsRaw', this)" />
