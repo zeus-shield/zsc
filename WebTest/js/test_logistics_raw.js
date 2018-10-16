@@ -7,8 +7,10 @@ import Logistics from './logistics_raw.js';
 const contractName = Symbol('contractName');
 const compiledJson = Symbol('compiledJson');
 const abi = Symbol('abi');
-const trackContractAddress = Symbol('trackContractAddress');
 const contractAddress = Symbol('contractAddress');
+
+const trackAbi = Symbol('trackAbi');
+const trackContractAddress = Symbol('trackContractAddress');
 
 const nextIndex = Symbol('nextIndex');
 const tick = Symbol('tick');
@@ -220,20 +222,31 @@ export default class TestLogisticsRaw {
         let key = channels[0].key;
 
         let name;
+        let fullName;
+        let found = false;
+
         let byteCode;
         let transaction;
         let contract;
         let data;
         let handler = this;
 
-        for (name in this[compiledJson].contracts) {
-            if (name.indexOf(this[contractName]) > 0)
+        for (fullName in this[compiledJson].contracts) {
+            //console.log(fullName);
+            name = fullName.substr(fullName.indexOf(":") + 1);
+            if (name == this[contractName]) {
+                found = true;
                 break;
-            //console.log(contractName);
+            }
         }
 
-        byteCode = '0x' + this[compiledJson].contracts[name].bin;
-        this[abi] = JSON.parse(this[compiledJson].contracts[name].abi);
+        if (!found) {
+            Output(elementId, 'small', 'red', "JSON file error！");
+            return;
+        }
+
+        byteCode = '0x' + this[compiledJson].contracts[fullName].bin;
+        this[abi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
 
         contract = web3.eth.contract(this[abi]);
         data = contract.new.getData({data: byteCode});
@@ -527,8 +540,8 @@ export default class TestLogisticsRaw {
                                             string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
                                             Output(window.outputOperationElement, 'small', 'red', string);
                                         } else {
-                                            let status = "Try to get status again!";
-                                            let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                            status = "Try to get status again!";
+                                            string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
                                             Output(window.outputOperationElement, 'small', 'red', string);
                                         }
                                     } else {
@@ -536,8 +549,8 @@ export default class TestLogisticsRaw {
                                     }
                                 });
                             } else {
-                                let status = "Try to get status again!";
-                                let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                status = "Try to get status again!";
+                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
                                 Output(window.outputOperationElement, 'small', 'red', string);
                             }
                         } else {
@@ -545,8 +558,8 @@ export default class TestLogisticsRaw {
                         }
                     });
                 } else {
-                    let status = "Try to get status again!";
-                    let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                    status = "Try to get status again!";
+                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
                     Output(window.outputOperationElement, 'small', 'red', string);
                 }
             } else {
