@@ -15,6 +15,7 @@ export default function file(module, input) {
         reader.readAsText(file);
         reader.onload = function() {
             let test;
+            let elementId;
             //console.log(this.result);
             //alert(this.result);
 
@@ -46,13 +47,26 @@ export default function file(module, input) {
                     }
                     break;
                 }
-                case 'LogisticsRaw': {
+                case 'LogisticsTrackRaw': {
+                    elementId = window.outputDeployTrackElement;
                     if('undefined' == typeof window.testLogisticsRawClass) {
                         test = new TestLogisticsRaw();
                         window.testLogisticsRawClass = test;
                     } else {
                         test = window.testLogisticsRawClass;
                     }
+                    test.setContractName('LogisticsTrack');
+                    break;
+                }
+                case 'LogisticsRaw': {
+                    elementId = window.outputDeployElement;
+                    if('undefined' == typeof window.testLogisticsRawClass) {
+                        test = new TestLogisticsRaw();
+                        window.testLogisticsRawClass = test;
+                    } else {
+                        test = window.testLogisticsRawClass;
+                    }
+                    test.setContractName('Logistics');
                     break;
                 }
                 case 'Analysis': {
@@ -72,7 +86,7 @@ export default function file(module, input) {
 
             if('undefined' != typeof test) {
                 test.setCompiledJson(this.result);
-                Output('output', 'small', 'red', 'Upload successfully!');
+                Output(elementId, 'small', 'red', 'Upload successfully!');
             }
         }
     } 

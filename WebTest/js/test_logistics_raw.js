@@ -9,6 +9,9 @@ const compiledJson = Symbol('compiledJson');
 const abi = Symbol('abi');
 const contractAddress = Symbol('contractAddress');
 
+const trackAbi = Symbol('trackAbi');
+const trackContractAddress = Symbol('trackContractAddress');
+
 const nextIndex = Symbol('nextIndex');
 const tick = Symbol('tick');
 
@@ -26,6 +29,8 @@ export default class TestLogisticsRaw {
         this[compiledJson] = '';
         this[abi] = '';
         this[contractAddress] = '';
+        // this[abi] = [{"constant":false,"inputs":[{"name":"_num","type":"string"}],"name":"remove","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_info","type":"string"}],"name":"updateEx","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"constant":false,"inputs":[{"name":"_num","type":"string"},{"name":"_transNum","type":"string"},{"name":"_model","type":"string"},{"name":"_destinationCountry","type":"string"},{"name":"_lastStatus","type":"string"},{"name":"_tracks","type":"string"}],"name":"update","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_num","type":"string"},{"name":"_transNum","type":"string"},{"name":"_model","type":"string"},{"name":"_destinationCountry","type":"string"},{"name":"_lastStatus","type":"string"}],"name":"updateBrief","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_brief","type":"string"}],"name":"updateBriefEx","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_num","type":"string"},{"name":"_tracks","type":"string"},{"name":"_updateType","type":"uint256"}],"name":"updateTracks","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_num","type":"string"}],"name":"getBrief","outputs":[{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_index","type":"uint256"}],"name":"getBriefByIndex","outputs":[{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_num","type":"string"}],"name":"getBriefEx","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_index","type":"uint256"}],"name":"getBriefExByIndex","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_num","type":"string"}],"name":"getTracks","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"number","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_num","type":"string"}],"name":"numberOfTracks","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}];
+        // this[contractAddress] = "0x9cb887f15245628f79e9bfdbd719753d7ffa6d86";
         this[nextIndex] = 0;
         this[tick] = 0;
     }
@@ -52,7 +57,7 @@ export default class TestLogisticsRaw {
                 // finish the all the block
                 let ticks = (new Date()).valueOf() - handler[tick];
                 let string = `Finish all(cost: ${ticks}ms).`;
-                Output(window.outputElement, 'small', 'red', string);
+                Output(window.outputOperationElement, 'small', 'red', string);
             }
             return true;
         } else {
@@ -102,15 +107,15 @@ export default class TestLogisticsRaw {
                 }
 
                 let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                Output(window.outputElement, 'small', 'red', string);
+                Output(window.outputOperationElement, 'small', 'red', string);
             } else {
                 let status = "Try to get status again!";
                 let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                Output(window.outputElement, 'small', 'red', string);
+                Output(window.outputOperationElement, 'small', 'red', string);
             }
         } else {
             handler[openChannel](cmd, handler, account, key, parallelCount, blockIndex, blockCount);
-            Output(window.outputElement, 'small', 'red', error);
+            Output(window.outputOperationElement, 'small', 'red', error);
         }        
     }
 
@@ -197,12 +202,19 @@ export default class TestLogisticsRaw {
         this[compiledJson] = JSON.parse(data);
     }
 
-    deploy() {
+    deploy(type) {
         console.log('TestLogisticsRaw.deploy()');
+        let elementId;
         let channels = window.channelClass.get("idle");
 
+        if ('track' == type) {
+            elementId = window.outputDeployTrackElement;
+        } else {
+            elementId = window.outputDeployElement;
+        }
+
         if (0 == channels.length) {
-            Output(window.outputElement, 'small', 'red', "No channnel(idle)!");
+            Output(elementId, 'small', 'red', "No channnel(idle)!");
             return;
         }
 
@@ -210,20 +222,31 @@ export default class TestLogisticsRaw {
         let key = channels[0].key;
 
         let name;
+        let fullName;
+        let found = false;
+
         let byteCode;
         let transaction;
         let contract;
         let data;
         let handler = this;
 
-        for (name in this[compiledJson].contracts) {
-            if (name.indexOf(this[contractName]) > 0)
+        for (fullName in this[compiledJson].contracts) {
+            //console.log(fullName);
+            name = fullName.substr(fullName.indexOf(":") + 1);
+            if (name == this[contractName]) {
+                found = true;
                 break;
-            //console.log(contractName);
+            }
         }
 
-        byteCode = '0x' + this[compiledJson].contracts[name].bin;
-        this[abi] = JSON.parse(this[compiledJson].contracts[name].abi);
+        if (!found) {
+            Output(elementId, 'small', 'red', "JSON file error！");
+            return;
+        }
+
+        byteCode = '0x' + this[compiledJson].contracts[fullName].bin;
+        this[abi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
 
         contract = web3.eth.contract(this[abi]);
         data = contract.new.getData({data: byteCode});
@@ -236,16 +259,59 @@ export default class TestLogisticsRaw {
                 if('undefined' != typeof transaction) {
                     transaction.do("deploy", data, result, null, function(error, result) {
                         if (!error) {
-                            handler[contractAddress] = result.contractAddress;
+                            if ('track' == type) {
+                                handler[trackContractAddress] = result.contractAddress;
+                            } else {
+                                handler[contractAddress] = result.contractAddress;
+                            }
                             let string = `[TransactionHash]:${result.transactionHash}</br>[ContractAddress]:${result.contractAddress}</br>[Try]:${result.tryTimes}(times)`;
-                            Output(window.outputElement, 'small', 'red', string);
+                            Output(elementId, 'small', 'red', string);
                         } else {
-                            Output(window.outputElement, 'small', 'red', error);
+                            Output(elementId, 'small', 'red', error);
                         }
                     });
                 }
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                Output(elementId, 'small', 'red', error);
+            }
+        });
+    }
+
+    setup() {
+        console.log('TestLogisticsRaw.setup()');
+
+        let channels = window.channelClass.get("idle");
+
+        if (0 == channels.length) {
+            Output(window.outputOperationElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = channels[0].account;
+        let key = channels[0].key;
+
+        let status = "";
+        let string = "";
+
+        let logistics = new Logistics(this[abi], this[contractAddress]);
+        logistics.setTrackContractAdress(account, key, this[trackContractAddress], function(error, result) {
+            if (!error) {
+                if ("" != result.status) {
+                    if ("0x1" == result.status) {
+                        status = "succeeded";
+                    } else {
+                        status = "failure";
+                    }
+
+                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                    Output(window.outputSetupElement, 'small', 'red', string);
+                } else {
+                    status = "Try to get status again!";
+                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                    Output(window.outputSetupElement, 'small', 'red', string);
+                }
+            } else {
+                Output(window.outputSetupElement, 'small', 'red', error);
             }
         });
     }
@@ -255,7 +321,7 @@ export default class TestLogisticsRaw {
         let channels = window.channelClass.get("idle");
 
         if (0 == channels.length) {
-            Output(window.outputElement, 'small', 'red', "No channnel(idle)!");
+            Output(window.outputOperationElement, 'small', 'red', "No channnel(idle)!");
             return;
         }
 
@@ -285,7 +351,7 @@ export default class TestLogisticsRaw {
                     }
 
                     string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                    Output(window.outputElement, 'small', 'red', string);
+                    Output(window.outputOperationElement, 'small', 'red', string);
 
                     // update
                     logistics.update(account, key, "JNTCU0600046684YQ", "MSK0000027694", "INFO4", "Russian", "GTMS_SIGNED", tracks4, function(error, result) {
@@ -298,7 +364,7 @@ export default class TestLogisticsRaw {
                                 }
 
                                 string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                Output(window.outputElement, 'small', 'red', string);
+                                Output(window.outputOperationElement, 'small', 'red', string);
 
                                 // update
                                 logistics.update(account, key, "JNTCU0600046685YQ", "MSK0000027695", "INFO5", "Russian", "GTMS_SIGNED", tracks5, function(error, result) {
@@ -311,7 +377,7 @@ export default class TestLogisticsRaw {
                                             }
 
                                             string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                            Output(window.outputElement, 'small', 'red', string);
+                                            Output(window.outputOperationElement, 'small', 'red', string);
 
                                             // updateEx
                                             logistics.updateEx(account, key, info6, function(error, result) {
@@ -324,7 +390,7 @@ export default class TestLogisticsRaw {
                                                         }
 
                                                         string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                                        Output(window.outputElement, 'small', 'red', string);
+                                                        Output(window.outputOperationElement, 'small', 'red', string);
 
                                                         // update
                                                         logistics.update(account, key, "JNTCU0600046687YQ", "MSK0000027697", "INFO7", "Russian", "GTMS_SIGNED", tracks7, function(error, result) {
@@ -337,50 +403,50 @@ export default class TestLogisticsRaw {
                                                                     }
 
                                                                     string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                                                    Output(window.outputElement, 'small', 'red', string);
+                                                                    Output(window.outputOperationElement, 'small', 'red', string);
                                                                 } else {
                                                                     let status = "Try to get status again!";
                                                                     let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                                                    Output(window.outputElement, 'small', 'red', string);
+                                                                    Output(window.outputOperationElement, 'small', 'red', string);
                                                                 }
                                                             } else {
-                                                                Output(window.outputElement, 'small', 'red', error);
+                                                                Output(window.outputOperationElement, 'small', 'red', error);
                                                             }
                                                         });
                                                     } else {
                                                         let status = "Try to get status again!";
                                                         let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                                        Output(window.outputElement, 'small', 'red', string);
+                                                        Output(window.outputOperationElement, 'small', 'red', string);
                                                     }
                                                 } else {
-                                                    Output(window.outputElement, 'small', 'red', error);
+                                                    Output(window.outputOperationElement, 'small', 'red', error);
                                                 }
                                             });
                                         } else {
                                             let status = "Try to get status again!";
                                             let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                            Output(window.outputElement, 'small', 'red', string);
+                                            Output(window.outputOperationElement, 'small', 'red', string);
                                         }
                                     } else {
-                                        Output(window.outputElement, 'small', 'red', error);
+                                        Output(window.outputOperationElement, 'small', 'red', error);
                                     }
                                 });
                             } else {
                                 let status = "Try to get status again!";
                                 let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                Output(window.outputElement, 'small', 'red', string);
+                                Output(window.outputOperationElement, 'small', 'red', string);
                             }
                         } else {
-                            Output(window.outputElement, 'small', 'red', error);
+                            Output(window.outputOperationElement, 'small', 'red', error);
                         }
                     });
                 } else {
                     let status = "Try to get status again!";
                     let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                    Output(window.outputElement, 'small', 'red', string);
+                    Output(window.outputOperationElement, 'small', 'red', string);
                 }
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                Output(window.outputOperationElement, 'small', 'red', error);
             }
         });
     }
@@ -393,7 +459,7 @@ export default class TestLogisticsRaw {
         let parallelCount = 0;
 
         if (0 == channelIdles.length) {
-            Output(window.outputElement, 'small', 'red', "No channnel(idle)!");
+            Output(window.outputOperationElement, 'small', 'red', "No channnel(idle)!");
             return;
         }
 
@@ -420,7 +486,7 @@ export default class TestLogisticsRaw {
         let channels = window.channelClass.get("idle");
 
         if (0 == channels.length) {
-            Output(window.outputElement, 'small', 'red', "No channnel(idle)!");
+            Output(window.outputOperationElement, 'small', 'red', "No channnel(idle)!");
             return;
         }
 
@@ -446,7 +512,7 @@ export default class TestLogisticsRaw {
                     }
 
                     string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                    Output(window.outputElement, 'small', 'red', string);
+                    Output(window.outputOperationElement, 'small', 'red', string);
 
                     // updateBriefEx
                     logistics.updateBriefEx(account, key, brief9, function(error, result) {
@@ -459,7 +525,7 @@ export default class TestLogisticsRaw {
                                 }
 
                                 string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                Output(window.outputElement, 'small', 'red', string);
+                                Output(window.outputOperationElement, 'small', 'red', string);
 
                                 // updateTracks
                                 logistics.updateTracks(account, key, "JNTCU0600046685YQ", newTracks5, 1, function(error, result) {
@@ -472,32 +538,32 @@ export default class TestLogisticsRaw {
                                             }
 
                                             string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                            Output(window.outputElement, 'small', 'red', string);
+                                            Output(window.outputOperationElement, 'small', 'red', string);
                                         } else {
-                                            let status = "Try to get status again!";
-                                            let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                            Output(window.outputElement, 'small', 'red', string);
+                                            status = "Try to get status again!";
+                                            string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                            Output(window.outputOperationElement, 'small', 'red', string);
                                         }
                                     } else {
-                                        Output(window.outputElement, 'small', 'red', error);
+                                        Output(window.outputOperationElement, 'small', 'red', error);
                                     }
                                 });
                             } else {
-                                let status = "Try to get status again!";
-                                let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                Output(window.outputElement, 'small', 'red', string);
+                                status = "Try to get status again!";
+                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                Output(window.outputOperationElement, 'small', 'red', string);
                             }
                         } else {
-                            Output(window.outputElement, 'small', 'red', error);
+                            Output(window.outputOperationElement, 'small', 'red', error);
                         }
                     });
                 } else {
-                    let status = "Try to get status again!";
-                    let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                    Output(window.outputElement, 'small', 'red', string);
+                    status = "Try to get status again!";
+                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                    Output(window.outputOperationElement, 'small', 'red', string);
                 }
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                Output(window.outputOperationElement, 'small', 'red', error);
             }
         });
     }
@@ -510,7 +576,7 @@ export default class TestLogisticsRaw {
         let parallelCount = 0;
 
         if (0 == channelIdles.length) {
-            Output(window.outputElement, 'small', 'red', "No channnel(idle)!");
+            Output(window.outputOperationElement, 'small', 'red', "No channnel(idle)!");
             return;
         }
 
@@ -538,41 +604,41 @@ export default class TestLogisticsRaw {
 
         // logistics.getBrief("JNTCU0600046689YQ", function(error, result) {
         //     if (!error) {
-        //         Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+        //         Output(window.outputOperationElement, 'small', 'red', `[Brief]:${result}`);
         //     } else {
-        //         Output(window.outputElement, 'small', 'red', error);
+        //         Output(window.outputOperationElement, 'small', 'red', error);
         //     }
         // });
 
         // logistics.getBriefEx("JNTCU0600046688YQ", function(error, result) {
         //     if (!error) {
-        //         Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+        //         Output(window.outputOperationElement, 'small', 'red', `[Brief]:${result}`);
         //     } else {
-        //         Output(window.outputElement, 'small', 'red', error);
+        //         Output(window.outputOperationElement, 'small', 'red', error);
         //     }
         // });
 
         // logistics.getBriefByIndex(0, function(error, result) {
         //     if (!error) {
-        //         Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+        //         Output(window.outputOperationElement, 'small', 'red', `[Brief]:${result}`);
         //     } else {
-        //         Output(window.outputElement, 'small', 'red', error);
+        //         Output(window.outputOperationElement, 'small', 'red', error);
         //     }
         // });
 
         // logistics.getBriefExByIndex(4, function(error, result) {
         //     if (!error) {
-        //         Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+        //         Output(window.outputOperationElement, 'small', 'red', `[Brief]:${result}`);
         //     } else {
-        //         Output(window.outputElement, 'small', 'red', error);
+        //         Output(window.outputOperationElement, 'small', 'red', error);
         //     }
         // });
 
         logistics.getTracks("JNTCU0600046685YQ", function(error, result) {
             if (!error) {
-                Output(window.outputElement, 'small', 'red', `[Tracks]:</br>${result}`);
+                Output(window.outputOperationElement, 'small', 'red', `[Tracks]:</br>${result}`);
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                Output(window.outputOperationElement, 'small', 'red', error);
             }
         });
     }
@@ -593,12 +659,12 @@ export default class TestLogisticsRaw {
                     }
                     
                     let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                    Output(window.outputElement, 'small', 'red', string);
+                    Output(window.outputOperationElement, 'small', 'red', string);
 
                     // getTracks
                     logistics.getTracks("JNTCU0600639867YQ", function(error, result) {
                         if (!error) {
-                            Output(window.outputElement, 'small', 'red', `[Track]:</br>${result}`);
+                            Output(window.outputOperationElement, 'small', 'red', `[Track]:</br>${result}`);
                             // remove
                             logistics.remove("JNTCU0600639867YQ", function(error, result) {
                                 if (!error) {
@@ -611,31 +677,31 @@ export default class TestLogisticsRaw {
                                         // getTracks
                                         logistics.getTracks("JNTCU0600639867YQ", function(error, result) {
                                             if (!error) {
-                                                Output(window.outputElement, 'small', 'red', `[Track]:</br>${result}`);
+                                                Output(window.outputOperationElement, 'small', 'red', `[Track]:</br>${result}`);
                                             } else {
-                                                Output(window.outputElement, 'small', 'red', error);
+                                                Output(window.outputOperationElement, 'small', 'red', error);
                                             }
                                         });
                                     } else {
                                         let status = "Try to get status again!";
                                         let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                        Output(window.outputElement, 'small', 'red', string);
+                                        Output(window.outputOperationElement, 'small', 'red', string);
                                     }
                                 } else {
-                                    Output(window.outputElement, 'small', 'red', error);
+                                    Output(window.outputOperationElement, 'small', 'red', error);
                                 }
                             });
                         } else {
-                            Output(window.outputElement, 'small', 'red', error);
+                            Output(window.outputOperationElement, 'small', 'red', error);
                         }
                     });
                 } else {
                     let status = "Try to get status again!";
                     let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                    Output(window.outputElement, 'small', 'red', string);
+                    Output(window.outputOperationElement, 'small', 'red', string);
                 }
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                Output(window.outputOperationElement, 'small', 'red', error);
             }
         });
     }
@@ -653,14 +719,14 @@ export default class TestLogisticsRaw {
                     logistics.getBriefExByIndex(i, function(error, result) {
                         if (!error) {
                             console.log(result);
-                            Output(window.outputElement, 'small', 'red', `[Brief]:</br>${result}`);
+                            Output(window.outputOperationElement, 'small', 'red', `[Brief]:</br>${result}`);
                         } else {
-                            Output(window.outputElement, 'small', 'red', error);
+                            Output(window.outputOperationElement, 'small', 'red', error);
                         }
                     })
                 }
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                Output(window.outputOperationElement, 'small', 'red', error);
             }
         })
     }
@@ -672,9 +738,9 @@ export default class TestLogisticsRaw {
         // number
         logistics.numberOfTracks("JNTCU0600046685YQ", function(error, result) {
             if (!error) {
-                Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
+                Output(window.outputOperationElement, 'small', 'red', `[Number]:${result}`);
             } else {
-                Output(window.outputElement, 'small', 'red', error);
+                Output(window.outputOperationElement, 'small', 'red', error);
             }
         })
     }
@@ -682,8 +748,14 @@ export default class TestLogisticsRaw {
     do(operation) {
         console.log('TestLogisticsRaw.do(%s)', operation);
         switch(operation) {
-            case 'Deploy':
-                this.deploy();
+            case 'DeployTrack':
+                this.deploy('track');
+                break;
+            case 'DeployBrief':
+                this.deploy('brief');
+                break;
+            case 'Setup':
+                this.setup();
                 break;
             case 'Create':
                 // this.create();
@@ -700,7 +772,7 @@ export default class TestLogisticsRaw {
                 // this.numberOfTracks();
                 break;
             default:
-                Output(window.outputElement, 'small', 'red', 'Operation Error!');
+                Output(window.outputOperationElement, 'small', 'red', 'Operation Error!');
                 break;
         }
     }

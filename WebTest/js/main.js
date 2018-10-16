@@ -58,7 +58,7 @@ export default function main(module, operation) {
             } else {
                 test = window.testLogisticsRawClass;
             }
-            test.setContractName('Logistics');
+            // test.setContractName('Logistics');
             break;
         }
         case 'Analysis': {

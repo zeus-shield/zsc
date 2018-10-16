@@ -18,6 +18,27 @@ export default class LogisticsRaw {
         this[account] = web3.eth.coinbase;
     }
 
+    setTrackContractAdress(account, key, _address, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+        let data = contractInstance.setTrackContractAdress.getData(_address);
+
+        contractInstance.setTrackContractAdress.estimateGas(_address, function(error, result) {
+            if (!error) {
+                let transaction = new Transaction(account, key);
+                if('undefined' != typeof transaction) {
+                    transaction.do("transaction", data, result, handler[constractAddress], func);
+                }
+            } else {
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != func) {
+                    func(error);
+                }
+            }
+        });
+    }
+
     updateTracks(account, key, _num, _tracks, _updateType, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
