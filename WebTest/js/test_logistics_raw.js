@@ -208,7 +208,7 @@ export default class TestLogisticsRaw {
         if ('track' == type) {
             elementId = window.outputDeployTrackElement;
         } else {
-            elementId = window.outputDeployBriefElement;
+            elementId = window.outputDeployElement;
         }
 
         if (0 == channels.length) {
@@ -262,6 +262,10 @@ export default class TestLogisticsRaw {
                 Output(elementId, 'small', 'red', error);
             }
         });
+    }
+
+    setup() {
+        console.log('TestLogisticsRaw.setup()');
     }
 
     create() {
@@ -701,6 +705,9 @@ export default class TestLogisticsRaw {
                 break;
             case 'DeployBrief':
                 this.deploy('brief');
+                break;
+            case 'Setup':
+                this.setup();
                 break;
             case 'Create':
                 // this.create();
