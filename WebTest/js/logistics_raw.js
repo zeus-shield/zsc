@@ -165,6 +165,27 @@ export default class LogisticsRaw {
         });       
     }
 
+    discard(account, key, _num, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+        let data = contractInstance.discard.getData(_num);
+
+        contractInstance.discard.estimateGas(_num, function(error, result) {
+            if (!error) {
+                let transaction = new Transaction(account, key);
+                if('undefined' != typeof transaction) {
+                    transaction.do("transaction", data, result, handler[constractAddress], func);
+                }
+            } else {
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != func) {
+                    func(error);
+                }
+            }
+        });       
+    }
+
     getTracks(_num, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
