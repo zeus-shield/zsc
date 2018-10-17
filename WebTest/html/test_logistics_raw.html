@@ -82,29 +82,29 @@
             </p>
             <p id="output_provider"></p>
 
-            <p><h4>2. [logisticsTrack] Please compile solidity file and upload compiled json file at first, then deploy!</h4></p>
+<!--             <p><h4>2. [logisticsTrack] Please compile solidity file and upload compiled json file at first, then deploy!</h4></p>
             <p>
                 <label for="file_track">Upload</label>
                 <input type="file" id="file_track" onchange="file('LogisticsTrackRaw', this)" />
                 <button type="button" id="deploy" onclick="main('LogisticsRaw', 'DeployTrack')">Deploy</button>
             </p>
-            <p id="output_deploy_track"></p>
+            <p id="output_deploy_track"></p> -->
 
-            <p><h4>3. [Logistics] Please compile solidity file and upload compiled json file at first, then deploy!</h4></p>
+            <p><h4>2. [Logistics] Please compile solidity file and upload compiled json file at first, then deploy!</h4></p>
             <p>
                 <label for="file">Upload</label>
                 <input type="file" id="file" onchange="file('LogisticsRaw', this)" />
-                <button type="button" id="deploy" onclick="main('LogisticsRaw', 'DeployBrief')">Deploy</button>
+                <button type="button" id="deploy" onclick="main('LogisticsRaw', 'Deploy')">Deploy</button>
             </p>
             <p id="output_deploy"></p>
 
-            <p><h4>4. Setup</h4></p>
+<!--             <p><h4>4. Setup</h4></p>
             <p>
                 <button type="button" id="setup" onclick="main('LogisticsRaw', 'Setup')">Setup</button>
             </p>
-            <p id="output_setup"></p>
+            <p id="output_setup"></p> -->
 
-            <p><h4>5. Operation</h4></p>
+            <p><h4>3. Operation</h4></p>
             <p>
                 <button type="button" id="create" onclick="main('LogisticsRaw', 'Create')">Create</button>
                 <button type="button" id="update" onclick="main('LogisticsRaw', 'Update')">Update</button>
@@ -115,25 +115,5 @@
         </div>
 
         <div id="footer">Copyright ? deduotech.com</div>
-<!--             <a href="../index.html" title="Back">Back</a></br></br>
-            <text>[Brief]Please compile solidity file and upload compiled json file at first!</text>
-            <label for="file">Upload</label>
-            <input type="file" id="file" onchange="file('LogisticsRaw', this)" /></br>
-            <text>[Track]Please compile solidity file and upload compiled json file at first!</text>
-            <label for="file">Upload</label>
-            <input type="file" id="file" onchange="file('LogisticsRaw', this)" /></br>
-            <text>Please select web3 provider:</text></br>
-            <select id="provider">
-              <option value ="local">Localhost</option>
-              <option value ="injected">Injected Web3</option>
-            </select>
-            </br>
-            </br>
-            <button type="button" id="deploy" onclick="main('LogisticsRaw', 'Deploy')">Deploy</button>
-            <button type="button" id="create" onclick="main('LogisticsRaw', 'Create')">Create</button>
-            <button type="button" id="update" onclick="main('LogisticsRaw', 'Update')">Update</button>
-            <button type="button" id="get" onclick="main('LogisticsRaw', 'Get')">Get</button>
-            <p id="output"></p> -->
-<!--         </div> -->
     </body>
 </html>
