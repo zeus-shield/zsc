@@ -21,6 +21,7 @@ const openChannelFunc = Symbol('openChannelFunc');
 const openChannel = Symbol('openChannel');
 const openNextChannel = Symbol('openNextChannel');
 const closeChannel = Symbol('closeChannel');
+const getDiscard = Symbol('getDiscard');
 
 export default class TestLogisticsRaw {
 
@@ -716,6 +717,170 @@ export default class TestLogisticsRaw {
         });
     }
 
+    [getDiscard](handler, num) {
+        handler.numberOfDiscard(num, function(error, result) {
+            if (!error) {
+                for (let i=0; i<result; i++) {
+                    handler.getBriefDiscard(num, i, function(error, result) {
+                    // handler.getTracksDiscard(num, i, function(error, result) {
+                        if (!error) {
+                            // console.log(result);
+                            Output(window.outputOperationElement, 'small', 'red', `[Brief]:</br>${result}`);
+                        } else {
+                            Output(window.outputOperationElement, 'small', 'red', error);
+                        }
+                    })
+                }
+            } else {
+                Output(window.outputOperationElement, 'small', 'red', error);
+            }
+        })
+    }
+
+    // discard -> update -> discard -> discard -> updateEx -> discard
+    discard() {
+        console.log('TestLogisticsRaw.discard()');
+        let handler = this;
+        let logistics = new Logistics(this[abi], this[contractAddress]);
+        let tracks5_1 = "{\"trackElementList\":[{\"time\":\"2017-07-13 11:54:00\",\"facilityName\":\"Track5_1\",\"desc\":\"Track5_1\"}&{\"time\":\"2017-07-07 17:39:09\",\"facilityName\":\"Track5_1\",\"desc\":\"Груз отправлен со склада хранения (<a href= >КСЭ</a>, номер накладной <a href=$f=$http://cse.ru/track.php?order=waybill%amp;number=JNTCU0600639867YQ$ tar target=$_blank$>JNTCU0600639867YQ</a>)\"}]}";
+        let info5_4 = "{\"error\":null,\"num\":\"JNTCU0600046685YQ\",\"transNum\":\"Info5_3 上海市宜山路900号科技大楼A栋6楼，邮编：200233\",\"model\":\"Info5_3 J-NET俄全通INFO5\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"Track5_3\",\"timeZone\":\"+3\",\"desc\":\"Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Track5_3\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
+        
+        let channels = window.channelClass.get("idle");
+
+        if (0 == channels.length) {
+            Output(window.outputOperationElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let status = "";
+        let string = "";
+
+        let account = channels[0].account;
+        let key = channels[0].key;
+
+        let num = "JNTCU0600046685YQ";
+
+        // discard
+        logistics.discard(account, key, num, function(error, result) {
+            if (!error) {
+                if ("" != result.status) {
+                    if (0x0 == parseInt(result.status)) {
+                        status = "failure";
+                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                        Output(window.outputOperationElement, 'small', 'red', string);
+                        return;
+                    }
+
+                    // update
+                    logistics.update(account, key, num, "position[1]", "position[1]", "position[1]", "position[1]", tracks5_1, function(error, result) {
+                        if (!error) {
+                            if ("" != result.status) {
+                                if (0x0 == parseInt(result.status)) {
+                                    status = "failure";
+                                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                    Output(window.outputOperationElement, 'small', 'red', string);
+                                    return;
+                                }
+                                // discard
+                                logistics.discard(account, key, num, function(error, result) {
+                                    if (!error) {
+                                        if ("" != result.status) {
+                                            if (0x0 == parseInt(result.status)) {
+                                                status = "failure";
+                                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                                Output(window.outputOperationElement, 'small', 'red', string);
+                                                return;
+                                            }
+                                            // discard
+                                            logistics.discard(account, key, num, function(error, result) {
+                                                if (!error) {
+                                                    if ("" != result.status) {
+                                                        if (0x0 == parseInt(result.status)) {
+                                                            status = "failure";
+                                                            string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                                            Output(window.outputOperationElement, 'small', 'red', string);
+                                                            return;
+                                                        }
+                                                        // updateEx
+                                                        logistics.updateEx(account, key, info5_4, function(error, result) {
+                                                            if (!error) {
+                                                                if ("" != result.status) {
+                                                                    if (0x0 == parseInt(result.status)) {
+                                                                        status = "failure";
+                                                                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                                                        Output(window.outputOperationElement, 'small', 'red', string);
+                                                                        return;
+                                                                    }
+                                                                    // discard
+                                                                    logistics.discard(account, key, num, function(error, result) {
+                                                                        if (!error) {
+                                                                            if ("" != result.status) {
+                                                                                if (0x0 == parseInt(result.status)) {
+                                                                                    status = "failure";
+                                                                                } else {
+                                                                                    status = "succeeded";
+                                                                                }
+                                                                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                                                                Output(window.outputOperationElement, 'small', 'red', string);
+                                                                                if (0x1 == parseInt(result.status)) {
+                                                                                    handler[getDiscard](logistics, num);
+                                                                                }
+                                                                            } else {
+                                                                                status = "Try to get status again!";
+                                                                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                                                                Output(window.outputOperationElement, 'small', 'red', string);
+                                                                            }
+                                                                        } else {
+                                                                            Output(window.outputOperationElement, 'small', 'red', error);
+                                                                        }
+                                                                    });
+                                                                } else {
+                                                                    status = "Try to get status again!";
+                                                                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                                                    Output(window.outputOperationElement, 'small', 'red', string);
+                                                                }
+                                                            } else {
+                                                                Output(window.outputOperationElement, 'small', 'red', error);
+                                                            }
+                                                        });
+                                                    } else {
+                                                        status = "Try to get status again!";
+                                                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                                        Output(window.outputOperationElement, 'small', 'red', string);
+                                                    }
+                                                } else {
+                                                    Output(window.outputOperationElement, 'small', 'red', error);
+                                                }
+                                            });
+                                        } else {
+                                            status = "Try to get status again!";
+                                            string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                            Output(window.outputOperationElement, 'small', 'red', string);
+                                        }
+                                    } else {
+                                        Output(window.outputOperationElement, 'small', 'red', error);
+                                    }
+                                });
+                            } else {
+                                status = "Try to get status again!";
+                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                Output(window.outputOperationElement, 'small', 'red', string);
+                            }
+                        } else {
+                            Output(window.outputOperationElement, 'small', 'red', error);
+                        }
+                    });
+                } else {
+                    status = "Try to get status again!";
+                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                    Output(window.outputOperationElement, 'small', 'red', string);
+                }
+            } else {
+                Output(window.outputOperationElement, 'small', 'red', error);
+            }
+        });
+    }
+
     number() {
         console.log('TestLogisticsRaw.number()');
         let logistics = new Logistics(this[abi], this[contractAddress]);
@@ -778,6 +943,7 @@ export default class TestLogisticsRaw {
             case 'Get':
                 // this.get();
                 // this.remove();
+                // this.discard();
                 this.number();
                 // this.numberOfTracks();
                 break;
