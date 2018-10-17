@@ -25,4 +25,8 @@ export default class Channel {
 
         return result;
     }
+
+    status(index, status) {
+        this[channel][index].status = status;
+    }
 }
