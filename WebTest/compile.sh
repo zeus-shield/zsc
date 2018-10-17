@@ -4,8 +4,8 @@ SFLAGS="--optimize --overwrite --pretty-json --combined-json bin,abi"
 CORE="sol"
 
 SOURCES=(
-logistics_track
-logistics
+logistics_string_min
+logistics_string
 )
 
 for((i=0;i<${#SOURCES[@]};i++));
