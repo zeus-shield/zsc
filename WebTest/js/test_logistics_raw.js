@@ -71,13 +71,13 @@ export default class TestLogisticsRaw {
     [openChannelFunc](cmd, handler, account, key, parallelCount, blockIndex, blockCount, error, result) {
         if (!error) {
             if ("" != result.status) {
-                if ("0x1" == result.status) {
+                if (0x1 == parseInt(result.status)) {
                     console.log("%cindex=%s(succeeded), account=%s","background:white;color:orange", blockIndex, account);
                 } else {
                     console.log("%cindex=%s(failure), account=%s","background:white;color:red", blockIndex, account);
                 }
 
-                if ("0x1" == result.status) {
+                if (0x1 == parseInt(result.status)) {
                     // try to next transaction
                     status = "succeeded";
 
@@ -297,7 +297,7 @@ export default class TestLogisticsRaw {
         logistics.setTrackContractAdress(account, key, this[trackContractAddress], function(error, result) {
             if (!error) {
                 if ("" != result.status) {
-                    if ("0x1" == result.status) {
+                    if (0x1 == parseInt(result.status)) {
                         status = "succeeded";
                     } else {
                         status = "failure";
@@ -344,7 +344,7 @@ export default class TestLogisticsRaw {
         logistics.updateEx(account, key, info3, function(error, result) {
             if (!error) {
                 if ("" != result.status) {
-                    if ("0x1" == result.status) {
+                    if (0x1 == parseInt(result.status)) {
                         status = "succeeded";
                     } else {
                         status = "failure";
@@ -357,7 +357,7 @@ export default class TestLogisticsRaw {
                     logistics.update(account, key, "JNTCU0600046684YQ", "MSK0000027694", "INFO4", "Russian", "GTMS_SIGNED", tracks4, function(error, result) {
                         if (!error) {
                             if ("" != result.status) {
-                                if ("0x1" == result.status) {
+                                if (0x1 == parseInt(result.status)) {
                                     status = "succeeded";
                                 } else {
                                     status = "failure";
@@ -370,7 +370,7 @@ export default class TestLogisticsRaw {
                                 logistics.update(account, key, "JNTCU0600046685YQ", "MSK0000027695", "INFO5", "Russian", "GTMS_SIGNED", tracks5, function(error, result) {
                                     if (!error) {
                                         if ("" != result.status) {
-                                            if ("0x1" == result.status) {
+                                            if (0x1 == parseInt(result.status)) {
                                                 status = "succeeded";
                                             } else {
                                                 status = "failure";
@@ -383,7 +383,7 @@ export default class TestLogisticsRaw {
                                             logistics.updateEx(account, key, info6, function(error, result) {
                                                 if (!error) {
                                                     if ("" != result.status) {
-                                                        if ("0x1" == result.status) {
+                                                        if (0x1 == parseInt(result.status)) {
                                                             status = "succeeded";
                                                         } else {
                                                             status = "failure";
@@ -396,7 +396,7 @@ export default class TestLogisticsRaw {
                                                         logistics.update(account, key, "JNTCU0600046687YQ", "MSK0000027697", "INFO7", "Russian", "GTMS_SIGNED", tracks7, function(error, result) {
                                                             if (!error) {
                                                                 if ("" != result.status) {
-                                                                    if ("0x1" == result.status) {
+                                                                    if (0x1 == (result.status)) {
                                                                         status = "succeeded";
                                                                     } else {
                                                                         status = "failure";
@@ -505,7 +505,7 @@ export default class TestLogisticsRaw {
         logistics.updateBrief(account, key, "JNTCU0600046688YQ", "MSK0000027698", "INFO8", "Russian", "GTMS_SIGNED", function(error, result) {
             if (!error) {
                 if ("" != result.status) {
-                    if ("0x1" == result.status) {
+                    if (0x1 == parseInt(result.status)) {
                         status = "succeeded";
                     } else {
                         status = "failure";
@@ -518,7 +518,7 @@ export default class TestLogisticsRaw {
                     logistics.updateBriefEx(account, key, brief9, function(error, result) {
                         if (!error) {
                             if ("" != result.status) {
-                                if ("0x1" == result.status) {
+                                if (0x1 == parseInt(result.status)) {
                                     status = "succeeded";
                                 } else {
                                     status = "failure";
@@ -531,7 +531,7 @@ export default class TestLogisticsRaw {
                                 logistics.updateTracks(account, key, "JNTCU0600046685YQ", newTracks5, 1, function(error, result) {
                                     if (!error) {
                                         if ("" != result.status) {
-                                            if ("0x1" == result.status) {
+                                            if (0x1 == parseInt(result.status)) {
                                                 status = "succeeded";
                                             } else {
                                                 status = "failure";
@@ -718,7 +718,7 @@ export default class TestLogisticsRaw {
                     // logistics.getBriefByIndex(i, function(error, result) {
                     logistics.getBriefExByIndex(i, function(error, result) {
                         if (!error) {
-                            console.log(result);
+                            // console.log(result);
                             Output(window.outputOperationElement, 'small', 'red', `[Brief]:</br>${result}`);
                         } else {
                             Output(window.outputOperationElement, 'small', 'red', error);
