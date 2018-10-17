@@ -181,7 +181,7 @@ export default class LogisticsRaw {
                         console.log("============= Logistics.getTracks(bytes32) =============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
-                        console.log("gasPrice:", result);
+                        console.log("gasPrice:", result.toString(10));
                         console.log("========================================================");
                         // call 'Logistics.getTracks(bytes32)'
                         contractInstance.getTracks.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
@@ -233,7 +233,7 @@ export default class LogisticsRaw {
                         console.log("============= Logistics.getBrief(bytes32) =============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
-                        console.log("gasPrice:", result);
+                        console.log("gasPrice:", result.toString(10));
                         console.log("=======================================================");
                         // call 'Logistics.getBrief(bytes32)'
                         contractInstance.getBrief.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
@@ -285,7 +285,7 @@ export default class LogisticsRaw {
                         console.log("============ Logistics.getBriefEx(bytes32) ============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
-                        console.log("gasPrice:", result);
+                        console.log("gasPrice:", result.toString(10));
                         console.log("=======================================================");
                         // call 'Logistics.getBriefEx(bytes32)'
                         contractInstance.getBriefEx.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
@@ -337,7 +337,7 @@ export default class LogisticsRaw {
                         console.log("============== Logistics.getBriefByIndex(uint) ==============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
-                        console.log("gasPrice:", result);
+                        console.log("gasPrice:", result.toString(10));
                         console.log("=============================================================");
                         // call 'Logistics.getBriefByIndex(uint)'
                         contractInstance.getBriefByIndex.call(_index, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
@@ -389,7 +389,7 @@ export default class LogisticsRaw {
                         console.log("============== Logistics.getBriefExByIndex(uint) ==============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
-                        console.log("gasPrice:", result);
+                        console.log("gasPrice:", result.toString(10));
                         console.log("===============================================================");
                         // call 'Logistics.getBriefExByIndex(uint)'
                         contractInstance.getBriefExByIndex.call(_index, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
@@ -441,13 +441,13 @@ export default class LogisticsRaw {
                         console.log("================= Logistics.number() =================");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
-                        console.log("gasPrice:", result);
+                        console.log("gasPrice:", result.toString(10));
                         console.log("======================================================");
                         // call 'Logistics.number()'
                         contractInstance.number.call({from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 // Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
-                                console.log("[Number]:", result);
+                                console.log("[Number]:", result.toString(10));
                                 if (null != func) {
                                     func(null, result);
                                 }
@@ -493,7 +493,7 @@ export default class LogisticsRaw {
                         console.log("============ Logistics.numberOfTracks(bytes32) ============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
-                        console.log("gasPrice:", result);
+                        console.log("gasPrice:", result.toString(10));
                         console.log("===========================================================");
                         // call 'Logistics.numberOfTracks(bytes32)'
                         contractInstance.numberOfTracks.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
