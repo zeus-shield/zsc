@@ -247,9 +247,14 @@ export default class TestLogisticsRaw {
         }
 
         byteCode = '0x' + this[compiledJson].contracts[fullName].bin;
-        this[abi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
+        if ('track' == type) {
+            this[trackAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
+            contract = web3.eth.contract(this[trackAbi]);
+        } else {
+            this[abi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
+            contract = web3.eth.contract(this[abi]);
+        }
 
-        contract = web3.eth.contract(this[abi]);
         data = contract.new.getData({data: byteCode});
 
         // estimate gas
