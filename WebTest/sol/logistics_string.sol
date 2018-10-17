@@ -7,10 +7,12 @@ pragma solidity ^0.4.21;
 //pragma experimental ABIEncoderV2;
 
 import "./utillib/LibString.sol";
+import "./utillib/LibInt.sol";
 
 contract Logistics {
 
     using LibString for *;
+    using LibInt for *;
 
     struct Track {
         string type_;
@@ -24,7 +26,7 @@ contract Logistics {
     }
 
     struct Info {
-        string num_;
+        // string num_;
         string transNum_;
         string model_;
         string destinationCountry_;
@@ -34,6 +36,11 @@ contract Logistics {
     }
 
     string[] private nums_;
+    mapping(string => uint) private discardNumbers_;
+    mapping(uint => string) private discardNums_;
+
+    // num-discardNumber_ => info
+    // eg. JNTCU0600046683YQ-3 => info
     mapping(string => Info) private infos_;
 
     string[] private tracks_;
@@ -86,6 +93,10 @@ contract Logistics {
         nums_.length -= 1;
     }
  
+    function findValidNum(string _num) internal view returns (string) {
+        return _num.concat("-", discardNumbers_[_num].toString());
+    }
+
     function allocTracks(string _num, uint length) internal {
         infos_[_num].tracks_.length += length;
     }
@@ -194,6 +205,9 @@ contract Logistics {
             return;
         }
 
+        // find valid num name
+        string memory validNum = findValidNum(_num);
+
         if (_tracks.keyExists("trackElementList")) {
 
             string memory tracks = _tracks.getArrayValueByKey("trackElementList");
@@ -202,16 +216,16 @@ contract Logistics {
 
                 if (0 == _updateType) {
                     // remove all tracks at first
-                    removeTracks(_num);
+                    removeTracks(validNum);
                 }
 
-                startIndex = infos_[_num].tracks_.length;
+                startIndex = infos_[validNum].tracks_.length;
 
                 //alloc tracks
-                allocTracks(_num, tracks_.length);
+                allocTracks(validNum, tracks_.length);
 
                 for (uint i=0; i<tracks_.length; i++) {
-                    updateTrack(_num, startIndex+i, tracks_[i]);
+                    updateTrack(validNum, startIndex+i, tracks_[i]);
                 }
             }
         }
@@ -236,12 +250,15 @@ contract Logistics {
             nums_.push(_num);
         }
 
+        // find valid num name
+        string memory validNum = findValidNum(_num);
+
         // update brief
-        infos_[_num].num_                = _num;
-        infos_[_num].transNum_           = _transNum;
-        infos_[_num].model_              = _model;
-        infos_[_num].destinationCountry_ = _destinationCountry;
-        infos_[_num].lastStatus_         = _lastStatus;
+        // infos_[validNum].num_                = validNum;
+        infos_[validNum].transNum_           = _transNum;
+        infos_[validNum].model_              = _model;
+        infos_[validNum].destinationCountry_ = _destinationCountry;
+        infos_[validNum].lastStatus_         = _lastStatus;
     }
 
     function updateBriefEx(string _brief) public {
@@ -273,37 +290,40 @@ contract Logistics {
             nums_.push(num);
         }
 
-        infos_[num].num_ = num;
+        // find valid num name
+        string memory validNum = findValidNum(num);
+
+        // infos_[validNum].num_ = validNum;
 
         if (_brief.keyExists("transNum")) {
             transNum = _brief.getStringValueByKey("transNum");
             if (0 != bytes(transNum).length) {
-                infos_[num].transNum_ = transNum;
+                infos_[validNum].transNum_ = transNum;
             }
         }
 
         if (_brief.keyExists("model")) {
             model = _brief.getStringValueByKey("model");
             if (0 != bytes(model).length) {
-                infos_[num].model_ = model;
+                infos_[validNum].model_ = model;
             }
         }
 
         if (_brief.keyExists("destinationCountry")) {
             destinationCountry = _brief.getStringValueByKey("destinationCountry");
             if (0 != bytes(destinationCountry).length) {
-                infos_[num].destinationCountry_ = destinationCountry;
+                infos_[validNum].destinationCountry_ = destinationCountry;
             }
         }
 
         if (_brief.keyExists("lastStatus")) {
             lastStatus = _brief.getStringValueByKey("lastStatus");
             if (0 != bytes(lastStatus).length) {
-                infos_[num].lastStatus_ = lastStatus;
+                infos_[validNum].lastStatus_ = lastStatus;
             }
         }
 
-        // log0(num.toBytes32());
+        // log0(validNum.toBytes32());
         // log0(transNum.toBytes32());
         // log0(model.toBytes32());
         // log0(destinationCountry.toBytes32());
@@ -365,11 +385,36 @@ contract Logistics {
         // remove num
         removeNum(index);
 
+        // find valid num name
+        string memory validNum = findValidNum(_num);
+
         // remove tracks at first
-        removeTracks(_num);
+        removeTracks(validNum);
 
         // delete brief
-        delete infos_[_num];
+        delete infos_[validNum];
+    }
+
+    function discard(string _num) public {
+        uint index = 0;
+        bool found = false;
+
+        // check param
+        if (0 == bytes(_num).length) {
+            return;
+        }
+
+        // find num
+        (found, index) = findNum(_num);
+        if (!found) {
+            return;
+        }
+
+        // find valid num name
+        string memory validNum = findValidNum(_num);
+
+        discardNums_[discardNumbers_[_num]] = validNum;
+        discardNumbers_[_num] ++;
     }
 
     function getTracks(string _num) public view returns (string) {
@@ -390,18 +435,21 @@ contract Logistics {
             return str;
         }
 
-        str = "[";
-        for (uint i=0; i<infos_[_num].tracks_.length; i++) {
-            str = str.concat("{", infos_[_num].tracks_[i].type_.toKeyValue("type"), ",");
-            str = str.concat(infos_[_num].tracks_[i].time_.toKeyValue("time"), ",");
-            str = str.concat(infos_[_num].tracks_[i].country_.toKeyValue("country"), ",");
-            str = str.concat(infos_[_num].tracks_[i].city_.toKeyValue("city"), ",");
-            str = str.concat(infos_[_num].tracks_[i].facilityName_.toKeyValue("facilityName"), ",");
-            str = str.concat(infos_[_num].tracks_[i].timeZone_.toKeyValue("timeZone"), ",");
-            str = str.concat(infos_[_num].tracks_[i].desc_.toKeyValue("desc"), ",");
-            str = str.concat(infos_[_num].tracks_[i].actionCode_.toKeyValue("actionCode"), "}");
+        // find valid num name
+        string memory validNum = findValidNum(_num);
 
-            if (infos_[_num].tracks_.length != (i+1)) {
+        str = "[";
+        for (uint i=0; i<infos_[validNum].tracks_.length; i++) {
+            str = str.concat("{", infos_[validNum].tracks_[i].type_.toKeyValue("type"), ",");
+            str = str.concat(infos_[validNum].tracks_[i].time_.toKeyValue("time"), ",");
+            str = str.concat(infos_[validNum].tracks_[i].country_.toKeyValue("country"), ",");
+            str = str.concat(infos_[validNum].tracks_[i].city_.toKeyValue("city"), ",");
+            str = str.concat(infos_[validNum].tracks_[i].facilityName_.toKeyValue("facilityName"), ",");
+            str = str.concat(infos_[validNum].tracks_[i].timeZone_.toKeyValue("timeZone"), ",");
+            str = str.concat(infos_[validNum].tracks_[i].desc_.toKeyValue("desc"), ",");
+            str = str.concat(infos_[validNum].tracks_[i].actionCode_.toKeyValue("actionCode"), "}");
+
+            if (infos_[validNum].tracks_.length != (i+1)) {
                 str = str.concat(",");
             }
         }
@@ -428,11 +476,14 @@ contract Logistics {
             return (str[0], str[1], str[2], str[3], str[4]);
         }
 
+        // find valid num name
+        string memory validNum = findValidNum(_num);
+
         str[0] = _num;
-        str[1] = infos_[_num].transNum_;
-        str[2] = infos_[_num].model_;
-        str[3] = infos_[_num].destinationCountry_;
-        str[4] = infos_[_num].lastStatus_;
+        str[1] = infos_[validNum].transNum_;
+        str[2] = infos_[validNum].model_;
+        str[3] = infos_[validNum].destinationCountry_;
+        str[4] = infos_[validNum].lastStatus_;
 
         return (str[0], str[1], str[2], str[3], str[4]);
     }
@@ -455,11 +506,14 @@ contract Logistics {
             return str;
         }
 
+        // find valid num name
+        string memory validNum = findValidNum(_num);
+
         str = str.concat("{", _num.toKeyValue("num"), ",");
-        str = str.concat(infos_[_num].transNum_.toKeyValue("transNum"), ",");
-        str = str.concat(infos_[_num].model_.toKeyValue("model"), ",");
-        str = str.concat(infos_[_num].destinationCountry_.toKeyValue("destinationCountry"), ",");
-        str = str.concat(infos_[_num].lastStatus_.toKeyValue("lastStatus"), "}");
+        str = str.concat(infos_[validNum].transNum_.toKeyValue("transNum"), ",");
+        str = str.concat(infos_[validNum].model_.toKeyValue("model"), ",");
+        str = str.concat(infos_[validNum].destinationCountry_.toKeyValue("destinationCountry"), ",");
+        str = str.concat(infos_[validNum].lastStatus_.toKeyValue("lastStatus"), "}");
 
         return str;
     }
@@ -474,11 +528,15 @@ contract Logistics {
         }
 
         num = nums_[_index];
+
+        // find valid num name
+        string memory validNum = findValidNum(num);
+
         str[0] = num;
-        str[1] = infos_[num].transNum_;
-        str[2] = infos_[num].model_;
-        str[3] = infos_[num].destinationCountry_;
-        str[4] = infos_[num].lastStatus_;
+        str[1] = infos_[validNum].transNum_;
+        str[2] = infos_[validNum].model_;
+        str[3] = infos_[validNum].destinationCountry_;
+        str[4] = infos_[validNum].lastStatus_;
 
         return (str[0], str[1], str[2], str[3], str[4]);
     }
@@ -493,11 +551,15 @@ contract Logistics {
         }
 
         num = nums_[_index];
+
+        // find valid num name
+        string memory validNum = findValidNum(num);
+
         str = str.concat("{", num.toKeyValue("num"), ",");
-        str = str.concat(infos_[num].transNum_.toKeyValue("transNum"), ",");
-        str = str.concat(infos_[num].model_.toKeyValue("model"), ",");
-        str = str.concat(infos_[num].destinationCountry_.toKeyValue("destinationCountry"), ",");
-        str = str.concat(infos_[num].lastStatus_.toKeyValue("lastStatus"), "}");
+        str = str.concat(infos_[validNum].transNum_.toKeyValue("transNum"), ",");
+        str = str.concat(infos_[validNum].model_.toKeyValue("model"), ",");
+        str = str.concat(infos_[validNum].destinationCountry_.toKeyValue("destinationCountry"), ",");
+        str = str.concat(infos_[validNum].lastStatus_.toKeyValue("lastStatus"), "}");
 
         return str;
     }
@@ -521,6 +583,89 @@ contract Logistics {
             return 0;
         }
 
-        return infos_[_num].tracks_.length;
+        // find valid num name
+        string memory validNum = findValidNum(_num);
+
+        return infos_[validNum].tracks_.length;
     }
+
+    // for discard debug
+    // function numberOfDiscard(string _num) public view returns (uint) {
+    //     return discardNumbers_[_num];
+    // }
+
+    // function getBriefDiscard(string _num, uint _discardIndex) public view returns (string, string, string, string, string) {
+    //     uint index = 0;
+    //     bool found = false;
+    //     string[5] memory str = ["", "", "", "", ""];
+
+    //     // check param
+    //     if (0 == bytes(_num).length) {
+    //         return (str[0], str[1], str[2], str[3], str[4]);
+    //     }
+
+    //     if (discardNumbers_[_num] <= _discardIndex) {
+    //         return (str[0], str[1], str[2], str[3], str[4]);
+    //     }
+
+    //     // find num
+    //     (found, index) = findNum(_num);
+    //     if (!found) {
+    //         return (str[0], str[1], str[2], str[3], str[4]);
+    //     }
+
+    //     // find discard num name
+    //     string memory discardNum = discardNums_[_discardIndex];
+
+    //     str[0] = discardNum;
+    //     str[1] = infos_[discardNum].transNum_;
+    //     str[2] = infos_[discardNum].model_;
+    //     str[3] = infos_[discardNum].destinationCountry_;
+    //     str[4] = infos_[discardNum].lastStatus_;
+
+    //     return (str[0], str[1], str[2], str[3], str[4]);
+    // }
+
+    // function getTracksDiscard(string _num, uint _discardIndex) public view returns (string) {
+    //     uint index = 0;
+    //     bool found = false;
+    //     string memory str = "";
+
+    //     // check param
+    //     if (0 == bytes(_num).length) {
+    //         return str;
+    //     }
+
+    //     if (discardNumbers_[_num] <= _discardIndex) {
+    //         return str;
+    //     }
+
+    //     // find num
+    //     (found, index) = findNum(_num);
+    //     if (!found) {
+    //         return str;
+    //     }
+
+    //     // find discard num name
+    //     string memory discardNum = discardNums_[_discardIndex];
+
+    //     str = "[";
+    //     for (uint i=0; i<infos_[discardNum].tracks_.length; i++) {
+    //         str = str.concat("{", infos_[discardNum].tracks_[i].type_.toKeyValue("type"), ",");
+    //         str = str.concat(infos_[discardNum].tracks_[i].time_.toKeyValue("time"), ",");
+    //         str = str.concat(infos_[discardNum].tracks_[i].country_.toKeyValue("country"), ",");
+    //         str = str.concat(infos_[discardNum].tracks_[i].city_.toKeyValue("city"), ",");
+    //         str = str.concat(infos_[discardNum].tracks_[i].facilityName_.toKeyValue("facilityName"), ",");
+    //         str = str.concat(infos_[discardNum].tracks_[i].timeZone_.toKeyValue("timeZone"), ",");
+    //         str = str.concat(infos_[discardNum].tracks_[i].desc_.toKeyValue("desc"), ",");
+    //         str = str.concat(infos_[discardNum].tracks_[i].actionCode_.toKeyValue("actionCode"), "}");
+
+    //         if (infos_[discardNum].tracks_.length != (i+1)) {
+    //             str = str.concat(",");
+    //         }
+    //     }
+    //     str = str.concat("]");
+
+    //     return str;
+    // }
 }
