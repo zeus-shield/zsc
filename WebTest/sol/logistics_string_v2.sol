@@ -25,14 +25,12 @@ contract Logistics {
         string actionCode_;
     }
 
-    struct Info {
+    struct Brief {
         // string num_;
         string transNum_;
         string model_;
         string destinationCountry_;
         string lastStatus_;
-
-        // Track[] tracks_;
     }
 
     // string: original num name
@@ -57,7 +55,7 @@ contract Logistics {
     // string: valid num name(original num name + valid num index)
     // Brief: brief info
     // eg. JNTCU0600046683YQ-3 => Brief
-    mapping(string => Info) private infos_;
+    mapping(string => Brief) private briefs_;
 
     // string: valid track name(original num name + valid num index + track index)
     // Track: track info
@@ -280,11 +278,11 @@ contract Logistics {
         string memory validNum = findValidNum(_num);
 
         // update brief
-        // infos_[validNum].num_                = validNum;
-        infos_[validNum].transNum_           = _transNum;
-        infos_[validNum].model_              = _model;
-        infos_[validNum].destinationCountry_ = _destinationCountry;
-        infos_[validNum].lastStatus_         = _lastStatus;
+        // briefs_[validNum].num_                = validNum;
+        briefs_[validNum].transNum_           = _transNum;
+        briefs_[validNum].model_              = _model;
+        briefs_[validNum].destinationCountry_ = _destinationCountry;
+        briefs_[validNum].lastStatus_         = _lastStatus;
     }
 
     function updateBriefEx(string _brief) public {
@@ -319,33 +317,33 @@ contract Logistics {
         // find valid num name
         string memory validNum = findValidNum(num);
 
-        // infos_[validNum].num_ = validNum;
+        // briefs_[validNum].num_ = validNum;
 
         if (_brief.keyExists("transNum")) {
             transNum = _brief.getStringValueByKey("transNum");
             if (0 != bytes(transNum).length) {
-                infos_[validNum].transNum_ = transNum;
+                briefs_[validNum].transNum_ = transNum;
             }
         }
 
         if (_brief.keyExists("model")) {
             model = _brief.getStringValueByKey("model");
             if (0 != bytes(model).length) {
-                infos_[validNum].model_ = model;
+                briefs_[validNum].model_ = model;
             }
         }
 
         if (_brief.keyExists("destinationCountry")) {
             destinationCountry = _brief.getStringValueByKey("destinationCountry");
             if (0 != bytes(destinationCountry).length) {
-                infos_[validNum].destinationCountry_ = destinationCountry;
+                briefs_[validNum].destinationCountry_ = destinationCountry;
             }
         }
 
         if (_brief.keyExists("lastStatus")) {
             lastStatus = _brief.getStringValueByKey("lastStatus");
             if (0 != bytes(lastStatus).length) {
-                infos_[validNum].lastStatus_ = lastStatus;
+                briefs_[validNum].lastStatus_ = lastStatus;
             }
         }
 
@@ -418,7 +416,7 @@ contract Logistics {
         removeTracks(validNum);
 
         // delete brief
-        delete infos_[validNum];
+        delete briefs_[validNum];
     }
 
     function discard(string _num) public {
@@ -509,10 +507,10 @@ contract Logistics {
         string memory validNum = findValidNum(_num);
 
         str[0] = _num;
-        str[1] = infos_[validNum].transNum_;
-        str[2] = infos_[validNum].model_;
-        str[3] = infos_[validNum].destinationCountry_;
-        str[4] = infos_[validNum].lastStatus_;
+        str[1] = briefs_[validNum].transNum_;
+        str[2] = briefs_[validNum].model_;
+        str[3] = briefs_[validNum].destinationCountry_;
+        str[4] = briefs_[validNum].lastStatus_;
 
         return (str[0], str[1], str[2], str[3], str[4]);
     }
@@ -539,10 +537,10 @@ contract Logistics {
         string memory validNum = findValidNum(_num);
 
         str = str.concat("{", _num.toKeyValue("num"), ",");
-        str = str.concat(infos_[validNum].transNum_.toKeyValue("transNum"), ",");
-        str = str.concat(infos_[validNum].model_.toKeyValue("model"), ",");
-        str = str.concat(infos_[validNum].destinationCountry_.toKeyValue("destinationCountry"), ",");
-        str = str.concat(infos_[validNum].lastStatus_.toKeyValue("lastStatus"), "}");
+        str = str.concat(briefs_[validNum].transNum_.toKeyValue("transNum"), ",");
+        str = str.concat(briefs_[validNum].model_.toKeyValue("model"), ",");
+        str = str.concat(briefs_[validNum].destinationCountry_.toKeyValue("destinationCountry"), ",");
+        str = str.concat(briefs_[validNum].lastStatus_.toKeyValue("lastStatus"), "}");
 
         return str;
     }
@@ -562,10 +560,10 @@ contract Logistics {
         string memory validNum = findValidNum(num);
 
         str[0] = num;
-        str[1] = infos_[validNum].transNum_;
-        str[2] = infos_[validNum].model_;
-        str[3] = infos_[validNum].destinationCountry_;
-        str[4] = infos_[validNum].lastStatus_;
+        str[1] = briefs_[validNum].transNum_;
+        str[2] = briefs_[validNum].model_;
+        str[3] = briefs_[validNum].destinationCountry_;
+        str[4] = briefs_[validNum].lastStatus_;
 
         return (str[0], str[1], str[2], str[3], str[4]);
     }
@@ -585,10 +583,10 @@ contract Logistics {
         string memory validNum = findValidNum(num);
 
         str = str.concat("{", num.toKeyValue("num"), ",");
-        str = str.concat(infos_[validNum].transNum_.toKeyValue("transNum"), ",");
-        str = str.concat(infos_[validNum].model_.toKeyValue("model"), ",");
-        str = str.concat(infos_[validNum].destinationCountry_.toKeyValue("destinationCountry"), ",");
-        str = str.concat(infos_[validNum].lastStatus_.toKeyValue("lastStatus"), "}");
+        str = str.concat(briefs_[validNum].transNum_.toKeyValue("transNum"), ",");
+        str = str.concat(briefs_[validNum].model_.toKeyValue("model"), ",");
+        str = str.concat(briefs_[validNum].destinationCountry_.toKeyValue("destinationCountry"), ",");
+        str = str.concat(briefs_[validNum].lastStatus_.toKeyValue("lastStatus"), "}");
 
         return str;
     }
