@@ -35,3 +35,7 @@ function uF_getControlApisAdr() { return uF_controlApisAdr;}
 function uF_getControlApisAbi() { return JSON.parse(uF_controlApisAdvFullAbi);}
 
 
+function uf_numParameters(type) { 
+    if (type == "user") return uF_UserParameters.length;
+    else return uF_BindedEntityparameters.length;
+}
