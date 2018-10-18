@@ -49,3 +49,19 @@ function uf_getParameterValue(type, index) {
     if (type == "user") return uF_UserParameterValues[index];
     else return uF_EntityparameterValues[index];
 }
+
+function uF_getFullAbi(user, hex, adr, func){
+    var myContract = web3.eth.contract(uF_controlApisAdvAbiLogin);
+    var myControlApi = myContract.at(adr);
+    myControlApi.getFullAbi(user, hex, function(error, fullAbi) {
+        if(!error) { 
+            uF_controlApisAdvFullAbi = fullAbi;
+            uF_userName = user;
+            uF_userNameHr = hex;
+            uF_controlApisAdr = adr;
+            func(true);
+        } else {
+            console.log("error: " + error);
+        }
+    } );
+}
