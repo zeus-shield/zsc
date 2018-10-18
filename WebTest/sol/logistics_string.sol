@@ -43,12 +43,12 @@ contract Logistics {
     // eg. JNTCU0600046683YQ-3 => info
     mapping(string => Info) private infos_;
 
-    string[] private tracks_;
+    string[] private trackTmps_;
 
     // Constructor
     function Logistics() public {
         nums_.length = 0;
-        tracks_.length = 0;
+        trackTmps_.length = 0;
     }
 
     function findNum(string _num) internal view returns (bool, uint) {
@@ -212,7 +212,7 @@ contract Logistics {
 
             string memory tracks = _tracks.getArrayValueByKey("trackElementList");
             if (0 != bytes(tracks).length) {
-                tracks.split("&", tracks_);
+                tracks.split("&", trackTmps_);
 
                 if (0 == _updateType) {
                     // remove all tracks at first
@@ -222,10 +222,10 @@ contract Logistics {
                 startIndex = infos_[validNum].tracks_.length;
 
                 //alloc tracks
-                allocTracks(validNum, tracks_.length);
+                allocTracks(validNum, trackTmps_.length);
 
-                for (uint i=0; i<tracks_.length; i++) {
-                    updateTrack(validNum, startIndex+i, tracks_[i]);
+                for (uint i=0; i<trackTmps_.length; i++) {
+                    updateTrack(validNum, startIndex+i, trackTmps_[i]);
                 }
             }
         }
