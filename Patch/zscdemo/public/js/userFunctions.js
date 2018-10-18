@@ -39,3 +39,8 @@ function uf_numParameters(type) {
     if (type == "user") return uF_UserParameters.length;
     else return uF_BindedEntityparameters.length;
 }
+
+function uf_getParameterName(type, index) { 
+    if (type == "user") return uF_UserParameters[index];
+    else return uF_BindedEntityparameters[index];
+}
