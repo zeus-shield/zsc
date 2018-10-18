@@ -65,3 +65,17 @@ function uF_getFullAbi(user, hex, adr, func){
         }
     } );
 }
+
+function uF_login(user, pass, adr, func){
+    var myContract = web3.eth.contract(uF_controlApisAdvAbiLogin);
+    var myControlApi = myContract.at(adr);
+
+    myControlApi.tryLogin(user, pass, function(error, hexx) {
+        if(!error) {
+            if (hexx == 0x0) func(false);
+            else {
+                uF_getFullAbi(user, hexx, adr, func);
+            }
+        } else console.log("error: " + error);
+    } );
+}
