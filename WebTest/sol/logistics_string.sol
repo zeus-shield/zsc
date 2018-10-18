@@ -37,7 +37,6 @@ contract Logistics {
 
     string[] private nums_;
     mapping(string => uint) private discardNumbers_;
-    mapping(uint => string) private discardNums_;
 
     // num-discardNumber_ => info
     // eg. JNTCU0600046683YQ-3 => info
@@ -410,10 +409,6 @@ contract Logistics {
             return;
         }
 
-        // find valid num name
-        string memory validNum = findValidNum(_num);
-
-        discardNums_[discardNumbers_[_num]] = validNum;
         discardNumbers_[_num] ++;
     }
 
@@ -589,7 +584,7 @@ contract Logistics {
         return infos_[validNum].tracks_.length;
     }
 
-    // for discard debug
+    // // for discard debug
     // function numberOfDiscard(string _num) public view returns (uint) {
     //     return discardNumbers_[_num];
     // }
@@ -615,7 +610,7 @@ contract Logistics {
     //     }
 
     //     // find discard num name
-    //     string memory discardNum = discardNums_[_discardIndex];
+    //     string memory discardNum = _num.concat("-", _discardIndex.toString());
 
     //     str[0] = discardNum;
     //     str[1] = infos_[discardNum].transNum_;
@@ -647,7 +642,7 @@ contract Logistics {
     //     }
 
     //     // find discard num name
-    //     string memory discardNum = discardNums_[_discardIndex];
+    //     string memory discardNum = _num.concat("-", _discardIndex.toString());
 
     //     str = "[";
     //     for (uint i=0; i<infos_[discardNum].tracks_.length; i++) {
