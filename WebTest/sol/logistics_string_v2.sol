@@ -42,11 +42,6 @@ contract Logistics {
     // eg. JNTCU0600046683YQ => 3
     mapping(string => uint) private discardNumbers_;
 
-    // uint: discard num index
-    // string: discard num name(original num name + discard num index)
-    // eg. 3 => JNTCU0600046683YQ-3
-    mapping(uint => string) private discardNums_;
-
     // string: valid num name(original num name + valid num index)
     // uint: track number
     // eg. JNTCU0600046683YQ-3 => 4
@@ -434,10 +429,6 @@ contract Logistics {
             return;
         }
 
-        // find valid num name
-        string memory validNum = findValidNum(_num);
-
-        discardNums_[discardNumbers_[_num]] = validNum;
         discardNumbers_[_num] ++;
     }
 
@@ -616,7 +607,7 @@ contract Logistics {
         return trackNumbers_[validNum];
     }
 
-    // for discard debug
+    // // for discard debug
     // function numberOfDiscard(string _num) public view returns (uint) {
     //     return discardNumbers_[_num];
     // }
@@ -642,13 +633,13 @@ contract Logistics {
     //     }
 
     //     // find discard num name
-    //     string memory discardNum = discardNums_[_discardIndex];
+    //     string memory discardNum = _num.concat("-", _discardIndex.toString());
 
     //     str[0] = discardNum;
-    //     str[1] = infos_[discardNum].transNum_;
-    //     str[2] = infos_[discardNum].model_;
-    //     str[3] = infos_[discardNum].destinationCountry_;
-    //     str[4] = infos_[discardNum].lastStatus_;
+    //     str[1] = briefs_[discardNum].transNum_;
+    //     str[2] = briefs_[discardNum].model_;
+    //     str[3] = briefs_[discardNum].destinationCountry_;
+    //     str[4] = briefs_[discardNum].lastStatus_;
 
     //     return (str[0], str[1], str[2], str[3], str[4]);
     // }
@@ -656,6 +647,7 @@ contract Logistics {
     // function getTracksDiscard(string _num, uint _discardIndex) public view returns (string) {
     //     uint index = 0;
     //     bool found = false;
+    //     string memory trackName = "";
     //     string memory str = "";
 
     //     // check param
@@ -674,20 +666,22 @@ contract Logistics {
     //     }
 
     //     // find discard num name
-    //     string memory discardNum = discardNums_[_discardIndex];
+    //     string memory discardNum = _num.concat("-", _discardIndex.toString());
 
     //     str = "[";
-    //     for (uint i=0; i<infos_[discardNum].tracks_.length; i++) {
-    //         str = str.concat("{", infos_[discardNum].tracks_[i].type_.toKeyValue("type"), ",");
-    //         str = str.concat(infos_[discardNum].tracks_[i].time_.toKeyValue("time"), ",");
-    //         str = str.concat(infos_[discardNum].tracks_[i].country_.toKeyValue("country"), ",");
-    //         str = str.concat(infos_[discardNum].tracks_[i].city_.toKeyValue("city"), ",");
-    //         str = str.concat(infos_[discardNum].tracks_[i].facilityName_.toKeyValue("facilityName"), ",");
-    //         str = str.concat(infos_[discardNum].tracks_[i].timeZone_.toKeyValue("timeZone"), ",");
-    //         str = str.concat(infos_[discardNum].tracks_[i].desc_.toKeyValue("desc"), ",");
-    //         str = str.concat(infos_[discardNum].tracks_[i].actionCode_.toKeyValue("actionCode"), "}");
+    //     for (uint i=0; i<trackNumbers_[discardNum]; i++) {
+    //         trackName = discardNum.concat("-", i.toString());
 
-    //         if (infos_[discardNum].tracks_.length != (i+1)) {
+    //         str = str.concat("{", tracks_[trackName].type_.toKeyValue("type"), ",");
+    //         str = str.concat(tracks_[trackName].time_.toKeyValue("time"), ",");
+    //         str = str.concat(tracks_[trackName].country_.toKeyValue("country"), ",");
+    //         str = str.concat(tracks_[trackName].city_.toKeyValue("city"), ",");
+    //         str = str.concat(tracks_[trackName].facilityName_.toKeyValue("facilityName"), ",");
+    //         str = str.concat(tracks_[trackName].timeZone_.toKeyValue("timeZone"), ",");
+    //         str = str.concat(tracks_[trackName].desc_.toKeyValue("desc"), ",");
+    //         str = str.concat(tracks_[trackName].actionCode_.toKeyValue("actionCode"), "}");
+
+    //         if (trackNumbers_[discardNum] != (i+1)) {
     //             str = str.concat(",");
     //         }
     //     }
