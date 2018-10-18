@@ -74,21 +74,21 @@ contract Logistics {
         return (found, i);
     }
 
-    function removeNum(uint index) internal {
+    function removeNum(uint _index) internal {
         uint leftCount = 0;
 
         //check param
-        if (nums_.length <= index) {
+        if (nums_.length <= _index) {
             return;
         }
 
-        leftCount = nums_.length - index - 1;
+        leftCount = nums_.length - _index - 1;
         for (uint i=0; i<leftCount; i++) {
-            nums_[index] = nums_[index+1];
-            index ++;
+            nums_[_index] = nums_[_index+1];
+            _index ++;
         }
 
-        delete nums_[index];
+        delete nums_[_index];
 
         nums_.length -= 1;
     }
@@ -97,8 +97,8 @@ contract Logistics {
         return _num.concat("-", discardNumbers_[_num].toString());
     }
 
-    function allocTracks(string _num, uint length) internal {
-        infos_[_num].tracks_.length += length;
+    function allocTracks(string _num, uint _length) internal {
+        infos_[_num].tracks_.length += _length;
     }
 
     function removeTracks(string _num) internal {
@@ -108,7 +108,7 @@ contract Logistics {
         infos_[_num].tracks_.length = 0;
     }
 
-    function updateTrack(string _num, uint index, string _track) internal {
+    function updateTrack(string _num, uint _index, string _track) internal {
         string memory type32 = "";
         string memory time = "";
         string memory country = "";
@@ -118,63 +118,63 @@ contract Logistics {
         string memory desc = "";
         string memory actionCode = "";
 
-        if (infos_[_num].tracks_.length <= index) {
+        if (infos_[_num].tracks_.length <= _index) {
             return;
         }
 
         if (_track.keyExists("type")) {
             type32 = _track.getStringValueByKey("type");
             if (0 != bytes(type32).length) {
-                infos_[_num].tracks_[index].type_ = type32;
+                infos_[_num].tracks_[_index].type_ = type32;
             }
         }
 
         if (_track.keyExists("time")) {
             time = _track.getStringValueByKey("time");
             if (0 != bytes(time).length) {
-                infos_[_num].tracks_[index].time_ = time;
+                infos_[_num].tracks_[_index].time_ = time;
             }
         }
 
         if (_track.keyExists("country")) {
             country = _track.getStringValueByKey("country");
             if (0 != bytes(country).length) {
-                infos_[_num].tracks_[index].country_ = country;
+                infos_[_num].tracks_[_index].country_ = country;
             }
         }
 
         if (_track.keyExists("city")) {
             city = _track.getStringValueByKey("city");
             if (0 != bytes(city).length) {
-                infos_[_num].tracks_[index].city_ = city;
+                infos_[_num].tracks_[_index].city_ = city;
             }
         }
 
         if (_track.keyExists("facilityName")) {
             facilityName = _track.getStringValueByKey("facilityName");
             if (0 != bytes(facilityName).length) {
-                infos_[_num].tracks_[index].facilityName_ = facilityName;
+                infos_[_num].tracks_[_index].facilityName_ = facilityName;
             }
         }
 
         if (_track.keyExists("timeZone")) {
             timeZone = _track.getStringValueByKey("timeZone");
             if (0 != bytes(timeZone).length) {
-                infos_[_num].tracks_[index].timeZone_ = timeZone;
+                infos_[_num].tracks_[_index].timeZone_ = timeZone;
             }
         }
 
         if (_track.keyExists("desc")) {
             desc = _track.getStringValueByKey("desc");
             if (0 != bytes(desc).length) {
-                infos_[_num].tracks_[index].desc_ = desc;
+                infos_[_num].tracks_[_index].desc_ = desc;
             }
         }
 
         if (_track.keyExists("actionCode")) {
             actionCode = _track.getStringValueByKey("actionCode");
             if (0 != bytes(actionCode).length) {
-                infos_[_num].tracks_[index].actionCode_ = actionCode;
+                infos_[_num].tracks_[_index].actionCode_ = actionCode;
             }
         }
 
