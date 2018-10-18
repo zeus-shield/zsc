@@ -497,7 +497,7 @@ contract Logistics {
         // find valid num name
         string memory validNum = findValidNum(_num);
 
-        str[0] = validNum;
+        str[0] = _num;
         str[1] = briefs_[validNum].transNum_;
         str[2] = briefs_[validNum].model_;
         str[3] = briefs_[validNum].destinationCountry_;
@@ -527,7 +527,7 @@ contract Logistics {
         // find valid num name
         string memory validNum = findValidNum(_num);
 
-        str = str.concat("{", validNum.toKeyValue("num"), ",");
+        str = str.concat("{", _num.toKeyValue("num"), ",");
         str = str.concat(briefs_[validNum].transNum_.toKeyValue("transNum"), ",");
         str = str.concat(briefs_[validNum].model_.toKeyValue("model"), ",");
         str = str.concat(briefs_[validNum].destinationCountry_.toKeyValue("destinationCountry"), ",");
@@ -550,7 +550,7 @@ contract Logistics {
         // find valid num name
         string memory validNum = findValidNum(num);
 
-        str[0] = validNum;
+        str[0] = num;
         str[1] = briefs_[validNum].transNum_;
         str[2] = briefs_[validNum].model_;
         str[3] = briefs_[validNum].destinationCountry_;
@@ -573,7 +573,7 @@ contract Logistics {
         // find valid num name
         string memory validNum = findValidNum(num);
 
-        str = str.concat("{", validNum.toKeyValue("num"), ",");
+        str = str.concat("{", num.toKeyValue("num"), ",");
         str = str.concat(briefs_[validNum].transNum_.toKeyValue("transNum"), ",");
         str = str.concat(briefs_[validNum].model_.toKeyValue("model"), ",");
         str = str.concat(briefs_[validNum].destinationCountry_.toKeyValue("destinationCountry"), ",");
