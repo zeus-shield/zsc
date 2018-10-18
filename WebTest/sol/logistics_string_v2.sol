@@ -35,16 +35,32 @@ contract Logistics {
         // Track[] tracks_;
     }
 
+    // string: original num name
+    // eg. JNTCU0600046683YQ
     string[] private nums_;
+
+    // string: original num name
+    // uint: discard num count
+    // eg. JNTCU0600046683YQ => 3
     mapping(string => uint) private discardNumbers_;
+
+    // uint: discard num index
+    // string: discard num name(original num name + discard num index)
+    // eg. 3 => JNTCU0600046683YQ-3
     mapping(uint => string) private discardNums_;
 
-    // num-discardNumber_ => Info
-    // eg. JNTCU0600046683YQ-3 => Info
+    // string: valid num name(original num name + valid num index)
+    // uint: track number
+    // eg. JNTCU0600046683YQ-3 => 4
     mapping(string => uint) private trackNumbers_;
+
+    // string: valid num name(original num name + valid num index)
+    // Brief: brief info
+    // eg. JNTCU0600046683YQ-3 => Brief
     mapping(string => Info) private infos_;
 
-    // num-discardNumber_-index => Track
+    // string: valid track name(original num name + valid num index + track index)
+    // Track: track info
     // eg. JNTCU0600046683YQ-3-5 => Track
     mapping(string => Track) private tracks_;  
 
