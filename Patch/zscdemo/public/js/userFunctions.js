@@ -44,3 +44,8 @@ function uf_getParameterName(type, index) {
     if (type == "user") return uF_UserParameters[index];
     else return uF_BindedEntityparameters[index];
 }
+
+function uf_getParameterValue(type, index) { 
+    if (type == "user") return uF_UserParameterValues[index];
+    else return uF_EntityparameterValues[index];
+}
