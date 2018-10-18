@@ -59,8 +59,8 @@ export default class TestLogisticsRaw {
                 let ticks = (new Date()).valueOf() - handler[tick];
                 let string = `Finish all(cost: ${ticks}ms).`;
                 Output(window.outputOperationElement, 'small', 'red', string);
+                return true;
             }
-            return true;
         } else {
             handler[openChannel](cmd, handler, account, key, parallelCount, handler[nextIndex], blockCount);
             handler[nextIndex] ++;
@@ -92,19 +92,19 @@ export default class TestLogisticsRaw {
                     // retry to last transaction
                     status = "failure";
 
-                    if ((!web3.currentProvider.isMetaMask)
-                        && ("http://localhost:7545" == web3.currentProvider.host)) {
-                        // ganache (workaround)
-                        // lock -- DOTO
-                        let finished = handler[openNextChannel](cmd, handler, account, key, parallelCount, blockIndex, blockCount, error, result);
-                        if (finished) {
-                            return;
-                        }
-                        // unlock -- DOTO
-                    } else {
+                    // if ((!web3.currentProvider.isMetaMask)
+                    //     && ("http://localhost:7545" == web3.currentProvider.host)) {
+                    //     // ganache (workaround)
+                    //     // lock -- DOTO
+                    //     let finished = handler[openNextChannel](cmd, handler, account, key, parallelCount, blockIndex, blockCount, error, result);
+                    //     if (finished) {
+                    //         return;
+                    //     }
+                    //     // unlock -- DOTO
+                    // } else {
                         // geth or metamask
-                        handler[openChannel](cmd, handler, account, key, parallelCount, blockIndex, blockCount);
-                    }
+                    handler[openChannel](cmd, handler, account, key, parallelCount, blockIndex, blockCount);
+                    // }
                 }
 
                 let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
