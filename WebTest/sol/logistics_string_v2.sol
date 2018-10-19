@@ -26,7 +26,6 @@ contract Logistics {
     }
 
     struct Brief {
-        // string num_;
         string transNum_;
         string model_;
         string destinationCountry_;
@@ -87,9 +86,18 @@ contract Logistics {
 
         return numExists_[_num];
     }
+
+    function addNum(string _num) internal {
+        // check param
+        if (0 == bytes(_num).length) {
+            return;
         }
 
-        return (found, i);
+        numNames_[numCount_] = _num;
+        numIndexs_[_num] = numCount_;
+        numExists_[_num] = true;
+
+        numCount_ ++;
     }
 
     function removeNum(uint _index) internal {
