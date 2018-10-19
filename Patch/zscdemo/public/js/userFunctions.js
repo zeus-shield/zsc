@@ -99,3 +99,16 @@ function uF_doesNodeExist(func){
             else  console.log("error: " + error);
         });
 }
+
+function uF_creatElement(logID) {
+    var node = uF_getUsername();
+    var myContract = web3.eth.contract(uF_getControlApisAbi());
+    var myControlApi = myContract.at(uF_getControlApisAdr());
+
+    myControlApi.createElement(1, node,
+        {from: uF_getEthAccount(), gasPrice: uf_getGasPrice(), gas : uf_getGasLimit(55000)}, 
+        function(error, result){ 
+            if(!error) uF_showHashResult(logID, result);
+            else console.log("error: " + error);
+        });
+}  
