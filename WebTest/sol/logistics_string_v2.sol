@@ -209,8 +209,6 @@ contract Logistics {
 
     // _updateType: 0 means overwrite, 1 means add
     function updateTracks(string _num, string _tracks, uint _updateType) public {
-        uint index = 0;
-        bool found = false;
         uint startIndex = 0;
 
         // check param
@@ -219,8 +217,7 @@ contract Logistics {
         }
 
         // find num
-        (found, index) = findNum(_num);
-        if (!found) {
+        if (!findNum(_num)) {
             return;
         }
 
@@ -252,10 +249,6 @@ contract Logistics {
 
     function updateBrief(string _num, string _transNum, string _model,
                          string _destinationCountry, string _lastStatus) public {
-        
-        uint index = 0;
-        bool found = false;
-
         // check param
         if ((0 == bytes(_num).length) || (0 == bytes(_transNum).length) || (0 == bytes(_model).length)
             || (0 == bytes(_destinationCountry).length) || (0 == bytes(_lastStatus).length)) {
@@ -263,17 +256,15 @@ contract Logistics {
         }
 
         // find num
-        (found, index) = findNum(_num);
-        if (!found) {
+        if (!findNum(_num)) {
             // add num
-            nums_.push(_num);
+            addNum(_num);
         }
 
         // find valid num name
         string memory validNum = findValidNum(_num);
 
         // update brief
-        // briefs_[validNum].num_                = validNum;
         briefs_[validNum].transNum_           = _transNum;
         briefs_[validNum].model_              = _model;
         briefs_[validNum].destinationCountry_ = _destinationCountry;
@@ -281,8 +272,6 @@ contract Logistics {
     }
 
     function updateBriefEx(string _brief) public {
-        uint index = 0;
-        bool found = false;
         string memory num = "";
         string memory transNum = "";
         string memory model = "";
@@ -303,16 +292,13 @@ contract Logistics {
         }
 
         // find num
-        (found, index) = findNum(num);
-        if (!found) {
+        if (!findNum(num)) {
             // add num
-            nums_.push(num);
+            addNum(num);
         }
 
         // find valid num name
         string memory validNum = findValidNum(num);
-
-        // briefs_[validNum].num_ = validNum;
 
         if (_brief.keyExists("transNum")) {
             transNum = _brief.getStringValueByKey("transNum");
@@ -387,22 +373,18 @@ contract Logistics {
     }
 
     function remove(string _num) public {
-        uint index = 0;
-        bool found = false;
-
         // check param
         if (0 == bytes(_num).length) {
             return;
         }
 
         // find num
-        (found, index) = findNum(_num);
-        if (!found) {
+        if (!findNum(_num)) {
             return;
         }
 
         // remove num
-        removeNum(index);
+        removeNum(_num);
 
         // find valid num name
         string memory validNum = findValidNum(_num);
@@ -415,17 +397,13 @@ contract Logistics {
     }
 
     function discard(string _num) public {
-        uint index = 0;
-        bool found = false;
-
         // check param
         if (0 == bytes(_num).length) {
             return;
         }
 
         // find num
-        (found, index) = findNum(_num);
-        if (!found) {
+        if (!findNum(_num)) {
             return;
         }
 
@@ -433,8 +411,6 @@ contract Logistics {
     }
 
     function getTracks(string _num) public view returns (string) {
-        uint index = 0;
-        bool found = false;
         string memory trackName = "";
         string memory str = "";
 
@@ -446,8 +422,7 @@ contract Logistics {
         }
 
         // find num
-        (found, index) = findNum(_num);
-        if (!found) {
+        if (!findNum(_num)) {
             return str;
         }
 
@@ -477,7 +452,6 @@ contract Logistics {
     }
 
     function getBrief(string _num) public view returns (string, string, string, string, string) {
-        uint index = 0;
         bool found = false;
         string[5] memory str = ["", "", "", "", ""];
 
@@ -489,7 +463,7 @@ contract Logistics {
         }
 
         // find num
-        (found, index) = findNum(_num);
+        found = findNum(_num);
         if (!found) {
             return (str[0], str[1], str[2], str[3], str[4]);
         }
@@ -507,7 +481,6 @@ contract Logistics {
     }
 
     function getBriefEx(string _num) public view returns (string) {
-        uint index = 0;
         bool found = false;
         string memory str = "";
 
@@ -519,7 +492,7 @@ contract Logistics {
         }
 
         // find num
-        (found, index) = findNum(_num);
+        found = findNum(_num);
         if (!found) {
             return str;
         }
@@ -541,11 +514,11 @@ contract Logistics {
         string[5] memory str = ["", "", "", "", ""];
 
         // check param
-        if (nums_.length <= _index) {
+        if (numCount_ <= _index) {
             return (str[0], str[1], str[2], str[3], str[4]);
         }
 
-        num = nums_[_index];
+        num = numNames_[_index];
 
         // find valid num name
         string memory validNum = findValidNum(num);
@@ -564,11 +537,11 @@ contract Logistics {
         string memory str = "";
 
         // check param
-        if (nums_.length <= _index) {
+        if (numCount_ <= _index) {
             return str;
         }
 
-        num = nums_[_index];
+        num = numNames_[_index];
 
         // find valid num name
         string memory validNum = findValidNum(num);
@@ -583,21 +556,17 @@ contract Logistics {
     }
 
     function number() public view returns (uint) {
-        return nums_.length;
+        return numCount_;
     }
 
     function numberOfTracks(string _num) public view returns (uint) {
-        uint index = 0;
-        bool found = false;
-
         // check param
         if (0 == bytes(_num).length) {
             return 0;
         }
 
         // find num
-        (found, index) = findNum(_num);
-        if (!found) {
+        if (!findNum(_num)) {
             return 0;
         }
 
