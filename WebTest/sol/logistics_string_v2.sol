@@ -46,7 +46,7 @@ contract Logistics {
     mapping(string => bool) private numExists_;
 
     // string(original num name) => uint(discard num count)
-    mapping(string => uint) private discardNumbers_;
+    mapping(string => uint) private discardCounts_;
     //////////////////////////////////////////////////////////
 
     // string: valid num name(original num name + valid num index)
@@ -129,7 +129,7 @@ contract Logistics {
     }
  
     function findValidNum(string _num) internal view returns (string) {
-        return _num.concat("-", discardNumbers_[_num].toString());
+        return _num.concat("-", discardCounts_[_num].toString());
     }
 
     function allocTracks(string _num, uint _length) internal {
@@ -428,7 +428,7 @@ contract Logistics {
             return;
         }
 
-        discardNumbers_[_num] ++;
+        discardCounts_[_num] ++;
     }
 
     function getTracks(string _num) public view returns (string) {
@@ -599,7 +599,7 @@ contract Logistics {
 
     // // for discard debug
     // function numberOfDiscard(string _num) public view returns (uint) {
-    //     return discardNumbers_[_num];
+    //     return discardCounts_[_num];
     // }
 
     // function getBriefDiscard(string _num, uint _discardIndex) public view returns (string, string, string, string, string) {
@@ -612,7 +612,7 @@ contract Logistics {
     //         return (str[0], str[1], str[2], str[3], str[4]);
     //     }
 
-    //     if (discardNumbers_[_num] <= _discardIndex) {
+    //     if (discardCounts_[_num] <= _discardIndex) {
     //         return (str[0], str[1], str[2], str[3], str[4]);
     //     }
 
@@ -645,7 +645,7 @@ contract Logistics {
     //         return str;
     //     }
 
-    //     if (discardNumbers_[_num] <= _discardIndex) {
+    //     if (discardCounts_[_num] <= _discardIndex) {
     //         return str;
     //     }
 
