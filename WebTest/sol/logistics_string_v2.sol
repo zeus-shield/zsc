@@ -65,12 +65,11 @@ contract Logistics {
     mapping(string => Track) private tracks_;  
 
     // track temps
-    string[] private trackTmps_;
+    mapping(string => string[]) private trackTmps_;
 
     // Constructor
     function Logistics() public {
         numCount_ = 0;
-        trackTmps_.length = 0;
     }
 
     function findNum(string _num) internal view returns (bool) {
@@ -249,7 +248,7 @@ contract Logistics {
 
             string memory tracks = _tracks.getArrayValueByKey("trackElementList");
             if (0 != bytes(tracks).length) {
-                tracks.split("&", trackTmps_);
+                tracks.split("&", trackTmps_[validNum]);
 
                 if (0 == _updateType) {
                     // remove all tracks at first
@@ -259,10 +258,10 @@ contract Logistics {
                 startIndex = trackCounts_[validNum];
 
                 //alloc tracks
-                allocTracks(validNum, trackTmps_.length);
+                allocTracks(validNum, trackTmps_[validNum].length);
 
-                for (uint i=0; i<trackTmps_.length; i++) {
-                    updateTrack(validNum, startIndex+i, trackTmps_[i]);
+                for (uint i=0; i<trackTmps_[validNum].length; i++) {
+                    updateTrack(validNum, startIndex+i, trackTmps_[validNum][i]);
                 }
             }
         }
