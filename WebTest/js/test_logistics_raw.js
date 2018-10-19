@@ -948,7 +948,7 @@ export default class TestLogisticsRaw {
             case 'Get':
                 // this.get();
                 // this.remove();
-                // this.discard();
+                // this.invalid();
                 this.number();
                 // this.numberOfTracks();
                 break;
