@@ -141,3 +141,20 @@ function uF_setElementParameter(logID) {
         });
     }
 } 
+
+function uF_loadEthBalance() {
+    var node = uF_getUsername();
+    var myContract = web3.eth.contract(uF_getControlApisAbi());
+    var myControlApi = myContract.at(uF_getControlApisAdr());
+
+    myControlApi.getElementEthBalance(node, function(error, balance){ 
+        if(!error) {
+            uF_ethBalance = balance;  
+            uf_getControlApi().getElementAddress(1, nodeName, function(error, address){ 
+                if(!error) { uF_userNodeAddress = address; func(); }
+                else console.log("error: " + error);
+            });
+        }
+    });
+
+}
