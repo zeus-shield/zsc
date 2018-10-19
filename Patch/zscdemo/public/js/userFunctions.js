@@ -88,3 +88,14 @@ function uF_keepOnline(user, hr, adr, func){
         else console.log("error: " + error);
     } );
 }
+
+function uF_doesNodeExist(func){
+    var node = uF_getUsername();
+    var myContract = web3.eth.contract(uF_getControlApisAbi());
+    var myControlApi = myContract.at(uF_getControlApisAdr());
+    myControlApi.doesElementExist(node,
+        function(error, ret){ 
+            if(!error) func(ret);  
+            else  console.log("error: " + error);
+        });
+}
