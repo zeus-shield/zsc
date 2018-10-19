@@ -1,10 +1,10 @@
-/*
- Copyright (c) 2018, ZSC Dev Team
- 2017-12-18: v0.01
-*/
+/**
+ Copyright (c) 2018, deduotech.com
+ 2018-10-19: v0.00.01
+ */
 
 pragma solidity ^0.4.21;
-//pragma experimental ABIEncoderV2;
+// pragma experimental ABIEncoderV2;
 
 import "./utillib/LibString.sol";
 import "./utillib/LibInt.sol";
@@ -416,7 +416,7 @@ contract Logistics {
         delete briefs_[validNum];
     }
 
-    function discard(string _num) public {
+    function invalid(string _num) public {
         // check param
         if (0 == bytes(_num).length) {
             return;
@@ -596,46 +596,41 @@ contract Logistics {
         return trackCounts_[validNum];
     }
 
-    // // for discard debug
-    // function numberOfDiscard(string _num) public view returns (uint) {
-    //     return numInvalidCounts_[_num];
-    // }
+    // for invalid debug
+    function numberOfInvalidNums(string _num) public view returns (uint) {
+        return numInvalidCounts_[_num];
+    }
 
-    // function getBriefDiscard(string _num, uint _discardIndex) public view returns (string, string, string, string, string) {
-    //     uint index = 0;
-    //     bool found = false;
-    //     string[5] memory str = ["", "", "", "", ""];
+    function getBriefInvalid(string _num, uint _invalidIndex) public view returns (string, string, string, string, string) {
+        string[5] memory str = ["", "", "", "", ""];
 
-    //     // check param
-    //     if (0 == bytes(_num).length) {
-    //         return (str[0], str[1], str[2], str[3], str[4]);
-    //     }
+        // check param
+        if (0 == bytes(_num).length) {
+            return (str[0], str[1], str[2], str[3], str[4]);
+        }
 
-    //     if (numInvalidCounts_[_num] <= _discardIndex) {
-    //         return (str[0], str[1], str[2], str[3], str[4]);
-    //     }
+        if (numInvalidCounts_[_num] <= _invalidIndex) {
+            return (str[0], str[1], str[2], str[3], str[4]);
+        }
 
-    //     // find num
-    //     (found, index) = findNum(_num);
-    //     if (!found) {
-    //         return (str[0], str[1], str[2], str[3], str[4]);
-    //     }
+        // find num
+        if (!findNum(_num)) {
+            return (str[0], str[1], str[2], str[3], str[4]);
+        }
 
-    //     // find discard num name
-    //     string memory discardNum = _num.concat("-", _discardIndex.toString());
+        // get invalid num name
+        string memory invalidNum = _num.concat("-", _invalidIndex.toString());
 
-    //     str[0] = discardNum;
-    //     str[1] = briefs_[discardNum].transNum_;
-    //     str[2] = briefs_[discardNum].model_;
-    //     str[3] = briefs_[discardNum].destinationCountry_;
-    //     str[4] = briefs_[discardNum].lastStatus_;
+        str[0] = invalidNum;
+        str[1] = briefs_[invalidNum].transNum_;
+        str[2] = briefs_[invalidNum].model_;
+        str[3] = briefs_[invalidNum].destinationCountry_;
+        str[4] = briefs_[invalidNum].lastStatus_;
 
-    //     return (str[0], str[1], str[2], str[3], str[4]);
-    // }
+        return (str[0], str[1], str[2], str[3], str[4]);
+    }
 
-    // function getTracksDiscard(string _num, uint _discardIndex) public view returns (string) {
-    //     uint index = 0;
-    //     bool found = false;
+    // function getTracksInvalid(string _num, uint _invalidIndex) public view returns (string) {
     //     string memory trackName = "";
     //     string memory str = "";
 
@@ -644,22 +639,21 @@ contract Logistics {
     //         return str;
     //     }
 
-    //     if (numInvalidCounts_[_num] <= _discardIndex) {
+    //     if (numInvalidCounts_[_num] <= _invalidIndex) {
     //         return str;
     //     }
 
     //     // find num
-    //     (found, index) = findNum(_num);
-    //     if (!found) {
+    //     if (!findNum(_num)) {
     //         return str;
     //     }
 
-    //     // find discard num name
-    //     string memory discardNum = _num.concat("-", _discardIndex.toString());
+    //     // find invalid num name
+    //     string memory invalidNum = _num.concat("-", _invalidIndex.toString());
 
     //     str = "[";
-    //     for (uint i=0; i<trackCounts_[discardNum]; i++) {
-    //         trackName = discardNum.concat("-", i.toString());
+    //     for (uint i=0; i<trackCounts_[invalidNum]; i++) {
+    //         trackName = invalidNum.concat("-", i.toString());
 
     //         str = str.concat("{", tracks_[trackName].type_.toKeyValue("type"), ",");
     //         str = str.concat(tracks_[trackName].time_.toKeyValue("time"), ",");
@@ -670,7 +664,7 @@ contract Logistics {
     //         str = str.concat(tracks_[trackName].desc_.toKeyValue("desc"), ",");
     //         str = str.concat(tracks_[trackName].actionCode_.toKeyValue("actionCode"), "}");
 
-    //         if (trackCounts_[discardNum] != (i+1)) {
+    //         if (trackCounts_[invalidNum] != (i+1)) {
     //             str = str.concat(",");
     //         }
     //     }
