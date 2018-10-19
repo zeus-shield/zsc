@@ -654,26 +654,26 @@ export default class LogisticsRaw {
         });
     }
 
-    getTracksDiscard(_num, _discardIndex, func) {
+    getTracksInvalid(_num, _invalidIndex, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getTracksDiscard.estimateGas(_num, _discardIndex, function(error, result) {
+        contractInstance.getTracksInvalid.estimateGas(_num, _invalidIndex, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============= Logistics.getTracksDiscard(string, uint) ==============");
+                        console.log("============= Logistics.getTracksInvalid(string, uint) ==============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
                         console.log("=====================================================================");
-                        // call 'Logistics.getTracksDiscard(string, uint)'
-                        contractInstance.getTracksDiscard.call(_num, _discardIndex, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        // call 'Logistics.getTracksInvalid(string, uint)'
+                        contractInstance.getTracksInvalid.call(_num, _invalidIndex, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 // Output(window.outputElement, 'small', 'red', `[Track]:${result}`);
                                 console.log("[Tracks]:", result);
