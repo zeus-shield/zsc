@@ -32,39 +32,39 @@ contract Logistics {
         string lastStatus_;
     }
 
-    //////////////////////////////////////////////////////////
-    // num count
+    /*************************************************/
+    /** @desc num count */
     uint private numCount_;
 
-    // uint(num index) => string(original num name)
+    /** @desc uint(num index) => string(original num name) */
     mapping(uint => string) private numNames_;
 
-    // string(original num name) => uint(num index)
+    /** @desc string(original num name) => uint(num index) */
     mapping(string => uint) private numIndexs_;
-    
-    // string(original num name) => bool(num exist flag)
+
+    /** @desc string(original num name) => bool(num exist flag) */
     mapping(string => bool) private numExists_;
 
-    // string(original num name) => uint(discard num count)
+    /** @desc string(original num name) => uint(discard num count) */
     mapping(string => uint) private discardCounts_;
-    //////////////////////////////////////////////////////////
+    /*************************************************/
 
-    // string: valid num name(original num name + valid num index)
-    // Brief: brief info
-    // eg. JNTCU0600046683YQ-3 => Brief
+    /** @desc string(valid num name: original num name + valid num index) => Brief(brief info)
+      * @eg JNTCU0600046683YQ-3 => Brief
+      */
     mapping(string => Brief) private briefs_;
 
-    // string: valid num name(original num name + valid num index)
-    // uint: track number
-    // eg. JNTCU0600046683YQ-3 => 4
+    /** @desc string(valid num name: original num name + valid num index) => uint(track count)
+      * @eg JNTCU0600046683YQ-3 => 4
+      */
     mapping(string => uint) private trackCounts_;
 
-    // string: valid track name(original num name + valid num index + track index)
-    // Track: track info
-    // eg. JNTCU0600046683YQ-3-5 => Track
+    /** @desc string(track name: original num name + valid num index + track index) => Track(track info)
+      * @eg JNTCU0600046683YQ-3-5 => Track
+      */
     mapping(string => Track) private tracks_;  
 
-    // track temps
+    /** @desc string(valid num name: original num name + valid num index) => string[](track temps) */
     mapping(string => string[]) private trackTmps_;
 
     // Constructor
