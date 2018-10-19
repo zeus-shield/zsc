@@ -742,9 +742,9 @@ export default class TestLogisticsRaw {
         })
     }
 
-    // discard -> update -> discard -> discard -> updateEx -> discard
-    discard() {
-        console.log('TestLogisticsRaw.discard()');
+    // invalid -> update -> invalid -> invalid -> updateEx -> invalid
+    invalid() {
+        console.log('TestLogisticsRaw.invalid()');
         let handler = this;
         let logistics = new Logistics(this[abi], this[contractAddress]);
         let tracks5_1 = "{\"trackElementList\":[{\"time\":\"2017-07-13 11:54:00\",\"facilityName\":\"Track5_1\",\"desc\":\"Track5_1\"}&{\"time\":\"2017-07-07 17:39:09\",\"facilityName\":\"Track5_1\",\"desc\":\"Груз отправлен со склада хранения (<a href= >КСЭ</a>, номер накладной <a href=$f=$http://cse.ru/track.php?order=waybill%amp;number=JNTCU0600639867YQ$ tar target=$_blank$>JNTCU0600639867YQ</a>)\"}]}";
@@ -765,8 +765,8 @@ export default class TestLogisticsRaw {
 
         let num = "JNTCU0600046685YQ";
 
-        // discard
-        logistics.discard(account, key, num, function(error, result) {
+        // invalid
+        logistics.invalid(account, key, num, function(error, result) {
             if (!error) {
                 if ("" != result.status) {
                     if (0x0 == parseInt(result.status)) {
@@ -786,8 +786,8 @@ export default class TestLogisticsRaw {
                                     Output(window.outputOperationElement, 'small', 'red', string);
                                     return;
                                 }
-                                // discard
-                                logistics.discard(account, key, num, function(error, result) {
+                                // invalid
+                                logistics.invalid(account, key, num, function(error, result) {
                                     if (!error) {
                                         if ("" != result.status) {
                                             if (0x0 == parseInt(result.status)) {
@@ -796,8 +796,8 @@ export default class TestLogisticsRaw {
                                                 Output(window.outputOperationElement, 'small', 'red', string);
                                                 return;
                                             }
-                                            // discard
-                                            logistics.discard(account, key, num, function(error, result) {
+                                            // invalid
+                                            logistics.invalid(account, key, num, function(error, result) {
                                                 if (!error) {
                                                     if ("" != result.status) {
                                                         if (0x0 == parseInt(result.status)) {
@@ -816,8 +816,8 @@ export default class TestLogisticsRaw {
                                                                         Output(window.outputOperationElement, 'small', 'red', string);
                                                                         return;
                                                                     }
-                                                                    // discard
-                                                                    logistics.discard(account, key, num, function(error, result) {
+                                                                    // invalid
+                                                                    logistics.invalid(account, key, num, function(error, result) {
                                                                         if (!error) {
                                                                             if ("" != result.status) {
                                                                                 if (0x0 == parseInt(result.status)) {
