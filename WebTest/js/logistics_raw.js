@@ -550,26 +550,26 @@ export default class LogisticsRaw {
         });
     }
 
-    numberOfDiscard(_num, func) {
+    numberOfInvalidNums(_num, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.numberOfDiscard.estimateGas(_num, function(error, result) {
+        contractInstance.numberOfInvalidNums.estimateGas(_num, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============ Logistics.numberOfDiscard(string) ============");
+                        console.log("============ Logistics.numberOfInvalidNums(string) ============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("===========================================================");
-                        // call 'Logistics.numberOfDiscard(string)'
-                        contractInstance.numberOfDiscard.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        console.log("===============================================================");
+                        // call 'Logistics.numberOfInvalidNums(string)'
+                        contractInstance.numberOfInvalidNums.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 // Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
                                 console.log("[Number]:", result.toString(10));
