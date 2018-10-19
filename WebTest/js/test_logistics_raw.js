@@ -722,6 +722,67 @@ export default class TestLogisticsRaw {
         });
     }
 
+    removeEx() {
+        console.log('TestLogisticsRaw.removeEx()');
+        let logistics = new Logistics(this[abi], this[contractAddress]);
+        let channels = window.channelClass.get("idle");
+
+        if (0 == channels.length) {
+            Output(window.outputOperationElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = channels[0].account;
+        let key = channels[0].key;
+
+        let status = "";
+        let string = "";
+
+        // create and update at first
+
+        // remove
+        logistics.remove(account, key, "JNTCU0600046684YQ", function(error, result) {
+            if (!error) {
+                if ("" != result.status) {
+                    if (0x0 == parseInt(result.status)) {
+                        status = "failure";
+                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                        Output(window.outputOperationElement, 'small', 'red', string);
+                        return;
+                    }
+                    // remove
+                    logistics.remove(account, key, "JNTCU0600046688YQ", function(error, result) {
+                        if (!error) {
+                            if ("" != result.status) {
+                                if (0x1 == parseInt(result.status)) {
+                                    status = "succeeded";
+                                } else {
+                                    status = "failure";
+                                }
+                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                Output(window.outputOperationElement, 'small', 'red', string);
+                                return;
+                            } else {
+                                status = "Try to get status again!";
+                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                Output(window.outputOperationElement, 'small', 'red', string);
+                            }
+                        } else {
+                            Output(window.outputOperationElement, 'small', 'red', error);
+                        }
+                    });
+                } else {
+                    status = "Try to get status again!";
+                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                    Output(window.outputOperationElement, 'small', 'red', string);
+                }
+            } else {
+                Output(window.outputOperationElement, 'small', 'red', error);
+            }
+        });
+
+    }
+
     [getInvalid](handler, num) {
         handler.numberOfInvalidNums(num, function(error, result) {
             if (!error) {
@@ -886,8 +947,8 @@ export default class TestLogisticsRaw {
         });
     }
 
-    number() {
-        console.log('TestLogisticsRaw.number()');
+    debugBrief() {
+        console.log('TestLogisticsRaw.debugBrief()');
         let logistics = new Logistics(this[abi], this[contractAddress]);
 
         // number
@@ -945,11 +1006,15 @@ export default class TestLogisticsRaw {
                 // this.update();
                 this.updateParallel();
                 break;
-            case 'Get':
-                // this.get();
-                // this.remove();
+            case 'Remove':
+                this.removeEx();
+                break;
+            case 'DebugBrief':
+                this.debugBrief();
+                break;
+            case 'Misc':
+                this.get();
                 // this.invalid();
-                this.number();
                 // this.numberOfTracks();
                 break;
             default:
