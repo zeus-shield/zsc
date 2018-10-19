@@ -165,12 +165,12 @@ export default class LogisticsRaw {
         });       
     }
 
-    discard(account, key, _num, func) {
+    invalid(account, key, _num, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
-        let data = contractInstance.discard.getData(_num);
+        let data = contractInstance.invalid.getData(_num);
 
-        contractInstance.discard.estimateGas(_num, function(error, result) {
+        contractInstance.invalid.estimateGas(_num, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(account, key);
                 if('undefined' != typeof transaction) {
