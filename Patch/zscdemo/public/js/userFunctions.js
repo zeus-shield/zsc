@@ -112,3 +112,32 @@ function uF_creatElement(logID) {
             else console.log("error: " + error);
         });
 }  
+
+function uF_setElementParameter(logID) {
+    var node = uF_getUsername();
+    var hr = uF_getUsernameHr();
+    var myContract = web3.eth.contract(uF_getControlApisAbi());
+    var myControlApi = myContract.at(uF_getControlApisAdr());
+
+    var info = "";
+    var count = 0;
+
+    for (var i = 0; i < uF_parameters.length; ++i) {
+        var value = document.getElementById(uF_parameters[i]).value;
+        if (value != uF_parameterValue[i]) {
+            count ++;
+            uF_parameterValue[i] = value;
+
+            info += "{<" + uF_parameters[i] + ">" + "<" + value + ">}";
+        }
+    }
+
+    if (count > 0) {
+        myControlApi.setElementMultipleParameters(nodeName, hr, info,  
+            {from: uF_getEthAccount(), gasPrice: uF_getGasPrice(1), gas : uf_getGasLimit(55000)}, 
+            function(error, result){ 
+                if(!error) uF_showHashResult(logID, result);
+                else console.log("error: " + error);
+        });
+    }
+} 
