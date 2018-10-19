@@ -45,8 +45,8 @@ contract Logistics {
     /** @desc string(original num name) => bool(num exist flag) */
     mapping(string => bool) private numExists_;
 
-    /** @desc string(original num name) => uint(num discard count) */
-    mapping(string => uint) private numDiscardCounts_;
+    /** @desc string(original num name) => uint(num invalid count) */
+    mapping(string => uint) private numInvalidCounts_;
     /*************************************************/
 
     /** @desc string(valid num name: original num name + valid num index) => Brief(brief info)
@@ -127,8 +127,8 @@ contract Logistics {
         numTotalCount_ --;
     }
  
-    function findValidNum(string _num) internal view returns (string) {
-        return _num.concat("-", numDiscardCounts_[_num].toString());
+    function getValidNumName(string _num) internal view returns (string) {
+        return _num.concat("-", numInvalidCounts_[_num].toString());
     }
 
     function allocTracks(string _num, uint _length) internal {
@@ -241,8 +241,8 @@ contract Logistics {
             return;
         }
 
-        // find valid num name
-        string memory validNum = findValidNum(_num);
+        // get valid num name
+        string memory validNum = getValidNumName(_num);
 
         if (_tracks.keyExists("trackElementList")) {
 
@@ -281,8 +281,8 @@ contract Logistics {
             addNum(_num);
         }
 
-        // find valid num name
-        string memory validNum = findValidNum(_num);
+        // get valid num name
+        string memory validNum = getValidNumName(_num);
 
         // update brief
         briefs_[validNum].transNum_           = _transNum;
@@ -317,8 +317,8 @@ contract Logistics {
             addNum(num);
         }
 
-        // find valid num name
-        string memory validNum = findValidNum(num);
+        // get valid num name
+        string memory validNum = getValidNumName(num);
 
         if (_brief.keyExists("transNum")) {
             transNum = _brief.getStringValueByKey("transNum");
@@ -406,8 +406,8 @@ contract Logistics {
         // remove num
         removeNum(_num);
 
-        // find valid num name
-        string memory validNum = findValidNum(_num);
+        // get valid num name
+        string memory validNum = getValidNumName(_num);
 
         // remove tracks at first
         removeTracks(validNum);
@@ -427,7 +427,7 @@ contract Logistics {
             return;
         }
 
-        numDiscardCounts_[_num] ++;
+        numInvalidCounts_[_num] ++;
     }
 
     function getTracks(string _num) public view returns (string) {
@@ -446,8 +446,8 @@ contract Logistics {
             return str;
         }
 
-        // find valid num name
-        string memory validNum = findValidNum(_num);
+        // get valid num name
+        string memory validNum = getValidNumName(_num);
 
         str = "[";
         for (uint i=0; i<trackCounts_[validNum]; i++) {
@@ -488,8 +488,8 @@ contract Logistics {
             return (str[0], str[1], str[2], str[3], str[4]);
         }
 
-        // find valid num name
-        string memory validNum = findValidNum(_num);
+        // get valid num name
+        string memory validNum = getValidNumName(_num);
 
         str[0] = _num;
         str[1] = briefs_[validNum].transNum_;
@@ -517,8 +517,8 @@ contract Logistics {
             return str;
         }
 
-        // find valid num name
-        string memory validNum = findValidNum(_num);
+        // get valid num name
+        string memory validNum = getValidNumName(_num);
 
         str = str.concat("{", _num.toKeyValue("num"), ",");
         str = str.concat(briefs_[validNum].transNum_.toKeyValue("transNum"), ",");
@@ -540,8 +540,8 @@ contract Logistics {
 
         num = numNames_[_index];
 
-        // find valid num name
-        string memory validNum = findValidNum(num);
+        // get valid num name
+        string memory validNum = getValidNumName(num);
 
         str[0] = num;
         str[1] = briefs_[validNum].transNum_;
@@ -563,8 +563,8 @@ contract Logistics {
 
         num = numNames_[_index];
 
-        // find valid num name
-        string memory validNum = findValidNum(num);
+        // get valid num name
+        string memory validNum = getValidNumName(num);
 
         str = str.concat("{", num.toKeyValue("num"), ",");
         str = str.concat(briefs_[validNum].transNum_.toKeyValue("transNum"), ",");
@@ -590,15 +590,15 @@ contract Logistics {
             return 0;
         }
 
-        // find valid num name
-        string memory validNum = findValidNum(_num);
+        // get valid num name
+        string memory validNum = getValidNumName(_num);
 
         return trackCounts_[validNum];
     }
 
     // // for discard debug
     // function numberOfDiscard(string _num) public view returns (uint) {
-    //     return numDiscardCounts_[_num];
+    //     return numInvalidCounts_[_num];
     // }
 
     // function getBriefDiscard(string _num, uint _discardIndex) public view returns (string, string, string, string, string) {
@@ -611,7 +611,7 @@ contract Logistics {
     //         return (str[0], str[1], str[2], str[3], str[4]);
     //     }
 
-    //     if (numDiscardCounts_[_num] <= _discardIndex) {
+    //     if (numInvalidCounts_[_num] <= _discardIndex) {
     //         return (str[0], str[1], str[2], str[3], str[4]);
     //     }
 
@@ -644,7 +644,7 @@ contract Logistics {
     //         return str;
     //     }
 
-    //     if (numDiscardCounts_[_num] <= _discardIndex) {
+    //     if (numInvalidCounts_[_num] <= _discardIndex) {
     //         return str;
     //     }
 
