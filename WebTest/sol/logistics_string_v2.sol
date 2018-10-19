@@ -33,8 +33,8 @@ contract Logistics {
     }
 
     /*************************************************/
-    /** @desc num count */
-    uint private numCount_;
+    /** @desc num total count */
+    uint private numTotalCount_;
 
     /** @desc uint(num index) => string(original num name) */
     mapping(uint => string) private numNames_;
@@ -45,8 +45,8 @@ contract Logistics {
     /** @desc string(original num name) => bool(num exist flag) */
     mapping(string => bool) private numExists_;
 
-    /** @desc string(original num name) => uint(discard num count) */
-    mapping(string => uint) private discardCounts_;
+    /** @desc string(original num name) => uint(num discard count) */
+    mapping(string => uint) private numDiscardCounts_;
     /*************************************************/
 
     /** @desc string(valid num name: original num name + valid num index) => Brief(brief info)
@@ -69,7 +69,7 @@ contract Logistics {
 
     // Constructor
     function Logistics() public {
-        numCount_ = 0;
+        numTotalCount_ = 0;
     }
 
     function findNum(string _num) internal view returns (bool) {
@@ -78,8 +78,8 @@ contract Logistics {
             return false;
         }
 
-        // check num count
-        if (0 == numCount_) {
+        // check num total count
+        if (0 == numTotalCount_) {
             return false;
         }
 
@@ -92,11 +92,11 @@ contract Logistics {
             return;
         }
 
-        numNames_[numCount_] = _num;
-        numIndexs_[_num] = numCount_;
+        numNames_[numTotalCount_] = _num;
+        numIndexs_[_num] = numTotalCount_;
         numExists_[_num] = true;
 
-        numCount_ ++;
+        numTotalCount_ ++;
     }
 
     function removeNum(string _num) internal {
@@ -108,27 +108,27 @@ contract Logistics {
             return;
         }
 
-        // check num count
-        if (0 == numCount_) {
+        // check num total count
+        if (0 == numTotalCount_) {
             return;
         }
 
-        lastNumName = numNames_[numCount_-1];
+        lastNumName = numNames_[numTotalCount_-1];
         currentIndex = numIndexs_[_num];
 
         numNames_[currentIndex] = lastNumName;
-        delete numNames_[numCount_-1];
+        delete numNames_[numTotalCount_-1];
 
         numIndexs_[lastNumName] = currentIndex;
         delete numIndexs_[_num];
 
         numExists_[_num] = false;
 
-        numCount_ --;
+        numTotalCount_ --;
     }
  
     function findValidNum(string _num) internal view returns (string) {
-        return _num.concat("-", discardCounts_[_num].toString());
+        return _num.concat("-", numDiscardCounts_[_num].toString());
     }
 
     function allocTracks(string _num, uint _length) internal {
@@ -427,7 +427,7 @@ contract Logistics {
             return;
         }
 
-        discardCounts_[_num] ++;
+        numDiscardCounts_[_num] ++;
     }
 
     function getTracks(string _num) public view returns (string) {
@@ -534,7 +534,7 @@ contract Logistics {
         string[5] memory str = ["", "", "", "", ""];
 
         // check param
-        if (numCount_ <= _index) {
+        if (numTotalCount_ <= _index) {
             return (str[0], str[1], str[2], str[3], str[4]);
         }
 
@@ -557,7 +557,7 @@ contract Logistics {
         string memory str = "";
 
         // check param
-        if (numCount_ <= _index) {
+        if (numTotalCount_ <= _index) {
             return str;
         }
 
@@ -576,7 +576,7 @@ contract Logistics {
     }
 
     function number() public view returns (uint) {
-        return numCount_;
+        return numTotalCount_;
     }
 
     function numberOfTracks(string _num) public view returns (uint) {
@@ -598,7 +598,7 @@ contract Logistics {
 
     // // for discard debug
     // function numberOfDiscard(string _num) public view returns (uint) {
-    //     return discardCounts_[_num];
+    //     return numDiscardCounts_[_num];
     // }
 
     // function getBriefDiscard(string _num, uint _discardIndex) public view returns (string, string, string, string, string) {
@@ -611,7 +611,7 @@ contract Logistics {
     //         return (str[0], str[1], str[2], str[3], str[4]);
     //     }
 
-    //     if (discardCounts_[_num] <= _discardIndex) {
+    //     if (numDiscardCounts_[_num] <= _discardIndex) {
     //         return (str[0], str[1], str[2], str[3], str[4]);
     //     }
 
@@ -644,7 +644,7 @@ contract Logistics {
     //         return str;
     //     }
 
-    //     if (discardCounts_[_num] <= _discardIndex) {
+    //     if (numDiscardCounts_[_num] <= _discardIndex) {
     //         return str;
     //     }
 
