@@ -70,28 +70,23 @@ contract Logistics {
 
     // Constructor
     function Logistics() public {
-        nums_.length = 0;
+        numCount_ = 0;
         trackTmps_.length = 0;
     }
 
-    function findNum(string _num) internal view returns (bool, uint) {
-        uint i = 0;
-        bool found = false;
-
+    function findNum(string _num) internal view returns (bool) {
         // check param
         if (0 == bytes(_num).length) {
-            return (found, i);
+            return false;
         }
 
-        if (0 == nums_.length) {
-            return (found, i);
+        // check num count
+        if (0 == numCount_) {
+            return false;
         }
 
-        for (i=0; i<nums_.length; i++) {
-            if (_num.equals(nums_[i])) {
-                found = true;
-                break;
-            }
+        return numExists_[_num];
+    }
         }
 
         return (found, i);
