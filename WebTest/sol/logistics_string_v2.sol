@@ -412,7 +412,7 @@ contract Logistics {
         // remove tracks at first
         removeTracks(validNum);
 
-        // delete brief
+        // remove brief
         delete briefs_[validNum];
     }
 
@@ -426,6 +426,9 @@ contract Logistics {
         if (!findNum(_num)) {
             return;
         }
+
+        // remove num
+        removeNum(_num);
 
         numInvalidCounts_[_num] ++;
     }
@@ -614,9 +617,9 @@ contract Logistics {
         }
 
         // find num
-        if (!findNum(_num)) {
-            return (str[0], str[1], str[2], str[3], str[4]);
-        }
+        // if (!findNum(_num)) {
+        //     return (str[0], str[1], str[2], str[3], str[4]);
+        // }
 
         // get invalid num name
         string memory invalidNum = _num.concat("-", _invalidIndex.toString());
@@ -644,9 +647,9 @@ contract Logistics {
     //     }
 
     //     // find num
-    //     if (!findNum(_num)) {
-    //         return str;
-    //     }
+    //     // if (!findNum(_num)) {
+    //     //     return str;
+    //     // }
 
     //     // find invalid num name
     //     string memory invalidNum = _num.concat("-", _invalidIndex.toString());

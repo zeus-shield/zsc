@@ -787,8 +787,8 @@ export default class TestLogisticsRaw {
         handler.numberOfInvalidNums(num, function(error, result) {
             if (!error) {
                 for (let i=0; i<result; i++) {
-                    //handler.getBriefInvalid(num, i, function(error, result) {
-                    handler.getTracksInvalid(num, i, function(error, result) {
+                    handler.getBriefInvalid(num, i, function(error, result) {
+                    // handler.getTracksInvalid(num, i, function(error, result) {
                         if (!error) {
                             // console.log(result);
                             Output(window.outputOperationElement, 'small', 'red', `[Brief]:</br>${result}`);
