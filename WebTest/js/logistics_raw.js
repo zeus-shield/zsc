@@ -602,26 +602,26 @@ export default class LogisticsRaw {
         });
     }
 
-    getBriefDiscard(_num, _discardIndex, func) {
+    getBriefInvalid(_num, _invalidIndex, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getBriefDiscard.estimateGas(_num, _discardIndex, function(error, result) {
+        contractInstance.getBriefInvalid.estimateGas(_num, _invalidIndex, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============= Logistics.getBriefDiscard(string, uint) ==============");
+                        console.log("============= Logistics.getBriefInvalid(string, uint) ==============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
                         console.log("====================================================================");
-                        // call 'Logistics.getBriefDiscard(string, uint)'
-                        contractInstance.getBriefDiscard.call(_num, _discardIndex, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        // call 'Logistics.getBriefInvalid(string, uint)'
+                        contractInstance.getBriefInvalid.call(_num, _invalidIndex, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
                                 console.log("[Brief]:", result);
