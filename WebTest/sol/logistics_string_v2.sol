@@ -57,7 +57,7 @@ contract Logistics {
     // string: valid num name(original num name + valid num index)
     // uint: track number
     // eg. JNTCU0600046683YQ-3 => 4
-    mapping(string => uint) private trackNumbers_;
+    mapping(string => uint) private trackCounts_;
 
     // string: valid track name(original num name + valid num index + track index)
     // Track: track info
@@ -133,16 +133,16 @@ contract Logistics {
     }
 
     function allocTracks(string _num, uint _length) internal {
-        trackNumbers_[_num] += _length;
+        trackCounts_[_num] += _length;
     }
 
     function removeTracks(string _num) internal {
         string memory trackName = "";
-        for (uint i=0; i<trackNumbers_[_num]; i++) {
+        for (uint i=0; i<trackCounts_[_num]; i++) {
             trackName = _num.concat("-", i.toString());
             delete tracks_[trackName];
         }
-        trackNumbers_[_num] = 0;
+        trackCounts_[_num] = 0;
     }
 
     function updateTrack(string _num, uint _index, string _track) internal {
@@ -156,7 +156,7 @@ contract Logistics {
         string memory desc = "";
         string memory actionCode = "";
 
-        if (trackNumbers_[_num] <= _index) {
+        if (trackCounts_[_num] <= _index) {
             return;
         }
 
@@ -256,7 +256,7 @@ contract Logistics {
                     removeTracks(validNum);
                 }
 
-                startIndex = trackNumbers_[validNum];
+                startIndex = trackCounts_[validNum];
 
                 //alloc tracks
                 allocTracks(validNum, trackTmps_.length);
@@ -451,7 +451,7 @@ contract Logistics {
         string memory validNum = findValidNum(_num);
 
         str = "[";
-        for (uint i=0; i<trackNumbers_[validNum]; i++) {
+        for (uint i=0; i<trackCounts_[validNum]; i++) {
             trackName = validNum.concat("-", i.toString());
 
             str = str.concat("{", tracks_[trackName].type_.toKeyValue("type"), ",");
@@ -463,7 +463,7 @@ contract Logistics {
             str = str.concat(tracks_[trackName].desc_.toKeyValue("desc"), ",");
             str = str.concat(tracks_[trackName].actionCode_.toKeyValue("actionCode"), "}");
 
-            if (trackNumbers_[validNum] != (i+1)) {
+            if (trackCounts_[validNum] != (i+1)) {
                 str = str.concat(",");
             }
         }
@@ -594,7 +594,7 @@ contract Logistics {
         // find valid num name
         string memory validNum = findValidNum(_num);
 
-        return trackNumbers_[validNum];
+        return trackCounts_[validNum];
     }
 
     // // for discard debug
@@ -659,7 +659,7 @@ contract Logistics {
     //     string memory discardNum = _num.concat("-", _discardIndex.toString());
 
     //     str = "[";
-    //     for (uint i=0; i<trackNumbers_[discardNum]; i++) {
+    //     for (uint i=0; i<trackCounts_[discardNum]; i++) {
     //         trackName = discardNum.concat("-", i.toString());
 
     //         str = str.concat("{", tracks_[trackName].type_.toKeyValue("type"), ",");
@@ -671,7 +671,7 @@ contract Logistics {
     //         str = str.concat(tracks_[trackName].desc_.toKeyValue("desc"), ",");
     //         str = str.concat(tracks_[trackName].actionCode_.toKeyValue("actionCode"), "}");
 
-    //         if (trackNumbers_[discardNum] != (i+1)) {
+    //         if (trackCounts_[discardNum] != (i+1)) {
     //             str = str.concat(",");
     //         }
     //     }
