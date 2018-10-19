@@ -100,23 +100,32 @@ contract Logistics {
         numCount_ ++;
     }
 
-    function removeNum(uint _index) internal {
-        uint leftCount = 0;
+    function removeNum(string _num) internal {
+        string memory lastNumName = "";
+        uint currentIndex = 0;
 
-        //check param
-        if (nums_.length <= _index) {
+        // check param
+        if (0 == bytes(_num).length) {
             return;
         }
 
-        leftCount = nums_.length - _index - 1;
-        for (uint i=0; i<leftCount; i++) {
-            nums_[_index] = nums_[_index+1];
-            _index ++;
+        // check num count
+        if (0 == numCount_) {
+            return;
         }
 
-        delete nums_[_index];
+        lastNumName = numNames_[numCount_-1];
+        currentIndex = numIndexs_[_num];
 
-        nums_.length -= 1;
+        numNames_[currentIndex] = lastNumName;
+        delete numNames_[numCount_-1];
+
+        numIndexs_[lastNumName] = currentIndex;
+        delete numIndexs_[_num];
+
+        numExists_[_num] = false;
+
+        numCount_ --;
     }
  
     function findValidNum(string _num) internal view returns (string) {
