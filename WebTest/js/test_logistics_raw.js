@@ -21,7 +21,7 @@ const openChannelFunc = Symbol('openChannelFunc');
 const openChannel = Symbol('openChannel');
 const openNextChannel = Symbol('openNextChannel');
 const closeChannel = Symbol('closeChannel');
-const getDiscard = Symbol('getDiscard');
+const getInvalid = Symbol('getInvalid');
 
 export default class TestLogisticsRaw {
 
@@ -722,12 +722,12 @@ export default class TestLogisticsRaw {
         });
     }
 
-    [getDiscard](handler, num) {
-        handler.numberOfDiscard(num, function(error, result) {
+    [getInvalid](handler, num) {
+        handler.numberOfInvalidNums(num, function(error, result) {
             if (!error) {
                 for (let i=0; i<result; i++) {
-                    handler.getBriefDiscard(num, i, function(error, result) {
-                    // handler.getTracksDiscard(num, i, function(error, result) {
+                    //handler.getBriefInvalid(num, i, function(error, result) {
+                    handler.getTracksInvalid(num, i, function(error, result) {
                         if (!error) {
                             // console.log(result);
                             Output(window.outputOperationElement, 'small', 'red', `[Brief]:</br>${result}`);
@@ -828,7 +828,7 @@ export default class TestLogisticsRaw {
                                                                                 string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
                                                                                 Output(window.outputOperationElement, 'small', 'red', string);
                                                                                 if (0x1 == parseInt(result.status)) {
-                                                                                    handler[getDiscard](logistics, num);
+                                                                                    handler[getInvalid](logistics, num);
                                                                                 }
                                                                             } else {
                                                                                 status = "Try to get status again!";
