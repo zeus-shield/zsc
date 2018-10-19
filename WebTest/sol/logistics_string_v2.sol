@@ -33,30 +33,39 @@ contract Logistics {
         string lastStatus_;
     }
 
-    // string: original num name
-    // eg. JNTCU0600046683YQ
-    string[] private nums_;
+    //////////////////////////////////////////////////////////
+    // num count
+    uint private numCount_;
 
-    // string: original num name
-    // uint: discard num count
-    // eg. JNTCU0600046683YQ => 3
+    // uint(num index) => string(original num name)
+    mapping(uint => string) private numNames_;
+
+    // string(original num name) => uint(num index)
+    mapping(string => uint) private numIndexs_;
+    
+    // string(original num name) => bool(num exist flag)
+    mapping(string => bool) private numExists_;
+
+    // string(original num name) => uint(discard num count)
     mapping(string => uint) private discardNumbers_;
-
-    // string: valid num name(original num name + valid num index)
-    // uint: track number
-    // eg. JNTCU0600046683YQ-3 => 4
-    mapping(string => uint) private trackNumbers_;
+    //////////////////////////////////////////////////////////
 
     // string: valid num name(original num name + valid num index)
     // Brief: brief info
     // eg. JNTCU0600046683YQ-3 => Brief
     mapping(string => Brief) private briefs_;
 
+    // string: valid num name(original num name + valid num index)
+    // uint: track number
+    // eg. JNTCU0600046683YQ-3 => 4
+    mapping(string => uint) private trackNumbers_;
+
     // string: valid track name(original num name + valid num index + track index)
     // Track: track info
     // eg. JNTCU0600046683YQ-3-5 => Track
     mapping(string => Track) private tracks_;  
 
+    // track temps
     string[] private trackTmps_;
 
     // Constructor
