@@ -34,3 +34,6 @@ app.use('/', (req, res, next) => {
     res.header("Access-Control-Allow-Credentials", "true");
     next();
 })
+
+config.serverPath.indexOf('localhost') > -1 ? mongoose.connect('mongodb://localhost:27017/zscapply',{useNewUrlParser: true }):
+mongoose.connect('mongodb://18.219.177.53:27017/zscapply',{useNewUrlParser: true });
