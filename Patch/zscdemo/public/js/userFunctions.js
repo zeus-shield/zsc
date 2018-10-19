@@ -79,3 +79,12 @@ function uF_login(user, pass, adr, func){
         } else console.log("error: " + error);
     } );
 }
+
+function uF_keepOnline(user, hr, adr, func){
+    var myControlApi = uf_getControlApi(adr);
+    var ret;
+    myControlApi.keepOnline(user, hr, function(error, ret) {
+        if(!error) func(ret);
+        else console.log("error: " + error);
+    } );
+}
