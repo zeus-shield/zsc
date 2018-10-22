@@ -204,3 +204,13 @@ function uF_getElementParameterNameByIndex(index, func) {
         });
     } 
 } 
+
+function uF_loadElementParameterValues(num, func) {
+    for (var i = 0; i < num; ++i) {
+        uF_getSingleParameter(i, function(index, value) {
+            uF_parameterValue[index] = value;
+            if (index == num - 1)
+                func(index);
+        });
+    } 
+} 
