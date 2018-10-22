@@ -171,3 +171,15 @@ function uF_loadElementParameters(func) {
         }); 
     });
 }
+
+function uF_numElementParameters(func){
+    var node = uF_getUsername();
+    var myContract = web3.eth.contract(uF_getControlApisAbi());
+    var myControlApi = myContract.at(uF_getControlApisAdr());
+
+    myControlApi.numElementParameters(node, {from: uF_getEthAccount()},
+         function(error, num){ 
+            if(!error) func(num.toString(10));  
+            else console.log("error: " + error);
+         });
+}
