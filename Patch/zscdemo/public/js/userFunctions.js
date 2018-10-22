@@ -158,3 +158,16 @@ function uF_loadEthBalance() {
     });
 
 }
+
+///////////////////////////
+function uF_loadElementParameters(func) {
+    uF_numElementParameters(function(num) {
+        uF_loadElementParameterNames(num, function(sum) {
+            uF_loadElementParameterValues(sum, function(index){
+                if (index == sum - 1) {
+                    func();
+                }
+            });
+        }); 
+    });
+}
