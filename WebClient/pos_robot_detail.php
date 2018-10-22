@@ -42,11 +42,10 @@ session_start();
                     window.location.href = "index.php";
                 } else {
                     singleRobotGM = new ZSCRobotSingleDetails(account, userLogin.getErc721Adr(), userLogin.getControlApisFullAbi());
-                    loadSingleRobotDetails(robotId);
-
                     singleRobotGM.getOwner(robotId, function(error, result) {
                         if (!error) {
                             owner = result;
+                            loadSingleRobotDetails(robotId);
                         }
                     });
                 }
