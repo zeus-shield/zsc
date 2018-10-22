@@ -446,6 +446,58 @@ export default class LogisticsRaw {
         });
     }
 
+    exist(_num, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.exist.estimateGas(_num, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("================ Logistics.exist(string) =================");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("==========================================================");
+                        // call 'Logistics.exist(string)'
+                        contractInstance.exist.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                // Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
+                                console.log("[Number]:", result.toString(10));
+                                if (null != func) {
+                                    func(null, result);
+                                }
+                            } else {
+                                // Output(window.outputElement, 'small', 'red', error);
+                                console.log(error);
+                                if (null != func) {
+                                    func(error);
+                                }
+                            }
+                        });
+                    } else {
+                        // Output(window.outputElement, 'small', 'red', error);
+                        console.log(error);
+                        if (null != func) {
+                            func(error);
+                        }
+                    }
+                });
+            } else {
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != func) {
+                    func(error);
+                }
+            }
+        });
+    }
+
     number(func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
