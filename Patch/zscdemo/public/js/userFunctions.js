@@ -183,3 +183,14 @@ function uF_numElementParameters(func){
             else console.log("error: " + error);
          });
 }
+
+function uF_loadElementParameterNames(num, func) {
+    for (var i = 0; i < num; ++i) {
+        uF_getElementParameterNameByIndex(node, i, function(index, para) {
+            uF_parameters[index] = para;
+            if (index == num - 1) {
+                func(num);
+            }
+        });
+    } 
+} 
