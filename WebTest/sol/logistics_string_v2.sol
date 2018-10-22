@@ -72,20 +72,6 @@ contract Logistics {
         numTotalCount_ = 0;
     }
 
-    function findNum(string _num) internal view returns (bool) {
-        // check param
-        if (0 == bytes(_num).length) {
-            return false;
-        }
-
-        // check num total count
-        if (0 == numTotalCount_) {
-            return false;
-        }
-
-        return numExists_[_num];
-    }
-
     function addNum(string _num) internal {
         // check param
         if (0 == bytes(_num).length) {
@@ -227,6 +213,20 @@ contract Logistics {
         // log0(actionCode.toBytes32());
     }
 
+    function checkExist(string _num) public view returns (bool) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return false;
+        }
+
+        // check num total count
+        if (0 == numTotalCount_) {
+            return false;
+        }
+
+        return numExists_[_num];
+    }
+
     // _updateType: 0 means overwrite, 1 means add
     function updateTracks(string _num, string _tracks, uint _updateType) public {
         uint startIndex = 0;
@@ -236,8 +236,8 @@ contract Logistics {
             return;
         }
 
-        // find num
-        if (!findNum(_num)) {
+        // check num exist
+        if (!checkExist(_num)) {
             return;
         }
 
@@ -275,8 +275,8 @@ contract Logistics {
             return;
         }
 
-        // find num
-        if (!findNum(_num)) {
+        // check num exist
+        if (!checkExist(_num)) {
             // add num
             addNum(_num);
         }
@@ -311,8 +311,8 @@ contract Logistics {
             return;
         }
 
-        // find num
-        if (!findNum(num)) {
+        // check num exist
+        if (!checkExist(num)) {
             // add num
             addNum(num);
         }
@@ -398,8 +398,8 @@ contract Logistics {
             return;
         }
 
-        // find num
-        if (!findNum(_num)) {
+        // check num exist
+        if (!checkExist(_num)) {
             return;
         }
 
@@ -422,8 +422,8 @@ contract Logistics {
             return;
         }
 
-        // find num
-        if (!findNum(_num)) {
+        // check num exist
+        if (!checkExist(_num)) {
             return;
         }
 
@@ -444,8 +444,8 @@ contract Logistics {
             return str;
         }
 
-        // find num
-        if (!findNum(_num)) {
+        // check num exist
+        if (!checkExist(_num)) {
             return str;
         }
 
@@ -485,8 +485,8 @@ contract Logistics {
             return (str[0], str[1], str[2], str[3], str[4]);
         }
 
-        // find num
-        found = findNum(_num);
+        // check num exist
+        found = checkExist(_num);
         if (!found) {
             return (str[0], str[1], str[2], str[3], str[4]);
         }
@@ -514,8 +514,8 @@ contract Logistics {
             return str;
         }
 
-        // find num
-        found = findNum(_num);
+        // check num exist
+        found = checkExist(_num);
         if (!found) {
             return str;
         }
@@ -588,8 +588,8 @@ contract Logistics {
             return 0;
         }
 
-        // find num
-        if (!findNum(_num)) {
+        // check num exist
+        if (!checkExist(_num)) {
             return 0;
         }
 
@@ -616,8 +616,8 @@ contract Logistics {
             return (str[0], str[1], str[2], str[3], str[4]);
         }
 
-        // find num
-        // if (!findNum(_num)) {
+        // check num exist
+        // if (!checkExist(_num)) {
         //     return (str[0], str[1], str[2], str[3], str[4]);
         // }
 
@@ -646,8 +646,8 @@ contract Logistics {
     //         return str;
     //     }
 
-    //     // find num
-    //     // if (!findNum(_num)) {
+    //     // check num exist
+    //     // if (!checkExist(_num)) {
     //     //     return str;
     //     // }
 
