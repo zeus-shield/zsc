@@ -165,12 +165,12 @@ export default class LogisticsRaw {
         });       
     }
 
-    discard(account, key, _num, func) {
+    invalid(account, key, _num, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
-        let data = contractInstance.discard.getData(_num);
+        let data = contractInstance.invalid.getData(_num);
 
-        contractInstance.discard.estimateGas(_num, function(error, result) {
+        contractInstance.invalid.estimateGas(_num, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(account, key);
                 if('undefined' != typeof transaction) {
@@ -446,6 +446,58 @@ export default class LogisticsRaw {
         });
     }
 
+    exist(_num, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.exist.estimateGas(_num, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("================ Logistics.exist(string) =================");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("==========================================================");
+                        // call 'Logistics.exist(string)'
+                        contractInstance.exist.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                // Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
+                                console.log("[Number]:", result.toString(10));
+                                if (null != func) {
+                                    func(null, result);
+                                }
+                            } else {
+                                // Output(window.outputElement, 'small', 'red', error);
+                                console.log(error);
+                                if (null != func) {
+                                    func(error);
+                                }
+                            }
+                        });
+                    } else {
+                        // Output(window.outputElement, 'small', 'red', error);
+                        console.log(error);
+                        if (null != func) {
+                            func(error);
+                        }
+                    }
+                });
+            } else {
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != func) {
+                    func(error);
+                }
+            }
+        });
+    }
+
     number(func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
@@ -550,26 +602,26 @@ export default class LogisticsRaw {
         });
     }
 
-    numberOfDiscard(_num, func) {
+    numberOfInvalidNums(_num, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.numberOfDiscard.estimateGas(_num, function(error, result) {
+        contractInstance.numberOfInvalidNums.estimateGas(_num, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============ Logistics.numberOfDiscard(string) ============");
+                        console.log("============ Logistics.numberOfInvalidNums(string) ============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("===========================================================");
-                        // call 'Logistics.numberOfDiscard(string)'
-                        contractInstance.numberOfDiscard.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        console.log("===============================================================");
+                        // call 'Logistics.numberOfInvalidNums(string)'
+                        contractInstance.numberOfInvalidNums.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 // Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
                                 console.log("[Number]:", result.toString(10));
@@ -602,26 +654,26 @@ export default class LogisticsRaw {
         });
     }
 
-    getBriefDiscard(_num, _discardIndex, func) {
+    getBriefInvalid(_num, _invalidIndex, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getBriefDiscard.estimateGas(_num, _discardIndex, function(error, result) {
+        contractInstance.getBriefInvalid.estimateGas(_num, _invalidIndex, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============= Logistics.getBriefDiscard(string, uint) ==============");
+                        console.log("============= Logistics.getBriefInvalid(string, uint) ==============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
                         console.log("====================================================================");
-                        // call 'Logistics.getBriefDiscard(string, uint)'
-                        contractInstance.getBriefDiscard.call(_num, _discardIndex, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        // call 'Logistics.getBriefInvalid(string, uint)'
+                        contractInstance.getBriefInvalid.call(_num, _invalidIndex, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
                                 console.log("[Brief]:", result);
@@ -654,26 +706,26 @@ export default class LogisticsRaw {
         });
     }
 
-    getTracksDiscard(_num, _discardIndex, func) {
+    getTracksInvalid(_num, _invalidIndex, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getTracksDiscard.estimateGas(_num, _discardIndex, function(error, result) {
+        contractInstance.getTracksInvalid.estimateGas(_num, _invalidIndex, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============= Logistics.getTracksDiscard(string, uint) ==============");
+                        console.log("============= Logistics.getTracksInvalid(string, uint) ==============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
                         console.log("=====================================================================");
-                        // call 'Logistics.getTracksDiscard(string, uint)'
-                        contractInstance.getTracksDiscard.call(_num, _discardIndex, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        // call 'Logistics.getTracksInvalid(string, uint)'
+                        contractInstance.getTracksInvalid.call(_num, _invalidIndex, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 // Output(window.outputElement, 'small', 'red', `[Track]:${result}`);
                                 console.log("[Tracks]:", result);

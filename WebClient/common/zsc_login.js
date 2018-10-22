@@ -5,7 +5,7 @@ Copyright (c) 2018 ZSC Dev Team
 var g_controlApisFullAbi;
 
 function ZSCLogin(userAccount) {
-    this.admAdr = "0x8da6e7cfab4dcd01894e368769e5cd3c638747bf";
+    this.admAdr = "0x98d5f269927cb4c3817e454e0c67c38ec54d5a73";
     this.controlApisAdr;
     this.erc721Adr;
     this.userStatus;
@@ -65,11 +65,6 @@ ZSCLogin.prototype.getControlApisInfo = function(gm, func) {
     } );
 }
 
-/*
-"info?abi=",
-"sysAdr=",    
-"erc721Adr=",  
-*/
 ZSCLogin.prototype.parserControlApisInfo = function(gm, urlinfo) {
     var found1 = urlinfo.indexOf("?");
     var found2 = urlinfo.indexOf("=");

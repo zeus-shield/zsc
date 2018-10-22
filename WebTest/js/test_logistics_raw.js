@@ -21,7 +21,7 @@ const openChannelFunc = Symbol('openChannelFunc');
 const openChannel = Symbol('openChannel');
 const openNextChannel = Symbol('openNextChannel');
 const closeChannel = Symbol('closeChannel');
-const getDiscard = Symbol('getDiscard');
+const getInvalid = Symbol('getInvalid');
 
 export default class TestLogisticsRaw {
 
@@ -722,12 +722,73 @@ export default class TestLogisticsRaw {
         });
     }
 
-    [getDiscard](handler, num) {
-        handler.numberOfDiscard(num, function(error, result) {
+    removeEx() {
+        console.log('TestLogisticsRaw.removeEx()');
+        let logistics = new Logistics(this[abi], this[contractAddress]);
+        let channels = window.channelClass.get("idle");
+
+        if (0 == channels.length) {
+            Output(window.outputOperationElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = channels[0].account;
+        let key = channels[0].key;
+
+        let status = "";
+        let string = "";
+
+        // create and update at first
+
+        // remove
+        logistics.remove(account, key, "JNTCU0600046684YQ", function(error, result) {
+            if (!error) {
+                if ("" != result.status) {
+                    if (0x0 == parseInt(result.status)) {
+                        status = "failure";
+                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                        Output(window.outputOperationElement, 'small', 'red', string);
+                        return;
+                    }
+                    // remove
+                    logistics.remove(account, key, "JNTCU0600046688YQ", function(error, result) {
+                        if (!error) {
+                            if ("" != result.status) {
+                                if (0x1 == parseInt(result.status)) {
+                                    status = "succeeded";
+                                } else {
+                                    status = "failure";
+                                }
+                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                Output(window.outputOperationElement, 'small', 'red', string);
+                                return;
+                            } else {
+                                status = "Try to get status again!";
+                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                Output(window.outputOperationElement, 'small', 'red', string);
+                            }
+                        } else {
+                            Output(window.outputOperationElement, 'small', 'red', error);
+                        }
+                    });
+                } else {
+                    status = "Try to get status again!";
+                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                    Output(window.outputOperationElement, 'small', 'red', string);
+                }
+            } else {
+                Output(window.outputOperationElement, 'small', 'red', error);
+            }
+        });
+
+    }
+
+    [getInvalid](handler, num) {
+        handler.numberOfInvalidNums(num, function(error, result) {
             if (!error) {
                 for (let i=0; i<result; i++) {
-                    handler.getBriefDiscard(num, i, function(error, result) {
-                    // handler.getTracksDiscard(num, i, function(error, result) {
+                    handler.getBriefInvalid(num, i, function(error, result) {
+                    // handler.getTracksInvalid(num, i, function(error, result) {
                         if (!error) {
                             // console.log(result);
                             Output(window.outputOperationElement, 'small', 'red', `[Brief]:</br>${result}`);
@@ -742,9 +803,9 @@ export default class TestLogisticsRaw {
         })
     }
 
-    // discard -> update -> discard -> discard -> updateEx -> discard
-    discard() {
-        console.log('TestLogisticsRaw.discard()');
+    // invalid -> update -> invalid -> invalid -> updateEx -> invalid
+    invalid() {
+        console.log('TestLogisticsRaw.invalid()');
         let handler = this;
         let logistics = new Logistics(this[abi], this[contractAddress]);
         let tracks5_1 = "{\"trackElementList\":[{\"time\":\"2017-07-13 11:54:00\",\"facilityName\":\"Track5_1\",\"desc\":\"Track5_1\"}&{\"time\":\"2017-07-07 17:39:09\",\"facilityName\":\"Track5_1\",\"desc\":\"Груз отправлен со склада хранения (<a href= >КСЭ</a>, номер накладной <a href=$f=$http://cse.ru/track.php?order=waybill%amp;number=JNTCU0600639867YQ$ tar target=$_blank$>JNTCU0600639867YQ</a>)\"}]}";
@@ -765,8 +826,8 @@ export default class TestLogisticsRaw {
 
         let num = "JNTCU0600046685YQ";
 
-        // discard
-        logistics.discard(account, key, num, function(error, result) {
+        // invalid
+        logistics.invalid(account, key, num, function(error, result) {
             if (!error) {
                 if ("" != result.status) {
                     if (0x0 == parseInt(result.status)) {
@@ -786,8 +847,8 @@ export default class TestLogisticsRaw {
                                     Output(window.outputOperationElement, 'small', 'red', string);
                                     return;
                                 }
-                                // discard
-                                logistics.discard(account, key, num, function(error, result) {
+                                // invalid
+                                logistics.invalid(account, key, num, function(error, result) {
                                     if (!error) {
                                         if ("" != result.status) {
                                             if (0x0 == parseInt(result.status)) {
@@ -796,8 +857,8 @@ export default class TestLogisticsRaw {
                                                 Output(window.outputOperationElement, 'small', 'red', string);
                                                 return;
                                             }
-                                            // discard
-                                            logistics.discard(account, key, num, function(error, result) {
+                                            // invalid
+                                            logistics.invalid(account, key, num, function(error, result) {
                                                 if (!error) {
                                                     if ("" != result.status) {
                                                         if (0x0 == parseInt(result.status)) {
@@ -816,8 +877,8 @@ export default class TestLogisticsRaw {
                                                                         Output(window.outputOperationElement, 'small', 'red', string);
                                                                         return;
                                                                     }
-                                                                    // discard
-                                                                    logistics.discard(account, key, num, function(error, result) {
+                                                                    // invalid
+                                                                    logistics.invalid(account, key, num, function(error, result) {
                                                                         if (!error) {
                                                                             if ("" != result.status) {
                                                                                 if (0x0 == parseInt(result.status)) {
@@ -828,7 +889,7 @@ export default class TestLogisticsRaw {
                                                                                 string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
                                                                                 Output(window.outputOperationElement, 'small', 'red', string);
                                                                                 if (0x1 == parseInt(result.status)) {
-                                                                                    handler[getDiscard](logistics, num);
+                                                                                    handler[getInvalid](logistics, num);
                                                                                 }
                                                                             } else {
                                                                                 status = "Try to get status again!";
@@ -886,8 +947,8 @@ export default class TestLogisticsRaw {
         });
     }
 
-    number() {
-        console.log('TestLogisticsRaw.number()');
+    debugBrief() {
+        console.log('TestLogisticsRaw.debugBrief()');
         let logistics = new Logistics(this[abi], this[contractAddress]);
 
         // number
@@ -945,11 +1006,15 @@ export default class TestLogisticsRaw {
                 // this.update();
                 this.updateParallel();
                 break;
-            case 'Get':
-                // this.get();
-                // this.remove();
-                // this.discard();
-                this.number();
+            case 'Remove':
+                this.removeEx();
+                break;
+            case 'DebugBrief':
+                this.debugBrief();
+                break;
+            case 'Misc':
+                this.get();
+                // this.invalid();
                 // this.numberOfTracks();
                 break;
             default:

@@ -43,8 +43,8 @@ echo $htmlObjects->loadScriptFiles();
         <text>Symbol</text>  <input type="text" id="TokenSymbol" value="ETH"></input> <br>
         <text>Decimals</text>  <input type="text" id="TokenDecimals" value="18"></input> <br>
         <text>Address</text>  <input type="text" id="TokenAddress" value="0x0"></input> <br>
-        <text>Posable</text>  <input type="text" id="PosableTag" value="false"></input> <br>
-        <text>Tradeable</text>  <input type="text" id="TradableTag" value="false"></input> <br>
+        <text>Posable</text>  <input type="text" id="PosableTag" value="0"></input> <br>
+        <text>Tradeable</text>  <input type="text" id="TradableTag" value="0"></input> <br>
         <button type="button" onClick="addTokenContract('TokenName', 'TokenSymbol', 'TokenDecimals', 'TokenAddress', 'PosableTag', 'TradableTag')">Add a token contract</button> <br>
         <text id="AddUserHash"></text>
     </div>

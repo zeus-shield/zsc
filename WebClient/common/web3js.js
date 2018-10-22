@@ -11,6 +11,7 @@ function setupWeb3js() {
     // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
     var Web3 = require('web3');
     web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
+    //web3 = new Web3(new Web3.providers.HttpProvider("https://rinkeby.infura.io/"));
     
     if(!web3.isConnected())
         console.log("not connected");
