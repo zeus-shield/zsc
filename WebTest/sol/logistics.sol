@@ -1,96 +1,230 @@
-/*
- Copyright (c) 2018, ZSC Dev Team
- 2017-12-18: v0.01
-*/
+/**
+ Copyright (c) 2018, deduotech.com
+ 2018-10-19: v0.00.01
+ */
 
 pragma solidity ^0.4.21;
-//pragma experimental ABIEncoderV2;
+// pragma experimental ABIEncoderV2;
 
 import "./utillib/LibString.sol";
-import "./logistics_track.sol";
+import "./utillib/LibInt.sol";
 
 contract Logistics {
 
     using LibString for *;
+    using LibInt for *;
 
-    struct Info {
-        string num_;
+    struct Track {
+        string type_;
+        string time_;
+        string country_;
+        string city_;
+        string facilityName_;
+        string timeZone_;
+        string desc_;
+        string actionCode_;
+    }
+
+    struct Brief {
         string transNum_;
         string model_;
         string destinationCountry_;
         string lastStatus_;
     }
 
-    string[] private nums_;
-    mapping(string => Info[]) private infos_;
+    /*************************************************/
+    /** @desc num total count */
+    uint private numTotalCount_;
 
-    address trackAddress_;
+    /** @desc uint(num index) => string(original num name) */
+    mapping(uint => string) private numNames_;
+
+    /** @desc string(original num name) => uint(num index) */
+    mapping(string => uint) private numIndexs_;
+
+    /** @desc string(original num name) => bool(num exist flag) */
+    mapping(string => bool) private numExists_;
+
+    /** @desc string(original num name) => uint(num invalid count) */
+    mapping(string => uint) private numInvalidCounts_;
+    /*************************************************/
+
+    /** @desc string(valid num name: original num name + valid num index) => Brief(brief info)
+      * @eg JNTCU0600046683YQ-3 => Brief
+      */
+    mapping(string => Brief) private briefs_;
+
+    /** @desc string(valid num name: original num name + valid num index) => uint(track count)
+      * @eg JNTCU0600046683YQ-3 => 4
+      */
+    mapping(string => uint) private trackCounts_;
+
+    /** @desc string(track name: original num name + valid num index + track index) => Track(track info)
+      * @eg JNTCU0600046683YQ-3-5 => Track
+      */
+    mapping(string => Track) private tracks_;  
+
+    /** @desc string(valid num name: original num name + valid num index) => string[](track temps) */
+    mapping(string => string[]) private trackTmps_;
 
     // Constructor
     function Logistics() public {
-        nums_.length = 0;
-        trackAddress_ = 0;
+        numTotalCount_ = 0;
     }
 
-    function setTrackContractAdress(address _address) public {
-        trackAddress_ = _address;
+    function findNum(string _num) internal view returns (bool) {
+        // check num total count
+        if (0 == numTotalCount_) {
+            return false;
+        }
+
+        return numExists_[_num];
     }
 
-    function findNum(string _num) internal view returns (bool, uint) {
-        uint i = 0;
-        bool found = false;
-
+    function addNum(string _num) internal {
         // check param
         if (0 == bytes(_num).length) {
-            return (found, i);
-        }
-
-        if (0 == nums_.length) {
-            return (found, i);
-        }
-
-        for (i=0; i<nums_.length; i++) {
-            if (_num.equals(nums_[i])) {
-                found = true;
-                break;
-            }
-        }
-
-        return (found, i);
-    }
-
-    function removeNum(uint index) internal {
-        uint leftCount = 0;
-
-        //check param
-        if (nums_.length <= index) {
             return;
         }
 
-        leftCount = nums_.length - index - 1;
-        for (uint i=0; i<leftCount; i++) {
-            nums_[index] = nums_[index+1];
-            index ++;
+        numNames_[numTotalCount_] = _num;
+        numIndexs_[_num] = numTotalCount_;
+        numExists_[_num] = true;
+
+        numTotalCount_ ++;
+    }
+
+    function removeNum(string _num) internal {
+        string memory lastNumName = "";
+        uint currentIndex = 0;
+
+        // check param
+        if (0 == bytes(_num).length) {
+            return;
         }
 
-        delete nums_[index];
+        // check num total count
+        if (0 == numTotalCount_) {
+            return;
+        }
 
-        nums_.length -= 1;
+        lastNumName = numNames_[numTotalCount_-1];
+        currentIndex = numIndexs_[_num];
+
+        numNames_[currentIndex] = lastNumName;
+        delete numNames_[numTotalCount_-1];
+
+        numIndexs_[lastNumName] = currentIndex;
+        delete numIndexs_[_num];
+
+        numExists_[_num] = false;
+
+        numTotalCount_ --;
     }
  
-    function findNumUpdateValidIndex(string _num) internal view returns (bool, uint) {
-        if (0 == infos_[_num].length) {
-            return (false, 0);
-        } else {
-            return (true, infos_[_num].length - 1);
+    function getValidNumName(string _num) internal view returns (string) {
+        return _num.concat("-", numInvalidCounts_[_num].toString());
+    }
+
+    function allocTracks(string _num, uint _length) internal {
+        trackCounts_[_num] += _length;
+    }
+
+    function removeTracks(string _num) internal {
+        string memory trackName = "";
+        for (uint i=0; i<trackCounts_[_num]; i++) {
+            trackName = _num.concat("-", i.toString());
+            delete tracks_[trackName];
         }
+        trackCounts_[_num] = 0;
+    }
+
+    function updateTrack(string _num, uint _index, string _track) internal {
+        string memory trackName = "";
+        string memory type32 = "";
+        string memory time = "";
+        string memory country = "";
+        string memory city = "";
+        string memory facilityName = "";
+        string memory timeZone = "";
+        string memory desc = "";
+        string memory actionCode = "";
+
+        if (trackCounts_[_num] <= _index) {
+            return;
+        }
+
+        trackName = _num.concat("-", _index.toString());
+
+        if (_track.keyExists("type")) {
+            type32 = _track.getStringValueByKey("type");
+            if (0 != bytes(type32).length) {
+                tracks_[trackName].type_ = type32;
+            }
+        }
+
+        if (_track.keyExists("time")) {
+            time = _track.getStringValueByKey("time");
+            if (0 != bytes(time).length) {
+                tracks_[trackName].time_ = time;
+            }
+        }
+
+        if (_track.keyExists("country")) {
+            country = _track.getStringValueByKey("country");
+            if (0 != bytes(country).length) {
+                tracks_[trackName].country_ = country;
+            }
+        }
+
+        if (_track.keyExists("city")) {
+            city = _track.getStringValueByKey("city");
+            if (0 != bytes(city).length) {
+                tracks_[trackName].city_ = city;
+            }
+        }
+
+        if (_track.keyExists("facilityName")) {
+            facilityName = _track.getStringValueByKey("facilityName");
+            if (0 != bytes(facilityName).length) {
+                tracks_[trackName].facilityName_ = facilityName;
+            }
+        }
+
+        if (_track.keyExists("timeZone")) {
+            timeZone = _track.getStringValueByKey("timeZone");
+            if (0 != bytes(timeZone).length) {
+                tracks_[trackName].timeZone_ = timeZone;
+            }
+        }
+
+        if (_track.keyExists("desc")) {
+            desc = _track.getStringValueByKey("desc");
+            if (0 != bytes(desc).length) {
+                tracks_[trackName].desc_ = desc;
+            }
+        }
+
+        if (_track.keyExists("actionCode")) {
+            actionCode = _track.getStringValueByKey("actionCode");
+            if (0 != bytes(actionCode).length) {
+                tracks_[trackName].actionCode_ = actionCode;
+            }
+        }
+
+        // log0(type32.toBytes32());
+        // log0(time.toBytes32());
+        // log0(country.toBytes32());
+        // log0(city.toBytes32());
+        // log0(facilityName.toBytes32());
+        // log0(timeZone.toBytes32());
+        // log0(desc.toBytes32());
+        // log0(actionCode.toBytes32());
     }
 
     // _updateType: 0 means overwrite, 1 means add
     function updateTracks(string _num, string _tracks, uint _updateType) public {
-        uint index = 0;
-        uint numValidIndex = 0;
-        bool found = false;
+        uint startIndex = 0;
 
         // check param
         if ((0 == bytes(_num).length) || (0 == bytes(_tracks).length)) {
@@ -98,29 +232,38 @@ contract Logistics {
         }
 
         // find num
-        (found, index) = findNum(_num);
-        if (!found) {
+        if (!findNum(_num)) {
             return;
         }
 
-        // find num valid index
-        (found, numValidIndex) = findNumUpdateValidIndex(_num);
-        if (!found) {
-            return;
-        }
+        // get valid num name
+        string memory validNum = getValidNumName(_num);
 
-        if (0 != trackAddress_) {
-            LogisticsTrack(trackAddress_).updateTracks(_num, numValidIndex, _tracks, _updateType);
+        if (_tracks.keyExists("trackElementList")) {
+
+            string memory tracks = _tracks.getArrayValueByKey("trackElementList");
+            if (0 != bytes(tracks).length) {
+                tracks.split("&", trackTmps_[validNum]);
+
+                if (0 == _updateType) {
+                    // remove all tracks at first
+                    removeTracks(validNum);
+                }
+
+                startIndex = trackCounts_[validNum];
+
+                //alloc tracks
+                allocTracks(validNum, trackTmps_[validNum].length);
+
+                for (uint i=0; i<trackTmps_[validNum].length; i++) {
+                    updateTrack(validNum, startIndex+i, trackTmps_[validNum][i]);
+                }
+            }
         }
     }
 
     function updateBrief(string _num, string _transNum, string _model,
                          string _destinationCountry, string _lastStatus) public {
-        
-        uint index = 0;
-        uint numValidIndex = 0;
-        bool found = false;
-
         // check param
         if ((0 == bytes(_num).length) || (0 == bytes(_transNum).length) || (0 == bytes(_model).length)
             || (0 == bytes(_destinationCountry).length) || (0 == bytes(_lastStatus).length)) {
@@ -128,31 +271,22 @@ contract Logistics {
         }
 
         // find num
-        (found, index) = findNum(_num);
-        if (!found) {
+        if (!findNum(_num)) {
             // add num
-            nums_.push(_num);
+            addNum(_num);
         }
 
-        // find num valid index
-        (found, numValidIndex) = findNumUpdateValidIndex(_num);
-        if (!found) {
-            // alloc num
-            infos_[_num].length ++;
-        }
+        // get valid num name
+        string memory validNum = getValidNumName(_num);
 
         // update brief
-        infos_[_num][numValidIndex].num_                = _num;
-        infos_[_num][numValidIndex].transNum_           = _transNum;
-        infos_[_num][numValidIndex].model_              = _model;
-        infos_[_num][numValidIndex].destinationCountry_ = _destinationCountry;
-        infos_[_num][numValidIndex].lastStatus_         = _lastStatus;
+        briefs_[validNum].transNum_           = _transNum;
+        briefs_[validNum].model_              = _model;
+        briefs_[validNum].destinationCountry_ = _destinationCountry;
+        briefs_[validNum].lastStatus_         = _lastStatus;
     }
 
     function updateBriefEx(string _brief) public {
-        uint index = 0;
-        uint numValidIndex = 0;
-        bool found = false;
         string memory num = "";
         string memory transNum = "";
         string memory model = "";
@@ -173,50 +307,43 @@ contract Logistics {
         }
 
         // find num
-        (found, index) = findNum(num);
-        if (!found) {
+        if (!findNum(num)) {
             // add num
-            nums_.push(num);
+            addNum(num);
         }
 
-        // find num valid index
-        (found, numValidIndex) = findNumUpdateValidIndex(num);
-        if (!found) {
-            // alloc num
-            infos_[num].length ++;
-        }
-
-        infos_[num][numValidIndex].num_ = num;
+        // get valid num name
+        string memory validNum = getValidNumName(num);
 
         if (_brief.keyExists("transNum")) {
             transNum = _brief.getStringValueByKey("transNum");
             if (0 != bytes(transNum).length) {
-                infos_[num][numValidIndex].transNum_ = transNum;
+                briefs_[validNum].transNum_ = transNum;
             }
         }
 
         if (_brief.keyExists("model")) {
             model = _brief.getStringValueByKey("model");
             if (0 != bytes(model).length) {
-                infos_[num][numValidIndex].model_ = model;
+                briefs_[validNum].model_ = model;
             }
         }
 
         if (_brief.keyExists("destinationCountry")) {
             destinationCountry = _brief.getStringValueByKey("destinationCountry");
             if (0 != bytes(destinationCountry).length) {
-                infos_[num][numValidIndex].destinationCountry_ = destinationCountry;
+                briefs_[validNum].destinationCountry_ = destinationCountry;
             }
         }
 
         if (_brief.keyExists("lastStatus")) {
             lastStatus = _brief.getStringValueByKey("lastStatus");
             if (0 != bytes(lastStatus).length) {
-                infos_[num][numValidIndex].lastStatus_ = lastStatus;
+                briefs_[validNum].lastStatus_ = lastStatus;
             }
         }
 
-        // log0(num.toBytes32());
+        // log0(validNum.toBytes32());
         // log0(transNum.toBytes32());
         // log0(model.toBytes32());
         // log0(destinationCountry.toBytes32());
@@ -261,67 +388,88 @@ contract Logistics {
     }
 
     function remove(string _num) public {
-        uint index = 0;
-        uint numValidIndex = 0;
-        bool found = false;
-
         // check param
         if (0 == bytes(_num).length) {
             return;
         }
 
         // find num
-        (found, index) = findNum(_num);
-        if (!found) {
-            return;
-        }
-
-        // find num valid index
-        (found, numValidIndex) = findNumUpdateValidIndex(_num);
-        if (!found) {
+        if (!findNum(_num)) {
             return;
         }
 
         // remove num
-        removeNum(index);
+        removeNum(_num);
+
+        // get valid num name
+        string memory validNum = getValidNumName(_num);
 
         // remove tracks at first
-        if (0 != trackAddress_) {
-            LogisticsTrack(trackAddress_).removeTracks(_num, numValidIndex);
-        }
+        removeTracks(validNum);
 
-        // delete brief
-        delete infos_[_num][numValidIndex];
+        // remove brief
+        delete briefs_[validNum];
     }
 
-    function checkNum(string _num) public view returns (bool) {
-        uint index = 0;
-        uint numValidIndex = 0;
-        bool found = false;
- 
+    function invalid(string _num) public {
         // check param
         if (0 == bytes(_num).length) {
-            return false;
+            return;
         }
 
         // find num
-        (found, index) = findNum(_num);
-        if (!found) {
-            return false;
+        if (!findNum(_num)) {
+            return;
         }
 
-        // find num valid index
-        (found, numValidIndex) = findNumUpdateValidIndex(_num);
-        if (!found) {
-            return false;
+        // remove num
+        removeNum(_num);
+
+        numInvalidCounts_[_num] ++;
+    }
+
+    function getTracks(string _num) public view returns (string) {
+        string memory trackName = "";
+        string memory str = "";
+
+        // _num = "JNTCU0600046683YQ";
+
+        // check param
+        if (0 == bytes(_num).length) {
+            return str;
         }
 
-        return true;
+        // find num
+        if (!findNum(_num)) {
+            return str;
+        }
+
+        // get valid num name
+        string memory validNum = getValidNumName(_num);
+
+        str = "[";
+        for (uint i=0; i<trackCounts_[validNum]; i++) {
+            trackName = validNum.concat("-", i.toString());
+
+            str = str.concat("{", tracks_[trackName].type_.toKeyValue("type"), ",");
+            str = str.concat(tracks_[trackName].time_.toKeyValue("time"), ",");
+            str = str.concat(tracks_[trackName].country_.toKeyValue("country"), ",");
+            str = str.concat(tracks_[trackName].city_.toKeyValue("city"), ",");
+            str = str.concat(tracks_[trackName].facilityName_.toKeyValue("facilityName"), ",");
+            str = str.concat(tracks_[trackName].timeZone_.toKeyValue("timeZone"), ",");
+            str = str.concat(tracks_[trackName].desc_.toKeyValue("desc"), ",");
+            str = str.concat(tracks_[trackName].actionCode_.toKeyValue("actionCode"), "}");
+
+            if (trackCounts_[validNum] != (i+1)) {
+                str = str.concat(",");
+            }
+        }
+        str = str.concat("]");
+
+        return str;
     }
 
     function getBrief(string _num) public view returns (string, string, string, string, string) {
-        uint index = 0;
-        uint numValidIndex = 0;
         bool found = false;
         string[5] memory str = ["", "", "", "", ""];
 
@@ -333,29 +481,24 @@ contract Logistics {
         }
 
         // find num
-        (found, index) = findNum(_num);
+        found = findNum(_num);
         if (!found) {
             return (str[0], str[1], str[2], str[3], str[4]);
         }
 
-        // find num valid index
-        (found, numValidIndex) = findNumUpdateValidIndex(_num);
-        if (!found) {
-            return (str[0], str[1], str[2], str[3], str[4]);
-        }
+        // get valid num name
+        string memory validNum = getValidNumName(_num);
 
         str[0] = _num;
-        str[1] = infos_[_num][numValidIndex].transNum_;
-        str[2] = infos_[_num][numValidIndex].model_;
-        str[3] = infos_[_num][numValidIndex].destinationCountry_;
-        str[4] = infos_[_num][numValidIndex].lastStatus_;
+        str[1] = briefs_[validNum].transNum_;
+        str[2] = briefs_[validNum].model_;
+        str[3] = briefs_[validNum].destinationCountry_;
+        str[4] = briefs_[validNum].lastStatus_;
 
         return (str[0], str[1], str[2], str[3], str[4]);
     }
 
     function getBriefEx(string _num) public view returns (string) {
-        uint index = 0;
-        uint numValidIndex = 0;
         bool found = false;
         string memory str = "";
 
@@ -367,112 +510,173 @@ contract Logistics {
         }
 
         // find num
-        (found, index) = findNum(_num);
+        found = findNum(_num);
         if (!found) {
             return str;
         }
 
-        // find num valid index
-        (found, numValidIndex) = findNumUpdateValidIndex(_num);
-        if (!found) {
-            return str;
-        }
+        // get valid num name
+        string memory validNum = getValidNumName(_num);
 
         str = str.concat("{", _num.toKeyValue("num"), ",");
-        str = str.concat(infos_[_num][numValidIndex].transNum_.toKeyValue("transNum"), ",");
-        str = str.concat(infos_[_num][numValidIndex].model_.toKeyValue("model"), ",");
-        str = str.concat(infos_[_num][numValidIndex].destinationCountry_.toKeyValue("destinationCountry"), ",");
-        str = str.concat(infos_[_num][numValidIndex].lastStatus_.toKeyValue("lastStatus"), "}");
+        str = str.concat(briefs_[validNum].transNum_.toKeyValue("transNum"), ",");
+        str = str.concat(briefs_[validNum].model_.toKeyValue("model"), ",");
+        str = str.concat(briefs_[validNum].destinationCountry_.toKeyValue("destinationCountry"), ",");
+        str = str.concat(briefs_[validNum].lastStatus_.toKeyValue("lastStatus"), "}");
 
         return str;
     }
 
     function getBriefByIndex(uint _index) public view returns (string, string, string, string, string) {
-        uint numValidIndex = 0;
-        bool found = false;
         string memory num = "";
         string[5] memory str = ["", "", "", "", ""];
 
         // check param
-        if (nums_.length <= _index) {
+        if (numTotalCount_ <= _index) {
             return (str[0], str[1], str[2], str[3], str[4]);
         }
 
-        num = nums_[_index];
+        num = numNames_[_index];
 
-        // find num valid index
-        (found, numValidIndex) = findNumUpdateValidIndex(num);
-        if (!found) {
-            return (str[0], str[1], str[2], str[3], str[4]);
-        }
+        // get valid num name
+        string memory validNum = getValidNumName(num);
 
         str[0] = num;
-        str[1] = infos_[num][numValidIndex].transNum_;
-        str[2] = infos_[num][numValidIndex].model_;
-        str[3] = infos_[num][numValidIndex].destinationCountry_;
-        str[4] = infos_[num][numValidIndex].lastStatus_;
+        str[1] = briefs_[validNum].transNum_;
+        str[2] = briefs_[validNum].model_;
+        str[3] = briefs_[validNum].destinationCountry_;
+        str[4] = briefs_[validNum].lastStatus_;
 
         return (str[0], str[1], str[2], str[3], str[4]);
     }
 
     function getBriefExByIndex(uint _index) public view returns (string) {
-        uint numValidIndex = 0;
-        bool found = false;
         string memory num = "";
         string memory str = "";
 
         // check param
-        if (nums_.length <= _index) {
+        if (numTotalCount_ <= _index) {
             return str;
         }
 
-        num = nums_[_index];
+        num = numNames_[_index];
 
-        // find num valid index
-        (found, numValidIndex) = findNumUpdateValidIndex(num);
-        if (!found) {
-            return str;
-        }
+        // get valid num name
+        string memory validNum = getValidNumName(num);
 
         str = str.concat("{", num.toKeyValue("num"), ",");
-        str = str.concat(infos_[num][numValidIndex].transNum_.toKeyValue("transNum"), ",");
-        str = str.concat(infos_[num][numValidIndex].model_.toKeyValue("model"), ",");
-        str = str.concat(infos_[num][numValidIndex].destinationCountry_.toKeyValue("destinationCountry"), ",");
-        str = str.concat(infos_[num][numValidIndex].lastStatus_.toKeyValue("lastStatus"), "}");
+        str = str.concat(briefs_[validNum].transNum_.toKeyValue("transNum"), ",");
+        str = str.concat(briefs_[validNum].model_.toKeyValue("model"), ",");
+        str = str.concat(briefs_[validNum].destinationCountry_.toKeyValue("destinationCountry"), ",");
+        str = str.concat(briefs_[validNum].lastStatus_.toKeyValue("lastStatus"), "}");
 
         return str;
     }
 
+    function exist(string _num) public view returns (bool) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return false;
+        }
+
+        return findNum(_num);
+    }
+
     function number() public view returns (uint) {
-        return nums_.length;
+        return numTotalCount_;
     }
 
     function numberOfTracks(string _num) public view returns (uint) {
-        uint index = 0;
-        uint numValidIndex = 0;
-        bool found = false;
-
         // check param
         if (0 == bytes(_num).length) {
             return 0;
         }
 
         // find num
-        (found, index) = findNum(_num);
-        if (!found) {
+        if (!findNum(_num)) {
             return 0;
         }
 
-        // find num valid index
-        (found, numValidIndex) = findNumUpdateValidIndex(_num);
-        if (!found) {
-            return 0;
-        }
+        // get valid num name
+        string memory validNum = getValidNumName(_num);
 
-        if (0 != trackAddress_) {
-            return LogisticsTrack(trackAddress_).numberOfTracks(_num, numValidIndex);
-        }
-
-        return 0;
+        return trackCounts_[validNum];
     }
+
+    // for invalid debug
+    function numberOfInvalidNums(string _num) public view returns (uint) {
+        return numInvalidCounts_[_num];
+    }
+
+    function getBriefInvalid(string _num, uint _invalidIndex) public view returns (string, string, string, string, string) {
+        string[5] memory str = ["", "", "", "", ""];
+
+        // check param
+        if (0 == bytes(_num).length) {
+            return (str[0], str[1], str[2], str[3], str[4]);
+        }
+
+        if (numInvalidCounts_[_num] <= _invalidIndex) {
+            return (str[0], str[1], str[2], str[3], str[4]);
+        }
+
+        // find num
+        // if (!findNum(_num)) {
+        //     return (str[0], str[1], str[2], str[3], str[4]);
+        // }
+
+        // get invalid num name
+        string memory invalidNum = _num.concat("-", _invalidIndex.toString());
+
+        str[0] = invalidNum;
+        str[1] = briefs_[invalidNum].transNum_;
+        str[2] = briefs_[invalidNum].model_;
+        str[3] = briefs_[invalidNum].destinationCountry_;
+        str[4] = briefs_[invalidNum].lastStatus_;
+
+        return (str[0], str[1], str[2], str[3], str[4]);
+    }
+
+    // function getTracksInvalid(string _num, uint _invalidIndex) public view returns (string) {
+    //     string memory trackName = "";
+    //     string memory str = "";
+
+    //     // check param
+    //     if (0 == bytes(_num).length) {
+    //         return str;
+    //     }
+
+    //     if (numInvalidCounts_[_num] <= _invalidIndex) {
+    //         return str;
+    //     }
+
+    //     // find num
+    //     // if (!findNum(_num)) {
+    //     //     return str;
+    //     // }
+
+    //     // find invalid num name
+    //     string memory invalidNum = _num.concat("-", _invalidIndex.toString());
+
+    //     str = "[";
+    //     for (uint i=0; i<trackCounts_[invalidNum]; i++) {
+    //         trackName = invalidNum.concat("-", i.toString());
+
+    //         str = str.concat("{", tracks_[trackName].type_.toKeyValue("type"), ",");
+    //         str = str.concat(tracks_[trackName].time_.toKeyValue("time"), ",");
+    //         str = str.concat(tracks_[trackName].country_.toKeyValue("country"), ",");
+    //         str = str.concat(tracks_[trackName].city_.toKeyValue("city"), ",");
+    //         str = str.concat(tracks_[trackName].facilityName_.toKeyValue("facilityName"), ",");
+    //         str = str.concat(tracks_[trackName].timeZone_.toKeyValue("timeZone"), ",");
+    //         str = str.concat(tracks_[trackName].desc_.toKeyValue("desc"), ",");
+    //         str = str.concat(tracks_[trackName].actionCode_.toKeyValue("actionCode"), "}");
+
+    //         if (trackCounts_[invalidNum] != (i+1)) {
+    //             str = str.concat(",");
+    //         }
+    //     }
+    //     str = str.concat("]");
+
+    //     return str;
+    // }
 }
