@@ -227,3 +227,22 @@ function uF_getSingleParameter(index, func){
             else  console.log("error: " + error);
         });
 }
+
+///////////////////////////
+function uF_transferEth(destAddressID, amountID, logID){  
+    var node = uF_getUsername();
+    var myContract = web3.eth.contract(uF_getControlApisAbi());
+    var myControlApi = myContract.at(uF_getControlApisAdr());
+
+    var destAddress = document.getElementById(destAddressID).value;
+    var amount = document.getElementById(amountID).value;
+
+    if (destAddress != 0 && amount > 0) {
+        uf_getControlApi().elementwithDrawEth(1, nodeName, destAddress, web3.toWei(amount, 'ether') , 
+            {from: uf_getEthAccount(), gasPrice: uf_getGasPrice(1), gas : uf_getGasLimit(55000)}, 
+            function(error, result){ 
+            if(!error) uF_showHashResult(logID, result);
+            else console.log("error: " + error);
+        });
+    }
+}
