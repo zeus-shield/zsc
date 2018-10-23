@@ -246,3 +246,20 @@ function uF_transferEth(destAddressID, amountID, logID){
         });
     }
 }
+
+///////////////////////////
+function uF_loadBindedEntities(type, func) {
+    var node = uF_getUsername();
+    var myContract = web3.eth.contract(uF_getControlApisAbi());
+    var myControlApi = myContract.at(uF_getControlApisAdr());
+
+    uF_numBindedEntities(node, type, function(num) {
+        for (var i = 0; i < num; ++i) {
+            myControlApi.getBindedElementNameByIndex(type, i, function(index, value) {
+                uF_parameterValue[index] = value;
+                if (index == num - 1)
+                    func(index);
+            });
+        } 
+    });
+}
