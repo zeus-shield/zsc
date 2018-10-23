@@ -6,10 +6,10 @@
 pragma solidity ^0.4.21;
 // pragma experimental ABIEncoderV2;
 
-contract Logistics {
+contract LogisticsTrack {
 
     // Constructor
-    function Logistics() public {}
+    function LogisticsTrack() public {}
 
     // _updateType: 0 means overwrite, 1 means add
     function updateTracks(string _num, string _tracks, uint _updateType) public {}
