@@ -2,7 +2,7 @@
 
 SFLAGS="--optimize --overwrite --pretty-json --combined-json bin,abi"
 CORE="sol"
-
+IMPORTPATH="/=/"
 SOURCES=(
 logistics_string_min
 logistics_string
@@ -14,7 +14,7 @@ SOURCE=${SOURCES[i]}".sol";
 echo "########## compiling "${SOURCE}" ##########"
 
 # Compiling to JSON file(build/xxx/combined.json)
-solc ${SFLAGS} ./${CORE}/${SOURCE} -o build/${SOURCES[i]}
+solc ${SFLAGS} ${IMPORTPATH} ./${CORE}/${SOURCE} -o build/${SOURCES[i]}
 
 # Compiling to JS file(WebAdm/js/compiled_xxx.js)
 # COMPILED="`solc ${SFLAGS} ./${CORE}/${SOURCE}`"
