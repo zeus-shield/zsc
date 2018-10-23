@@ -8,8 +8,16 @@ pragma solidity ^0.4.21;
 
 contract Logistics {
 
+    address briefAddr_;
+    address trackAddr_;
+
     // Constructor
     function Logistics() public {}
+
+    function setup(address _briefAddr, address _trackAddr) public {
+        briefAddr_ = _briefAddr;
+        trackAddr_ = _trackAddr;
+    }
 
     // _updateType: 0 means overwrite, 1 means add
     function updateTracks(string _num, string _tracks, uint _updateType) public {}
