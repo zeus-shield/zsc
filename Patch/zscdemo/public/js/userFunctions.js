@@ -213,4 +213,17 @@ function uF_loadElementParameterValues(num, func) {
                 func(index);
         });
     } 
-} 
+
+
+function uF_getSingleParameter(index, func){ 
+    var node = uF_getUsername();
+    var myContract = web3.eth.contract(uF_getControlApisAbi());
+    var myControlApi = myContract.at(uF_getControlApisAdr());
+
+    myControlApi.getElementParameter(node, uF_parameters[index], 
+        {from: uF_getEthAccount()},
+        function(error, value){ 
+            if(!error) func(index, value);
+            else  console.log("error: " + error);
+        });
+}
