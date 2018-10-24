@@ -72,7 +72,7 @@ contract Logistics {
         numTotalCount_ = 0;
     }
 
-    function findNum(string _num) internal view returns (bool) {
+    function _findNum(string _num) internal view returns (bool) {
         // check num total count
         if (0 == numTotalCount_) {
             return false;
@@ -81,7 +81,7 @@ contract Logistics {
         return numExists_[_num];
     }
 
-    function addNum(string _num) internal {
+    function _addNum(string _num) internal {
         // check param
         if (0 == bytes(_num).length) {
             return;
@@ -94,7 +94,7 @@ contract Logistics {
         numTotalCount_ ++;
     }
 
-    function removeNum(string _num) internal {
+    function _removeNum(string _num) internal {
         string memory lastNumName = "";
         uint currentIndex = 0;
 
@@ -122,15 +122,15 @@ contract Logistics {
         numTotalCount_ --;
     }
  
-    function getValidNumName(string _num) internal view returns (string) {
+    function _getValidNumName(string _num) internal view returns (string) {
         return _num.concat("-", numInvalidCounts_[_num].toString());
     }
 
-    function allocTracks(string _num, uint _length) internal {
+    function _allocTracks(string _num, uint _length) internal {
         trackCounts_[_num] += _length;
     }
 
-    function removeTracks(string _num) internal {
+    function _removeTracks(string _num) internal {
         string memory trackName = "";
         for (uint i=0; i<trackCounts_[_num]; i++) {
             trackName = _num.concat("-", i.toString());
@@ -139,7 +139,7 @@ contract Logistics {
         trackCounts_[_num] = 0;
     }
 
-    function updateTrack(string _num, uint _index, string _track) internal {
+    function _updateTrack(string _num, uint _index, string _track) internal {
         string memory trackName = "";
         string memory type32 = "";
         string memory time = "";
@@ -233,12 +233,12 @@ contract Logistics {
         }
 
         // find num
-        if (!findNum(_num)) {
+        if (!_findNum(_num)) {
             return;
         }
 
         // get valid num name
-        string memory validNum = getValidNumName(_num);
+        string memory validNum = _getValidNumName(_num);
 
         if (_tracks.keyExists("trackElementList")) {
 
@@ -248,16 +248,16 @@ contract Logistics {
 
                 if (0 == _updateType) {
                     // remove all tracks at first
-                    removeTracks(validNum);
+                    _removeTracks(validNum);
                 }
 
                 startIndex = trackCounts_[validNum];
 
                 //alloc tracks
-                allocTracks(validNum, trackTmps_[validNum].length);
+                _allocTracks(validNum, trackTmps_[validNum].length);
 
                 for (uint i=0; i<trackTmps_[validNum].length; i++) {
-                    updateTrack(validNum, startIndex+i, trackTmps_[validNum][i]);
+                    _updateTrack(validNum, startIndex+i, trackTmps_[validNum][i]);
                 }
             }
         }
@@ -272,13 +272,13 @@ contract Logistics {
         }
 
         // find num
-        if (!findNum(_num)) {
+        if (!_findNum(_num)) {
             // add num
-            addNum(_num);
+            _addNum(_num);
         }
 
         // get valid num name
-        string memory validNum = getValidNumName(_num);
+        string memory validNum = _getValidNumName(_num);
 
         // update brief
         briefs_[validNum].transNum_           = _transNum;
@@ -308,13 +308,13 @@ contract Logistics {
         }
 
         // find num
-        if (!findNum(num)) {
+        if (!_findNum(num)) {
             // add num
-            addNum(num);
+            _addNum(num);
         }
 
         // get valid num name
-        string memory validNum = getValidNumName(num);
+        string memory validNum = _getValidNumName(num);
 
         if (_brief.keyExists("transNum")) {
             transNum = _brief.getStringValueByKey("transNum");
@@ -395,18 +395,18 @@ contract Logistics {
         }
 
         // find num
-        if (!findNum(_num)) {
+        if (!_findNum(_num)) {
             return;
         }
 
         // remove num
-        removeNum(_num);
+        _removeNum(_num);
 
         // get valid num name
-        string memory validNum = getValidNumName(_num);
+        string memory validNum = _getValidNumName(_num);
 
         // remove tracks at first
-        removeTracks(validNum);
+        _removeTracks(validNum);
 
         // remove brief
         delete briefs_[validNum];
@@ -419,12 +419,12 @@ contract Logistics {
         }
 
         // find num
-        if (!findNum(_num)) {
+        if (!_findNum(_num)) {
             return;
         }
 
         // remove num
-        removeNum(_num);
+        _removeNum(_num);
 
         numInvalidCounts_[_num] ++;
     }
@@ -441,12 +441,12 @@ contract Logistics {
         }
 
         // find num
-        if (!findNum(_num)) {
+        if (!_findNum(_num)) {
             return str;
         }
 
         // get valid num name
-        string memory validNum = getValidNumName(_num);
+        string memory validNum = _getValidNumName(_num);
 
         str = "[";
         for (uint i=0; i<trackCounts_[validNum]; i++) {
@@ -482,13 +482,13 @@ contract Logistics {
         }
 
         // find num
-        found = findNum(_num);
+        found = _findNum(_num);
         if (!found) {
             return (str[0], str[1], str[2], str[3], str[4]);
         }
 
         // get valid num name
-        string memory validNum = getValidNumName(_num);
+        string memory validNum = _getValidNumName(_num);
 
         str[0] = _num;
         str[1] = briefs_[validNum].transNum_;
@@ -511,13 +511,13 @@ contract Logistics {
         }
 
         // find num
-        found = findNum(_num);
+        found = _findNum(_num);
         if (!found) {
             return str;
         }
 
         // get valid num name
-        string memory validNum = getValidNumName(_num);
+        string memory validNum = _getValidNumName(_num);
 
         str = str.concat("{", _num.toKeyValue("num"), ",");
         str = str.concat(briefs_[validNum].transNum_.toKeyValue("transNum"), ",");
@@ -540,7 +540,7 @@ contract Logistics {
         num = numNames_[_index];
 
         // get valid num name
-        string memory validNum = getValidNumName(num);
+        string memory validNum = _getValidNumName(num);
 
         str[0] = num;
         str[1] = briefs_[validNum].transNum_;
@@ -563,7 +563,7 @@ contract Logistics {
         num = numNames_[_index];
 
         // get valid num name
-        string memory validNum = getValidNumName(num);
+        string memory validNum = _getValidNumName(num);
 
         str = str.concat("{", num.toKeyValue("num"), ",");
         str = str.concat(briefs_[validNum].transNum_.toKeyValue("transNum"), ",");
@@ -580,7 +580,7 @@ contract Logistics {
             return false;
         }
 
-        return findNum(_num);
+        return _findNum(_num);
     }
 
     function number() public view returns (uint) {
@@ -594,12 +594,12 @@ contract Logistics {
         }
 
         // find num
-        if (!findNum(_num)) {
+        if (!_findNum(_num)) {
             return 0;
         }
 
         // get valid num name
-        string memory validNum = getValidNumName(_num);
+        string memory validNum = _getValidNumName(_num);
 
         return trackCounts_[validNum];
     }
@@ -627,7 +627,7 @@ contract Logistics {
         }
 
         // find num
-        // if (!findNum(_num)) {
+        // if (!_findNum(_num)) {
         //     return (str[0], str[1], str[2], str[3], str[4]);
         // }
 
@@ -657,7 +657,7 @@ contract Logistics {
     //     }
 
     //     // find num
-    //     // if (!findNum(_num)) {
+    //     // if (!_findNum(_num)) {
     //     //     return str;
     //     // }
 
