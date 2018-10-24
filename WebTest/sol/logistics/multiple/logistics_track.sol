@@ -6,8 +6,13 @@
 pragma solidity ^0.4.21;
 // pragma experimental ABIEncoderV2;
 
+import "../../utillib/LibString.sol";
+import "../../utillib/LibInt.sol";
+
 contract LogisticsTrack {
 
+    using LibString for *;
+    using LibInt for *;
     // Constructor
     function LogisticsTrack() public {}
 
