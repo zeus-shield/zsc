@@ -227,7 +227,8 @@ contract Logistics {
         uint startIndex = 0;
 
         // check param
-        if ((0 == bytes(_num).length) || (0 == bytes(_tracks).length)) {
+        if ((0 == bytes(_num).length) || (0 == bytes(_tracks).length)
+            || ((0 != _updateType) && (1 != _updateType))) {
             return;
         }
 
@@ -605,6 +606,11 @@ contract Logistics {
 
     // for invalid debug
     function numberOfInvalidNums(string _num) public view returns (uint) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return 0;
+        }
+
         return numInvalidCounts_[_num];
     }
 
