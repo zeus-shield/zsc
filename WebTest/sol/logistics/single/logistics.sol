@@ -49,22 +49,22 @@ contract Logistics {
     mapping(string => uint) private numInvalidCounts_;
     /*************************************************/
 
-    /** @desc string(valid num name: original num name + valid num index) => Brief(brief info)
+    /** @desc string(valid/invalid num name: original num name + valid/invalid num index) => Brief(brief info)
       * @eg JNTCU0600046683YQ-3 => Brief
       */
     mapping(string => Brief) private briefs_;
 
-    /** @desc string(valid num name: original num name + valid num index) => uint(track count)
+    /** @desc string(valid/invalid num name: original num name + valid/invalid num index) => uint(track count)
       * @eg JNTCU0600046683YQ-3 => 4
       */
     mapping(string => uint) private trackCounts_;
 
-    /** @desc string(track name: original num name + valid num index + track index) => Track(track info)
+    /** @desc string(track name: original num name + valid/invalid num index + track index) => Track(track info)
       * @eg JNTCU0600046683YQ-3-5 => Track
       */
     mapping(string => Track) private tracks_;  
 
-    /** @desc string(valid num name: original num name + valid num index) => string[](track temps) */
+    /** @desc string(valid/invalid num name: original num name + valid/invalid num index) => string[](track temps) */
     mapping(string => string[]) private trackTmps_;
 
     // Constructor
@@ -222,7 +222,7 @@ contract Logistics {
         // log0(actionCode.toBytes32());
     }
 
-    // _updateType: 0 means overwrite, 1 means add
+    // _updateType: 0 means overwrite, 1 means append
     function updateTracks(string _num, string _tracks, uint _updateType) public {
         uint startIndex = 0;
 
