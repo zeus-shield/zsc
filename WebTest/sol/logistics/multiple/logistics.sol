@@ -6,9 +6,15 @@
 pragma solidity ^0.4.21;
 // pragma experimental ABIEncoderV2;
 
+import "./Logistics_brief.sol";
+import "./Logistics_track.sol";
+
 contract Logistics {
 
+    /** @desc brief contract address */
     address briefAddr_;
+
+    /** @desc track contract address */
     address trackAddr_;
 
     // Constructor
