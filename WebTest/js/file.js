@@ -59,7 +59,6 @@ export default function file(module, contractName, input) {
                     } else {
                         elementId = window.outputDeployElement;
                     }
-                    test.setContractName(contractName);
                     break;
                 }
                 case 'Analysis': {
