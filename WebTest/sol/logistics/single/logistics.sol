@@ -43,7 +43,7 @@ contract Logistics {
     mapping(string => uint) private numIndexs_;
 
     /** @desc string(original num name) => bool(num exist flag) */
-    mapping(string => bool) private numExists_;
+    mapping(string => bool) private numExist_;
 
     /** @desc string(original num name) => uint(num invalid count) */
     mapping(string => uint) private numInvalidCounts_;
@@ -78,7 +78,7 @@ contract Logistics {
             return false;
         }
 
-        return numExists_[_num];
+        return numExist_[_num];
     }
 
     function _addNum(string _num) internal {
@@ -89,7 +89,7 @@ contract Logistics {
 
         numNames_[numTotalCount_] = _num;
         numIndexs_[_num] = numTotalCount_;
-        numExists_[_num] = true;
+        numExist_[_num] = true;
 
         numTotalCount_ ++;
     }
@@ -117,7 +117,7 @@ contract Logistics {
         numIndexs_[lastNumName] = currentIndex;
         delete numIndexs_[_num];
 
-        numExists_[_num] = false;
+        numExist_[_num] = false;
 
         numTotalCount_ --;
     }
@@ -404,7 +404,7 @@ contract Logistics {
         // get valid num name
         string memory validNum = _getValidNumName(_num);
 
-        // remove tracks at first
+        // remove tracks
         _removeTracks(validNum);
 
         // remove brief
