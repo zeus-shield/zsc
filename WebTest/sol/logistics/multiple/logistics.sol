@@ -18,7 +18,4 @@ contract LogisticsCore {
     function numberOfInvalid(string _num) public view returns (uint);
 }
 
-contract Logistics {
-
-
-}
+contract Logistics {}
