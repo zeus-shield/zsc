@@ -15,7 +15,7 @@ import TestLogistics from './test_logistics.js';
 import TestLogisticsRaw from './test_logistics_raw.js';
 import TestAnalysis from './test_analysis.js';
 
-export default function main(module, operation) {
+export default function main(module, operation, para1, para2) {
     let test = 0;
     let string = `Module:[${module}], Operation:[${operation}]`;
     //alert(string);
@@ -79,7 +79,7 @@ export default function main(module, operation) {
 
     if(0 != test)
     {
-        test.do(operation);
+        test.do(operation, para1, para2);
     }
 }
 
