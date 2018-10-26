@@ -126,20 +126,20 @@ contract Logistics {
         return _num.concat("-", numInvalidCounts_[_num].toString());
     }
 
-    function _allocTracks(string _num, uint _length) internal {
-        trackCounts_[_num] += _length;
+    function _allocTracks(string _validNum, uint _length) internal {
+        trackCounts_[_validNum] += _length;
     }
 
-    function _removeTracks(string _num) internal {
+    function _removeTracks(string _validNum) internal {
         string memory trackName = "";
-        for (uint i=0; i<trackCounts_[_num]; i++) {
-            trackName = _num.concat("-", i.toString());
+        for (uint i=0; i<trackCounts_[_validNum]; i++) {
+            trackName = _validNum.concat("-", i.toString());
             delete tracks_[trackName];
         }
-        trackCounts_[_num] = 0;
+        trackCounts_[_validNum] = 0;
     }
 
-    function _updateTrack(string _num, uint _index, string _track) internal {
+    function _updateTrack(string _validNum, uint _index, string _track) internal {
         string memory trackName = "";
         string memory type32 = "";
         string memory time = "";
@@ -150,11 +150,11 @@ contract Logistics {
         string memory desc = "";
         string memory actionCode = "";
 
-        if (trackCounts_[_num] <= _index) {
+        if (trackCounts_[_validNum] <= _index) {
             return;
         }
 
-        trackName = _num.concat("-", _index.toString());
+        trackName = _validNum.concat("-", _index.toString());
 
         if (_track.keyExists("type")) {
             type32 = _track.getStringValueByKey("type");
@@ -354,7 +354,6 @@ contract Logistics {
     function update(string _num, string _transNum, 
                     string _model, string _destinationCountry,
                     string _lastStatus, string _tracks) public {
-
         // update brief
         updateBrief(_num, _transNum, _model, _destinationCountry, _lastStatus);
 
