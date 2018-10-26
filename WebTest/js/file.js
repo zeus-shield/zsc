@@ -6,7 +6,7 @@ import TestLogisticsRaw from './test_logistics_raw.js';
 import TestAnalysis from './test_analysis.js';
 import Output from './output.js';
 
-export default function file(module, input) {
+export default function file(module, contractName, input) {
     //support chrome IE10
     if (window.FileReader) {
         var file = input.files[0];
@@ -47,26 +47,19 @@ export default function file(module, input) {
                     }
                     break;
                 }
-                case 'LogisticsTrackRaw': {
-                    elementId = window.outputDeployTrackElement;
-                    if('undefined' == typeof window.testLogisticsRawClass) {
-                        test = new TestLogisticsRaw();
-                        window.testLogisticsRawClass = test;
-                    } else {
-                        test = window.testLogisticsRawClass;
-                    }
-                    test.setContractName('LogisticsTrack');
-                    break;
-                }
                 case 'LogisticsRaw': {
-                    elementId = window.outputDeployElement;
                     if('undefined' == typeof window.testLogisticsRawClass) {
                         test = new TestLogisticsRaw();
                         window.testLogisticsRawClass = test;
                     } else {
                         test = window.testLogisticsRawClass;
                     }
-                    test.setContractName('Logistics');
+                    if ('LogisticsCore' == contractName) {
+                        elementId = window.outputDeployCoreElement;
+                    } else {
+                        elementId = window.outputDeployElement;
+                    }
+                    test.setContractName(contractName);
                     break;
                 }
                 case 'Analysis': {
