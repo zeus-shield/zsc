@@ -87,6 +87,14 @@ router.get('/getOrder', function (req, res) {
             num:    req.query[0]
     };
     
+    Order.findOne(num, function (err, doc) {
+        if (err) {
+            return console.log(err);
+        }
+        res.json({
+            users: doc
+        })
+   })
 
 })
 
