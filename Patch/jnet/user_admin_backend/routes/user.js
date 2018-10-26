@@ -65,4 +65,19 @@ router.post('/add', function (req, res) {
                  }else {
                  new Order(req.body).save();
                  res.json({
+			status:4,
+			msg:"添加成功",
+			result:'',
+                 })
+	          }
+            })
+        } else {
+	    new Order(req.body).save();
+	    res.json({
+		status:4,
+		msg:"添加成功",
+		result:'',		
+	    })
+	}
+   })
 })
