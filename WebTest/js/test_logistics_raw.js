@@ -4,13 +4,12 @@ import Transaction from './transaction_raw.js';
 import Logistics from './logistics_raw.js';
 
 //private member
-const contractName = Symbol('contractName');
 const compiledJson = Symbol('compiledJson');
 const abi = Symbol('abi');
 const contractAddress = Symbol('contractAddress');
 
-const trackAbi = Symbol('trackAbi');
-const trackContractAddress = Symbol('trackContractAddress');
+const coreAbi = Symbol('coreAbi');
+const coreContractAddress = Symbol('coreContractAddress');
 
 const nextIndex = Symbol('nextIndex');
 const tick = Symbol('tick');
@@ -26,7 +25,6 @@ const getInvalid = Symbol('getInvalid');
 export default class TestLogisticsRaw {
 
     constructor() {
-        this[contractName] = '';
         this[compiledJson] = '';
         this[abi] = '';
         this[contractAddress] = '';
@@ -195,21 +193,17 @@ export default class TestLogisticsRaw {
         window.channelClass.status(index, "idle");
     }
 
-    setContractName(name) {
-        this[contractName] = name;
-    }
-
     setCompiledJson(data) {
         this[compiledJson] = JSON.parse(data);
     }
 
-    deploy(type) {
-        console.log('TestLogisticsRaw.deploy()');
+    deploy(contractName) {
+        console.log('TestLogisticsRaw.deploy(%s)', contractName);
         let elementId;
         let channels = window.channelClass.get("idle");
 
-        if ('track' == type) {
-            elementId = window.outputDeployTrackElement;
+        if ('LogisticsCore' == contractName) {
+            elementId = window.outputDeployCoreElement;
         } else {
             elementId = window.outputDeployElement;
         }
@@ -235,7 +229,7 @@ export default class TestLogisticsRaw {
         for (fullName in this[compiledJson].contracts) {
             //console.log(fullName);
             name = fullName.substr(fullName.indexOf(":") + 1);
-            if (name == this[contractName]) {
+            if (name == contractName) {
                 found = true;
                 break;
             }
@@ -247,9 +241,9 @@ export default class TestLogisticsRaw {
         }
 
         byteCode = '0x' + this[compiledJson].contracts[fullName].bin;
-        if ('track' == type) {
-            this[trackAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
-            contract = web3.eth.contract(this[trackAbi]);
+        if ('LogisticsCore' == contractName) {
+            this[coreAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
+            contract = web3.eth.contract(this[coreAbi]);
         } else {
             this[abi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
             contract = web3.eth.contract(this[abi]);
@@ -265,8 +259,8 @@ export default class TestLogisticsRaw {
                 if('undefined' != typeof transaction) {
                     transaction.do("deploy", data, result, null, function(error, result) {
                         if (!error) {
-                            if ('track' == type) {
-                                handler[trackContractAddress] = result.contractAddress;
+                            if ('LogisticsCore' == contractName) {
+                                handler[coreContractAddress] = result.contractAddress;
                             } else {
                                 handler[contractAddress] = result.contractAddress;
                             }
@@ -300,7 +294,7 @@ export default class TestLogisticsRaw {
         let string = "";
 
         let logistics = new Logistics(this[abi], this[contractAddress]);
-        logistics.setTrackContractAdress(account, key, this[trackContractAddress], function(error, result) {
+        logistics.setTrackContractAdress(account, key, this[coreContractAddress], function(error, result) {
             if (!error) {
                 if ("" != result.status) {
                     if (0x1 == parseInt(result.status)) {
@@ -986,14 +980,11 @@ export default class TestLogisticsRaw {
         })
     }
 
-    do(operation) {
-        console.log('TestLogisticsRaw.do(%s)', operation);
+    do(operation, para1, para2) {
+        console.log('TestLogisticsRaw.do(%s, %s)', operation, para1);
         switch(operation) {
-            case 'DeployTrack':
-                this.deploy('track');
-                break;
             case 'Deploy':
-                this.deploy('');
+                this.deploy(para1);
                 break;
             case 'Setup':
                 this.setup();
