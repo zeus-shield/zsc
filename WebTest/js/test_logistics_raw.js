@@ -240,6 +240,11 @@ export default class TestLogisticsRaw {
             return;
         }
 
+        if ('' == this[compiledJson].contracts[fullName].bin) {
+            Output(elementId, 'small', 'red', "Bin is null in json file!");
+            return;
+        }     
+
         byteCode = '0x' + this[compiledJson].contracts[fullName].bin;
         if ('LogisticsCore' == contractName) {
             this[coreAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
