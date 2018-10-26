@@ -47,3 +47,11 @@ router.post('/getNums', function (req, res) {
             console.log(error);
         });
 })
+
+//添加订单信息至数据库
+router.post('/add', function (req, res) {
+    let order = {
+        num:    req.body.num,
+    };
+    
+})
