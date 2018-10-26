@@ -81,32 +81,32 @@
             <p><h4>2. [logisticsCore] Please compile solidity file and upload compiled json file(logistics_core.json) at first, then deploy!</h4></p>
             <p>
                 <label for="logistics_core">Upload</label>
-                <input type="file" id="logistics_core" onchange="file('LogisticsRawCore', this)" />
-                <button type="button" id="deploy" onclick="main('LogisticsRaw', 'DeployCore')">Deploy</button>
+                <input type="file" id="logistics_core" onchange="file('LogisticsRaw', 'LogisticsCore', this)" />
+                <button type="button" id="deploy" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsCore', '')">Deploy</button>
             </p>
             <p id="output_deploy_core"></p>
 
             <p><h4>3. [Logistics] Please compile solidity file and upload compiled json file(logistics.json) at first, then deploy!</h4></p>
             <p>
                 <label for="logistics">Upload</label>
-                <input type="file" id="logistics" onchange="file('LogisticsRaw', this)" />
-                <button type="button" id="deploy" onclick="main('LogisticsRaw', 'Deploy')">Deploy</button>
+                <input type="file" id="logistics" onchange="file('LogisticsRaw', 'Logistics', this)" />
+                <button type="button" id="deploy" onclick="main('LogisticsRaw', 'Deploy', 'Logistics', '')">Deploy</button>
             </p>
             <p id="output_deploy"></p>
 
             <p><h4>4. Setup</h4></p>
             <p>
-                <button type="button" id="setup" onclick="main('LogisticsRaw', 'Setup')">Setup</button>
+                <button type="button" id="setup" onclick="main('LogisticsRaw', 'Setup', '', '')">Setup</button>
             </p>
             <p id="output_setup"></p>
 
             <p><h4>5. Operation</h4></p>
             <p>
-                <button type="button" id="create" onclick="main('LogisticsRaw', 'Create')">Create</button>
-                <button type="button" id="update" onclick="main('LogisticsRaw', 'Update')">Update</button>
-                <button type="button" id="update" onclick="main('LogisticsRaw', 'Remove')">Remove</button>
-                <button type="button" id="update" onclick="main('LogisticsRaw', 'DebugBrief')">DebugBrief</button>
-                <button type="button" id="get" onclick="main('LogisticsRaw', 'Misc')">Misc</button>
+                <button type="button" id="create" onclick="main('LogisticsRaw', 'Create', '', '')">Create</button>
+                <button type="button" id="update" onclick="main('LogisticsRaw', 'Update', '', '')">Update</button>
+                <button type="button" id="update" onclick="main('LogisticsRaw', 'Remove', '', '')">Remove</button>
+                <button type="button" id="update" onclick="main('LogisticsRaw', 'DebugBrief', '', '')">DebugBrief</button>
+                <button type="button" id="get" onclick="main('LogisticsRaw', 'Misc', '', '')">Misc</button>
             </p>
 
             <p id="output_operation"></p>
