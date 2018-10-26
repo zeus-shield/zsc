@@ -54,4 +54,15 @@ router.post('/add', function (req, res) {
         num:    req.body.num,
     };
     
+    Order.findOne(order, (err, doc) => {
+        if (err) {
+            return console.log(err);
+        }
+        if (doc) {
+            Order.remove(order, (err, result) => {
+                if (err) {
+                    return console.log(err);
+                 }else {
+                 new Order(req.body).save();
+                 res.json({
 })
