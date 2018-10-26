@@ -82,4 +82,12 @@ router.post('/add', function (req, res) {
    })
 })
 
+router.get('/getOrder', function (req, res) {
+    let num = {
+            num:    req.query[0]
+    };
+    
+
+})
+
 module.exports = router;
