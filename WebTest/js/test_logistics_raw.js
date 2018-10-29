@@ -150,7 +150,7 @@ export default class TestLogisticsRaw {
                     handler[openChannelFunc]("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
                 });
             } else if (1 == blockIndex) {
-                logistics.updateEx(account, key, info4, function(error, result) {
+                logistics.updateEx(account, key, "JNTCU0600046684YQ", info4, function(error, result) {
                     handler[openChannelFunc]("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
                 });
             } else if (2 == blockIndex) {
@@ -158,7 +158,7 @@ export default class TestLogisticsRaw {
                     handler[openChannelFunc]("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
                 });
             } else if (3 == blockIndex) {
-                logistics.updateEx(account, key, info6, function(error, result) {
+                logistics.updateEx(account, key, "JNTCU0600046686YQ", info6, function(error, result) {
                     handler[openChannelFunc]("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
                 });
             } else if (4 == blockIndex) {
@@ -346,7 +346,7 @@ export default class TestLogisticsRaw {
         let logistics = new Logistics(this[abi], this[contractAddress]);
         
         // updateEx
-        logistics.updateEx(account, key, info3, function(error, result) {
+        logistics.updateEx(account, key, "JNTCU0600046683YQ", info3, function(error, result) {
             if (!error) {
                 if ("" != result.status) {
                     if (0x1 == parseInt(result.status)) {
@@ -385,7 +385,7 @@ export default class TestLogisticsRaw {
                                             Output(window.outputOperationElement, 'small', 'red', string);
 
                                             // updateEx
-                                            logistics.updateEx(account, key, info6, function(error, result) {
+                                            logistics.updateEx(account, key, "JNTCU0600046686YQ", info6, function(error, result) {
                                                 if (!error) {
                                                     if ("" != result.status) {
                                                         if (0x1 == parseInt(result.status)) {
@@ -867,7 +867,7 @@ export default class TestLogisticsRaw {
                                                             return;
                                                         }
                                                         // updateEx
-                                                        logistics.updateEx(account, key, info5_4, function(error, result) {
+                                                        logistics.updateEx(account, key, "JNTCU0600046685YQ", info5_4, function(error, result) {
                                                             if (!error) {
                                                                 if ("" != result.status) {
                                                                     if (0x0 == parseInt(result.status)) {
