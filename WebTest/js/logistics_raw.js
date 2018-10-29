@@ -140,22 +140,22 @@ export default class LogisticsRaw {
         });
     }
 
-    updateEx(account, key, _info, func) {
+    updateEx(_account, _key, _num, _info, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
-        let data = contractInstance.updateEx.getData(_info);
+        let data = contractInstance.updateEx.getData(_num, _info);
 
-        contractInstance.updateEx.estimateGas(_info, function(error, result) {
+        contractInstance.updateEx.estimateGas(_num, _info, function(error, result) {
             if (!error) {
-                let transaction = new Transaction(account, key);
+                let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[constractAddress], func);
+                    transaction.do("transaction", data, result, handler[constractAddress], _func);
                 }
             } else {
                 // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
-                if (null != func) {
-                    func(error);
+                if (null != _func) {
+                    _func(error);
                 }
             }
         });
