@@ -172,7 +172,7 @@ export default class TestLogisticsRaw {
                     handler[openChannelFunc]("update", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
                 });
             } else if (1 == blockIndex) {
-                logistics.updateBriefEx(account, key, brief9, function(error, result) {
+                logistics.updateBriefEx(account, key, "JNTCU0600046689YQ", brief9, function(error, result) {
                     handler[openChannelFunc]("update", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
                 });
             } else if (2 == blockIndex) {
@@ -520,7 +520,7 @@ export default class TestLogisticsRaw {
                     Output(window.outputOperationElement, 'small', 'red', string);
 
                     // updateBriefEx
-                    logistics.updateBriefEx(account, key, brief9, function(error, result) {
+                    logistics.updateBriefEx(account, key, "JNTCU0600046689YQ", brief9, function(error, result) {
                         if (!error) {
                             if ("" != result.status) {
                                 if (0x1 == parseInt(result.status)) {
