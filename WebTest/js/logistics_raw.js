@@ -10,47 +10,30 @@ import Transaction from './transaction_raw.js';
 const account = Symbol('account');
 const constractAbi = Symbol('abi');
 const constractAddress = Symbol('constractAddress');
-const coreConstractAbi = Symbol('coreAbi');
-const coreConstractAddress = Symbol('coreConstractAddress');
 
 export default class LogisticsRaw {
     constructor(abi, address) {
         this[account] = web3.eth.coinbase;
         this[constractAbi] = abi;
         this[constractAddress] = address;
-        this[coreConstractAbi] = "";
-        this[coreConstractAddress] = "";
     }
 
-    setup(account, key, _coreAbi, _coreAddr, func) {
+    setup(account, key, _addr, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
-        let data = contractInstance.setup.getData(_coreAddr);
+        let data = contractInstance.setup.getData(_addr);
 
-        contractInstance.setup.estimateGas(_coreAddr, function(error, result) {
+        contractInstance.setup.estimateGas(_addr, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(account, key);
                 if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[constractAddress], function(error, result) {
-                        if (null != func) {
-                            func(error, result);
-                        }
-
-                        if (!error) {
-                            if ("" != result.status) {
-                                if (0x1 == parseInt(result.status)) {
-                                    handler[coreConstractAbi] = _coreAbi;
-                                    handler[coreConstractAddress] = _coreAddr;
-                                }
-                            }
-                        }
-                    });
+                    transaction.do("transaction", data, result, handler[constractAddress], _func);
                 }
             } else {
                 // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
-                if (null != func) {
-                    func(error);
+                if (null != _func) {
+                    _func(error);
                 }
             }
         });
@@ -203,267 +186,7 @@ export default class LogisticsRaw {
         });       
     }
 
-    getTracks(_num, func) {
-        let handler = this;
-        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
-
-        // estimate gas
-        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getTracks.estimateGas(_num, function(error, result) {
-            if(!error) {
-                let gasRequired = result;
-                // get gas price
-                // MetaMask Web3 object does not support synchronous methods without a callback parameter
-                web3.eth.getGasPrice(function(error, result) {
-                    if(!error) {
-                        console.log("============= Logistics.getTracks(string) ==============");
-                        console.log("from:    ", handler[account]);
-                        console.log("gas:     ", gasRequired);
-                        console.log("gasPrice:", result.toString(10));
-                        console.log("========================================================");
-                        // call 'Logistics.getTracks(string)'
-                        contractInstance.getTracks.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
-                            if(!error) {
-                                // Output(window.outputElement, 'small', 'red', `[Track]:${result}`);
-                                console.log("[Tracks]:", result);
-                                if (null != func) {
-                                    func(null, result);
-                                }
-                            } else {
-                                // Output(window.outputElement, 'small', 'red', error);
-                                console.log(error);
-                                if (null != func) {
-                                    func(error);
-                                }
-                            }
-                        });
-                    } else {
-                        // Output(window.outputElement, 'small', 'red', error);
-                        console.log(error);
-                        if (null != func) {
-                            func(error);
-                        }
-                    }
-                });
-            } else {
-                // Output(window.outputElement, 'small', 'red', error);
-                console.log(error);
-                if (null != func) {
-                    func(error);
-                }
-            }
-        });
-    }
-
-    getBrief(_num, func) {
-        let handler = this;
-        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
-
-        // estimate gas
-        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getBrief.estimateGas(_num, function(error, result) {
-            if(!error) {
-                let gasRequired = result;
-                // get gas price
-                // MetaMask Web3 object does not support synchronous methods without a callback parameter
-                web3.eth.getGasPrice(function(error, result) {
-                    if(!error) {
-                        console.log("============= Logistics.getBrief(string) ==============");
-                        console.log("from:    ", handler[account]);
-                        console.log("gas:     ", gasRequired);
-                        console.log("gasPrice:", result.toString(10));
-                        console.log("=======================================================");
-                        // call 'Logistics.getBrief(string)'
-                        contractInstance.getBrief.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
-                            if(!error) {
-                                // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
-                                console.log("[Brief]:", result);
-                                if (null != func) {
-                                    func(null, result);
-                                }
-                            } else {
-                                // Output(window.outputElement, 'small', 'red', error);
-                                console.log(error);
-                                if (null != func) {
-                                    func(error);
-                                }
-                            }
-                        });
-                    } else {
-                        // Output(window.outputElement, 'small', 'red', error);
-                        console.log(error);
-                        if (null != func) {
-                            func(error);
-                        }
-                    }
-                });
-            } else {
-                // Output(window.outputElement, 'small', 'red', error);
-                console.log(error);
-                if (null != func) {
-                    func(error);
-                }
-            }
-        });
-    }
-
-    getBriefEx(_num, func) {
-        let handler = this;
-        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
-
-        // estimate gas
-        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getBriefEx.estimateGas(_num, function(error, result) {
-            if(!error) {
-                let gasRequired = result;
-                // get gas price
-                // MetaMask Web3 object does not support synchronous methods without a callback parameter
-                web3.eth.getGasPrice(function(error, result) {
-                    if(!error) {
-                        console.log("============ Logistics.getBriefEx(string) =============");
-                        console.log("from:    ", handler[account]);
-                        console.log("gas:     ", gasRequired);
-                        console.log("gasPrice:", result.toString(10));
-                        console.log("=======================================================");
-                        // call 'Logistics.getBriefEx(string)'
-                        contractInstance.getBriefEx.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
-                            if(!error) {
-                                // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
-                                console.log("[Brief]:", result);
-                                if (null != func) {
-                                    func(null, result);
-                                }
-                            } else {
-                                // Output(window.outputElement, 'small', 'red', error);
-                                console.log(error);
-                                if (null != func) {
-                                    func(error);
-                                }
-                            }
-                        });
-                    } else {
-                        // Output(window.outputElement, 'small', 'red', error);
-                        console.log(error);
-                        if (null != func) {
-                            func(error);
-                        }
-                    }
-                });
-            } else {
-                // Output(window.outputElement, 'small', 'red', error);
-                console.log(error);
-                if (null != func) {
-                    func(error);
-                }
-            }
-        });
-    }
-
-    getBriefByIndex(_index, func) {
-        let handler = this;
-        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
-
-        // estimate gas
-        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getBriefByIndex.estimateGas(_index, function(error, result) {
-            if(!error) {
-                let gasRequired = result;
-                // get gas price
-                // MetaMask Web3 object does not support synchronous methods without a callback parameter
-                web3.eth.getGasPrice(function(error, result) {
-                    if(!error) {
-                        console.log("============== Logistics.getBriefByIndex(uint) ==============");
-                        console.log("from:    ", handler[account]);
-                        console.log("gas:     ", gasRequired);
-                        console.log("gasPrice:", result.toString(10));
-                        console.log("=============================================================");
-                        // call 'Logistics.getBriefByIndex(uint)'
-                        contractInstance.getBriefByIndex.call(_index, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
-                            if(!error) {
-                                // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
-                                console.log("[Brief]:", result);
-                                if (null != func) {
-                                    func(null, result);
-                                }                                
-                            } else {
-                                //Output(window.outputElement, 'small', 'red', error);
-                                console.log(error);
-                                if (null != func) {
-                                    func(error);
-                                }
-                            }
-                        });
-                    } else {
-                        // Output(window.outputElement, 'small', 'red', error);
-                        console.log(error);
-                        if (null != func) {
-                            func(error);
-                        }
-                    }
-                });
-            } else {
-                // Output(window.outputElement, 'small', 'red', error);
-                console.log(error);
-                if (null != func) {
-                    func(error);
-                }
-            }
-        });
-    }
-
-    getBriefExByIndex(_index, func) {
-        let handler = this;
-        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
-
-        // estimate gas
-        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getBriefExByIndex.estimateGas(_index, function(error, result) {
-            if(!error) {
-                let gasRequired = result;
-                // get gas price
-                // MetaMask Web3 object does not support synchronous methods without a callback parameter
-                web3.eth.getGasPrice(function(error, result) {
-                    if(!error) {
-                        console.log("============== Logistics.getBriefExByIndex(uint) ==============");
-                        console.log("from:    ", handler[account]);
-                        console.log("gas:     ", gasRequired);
-                        console.log("gasPrice:", result.toString(10));
-                        console.log("===============================================================");
-                        // call 'Logistics.getBriefExByIndex(uint)'
-                        contractInstance.getBriefExByIndex.call(_index, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
-                            if(!error) {
-                                // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
-                                console.log("[Brief]:", result);
-                                if (null != func) {
-                                    func(null, result);
-                                }
-                            } else {
-                                // Output(window.outputElement, 'small', 'red', error);
-                                console.log(error);
-                                if (null != func) {
-                                    func(error);
-                                }
-                            }
-                        });
-                    } else {
-                        // Output(window.outputElement, 'small', 'red', error);
-                        console.log(error);
-                        if (null != func) {
-                            func(error);
-                        }
-                    }
-                });
-            } else {
-                // Output(window.outputElement, 'small', 'red', error);
-                console.log(error);
-                if (null != func) {
-                    func(error);
-                }
-            }
-        });
-    }
-
-    exist(_num, func) {
+    exist(_num, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
@@ -486,36 +209,36 @@ export default class LogisticsRaw {
                             if(!error) {
                                 // Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
                                 console.log("[Number]:", result.toString(10));
-                                if (null != func) {
-                                    func(null, result);
+                                if (null != _func) {
+                                    _func(null, result);
                                 }
                             } else {
                                 // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
-                                if (null != func) {
-                                    func(error);
+                                if (null != _func) {
+                                    _func(error);
                                 }
                             }
                         });
                     } else {
                         // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
-                        if (null != func) {
-                            func(error);
+                        if (null != _func) {
+                            _func(error);
                         }
                     }
                 });
             } else {
                 // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
-                if (null != func) {
-                    func(error);
+                if (null != _func) {
+                    _func(error);
                 }
             }
         });
     }
 
-    number(func) {
+    number(_func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
@@ -538,36 +261,36 @@ export default class LogisticsRaw {
                             if(!error) {
                                 // Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
                                 console.log("[Number]:", result.toString(10));
-                                if (null != func) {
-                                    func(null, result);
+                                if (null != _func) {
+                                    _func(null, result);
                                 }
                             } else {
                                 // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
-                                if (null != func) {
-                                    func(error);
+                                if (null != _func) {
+                                    _func(error);
                                 }
                             }
                         });
                     } else {
                         // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
-                        if (null != func) {
-                            func(error);
+                        if (null != _func) {
+                            _func(error);
                         }
                     }
                 });
             } else {
                 // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
-                if (null != func) {
-                    func(error);
+                if (null != _func) {
+                    _func(error);
                 }
             }
         });
     }
 
-    numberOfTracks(_num, func) {
+    numberOfTracks(_num, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
@@ -590,36 +313,36 @@ export default class LogisticsRaw {
                             if(!error) {
                                 // Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
                                 console.log("[Number]:", result.toString(10));
-                                if (null != func) {
-                                    func(null, result);
+                                if (null != _func) {
+                                    _func(null, result);
                                 }
                             } else {
                                 // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
-                                if (null != func) {
-                                    func(error);
+                                if (null != _func) {
+                                    _func(error);
                                 }
                             }
                         });
                     } else {
                         // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
-                        if (null != func) {
-                            func(error);
+                        if (null != _func) {
+                            _func(error);
                         }
                     }
                 });
             } else {
                 // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
-                if (null != func) {
-                    func(error);
+                if (null != _func) {
+                    _func(error);
                 }
             }
         });
     }
 
-    numberOfInvalidNums(_num, func) {
+    numberOfInvalidNums(_num, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
@@ -642,38 +365,298 @@ export default class LogisticsRaw {
                             if(!error) {
                                 // Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
                                 console.log("[Number]:", result.toString(10));
-                                if (null != func) {
-                                    func(null, result);
+                                if (null != _func) {
+                                    _func(null, result);
                                 }
                             } else {
                                 // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
-                                if (null != func) {
-                                    func(error);
+                                if (null != _func) {
+                                    _func(error);
                                 }
                             }
                         });
                     } else {
                         // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
-                        if (null != func) {
-                            func(error);
+                        if (null != _func) {
+                            _func(error);
                         }
                     }
                 });
             } else {
                 // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
-                if (null != func) {
-                    func(error);
+                if (null != _func) {
+                    _func(error);
                 }
             }
         });
     }
 
-    getBriefInvalid(_num, _invalidIndex, func) {
+    getTracks(_abi, _addr, _num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+        let contractInstance = web3.eth.contract(_abi).at(_addr);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.getTracks.estimateGas(_num, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("============= Logistics.getTracks(string) ==============");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("========================================================");
+                        // call 'Logistics.getTracks(string)'
+                        contractInstance.getTracks.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                // Output(window.outputElement, 'small', 'red', `[Track]:${result}`);
+                                console.log("[Tracks]:", result);
+                                if (null != _func) {
+                                    _func(null, result);
+                                }
+                            } else {
+                                // Output(window.outputElement, 'small', 'red', error);
+                                console.log(error);
+                                if (null != _func) {
+                                    _func(error);
+                                }
+                            }
+                        });
+                    } else {
+                        // Output(window.outputElement, 'small', 'red', error);
+                        console.log(error);
+                        if (null != _func) {
+                            _func(error);
+                        }
+                    }
+                });
+            } else {
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != _func) {
+                    _func(error);
+                }
+            }
+        });
+    }
+
+    getBrief(_abi, _addr, _num, _func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(_abi).at(_addr);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.getBrief.estimateGas(_num, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("============= Logistics.getBrief(string) ==============");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("=======================================================");
+                        // call 'Logistics.getBrief(string)'
+                        contractInstance.getBrief.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+                                console.log("[Brief]:", result);
+                                if (null != _func) {
+                                    _func(null, result);
+                                }
+                            } else {
+                                // Output(window.outputElement, 'small', 'red', error);
+                                console.log(error);
+                                if (null != _func) {
+                                    _func(error);
+                                }
+                            }
+                        });
+                    } else {
+                        // Output(window.outputElement, 'small', 'red', error);
+                        console.log(error);
+                        if (null != _func) {
+                            _func(error);
+                        }
+                    }
+                });
+            } else {
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != _func) {
+                    _func(error);
+                }
+            }
+        });
+    }
+
+    getBriefEx(_abi, _addr, _num, _func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(_abi).at(_addr);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.getBriefEx.estimateGas(_num, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("============ Logistics.getBriefEx(string) =============");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("=======================================================");
+                        // call 'Logistics.getBriefEx(string)'
+                        contractInstance.getBriefEx.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+                                console.log("[Brief]:", result);
+                                if (null != _func) {
+                                    _func(null, result);
+                                }
+                            } else {
+                                // Output(window.outputElement, 'small', 'red', error);
+                                console.log(error);
+                                if (null != _func) {
+                                    _func(error);
+                                }
+                            }
+                        });
+                    } else {
+                        // Output(window.outputElement, 'small', 'red', error);
+                        console.log(error);
+                        if (null != _func) {
+                            _func(error);
+                        }
+                    }
+                });
+            } else {
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != _func) {
+                    _func(error);
+                }
+            }
+        });
+    }
+
+    getBriefByIndex(_abi, _addr, _index, _func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(_abi).at(_addr);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.getBriefByIndex.estimateGas(_index, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("============== Logistics.getBriefByIndex(uint) ==============");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("=============================================================");
+                        // call 'Logistics.getBriefByIndex(uint)'
+                        contractInstance.getBriefByIndex.call(_index, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+                                console.log("[Brief%d]: %s", _index, result);
+                                if (null != _func) {
+                                    _func(null, _index, result);
+                                }                                
+                            } else {
+                                //Output(window.outputElement, 'small', 'red', error);
+                                console.log(error);
+                                if (null != _func) {
+                                    _func(error, _index);
+                                }
+                            }
+                        });
+                    } else {
+                        // Output(window.outputElement, 'small', 'red', error);
+                        console.log(error);
+                        if (null != _func) {
+                            _func(error, _index);
+                        }
+                    }
+                });
+            } else {
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != _func) {
+                    _func(error, _index);
+                }
+            }
+        });
+    }
+
+    getBriefExByIndex(_abi, _addr, _index, _func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(_abi).at(_addr);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.getBriefExByIndex.estimateGas(_index, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("============== Logistics.getBriefExByIndex(uint) ==============");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("===============================================================");
+                        // call 'Logistics.getBriefExByIndex(uint)'
+                        contractInstance.getBriefExByIndex.call(_index, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
+                                console.log("[Brief%d]: %s", _index, result);
+                                if (null != _func) {
+                                    _func(null, _index, result);
+                                }
+                            } else {
+                                // Output(window.outputElement, 'small', 'red', error);
+                                console.log(error);
+                                if (null != _func) {
+                                    _func(error, _index);
+                                }
+                            }
+                        });
+                    } else {
+                        // Output(window.outputElement, 'small', 'red', error);
+                        console.log(error);
+                        if (null != _func) {
+                            _func(error, _index);
+                        }
+                    }
+                });
+            } else {
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != _func) {
+                    _func(error, _index);
+                }
+            }
+        });
+    }
+
+    getBriefInvalid(_abi, _addr, _num, _invalidIndex, _func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(_abi).at(_addr);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -694,38 +677,38 @@ export default class LogisticsRaw {
                             if(!error) {
                                 // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
                                 console.log("[Brief]:", result);
-                                if (null != func) {
-                                    func(null, result);
+                                if (null != _func) {
+                                    _func(null, result);
                                 }
                             } else {
                                 // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
-                                if (null != func) {
-                                    func(error);
+                                if (null != _func) {
+                                    _func(error);
                                 }
                             }
                         });
                     } else {
                         // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
-                        if (null != func) {
-                            func(error);
+                        if (null != _func) {
+                            _func(error);
                         }
                     }
                 });
             } else {
                 // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
-                if (null != func) {
-                    func(error);
+                if (null != _func) {
+                    _func(error);
                 }
             }
         });
     }
 
-    getTracksInvalid(_num, _invalidIndex, func) {
+    getTracksInvalid(_abi, _addr, _num, _invalidIndex, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+        let contractInstance = web3.eth.contract(_abi).at(_addr);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -746,30 +729,30 @@ export default class LogisticsRaw {
                             if(!error) {
                                 // Output(window.outputElement, 'small', 'red', `[Track]:${result}`);
                                 console.log("[Tracks]:", result);
-                                if (null != func) {
-                                    func(null, result);
+                                if (null != _func) {
+                                    _func(null, result);
                                 }
                             } else {
                                 // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
-                                if (null != func) {
-                                    func(error);
+                                if (null != _func) {
+                                    _func(error);
                                 }
                             }
                         });
                     } else {
                         // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
-                        if (null != func) {
-                            func(error);
+                        if (null != _func) {
+                            _func(error);
                         }
                     }
                 });
             } else {
                 // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
-                if (null != func) {
-                    func(error);
+                if (null != _func) {
+                    _func(error);
                 }
             }
         });
