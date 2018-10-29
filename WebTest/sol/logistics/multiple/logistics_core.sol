@@ -82,6 +82,26 @@ contract LogisticsCore {
     }
 
     function _removeNum(string _num) internal {
+        string memory lastNumName = "";
+        uint currentIndex = 0;
+
+        // check num total count
+        if (0 == numTotalCount_) {
+            return;
+        }
+
+        lastNumName = numNames_[numTotalCount_-1];
+        currentIndex = numIndexs_[_num];
+
+        numNames_[currentIndex] = lastNumName;
+        delete numNames_[numTotalCount_-1];
+
+        numIndexs_[lastNumName] = currentIndex;
+        delete numIndexs_[_num];
+
+        numTotalCount_ --;
+
+        // numExist_[_num] = false;
     }
  
     function _getValidNumName(string _num) internal view returns (string) {
