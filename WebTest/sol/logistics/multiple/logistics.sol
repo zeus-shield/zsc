@@ -70,12 +70,12 @@ contract Logistics {
             return;
         }
 
+        LogisticsCore(coreAddr_).updateBrief(numExist_[_num], _num, _transNum, _model, _destinationCountry, _lastStatus);
+
         // check num exist
         if (!numExist_[_num]) {
             numExist_[_num] = true;
         }
-
-        LogisticsCore(coreAddr_).updateBrief(numExist_[_num], _num, _transNum, _model, _destinationCountry, _lastStatus);
     }
 
     function updateBriefEx(string _num, string _brief) public {
@@ -89,12 +89,12 @@ contract Logistics {
             return;
         }
 
+        LogisticsCore(coreAddr_).updateBriefEx(numExist_[_num], _num, _brief);
+
         // check num exist
         if (!numExist_[_num]) {
             numExist_[_num] = true;
         }
-
-        LogisticsCore(coreAddr_).updateBriefEx(numExist_[_num], _num, _brief);
     }
 
     function update(string _num, string _transNum, 
