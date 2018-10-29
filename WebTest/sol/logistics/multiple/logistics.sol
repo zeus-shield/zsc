@@ -100,6 +100,13 @@ contract Logistics {
     function update(string _num, string _transNum, 
                     string _model, string _destinationCountry,
                     string _lastStatus, string _tracks) public {
+        // update brief
+        updateBrief(_num, _transNum, _model, _destinationCountry, _lastStatus);
+
+        // update tracks from json(similar to)
+        if (0 != bytes(_tracks).length) {
+            updateTracks(_num, _tracks, 0);
+        }
     }
 
     function updateEx(string _num, string _info) public {
