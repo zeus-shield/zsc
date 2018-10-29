@@ -18,4 +18,11 @@ contract LogisticsCore {
     function numberOfInvalid(string _num) public view returns (uint);
 }
 
-contract Logistics {}
+contract Logistics {
+
+    /** @desc core address */
+    address private coreAddr_; 
+
+    /** @desc string(original num name) => bool(num exist flag) */
+    mapping(string => bool) private numExist_;
+}
