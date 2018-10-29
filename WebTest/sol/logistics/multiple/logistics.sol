@@ -79,6 +79,22 @@ contract Logistics {
     }
 
     function updateBriefEx(string _num, string _brief) public {
+        // check param
+        if ((0 == bytes(_num).length) || (0 == bytes(_brief).length)) {
+            return;
+        }
+
+        // check core address
+        if (0 == coreAddr_) {
+            return;
+        }
+
+        // check num exist
+        if (!numExist_[_num]) {
+            numExist_[_num] = true;
+        }
+
+        LogisticsCore(coreAddr_).updateBriefEx(numExist_[_num], _num, _brief);
     }
 
     function update(string _num, string _transNum, 
