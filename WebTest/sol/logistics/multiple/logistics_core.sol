@@ -71,4 +71,22 @@ contract LogisticsCore {
     function LogisticsCore() public {
         numTotalCount_ = 0;
     }
+
+    function _addNum(string _num) internal {
+    }
+
+    function _removeNum(string _num) internal {
+    }
+ 
+    function _getValidNumName(string _num) internal view returns (string) {
+    }
+
+    function _allocTracks(string _validNum, uint _length) internal {
+    }
+
+    function _removeTracks(string _validNum) internal {
+    }
+
+    function _updateTrack(string _validNum, uint _index, string _track) internal {
+    }
 }
