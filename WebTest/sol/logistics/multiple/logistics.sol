@@ -37,6 +37,24 @@ contract Logistics {
  
     // _updateType: 0 means overwrite, 1 means append
     function updateTracks(string _num, string _tracks, uint _updateType) public {
+
+        // check param
+        if ((0 == bytes(_num).length) || (0 == bytes(_tracks).length)
+            || ((0 != _updateType) && (1 != _updateType))) {
+            return;
+        }
+
+        // check core address
+        if (0 == coreAddr_) {
+            return;
+        }
+
+        // check num exist
+        if (!numExist_[_num]) {
+            return;
+        }
+
+        LogisticsCore(coreAddr_).updateTracks(_num, _tracks, _updateType);
     }
 
     function updateBrief(string _num, string _transNum, string _model,
