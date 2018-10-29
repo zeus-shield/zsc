@@ -73,6 +73,12 @@ contract LogisticsCore {
     }
 
     function _addNum(string _num) internal {
+        numNames_[numTotalCount_] = _num;
+        numIndexs_[_num] = numTotalCount_;
+
+        numTotalCount_ ++;
+
+        // numExist_[_num] = true;
     }
 
     function _removeNum(string _num) internal {
