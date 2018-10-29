@@ -59,6 +59,23 @@ contract Logistics {
 
     function updateBrief(string _num, string _transNum, string _model,
                          string _destinationCountry, string _lastStatus) public {
+        // check param
+        if ((0 == bytes(_num).length) || (0 == bytes(_transNum).length) || (0 == bytes(_model).length)
+            || (0 == bytes(_destinationCountry).length) || (0 == bytes(_lastStatus).length)) {
+            return;
+        }
+
+        // check core address
+        if (0 == coreAddr_) {
+            return;
+        }
+
+        // check num exist
+        if (!numExist_[_num]) {
+            numExist_[_num] = true;
+        }
+
+        LogisticsCore(coreAddr_).updateBrief(numExist_[_num], _num, _transNum, _model, _destinationCountry, _lastStatus);
     }
 
     function updateBriefEx(string _num, string _brief) public {
