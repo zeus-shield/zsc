@@ -29,4 +29,26 @@ export default class Channel {
     status(index, status) {
         this[channel][index].status = status;
     }
+
+    find(account) {
+        let i = 0;
+
+        for (i=0; i<this[channel].length; i++) {
+            if (account == this[channel][i].account) {
+                break;
+            }
+        }
+        return i;
+    }
+
+    size() {
+        return this[channel].length;
+    }
+
+    clear() {
+        let size = this[channel].length;
+        for (let i=0; i<size; i++) {
+            this[channel].pop();
+        }
+    }
 }
