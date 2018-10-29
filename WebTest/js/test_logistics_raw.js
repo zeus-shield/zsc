@@ -299,7 +299,7 @@ export default class TestLogisticsRaw {
         let string = "";
 
         let logistics = new Logistics(this[abi], this[contractAddress]);
-        logistics.setTrackContractAdress(account, key, this[coreContractAddress], function(error, result) {
+        logistics.setup(account, key, this[coreAbi], this[coreContractAddress], function(error, result) {
             if (!error) {
                 if ("" != result.status) {
                     if (0x1 == parseInt(result.status)) {
