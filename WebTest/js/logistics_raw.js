@@ -22,16 +22,29 @@ export default class LogisticsRaw {
         this[coreConstractAddress] = "";
     }
 
-    setTrackContractAdress(account, key, _address, func) {
+    setup(account, key, _coreAbi, _coreAddr, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
-        let data = contractInstance.setTrackContractAdress.getData(_address);
+        let data = contractInstance.setup.getData(_coreAddr);
 
-        contractInstance.setTrackContractAdress.estimateGas(_address, function(error, result) {
+        contractInstance.setup.estimateGas(_coreAddr, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(account, key);
                 if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[constractAddress], func);
+                    transaction.do("transaction", data, result, handler[constractAddress], function(error, result) {
+                        if (null != func) {
+                            func(error, result);
+                        }
+
+                        if (!error) {
+                            if ("" != result.status) {
+                                if (0x1 == parseInt(result.status)) {
+                                    handler[coreConstractAbi] = _coreAbi;
+                                    handler[coreConstractAddress] = _coreAddr;
+                                }
+                            }
+                        }
+                    });
                 }
             } else {
                 // Output(window.outputElement, 'small', 'red', error);
