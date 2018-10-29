@@ -7,15 +7,19 @@ import Receipt from './receipt.js';
 import Transaction from './transaction_raw.js';
 
 // private member
+const account = Symbol('account');
 const constractAbi = Symbol('abi');
 const constractAddress = Symbol('constractAddress');
-const account = Symbol('account');
+const coreConstractAbi = Symbol('coreAbi');
+const coreConstractAddress = Symbol('coreConstractAddress');
 
 export default class LogisticsRaw {
     constructor(abi, address) {
+        this[account] = web3.eth.coinbase;
         this[constractAbi] = abi;
         this[constractAddress] = address;
-        this[account] = web3.eth.coinbase;
+        this[coreConstractAbi] = "";
+        this[coreConstractAddress] = "";
     }
 
     setTrackContractAdress(account, key, _address, func) {
