@@ -89,4 +89,50 @@ contract LogisticsCore {
 
     function _updateTrack(string _validNum, uint _index, string _track) internal {
     }
+
+    // _updateType: 0 means overwrite, 1 means append
+    function updateTracks(string _num, string _tracks, uint _updateType) public {
+    }
+
+    function updateBrief(bool _numExist, string _num, string _transNum, string _model,
+    }
+
+    function updateBriefEx(bool _numExist, string _num, string _brief) public {
+    }
+
+    function remove(string _num) public {
+    }
+
+    function invalid(string _num) public {
+    }
+
+    function number() public view returns (uint) {
+    }
+
+    function numberOfTracks(string _num) public view returns (uint) {
+    }
+
+    function numberOfInvalid(string _num) public view returns (uint) {
+    }
+
+    function getTracks(string _num) public view returns (string) {
+    }
+
+    function getBrief(string _num) public view returns (string, string, string, string, string) {
+    }
+
+    function getBriefEx(string _num) public view returns (string) {
+    }
+
+    function getBriefByIndex(uint _index) public view returns (string, string, string, string, string) {
+    }
+
+    function getBriefExByIndex(uint _index) public view returns (string) {
+    }
+
+    function getBriefInvalid(string _num, uint _invalidIndex) public view returns (string, string, string, string, string) {
+    }
+
+    function getTracksInvalid(string _num, uint _invalidIndex) public view returns (string) {
+    }
 }
