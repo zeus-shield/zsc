@@ -31,4 +31,44 @@ contract LogisticsCore {
         string destinationCountry_;
         string lastStatus_;
     }
+
+    /*************************************************/
+    /** @desc num total count */
+    uint private numTotalCount_;
+
+    /** @desc uint(num index) => string(original num name) */
+    mapping(uint => string) private numNames_;
+
+    /** @desc string(original num name) => uint(num index) */
+    mapping(string => uint) private numIndexs_;
+
+    /** @desc string(original num name) => bool(num exist flag) */
+    // mapping(string => bool) private numExist_;
+
+    /** @desc string(original num name) => uint(num invalid count) */
+    mapping(string => uint) private numInvalidCounts_;
+    /*************************************************/
+
+    /** @desc string(valid/invalid num name: original num name + valid/invalid num index) => Brief(brief info)
+      * @eg JNTCU0600046683YQ-3 => Brief
+      */
+    mapping(string => Brief) private briefs_;
+
+    /** @desc string(valid/invalid num name: original num name + valid/invalid num index) => uint(track count)
+      * @eg JNTCU0600046683YQ-3 => 4
+      */
+    mapping(string => uint) private trackCounts_;
+
+    /** @desc string(track name: original num name + valid/invalid num index + track index) => Track(track info)
+      * @eg JNTCU0600046683YQ-3-5 => Track
+      */
+    mapping(string => Track) private tracks_;  
+
+    /** @desc string(valid/invalid num name: original num name + valid/invalid num index) => string[](track temps) */
+    mapping(string => string[]) private trackTmps_;
+
+    // Constructor
+    function LogisticsCore() public {
+        numTotalCount_ = 0;
+    }
 }
