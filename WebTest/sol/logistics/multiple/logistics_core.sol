@@ -311,6 +311,32 @@ contract LogisticsCore {
     }
 
     function getTracks(string _num) public view returns (string) {
+        string memory trackName = "";
+        string memory str = "";
+
+        // get valid num name
+        string memory validNum = _getValidNumName(_num);
+
+        str = "[";
+        for (uint i=0; i<trackCounts_[validNum]; i++) {
+            trackName = validNum.concat("-", i.toString());
+
+            str = str.concat("{", tracks_[trackName].type_.toKeyValue("type"), ",");
+            str = str.concat(tracks_[trackName].time_.toKeyValue("time"), ",");
+            str = str.concat(tracks_[trackName].country_.toKeyValue("country"), ",");
+            str = str.concat(tracks_[trackName].city_.toKeyValue("city"), ",");
+            str = str.concat(tracks_[trackName].facilityName_.toKeyValue("facilityName"), ",");
+            str = str.concat(tracks_[trackName].timeZone_.toKeyValue("timeZone"), ",");
+            str = str.concat(tracks_[trackName].desc_.toKeyValue("desc"), ",");
+            str = str.concat(tracks_[trackName].actionCode_.toKeyValue("actionCode"), "}");
+
+            if (trackCounts_[validNum] != (i+1)) {
+                str = str.concat(",");
+            }
+        }
+        str = str.concat("]");
+
+        return str;
     }
 
     function getBrief(string _num) public view returns (string, string, string, string, string) {
