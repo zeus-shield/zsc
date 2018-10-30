@@ -105,9 +105,11 @@ contract LogisticsCore {
     }
  
     function _getValidNumName(string _num) internal view returns (string) {
+        return _num.concat("-", numInvalidCounts_[_num].toString());
     }
 
     function _allocTracks(string _validNum, uint _length) internal {
+        trackCounts_[_validNum] += _length;
     }
 
     function _removeTracks(string _validNum) internal {
