@@ -158,6 +158,12 @@ contract Logistics {
     }
 
     function exist(string _num) public view returns (bool) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return false;
+        }
+
+        return numExist_[_num];
     }
 
     function number() public view returns (uint) {
