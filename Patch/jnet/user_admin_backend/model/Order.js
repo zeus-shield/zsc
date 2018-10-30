@@ -13,3 +13,5 @@ const OrderSchema = new Schema({
     hashList:{ "type": "array", "items": "string", default: ''},
    
 });
+
+module.exports = mongoose.model('Order', OrderSchema);
