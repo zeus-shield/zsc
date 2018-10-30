@@ -176,6 +176,22 @@ contract Logistics {
     }
 
     function numberOfTracks(string _num) public view returns (uint) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return 0;
+        }
+
+        // check core address
+        if (0 == coreAddr_) {
+            return 0;
+        }
+
+        // check num exist
+        if (!numExist_[_num]) {
+            return 0;
+        }
+
+        return LogisticsCore(coreAddr_).numberOfTracks(_num);
     }
 
     function numberOfInvalid(string _num) public view returns (uint) {
