@@ -167,6 +167,12 @@ contract Logistics {
     }
 
     function number() public view returns (uint) {
+        // check core address
+        if (0 == coreAddr_) {
+            return 0;
+        }
+
+        return LogisticsCore(coreAddr_).number();
     }
 
     function numberOfTracks(string _num) public view returns (uint) {
