@@ -340,6 +340,17 @@ contract LogisticsCore {
     }
 
     function getBrief(string _num) public view returns (string, string, string, string, string) {
+        // get valid num name
+        string memory validNum = _getValidNumName(_num);
+        string[5] memory str = ["", "", "", "", ""];
+
+        str[0] = _num;
+        str[1] = briefs_[validNum].transNum_;
+        str[2] = briefs_[validNum].model_;
+        str[3] = briefs_[validNum].destinationCountry_;
+        str[4] = briefs_[validNum].lastStatus_;
+
+        return (str[0], str[1], str[2], str[3], str[4]);
     }
 
     function getBriefEx(string _num) public view returns (string) {
