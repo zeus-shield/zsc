@@ -10,22 +10,12 @@ import Transaction from './transaction_raw.js';
 const account = Symbol('account');
 const constractAbi = Symbol('constractAbi');
 const constractAddress = Symbol('constractAddress');
-const coreConstractAbi = Symbol('coreConstractAbi');
-const coreConstractAddress = Symbol('coreConstractAddress');
 
 export default class LogisticsRaw {
-    constructor() {
+    constructor(_abi, _constractAddr) {
         this[account] = web3.eth.coinbase;
-    }
-
-    setContract(_abi, _addr) {
         this[constractAbi] = _abi;
-        this[constractAddress] = _addr; 
-    }
-
-    setCoreContract(_abi, _addr) {
-        this[coreConstractAbi] = _abi;
-        this[coreConstractAddress] = _addr; 
+        this[constractAddress] = _constractAddr; 
     }
 
     setup(account, key, _addr, _func) {
@@ -406,7 +396,7 @@ export default class LogisticsRaw {
 
     getTracks(_num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -458,7 +448,7 @@ export default class LogisticsRaw {
 
     getBrief(_num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -510,7 +500,7 @@ export default class LogisticsRaw {
 
     getBriefEx(_num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -562,7 +552,7 @@ export default class LogisticsRaw {
 
     getBriefByIndex(_index, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -614,7 +604,7 @@ export default class LogisticsRaw {
 
     getBriefExByIndex(_index, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -666,7 +656,7 @@ export default class LogisticsRaw {
 
     getBriefInvalid(_num, _invalidIndex, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -718,7 +708,7 @@ export default class LogisticsRaw {
 
     getTracksInvalid(_num, _invalidIndex, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
