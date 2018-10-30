@@ -1,15 +1,16 @@
-const formidable = require('formidable'); //ÎÄ¼ş´¦ÀíÄ£¿é
-const fs = require('fs'); //ÎÄ¼şÄ£¿é
-const path = require('path'); //pathÄ£¿é
+const formidable = require('formidable'); //æ–‡ä»¶å¤„ç†æ¨¡å—
+const fs = require('fs'); //æ–‡ä»¶æ¨¡å—
+const path = require('path'); //pathæ¨¡å—
+
 
 module.exports = function(req) {
     const form = new formidable.IncomingForm();
     let uploadDir = path.resolve(__dirname,'../public/images/robot');
 
-    form.uploadDir = uploadDir; //´æ´¢Ä¿Â¼
-    form.keepExtensions = true; //±£Áôºó×º
-    form.encoding = 'utf-8'; //ÉèÖÃ±àÂë
-    form.maxFieldsSize = 2 * 1024 //ÉèÖÃ×î´óÎÄ¼ş
+    form.uploadDir = uploadDir; //å­˜å‚¨ç›®å½•
+    form.keepExtensions = true; //ä¿ç•™åç¼€
+    form.encoding = 'utf-8'; //è®¾ç½®ç¼–ç 
+    form.maxFieldsSize = 2 * 1024 //è®¾ç½®æœ€å¤§æ–‡ä»¶
     console.log(4)
     return new Promise(function(resolve, reject) {
         form.parse(req, function(err, fields, files) {
