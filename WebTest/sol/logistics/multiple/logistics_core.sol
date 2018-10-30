@@ -3,7 +3,7 @@
  2018-10-19: v0.00.01
  */
 
-pragma solidity ^0.4.21;
+pragma solidity ^0.4.25;
 // pragma experimental ABIEncoderV2;
 
 import "../../utillib/LibString.sol";
@@ -68,7 +68,7 @@ contract LogisticsCore {
     mapping(string => string[]) private trackTmps_;
 
     // Constructor
-    function LogisticsCore() public {
+    constructor() public {
         numTotalCount_ = 0;
     }
 
@@ -285,6 +285,17 @@ contract LogisticsCore {
     }
 
     function remove(string _num) public {
+        // get valid num name
+        string memory validNum = _getValidNumName(_num);
+
+        // remove tracks
+        _removeTracks(validNum);
+
+        // remove brief
+        delete briefs_[validNum];
+
+        // remove num
+        _removeNum(_num);
     }
 
     function invalid(string _num) public {
