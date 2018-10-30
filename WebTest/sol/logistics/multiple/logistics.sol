@@ -34,7 +34,7 @@ contract Logistics {
     mapping(string => bool) private numExist_;
 
     // Constructor
-    function Logistics() public {
+    constructor() public {
         coreAddr_ = 0;
     }
 
@@ -216,6 +216,22 @@ contract Logistics {
     }
 
     function getTracks(string _num) public view returns (string) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return "";
+        }
+
+        // check core address
+        if (0 == coreAddr_) {
+            return "";
+        }
+
+        // check num exist
+        if (!numExist_[_num]) {
+            return "";
+        }
+
+        return LogisticsCore(coreAddr_).getTracks(_num);
     }
 
     function getBrief(string _num) public view returns (string, string, string, string, string) {
