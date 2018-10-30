@@ -29,14 +29,15 @@ session_start();
     var userLogin;
     var userRobotGM;
 
-    let binded = false;
-
     checkeWeb3Account(function(account) {
         userLogin = new ZSCLogin(account);
         userLogin.tryLogin(userType, function(ret) {
-            binded = ret;
-            userRobotGM = new ZSCRobotAllBreifes(account, userLogin.getErc721Adr(), userLogin.getControlApisFullAbi());
-            loadAllUserRobotBriefs();
+            if(!ret) { 
+                window.location.href = "index_login.php?type=staker";
+            } else {
+                userRobotGM = new ZSCRobotAllBreifes(account, userLogin.getErc721Adr(), userLogin.getControlApisFullAbi());
+                loadAllUserRobotBriefs();
+            }
         });
     });
 
@@ -77,11 +78,7 @@ session_start();
         text  += '<text id="OperationHash" value = "log:"> </text> </div>';
 
         text += '<div class="well" align="center" >'
-        if (binded) {
-            text += '   <button type="button" onClick="' + createGen0Func + '">  Create Lev0 miner robot (Cost 0.01ETH) </button> <br>'
-        } else {
-            text += '   <button type="button" onClick="'+ bindAndActivate + '()"' + '>Bind account and activate wallet at first, then create Lev0 miner robot (Cost 0.01ETH)</button> <br>'
-        }
+        text += '   <button type="button" onClick="' + createGen0Func + '">  Create Lev0 miner robot (Cost 0.01ETH) </button> <br>'
         text += '</div>';
 
         text += '<div class="well">';

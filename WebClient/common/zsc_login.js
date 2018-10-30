@@ -37,9 +37,10 @@ ZSCLogin.prototype.tryLogin = function(userType, func){
     myAdmAdv.tryLogin(userType, {from: gm.account},
         function(error, result) {
         if(!error) {
-            gm.getControlApisInfo(gm, callBack);
             if (result == false) {
                 callBack(false);
+            } else {
+                gm.getControlApisInfo(gm, callBack);
             }
         } else { 
             callBack(false);

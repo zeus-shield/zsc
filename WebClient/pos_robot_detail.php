@@ -30,20 +30,22 @@ session_start();
     var userLogin;
     var singleRobotGM;
 
-    var binded = false;
     var owner;
 
     checkeWeb3Account(function(account) {
         userLogin = new ZSCLogin(account);
         userLogin.tryLogin(userType, function(ret) {
-            binded = ret;
-            singleRobotGM = new ZSCRobotSingleDetails(account, userLogin.getErc721Adr(), userLogin.getControlApisFullAbi());
-            singleRobotGM.getOwner(robotId, function(error, result) {
+            if(!ret) { 
+                  window.location.href = "index_login.php?type=staker";
+            } else {
+                singleRobotGM = new ZSCRobotSingleDetails(account, userLogin.getErc721Adr(), userLogin.getControlApisFullAbi());
+                singleRobotGM.getOwner(robotId, function(error, result) {
                 if (!error) {
-                    owner = result;
-                    loadSingleRobotDetails(robotId);
-                }
-            });
+                        owner = result;
+                        loadSingleRobotDetails(robotId);
+                    }
+                });
+            }
         });
     });
 
@@ -178,13 +180,9 @@ session_start();
                 text += '</tr>'
             } else {
                 text += '<tr>'
-                if (binded) {
-                    text += '   <td colspan="1"><button type="button" onClick="' + purchaseRobotPrefix + robotId + purchaseRobotSuffix + '"> Purchase robot</button></td>'
-                    text += '</tr>'
-                } else {
-                    text += '   <td colspan="1"><button type="button" onClick="'+ bindAndActivate + '()"' + '>Bind account and activate wallet at first, then purchase robot</button></td>'
-                    text += '</tr>'
-                }
+                text += '   <td colspan="1"><button type="button" onClick="' + purchaseRobotPrefix + robotId + purchaseRobotSuffix + '"> Purchase robot</button></td>'
+                text += '</tr>'
+                
             }
         }
         text += '</table></div>'
