@@ -120,6 +120,77 @@ contract LogisticsCore {
     }
 
     function _updateTrack(string _validNum, uint _index, string _track) internal {
+        string memory trackName = "";
+        string memory type32 = "";
+        string memory time = "";
+        string memory country = "";
+        string memory city = "";
+        string memory facilityName = "";
+        string memory timeZone = "";
+        string memory desc = "";
+        string memory actionCode = "";
+
+        if (trackCounts_[_validNum] <= _index) {
+            return;
+        }
+
+        trackName = _validNum.concat("-", _index.toString());
+
+        if (_track.keyExists("type")) {
+            type32 = _track.getStringValueByKey("type");
+            if (0 != bytes(type32).length) {
+                tracks_[trackName].type_ = type32;
+            }
+        }
+
+        if (_track.keyExists("time")) {
+            time = _track.getStringValueByKey("time");
+            if (0 != bytes(time).length) {
+                tracks_[trackName].time_ = time;
+            }
+        }
+
+        if (_track.keyExists("country")) {
+            country = _track.getStringValueByKey("country");
+            if (0 != bytes(country).length) {
+                tracks_[trackName].country_ = country;
+            }
+        }
+
+        if (_track.keyExists("city")) {
+            city = _track.getStringValueByKey("city");
+            if (0 != bytes(city).length) {
+                tracks_[trackName].city_ = city;
+            }
+        }
+
+        if (_track.keyExists("facilityName")) {
+            facilityName = _track.getStringValueByKey("facilityName");
+            if (0 != bytes(facilityName).length) {
+                tracks_[trackName].facilityName_ = facilityName;
+            }
+        }
+
+        if (_track.keyExists("timeZone")) {
+            timeZone = _track.getStringValueByKey("timeZone");
+            if (0 != bytes(timeZone).length) {
+                tracks_[trackName].timeZone_ = timeZone;
+            }
+        }
+
+        if (_track.keyExists("desc")) {
+            desc = _track.getStringValueByKey("desc");
+            if (0 != bytes(desc).length) {
+                tracks_[trackName].desc_ = desc;
+            }
+        }
+
+        if (_track.keyExists("actionCode")) {
+            actionCode = _track.getStringValueByKey("actionCode");
+            if (0 != bytes(actionCode).length) {
+                tracks_[trackName].actionCode_ = actionCode;
+            }
+        }
     }
 
     // _updateType: 0 means overwrite, 1 means append
