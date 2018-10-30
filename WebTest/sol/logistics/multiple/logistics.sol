@@ -138,6 +138,23 @@ contract Logistics {
     }
 
     function invalid(string _num) public {
+        // check param
+        if (0 == bytes(_num).length) {
+            return;
+        }
+
+        // check core address
+        if (0 == coreAddr_) {
+            return;
+        }
+
+        // check num exist
+        if (!numExist_[_num]) {
+            return;
+        }
+
+        LogisticsCore(coreAddr_).invalid(_num);
+        numExist_[_num] = false;
     }
 
     function exist(string _num) public view returns (bool) {
