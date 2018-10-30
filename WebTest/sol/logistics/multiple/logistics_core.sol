@@ -197,6 +197,32 @@ contract LogisticsCore {
 
     // _updateType: 0 means overwrite, 1 means append
     function updateTracks(string _num, string _tracks, uint _updateType) public {
+        uint startIndex = 0;
+
+        // get valid num name
+        string memory validNum = _getValidNumName(_num);
+
+        if (_tracks.keyExists("trackElementList")) {
+
+            string memory tracks = _tracks.getArrayValueByKey("trackElementList");
+            if (0 != bytes(tracks).length) {
+                tracks.split("&", trackTmps_[validNum]);
+
+                if (0 == _updateType) {
+                    // remove all tracks at first
+                    _removeTracks(validNum);
+                }
+
+                startIndex = trackCounts_[validNum];
+
+                //alloc tracks
+                _allocTracks(validNum, trackTmps_[validNum].length);
+
+                for (uint i=0; i<trackTmps_[validNum].length; i++) {
+                    _updateTrack(validNum, startIndex+i, trackTmps_[validNum][i]);
+                }
+            }
+        }
     }
 
     function updateBrief(bool _numExist, string _num, string _transNum, string _model,
