@@ -226,6 +226,19 @@ contract LogisticsCore {
     }
 
     function updateBrief(bool _numExist, string _num, string _transNum, string _model,
+                         string _destinationCountry, string _lastStatus) public {
+        if (!_numExist) {
+           _addNum(_num); 
+        }
+
+        // get valid num name
+        string memory validNum = _getValidNumName(_num);
+
+        // update brief
+        briefs_[validNum].transNum_           = _transNum;
+        briefs_[validNum].model_              = _model;
+        briefs_[validNum].destinationCountry_ = _destinationCountry;
+        briefs_[validNum].lastStatus_         = _lastStatus;
     }
 
     function updateBriefEx(bool _numExist, string _num, string _brief) public {
