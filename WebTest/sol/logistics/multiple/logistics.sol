@@ -195,5 +195,16 @@ contract Logistics {
     }
 
     function numberOfInvalid(string _num) public view returns (uint) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return 0;
+        }
+
+        // check core address
+        if (0 == coreAddr_) {
+            return 0;
+        }
+
+        return LogisticsCore(coreAddr_).numberOfInvalid(_num);
     }
 }
