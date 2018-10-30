@@ -31,14 +31,9 @@ session_start();
 
     checkeWeb3Account(function(account) {
         userLogin = new ZSCLogin(account);
-        // userLogin.tryLogin(userType, function(ret) {
         userLogin.getControlApisInfo(userLogin, function(ret) {
-            if(!ret) { 
-                window.location.href = "index.php";
-            } else {
-                userRobotGM = new ZSCRobotAllBreifes(account, userLogin.getErc721Adr(), userLogin.getControlApisFullAbi());
-                loadAllSellingRobotBriefs();
-            }
+            userRobotGM = new ZSCRobotAllBreifes(account, userLogin.getErc721Adr(), userLogin.getControlApisFullAbi());
+            loadAllSellingRobotBriefs();
         });
     });
 
