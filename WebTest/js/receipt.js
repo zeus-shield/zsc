@@ -3,6 +3,8 @@
 */
 
 // import Output from './output.js';
+const _hexToString = Symbol('_hexToString');
+const _debugLogs = Symbol('debugLogs');
 
 class Result {
     constructor() {}
@@ -13,6 +15,39 @@ class Result {
 
 export default class Receipt {
     constructor() {}
+
+    [_hexToString](str) {
+        let value = "";
+        let byte = "";
+        let code = "";
+
+        str = str.substr(str.indexOf("0x")+2);
+
+        for(let i=0; i<str.length/2; i++) {
+            byte = str.substring(i*2, i*2+2);
+            code = parseInt(byte, 16);
+            if ("0" == code) {
+                break;
+            }
+            value += String.fromCharCode(code);
+　　　　}
+
+　　　　return value;
+　　}
+
+    [_debugLogs](handler, logs) {
+        let i = 0;
+        let j = 0;
+        for (i=0; i<logs.length; i++) {
+            console.log("==================================== logs%d ====================================", i);
+            console.log("data(hex): %s", logs[i].data);
+            console.log("data(str): %s", handler[_hexToString](logs[i].data));
+            for (j=0; j<logs[i].topics.length; j++) {
+                console.log("topics[%d](hex): %s", j, logs[i].topics[j]);
+                console.log("topics[%d](str): %s", j, handler[_hexToString](logs[i].topics[j]));
+            }
+        }
+    }
 
     getReceipt(cmd, transactionHash, tryTimes, timeout, func) {
         let handler = this;
@@ -39,6 +74,9 @@ export default class Receipt {
         web3.eth.getTransactionReceipt(transactionHash, function(error, receipt) {
             if (null != receipt) {
                 if (null != func) {
+
+                    handler[_debugLogs](handler, receipt.logs);
+
                     result.transactionHash = transactionHash;
 
                     if ("contractAddress" == cmd) {
