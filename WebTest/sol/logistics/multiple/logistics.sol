@@ -3,7 +3,7 @@
  2018-10-19: v0.00.01
  */
 
-pragma solidity ^0.4.21;
+pragma solidity ^0.4.25;
 // pragma experimental ABIEncoderV2;
 
 contract LogisticsCore {
@@ -16,6 +16,13 @@ contract LogisticsCore {
     function number() public view returns (uint);
     function numberOfTracks(string _num) public view returns (uint);
     function numberOfInvalid(string _num) public view returns (uint);
+    function getTracks(string _num) public view returns (string);
+    function getBrief(string _num) public view returns (string, string, string, string, string);
+    function getBriefEx(string _num) public view returns (string);
+    function getBriefByIndex(uint _index) public view returns (string, string, string, string, string);
+    function getBriefExByIndex(uint _index) public view returns (string);
+    function getBriefInvalid(string _num, uint _invalidIndex) public view returns (string, string, string, string, string);
+    function getTracksInvalid(string _num, uint _invalidIndex) public view returns (string);
 }
 
 contract Logistics {
@@ -206,5 +213,26 @@ contract Logistics {
         }
 
         return LogisticsCore(coreAddr_).numberOfInvalid(_num);
+    }
+
+    function getTracks(string _num) public view returns (string) {
+    }
+
+    function getBrief(string _num) public view returns (string, string, string, string, string) {
+    }
+
+    function getBriefEx(string _num) public view returns (string) {
+    }
+
+    function getBriefByIndex(uint _index) public view returns (string, string, string, string, string) {
+    }
+
+    function getBriefExByIndex(uint _index) public view returns (string) {
+    }
+
+    function getBriefInvalid(string _num, uint _invalidIndex) public view returns (string, string, string, string, string) {
+    }
+
+    function getTracksInvalid(string _num, uint _invalidIndex) public view returns (string) {
     }
 }
