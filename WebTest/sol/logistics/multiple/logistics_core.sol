@@ -111,6 +111,12 @@ contract LogisticsCore {
     }
 
     function _removeTracks(string _validNum) internal {
+        string memory trackName = "";
+        for (uint i=0; i<trackCounts_[_validNum]; i++) {
+            trackName = _validNum.concat("-", i.toString());
+            delete tracks_[trackName];
+        }
+        trackCounts_[_validNum] = 0;
     }
 
     function _updateTrack(string _validNum, uint _index, string _track) internal {
