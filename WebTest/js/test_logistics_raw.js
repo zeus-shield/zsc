@@ -30,6 +30,8 @@ export default class TestLogisticsRaw {
         this[contractAddress] = '';
         // this[abi] = [{"constant":false,"inputs":[{"name":"_num","type":"string"}],"name":"remove","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_info","type":"string"}],"name":"updateEx","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"constant":false,"inputs":[{"name":"_num","type":"string"},{"name":"_transNum","type":"string"},{"name":"_model","type":"string"},{"name":"_destinationCountry","type":"string"},{"name":"_lastStatus","type":"string"},{"name":"_tracks","type":"string"}],"name":"update","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_num","type":"string"},{"name":"_transNum","type":"string"},{"name":"_model","type":"string"},{"name":"_destinationCountry","type":"string"},{"name":"_lastStatus","type":"string"}],"name":"updateBrief","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_brief","type":"string"}],"name":"updateBriefEx","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_num","type":"string"},{"name":"_tracks","type":"string"},{"name":"_updateType","type":"uint256"}],"name":"updateTracks","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_num","type":"string"}],"name":"getBrief","outputs":[{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_index","type":"uint256"}],"name":"getBriefByIndex","outputs":[{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_num","type":"string"}],"name":"getBriefEx","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_index","type":"uint256"}],"name":"getBriefExByIndex","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_num","type":"string"}],"name":"getTracks","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"number","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_num","type":"string"}],"name":"numberOfTracks","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}];
         // this[contractAddress] = "0x9cb887f15245628f79e9bfdbd719753d7ffa6d86";
+        this[coreAbi] = '';
+        this[coreContractAddress] = '';
         this[nextIndex] = 0;
         this[tick] = 0;
     }
@@ -130,7 +132,8 @@ export default class TestLogisticsRaw {
         let brief9 = "{\"error\":null,\"num\":\"JNTCU0600046689YQ\",\"transNum\":\"MSK0000027699\",\"model\":\"J-NET俄全通INFO9\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\"}";
         let newTracks5 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"上海德铎泰信息科技有限公司 上海市闵行区宜山路2016号合川大厦6H\",\"facilityName\":\"NewTrack5-1\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"NewTrack5-2\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-2\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
 
-        let logistics = new Logistics(this[abi], this[contractAddress]);
+        let logistics = new Logistics();
+        logistics.setContract(this[abi], this[contractAddress]);
 
         if (blockCount < blockIndex) {
             return;
@@ -298,7 +301,9 @@ export default class TestLogisticsRaw {
         let status = "";
         let string = "";
 
-        let logistics = new Logistics(this[abi], this[contractAddress]);
+        let logistics = new Logistics();
+        logistics.setContract(this[abi], this[contractAddress]);
+
         logistics.setup(account, key, this[coreContractAddress], function(error, result) {
             if (!error) {
                 if ("" != result.status) {
@@ -343,7 +348,8 @@ export default class TestLogisticsRaw {
         let tracks5 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"Track5-1\",\"timeZone\":\"+3\",\"desc\":\"Track5-1\",\"actionCode\":\"GTMS_SIGNED\"}}]}";
         let tracks7 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"Track6-1\",\"timeZone\":\"+3\",\"desc\":\"Track6-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Track6-2\",\"timeZone\":\"+3\",\"desc\":\"Track6-2\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Track6-3\",\"timeZone\":\"+3\",\"desc\":\"Track6-3\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
 
-        let logistics = new Logistics(this[abi], this[contractAddress]);
+        let logistics = new Logistics();
+        logistics.setContract(this[abi], this[contractAddress]);
         
         // updateEx
         logistics.updateEx(account, key, "JNTCU0600046683YQ", info3, function(error, result) {
@@ -505,7 +511,9 @@ export default class TestLogisticsRaw {
         // update testing data
         let brief9 = "{\"error\":null,\"num\":\"JNTCU0600046689YQ\",\"transNum\":\"MSK0000027699\",\"model\":\"INFO9\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\"}";
         let newTracks5 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"NewTrack5-1\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"NewTrack5-2\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-2\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
-        let logistics = new Logistics(this[abi], this[contractAddress]);
+        
+        let logistics = new Logistics();
+        logistics.setContract(this[abi], this[contractAddress]);
 
         // updateBrief
         logistics.updateBrief(account, key, "JNTCU0600046688YQ", "MSK0000027698", "INFO8", "Russian", "GTMS_SIGNED", function(error, result) {
@@ -606,9 +614,10 @@ export default class TestLogisticsRaw {
 
     get() {
         console.log('TestLogisticsRaw.get()');
-        let logistics = new Logistics(this[abi], this[contractAddress]);
+        let logistics = new Logistics();
+        logistics.setCoreContract(this[coreAbi], this[coreContractAddress]);
 
-        // logistics.getBrief(this[coreAbi], this[coreContractAddress], "JNTCU0600046689YQ", function(error, result) {
+        // logistics.getBrief("JNTCU0600046689YQ", function(error, result) {
         //     if (!error) {
         //         Output(window.outputOperationElement, 'small', 'red', `[Brief]:${result}`);
         //     } else {
@@ -616,7 +625,7 @@ export default class TestLogisticsRaw {
         //     }
         // });
 
-        // logistics.getBriefEx(this[coreAbi], this[coreContractAddress], "JNTCU0600046688YQ", function(error, result) {
+        // logistics.getBriefEx("JNTCU0600046688YQ", function(error, result) {
         //     if (!error) {
         //         Output(window.outputOperationElement, 'small', 'red', `[Brief]:${result}`);
         //     } else {
@@ -624,7 +633,7 @@ export default class TestLogisticsRaw {
         //     }
         // });
 
-        // logistics.getBriefByIndex(this[coreAbi], this[coreContractAddress], 0, function(error, index, result) {
+        // logistics.getBriefByIndex(0, function(error, index, result) {
         //     if (!error) {
         //         Output(window.outputOperationElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
         //     } else {
@@ -632,7 +641,7 @@ export default class TestLogisticsRaw {
         //     }
         // });
 
-        // logistics.getBriefExByIndex(this[coreAbi], this[coreContractAddress], 4, function(error, index, result) {
+        // logistics.getBriefExByIndex(4, function(error, index, result) {
         //     if (!error) {
         //         Output(window.outputOperationElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
         //     } else {
@@ -640,7 +649,7 @@ export default class TestLogisticsRaw {
         //     }
         // });
 
-        logistics.getTracks(this[coreAbi], this[coreContractAddress], "JNTCU0600046685YQ", function(error, result) {
+        logistics.getTracks("JNTCU0600046685YQ", function(error, result) {
             if (!error) {
                 Output(window.outputOperationElement, 'small', 'red', `[Tracks]:</br>${result}`);
             } else {
@@ -651,10 +660,7 @@ export default class TestLogisticsRaw {
 
     remove() {
         console.log('TestLogisticsRaw.remove()');
-        let handler = this;
-        let logistics = new Logistics(this[abi], this[contractAddress]);
         let tracks4 = "{\"trackElementList\":[{\"time\":\"2017-07-13 11:54:00\",\"facilityName\":\"Track4-1\",\"desc\":\"Track4-1\"}&{\"time\":\"2017-07-07 17:39:09\",\"facilityName\":\"Track4-2\",\"desc\":\"Груз отправлен со склада хранения (<a href= >КСЭ</a>, номер накладной <a href=$f=$http://cse.ru/track.php?order=waybill%amp;number=JNTCU0600639867YQ$ tar target=$_blank$>JNTCU0600639867YQ</a>)\"}]}";
-
         let channels = window.channelClass.get("idle");
 
         if (0 == channels.length) {
@@ -664,6 +670,10 @@ export default class TestLogisticsRaw {
 
         let account = channels[0].account;
         let key = channels[0].key;
+
+        let logistics = new Logistics();
+        logistics.setContract(this[abi], this[contractAddress]);
+        logistics.setCoreContract(this[coreAbi], this[coreContractAddress]);
 
         // update
         logistics.update(account, key, "JNTCU0600639867YQ", "MSK0000027694", "INFO4", "Russian", "GTMS_SIGNED", tracks4, function(error, result) {
@@ -679,7 +689,7 @@ export default class TestLogisticsRaw {
                     Output(window.outputOperationElement, 'small', 'red', string);
 
                     // getTracks
-                    logistics.getTracks(handler[coreAbi], handler[coreContractAddress], "JNTCU0600639867YQ", function(error, result) {
+                    logistics.getTracks("JNTCU0600639867YQ", function(error, result) {
                         if (!error) {
                             Output(window.outputOperationElement, 'small', 'red', `[Track]:</br>${result}`);
                             // remove
@@ -692,7 +702,7 @@ export default class TestLogisticsRaw {
                                             status = "failure";
                                         }
                                         // getTracks
-                                        logistics.getTracks(handler[coreAbi], handler[coreContractAddress], "JNTCU0600639867YQ", function(error, result) {
+                                        logistics.getTracks("JNTCU0600639867YQ", function(error, result) {
                                             if (!error) {
                                                 Output(window.outputOperationElement, 'small', 'red', `[Track]:</br>${result}`);
                                             } else {
@@ -725,7 +735,6 @@ export default class TestLogisticsRaw {
 
     removeEx() {
         console.log('TestLogisticsRaw.removeEx()');
-        let logistics = new Logistics(this[abi], this[contractAddress]);
         let channels = window.channelClass.get("idle");
 
         if (0 == channels.length) {
@@ -740,6 +749,9 @@ export default class TestLogisticsRaw {
         let string = "";
 
         // create and update at first
+
+        let logistics = new Logistics();
+        logistics.setContract(this[abi], this[contractAddress]);
 
         // remove
         logistics.remove(account, key, "JNTCU0600046684YQ", function(error, result) {
@@ -788,18 +800,18 @@ export default class TestLogisticsRaw {
         handler.numberOfInvalidNums(num, function(error, result) {
             if (!error) {
                 for (let i=0; i<result; i++) {
-                    handler.getBriefInvalid(handler[coreAbi], handler[coreContractAddress], num, i, function(error, result) {
-                    // handler.getTracksInvalid(handler[coreAbi], handler[coreContractAddress], num, i, function(error, result) {
+                    handler.getBriefInvalid(num, i, function(error, num, index, result) {
+                    // handler.getTracksInvalid(num, i, function(error, num. index, result) {
                         if (!error) {
                             // console.log(result);
-                            Output(window.outputOperationElement, 'small', 'red', `[Brief]:</br>${result}`);
+                            Output(window.outputOperationElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
                         } else {
-                            Output(window.outputOperationElement, 'small', 'red', error);
+                            Output(window.outputOperationElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
                         }
                     })
                 }
             } else {
-                Output(window.outputOperationElement, 'small', 'red', error);
+                Output(window.outputOperationElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
             }
         })
     }
@@ -808,7 +820,6 @@ export default class TestLogisticsRaw {
     invalid() {
         console.log('TestLogisticsRaw.invalid()');
         let handler = this;
-        let logistics = new Logistics(this[abi], this[contractAddress]);
         let tracks5_1 = "{\"trackElementList\":[{\"time\":\"2017-07-13 11:54:00\",\"facilityName\":\"Track5_1\",\"desc\":\"Track5_1\"}&{\"time\":\"2017-07-07 17:39:09\",\"facilityName\":\"Track5_1\",\"desc\":\"Груз отправлен со склада хранения (<a href= >КСЭ</a>, номер накладной <a href=$f=$http://cse.ru/track.php?order=waybill%amp;number=JNTCU0600639867YQ$ tar target=$_blank$>JNTCU0600639867YQ</a>)\"}]}";
         let info5_4 = "{\"error\":null,\"num\":\"JNTCU0600046685YQ\",\"transNum\":\"Info5_3 上海市宜山路900号科技大楼A栋6楼，邮编：200233\",\"model\":\"Info5_3 J-NET俄全通INFO5\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"Track5_3\",\"timeZone\":\"+3\",\"desc\":\"Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Track5_3\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
         
@@ -826,6 +837,9 @@ export default class TestLogisticsRaw {
         let key = channels[0].key;
 
         let num = "JNTCU0600046685YQ";
+
+        let logistics = new Logistics();
+        logistics.setContract(this[abi], this[contractAddress]);
 
         // invalid
         logistics.invalid(account, key, num, function(error, result) {
@@ -950,16 +964,17 @@ export default class TestLogisticsRaw {
 
     debugBrief() {
         console.log('TestLogisticsRaw.debugBrief()');
-        let handler = this;
-        let logistics = new Logistics(this[abi], this[contractAddress]);
+        let logistics = new Logistics();
+        logistics.setContract(this[abi], this[contractAddress]);
+        logistics.setCoreContract(this[coreAbi], this[coreContractAddress]);
 
         // number
         logistics.number(function(error, result) {
             if (!error) {
                 for (let i=0; i<result; i++) {
                     // getBriefExByIndex
-                    // logistics.getBriefByIndex(handler[coreAbi], handler[coreContractAddress], i, function(error, index, result) {
-                    logistics.getBriefExByIndex(handler[coreAbi], handler[coreContractAddress], i, function(error, index, result) {
+                    // logistics.getBriefByIndex(i, function(error, index, result) {
+                    logistics.getBriefExByIndex(i, function(error, index, result) {
                         if (!error) {
                             // console.log(result);
                             Output(window.outputOperationElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
@@ -976,7 +991,8 @@ export default class TestLogisticsRaw {
 
     numberOfTracks() {
         console.log('TestLogisticsRaw.numberOfTracks()');
-        let logistics = new Logistics(this[abi], this[contractAddress]);
+        let logistics = new Logistics();
+        logistics.setContract(this[abi], this[contractAddress]);
 
         // number
         logistics.numberOfTracks("JNTCU0600046685YQ", function(error, result) {
