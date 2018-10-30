@@ -37,17 +37,11 @@ session_start();
         userLogin = new ZSCLogin(account);
         userLogin.tryLogin(userType, function(ret) {
             binded = ret;
-            userLogin.getControlApisInfo(userLogin, function(ret) {
-                if(!ret) { 
-                    window.location.href = "index.php";
-                } else {
-                    singleRobotGM = new ZSCRobotSingleDetails(account, userLogin.getErc721Adr(), userLogin.getControlApisFullAbi());
-                    singleRobotGM.getOwner(robotId, function(error, result) {
-                        if (!error) {
-                            owner = result;
-                            loadSingleRobotDetails(robotId);
-                        }
-                    });
+            singleRobotGM = new ZSCRobotSingleDetails(account, userLogin.getErc721Adr(), userLogin.getControlApisFullAbi());
+            singleRobotGM.getOwner(robotId, function(error, result) {
+                if (!error) {
+                    owner = result;
+                    loadSingleRobotDetails(robotId);
                 }
             });
         });
