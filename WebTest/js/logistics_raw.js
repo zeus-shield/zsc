@@ -8,14 +8,24 @@ import Transaction from './transaction_raw.js';
 
 // private member
 const account = Symbol('account');
-const constractAbi = Symbol('abi');
+const constractAbi = Symbol('constractAbi');
 const constractAddress = Symbol('constractAddress');
+const coreConstractAbi = Symbol('coreConstractAbi');
+const coreConstractAddress = Symbol('coreConstractAddress');
 
 export default class LogisticsRaw {
-    constructor(abi, address) {
+    constructor() {
         this[account] = web3.eth.coinbase;
-        this[constractAbi] = abi;
-        this[constractAddress] = address;
+    }
+
+    setContract(_abi, _addr) {
+        this[constractAbi] = _abi;
+        this[constractAddress] = _addr; 
+    }
+
+    setCoreContract(_abi, _addr) {
+        this[coreConstractAbi] = _abi;
+        this[coreConstractAddress] = _addr; 
     }
 
     setup(account, key, _addr, _func) {
@@ -394,9 +404,9 @@ export default class LogisticsRaw {
         });
     }
 
-    getTracks(_abi, _addr, _num, _func) {
+    getTracks(_num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(_abi).at(_addr);
+        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -446,9 +456,9 @@ export default class LogisticsRaw {
         });
     }
 
-    getBrief(_abi, _addr, _num, _func) {
+    getBrief(_num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(_abi).at(_addr);
+        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -498,9 +508,9 @@ export default class LogisticsRaw {
         });
     }
 
-    getBriefEx(_abi, _addr, _num, _func) {
+    getBriefEx(_num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(_abi).at(_addr);
+        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -550,9 +560,9 @@ export default class LogisticsRaw {
         });
     }
 
-    getBriefByIndex(_abi, _addr, _index, _func) {
+    getBriefByIndex(_index, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(_abi).at(_addr);
+        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -602,9 +612,9 @@ export default class LogisticsRaw {
         });
     }
 
-    getBriefExByIndex(_abi, _addr, _index, _func) {
+    getBriefExByIndex(_index, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(_abi).at(_addr);
+        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -654,9 +664,9 @@ export default class LogisticsRaw {
         });
     }
 
-    getBriefInvalid(_abi, _addr, _num, _invalidIndex, _func) {
+    getBriefInvalid(_num, _invalidIndex, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(_abi).at(_addr);
+        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -676,15 +686,15 @@ export default class LogisticsRaw {
                         contractInstance.getBriefInvalid.call(_num, _invalidIndex, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
-                                console.log("[Brief]:", result);
+                                console.log("[%s-%d]: %s", _num, _invalidIndex, result);
                                 if (null != _func) {
-                                    _func(null, result);
+                                    _func(null, _num, _invalidIndex, result);
                                 }
                             } else {
                                 // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
                                 if (null != _func) {
-                                    _func(error);
+                                    _func(error, _num, _invalidIndex);
                                 }
                             }
                         });
@@ -692,7 +702,7 @@ export default class LogisticsRaw {
                         // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
                         if (null != _func) {
-                            _func(error);
+                            _func(error, _num, _invalidIndex);
                         }
                     }
                 });
@@ -700,15 +710,15 @@ export default class LogisticsRaw {
                 // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
                 if (null != _func) {
-                    _func(error);
+                    _func(error, _num, _invalidIndex);
                 }
             }
         });
     }
 
-    getTracksInvalid(_abi, _addr, _num, _invalidIndex, _func) {
+    getTracksInvalid(_num, _invalidIndex, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(_abi).at(_addr);
+        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -728,15 +738,15 @@ export default class LogisticsRaw {
                         contractInstance.getTracksInvalid.call(_num, _invalidIndex, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 // Output(window.outputElement, 'small', 'red', `[Track]:${result}`);
-                                console.log("[Tracks]:", result);
+                                console.log("[%s-%d]: %s", _num, _invalidIndex, result);
                                 if (null != _func) {
-                                    _func(null, result);
+                                    _func(null, _num, _invalidIndex, result);
                                 }
                             } else {
                                 // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
                                 if (null != _func) {
-                                    _func(error);
+                                    _func(error, _num, _invalidIndex);
                                 }
                             }
                         });
@@ -744,7 +754,7 @@ export default class LogisticsRaw {
                         // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
                         if (null != _func) {
-                            _func(error);
+                            _func(error, _num, _invalidIndex);
                         }
                     }
                 });
@@ -752,7 +762,7 @@ export default class LogisticsRaw {
                 // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
                 if (null != _func) {
-                    _func(error);
+                    _func(error, _num, _invalidIndex);
                 }
             }
         });
