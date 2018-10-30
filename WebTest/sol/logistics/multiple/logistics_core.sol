@@ -242,6 +242,46 @@ contract LogisticsCore {
     }
 
     function updateBriefEx(bool _numExist, string _num, string _brief) public {
+        string memory transNum = "";
+        string memory model = "";
+        string memory destinationCountry = "";
+        string memory lastStatus = "";
+
+        if (!_numExist) {
+            // add num
+            _addNum(_num);
+        }
+
+        // get valid num name
+        string memory validNum = _getValidNumName(_num);
+
+        if (_brief.keyExists("transNum")) {
+            transNum = _brief.getStringValueByKey("transNum");
+            if (0 != bytes(transNum).length) {
+                briefs_[validNum].transNum_ = transNum;
+            }
+        }
+
+        if (_brief.keyExists("model")) {
+            model = _brief.getStringValueByKey("model");
+            if (0 != bytes(model).length) {
+                briefs_[validNum].model_ = model;
+            }
+        }
+
+        if (_brief.keyExists("destinationCountry")) {
+            destinationCountry = _brief.getStringValueByKey("destinationCountry");
+            if (0 != bytes(destinationCountry).length) {
+                briefs_[validNum].destinationCountry_ = destinationCountry;
+            }
+        }
+
+        if (_brief.keyExists("lastStatus")) {
+            lastStatus = _brief.getStringValueByKey("lastStatus");
+            if (0 != bytes(lastStatus).length) {
+                briefs_[validNum].lastStatus_ = lastStatus;
+            }
+        }
     }
 
     function remove(string _num) public {
