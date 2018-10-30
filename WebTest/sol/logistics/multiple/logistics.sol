@@ -110,6 +110,11 @@ contract Logistics {
     }
 
     function updateEx(string _num, string _info) public {
+        // update brief from json(similar to)
+        updateBriefEx(_num, _info);
+
+        // update tracks from json(similar to)
+        updateTracks(_num, _info, uint(0));
     }
 
     function remove(string _num) public {
