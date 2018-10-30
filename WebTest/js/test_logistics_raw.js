@@ -132,8 +132,7 @@ export default class TestLogisticsRaw {
         let brief9 = "{\"error\":null,\"num\":\"JNTCU0600046689YQ\",\"transNum\":\"MSK0000027699\",\"model\":\"J-NET俄全通INFO9\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\"}";
         let newTracks5 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"上海德铎泰信息科技有限公司 上海市闵行区宜山路2016号合川大厦6H\",\"facilityName\":\"NewTrack5-1\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"NewTrack5-2\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-2\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
 
-        let logistics = new Logistics();
-        logistics.setContract(this[abi], this[contractAddress]);
+        let logistics = new Logistics(this[abi], this[contractAddress]);
 
         if (blockCount < blockIndex) {
             return;
@@ -301,8 +300,7 @@ export default class TestLogisticsRaw {
         let status = "";
         let string = "";
 
-        let logistics = new Logistics();
-        logistics.setContract(this[abi], this[contractAddress]);
+        let logistics = new Logistics(this[abi], this[contractAddress]);
 
         logistics.setup(account, key, this[coreContractAddress], function(error, result) {
             if (!error) {
@@ -348,8 +346,7 @@ export default class TestLogisticsRaw {
         let tracks5 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"Track5-1\",\"timeZone\":\"+3\",\"desc\":\"Track5-1\",\"actionCode\":\"GTMS_SIGNED\"}}]}";
         let tracks7 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"Track6-1\",\"timeZone\":\"+3\",\"desc\":\"Track6-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Track6-2\",\"timeZone\":\"+3\",\"desc\":\"Track6-2\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Track6-3\",\"timeZone\":\"+3\",\"desc\":\"Track6-3\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
 
-        let logistics = new Logistics();
-        logistics.setContract(this[abi], this[contractAddress]);
+        let logistics = new Logistics(this[abi], this[contractAddress]);
         
         // updateEx
         logistics.updateEx(account, key, "JNTCU0600046683YQ", info3, function(error, result) {
@@ -512,8 +509,7 @@ export default class TestLogisticsRaw {
         let brief9 = "{\"error\":null,\"num\":\"JNTCU0600046689YQ\",\"transNum\":\"MSK0000027699\",\"model\":\"INFO9\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\"}";
         let newTracks5 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"NewTrack5-1\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"NewTrack5-2\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-2\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
         
-        let logistics = new Logistics();
-        logistics.setContract(this[abi], this[contractAddress]);
+        let logistics = new Logistics(this[abi], this[contractAddress]);
 
         // updateBrief
         logistics.updateBrief(account, key, "JNTCU0600046688YQ", "MSK0000027698", "INFO8", "Russian", "GTMS_SIGNED", function(error, result) {
@@ -614,8 +610,7 @@ export default class TestLogisticsRaw {
 
     get() {
         console.log('TestLogisticsRaw.get()');
-        let logistics = new Logistics();
-        logistics.setCoreContract(this[coreAbi], this[coreContractAddress]);
+        let logistics = new Logistics(this[abi], this[contractAddress]);
 
         // logistics.getBrief("JNTCU0600046689YQ", function(error, result) {
         //     if (!error) {
@@ -671,9 +666,7 @@ export default class TestLogisticsRaw {
         let account = channels[0].account;
         let key = channels[0].key;
 
-        let logistics = new Logistics();
-        logistics.setContract(this[abi], this[contractAddress]);
-        logistics.setCoreContract(this[coreAbi], this[coreContractAddress]);
+        let logistics = new Logistics(this[abi], this[contractAddress]);
 
         // update
         logistics.update(account, key, "JNTCU0600639867YQ", "MSK0000027694", "INFO4", "Russian", "GTMS_SIGNED", tracks4, function(error, result) {
@@ -750,8 +743,7 @@ export default class TestLogisticsRaw {
 
         // create and update at first
 
-        let logistics = new Logistics();
-        logistics.setContract(this[abi], this[contractAddress]);
+        let logistics = new Logistics(this[abi], this[contractAddress]);
 
         // remove
         logistics.remove(account, key, "JNTCU0600046684YQ", function(error, result) {
@@ -838,8 +830,7 @@ export default class TestLogisticsRaw {
 
         let num = "JNTCU0600046685YQ";
 
-        let logistics = new Logistics();
-        logistics.setContract(this[abi], this[contractAddress]);
+        let logistics = new Logistics(this[abi], this[contractAddress]);
 
         // invalid
         logistics.invalid(account, key, num, function(error, result) {
@@ -964,9 +955,7 @@ export default class TestLogisticsRaw {
 
     debugBrief() {
         console.log('TestLogisticsRaw.debugBrief()');
-        let logistics = new Logistics();
-        logistics.setContract(this[abi], this[contractAddress]);
-        logistics.setCoreContract(this[coreAbi], this[coreContractAddress]);
+        let logistics = new Logistics(this[abi], this[contractAddress]);
 
         // number
         logistics.number(function(error, result) {
@@ -991,8 +980,7 @@ export default class TestLogisticsRaw {
 
     numberOfTracks() {
         console.log('TestLogisticsRaw.numberOfTracks()');
-        let logistics = new Logistics();
-        logistics.setContract(this[abi], this[contractAddress]);
+        let logistics = new Logistics(this[abi], this[contractAddress]);
 
         // number
         logistics.numberOfTracks("JNTCU0600046685YQ", function(error, result) {
