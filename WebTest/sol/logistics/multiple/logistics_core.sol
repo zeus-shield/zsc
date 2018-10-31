@@ -391,6 +391,26 @@ contract LogisticsCore {
     }
 
     function getBriefExByIndex(uint _index) public view returns (string) {
+        string memory num = "";
+        string memory str = "";
+
+        // check param
+        if (numTotalCount_ <= _index) {
+            return str;
+        }
+
+        num = numNames_[_index];
+
+        // get valid num name
+        string memory validNum = _getValidNumName(num);
+
+        str = str.concat("{", num.toKeyValue("num"), ",");
+        str = str.concat(briefs_[validNum].transNum_.toKeyValue("transNum"), ",");
+        str = str.concat(briefs_[validNum].model_.toKeyValue("model"), ",");
+        str = str.concat(briefs_[validNum].destinationCountry_.toKeyValue("destinationCountry"), ",");
+        str = str.concat(briefs_[validNum].lastStatus_.toKeyValue("lastStatus"), "}");
+
+        return str;
     }
 
     function getBriefInvalid(string _num, uint _invalidIndex) public view returns (string, string, string, string, string) {
