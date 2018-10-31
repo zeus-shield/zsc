@@ -414,6 +414,24 @@ contract LogisticsCore {
     }
 
     function getBriefInvalid(string _num, uint _invalidIndex) public view returns (string, string, string, string, string) {
+        string[5] memory str = ["", "", "", "", ""];
+
+        if (numInvalidCounts_[_num] <= _invalidIndex) {
+            return (str[0], str[1], str[2], str[3], str[4]);
+        }
+
+        // don't need to check num exist
+
+        // get invalid num name
+        string memory invalidNum = _num.concat("-", _invalidIndex.toString());
+
+        str[0] = invalidNum;
+        str[1] = briefs_[invalidNum].transNum_;
+        str[2] = briefs_[invalidNum].model_;
+        str[3] = briefs_[invalidNum].destinationCountry_;
+        str[4] = briefs_[invalidNum].lastStatus_;
+
+        return (str[0], str[1], str[2], str[3], str[4]);
     }
 
     function getTracksInvalid(string _num, uint _invalidIndex) public view returns (string) {
