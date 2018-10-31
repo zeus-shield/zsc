@@ -354,6 +354,17 @@ contract LogisticsCore {
     }
 
     function getBriefEx(string _num) public view returns (string) {
+        // get valid num name
+        string memory validNum = _getValidNumName(_num);
+        string memory str = "";
+
+        str = str.concat("{", _num.toKeyValue("num"), ",");
+        str = str.concat(briefs_[validNum].transNum_.toKeyValue("transNum"), ",");
+        str = str.concat(briefs_[validNum].model_.toKeyValue("model"), ",");
+        str = str.concat(briefs_[validNum].destinationCountry_.toKeyValue("destinationCountry"), ",");
+        str = str.concat(briefs_[validNum].lastStatus_.toKeyValue("lastStatus"), "}");
+
+        return str;
     }
 
     function getBriefByIndex(uint _index) public view returns (string, string, string, string, string) {
