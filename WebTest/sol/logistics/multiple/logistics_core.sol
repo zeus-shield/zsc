@@ -435,5 +435,37 @@ contract LogisticsCore {
     }
 
     function getTracksInvalid(string _num, uint _invalidIndex) public view returns (string) {
+        string memory trackName = "";
+        string memory str = "";
+
+        if (numInvalidCounts_[_num] <= _invalidIndex) {
+            return str;
+        }
+
+        // don't need to check num exist
+
+        // find invalid num name
+        string memory invalidNum = _num.concat("-", _invalidIndex.toString());
+
+        str = "[";
+        for (uint i=0; i<trackCounts_[invalidNum]; i++) {
+            trackName = invalidNum.concat("-", i.toString());
+
+            str = str.concat("{", tracks_[trackName].type_.toKeyValue("type"), ",");
+            str = str.concat(tracks_[trackName].time_.toKeyValue("time"), ",");
+            str = str.concat(tracks_[trackName].country_.toKeyValue("country"), ",");
+            str = str.concat(tracks_[trackName].city_.toKeyValue("city"), ",");
+            str = str.concat(tracks_[trackName].facilityName_.toKeyValue("facilityName"), ",");
+            str = str.concat(tracks_[trackName].timeZone_.toKeyValue("timeZone"), ",");
+            str = str.concat(tracks_[trackName].desc_.toKeyValue("desc"), ",");
+            str = str.concat(tracks_[trackName].actionCode_.toKeyValue("actionCode"), "}");
+
+            if (trackCounts_[invalidNum] != (i+1)) {
+                str = str.concat(",");
+            }
+        }
+        str = str.concat("]");
+
+        return str;
     }
 }
