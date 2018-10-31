@@ -299,15 +299,22 @@ contract LogisticsCore {
     }
 
     function invalid(string _num) public {
+        // remove num
+        _removeNum(_num);
+
+        numInvalidCounts_[_num] ++;
     }
 
     function number() public view returns (uint) {
+        return numTotalCount_;
     }
 
     function numberOfTracks(string _num) public view returns (uint) {
+        return trackCounts_[_getValidNumName(_num)];
     }
 
     function numberOfInvalid(string _num) public view returns (uint) {
+        return numInvalidCounts_[_num];
     }
 
     function getTracks(string _num) public view returns (string) {
