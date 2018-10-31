@@ -273,6 +273,12 @@ contract Logistics {
     }
 
     function getBriefByIndex(uint _index) public view returns (string, string, string, string, string) {
+        // check core address
+        if (0 == coreAddr_) {
+            return ("", "", "", "", "");
+        }
+
+        return LogisticsCore(coreAddr_).getBriefByIndex(_index);
     }
 
     function getBriefExByIndex(uint _index) public view returns (string) {
