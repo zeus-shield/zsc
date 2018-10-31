@@ -291,6 +291,17 @@ contract Logistics {
     }
 
     function getBriefInvalid(string _num, uint _invalidIndex) public view returns (string, string, string, string, string) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return ("", "", "", "", "");
+        }
+
+        // check core address
+        if (0 == coreAddr_) {
+            return ("", "", "", "", "");
+        }
+
+        return LogisticsCore(coreAddr_).getBriefInvalid(_num, _invalidIndex);
     }
 
     function getTracksInvalid(string _num, uint _invalidIndex) public view returns (string) {
