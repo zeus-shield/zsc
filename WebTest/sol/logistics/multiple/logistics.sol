@@ -305,5 +305,16 @@ contract Logistics {
     }
 
     function getTracksInvalid(string _num, uint _invalidIndex) public view returns (string) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return "";
+        }
+
+        // check core address
+        if (0 == coreAddr_) {
+            return "";
+        }
+
+        return LogisticsCore(coreAddr_).getTracksInvalid(_num, _invalidIndex);
     }
 }
