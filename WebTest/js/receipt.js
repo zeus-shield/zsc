@@ -30,10 +30,10 @@ export default class Receipt {
                 break;
             }
             value += String.fromCharCode(code);
-　　　　}
+    }
 
-　　　　return value;
-　　}
+    return value;
+  }
 
     [_debugLogs](handler, logs) {
         let i = 0;
