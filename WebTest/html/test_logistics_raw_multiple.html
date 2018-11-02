@@ -39,6 +39,12 @@
                 text-align:left;
                 padding:10px;
             }
+            #number {
+                background-color:#e3e3e3;
+                color:black;
+                text-align:left;
+                padding:10px;
+            }
             #footer {
                 background-color:black;
                 color:white;
@@ -66,6 +72,10 @@
 
                 document.getElementById("get_info_submit").onclick = function() {
                     main('LogisticsRaw', 'GetInfo', document.getElementById("get_info_type").value, document.getElementById("get_info_para").value);
+                }
+
+                document.getElementById("number_submit").onclick = function() {
+                    main('LogisticsRaw', 'Number', document.getElementById("number_type").value, document.getElementById("number_para").value);
                 }
             }
         </script>
@@ -135,8 +145,21 @@
                     <button type="button" id="get_info_submit">Submit</button>
                 </div>
             <p>
-                <button type="button" id="update" onclick="main('LogisticsRaw', 'Number', '', '')">Number</button>
-                <button type="button" id="update" onclick="main('LogisticsRaw', 'GetInfo', '', '')">GetInfo</button>
+
+            </p>    
+                <div id="number">
+                    <h5>Number:</h5>
+                    Select Type:<br>
+                    <select id="number_type">
+                        <option value ="Num">Num</option>
+                        <option value ="Tracks">Tracks</option>
+                    </select><br>
+                    Params:<br>
+                    <input type="text" id="number_para"><br>
+                    <button type="button" id="number_submit">Submit</button>
+                </div>
+            <p>
+
             </p>
 
             <p id="output_operation"></p>
