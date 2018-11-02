@@ -608,21 +608,25 @@ export default class TestLogisticsRaw {
         }
     }
 
-    get(type, para1, para2) {
-        console.log('TestLogisticsRaw.get(%s, %s, %s)', type, para1, para2);
+    get(type, para) {
+        console.log('TestLogisticsRaw.get(%s, %s)', type, para);
         let logistics = new Logistics(this[abi], this[contractAddress]);
 
-        if ('tracks' == type) {
+        if ('Tracks' == type) {
             // logistics.getTracks("JNTCU0600046685YQ", function(error, result) {
-            logistics.getTracks(para1, function(error, result) {
+            logistics.getTracks(para, function(error, result) {
                 if (!error) {
                     Output(window.outputOperationElement, 'small', 'red', `[Tracks]:</br>${result}`);
                 } else {
                     Output(window.outputOperationElement, 'small', 'red', error);
                 }
             });
-        } else if ('tracksInvalid' == type) {
-            logistics.getTracksInvalid(para1, para2, function(error, num, index, result) {
+        } else if ('TracksInvalid' == type) {
+            let paras = para.split(",");
+            let num = paras[0];
+            let index = paras[1];
+
+            logistics.getTracksInvalid(num, index, function(error, num, index, result) {
                 if (!error) {
                     // console.log(result);
                     Output(window.outputOperationElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
@@ -630,35 +634,35 @@ export default class TestLogisticsRaw {
                     Output(window.outputOperationElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
                 }
             })
-        } else if ('brief' == type) {
+        } else if ('Brief' == type) {
             // logistics.getBrief("JNTCU0600046689YQ", function(error, result) {
-            logistics.getBrief(para1, function(error, result) {
+            logistics.getBrief(para, function(error, result) {
                 if (!error) {
                     Output(window.outputOperationElement, 'small', 'red', `[Brief]:${result}`);
                 } else {
                     Output(window.outputOperationElement, 'small', 'red', error);
                 }
             });
-        } else if ('briefEx' == type) {
+        } else if ('BriefEx' == type) {
             // logistics.getBriefEx("JNTCU0600046688YQ", function(error, result) {
-            logistics.getBriefEx(para1, function(error, result) {
+            logistics.getBriefEx(para, function(error, result) {
                 if (!error) {
                     Output(window.outputOperationElement, 'small', 'red', `[Brief]:${result}`);
                 } else {
                     Output(window.outputOperationElement, 'small', 'red', error);
                 }
             });           
-        } else if ('briefByIndex' == type) {
+        } else if ('BriefByIndex' == type) {
             //logistics.getBriefByIndex(0, function(error, index, result) {
-            logistics.getBriefByIndex(para1, function(error, index, result) {
+            logistics.getBriefByIndex(para, function(error, index, result) {
                 if (!error) {
                     Output(window.outputOperationElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
                 } else {
                     Output(window.outputOperationElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
                 }
             });
-        } else if ('briefExByIndex' == type) {
-            logistics.getBriefExByIndex(para1, function(error, index, result) {
+        } else if ('BriefExByIndex' == type) {
+            logistics.getBriefExByIndex(para, function(error, index, result) {
             // logistics.getBriefExByIndex(4, function(error, index, result) {
                 if (!error) {
                     Output(window.outputOperationElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
@@ -666,8 +670,12 @@ export default class TestLogisticsRaw {
                     Output(window.outputOperationElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
                 }
             });
-        } else if ('briefInvalid' == type) {
-            logistics.getBriefInvalid(para1, para2, function(error, num, index, result) {
+        } else if ('BriefInvalid' == type) {
+            let paras = para.split(",");
+            let num = paras[0];
+            let index = paras[1];
+
+            logistics.getBriefInvalid(num, index, function(error, num, index, result) {
                 if (!error) {
                     // console.log(result);
                     Output(window.outputOperationElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
