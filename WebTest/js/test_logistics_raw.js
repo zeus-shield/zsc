@@ -1063,10 +1063,10 @@ export default class TestLogisticsRaw {
                 this.debugBrief();
                 break;
             case 'Number':
-                this.numberOfTracks();
+                this.number(para1, para2);
                 break;
             case 'GetInfo':
-                this.get("brief", "JNTCU0600046685YQ");
+                this.get(para1, para2);
                 break;
             default:
                 Output(window.outputOperationElement, 'small', 'red', 'Operation Error!');
