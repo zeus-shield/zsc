@@ -608,49 +608,74 @@ export default class TestLogisticsRaw {
         }
     }
 
-    get() {
-        console.log('TestLogisticsRaw.get()');
+    get(type, para1, para2) {
+        console.log('TestLogisticsRaw.get(%s, %s, %s)', type, para1, para2);
         let logistics = new Logistics(this[abi], this[contractAddress]);
 
-        // logistics.getBrief("JNTCU0600046689YQ", function(error, result) {
-        //     if (!error) {
-        //         Output(window.outputOperationElement, 'small', 'red', `[Brief]:${result}`);
-        //     } else {
-        //         Output(window.outputOperationElement, 'small', 'red', error);
-        //     }
-        // });
-
-        // logistics.getBriefEx("JNTCU0600046688YQ", function(error, result) {
-        //     if (!error) {
-        //         Output(window.outputOperationElement, 'small', 'red', `[Brief]:${result}`);
-        //     } else {
-        //         Output(window.outputOperationElement, 'small', 'red', error);
-        //     }
-        // });
-
-        // logistics.getBriefByIndex(0, function(error, index, result) {
-        //     if (!error) {
-        //         Output(window.outputOperationElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
-        //     } else {
-        //         Output(window.outputOperationElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
-        //     }
-        // });
-
-        // logistics.getBriefExByIndex(4, function(error, index, result) {
-        //     if (!error) {
-        //         Output(window.outputOperationElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
-        //     } else {
-        //         Output(window.outputOperationElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
-        //     }
-        // });
-
-        logistics.getTracks("JNTCU0600046685YQ", function(error, result) {
-            if (!error) {
-                Output(window.outputOperationElement, 'small', 'red', `[Tracks]:</br>${result}`);
-            } else {
-                Output(window.outputOperationElement, 'small', 'red', error);
-            }
-        });
+        if ('tracks' == type) {
+            // logistics.getTracks("JNTCU0600046685YQ", function(error, result) {
+            logistics.getTracks(para1, function(error, result) {
+                if (!error) {
+                    Output(window.outputOperationElement, 'small', 'red', `[Tracks]:</br>${result}`);
+                } else {
+                    Output(window.outputOperationElement, 'small', 'red', error);
+                }
+            });
+        } else if ('tracksInvalid' == type) {
+            logistics.getTracksInvalid(para1, para2, function(error, num, index, result) {
+                if (!error) {
+                    // console.log(result);
+                    Output(window.outputOperationElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
+                } else {
+                    Output(window.outputOperationElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
+                }
+            })
+        } else if ('brief' == type) {
+            // logistics.getBrief("JNTCU0600046689YQ", function(error, result) {
+            logistics.getBrief(para1, function(error, result) {
+                if (!error) {
+                    Output(window.outputOperationElement, 'small', 'red', `[Brief]:${result}`);
+                } else {
+                    Output(window.outputOperationElement, 'small', 'red', error);
+                }
+            });
+        } else if ('briefEx' == type) {
+            // logistics.getBriefEx("JNTCU0600046688YQ", function(error, result) {
+            logistics.getBriefEx(para1, function(error, result) {
+                if (!error) {
+                    Output(window.outputOperationElement, 'small', 'red', `[Brief]:${result}`);
+                } else {
+                    Output(window.outputOperationElement, 'small', 'red', error);
+                }
+            });           
+        } else if ('briefByIndex' == type) {
+            //logistics.getBriefByIndex(0, function(error, index, result) {
+            logistics.getBriefByIndex(para1, function(error, index, result) {
+                if (!error) {
+                    Output(window.outputOperationElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
+                } else {
+                    Output(window.outputOperationElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
+                }
+            });
+        } else if ('briefExByIndex' == type) {
+            logistics.getBriefExByIndex(para1, function(error, index, result) {
+            // logistics.getBriefExByIndex(4, function(error, index, result) {
+                if (!error) {
+                    Output(window.outputOperationElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
+                } else {
+                    Output(window.outputOperationElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
+                }
+            });
+        } else if ('briefInvalid' == type) {
+            logistics.getBriefInvalid(para1, para2, function(error, num, index, result) {
+                if (!error) {
+                    // console.log(result);
+                    Output(window.outputOperationElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
+                } else {
+                    Output(window.outputOperationElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
+                }
+            })
+        } else {}
     }
 
     remove() {
@@ -1012,13 +1037,17 @@ export default class TestLogisticsRaw {
             case 'Remove':
                 this.removeEx();
                 break;
+            case 'Invalid':
+                this.invalid();
+                break;
             case 'DebugBrief':
                 this.debugBrief();
                 break;
-            case 'Misc':
-                this.get();
-                // this.invalid();
-                // this.numberOfTracks();
+            case 'Number':
+                this.numberOfTracks();
+                break;
+            case 'GetInfo':
+                this.get("brief", "JNTCU0600046685YQ");
                 break;
             default:
                 Output(window.outputOperationElement, 'small', 'red', 'Operation Error!');
