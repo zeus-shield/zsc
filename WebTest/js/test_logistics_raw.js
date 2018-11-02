@@ -1011,18 +1011,29 @@ export default class TestLogisticsRaw {
         })
     }
 
-    numberOfTracks() {
-        console.log('TestLogisticsRaw.numberOfTracks()');
+    number(type, para) {
+        console.log('TestLogisticsRaw.number(%s)', type);
         let logistics = new Logistics(this[abi], this[contractAddress]);
 
-        // number
-        logistics.numberOfTracks("JNTCU0600046685YQ", function(error, result) {
-            if (!error) {
-                Output(window.outputOperationElement, 'small', 'red', `[Number]:${result}`);
-            } else {
-                Output(window.outputOperationElement, 'small', 'red', error);
-            }
-        })
+        if ("Tracks" == type) {
+            // logistics.numberOfTracks("JNTCU0600046685YQ", function(error, result) {
+            logistics.numberOfTracks(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputOperationElement, 'small', 'red', `[Number]:${result}`);
+                } else {
+                    Output(window.outputOperationElement, 'small', 'red', error);
+                }
+            })   
+        } else if ("Num" == type) {
+            // logistics.numberOfTracks("JNTCU0600046685YQ", function(error, result) {
+            logistics.number(function(error, result) {
+                if (!error) {
+                    Output(window.outputOperationElement, 'small', 'red', `[Number]:${result}`);
+                } else {
+                    Output(window.outputOperationElement, 'small', 'red', error);
+                }
+            })             
+        } else {}
     }
 
     do(operation, para1, para2) {
