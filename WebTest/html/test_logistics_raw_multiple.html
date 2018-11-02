@@ -33,6 +33,12 @@
                 float:left;
                 padding:10px;        
             }
+            #common_test {
+                background-color:#e3e3e3;
+                color:black;
+                text-align:left;
+                padding:10px;
+            }
             #get_info {
                 background-color:#e3e3e3;
                 color:black;
@@ -122,12 +128,17 @@
 
             <p><h4>5. Operation</h4></p>
             <p>
-                <button type="button" id="create" onclick="main('LogisticsRaw', 'Create', '', '')">Create</button>
-                <button type="button" id="update" onclick="main('LogisticsRaw', 'Update', '', '')">Update</button>
-                <button type="button" id="update" onclick="main('LogisticsRaw', 'Remove', '', '')">Remove</button>
-                <button type="button" id="update" onclick="main('LogisticsRaw', 'Invalid', '', '')">Invalid</button>
-                <button type="button" id="update" onclick="main('LogisticsRaw', 'DebugBrief', '', '')">DebugBrief</button>
-            </p>    
+                <div id="common_test">
+                    <h5>Common Test:</h5>
+                    <button type="button" id="create" onclick="main('LogisticsRaw', 'Create', '', '')">Create</button>
+                    <button type="button" id="update" onclick="main('LogisticsRaw', 'Update', '', '')">Update</button>
+                    <button type="button" id="update" onclick="main('LogisticsRaw', 'Remove', '', '')">Remove</button>
+                    <button type="button" id="update" onclick="main('LogisticsRaw', 'Invalid', '', '')">Invalid</button>
+                    <button type="button" id="update" onclick="main('LogisticsRaw', 'DebugBrief', '', '')">DebugBrief</button>
+                    <p id="output_operation"></p>
+                </div>
+            </p>
+            <p>  
                 <div id="get_info">
                     <h5>Get Info:</h5>
                     Select Type:<br>
@@ -144,9 +155,9 @@
                     <input type="text" id="get_info_para"><br>
                     <button type="button" id="get_info_submit">Submit</button>
                 </div>
-            <p>
+            </p>
 
-            </p>    
+            <p>   
                 <div id="number">
                     <h5>Number:</h5>
                     Select Type:<br>
@@ -158,11 +169,7 @@
                     <input type="text" id="number_para"><br>
                     <button type="button" id="number_submit">Submit</button>
                 </div>
-            <p>
-
             </p>
-
-            <p id="output_operation"></p>
         </div>
 
         <div id="footer">Copyright ? deduotech.com</div>
