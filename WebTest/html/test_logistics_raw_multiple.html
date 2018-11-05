@@ -104,12 +104,17 @@
                 document.getElementById("remove_submit").onclick = function() {
                     main('LogisticsRaw', 'Remove', document.getElementById("remove_para").value, "");
                 }
+
+                document.getElementById("invalid_submit").onclick = function() {
+                    main('LogisticsRaw', 'Invalid', document.getElementById("invalid_para").value, "");
+                }
+
                 document.getElementById("get_info_submit").onclick = function() {
                     main('LogisticsRaw', 'GetInfo', document.getElementById("get_info_type").value, document.getElementById("get_info_para").value);
                 }
 
-                document.getElementById("number_submit").onclick = function() {
-                    main('LogisticsRaw', 'Number', document.getElementById("number_type").value, document.getElementById("number_para").value);
+                document.getElementById("get_number_submit").onclick = function() {
+                    main('LogisticsRaw', 'Number', document.getElementById("get_number_type").value, document.getElementById("get_number_para").value);
                 }
             }
         </script>
