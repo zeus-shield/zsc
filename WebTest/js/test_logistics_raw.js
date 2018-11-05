@@ -842,8 +842,8 @@ export default class TestLogisticsRaw {
     }
 
     // invalid -> update -> invalid -> invalid -> updateEx -> invalid
-    invalid() {
-        console.log('TestLogisticsRaw.invalid()');
+    invalidEx() {
+        console.log('TestLogisticsRaw.invalidEx()');
         let handler = this;
         let tracks5_1 = "{\"trackElementList\":[{\"time\":\"2017-07-13 11:54:00\",\"facilityName\":\"Track5_1\",\"desc\":\"Track5_1\"}&{\"time\":\"2017-07-07 17:39:09\",\"facilityName\":\"Track5_1\",\"desc\":\"Груз отправлен со склада хранения (<a href= >КСЭ</a>, номер накладной <a href=$f=$http://cse.ru/track.php?order=waybill%amp;number=JNTCU0600639867YQ$ tar target=$_blank$>JNTCU0600639867YQ</a>)\"}]}";
         let info5_4 = "{\"error\":null,\"num\":\"JNTCU0600046685YQ\",\"transNum\":\"Info5_3 上海市宜山路900号科技大楼A栋6楼，邮编：200233\",\"model\":\"Info5_3 J-NET俄全通INFO5\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"Track5_3\",\"timeZone\":\"+3\",\"desc\":\"Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Track5_3\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
@@ -1053,11 +1053,11 @@ export default class TestLogisticsRaw {
                 // this.update();
                 this.updateParallel();
                 break;
-            case 'Remove':
+            case 'RemoveEx':
                 this.removeEx();
                 break;
-            case 'Invalid':
-                this.invalid();
+            case 'invalidEx':
+                this.invalidEx();
                 break;
             case 'DebugBrief':
                 this.debugBrief();
