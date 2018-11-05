@@ -1065,7 +1065,7 @@ export default class TestLogisticsRaw {
                 this.remove(para1);
                 break;
             case 'Invalid':
-                this.Invalid(para1);
+                this.invalid(para1);
                 break;
             case 'Number':
                 this.number(para1, para2);
