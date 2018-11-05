@@ -686,9 +686,8 @@ export default class TestLogisticsRaw {
         } else {}
     }
 
-    remove() {
-        console.log('TestLogisticsRaw.remove()');
-        let tracks4 = "{\"trackElementList\":[{\"time\":\"2017-07-13 11:54:00\",\"facilityName\":\"Track4-1\",\"desc\":\"Track4-1\"}&{\"time\":\"2017-07-07 17:39:09\",\"facilityName\":\"Track4-2\",\"desc\":\"Груз отправлен со склада хранения (<a href= >КСЭ</a>, номер накладной <a href=$f=$http://cse.ru/track.php?order=waybill%amp;number=JNTCU0600639867YQ$ tar target=$_blank$>JNTCU0600639867YQ</a>)\"}]}";
+    remove(num) {
+        console.log('TestLogisticsRaw.remove(%s)', num);
         let channels = window.channelClass.get("idle");
 
         if (0 == channels.length) {
@@ -701,8 +700,8 @@ export default class TestLogisticsRaw {
 
         let logistics = new Logistics(this[abi], this[contractAddress]);
 
-        // update
-        logistics.update(account, key, "JNTCU0600639867YQ", "MSK0000027694", "INFO4", "Russian", "GTMS_SIGNED", tracks4, function(error, result) {
+        // remove
+        logistics.remove(account, key, num, function(error, result) {
             if (!error) {
                 if ("" != result.status) {
                     if (0x1 == parseInt(result.status)) {
@@ -710,44 +709,8 @@ export default class TestLogisticsRaw {
                     } else {
                         status = "failure";
                     }
-                    
                     let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
                     Output(window.outputOperationElement, 'small', 'red', string);
-
-                    // getTracks
-                    logistics.getTracks("JNTCU0600639867YQ", function(error, result) {
-                        if (!error) {
-                            Output(window.outputOperationElement, 'small', 'red', `[Track]:</br>${result}`);
-                            // remove
-                            logistics.remove(account, key, "JNTCU0600639867YQ", function(error, result) {
-                                if (!error) {
-                                    if ("" != result.status) {
-                                        if (0x1 == parseInt(result.status)) {
-                                            status = "succeeded";
-                                        } else {
-                                            status = "failure";
-                                        }
-                                        // getTracks
-                                        logistics.getTracks("JNTCU0600639867YQ", function(error, result) {
-                                            if (!error) {
-                                                Output(window.outputOperationElement, 'small', 'red', `[Track]:</br>${result}`);
-                                            } else {
-                                                Output(window.outputOperationElement, 'small', 'red', error);
-                                            }
-                                        });
-                                    } else {
-                                        let status = "Try to get status again!";
-                                        let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                        Output(window.outputOperationElement, 'small', 'red', string);
-                                    }
-                                } else {
-                                    Output(window.outputOperationElement, 'small', 'red', error);
-                                }
-                            });
-                        } else {
-                            Output(window.outputOperationElement, 'small', 'red', error);
-                        }
-                    });
                 } else {
                     let status = "Try to get status again!";
                     let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
