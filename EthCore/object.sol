@@ -9,6 +9,7 @@ import "./delegate.sol";
 
 contract Recorder {
     function addLog(string _log, bool _newLine) public;
+    function getRandomNumber(uint _min, uint _max) public returns (uint);
 }
 
 contract Object is Delegated {
@@ -34,4 +35,10 @@ contract Object is Delegated {
             Recorder(logRecorder_).addLog(_log, _newLine);
         }
     }  
+    
+    function random(uint _min, uint _max) internal returns (uint) {
+        require(logRecorder_ != address(0));
+        return Recorder(logRecorder_).getRandomNumber(_min, _max);
+    }
+    
 }
