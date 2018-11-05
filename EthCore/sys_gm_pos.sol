@@ -110,7 +110,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
 
     //////////////////////////   
-    function getRandomUnitCategory() internal view returns (bytes32) {
+    function getRandomUnitCategory() internal returns (bytes32) {
         uint ran = random(0, MAX_RATIO_VALUE);
         uint rareLev;
         if (ran <= rareProb_["R"]) {
@@ -272,6 +272,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
 
     ///////////////
+    /*
     function setUnitSpec(uint _unitId, bool _tag) public {
         checkDelegate(msg.sender, 1);
         robots_[_unitId].specific_ = _tag;
@@ -348,6 +349,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         checkDelegate(msg.sender, 1);
         robots_[_unitId].sellPrice_ = _price;
     }
+    */
 
     //////////////////////
     function getPosRatio() public view returns (uint, uint) {
