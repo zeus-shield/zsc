@@ -101,6 +101,9 @@
                      }
                 },false);
 
+                document.getElementById("remove_submit").onclick = function() {
+                    main('LogisticsRaw', 'Remove', document.getElementById("remove_para").value, "");
+                }
                 document.getElementById("get_info_submit").onclick = function() {
                     main('LogisticsRaw', 'GetInfo', document.getElementById("get_info_type").value, document.getElementById("get_info_para").value);
                 }
