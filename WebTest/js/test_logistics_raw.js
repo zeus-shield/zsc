@@ -784,6 +784,42 @@ export default class TestLogisticsRaw {
 
     }
 
+    invalid(num) {
+        console.log('TestLogisticsRaw.invalid(%s)', num);
+        let channels = window.channelClass.get("idle");
+
+        if (0 == channels.length) {
+            Output(window.outputOperationElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = channels[0].account;
+        let key = channels[0].key;
+
+        let logistics = new Logistics(this[abi], this[contractAddress]);
+
+        // invalid
+        logistics.invalid(account, key, num, function(error, result) {
+            if (!error) {
+                if ("" != result.status) {
+                    if (0x1 == parseInt(result.status)) {
+                        status = "succeeded";
+                    } else {
+                        status = "failure";
+                    }
+                    let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                    Output(window.outputOperationElement, 'small', 'red', string);
+                } else {
+                    let status = "Try to get status again!";
+                    let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                    Output(window.outputOperationElement, 'small', 'red', string);
+                }
+            } else {
+                Output(window.outputOperationElement, 'small', 'red', error);
+            }
+        });
+    }
+
     [getInvalid](handler, num) {
         handler.numberOfInvalidNums(num, function(error, result) {
             if (!error) {
@@ -1024,6 +1060,12 @@ export default class TestLogisticsRaw {
                 break;
             case 'DebugBrief':
                 this.debugBrief();
+                break;
+            case 'Remove':
+                this.remove(para1);
+                break;
+            case 'Invalid':
+                this.Invalid(para1);
                 break;
             case 'Number':
                 this.number(para1, para2);
