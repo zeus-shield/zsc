@@ -519,7 +519,6 @@ export default class LogisticsRaw {
                         // call 'Logistics.getBriefEx(string)'
                         contractInstance.getBriefEx.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
                                 console.log("[Brief]:", result);
                                 if (null != _func) {
                                     _func(null, result);
@@ -572,7 +571,8 @@ export default class LogisticsRaw {
                         contractInstance.getBriefByIndex.call(_index, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
-                                console.log("[Brief%d]: %s", _index, result);
+                                console.log("[Brief%s]: %s, %s, %s, %s, %s", 
+                                    _index, result[0], result[1], result[2], result[3], result[4]);
                                 if (null != _func) {
                                     _func(null, _index, result);
                                 }                                
@@ -623,8 +623,7 @@ export default class LogisticsRaw {
                         // call 'Logistics.getBriefExByIndex(uint)'
                         contractInstance.getBriefExByIndex.call(_index, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
-                                console.log("[Brief%d]: %s", _index, result);
+                                console.log("[Brief%s]: %s", _index, result);
                                 if (null != _func) {
                                     _func(null, _index, result);
                                 }
@@ -675,8 +674,8 @@ export default class LogisticsRaw {
                         // call 'Logistics.getBriefInvalid(string, uint)'
                         contractInstance.getBriefInvalid.call(_num, _invalidIndex, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
-                                console.log("[%s-%d]: %s", _num, _invalidIndex, result);
+                                console.log("[%s-%s]: %s, %s, %s, %s, %s", 
+                                    _num, _invalidIndex, result[0], result[1], result[2], result[3], result[4]);
                                 if (null != _func) {
                                     _func(null, _num, _invalidIndex, result);
                                 }
@@ -727,8 +726,7 @@ export default class LogisticsRaw {
                         // call 'Logistics.getTracksInvalid(string, uint)'
                         contractInstance.getTracksInvalid.call(_num, _invalidIndex, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                // Output(window.outputElement, 'small', 'red', `[Track]:${result}`);
-                                console.log("[%s-%d]: %s", _num, _invalidIndex, result);
+                                console.log("[%s-%s]: %s", _num, _invalidIndex, result);
                                 if (null != _func) {
                                     _func(null, _num, _invalidIndex, result);
                                 }
