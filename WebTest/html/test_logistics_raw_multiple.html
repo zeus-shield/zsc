@@ -42,7 +42,7 @@
             }
             #write_test {
                 background-color:#e3e3e3;
-                height:210px;
+                height:240px;
                 padding:10px;
                 clear:left;
             }
@@ -92,6 +92,7 @@
                 window.outputDeployElement = 'output_deploy';
                 window.outputSetupElement = 'output_setup';
                 window.outputOperationElement = 'output_common';
+                window.outputWriteElement = 'output_write';
                 window.outputReadElement = 'output_read';
 
                 provider(false);
@@ -189,6 +190,7 @@
                         <input type="text" id="invalid_para"><br>
                         <button type="button" id="invalid_submit">Submit</button>
                     </div>
+                    <p id="output_write"></p>
                 </div>
             </p>
 
