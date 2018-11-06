@@ -616,9 +616,9 @@ export default class TestLogisticsRaw {
             // logistics.getTracks("JNTCU0600046685YQ", function(error, result) {
             logistics.getTracks(para, function(error, result) {
                 if (!error) {
-                    Output(window.outputOperationElement, 'small', 'red', `[Tracks]:</br>${result}`);
+                    Output(window.outputReadElement, 'small', 'red', `[Tracks]:</br>${result}`);
                 } else {
-                    Output(window.outputOperationElement, 'small', 'red', error);
+                    Output(window.outputReadElement, 'small', 'red', error);
                 }
             });
         } else if ('TracksInvalid' == type) {
@@ -629,45 +629,45 @@ export default class TestLogisticsRaw {
             logistics.getTracksInvalid(num, index, function(error, num, index, result) {
                 if (!error) {
                     // console.log(result);
-                    Output(window.outputOperationElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
+                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
                 } else {
-                    Output(window.outputOperationElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
+                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
                 }
             })
         } else if ('Brief' == type) {
             // logistics.getBrief("JNTCU0600046689YQ", function(error, result) {
             logistics.getBrief(para, function(error, result) {
                 if (!error) {
-                    Output(window.outputOperationElement, 'small', 'red', `[Brief]:${result}`);
+                    Output(window.outputReadElement, 'small', 'red', `[Brief]:${result}`);
                 } else {
-                    Output(window.outputOperationElement, 'small', 'red', error);
+                    Output(window.outputReadElement, 'small', 'red', error);
                 }
             });
         } else if ('BriefEx' == type) {
             // logistics.getBriefEx("JNTCU0600046688YQ", function(error, result) {
             logistics.getBriefEx(para, function(error, result) {
                 if (!error) {
-                    Output(window.outputOperationElement, 'small', 'red', `[Brief]:${result}`);
+                    Output(window.outputReadElement, 'small', 'red', `[Brief]:${result}`);
                 } else {
-                    Output(window.outputOperationElement, 'small', 'red', error);
+                    Output(window.outputReadElement, 'small', 'red', error);
                 }
             });           
         } else if ('BriefByIndex' == type) {
             //logistics.getBriefByIndex(0, function(error, index, result) {
             logistics.getBriefByIndex(para, function(error, index, result) {
                 if (!error) {
-                    Output(window.outputOperationElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
+                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
                 } else {
-                    Output(window.outputOperationElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
+                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
                 }
             });
         } else if ('BriefExByIndex' == type) {
             logistics.getBriefExByIndex(para, function(error, index, result) {
             // logistics.getBriefExByIndex(4, function(error, index, result) {
                 if (!error) {
-                    Output(window.outputOperationElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
+                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
                 } else {
-                    Output(window.outputOperationElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
+                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
                 }
             });
         } else if ('BriefInvalid' == type) {
@@ -678,9 +678,9 @@ export default class TestLogisticsRaw {
             logistics.getBriefInvalid(num, index, function(error, num, index, result) {
                 if (!error) {
                     // console.log(result);
-                    Output(window.outputOperationElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
+                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
                 } else {
-                    Output(window.outputOperationElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
+                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
                 }
             })
         } else {}
@@ -1018,26 +1018,26 @@ export default class TestLogisticsRaw {
             // logistics.numberOfTracks("JNTCU0600046685YQ", function(error, result) {
             logistics.number(function(error, result) {
                 if (!error) {
-                    Output(window.outputOperationElement, 'small', 'red', `[Number]:${result}`);
+                    Output(window.outputReadElement, 'small', 'red', `[Number]:${result}`);
                 } else {
-                    Output(window.outputOperationElement, 'small', 'red', error);
+                    Output(window.outputReadElement, 'small', 'red', error);
                 }
             })             
         } else if ("Tracks" == type) {
             // logistics.numberOfTracks("JNTCU0600046685YQ", function(error, result) {
             logistics.numberOfTracks(para, function(error, result) {
                 if (!error) {
-                    Output(window.outputOperationElement, 'small', 'red', `[Number]:${result}`);
+                    Output(window.outputReadElement, 'small', 'red', `[Number]:${result}`);
                 } else {
-                    Output(window.outputOperationElement, 'small', 'red', error);
+                    Output(window.outputReadElement, 'small', 'red', error);
                 }
             })   
         } else if ("Invalid" == type) {
             logistics.numberOfInvalid(para, function(error, result) {
                 if (!error) {
-                    Output(window.outputOperationElement, 'small', 'red', `[Number]:${result}`);
+                    Output(window.outputReadElement, 'small', 'red', `[Number]:${result}`);
                 } else {
-                    Output(window.outputOperationElement, 'small', 'red', error);
+                    Output(window.outputReadElement, 'small', 'red', error);
                 }
             })   
         }
