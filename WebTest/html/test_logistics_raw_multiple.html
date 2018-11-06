@@ -114,7 +114,7 @@
                 }
 
                 document.getElementById("get_number_submit").onclick = function() {
-                    main('LogisticsRaw', 'Number', document.getElementById("get_number_type").value, document.getElementById("get_number_para").value);
+                    main('LogisticsRaw', 'GetNumber', document.getElementById("get_number_type").value, document.getElementById("get_number_para").value);
                 }
             }
         </script>
@@ -215,6 +215,7 @@
                         <select id="get_number_type">
                             <option value ="Num">Num</option>
                             <option value ="Tracks">Tracks</option>
+                            <option value ="Invalid">Invalid</option>
                         </select><br>
                         Params:<br>
                         <input type="text" id="get_number_para"><br>
