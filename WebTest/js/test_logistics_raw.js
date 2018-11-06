@@ -608,8 +608,8 @@ export default class TestLogisticsRaw {
         }
     }
 
-    get(type, para) {
-        console.log('TestLogisticsRaw.get(%s, %s)', type, para);
+    getInfo(type, para) {
+        console.log('TestLogisticsRaw.getInfo(%s, %s)', type, para);
         let logistics = new Logistics(this[abi], this[contractAddress]);
 
         if ('Tracks' == type) {
@@ -821,7 +821,7 @@ export default class TestLogisticsRaw {
     }
 
     [getInvalid](handler, num) {
-        handler.numberOfInvalidNums(num, function(error, result) {
+        handler.numberOfInvalid(num, function(error, result) {
             if (!error) {
                 for (let i=0; i<result; i++) {
                     handler.getBriefInvalid(num, i, function(error, num, index, result) {
@@ -1010,20 +1010,11 @@ export default class TestLogisticsRaw {
         })
     }
 
-    number(type, para) {
-        console.log('TestLogisticsRaw.number(%s)', type);
+    getNumber(type, para) {
+        console.log('TestLogisticsRaw.getNumber(%s)', type);
         let logistics = new Logistics(this[abi], this[contractAddress]);
 
-        if ("Tracks" == type) {
-            // logistics.numberOfTracks("JNTCU0600046685YQ", function(error, result) {
-            logistics.numberOfTracks(para, function(error, result) {
-                if (!error) {
-                    Output(window.outputOperationElement, 'small', 'red', `[Number]:${result}`);
-                } else {
-                    Output(window.outputOperationElement, 'small', 'red', error);
-                }
-            })   
-        } else if ("Num" == type) {
+        if ("Num" == type) {
             // logistics.numberOfTracks("JNTCU0600046685YQ", function(error, result) {
             logistics.number(function(error, result) {
                 if (!error) {
@@ -1032,7 +1023,24 @@ export default class TestLogisticsRaw {
                     Output(window.outputOperationElement, 'small', 'red', error);
                 }
             })             
-        } else {}
+        } else if ("Tracks" == type) {
+            // logistics.numberOfTracks("JNTCU0600046685YQ", function(error, result) {
+            logistics.numberOfTracks(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputOperationElement, 'small', 'red', `[Number]:${result}`);
+                } else {
+                    Output(window.outputOperationElement, 'small', 'red', error);
+                }
+            })   
+        } else if ("Invalid" == type) {
+            logistics.numberOfInvalid(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputOperationElement, 'small', 'red', `[Number]:${result}`);
+                } else {
+                    Output(window.outputOperationElement, 'small', 'red', error);
+                }
+            })   
+        }
     }
 
     do(operation, para1, para2) {
@@ -1067,11 +1075,11 @@ export default class TestLogisticsRaw {
             case 'Invalid':
                 this.invalid(para1);
                 break;
-            case 'Number':
-                this.number(para1, para2);
+            case 'GetNumber':
+                this.getNumber(para1, para2);
                 break;
             case 'GetInfo':
-                this.get(para1, para2);
+                this.getInfo(para1, para2);
                 break;
             default:
                 Output(window.outputOperationElement, 'small', 'red', 'Operation Error!');
