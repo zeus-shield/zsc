@@ -60,7 +60,7 @@
             }
             #read_test {
                 background-color:#e3e3e3;
-                height:250px;
+                height:280px;
                 padding:10px;
                 clear:left;
             }
@@ -91,7 +91,9 @@
                 window.outputDeployCoreElement = 'output_deploy_core';
                 window.outputDeployElement = 'output_deploy';
                 window.outputSetupElement = 'output_setup';
-                window.outputOperationElement = 'output_operation';
+                window.outputOperationElement = 'output_common';
+                window.outputReadElement = 'output_read';
+
                 provider(false);
                 document.getElementById('provider').addEventListener('change',function(){
                      if('injected' == this.value) {
@@ -168,7 +170,7 @@
                     <button type="button" id="update" onclick="main('LogisticsRaw', 'RemoveEx', '', '')">RemoveEx</button>
                     <button type="button" id="update" onclick="main('LogisticsRaw', 'InvalidEx', '', '')">InvalidEx</button>
                     <button type="button" id="update" onclick="main('LogisticsRaw', 'DebugBrief', '', '')">DebugBrief</button>
-                    <p id="output_operation"></p>
+                    <p id="output_common"></p>
                 </div>
             </p>
 
@@ -221,6 +223,7 @@
                         <input type="text" id="get_number_para"><br>
                         <button type="button" id="get_number_submit">Submit</button>
                     </div>
+                    <p id="output_read"></p>
                 </div>
             </p>
         </div>
