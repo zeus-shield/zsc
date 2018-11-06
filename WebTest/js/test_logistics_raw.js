@@ -691,7 +691,7 @@ export default class TestLogisticsRaw {
         let channels = window.channelClass.get("idle");
 
         if (0 == channels.length) {
-            Output(window.outputOperationElement, 'small', 'red', "No channnel(idle)!");
+            Output(window.outputWriteElement, 'small', 'red', "No channnel(idle)!");
             return;
         }
 
@@ -710,14 +710,14 @@ export default class TestLogisticsRaw {
                         status = "failure";
                     }
                     let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                    Output(window.outputOperationElement, 'small', 'red', string);
+                    Output(window.outputWriteElement, 'small', 'red', string);
                 } else {
                     let status = "Try to get status again!";
                     let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                    Output(window.outputOperationElement, 'small', 'red', string);
+                    Output(window.outputWriteElement, 'small', 'red', string);
                 }
             } else {
-                Output(window.outputOperationElement, 'small', 'red', error);
+                Output(window.outputWriteElement, 'small', 'red', error);
             }
         });
     }
@@ -789,7 +789,7 @@ export default class TestLogisticsRaw {
         let channels = window.channelClass.get("idle");
 
         if (0 == channels.length) {
-            Output(window.outputOperationElement, 'small', 'red', "No channnel(idle)!");
+            Output(window.outputWriteElement, 'small', 'red', "No channnel(idle)!");
             return;
         }
 
@@ -808,14 +808,14 @@ export default class TestLogisticsRaw {
                         status = "failure";
                     }
                     let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                    Output(window.outputOperationElement, 'small', 'red', string);
+                    Output(window.outputWriteElement, 'small', 'red', string);
                 } else {
                     let status = "Try to get status again!";
                     let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                    Output(window.outputOperationElement, 'small', 'red', string);
+                    Output(window.outputWriteElement, 'small', 'red', string);
                 }
             } else {
-                Output(window.outputOperationElement, 'small', 'red', error);
+                Output(window.outputWriteElement, 'small', 'red', error);
             }
         });
     }
