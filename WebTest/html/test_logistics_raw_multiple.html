@@ -16,12 +16,6 @@
                 background: #ccc;
                 border: 5px solid #ccc;
             }
-            #logistics {
-                display: none;
-            }
-            #logistics_core {
-                display: none;
-            }
             #header {
                 background-color:black;
                 padding:5px;
@@ -33,6 +27,13 @@
                 width:900px;
                 padding:10px;
 /*                float:left;*/
+            }
+            #deploy{
+                background-color:#e3e3e3;
+                padding:10px;
+            }
+            #logistics_database_file,#logistics_core_file,#logistics_file {
+                display: none;
             }
             #common_test {
                 background-color:#e3e3e3;
@@ -88,6 +89,7 @@
         <script type="text/javascript">
             window.onload = function () {
                 window.outputProviderElement = 'output_provider';
+                window.outputDeployDatabaseElement = 'output_deploy_database';
                 window.outputDeployCoreElement = 'output_deploy_core';
                 window.outputDeployElement = 'output_deploy';
                 window.outputSetupElement = 'output_setup';
@@ -140,29 +142,42 @@
             </p>
             <p id="output_provider"></p>
 
-            <p><h4>2. [logisticsCore] Please compile solidity file and upload compiled json file(logistics_core.json) at first, then deploy!</h4></p>
             <p>
-                <label for="logistics_core">Upload</label>
-                <input type="file" id="logistics_core" onchange="file('LogisticsRaw', 'LogisticsCore', this)" />
-                <button type="button" id="deploy" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsCore', '')">Deploy</button>
-            </p>
-            <p id="output_deploy_core"></p>
+                <h4>2. Deploy:</h4>
+                <div id="deploy">
+                    <p><h5>Deploy [logistics_database]</h5></p>
+                    <p>
+                        <label for="logistics_database_file">Upload</label>
+                        <input type="file" id="logistics_database_file" onchange="file('LogisticsRaw', 'LogisticsDatabase', this)" />
+                        <button type="button" id="deploy_b" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsDatabase', '')">Deploy</button>
+                    </p>
+                    <p id="output_deploy_database"></p>
 
-            <p><h4>3. [Logistics] Please compile solidity file and upload compiled json file(logistics.json) at first, then deploy!</h4></p>
-            <p>
-                <label for="logistics">Upload</label>
-                <input type="file" id="logistics" onchange="file('LogisticsRaw', 'Logistics', this)" />
-                <button type="button" id="deploy" onclick="main('LogisticsRaw', 'Deploy', 'Logistics', '')">Deploy</button>
-            </p>
-            <p id="output_deploy"></p>
+                    <p><h5>Deploy [logistics_core]</h5></p>
+                    <p>
+                        <label for="logistics_core_file">Upload</label>
+                        <input type="file" id="logistics_core_file" onchange="file('LogisticsRaw', 'LogisticsCore', this)" />
+                        <button type="button" id="deploy_b" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsCore', '')">Deploy</button>
+                    </p>
+                    <p id="output_deploy_core"></p>
 
-            <p><h4>4. Setup</h4></p>
+                    <p><h5>Deploy [logistics]</h5></p>
+                    <p>
+                        <label for="logistics_file">Upload</label>
+                        <input type="file" id="logistics_file" onchange="file('LogisticsRaw', 'Logistics', this)" />
+                        <button type="button" id="deploy_b" onclick="main('LogisticsRaw', 'Deploy', 'Logistics', '')">Deploy</button>
+                    </p>
+                    <p id="output_deploy"></p>
+                </div>
+            </p>
+
+            <p><h4>3. Setup</h4></p>
             <p>
                 <button type="button" id="setup" onclick="main('LogisticsRaw', 'Setup', '', '')">Setup</button>
             </p>
             <p id="output_setup"></p>
 
-            <p><h4>5. Test</h4></p>
+            <p><h4>4. Test</h4></p>
             <p>
                 <div id="common_test">
                     <h5>Common Test:</h5>
