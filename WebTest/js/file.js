@@ -54,7 +54,9 @@ export default function file(module, contractName, input) {
                     } else {
                         test = window.testLogisticsRawClass;
                     }
-                    if ('LogisticsCore' == contractName) {
+                    if ('LogisticsDatabase' == contractName) {
+                        elementId = window.outputDeployDatabaseElement;
+                    } else if ('LogisticsCore' == contractName) {
                         elementId = window.outputDeployCoreElement;
                     } else {
                         elementId = window.outputDeployElement;
