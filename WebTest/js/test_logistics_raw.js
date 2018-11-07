@@ -11,6 +11,9 @@ const contractAddress = Symbol('contractAddress');
 const coreAbi = Symbol('coreAbi');
 const coreContractAddress = Symbol('coreContractAddress');
 
+const databaseAbi = Symbol('databaseAbi');
+const databaseContractAddress = Symbol('databaseContractAddress');
+
 const nextIndex = Symbol('nextIndex');
 const tick = Symbol('tick');
 
@@ -28,10 +31,12 @@ export default class TestLogisticsRaw {
         this[compiledJson] = '';
         this[abi] = '';
         this[contractAddress] = '';
-        // this[abi] = [{"constant":false,"inputs":[{"name":"_num","type":"string"}],"name":"remove","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_info","type":"string"}],"name":"updateEx","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"constant":false,"inputs":[{"name":"_num","type":"string"},{"name":"_transNum","type":"string"},{"name":"_model","type":"string"},{"name":"_destinationCountry","type":"string"},{"name":"_lastStatus","type":"string"},{"name":"_tracks","type":"string"}],"name":"update","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_num","type":"string"},{"name":"_transNum","type":"string"},{"name":"_model","type":"string"},{"name":"_destinationCountry","type":"string"},{"name":"_lastStatus","type":"string"}],"name":"updateBrief","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_brief","type":"string"}],"name":"updateBriefEx","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_num","type":"string"},{"name":"_tracks","type":"string"},{"name":"_updateType","type":"uint256"}],"name":"updateTracks","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_num","type":"string"}],"name":"getBrief","outputs":[{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_index","type":"uint256"}],"name":"getBriefByIndex","outputs":[{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"},{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_num","type":"string"}],"name":"getBriefEx","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_index","type":"uint256"}],"name":"getBriefExByIndex","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_num","type":"string"}],"name":"getTracks","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"number","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_num","type":"string"}],"name":"numberOfTracks","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}];
-        // this[contractAddress] = "0x9cb887f15245628f79e9bfdbd719753d7ffa6d86";
+        // this[abi] = [{"constant": true,"inputs": [{"name": "_num","type": "string"},{"name": "_invalidIndex","type": "uint256"}],"name": "getTracksInvalid","outputs": [{"name": "","type": "string"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": true,"inputs": [{"name": "_num","type": "string"}],"name": "exist","outputs": [{"name": "","type": "bool"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": true,"inputs": [{"name": "_index","type": "uint256"}],"name": "getBriefByIndex","outputs": [{"name": "","type": "string"},{"name": "","type": "string"},{"name": "","type": "string"},{"name": "","type": "string"},{"name": "","type": "string"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": true,"inputs": [{"name": "_num","type": "string"}],"name": "numberOfTracks","outputs": [{"name": "","type": "uint256"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"name": "_num","type": "string"},{"name": "_brief","type": "string"}],"name": "updateBriefEx","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": true,"inputs": [{"name": "_num","type": "string"}],"name": "numberOfInvalid","outputs": [{"name": "","type": "uint256"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"name": "_num","type": "string"},{"name": "_transNum","type": "string"},{"name": "_model","type": "string"},{"name": "_destinationCountry","type": "string"},{"name": "_lastStatus","type": "string"}],"name": "updateBrief","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": true,"inputs": [{"name": "_num","type": "string"}],"name": "getBriefEx","outputs": [{"name": "","type": "string"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": true,"inputs": [{"name": "_index","type": "uint256"}],"name": "getBriefExByIndex","outputs": [{"name": "","type": "string"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": true,"inputs": [{"name": "_num","type": "string"}],"name": "getTracks","outputs": [{"name": "","type": "string"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"name": "_coreAddr","type": "address"}],"name": "setup","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": false,"inputs": [{"name": "_num","type": "string"}],"name": "remove","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": false,"inputs": [{"name": "_num","type": "string"}],"name": "invalid","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": true,"inputs": [],"name": "number","outputs": [{"name": "","type": "uint256"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"name": "_num","type": "string"},{"name": "_tracks","type": "string"},{"name": "_updateType","type": "uint256"}],"name": "updateTracks","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": true,"inputs": [{"name": "_num","type": "string"},{"name": "_invalidIndex","type": "uint256"}],"name": "getBriefInvalid","outputs": [{"name": "","type": "string"},{"name": "","type": "string"},{"name": "","type": "string"},{"name": "","type": "string"},{"name": "","type": "string"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"name": "_num","type": "string"},{"name": "_info","type": "string"}],"name": "updateEx","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": false,"inputs": [{"name": "_num","type": "string"},{"name": "_transNum","type": "string"},{"name": "_model","type": "string"},{"name": "_destinationCountry","type": "string"},{"name": "_lastStatus","type": "string"},{"name": "_tracks","type": "string"}],"name": "update","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": true,"inputs": [{"name": "_num","type": "string"}],"name": "getBrief","outputs": [{"name": "","type": "string"},{"name": "","type": "string"},{"name": "","type": "string"},{"name": "","type": "string"},{"name": "","type": "string"}],"payable": false,"stateMutability": "view","type": "function"},{"inputs": [],"payable": false,"stateMutability": "nonpayable","type": "constructor"}]; 
+        // this[contractAddress] = "0xee90212c0b872ac4b2f36aa82917ebb87d379a9f";
         this[coreAbi] = '';
         this[coreContractAddress] = '';
+        this[databaseAbi] = '';
+        this[databaseContractAddress] = '';
         this[nextIndex] = 0;
         this[tick] = 0;
     }
@@ -204,7 +209,9 @@ export default class TestLogisticsRaw {
         let elementId;
         let channels = window.channelClass.get("idle");
 
-        if ('LogisticsCore' == contractName) {
+        if ('LogisticsDatabase' == contractName) {
+            elementId = window.outputDeployDatabaseElement;
+        } else if ('LogisticsCore' == contractName) {
             elementId = window.outputDeployCoreElement;
         } else {
             elementId = window.outputDeployElement;
@@ -248,7 +255,10 @@ export default class TestLogisticsRaw {
         }     
 
         byteCode = '0x' + this[compiledJson].contracts[fullName].bin;
-        if ('LogisticsCore' == contractName) {
+        if ('LogisticsDatabase' == contractName) {
+            this[databaseAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
+            contract = web3.eth.contract(this[databaseAbi]);
+        } else if ('LogisticsCore' == contractName) {
             this[coreAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
             contract = web3.eth.contract(this[coreAbi]);
         } else {
@@ -266,7 +276,9 @@ export default class TestLogisticsRaw {
                 if('undefined' != typeof transaction) {
                     transaction.do("deploy", data, result, null, function(error, result) {
                         if (!error) {
-                            if ('LogisticsCore' == contractName) {
+                            if ('LogisticsDatabase' == contractName) {
+                                handler[databaseContractAddress] = result.contractAddress;
+                            } else if ('LogisticsCore' == contractName) {
                                 handler[coreContractAddress] = result.contractAddress;
                             } else {
                                 handler[contractAddress] = result.contractAddress;
