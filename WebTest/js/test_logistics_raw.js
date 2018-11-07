@@ -824,8 +824,8 @@ export default class TestLogisticsRaw {
         handler.numberOfInvalid(num, function(error, result) {
             if (!error) {
                 for (let i=0; i<result; i++) {
-                    handler.getBriefInvalid(num, i, function(error, num, index, result) {
-                    // handler.getTracksInvalid(num, i, function(error, num. index, result) {
+                    // handler.getBriefInvalid(num, i, function(error, num, index, result) {
+                    handler.getTracksInvalid(num, i, function(error, num, index, result) {
                         if (!error) {
                             // console.log(result);
                             Output(window.outputCommonElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
@@ -844,8 +844,8 @@ export default class TestLogisticsRaw {
     invalidEx() {
         console.log('TestLogisticsRaw.invalidEx()');
         let handler = this;
-        let tracks5_1 = "{\"trackElementList\":[{\"time\":\"2017-07-13 11:54:00\",\"facilityName\":\"Track5_1\",\"desc\":\"Track5_1\"}&{\"time\":\"2017-07-07 17:39:09\",\"facilityName\":\"Track5_1\",\"desc\":\"Груз отправлен со склада хранения (<a href= >КСЭ</a>, номер накладной <a href=$f=$http://cse.ru/track.php?order=waybill%amp;number=JNTCU0600639867YQ$ tar target=$_blank$>JNTCU0600639867YQ</a>)\"}]}";
-        let info5_4 = "{\"error\":null,\"num\":\"JNTCU0600046685YQ\",\"transNum\":\"Info5_3 上海市宜山路900号科技大楼A栋6楼，邮编：200233\",\"model\":\"Info5_3 J-NET俄全通INFO5\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"Track5_3\",\"timeZone\":\"+3\",\"desc\":\"Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Track5_3\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
+        let tracks5_invalid1 = "{\"trackElementList\":[{\"time\":\"invalid(1-1)\",\"facilityName\":\"invalid(1-1)\",\"desc\":\"invalid(1-1)\"}&{\"time\":\"invalid(1-2)\",\"facilityName\":\"invalid(1-2)\",\"desc\":\"invalid(1-2) Груз отправлен со склада хранения (<a href= >КСЭ</a>, номер накладной <a href=$f=$http://cse.ru/track.php?order=waybill%amp;number=JNTCU0600639867YQ$ tar target=$_blank$>JNTCU0600639867YQ</a>)\"}]}";
+        let info5_invalid2 = "{\"error\":null,\"num\":\"JNTCU0600046685YQ\",\"transNum\":\"invalid(2) 上海市宜山路900号科技大楼A栋6楼，邮编：200233\",\"model\":\"invalid(2) J-NET俄全通INFO5\",\"destinationCountry\":\"invalid(2)\",\"lastStatus\":\"invalid(2)\",\"trackElementList\":[{\"type\":\"invalid(2-1)\",\"time\":\"invalid(2-1)\",\"country\":\"invalid(2-1)\",\"city\":\"invalid(2-1)\",\"facilityName\":\"invalid(2-1)\",\"timeZone\":\"invalid(2-1)\",\"desc\":\"invalid(2-1) Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\",\"actionCode\":\"invalid(2-1)\"}&{\"type\":\"invalid(2-2)\",\"time\":\"invalid(2-2)\",\"country\":\"invalid(2-2)\",\"city\":\"invalid(2-2)\",\"facilityName\":\"invalid(2-2)\",\"timeZone\":\"invalid(2-2)\",\"desc\":\"invalid(2-2) Order received successfully\",\"actionCode\":\"invalid(2-2)\"}&{\"type\":\"invalid(2-3)\",\"time\":\"invalid(2-3)\",\"country\":\"invalid(2-3)\",\"city\":\"invalid(2-3)\",\"facilityName\":\"invalid(2-3)\",\"timeZone\":\"invalid(2-3)\",\"desc\":\"invalid(2-3) The parcel is ready to transfer to the courier\",\"actionCode\":\"invalid(2-3)\"}]}";
         
         let channels = window.channelClass.get("idle");
 
@@ -876,7 +876,7 @@ export default class TestLogisticsRaw {
                     }
 
                     // update
-                    logistics.update(account, key, num, "position[1]", "position[1]", "position[1]", "position[1]", tracks5_1, function(error, result) {
+                    logistics.update(account, key, num, "invalid(1)", "invalid(1)", "invalid(1)", "invalid(1)", tracks5_invalid1, function(error, result) {
                         if (!error) {
                             if ("" != result.status) {
                                 if (0x0 == parseInt(result.status)) {
@@ -906,7 +906,7 @@ export default class TestLogisticsRaw {
                                                             return;
                                                         }
                                                         // updateEx
-                                                        logistics.updateEx(account, key, "JNTCU0600046685YQ", info5_4, function(error, result) {
+                                                        logistics.updateEx(account, key, "JNTCU0600046685YQ", info5_invalid2, function(error, result) {
                                                             if (!error) {
                                                                 if ("" != result.status) {
                                                                     if (0x0 == parseInt(result.status)) {
