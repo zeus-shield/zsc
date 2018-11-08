@@ -11,6 +11,9 @@ const account = Symbol('account');
 const constractAbi = Symbol('constractAbi');
 const constractAddress = Symbol('constractAddress');
 
+const coreConstractAbi = Symbol('coreConstractAbi');
+const coreConstractAddress = Symbol('coreConstractAddress');
+
 export default class LogisticsRaw {
     constructor(_abi, _constractAddr) {
         this[account] = web3.eth.coinbase;
@@ -18,16 +21,42 @@ export default class LogisticsRaw {
         this[constractAddress] = _constractAddr; 
     }
 
-    setup(account, key, _databaseAddr, _coreAddr, _func) {
+    setCoreConstract(_abi, _constractAddr) {
+        this[coreConstractAbi] = _abi;
+        this[coreConstractAddress] = _constractAddr;
+    }
+
+    setup(account, key, _coreAddr, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
-        let data = contractInstance.setup.getData(_databaseAddr, _coreAddr);
+        let data = contractInstance.setup.getData(_coreAddr);
 
-        contractInstance.setup.estimateGas(_databaseAddr, _coreAddr, function(error, result) {
+        contractInstance.setup.estimateGas(_coreAddr, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(account, key);
                 if('undefined' != typeof transaction) {
                     transaction.do("transaction", data, result, handler[constractAddress], _func);
+                }
+            } else {
+                // Output(window.outputElement, 'small', 'red', error);
+                console.log(error);
+                if (null != _func) {
+                    _func(error);
+                }
+            }
+        });
+    }
+
+    setupCore(account, key, _databaseAddr, _func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let data = contractInstance.setup.getData(_databaseAddr);
+
+        contractInstance.setup.estimateGas(_databaseAddr, function(error, result) {
+            if (!error) {
+                let transaction = new Transaction(account, key);
+                if('undefined' != typeof transaction) {
+                    transaction.do("transaction", data, result, handler[coreConstractAddress], _func);
                 }
             } else {
                 // Output(window.outputElement, 'small', 'red', error);
