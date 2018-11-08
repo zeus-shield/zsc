@@ -39,8 +39,16 @@ contract Logistics {
         coreAddr_ = 0;
     }
 
-    function setup(address _coreAddr) public {
+    function setup(address _databaseAddr, address _coreAddr) public {
+        // check database address
+        require(0 != _databaseAddr);
+
+        // check core address
+        require(0 != _coreAddr);
+        
         coreAddr_ = _coreAddr;
+
+        LogisticsCore(coreAddr_).setup(_databaseAddr);
     }
  
     // _updateType: 0 means overwrite, 1 means append
