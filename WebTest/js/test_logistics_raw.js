@@ -138,6 +138,7 @@ export default class TestLogisticsRaw {
         let newTracks5 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"上海德铎泰信息科技有限公司 上海市闵行区宜山路2016号合川大厦6H\",\"facilityName\":\"NewTrack5-1\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"NewTrack5-2\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-2\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
 
         let logistics = new Logistics(this[abi], this[contractAddress]);
+        logistics.setCoreConstract(this[coreAbi], this[coreContractAddress]);
 
         if (blockCount < blockIndex) {
             return;
@@ -380,6 +381,7 @@ export default class TestLogisticsRaw {
         let tracks7 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"Track7-1\",\"timeZone\":\"+3\",\"desc\":\"Track7-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Track7-2\",\"timeZone\":\"+3\",\"desc\":\"Track7-2\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Track7-3\",\"timeZone\":\"+3\",\"desc\":\"Track7-3\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
 
         let logistics = new Logistics(this[abi], this[contractAddress]);
+        logistics.setCoreConstract(this[coreAbi], this[coreContractAddress]);
         
         // updateEx
         logistics.updateEx(account, key, "JNTCU0600046683YQ", info3, function(error, result) {
@@ -543,6 +545,7 @@ export default class TestLogisticsRaw {
         let newTracks5 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"NewTrack5-1\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"NewTrack5-2\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-2\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
         
         let logistics = new Logistics(this[abi], this[contractAddress]);
+        logistics.setCoreConstract(this[coreAbi], this[coreContractAddress]);
 
         // updateBrief
         logistics.updateBrief(account, key, "JNTCU0600046688YQ", "MSK0000027698", "INFO8", "Russian", "GTMS_SIGNED", function(error, result) {
@@ -644,6 +647,7 @@ export default class TestLogisticsRaw {
     getInfo(type, para) {
         console.log('TestLogisticsRaw.getInfo(%s, %s)', type, para);
         let logistics = new Logistics(this[abi], this[contractAddress]);
+        logistics.setCoreConstract(this[coreAbi], this[coreContractAddress]);
 
         if ('Tracks' == type) {
             // logistics.getTracks("JNTCU0600046685YQ", function(error, result) {
@@ -732,6 +736,7 @@ export default class TestLogisticsRaw {
         let key = channels[0].key;
 
         let logistics = new Logistics(this[abi], this[contractAddress]);
+        logistics.setCoreConstract(this[coreAbi], this[coreContractAddress]);
 
         // remove
         logistics.remove(account, key, num, function(error, result) {
@@ -773,6 +778,7 @@ export default class TestLogisticsRaw {
         // create and update at first
 
         let logistics = new Logistics(this[abi], this[contractAddress]);
+        logistics.setCoreConstract(this[coreAbi], this[coreContractAddress]);
 
         // remove
         logistics.remove(account, key, "JNTCU0600046684YQ", function(error, result) {
@@ -830,6 +836,7 @@ export default class TestLogisticsRaw {
         let key = channels[0].key;
 
         let logistics = new Logistics(this[abi], this[contractAddress]);
+        logistics.setCoreConstract(this[coreAbi], this[coreContractAddress]);
 
         // invalid
         logistics.invalid(account, key, num, function(error, result) {
@@ -896,6 +903,7 @@ export default class TestLogisticsRaw {
         let num = "JNTCU0600046685YQ";
 
         let logistics = new Logistics(this[abi], this[contractAddress]);
+        logistics.setCoreConstract(this[coreAbi], this[coreContractAddress]);
 
         // invalid
         logistics.invalid(account, key, num, function(error, result) {
@@ -1046,6 +1054,7 @@ export default class TestLogisticsRaw {
     getNumber(type, para) {
         console.log('TestLogisticsRaw.getNumber(%s)', type);
         let logistics = new Logistics(this[abi], this[contractAddress]);
+        logistics.setCoreConstract(this[coreAbi], this[coreContractAddress]);
 
         if ("Num" == type) {
             // logistics.numberOfTracks("JNTCU0600046685YQ", function(error, result) {
