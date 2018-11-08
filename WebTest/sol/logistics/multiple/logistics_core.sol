@@ -6,8 +6,7 @@
 pragma solidity ^0.4.25;
 // pragma experimental ABIEncoderV2;
 
-import "../../utillib/LibString.sol";
-import "../../utillib/LibInt.sol";
+import "./Logistics_database.sol";
 
 contract LogisticsCore {
 
@@ -32,6 +31,9 @@ contract LogisticsCore {
         string lastStatus_;
     }
 
+    /** @desc database address */
+    address private databaseAddr_;
+
     /*************************************************/
     /** @desc num total count */
     uint private numTotalCount_;
@@ -49,26 +51,9 @@ contract LogisticsCore {
     mapping(string => uint) private numInvalidCounts_;
     /*************************************************/
 
-    /** @desc string(valid/invalid num name: original num name + valid/invalid num index) => Brief(brief info)
-      * @eg JNTCU0600046683YQ-3 => Brief
-      */
-    mapping(string => Brief) private briefs_;
-
-    /** @desc string(valid/invalid num name: original num name + valid/invalid num index) => uint(track count)
-      * @eg JNTCU0600046683YQ-3 => 4
-      */
-    mapping(string => uint) private trackCounts_;
-
-    /** @desc string(track name: original num name + valid/invalid num index + track index) => Track(track info)
-      * @eg JNTCU0600046683YQ-3-5 => Track
-      */
-    mapping(string => Track) private tracks_;  
-
-    /** @desc string(valid/invalid num name: original num name + valid/invalid num index) => string[](track temps) */
-    mapping(string => string[]) private trackTmps_;
-
     // Constructor
     constructor() public {
+        databaseAddr_ = 0;
         numTotalCount_ = 0;
     }
 
@@ -108,371 +93,156 @@ contract LogisticsCore {
         return _num.concat("-", numInvalidCounts_[_num].toString());
     }
 
-    function _allocTracks(string _validNum, uint _length) internal {
-        trackCounts_[_validNum] += _length;
-    }
+    function setup(address _databaseAddr) external {
+        // check database address
+        require(0 != _databaseAddr);
 
-    function _removeTracks(string _validNum) internal {
-        string memory trackName = "";
-        for (uint i=0; i<trackCounts_[_validNum]; i++) {
-            trackName = _validNum.concat("-", i.toString());
-            delete tracks_[trackName];
-        }
-        trackCounts_[_validNum] = 0;
-    }
-
-    function _updateTrack(string _validNum, uint _index, string _track) internal {
-        string memory trackName = "";
-        string memory type32 = "";
-        string memory time = "";
-        string memory country = "";
-        string memory city = "";
-        string memory facilityName = "";
-        string memory timeZone = "";
-        string memory desc = "";
-        string memory actionCode = "";
-
-        if (trackCounts_[_validNum] <= _index) {
-            return;
-        }
-
-        trackName = _validNum.concat("-", _index.toString());
-
-        if (_track.keyExists("type")) {
-            type32 = _track.getStringValueByKey("type");
-            if (0 != bytes(type32).length) {
-                tracks_[trackName].type_ = type32;
-            }
-        }
-
-        if (_track.keyExists("time")) {
-            time = _track.getStringValueByKey("time");
-            if (0 != bytes(time).length) {
-                tracks_[trackName].time_ = time;
-            }
-        }
-
-        if (_track.keyExists("country")) {
-            country = _track.getStringValueByKey("country");
-            if (0 != bytes(country).length) {
-                tracks_[trackName].country_ = country;
-            }
-        }
-
-        if (_track.keyExists("city")) {
-            city = _track.getStringValueByKey("city");
-            if (0 != bytes(city).length) {
-                tracks_[trackName].city_ = city;
-            }
-        }
-
-        if (_track.keyExists("facilityName")) {
-            facilityName = _track.getStringValueByKey("facilityName");
-            if (0 != bytes(facilityName).length) {
-                tracks_[trackName].facilityName_ = facilityName;
-            }
-        }
-
-        if (_track.keyExists("timeZone")) {
-            timeZone = _track.getStringValueByKey("timeZone");
-            if (0 != bytes(timeZone).length) {
-                tracks_[trackName].timeZone_ = timeZone;
-            }
-        }
-
-        if (_track.keyExists("desc")) {
-            desc = _track.getStringValueByKey("desc");
-            if (0 != bytes(desc).length) {
-                tracks_[trackName].desc_ = desc;
-            }
-        }
-
-        if (_track.keyExists("actionCode")) {
-            actionCode = _track.getStringValueByKey("actionCode");
-            if (0 != bytes(actionCode).length) {
-                tracks_[trackName].actionCode_ = actionCode;
-            }
-        }
+        databaseAddr_ = _databaseAddr;
     }
 
     // _updateType: 0 means overwrite, 1 means append
-    function updateTracks(string _num, string _tracks, uint _updateType) public {
-        uint startIndex = 0;
-
-        // get valid num name
-        string memory validNum = _getValidNumName(_num);
-
-        if (_tracks.keyExists("trackElementList")) {
-
-            string memory tracks = _tracks.getArrayValueByKey("trackElementList");
-            if (0 != bytes(tracks).length) {
-                tracks.split("&", trackTmps_[validNum]);
-
-                if (0 == _updateType) {
-                    // remove all tracks at first
-                    _removeTracks(validNum);
-                }
-
-                startIndex = trackCounts_[validNum];
-
-                //alloc tracks
-                _allocTracks(validNum, trackTmps_[validNum].length);
-
-                for (uint i=0; i<trackTmps_[validNum].length; i++) {
-                    _updateTrack(validNum, startIndex+i, trackTmps_[validNum][i]);
-                }
-            }
-        }
+    function updateTracks(string _num, string _tracks, uint _updateType) external {
+        // check database address
+        require(0 != databaseAddr_);
+ 
+        // update tracks
+        LogisticsDatabase(databaseAddr_).updateTracks(_getValidNumName(_num), _tracks, _updateType);
     }
 
     function updateBrief(bool _numExist, string _num, string _transNum, string _model,
-                         string _destinationCountry, string _lastStatus) public {
+                         string _destinationCountry, string _lastStatus) external {
+        // check database address
+        require(0 != databaseAddr_);
+
         if (!_numExist) {
            _addNum(_num); 
         }
 
-        // get valid num name
-        string memory validNum = _getValidNumName(_num);
-
         // update brief
-        briefs_[validNum].transNum_           = _transNum;
-        briefs_[validNum].model_              = _model;
-        briefs_[validNum].destinationCountry_ = _destinationCountry;
-        briefs_[validNum].lastStatus_         = _lastStatus;
+        LogisticsDatabase(databaseAddr_).updateBrief(_getValidNumName(_num), _transNum, _model, _destinationCountry, _lastStatus);
     }
 
-    function updateBriefEx(bool _numExist, string _num, string _brief) public {
-        string memory transNum = "";
-        string memory model = "";
-        string memory destinationCountry = "";
-        string memory lastStatus = "";
+    function updateBriefEx(bool _numExist, string _num, string _brief) external {
+        // check database address
+        require(0 != databaseAddr_);
 
         if (!_numExist) {
             // add num
             _addNum(_num);
         }
 
-        // get valid num name
-        string memory validNum = _getValidNumName(_num);
-
-        if (_brief.keyExists("transNum")) {
-            transNum = _brief.getStringValueByKey("transNum");
-            if (0 != bytes(transNum).length) {
-                briefs_[validNum].transNum_ = transNum;
-            }
-        }
-
-        if (_brief.keyExists("model")) {
-            model = _brief.getStringValueByKey("model");
-            if (0 != bytes(model).length) {
-                briefs_[validNum].model_ = model;
-            }
-        }
-
-        if (_brief.keyExists("destinationCountry")) {
-            destinationCountry = _brief.getStringValueByKey("destinationCountry");
-            if (0 != bytes(destinationCountry).length) {
-                briefs_[validNum].destinationCountry_ = destinationCountry;
-            }
-        }
-
-        if (_brief.keyExists("lastStatus")) {
-            lastStatus = _brief.getStringValueByKey("lastStatus");
-            if (0 != bytes(lastStatus).length) {
-                briefs_[validNum].lastStatus_ = lastStatus;
-            }
-        }
+        // update brief ex
+        LogisticsDatabase(databaseAddr_).updateBriefEx(_getValidNumName(_num), _brief);
     }
 
-    function remove(string _num) public {
-        // get valid num name
-        string memory validNum = _getValidNumName(_num);
+    function remove(string _num) external {
+        // check database address
+        require(0 != databaseAddr_);
 
-        // remove tracks
-        _removeTracks(validNum);
-
-        // remove brief
-        delete briefs_[validNum];
+        // remove database
+        LogisticsDatabase(databaseAddr_).remove(_getValidNumName(_num));
 
         // remove num
         _removeNum(_num);
     }
 
-    function invalid(string _num) public {
+    function invalid(string _num) external {
         // remove num
         _removeNum(_num);
 
         numInvalidCounts_[_num] ++;
     }
 
-    function number() public view returns (uint) {
+    function number() external view returns (uint) {
         return numTotalCount_;
     }
 
-    function numberOfTracks(string _num) public view returns (uint) {
-        return trackCounts_[_getValidNumName(_num)];
+    function numberOfTracks(string _num) external view returns (uint) {
+        // check database address
+        require(0 != databaseAddr_);
+
+        return LogisticsDatabase(databaseAddr_).numberOfTracks(_getValidNumName(_num));
     }
 
-    function numberOfInvalid(string _num) public view returns (uint) {
+    function numberOfInvalid(string _num) external view returns (uint) {
         return numInvalidCounts_[_num];
     }
 
-    function getTracks(string _num) public view returns (string) {
-        string memory trackName = "";
-        string memory str = "";
+    function getTracks(string _num) external view returns (string) {
+        // check database address
+        require(0 != databaseAddr_);
 
-        // get valid num name
-        string memory validNum = _getValidNumName(_num);
-
-        str = "[";
-        for (uint i=0; i<trackCounts_[validNum]; i++) {
-            trackName = validNum.concat("-", i.toString());
-
-            str = str.concat("{", tracks_[trackName].type_.toKeyValue("type"), ",");
-            str = str.concat(tracks_[trackName].time_.toKeyValue("time"), ",");
-            str = str.concat(tracks_[trackName].country_.toKeyValue("country"), ",");
-            str = str.concat(tracks_[trackName].city_.toKeyValue("city"), ",");
-            str = str.concat(tracks_[trackName].facilityName_.toKeyValue("facilityName"), ",");
-            str = str.concat(tracks_[trackName].timeZone_.toKeyValue("timeZone"), ",");
-            str = str.concat(tracks_[trackName].desc_.toKeyValue("desc"), ",");
-            str = str.concat(tracks_[trackName].actionCode_.toKeyValue("actionCode"), "}");
-
-            if (trackCounts_[validNum] != (i+1)) {
-                str = str.concat(",");
-            }
-        }
-        str = str.concat("]");
-
-        return str;
+        return LogisticsDatabase(databaseAddr_).getTracks(_getValidNumName(_num));
     }
 
-    function getBrief(string _num) public view returns (string, string, string, string, string) {
-        // get valid num name
-        string memory validNum = _getValidNumName(_num);
-        string[5] memory str = ["", "", "", "", ""];
+    function getBrief(string _num) external view returns (string, string, string, string, string) {
+        // check database address
+        require(0 != databaseAddr_);
 
-        str[0] = _num;
-        str[1] = briefs_[validNum].transNum_;
-        str[2] = briefs_[validNum].model_;
-        str[3] = briefs_[validNum].destinationCountry_;
-        str[4] = briefs_[validNum].lastStatus_;
-
-        return (str[0], str[1], str[2], str[3], str[4]);
+        return LogisticsDatabase(databaseAddr_).getBrief(_num, _getValidNumName(_num));
     }
 
-    function getBriefEx(string _num) public view returns (string) {
-        // get valid num name
-        string memory validNum = _getValidNumName(_num);
-        string memory str = "";
+    function getBriefEx(string _num) external view returns (string) {
+        // check database address
+        require(0 != databaseAddr_);
 
-        str = str.concat("{", _num.toKeyValue("num"), ",");
-        str = str.concat(briefs_[validNum].transNum_.toKeyValue("transNum"), ",");
-        str = str.concat(briefs_[validNum].model_.toKeyValue("model"), ",");
-        str = str.concat(briefs_[validNum].destinationCountry_.toKeyValue("destinationCountry"), ",");
-        str = str.concat(briefs_[validNum].lastStatus_.toKeyValue("lastStatus"), "}");
-
-        return str;
+        return LogisticsDatabase(databaseAddr_).getBriefEx(_num, _getValidNumName(_num));
     }
 
-    function getBriefByIndex(uint _index) public view returns (string, string, string, string, string) {
-        string memory num = "";
-        string[5] memory str = ["", "", "", "", ""];
+    function getBriefByIndex(uint _index) external view returns (string, string, string, string, string) {
+        // check database address
+        require(0 != databaseAddr_);
 
-        // check param
-        if (numTotalCount_ <= _index) {
-            return (str[0], str[1], str[2], str[3], str[4]);
+        // check index
+        // require(numTotalCount_ > _index);
+        if(numTotalCount_ <= _index) {
+            return ("", "", "", "", "");
         }
 
-        num = numNames_[_index];
+        string memory num = numNames_[_index];
 
-        // get valid num name
-        string memory validNum = _getValidNumName(num);
-
-        str[0] = num;
-        str[1] = briefs_[validNum].transNum_;
-        str[2] = briefs_[validNum].model_;
-        str[3] = briefs_[validNum].destinationCountry_;
-        str[4] = briefs_[validNum].lastStatus_;
-
-        return (str[0], str[1], str[2], str[3], str[4]);
+        return LogisticsDatabase(databaseAddr_).getBrief(num, _getValidNumName(num));
     }
 
-    function getBriefExByIndex(uint _index) public view returns (string) {
-        string memory num = "";
-        string memory str = "";
+    function getBriefExByIndex(uint _index) external view returns (string) {
+        // check database address
+        require(0 != databaseAddr_);       
 
-        // check param
-        if (numTotalCount_ <= _index) {
-            return str;
-        }
+        // check index
+        require(numTotalCount_ > _index);
 
-        num = numNames_[_index];
+        string memory num = numNames_[_index];
 
-        // get valid num name
-        string memory validNum = _getValidNumName(num);
-
-        str = str.concat("{", num.toKeyValue("num"), ",");
-        str = str.concat(briefs_[validNum].transNum_.toKeyValue("transNum"), ",");
-        str = str.concat(briefs_[validNum].model_.toKeyValue("model"), ",");
-        str = str.concat(briefs_[validNum].destinationCountry_.toKeyValue("destinationCountry"), ",");
-        str = str.concat(briefs_[validNum].lastStatus_.toKeyValue("lastStatus"), "}");
-
-        return str;
+        return LogisticsDatabase(databaseAddr_).getBriefEx(num, _getValidNumName(num));
     }
 
-    function getBriefInvalid(string _num, uint _invalidIndex) public view returns (string, string, string, string, string) {
-        string[5] memory str = ["", "", "", "", ""];
+    function getBriefInvalid(string _num, uint _invalidIndex) external view returns (string, string, string, string, string) {
+        // check database address
+        require(0 != databaseAddr_);
 
-        if (numInvalidCounts_[_num] <= _invalidIndex) {
-            return (str[0], str[1], str[2], str[3], str[4]);
-        }
+        // check invalid index
+        require(numInvalidCounts_[_num] > _invalidIndex);
 
         // don't need to check num exist
 
         // get invalid num name
         string memory invalidNum = _num.concat("-", _invalidIndex.toString());
 
-        str[0] = invalidNum;
-        str[1] = briefs_[invalidNum].transNum_;
-        str[2] = briefs_[invalidNum].model_;
-        str[3] = briefs_[invalidNum].destinationCountry_;
-        str[4] = briefs_[invalidNum].lastStatus_;
-
-        return (str[0], str[1], str[2], str[3], str[4]);
+        return LogisticsDatabase(databaseAddr_).getBrief(invalidNum, invalidNum);
     }
 
-    function getTracksInvalid(string _num, uint _invalidIndex) public view returns (string) {
-        string memory trackName = "";
-        string memory str = "";
+    function getTracksInvalid(string _num, uint _invalidIndex) external view returns (string) {
+        // check database address
+        require(0 != databaseAddr_); 
 
-        if (numInvalidCounts_[_num] <= _invalidIndex) {
-            return str;
-        }
+        // check invalid index
+        require(numInvalidCounts_[_num] > _invalidIndex);
 
         // don't need to check num exist
 
         // find invalid num name
         string memory invalidNum = _num.concat("-", _invalidIndex.toString());
 
-        str = "[";
-        for (uint i=0; i<trackCounts_[invalidNum]; i++) {
-            trackName = invalidNum.concat("-", i.toString());
-
-            str = str.concat("{", tracks_[trackName].type_.toKeyValue("type"), ",");
-            str = str.concat(tracks_[trackName].time_.toKeyValue("time"), ",");
-            str = str.concat(tracks_[trackName].country_.toKeyValue("country"), ",");
-            str = str.concat(tracks_[trackName].city_.toKeyValue("city"), ",");
-            str = str.concat(tracks_[trackName].facilityName_.toKeyValue("facilityName"), ",");
-            str = str.concat(tracks_[trackName].timeZone_.toKeyValue("timeZone"), ",");
-            str = str.concat(tracks_[trackName].desc_.toKeyValue("desc"), ",");
-            str = str.concat(tracks_[trackName].actionCode_.toKeyValue("actionCode"), "}");
-
-            if (trackCounts_[invalidNum] != (i+1)) {
-                str = str.concat(",");
-            }
-        }
-        str = str.concat("]");
-
-        return str;
+        return LogisticsDatabase(databaseAddr_).getTracks(invalidNum);
     }
 }
