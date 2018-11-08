@@ -107,6 +107,11 @@ contract LogisticsCore {
 
     // _updateType: 0 means overwrite, 1 means append
     function updateTracks(string _num, string _tracks, uint _updateType) external _checkDatabaseAddr {
+        // check param
+        require(0 != bytes(_num).length);
+        require(0 != bytes(_tracks).length);
+        require((0 == _updateType) || (1 == _updateType));
+
         // check num exist
         require(numExist_[_num]);
 
@@ -115,7 +120,10 @@ contract LogisticsCore {
     }
 
     function updateBrief(string _num, string _transNum, string _model,
-                         string _destinationCountry, string _lastStatus) external _checkDatabaseAddr {
+                         string _destinationCountry, string _lastStatus) public _checkDatabaseAddr {
+        // check param
+        require(0 != bytes(_num).length);
+
         if (!numExist_[_num]) {
             // add num
             _addNum(_num);
@@ -125,7 +133,11 @@ contract LogisticsCore {
         LogisticsDatabase(databaseAddr_).updateBrief(_getValidNumName(_num), _transNum, _model, _destinationCountry, _lastStatus);
     }
 
-    function updateBriefEx(string _num, string _brief) external _checkDatabaseAddr {
+    function updateBriefEx(string _num, string _brief) public _checkDatabaseAddr {
+        // check param
+        require(0 != bytes(_num).length);
+        require(0 != bytes(_brief).length);
+
         if (!numExist_[_num]) {
             // add num
             _addNum(_num);
@@ -135,7 +147,30 @@ contract LogisticsCore {
         LogisticsDatabase(databaseAddr_).updateBriefEx(_getValidNumName(_num), _brief);
     }
 
+    function update(string _num, string _transNum, 
+                    string _model, string _destinationCountry,
+                    string _lastStatus, string _tracks) external {
+        // update brief
+        updateBrief(_num, _transNum, _model, _destinationCountry, _lastStatus);
+
+        // update tracks from json(similar to)
+        if (0 != bytes(_tracks).length) {
+            this.updateTracks(_num, _tracks, 0);
+        }
+    }
+
+    function updateEx(string _num, string _info) external {
+        // update brief from json(similar to)
+        updateBriefEx(_num, _info);
+
+        // update tracks from json(similar to)
+        this.updateTracks(_num, _info, uint(0));
+    }
+
     function remove(string _num) external _checkDatabaseAddr {
+        // check param
+        require(0 != bytes(_num).length);
+
         // check num exist
         require(numExist_[_num]);
 
@@ -147,6 +182,9 @@ contract LogisticsCore {
     }
 
     function invalid(string _num) external {
+        // check param
+        require(0 != bytes(_num).length);
+
         // check num exist
         require(numExist_[_num]);
 
@@ -157,6 +195,11 @@ contract LogisticsCore {
     }
 
     function exist(string _num) external view returns (bool) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return false;
+        }
+
         return numExist_[_num];
     }
 
@@ -165,6 +208,11 @@ contract LogisticsCore {
     }
 
     function numberOfTracks(string _num) external view _checkDatabaseAddr returns (uint) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return 0;
+        }
+
         // check num exist
         if (!numExist_[_num]) {
             return 0;
@@ -174,10 +222,20 @@ contract LogisticsCore {
     }
 
     function numberOfInvalid(string _num) external view returns (uint) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return 0;
+        }
+
         return numInvalidCounts_[_num];
     }
 
     function getTracks(string _num) external view _checkDatabaseAddr returns (string) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return "";
+        }
+
         // check num exist
         if (!numExist_[_num]) {
             return "";
@@ -187,6 +245,11 @@ contract LogisticsCore {
     }
 
     function getBrief(string _num) external view _checkDatabaseAddr returns (string, string, string, string, string) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return ("", "", "", "", "");
+        }
+
         // check num exist
         if (!numExist_[_num]) {
             return ("", "", "", "", "");
@@ -196,6 +259,11 @@ contract LogisticsCore {
     }
 
     function getBriefEx(string _num) external view _checkDatabaseAddr returns (string) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return "";
+        }
+
         // check num exist
         if (!numExist_[_num]) {
             return "";
@@ -229,6 +297,11 @@ contract LogisticsCore {
     }
 
     function getBriefInvalid(string _num, uint _invalidIndex) external view _checkDatabaseAddr returns (string, string, string, string, string) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return ("", "", "", "", "");
+        }
+
         // check invalid index
         // require(numInvalidCounts_[_num] > _invalidIndex);
         if (numInvalidCounts_[_num] <= _invalidIndex) {
@@ -244,6 +317,11 @@ contract LogisticsCore {
     }
 
     function getTracksInvalid(string _num, uint _invalidIndex) external view _checkDatabaseAddr returns (string) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return "";
+        }
+
         // check invalid index
         // require(numInvalidCounts_[_num] > _invalidIndex);
         if (numInvalidCounts_[_num] <= _invalidIndex) {
