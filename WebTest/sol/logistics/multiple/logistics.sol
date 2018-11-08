@@ -53,22 +53,17 @@ contract Logistics {
  
     // _updateType: 0 means overwrite, 1 means append
     function updateTracks(string _num, string _tracks, uint _updateType) public {
-
         // check param
-        if ((0 == bytes(_num).length) || (0 == bytes(_tracks).length)
-            || ((0 != _updateType) && (1 != _updateType))) {
-            return;
-        }
+        require(0 != bytes(_num).length);
+        require(0 != bytes(_tracks).length);
+        require((0 == _updateType) || (1 == _updateType));
+
 
         // check core address
-        if (0 == coreAddr_) {
-            return;
-        }
+        require(0 != coreAddr_);
 
         // check num exist
-        if (!numExist_[_num]) {
-            return;
-        }
+        require(numExist_[_num]);
 
         LogisticsCore(coreAddr_).updateTracks(_num, _tracks, _updateType);
     }
@@ -76,15 +71,10 @@ contract Logistics {
     function updateBrief(string _num, string _transNum, string _model,
                          string _destinationCountry, string _lastStatus) public {
         // check param
-        if ((0 == bytes(_num).length) || (0 == bytes(_transNum).length) || (0 == bytes(_model).length)
-            || (0 == bytes(_destinationCountry).length) || (0 == bytes(_lastStatus).length)) {
-            return;
-        }
+        require(0 != bytes(_num).length);
 
         // check core address
-        if (0 == coreAddr_) {
-            return;
-        }
+        require(0 != coreAddr_);
 
         LogisticsCore(coreAddr_).updateBrief(numExist_[_num], _num, _transNum, _model, _destinationCountry, _lastStatus);
 
@@ -96,14 +86,11 @@ contract Logistics {
 
     function updateBriefEx(string _num, string _brief) public {
         // check param
-        if ((0 == bytes(_num).length) || (0 == bytes(_brief).length)) {
-            return;
-        }
+        require(0 != bytes(_num).length);
+        require(0 != bytes(_brief).length);
 
         // check core address
-        if (0 == coreAddr_) {
-            return;
-        }
+        require(0 != coreAddr_);
 
         LogisticsCore(coreAddr_).updateBriefEx(numExist_[_num], _num, _brief);
 
@@ -135,19 +122,13 @@ contract Logistics {
 
     function remove(string _num) public {
         // check param
-        if (0 == bytes(_num).length) {
-            return;
-        }
+        require(0 != bytes(_num).length);
 
         // check core address
-        if (0 == coreAddr_) {
-            return;
-        }
+        require(0 != coreAddr_);
 
         // check num exist
-        if (!numExist_[_num]) {
-            return;
-        }
+        require(numExist_[_num]);
 
         LogisticsCore(coreAddr_).remove(_num);
         numExist_[_num] = false;
@@ -155,19 +136,13 @@ contract Logistics {
 
     function invalid(string _num) public {
         // check param
-        if (0 == bytes(_num).length) {
-            return;
-        }
+        require(0 != bytes(_num).length);
 
         // check core address
-        if (0 == coreAddr_) {
-            return;
-        }
+        require(0 != coreAddr_);
 
         // check num exist
-        if (!numExist_[_num]) {
-            return;
-        }
+        require(numExist_[_num]);
 
         LogisticsCore(coreAddr_).invalid(_num);
         numExist_[_num] = false;
@@ -184,9 +159,7 @@ contract Logistics {
 
     function number() public view returns (uint) {
         // check core address
-        if (0 == coreAddr_) {
-            return 0;
-        }
+        require(0 != coreAddr_);
 
         return LogisticsCore(coreAddr_).number();
     }
@@ -198,9 +171,7 @@ contract Logistics {
         }
 
         // check core address
-        if (0 == coreAddr_) {
-            return 0;
-        }
+        require(0 != coreAddr_);
 
         // check num exist
         if (!numExist_[_num]) {
@@ -217,9 +188,7 @@ contract Logistics {
         }
 
         // check core address
-        if (0 == coreAddr_) {
-            return 0;
-        }
+        require(0 != coreAddr_);
 
         return LogisticsCore(coreAddr_).numberOfInvalid(_num);
     }
@@ -231,9 +200,7 @@ contract Logistics {
         }
 
         // check core address
-        if (0 == coreAddr_) {
-            return "";
-        }
+        require(0 != coreAddr_);
 
         // check num exist
         if (!numExist_[_num]) {
@@ -250,9 +217,7 @@ contract Logistics {
         }
 
         // check core address
-        if (0 == coreAddr_) {
-            return ("", "", "", "", "");
-        }
+        require(0 != coreAddr_);
 
         // check num exist
         if (!numExist_[_num]) {
@@ -269,9 +234,7 @@ contract Logistics {
         }
 
         // check core address
-        if (0 == coreAddr_) {
-            return "";
-        }
+        require(0 != coreAddr_);
 
         // check num exist
         if (!numExist_[_num]) {
@@ -283,18 +246,14 @@ contract Logistics {
 
     function getBriefByIndex(uint _index) public view returns (string, string, string, string, string) {
         // check core address
-        if (0 == coreAddr_) {
-            return ("", "", "", "", "");
-        }
+        require(0 != coreAddr_);
 
         return LogisticsCore(coreAddr_).getBriefByIndex(_index);
     }
 
     function getBriefExByIndex(uint _index) public view returns (string) {
         // check core address
-        if (0 == coreAddr_) {
-            return "";
-        }
+        require(0 != coreAddr_);
 
         return LogisticsCore(coreAddr_).getBriefExByIndex(_index);
     }
@@ -306,9 +265,7 @@ contract Logistics {
         }
 
         // check core address
-        if (0 == coreAddr_) {
-            return ("", "", "", "", "");
-        }
+        require(0 != coreAddr_);
 
         return LogisticsCore(coreAddr_).getBriefInvalid(_num, _invalidIndex);
     }
@@ -320,9 +277,7 @@ contract Logistics {
         }
 
         // check core address
-        if (0 == coreAddr_) {
-            return "";
-        }
+        require(0 != coreAddr_);
 
         return LogisticsCore(coreAddr_).getTracksInvalid(_num, _invalidIndex);
     }
