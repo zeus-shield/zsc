@@ -9,11 +9,12 @@ pragma solidity ^0.4.25;
 contract LogisticsCore {
     function setup(address _databaseAddr) external;
     function updateTracks(string _num, string _tracks, uint _updateType) external;
-    function updateBrief(bool _numExist, string _num, string _transNum, string _model,
+    function updateBrief(string _num, string _transNum, string _model,
                          string _destinationCountry, string _lastStatus) external;
-    function updateBriefEx(bool _numExist, string _num, string _brief) external;
+    function updateBriefEx(string _num, string _brief) external;
     function remove(string _num) external;
     function invalid(string _num) external;
+    function exist(string _num) external view returns (bool);
     function number() external view returns (uint);
     function numberOfTracks(string _num) external view returns (uint);
     function numberOfInvalid(string _num) external view returns (uint);
@@ -30,9 +31,6 @@ contract Logistics {
 
     /** @desc core address */
     address private coreAddr_; 
-
-    /** @desc string(original num name) => bool(num exist flag) */
-    mapping(string => bool) private numExist_;
 
     // Constructor
     constructor() public {
@@ -63,9 +61,6 @@ contract Logistics {
         require(0 != bytes(_tracks).length);
         require((0 == _updateType) || (1 == _updateType));
 
-        // check num exist
-        require(numExist_[_num]);
-
         LogisticsCore(coreAddr_).updateTracks(_num, _tracks, _updateType);
     }
 
@@ -74,12 +69,7 @@ contract Logistics {
         // check param
         require(0 != bytes(_num).length);
 
-        LogisticsCore(coreAddr_).updateBrief(numExist_[_num], _num, _transNum, _model, _destinationCountry, _lastStatus);
-
-        // check num exist
-        if (!numExist_[_num]) {
-            numExist_[_num] = true;
-        }
+        LogisticsCore(coreAddr_).updateBrief(_num, _transNum, _model, _destinationCountry, _lastStatus);
     }
 
     function updateBriefEx(string _num, string _brief) public _checkCoreAddr {
@@ -87,12 +77,7 @@ contract Logistics {
         require(0 != bytes(_num).length);
         require(0 != bytes(_brief).length);
 
-        LogisticsCore(coreAddr_).updateBriefEx(numExist_[_num], _num, _brief);
-
-        // check num exist
-        if (!numExist_[_num]) {
-            numExist_[_num] = true;
-        }
+        LogisticsCore(coreAddr_).updateBriefEx(_num, _brief);
     }
 
     function update(string _num, string _transNum, 
@@ -119,31 +104,23 @@ contract Logistics {
         // check param
         require(0 != bytes(_num).length);
 
-        // check num exist
-        require(numExist_[_num]);
-
         LogisticsCore(coreAddr_).remove(_num);
-        numExist_[_num] = false;
     }
 
     function invalid(string _num) public _checkCoreAddr {
         // check param
         require(0 != bytes(_num).length);
 
-        // check num exist
-        require(numExist_[_num]);
-
         LogisticsCore(coreAddr_).invalid(_num);
-        numExist_[_num] = false;
     }
 
-    function exist(string _num) public view returns (bool) {
+    function exist(string _num) public view _checkCoreAddr returns (bool) {
         // check param
         if (0 == bytes(_num).length) {
             return false;
         }
 
-        return numExist_[_num];
+        return LogisticsCore(coreAddr_).exist(_num);
     }
 
     function number() public view _checkCoreAddr returns (uint) {
@@ -153,11 +130,6 @@ contract Logistics {
     function numberOfTracks(string _num) public view _checkCoreAddr returns (uint) {
         // check param
         if (0 == bytes(_num).length) {
-            return 0;
-        }
-
-        // check num exist
-        if (!numExist_[_num]) {
             return 0;
         }
 
@@ -179,11 +151,6 @@ contract Logistics {
             return "";
         }
 
-        // check num exist
-        if (!numExist_[_num]) {
-            return "";
-        }
-
         return LogisticsCore(coreAddr_).getTracks(_num);
     }
 
@@ -193,22 +160,12 @@ contract Logistics {
             return ("", "", "", "", "");
         }
 
-        // check num exist
-        if (!numExist_[_num]) {
-            return ("", "", "", "", "");
-        }
-
         return LogisticsCore(coreAddr_).getBrief(_num);
     }
 
     function getBriefEx(string _num) public view _checkCoreAddr returns (string) {
         // check param
         if (0 == bytes(_num).length) {
-            return "";
-        }
-
-        // check num exist
-        if (!numExist_[_num]) {
             return "";
         }
 
