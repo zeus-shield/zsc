@@ -299,6 +299,7 @@ export default class TestLogisticsRaw {
     setup() {
         console.log('TestLogisticsRaw.setup()');
 
+        let handler = this;
         let channels = window.channelClass.get("idle");
 
         if (0 == channels.length) {
@@ -313,18 +314,38 @@ export default class TestLogisticsRaw {
         let string = "";
 
         let logistics = new Logistics(this[abi], this[contractAddress]);
+        logistics.setCoreConstract(this[coreAbi], this[coreContractAddress]);
 
-        logistics.setup(account, key, this[databaseContractAddress], this[coreContractAddress], function(error, result) {
+        logistics.setup(account, key, this[coreContractAddress], function(error, result) {
             if (!error) {
                 if ("" != result.status) {
-                    if (0x1 == parseInt(result.status)) {
-                        status = "succeeded";
-                    } else {
+                    if (0x0 == parseInt(result.status)) {
                         status = "failure";
+                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                        Output(window.outputSetupElement, 'small', 'red', string);
+                        return;
                     }
 
-                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                    Output(window.outputSetupElement, 'small', 'red', string);
+                    logistics.setupCore(account, key, handler[databaseContractAddress], function(error, result) {
+                        if (!error) {
+                            if ("" != result.status) {
+                                if (0x1 == parseInt(result.status)) {
+                                    status = "succeeded";
+                                } else {
+                                    status = "failure";
+                                }
+
+                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                Output(window.outputSetupElement, 'small', 'red', string);
+                            } else {
+                                status = "Try to get status again!";
+                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                Output(window.outputSetupElement, 'small', 'red', string);
+                            }
+                        } else {
+                            Output(window.outputSetupElement, 'small', 'red', error);
+                        }
+                    });
                 } else {
                     status = "Try to get status again!";
                     string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
