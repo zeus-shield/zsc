@@ -18,12 +18,12 @@ export default class LogisticsRaw {
         this[constractAddress] = _constractAddr; 
     }
 
-    setup(account, key, _addr, _func) {
+    setup(account, key, _databaseAddr, _coreAddr, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
-        let data = contractInstance.setup.getData(_addr);
+        let data = contractInstance.setup.getData(_databaseAddr, _coreAddr);
 
-        contractInstance.setup.estimateGas(_addr, function(error, result) {
+        contractInstance.setup.estimateGas(_databaseAddr, _coreAddr, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(account, key);
                 if('undefined' != typeof transaction) {
