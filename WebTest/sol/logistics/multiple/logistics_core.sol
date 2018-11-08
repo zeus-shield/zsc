@@ -57,6 +57,11 @@ contract LogisticsCore {
         numTotalCount_ = 0;
     }
 
+    modifier _checkDatabaseAddr() {
+        require(0 != databaseAddr_);
+        _;
+    }
+
     function _addNum(string _num) internal {
         numNames_[numTotalCount_] = _num;
         numIndexs_[_num] = numTotalCount_;
@@ -101,19 +106,13 @@ contract LogisticsCore {
     }
 
     // _updateType: 0 means overwrite, 1 means append
-    function updateTracks(string _num, string _tracks, uint _updateType) external {
-        // check database address
-        require(0 != databaseAddr_);
- 
+    function updateTracks(string _num, string _tracks, uint _updateType) external _checkDatabaseAddr { 
         // update tracks
         LogisticsDatabase(databaseAddr_).updateTracks(_getValidNumName(_num), _tracks, _updateType);
     }
 
     function updateBrief(bool _numExist, string _num, string _transNum, string _model,
-                         string _destinationCountry, string _lastStatus) external {
-        // check database address
-        require(0 != databaseAddr_);
-
+                         string _destinationCountry, string _lastStatus) external _checkDatabaseAddr {
         if (!_numExist) {
            _addNum(_num); 
         }
@@ -122,10 +121,7 @@ contract LogisticsCore {
         LogisticsDatabase(databaseAddr_).updateBrief(_getValidNumName(_num), _transNum, _model, _destinationCountry, _lastStatus);
     }
 
-    function updateBriefEx(bool _numExist, string _num, string _brief) external {
-        // check database address
-        require(0 != databaseAddr_);
-
+    function updateBriefEx(bool _numExist, string _num, string _brief) external _checkDatabaseAddr {
         if (!_numExist) {
             // add num
             _addNum(_num);
@@ -135,10 +131,7 @@ contract LogisticsCore {
         LogisticsDatabase(databaseAddr_).updateBriefEx(_getValidNumName(_num), _brief);
     }
 
-    function remove(string _num) external {
-        // check database address
-        require(0 != databaseAddr_);
-
+    function remove(string _num) external _checkDatabaseAddr {
         // remove database
         LogisticsDatabase(databaseAddr_).remove(_getValidNumName(_num));
 
@@ -157,10 +150,7 @@ contract LogisticsCore {
         return numTotalCount_;
     }
 
-    function numberOfTracks(string _num) external view returns (uint) {
-        // check database address
-        require(0 != databaseAddr_);
-
+    function numberOfTracks(string _num) external view _checkDatabaseAddr returns (uint) {
         return LogisticsDatabase(databaseAddr_).numberOfTracks(_getValidNumName(_num));
     }
 
@@ -168,31 +158,19 @@ contract LogisticsCore {
         return numInvalidCounts_[_num];
     }
 
-    function getTracks(string _num) external view returns (string) {
-        // check database address
-        require(0 != databaseAddr_);
-
+    function getTracks(string _num) external view _checkDatabaseAddr returns (string) {
         return LogisticsDatabase(databaseAddr_).getTracks(_getValidNumName(_num));
     }
 
-    function getBrief(string _num) external view returns (string, string, string, string, string) {
-        // check database address
-        require(0 != databaseAddr_);
-
+    function getBrief(string _num) external view _checkDatabaseAddr returns (string, string, string, string, string) {
         return LogisticsDatabase(databaseAddr_).getBrief(_num, _getValidNumName(_num));
     }
 
-    function getBriefEx(string _num) external view returns (string) {
-        // check database address
-        require(0 != databaseAddr_);
-
+    function getBriefEx(string _num) external view _checkDatabaseAddr returns (string) {
         return LogisticsDatabase(databaseAddr_).getBriefEx(_num, _getValidNumName(_num));
     }
 
-    function getBriefByIndex(uint _index) external view returns (string, string, string, string, string) {
-        // check database address
-        require(0 != databaseAddr_);
-
+    function getBriefByIndex(uint _index) external view _checkDatabaseAddr returns (string, string, string, string, string) {
         // check index
         // require(numTotalCount_ > _index);
         if(numTotalCount_ <= _index) {
@@ -204,24 +182,24 @@ contract LogisticsCore {
         return LogisticsDatabase(databaseAddr_).getBrief(num, _getValidNumName(num));
     }
 
-    function getBriefExByIndex(uint _index) external view returns (string) {
-        // check database address
-        require(0 != databaseAddr_);       
-
+    function getBriefExByIndex(uint _index) external view _checkDatabaseAddr returns (string) {
         // check index
-        require(numTotalCount_ > _index);
+        // require(numTotalCount_ > _index);
+        if(numTotalCount_ <= _index) {
+            return ("");
+        }        
 
         string memory num = numNames_[_index];
 
         return LogisticsDatabase(databaseAddr_).getBriefEx(num, _getValidNumName(num));
     }
 
-    function getBriefInvalid(string _num, uint _invalidIndex) external view returns (string, string, string, string, string) {
-        // check database address
-        require(0 != databaseAddr_);
-
+    function getBriefInvalid(string _num, uint _invalidIndex) external view _checkDatabaseAddr returns (string, string, string, string, string) {
         // check invalid index
-        require(numInvalidCounts_[_num] > _invalidIndex);
+        // require(numInvalidCounts_[_num] > _invalidIndex);
+        if (numInvalidCounts_[_num] <= _invalidIndex) {
+            return ("", "", "", "", "");
+        }
 
         // don't need to check num exist
 
@@ -231,12 +209,12 @@ contract LogisticsCore {
         return LogisticsDatabase(databaseAddr_).getBrief(invalidNum, invalidNum);
     }
 
-    function getTracksInvalid(string _num, uint _invalidIndex) external view returns (string) {
-        // check database address
-        require(0 != databaseAddr_); 
-
+    function getTracksInvalid(string _num, uint _invalidIndex) external view _checkDatabaseAddr returns (string) {
         // check invalid index
-        require(numInvalidCounts_[_num] > _invalidIndex);
+        // require(numInvalidCounts_[_num] > _invalidIndex);
+        if (numInvalidCounts_[_num] <= _invalidIndex) {
+            return ("");
+        }        
 
         // don't need to check num exist
 
