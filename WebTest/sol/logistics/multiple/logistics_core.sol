@@ -45,7 +45,7 @@ contract LogisticsCore {
     mapping(string => uint) private numIndexs_;
 
     /** @desc string(original num name) => bool(num exist flag) */
-    // mapping(string => bool) private numExist_;
+    mapping(string => bool) private numExist_;
 
     /** @desc string(original num name) => uint(num invalid count) */
     mapping(string => uint) private numInvalidCounts_;
@@ -68,7 +68,7 @@ contract LogisticsCore {
 
         numTotalCount_ ++;
 
-        // numExist_[_num] = true;
+        numExist_[_num] = true;
     }
 
     function _removeNum(string _num) internal {
@@ -91,7 +91,7 @@ contract LogisticsCore {
 
         numTotalCount_ --;
 
-        // numExist_[_num] = false;
+        numExist_[_num] = false;
     }
  
     function _getValidNumName(string _num) internal view returns (string) {
@@ -106,23 +106,27 @@ contract LogisticsCore {
     }
 
     // _updateType: 0 means overwrite, 1 means append
-    function updateTracks(string _num, string _tracks, uint _updateType) external _checkDatabaseAddr { 
+    function updateTracks(string _num, string _tracks, uint _updateType) external _checkDatabaseAddr {
+        // check num exist
+        require(numExist_[_num]);
+
         // update tracks
         LogisticsDatabase(databaseAddr_).updateTracks(_getValidNumName(_num), _tracks, _updateType);
     }
 
-    function updateBrief(bool _numExist, string _num, string _transNum, string _model,
+    function updateBrief(string _num, string _transNum, string _model,
                          string _destinationCountry, string _lastStatus) external _checkDatabaseAddr {
-        if (!_numExist) {
-           _addNum(_num); 
+        if (!numExist_[_num]) {
+            // add num
+            _addNum(_num);
         }
 
         // update brief
         LogisticsDatabase(databaseAddr_).updateBrief(_getValidNumName(_num), _transNum, _model, _destinationCountry, _lastStatus);
     }
 
-    function updateBriefEx(bool _numExist, string _num, string _brief) external _checkDatabaseAddr {
-        if (!_numExist) {
+    function updateBriefEx(string _num, string _brief) external _checkDatabaseAddr {
+        if (!numExist_[_num]) {
             // add num
             _addNum(_num);
         }
@@ -132,6 +136,9 @@ contract LogisticsCore {
     }
 
     function remove(string _num) external _checkDatabaseAddr {
+        // check num exist
+        require(numExist_[_num]);
+
         // remove database
         LogisticsDatabase(databaseAddr_).remove(_getValidNumName(_num));
 
@@ -140,10 +147,17 @@ contract LogisticsCore {
     }
 
     function invalid(string _num) external {
+        // check num exist
+        require(numExist_[_num]);
+
         // remove num
         _removeNum(_num);
 
         numInvalidCounts_[_num] ++;
+    }
+
+    function exist(string _num) external view returns (bool) {
+        return numExist_[_num];
     }
 
     function number() external view returns (uint) {
@@ -151,6 +165,11 @@ contract LogisticsCore {
     }
 
     function numberOfTracks(string _num) external view _checkDatabaseAddr returns (uint) {
+        // check num exist
+        if (!numExist_[_num]) {
+            return 0;
+        }
+
         return LogisticsDatabase(databaseAddr_).numberOfTracks(_getValidNumName(_num));
     }
 
@@ -159,14 +178,29 @@ contract LogisticsCore {
     }
 
     function getTracks(string _num) external view _checkDatabaseAddr returns (string) {
+        // check num exist
+        if (!numExist_[_num]) {
+            return "";
+        }
+
         return LogisticsDatabase(databaseAddr_).getTracks(_getValidNumName(_num));
     }
 
     function getBrief(string _num) external view _checkDatabaseAddr returns (string, string, string, string, string) {
+        // check num exist
+        if (!numExist_[_num]) {
+            return ("", "", "", "", "");
+        }
+
         return LogisticsDatabase(databaseAddr_).getBrief(_num, _getValidNumName(_num));
     }
 
     function getBriefEx(string _num) external view _checkDatabaseAddr returns (string) {
+        // check num exist
+        if (!numExist_[_num]) {
+            return "";
+        }
+
         return LogisticsDatabase(databaseAddr_).getBriefEx(_num, _getValidNumName(_num));
     }
 
