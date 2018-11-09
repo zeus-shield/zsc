@@ -88,6 +88,7 @@ session_start();
     }
 
 </script>
+<?php echo $htmlObjects->loadEthereumEnable(); ?>
 
 </body>
 </html>

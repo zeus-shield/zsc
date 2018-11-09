@@ -147,6 +147,27 @@ class ZSCInclude {
         return $text;
     }
 
+    public function loadEthereumEnable() {
+        $text = '
+        <script type="text/javascript">
+    window.addEventListener("load", async () => {
+    // Modern dapp browsers...
+    if (window.ethereum) {
+        window.web3 = new Web3(ethereum);
+        try {
+            // Request account access if needed
+            await ethereum.enable();
+            
+        } catch (error) {
+            // User denied account access...
+        }
+    }
+});
+</script>
+        ';
+        return $text;
+    }
+
 }
 ?>
 
