@@ -151,6 +151,8 @@ class ZSCInclude {
         $text = '
         <script type="text/javascript">
     window.addEventListener("load", async () => {
+    if (doesLocalWeb3js()) return;
+
     // Modern dapp browsers...
     if (window.ethereum) {
         window.web3 = new Web3(ethereum);
