@@ -212,6 +212,19 @@ contract LogisticsCore {
         return numInvalidCounts_[_num];
     }
 
+    function getParcel(string _num) external view _checkDatabaseAddr returns (string, string, string, string, string) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return ("", "", "", "", "");
+        }
+
+        // check num exist
+        if (!numExist_[_num]) {
+            return ("", "", "", "", "");
+        }
+
+        return LogisticsDatabase(databaseAddr_).getParcel(_getValidNumName(_num));
+    }
     function getTracks(string _num) external view _checkDatabaseAddr returns (string) {
         // check param
         if (0 == bytes(_num).length) {
