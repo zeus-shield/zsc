@@ -13,24 +13,6 @@ contract LogisticsCore {
     using LibString for *;
     using LibInt for *;
 
-    struct Track {
-        string type_;
-        string time_;
-        string country_;
-        string city_;
-        string facilityName_;
-        string timeZone_;
-        string desc_;
-        string actionCode_;
-    }
-
-    struct Brief {
-        string transNum_;
-        string model_;
-        string destinationCountry_;
-        string lastStatus_;
-    }
-
     /** @desc database address */
     address private databaseAddr_;
 
