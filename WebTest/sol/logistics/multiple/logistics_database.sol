@@ -170,6 +170,11 @@ contract LogisticsDatabase {
         return trackCounts_[_num];
     }
 
+    function getParcel(string _num) external view returns (string, string, string, string, string) {
+        string memory tacks = this.getTracks(_num);
+
+        return (briefs_[_num].transNum_, briefs_[_num].model_, briefs_[_num].destinationCountry_, briefs_[_num].lastStatus_, tacks);
+    }
     function getTracks(string _num) external view returns (string) {
         string memory trackName = "";
         string memory str = "";
