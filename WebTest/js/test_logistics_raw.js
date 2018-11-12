@@ -649,7 +649,23 @@ export default class TestLogisticsRaw {
         let logistics = new Logistics(this[abi], this[contractAddress]);
         logistics.setCoreConstract(this[coreAbi], this[coreContractAddress]);
 
-        if ('Tracks' == type) {
+        if ('Parcel' == type) {
+            logistics.getParcel(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Parcel]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            });
+        } else if ('ParcelEx' == type) {
+            logistics.getParcelEx(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Parcel]:${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            });           
+        } else if ('Tracks' == type) {
             // logistics.getTracks("JNTCU0600046685YQ", function(error, result) {
             logistics.getTracks(para, function(error, result) {
                 if (!error) {
