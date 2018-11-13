@@ -6,28 +6,11 @@
 pragma solidity ^0.4.25;
 // pragma experimental ABIEncoderV2;
 
+import "../../common/ownable.sol";
+
 contract LogisticsCore {
     function getParcel(string _num) external view returns (string, string, string, string, string);
     function getParcelEx(string _num) external view returns (string);
-}
-
-contract Ownable {
-  address private owner_;
-
-  constructor() public {
-    owner_ = msg.sender;
-  }
-
-  modifier _onlyOwner() {
-    require(msg.sender == owner_);
-    _;
-  }
-
-  function transferOwnership(address _newOwner) external _onlyOwner {
-    if (0 != _newOwner) {
-      owner_ = _newOwner;
-    }
-  }
 }
 
 contract Logistics is Ownable {
@@ -38,6 +21,10 @@ contract Logistics is Ownable {
     // Constructor
     constructor() public {
         coreAddr_ = 0;
+    }
+
+    function kill() external _onlyOwner {
+        selfdestruct(owner_);
     }
 
     modifier _checkCoreAddr() {
