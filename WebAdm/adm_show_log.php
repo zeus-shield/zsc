@@ -63,7 +63,10 @@ echo $htmlObjects->loadHeader();
     //function sF_initSystemLog(logRecorderAdr, adrs, elementID, initialModuleIndex) {
     sF_initSystemLog(recorderAdr, logedModuleAdrs, "SystemLog", 0);
 
-</script>      
+</script>  
+
+<?php echo $htmlObjects->loadEthereumEnable(); ?>
+    
 </body>
 </html>
 

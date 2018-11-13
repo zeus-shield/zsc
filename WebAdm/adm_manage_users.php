@@ -56,6 +56,10 @@ echo $htmlObjects->loadScriptFiles();
     window.addEventListener('load', function() {
         loadUserManager();
     }); 
+
+
+<?php echo $htmlObjects->loadEthereumEnable(); ?>
+
 </script>
 
 </body>

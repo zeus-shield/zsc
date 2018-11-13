@@ -117,6 +117,10 @@ echo $htmlObjects->loadScriptFiles();
     window.addEventListener('load', function() {
         loadUserInfos();
     });  
-</script>   
+</script> 
+
+
+<?php echo $htmlObjects->loadEthereumEnable(); ?>
+  
 </body>
 </html>
