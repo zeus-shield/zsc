@@ -11,7 +11,26 @@ contract LogisticsCore {
     function getParcelEx(string _num) external view returns (string);
 }
 
-contract Logistics {
+contract Ownable {
+  address private owner_;
+
+  constructor() public {
+    owner_ = msg.sender;
+  }
+
+  modifier _onlyOwner() {
+    require(msg.sender == owner_);
+    _;
+  }
+
+  function transferOwnership(address _newOwner) external _onlyOwner {
+    if (0 != _newOwner) {
+      owner_ = _newOwner;
+    }
+  }
+}
+
+contract Logistics is Ownable {
 
     /** @desc core address */
     address private coreAddr_; 
@@ -26,7 +45,7 @@ contract Logistics {
         _;
     }
 
-    function setup(address _coreAddr) external {
+    function setup(address _coreAddr) external _onlyOwner {
         // check core address
         require(0 != _coreAddr);
         
