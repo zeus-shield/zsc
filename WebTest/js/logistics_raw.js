@@ -3,7 +3,6 @@
 */
 
 import Receipt from './receipt.js';
-// import Output from './output.js';
 import Transaction from './transaction_raw.js';
 
 // private member
@@ -26,19 +25,18 @@ export default class LogisticsRaw {
         this[coreConstractAddress] = _constractAddr;
     }
 
-    setup(account, key, _coreAddr, _func) {
+    setup(_account, _key, _coreAddr, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
         let data = contractInstance.setup.getData(_coreAddr);
 
         contractInstance.setup.estimateGas(_coreAddr, function(error, result) {
             if (!error) {
-                let transaction = new Transaction(account, key);
+                let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
                     transaction.do("transaction", data, result, handler[constractAddress], _func);
                 }
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
                 if (null != _func) {
                     _func(error);
@@ -47,19 +45,18 @@ export default class LogisticsRaw {
         });
     }
 
-    setupCore(account, key, _databaseAddr, _func) {
+    setupCore(_account, _key, _databaseAddr, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
         let data = contractInstance.setup.getData(_databaseAddr);
 
         contractInstance.setup.estimateGas(_databaseAddr, function(error, result) {
             if (!error) {
-                let transaction = new Transaction(account, key);
+                let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
                     transaction.do("transaction", data, result, handler[coreConstractAddress], _func);
                 }
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
                 if (null != _func) {
                     _func(error);
@@ -68,43 +65,41 @@ export default class LogisticsRaw {
         });
     }
 
-    updateTracks(account, key, _num, _tracks, _updateType, func) {
+    updateTracks(_account, _key, _num, _tracks, _updateType, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
         let data = contractInstance.updateTracks.getData(_num, _tracks, _updateType);
 
         contractInstance.updateTracks.estimateGas(_num, _tracks, _updateType, function(error, result) {
             if (!error) {
-                let transaction = new Transaction(account, key);
+                let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[coreConstractAddress], func);
+                    transaction.do("transaction", data, result, handler[coreConstractAddress], _func);
                 }
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
-                if (null != func) {
-                    func(error);
+                if (null != _func) {
+                    _func(error);
                 }
             }
         });
     }
 
-    updateBrief(account, key, _num, _transNum, _model, _destinationCountry, _lastStatus, func) {
+    updateBrief(_account, _key, _num, _transNum, _model, _destinationCountry, _lastStatus, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
         let data = contractInstance.updateBrief.getData(_num, _transNum, _model, _destinationCountry, _lastStatus);
 
         contractInstance.updateBrief.estimateGas(_num, _transNum, _model, _destinationCountry, _lastStatus, function(error, result) {
             if (!error) {
-                let transaction = new Transaction(account, key);
+                let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[coreConstractAddress], func);
+                    transaction.do("transaction", data, result, handler[coreConstractAddress], _func);
                 }
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
-                if (null != func) {
-                    func(error);
+                if (null != _func) {
+                    _func(error);
                 }
             }
         });
@@ -122,7 +117,6 @@ export default class LogisticsRaw {
                     transaction.do("transaction", data, result, handler[coreConstractAddress], _func);
                 }
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
                 if (null != _func) {
                     _func(error);
@@ -131,22 +125,21 @@ export default class LogisticsRaw {
         });
     }
 
-    update(account, key, _num, _transNum, _model, _destinationCountry, _lastStatus, _tracks, func) {
+    update(_account, _key, _num, _transNum, _model, _destinationCountry, _lastStatus, _tracks, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
         let data = contractInstance.update.getData(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks);
 
         contractInstance.update.estimateGas(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks, {data: data}, function(error, result) {
             if (!error) {
-                let transaction = new Transaction(account, key);
+                let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[coreConstractAddress], func);
+                    transaction.do("transaction", data, result, handler[coreConstractAddress], _func);
                 }
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
-                if (null != func) {
-                    func(error);
+                if (null != _func) {
+                    _func(error);
                 }
             }
         });
@@ -164,7 +157,6 @@ export default class LogisticsRaw {
                     transaction.do("transaction", data, result, handler[coreConstractAddress], _func);
                 }
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
                 if (null != _func) {
                     _func(error);
@@ -173,43 +165,41 @@ export default class LogisticsRaw {
         });
     }
 
-    remove(account, key, _num, func) {
+    remove(_account, _key, _num, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
         let data = contractInstance.remove.getData(_num);
 
         contractInstance.remove.estimateGas(_num, function(error, result) {
             if (!error) {
-                let transaction = new Transaction(account, key);
+                let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[coreConstractAddress], func);
+                    transaction.do("transaction", data, result, handler[coreConstractAddress], _func);
                 }
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
-                if (null != func) {
-                    func(error);
+                if (null != _func) {
+                    _func(error);
                 }
             }
         });       
     }
 
-    invalid(account, key, _num, func) {
+    invalid(_account, _key, _num, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
         let data = contractInstance.invalid.getData(_num);
 
         contractInstance.invalid.estimateGas(_num, function(error, result) {
             if (!error) {
-                let transaction = new Transaction(account, key);
+                let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[coreConstractAddress], func);
+                    transaction.do("transaction", data, result, handler[coreConstractAddress], _func);
                 }
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
-                if (null != func) {
-                    func(error);
+                if (null != _func) {
+                    _func(error);
                 }
             }
         });       
@@ -236,13 +226,11 @@ export default class LogisticsRaw {
                         // call 'Logistics.exist(string)'
                         contractInstance.exist.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                // Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
                                 console.log("[Number]:", result.toString(10));
                                 if (null != _func) {
                                     _func(null, result);
                                 }
                             } else {
-                                // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
                                 if (null != _func) {
                                     _func(error);
@@ -250,7 +238,6 @@ export default class LogisticsRaw {
                             }
                         });
                     } else {
-                        // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
                         if (null != _func) {
                             _func(error);
@@ -258,7 +245,6 @@ export default class LogisticsRaw {
                     }
                 });
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
                 if (null != _func) {
                     _func(error);
@@ -288,13 +274,11 @@ export default class LogisticsRaw {
                         // call 'Logistics.number()'
                         contractInstance.number.call({from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                // Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
                                 console.log("[Number]:", result.toString(10));
                                 if (null != _func) {
                                     _func(null, result);
                                 }
                             } else {
-                                // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
                                 if (null != _func) {
                                     _func(error);
@@ -302,7 +286,6 @@ export default class LogisticsRaw {
                             }
                         });
                     } else {
-                        // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
                         if (null != _func) {
                             _func(error);
@@ -310,7 +293,6 @@ export default class LogisticsRaw {
                     }
                 });
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
                 if (null != _func) {
                     _func(error);
@@ -340,13 +322,11 @@ export default class LogisticsRaw {
                         // call 'Logistics.numberOfTracks(string)'
                         contractInstance.numberOfTracks.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                // Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
                                 console.log("[Number]:", result.toString(10));
                                 if (null != _func) {
                                     _func(null, result);
                                 }
                             } else {
-                                // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
                                 if (null != _func) {
                                     _func(error);
@@ -354,7 +334,6 @@ export default class LogisticsRaw {
                             }
                         });
                     } else {
-                        // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
                         if (null != _func) {
                             _func(error);
@@ -362,7 +341,6 @@ export default class LogisticsRaw {
                     }
                 });
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
                 if (null != _func) {
                     _func(error);
@@ -392,13 +370,11 @@ export default class LogisticsRaw {
                         // call 'Logistics.numberOfInvalid(string)'
                         contractInstance.numberOfInvalid.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                // Output(window.outputElement, 'small', 'red', `[Number]:${result}`);
                                 console.log("[Number]:", result.toString(10));
                                 if (null != _func) {
                                     _func(null, result);
                                 }
                             } else {
-                                // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
                                 if (null != _func) {
                                     _func(error);
@@ -406,7 +382,6 @@ export default class LogisticsRaw {
                             }
                         });
                     } else {
-                        // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
                         if (null != _func) {
                             _func(error);
@@ -414,7 +389,6 @@ export default class LogisticsRaw {
                     }
                 });
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
                 if (null != _func) {
                     _func(error);
@@ -444,13 +418,11 @@ export default class LogisticsRaw {
                         // call 'Logistics.getParcel(string)'
                         contractInstance.getParcel.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                // Output(window.outputElement, 'small', 'red', `[Track]:${result}`);
                                 console.log("[Parcel]:", result);
                                 if (null != _func) {
                                     _func(null, result);
                                 }
                             } else {
-                                // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
                                 if (null != _func) {
                                     _func(error);
@@ -458,7 +430,6 @@ export default class LogisticsRaw {
                             }
                         });
                     } else {
-                        // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
                         if (null != _func) {
                             _func(error);
@@ -466,7 +437,6 @@ export default class LogisticsRaw {
                     }
                 });
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
                 if (null != _func) {
                     _func(error);
@@ -496,13 +466,11 @@ export default class LogisticsRaw {
                         // call 'Logistics.getParcelEx(string)'
                         contractInstance.getParcelEx.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                // Output(window.outputElement, 'small', 'red', `[Track]:${result}`);
                                 console.log("[Parcel]:", result);
                                 if (null != _func) {
                                     _func(null, result);
                                 }
                             } else {
-                                // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
                                 if (null != _func) {
                                     _func(error);
@@ -510,7 +478,6 @@ export default class LogisticsRaw {
                             }
                         });
                     } else {
-                        // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
                         if (null != _func) {
                             _func(error);
@@ -518,7 +485,6 @@ export default class LogisticsRaw {
                     }
                 });
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
                 if (null != _func) {
                     _func(error);
@@ -548,13 +514,11 @@ export default class LogisticsRaw {
                         // call 'Logistics.getTracks(string)'
                         contractInstance.getTracks.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                // Output(window.outputElement, 'small', 'red', `[Track]:${result}`);
                                 console.log("[Tracks]:", result);
                                 if (null != _func) {
                                     _func(null, result);
                                 }
                             } else {
-                                // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
                                 if (null != _func) {
                                     _func(error);
@@ -562,7 +526,6 @@ export default class LogisticsRaw {
                             }
                         });
                     } else {
-                        // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
                         if (null != _func) {
                             _func(error);
@@ -570,7 +533,6 @@ export default class LogisticsRaw {
                     }
                 });
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
                 if (null != _func) {
                     _func(error);
@@ -600,13 +562,11 @@ export default class LogisticsRaw {
                         // call 'Logistics.getBrief(string)'
                         contractInstance.getBrief.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
                                 console.log("[Brief]:", result);
                                 if (null != _func) {
                                     _func(null, result);
                                 }
                             } else {
-                                // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
                                 if (null != _func) {
                                     _func(error);
@@ -614,7 +574,6 @@ export default class LogisticsRaw {
                             }
                         });
                     } else {
-                        // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
                         if (null != _func) {
                             _func(error);
@@ -622,7 +581,6 @@ export default class LogisticsRaw {
                     }
                 });
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
                 if (null != _func) {
                     _func(error);
@@ -657,7 +615,6 @@ export default class LogisticsRaw {
                                     _func(null, result);
                                 }
                             } else {
-                                // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
                                 if (null != _func) {
                                     _func(error);
@@ -665,7 +622,6 @@ export default class LogisticsRaw {
                             }
                         });
                     } else {
-                        // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
                         if (null != _func) {
                             _func(error);
@@ -673,7 +629,6 @@ export default class LogisticsRaw {
                     }
                 });
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
                 if (null != _func) {
                     _func(error);
@@ -703,14 +658,12 @@ export default class LogisticsRaw {
                         // call 'Logistics.getBriefByIndex(uint)'
                         contractInstance.getBriefByIndex.call(_index, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                // Output(window.outputElement, 'small', 'red', `[Brief]:${result}`);
                                 console.log("[Brief%s]: %s, %s, %s, %s, %s", 
                                     _index, result[0], result[1], result[2], result[3], result[4]);
                                 if (null != _func) {
                                     _func(null, _index, result);
                                 }                                
                             } else {
-                                //Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
                                 if (null != _func) {
                                     _func(error, _index);
@@ -718,7 +671,6 @@ export default class LogisticsRaw {
                             }
                         });
                     } else {
-                        // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
                         if (null != _func) {
                             _func(error, _index);
@@ -726,7 +678,6 @@ export default class LogisticsRaw {
                     }
                 });
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
                 if (null != _func) {
                     _func(error, _index);
@@ -761,7 +712,6 @@ export default class LogisticsRaw {
                                     _func(null, _index, result);
                                 }
                             } else {
-                                // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
                                 if (null != _func) {
                                     _func(error, _index);
@@ -769,7 +719,6 @@ export default class LogisticsRaw {
                             }
                         });
                     } else {
-                        // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
                         if (null != _func) {
                             _func(error, _index);
@@ -777,7 +726,6 @@ export default class LogisticsRaw {
                     }
                 });
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
                 if (null != _func) {
                     _func(error, _index);
@@ -813,7 +761,6 @@ export default class LogisticsRaw {
                                     _func(null, _num, _invalidIndex, result);
                                 }
                             } else {
-                                // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
                                 if (null != _func) {
                                     _func(error, _num, _invalidIndex);
@@ -821,7 +768,6 @@ export default class LogisticsRaw {
                             }
                         });
                     } else {
-                        // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
                         if (null != _func) {
                             _func(error, _num, _invalidIndex);
@@ -829,7 +775,6 @@ export default class LogisticsRaw {
                     }
                 });
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
                 if (null != _func) {
                     _func(error, _num, _invalidIndex);
@@ -864,7 +809,6 @@ export default class LogisticsRaw {
                                     _func(null, _num, _invalidIndex, result);
                                 }
                             } else {
-                                // Output(window.outputElement, 'small', 'red', error);
                                 console.log(error);
                                 if (null != _func) {
                                     _func(error, _num, _invalidIndex);
@@ -872,7 +816,6 @@ export default class LogisticsRaw {
                             }
                         });
                     } else {
-                        // Output(window.outputElement, 'small', 'red', error);
                         console.log(error);
                         if (null != _func) {
                             _func(error, _num, _invalidIndex);
@@ -880,7 +823,6 @@ export default class LogisticsRaw {
                     }
                 });
             } else {
-                // Output(window.outputElement, 'small', 'red', error);
                 console.log(error);
                 if (null != _func) {
                     _func(error, _num, _invalidIndex);
