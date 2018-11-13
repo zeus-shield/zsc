@@ -175,6 +175,20 @@ contract LogisticsDatabase {
 
         return (briefs_[_num].transNum_, briefs_[_num].model_, briefs_[_num].destinationCountry_, briefs_[_num].lastStatus_, tacks);
     }
+
+    function getParcelEx(string _num) external view returns (string) {
+        string memory str = "";
+        string memory tacks = this.getTracks(_num);
+
+        str = str.concat("{", _num.toKeyValue("num"), ",");
+        str = str.concat(briefs_[_num].transNum_.toKeyValue("transNum"), ",");
+        str = str.concat(briefs_[_num].model_.toKeyValue("model"), ",");
+        str = str.concat(briefs_[_num].destinationCountry_.toKeyValue("destinationCountry"), ",");
+        str = str.concat(briefs_[_num].lastStatus_.toKeyValue("lastStatus"), ",");
+        str = str.concat("\"trackElementList\":", tacks, "}");
+        return str;
+    }
+
     function getTracks(string _num) external view returns (string) {
         string memory trackName = "";
         string memory str = "";
