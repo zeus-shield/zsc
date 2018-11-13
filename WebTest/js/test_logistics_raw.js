@@ -953,15 +953,15 @@ export default class TestLogisticsRaw {
                                                 return;
                                             }
                                             // invalid
-                                            logistics.invalid(account, key, num, function(error, result) {
-                                                if (!error) {
-                                                    if ("" != result.status) {
-                                                        if (0x0 == parseInt(result.status)) {
-                                                            status = "failure";
-                                                            string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                                            Output(window.outputCommonElement, 'small', 'red', string);
-                                                            return;
-                                                        }
+                                            // logistics.invalid(account, key, num, function(error, result) {
+                                            //     if (!error) {
+                                            //         if ("" != result.status) {
+                                            //             if (0x0 == parseInt(result.status)) {
+                                            //                 status = "failure";
+                                            //                 string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                            //                 Output(window.outputCommonElement, 'small', 'red', string);
+                                            //                 return;
+                                            //             }
                                                         // updateEx
                                                         logistics.updateEx(account, key, "JNTCU0600046685YQ", info5_invalid2, function(error, result) {
                                                             if (!error) {
@@ -1004,15 +1004,15 @@ export default class TestLogisticsRaw {
                                                                 Output(window.outputCommonElement, 'small', 'red', error);
                                                             }
                                                         });
-                                                    } else {
-                                                        status = "Try to get status again!";
-                                                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                                        Output(window.outputCommonElement, 'small', 'red', string);
-                                                    }
-                                                } else {
-                                                    Output(window.outputCommonElement, 'small', 'red', error);
-                                                }
-                                            });
+                                            //         } else {
+                                            //             status = "Try to get status again!";
+                                            //             string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                            //             Output(window.outputCommonElement, 'small', 'red', string);
+                                            //         }
+                                            //     } else {
+                                            //         Output(window.outputCommonElement, 'small', 'red', error);
+                                            //     }
+                                            // });
                                         } else {
                                             status = "Try to get status again!";
                                             string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
@@ -1045,6 +1045,7 @@ export default class TestLogisticsRaw {
     debugBrief() {
         console.log('TestLogisticsRaw.debugBrief()');
         let logistics = new Logistics(this[abi], this[contractAddress]);
+        logistics.setCoreConstract(this[coreAbi], this[coreContractAddress]);
 
         // number
         logistics.number(function(error, result) {
