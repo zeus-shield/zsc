@@ -660,7 +660,7 @@ export default class TestLogisticsRaw {
         } else if ('ParcelEx' == type) {
             logistics.getParcelEx(para, function(error, result) {
                 if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Parcel]:${result}`);
+                    Output(window.outputReadElement, 'small', 'red', `[Parcel]:</br>${result}`);
                 } else {
                     Output(window.outputReadElement, 'small', 'red', error);
                 }
