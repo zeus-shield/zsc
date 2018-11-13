@@ -88,6 +88,10 @@ $htmlObjects = new ZSChtmlObjects();
         <?php echo $htmlObjects->loadInitObjects('initSystemComponent');?>
 
     </div>
+
+
+<?php echo $htmlObjects->loadEthereumEnable(); ?>
+
 </body>
 </html>
 

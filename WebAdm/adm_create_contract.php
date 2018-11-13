@@ -43,6 +43,8 @@ include("adm_header.php");
         <button type="button" onClick="gotoConfigureLogRecorder()">Next: configure log recorder</button>
     </div>
 
+<?php echo $htmlObjects->loadEthereumEnable(); ?>
+
 </body>
 </html>
 

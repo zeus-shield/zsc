@@ -42,6 +42,8 @@ $htmlObjects = new ZSCHtmlObjects();
         <?php echo $htmlObjects->loadAddGMs('addGmModule');?>
     </div>
 
+<?php echo $htmlObjects->loadEthereumEnable(); ?>
+
 </body>
 </html>
 

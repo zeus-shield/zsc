@@ -97,6 +97,11 @@ recordSystemObjectAdrs($htmlObjects);
     
     echo $htmlObjects->loadSetLogRecorderHtml('setLogRecorderToListener');
 ?>
+
+
+<?php echo $htmlObjects->loadEthereumEnable(); ?>
+
+
 </body>
 </html>
 

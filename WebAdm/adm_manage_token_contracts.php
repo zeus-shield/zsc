@@ -57,5 +57,8 @@ echo $htmlObjects->loadScriptFiles();
 	});
 </script>
 
+
+<?php echo $htmlObjects->loadEthereumEnable(); ?>
+
 </body>
 </html>
