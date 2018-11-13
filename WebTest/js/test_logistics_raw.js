@@ -649,7 +649,15 @@ export default class TestLogisticsRaw {
         let logistics = new Logistics(this[abi], this[contractAddress]);
         logistics.setCoreConstract(this[coreAbi], this[coreContractAddress]);
 
-        if ('Parcel' == type) {
+        if ('LogisticsInfo' == type) {
+            logistics.getLogisticsInfo(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Parcel]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            });
+        } else if ('Parcel' == type) {
             logistics.getParcel(para, function(error, result) {
                 if (!error) {
                     Output(window.outputReadElement, 'small', 'red', `[Parcel]:</br>${result}`);
