@@ -95,6 +95,28 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
         return $text;
     }
     
+    public function loadEthereumEnable() {
+        $text = '
+        <script type="text/javascript">
+    window.addEventListener("load", async () => {
+    if (doesLocalWeb3js()) return;
+    // Modern dapp browsers...
+    if (window.ethereum) {
+        window.web3 = new Web3(ethereum);
+        try {
+            // Request account access if needed
+            await ethereum.enable();
+            
+        } catch (error) {
+            // User denied account access...
+        }
+    }
+});
+</script>
+        ';
+        return $text;
+    }
+
     public function loadAllAdrs() {
         $modules = ZscBase::getObjectArray();
         $num = count($modules);
