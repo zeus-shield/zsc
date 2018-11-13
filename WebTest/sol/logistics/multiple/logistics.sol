@@ -33,16 +33,7 @@ contract Logistics {
         coreAddr_ = _coreAddr;
     }
 
-    function getParcel(string _num) external view _checkCoreAddr returns (string, string, string, string, string) {
-        // check param
-        if (0 == bytes(_num).length) {
-            return ("", "", "", "", "");
-        }
-
-        return LogisticsCore(coreAddr_).getParcel(_num);
-    }
-
-    function getParcelEx(string _num) external view _checkCoreAddr returns (string) {
+    function getLogisticsInfo(string _num) external view _checkCoreAddr returns (string) {
         // check param
         if (0 == bytes(_num).length) {
             return "";
