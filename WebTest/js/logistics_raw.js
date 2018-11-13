@@ -399,7 +399,7 @@ export default class LogisticsRaw {
 
     getParcel(_num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -447,7 +447,7 @@ export default class LogisticsRaw {
 
     getParcelEx(_num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -462,7 +462,7 @@ export default class LogisticsRaw {
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("========================================================");
+                        console.log("==========================================================");
                         // call 'Logistics.getParcelEx(string)'
                         contractInstance.getParcelEx.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
@@ -826,6 +826,54 @@ export default class LogisticsRaw {
                 console.log(error);
                 if (null != _func) {
                     _func(error, _num, _invalidIndex);
+                }
+            }
+        });
+    }
+
+    getLogisticsInfo(_num, _func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.getLogisticsInfo.estimateGas(_num, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("============= Logistics.getLogisticsInfo(string) ==============");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("===============================================================");
+                        // call 'Logistics.getLogisticsInfo(string)'
+                        contractInstance.getLogisticsInfo.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                console.log("[Parcel]:", result);
+                                if (null != _func) {
+                                    _func(null, result);
+                                }
+                            } else {
+                                console.log(error);
+                                if (null != _func) {
+                                    _func(error);
+                                }
+                            }
+                        });
+                    } else {
+                        console.log(error);
+                        if (null != _func) {
+                            _func(error);
+                        }
+                    }
+                });
+            } else {
+                console.log(error);
+                if (null != _func) {
+                    _func(error);
                 }
             }
         });
