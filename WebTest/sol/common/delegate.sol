@@ -41,7 +41,7 @@ contract Delegate is Ownable {
     function() external payable { revert(); }
 
     function kill() external _onlyOwner {
-        require(check(msg.sender, 1));
+        require(checkDelegate(msg.sender, 1));
         selfdestruct(owner_);   
     }
 
@@ -53,7 +53,7 @@ contract Delegate is Ownable {
 
         require(1 < _priority);
 
-        require(check(msg.sender, 1));
+        require(checkDelegate(msg.sender, 1));
 
         uint index;
         if (exists_[_adr]) {
@@ -72,12 +72,14 @@ contract Delegate is Ownable {
 
     function removeDelegate(address _adr) external _onlyOwner {
         if (address(this) == _adr) return;
-        if (0 == delegateNos_) return;
 
         // owner's priority can't be remove
         require(owner_ != _adr);
 
-        require(check(msg.sender, 1));
+        require(checkDelegate(msg.sender, 1));
+
+        require(0 < delegateNos_);
+        require(exists_[_adr]);
 
         address lastAddr = 0;
         uint lastPriority = 0;
