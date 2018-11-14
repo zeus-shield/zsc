@@ -2,6 +2,7 @@
 import Output from './output.js';
 import Transaction from './transaction_raw.js';
 import Logistics from './logistics_raw.js';
+import Delegate from './delegate.js';
 
 //private member
 const compiledJson = Symbol('compiledJson');
@@ -1112,8 +1113,7 @@ export default class TestLogisticsRaw {
 
     delegate(cmd, para) {
         console.log('TestLogisticsRaw.delegate(%s, %s)', cmd, para);
-        let logistics = new Logistics(this[abi], this[contractAddress]);
-        logistics.setCoreConstract(this[coreAbi], this[coreContractAddress]);
+        let delegate = new Delegate(this[coreAbi], this[coreContractAddress]);
     }
 
     do(operation, para1, para2) {
