@@ -8,8 +8,9 @@ pragma solidity ^0.4.25;
 
 import "../../utillib/LibString.sol";
 import "../../utillib/LibInt.sol";
+import "../../common/delegate.sol";
 
-contract LogisticsDatabase {
+contract LogisticsDatabase is Delegate {
 
     using LibString for *;
     using LibInt for *;
@@ -52,6 +53,11 @@ contract LogisticsDatabase {
 
     // Constructor
     constructor() public {}
+
+    modifier _onlyAdmin() {
+        require(checkDelegate(msg.sender, 2));
+        _;
+    }
 
     function _allocTracks(string _num, uint _length) internal {
         trackCounts_[_num] += _length;
@@ -106,7 +112,7 @@ contract LogisticsDatabase {
     }
 
     // _updateType: 0 means overwrite, 1 means append
-    function updateTracks(string _num, string _tracks, uint _updateType) external {
+    function updateTracks(string _num, string _tracks, uint _updateType) external _onlyAdmin {
         uint startIndex = 0;
 
         if (_tracks.keyExists("trackElementList")) {
@@ -133,14 +139,14 @@ contract LogisticsDatabase {
     }
 
     function updateBrief(string _num, string _transNum, string _model,
-                         string _destinationCountry, string _lastStatus) external {
+                         string _destinationCountry, string _lastStatus) external _onlyAdmin {
         briefs_[_num].transNum_           = _transNum;
         briefs_[_num].model_              = _model;
         briefs_[_num].destinationCountry_ = _destinationCountry;
         briefs_[_num].lastStatus_         = _lastStatus;
     }
 
-    function updateBriefEx(string _num, string _brief) external {
+    function updateBriefEx(string _num, string _brief) external _onlyAdmin {
         if (_brief.keyExists("transNum")) {
             briefs_[_num].transNum_ = _brief.getStringValueByKey("transNum");
         }
@@ -158,7 +164,7 @@ contract LogisticsDatabase {
         }
     }
 
-    function remove(string _num) external {
+    function remove(string _num) external _onlyAdmin {
         // remove tracks
         _removeTracks(_num);
 
