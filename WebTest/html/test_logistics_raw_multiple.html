@@ -76,12 +76,18 @@
                      }
                 },false);
 
+                document.getElementById("b_delegate").onclick = function() {
+                    main('LogisticsRaw', 'Delegate', 'Debug', document.getElementById("s_delegate_debug_contract").value);
+                }
+
                 document.getElementById("b_delegate_update_submit").onclick = function() {
-                    main('LogisticsRaw', 'Delegate', 'Update', document.getElementById("i_delegate_update_para").value);
+                    let contract = document.getElementById("s_delegate_update_contract").value;
+                    main('LogisticsRaw', 'Delegate', `Update${contract}`, document.getElementById("i_delegate_update_para").value);
                 }
 
                 document.getElementById("b_delegate_remove_submit").onclick = function() {
-                    main('LogisticsRaw', 'Delegate', 'Remove', document.getElementById("i_delegate_remove_para").value);
+                    let contract = document.getElementById("s_delegate_remove_contract").value;
+                    main('LogisticsRaw', 'Delegate', `Remove${contract}`, document.getElementById("i_delegate_remove_para").value);
                 }
 
                 document.getElementById("remove_submit").onclick = function() {
@@ -163,16 +169,30 @@
             <p>
                 <div class="well" id="block">
                     <h4>4. Delegate</h4>
-                    <button type="button" id="b_delegate" onclick="main('LogisticsRaw', 'Delegate', 'Debug', '')">Debug</button>
+                    <select id="s_delegate_debug_contract">
+                        <option value ="Core">Core</option>
+                        <option value ="Database">Database</option>
+                    </select>
+                    <button type="button" id="b_delegate">Debug</button>
                     <p id="p_output_delegate_read"></p>
                     <div id="element">
                         <h5>Update:</h5>
+                        Select Contract:<br>
+                        <select id="s_delegate_update_contract">
+                            <option value ="Core">Core</option>
+                            <option value ="Database">Database</option>
+                        </select><br>
                         Address:<br>
                         <input type="text" id="i_delegate_update_para"><br>
                         <button type="button" id="b_delegate_update_submit">Submit</button>
                     </div>
                     <div id="element">
                         <h5>Remove:</h5>
+                        Select Contract:<br>
+                        <select id="s_delegate_remove_contract">
+                            <option value ="Core">Core</option>
+                            <option value ="Database">Database</option>
+                        </select><br>
                         Address:<br>
                         <input type="text" id="i_delegate_remove_para"><br>
                         <button type="button" id="b_delegate_remove_submit">Submit</button>
