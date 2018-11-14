@@ -1110,6 +1110,12 @@ export default class TestLogisticsRaw {
         }
     }
 
+    delegate(cmd, para) {
+        console.log('TestLogisticsRaw.delegate(%s, %s)', cmd, para);
+        let logistics = new Logistics(this[abi], this[contractAddress]);
+        logistics.setCoreConstract(this[coreAbi], this[coreContractAddress]);
+    }
+
     do(operation, para1, para2) {
         console.log('TestLogisticsRaw.do(%s, %s)', operation, para1);
         switch(operation) {
@@ -1147,6 +1153,9 @@ export default class TestLogisticsRaw {
                 break;
             case 'GetInfo':
                 this.getInfo(para1, para2);
+                break;
+            case 'Delegate':
+                this.delegate(para1, para2);
                 break;
             default:
                 Output(window.outputCommonElement, 'small', 'red', 'Operation Error!');
