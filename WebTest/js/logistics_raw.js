@@ -218,12 +218,12 @@ export default class LogisticsRaw {
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("================ Logistics.exist(string) =================");
+                        console.log("================ LogisticsCore.exist(string) =================");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("==========================================================");
-                        // call 'Logistics.exist(string)'
+                        console.log("==============================================================");
+                        // call 'LogisticsCore.exist(string)'
                         contractInstance.exist.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[Number]:", result.toString(10));
@@ -266,12 +266,12 @@ export default class LogisticsRaw {
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("================= Logistics.number() =================");
+                        console.log("================= LogisticsCore.number() =================");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("======================================================");
-                        // call 'Logistics.number()'
+                        console.log("==========================================================");
+                        // call 'LogisticsCore.number()'
                         contractInstance.number.call({from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[Number]:", result.toString(10));
@@ -314,12 +314,12 @@ export default class LogisticsRaw {
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============ Logistics.numberOfTracks(string) =============");
+                        console.log("============ LogisticsCore.numberOfTracks(string) =============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("===========================================================");
-                        // call 'Logistics.numberOfTracks(string)'
+                        console.log("===============================================================");
+                        // call 'LogisticsCore.numberOfTracks(string)'
                         contractInstance.numberOfTracks.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[Number]:", result.toString(10));
@@ -362,12 +362,12 @@ export default class LogisticsRaw {
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============== Logistics.numberOfInvalid(string) ==============");
+                        console.log("============== LogisticsCore.numberOfInvalid(string) ==============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("===============================================================");
-                        // call 'Logistics.numberOfInvalid(string)'
+                        console.log("===================================================================");
+                        // call 'LogisticsCore.numberOfInvalid(string)'
                         contractInstance.numberOfInvalid.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[Number]:", result.toString(10));
@@ -410,12 +410,12 @@ export default class LogisticsRaw {
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============= Logistics.getParcel(string) ==============");
+                        console.log("============= LogisticsCore.getParcel(string) ==============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("========================================================");
-                        // call 'Logistics.getParcel(string)'
+                        console.log("============================================================");
+                        // call 'LogisticsCore.getParcel(string)'
                         contractInstance.getParcel.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[Parcel]:", result);
@@ -458,12 +458,12 @@ export default class LogisticsRaw {
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============= Logistics.getParcelEx(string) ==============");
+                        console.log("============= LogisticsCore.getParcelEx(string) ==============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("==========================================================");
-                        // call 'Logistics.getParcelEx(string)'
+                        console.log("==============================================================");
+                        // call 'LogisticsCore.getParcelEx(string)'
                         contractInstance.getParcelEx.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[Parcel]:", result);
@@ -506,12 +506,12 @@ export default class LogisticsRaw {
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============= Logistics.getTracks(string) ==============");
+                        console.log("============= LogisticsCore.getTracks(string) ==============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("========================================================");
-                        // call 'Logistics.getTracks(string)'
+                        console.log("============================================================");
+                        // call 'LogisticsCore.getTracks(string)'
                         contractInstance.getTracks.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[Tracks]:", result);
@@ -554,12 +554,12 @@ export default class LogisticsRaw {
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============= Logistics.getBrief(string) ==============");
+                        console.log("============= LogisticsCore.getBrief(string) ==============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("=======================================================");
-                        // call 'Logistics.getBrief(string)'
+                        console.log("===========================================================");
+                        // call 'LogisticsCore.getBrief(string)'
                         contractInstance.getBrief.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[Brief]:", result);
@@ -602,12 +602,12 @@ export default class LogisticsRaw {
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============ Logistics.getBriefEx(string) =============");
+                        console.log("============ LogisticsCore.getBriefEx(string) =============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("=======================================================");
-                        // call 'Logistics.getBriefEx(string)'
+                        console.log("===========================================================");
+                        // call 'LogisticsCore.getBriefEx(string)'
                         contractInstance.getBriefEx.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[Brief]:", result);
@@ -650,12 +650,12 @@ export default class LogisticsRaw {
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============== Logistics.getBriefByIndex(uint) ==============");
+                        console.log("============== LogisticsCore.getBriefByIndex(uint) ==============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("=============================================================");
-                        // call 'Logistics.getBriefByIndex(uint)'
+                        console.log("=================================================================");
+                        // call 'LogisticsCore.getBriefByIndex(uint)'
                         contractInstance.getBriefByIndex.call(_index, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[Brief%s]: %s, %s, %s, %s, %s", 
@@ -699,12 +699,12 @@ export default class LogisticsRaw {
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============== Logistics.getBriefExByIndex(uint) ==============");
+                        console.log("============== LogisticsCore.getBriefExByIndex(uint) ==============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("===============================================================");
-                        // call 'Logistics.getBriefExByIndex(uint)'
+                        console.log("===================================================================");
+                        // call 'LogisticsCore.getBriefExByIndex(uint)'
                         contractInstance.getBriefExByIndex.call(_index, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[Brief%s]: %s", _index, result);
@@ -747,12 +747,12 @@ export default class LogisticsRaw {
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============= Logistics.getBriefInvalid(string, uint) ==============");
+                        console.log("============= LogisticsCore.getBriefInvalid(string, uint) ==============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("====================================================================");
-                        // call 'Logistics.getBriefInvalid(string, uint)'
+                        console.log("========================================================================");
+                        // call 'LogisticsCore.getBriefInvalid(string, uint)'
                         contractInstance.getBriefInvalid.call(_num, _invalidIndex, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[%s-%s]: %s, %s, %s, %s, %s", 
@@ -796,12 +796,12 @@ export default class LogisticsRaw {
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============= Logistics.getTracksInvalid(string, uint) ==============");
+                        console.log("============= LogisticsCore.getTracksInvalid(string, uint) ==============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("=====================================================================");
-                        // call 'Logistics.getTracksInvalid(string, uint)'
+                        console.log("=========================================================================");
+                        // call 'LogisticsCore.getTracksInvalid(string, uint)'
                         contractInstance.getTracksInvalid.call(_num, _invalidIndex, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[%s-%s]: %s", _num, _invalidIndex, result);
