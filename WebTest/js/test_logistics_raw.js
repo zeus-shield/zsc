@@ -1113,7 +1113,104 @@ export default class TestLogisticsRaw {
 
     delegate(cmd, para) {
         console.log('TestLogisticsRaw.delegate(%s, %s)', cmd, para);
-        let delegate = new Delegate(this[coreAbi], this[coreContractAddress]);
+        let channels = window.channelClass.get("idle");
+
+        if (0 == channels.length) {
+            Output(window.outputDelegateWriteElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = channels[0].account;
+        let key = channels[0].key;
+
+        let delegate;
+
+        if ("Debug" == cmd) {
+            if ("Core" == para) {
+                delegate = new Delegate(this[coreAbi], this[coreContractAddress]);
+            } else if ("Database" == para) {
+                delegate = new Delegate(this[databaseAbi], this[databaseContractAddress]);
+            } else {
+                Output(window.outputDelegateReadElement, 'small', 'red', "Command Error!");
+                return;
+            }
+
+            // number
+            delegate.number(function(error, result) {
+                if (!error) {
+                    for (let i=0; i<result; i++) {
+                        delegate.getInfoByIndex(i, function(error, index, result) {
+                            if (!error) {
+                                // console.log(result);
+                                Output(window.outputDelegateReadElement, 'small', 'red', `[Delegate${index}]:</br>${result}`);
+                            } else {
+                                Output(window.outputDelegateReadElement, 'small', 'red', `[Delegate${index}]:</br>${error}`);
+                            }
+                        })
+                    }
+                } else {
+                    Output(window.outputDelegateReadElement, 'small', 'red', error);
+                }
+            })
+        } else if("UpdateCore" == cmd) {
+            let paras = para.split(",");
+            let address = paras[0];
+            let priority = paras[1];
+
+            delegate = new Delegate(this[coreAbi], this[coreContractAddress]);
+
+            // update
+            delegate.update(account, key, address, priority, function(error, result) {
+                if (!error) {
+                    if ("" != result.status) {
+                        if (0x1 == parseInt(result.status)) {
+                            status = "succeeded";
+                        } else {
+                            status = "failure";
+                        }
+                        let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                        Output(window.outputDelegateWriteElement, 'small', 'red', string);
+                    } else {
+                        let status = "Try to get status again!";
+                        let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                        Output(window.outputDelegateWriteElement, 'small', 'red', string);
+                    }
+                } else {
+                    Output(window.outputDelegateWriteElement, 'small', 'red', error);
+                }
+            });
+        } else if("UpdateDatabase" == cmd) {
+            let paras = para.split(",");
+            let address = paras[0];
+            let priority = paras[1];
+        } else if("RemoveCore" == cmd) {
+            delegate = new Delegate(this[coreAbi], this[coreContractAddress]);
+
+            // update
+            delegate.remove(account, key, para, function(error, result) {
+                if (!error) {
+                    if ("" != result.status) {
+                        if (0x1 == parseInt(result.status)) {
+                            status = "succeeded";
+                        } else {
+                            status = "failure";
+                        }
+                        let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                        Output(window.outputDelegateWriteElement, 'small', 'red', string);
+                    } else {
+                        let status = "Try to get status again!";
+                        let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                        Output(window.outputDelegateWriteElement, 'small', 'red', string);
+                    }
+                } else {
+                    Output(window.outputDelegateWriteElement, 'small', 'red', error);
+                }
+            });
+        } else if("RemoveDatabase" == cmd) {
+
+        } else {
+
+        }
     }
 
     do(operation, para1, para2) {
