@@ -6,9 +6,10 @@
 pragma solidity ^0.4.25;
 // pragma experimental ABIEncoderV2;
 
+import "../../common/delegate.sol";
 import "./Logistics_database.sol";
 
-contract LogisticsCore {
+contract LogisticsCore is Delegate {
 
     using LibString for *;
     using LibInt for *;
@@ -41,6 +42,11 @@ contract LogisticsCore {
 
     modifier _checkDatabaseAddr() {
         require(0 != databaseAddr_);
+        _;
+    }
+
+    modifier _onlyAdmin() {
+        require(checkDelegate(msg.sender, 2));
         _;
     }
 
@@ -80,7 +86,7 @@ contract LogisticsCore {
         return _num.concat("-", numInvalidCounts_[_num].toString());
     }
 
-    function setup(address _databaseAddr) external {
+    function setup(address _databaseAddr) external _onlyOwner {
         // check database address
         require(0 != _databaseAddr);
 
@@ -88,7 +94,7 @@ contract LogisticsCore {
     }
 
     // _updateType: 0 means overwrite, 1 means append
-    function updateTracks(string _num, string _tracks, uint _updateType) external _checkDatabaseAddr {
+    function updateTracks(string _num, string _tracks, uint _updateType) external _onlyAdmin _checkDatabaseAddr {
         // check param
         require(0 != bytes(_num).length);
         require(0 != bytes(_tracks).length);
@@ -102,7 +108,7 @@ contract LogisticsCore {
     }
 
     function updateBrief(string _num, string _transNum, string _model,
-                         string _destinationCountry, string _lastStatus) public _checkDatabaseAddr {
+                         string _destinationCountry, string _lastStatus) public _onlyAdmin _checkDatabaseAddr {
         // check param
         require(0 != bytes(_num).length);
 
@@ -115,7 +121,7 @@ contract LogisticsCore {
         LogisticsDatabase(databaseAddr_).updateBrief(_getValidNumName(_num), _transNum, _model, _destinationCountry, _lastStatus);
     }
 
-    function updateBriefEx(string _num, string _brief) public _checkDatabaseAddr {
+    function updateBriefEx(string _num, string _brief) public _onlyAdmin _checkDatabaseAddr {
         // check param
         require(0 != bytes(_num).length);
         require(0 != bytes(_brief).length);
@@ -131,7 +137,7 @@ contract LogisticsCore {
 
     function update(string _num, string _transNum, 
                     string _model, string _destinationCountry,
-                    string _lastStatus, string _tracks) external {
+                    string _lastStatus, string _tracks) external _onlyAdmin {
         // update brief
         updateBrief(_num, _transNum, _model, _destinationCountry, _lastStatus);
 
@@ -141,7 +147,7 @@ contract LogisticsCore {
         }
     }
 
-    function updateEx(string _num, string _info) external {
+    function updateEx(string _num, string _info) external _onlyAdmin {
         // update brief from json(similar to)
         updateBriefEx(_num, _info);
 
@@ -149,7 +155,7 @@ contract LogisticsCore {
         this.updateTracks(_num, _info, uint(0));
     }
 
-    function remove(string _num) external _checkDatabaseAddr {
+    function remove(string _num) external _onlyAdmin _checkDatabaseAddr {
         // check param
         require(0 != bytes(_num).length);
 
@@ -163,7 +169,7 @@ contract LogisticsCore {
         _removeNum(_num);
     }
 
-    function invalid(string _num) external {
+    function invalid(string _num) external _onlyAdmin {
         // check param
         require(0 != bytes(_num).length);
 
