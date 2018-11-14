@@ -1183,6 +1183,29 @@ export default class TestLogisticsRaw {
             let paras = para.split(",");
             let address = paras[0];
             let priority = paras[1];
+
+            delegate = new Delegate(this[databaseAbi], this[databaseContractAddress]);
+
+            // update
+            delegate.update(account, key, address, priority, function(error, result) {
+                if (!error) {
+                    if ("" != result.status) {
+                        if (0x1 == parseInt(result.status)) {
+                            status = "succeeded";
+                        } else {
+                            status = "failure";
+                        }
+                        let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                        Output(window.outputDelegateWriteElement, 'small', 'red', string);
+                    } else {
+                        let status = "Try to get status again!";
+                        let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                        Output(window.outputDelegateWriteElement, 'small', 'red', string);
+                    }
+                } else {
+                    Output(window.outputDelegateWriteElement, 'small', 'red', error);
+                }
+            });
         } else if("RemoveCore" == cmd) {
             delegate = new Delegate(this[coreAbi], this[coreContractAddress]);
 
@@ -1207,7 +1230,28 @@ export default class TestLogisticsRaw {
                 }
             });
         } else if("RemoveDatabase" == cmd) {
+            delegate = new Delegate(this[databaseAbi], this[databaseContractAddress]);
 
+            // update
+            delegate.remove(account, key, para, function(error, result) {
+                if (!error) {
+                    if ("" != result.status) {
+                        if (0x1 == parseInt(result.status)) {
+                            status = "succeeded";
+                        } else {
+                            status = "failure";
+                        }
+                        let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                        Output(window.outputDelegateWriteElement, 'small', 'red', string);
+                    } else {
+                        let status = "Try to get status again!";
+                        let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                        Output(window.outputDelegateWriteElement, 'small', 'red', string);
+                    }
+                } else {
+                    Output(window.outputDelegateWriteElement, 'small', 'red', error);
+                }
+            });
         } else {
 
         }
