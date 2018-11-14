@@ -34,12 +34,12 @@
             #logistics_database_file,#logistics_core_file,#logistics_file {
                 display: none;
             }
-            #web3,#deploy,#setup,#test {
+            #block {
 /*                background-color:#e3e3e3;*/
                 padding:10px;
                 clear:left;
             }
-            #remove,#invalid,#get_info,#get_number,#deploy_database,#deploy_core,#deploy_interface {
+            #element {
 /*                width:418px;*/
                 padding:10px;
                 border:1px solid black;
@@ -61,6 +61,8 @@
                 window.outputDeployCoreElement = 'output_deploy_core';
                 window.outputDeployElement = 'output_deploy';
                 window.outputSetupElement = 'output_setup';
+                window.outputDelegateWriteElement = 'p_output_delegate_write';
+                window.outputDelegateReadElement = 'p_output_delegate_read';
                 window.outputCommonElement = 'output_common';
                 window.outputWriteElement = 'output_write';
                 window.outputReadElement = 'output_read';
@@ -73,6 +75,14 @@
                         provider(false);
                      }
                 },false);
+
+                document.getElementById("b_delegate_update_submit").onclick = function() {
+                    main('LogisticsRaw', 'Delegate', 'Update', document.getElementById("i_delegate_update_para").value);
+                }
+
+                document.getElementById("b_delegate_remove_submit").onclick = function() {
+                    main('LogisticsRaw', 'Delegate', 'Remove', document.getElementById("i_delegate_remove_para").value);
+                }
 
                 document.getElementById("remove_submit").onclick = function() {
                     main('LogisticsRaw', 'Remove', document.getElementById("remove_para").value, "");
@@ -102,7 +112,7 @@
             <p><a href="../index.html" title="Back">Back</a></p>
 
             <p>
-                <div class="well" id="web3">
+                <div class="well" id="block">
                     <h4>1. Please select web3 provider:</h4>
                     <select id="provider">
                       <option value ="local">Localhost</option>
@@ -113,9 +123,9 @@
             </p>
 
             <p>
-                <div class="well" id="deploy">
+                <div class="well" id="block">
                     <h4>2. Deploy:</h4>
-                    <div id="deploy_database">
+                    <div id="element">
                         <h5>Deploy [logistics_database]</h5>
                         <label id="logistics_database_l" for="logistics_database_file">Upload</label>
                         <input type="file" id="logistics_database_file" onchange="file('LogisticsRaw', 'LogisticsDatabase', this)" />
@@ -123,7 +133,7 @@
                         <p id="output_deploy_database"></p>
                     </div>
 
-                    <div id="deploy_core">
+                    <div id="element">
                         <h5>Deploy [logistics_core]</h5>
                         <label id="logistics_core_l" for="logistics_core_file">Upload</label>
                         <input type="file" id="logistics_core_file" onchange="file('LogisticsRaw', 'LogisticsCore', this)" />
@@ -131,7 +141,7 @@
                         <p id="output_deploy_core"></p>
                     </div>                   
 
-                    <div id="deploy_interface">
+                    <div id="element">
                         <h5>Deploy [logistics]</h5>
                         <label id="logistics_l" for="logistics_file">Upload</label>
                         <input type="file" id="logistics_file" onchange="file('LogisticsRaw', 'Logistics', this)" />
@@ -143,7 +153,7 @@
             </p>
 
             <p>
-                <div class="well" id="setup">
+                <div class="well" id="block">
                     <h4>3. Setup</h4>
                     <button type="button" id="setup_b" onclick="main('LogisticsRaw', 'Setup', '', '')">Setup</button>
                     <p id="output_setup"></p>
@@ -151,25 +161,46 @@
             </p>
 
             <p>
-                <div class="well" id="test">
-                    <h4>4. Test</h4>
+                <div class="well" id="block">
+                    <h4>4. Delegate</h4>
+                    <button type="button" id="b_delegate" onclick="main('LogisticsRaw', 'Delegate', 'Debug', '')">Debug</button>
+                    <p id="p_output_delegate_read"></p>
+                    <div id="element">
+                        <h5>Update:</h5>
+                        Address:<br>
+                        <input type="text" id="i_delegate_update_para"><br>
+                        <button type="button" id="b_delegate_update_submit">Submit</button>
+                    </div>
+                    <div id="element">
+                        <h5>Remove:</h5>
+                        Address:<br>
+                        <input type="text" id="i_delegate_remove_para"><br>
+                        <button type="button" id="b_delegate_remove_submit">Submit</button>
+                    </div>
+                    <div style="clear: left"></div>
+                    <p id="p_output_delegate_write"></p>
+                </div>
+            </p>
 
+            <p>
+                <div class="well" id="block">
+                    <h4>5. Test</h4>
                     <h5>Common Test:</h5>
-                    <button type="button" id="create" onclick="main('LogisticsRaw', 'Create', '', '')">Create</button>
-                    <button type="button" id="update" onclick="main('LogisticsRaw', 'Update', '', '')">Update</button>
-                    <button type="button" id="update" onclick="main('LogisticsRaw', 'RemoveEx', '', '')">RemoveEx</button>
-                    <button type="button" id="update" onclick="main('LogisticsRaw', 'InvalidEx', '', '')">InvalidEx</button>
-                    <button type="button" id="update" onclick="main('LogisticsRaw', 'DebugBrief', '', '')">DebugBrief</button>
+                    <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Create', '', '')">Create</button>
+                    <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Update', '', '')">Update</button>
+                    <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'RemoveEx', '', '')">RemoveEx</button>
+                    <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'InvalidEx', '', '')">InvalidEx</button>
+                    <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'DebugBrief', '', '')">DebugBrief</button>
                     <p id="output_common"></p>
 
                     <h5>Write Test:</h5>
-                    <div id="remove">
+                    <div id="element">
                         <h5>Remove:</h5>
                         Num:<br>
                         <input type="text" id="remove_para"><br>
                         <button type="button" id="remove_submit">Submit</button>
                     </div>
-                    <div id="invalid">
+                    <div id="element">
                         <h5>Invalid:</h5>
                         Num:<br>
                         <input type="text" id="invalid_para"><br>
@@ -179,7 +210,7 @@
                     <p id="output_write"></p>
 
                     <h5>Read Test:</h5>
-                    <div id="get_info">
+                    <div id="element">
                         <h5>Get Info:</h5>
                         Select Type:<br>
                         <select id="get_info_type">
@@ -198,7 +229,7 @@
                         <input type="text" id="get_info_para"><br>
                         <button type="button" id="get_info_submit">Submit</button>
                     </div>
-                    <div id="get_number">
+                    <div id="element">
                         <h5>Get Number:</h5>
                         Select Type:<br>
                         <select id="get_number_type">
