@@ -1,5 +1,9 @@
 <html>
     <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<!--         <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> -->
         <script type="text/javascript" src="../js/ethereumjs-tx-1.3.7/conv/ethereumjs-tx.min.js"></script>
         <script type="text/javascript" src="../js/ethereumjs-util-5.2.0/conv/ethereumjs-util.min.js"></script>
         <script type="text/javascript" src="../js/web3.js-0.20.6/dist/web3.js"></script>
@@ -7,9 +11,9 @@
         <script type="module" src="../js/file.js"></script>
         <script type="module" src="../js/provider.js"></script>
         <style>
-            label {
+            #logistics_database_l,#logistics_core_l,#logistics_l {
                 width: 60px;
-                height: 15px;
+                height: 25px;
                 line-height: 15px;
                 text-align: center;
 /*                display: block;*/
@@ -24,19 +28,19 @@
             }
             #section {
                 background-color:white;
-                width:900px;
+/*                width:900px;*/
                 padding:10px;
             }
             #logistics_database_file,#logistics_core_file,#logistics_file {
                 display: none;
             }
-            #deploy,#common_test,#write_test,#read_test {
-                background-color:#e3e3e3;
+            #web3,#deploy,#setup,#test {
+/*                background-color:#e3e3e3;*/
                 padding:10px;
                 clear:left;
             }
-            #remove,#invalid,#get_info,#get_number {
-                width:418px;
+            #remove,#invalid,#get_info,#get_number,#deploy_database,#deploy_core,#deploy_interface {
+/*                width:418px;*/
                 padding:10px;
                 border:1px solid black;
                 float:left;
@@ -97,53 +101,59 @@
         <div id="section">
             <p><a href="../index.html" title="Back">Back</a></p>
 
-            <p><h4>1. Please select web3 provider:</h4></p>
             <p>
-                <select id="provider">
-                  <option value ="local">Localhost</option>
-                  <option value ="injected">Injected Web3</option>
-                </select>
-            </p>
-            <p id="output_provider"></p>
-
-            <p>
-                <h4>2. Deploy:</h4>
-                <div id="deploy">
-                    <p><h5>Deploy [logistics_database]</h5></p>
-                    <p>
-                        <label for="logistics_database_file">Upload</label>
-                        <input type="file" id="logistics_database_file" onchange="file('LogisticsRaw', 'LogisticsDatabase', this)" />
-                        <button type="button" id="deploy_b" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsDatabase', '')">Deploy</button>
-                    </p>
-                    <p id="output_deploy_database"></p>
-
-                    <p><h5>Deploy [logistics_core]</h5></p>
-                    <p>
-                        <label for="logistics_core_file">Upload</label>
-                        <input type="file" id="logistics_core_file" onchange="file('LogisticsRaw', 'LogisticsCore', this)" />
-                        <button type="button" id="deploy_b" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsCore', '')">Deploy</button>
-                    </p>
-                    <p id="output_deploy_core"></p>
-
-                    <p><h5>Deploy [logistics]</h5></p>
-                    <p>
-                        <label for="logistics_file">Upload</label>
-                        <input type="file" id="logistics_file" onchange="file('LogisticsRaw', 'Logistics', this)" />
-                        <button type="button" id="deploy_b" onclick="main('LogisticsRaw', 'Deploy', 'Logistics', '')">Deploy</button>
-                    </p>
-                    <p id="output_deploy"></p>
+                <div class="well" id="web3">
+                    <h4>1. Please select web3 provider:</h4>
+                    <select id="provider">
+                      <option value ="local">Localhost</option>
+                      <option value ="injected">Injected Web3</option>
+                    </select>
+                    <p id="output_provider"></p>
                 </div>
             </p>
 
-            <p><h4>3. Setup</h4></p>
             <p>
-                <button type="button" id="setup" onclick="main('LogisticsRaw', 'Setup', '', '')">Setup</button>
-            </p>
-            <p id="output_setup"></p>
+                <div class="well" id="deploy">
+                    <h4>2. Deploy:</h4>
+                    <div id="deploy_database">
+                        <h5>Deploy [logistics_database]</h5>
+                        <label id="logistics_database_l" for="logistics_database_file">Upload</label>
+                        <input type="file" id="logistics_database_file" onchange="file('LogisticsRaw', 'LogisticsDatabase', this)" />
+                        <button type="button" id="deploy_b" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsDatabase', '')">Deploy</button>
+                        <p id="output_deploy_database"></p>
+                    </div>
 
-            <p><h4>4. Test</h4></p>
+                    <div id="deploy_core">
+                        <h5>Deploy [logistics_core]</h5>
+                        <label id="logistics_core_l" for="logistics_core_file">Upload</label>
+                        <input type="file" id="logistics_core_file" onchange="file('LogisticsRaw', 'LogisticsCore', this)" />
+                        <button type="button" id="deploy_b" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsCore', '')">Deploy</button>
+                        <p id="output_deploy_core"></p>
+                    </div>                   
+
+                    <div id="deploy_interface">
+                        <h5>Deploy [logistics]</h5>
+                        <label id="logistics_l" for="logistics_file">Upload</label>
+                        <input type="file" id="logistics_file" onchange="file('LogisticsRaw', 'Logistics', this)" />
+                        <button type="button" id="deploy_b" onclick="main('LogisticsRaw', 'Deploy', 'Logistics', '')">Deploy</button>
+                        <p id="output_deploy"></p>
+                    </div>
+                    <div style="clear:left"></div>
+                </div>
+            </p>
+
             <p>
-                <div id="common_test">
+                <div class="well" id="setup">
+                    <h4>3. Setup</h4>
+                    <button type="button" id="setup_b" onclick="main('LogisticsRaw', 'Setup', '', '')">Setup</button>
+                    <p id="output_setup"></p>
+                </div>
+            </p>
+
+            <p>
+                <div class="well" id="test">
+                    <h4>4. Test</h4>
+
                     <h5>Common Test:</h5>
                     <button type="button" id="create" onclick="main('LogisticsRaw', 'Create', '', '')">Create</button>
                     <button type="button" id="update" onclick="main('LogisticsRaw', 'Update', '', '')">Update</button>
@@ -151,11 +161,7 @@
                     <button type="button" id="update" onclick="main('LogisticsRaw', 'InvalidEx', '', '')">InvalidEx</button>
                     <button type="button" id="update" onclick="main('LogisticsRaw', 'DebugBrief', '', '')">DebugBrief</button>
                     <p id="output_common"></p>
-                </div>
-            </p>
 
-            <p>
-                <div id="write_test">
                     <h5>Write Test:</h5>
                     <div id="remove">
                         <h5>Remove:</h5>
@@ -171,11 +177,7 @@
                     </div>
                     <div style="clear: left"></div>
                     <p id="output_write"></p>
-                </div>
-            </p>
 
-            <p>
-                <div id="read_test">
                     <h5>Read Test:</h5>
                     <div id="get_info">
                         <h5>Get Info:</h5>
@@ -213,7 +215,6 @@
                 </div>
             </p>
         </div>
-
-        <div id="footer">Copyright ? deduotech.com</div>
+    </div> 
     </body>
 </html>
