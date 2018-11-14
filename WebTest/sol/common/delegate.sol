@@ -12,9 +12,9 @@ contract Delegate is Ownable {
     uint delegateNos_;
     mapping (uint => address) public adrs_;
     /** @desc prioritie map.
-      * 0: invalid
-      * 1: ownable
-      * 2 ~ uint: define by user
+      * == 0: invalid
+      * == 1: ownable
+      * >= 2: define by user
       */
     mapping (uint => uint) public priorities_;
     mapping (address => uint) public indice_;
@@ -28,7 +28,7 @@ contract Delegate is Ownable {
         delegateNos_ = 1;
     }
 
-    function check(address _adr, uint _priority) public view returns (bool)  {
+    function checkDelegate(address _adr, uint _priority) public view returns (bool)  {
         if (_adr == address(this)) return true;
         if (0 == _priority) return false;
         if (!exists_[_adr]) return false;
@@ -45,7 +45,7 @@ contract Delegate is Ownable {
         selfdestruct(owner_);   
     }
 
-    function update(address _adr, uint _priority) external _onlyOwner {
+    function updateDelegate(address _adr, uint _priority) external _onlyOwner {
         if (address(this) == _adr) return;
 
         // owner's priority can't be changed
@@ -70,7 +70,7 @@ contract Delegate is Ownable {
         }
     }
 
-    function remove(address _adr) external _onlyOwner {
+    function removeDelegate(address _adr) external _onlyOwner {
         if (address(this) == _adr) return;
         if (0 == delegateNos_) return;
 
@@ -101,11 +101,11 @@ contract Delegate is Ownable {
         exists_[_adr] = false;
     }
 
-    function number() external view returns (uint) {
+    function numberOfDelegates() external view returns (uint) {
         return delegateNos_;
     }
 
-    function getInfoByIndex(uint _index) external view returns (address, uint) {
+    function getDelegateByIndex(uint _index) external view returns (address, uint) {
         require(_index < delegateNos_);
         require(exists_[adrs_[_index]]);
         require(indice_[adrs_[_index]] == _index);
