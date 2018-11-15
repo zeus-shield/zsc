@@ -6,9 +6,7 @@
 pragma solidity ^0.4.25;
 // pragma experimental ABIEncoderV2;
 
-import "./ownable.sol";
-
-contract Delegate is Ownable {
+contract Delegate {
     uint delegateNos_;
     mapping (uint => address) public adrs_;
     /** @desc prioritie map.
@@ -21,40 +19,22 @@ contract Delegate is Ownable {
     mapping (address => bool) public exists_;
 
     constructor() public {
-        exists_[msg.sender] = true;
-        indice_[msg.sender] = 0;
         adrs_[0] = msg.sender;
         priorities_[0] = 1;
+        indice_[msg.sender] = 0;
+        exists_[msg.sender] = true;
         delegateNos_ = 1;
     }
 
-    function checkDelegate(address _adr, uint _priority) public view returns (bool)  {
-        if (_adr == address(this)) return true;
-        if (0 == _priority) return false;
-        if (!exists_[_adr]) return false;
-
-        uint index = indice_[_adr];
-        return (priorities_[index] != 0 && priorities_[index] <= _priority);
+    modifier _onlyOwner() {
+        require(exists_[msg.sender]);
+        require(0 == indice_[msg.sender]);
+        require(adrs_[0] == msg.sender);
+        require(1 == priorities_[0]);
+        _;
     }
 
-    // This unnamed function is called whenever someone tries to send ether to it
-    function() external payable { revert(); }
-
-    function kill() external _onlyOwner {
-        require(checkDelegate(msg.sender, 1));
-        selfdestruct(owner_);   
-    }
-
-    function updateDelegate(address _adr, uint _priority) external _onlyOwner {
-        if (address(this) == _adr) return;
-
-        // owner's priority can't be changed
-        require(owner_ != _adr);
-
-        require(1 < _priority);
-
-        require(checkDelegate(msg.sender, 1));
-
+    function _update(address _adr, uint _priority) private {
         uint index;
         if (exists_[_adr]) {
             index = indice_[_adr];
@@ -70,32 +50,89 @@ contract Delegate is Ownable {
         }
     }
 
-    function removeDelegate(address _adr) external _onlyOwner {
+    function _swap(address _lAdr, uint _rNos) private {
+        uint lPriority = 0;
+        uint lNos = 0;
+        address rAddr = 0;
+        uint rPriority = 0;
+
+        rAddr = adrs_[_rNos];
+        rPriority = priorities_[_rNos];
+        // _rNos;
+
+        // _lAdr
+        lNos = indice_[_lAdr];
+        lPriority = priorities_[lNos];
+
+        adrs_[lNos] = rAddr;
+        priorities_[lNos] = rPriority;
+        indice_[rAddr] = lNos;
+
+        adrs_[_rNos] = _lAdr;
+        priorities_[_rNos] = lPriority;
+        indice_[_lAdr] = _rNos;
+    }
+
+    function checkDelegate(address _adr, uint _priority) public view returns (bool)  {
+        if (_adr == address(this)) return true;
+        if (0 == _priority) return false;
+        if (!exists_[_adr]) return false;
+
+        uint index = indice_[_adr];
+        return (priorities_[index] != 0 && priorities_[index] <= _priority);
+    }
+
+    // This unnamed function is called whenever someone tries to send ether to it
+    function() external payable { revert(); }
+
+    function kill() external _onlyOwner {
+        selfdestruct(adrs_[0]);   
+    }
+
+    function transferOwnersihp(address _newOwner) external _onlyOwner {
+        if (0 != _newOwner) {
+            address owner = adrs_[0];
+
+            // upgrade new owner
+            _update(_newOwner, 1);
+            uint newOwnerNos = indice_[_newOwner];
+
+            // _swap old owner and new owner
+            _swap(_newOwner, 0);
+            require(0 == indice_[_newOwner]);
+            require(newOwnerNos == indice_[owner]);
+
+            // downgrade old owner
+            priorities_[indice_[owner]] = 2;
+        }
+    }
+
+    function updateDelegate(address _adr, uint _priority) public _onlyOwner {
+        if (address(this) == _adr) return;
+
+        // owner's priority can't be changed
+        require(adrs_[0] != _adr);
+
+        // invalid priority and owner's priority can't be set
+        require(1 < _priority);
+
+        _update(_adr, _priority);
+    }
+
+    function removeDelegate(address _adr) public _onlyOwner {
         if (address(this) == _adr) return;
 
         // owner's priority can't be remove
-        require(owner_ != _adr);
-
-        require(checkDelegate(msg.sender, 1));
+        require(adrs_[0] != _adr);
 
         require(0 < delegateNos_);
         require(exists_[_adr]);
 
-        address lastAddr = 0;
-        uint lastPriority = 0;
-        uint currentIndex = 0;
+        _swap(_adr, delegateNos_-1);
+        require((delegateNos_-1) == indice_[_adr]);
 
-        lastAddr = adrs_[delegateNos_-1];
-        lastPriority = priorities_[delegateNos_-1];
-        currentIndex = indice_[_adr];
-
-        adrs_[currentIndex] = lastAddr;
         delete adrs_[delegateNos_-1];
-
-        priorities_[currentIndex] = lastPriority;
         delete priorities_[delegateNos_-1];
-
-        indice_[lastAddr] = currentIndex;
         delete indice_[_adr];
 
         delegateNos_ --;
