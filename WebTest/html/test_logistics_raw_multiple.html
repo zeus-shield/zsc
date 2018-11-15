@@ -76,6 +76,10 @@
                      }
                 },false);
 
+                document.getElementById("b_setup").onclick = function() {
+                    main('LogisticsRaw', 'Setup', document.getElementById("s_setup_contract").value, '');
+                }
+
                 document.getElementById("b_delegate").onclick = function() {
                     main('LogisticsRaw', 'Delegate', 'Debug', document.getElementById("s_delegate_debug_contract").value);
                 }
@@ -161,7 +165,11 @@
             <p>
                 <div class="well" id="block">
                     <h4>3. Setup</h4>
-                    <button type="button" id="setup_b" onclick="main('LogisticsRaw', 'Setup', '', '')">Setup</button>
+                    <select id="s_setup_contract">
+                        <option value ="Logistics">Logistics</option>
+                        <option value ="LogisticsCore">LogisticsCore</option>
+                    </select>
+                    <button type="button" id="b_setup">Setup</button>
                     <p id="output_setup"></p>
                 </div>
             </p>
