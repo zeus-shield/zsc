@@ -42,6 +42,8 @@ $htmlObjects = new ZSCHtmlObjects();
         <?php echo $htmlObjects->loadAddFactoryModules('addFactoryModule');?>
     </div>
 
+<?php echo $htmlObjects->loadEthereumEnable(); ?>
+
 </body>
 </html>
 

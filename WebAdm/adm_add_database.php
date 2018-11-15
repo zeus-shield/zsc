@@ -45,6 +45,9 @@ $htmlObjects = new ZSCHtmlObjects();
        <button type="button" onClick="addDatabase('DatabaseName', 'AddDatabaseHashId')">Add</button><br> 
        <text id="AddDatabaseHashId"></text>
     </div>
+
+<?php echo $htmlObjects->loadEthereumEnable(); ?>
+
 </body>
 </html>
 
