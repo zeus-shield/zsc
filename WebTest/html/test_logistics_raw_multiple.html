@@ -94,6 +94,10 @@
                     main('LogisticsRaw', 'Delegate', `Remove${contract}`, document.getElementById("i_delegate_remove_para").value);
                 }
 
+                document.getElementById("b_update_submit").onclick = function() {
+                    main('LogisticsRaw', 'Update', document.getElementById("s_update_type").value, document.getElementById("i_update_para").value);
+                }
+
                 document.getElementById("remove_submit").onclick = function() {
                     main('LogisticsRaw', 'Remove', document.getElementById("remove_para").value, "");
                 }
@@ -215,13 +219,24 @@
                     <h4>5. Test</h4>
                     <h5>Common Test:</h5>
                     <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Create', '', '')">Create</button>
-                    <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Update', '', '')">Update</button>
+                    <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Update', 'Parallel', '')">Update</button>
                     <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'RemoveEx', '', '')">RemoveEx</button>
                     <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'InvalidEx', '', '')">InvalidEx</button>
                     <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'DebugBrief', '', '')">DebugBrief</button>
                     <p id="output_common"></p>
 
                     <h5>Write Test:</h5>
+                    <div id="element">
+                        <h5>Get Info:</h5>
+                        Select Type:<br>
+                        <select id="s_update_type">
+                            <option value ="Update">Update</option>
+                            <option value ="UpdateTracks">UpdateTracks</option>
+                        </select><br>
+                        Params:<br>
+                        <input type="text" id="i_update_para"><br>
+                        <button type="button" id="b_update_submit">Submit</button>
+                    </div>
                     <div id="element">
                         <h5>Remove:</h5>
                         Num:<br>
