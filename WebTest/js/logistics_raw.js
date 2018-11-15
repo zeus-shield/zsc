@@ -7,34 +7,34 @@ import Transaction from './transaction_raw.js';
 
 // private member
 const account = Symbol('account');
-const constractAbi = Symbol('constractAbi');
-const constractAddress = Symbol('constractAddress');
+const contractAbi = Symbol('contractAbi');
+const contractAddress = Symbol('contractAddress');
 
-const coreConstractAbi = Symbol('coreConstractAbi');
-const coreConstractAddress = Symbol('coreConstractAddress');
+const coreContractAbi = Symbol('coreContractAbi');
+const coreContractAddress = Symbol('coreContractAddress');
 
 export default class LogisticsRaw {
-    constructor(_abi, _constractAddr) {
+    constructor(_abi, _contractAddr) {
         this[account] = web3.eth.coinbase;
-        this[constractAbi] = _abi;
-        this[constractAddress] = _constractAddr; 
+        this[contractAbi] = _abi;
+        this[contractAddress] = _contractAddr; 
     }
 
-    setCoreConstract(_abi, _constractAddr) {
-        this[coreConstractAbi] = _abi;
-        this[coreConstractAddress] = _constractAddr;
+    setCoreConstract(_abi, _contractAddr) {
+        this[coreContractAbi] = _abi;
+        this[coreContractAddress] = _contractAddr;
     }
 
     setup(_account, _key, _coreAddr, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
         let data = contractInstance.setup.getData(_coreAddr);
 
         contractInstance.setup.estimateGas(_coreAddr, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[constractAddress], _func);
+                    transaction.do("transaction", data, result, handler[contractAddress], _func);
                 }
             } else {
                 console.log(error);
@@ -47,14 +47,14 @@ export default class LogisticsRaw {
 
     setupCore(_account, _key, _databaseAddr, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
         let data = contractInstance.setup.getData(_databaseAddr);
 
         contractInstance.setup.estimateGas(_databaseAddr, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[coreConstractAddress], _func);
+                    transaction.do("transaction", data, result, handler[coreContractAddress], _func);
                 }
             } else {
                 console.log(error);
@@ -67,14 +67,14 @@ export default class LogisticsRaw {
 
     updateTracks(_account, _key, _num, _tracks, _updateType, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
         let data = contractInstance.updateTracks.getData(_num, _tracks, _updateType);
 
         contractInstance.updateTracks.estimateGas(_num, _tracks, _updateType, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[coreConstractAddress], _func);
+                    transaction.do("transaction", data, result, handler[coreContractAddress], _func);
                 }
             } else {
                 console.log(error);
@@ -87,14 +87,14 @@ export default class LogisticsRaw {
 
     updateBrief(_account, _key, _num, _transNum, _model, _destinationCountry, _lastStatus, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
         let data = contractInstance.updateBrief.getData(_num, _transNum, _model, _destinationCountry, _lastStatus);
 
         contractInstance.updateBrief.estimateGas(_num, _transNum, _model, _destinationCountry, _lastStatus, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[coreConstractAddress], _func);
+                    transaction.do("transaction", data, result, handler[coreContractAddress], _func);
                 }
             } else {
                 console.log(error);
@@ -107,14 +107,14 @@ export default class LogisticsRaw {
 
     updateBriefEx(_account, _key, _num, _brief, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
         let data = contractInstance.updateBriefEx.getData(_num, _brief);
 
         contractInstance.updateBriefEx.estimateGas(_num, _brief, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[coreConstractAddress], _func);
+                    transaction.do("transaction", data, result, handler[coreContractAddress], _func);
                 }
             } else {
                 console.log(error);
@@ -127,14 +127,14 @@ export default class LogisticsRaw {
 
     update(_account, _key, _num, _transNum, _model, _destinationCountry, _lastStatus, _tracks, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
         let data = contractInstance.update.getData(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks);
 
         contractInstance.update.estimateGas(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks, {data: data}, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[coreConstractAddress], _func);
+                    transaction.do("transaction", data, result, handler[coreContractAddress], _func);
                 }
             } else {
                 console.log(error);
@@ -147,14 +147,14 @@ export default class LogisticsRaw {
 
     updateEx(_account, _key, _num, _info, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
         let data = contractInstance.updateEx.getData(_num, _info);
 
         contractInstance.updateEx.estimateGas(_num, _info, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[coreConstractAddress], _func);
+                    transaction.do("transaction", data, result, handler[coreContractAddress], _func);
                 }
             } else {
                 console.log(error);
@@ -167,14 +167,14 @@ export default class LogisticsRaw {
 
     remove(_account, _key, _num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
         let data = contractInstance.remove.getData(_num);
 
         contractInstance.remove.estimateGas(_num, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[coreConstractAddress], _func);
+                    transaction.do("transaction", data, result, handler[coreContractAddress], _func);
                 }
             } else {
                 console.log(error);
@@ -187,14 +187,14 @@ export default class LogisticsRaw {
 
     invalid(_account, _key, _num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
         let data = contractInstance.invalid.getData(_num);
 
         contractInstance.invalid.estimateGas(_num, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[coreConstractAddress], _func);
+                    transaction.do("transaction", data, result, handler[coreContractAddress], _func);
                 }
             } else {
                 console.log(error);
@@ -207,7 +207,7 @@ export default class LogisticsRaw {
 
     exist(_num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -255,7 +255,7 @@ export default class LogisticsRaw {
 
     number(_func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -303,7 +303,7 @@ export default class LogisticsRaw {
 
     numberOfTracks(_num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -351,7 +351,7 @@ export default class LogisticsRaw {
 
     numberOfInvalid(_num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -399,7 +399,7 @@ export default class LogisticsRaw {
 
     getParcel(_num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -447,7 +447,7 @@ export default class LogisticsRaw {
 
     getParcelEx(_num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -495,7 +495,7 @@ export default class LogisticsRaw {
 
     getTracks(_num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -543,7 +543,7 @@ export default class LogisticsRaw {
 
     getBrief(_num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -591,7 +591,7 @@ export default class LogisticsRaw {
 
     getBriefEx(_num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -639,7 +639,7 @@ export default class LogisticsRaw {
 
     getBriefByIndex(_index, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -688,7 +688,7 @@ export default class LogisticsRaw {
 
     getBriefExByIndex(_index, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -736,7 +736,7 @@ export default class LogisticsRaw {
 
     getBriefInvalid(_num, _invalidIndex, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -785,7 +785,7 @@ export default class LogisticsRaw {
 
     getTracksInvalid(_num, _invalidIndex, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[coreConstractAbi]).at(this[coreConstractAddress]);
+        let contractInstance = web3.eth.contract(this[coreContractAbi]).at(this[coreContractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
@@ -833,7 +833,7 @@ export default class LogisticsRaw {
 
     getLogisticsInfo(_num, _func) {
         let handler = this;
-        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
