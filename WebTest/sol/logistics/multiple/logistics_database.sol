@@ -54,7 +54,7 @@ contract LogisticsDatabase is Delegate {
     // Constructor
     constructor() public {}
 
-    modifier _onlyAdmin() {
+    modifier _onlyHigherThanAdmin() {
         require(checkDelegate(msg.sender, 2));
         _;
     }
@@ -112,7 +112,7 @@ contract LogisticsDatabase is Delegate {
     }
 
     // _updateType: 0 means overwrite, 1 means append
-    function updateTracks(string _num, string _tracks, uint _updateType) external _onlyAdmin {
+    function updateTracks(string _num, string _tracks, uint _updateType) external _onlyHigherThanAdmin {
         uint startIndex = 0;
 
         if (_tracks.keyExists("trackElementList")) {
@@ -139,14 +139,14 @@ contract LogisticsDatabase is Delegate {
     }
 
     function updateBrief(string _num, string _transNum, string _model,
-                         string _destinationCountry, string _lastStatus) external _onlyAdmin {
+                         string _destinationCountry, string _lastStatus) external _onlyHigherThanAdmin {
         briefs_[_num].transNum_           = _transNum;
         briefs_[_num].model_              = _model;
         briefs_[_num].destinationCountry_ = _destinationCountry;
         briefs_[_num].lastStatus_         = _lastStatus;
     }
 
-    function updateBriefEx(string _num, string _brief) external _onlyAdmin {
+    function updateBriefEx(string _num, string _brief) external _onlyHigherThanAdmin {
         if (_brief.keyExists("transNum")) {
             briefs_[_num].transNum_ = _brief.getStringValueByKey("transNum");
         }
@@ -164,7 +164,7 @@ contract LogisticsDatabase is Delegate {
         }
     }
 
-    function remove(string _num) external _onlyAdmin {
+    function remove(string _num) external _onlyHigherThanAdmin {
         // remove tracks
         _removeTracks(_num);
 
