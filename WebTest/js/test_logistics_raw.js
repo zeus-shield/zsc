@@ -527,8 +527,8 @@ export default class TestLogisticsRaw {
         }
     }
 
-    update() {
-        console.log('TestLogisticsRaw.update()');
+    update(type, para) {
+        console.log('TestLogisticsRaw.update(%s)', type);
         let channels = window.channelClass.get("idle");
 
         if (0 == channels.length) {
@@ -542,77 +542,44 @@ export default class TestLogisticsRaw {
         let status = "";
         let string = "";
 
-        // update testing data
-        let brief9 = "{\"error\":null,\"num\":\"JNTCU0600046689YQ\",\"transNum\":\"MSK0000027699\",\"model\":\"INFO9\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\"}";
-        let newTracks5 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"NewTrack5-1\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"NewTrack5-2\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-2\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
-        
         let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
 
-        // updateBrief
-        logisticsCore.updateBrief(account, key, "JNTCU0600046688YQ", "MSK0000027698", "INFO8", "Russian", "GTMS_SIGNED", function(error, result) {
-            if (!error) {
-                if ("" != result.status) {
-                    if (0x1 == parseInt(result.status)) {
-                        status = "succeeded";
-                    } else {
-                        status = "failure";
-                    }
+        if (type == "Update") {
+            let paras = para.split(",^,");
+            let num = paras[0];
+            let transNum = paras[1];
+            let model = paras[2];
+            let destinationCountry = paras[3];
+            let lastStatus = paras[4];
+            let tracks = paras[5];
 
-                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                    Output(window.outputCommonElement, 'small', 'red', string);
-
-                    // updateBriefEx
-                    logisticsCore.updateBriefEx(account, key, "JNTCU0600046689YQ", brief9, function(error, result) {
-                        if (!error) {
-                            if ("" != result.status) {
-                                if (0x1 == parseInt(result.status)) {
-                                    status = "succeeded";
-                                } else {
-                                    status = "failure";
-                                }
-
-                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                Output(window.outputCommonElement, 'small', 'red', string);
-
-                                // updateTracks
-                                logisticsCore.updateTracks(account, key, "JNTCU0600046685YQ", newTracks5, 1, function(error, result) {
-                                    if (!error) {
-                                        if ("" != result.status) {
-                                            if (0x1 == parseInt(result.status)) {
-                                                status = "succeeded";
-                                            } else {
-                                                status = "failure";
-                                            }
-
-                                            string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                            Output(window.outputCommonElement, 'small', 'red', string);
-                                        } else {
-                                            status = "Try to get status again!";
-                                            string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                            Output(window.outputCommonElement, 'small', 'red', string);
-                                        }
-                                    } else {
-                                        Output(window.outputCommonElement, 'small', 'red', error);
-                                    }
-                                });
-                            } else {
-                                status = "Try to get status again!";
-                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                Output(window.outputCommonElement, 'small', 'red', string);
-                            }
+            logisticsCore.update(account, key, num, transNum, model, destinationCountry, lastStatus, tracks, function(error, result) {
+                if (!error) {
+                    if ("" != result.status) {
+                        if (0x1 == parseInt(result.status)) {
+                            status = "succeeded";
                         } else {
-                            Output(window.outputCommonElement, 'small', 'red', error);
+                            status = "failure";
                         }
-                    });
+
+                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                        Output(window.outputCommonElement, 'small', 'red', string);
+                    } else {
+                        status = "Try to get status again!";
+                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                        Output(window.outputCommonElement, 'small', 'red', string);
+                    }
                 } else {
-                    status = "Try to get status again!";
-                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                    Output(window.outputCommonElement, 'small', 'red', string);
+                    Output(window.outputCommonElement, 'small', 'red', error);
                 }
-            } else {
-                Output(window.outputCommonElement, 'small', 'red', error);
-            }
-        });
+            });
+        } else if (type == "UpdateTracks") {
+            Output(window.outputReadElement, 'small', 'red', "Don't support now!");
+        } else if (type == "Parallel") {
+            this.updateParallel();
+        } else {
+            Output(window.outputReadElement, 'small', 'red', "Update type Error!");
+        }
     }
 
     updateParallel() {
@@ -1268,8 +1235,8 @@ export default class TestLogisticsRaw {
                 this.createParallel();
                 break;
             case 'Update':
-                // this.update();
-                this.updateParallel();
+                this.update(para1, para2);
+                // this.updateParallel();
                 break;
             case 'RemoveEx':
                 this.removeEx();
