@@ -45,7 +45,7 @@ contract LogisticsCore is Delegate {
         _;
     }
 
-    modifier _onlyAdmin() {
+    modifier _onlyHigherThanAdmin() {
         require(checkDelegate(msg.sender, 2));
         _;
     }
@@ -89,12 +89,11 @@ contract LogisticsCore is Delegate {
     function setup(address _databaseAddr) external _onlyOwner {
         // check database address
         require(0 != _databaseAddr);
-
         databaseAddr_ = _databaseAddr;
     }
 
     // _updateType: 0 means overwrite, 1 means append
-    function updateTracks(string _num, string _tracks, uint _updateType) external _onlyAdmin _checkDatabaseAddr {
+    function updateTracks(string _num, string _tracks, uint _updateType) external _onlyHigherThanAdmin _checkDatabaseAddr {
         // check param
         require(0 != bytes(_num).length);
         require(0 != bytes(_tracks).length);
@@ -108,7 +107,7 @@ contract LogisticsCore is Delegate {
     }
 
     function updateBrief(string _num, string _transNum, string _model,
-                         string _destinationCountry, string _lastStatus) public _onlyAdmin _checkDatabaseAddr {
+                         string _destinationCountry, string _lastStatus) public _onlyHigherThanAdmin _checkDatabaseAddr {
         // check param
         require(0 != bytes(_num).length);
 
@@ -121,7 +120,7 @@ contract LogisticsCore is Delegate {
         LogisticsDatabase(databaseAddr_).updateBrief(_getValidNumName(_num), _transNum, _model, _destinationCountry, _lastStatus);
     }
 
-    function updateBriefEx(string _num, string _brief) public _onlyAdmin _checkDatabaseAddr {
+    function updateBriefEx(string _num, string _brief) public _onlyHigherThanAdmin _checkDatabaseAddr {
         // check param
         require(0 != bytes(_num).length);
         require(0 != bytes(_brief).length);
@@ -137,7 +136,7 @@ contract LogisticsCore is Delegate {
 
     function update(string _num, string _transNum, 
                     string _model, string _destinationCountry,
-                    string _lastStatus, string _tracks) external _onlyAdmin {
+                    string _lastStatus, string _tracks) external _onlyHigherThanAdmin {
         // update brief
         updateBrief(_num, _transNum, _model, _destinationCountry, _lastStatus);
 
@@ -147,7 +146,7 @@ contract LogisticsCore is Delegate {
         }
     }
 
-    function updateEx(string _num, string _info) external _onlyAdmin {
+    function updateEx(string _num, string _info) external _onlyHigherThanAdmin {
         // update brief from json(similar to)
         updateBriefEx(_num, _info);
 
@@ -155,7 +154,7 @@ contract LogisticsCore is Delegate {
         this.updateTracks(_num, _info, uint(0));
     }
 
-    function remove(string _num) external _onlyAdmin _checkDatabaseAddr {
+    function remove(string _num) external _onlyHigherThanAdmin _checkDatabaseAddr {
         // check param
         require(0 != bytes(_num).length);
 
@@ -169,7 +168,7 @@ contract LogisticsCore is Delegate {
         _removeNum(_num);
     }
 
-    function invalid(string _num) external _onlyAdmin {
+    function invalid(string _num) external _onlyHigherThanAdmin {
         // check param
         require(0 != bytes(_num).length);
 
