@@ -22,7 +22,7 @@ export default class Delegate {
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
         let data = contractInstance.transferOwnership.getData(_newOwner, _degradePrio);
 
-        contractInstance.transferOwnership.estimateGas(_newOwner, _degradePrio, function(error, result) {
+        contractInstance.transferOwnership.estimateGas(_newOwner, _degradePrio, {from: _account}, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
@@ -42,7 +42,7 @@ export default class Delegate {
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
         let data = contractInstance.updateDelegate.getData(_addr, _priority);
 
-        contractInstance.updateDelegate.estimateGas(_addr, _priority, function(error, result) {
+        contractInstance.updateDelegate.estimateGas(_addr, _priority, {from: _account}, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
@@ -62,7 +62,7 @@ export default class Delegate {
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
         let data = contractInstance.removeDelegate.getData(_addr);
 
-        contractInstance.removeDelegate.estimateGas(_addr, function(error, result) {
+        contractInstance.removeDelegate.estimateGas(_addr, {from: _account}, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
@@ -83,7 +83,7 @@ export default class Delegate {
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.numberOfDelegates.estimateGas(function(error, result) {
+        contractInstance.numberOfDelegates.estimateGas({from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
@@ -131,7 +131,7 @@ export default class Delegate {
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getDelegateById.estimateGas(_id, function(error, result) {
+        contractInstance.getDelegateById.estimateGas(_id, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
