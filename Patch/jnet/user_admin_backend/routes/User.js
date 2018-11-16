@@ -24,3 +24,25 @@ router.post('/signin', function(req, res, next) {
         if (err) {
             return console.log(err);
         }
+        if (doc) {
+            req.session.u = doc;
+            res.cookie('id', doc._id)
+            return res.json({
+                code: 200,
+                msg: "登录成功",
+                user: {
+                    name:doc.name,
+                    username:doc.username,
+                    grade:doc.grade,
+                    avatar:doc.avatar
+                }
+            })
+        } else {
+            return res.json({
+                code: 0,
+                msg: "用户名或密码错误",
+                user: ""
+            })
+        }
+    })
+})
