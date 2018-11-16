@@ -59,11 +59,11 @@ contract LogisticsDatabase is Delegate {
         _;
     }
 
-    function _allocTracks(string _num, uint _length) internal {
+    function _allocTracks(string _num, uint _length) private {
         trackCounts_[_num] += _length;
     }
 
-    function _removeTracks(string _num) internal {
+    function _removeTracks(string _num) private {
         string memory trackName = "";
         for (uint i=0; i<trackCounts_[_num]; i++) {
             trackName = _num.concat("-", i.toString());
@@ -72,7 +72,7 @@ contract LogisticsDatabase is Delegate {
         trackCounts_[_num] = 0;
     }
 
-    function _updateTrack(string _num, uint _index, string _track) internal {
+    function _updateTrack(string _num, uint _index, string _track) private {
         // check index
         require(trackCounts_[_num] > _index);
 
