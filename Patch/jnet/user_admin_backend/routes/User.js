@@ -14,3 +14,13 @@ router.post('/addUser', function (req, res) {
         result:""
     })
 })
+
+router.post('/signin', function(req, res, next) {
+    const para = {
+        username: req.body.username,
+        password: req.body.password
+    }
+    user.findOne(para, (err, doc) => {
+        if (err) {
+            return console.log(err);
+        }
