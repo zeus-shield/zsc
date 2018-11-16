@@ -3,10 +3,11 @@
 SFLAGS="--optimize --overwrite --pretty-json --combined-json bin,abi"
 CORE="sol"
 MODULE="logistics"
-MODE="single"
-# MODE="multiple"
+# MODE="single"
+MODE="multiple"
 IMPORTPATH="/=/"
 SOURCES=(
+logistics_core
 logistics
 )
 BUILDPATH="./build"
