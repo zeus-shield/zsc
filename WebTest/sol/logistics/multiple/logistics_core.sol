@@ -25,10 +25,10 @@ contract LogisticsCore is Delegate {
     mapping(uint => string) private numNames_;
 
     /** @desc string(original num name) => uint(num index) */
-    mapping(string => uint) private numIndexs_;
+    mapping(string => uint) private numIds_;
 
     /** @desc string(original num name) => bool(num exist flag) */
-    mapping(string => bool) private numExist_;
+    mapping(string => bool) private numExists_;
 
     /** @desc string(original num name) => uint(num invalid count) */
     mapping(string => uint) private numInvalidCounts_;
@@ -50,16 +50,16 @@ contract LogisticsCore is Delegate {
         _;
     }
 
-    function _addNum(string _num) internal {
+    function _addNum(string _num) private {
         numNames_[numTotalCount_] = _num;
-        numIndexs_[_num] = numTotalCount_;
+        numIds_[_num] = numTotalCount_;
 
         numTotalCount_ ++;
 
-        numExist_[_num] = true;
+        numExists_[_num] = true;
     }
 
-    function _removeNum(string _num) internal {
+    function _removeNum(string _num) private {
         string memory lastNumName = "";
         uint currentIndex = 0;
 
@@ -69,20 +69,20 @@ contract LogisticsCore is Delegate {
         }
 
         lastNumName = numNames_[numTotalCount_-1];
-        currentIndex = numIndexs_[_num];
+        currentIndex = numIds_[_num];
 
         numNames_[currentIndex] = lastNumName;
         delete numNames_[numTotalCount_-1];
 
-        numIndexs_[lastNumName] = currentIndex;
-        delete numIndexs_[_num];
+        numIds_[lastNumName] = currentIndex;
+        delete numIds_[_num];
 
         numTotalCount_ --;
 
-        numExist_[_num] = false;
+        numExists_[_num] = false;
     }
  
-    function _getValidNumName(string _num) internal view returns (string) {
+    function _getValidNumName(string _num) private view returns (string) {
         return _num.concat("-", numInvalidCounts_[_num].toString());
     }
 
@@ -100,7 +100,7 @@ contract LogisticsCore is Delegate {
         require((0 == _updateType) || (1 == _updateType));
 
         // check num exist
-        require(numExist_[_num]);
+        require(numExists_[_num]);
 
         // update tracks
         LogisticsDatabase(databaseAddr_).updateTracks(_getValidNumName(_num), _tracks, _updateType);
@@ -111,7 +111,7 @@ contract LogisticsCore is Delegate {
         // check param
         require(0 != bytes(_num).length);
 
-        if (!numExist_[_num]) {
+        if (!numExists_[_num]) {
             // add num
             _addNum(_num);
         }
@@ -125,7 +125,7 @@ contract LogisticsCore is Delegate {
         require(0 != bytes(_num).length);
         require(0 != bytes(_brief).length);
 
-        if (!numExist_[_num]) {
+        if (!numExists_[_num]) {
             // add num
             _addNum(_num);
         }
@@ -159,7 +159,7 @@ contract LogisticsCore is Delegate {
         require(0 != bytes(_num).length);
 
         // check num exist
-        require(numExist_[_num]);
+        require(numExists_[_num]);
 
         // remove database
         LogisticsDatabase(databaseAddr_).remove(_getValidNumName(_num));
@@ -173,7 +173,7 @@ contract LogisticsCore is Delegate {
         require(0 != bytes(_num).length);
 
         // check num exist
-        require(numExist_[_num]);
+        require(numExists_[_num]);
 
         // remove num
         _removeNum(_num);
@@ -187,7 +187,7 @@ contract LogisticsCore is Delegate {
             return false;
         }
 
-        return numExist_[_num];
+        return numExists_[_num];
     }
 
     function number() external view returns (uint) {
@@ -201,7 +201,7 @@ contract LogisticsCore is Delegate {
         }
 
         // check num exist
-        if (!numExist_[_num]) {
+        if (!numExists_[_num]) {
             return 0;
         }
 
@@ -224,7 +224,7 @@ contract LogisticsCore is Delegate {
         }
 
         // check num exist
-        if (!numExist_[_num]) {
+        if (!numExists_[_num]) {
             return ("", "", "", "", "");
         }
 
@@ -238,7 +238,7 @@ contract LogisticsCore is Delegate {
         }
 
         // check num exist
-        if (!numExist_[_num]) {
+        if (!numExists_[_num]) {
             return "";
         }
 
@@ -252,7 +252,7 @@ contract LogisticsCore is Delegate {
         }
 
         // check num exist
-        if (!numExist_[_num]) {
+        if (!numExists_[_num]) {
             return "";
         }
 
@@ -266,7 +266,7 @@ contract LogisticsCore is Delegate {
         }
 
         // check num exist
-        if (!numExist_[_num]) {
+        if (!numExists_[_num]) {
             return ("", "", "", "", "");
         }
 
@@ -280,7 +280,7 @@ contract LogisticsCore is Delegate {
         }
 
         // check num exist
-        if (!numExist_[_num]) {
+        if (!numExists_[_num]) {
             return "";
         }
 
