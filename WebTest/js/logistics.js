@@ -44,7 +44,7 @@ export default class LogisticsCore {
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getLogisticsInfo.estimateGas(_num, {from: handler[account]}, function(error, result) {
+        contractInstance.getLogisticsInfo.estimateGas(_num, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
