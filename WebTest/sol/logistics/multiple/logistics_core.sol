@@ -350,4 +350,8 @@ contract LogisticsCore is Delegate {
 
         return LogisticsDatabase(databaseAddr_).getTracks(invalidNum);
     }
+
+    function getDatabaseContractAddress() external view _onlyOwner returns (address) {
+        return databaseAddr_;
+    }
 }
