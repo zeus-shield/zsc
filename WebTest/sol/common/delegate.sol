@@ -1,6 +1,6 @@
 /**
- Copyright (c) 2018, deduotech.com
- 2018-10-19: v0.00.01
+  Copyright (c) 2018, ZSC Dev Team
+  2018-10-19: v0.00.01
  */
 
 pragma solidity ^0.4.25;

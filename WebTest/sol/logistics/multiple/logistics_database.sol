@@ -1,6 +1,6 @@
 /**
- Copyright (c) 2018, deduotech.com
- 2018-10-19: v0.00.01
+  Copyright (c) 2018, ZSC Dev Team
+  2018-10-19: v0.00.01
  */
 
 pragma solidity ^0.4.25;
@@ -182,11 +182,11 @@ contract LogisticsDatabase is Delegate {
         return (briefs_[_num].transNum_, briefs_[_num].model_, briefs_[_num].destinationCountry_, briefs_[_num].lastStatus_, tacks);
     }
 
-    function getParcelEx(string _num) external view returns (string) {
+    function getParcelEx(string _originalNum, string _num) external view returns (string) {
         string memory str = "";
         string memory tacks = this.getTracks(_num);
 
-        str = str.concat("{", _num.toKeyValue("num"), ",");
+        str = str.concat("{", _originalNum.toKeyValue("num"), ",");
         str = str.concat(briefs_[_num].transNum_.toKeyValue("transNum"), ",");
         str = str.concat(briefs_[_num].model_.toKeyValue("model"), ",");
         str = str.concat(briefs_[_num].destinationCountry_.toKeyValue("destinationCountry"), ",");
