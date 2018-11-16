@@ -1,6 +1,6 @@
 /**
- Copyright (c) 2018, deduotech.com
- 2018-10-19: v0.00.01
+  Copyright (c) 2018, ZSC Dev Team
+  2018-10-19: v0.00.01
  */
 
 pragma solidity ^0.4.25;
@@ -242,7 +242,7 @@ contract LogisticsCore is Delegate {
             return "";
         }
 
-        return LogisticsDatabase(databaseAddr_).getParcelEx(_getValidNumName(_num));
+        return LogisticsDatabase(databaseAddr_).getParcelEx(_num, _getValidNumName(_num));
     }
 
     function getTracks(string _num) external view _checkDatabaseAddr returns (string) {
