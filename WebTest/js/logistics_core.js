@@ -23,7 +23,7 @@ export default class LogisticsCore {
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
         let data = contractInstance.setup.getData(_databaseAddr);
 
-        contractInstance.setup.estimateGas(_databaseAddr, function(error, result) {
+        contractInstance.setup.estimateGas(_databaseAddr, {from: _account}, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
@@ -43,7 +43,7 @@ export default class LogisticsCore {
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
         let data = contractInstance.updateTracks.getData(_num, _tracks, _updateType);
 
-        contractInstance.updateTracks.estimateGas(_num, _tracks, _updateType, function(error, result) {
+        contractInstance.updateTracks.estimateGas(_num, _tracks, _updateType, {from: _account}, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
@@ -63,7 +63,7 @@ export default class LogisticsCore {
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
         let data = contractInstance.updateBrief.getData(_num, _transNum, _model, _destinationCountry, _lastStatus);
 
-        contractInstance.updateBrief.estimateGas(_num, _transNum, _model, _destinationCountry, _lastStatus, function(error, result) {
+        contractInstance.updateBrief.estimateGas(_num, _transNum, _model, _destinationCountry, _lastStatus, {from: _account}, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
@@ -83,7 +83,7 @@ export default class LogisticsCore {
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
         let data = contractInstance.updateBriefEx.getData(_num, _brief);
 
-        contractInstance.updateBriefEx.estimateGas(_num, _brief, function(error, result) {
+        contractInstance.updateBriefEx.estimateGas(_num, _brief, {from: _account}, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
@@ -103,7 +103,8 @@ export default class LogisticsCore {
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
         let data = contractInstance.update.getData(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks);
 
-        contractInstance.update.estimateGas(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks, {data: data}, function(error, result) {
+        contractInstance.update.estimateGas(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks, {from: _account}, function(error, result) {
+        //contractInstance.update.estimateGas(_num, _transNum, _model, _destinationCountry, _lastStatus, _tracks, {from: _account, data: data}, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
@@ -123,7 +124,7 @@ export default class LogisticsCore {
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
         let data = contractInstance.updateEx.getData(_num, _info);
 
-        contractInstance.updateEx.estimateGas(_num, _info, function(error, result) {
+        contractInstance.updateEx.estimateGas(_num, _info, {from: _account}, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
@@ -143,7 +144,7 @@ export default class LogisticsCore {
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
         let data = contractInstance.remove.getData(_num);
 
-        contractInstance.remove.estimateGas(_num, function(error, result) {
+        contractInstance.remove.estimateGas(_num, {from: _account}, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
@@ -163,7 +164,7 @@ export default class LogisticsCore {
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
         let data = contractInstance.invalid.getData(_num);
 
-        contractInstance.invalid.estimateGas(_num, function(error, result) {
+        contractInstance.invalid.estimateGas(_num, {from: _account}, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
@@ -184,7 +185,7 @@ export default class LogisticsCore {
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.exist.estimateGas(_num, function(error, result) {
+        contractInstance.exist.estimateGas(_num, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
@@ -232,7 +233,7 @@ export default class LogisticsCore {
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.number.estimateGas(function(error, result) {
+        contractInstance.number.estimateGas({from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
@@ -280,7 +281,7 @@ export default class LogisticsCore {
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.numberOfTracks.estimateGas(_num, function(error, result) {
+        contractInstance.numberOfTracks.estimateGas(_num, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
@@ -328,7 +329,7 @@ export default class LogisticsCore {
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.numberOfInvalid.estimateGas(_num, function(error, result) {
+        contractInstance.numberOfInvalid.estimateGas(_num, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
@@ -376,7 +377,7 @@ export default class LogisticsCore {
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getParcel.estimateGas(_num, function(error, result) {
+        contractInstance.getParcel.estimateGas(_num, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
@@ -424,7 +425,7 @@ export default class LogisticsCore {
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getParcelEx.estimateGas(_num, function(error, result) {
+        contractInstance.getParcelEx.estimateGas(_num, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
@@ -472,7 +473,7 @@ export default class LogisticsCore {
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getTracks.estimateGas(_num, function(error, result) {
+        contractInstance.getTracks.estimateGas(_num, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
@@ -520,7 +521,7 @@ export default class LogisticsCore {
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getBrief.estimateGas(_num, function(error, result) {
+        contractInstance.getBrief.estimateGas(_num, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
@@ -568,7 +569,7 @@ export default class LogisticsCore {
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getBriefEx.estimateGas(_num, function(error, result) {
+        contractInstance.getBriefEx.estimateGas(_num, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
@@ -616,7 +617,7 @@ export default class LogisticsCore {
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getBriefByIndex.estimateGas(_index, function(error, result) {
+        contractInstance.getBriefByIndex.estimateGas(_index, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
@@ -665,7 +666,7 @@ export default class LogisticsCore {
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getBriefExByIndex.estimateGas(_index, function(error, result) {
+        contractInstance.getBriefExByIndex.estimateGas(_index, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
@@ -713,7 +714,7 @@ export default class LogisticsCore {
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getBriefInvalid.estimateGas(_num, _invalidIndex, function(error, result) {
+        contractInstance.getBriefInvalid.estimateGas(_num, _invalidIndex, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
@@ -762,7 +763,7 @@ export default class LogisticsCore {
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getTracksInvalid.estimateGas(_num, _invalidIndex, function(error, result) {
+        contractInstance.getTracksInvalid.estimateGas(_num, _invalidIndex, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
