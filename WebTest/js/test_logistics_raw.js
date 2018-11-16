@@ -566,7 +566,7 @@ export default class TestLogisticsRaw {
         let channels = window.channelClass.get("idle");
 
         if (0 == channels.length) {
-            Output(window.outputCommonElement, 'small', 'red', "No channnel(idle)!");
+            Output(window.outputWriteElement, 'small', 'red', "No channnel(idle)!");
             return;
         }
 
@@ -597,22 +597,22 @@ export default class TestLogisticsRaw {
                         }
 
                         string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                        Output(window.outputCommonElement, 'small', 'red', string);
+                        Output(window.outputWriteElement, 'small', 'red', string);
                     } else {
                         status = "Try to get status again!";
                         string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                        Output(window.outputCommonElement, 'small', 'red', string);
+                        Output(window.outputWriteElement, 'small', 'red', string);
                     }
                 } else {
-                    Output(window.outputCommonElement, 'small', 'red', error);
+                    Output(window.outputWriteElement, 'small', 'red', error);
                 }
             });
         } else if (type == "UpdateTracks") {
-            Output(window.outputReadElement, 'small', 'red', "Don't support now!");
+            Output(window.outputWriteElement, 'small', 'red', "Don't support now!");
         } else if (type == "Parallel") {
             this.updateParallel();
         } else {
-            Output(window.outputReadElement, 'small', 'red', "Update type Error!");
+            Output(window.outputWriteElement, 'small', 'red', "Update type Error!");
         }
     }
 
@@ -1150,7 +1150,7 @@ export default class TestLogisticsRaw {
                 delegate.number(function(error, result) {
                     if (!error) {
                         for (let i=0; i<result; i++) {
-                            delegate.getInfoByIndex(i, function(error, index, result) {
+                            delegate.getInfoById(i, function(error, index, result) {
                                 if (!error) {
                                     // console.log(result);
                                     Output(window.outputDelegateReadElement, 'small', 'red', `[Delegate${index}]:</br>${result}`);
@@ -1182,8 +1182,8 @@ export default class TestLogisticsRaw {
                 });
                 break;
             case "Transfer":
-                // transferOwnersihp
-                delegate.transferOwnersihp(account, key, paras, function(error, result) {
+                // transferOwnership
+                delegate.transferOwnership(account, key, paras, 2, function(error, result) {
                     handler[commmonTransactionProc](error, result);
                 });                
                 break;
