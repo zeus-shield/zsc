@@ -17,12 +17,12 @@ export default class Delegate {
         this[constractAddress] = _constractAddr; 
     }
 
-    transferOwnersihp(_account, _key, _newOwner, _func) {
+    transferOwnership(_account, _key, _newOwner, _degradePrio, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
-        let data = contractInstance.transferOwnersihp.getData(_newOwner);
+        let data = contractInstance.transferOwnership.getData(_newOwner, _degradePrio);
 
-        contractInstance.transferOwnersihp.estimateGas(_newOwner, function(error, result) {
+        contractInstance.transferOwnership.estimateGas(_newOwner, _degradePrio, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
@@ -125,49 +125,49 @@ export default class Delegate {
         });
     }
 
-    getInfoByIndex(_index, _func) {
+    getInfoById(_id, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getDelegateByIndex.estimateGas(_index, function(error, result) {
+        contractInstance.getDelegateById.estimateGas(_id, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============== Delegate.getDelegateByIndex(uint) ==============");
+                        console.log("============== Delegate.getDelegateById(uint) ==============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("===============================================================");
-                        // call 'Delegate.getDelegateByIndex(uint)'
-                        contractInstance.getDelegateByIndex.call(_index, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        console.log("============================================================");
+                        // call 'Delegate.getDelegateById(uint)'
+                        contractInstance.getDelegateById.call(_id, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                console.log("[Delegate%s]: %s, %s", _index, result[0], result[1].toString(10));
+                                console.log("[Delegate%s]: %s, %s", _id, result[0], result[1].toString(10));
                                 if (null != _func) {
-                                    _func(null, _index, result);
+                                    _func(null, _id, result);
                                 }                                
                             } else {
                                 console.log(error);
                                 if (null != _func) {
-                                    _func(error, _index);
+                                    _func(error, _id);
                                 }
                             }
                         });
                     } else {
                         console.log(error);
                         if (null != _func) {
-                            _func(error, _index);
+                            _func(error, _id);
                         }
                     }
                 });
             } else {
                 console.log(error);
                 if (null != _func) {
-                    _func(error, _index);
+                    _func(error, _id);
                 }
             }
         });
