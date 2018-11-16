@@ -77,7 +77,11 @@
                 },false);
 
                 document.getElementById("b_setup").onclick = function() {
-                    main('LogisticsRaw', 'Setup', document.getElementById("s_setup_contract").value, '');
+                    main('LogisticsRaw', 'Setup', 'Set', document.getElementById("s_setup_contract").value);
+                }
+
+                document.getElementById("b_get_sub_contract_addr").onclick = function() {
+                    main('LogisticsRaw', 'Setup', 'Get', document.getElementById("s_get_sub_contract_addr").value);
                 }
 
                 document.getElementById("b_delegate").onclick = function() {
@@ -179,7 +183,13 @@
                         <option value ="Logistics">Logistics</option>
                         <option value ="LogisticsCore">LogisticsCore</option>
                     </select>
-                    <button type="button" id="b_setup">Setup</button>
+                    <button type="button" id="b_setup">Setup</button><br>
+
+                    <select id="s_get_sub_contract_addr">
+                        <option value ="Logistics">Logistics</option>
+                        <option value ="LogisticsCore">LogisticsCore</option>
+                    </select>
+                    <button type="button" id="b_get_sub_contract_addr">SubContractAddress</button>
                     <p id="output_setup"></p>
                 </div>
             </p>
