@@ -33,13 +33,16 @@ const getDelegateInstance = Symbol('getDelegateInstance');
 export default class TestLogisticsRaw {
 
     constructor() {
-        this[compiledJson] = '';
-        this[abi] = '';
-        this[contractAddress] = '';
-        this[coreAbi] = '';
-        this[coreContractAddress] = '';
-        this[databaseAbi] = '';
-        this[databaseContractAddress] = '';
+        this[compiledJson] = [];
+
+        this[abi] = [];
+        this[coreAbi] = [];
+        this[databaseAbi] = [];
+
+        this[contractAddress] = "";
+        this[coreContractAddress] = "";
+        this[databaseContractAddress] = "";
+        
         this[nextIndex] = 0;
         this[tick] = 0;
     }
