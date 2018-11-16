@@ -6,7 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var mongoose = require('mongoose');
-var user = require('./routes/user');
+var Order = require('./routes/Order');
+var User = require('./routes/User');
 var index = require('./routes/index');
 var config = require('./config/config');
 var app = express();
@@ -39,7 +40,8 @@ config.serverPath.indexOf('localhost') > -1 ? mongoose.connect('mongodb://localh
 mongoose.connect('mongodb://18.219.177.53:27017/zscapply',{useNewUrlParser: true });
 
 app.use('/', index);
-app.use('/user', user);
+app.use('/User', User);
+app.use('/Order', Order);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
