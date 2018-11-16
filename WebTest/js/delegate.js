@@ -17,6 +17,26 @@ export default class Delegate {
         this[constractAddress] = _constractAddr; 
     }
 
+    transferOwnersihp(_account, _key, _newOwner, _func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
+        let data = contractInstance.transferOwnersihp.getData(_newOwner);
+
+        contractInstance.transferOwnersihp.estimateGas(_newOwner, function(error, result) {
+            if (!error) {
+                let transaction = new Transaction(_account, _key);
+                if('undefined' != typeof transaction) {
+                    transaction.do("transaction", data, result, handler[constractAddress], _func);
+                }
+            } else {
+                console.log(error);
+                if (null != _func) {
+                    _func(error);
+                }
+            }
+        });       
+    }   
+
     update(_account, _key, _addr, _priority, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[constractAbi]).at(this[constractAddress]);
