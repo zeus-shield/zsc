@@ -65,7 +65,7 @@ export default class TestLogisticsRaw {
         return new Array(channels[0].account, channels[0].key);
     }
 
-    [commmonTransactionProc](error, result) { 
+    [commmonTransactionProc](error, result, output) { 
         if (!error) {
             if ("" != result.status) {
                 let status;
@@ -75,14 +75,14 @@ export default class TestLogisticsRaw {
                     status = "failure";
                 }
                 let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                Output(window.outputDelegateWriteElement, 'small', 'red', string);
+                Output(output, 'small', 'red', string);
             } else {
                 let status = "Try to get status again!";
                 let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                Output(window.outputDelegateWriteElement, 'small', 'red', string);
+                Output(output, 'small', 'red', string);
             }
         } else {
-            Output(window.outputDelegateWriteElement, 'small', 'red', error);
+            Output(output, 'small', 'red', error);
         }
     }
 
@@ -330,68 +330,53 @@ export default class TestLogisticsRaw {
         });
     }
 
-    setup(contractName) {
-        console.log('TestLogisticsRaw.setup(%s)', contractName);
-
-        let channels = window.channelClass.get("idle");
-
-        if (0 == channels.length) {
-            Output(window.outputCommonElement, 'small', 'red', "No channnel(idle)!");
+    setup(cmd, contractName) {
+        console.log('TestLogisticsRaw.setup(%s, %s)', cmd, contractName);
+        let handler = this;
+        let tmps = this[getCommonAccount]();
+        if (0 == tmps[0]) {
+            Output(window.outputSetupElement, 'small', 'red', "No channnel(idle)!");
             return;
         }
 
-        let account = channels[0].account;
-        let key = channels[0].key;
+        let account = tmps[0];
+        let key = tmps[1];
 
-        let status = "";
-        let string = "";
-
-        if ("Logistics" == contractName) {
-            let logistics = new Logistics(this[abi], this[contractAddress]);
-            logistics.setup(account, key, this[coreContractAddress], function(error, result) {
-                if (!error) {
-                    if ("" != result.status) {
-                        if (0x1 == parseInt(result.status)) {
-                            status = "succeeded";
-                        } else {
-                            status = "failure";
-                        }
-
-                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                        Output(window.outputSetupElement, 'small', 'red', string);
-                    } else {
-                        status = "Try to get status again!";
-                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                        Output(window.outputSetupElement, 'small', 'red', string);
-                    }
+        switch (cmd) {
+            case "Set":
+                if ("Logistics" == contractName) {
+                    let logistics = new Logistics(this[abi], this[contractAddress]);
+                    logistics.setup(account, key, this[coreContractAddress], function(error, result) {
+                        handler[commmonTransactionProc](error, result, window.outputSetupElement);
+                    });
+                } else if ("LogisticsCore" == contractName) {
+                    let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+                    logisticsCore.setup(account, key, this[databaseContractAddress], function(error, result) {
+                        handler[commmonTransactionProc](error, result, window.outputSetupElement);
+                    });
                 } else {
-                    Output(window.outputSetupElement, 'small', 'red', error);
+                    Output(window.outputSetupElement, 'small', 'red', "Contract name Error!");
                 }
-            });
-        } else if ("LogisticsCore" == contractName) {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            logisticsCore.setup(account, key, this[databaseContractAddress], function(error, result) {
-                if (!error) {
-                    if ("" != result.status) {
-                        if (0x1 == parseInt(result.status)) {
-                            status = "succeeded";
+                break;
+            case "Get":
+                if ("Logistics" == contractName) {
+                    Output(window.outputSetupElement, 'small', 'red', "Don't support now!");
+                } else if ("LogisticsCore" == contractName) {
+                    let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+                    logisticsCore.getDatabaseAddr(account, function(error, result) {
+                        if (!error) {
+                            Output(window.outputSetupElement, 'small', 'red', `[DatabaseContractAddress]:${result}`);
                         } else {
-                            status = "failure";
+                            Output(window.outputSetupElement, 'small', 'red', error);
                         }
-
-                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                        Output(window.outputSetupElement, 'small', 'red', string);
-                    } else {
-                        status = "Try to get status again!";
-                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                        Output(window.outputSetupElement, 'small', 'red', string);
-                    }
+                    });
                 } else {
-                    Output(window.outputSetupElement, 'small', 'red', error);
+                    Output(window.outputSetupElement, 'small', 'red', "Contract name Error!");
                 }
-            });
-        } else {
-            Output(window.outputSetupElement, 'small', 'red', "Contract name Error!");
+                break;
+            default:
+                Output(window.outputSetupElement, 'small', 'red', "Command Error!");
+                break;
         }
     }
 
@@ -1171,20 +1156,20 @@ export default class TestLogisticsRaw {
 
                 // update
                 delegate.update(account, key, address, priority, function(error, result) {
-                    handler[commmonTransactionProc](error, result);
+                    handler[commmonTransactionProc](error, result, window.outputDelegateWriteElement);
                 });
 
                 break;
             case "Remove":
                 // remove
                 delegate.remove(account, key, paras, function(error, result) {
-                    handler[commmonTransactionProc](error, result);
+                    handler[commmonTransactionProc](error, result, window.outputDelegateWriteElement);
                 });
                 break;
             case "Transfer":
                 // transferOwnership
                 delegate.transferOwnership(account, key, paras, 2, function(error, result) {
-                    handler[commmonTransactionProc](error, result);
+                    handler[commmonTransactionProc](error, result, window.outputDelegateWriteElement);
                 });                
                 break;
             default:
@@ -1200,7 +1185,7 @@ export default class TestLogisticsRaw {
                 this.deploy(para1);
                 break;
             case 'Setup':
-                this.setup(para1);
+                this.setup(para1, para2);
                 break;
             case 'Create':
                 // this.create();
