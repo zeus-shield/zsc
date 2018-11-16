@@ -8,15 +8,15 @@ pragma solidity ^0.4.25;
 
 contract Delegate {
     uint delegateNos_;
-    mapping (uint => address) public adrs_;
+    mapping (uint => address) private adrs_;
     /** @desc prioritie map.
       * == 0: invalid
       * == 1: ownable
       * >= 2: define by user
       */
-    mapping (uint => uint) public priorities_;
-    mapping (address => uint) public indice_;
-    mapping (address => bool) public exists_;
+    mapping (uint => uint) private priorities_;
+    mapping (address => uint) private indice_;
+    mapping (address => bool) private exists_;
 
     constructor() public {
         adrs_[0] = msg.sender;
@@ -107,7 +107,7 @@ contract Delegate {
         }
     }
 
-    function updateDelegate(address _adr, uint _priority) public _onlyOwner {
+    function updateDelegate(address _adr, uint _priority) external _onlyOwner {
         if (address(this) == _adr) return;
 
         // owner's priority can't be changed
@@ -119,7 +119,7 @@ contract Delegate {
         _update(_adr, _priority);
     }
 
-    function removeDelegate(address _adr) public _onlyOwner {
+    function removeDelegate(address _adr) external _onlyOwner {
         if (address(this) == _adr) return;
 
         // owner's priority can't be remove
