@@ -368,7 +368,7 @@ export default class TestLogisticsRaw {
                     let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
                     logisticsCore.getDatabaseAddr(account, function(error, result) {
                         if (!error) {
-                            Output(window.outputSetupElement, 'small', 'red', `[DatabaseContractAddress]:${result}`);
+                            Output(window.outputSetupElement, 'small', 'red', `[DatabaseContractAddress]: ${result}`);
                         } else {
                             Output(window.outputSetupElement, 'small', 'red', error);
                         }
@@ -641,7 +641,7 @@ export default class TestLogisticsRaw {
             let logistics = new Logistics(this[abi], this[contractAddress]);
             logistics.getLogisticsInfo(para, function(error, result) {
                 if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Parcel]:</br>${result}`);
+                    Output(window.outputReadElement, 'small', 'red', `[Info]:</br>${result}`);
                 } else {
                     Output(window.outputReadElement, 'small', 'red', error);
                 }
@@ -1137,13 +1137,19 @@ export default class TestLogisticsRaw {
                 // number
                 delegate.number(function(error, result) {
                     if (!error) {
-                        for (let i=0; i<result; i++) {
-                            delegate.getInfoById(i, function(error, index, result) {
+                        let sum = result;
+                        let logs = "";
+                        let count = 0;
+                        for (let i=0; i<sum; i++) {
+                            delegate.getInfoById(i, function(error, id, result) {
                                 if (!error) {
-                                    // console.log(result);
-                                    Output(window.outputDelegateReadElement, 'small', 'red', `[Delegate${index}]:</br>${result}`);
+                                    logs = logs.concat(`[Delegate${id}]: ${result}</br>`);
+                                    count ++;
+                                    if (count == sum) {
+                                        Output(window.outputDelegateReadElement, 'small', 'red', logs);
+                                    }                                 
                                 } else {
-                                    Output(window.outputDelegateReadElement, 'small', 'red', `[Delegate${index}]:</br>${error}`);
+                                    Output(window.outputDelegateReadElement, 'small', 'red', `[Delegate${id}]:</br>${error}`);
                                 }
                             })
                         }
