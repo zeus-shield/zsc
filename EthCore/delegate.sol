@@ -18,17 +18,30 @@ contract ERC20Interface {
 }
 
 contract Owned {
-    address owner;
+    address public owner;
+    address public newOwner;
 
-    function Owned() public {owner = msg.sender;}
-    
-    function transferOwnership(address newOwner) public {
-        checkOwner(msg.sender);
-        owner = newOwner;
-    }       
+    event OwnershipTransferred(address indexed _from, address indexed _to);
+
+    function MyOwned() public {
+        owner = msg.sender;
+    }
 
     function checkOwner(address _account) internal view { 
+        checkOwner(msg.sender);
         require(_account == owner); 
+    }
+
+    function transferOwnership(address _newOwner) public {
+        checkOwner(msg.sender);
+        newOwner = _newOwner;
+    }
+
+    function acceptOwnership() public {
+        require(msg.sender == newOwner);
+        emit OwnershipTransferred(owner, newOwner);
+        owner = newOwner;
+        newOwner = address(0);
     }
 }
 
