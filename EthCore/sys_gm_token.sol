@@ -35,16 +35,10 @@ contract SysGmToken is SysGmBase {
     } 
 
     function numOfTokens() public view returns (uint) {
-        /* check delegate */
-        checkDelegate(msg.sender, 1);
-
         return number_;
     }
 
     function doesTokenExist(bytes32 _symbol) public view returns (bool) {
-        /* check delegate */
-        checkDelegate(msg.sender, 1);
-
         return exists_[_symbol];
     }
 
@@ -101,9 +95,6 @@ contract SysGmToken is SysGmBase {
     }
 
     function getTokenInfoByIndex(uint _index) public view returns (bytes32, bytes32, bytes32, uint, address) {
-        /* check delegate */
-        checkDelegate(msg.sender, 1);
-
         /*check param */
         require(number_ > _index);
 
@@ -118,9 +109,6 @@ contract SysGmToken is SysGmBase {
     }
 
     function getTokenInfoBySymbol(bytes32 _symbol) public view returns (bytes32, bytes32, bytes32, uint, address) {
-        /* check delegate */
-        checkDelegate(msg.sender, 1);
-
         require(exists_[_symbol]);
 
         return getTokenInfoByIndex(indexs_[_symbol]);
@@ -145,8 +133,6 @@ contract SysGmToken is SysGmBase {
     }
 
     function getTokenInfoStrByIndex(uint _index) public view returns (string) {
-        checkDelegate(msg.sender, 1);
-
         bytes32 status = tokens_[_index].status_;
         bytes32 tokenName = tokens_[_index].name_;
         bytes32 tokenSymbol = tokens_[_index].symbol_;
