@@ -139,7 +139,7 @@ function cC_setupContract(contractName, paramId) {
     var databin = cC_getContractBin(contractName);
     var greeterContract = web3.eth.contract(cC_getContractAbi(contractName)); 
     var account = web3.eth.accounts[0];
-    var greeter = greeterContract.new(parameter, {account, data: databin, gas: 7000000, gasPrice: cC_getGasPrice(30)}, function(e, contract){
+    var greeter = greeterContract.new(parameter, {account, data: databin, gas: 6800000, gasPrice: cC_getGasPrice(30)}, function(e, contract){
         if(!e) {
             if(!contract.address) {
                 logResult += "Send transactionHash: " + contract.transactionHash + "\nwaiting to be mined... ";
