@@ -11,6 +11,10 @@ contract SysGmPosEffect {
     function getExtraValue(uint _robotId, bytes32 _para) public view returns (uint);
 }
 
+contract ControlApi {
+    function doesWalletExist(address _wallet) public view returns (bool);
+}
+
 contract SysGmPos is Erc721Adv, SysGmBase {
     uint internal constant DAY_IN_SECONDS = 86400;
     uint internal constant MAX_RATIO_VALUE = 1000000;
@@ -90,7 +94,8 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     } 
 
     //////////////////////////
-    function checkTradeAble(uint256 _unitId) internal view {
+    function checkTradeAble(address _to, uint256 _unitId) internal view {
+        require(!ControlApi(getControlApiAdr()).doesWalletExist(_to));
         require(robots_[_unitId].status_ == "idle");
         require(publicTradeable_);
     }
@@ -211,7 +216,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
    
     function setUnitCategory(string _ctgStr, string _nameStr, uint _rareValue, uint _probWeight, uint _spBirthMin, uint _spBirthMax, uint _rrBirthMin, uint _rrBirthMax, uint _upProbBirthMin, uint _upProbBirthMax) public {
-        checkDelegate(msg.sender, subPri_);
+        checkDelegate(msg.sender, admPri_);
         require(_probWeight >= 2);
 
         uint index;
