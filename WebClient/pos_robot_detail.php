@@ -30,21 +30,26 @@ session_start();
     var userLogin;
     var singleRobotGM;
 
-    var owner;
+    //var owner;
+    var loginedUser;
 
     checkeWeb3Account(function(account) {
         userLogin = new ZSCLogin(account);
+        loginedUser = account;
         userLogin.tryLogin(userType, function(ret) {
             if(!ret) { 
                   window.location.href = "index_login.php?type=staker";
             } else {
                 singleRobotGM = new ZSCRobotSingleDetails(account, userLogin.getErc721Adr(), userLogin.getControlApisFullAbi());
+                loadSingleRobotDetails(robotId);
+                /*
                 singleRobotGM.getOwner(robotId, function(error, result) {
                 if (!error) {
                         owner = result;
                         loadSingleRobotDetails(robotId);
                     }
                 });
+                */
             }
         });
     });
@@ -174,7 +179,7 @@ session_start();
             // robotStatus == "selling"
 
             // if (singleRobotGM.getUserAccount() == seller) {
-            if (owner == seller) {
+            if (seller == loginedUser) {
                 text += '<tr>'
                 text += '   <td colspan="1"><button type="button" onClick="' + cancelSellingPrefix + robotId + cancelSellingSuffix + '"> Cancel selling </button></td>'
                 text += '</tr>'
@@ -195,7 +200,7 @@ session_start();
         //all paras: "status", "name", "special", "sellPrice", "seller", "posToken", "minedSP", "rewardSP", "lastSP", "rrMineDay", "rrRewardDay", "spCur", "spMax", "spBase", "mineStart", "mineEnd", "spBirth", "spExtra", "rrBirth", "rrExtra", "rrLevEft", "upProb", "upBirth", "upExtra", "upPrice"];
     
         text += '<tr> <td><text> id     </text></td> <td><text>' + robotId     + '</text></td> </tr>';
-        text += '<tr> <td><text> owner     </text></td> <td><text>' + owner     + '</text></td> </tr>';
+        //text += '<tr> <td><text> owner     </text></td> <td><text>' + owner     + '</text></td> </tr>';
         text += '<tr> <td><text> status </text></td> <td><text>' + robotStatus + '</text></td> </tr>';
         text += '<tr> <td>------</td> <td>------</td> </tr>'
 
