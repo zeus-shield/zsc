@@ -68,7 +68,7 @@ contract AbisForUserControlApis {
     function transfer(address _to, uint _tokenId) public; //Erc721;
     function ownerOf(uint _tokenId) public view returns (address);
 
-    function createUnit(bool _isRandom, bytes32 _ctgName, address _user) public;
+    function createUnit(bool _isRandom, string _ctgType,  address _user) public;
     function activeUnit(uint _robotId, bytes32 _tokenType, uint _durationInDays) public;
     function upgradeUnitSpLev(uint _robotId) public;
     function publishUnit(uint _robotId, uint _price) public;
