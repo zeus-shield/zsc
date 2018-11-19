@@ -47,6 +47,8 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         address seller_;
 
         bytes32 posToken_;
+
+        uint totalMinedSP_;
     }
     uint internal robotNos_;
     mapping(uint => RobotUnit) internal robots_;
@@ -131,6 +133,7 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     }
 
     function mintUnit(address _user, bytes32 _ctg) internal returns (uint) {
+        require(ctgExits_[_ctg]);
         uint index = robotNos_;
         robotNos_++;
         _mint(_user, index);
@@ -439,6 +442,10 @@ contract SysGmPos is Erc721Adv, SysGmBase {
 
     function getUnitSellPrice(uint _unitId) public view returns (uint) {
         return robots_[_unitId].sellPrice_;
+    }
+
+    function getUnitTotalMinedSP(uint _unitId) public view returns (uint) {
+        return robots_[_unitId].totalMinedSP_;
     }
 
     function getUnitParaExtra(uint _unitId, bytes32 _para) public view returns (uint) {
