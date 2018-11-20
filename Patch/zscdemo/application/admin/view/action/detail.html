@@ -1,0 +1,32 @@
+{extend name="public/base"/}
+{block name="body"}
+<div class="main-box no-header clearfix">
+	<header class="main-box-header clearfix">
+		<!-- 标题栏 -->
+		<div class="pull-left">
+			<h2>{$meta_title}</h2>
+		</div>
+		<div class="pull-right">
+		</div>
+	</header>
+
+	<div class="main-box-body clearfix">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th align="right">名称</th>
+					<th>信息</th>
+				</tr>
+			</thead>
+			<tbody>
+				{volist name="info" id="item"}
+				<tr>
+					<td align="right">{$key}：</td>
+					<td>{$item}</td>
+				</tr>
+				{/volist}
+			</tbody>
+		</table>
+	</div>
+</div>
+{/block}
