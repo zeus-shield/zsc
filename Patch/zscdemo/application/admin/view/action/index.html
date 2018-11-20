@@ -1,0 +1,67 @@
+{extend name="public/base"/}
+{block name="body"}
+<div class="main-box no-header clearfix">
+	<header class="main-box-header clearfix">
+		<!-- 标题栏 -->
+		<div class="pull-left">
+			<h2>{$meta_title}</h2>
+		</div>
+		<div class="pull-right">
+			<a class="btn btn-primary" id="action_add" href="{:url('add')}">新 增</a>
+			<button class="btn btn-success ajax-post" target-form="ids" url="{:url('setstatus?status=1')}" >启 用</button>
+			<button class="btn btn-default ajax-post" target-form="ids" url="{:url('setstatus?status=0')}">禁 用</button>
+			<button class="btn btn-danger ajax-post confirm" target-form="ids" url="{:url('del')}">删 除</button>
+		</div>
+	</header>
+	<div class="main-box-body clearfix">
+		<!-- 数据列表 -->
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th class="row-selected row-selected">
+						<input class="check-all" type="checkbox"/>
+					</th>
+					<th class="">编号</th>
+					<th class="">标识</th>
+					<th class="">名称</th>
+					<th class="">类型</th>
+					<th class="">规则</th>
+					<th class="">状态</th>
+					<th class="">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{volist name="list" id="vo"}
+					<tr>
+						<td>
+							<input class="ids" type="checkbox" name="id[]" value="{$vo['id']}" />
+						</td>
+						<td>{$vo.id}</td>
+						<td>{$vo.name}</td>
+						<td>
+							<a href="{:url('edit?id='.$vo['id'])}">{$vo.title}</a>
+						</td>
+						<td>
+							<span>{:get_action_type($vo['type'])}</span>
+						</td>
+						<td>{$vo.remark}</td>
+						<td>{$vo.status_text}</td>
+						<td>
+							<a href="{:url('edit?id='.$vo['id'])}">编辑</a>
+							{if $vo['status']}
+							<a href="{:url('setstatus',array('id'=> $vo['id'],'status'=>0))}" class="ajax-get">禁用</a>
+							{else/}
+							<a href="{:url('setstatus',array('id'=> $vo['id'],'status'=>1))}" class="ajax-get">启用</a>
+							{/if}
+							<a href="{:url('del' , array('id' => $vo['id']))}" class="confirm ajax-get">删除</a>
+						</td>
+					</tr>
+				{/volist}
+			</tbody>
+		</table>
+		<!-- 分页 -->
+		{$page}
+		<!-- /分页 -->
+	</div>
+</div>
+{/block}
