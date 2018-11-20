@@ -10,7 +10,7 @@ router.post('/addUser', function (req, res) {
 
     res.json({
         status:4,
-        msg:"注册成功",
+        msg:"娉ㄥ唽鎴愬姛",
         result:""
     })
 })
@@ -29,7 +29,7 @@ router.post('/signin', function(req, res, next) {
             res.cookie('id', doc._id)
             return res.json({
                 code: 200,
-                msg: "登录成功",
+                msg: "鐧诲綍鎴愬姛",
                 user: {
                     name:doc.name,
                     username:doc.username,
@@ -40,7 +40,7 @@ router.post('/signin', function(req, res, next) {
         } else {
             return res.json({
                 code: 0,
-                msg: "用户名或密码错误",
+                msg: "鐢ㄦ埛鍚嶆垨瀵嗙爜閿欒",
                 user: ""
             })
         }
