@@ -1,0 +1,49 @@
+{extend name="public/base"/}
+
+{block name="body"}
+<div class="main-box no-header clearfix">
+	<header class="main-box-header clearfix">
+		<!-- 标题栏 -->
+		<div class="pull-left">
+			<h2>{$meta_title}</h2>
+		</div>
+		<div class="pull-right">
+        	<a class="btn btn-warning ajax-get confirm" href="{:url('clear')}">清 空</a>
+			<button class="btn btn-danger ajax-post confirm" target-form="ids" url="{:url('dellog')}">删 除</button>
+		</div>
+	</header>
+
+	<div class="main-box-body clearfix">
+		<!-- 数据列表 -->
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+					<th class="">编号</th>
+					<th class="">行为名称</th>
+					<th class="">执行者</th>
+					<th class="">执行时间</th>
+					<th class="">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{volist name="list" id="vo"}
+				<tr>
+		            <td><input class="ids" type="checkbox" name="id[]" value="{$vo['id']}" /></td>
+					<td>{$vo['id']} </td>
+					<td>{:get_action($vo['action_id'],'title')}</td>
+					<td>{:get_nickname($vo['user_id'])}</td>
+					<td><span>{$vo.create_time|time_format}</span></td>
+					<td><a href="{:url('detail?id='.$vo['id'])}">详细</a>
+						<a class="confirm ajax-get" href="{:url('dellog?id='.$vo['id'])}">删除</a>
+		                </td>
+				</tr>
+				{/volist}
+			</tbody>
+		</table>
+		<!-- 分页 -->
+		{$page}
+		<!-- /分页 -->
+	</div>
+</div>
+{/block}
