@@ -15,6 +15,25 @@ function int_to_string(&$data, $map = array('status' => array(1 => '正常', -1 
 	return $data;
 }
 
+
+function get_status_title($status = null) {
+	if (!isset($status)) {
+		return false;
+	}
+	switch ($status) {
+	case -1:return '已删除';
+		break;
+	case 0:return '禁用';
+		break;
+	case 1:return '正常';
+		break;
+	case 2:return '待审核';
+		break;
+	default:return false;
+		break;
+	}
+}
+
 function show_status_op($status) {
 	switch ($status) {
 	case 0:return '启用';
