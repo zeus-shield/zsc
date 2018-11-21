@@ -27,3 +27,14 @@ function show_status_op($status) {
 		break;
 	}
 }
+
+function get_action_type($type, $all = false) {
+	$list = array(
+		1 => '系统',
+		2 => '用户',
+	);
+	if ($all) {
+		return $list;
+	}
+	return $list[$type];
+}
