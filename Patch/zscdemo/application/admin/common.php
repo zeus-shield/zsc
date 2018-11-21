@@ -38,3 +38,15 @@ function get_action_type($type, $all = false) {
 	}
 	return $list[$type];
 }
+
+function get_action($id = null, $field = null) {
+	if (empty($id) && !is_numeric($id)) {
+		return false;
+	}
+	$list = cache('action_list');
+	if (empty($list[$id])) {
+		$map       = array('status' => array('gt', -1), 'id' => $id);
+		$list[$id] = db('Action')->where($map)->field(true)->find();
+	}
+	return empty($field) ? $list[$id] : $list[$id][$field];
+}
