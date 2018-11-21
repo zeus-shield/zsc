@@ -69,3 +69,19 @@ function get_action($id = null, $field = null) {
 	}
 	return empty($field) ? $list[$id] : $list[$id][$field];
 }
+
+function get_document_field($value = null, $condition = 'id', $field = null) {
+	if (empty($value)) {
+		return false;
+	}
+
+	//拼接参数
+	$map[$condition] = $value;
+	$info            = db('Model')->where($map);
+	if (empty($field)) {
+		$info = $info->field(true)->find();
+	} else {
+		$info = $info->value($field);
+	}
+	return $info;
+}
