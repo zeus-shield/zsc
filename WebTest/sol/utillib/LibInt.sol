@@ -1,11 +1,9 @@
 /**
-* file LibInt.sol
-* author liaoyan
-* time 2016-11-29
-* desc the defination of LibInt libary
-*/
+  Copyright (c) 2018, ZSC Dev Team
+  2018-10-19: v0.00.01
+ */
 
-pragma solidity ^0.4.2;
+pragma solidity ^0.4.25;
 
 library LibInt {
     using LibInt for *;
