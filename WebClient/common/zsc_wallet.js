@@ -12,6 +12,8 @@ function ZSCWallet(acount, adr, abi) {
     this.tokenLocked = [];
     this.tokenAddress;
 
+    this.totalRewards = 0;
+
     this.itemTags = [];
     this.account = acount;
     this.contractAdr = adr;
@@ -25,6 +27,7 @@ ZSCWallet.prototype.getTokenNos = function() { return this.tokenNos;}
 ZSCWallet.prototype.getTokenSymbol = function(index) { return this.tokenSymbol[index];}
 ZSCWallet.prototype.getTokenBalance = function(index) { return bF_robotParaValue(this.tokenBalance[index], "FromWei");}
 ZSCWallet.prototype.getTokenLocked = function(index) { return bF_robotParaValue(this.tokenLocked[index], "FromWei");}
+ZSCWallet.prototype.getTotalRewards = function() { return bF_robotParaValue(this.totalRewards, "FromWei");}
 
 ZSCWallet.prototype.resetAllItemTags = function(gm) {
     for (var i = 0; i < gm.tokenNos; ++i) {
@@ -43,7 +46,7 @@ ZSCWallet.prototype.checkAllItemTags = function(gm) {
 
 ZSCWallet.prototype.submitTransferValue = function(tokenSymbol, destAddress, amount, hashId, func) {  
     var gm = this;
-    var callBack = func;
+    var callback = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
     if (destAddress != 0 && amount > 0) {
@@ -51,7 +54,7 @@ ZSCWallet.prototype.submitTransferValue = function(tokenSymbol, destAddress, amo
             {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
             function(error, result){ 
             if(!error) {
-                bF_showHashResult(hashId, result, callBack);
+                bF_showHashResult(hashId, result, callback);
             } else {
                 console.log("error: " + error);
             }
@@ -61,12 +64,12 @@ ZSCWallet.prototype.submitTransferValue = function(tokenSymbol, destAddress, amo
 
 ZSCWallet.prototype.loadTokenWallets = function(func) {
     var gm = this;
-    var callBack = func;
+    var callback = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
     gm.getUserWalletAddress(gm, function(ret) {
         if (ret) {
-            callBack();
+            callback();
         } else {
             gm.numTokenWallets(gm, function(gm) {
                 if (gm.tokenNos == 0) {
@@ -76,7 +79,7 @@ ZSCWallet.prototype.loadTokenWallets = function(func) {
                     for (var i = 0; i < gm.tokenNos; ++i) {
                         gm.loadTokenInfoByIndex(gm, i, function(gm, index) {
                             if (gm.checkAllItemTags(gm) == true) {
-                                callBack();
+                                callback();
                             }
                         });
                     }
@@ -87,7 +90,7 @@ ZSCWallet.prototype.loadTokenWallets = function(func) {
 }              
 
 ZSCWallet.prototype.getUserWalletAddress = function(gm, func) {
-    var callBack = func;
+    var callback = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
     myControlApi.getUserWalletAddress(
@@ -96,10 +99,10 @@ ZSCWallet.prototype.getUserWalletAddress = function(gm, func) {
             if(!error) {
                 gm.tokenAddress = result;
                 if (result == 0x0) {
-                    callBack(true);
+                    callback(true);
                 } else {
                     gm.isActivated = true;
-                    callBack(false)
+                    callback(false)
                 }
             } else {
                 console.log("error: " + error);
@@ -107,8 +110,26 @@ ZSCWallet.prototype.getUserWalletAddress = function(gm, func) {
         });
 }
 
+ZSCWallet.prototype.loadUserRewardInfo = function(tokenSymbol, func) {
+    var gm = this;
+    var callback = func;
+    var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
+
+    myControlApi.getRewardInfoByUser( gm.account, tokenSymbol, 
+        {from: gm.account},
+        function(error, result){ 
+            if(!error) {
+                gm.totalRewards = result.toString(10);
+                callback();
+            } else {
+                console.log("error: " + error);
+            }
+        });
+}
+
+///////////////////////////////////
 ZSCWallet.prototype.numTokenWallets = function(gm, func) {
-    var callBack = func;
+    var callback = func;
     var myControlApi = web3.eth.contract(gm.contractAbi).at(gm.contractAdr);
 
     myControlApi.numOfTokens(
@@ -124,7 +145,7 @@ ZSCWallet.prototype.numTokenWallets = function(gm, func) {
 }
 
 ZSCWallet.prototype.loadTokenInfoByIndex = function(gm, index, func) {
-    var callBack = func;
+    var callback = func;
     var myControlApi = web3.eth.contract(this.contractAbi).at(this.contractAdr);
 
     myControlApi.getTokenBalanceInfoByIndex(Number(index), 
@@ -133,7 +154,7 @@ ZSCWallet.prototype.loadTokenInfoByIndex = function(gm, index, func) {
             if(!error) {
                 gm.itemTags[index] = true;
                 gm.parserTokenBalanceInfoByIndex(gm, result, index);
-                callBack(gm, index);
+                callback(gm, index);
             } else {
                 console.log("error: " + error);
             }
@@ -142,14 +163,14 @@ ZSCWallet.prototype.loadTokenInfoByIndex = function(gm, index, func) {
 
 ZSCWallet.prototype.enableUserWallet = function(hashId, func) {
     var gm = this;
-    var callBack = func;
+    var callback = func;
     var myControlApi = web3.eth.contract(this.contractAbi).at(this.contractAdr);
 
     myControlApi.enableUserWallet(
         {from: gm.account, gasPrice: gm.gasPrice, gas: gm.gasLimit},
         function(error, result){ 
             if(!error) {
-                bF_showHashResult(hashId, result, callBack);
+                bF_showHashResult(hashId, result, callback);
             } else {
                 console.log("error: " + error);
             }
@@ -181,5 +202,4 @@ ZSCWallet.prototype.parserTokenBalanceInfoByIndex = function(gm, urlinfo, index)
     gm.tokenLocked[index]  = lockedInfo.split("=")[1];
     return true;
 }
-
 
