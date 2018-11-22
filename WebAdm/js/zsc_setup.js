@@ -144,6 +144,18 @@ ZSCSetup.prototype.setTokenAmountToUser = function(ethAmount, tokenSymbol, token
     });
 }  
 
+ZSCSetup.prototype.setPosMagerDelegate = function(adr, priority, hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi("PosManager"));
+    var myPosGM = myContract.at(this.PosManagerAdr);
+
+    myPosGM.setDelegate(adr, priority, 
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
+        function(error, result){ 
+            if(!error) cC_showHashResultTest(hashID, result, function(){console.log("ok");});
+            else console.log("error: " + error);
+        });
+} 
+
 ZSCSetup.prototype.addFactoryModule = function(factModule, hashID) {
     var factoryAdr;
     var factoryType;
