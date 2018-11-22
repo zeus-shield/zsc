@@ -104,8 +104,8 @@ contract DBDatabase is Object {
         nodeExists_[_node] = true;
 
         //for testing purpose; 2018-03-06, 2018-03-14, 2018-05-31
-        addLog("_addNode: ", true);
-        addLog(PlatString.bytes32ToString(ndName), false);
+        //addLog("_addNode: ", true);
+        //addLog(PlatString.bytes32ToString(ndName), false);
     }
     
     function destroyNode(address _node) public returns (bool) {
