@@ -47,7 +47,7 @@ contract Erc721Adv is ERC721, Delegated {
     mapping (address => uint[]) private ownedTokens_;
 
     // Mapping from token ID to index of the owner tokens list
-    mapping(uint => uint) private ownedTokensIndex_;
+    mapping (uint => uint) private ownedTokensIndex_;
 
     mapping (uint => address[]) private tokenHistories_;
 
@@ -107,7 +107,7 @@ contract Erc721Adv is ERC721, Delegated {
         checkTradeAble(_to, _tokenId);
         //checkCanTransfer(msg.sender, _tokenId);
         _transfer(msg.sender, _to, _tokenId);
-        addTokenHistory(_tokenId, _to);
+        
     }
 
     function safeTransferFrom(address _from, address _to, uint _tokenId) public {
@@ -162,6 +162,7 @@ contract Erc721Adv is ERC721, Delegated {
     function _transfer(address _from, address _to, uint _tokenId) internal {
         checkOnlyOwnerOf(_from, _tokenId);
         clearApprovalAndTransfer(_from, _to, _tokenId);
+        addTokenHistory(_tokenId, _to);
     }
 
     /**
