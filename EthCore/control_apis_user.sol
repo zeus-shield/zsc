@@ -80,6 +80,10 @@ contract AbisForUserControlApis {
     function getUnitInfoByIndex(bytes32 _type, address _adr, uint _index, bytes32[] _paras) public view returns (string);
     function getUnitInfoById(uint _robotId, bytes32[] _paras) public view returns (string);
 
+    function numSellings(uint _robotId) public view returns (uint);
+    function getSellingInfoByIndex(uint _robotId, uint _index) public view returns (string);
+    function getRewardInfoByUser(address _user, bytes32 _tokenSymbol) public view returns (uint);
+    /*
     function getPublicTradeableTag() public view returns (uint);
     function getPosRatio() public view returns (uint, uint);
 
@@ -106,5 +110,8 @@ contract AbisForUserControlApis {
     function getUnitSeller(uint _unitId) public view returns (address);
     function getUnitSellPrice(uint _unitId) public view returns (uint);
     function getUnitParaExtra(uint _unitId, bytes32 _para) public view returns (uint);
+    */
+
+
 }
 
