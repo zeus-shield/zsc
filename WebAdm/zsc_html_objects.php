@@ -22,8 +22,9 @@ class ZSCHtmlObjects extends ZSCSystemObjects {
         <table align="center" style="width:800px">
            <tr>
             <td align="center"><a href="adm_create_contract.php">[Create contract]</a></td>
-            <td align="center"><a href="adm_configure_logrecorder.php">[Config. LogRecorder]</a></td>
-            <td align="center"><a href="adm_init_sys_component.php">[Init Component]</a></td>
+            <td align="center"><a href="adm_configure_logrecorder.php">[Config. Log]</a></td>
+            <td align="center"><a href="adm_init_sys_base.php">[Init. Base]</a></td>
+            <td align="center"><a href="adm_init_sys_adv.php">[Init. Adv]</a></td>
             <td align="center"><a href="adm_add_database.php">[Add Database]</a></td>
             <td align="center"><a href="adm_add_factory.php">[Add Factory]</a></td>
             <td align="center"><a href="adm_add_gm.php">[Add Moduele]</a></td>
