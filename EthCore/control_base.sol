@@ -277,7 +277,7 @@ contract ControlBase is Object {
 
     //------2018-07-18: new verstion: YYA------ 
     function getUserWalletAddress() public view returns (address) {
-        checkAllowed(msg.sender);
+        //checkAllowed(msg.sender);
         bytes32 userName = getMappedName(msg.sender);
         return getBindedWalletAddress(userName); 
     }
@@ -287,8 +287,7 @@ contract ControlBase is Object {
     }
 
     function getTokenBalanceInfoBySymbol(bytes32 _symbol) public view returns (string) {
-        checkAllowed(msg.sender);
-
+        //checkAllowed(msg.sender);
         bytes32 userName = getMappedName(msg.sender);
         bytes32 status;
         bytes32 tokenName;
@@ -316,8 +315,7 @@ contract ControlBase is Object {
     }
 
     function getTokenBalanceInfoByIndex(uint _index) public view returns (string) {
-        checkAllowed(msg.sender);
-
+        //checkAllowed(msg.sender);
         bytes32 userName = getMappedName(msg.sender);
         bytes32 status;
         bytes32 tokenName;
