@@ -75,9 +75,9 @@ ZSCUserManagement.prototype.loadUsers = function(phpFunc) {
 }
 
 ZSCUserManagement.prototype.numUsers = function(gm, func) {
-    this.myAdmAdv.numUsers(
+    gm.myAdmAdv.numUsers(
         "123456",
-        {from: this.account},
+        {from: gm.account},
         function(error, num){ 
             if(!error) { 
                 gm.userNos = num.toString(10); 
@@ -140,25 +140,25 @@ ZSCUserManagement.prototype.loadUserManagementHtml = function(setStatus, element
     var setStatusSuffix = "')";
     var hashId = "ButtonHashId";
 
-    var text = ' <text id="ButtonHashId"> </text>'
-    text += '<table id="ZSCUserInfoBody" align="center" style="width:800px;min-height:30px">'
+    var text = ' <text id="ButtonHashId"> </text><br>'
+    text += '<table id="ZSCUserInfoBody" style="width:1200px;min-height:50px">'
     text += '<tr>'
-    text += '   <td>index </td> <td>name</td> <td>type</td> <td>status</td> <td>node/creator</td> <td>active</td>  <td>deactive</td> '
+    text += '   <td>index </td> <td>name</td> <td>type</td> <td>status</td> <td>wallet</td> <td>user</td> <td>active</td>  <td>deactive</td> '
     text += '</tr> '
-    text += '<tr> <td>---------</td> <td>---------</td> <td>---------</td> <td>---------</td>'
-    text += '<td>------------------------------------------------------------</td>'
-    text += '<td>---</td> <td>---</td>   </tr>'
+    text += '<tr> <td>---</td> <td>---</td> <td>---</td>  <td>---------</td> <td>---------</td> <td>---------</td>'
+    text += '<td>------------------------------------------------------------</td><td>------------------------------------------------------------</td>'
+    text += '  </tr>'
 
     for (var i = 0; i < this.userNos; ++i) {
         text += '<tr>';
         text += '   <td><text> ' + i + '</text></td>'
+        text += '   <td><button type="button" onClick="' + setStatusPrefix + this.userEthAdr[i] + "', 'true', '"  + hashId + setStatusSuffix + '">Active</button></td>'
+        text += '   <td><button type="button" onClick="' + setStatusPrefix + this.userEthAdr[i] + "', 'false', '" + hashId + setStatusSuffix + '">Deactive</button></td>'
         text += '   <td><text> ' + this.userName[i]    + '</text></td>'
         text += '   <td><text> ' + this.userType[i]    + ' </text></td>'
         text += '   <td><text> ' + this.userStatus[i]  + ' </text></td>'
-        text += '   <td><text>' + this.userNodeAdr[i]  + ' </text><br>'
-        text += '       <text>' + this.userEthAdr[i]  + ' </text></td>'
-        text += '   <td><button type="button" onClick="' + setStatusPrefix + this.userName[i] + "', 'true', '"  + hashId + setStatusSuffix + '">Active</button></td>'
-        text += '   <td><button type="button" onClick="' + setStatusPrefix + this.userName[i] + "', 'false', '" + hashId + setStatusSuffix + '">Deactive</button></td>'
+        text += '   <td><text>' + this.userNodeAdr[i]  + ' </text></td>'
+        text += '   <td><text>' + this.userEthAdr[i]  + ' </text></td>'
         text += '</tr> '
     }
     text += '</table>';
@@ -169,7 +169,7 @@ ZSCUserManagement.prototype.setUserActiveState = function(userName, status, hash
     var tag;
     if (status == "false") tag = false;
     else tag = true;
-    this.myAdmAdv.setUserActiveState(userName, tag, {from: this.account, gas: 7430000},
+    this.myAdmAdv.setUserActiveState(userName, tag, {from: this.account, gas: this.gasLimit},
         function(error, result) { 
             if(!error) cC_showHashResultTest(hashId, result, function() {window.location.reload(true);})
              else console.log("error: " + error);
