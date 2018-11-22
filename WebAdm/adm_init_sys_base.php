@@ -51,10 +51,11 @@ $htmlObjects = new ZSChtmlObjects();
         zscSetup.setTokenAmountToUser(ethAmount, tokenSymbol, tokenAmount, elementId);
     }
 
-    function setPosMagerDelegate(adrId, priorityId, elementId) {
-        var adr = document.getElementById(adrId).value;
+    function setModuleDelegate(selectedModuleId, gmAdrId, priorityId, elementId) {
+        var selectedModule = document.getElementById(selectedModuleId).value;
+        var gmAdr = document.getElementById(gmAdrId).value;
         var priority = document.getElementById(priorityId).value;
-        zscSetup.setPosMagerDelegate(adr, priority, elementId);
+        zscSetup.setModuleDelegate(selectedModule, gmAdr, priority, elementId);
     }
 </script>
 </head>
@@ -87,10 +88,15 @@ $htmlObjects = new ZSChtmlObjects();
         <text id="setTestTokenToUserHash"></text> <br><br>
 
         <text>Step - 5</text>
-        <button type="button" onClick="setAdmAdvManagerDelegate('PosGMAdm', 'Priority', 'setPsGMAdmHash')">Set AdmAdv Adm</button> <br>
-        <text>PosGM Adm</text>  <input type="text" id="PosGMAdm" value=""></input>
-        <text>Priority</text>  <input type="text" id="PosGMPriority" value="0"></input>
-        <text id="setPsGMAdmHash"></text> <br><br>
+        <button type="button" onClick="setModuleDelegate('SelectedModule', 'ModuleGM', 'Priority', 'setModuleDelegateHash')">Set AdmAdv Adm</button> <br>
+        <select id = "SelectedModule" style="width:100px">
+        <option value ="AdmAdv">AdmAdv</option>
+        <option value ="ControlApisAdv">ControlApi</option>
+        <option value="PosManager">PosGM</option>
+        </select><br>
+        <text>Module GM</text>  <input type="text" id="ModuleGM" value="0x"></input><br>
+        <text>Priority</text>  <input type="text" id="Priority" value="0"></input><br>
+        <text id="setModuleDelegateHash"></text> <br><br>
 
     </div>
 
