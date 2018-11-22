@@ -60,6 +60,9 @@ ZSCSetup.prototype.initSystemModule = function(module, hashID) {
     if (module == "TestToken") {
         this.initTestToken(hashID);
 
+    } else if (module == "LogRecorder") {
+        this.initLogRecorder(hashID);
+
     } else if (module == "AdmAdv") {
         this.initAdmAdv(hashID);
 
@@ -211,6 +214,18 @@ ZSCSetup.prototype.initTestToken = function(hashID) {
     var myTestToken = myContract.at(this.testTokenAdr);
 
     myTestToken.allocate(this.ControlApisAdvAdr, 1000 * 1000 * 1000 * Math.pow(10, 18), 
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
+        function(error, result){ 
+            if(!error) cC_showHashResultTest(hashID, result, function(){});
+            else console.log("error: " + error);
+        });
+} 
+
+ZSCSetup.prototype.initLogRecorder = function(hashID) {
+    var myContract = web3.eth.contract(cC_getContractAbi("LogRecorder"));
+    var myLogRecorder = myContract.at(this.logRecorderAdr);
+
+    myLogRecorder.initLogRecorder(
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){});
