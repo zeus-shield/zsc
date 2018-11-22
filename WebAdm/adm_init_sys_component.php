@@ -55,6 +55,11 @@ $htmlObjects = new ZSChtmlObjects();
         zscSetup.setTokenAmountToUser(ethAmount, tokenSymbol, tokenAmount, elementId);
     }
 
+    function setPosMagerDelegate(adrId, priorityId, elementId) {
+        var adr = document.getElementById(adrId).value;
+        var priority = document.getElementById(priorityId).value;
+        zscSetup.setPosMagerDelegate(adr, priority, elementId);
+    }
 </script>
 </head>
 <body>
@@ -75,7 +80,7 @@ $htmlObjects = new ZSChtmlObjects();
 
         <text>Step - 0 - 3 </text>
         <button type="button" onClick="setPosPaymentReceiver('PaymentReceiver', 'paymentReceiverHash')">Set receiver</button> <br>
-        <text>Pos-payment receiver</text>  <input type="text" id="PaymentReceiver" value="0xba5e96003825010641ef5ef921a2e6e5976d0d1c"></input> 
+        <text>Pos-payment receiver</text>  <input type="text" id="PaymentReceiver" value="0xA4a77EF86073641fB0fD110F19230215746874eC"></input> 
         <text id="paymentReceiverHash"></text> <br><br>
 
         <text>Step - 0 - 4</text>
@@ -84,6 +89,12 @@ $htmlObjects = new ZSChtmlObjects();
         Token Symbol: <input type="text" id="AllocatedTokenSymbol" value="TestMYT"></input> <br> 
         Token Amount: <input type="text" id="AllocatedTokenAmount" value="50000"></input> <br> 
         <text id="setTestTokenToUserHash"></text> <br><br>
+
+        <text>Step - 0 - 5</text>
+        <button type="button" onClick="setPosMagerDelegate('PsGMAdm', 'Priority', 'setPsGMAdmHash')">Set PosGM Adm</button> <br>
+        <text>PosGM Adm</text>  <input type="text" id="PsGMAdm" value=""></input><br> 
+        <text>Priority</text>  <input type="text" id="Priority" value="0"></input> 
+        <text id="setPsGMAdmHash"></text> <br><br>
 
         <?php echo $htmlObjects->loadInitObjects('initSystemComponent');?>
 
