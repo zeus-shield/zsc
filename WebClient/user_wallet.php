@@ -38,13 +38,18 @@ session_start();
                 // alert("Please bind account and activate wallet at first!");
             } else {
                 zscUserWalletGM = new ZSCWallet(account, zscUserLogin.getControlApisAdr(), zscUserLogin.getControlApisFullAbi());
-                zscUserWalletGM.loadTokenWallets(function() {
-                    loadHtml("PageBody", "enableUserWallet", "submitTransferValue");
-                });
+                loadTokenWallets();
             }
         });
     });
     /////////////////////////////
+    function loadTokenWallets() {
+        zscUserWalletGM.loadTokenWallets(function() {
+            zscUserWalletGM.loadUserRewardInfo("TestMYT", function() {
+                loadHtml("PageBody", "enableUserWallet", "submitTransferValue");
+            });
+        });
+    }
     function enableUserWallet(hashId) {
         zscUserWalletGM.enableUserWallet(hashId, function() {                
             window.location.reload(true);
@@ -71,12 +76,13 @@ session_start();
         var hashId;
         var tokenNos = zscUserWalletGM.getTokenNos();
         var userWallet = zscUserWalletGM.getWalletAddress();
+        var totalRewards = zscUserWalletGM.getTotalRewards();
     
         //var titlle = zscUserLogin.getzscUserType() + " [" + zscUserLogin.getUserName() + "] - profile: " 
-        var titlle = 'user wallet address: <text> <a href="https://rinkeby.etherscan.io/address/' + userWallet + '#tokentxns" target="_blank" >' + userWallet + '</a></text>'
+        var titlle = 'user wallet address: <text> <a href="https://rinkeby.etherscan.io/address/' + userWallet + '#tokentxns" target="_blank" >' + userWallet + '</a></text>'  + '<br> total reward tokens: ' + totalRewards + '<br>'
 
         text = '<div class="well" align="center" >' + titlle ;
-        text += '<br> <br> <text id="EnableWalletHash" value = "log:"> </text> <br> </div>';
+        text += '<br> <text id="EnableWalletHash" value = "log:"> </text> </div>';
 
         text += '<div class="well">';
 
