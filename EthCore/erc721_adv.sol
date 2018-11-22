@@ -49,7 +49,7 @@ contract Erc721Adv is ERC721, Delegated {
     // Mapping from token ID to index of the owner tokens list
     mapping (uint => uint) private ownedTokensIndex_;
 
-    mapping (uint => address[]) private tokenHistories_;
+    //mapping (uint => address[]) private tokenHistories_;
 
     string private tokenSymbol_ = "DFN";
     
@@ -71,6 +71,7 @@ contract Erc721Adv is ERC721, Delegated {
         tokenSymbol_ = _symbole;
     }
 
+    /*
     function numTokenHistories(uint _tokenId) public view returns (uint) {
         return tokenHistories_[_tokenId].length;
     }
@@ -79,6 +80,7 @@ contract Erc721Adv is ERC721, Delegated {
         require(_index < tokenHistories_[_tokenId].length);
         return tokenHistories_[_tokenId][_index];
     }
+    */
 
     ////////////////////////
     function name() public view returns (string) { 
@@ -162,7 +164,7 @@ contract Erc721Adv is ERC721, Delegated {
     function _transfer(address _from, address _to, uint _tokenId) internal {
         checkOnlyOwnerOf(_from, _tokenId);
         clearApprovalAndTransfer(_from, _to, _tokenId);
-        addTokenHistory(_tokenId, _to);
+        //addTokenHistory(_tokenId, _to);
     }
 
     /**
@@ -255,8 +257,10 @@ contract Erc721Adv is ERC721, Delegated {
         totalTokens_ = totalTokens_.sub(1);
     }
 
+    /*
     function addTokenHistory(uint _tokenId, address _owner) private {
         tokenHistories_[_tokenId].push(_owner);
     }
+    */
 }
 
