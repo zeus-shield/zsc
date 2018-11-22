@@ -23,3 +23,4 @@ class Action extends Admin {
 		$this->setMeta('用户行为');
 		return $this->fetch();
 	}
+}

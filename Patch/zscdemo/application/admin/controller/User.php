@@ -26,3 +26,4 @@ class User extends Admin {
 		$this->setMeta('用户信息');
 		return $this->fetch();
 	}
+}
