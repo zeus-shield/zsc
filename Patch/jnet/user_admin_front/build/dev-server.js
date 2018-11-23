@@ -27,3 +27,7 @@ var devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
   quiet: true
 })
+
+var hotMiddleware = require('webpack-hot-middleware')(compiler, {
+  log: () => {}
+})
