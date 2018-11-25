@@ -38,9 +38,10 @@ $htmlObjects = new ZSChtmlObjects();
         zscSetup.setAdmReadPass(admReadPass, elementId);
     }
 
-    function setPosPaymentReceiver(receiverId, elementId) {
+    function setPosPaymentReceiver(receiverId, takeFeeId, elementId) {
         var receiver = document.getElementById(receiverId).value;
-        zscSetup.setPosPaymentReceiver(receiver, elementId);
+        var takeFee = document.getElementById(takeFeeId).value;
+        zscSetup.setPosPaymentReceiver(receiver, takeFee, elementId);
     }
 
     function setTestTokenToUser(ethAmountId, tokenSymbolId, tokenAmountId, elementId) {
@@ -76,8 +77,9 @@ $htmlObjects = new ZSChtmlObjects();
         <text id="setAdmReadPassHash"></text> <br><br>
 
         <text>Step -3 </text>
-        <button type="button" onClick="setPosPaymentReceiver('PaymentReceiver', 'paymentReceiverHash')">Set payment receiver</button> <br>
-        Payment Receiver: <input type="text" id="PaymentReceiver" value="0xA4a77EF86073641fB0fD110F19230215746874eC"></input> 
+        <button type="button" onClick="setPosPaymentReceiver('PaymentReceiver', 'TakeFee', 'paymentReceiverHash')">Set payment receiver</button> <br>
+        Payment Receiver: <input type="text" id="PaymentReceiver" value="0xA4a77EF86073641fB0fD110F19230215746874eC"></input> <br>
+        Take fee: <input type="text" id="TakeFee" value="0"></input> <br>
         <text id="paymentReceiverHash"></text> <br><br>
 
         <text>Step - 4</text>
