@@ -21,9 +21,6 @@ contract SysGmPos is Erc721Adv, SysGmBase {
     uint public dayInSeconds_;
 
     struct RobotUnit {
-        bytes32 status_;
-        bytes32 ctg_;
-        bytes32 name_;
         bool specific_;
         uint rare_;
 
@@ -46,16 +43,17 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         uint sellPrice_;
         address seller_;
 
-        bytes32 posToken_;
-
         uint totalMinedSP_;
+
+        bytes32 posToken_;
+        bytes32 status_;
+        bytes32 ctg_;
+        bytes32 name_;
     }
     uint internal robotNos_;
     mapping(uint => RobotUnit) internal robots_;
 
     struct CtgUnit {
-        bytes32 ctg_;
-        bytes32 name_;
         uint rare_;
         uint probWeight_;
         uint spBirthMin_;
@@ -64,6 +62,9 @@ contract SysGmPos is Erc721Adv, SysGmBase {
         uint rrBirthMax_;
         uint upProbBirthMin_;
         uint upProbBirthMax_;
+
+        bytes32 ctg_;
+        bytes32 name_;
     }
     uint private ctgNos_;
     mapping(uint => CtgUnit) private ctgs_;
