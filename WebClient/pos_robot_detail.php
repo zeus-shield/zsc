@@ -157,7 +157,12 @@ session_start();
         var robotId     = singleRobotGM.getRobotDetailParaValue("id",     "null");
         var seller      = singleRobotGM.getRobotDetailParaValue("seller", "Adr")
 
+
+
         var text  = '<div class="well" align="center" >' + titlle + ' | 1 day => 1 minute <br>';
+        
+        text += '<a href="pos_robot_history.php?robotId=' + robotId + '">[History]</a> <br>';
+
         text += '<div class="well">';
         text += '<table align="center" style="width:600px;min-height:30px">'
         if (robotStatus == "idle") {
