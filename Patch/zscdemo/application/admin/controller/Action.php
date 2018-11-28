@@ -23,4 +23,27 @@ class Action extends Admin {
 		$this->setMeta('用户行为');
 		return $this->fetch();
 	}
+
+	public function add() {
+		$model = model('Action');
+		if (IS_POST) {
+			$data   = input('post.');
+			$result = $model->save($data);
+			if (false != $result) {
+				action_log('add_action', 'Action', $result, session('user_auth.uid'));
+				return $this->success('添加成功！', url('index'));
+			} else {
+				return $this->error($model->getError());
+			}
+		} else {
+			$data = array(
+				'keyList' => $model->fieldlist,
+			);
+			$this->assign($data);
+			$this->setMeta("添加行为");
+			return $this->fetch('public/edit');
+		}
+	}
+
+	
 }
