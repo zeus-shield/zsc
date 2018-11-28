@@ -70,4 +70,19 @@ class Action extends Admin {
 			return $this->fetch('public/edit');
 		}
 	}
+
+	public function del() {
+		$id = $this->getArrayParam('id');
+		if (empty($id)) {
+			return $this->error("非法操作！", '');
+		}
+		$map['id'] = array('IN', $id);
+		$result    = db('Action')->where($map)->delete();
+		if ($result) {
+			action_log('delete_action', 'Action', $id, session('user_auth.uid'));
+			return $this->success('删除成功！');
+		} else {
+			return $this->error('删除失败！');
+		}
+	}
 }
