@@ -45,5 +45,29 @@ class Action extends Admin {
 		}
 	}
 
-	
+	public function edit($id = null) {
+		$model = model('Action');
+		if (IS_POST) {
+			$data   = input('post.');
+			$result = $model->save($data, array('id' => $data['id']));
+			if ($result !== false) {
+				action_log('edit_action', 'Action', $id, session('user_auth.uid'));
+				return $this->success('编辑成功！', url('index'));
+			} else {
+				return $this->error($model->getError());
+			}
+		} else {
+			$info = $model::where(array('id' => $id))->find();
+			if (!$info) {
+				return $this->error("非法操作！");
+			}
+			$data = array(
+				'info'    => $info,
+				'keyList' => $model->fieldlist,
+			);
+			$this->assign($data);
+			$this->setMeta("编辑行为");
+			return $this->fetch('public/edit');
+		}
+	}
 }
