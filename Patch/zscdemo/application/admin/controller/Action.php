@@ -102,4 +102,22 @@ class Action extends Admin {
 			return $this->error('设置' . $message . '状态失败！');
 		}
 	}
+
+	public function log() {
+
+		//获取列表数据
+		$map['status'] = array('gt', -1);
+
+		$order = "id desc";
+		//获取列表数据
+		$list = model('ActionLog')->where($map)->order($order)->paginate(10);
+
+		$data = array(
+			'list' => $list,
+			'page' => $list->render(),
+		);
+		$this->assign($data);
+		$this->setMeta('行为日志');
+		return $this->fetch();
+	}	
 }
