@@ -85,4 +85,21 @@ class Action extends Admin {
 			return $this->error('删除失败！');
 		}
 	}
+
+	public function setstatus() {
+		$id = $this->getArrayParam('id');
+		if (empty($id)) {
+			return $this->error("非法操作！", '');
+		}
+		$status    = input('get.status', '', 'trim,intval');
+		$message   = !$status ? '禁用' : '启用';
+		$map['id'] = array('IN', $id);
+		$result    = db('Action')->where($map)->setField('status', $status);
+		if ($result !== false) {
+			action_log('setstatus_action', 'Action', $id, session('user_auth.uid'));
+			return $this->success('设置' . $message . '状态成功！');
+		} else {
+			return $this->error('设置' . $message . '状态失败！');
+		}
+	}
 }
