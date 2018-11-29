@@ -108,7 +108,11 @@ contract Erc721Adv is ERC721, Delegated {
     function transfer(address _to, uint _tokenId) public {
         checkTradeAble(_to, _tokenId);
         //checkCanTransfer(msg.sender, _tokenId);
-        _transfer(msg.sender, _to, _tokenId);
+        if (_to == address(0)) {
+            _burn(msg.sender, _tokenId);
+        } else {
+            _transfer(msg.sender, _to, _tokenId);
+        }
         
     }
 
