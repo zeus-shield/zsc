@@ -141,4 +141,19 @@ class Action extends Admin {
 		$this->setMeta('查看行为日志');
 		return $this->fetch();
 	}
+
+	public function dellog() {
+		$id = $this->getArrayParam('id');
+		if (empty($id)) {
+			return $this->error("非法操作！", '');
+		}
+		$map['id'] = array('IN', $id);
+		$res       = db('ActionLog')->where($map)->delete();
+		if ($res !== false) {
+			action_log('delete_actionlog', 'ActionLog', $id, session('user_auth.uid'));
+			return $this->success('删除成功！');
+		} else {
+			return $this->error('删除失败！');
+		}
+	}
 }
