@@ -156,4 +156,15 @@ class Action extends Admin {
 			return $this->error('删除失败！');
 		}
 	}
+
+	public function clear($id = '') {
+		$res = db('ActionLog')->where('1=1')->delete();
+		if ($res !== false) {
+			//记录行为
+			action_log('clear_actionlog', 'ActionLog', $id, session('user_auth.uid'));
+			return $this->success('日志清空成功！');
+		} else {
+			return $this->error('日志清空失败！');
+		}
+	}
 }
