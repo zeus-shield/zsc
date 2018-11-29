@@ -104,7 +104,6 @@ contract ControlBase is Object {
     uint private allocatedETH_;
 
     address internal paymentReceiver_;
-    uint internal takeFeeProb_;
 
     mapping(address => bool) private walletAdrs_;
 
@@ -137,12 +136,6 @@ contract ControlBase is Object {
                 require(_userWalletAdr.call.value(allocatedETH_)());
             }
         }        
-    }
-
-    function calculateTakeFee(uint _amount) internal view returns (uint) {
-        uint value;
-        value = _amount.mul(takeFeeProb_);
-        return value.div(100000);
     }
 
     function mapFactoryDatabase(address _factoryAdr, bytes32 _dbName, uint _priority) internal {
@@ -222,11 +215,10 @@ contract ControlBase is Object {
         addLog("initControlApis ", true);
     }
 
-    function setPaymentReceiver(address _receiver, uint _takeFeeProb) public {
+    function setPaymentReceiver(address _receiver) public {
         checkDelegate(msg.sender, 1);
         require(_receiver != address(0));
         paymentReceiver_ = _receiver;
-        takeFeeProb_ = _takeFeeProb;
     }
 
     function setPreallocateAmountToTester(uint _ethAmount, bytes32 _tokenSymbol, uint _tokenAmount) public { 
