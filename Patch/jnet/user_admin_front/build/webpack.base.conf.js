@@ -27,3 +27,13 @@ module.exports = {
       'scss_vars': '@/styles/vars.scss'
     }
   },
+  //Ìí¼Ó´úÂë
+  plugins: [
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery",
+      jquery: "jquery",
+      "window.jQuery": "jquery"
+    })
+  ],
+  
