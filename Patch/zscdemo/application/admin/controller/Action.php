@@ -120,4 +120,25 @@ class Action extends Admin {
 		$this->setMeta('行为日志');
 		return $this->fetch();
 	}	
+
+	public function detail($id = 0) {
+		$model = model('ActionLog');
+		if (empty($id)) {
+			return $this->error('参数错误！');
+		}
+
+		$info = $model::get($id);
+
+		$info['title']       = get_action($info['action_id'], 'title');
+		$info['user_id']     = get_username($info['user_id']);
+		$info['action_ip']   = long2ip($info['action_ip']);
+		$info['create_time'] = date('Y-m-d H:i:s', $info['create_time']);
+		$data                = array(
+			'info'    => $info,
+			'keyList' => $model->keyList,
+		);
+		$this->assign($data);
+		$this->setMeta('查看行为日志');
+		return $this->fetch();
+	}
 }
