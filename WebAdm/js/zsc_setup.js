@@ -123,11 +123,11 @@ ZSCSetup.prototype.setAdmReadPass = function(readPass, hashID) {
         });
 } 
 
-ZSCSetup.prototype.setPosPaymentReceiver = function(receiver, takefee, hashID) {
+ZSCSetup.prototype.setPosPaymentReceiver = function(receiver, hashID) {
     var myContract = web3.eth.contract(cC_getContractAbi("ControlApisAdv"));
     var myControlApi = myContract.at(this.ControlApisAdvAdr);
 
-    myControlApi.setPaymentReceiver(receiver, web3.toWei(takefee, 'ether'),
+    myControlApi.setPaymentReceiver(receiver,
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){console.log("ok");});
