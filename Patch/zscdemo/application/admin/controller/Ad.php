@@ -28,4 +28,24 @@ class Ad extends Admin {
 		$this->setMeta("广告管理");
 		return $this->fetch();
 	}	
+
+
+	public function add() {
+		$place = model('AdPlace');
+		if (IS_POST) {
+			$result = $place->change();
+			if (false !== false) {
+				return $this->success("添加成功！");
+			} else {
+				return $this->error($place->getError());
+			}
+		} else {
+			$data = array(
+				'keyList' => $place->keyList,
+			);
+			$this->assign($data);
+			$this->setMeta("添加广告位");
+			return $this->fetch('public/edit');
+		}
+	}
 }
