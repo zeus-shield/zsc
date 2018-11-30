@@ -48,4 +48,28 @@ class Ad extends Admin {
 			return $this->fetch('public/edit');
 		}
 	}
+
+		public function edit($id = null) {
+		$place = model('AdPlace');
+		if (IS_POST) {
+			$result = $place->change();
+			if ($result) {
+				return $this->success("修改成功！", url('admin/ad/index'));
+			} else {
+				return $this->error($this->adplace->getError());
+			}
+		} else {
+			$info = db('AdPlace')->where(array('id' => $id))->find();
+			if (!$info) {
+				return $this->error("非法操作！");
+			}
+			$data = array(
+				'info'    => $info,
+				'keyList' => $place->keyList,
+			);
+			$this->assign($data);
+			$this->setMeta("编辑广告位");
+			return $this->fetch('public/edit');
+		}
+	}
 }
