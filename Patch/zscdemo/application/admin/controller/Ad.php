@@ -88,4 +88,19 @@ class Ad extends Admin {
 			return $this->error("删除失败！");
 		}
 	}
+
+		public function lists($id = null) {
+		$map['place_id'] = $id;
+		$order           = "id desc";
+
+		$list = db('Ad')->where($map)->order($order)->paginate(10);
+		$data = array(
+			'id'   => $id,
+			'list' => $list,
+			'page' => $list->render(),
+		);
+		$this->assign($data);
+		$this->setMeta("广告管理");
+		return $this->fetch();
+	}
 }
