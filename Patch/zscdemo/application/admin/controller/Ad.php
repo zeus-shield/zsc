@@ -124,4 +124,28 @@ class Ad extends Admin {
 			return $this->fetch('public/edit');
 		}
 	}
+
+		public function editad($id = null) {
+		$ad = model('ad');
+		if (IS_POST) {
+			$result = $ad->change();
+			if ($result) {
+				return $this->success("修改成功！", url('admin/ad/lists', array('id' => $this->param['place_id'])));
+			} else {
+				return $this->error($ad->getError());
+			}
+		} else {
+			$info = db('ad')->where(array('id' => $id))->find();
+			if (!$info) {
+				return $this->error("非法操作！");
+			}
+			$data = array(
+				'info'    => $info,
+				'keyList' => $ad->keyList,
+			);
+			$this->assign($data);
+			$this->setMeta("编辑广告位");
+			return $this->fetch('public/edit');
+		}
+	}
 }
