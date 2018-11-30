@@ -27,7 +27,7 @@ module.exports = {
       'scss_vars': '@/styles/vars.scss'
     }
   },
-  //Ìí¼Ó´úÂë
+  //æ·»åŠ ä»£ç 
   plugins: [
     new webpack.ProvidePlugin({
       $: "jquery",
@@ -48,4 +48,12 @@ module.exports = {
         test: /\.js$/,
         loader: 'babel-loader',
         include: [resolve('src'), resolve('test')]
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+        }
       },
