@@ -175,7 +175,7 @@ contract LogisticsDatabase is Delegate {
     }
 
     function updateBrief(string _num, string _transNum, string _model,
-                         string _destinationCountry, string _lastStatus) external _onlyAdminOrHigher {
+                         uint16 _destinationCountry, uint8 _lastStatus) external _onlyAdminOrHigher {
         briefs_[_num].transNum_           = _transNum;
         briefs_[_num].model_              = _model;
         briefs_[_num].destinationCountry_ = _destinationCountry;
