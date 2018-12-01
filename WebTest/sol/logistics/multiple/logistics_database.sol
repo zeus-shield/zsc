@@ -32,8 +32,8 @@ contract LogisticsDatabase is Delegate {
     struct Brief {
         string transNum_;
         string model_;
-        string destinationCountry_;
-        string lastStatus_;
+        uint16 destinationCountry_;
+        uint8 lastStatus_;
     }
 
     /** @desc string(valid/invalid num name: original num name + valid/invalid num index) => Brief(brief info)
