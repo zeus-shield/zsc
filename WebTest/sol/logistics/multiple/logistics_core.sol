@@ -217,15 +217,15 @@ contract LogisticsCore is Delegate {
         return numInvalidCounts_[_num];
     }
 
-    function getParcel(string _num) external view _checkDatabaseAddr returns (string, string, string, string, string) {
+    function getParcel(string _num) external view _checkDatabaseAddr returns (string, string, uint16, uint8, string) {
         // check param
         if (0 == bytes(_num).length) {
-            return ("", "", "", "", "");
+            return ("", "", 0, 0, "");
         }
 
         // check num exist
         if (!numExists_[_num]) {
-            return ("", "", "", "", "");
+            return ("", "", 0, 0, "");
         }
 
         return LogisticsDatabase(databaseAddr_).getParcel(_getValidNumName(_num));
