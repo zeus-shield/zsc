@@ -16,14 +16,17 @@ contract LogisticsDatabase is Delegate {
     using LibInt for *;
 
     struct Track {
-        string type_;
-        string time_;
-        string country_;
-        string city_;
+        /** @desc track info
+          * city: 0~15(uint16)
+          * country: 16~31(uint16)
+          * time: 32~95(uint64)
+          * timezone: 96~103(int8)
+          * actionCode: 103~110(7 bits)
+          * type: 111(1 bit)
+          */
+        uint112 data_;
         string facilityName_;
-        string timeZone_;
         string desc_;
-        string actionCode_;
     }
 
     struct Brief {
