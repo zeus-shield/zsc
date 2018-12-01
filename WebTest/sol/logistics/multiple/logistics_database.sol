@@ -290,8 +290,8 @@ contract LogisticsDatabase is Delegate {
         str = str.concat("{", _originalNum.toKeyValue("num"), ",");
         str = str.concat(briefs_[_num].transNum_.toKeyValue("transNum"), ",");
         str = str.concat(briefs_[_num].model_.toKeyValue("model"), ",");
-        str = str.concat(briefs_[_num].destinationCountry_.toKeyValue("destinationCountry"), ",");
-        str = str.concat(briefs_[_num].lastStatus_.toKeyValue("lastStatus"), "}");
+        str = str.concat(uint(briefs_[_num].destinationCountry_).toString().toKeyValue("destinationCountry"), ",");
+        str = str.concat(uint(briefs_[_num].lastStatus_).toString().toKeyValue("lastStatus"), "}");
 
         return str;
     }
