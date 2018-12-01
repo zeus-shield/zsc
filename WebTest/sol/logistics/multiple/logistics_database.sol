@@ -192,11 +192,11 @@ contract LogisticsDatabase is Delegate {
         }
 
         if (_brief.keyExists("destinationCountry")) {
-            briefs_[_num].destinationCountry_ = _brief.getStringValueByKey("destinationCountry");
+            briefs_[_num].destinationCountry_ = uint16(_brief.getStringValueByKey("destinationCountry").toUint());
         }
 
         if (_brief.keyExists("lastStatus")) {
-            briefs_[_num].lastStatus_ = _brief.getStringValueByKey("lastStatus");
+            briefs_[_num].lastStatus_ = uint8(_brief.getStringValueByKey("lastStatus").toUint());
         }
     }
 
