@@ -232,6 +232,13 @@ contract LogisticsDatabase is Delegate {
     }
 
     function getTracks(string _num) external view returns (string) {
+        uint112 data = 0;
+        uint16 city = 0;
+        uint16 country = 0;
+        uint64 time = 0;
+        int8 timezone = 0;
+        uint8 actionCode = 0;
+        uint8 type8 = 0;
         string memory trackName = "";
         string memory str = "";
 
@@ -239,14 +246,30 @@ contract LogisticsDatabase is Delegate {
         for (uint i=0; i<trackCounts_[_num]; i++) {
             trackName = _num.concat("-", i.toString());
 
-            str = str.concat("{", tracks_[trackName].type_.toKeyValue("type"), ",");
-            str = str.concat(tracks_[trackName].time_.toKeyValue("time"), ",");
-            str = str.concat(tracks_[trackName].country_.toKeyValue("country"), ",");
-            str = str.concat(tracks_[trackName].city_.toKeyValue("city"), ",");
+            data = tracks_[trackName].data_;
+
+            // city = uint16(data & (uint112(-1) >> (112-16)));
+            // country = uint16((data & (uint112(-1) << 16 & uint112(-1) >> (112-16-16))) >> 16);
+            // time = uint64((data & (uint112(-1) << (16+16) & uint112(-1) >> (112-16-16-64))) >> (16+16));
+            // timezone = int8((data & (uint112(-1) << (16+16+64) & uint112(-1) >> (112-16-16-64-8))) >> (16+16+64));
+            // actionCode = uint8((data & (uint112(-1) << (16+16+64+8) & uint112(-1) >> (112-16-16-64-8-7))) >> (16+16+64+8));
+
+            city = uint16(data & uint16(-1));
+            country = uint16((data & uint32(-1) << 16) >> 16);
+            time = uint64((data & uint96(-1) << (16+16)) >> (16+16));
+            timezone = int8((data & uint104(-1) << (16+16+64)) >> (16+16+64));
+            actionCode = uint8((data & uint112(-1) << (16+16+64+8)) >> (16+16+64+8)) & (uint8(-1) >> 1);
+
+            type8 = uint8((data & uint112(-1) << (16+16+64+8+7)) >> (16+16+64+8+7));
+
+            str = str.concat("{", uint(type8).toString().toKeyValue("type"), ",");
+            str = str.concat(uint(time).toString().toKeyValue("time"), ",");
+            str = str.concat(uint(country).toString().toKeyValue("country"), ",");
+            str = str.concat(uint(city).toString().toKeyValue("city"), ",");
             str = str.concat(tracks_[trackName].facilityName_.toKeyValue("facilityName"), ",");
-            str = str.concat(tracks_[trackName].timeZone_.toKeyValue("timeZone"), ",");
+            str = str.concat(int(timezone).toString().toKeyValue("timeZone"), ",");
             str = str.concat(tracks_[trackName].desc_.toKeyValue("desc"), ",");
-            str = str.concat(tracks_[trackName].actionCode_.toKeyValue("actionCode"), "}");
+            str = str.concat(uint(actionCode).toString().toKeyValue("actionCode"), "}");
 
             if (trackCounts_[_num] != (i+1)) {
                 str = str.concat(",");
