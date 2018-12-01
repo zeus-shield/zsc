@@ -11,7 +11,7 @@ contract DBNode {
     function getBalance(address _adr) public view returns (uint256);
     function getLockedAmount(address _tokenAdr) public view returns (uint);
     function getTransactionInfoByIndex(uint _index) public view returns (uint, uint, uint, address, address);
-    function executeTransaction(address _tokenAdr, address _dest, uint _amount) public returns (uint);
+    function executeTransaction(address _tokenAdr, address _dest, uint _amount) public;
     function setERC20TokenAddress(address _tokenAdr) public;
     function numTransactions() public view returns (uint);
     function lockWallet(address _tokenAdr, uint _amount) public;
@@ -258,7 +258,7 @@ contract ControlBase is Object {
 
     //////////////////////////////////////
     //////////////////////////////////////
-    function submitTransfer(bytes32 _tokenSymbol, address _dest, uint256 _amount) public returns (uint) {
+    function submitTransfer(bytes32 _tokenSymbol, address _dest, uint256 _amount) public  {
         checkAllowed(msg.sender);
         require(_amount > 0);
 
@@ -267,8 +267,7 @@ contract ControlBase is Object {
         require(walletAdr != address(0));
 
         address tokenContractAdr = getDBModule("gm-token").getTokenAddress(_tokenSymbol);
-        uint amount = DBNode(walletAdr).executeTransaction(tokenContractAdr, _dest, _amount);
-        return amount;
+        DBNode(walletAdr).executeTransaction(tokenContractAdr, _dest, _amount);
     }
 
     function getModuleAdress(bytes32 _name) public view returns (address) {
