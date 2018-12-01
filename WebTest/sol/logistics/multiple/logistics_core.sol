@@ -107,7 +107,7 @@ contract LogisticsCore is Delegate {
     }
 
     function updateBrief(string _num, string _transNum, string _model,
-                         string _destinationCountry, string _lastStatus) public _onlyAdminOrHigher _checkDatabaseAddr {
+                         uint16 _destinationCountry, uint8 _lastStatus) public _onlyAdminOrHigher _checkDatabaseAddr {
         // check param
         require(0 != bytes(_num).length);
 
