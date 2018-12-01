@@ -287,11 +287,11 @@ contract LogisticsCore is Delegate {
         return LogisticsDatabase(databaseAddr_).getBriefEx(_num, _getValidNumName(_num));
     }
 
-    function getBriefByIndex(uint _index) external view _checkDatabaseAddr returns (string, string, string, string, string) {
+    function getBriefByIndex(uint _index) external view _checkDatabaseAddr returns (string, string, string, uint16, uint8) {
         // check index
         // require(numTotalCount_ > _index);
         if(numTotalCount_ <= _index) {
-            return ("", "", "", "", "");
+            return ("", "", "", 0, 0);
         }
 
         string memory num = numNames_[_index];
