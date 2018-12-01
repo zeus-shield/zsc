@@ -311,16 +311,16 @@ contract LogisticsCore is Delegate {
         return LogisticsDatabase(databaseAddr_).getBriefEx(num, _getValidNumName(num));
     }
 
-    function getBriefInvalid(string _num, uint _invalidIndex) external view _checkDatabaseAddr returns (string, string, string, string, string) {
+    function getBriefInvalid(string _num, uint _invalidIndex) external view _checkDatabaseAddr returns (string, string, string, uint16, uint8) {
         // check param
         if (0 == bytes(_num).length) {
-            return ("", "", "", "", "");
+            return ("", "", "", 0, 0);
         }
 
         // check invalid index
         // require(numInvalidCounts_[_num] > _invalidIndex);
         if (numInvalidCounts_[_num] <= _invalidIndex) {
-            return ("", "", "", "", "");
+            return ("", "", "", 0, 0);
         }
 
         // don't need to check num exist
