@@ -76,41 +76,74 @@ contract LogisticsDatabase is Delegate {
     }
 
     function _updateTrack(string _num, uint _index, string _track) private {
+        uint112 data = 0;
+
         // check index
         require(trackCounts_[_num] > _index);
 
         string memory trackName = _num.concat("-", _index.toString());
+        data = tracks_[trackName].data_;
 
-        if (_track.keyExists("type")) {
-            tracks_[trackName].type_ = _track.getStringValueByKey("type");
+        if (_track.keyExists("city")) {
+            // clear data
+            data = data & uint112(-1) << 16;
+            // update data
+            data = data | uint16(_track.getStringValueByKey("city").toUint());
+            // data = data | uint16(_track.getIntValueByKey("city"));
+        }
+
+         if (_track.keyExists("country")) {
+            // clear data
+            // data = data & (uint112(-1) << (16+16) | uint112(-1) >> (112-16));
+            data = data & (uint112(-1) << (16+16) | uint16(-1));
+            // update data
+            data = data | uint32(_track.getStringValueByKey("country").toUint()) << 16;
+            // data = data | uint32(_track.getIntValueByKey("country")) << 16;
         }
 
         if (_track.keyExists("time")) {
-            tracks_[trackName].time_ = _track.getStringValueByKey("time");
+            // clear data
+            // data = data & (uint112(-1) << (16+16+64) | uint112(-1) >> (112-16-16));
+            data = data & (uint112(-1) << (16+16+64) | uint32(-1));
+            // update data
+            data = data | uint96(_track.getStringValueByKey("time").toUint()) << (16+16);
+            // data = data | uint96(_track.getIntValueByKey("time")) << (16+16);
         }
 
-        if (_track.keyExists("country")) {
-            tracks_[trackName].country_ = _track.getStringValueByKey("country");
+        if (_track.keyExists("timeZone")) {
+            // clear data
+            // data = data & (uint112(-1) << (16+16+64+8) | uint112(-1) >> (112-16-16-64));
+            data = data & (uint112(-1) << (16+16+64+8) | uint96(-1));
+            // update data
+            data = data | uint104(_track.getStringValueByKey("timeZone").toInt()) << (16+16+64);
+            // data = data | uint104(_track.getIntValueByKey("timeZone")) << (16+16+64);
         }
 
-        if (_track.keyExists("city")) {
-            tracks_[trackName].city_ = _track.getStringValueByKey("city");
+        if (_track.keyExists("actionCode")) {
+            // clear data
+            // data = data & (uint112(-1) << (16+16+64+8+7) | uint112(-1) >> (112-16-16-64-8));
+            data = data & (uint112(-1) << (16+16+64+8+7) | uint104(-1));
+            // update data
+            data = data | uint112(_track.getStringValueByKey("actionCode").toUint()) << (16+16+64+8);
+            // data = data | uint112(_track.getIntValueByKey("actionCode")) << (16+16+64+8);
         }
+
+        if (_track.keyExists("type")) {
+            // clear data
+            data = data & (uint112(-1) >> (112-16-16-64-8-7));
+            // update data
+            data = data | uint112(_track.getStringValueByKey("type").toUint()) << (16+16+64+8+7);
+            // data = data | uint112(_track.getIntValueByKey("type")) << (16+16+64+8+7);
+        }
+
+        tracks_[trackName].data_ = data;
 
         if (_track.keyExists("facilityName")) {
             tracks_[trackName].facilityName_ = _track.getStringValueByKey("facilityName");
         }
 
-        if (_track.keyExists("timeZone")) {
-            tracks_[trackName].timeZone_ = _track.getStringValueByKey("timeZone");
-        }
-
         if (_track.keyExists("desc")) {
             tracks_[trackName].desc_ = _track.getStringValueByKey("desc");
-        }
-
-        if (_track.keyExists("actionCode")) {
-            tracks_[trackName].actionCode_ = _track.getStringValueByKey("actionCode");
         }
     }
 
