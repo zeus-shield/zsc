@@ -1163,6 +1163,11 @@ export default class TestLogisticsRaw {
                 let address = tmps[0];
                 let priority = tmps[1];
 
+                if (undefined == priority) {
+                    Output(window.outputDelegateWriteElement, 'small', 'red', "Please input priority!");
+                    return;
+                }
+
                 // update
                 delegate.update(account, key, address, priority, function(error, result) {
                     handler[commmonTransactionProc](error, result, window.outputDelegateWriteElement);
