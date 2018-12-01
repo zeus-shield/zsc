@@ -135,8 +135,8 @@ contract LogisticsCore is Delegate {
     }
 
     function update(string _num, string _transNum, 
-                    string _model, string _destinationCountry,
-                    string _lastStatus, string _tracks) external _onlyAdminOrHigher {
+                    string _model, uint16 _destinationCountry,
+                    uint8 _lastStatus, string _tracks) external _onlyAdminOrHigher {
         // update brief
         updateBrief(_num, _transNum, _model, _destinationCountry, _lastStatus);
 
