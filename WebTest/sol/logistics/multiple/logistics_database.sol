@@ -280,7 +280,7 @@ contract LogisticsDatabase is Delegate {
         return str;
     }
 
-    function getBrief(string _originalNum, string _num) external view returns (string, string, string, string, string) {
+    function getBrief(string _originalNum, string _num) external view returns (string, string, string, uint16, uint8) {
         return (_originalNum, briefs_[_num].transNum_, briefs_[_num].model_, briefs_[_num].destinationCountry_, briefs_[_num].lastStatus_);
     }
 
