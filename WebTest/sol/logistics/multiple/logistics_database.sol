@@ -212,7 +212,7 @@ contract LogisticsDatabase is Delegate {
         return trackCounts_[_num];
     }
 
-    function getParcel(string _num) external view returns (string, string, string, string, string) {
+    function getParcel(string _num) external view returns (string, string, uint16, uint8, string) {
         string memory tacks = this.getTracks(_num);
 
         return (briefs_[_num].transNum_, briefs_[_num].model_, briefs_[_num].destinationCountry_, briefs_[_num].lastStatus_, tacks);
@@ -225,8 +225,8 @@ contract LogisticsDatabase is Delegate {
         str = str.concat("{", _originalNum.toKeyValue("num"), ",");
         str = str.concat(briefs_[_num].transNum_.toKeyValue("transNum"), ",");
         str = str.concat(briefs_[_num].model_.toKeyValue("model"), ",");
-        str = str.concat(briefs_[_num].destinationCountry_.toKeyValue("destinationCountry"), ",");
-        str = str.concat(briefs_[_num].lastStatus_.toKeyValue("lastStatus"), ",");
+        str = str.concat(uint(briefs_[_num].destinationCountry_).toString().toKeyValue("destinationCountry"), ",");
+        str = str.concat(uint(briefs_[_num].lastStatus_).toString().toKeyValue("lastStatus"), ",");
         str = str.concat("\"trackElementList\":", tacks, "}");
         return str;
     }
