@@ -108,12 +108,12 @@
                     main('LogisticsRaw', 'Update', document.getElementById("s_update_type").value, document.getElementById("i_update_para").value);
                 }
 
-                document.getElementById("remove_submit").onclick = function() {
+                document.getElementById("b_remove_submit").onclick = function() {
                     main('LogisticsRaw', 'Remove', 'Common', document.getElementById("remove_para").value);
                 }
 
-                document.getElementById("invalid_submit").onclick = function() {
-                    main('LogisticsRaw', 'Invalid', document.getElementById("invalid_para").value, "");
+                document.getElementById("b_invalid_submit").onclick = function() {
+                    main('LogisticsRaw', 'Invalid', 'Common', document.getElementById("invalid_para").value);
                 }
 
                 document.getElementById("get_info_submit").onclick = function() {
@@ -252,7 +252,7 @@
                     <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Create', '', '')">Create</button>
                     <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Update', 'Batch', '')">Update</button>
                     <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Remove', 'Batch', '')">Remove</button>
-                    <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'InvalidEx', '', '')">InvalidEx</button>
+                    <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Invalid', 'Batch', '')">Invalid</button>
                     <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'DebugBrief', '', '')">DebugBrief</button>
                     <p id="output_common"></p>
 
@@ -272,13 +272,13 @@
                         <h5>Remove:</h5>
                         Num:<br>
                         <input type="text" id="remove_para"><br>
-                        <button type="button" id="remove_submit">Submit</button>
+                        <button type="button" id="b_remove_submit">Submit</button>
                     </div>
                     <div id="element">
                         <h5>Invalid:</h5>
                         Num:<br>
                         <input type="text" id="invalid_para"><br>
-                        <button type="button" id="invalid_submit">Submit</button>
+                        <button type="button" id="b_invalid_submit">Submit</button>
                     </div>
                     <div style="clear: left"></div>
                     <p id="output_write"></p>
