@@ -99,4 +99,16 @@ class Addons extends Admin {
 		}
 	}
 
+		/**
+	 * 卸载插件
+	 */
+	public function uninstall($id) {
+		$result = $this->addons->uninstall($id);
+		if ($result === false) {
+			return $this->error($this->addons->getError(), '');
+		} else {
+			return $this->success('卸载成功！');
+		}
+	}
+
 }
