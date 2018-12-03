@@ -109,7 +109,7 @@
                 }
 
                 document.getElementById("remove_submit").onclick = function() {
-                    main('LogisticsRaw', 'Remove', document.getElementById("remove_para").value, "");
+                    main('LogisticsRaw', 'Remove', 'Common', document.getElementById("remove_para").value);
                 }
 
                 document.getElementById("invalid_submit").onclick = function() {
@@ -248,10 +248,10 @@
             <p>
                 <div class="well" id="block">
                     <h4>5. Test</h4>
-                    <h5>Common Test:</h5>
+                    <h5>Common Test(Batch Mode):</h5>
                     <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Create', '', '')">Create</button>
                     <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Update', 'Parallel', '')">Update</button>
-                    <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'RemoveEx', '', '')">RemoveEx</button>
+                    <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Remove', 'Batch', '')">Remove</button>
                     <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'InvalidEx', '', '')">InvalidEx</button>
                     <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'DebugBrief', '', '')">DebugBrief</button>
                     <p id="output_common"></p>
