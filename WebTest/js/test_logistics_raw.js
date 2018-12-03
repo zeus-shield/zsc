@@ -533,42 +533,6 @@ export default class TestLogisticsRaw {
         }
     }
 
-    invalid(num) {
-        console.log('TestLogisticsRaw.invalid(%s)', num);
-        let channels = window.channelClass.get("idle");
-
-        if (0 == channels.length) {
-            Output(window.outputWriteElement, 'small', 'red', "No channnel(idle)!");
-            return;
-        }
-
-        let account = channels[0].account;
-        let key = channels[0].key;
-
-        let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-
-        // invalid
-        logisticsCore.invalid(account, key, num, function(error, result) {
-            if (!error) {
-                if ("" != result.status) {
-                    if (0x1 == parseInt(result.status)) {
-                        status = "succeeded";
-                    } else {
-                        status = "failure";
-                    }
-                    let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                    Output(window.outputWriteElement, 'small', 'red', string);
-                } else {
-                    let status = "Try to get status again!";
-                    let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                    Output(window.outputWriteElement, 'small', 'red', string);
-                }
-            } else {
-                Output(window.outputWriteElement, 'small', 'red', error);
-            }
-        });
-    }
-
     [getInvalid](handler, num) {
         handler.numberOfInvalid(num, function(error, result) {
             if (!error) {
@@ -589,25 +553,14 @@ export default class TestLogisticsRaw {
         })
     }
 
-    // invalid -> update -> invalid -> invalid -> updateEx -> invalid
-    invalidEx() {
-        console.log('TestLogisticsRaw.invalidEx()');
-        let handler = this;
-        let tracks5_invalid1 = "{\"trackElementList\":[{\"time\":\"invalid(1-1)\",\"facilityName\":\"invalid(1-1)\",\"desc\":\"invalid(1-1)\"}&{\"time\":\"invalid(1-2)\",\"facilityName\":\"invalid(1-2)\",\"desc\":\"invalid(1-2) Груз отправлен со склада хранения (<a href= >КСЭ</a>, номер накладной <a href=$f=$http://cse.ru/track.php?order=waybill%amp;number=JNTCU0600639867YQ$ tar target=$_blank$>JNTCU0600639867YQ</a>)\"}]}";
-        let info5_invalid2 = "{\"error\":null,\"num\":\"JNTCU0600046685YQ\",\"transNum\":\"invalid(2) 上海市宜山路900号科技大楼A栋6楼，邮编：200233\",\"model\":\"invalid(2) J-NET俄全通INFO5\",\"destinationCountry\":\"invalid(2)\",\"lastStatus\":\"invalid(2)\",\"trackElementList\":[{\"type\":\"invalid(2-1)\",\"time\":\"invalid(2-1)\",\"country\":\"invalid(2-1)\",\"city\":\"invalid(2-1)\",\"facilityName\":\"invalid(2-1)\",\"timeZone\":\"invalid(2-1)\",\"desc\":\"invalid(2-1) Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\",\"actionCode\":\"invalid(2-1)\"}&{\"type\":\"invalid(2-2)\",\"time\":\"invalid(2-2)\",\"country\":\"invalid(2-2)\",\"city\":\"invalid(2-2)\",\"facilityName\":\"invalid(2-2)\",\"timeZone\":\"invalid(2-2)\",\"desc\":\"invalid(2-2) Order received successfully\",\"actionCode\":\"invalid(2-2)\"}&{\"type\":\"invalid(2-3)\",\"time\":\"invalid(2-3)\",\"country\":\"invalid(2-3)\",\"city\":\"invalid(2-3)\",\"facilityName\":\"invalid(2-3)\",\"timeZone\":\"invalid(2-3)\",\"desc\":\"invalid(2-3) The parcel is ready to transfer to the courier\",\"actionCode\":\"invalid(2-3)\"}]}";
+    // invalid -> update -> invalid -> updateEx -> invalid
+    [invalidBatch](account, key, handler) {
+        console.log('TestLogisticsRaw.invalidBatch()');
+        let tracks5_invalid1 = "{\"trackElementList\":[{\"time\":\"1543830482\",\"facilityName\":\"invalid(1-1)\",\"desc\":\"invalid(1-1)\"}&{\"time\":\"1543830482\",\"facilityName\":\"invalid(1-2)\",\"desc\":\"invalid(1-2) Груз отправлен со склада хранения (<a href= >КСЭ</a>, номер накладной <a href=$f=$http://cse.ru/track.php?order=waybill%amp;number=JNTCU0600639867YQ$ tar target=$_blank$>JNTCU0600639867YQ</a>)\"}]}";
+        let info5_invalid2 = "{\"error\":null,\"num\":\"JNTCU0600046685YQ\",\"transNum\":\"invalid(2) 上海市宜山路900号科技大楼A栋6楼，邮编：200233\",\"model\":\"invalid(2) J-NET俄全通INFO5\",\"destinationCountry\":\"07\",\"lastStatus\":\"23\",\"trackElementList\":[{\"type\":\"1\",\"time\":\"1543830694\",\"country\":\"0086\",\"city\":\"021\",\"facilityName\":\"invalid(2-1)\",\"timeZone\":\"1543830694\",\"desc\":\"invalid(2-1) Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\",\"actionCode\":\"21\"}&{\"type\":\"0\",\"time\":\"1543830694\",\"country\":\"021\",\"city\":\"0571\",\"facilityName\":\"invalid(2-2)\",\"timeZone\":\"+3\",\"desc\":\"invalid(2-2) Order received successfully\",\"actionCode\":\"22\"}&{\"type\":\"1\",\"time\":\"1543830694\",\"country\":\"007\",\"city\":\"0724\",\"facilityName\":\"invalid(2-3)\",\"timeZone\":\"-7\",\"desc\":\"invalid(2-3) The parcel is ready to transfer to the courier\",\"actionCode\":\"23\"}]}";
         
-        let channels = window.channelClass.get("idle");
-
-        if (0 == channels.length) {
-            Output(window.outputCommonElement, 'small', 'red', "No channnel(idle)!");
-            return;
-        }
-
         let status = "";
         let string = "";
-
-        let account = channels[0].account;
-        let key = channels[0].key;
 
         let num = "JNTCU0600046685YQ";
 
@@ -625,7 +578,7 @@ export default class TestLogisticsRaw {
                     }
 
                     // update
-                    logisticsCore.update(account, key, num, "invalid(1)", "invalid(1)", "invalid(1)", "invalid(1)", tracks5_invalid1, function(error, result) {
+                    logisticsCore.update(account, key, num, "invalid(1)", "invalid(1)", 7, 12, tracks5_invalid1, function(error, result) {
                         if (!error) {
                             if ("" != result.status) {
                                 if (0x0 == parseInt(result.status)) {
@@ -732,6 +685,30 @@ export default class TestLogisticsRaw {
                 Output(window.outputCommonElement, 'small', 'red', error);
             }
         });
+    }
+
+    invalid(type, para) {
+        console.log('TestLogisticsRaw.invalid(%s, %s)', type, para);
+        let handler = this;
+        let tmps = this[getCommonAccount]();
+        if (0 == tmps[0]) {
+            Output(window.outputWriteElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = tmps[0];
+        let key = tmps[1];
+
+        if (type == "Common") {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.invalid(account, key, para, function(error, result) {
+                handler[commmonTransactionProc](error, result, window.outputWriteElement);
+            });
+        } else if (type == "Batch") {
+            this[invalidBatch](account, key, this);
+        } else {
+            Output(window.outputWriteElement, 'small', 'red', "Invalid type Error!");
+        }
     }
 
     debugBrief() {
@@ -1011,14 +988,11 @@ export default class TestLogisticsRaw {
             case 'Remove':
                 this.remove(para1, para2);
                 break;
-            case 'InvalidEx':
-                this.invalidEx();
+            case 'Invalid':
+                this.invalid(para1, para2);
                 break;
             case 'DebugBrief':
                 this.debugBrief();
-                break;
-            case 'Invalid':
-                this.invalid(para1);
                 break;
             case 'GetNumber':
                 this.getNumber(para1, para2);
