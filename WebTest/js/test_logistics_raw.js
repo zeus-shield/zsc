@@ -28,6 +28,7 @@ const openChannel = Symbol('openChannel');
 const openNextChannel = Symbol('openNextChannel');
 const closeChannel = Symbol('closeChannel');
 const updateParallel = Symbol('updateParallel');
+const removeBatch = Symbol('removeBatch');
 const getInvalid = Symbol('getInvalid');
 const getDelegateInstance = Symbol('getDelegateInstance');
 
@@ -457,9 +458,6 @@ export default class TestLogisticsRaw {
         let account = tmps[0];
         let key = tmps[1];
 
-        let status = "";
-        let string = "";
-
         let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
 
         if (type == "Update") {
@@ -483,208 +481,57 @@ export default class TestLogisticsRaw {
         }
     }
 
-    getInfo(type, para) {
-        console.log('TestLogisticsRaw.getInfo(%s, %s)', type, para);
-        
-        if ('LogisticsInfo' == type) {
-            let logistics = new Logistics(this[abi], this[contractAddress]);
-            logistics.getLogisticsInfo(para, function(error, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Info]:</br>${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', error);
-                }
-            });
-        } else if ('Parcel' == type) {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            logisticsCore.getParcel(para, function(error, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Parcel]:</br>${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', error);
-                }
-            });
-        } else if ('ParcelEx' == type) {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            logisticsCore.getParcelEx(para, function(error, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Parcel]:</br>${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', error);
-                }
-            });           
-        } else if ('Tracks' == type) {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            logisticsCore.getTracks(para, function(error, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Tracks]:</br>${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', error);
-                }
-            });
-        } else if ('TracksInvalid' == type) {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            let paras = para.split(",");
-            let num = paras[0];
-            let index = paras[1];
-
-            logisticsCore.getTracksInvalid(num, index, function(error, num, index, result) {
-                if (!error) {
-                    // console.log(result);
-                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
-                }
-            })
-        } else if ('Brief' == type) {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            logisticsCore.getBrief(para, function(error, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Brief]:${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', error);
-                }
-            });
-        } else if ('BriefEx' == type) {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            logisticsCore.getBriefEx(para, function(error, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Brief]:${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', error);
-                }
-            });           
-        } else if ('BriefByIndex' == type) {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            logisticsCore.getBriefByIndex(para, function(error, index, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
-                }
-            });
-        } else if ('BriefExByIndex' == type) {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            logisticsCore.getBriefExByIndex(para, function(error, index, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
-                }
-            });
-        } else if ('BriefInvalid' == type) {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            let paras = para.split(",");
-            let num = paras[0];
-            let index = paras[1];
-
-            logisticsCore.getBriefInvalid(num, index, function(error, num, index, result) {
-                if (!error) {
-                    // console.log(result);
-                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
-                }
-            })
-        } else {}
-    }
-
-    remove(num) {
-        console.log('TestLogisticsRaw.remove(%s)', num);
-        let channels = window.channelClass.get("idle");
-
-        if (0 == channels.length) {
-            Output(window.outputWriteElement, 'small', 'red', "No channnel(idle)!");
-            return;
-        }
-
-        let account = channels[0].account;
-        let key = channels[0].key;
-
-        let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-
-        // remove
-        logisticsCore.remove(account, key, num, function(error, result) {
-            if (!error) {
-                if ("" != result.status) {
-                    if (0x1 == parseInt(result.status)) {
-                        status = "succeeded";
-                    } else {
-                        status = "failure";
-                    }
-                    let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                    Output(window.outputWriteElement, 'small', 'red', string);
-                } else {
-                    let status = "Try to get status again!";
-                    let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                    Output(window.outputWriteElement, 'small', 'red', string);
-                }
-            } else {
-                Output(window.outputWriteElement, 'small', 'red', error);
-            }
-        });
-    }
-
-    removeEx() {
-        console.log('TestLogisticsRaw.removeEx()');
-        let channels = window.channelClass.get("idle");
-
-        if (0 == channels.length) {
-            Output(window.outputCommonElement, 'small', 'red', "No channnel(idle)!");
-            return;
-        }
-
-        let account = channels[0].account;
-        let key = channels[0].key;
-
-        let status = "";
-        let string = "";
+    [removeBatch](account, key, handler) {
+        console.log('TestLogisticsRaw.removeBatch()');
 
         // create and update at first
 
         let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-
-        // remove
         logisticsCore.remove(account, key, "JNTCU0600046684YQ", function(error, result) {
             if (!error) {
                 if ("" != result.status) {
                     if (0x0 == parseInt(result.status)) {
-                        status = "failure";
-                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                        let status = "failure";
+                        let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
                         Output(window.outputCommonElement, 'small', 'red', string);
                         return;
                     }
-                    // remove
                     logisticsCore.remove(account, key, "JNTCU0600046688YQ", function(error, result) {
-                        if (!error) {
-                            if ("" != result.status) {
-                                if (0x1 == parseInt(result.status)) {
-                                    status = "succeeded";
-                                } else {
-                                    status = "failure";
-                                }
-                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                Output(window.outputCommonElement, 'small', 'red', string);
-                                return;
-                            } else {
-                                status = "Try to get status again!";
-                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                Output(window.outputCommonElement, 'small', 'red', string);
-                            }
-                        } else {
-                            Output(window.outputCommonElement, 'small', 'red', error);
-                        }
+                        handler[commmonTransactionProc](error, result, window.outputCommonElement);
                     });
                 } else {
-                    status = "Try to get status again!";
-                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                    let status = "Try to get status again!";
+                    let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
                     Output(window.outputCommonElement, 'small', 'red', string);
                 }
             } else {
                 Output(window.outputCommonElement, 'small', 'red', error);
             }
         });
+    }
 
+    remove(type, para) {
+        console.log('TestLogisticsRaw.remove(%s, %s)', type, para);
+        let handler = this;
+        let tmps = this[getCommonAccount]();
+        if (0 == tmps[0]) {
+            Output(window.outputWriteElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = tmps[0];
+        let key = tmps[1];
+
+        if (type == "Common") {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.remove(account, key, para, function(error, result) {
+                handler[commmonTransactionProc](error, result, window.outputWriteElement);
+            });
+        } else if (type == "Batch") {
+            this[removeBatch](account, key, this);
+        } else {
+            Output(window.outputWriteElement, 'small', 'red', "Remove type Error!");
+        }
     }
 
     invalid(num) {
@@ -946,6 +793,112 @@ export default class TestLogisticsRaw {
         }
     }
 
+    getInfo(type, para) {
+        console.log('TestLogisticsRaw.getInfo(%s, %s)', type, para);
+        
+        if ('LogisticsInfo' == type) {
+            let logistics = new Logistics(this[abi], this[contractAddress]);
+            logistics.getLogisticsInfo(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Info]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            });
+        } else if ('Parcel' == type) {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.getParcel(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Parcel]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            });
+        } else if ('ParcelEx' == type) {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.getParcelEx(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Parcel]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            });           
+        } else if ('Tracks' == type) {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.getTracks(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Tracks]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            });
+        } else if ('TracksInvalid' == type) {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            let paras = para.split(",");
+            let num = paras[0];
+            let index = paras[1];
+
+            logisticsCore.getTracksInvalid(num, index, function(error, num, index, result) {
+                if (!error) {
+                    // console.log(result);
+                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
+                }
+            })
+        } else if ('Brief' == type) {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.getBrief(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Brief]:${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            });
+        } else if ('BriefEx' == type) {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.getBriefEx(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Brief]:${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            });           
+        } else if ('BriefByIndex' == type) {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.getBriefByIndex(para, function(error, index, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
+                }
+            });
+        } else if ('BriefExByIndex' == type) {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.getBriefExByIndex(para, function(error, index, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
+                }
+            });
+        } else if ('BriefInvalid' == type) {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            let paras = para.split(",");
+            let num = paras[0];
+            let index = paras[1];
+
+            logisticsCore.getBriefInvalid(num, index, function(error, num, index, result) {
+                if (!error) {
+                    // console.log(result);
+                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
+                }
+            })
+        } else {}
+    }
+
     [getDelegateInstance](contract) {
         let delegate = null;
         if ("Logistics" == contract) {
@@ -1056,17 +1009,14 @@ export default class TestLogisticsRaw {
             case 'Update':
                 this.update(para1, para2);
                 break;
-            case 'RemoveEx':
-                this.removeEx();
+            case 'Remove':
+                this.remove(para1, para2);
                 break;
             case 'InvalidEx':
                 this.invalidEx();
                 break;
             case 'DebugBrief':
                 this.debugBrief();
-                break;
-            case 'Remove':
-                this.remove(para1);
                 break;
             case 'Invalid':
                 this.invalid(para1);
