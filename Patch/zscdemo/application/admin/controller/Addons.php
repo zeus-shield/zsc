@@ -65,4 +65,38 @@ class Addons extends Admin {
 		}
 	}
 
+		//预览
+	public function preview($output = true) {
+	}
+
+	/**
+	 * 安装插件
+	 */
+	public function install() {
+		$addon_name = input('addon_name', '', 'trim,ucfirst');
+		$class      = get_addon_class($addon_name);
+		if (class_exists($class)) {
+			$addons = new $class;
+			$info   = $addons->info;
+			if (!$info || !$addons->checkInfo()) {
+				//检测信息的正确性
+				return $this->error('插件信息缺失');
+			}
+			session('addons_install_error', null);
+			$install_flag = $addons->install();
+			if (!$install_flag) {
+				return $this->error('执行插件预安装操作失败' . session('addons_install_error'));
+			}
+			$result = $this->addons->install($info);
+			if ($result) {
+				cache('hooks', null);
+				return $this->success('安装成功');
+			} else {
+				return $this->error($this->addons->getError());
+			}
+		} else {
+			return $this->error('插件不存在');
+		}
+	}
+
 }
