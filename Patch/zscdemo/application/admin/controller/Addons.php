@@ -16,7 +16,7 @@ class Addons extends Admin {
 		$this->hooks  = db('Hooks');
 	}
 	
-}
+
 	/**
 	 * 插件列表
 	 */
@@ -36,3 +36,33 @@ class Addons extends Admin {
 		$this->assign($data);
 		return $this->fetch();
 	}
+		//创建向导首页
+	public function add() {
+		if (IS_POST) {
+			$data = $this->addons->create();
+			if ($data) {
+				if ($result) {
+					return $this->success("创建成功！", url('admin/addons/index'));
+				} else {
+					return $this->error("创建失败！");
+				}
+			} else {
+				return $this->error($this->addons->getError());
+			}
+		} else {
+			$hooks = db('Hooks')->field('name,description')->select();
+			$this->assign('Hooks', $hooks);
+			$hook = db('Hooks')->field(true)->select();
+			foreach ($hook as $key => $value) {
+				$addons_opt[$value['name']] = $value['name'];
+			}
+			$addons_opt = array(array('type' => 'select', 'opt' => $addons_opt));
+			if (!is_writable(SENT_ADDON_PATH)) {
+				return $this->error('您没有创建目录写入权限，无法使用此功能');
+			}
+			$this->setMeta("添加插件");
+			return $this->fetch();
+		}
+	}
+
+}
