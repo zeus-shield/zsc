@@ -27,6 +27,7 @@ const openChannelFunc = Symbol('openChannelFunc');
 const openChannel = Symbol('openChannel');
 const openNextChannel = Symbol('openNextChannel');
 const closeChannel = Symbol('closeChannel');
+const updateParallel = Symbol('updateParallel');
 const getInvalid = Symbol('getInvalid');
 const getDelegateInstance = Symbol('getDelegateInstance');
 
@@ -414,6 +415,36 @@ export default class TestLogisticsRaw {
         }
     }
 
+    [updateParallel]() {
+        console.log('TestLogisticsRaw.updateSync()');
+
+        let channelIdles = window.channelClass.get("idle");
+        let blockCount = 3;
+        let parallelCount = 0;
+
+        if (0 == channelIdles.length) {
+            Output(window.outputCommonElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        if (blockCount > channelIdles.length) {
+            parallelCount = channelIdles.length;
+            this[nextIndex] = channelIdles.length;
+        } else {
+            parallelCount = blockCount;
+            this[nextIndex] = blockCount;
+        }
+
+        // start tick
+        this[tick] = (new Date()).valueOf();
+
+        for (let blockIndex=0; blockIndex<parallelCount; blockIndex++) {
+            let account = channelIdles[blockIndex].account;
+            let key = channelIdles[blockIndex].key;
+            this[openChannel]("update", this, account, key, parallelCount, blockIndex, blockCount);
+        }
+    }
+
     update(type, para) {
         console.log('TestLogisticsRaw.update(%s)', type);
         let channels = window.channelClass.get("idle");
@@ -463,39 +494,9 @@ export default class TestLogisticsRaw {
         } else if (type == "UpdateTracks") {
             Output(window.outputWriteElement, 'small', 'red', "Don't support now!");
         } else if (type == "Parallel") {
-            this.updateParallel();
+            this[updateParallel]();
         } else {
             Output(window.outputWriteElement, 'small', 'red', "Update type Error!");
-        }
-    }
-
-    updateParallel() {
-        console.log('TestLogisticsRaw.updateSync()');
-
-        let channelIdles = window.channelClass.get("idle");
-        let blockCount = 3;
-        let parallelCount = 0;
-
-        if (0 == channelIdles.length) {
-            Output(window.outputCommonElement, 'small', 'red', "No channnel(idle)!");
-            return;
-        }
-
-        if (blockCount > channelIdles.length) {
-            parallelCount = channelIdles.length;
-            this[nextIndex] = channelIdles.length;
-        } else {
-            parallelCount = blockCount;
-            this[nextIndex] = blockCount;
-        }
-
-        // start tick
-        this[tick] = (new Date()).valueOf();
-
-        for (let blockIndex=0; blockIndex<parallelCount; blockIndex++) {
-            let account = channelIdles[blockIndex].account;
-            let key = channelIdles[blockIndex].key;
-            this[openChannel]("update", this, account, key, parallelCount, blockIndex, blockCount);
         }
     }
 
