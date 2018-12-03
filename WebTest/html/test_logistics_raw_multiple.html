@@ -250,7 +250,7 @@
                     <h4>5. Test</h4>
                     <h5>Common Test(Batch Mode):</h5>
                     <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Create', '', '')">Create</button>
-                    <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Update', 'Parallel', '')">Update</button>
+                    <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Update', 'Batch', '')">Update</button>
                     <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Remove', 'Batch', '')">Remove</button>
                     <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'InvalidEx', '', '')">InvalidEx</button>
                     <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'DebugBrief', '', '')">DebugBrief</button>
@@ -261,8 +261,8 @@
                         <h5>Update Info:</h5>
                         Select Type:<br>
                         <select id="s_update_type">
-                            <option value ="Update">Update</option>
-                            <option value ="UpdateTracks">UpdateTracks</option>
+                            <option value ="All">All</option>
+                            <option value ="Tracks">Tracks</option>
                         </select><br>
                         Params:<br>
                         <input type="text" id="i_update_para"><br>
