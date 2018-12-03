@@ -255,13 +255,14 @@ export default class TestLogisticsRaw {
             elementId = window.outputDeployElement;
         }
 
-        if (0 == channels.length) {
+        let tmps = this[getCommonAccount]();
+        if (0 == tmps[0]) {
             Output(elementId, 'small', 'red', "No channnel(idle)!");
             return;
         }
 
-        let account = channels[0].account;
-        let key = channels[0].key;
+        let account = tmps[0];
+        let key = tmps[1];
 
         let name;
         let fullName;
