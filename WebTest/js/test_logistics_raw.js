@@ -384,7 +384,7 @@ export default class TestLogisticsRaw {
         }
     }
 
-    createParallel() {
+    create() {
         console.log('TestLogisticsRaw.createAnsync()');
 
         let channelIdles = window.channelClass.get("idle");
@@ -1068,11 +1068,10 @@ export default class TestLogisticsRaw {
                 this.setup(para1, para2);
                 break;
             case 'Create':
-                this.createParallel();
+                this.create();
                 break;
             case 'Update':
                 this.update(para1, para2);
-                // this.updateParallel();
                 break;
             case 'RemoveEx':
                 this.removeEx();
