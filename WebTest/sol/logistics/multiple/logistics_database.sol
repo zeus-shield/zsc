@@ -21,8 +21,8 @@ contract LogisticsDatabase is Delegate {
           * country: 16~31(uint16)
           * time: 32~95(uint64)
           * timezone: 96~103(int8)
-          * actionCode: 103~110(7 bits)
-          * type: 111(1 bit)
+          * actionCode: 103~109(6 bits)
+          * type: 110-111(2 bit)
           */
         uint112 data_;
         string facilityName_;
@@ -121,8 +121,8 @@ contract LogisticsDatabase is Delegate {
 
         if (_track.keyExists("actionCode")) {
             // clear data
-            // data = data & (uint112(-1) << (16+16+64+8+7) | uint112(-1) >> (112-16-16-64-8));
-            data = data & (uint112(-1) << (16+16+64+8+7) | uint104(-1));
+            // data = data & (uint112(-1) << (16+16+64+8+6) | uint112(-1) >> (112-16-16-64-8));
+            data = data & (uint112(-1) << (16+16+64+8+6) | uint104(-1));
             // update data
             data = data | uint112(_track.getStringValueByKey("actionCode").toUint()) << (16+16+64+8);
             // data = data | uint112(_track.getIntValueByKey("actionCode")) << (16+16+64+8);
@@ -130,10 +130,10 @@ contract LogisticsDatabase is Delegate {
 
         if (_track.keyExists("type")) {
             // clear data
-            data = data & (uint112(-1) >> (112-16-16-64-8-7));
+            data = data & (uint112(-1) >> (112-16-16-64-8-6));
             // update data
-            data = data | uint112(_track.getStringValueByKey("type").toUint()) << (16+16+64+8+7);
-            // data = data | uint112(_track.getIntValueByKey("type")) << (16+16+64+8+7);
+            data = data | uint112(_track.getStringValueByKey("type").toUint()) << (16+16+64+8+6);
+            // data = data | uint112(_track.getIntValueByKey("type")) << (16+16+64+8+6);
         }
 
         tracks_[trackName].data_ = data;
@@ -252,15 +252,15 @@ contract LogisticsDatabase is Delegate {
             // country = uint16((data & (uint112(-1) << 16 & uint112(-1) >> (112-16-16))) >> 16);
             // time = uint64((data & (uint112(-1) << (16+16) & uint112(-1) >> (112-16-16-64))) >> (16+16));
             // timezone = int8((data & (uint112(-1) << (16+16+64) & uint112(-1) >> (112-16-16-64-8))) >> (16+16+64));
-            // actionCode = uint8((data & (uint112(-1) << (16+16+64+8) & uint112(-1) >> (112-16-16-64-8-7))) >> (16+16+64+8));
+            // actionCode = uint8((data & (uint112(-1) << (16+16+64+8) & uint112(-1) >> (112-16-16-64-8-6))) >> (16+16+64+8));
 
             city = uint16(data & uint16(-1));
             country = uint16((data & uint32(-1) << 16) >> 16);
             time = uint64((data & uint96(-1) << (16+16)) >> (16+16));
             timezone = int8((data & uint104(-1) << (16+16+64)) >> (16+16+64));
-            actionCode = uint8((data & uint112(-1) << (16+16+64+8)) >> (16+16+64+8)) & (uint8(-1) >> 1);
+            actionCode = uint8((data & uint112(-1) << (16+16+64+8)) >> (16+16+64+8)) & (uint8(-1) >> (112-16-16-64-8-6));
 
-            type8 = uint8((data & uint112(-1) << (16+16+64+8+7)) >> (16+16+64+8+7));
+            type8 = uint8((data & uint112(-1) << (16+16+64+8+6)) >> (16+16+64+8+6));
 
             str = str.concat("{", uint(type8).toString().toKeyValue("type"), ",");
             str = str.concat(uint(time).toString().toKeyValue("time"), ",");
