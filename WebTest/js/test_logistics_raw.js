@@ -165,15 +165,15 @@ export default class TestLogisticsRaw {
 
     [openChannel](cmd, handler, account, key, parallelCount, blockIndex, blockCount) {
         // testing data(create)
-        let tracks3 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"杭州\",\"facilityName\":\"Track3-1\",\"timeZone\":\"+3\",\"desc\":\"Track3-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Track3-2\",\"timeZone\":\"+3\",\"desc\":\"Track3-2\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
-        let info4 = "{\"error\":null,\"num\":\"JNTCU0600046684YQ\",\"transNum\":\"MSK0000027694\",\"model\":\"J-NET俄全通INFO4\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"Track4-1\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"HangZhou\",\"facilityName\":\"Армавир\",\"timeZone\":\"+3\",\"desc\":\"Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"Russian\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
-        let tracks5 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"杭州\",\"facilityName\":\"Track5-1\",\"timeZone\":\"+3\",\"desc\":\"Track5-1\",\"actionCode\":\"GTMS_SIGNED\"}}]}";
-        let info6 = "{\"error\":null,\"num\":\"JNTCU0600046686YQ\",\"transNum\":\"MSK0000027696\",\"model\":\"J-NET俄全通INFO6\",\"destinationCountry\":\"China\",\"lastStatus\":\"GTMS_SIGNED\",\"trackElementList\":[{\"type\":\"Track6-1\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"China\",\"city\":\"HangZhou\",\"facilityName\":\"SF\",\"timeZone\":\"+3\",\"desc\":\"SF is good.\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"China\",\"city\":\"ShangHai\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"Order received successfully\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:00\",\"country\":\"China\",\"city\":\"BeiJing\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"VISIBLE_UNKOWN\"}]}";
-        let tracks7 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2018-11-8 11:54:00\",\"country\":\"Russian\",\"city\":\"杭州\",\"facilityName\":\"Track7-1\",\"timeZone\":\"+3\",\"desc\":\"Track7-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Track7-2\",\"timeZone\":\"+3\",\"desc\":\"Track7-2\",\"actionCode\":\"GWMS_ACCEPT\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"Track7-3\",\"timeZone\":\"+3\",\"desc\":\"Track7-3\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
+        let tracks3 = "{\"trackElementList\":[{\"type\":\"1\",\"time\":\"1499918040\",\"country\":\"7\",\"city\":\"0571\",\"facilityName\":\"Track3-1\",\"timeZone\":\"+3\",\"desc\":\"Track3-1\",\"actionCode\":\"10\"}&{\"type\":\"1\",\"time\":\"1499420349\",\"country\":\"7\",\"city\":\"021\",\"facilityName\":\"Track3-2\",\"timeZone\":\"+3\",\"desc\":\"Track3-2\",\"actionCode\":\"9\"}]}";
+        let info4 = "{\"error\":null,\"num\":\"JNTCU0600046684YQ\",\"transNum\":\"MSK0000027694\",\"model\":\"J-NET俄全通INFO4\",\"destinationCountry\":\"7\",\"lastStatus\":\"10\",\"trackElementList\":[{\"type\":\"0\",\"time\":\"1499918040\",\"country\":\"7\",\"city\":\"0571\",\"facilityName\":\"Армавир\",\"timeZone\":\"+3\",\"desc\":\"Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\",\"actionCode\":\"10\"}&{\"type\":\"1\",\"time\":\"1499420349\",\"country\":\"7\",\"city\":\"010\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"-8\",\"desc\":\"Order received successfully\",\"actionCode\":\"8\"}&{\"type\":\"1\",\"time\":\"1499420340\",\"country\":\"07\",\"city\":\"010\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"-3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"88\"}]}";
+        let tracks5 = "{\"trackElementList\":[{\"type\":\"1\",\"time\":\"1543804012\",\"country\":\"07\",\"city\":\"0571\",\"facilityName\":\"Track5-1\",\"timeZone\":\"-3\",\"desc\":\"Track5-1\",\"actionCode\":\"10\"}}]}";
+        let info6 = "{\"error\":null,\"num\":\"JNTCU0600046686YQ\",\"transNum\":\"MSK0000027696\",\"model\":\"J-NET俄全通INFO6\",\"destinationCountry\":\"0086\",\"lastStatus\":\"77\",\"trackElementList\":[{\"type\":\"0\",\"time\":\"1499918040\",\"country\":\"086\",\"city\":\"0724\",\"facilityName\":\"SF\",\"timeZone\":\"+3\",\"desc\":\"SF is good.\",\"actionCode\":\"10\"}&{\"type\":\"1\",\"time\":\"1543804012\",\"country\":\"86\",\"city\":\"021\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"-3\",\"desc\":\"Order received successfully\",\"actionCode\":\"66\"}&{\"type\":\"1\",\"time\":\"1499420340\",\"country\":\"0086\",\"city\":\"010\",\"facilityName\":\"Sorting center of J-NET\",\"timeZone\":\"+3\",\"desc\":\"The parcel is ready to transfer to the courier\",\"actionCode\":\"38\"}]}";
+        let tracks7 = "{\"trackElementList\":[{\"type\":\"1\",\"time\":\"1543804012\",\"country\":\"7\",\"city\":\"0571\",\"facilityName\":\"Track7-1\",\"timeZone\":\"+3\",\"desc\":\"Track7-1\",\"actionCode\":\"18\"}&{\"type\":\"1\",\"time\":\"1543804012\",\"country\":\"7\",\"city\":\"021\",\"facilityName\":\"Track7-2\",\"timeZone\":\"+3\",\"desc\":\"Track7-2\",\"actionCode\":\"10\"}&{\"type\":\"0\",\"time\":\"1543804012\",\"country\":\"7\",\"city\":\"0021\",\"facilityName\":\"Track7-3\",\"timeZone\":\"+3\",\"desc\":\"Track7-3\",\"actionCode\":\"48\"}]}";
 
         // testing data(update)
-        let brief9 = "{\"error\":null,\"num\":\"JNTCU0600046689YQ\",\"transNum\":\"MSK0000027699\",\"model\":\"J-NET俄全通INFO9\",\"destinationCountry\":\"Russian\",\"lastStatus\":\"GTMS_SIGNED\"}";
-        let newTracks5 = "{\"trackElementList\":[{\"type\":\"DC\",\"time\":\"2017-07-13 11:54:00\",\"country\":\"Russian\",\"city\":\"上海德铎泰信息科技有限公司 上海市闵行区宜山路2016号合川大厦6H\",\"facilityName\":\"NewTrack5-1\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-1\",\"actionCode\":\"GTMS_SIGNED\"}&{\"type\":\"DC\",\"time\":\"2017-07-07 17:39:09\",\"country\":\"Russian\",\"city\":\"ShangHai\",\"facilityName\":\"NewTrack5-2\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-2\",\"actionCode\":\"GWMS_ACCEPT\"}]}";
+        let brief9 = "{\"error\":null,\"num\":\"JNTCU0600046689YQ\",\"transNum\":\"MSK0000027699\",\"model\":\"J-NET俄全通INFO9\",\"destinationCountry\":\"07\",\"lastStatus\":\"10\"}";
+        let newTracks5 = "{\"trackElementList\":[{\"type\":\"1\",\"time\":\"1543804012\",\"country\":\"07\",\"city\":\"0021\",\"facilityName\":\"NewTrack5-1\",\"timeZone\":\"-3\",\"desc\":\"上海德铎泰信息科技有限公司 上海市闵行区宜山路2016号合川大厦6H\",\"actionCode\":\"18\"}&{\"type\":\"0\",\"time\":\"1543804509\",\"country\":\"007\",\"city\":\"021\",\"facilityName\":\"NewTrack5-2\",\"timeZone\":\"+3\",\"desc\":\"NewTrack5-2\",\"actionCode\":\"88\"}]}";
 
         let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
 
@@ -191,7 +191,7 @@ export default class TestLogisticsRaw {
 
         if ("create" == cmd) {
             if (0 == blockIndex) {
-                logisticsCore.update(account, key, "JNTCU0600046683YQ", "MSK0000027693", "J-NET俄全通INFO3", "Russian", "GTMS_SIGNED", tracks3, function(error, result) {
+                logisticsCore.update(account, key, "JNTCU0600046683YQ", "MSK0000027693", "J-NET俄全通INFO3", 7, 38, tracks3, function(error, result) {
                     handler[openChannelFunc]("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
                 });
             } else if (1 == blockIndex) {
@@ -199,7 +199,7 @@ export default class TestLogisticsRaw {
                     handler[openChannelFunc]("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
                 });
             } else if (2 == blockIndex) {
-                logisticsCore.update(account, key, "JNTCU0600046685YQ", "MSK0000027695", "J-NET俄全通INFO5", "Russian", "GTMS_SIGNED", tracks5, function(error, result) {
+                logisticsCore.update(account, key, "JNTCU0600046685YQ", "MSK0000027695", "J-NET俄全通INFO5", 7, 38, tracks5, function(error, result) {
                     handler[openChannelFunc]("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
                 });
             } else if (3 == blockIndex) {
@@ -207,13 +207,13 @@ export default class TestLogisticsRaw {
                     handler[openChannelFunc]("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
                 });
             } else if (4 == blockIndex) {
-                logisticsCore.update(account, key, "JNTCU0600046687YQ", "MSK0000027697", "J-NET俄全通INFO7", "Russian", "GTMS_SIGNED", tracks7, function(error, result) {
+                logisticsCore.update(account, key, "JNTCU0600046687YQ", "MSK0000027697", "J-NET俄全通INFO7", 7, 38, tracks7, function(error, result) {
                     handler[openChannelFunc]("create", handler, account, key, parallelCount, blockIndex, blockCount, error, result);                                
                 });
             } else {}
         } else if ("update" == cmd) {
              if (0 == blockIndex) {
-                logisticsCore.updateBrief(account, key, "JNTCU0600046688YQ", "MSK0000027698", "上海德铎泰信息科技有限公司 上海市闵行区宜山路2016号合川大厦6H", "Russian", "GTMS_SIGNED", function(error, result) {
+                logisticsCore.updateBrief(account, key, "JNTCU0600046688YQ", "MSK0000027698", "上海德铎泰信息科技有限公司 上海市闵行区宜山路2016号合川大厦6H", 7, 38, function(error, result) {
                     handler[openChannelFunc]("update", handler, account, key, parallelCount, blockIndex, blockCount, error, result);
                 });
             } else if (1 == blockIndex) {
