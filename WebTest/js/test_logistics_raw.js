@@ -30,6 +30,7 @@ const closeChannel = Symbol('closeChannel');
 const updateBatch = Symbol('updateBatch');
 const removeBatch = Symbol('removeBatch');
 const getInvalid = Symbol('getInvalid');
+const invalidBatch = Symbol('invalidBatch');
 const getDelegateInstance = Symbol('getDelegateInstance');
 
 export default class TestLogisticsRaw {
