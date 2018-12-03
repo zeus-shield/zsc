@@ -27,7 +27,7 @@ const openChannelFunc = Symbol('openChannelFunc');
 const openChannel = Symbol('openChannel');
 const openNextChannel = Symbol('openNextChannel');
 const closeChannel = Symbol('closeChannel');
-const updateParallel = Symbol('updateParallel');
+const updateBatch = Symbol('updateBatch');
 const removeBatch = Symbol('removeBatch');
 const getInvalid = Symbol('getInvalid');
 const getDelegateInstance = Symbol('getDelegateInstance');
@@ -417,7 +417,7 @@ export default class TestLogisticsRaw {
         }
     }
 
-    [updateParallel]() {
+    [updateBatch]() {
         console.log('TestLogisticsRaw.updateSync()');
         let channelIdles = window.channelClass.get("idle");
         let blockCount = 3;
@@ -458,9 +458,7 @@ export default class TestLogisticsRaw {
         let account = tmps[0];
         let key = tmps[1];
 
-        let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-
-        if (type == "Update") {
+        if (type == "All") {
             let paras = para.split(",^,");
             let num = paras[0];
             let transNum = paras[1];
@@ -469,13 +467,14 @@ export default class TestLogisticsRaw {
             let lastStatus = paras[4];
             let tracks = paras[5];
 
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
             logisticsCore.update(account, key, num, transNum, model, destinationCountry, lastStatus, tracks, function(error, result) {
                 handler[commmonTransactionProc](error, result, window.outputWriteElement);
             });
-        } else if (type == "UpdateTracks") {
+        } else if (type == "Tracks") {
             Output(window.outputWriteElement, 'small', 'red', "Don't support now!");
-        } else if (type == "Parallel") {
-            this[updateParallel]();
+        } else if (type == "Batch") {
+            this[updateBatch]();
         } else {
             Output(window.outputWriteElement, 'small', 'red', "Update type Error!");
         }
