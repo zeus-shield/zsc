@@ -111,4 +111,20 @@ class Addons extends Admin {
 		}
 	}
 
+
+		/**
+	 * 启用插件
+	 */
+	public function enable() {
+		$id = input('id');
+		cache('hooks', null);
+		$model  = model('Addons');
+		$result = $model::where(array('id' => $id))->update(array('status' => 1));
+		if ($result) {
+			return $this->success('启用成功');
+		} else {
+			return $this->error("启用失败！");
+		}
+	}
+
 }
