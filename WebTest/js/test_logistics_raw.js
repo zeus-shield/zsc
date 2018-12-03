@@ -418,7 +418,6 @@ export default class TestLogisticsRaw {
 
     [updateParallel]() {
         console.log('TestLogisticsRaw.updateSync()');
-
         let channelIdles = window.channelClass.get("idle");
         let blockCount = 3;
         let parallelCount = 0;
@@ -448,15 +447,15 @@ export default class TestLogisticsRaw {
 
     update(type, para) {
         console.log('TestLogisticsRaw.update(%s)', type);
-        let channels = window.channelClass.get("idle");
-
-        if (0 == channels.length) {
+        let handler = this;
+        let tmps = this[getCommonAccount]();
+        if (0 == tmps[0]) {
             Output(window.outputWriteElement, 'small', 'red', "No channnel(idle)!");
             return;
         }
 
-        let account = channels[0].account;
-        let key = channels[0].key;
+        let account = tmps[0];
+        let key = tmps[1];
 
         let status = "";
         let string = "";
@@ -473,24 +472,7 @@ export default class TestLogisticsRaw {
             let tracks = paras[5];
 
             logisticsCore.update(account, key, num, transNum, model, destinationCountry, lastStatus, tracks, function(error, result) {
-                if (!error) {
-                    if ("" != result.status) {
-                        if (0x1 == parseInt(result.status)) {
-                            status = "succeeded";
-                        } else {
-                            status = "failure";
-                        }
-
-                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                        Output(window.outputWriteElement, 'small', 'red', string);
-                    } else {
-                        status = "Try to get status again!";
-                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                        Output(window.outputWriteElement, 'small', 'red', string);
-                    }
-                } else {
-                    Output(window.outputWriteElement, 'small', 'red', error);
-                }
+                handler[commmonTransactionProc](error, result, window.outputWriteElement);
             });
         } else if (type == "UpdateTracks") {
             Output(window.outputWriteElement, 'small', 'red', "Don't support now!");
