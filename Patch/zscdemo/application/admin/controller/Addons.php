@@ -194,5 +194,19 @@ class Addons extends Admin {
 	}
 
 
+		/**
+	 * 删除钩子
+	 * @param string $hook  钩子名称
+	 */
+	public function deleteHook($hook) {
+		$model     = db('hooks');
+		$condition = array(
+			'name' => $hook,
+		);
+		$model->where($condition)->delete();
+		S('hooks', null);
+	}
+
+
 
 }
