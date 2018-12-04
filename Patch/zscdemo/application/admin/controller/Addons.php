@@ -142,6 +142,35 @@ class Addons extends Admin {
 		}
 	}
 
-	
+		/**
+	 * 设置插件页面
+	 */
+	public function config() {
+		if (IS_POST) {
+			# code...
+		} else {
+			$id = input('id', '', 'trim,intval');
+			if (!$id) {
+				return $this->error("非法操作！");
+			}
+			$info = $this->addons->find($id);
+			if (!empty($info)) {
+				$class = get_addon_class($info['name']);
+
+				$keyList = array();
+				$data    = array(
+					'keyList' => $keyList,
+				);
+				$this->assign($data);
+				$this->setMeta($info['title'] . " - 设置");
+				return $this->fetch('public/edit');
+			} else {
+				return $this->error("未安装此插件！");
+			}
+		}
+	}
+
+
+
 
 }
