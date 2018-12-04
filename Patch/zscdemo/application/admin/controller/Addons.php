@@ -127,4 +127,21 @@ class Addons extends Admin {
 		}
 	}
 
+	/**
+	 * 禁用插件
+	 */
+	public function disable() {
+		$id = input('id');
+		cache('hooks', null);
+		$model  = model('Addons');
+		$result = $model::where(array('id' => $id))->update(array('status' => 0));
+		if ($result) {
+			return $this->success('禁用成功');
+		} else {
+			return $this->error("禁用失败！");
+		}
+	}
+
+	
+
 }
