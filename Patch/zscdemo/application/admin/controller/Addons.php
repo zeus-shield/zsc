@@ -207,6 +207,26 @@ class Addons extends Admin {
 		S('hooks', null);
 	}
 
+	/**
+	 * 钩子列表
+	 */
+	public function hooks() {
+
+		$map   = array();
+		$order = "id desc";
+		$list  = model('Hooks')->where($map)->order($order)->paginate(10);
+
+		// 记录当前列表页的cookie
+		Cookie('__forward__', $_SERVER['REQUEST_URI']);
+
+		$data = array(
+			'list' => $list,
+			'page' => $list->render(),
+		);
+		$this->setMeta("钩子管理");
+		$this->assign($data);
+		return $this->fetch();
+	}
 
 
 }
