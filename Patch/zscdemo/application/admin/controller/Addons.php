@@ -171,6 +171,28 @@ class Addons extends Admin {
 	}
 
 
+	/**
+	 * 获取插件所需的钩子是否存在，没有则新增
+	 * @param string $str  钩子名称
+	 * @param string $addons  插件名称
+	 * @param string $addons  插件简介
+	 */
+	public function existHook($str, $addons, $msg = '') {
+		$hook_mod      = db('Hooks');
+		$where['name'] = $str;
+		$gethook       = $hook_mod->where($where)->find();
+		if (!$gethook || empty($gethook) || !is_array($gethook)) {
+			$data['name']        = $str;
+			$data['description'] = $msg;
+			$data['type']        = 1;
+			$data['update_time'] = time();
+			$data['addons']      = $addons;
+			if (false !== $hook_mod->create($data)) {
+				$hook_mod->add();
+			}
+		}
+	}
+
 
 
 }
