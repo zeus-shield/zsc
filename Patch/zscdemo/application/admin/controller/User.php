@@ -27,10 +27,7 @@ class User extends Admin {
 		return $this->fetch();
 	}
 
-	/**
-	 * 添加用户
-	 * @author colin <molong@tensent.cn>
-	 */
+
 	public function add() {
 		$model = \think\Loader::model('User');
 		if (IS_POST) {
@@ -51,5 +48,30 @@ class User extends Admin {
 			return $this->fetch('public/edit');
 		}
 	}
-	
+
+		public function edit() {
+		$model = model('User');
+		if (IS_POST) {
+			$data = $this->request->post();
+
+			$reuslt = $model->editUser($data, true);
+
+			if (false !== $reuslt) {
+				return $this->success('修改成功！', url('admin/user/index'));
+			} else {
+				return $this->error($model->getError(), '');
+			}
+		} else {
+			$info = $this->getUserinfo();
+
+			$data = array(
+				'info'    => $info,
+				'keyList' => $model->editfield,
+			);
+			$this->assign($data);
+			$this->setMeta("编辑用户");
+			return $this->fetch('public/edit');
+		}
+	}
+
 }
