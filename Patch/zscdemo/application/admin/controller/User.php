@@ -26,4 +26,30 @@ class User extends Admin {
 		$this->setMeta('用户信息');
 		return $this->fetch();
 	}
+
+	/**
+	 * 添加用户
+	 * @author colin <molong@tensent.cn>
+	 */
+	public function add() {
+		$model = \think\Loader::model('User');
+		if (IS_POST) {
+			$data = $this->request->param();
+			//创建注册用户
+			$result = $model->register($data['username'], $data['password'], $data['repassword'], $data['email'], false);
+			if ($result) {
+				return $this->success('用户添加成功！', url('admin/user/index'));
+			} else {
+				return $this->error($model->getError());
+			}
+		} else {
+			$data = array(
+				'keyList' => $model->addfield,
+			);
+			$this->assign($data);
+			$this->setMeta("添加用户");
+			return $this->fetch('public/edit');
+		}
+	}
+	
 }
