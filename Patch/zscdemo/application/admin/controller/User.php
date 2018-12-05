@@ -123,4 +123,21 @@ class User extends Admin {
 		}
 	}
 
+		private function getUserinfo($uid = null, $pass = null, $errormsg = null) {
+		$user = model('User');
+		$uid  = $uid ? $uid : input('id');
+		//如果无UID则修改当前用户
+		$uid        = $uid ? $uid : session('user_auth.uid');
+		$map['uid'] = $uid;
+		if ($pass != null) {
+			unset($map);
+			$map['password'] = $pass;
+		}
+		$list = $user::where($map)->field('uid,username,nickname,sex,email,qq,score,signature,status,salt')->find();
+		if (!$list) {
+			return $this->error($errormsg ? $errormsg : '不存在此用户！');
+		}
+		return $list;
+	}
+
 }
