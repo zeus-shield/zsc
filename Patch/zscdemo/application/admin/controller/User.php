@@ -74,4 +74,12 @@ class User extends Admin {
 		}
 	}
 
+		public function del($id) {
+		$uid = array('IN', is_array($id) ? implode(',', $id) : $id);
+		//获取用户信息
+		$find = $this->getUserinfo($uid);
+		model('User')->where(array('uid' => $uid))->delete();
+		return $this->success('删除用户成功！');
+	}
+
 }
