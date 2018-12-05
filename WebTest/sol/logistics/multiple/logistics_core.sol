@@ -93,7 +93,7 @@ contract LogisticsCore is Delegate {
     }
 
     // _updateType: 0 means overwrite, 1 means append
-    function updateTracks(string _num, string _tracks, uint _updateType) external _onlyAdminOrHigher _checkDatabaseAddr {
+    function updateTracks(string _num, string _tracks, uint8 _updateType) external _onlyAdminOrHigher _checkDatabaseAddr {
         // check param
         require(0 != bytes(_num).length);
         require(0 != bytes(_tracks).length);
@@ -151,7 +151,7 @@ contract LogisticsCore is Delegate {
         updateBriefEx(_num, _info);
 
         // update tracks from json(similar to)
-        this.updateTracks(_num, _info, uint(0));
+        this.updateTracks(_num, _info, uint8(0));
     }
 
     function remove(string _num) external _onlyAdminOrHigher _checkDatabaseAddr {
