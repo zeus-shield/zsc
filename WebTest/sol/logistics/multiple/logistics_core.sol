@@ -217,6 +217,8 @@ contract LogisticsCore is Delegate {
         return numInvalidCounts_[_num];
     }
 
+    function getNumByIndex(uint _index) external view returns (string) {
+    }
     function getParcel(string _num) external view _checkDatabaseAddr returns (string, string, uint16, uint8, string) {
         // check param
         if (0 == bytes(_num).length) {
