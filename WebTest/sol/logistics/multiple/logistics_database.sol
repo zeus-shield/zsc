@@ -281,7 +281,36 @@ contract LogisticsDatabase is Delegate {
     }
 
     function getTrackElementByIndex(string _num, uint _index, string _elementType) external view returns (string) {
+        string memory trackName = "";
+
+        // check param
+        if(trackCounts_[_num] <= _index) {
+            return "";
+        }
+
+        trackName = _num.concat("-", _index.toString());
+
+        if (_elementType.equals("city")) {
+            return uint(uint16(tracks_[trackName].data_ & uint16(-1))).toString();
+        } else if (_elementType.equals("country")) {
+            return uint(uint16((tracks_[trackName].data_ & uint32(-1) << 16) >> 16)).toString();
+        } else if (_elementType.equals("time")) {
+            return uint(uint64((tracks_[trackName].data_ & uint96(-1) << (16+16)) >> (16+16))).toString();
+        } else if (_elementType.equals("timezone")) {
+            return int(int8((tracks_[trackName].data_ & uint104(-1) << (16+16+64)) >> (16+16+64))).toString();
+        } else if (_elementType.equals("actionCode")) {
+            return uint(uint8((tracks_[trackName].data_ & uint112(-1) << (16+16+64+8)) >> (16+16+64+8)) & (uint8(-1) >> (112-16-16-64-8-6))).toString();
+        } else if (_elementType.equals("type")) {
+            return uint(uint8((tracks_[trackName].data_ & uint112(-1) << (16+16+64+8+6)) >> (16+16+64+8+6))).toString();
+        } else if (_elementType.equals("facilityName")) {
+            return tracks_[trackName].facilityName_;
+        } else if (_elementType.equals("desc")) {
+            return tracks_[trackName].desc_;
+        } else {
+            return "";
+        }     
     }
+
     function getBrief(string _originalNum, string _num) external view returns (string, string, string, uint16, uint8) {
         return (_originalNum, briefs_[_num].transNum_, briefs_[_num].model_, briefs_[_num].destinationCountry_, briefs_[_num].lastStatus_);
     }
