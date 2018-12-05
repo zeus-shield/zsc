@@ -82,4 +82,45 @@ class User extends Admin {
 		return $this->success('删除用户成功！');
 	}
 
+		public function auth() {
+		$access = model('AuthGroupAccess');
+		$group  = model('AuthGroup');
+		if (IS_POST) {
+			$uid = input('uid', '', 'trim,intval');
+			$access->where(array('uid' => $uid))->delete();
+			$group_type = config('user_group_type');
+			foreach ($group_type as $key => $value) {
+				$group_id = input($key, '', 'trim,intval');
+				if ($group_id) {
+					$add = array(
+						'uid'      => $uid,
+						'group_id' => $group_id,
+					);
+					$access->save($add);
+				}
+			}
+			return $this->success("设置成功！");
+		} else {
+			$uid  = input('id', '', 'trim,intval');
+			$row  = $group::select();
+			$auth = $access::where(array('uid' => $uid))->select();
+
+			$auth_list = array();
+			foreach ($auth as $key => $value) {
+				$auth_list[] = $value['group_id'];
+			}
+			foreach ($row as $key => $value) {
+				$list[$value['module']][] = $value;
+			}
+			$data = array(
+				'uid'       => $uid,
+				'auth_list' => $auth_list,
+				'list'      => $list,
+			);
+			$this->assign($data);
+			$this->setMeta("用户分组");
+			return $this->fetch();
+		}
+	}
+
 }
