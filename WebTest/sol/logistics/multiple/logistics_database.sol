@@ -148,7 +148,7 @@ contract LogisticsDatabase is Delegate {
     }
 
     // _updateType: 0 means overwrite, 1 means append
-    function updateTracks(string _num, string _tracks, uint _updateType) external _onlyAdminOrHigher {
+    function updateTracks(string _num, string _tracks, uint8 _updateType) external _onlyAdminOrHigher {
         uint startIndex = 0;
 
         if (_tracks.keyExists("trackElementList")) {
