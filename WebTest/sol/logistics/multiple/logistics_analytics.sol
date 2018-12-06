@@ -37,6 +37,9 @@ contract logisticsAnalytics {
     }
 
     function setup(address _coreAddr) external {
+        // check core and databaseaddress
+        require(0 != _coreAddr);
+        coreAddr_ = _coreAddr;
     }
 
     // type: 0 means 'sent', 1 means 'received'
