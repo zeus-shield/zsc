@@ -1194,8 +1194,19 @@ export default class TestLogisticsRaw {
         }
     }
 
-    analytics(cmds, paras) {
-        console.log('TestLogisticsRaw.Analytics(%s, %s)', cmds, paras);
+    analytics(cmd, paras) {
+        console.log('TestLogisticsRaw.Analytics(%s, %s)', cmd, paras);
+
+        switch (cmd) {
+            case "Amount":
+                if ("DummyData" == paras) {
+                } else {
+                }
+                break;
+            default:
+                Output(window.outputAnalyticsElement, 'small', 'red', "Command Error!");
+                break;
+        }
     }
 
     do(operation, para1, para2) {
