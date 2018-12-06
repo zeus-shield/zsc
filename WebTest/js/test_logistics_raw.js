@@ -1194,14 +1194,15 @@ export default class TestLogisticsRaw {
         }
     }
 
+    dummyData(para1, para2) {
+        console.log('TestLogisticsRaw.dummyData(%s, %s)', para1, para2);
+    }
+
     analytics(cmd, paras) {
         console.log('TestLogisticsRaw.Analytics(%s, %s)', cmd, paras);
 
         switch (cmd) {
             case "Amount":
-                if ("DummyData" == paras) {
-                } else {
-                }
                 break;
             default:
                 Output(window.outputAnalyticsElement, 'small', 'red', "Command Error!");
@@ -1241,6 +1242,9 @@ export default class TestLogisticsRaw {
                 break;
             case 'Delegate':
                 this.delegate(para1, para2);
+                break;
+            case 'DummyData':
+                this.dummyData(para1, para2);
                 break;
             case 'Analytics':
                 this.analytics(para1, para2);
