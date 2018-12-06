@@ -35,4 +35,7 @@ contract logisticsAnalytics {
         require(0 != coreAddr_);
         _;
     }
+
+    function setup(address _coreAddr) external {
+    }
 }
