@@ -171,8 +171,8 @@ export default class TestLogisticsRaw {
         // 中国(t0) -> 俄罗斯(t1)，签收
         let num3 = "JNTCU0600046683YQ";
         let transNum3 = "订单描述：（中国 -> 俄罗斯，签收）";
-        let model3 = "J-NET俄全通：（Russian, GTMS_SIGNED）"; 
-        let destinationCountry3 = 7; // Russian
+        let model3 = "J-NET俄全通：（Russia, GTMS_SIGNED）"; 
+        let destinationCountry3 = 7; // Russia
         let lastStatus3 = 28;        // GTMS_SIGNED("用户签收","Delivered")
         let tracks3 = 
             "{" +
@@ -188,9 +188,9 @@ export default class TestLogisticsRaw {
                 "}&{" +
                     "\"type\":\"02\"," +            // DC
                     "\"time\":\"1539854640\"," +    // 2018-10-18 17:24:00
-                    "\"country\":\"07\"," +         // Russian
+                    "\"country\":\"07\"," +         // Russia
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(1) -> track(1)描述：（DC, 2018-10-18 17:24:00, Russian, GTMS_SIGNED）\"," +
+                    "\"facilityName\":\"time(1) -> track(1)描述：（DC, 2018-10-18 17:24:00, Russia, GTMS_SIGNED）\"," +
                     "\"timeZone\":\"+3\"," +        // +3
                     "\"desc\":\"Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\"," +
                     "\"actionCode\":\"028\"" +      // GTMS_SIGNED("用户签收","Delivered")
@@ -204,15 +204,15 @@ export default class TestLogisticsRaw {
                 "\"error\":null," +
                 "\"num\":\"JNTCU0600046684YQ\"," +
                 "\"transNum\":\"订单描述：（中国 -> 美国 -> 俄罗斯，签收）\"," +
-                "\"model\":\"J-NET俄全通：（Russian, GTMS_SIGNED）\"," +
-                "\"destinationCountry\":\"07\"," +  // Russian
+                "\"model\":\"J-NET俄全通：（Russia, GTMS_SIGNED）\"," +
+                "\"destinationCountry\":\"07\"," +  // Russia
                 "\"lastStatus\":\"028\"," +         // GTMS_SIGNED("用户签收","Delivered")
                 "\"trackElementList\":[{" +
                     "\"type\":\"02\"," +            // DC 
                     "\"time\":\"1538797740\"," +    // 2018-10-06 11:49:00
-                    "\"country\":\"07\", " +        // Russian
+                    "\"country\":\"07\", " +        // Russia
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(2) -> track(0)描述：（DC, 2018-10-06 11:49:00, Russian, GTMS_SIGNED）\"," +
+                    "\"facilityName\":\"time(2) -> track(0)描述：（DC, 2018-10-06 11:49:00, Russia, GTMS_SIGNED）\"," +
                     "\"timeZone\":\"+3\"," +        // +3
                     "\"desc\":\"Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\"," +
                     "\"actionCode\":\"028\"" +      // GTMS_SIGNED("用户签收","Delivered")
@@ -240,8 +240,8 @@ export default class TestLogisticsRaw {
         // 中国(t3) -> 法国(t1) -> 美国(t0) -> 俄罗斯(t2)，转运中
         let num5 = "JNTCU0600046685YQ";
         let transNum5 = "订单描述：（中国 -> 法国 -> 美国 -> 俄罗斯，转运中）";
-        let model5 = "J-NET俄全通：（Russian, VISIBLE_UNKOWN）"; 
-        let destinationCountry5 = 7;                // Russian
+        let model5 = "J-NET俄全通：（Russia, VISIBLE_UNKOWN）"; 
+        let destinationCountry5 = 7;                // Russia
         let lastStatus5 = 37;                       // VISIBLE_UNKOWN("转运","transfer")
         let tracks5 =
             "{" +
@@ -266,9 +266,9 @@ export default class TestLogisticsRaw {
                 "}&{" +
                     "\"type\":\"2\"," +             // DC
                     "\"time\":\"1542079440\"," +    // 2018-11-13 11:24:00
-                    "\"country\":\"7\"," +          // Russian
+                    "\"country\":\"7\"," +          // Russia
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(3) -> track(2)描述：（DC, 2018-11-13 11:24:00, Russian, VISIBLE_UNKOWN）\"," +
+                    "\"facilityName\":\"time(3) -> track(2)描述：（DC, 2018-11-13 11:24:00, Russia, VISIBLE_UNKOWN）\"," +
                     "\"timeZone\":\"+3\"," +        // +3
                     "\"desc\":\"Принят на транзитный склад\"," +      
                     "\"actionCode\":\"37\"" +       // VISIBLE_UNKOWN("转运","transfer")
@@ -1194,6 +1194,10 @@ export default class TestLogisticsRaw {
         }
     }
 
+    analytics(cmds, paras) {
+        console.log('TestLogisticsRaw.Analytics(%s, %s)', cmds, paras);
+    }
+
     do(operation, para1, para2) {
         console.log('TestLogisticsRaw.do(%s, %s, %s)', operation, para1, para2);
         switch(operation) {
@@ -1227,6 +1231,8 @@ export default class TestLogisticsRaw {
             case 'Delegate':
                 this.delegate(para1, para2);
                 break;
+            case 'Analytics':
+                this.analytics(para1, para2);
             default:
                 Output(window.outputCommonElement, 'small', 'red', 'Operation Error!');
                 break;
