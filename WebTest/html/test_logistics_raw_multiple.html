@@ -124,6 +124,7 @@
                 document.getElementById("b_get_number_submit").onclick = function() {
                     main('LogisticsRaw', 'GetNumber', document.getElementById("s_get_number_type").value, document.getElementById("get_number_para").value);
                 }
+
                 document.getElementById("b_analytics_amount_submit").onclick = function() {
                     let countrySent = document.getElementById("s_analytics_amount_sent_country").value;
                     let countryReceived = document.getElementById("s_analytics_amount_received_country").value;
@@ -257,11 +258,11 @@
                 <div class="well" id="block">
                     <h4>5. Test</h4>
                     <h5>Common Test(Batch Mode):</h5>
-                    <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Create', '', '')">Create</button>
-                    <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Update', 'Batch', '')">Update</button>
-                    <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Remove', 'Batch', '')">Remove</button>
-                    <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'Invalid', 'Batch', '')">Invalid</button>
-                    <button type="button" id="common_test_b" onclick="main('LogisticsRaw', 'DebugBrief', '', '')">DebugBrief</button>
+                    <button type="button" id="b_common_test" onclick="main('LogisticsRaw', 'Create', '', '')">Create</button>
+                    <button type="button" id="b_common_test" onclick="main('LogisticsRaw', 'Update', 'Batch', '')">Update</button>
+                    <button type="button" id="b_common_test" onclick="main('LogisticsRaw', 'Remove', 'Batch', '')">Remove</button>
+                    <button type="button" id="b_common_test" onclick="main('LogisticsRaw', 'Invalid', 'Batch', '')">Invalid</button>
+                    <button type="button" id="b_common_test" onclick="main('LogisticsRaw', 'DebugBrief', '', '')">DebugBrief</button>
                     <p id="output_common"></p>
 
                     <h5>Write Test:</h5>
@@ -333,6 +334,7 @@
                     <h4>6. Analytics</h4>
                     <div id="element">
                         <h5>Parcel Amount:</h5>
+                        <button type="button" id="b_analytics_amount_dummy_data" onclick="main('LogisticsRaw', 'Analytics', 'Amount', 'DummyData')">Dummy Data</button><br>
                         Country(sent):<br>
                         <select id="s_analytics_amount_sent_country", >
                             <option value ="Russia">All</option>
