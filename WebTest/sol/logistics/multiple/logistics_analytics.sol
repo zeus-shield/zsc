@@ -38,4 +38,7 @@ contract logisticsAnalytics {
 
     function setup(address _coreAddr) external {
     }
+
+    // type: 0 means 'sent', 1 means 'received'
+    function getParcelCountByCountry(uint8 _type, uint16 _country) external view _checkCoreAddr returns (uint)  {
 }
