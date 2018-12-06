@@ -31,4 +31,8 @@ contract logisticsAnalytics {
         coreAddr_ = 0;
     }
 
+    modifier _checkCoreAddr() {
+        require(0 != coreAddr_);
+        _;
+    }
 }
