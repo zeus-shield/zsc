@@ -167,89 +167,120 @@ export default class TestLogisticsRaw {
 
     [openChannel](cmd, handler, account, key, parallelCount, blockIndex, blockCount) {
         // testing data(create)
+
+        // 中国(t0) -> 俄罗斯(t1)，签收
         let num3 = "JNTCU0600046683YQ";
-        let transNum3 = "MSK0000027693";
-        let model3 = "J-NET俄全通INFO3"; 
-        let destinationCountry3 = 7;
-        let lastStatus3 = 38;
+        let transNum3 = "订单描述：（中国 -> 俄罗斯，签收）";
+        let model3 = "J-NET俄全通：（Russian, GTMS_SIGNED）"; 
+        let destinationCountry3 = 7; // Russian
+        let lastStatus3 = 28;        // GTMS_SIGNED("用户签收","Delivered")
         let tracks3 = 
             "{" +
-                "\"trackElementList\":[{" + 
-                    "\"type\":\"1\"," +
-                    "\"time\":\"1499918040\"," +
-                    "\"country\":\"7\"," +              // Russian
-                    "\"city\":\"0571\"," +
-                    "\"facilityName\":\"Track3-1\"," +
-                    "\"timeZone\":\"+3\"," +
-                    "\"desc\":\"Track3-1\"," +
-                    "\"actionCode\":\"10\"" +
+                "\"trackElementList\":[{" +
+                    "\"type\":\"01\"," +            // OC
+                    "\"time\":\"1537924497\"," +    // 2018-09-26 09:14:57
+                    "\"country\":\"086\"," +        // China
+                    "\"city\":\"\"," +
+                    "\"facilityName\":\"time(0) -> track(0)描述：（OC, 2018-09-26 09:14:57, China, PU_PICKUP_SUCCESS）\"," +
+                    "\"timeZone\":\"+8\"," +        // +8
+                    "\"desc\":\"上海市闵行区宜山路2016号合川大厦6H上海德铎泰信息科技有限公司揽件成功！\"," +
+                    "\"actionCode\":\"001\"" +      // PU_PICKUP_SUCCESS("揽收成功","Item picked up by courier")
                 "}&{" +
-                    "\"type\":\"1\"," +
-                    "\"time\":\"1499420349\"," +
-                    "\"country\":\"7\"," +
-                    "\"city\":\"021\"," +
-                    "\"facilityName\":\"Track3-2\"," +
-                    "\"timeZone\":\"+3\"," +
-                    "\"desc\":\"Track3-2\"," +
-                    "\"actionCode\":\"9\"" +
+                    "\"type\":\"02\"," +            // DC
+                    "\"time\":\"1539854640\"," +    // 2018-10-18 17:24:00
+                    "\"country\":\"07\"," +         // Russian
+                    "\"city\":\"\"," +
+                    "\"facilityName\":\"time(1) -> track(1)描述：（DC, 2018-10-18 17:24:00, Russian, GTMS_SIGNED）\"," +
+                    "\"timeZone\":\"+3\"," +        // +3
+                    "\"desc\":\"Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\"," +
+                    "\"actionCode\":\"028\"" +      // GTMS_SIGNED("用户签收","Delivered")
                 "}]" +
             "}";
         
+        // 中国(t1) -> 美国(t2) -> 俄罗斯(t0)，签收
         let num4 = "JNTCU0600046684YQ";
         let info4 = 
             "{" +
                 "\"error\":null," +
                 "\"num\":\"JNTCU0600046684YQ\"," +
-                "\"transNum\":\"MSK0000027694\"," +
-                "\"model\":\"J-NET俄全通INFO4\"," +
-                "\"destinationCountry\":\"7\"," +
-                "\"lastStatus\":\"10\"," +
+                "\"transNum\":\"订单描述：（中国 -> 美国 -> 俄罗斯，签收）\"," +
+                "\"model\":\"J-NET俄全通：（Russian, GTMS_SIGNED）\"," +
+                "\"destinationCountry\":\"07\"," +  // Russian
+                "\"lastStatus\":\"028\"," +         // GTMS_SIGNED("用户签收","Delivered")
                 "\"trackElementList\":[{" +
-                    "\"type\":\"0\"," +
-                    "\"time\":\"1499918040\"," +
-                    "\"country\":\"7\", " +
-                    "\"city\":\"0571\"," +
-                    "\"facilityName\":\"Армавир\"," +
-                    "\"timeZone\":\"+3\"," +
+                    "\"type\":\"02\"," +            // DC 
+                    "\"time\":\"1538797740\"," +    // 2018-10-06 11:49:00
+                    "\"country\":\"07\", " +        // Russian
+                    "\"city\":\"\"," +
+                    "\"facilityName\":\"time(2) -> track(0)描述：（DC, 2018-10-06 11:49:00, Russian, GTMS_SIGNED）\"," +
+                    "\"timeZone\":\"+3\"," +        // +3
                     "\"desc\":\"Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\"," +
-                    "\"actionCode\":\"10\"" +
+                    "\"actionCode\":\"028\"" +      // GTMS_SIGNED("用户签收","Delivered")
                 "}&{" +
-                    "\"type\":\"1\"," +
-                    "\"time\":\"1499420349\"," +
-                    "\"country\":\"7\"," +
-                    "\"city\":\"010\"," +
-                    "\"facilityName\":\"Sorting center of J-NET\"," +
-                    "\"timeZone\":\"-8\", " +
-                    "\"desc\":\"Order received successfully\"," +
-                    "\"actionCode\":\"8\"" +
+                    "\"type\":\"1\"," +             // OC
+                    "\"time\":\"1537924497\"," +    // 2018-09-26 09:14:57
+                    "\"country\":\"86\"," +         // China
+                    "\"city\":\"\"," +
+                    "\"facilityName\":\"time(0) -> track(1)描述：（OC, 2018-09-26 09:14:57, China, PU_PICKUP_SUCCESS）\"," +
+                    "\"timeZone\":\"+8\", " +       // +8
+                    "\"desc\":\"上海市闵行区宜山路2016号合川大厦6H上海德铎泰信息科技有限公司揽件成功！\"," +
+                    "\"actionCode\":\"1\"" +        // PU_PICKUP_SUCCESS("揽收成功","Item picked up by courier")
                 "}&{" +
-                    "\"type\":\"1\"," +
-                    "\"time\":\"1499420340\"," +
-                    "\"country\":\"07\"," +
-                    "\"city\":\"010\"," +
-                    "\"facilityName\":\"Sorting center of J-NET\"," +
-                    "\"timeZone\":\"-3\"," +
+                    "\"type\":\"002\"," +           // DC
+                    "\"time\":\"1538365740\"," +    // 2018-10-01 11:49:00
+                    "\"country\":\"007\"," +        // USA
+                    "\"city\":\"\"," +
+                    "\"facilityName\":\"time(1) -> track(2)描述：（DC, 2018-10-01 11:49:00, USA, VISIBLE_UNKOWN）\"," +
+                    "\"timeZone\":\"-5\"," +        // -5
                     "\"desc\":\"The parcel is ready to transfer to the courier\"," +
-                    "\"actionCode\":\"88\"" +
+                    "\"actionCode\":\"0037\"" +     // VISIBLE_UNKOWN("转运","transfer")     
                 "}]" +
             "}";
         
+        // 中国(t3) -> 法国(t1) -> 美国(t0) -> 俄罗斯(t2)，转运中
         let num5 = "JNTCU0600046685YQ";
-        let transNum5 = "MSK0000027695";
-        let model5 = "J-NET俄全通INFO5"; 
-        let destinationCountry5 = 7;
-        let lastStatus5 = 38;
+        let transNum5 = "订单描述：（中国 -> 法国 -> 美国 -> 俄罗斯，转运中）";
+        let model5 = "J-NET俄全通：（Russian, VISIBLE_UNKOWN）"; 
+        let destinationCountry5 = 7;                // Russian
+        let lastStatus5 = 37;                       // VISIBLE_UNKOWN("转运","transfer")
         let tracks5 =
             "{" +
                 "\"trackElementList\":[{" +
-                    "\"type\":\"1\"," +
-                    "\"time\":\"1543804012\"," +
-                    "\"country\":\"07\"," +
-                    "\"city\":\"0571\"," +
-                    "\"facilityName\":\"Track5-1\"," +
-                    "\"timeZone\":\"-3\"," +
-                    "\"desc\":\"Track5-1\"," +
-                    "\"actionCode\":\"10\"" +
+                    "\"type\":\"2\"," +             // DC
+                    "\"time\":\"1541991540\"," +    // 2018-11-12 10:59:00
+                    "\"country\":\"1\"," +          // USA
+                    "\"city\":\"\"," +
+                    "\"facilityName\":\"time(2) -> track(0)描述：（DC, 2018-11-12 10:59:00, USA, VISIBLE_UNKOWN）\"," +
+                    "\"timeZone\":\"-5\"," +        // -5
+                    "\"desc\":\"International shipment release - Export\"," +
+                    "\"actionCode\":\"37\"" +       // VISIBLE_UNKOWN("转运","transfer")
+                "}&{" +
+                    "\"type\":\"2\"," +             // DC
+                    "\"time\":\"1541813640\"," +    // 2018-11-10 09:34:00
+                    "\"country\":\"33\"," +         // France
+                    "\"city\":\"\"," +
+                    "\"facilityName\":\"time(1) -> track(1)描述：（DC, 2018-11-10 09:34:00, France, VISIBLE_UNKOWN）\"," +
+                    "\"timeZone\":\"+0\"," +        // +0
+                    "\"desc\":\"Transport de marchandises\"," +
+                    "\"actionCode\":\"37\"" +       // VISIBLE_UNKOWN("转运","transfer")
+                "}&{" +
+                    "\"type\":\"2\"," +             // DC
+                    "\"time\":\"1542079440\"," +    // 2018-11-13 11:24:00
+                    "\"country\":\"7\"," +          // Russian
+                    "\"city\":\"\"," +
+                    "\"facilityName\":\"time(3) -> track(2)描述：（DC, 2018-11-13 11:24:00, Russian, VISIBLE_UNKOWN）\"," +
+                    "\"timeZone\":\"+3\"," +        // +3
+                    "\"desc\":\"Принят на транзитный склад\"," +      
+                    "\"actionCode\":\"37\"" +       // VISIBLE_UNKOWN("转运","transfer")
+                "}&{" +
+                    "\"type\":\"1\"," +             // OC
+                    "\"time\":\"1540966156\"," +    // 2018-10-31 14:09:16
+                    "\"country\":\"86\"," +         // China
+                    "\"city\":\"\"," +
+                    "\"facilityName\":\"time(0) -> track(3)描述：（OC, 2018-10-31 14:09:16, China, PU_PICKUP_SUCCESS）\"," +
+                    "\"timeZone\":\"+8\"," +        // +8
+                    "\"desc\":\"上海市闵行区宜山路2016号合川大厦6H上海德铎泰信息科技有限公司揽件成功！\"," +      
+                    "\"actionCode\":\"1\"" +       // PU_PICKUP_SUCCESS("揽收成功","Item picked up by courier")
                 "}]" +
             "}";
         
