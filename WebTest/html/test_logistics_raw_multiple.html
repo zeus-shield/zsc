@@ -66,9 +66,10 @@
                 window.outputCommonElement = 'output_common';
                 window.outputWriteElement = 'output_write';
                 window.outputReadElement = 'output_read';
+                window.outputAnalyticsElement = 'p_output_analytics';
 
                 provider(false);
-                document.getElementById('provider').addEventListener('change',function(){
+                document.getElementById("s_provider").addEventListener('change',function(){
                      if('injected' == this.value) {
                         provider(true);
                      } else {
@@ -117,11 +118,11 @@
                 }
 
                 document.getElementById("b_get_info_submit").onclick = function() {
-                    main('LogisticsRaw', 'GetInfo', document.getElementById("get_info_type").value, document.getElementById("get_info_para").value);
+                    main('LogisticsRaw', 'GetInfo', document.getElementById("s_get_info_type").value, document.getElementById("get_info_para").value);
                 }
 
                 document.getElementById("b_get_number_submit").onclick = function() {
-                    main('LogisticsRaw', 'GetNumber', document.getElementById("get_number_type").value, document.getElementById("get_number_para").value);
+                    main('LogisticsRaw', 'GetNumber', document.getElementById("s_get_number_type").value, document.getElementById("get_number_para").value);
                 }
                 document.getElementById("b_analytics_amount_submit").onclick = function() {
                     let countrySent = document.getElementById("s_analytics_amount_sent_country").value;
@@ -145,7 +146,7 @@
             <p>
                 <div class="well" id="block">
                     <h4>1. Please select web3 provider:</h4>
-                    <select id="provider">
+                    <select id="s_provider">
                       <option value ="local">Localhost</option>
                       <option value ="injected">Injected Web3</option>
                     </select>
@@ -294,7 +295,7 @@
                     <div id="element">
                         <h5>Get Info:</h5>
                         Select Type:<br>
-                        <select id="get_info_type">
+                        <select id="s_get_info_type">
                             <option value ="LogisticsInfo">LogisticsInfo</option>
                             <option value ="Parcel">Parcel</option>
                             <option value ="ParcelEx">ParcelEx</option>
@@ -313,7 +314,7 @@
                     <div id="element">
                         <h5>Get Number:</h5>
                         Select Type:<br>
-                        <select id="get_number_type">
+                        <select id="s_get_number_type">
                             <option value ="Num">Num</option>
                             <option value ="Tracks">Tracks</option>
                             <option value ="Invalid">Invalid</option>
@@ -369,7 +370,7 @@
                         <button type="button" id="b_analytics_amount_submit">Submit</button>
                     </div>
                     <div style="clear: left"></div>
-                    <p id="p_output_analytics_amount"></p>
+                    <p id="p_output_analytics"></p>
                 </div>
             </p>
         </div>
