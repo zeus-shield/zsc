@@ -195,4 +195,32 @@ class User extends Admin {
 		}
 	}
 
+		public function changeStatus($method = null) {
+		$id = array_unique((array) input('id', 0));
+		if (in_array(config('user_administrator'), $id)) {
+			return $this->error("不允许对超级管理员执行该操作!");
+		}
+		$id = is_array($id) ? implode(',', $id) : $id;
+		if (empty($id)) {
+			return $this->error('请选择要操作的数据!');
+		}
+		$map['uid'] = array('in', $id);
+		switch (strtolower($method)) {
+		case 'forbiduser':
+			$this->forbid('Member', $map);
+			break;
+
+		case 'resumeuser':
+			$this->resume('Member', $map);
+			break;
+
+		case 'deleteuser':
+			$this->delete('Member', $map);
+			break;
+
+		default:
+			return $this->error('参数非法');
+		}
+	}
+
 }
