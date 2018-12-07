@@ -228,5 +228,25 @@ class Addons extends Admin {
 		return $this->fetch();
 	}
 
+		public function addhook() {
+		$hooks = model('Hooks');
+		if (IS_POST) {
+			$result = $hooks->change();
+			if ($result !== false) {
+				return $this->success("修改成功");
+			} else {
+				return $this->error($hooks->getError());
+			}
+		} else {
+			$keylist = $hooks->getaddons();
+			$data    = array(
+				'keyList' => $keylist,
+			);
+			$this->assign($data);
+			$this->setMeta('编辑钩子');
+			return $this->fetch('public/edit');
+		}
+	}
+
 
 }
