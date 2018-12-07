@@ -140,4 +140,42 @@ class User extends Admin {
 		return $list;
 	}
 
+		public function submitNickname() {
+
+		//获取参数
+		$nickname = input('post.nickname');
+		$password = input('post.password');
+		if (empty($nickname)) {
+			return $this->error('请输入昵称');
+		}
+		if (empty($password)) {
+			return $this->error('请输入密码');
+		}
+
+		//密码验证
+		$User = new UserApi();
+		$uid  = $User->login(UID, $password, 4);
+		if ($uid == -2) {
+			return $this->error('密码不正确');
+		}
+
+		$Member = model('User');
+		$data   = $Member->create(array('nickname' => $nickname));
+		if (!$data) {
+			return $this->error($Member->getError());
+		}
+
+		$res = $Member->where(array('uid' => $uid))->save($data);
+
+		if ($res) {
+			$user             = session('user_auth');
+			$user['username'] = $data['nickname'];
+			session('user_auth', $user);
+			session('user_auth_sign', data_auth_sign($user));
+			return $this->success('修改昵称成功！');
+		} else {
+			return $this->error('修改昵称失败！');
+		}
+	}
+
 }
