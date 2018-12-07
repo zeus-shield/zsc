@@ -1412,6 +1412,36 @@ export default class TestLogisticsRaw {
             Output(outputElement, 'small', 'red', error);
         }        
     }
+
+    openChannelEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement) {
+        let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+
+        if (blockCount < blockIndex) {
+            return;
+        }
+
+        let index = window.channelClass.find(account);
+        let size = window.channelClass.size();
+        if (size == index) {
+            return;
+        }
+
+        window.channelClass.status(index, "busy");
+
+        if ("update" == data[blockIndex].type) {
+            logisticsCore.update(account, key, 
+                data[blockIndex].num, data[blockIndex].transNum,
+                data[blockIndex].model, data[blockIndex].destinationCountry,
+                data[blockIndex].lastStatus, data[blockIndex].tracks, function(error, result) {
+                handler.openChannelFuncEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
+            });
+        } else if ("updateEx" == data[blockIndex].type) {
+            logisticsCore.updateEx(account, key, data[blockIndex].num, data[blockIndex].info, function(error, result) {
+                handler.openChannelFuncEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
+            });
+        } else {}
+    }
+
     dummyData(para1, para2) {
         console.log('TestLogisticsRaw.dummyData(%s, %s)', para1, para2);
         // Analytics, Amount
