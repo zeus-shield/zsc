@@ -248,5 +248,28 @@ class Addons extends Admin {
 		}
 	}
 
+		//钩子出编辑挂载插件页面
+	public function edithook($id) {
+		$hooks = model('Hooks');
+		if (IS_POST) {
+			$result = $hooks->change();
+			if ($result !== false) {
+				return $this->success("修改成功");
+			} else {
+				return $this->error($hooks->getError());
+			}
+		} else {
+			$info    = db('Hooks')->find($id);
+			$keylist = $hooks->getaddons($info['addons']);
+			$data    = array(
+				'info'    => $info,
+				'keyList' => $keylist,
+			);
+			$this->assign($data);
+			$this->setMeta('编辑钩子');
+			return $this->fetch('public/edit');
+		}
+	}
+
 
 }
