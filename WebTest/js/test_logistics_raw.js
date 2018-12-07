@@ -1339,6 +1339,28 @@ export default class TestLogisticsRaw {
 
         return data;
     }
+
+    openNextChannelEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result) {
+        if (blockCount == handler[nextIndex]) {
+            // no block will proc, close channel
+            handler[closeChannel](account);
+
+            // if all the channel is idle, all the block finished
+            let channels = window.channelClass.get("idle");
+            if (window.channelClass.size() == channels.length) {
+                // finish the all the block
+                let ticks = (new Date()).valueOf() - handler[tick];
+                let string = `Finish all(cost: ${ticks}ms).`;
+                Output(outputElement, 'small', 'red', string);
+                return true;
+            }
+        } else {
+            handler.openChannelEx(handler, account, key, data, parallelCount, handler[nextIndex], blockCount, outputElement);
+            handler[nextIndex] ++;
+        }
+
+        return false;
+    }
     dummyData(para1, para2) {
         console.log('TestLogisticsRaw.dummyData(%s, %s)', para1, para2);
         // Analytics, Amount
