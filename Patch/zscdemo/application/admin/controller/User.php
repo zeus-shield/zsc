@@ -178,4 +178,21 @@ class User extends Admin {
 		}
 	}
 
+		public function editpwd() {
+		if (IS_POST) {
+			$user = model('User');
+			$data = $this->request->post();
+
+			$res = $user->editpw($data);
+			if ($res) {
+				return $this->success('修改密码成功！');
+			} else {
+				return $this->error($user->getError());
+			}
+		} else {
+			$this->setMeta('修改密码');
+			return $this->fetch();
+		}
+	}
+
 }
