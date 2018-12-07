@@ -1196,6 +1196,50 @@ export default class TestLogisticsRaw {
 
     dummyData(para1, para2) {
         console.log('TestLogisticsRaw.dummyData(%s, %s)', para1, para2);
+        // Analytics, Amount
+        let data;
+        let blockCount;
+        let outputElement;
+
+        switch (para1) {
+            case "Analytics":
+                outputElement = window.outputAnalyticsElement;
+                if ("Amount" == para2) {
+                    data = this.buildAnalyticsAmountData();
+                    blockCount = data.length;
+                } else {
+                    Output(outputElement, 'small', 'red', "Command Error!");
+                    return;
+                }
+                break;
+            default:
+                return;
+        }
+
+        let parallelCount = 0;
+        let channelIdles = window.channelClass.get("idle");
+
+        if (0 == channelIdles.length) {
+            Output(outputElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        if (blockCount > channelIdles.length) {
+            parallelCount = channelIdles.length;
+            this[nextIndex] = channelIdles.length;
+        } else {
+            parallelCount = blockCount;
+            this[nextIndex] = blockCount;
+        }
+
+        // start tick
+        this[tick] = (new Date()).valueOf();
+
+        for (let blockIndex=0; blockIndex<parallelCount; blockIndex++) {
+            let account = channelIdles[blockIndex].account;
+            let key = channelIdles[blockIndex].key;
+            this.openChannelEx(this, account, key, data, parallelCount, blockIndex, blockCount, outputElement);
+        }
     }
 
     analytics(cmd, paras) {
