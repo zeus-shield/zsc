@@ -1361,6 +1361,57 @@ export default class TestLogisticsRaw {
 
         return false;
     }
+
+    openChannelFuncEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result) {
+        if (!error) {
+            if ("" != result.status) {
+                if (0x1 == parseInt(result.status)) {
+                    console.log("%cindex=%s(succeeded), account=%s","background:white;color:orange", blockIndex, account);
+                } else {
+                    console.log("%cindex=%s(failure), account=%s","background:white;color:red", blockIndex, account);
+                }
+
+                if (0x1 == parseInt(result.status)) {
+                    // try to next transaction
+                    status = "succeeded";
+
+                    // lock -- DOTO
+                    let finished = handler.openNextChannelEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
+                    if (finished) {
+                        return;
+                    }
+                    // unlock -- DOTO
+                } else {
+                    // retry to last transaction
+                    status = "failure";
+
+                    // if ((!web3.currentProvider.isMetaMask)
+                    //     && ("http://localhost:7545" == web3.currentProvider.host)) {
+                    //     // ganache (workaround)
+                    //     // lock -- DOTO
+                    //     let finished = handler.openNextChannelEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
+                    //     if (finished) {
+                    //         return;
+                    //     }
+                    //     // unlock -- DOTO
+                    // } else {
+                        // geth or metamask
+                    handler.openChannelEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement);
+                    // }
+                }
+
+                let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                Output(outputElement, 'small', 'red', string);
+            } else {
+                let status = "Try to get status again!";
+                let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                Output(outputElement, 'small', 'red', string);
+            }
+        } else {
+            handler.openChannelEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement);
+            Output(outputElement, 'small', 'red', error);
+        }        
+    }
     dummyData(para1, para2) {
         console.log('TestLogisticsRaw.dummyData(%s, %s)', para1, para2);
         // Analytics, Amount
