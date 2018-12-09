@@ -1825,9 +1825,6 @@ export default class TestLogisticsRaw {
             case 'Setup':
                 this.setup(para1, para2);
                 break;
-            case 'Create':
-                this.create();
-                break;
             case 'Update':
                 this.update(para1, para2);
                 break;
