@@ -1729,18 +1729,42 @@ export default class TestLogisticsRaw {
 
         window.channelClass.status(index, "busy");
 
-        if ("update" == data[blockIndex].type) {
-            logisticsCore.update(account, key, 
-                data[blockIndex].num, data[blockIndex].transNum,
-                data[blockIndex].model, data[blockIndex].destinationCountry,
-                data[blockIndex].lastStatus, data[blockIndex].tracks, function(error, result) {
-                handler.openChannelFuncEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
-            });
-        } else if ("updateEx" == data[blockIndex].type) {
-            logisticsCore.updateEx(account, key, data[blockIndex].num, data[blockIndex].info, function(error, result) {
-                handler.openChannelFuncEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
-            });
-        } else {}
+        switch (data[blockIndex].type) {
+            case "update":
+                logisticsCore.update(account, key, 
+                    data[blockIndex].num, data[blockIndex].transNum,
+                    data[blockIndex].model, data[blockIndex].destinationCountry,
+                    data[blockIndex].lastStatus, data[blockIndex].tracks, function(error, result) {
+                    handler.openChannelFuncEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
+                });
+                break;
+            case "updateEx":
+                logisticsCore.updateEx(account, key, data[blockIndex].num, data[blockIndex].info, function(error, result) {
+                    handler.openChannelFuncEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
+                });
+                break;
+            case "updateBrief":
+                logisticsCore.updateBrief(account, key,
+                    data[blockIndex].num, data[blockIndex].transNum,
+                    data[blockIndex].model, data[blockIndex].destinationCountry,
+                    data[blockIndex].lastStatus, function(error, result) {
+                    handler.openChannelFuncEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
+                });
+                break;
+            case "updateBriefEx":
+                logisticsCore.updateBriefEx(account, key, data[blockIndex].num, data[blockIndex].info, function(error, result) {
+                    handler.openChannelFuncEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
+                });
+                break;
+            case "updateTracks":
+                logisticsCore.updateTracks(account, key, data[blockIndex].num, data[blockIndex].info, 1, function(error, result) {
+                    handler.openChannelFuncEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
+                });
+                break;
+            default:
+                Output(outputElement, 'small', 'red', "Command Type Error!");
+                break;
+        }
     }
 
     dummyData(para1, para2) {
