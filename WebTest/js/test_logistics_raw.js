@@ -27,7 +27,6 @@ const openChannelFunc = Symbol('openChannelFunc');
 const openChannel = Symbol('openChannel');
 const openNextChannel = Symbol('openNextChannel');
 const closeChannel = Symbol('closeChannel');
-const updateBatch = Symbol('updateBatch');
 const removeBatch = Symbol('removeBatch');
 const getInvalid = Symbol('getInvalid');
 const invalidBatch = Symbol('invalidBatch');
@@ -641,35 +640,6 @@ export default class TestLogisticsRaw {
         }
     }
 
-    [updateBatch]() {
-        console.log('TestLogisticsRaw.updateSync()');
-        let channelIdles = window.channelClass.get("idle");
-        let blockCount = 3;
-        let parallelCount = 0;
-
-        if (0 == channelIdles.length) {
-            Output(window.outputCommonElement, 'small', 'red', "No channnel(idle)!");
-            return;
-        }
-
-        if (blockCount > channelIdles.length) {
-            parallelCount = channelIdles.length;
-            this[nextIndex] = channelIdles.length;
-        } else {
-            parallelCount = blockCount;
-            this[nextIndex] = blockCount;
-        }
-
-        // start tick
-        this[tick] = (new Date()).valueOf();
-
-        for (let blockIndex=0; blockIndex<parallelCount; blockIndex++) {
-            let account = channelIdles[blockIndex].account;
-            let key = channelIdles[blockIndex].key;
-            this[openChannel]("update", this, account, key, parallelCount, blockIndex, blockCount);
-        }
-    }
-
     update(type, para) {
         console.log('TestLogisticsRaw.update(%s)', type);
         let handler = this;
@@ -697,8 +667,6 @@ export default class TestLogisticsRaw {
             });
         } else if (type == "Tracks") {
             Output(window.outputWriteElement, 'small', 'red', "Don't support now!");
-        } else if (type == "Batch") {
-            this[updateBatch]();
         } else {
             Output(window.outputWriteElement, 'small', 'red', "Update type Error!");
         }
@@ -1849,6 +1817,9 @@ export default class TestLogisticsRaw {
             case 'Setup':
                 this.setup(para1, para2);
                 break;
+            case 'DebugBrief':
+                this.debugBrief();
+                break;
             case 'Update':
                 this.update(para1, para2);
                 break;
@@ -1857,9 +1828,6 @@ export default class TestLogisticsRaw {
                 break;
             case 'Invalid':
                 this.invalid(para1, para2);
-                break;
-            case 'DebugBrief':
-                this.debugBrief();
                 break;
             case 'GetNumber':
                 this.getNumber(para1, para2);
