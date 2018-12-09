@@ -23,9 +23,9 @@ const tick = Symbol('tick');
 const sleep = Symbol('sleep');
 const getCommonAccount = Symbol('getCommonAccount');
 const commmonTransactionProc = Symbol('commmonTransactionProc');
-const openChannelFunc = Symbol('openChannelFunc');
-const openChannel = Symbol('openChannel');
-const openNextChannel = Symbol('openNextChannel');
+// const openChannelFunc = Symbol('openChannelFunc');
+// const openChannel = Symbol('openChannel');
+// const openNextChannel = Symbol('openNextChannel');
 const closeChannel = Symbol('closeChannel');
 const removeBatch = Symbol('removeBatch');
 const getInvalid = Symbol('getInvalid');
@@ -244,528 +244,6 @@ export default class TestLogisticsRaw {
                 break;
             default:
                 Output(window.outputSetupElement, 'small', 'red', "Command Error!");
-                break;
-        }
-    }
-
-    update(type, para) {
-        console.log('TestLogisticsRaw.update(%s)', type);
-        let handler = this;
-        let tmps = this[getCommonAccount]();
-        if (0 == tmps[0]) {
-            Output(window.outputWriteElement, 'small', 'red', "No channnel(idle)!");
-            return;
-        }
-
-        let account = tmps[0];
-        let key = tmps[1];
-
-        if (type == "All") {
-            let paras = para.split(",^,");
-            let num = paras[0];
-            let transNum = paras[1];
-            let model = paras[2];
-            let destinationCountry = paras[3];
-            let lastStatus = paras[4];
-            let tracks = paras[5];
-
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            logisticsCore.update(account, key, num, transNum, model, destinationCountry, lastStatus, tracks, function(error, result) {
-                handler[commmonTransactionProc](error, result, window.outputWriteElement);
-            });
-        } else if (type == "Tracks") {
-            Output(window.outputWriteElement, 'small', 'red', "Don't support now!");
-        } else {
-            Output(window.outputWriteElement, 'small', 'red', "Update type Error!");
-        }
-    }
-
-    [removeBatch](account, key, handler) {
-        console.log('TestLogisticsRaw.removeBatch()');
-
-        // create and update at first
-
-        let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-        logisticsCore.remove(account, key, "JNTCU0600046684YQ", function(error, result) {
-            if (!error) {
-                if ("" != result.status) {
-                    if (0x0 == parseInt(result.status)) {
-                        let status = "failure";
-                        let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                        Output(window.outputCommonElement, 'small', 'red', string);
-                        return;
-                    }
-                    logisticsCore.remove(account, key, "JNTCU0600046688YQ", function(error, result) {
-                        handler[commmonTransactionProc](error, result, window.outputCommonElement);
-                    });
-                } else {
-                    let status = "Try to get status again!";
-                    let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                    Output(window.outputCommonElement, 'small', 'red', string);
-                }
-            } else {
-                Output(window.outputCommonElement, 'small', 'red', error);
-            }
-        });
-    }
-
-    remove(type, para) {
-        console.log('TestLogisticsRaw.remove(%s, %s)', type, para);
-        let handler = this;
-        let tmps = this[getCommonAccount]();
-        if (0 == tmps[0]) {
-            Output(window.outputWriteElement, 'small', 'red', "No channnel(idle)!");
-            return;
-        }
-
-        let account = tmps[0];
-        let key = tmps[1];
-
-        if (type == "Common") {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            logisticsCore.remove(account, key, para, function(error, result) {
-                handler[commmonTransactionProc](error, result, window.outputWriteElement);
-            });
-        } else if (type == "Batch") {
-            this[removeBatch](account, key, this);
-        } else {
-            Output(window.outputWriteElement, 'small', 'red', "Remove type Error!");
-        }
-    }
-
-    [getInvalid](handler, num) {
-        handler.numberOfInvalid(num, function(error, result) {
-            if (!error) {
-                for (let i=0; i<result; i++) {
-                    // handler.getBriefInvalid(num, i, function(error, num, index, result) {
-                    handler.getTracksInvalid(num, i, function(error, num, index, result) {
-                        if (!error) {
-                            // console.log(result);
-                            Output(window.outputCommonElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
-                        } else {
-                            Output(window.outputCommonElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
-                        }
-                    })
-                }
-            } else {
-                Output(window.outputCommonElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
-            }
-        })
-    }
-
-    // invalid -> update -> invalid -> updateEx -> invalid
-    [invalidBatch](account, key, handler) {
-        console.log('TestLogisticsRaw.invalidBatch()');
-        let tracks5_invalid1 = "{\"trackElementList\":[{\"time\":\"1543830482\",\"facilityName\":\"invalid(1-1)\",\"desc\":\"invalid(1-1)\"}&{\"time\":\"1543830482\",\"facilityName\":\"invalid(1-2)\",\"desc\":\"invalid(1-2) Груз отправлен со склада хранения (<a href= >КСЭ</a>, номер накладной <a href=$f=$http://cse.ru/track.php?order=waybill%amp;number=JNTCU0600639867YQ$ tar target=$_blank$>JNTCU0600639867YQ</a>)\"}]}";
-        let info5_invalid2 = "{\"error\":null,\"num\":\"JNTCU0600046685YQ\",\"transNum\":\"invalid(2) 上海市宜山路900号科技大楼A栋6楼，邮编：200233\",\"model\":\"invalid(2) J-NET俄全通INFO5\",\"destinationCountry\":\"07\",\"lastStatus\":\"23\",\"trackElementList\":[{\"type\":\"1\",\"time\":\"1543830694\",\"country\":\"0086\",\"city\":\"021\",\"facilityName\":\"invalid(2-1)\",\"timeZone\":\"1543830694\",\"desc\":\"invalid(2-1) Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\",\"actionCode\":\"21\"}&{\"type\":\"0\",\"time\":\"1543830694\",\"country\":\"021\",\"city\":\"0571\",\"facilityName\":\"invalid(2-2)\",\"timeZone\":\"+3\",\"desc\":\"invalid(2-2) Order received successfully\",\"actionCode\":\"22\"}&{\"type\":\"1\",\"time\":\"1543830694\",\"country\":\"007\",\"city\":\"0724\",\"facilityName\":\"invalid(2-3)\",\"timeZone\":\"-7\",\"desc\":\"invalid(2-3) The parcel is ready to transfer to the courier\",\"actionCode\":\"23\"}]}";
-        
-        let status = "";
-        let string = "";
-
-        let num = "JNTCU0600046685YQ";
-
-        let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-
-        // invalid
-        logisticsCore.invalid(account, key, num, function(error, result) {
-            if (!error) {
-                if ("" != result.status) {
-                    if (0x0 == parseInt(result.status)) {
-                        status = "failure";
-                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                        Output(window.outputCommonElement, 'small', 'red', string);
-                        return;
-                    }
-
-                    // update
-                    logisticsCore.update(account, key, num, "invalid(1)", "invalid(1)", 7, 12, tracks5_invalid1, function(error, result) {
-                        if (!error) {
-                            if ("" != result.status) {
-                                if (0x0 == parseInt(result.status)) {
-                                    status = "failure";
-                                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                    Output(window.outputCommonElement, 'small', 'red', string);
-                                    return;
-                                }
-                                // invalid
-                                logisticsCore.invalid(account, key, num, function(error, result) {
-                                    if (!error) {
-                                        if ("" != result.status) {
-                                            if (0x0 == parseInt(result.status)) {
-                                                status = "failure";
-                                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                                Output(window.outputCommonElement, 'small', 'red', string);
-                                                return;
-                                            }
-                                            // invalid
-                                            // logisticsCore.invalid(account, key, num, function(error, result) {
-                                            //     if (!error) {
-                                            //         if ("" != result.status) {
-                                            //             if (0x0 == parseInt(result.status)) {
-                                            //                 status = "failure";
-                                            //                 string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                            //                 Output(window.outputCommonElement, 'small', 'red', string);
-                                            //                 return;
-                                            //             }
-                                                        // updateEx
-                                                        logisticsCore.updateEx(account, key, "JNTCU0600046685YQ", info5_invalid2, function(error, result) {
-                                                            if (!error) {
-                                                                if ("" != result.status) {
-                                                                    if (0x0 == parseInt(result.status)) {
-                                                                        status = "failure";
-                                                                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                                                        Output(window.outputCommonElement, 'small', 'red', string);
-                                                                        return;
-                                                                    }
-                                                                    // invalid
-                                                                    logisticsCore.invalid(account, key, num, function(error, result) {
-                                                                        if (!error) {
-                                                                            if ("" != result.status) {
-                                                                                if (0x0 == parseInt(result.status)) {
-                                                                                    status = "failure";
-                                                                                } else {
-                                                                                    status = "succeeded";
-                                                                                }
-                                                                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                                                                Output(window.outputCommonElement, 'small', 'red', string);
-                                                                                if (0x1 == parseInt(result.status)) {
-                                                                                    handler[getInvalid](logisticsCore, num);
-                                                                                }
-                                                                            } else {
-                                                                                status = "Try to get status again!";
-                                                                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                                                                Output(window.outputCommonElement, 'small', 'red', string);
-                                                                            }
-                                                                        } else {
-                                                                            Output(window.outputCommonElement, 'small', 'red', error);
-                                                                        }
-                                                                    });
-                                                                } else {
-                                                                    status = "Try to get status again!";
-                                                                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                                                    Output(window.outputCommonElement, 'small', 'red', string);
-                                                                }
-                                                            } else {
-                                                                Output(window.outputCommonElement, 'small', 'red', error);
-                                                            }
-                                                        });
-                                            //         } else {
-                                            //             status = "Try to get status again!";
-                                            //             string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                            //             Output(window.outputCommonElement, 'small', 'red', string);
-                                            //         }
-                                            //     } else {
-                                            //         Output(window.outputCommonElement, 'small', 'red', error);
-                                            //     }
-                                            // });
-                                        } else {
-                                            status = "Try to get status again!";
-                                            string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                            Output(window.outputCommonElement, 'small', 'red', string);
-                                        }
-                                    } else {
-                                        Output(window.outputCommonElement, 'small', 'red', error);
-                                    }
-                                });
-                            } else {
-                                status = "Try to get status again!";
-                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                                Output(window.outputCommonElement, 'small', 'red', string);
-                            }
-                        } else {
-                            Output(window.outputCommonElement, 'small', 'red', error);
-                        }
-                    });
-                } else {
-                    status = "Try to get status again!";
-                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                    Output(window.outputCommonElement, 'small', 'red', string);
-                }
-            } else {
-                Output(window.outputCommonElement, 'small', 'red', error);
-            }
-        });
-    }
-
-    invalid(type, para) {
-        console.log('TestLogisticsRaw.invalid(%s, %s)', type, para);
-        let handler = this;
-        let tmps = this[getCommonAccount]();
-        if (0 == tmps[0]) {
-            Output(window.outputWriteElement, 'small', 'red', "No channnel(idle)!");
-            return;
-        }
-
-        let account = tmps[0];
-        let key = tmps[1];
-
-        if (type == "Common") {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            logisticsCore.invalid(account, key, para, function(error, result) {
-                handler[commmonTransactionProc](error, result, window.outputWriteElement);
-            });
-        } else if (type == "Batch") {
-            this[invalidBatch](account, key, this);
-        } else {
-            Output(window.outputWriteElement, 'small', 'red', "Invalid type Error!");
-        }
-    }
-
-    debugBrief() {
-        console.log('TestLogisticsRaw.debugBrief()');
-        let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-
-        // number
-        logisticsCore.number(function(error, result) {
-            if (!error) {
-                for (let i=0; i<result; i++) {
-                    // getBriefExByIndex
-                    // logisticsCore.getBriefByIndex(i, function(error, index, result) {
-                    logisticsCore.getBriefExByIndex(i, function(error, index, result) {
-                        if (!error) {
-                            // console.log(result);
-                            Output(window.outputCommonElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
-                        } else {
-                            Output(window.outputCommonElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
-                        }
-                    })
-                }
-            } else {
-                Output(window.outputCommonElement, 'small', 'red', error);
-            }
-        })
-    }
-
-    getNumber(type, para) {
-        console.log('TestLogisticsRaw.getNumber(%s)', type);
-        let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-
-        if ("Num" == type) {
-            // logisticsCore.numberOfTracks("JNTCU0600046685YQ", function(error, result) {
-            logisticsCore.number(function(error, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Number]:${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', error);
-                }
-            })             
-        } else if ("Tracks" == type) {
-            // logisticsCore.numberOfTracks("JNTCU0600046685YQ", function(error, result) {
-            logisticsCore.numberOfTracks(para, function(error, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Number]:${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', error);
-                }
-            })   
-        } else if ("Invalid" == type) {
-            logisticsCore.numberOfInvalid(para, function(error, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Number]:${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', error);
-                }
-            })   
-        }
-    }
-
-    getInfo(type, para) {
-        console.log('TestLogisticsRaw.getInfo(%s, %s)', type, para);
-        
-        if ('LogisticsInfo' == type) {
-            let logistics = new Logistics(this[abi], this[contractAddress]);
-            logistics.getLogisticsInfo(para, function(error, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Info]:</br>${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', error);
-                }
-            });
-        } else if ('Parcel' == type) {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            logisticsCore.getParcel(para, function(error, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Parcel]:</br>${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', error);
-                }
-            });
-        } else if ('ParcelEx' == type) {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            logisticsCore.getParcelEx(para, function(error, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Parcel]:</br>${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', error);
-                }
-            });           
-        } else if ('Tracks' == type) {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            logisticsCore.getTracks(para, function(error, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Tracks]:</br>${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', error);
-                }
-            });
-        } else if ('TracksInvalid' == type) {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            let paras = para.split(",");
-            let num = paras[0];
-            let index = paras[1];
-
-            logisticsCore.getTracksInvalid(num, index, function(error, num, index, result) {
-                if (!error) {
-                    // console.log(result);
-                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
-                }
-            })
-        } else if ('Brief' == type) {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            logisticsCore.getBrief(para, function(error, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Brief]:${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', error);
-                }
-            });
-        } else if ('BriefEx' == type) {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            logisticsCore.getBriefEx(para, function(error, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Brief]:${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', error);
-                }
-            });           
-        } else if ('BriefByIndex' == type) {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            logisticsCore.getBriefByIndex(para, function(error, index, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
-                }
-            });
-        } else if ('BriefExByIndex' == type) {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            logisticsCore.getBriefExByIndex(para, function(error, index, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
-                }
-            });
-        } else if ('BriefInvalid' == type) {
-            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            let paras = para.split(",");
-            let num = paras[0];
-            let index = paras[1];
-
-            logisticsCore.getBriefInvalid(num, index, function(error, num, index, result) {
-                if (!error) {
-                    // console.log(result);
-                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
-                }
-            })
-        } else {}
-    }
-
-    [getDelegateInstance](contract) {
-        let delegate = null;
-        if ("Logistics" == contract) {
-            delegate = new Delegate(this[abi], this[contractAddress]);
-        } else if ("LogisticsCore" == contract) {
-            delegate = new Delegate(this[coreAbi], this[coreContractAddress]);
-        } else if ("LogisticsDatabase" == contract) {
-            delegate = new Delegate(this[databaseAbi], this[databaseContractAddress]);
-        } else {}
-
-        return delegate;       
-    }
-
-    delegate(cmds, paras) {
-        console.log('TestLogisticsRaw.delegate(%s; %s)', cmds, paras);
-        let handler = this;
-        let tmps = this[getCommonAccount]();
-        if (0 == tmps[0]) {
-            Output(window.outputDelegateWriteElement, 'small', 'red', "No channnel(idle)!");
-            return;
-        }
-
-        let account = tmps[0];
-        let key = tmps[1];
-
-        tmps = cmds.split(",");
-        let cmd = tmps[0];
-        let contract = tmps[1];
-
-        let delegate = this[getDelegateInstance](contract);
-        if (null == delegate) {
-            Output(window.outputDelegateReadElement, 'small', 'red', "Delegate instance Error!");
-            return;
-        }
-
-        switch (cmd) {
-            case "Debug":
-                // number
-                delegate.number(function(error, result) {
-                    if (!error) {
-                        let sum = result;
-                        let logs = "";
-                        let count = 0;
-                        for (let i=0; i<sum; i++) {
-                            delegate.getInfoById(i, function(error, id, result) {
-                                if (!error) {
-                                    logs = logs.concat(`[Delegate${id}]: ${result}</br>`);
-                                    count ++;
-                                    if (count == sum) {
-                                        Output(window.outputDelegateReadElement, 'small', 'red', logs);
-                                    }                                 
-                                } else {
-                                    Output(window.outputDelegateReadElement, 'small', 'red', `[Delegate${id}]:</br>${error}`);
-                                }
-                            })
-                        }
-                    } else {
-                        Output(window.outputDelegateReadElement, 'small', 'red', error);
-                    }
-                })               
-                break;
-            case "Update":
-                tmps = paras.split(",");
-                let address = tmps[0];
-                let priority = tmps[1];
-
-                if (undefined == priority) {
-                    Output(window.outputDelegateWriteElement, 'small', 'red', "Please input priority!");
-                    return;
-                }
-
-                // update
-                delegate.update(account, key, address, priority, function(error, result) {
-                    handler[commmonTransactionProc](error, result, window.outputDelegateWriteElement);
-                });
-
-                break;
-            case "Remove":
-                // remove
-                delegate.remove(account, key, paras, function(error, result) {
-                    handler[commmonTransactionProc](error, result, window.outputDelegateWriteElement);
-                });
-                break;
-            case "Transfer":
-                // transferOwnership
-                delegate.transferOwnership(account, key, paras, 2, function(error, result) {
-                    handler[commmonTransactionProc](error, result, window.outputDelegateWriteElement);
-                });                
-                break;
-            default:
-                Output(window.outputDelegateReadElement, 'small', 'red', "Command Error!");
                 break;
         }
     }
@@ -1404,6 +882,528 @@ export default class TestLogisticsRaw {
         }
     }
 
+    debugBrief() {
+        console.log('TestLogisticsRaw.debugBrief()');
+        let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+
+        // number
+        logisticsCore.number(function(error, result) {
+            if (!error) {
+                for (let i=0; i<result; i++) {
+                    // getBriefExByIndex
+                    // logisticsCore.getBriefByIndex(i, function(error, index, result) {
+                    logisticsCore.getBriefExByIndex(i, function(error, index, result) {
+                        if (!error) {
+                            // console.log(result);
+                            Output(window.outputCommonElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
+                        } else {
+                            Output(window.outputCommonElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
+                        }
+                    })
+                }
+            } else {
+                Output(window.outputCommonElement, 'small', 'red', error);
+            }
+        })
+    }
+
+    update(type, para) {
+        console.log('TestLogisticsRaw.update(%s)', type);
+        let handler = this;
+        let tmps = this[getCommonAccount]();
+        if (0 == tmps[0]) {
+            Output(window.outputWriteElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = tmps[0];
+        let key = tmps[1];
+
+        if (type == "All") {
+            let paras = para.split(",^,");
+            let num = paras[0];
+            let transNum = paras[1];
+            let model = paras[2];
+            let destinationCountry = paras[3];
+            let lastStatus = paras[4];
+            let tracks = paras[5];
+
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.update(account, key, num, transNum, model, destinationCountry, lastStatus, tracks, function(error, result) {
+                handler[commmonTransactionProc](error, result, window.outputWriteElement);
+            });
+        } else if (type == "Tracks") {
+            Output(window.outputWriteElement, 'small', 'red', "Don't support now!");
+        } else {
+            Output(window.outputWriteElement, 'small', 'red', "Update type Error!");
+        }
+    }
+
+    [removeBatch](account, key, handler) {
+        console.log('TestLogisticsRaw.removeBatch()');
+
+        // create and update at first
+
+        let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+        logisticsCore.remove(account, key, "JNTCU0600046684YQ", function(error, result) {
+            if (!error) {
+                if ("" != result.status) {
+                    if (0x0 == parseInt(result.status)) {
+                        let status = "failure";
+                        let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                        Output(window.outputCommonElement, 'small', 'red', string);
+                        return;
+                    }
+                    logisticsCore.remove(account, key, "JNTCU0600046688YQ", function(error, result) {
+                        handler[commmonTransactionProc](error, result, window.outputCommonElement);
+                    });
+                } else {
+                    let status = "Try to get status again!";
+                    let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                    Output(window.outputCommonElement, 'small', 'red', string);
+                }
+            } else {
+                Output(window.outputCommonElement, 'small', 'red', error);
+            }
+        });
+    }
+
+    remove(type, para) {
+        console.log('TestLogisticsRaw.remove(%s, %s)', type, para);
+        let handler = this;
+        let tmps = this[getCommonAccount]();
+        if (0 == tmps[0]) {
+            Output(window.outputWriteElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = tmps[0];
+        let key = tmps[1];
+
+        if (type == "Common") {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.remove(account, key, para, function(error, result) {
+                handler[commmonTransactionProc](error, result, window.outputWriteElement);
+            });
+        } else if (type == "Batch") {
+            this[removeBatch](account, key, this);
+        } else {
+            Output(window.outputWriteElement, 'small', 'red', "Remove type Error!");
+        }
+    }
+
+    [getInvalid](handler, num) {
+        handler.numberOfInvalid(num, function(error, result) {
+            if (!error) {
+                for (let i=0; i<result; i++) {
+                    // handler.getBriefInvalid(num, i, function(error, num, index, result) {
+                    handler.getTracksInvalid(num, i, function(error, num, index, result) {
+                        if (!error) {
+                            // console.log(result);
+                            Output(window.outputCommonElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
+                        } else {
+                            Output(window.outputCommonElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
+                        }
+                    })
+                }
+            } else {
+                Output(window.outputCommonElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
+            }
+        })
+    }
+
+    // invalid -> update -> invalid -> updateEx -> invalid
+    [invalidBatch](account, key, handler) {
+        console.log('TestLogisticsRaw.invalidBatch()');
+        let tracks5_invalid1 = "{\"trackElementList\":[{\"time\":\"1543830482\",\"facilityName\":\"invalid(1-1)\",\"desc\":\"invalid(1-1)\"}&{\"time\":\"1543830482\",\"facilityName\":\"invalid(1-2)\",\"desc\":\"invalid(1-2) Груз отправлен со склада хранения (<a href= >КСЭ</a>, номер накладной <a href=$f=$http://cse.ru/track.php?order=waybill%amp;number=JNTCU0600639867YQ$ tar target=$_blank$>JNTCU0600639867YQ</a>)\"}]}";
+        let info5_invalid2 = "{\"error\":null,\"num\":\"JNTCU0600046685YQ\",\"transNum\":\"invalid(2) 上海市宜山路900号科技大楼A栋6楼，邮编：200233\",\"model\":\"invalid(2) J-NET俄全通INFO5\",\"destinationCountry\":\"07\",\"lastStatus\":\"23\",\"trackElementList\":[{\"type\":\"1\",\"time\":\"1543830694\",\"country\":\"0086\",\"city\":\"021\",\"facilityName\":\"invalid(2-1)\",\"timeZone\":\"1543830694\",\"desc\":\"invalid(2-1) Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\",\"actionCode\":\"21\"}&{\"type\":\"0\",\"time\":\"1543830694\",\"country\":\"021\",\"city\":\"0571\",\"facilityName\":\"invalid(2-2)\",\"timeZone\":\"+3\",\"desc\":\"invalid(2-2) Order received successfully\",\"actionCode\":\"22\"}&{\"type\":\"1\",\"time\":\"1543830694\",\"country\":\"007\",\"city\":\"0724\",\"facilityName\":\"invalid(2-3)\",\"timeZone\":\"-7\",\"desc\":\"invalid(2-3) The parcel is ready to transfer to the courier\",\"actionCode\":\"23\"}]}";
+        
+        let status = "";
+        let string = "";
+
+        let num = "JNTCU0600046685YQ";
+
+        let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+
+        // invalid
+        logisticsCore.invalid(account, key, num, function(error, result) {
+            if (!error) {
+                if ("" != result.status) {
+                    if (0x0 == parseInt(result.status)) {
+                        status = "failure";
+                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                        Output(window.outputCommonElement, 'small', 'red', string);
+                        return;
+                    }
+
+                    // update
+                    logisticsCore.update(account, key, num, "invalid(1)", "invalid(1)", 7, 12, tracks5_invalid1, function(error, result) {
+                        if (!error) {
+                            if ("" != result.status) {
+                                if (0x0 == parseInt(result.status)) {
+                                    status = "failure";
+                                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                    Output(window.outputCommonElement, 'small', 'red', string);
+                                    return;
+                                }
+                                // invalid
+                                logisticsCore.invalid(account, key, num, function(error, result) {
+                                    if (!error) {
+                                        if ("" != result.status) {
+                                            if (0x0 == parseInt(result.status)) {
+                                                status = "failure";
+                                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                                Output(window.outputCommonElement, 'small', 'red', string);
+                                                return;
+                                            }
+                                            // invalid
+                                            // logisticsCore.invalid(account, key, num, function(error, result) {
+                                            //     if (!error) {
+                                            //         if ("" != result.status) {
+                                            //             if (0x0 == parseInt(result.status)) {
+                                            //                 status = "failure";
+                                            //                 string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                            //                 Output(window.outputCommonElement, 'small', 'red', string);
+                                            //                 return;
+                                            //             }
+                                                        // updateEx
+                                                        logisticsCore.updateEx(account, key, "JNTCU0600046685YQ", info5_invalid2, function(error, result) {
+                                                            if (!error) {
+                                                                if ("" != result.status) {
+                                                                    if (0x0 == parseInt(result.status)) {
+                                                                        status = "failure";
+                                                                        string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                                                        Output(window.outputCommonElement, 'small', 'red', string);
+                                                                        return;
+                                                                    }
+                                                                    // invalid
+                                                                    logisticsCore.invalid(account, key, num, function(error, result) {
+                                                                        if (!error) {
+                                                                            if ("" != result.status) {
+                                                                                if (0x0 == parseInt(result.status)) {
+                                                                                    status = "failure";
+                                                                                } else {
+                                                                                    status = "succeeded";
+                                                                                }
+                                                                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                                                                Output(window.outputCommonElement, 'small', 'red', string);
+                                                                                if (0x1 == parseInt(result.status)) {
+                                                                                    handler[getInvalid](logisticsCore, num);
+                                                                                }
+                                                                            } else {
+                                                                                status = "Try to get status again!";
+                                                                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                                                                Output(window.outputCommonElement, 'small', 'red', string);
+                                                                            }
+                                                                        } else {
+                                                                            Output(window.outputCommonElement, 'small', 'red', error);
+                                                                        }
+                                                                    });
+                                                                } else {
+                                                                    status = "Try to get status again!";
+                                                                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                                                    Output(window.outputCommonElement, 'small', 'red', string);
+                                                                }
+                                                            } else {
+                                                                Output(window.outputCommonElement, 'small', 'red', error);
+                                                            }
+                                                        });
+                                            //         } else {
+                                            //             status = "Try to get status again!";
+                                            //             string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                            //             Output(window.outputCommonElement, 'small', 'red', string);
+                                            //         }
+                                            //     } else {
+                                            //         Output(window.outputCommonElement, 'small', 'red', error);
+                                            //     }
+                                            // });
+                                        } else {
+                                            status = "Try to get status again!";
+                                            string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                            Output(window.outputCommonElement, 'small', 'red', string);
+                                        }
+                                    } else {
+                                        Output(window.outputCommonElement, 'small', 'red', error);
+                                    }
+                                });
+                            } else {
+                                status = "Try to get status again!";
+                                string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                                Output(window.outputCommonElement, 'small', 'red', string);
+                            }
+                        } else {
+                            Output(window.outputCommonElement, 'small', 'red', error);
+                        }
+                    });
+                } else {
+                    status = "Try to get status again!";
+                    string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
+                    Output(window.outputCommonElement, 'small', 'red', string);
+                }
+            } else {
+                Output(window.outputCommonElement, 'small', 'red', error);
+            }
+        });
+    }
+
+    invalid(type, para) {
+        console.log('TestLogisticsRaw.invalid(%s, %s)', type, para);
+        let handler = this;
+        let tmps = this[getCommonAccount]();
+        if (0 == tmps[0]) {
+            Output(window.outputWriteElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = tmps[0];
+        let key = tmps[1];
+
+        if (type == "Common") {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.invalid(account, key, para, function(error, result) {
+                handler[commmonTransactionProc](error, result, window.outputWriteElement);
+            });
+        } else if (type == "Batch") {
+            this[invalidBatch](account, key, this);
+        } else {
+            Output(window.outputWriteElement, 'small', 'red', "Invalid type Error!");
+        }
+    }
+
+    getNumber(type, para) {
+        console.log('TestLogisticsRaw.getNumber(%s)', type);
+        let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+
+        if ("Num" == type) {
+            // logisticsCore.numberOfTracks("JNTCU0600046685YQ", function(error, result) {
+            logisticsCore.number(function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Number]:${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            })             
+        } else if ("Tracks" == type) {
+            // logisticsCore.numberOfTracks("JNTCU0600046685YQ", function(error, result) {
+            logisticsCore.numberOfTracks(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Number]:${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            })   
+        } else if ("Invalid" == type) {
+            logisticsCore.numberOfInvalid(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Number]:${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            })   
+        }
+    }
+
+    getInfo(type, para) {
+        console.log('TestLogisticsRaw.getInfo(%s, %s)', type, para);
+        
+        if ('LogisticsInfo' == type) {
+            let logistics = new Logistics(this[abi], this[contractAddress]);
+            logistics.getLogisticsInfo(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Info]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            });
+        } else if ('Parcel' == type) {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.getParcel(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Parcel]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            });
+        } else if ('ParcelEx' == type) {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.getParcelEx(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Parcel]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            });           
+        } else if ('Tracks' == type) {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.getTracks(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Tracks]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            });
+        } else if ('TracksInvalid' == type) {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            let paras = para.split(",");
+            let num = paras[0];
+            let index = paras[1];
+
+            logisticsCore.getTracksInvalid(num, index, function(error, num, index, result) {
+                if (!error) {
+                    // console.log(result);
+                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
+                }
+            })
+        } else if ('Brief' == type) {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.getBrief(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Brief]:${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            });
+        } else if ('BriefEx' == type) {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.getBriefEx(para, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Brief]:${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            });           
+        } else if ('BriefByIndex' == type) {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.getBriefByIndex(para, function(error, index, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
+                }
+            });
+        } else if ('BriefExByIndex' == type) {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.getBriefExByIndex(para, function(error, index, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
+                }
+            });
+        } else if ('BriefInvalid' == type) {
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            let paras = para.split(",");
+            let num = paras[0];
+            let index = paras[1];
+
+            logisticsCore.getBriefInvalid(num, index, function(error, num, index, result) {
+                if (!error) {
+                    // console.log(result);
+                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
+                }
+            })
+        } else {}
+    }
+
+    [getDelegateInstance](contract) {
+        let delegate = null;
+        if ("Logistics" == contract) {
+            delegate = new Delegate(this[abi], this[contractAddress]);
+        } else if ("LogisticsCore" == contract) {
+            delegate = new Delegate(this[coreAbi], this[coreContractAddress]);
+        } else if ("LogisticsDatabase" == contract) {
+            delegate = new Delegate(this[databaseAbi], this[databaseContractAddress]);
+        } else {}
+
+        return delegate;       
+    }
+
+    delegate(cmds, paras) {
+        console.log('TestLogisticsRaw.delegate(%s; %s)', cmds, paras);
+        let handler = this;
+        let tmps = this[getCommonAccount]();
+        if (0 == tmps[0]) {
+            Output(window.outputDelegateWriteElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = tmps[0];
+        let key = tmps[1];
+
+        tmps = cmds.split(",");
+        let cmd = tmps[0];
+        let contract = tmps[1];
+
+        let delegate = this[getDelegateInstance](contract);
+        if (null == delegate) {
+            Output(window.outputDelegateReadElement, 'small', 'red', "Delegate instance Error!");
+            return;
+        }
+
+        switch (cmd) {
+            case "Debug":
+                // number
+                delegate.number(function(error, result) {
+                    if (!error) {
+                        let sum = result;
+                        let logs = "";
+                        let count = 0;
+                        for (let i=0; i<sum; i++) {
+                            delegate.getInfoById(i, function(error, id, result) {
+                                if (!error) {
+                                    logs = logs.concat(`[Delegate${id}]: ${result}</br>`);
+                                    count ++;
+                                    if (count == sum) {
+                                        Output(window.outputDelegateReadElement, 'small', 'red', logs);
+                                    }                                 
+                                } else {
+                                    Output(window.outputDelegateReadElement, 'small', 'red', `[Delegate${id}]:</br>${error}`);
+                                }
+                            })
+                        }
+                    } else {
+                        Output(window.outputDelegateReadElement, 'small', 'red', error);
+                    }
+                })               
+                break;
+            case "Update":
+                tmps = paras.split(",");
+                let address = tmps[0];
+                let priority = tmps[1];
+
+                if (undefined == priority) {
+                    Output(window.outputDelegateWriteElement, 'small', 'red', "Please input priority!");
+                    return;
+                }
+
+                // update
+                delegate.update(account, key, address, priority, function(error, result) {
+                    handler[commmonTransactionProc](error, result, window.outputDelegateWriteElement);
+                });
+
+                break;
+            case "Remove":
+                // remove
+                delegate.remove(account, key, paras, function(error, result) {
+                    handler[commmonTransactionProc](error, result, window.outputDelegateWriteElement);
+                });
+                break;
+            case "Transfer":
+                // transferOwnership
+                delegate.transferOwnership(account, key, paras, 2, function(error, result) {
+                    handler[commmonTransactionProc](error, result, window.outputDelegateWriteElement);
+                });                
+                break;
+            default:
+                Output(window.outputDelegateReadElement, 'small', 'red', "Command Error!");
+                break;
+        }
+    }
+
     analytics(cmd, paras) {
         console.log('TestLogisticsRaw.Analytics(%s, %s)', cmd, paras);
 
@@ -1425,6 +1425,9 @@ export default class TestLogisticsRaw {
             case 'Setup':
                 this.setup(para1, para2);
                 break;
+            case 'DummyData':
+                this.dummyData(para1, para2);
+                break;
             case 'DebugBrief':
                 this.debugBrief();
                 break;
@@ -1445,9 +1448,6 @@ export default class TestLogisticsRaw {
                 break;
             case 'Delegate':
                 this.delegate(para1, para2);
-                break;
-            case 'DummyData':
-                this.dummyData(para1, para2);
                 break;
             case 'Analytics':
                 this.analytics(para1, para2);
