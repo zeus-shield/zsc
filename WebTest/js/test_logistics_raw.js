@@ -1761,6 +1761,19 @@ export default class TestLogisticsRaw {
                     return;
                 }
                 break;
+            case "Test":
+                outputElement = window.outputCommonElement;
+                if ("Create" == para2) {
+                    data = this.buildTestCreateData();
+                    blockCount = data.length;
+                } else if ("Update" == para2) {
+                    data = this.buildTestUpdateData();
+                    blockCount = data.length;
+                } else {
+                    Output(outputElement, 'small', 'red', "Command Error!");
+                    return;
+                }
+                break;
             default:
                 return;
         }
