@@ -89,25 +89,43 @@ contract logisticsAnalytics {
     function setActionCode(string _tag, uint8 _value) external {
         actionCodes_[_tag] = _value;
     }
-    /** [desc] Get parcel amount by last status.
-      * [param]  _lastStatus: last status (0: means ignore last status).
+
+    /** [desc] Get dest country's received parcel amounts.
+      * [param] _destCountry: country code of parcels received(> 0).
+      * [param] _startTime: start time (0: means ignore time).
+      * [param] _endTime: end time (0: means ignore time).
       * [return] parcel amount.
       */
-    function _getParcelAmountByLastStatus(uint8 _lastStatus) private view returns (uint)  {
+    function _getParcelAmountByDestCountry(uint16 _destCountry, uint64 _startTime, uint64 _endTime) private view returns (uint)  {
+        uint i = 0;
+        uint index = 0;
         uint amount = 0;
+        uint8 lastStatus = 0;
+        uint16 destinationCountry = 0;
+        uint64 lastTrackTime = 0;
+        string memory num = "";
 
-        if (0 == _lastStatus) {
-            amount = LogisticsCore(coreAddr_).number();
-        } else {
-            uint i = 0;
-            uint8 lastStatus = 0;
-            string memory num = "";
+        // check param
+        if (0 == _destCountry) {
+            return 0;
+        }
 
-            for (i=0; i<LogisticsCore(coreAddr_).number(); i++) {
-                num = LogisticsCore(coreAddr_).getNumByIndex(i);
-                lastStatus = uint8(LogisticsCore(coreAddr_).getBriefElement(num, "lastStatus").toUint());
-                if (_lastStatus == lastStatus) {
+        for (i=0; i<LogisticsCore(coreAddr_).number(); i++) {
+            num = LogisticsCore(coreAddr_).getNumByIndex(i);
+            lastStatus = uint8(LogisticsCore(coreAddr_).getBriefElement(num, "lastStatus").toUint());
+            destinationCountry = uint16(LogisticsCore(coreAddr_).getBriefElement(num, "destinationCountry").toUint());
+            index = _getFirstOrLastTrackIndex(1, num);
+            lastTrackTime = uint64(LogisticsCore(coreAddr_).getTrackElementByIndex(num, index, "time").toUint());
+
+            if ((destinationCountry == _destCountry) && (actionCodes_["GTMS_SIGNED"] == lastStatus)) {
+                if ((0 == _startTime) && (0 == _endTime)) {
+                    // ignore time
                     amount ++;
+                } else {
+                    // _startTime <= lastTrackTime <= _endTime
+                    if ((_startTime <= lastTrackTime) && (_endTime >= lastTrackTime)) {
+                        amount ++;
+                    }
                 }
             }
         }
