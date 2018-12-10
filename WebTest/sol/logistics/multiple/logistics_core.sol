@@ -267,7 +267,7 @@ contract LogisticsCore is Delegate {
         return LogisticsDatabase(databaseAddr_).getTracks(_getValidNumName(_num));
     }
 
-    function getTrackElementByIndex(string _num, uint _index, string _elementType) external view _checkDatabaseAddr returns (string) {
+    function getTrackElementByIndex(string _num, uint _index, string _tag) external view _checkDatabaseAddr returns (string) {
         // check param
         if (0 == bytes(_num).length) {
             return "";
@@ -278,7 +278,7 @@ contract LogisticsCore is Delegate {
             return "";
         }
 
-        return LogisticsDatabase(databaseAddr_).getTrackElementByIndex(_getValidNumName(_num), _index, _elementType);
+        return LogisticsDatabase(databaseAddr_).getTrackElementByIndex(_getValidNumName(_num), _index, _tag);
     }
 
     function getBrief(string _num) external view _checkDatabaseAddr returns (string, string, string, uint16, uint8) {
