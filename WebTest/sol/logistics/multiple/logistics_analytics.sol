@@ -27,6 +27,11 @@ contract logisticsAnalytics {
     /** @desc core address */
     address private coreAddr_; 
 
+    /** @desc actionCode maping
+      * @eg GTMS_SIGNED => 28
+      */
+    mapping(string => uint8) private actionCodes_;
+
     // Constructor
     constructor() public {
         coreAddr_ = 0;
@@ -35,12 +40,6 @@ contract logisticsAnalytics {
     modifier _checkCoreAddr() {
         require(0 != coreAddr_);
         _;
-    }
-
-    function setup(address _coreAddr) external {
-        // check core and databaseaddress
-        require(0 != _coreAddr);
-        coreAddr_ = _coreAddr;
     }
 
     /** [desc] Get first or last track index.
@@ -81,6 +80,15 @@ contract logisticsAnalytics {
         return index;
     }
 
+    function setup(address _coreAddr) external {
+        // check core and databaseaddress
+        require(0 != _coreAddr);
+        coreAddr_ = _coreAddr;
+    }
+
+    function setActionCode(string _tag, uint8 _value) external {
+        actionCodes_[_tag] = _value;
+    }
     /** [desc] Get parcel amount by last status.
       * [param]  _lastStatus: last status (0: means ignore last status).
       * [return] parcel amount.
