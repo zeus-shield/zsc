@@ -106,7 +106,31 @@ contract logisticsAnalytics {
 
         return amount;
     }
-    // type: 0 means 'sent', 1 means 'received'
+
+    /** [desc] Get parcel amount.
+      * [param] _srcCountry: country code of parcels sent£¨0: means all countries£©.
+      * [param] _destCountry: country code of parcels received£¨0: means all countries£©.
+      * [param] _startTime: start time (0: means ignore time).
+      * [param] _endTime: end time (0: means ignore time).
+      * [return] parcel amount.
+      */
+    function getParcelAmount(uint16 _srcCountry, uint16 _destCountry, uint64 _startTime, uint64 _endTime) external view _checkCoreAddr returns (uint)  {
+        uint amount = 0;
+
+        if (0 == _srcCountry) {
+            if (0 == _destCountry) {
+                if ((0 == _startTime) && (0 == _endTime)) {
+                    amount = _getParcelAmountByLastStatus(0);
+                }
+            }
+        } else {
+
+        }
+
+        return amount;
+    }
+
+    // _type: 0 means 'sent', 1 means 'received'
     function getParcelCountByCountry(uint8 _type, uint16 _country) external view _checkCoreAddr returns (uint)  {
         uint i = 0;
         uint j = 0;
