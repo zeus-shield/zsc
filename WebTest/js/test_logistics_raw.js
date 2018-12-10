@@ -24,9 +24,9 @@ const tick = Symbol('tick');
 const sleep = Symbol('sleep');
 const getCommonAccount = Symbol('getCommonAccount');
 const commmonTransactionProc = Symbol('commmonTransactionProc');
-// const openChannelFunc = Symbol('openChannelFunc');
-// const openChannel = Symbol('openChannel');
-// const openNextChannel = Symbol('openNextChannel');
+const openNextChannel = Symbol('openNextChannel');
+const openChannelFunc = Symbol('openChannelFunc');
+const openChannel = Symbol('openChannel');
 const closeChannel = Symbol('closeChannel');
 const removeBatch = Symbol('removeBatch');
 const getInvalid = Symbol('getInvalid');
@@ -90,16 +90,6 @@ export default class TestLogisticsRaw {
         } else {
             Output(output, 'small', 'red', error);
         }
-    }
-
-    [closeChannel](account) {
-        let index = window.channelClass.find(account);
-        let size = window.channelClass.size();
-        if (size == index) {
-            return;
-        }
-
-        window.channelClass.status(index, "idle");
     }
 
     setCompiledJson(data) {
@@ -249,7 +239,7 @@ export default class TestLogisticsRaw {
         }
     }
 
-    openNextChannelEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result) {
+    [openNextChannel](handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result) {
         if (blockCount == handler[nextIndex]) {
             // no block will proc, close channel
             handler[closeChannel](account);
@@ -264,14 +254,14 @@ export default class TestLogisticsRaw {
                 return true;
             }
         } else {
-            handler.openChannelEx(handler, account, key, data, parallelCount, handler[nextIndex], blockCount, outputElement);
+            handler[openChannel](handler, account, key, data, parallelCount, handler[nextIndex], blockCount, outputElement);
             handler[nextIndex] ++;
         }
 
         return false;
     }
 
-    openChannelFuncEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result) {
+    [openChannelFunc](handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result) {
         if (!error) {
             if ("" != result.status) {
                 if (0x1 == parseInt(result.status)) {
@@ -285,7 +275,7 @@ export default class TestLogisticsRaw {
                     status = "succeeded";
 
                     // lock -- DOTO
-                    let finished = handler.openNextChannelEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
+                    let finished = handler[openNextChannel](handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
                     if (finished) {
                         return;
                     }
@@ -298,14 +288,14 @@ export default class TestLogisticsRaw {
                     //     && ("http://localhost:7545" == web3.currentProvider.host)) {
                     //     // ganache (workaround)
                     //     // lock -- DOTO
-                    //     let finished = handler.openNextChannelEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
+                    //     let finished = handler[openNextChannel](handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
                     //     if (finished) {
                     //         return;
                     //     }
                     //     // unlock -- DOTO
                     // } else {
                         // geth or metamask
-                    handler.openChannelEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement);
+                    handler[openChannel](handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement);
                     // }
                 }
 
@@ -317,12 +307,12 @@ export default class TestLogisticsRaw {
                 Output(outputElement, 'small', 'red', string);
             }
         } else {
-            handler.openChannelEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement);
+            handler[openChannel](handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement);
             Output(outputElement, 'small', 'red', error);
         }        
     }
 
-    openChannelEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement) {
+    [openChannel](handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement) {
         let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
 
         if (blockCount < blockIndex) {
@@ -343,12 +333,12 @@ export default class TestLogisticsRaw {
                     data[blockIndex].num, data[blockIndex].transNum,
                     data[blockIndex].model, data[blockIndex].destinationCountry,
                     data[blockIndex].lastStatus, data[blockIndex].tracks, function(error, result) {
-                    handler.openChannelFuncEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
+                    handler[openChannelFunc](handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
                 });
                 break;
             case "updateEx":
                 logisticsCore.updateEx(account, key, data[blockIndex].num, data[blockIndex].info, function(error, result) {
-                    handler.openChannelFuncEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
+                    handler[openChannelFunc](handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
                 });
                 break;
             case "updateBrief":
@@ -356,23 +346,33 @@ export default class TestLogisticsRaw {
                     data[blockIndex].num, data[blockIndex].transNum,
                     data[blockIndex].model, data[blockIndex].destinationCountry,
                     data[blockIndex].lastStatus, function(error, result) {
-                    handler.openChannelFuncEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
+                    handler[openChannelFunc](handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
                 });
                 break;
             case "updateBriefEx":
                 logisticsCore.updateBriefEx(account, key, data[blockIndex].num, data[blockIndex].info, function(error, result) {
-                    handler.openChannelFuncEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
+                    handler[openChannelFunc](handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
                 });
                 break;
             case "updateTracks":
                 logisticsCore.updateTracks(account, key, data[blockIndex].num, data[blockIndex].info, 1, function(error, result) {
-                    handler.openChannelFuncEx(handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
+                    handler[openChannelFunc](handler, account, key, data, parallelCount, blockIndex, blockCount, outputElement, error, result);
                 });
                 break;
             default:
                 Output(outputElement, 'small', 'red', "Command Type Error!");
                 break;
         }
+    }
+
+    [closeChannel](account) {
+        let index = window.channelClass.find(account);
+        let size = window.channelClass.size();
+        if (size == index) {
+            return;
+        }
+
+        window.channelClass.status(index, "idle");
     }
 
     dummyData(para1, para2) {
@@ -434,7 +434,7 @@ export default class TestLogisticsRaw {
         for (let blockIndex=0; blockIndex<parallelCount; blockIndex++) {
             let account = channelIdles[blockIndex].account;
             let key = channelIdles[blockIndex].key;
-            this.openChannelEx(this, account, key, data, parallelCount, blockIndex, blockCount, outputElement);
+            this[openChannel](this, account, key, data, parallelCount, blockIndex, blockCount, outputElement);
         }
     }
 
