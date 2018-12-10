@@ -4,6 +4,7 @@ import Transaction from './transaction_raw.js';
 import Delegate from './delegate.js';
 import Logistics from './logistics.js';
 import LogisticsCore from './logistics_core.js';
+import LogisticsTestData from './test_logistics_raw_data.js';
 
 //private member
 const compiledJson = Symbol('compiledJson');
@@ -381,11 +382,13 @@ export default class TestLogisticsRaw {
         let blockCount;
         let outputElement;
 
+        let logisticsTestData = new LogisticsTestData();
+
         switch (para1) {
             case "Analytics":
                 outputElement = window.outputAnalyticsElement;
                 if ("Amount" == para2) {
-                    data = this.buildAnalyticsAmountData();
+                    data = logisticsTestData.buildAnalyticsAmountData();
                     blockCount = data.length;
                 } else {
                     Output(outputElement, 'small', 'red', "Command Error!");
@@ -395,10 +398,10 @@ export default class TestLogisticsRaw {
             case "Test":
                 outputElement = window.outputCommonElement;
                 if ("Create" == para2) {
-                    data = this.buildTestCreateData();
+                    data = logisticsTestData.buildTestCreateData();
                     blockCount = data.length;
                 } else if ("Update" == para2) {
-                    data = this.buildTestUpdateData();
+                    data = logisticsTestData.buildTestUpdateData();
                     blockCount = data.length;
                 } else {
                     Output(outputElement, 'small', 'red', "Command Error!");
