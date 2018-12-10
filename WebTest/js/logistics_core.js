@@ -515,6 +515,9 @@ export default class LogisticsCore {
         });
     }
 
+    getTrackElementByIndex(_num, _index, _elementType, _func) {
+    }
+
     getBrief(_num, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
