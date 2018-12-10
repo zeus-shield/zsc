@@ -798,6 +798,19 @@ export default class TestLogisticsRaw {
                     Output(window.outputReadElement, 'small', 'red', error);
                 }
             });
+        } else if ('TrackElement' == type) {
+            let tmps = para.split(",");
+            let num = tmps[0];
+            let index = tmps[1];
+            let tag = tmps[2];
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.getTrackElementByIndex(num, index, tag, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Element]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            });
         } else if ('TracksInvalid' == type) {
             let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
             let paras = para.split(",");
