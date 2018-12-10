@@ -80,6 +80,32 @@ contract logisticsAnalytics {
 
         return index;
     }
+
+    /** [desc] Get parcel amount by last status.
+      * [param]  _lastStatus: last status (0: means ignore last status).
+      * [return] parcel amount.
+      */
+    function _getParcelAmountByLastStatus(uint8 _lastStatus) private view returns (uint)  {
+        uint amount = 0;
+
+        if (0 == _lastStatus) {
+            amount = LogisticsCore(coreAddr_).number();
+        } else {
+            uint i = 0;
+            uint8 lastStatus = 0;
+            string memory num = "";
+
+            for (i=0; i<LogisticsCore(coreAddr_).number(); i++) {
+                num = LogisticsCore(coreAddr_).getNumByIndex(i);
+                lastStatus = uint8(LogisticsCore(coreAddr_).getBriefElement(num, "lastStatus").toUint());
+                if (_lastStatus == lastStatus) {
+                    amount ++;
+                }
+            }
+        }
+
+        return amount;
+    }
     // type: 0 means 'sent', 1 means 'received'
     function getParcelCountByCountry(uint8 _type, uint16 _country) external view _checkCoreAddr returns (uint)  {
         uint i = 0;
