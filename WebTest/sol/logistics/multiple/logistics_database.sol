@@ -326,4 +326,18 @@ contract LogisticsDatabase is Delegate {
 
         return str;
     }
+
+    function getBriefElement(string _num, string _tag) external view returns (string) {
+        if (_tag.equals("transNum")) {
+            return briefs_[_num].transNum_;
+        } else if (_tag.equals("model")) {
+            return briefs_[_num].model_;
+        } else if (_tag.equals("destinationCountry")) {
+            return uint(briefs_[_num].destinationCountry_).toString();
+        } else if (_tag.equals("lastStatus")) {
+            return uint(briefs_[_num].lastStatus_).toString();
+        } else {
+            return "";
+        }
+    }
 }
