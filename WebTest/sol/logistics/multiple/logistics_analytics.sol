@@ -134,8 +134,8 @@ contract logisticsAnalytics {
     }
 
     /** [desc] Get parcel amount.
-      * [param] _srcCountry: country code of parcels sent£¨0: means all countries£©.
-      * [param] _destCountry: country code of parcels received£¨0: means all countries£©.
+      * [param] _srcCountry: country code of parcels sent (0: means all countries).
+      * [param] _destCountry: country code of parcels received (0: means all countries).
       * [param] _startTime: start time (0: means ignore time).
       * [param] _endTime: end time (0: means ignore time).
       * [return] parcel amount.
@@ -146,8 +146,15 @@ contract logisticsAnalytics {
         if (0 == _srcCountry) {
             if (0 == _destCountry) {
                 if ((0 == _startTime) && (0 == _endTime)) {
-                    amount = _getParcelAmountByLastStatus(0);
+                    // all parcel amounts
+                    amount = LogisticsCore(coreAddr_).number();
+                } else {
+                    // TODO
+                    return 0;
                 }
+            } else {
+                // dest country's received parcel amounts
+                amount = _getParcelAmountByDestCountry(_destCountry, _startTime, _endTime);
             }
         } else {
 
