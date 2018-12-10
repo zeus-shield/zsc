@@ -353,6 +353,20 @@ contract LogisticsCore is Delegate {
         return LogisticsDatabase(databaseAddr_).getBrief(invalidNum, invalidNum);
     }
 
+    function getBriefElement(string _num, string _tag) external view _checkDatabaseAddr returns (string) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return ("");
+        }
+
+        // check num exist
+        if (!numExists_[_num]) {
+            return ("");
+        }
+
+        return LogisticsDatabase(databaseAddr_).getBriefElement(_num, _tag);
+    }
+
     function getTracksInvalid(string _num, uint _invalidIndex) external view _checkDatabaseAddr returns (string) {
         // check param
         if (0 == bytes(_num).length) {
