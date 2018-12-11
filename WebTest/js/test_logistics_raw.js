@@ -36,6 +36,7 @@ const removeBatch = Symbol('removeBatch');
 const getInvalid = Symbol('getInvalid');
 const invalidBatch = Symbol('invalidBatch');
 const getDelegateInstance = Symbol('getDelegateInstance');
+const getTimeStamp = Symbol('getTimeStamp');
 
 export default class TestLogisticsRaw {
 
@@ -1003,6 +1004,26 @@ export default class TestLogisticsRaw {
         }
     }
 
+    [getTimeStamp](year, month) {
+        let start = "";
+        let end = "";
+        let date;
+        let startTime = 0;
+        let endTime = 0;
+
+        start = start.concat(year, "-", month, "-01 00:00:00");
+        date = new Date(parseInt(year), parseInt(month), 0);
+        end = end.concat(year, "-", month, "-", date.getDate().toString(10), " 23:59:59");
+
+        date = new Date(start);
+        startTime = date.getTime()/1000;
+
+        date = new Date(end);
+        endTime = date.getTime()/1000; 
+
+        return new Array(startTime, endTime);
+    }
+
     analytics(cmd, paras) {
         console.log('TestLogisticsRaw.Analytics(%s, %s)', cmd, paras);
         let handler = this;
@@ -1042,10 +1063,13 @@ export default class TestLogisticsRaw {
                 }
                 break;
             case "Amount":
-                let srcCountry = 0;
-                let destCountry = 0; 
-                let startTime = 0;
-                let endTime = 0;
+                let para = paras.split(",");
+                let srcCountry = para[0];
+                let destCountry = para[1];
+
+                let date = this[getTimeStamp](para[2], para[3]);
+                let startTime = date[0];
+                let endTime = date[1];
 
                 let logisticsAnalytics = new LogisticsAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
                 logisticsAnalytics.getParcelAmount(srcCountry, destCountry, startTime, endTime, function(error, result) {
