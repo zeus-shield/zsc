@@ -32,4 +32,37 @@ class Category extends Admin {
 		}
 	}
 
+	/* 编辑分类 */
+	public function edit($id = null, $pid = 0) {
+		if (IS_POST) {
+			$category = model('Category');
+			//提交表单
+			$result = $category->change();
+			if (false !== $result) {
+				//记录行为
+				action_log('update_category', 'category', $id, session('user_auth.uid'));
+				return $this->success('编辑成功！', url('index'));
+			} else {
+				$error = $category->getError();
+				return $this->error(empty($error) ? '未知错误！' : $error);
+			}
+		} else {
+			$cate = '';
+			if ($pid) {
+				/* 获取上级分类信息 */
+				$cate = db('Category')->find($pid);
+				if (!($cate && 1 == $cate['status'])) {
+					return $this->error('指定的上级分类不存在或被禁用！');
+				}
+			}
+			/* 获取分类信息 */
+			$info = $id ? db('Category')->find($id) : '';
+
+			$this->assign('info', $info);
+			$this->assign('category', $cate);
+			$this->setMeta('编辑分类');
+			return $this->fetch();
+		}
+	}	
+
 }
