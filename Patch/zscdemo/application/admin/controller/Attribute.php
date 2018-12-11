@@ -76,4 +76,25 @@ class Attribute extends Admin {
 			return $this->fetch('public/edit');
 		}
 	}
+
+		public function edit() {
+		if (IS_POST) {
+			$result = $this->model->change();
+			if ($result) {
+				return $this->success("修改成功！", url('Attribute/index', array('model_id' => $_POST['model_id'])));
+			} else {
+				return $this->error($this->model->getError());
+			}
+		} else {
+			$id   = input('id', '', 'trim,intval');
+			$info = db('Attribute')->find($id);
+			$data = array(
+				'info'       => $info,
+				'fieldGroup' => $this->field,
+			);
+			$this->assign($data);
+			$this->setMeta('编辑字段');
+			return $this->fetch('public/edit');
+		}
+	}
 }
