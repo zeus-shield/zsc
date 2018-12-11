@@ -3,6 +3,7 @@ import Output from './output.js';
 import Transaction from './transaction_raw.js';
 import Delegate from './delegate.js';
 import Logistics from './logistics.js';
+import LogisticsAnalytics from './logistics_analytics.js';
 import LogisticsCore from './logistics_core.js';
 import LogisticsTestData from './test_logistics_raw_data.js';
 
@@ -218,7 +219,12 @@ export default class TestLogisticsRaw {
                     logistics.setup(account, key, this[coreContractAddress], function(error, result) {
                         handler[commmonTransactionProc](error, result, window.outputSetupElement);
                     });
-                } else if ("LogisticsCore" == contractName) {
+                } else if ("LogisticsAnalytics" == contractName) {
+                    let logisticsAnalytics = new LogisticsAnalytics(this[abi], this[contractAddress]);
+                    logisticsAnalytics.setup(account, key, this[coreContractAddress], function(error, result) {
+                        handler[commmonTransactionProc](error, result, window.outputSetupElement);
+                    });
+                }else if ("LogisticsCore" == contractName) {
                     let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
                     logisticsCore.setup(account, key, this[databaseContractAddress], function(error, result) {
                         handler[commmonTransactionProc](error, result, window.outputSetupElement);
@@ -229,6 +235,8 @@ export default class TestLogisticsRaw {
                 break;
             case "Get":
                 if ("Logistics" == contractName) {
+                    Output(window.outputSetupElement, 'small', 'red', "Don't support now!");
+                } else if ("LogisticsAnalytics" == contractName) {
                     Output(window.outputSetupElement, 'small', 'red', "Don't support now!");
                 } else if ("LogisticsCore" == contractName) {
                     let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
