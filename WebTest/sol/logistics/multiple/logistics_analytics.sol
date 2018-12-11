@@ -91,7 +91,7 @@ contract logisticsAnalytics {
     }
 
     /** [desc] Get dest country's received parcel amounts.
-      * [param] _destCountry: country code of parcels received(> 0).
+      * [param] _destCountry: country code of parcels received (> 0).
       * [param] _startTime: start time (0: means ignore time).
       * [param] _endTime: end time (0: means ignore time).
       * [return] parcel amount.
@@ -101,23 +101,23 @@ contract logisticsAnalytics {
         uint index = 0;
         uint amount = 0;
         uint8 lastStatus = 0;
-        uint16 destinationCountry = 0;
+        uint16 destCountry = 0;
         uint64 lastTrackTime = 0;
         string memory num = "";
 
         // check param
-        if (0 == _destCountry) {
+        if ((0 == _destCountry) || (_startTime > _endTime)) {
             return 0;
         }
 
         for (i=0; i<LogisticsCore(coreAddr_).number(); i++) {
             num = LogisticsCore(coreAddr_).getNumByIndex(i);
             lastStatus = uint8(LogisticsCore(coreAddr_).getBriefElement(num, "lastStatus").toUint());
-            destinationCountry = uint16(LogisticsCore(coreAddr_).getBriefElement(num, "destinationCountry").toUint());
+            destCountry = uint16(LogisticsCore(coreAddr_).getBriefElement(num, "destinationCountry").toUint());
             index = _getFirstOrLastTrackIndex(1, num);
             lastTrackTime = uint64(LogisticsCore(coreAddr_).getTrackElementByIndex(num, index, "time").toUint());
 
-            if ((destinationCountry == _destCountry) && (actionCodes_["GTMS_SIGNED"] == lastStatus)) {
+            if ((destCountry == _destCountry) && (actionCodes_["GTMS_SIGNED"] == lastStatus)) {
                 if ((0 == _startTime) && (0 == _endTime)) {
                     // ignore time
                     amount ++;
