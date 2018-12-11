@@ -11,7 +11,7 @@
         <script type="module" src="../js/file.js"></script>
         <script type="module" src="../js/provider.js"></script>
         <style>
-            #logistics_database_l,#logistics_core_l,#logistics_l {
+            #l_logistics_database,#l_logistics_core,#l_logistics_analytics,#l_logistics {
                 width: 60px;
                 height: 25px;
                 line-height: 15px;
@@ -31,7 +31,7 @@
 /*                width:900px;*/
                 padding:10px;
             }
-            #logistics_database_file,#logistics_core_file,#logistics_file {
+            #logistics_database_file,#logistics_core_file,#logistics_analytics_file,#logistics_file {
                 display: none;
             }
             #block {
@@ -59,6 +59,7 @@
                 window.outputProviderElement = 'output_provider';
                 window.outputDeployDatabaseElement = 'output_deploy_database';
                 window.outputDeployCoreElement = 'output_deploy_core';
+                window.outputDeployAnalyticsElement = 'output_deploy_analytics';
                 window.outputDeployElement = 'output_deploy';
                 window.outputSetupElement = 'output_setup';
                 window.outputDelegateWriteElement = 'p_output_delegate_write';
@@ -160,25 +161,33 @@
                     <h4>2. Deploy:</h4>
                     <div id="element">
                         <h5>Deploy [logistics_database]</h5>
-                        <label id="logistics_database_l" for="logistics_database_file">Upload</label>
+                        <label id="l_logistics_database" for="logistics_database_file">Upload</label>
                         <input type="file" id="logistics_database_file" onchange="file('LogisticsRaw', 'LogisticsDatabase', this)" />
-                        <button type="button" id="deploy_b" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsDatabase', '')">Deploy</button>
+                        <button type="button" id="b_deploy" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsDatabase', '')">Deploy</button>
                         <p id="output_deploy_database"></p>
                     </div>
 
                     <div id="element">
                         <h5>Deploy [logistics_core]</h5>
-                        <label id="logistics_core_l" for="logistics_core_file">Upload</label>
+                        <label id="l_logistics_core" for="logistics_core_file">Upload</label>
                         <input type="file" id="logistics_core_file" onchange="file('LogisticsRaw', 'LogisticsCore', this)" />
-                        <button type="button" id="deploy_b" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsCore', '')">Deploy</button>
+                        <button type="button" id="b_deploy" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsCore', '')">Deploy</button>
                         <p id="output_deploy_core"></p>
                     </div>                   
 
                     <div id="element">
+                        <h5>Deploy [logistics_analytics]</h5>
+                        <label id="l_logistics_analytics" for="logistics_analytics_file">Upload</label>
+                        <input type="file" id="logistics_analytics_file" onchange="file('LogisticsRaw', 'LogisticsAnalytics', this)" />
+                        <button type="button" id="b_deploy" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsAnalytics', '')">Deploy</button>
+                        <p id="output_deploy_analytics"></p>
+                    </div>
+
+                    <div id="element">
                         <h5>Deploy [logistics]</h5>
-                        <label id="logistics_l" for="logistics_file">Upload</label>
+                        <label id="l_logistics" for="logistics_file">Upload</label>
                         <input type="file" id="logistics_file" onchange="file('LogisticsRaw', 'Logistics', this)" />
-                        <button type="button" id="deploy_b" onclick="main('LogisticsRaw', 'Deploy', 'Logistics', '')">Deploy</button>
+                        <button type="button" id="b_deploy" onclick="main('LogisticsRaw', 'Deploy', 'Logistics', '')">Deploy</button>
                         <p id="output_deploy"></p>
                     </div>
                     <div style="clear:left"></div>
