@@ -3,6 +3,7 @@ import Output from './output.js';
 import Transaction from './transaction_raw.js';
 import Delegate from './delegate.js';
 import Logistics from './logistics.js';
+import LogisticsAnalytics from './logistics_analytics.js';
 import LogisticsCore from './logistics_core.js';
 import LogisticsTestData from './test_logistics_raw_data.js';
 
@@ -10,6 +11,9 @@ import LogisticsTestData from './test_logistics_raw_data.js';
 const compiledJson = Symbol('compiledJson');
 const abi = Symbol('abi');
 const contractAddress = Symbol('contractAddress');
+
+const analyticsAbi = Symbol('analyticsAbi');
+const analyticsContractAddress = Symbol('analyticsContractAddress');
 
 const coreAbi = Symbol('coreAbi');
 const coreContractAddress = Symbol('coreContractAddress');
@@ -105,6 +109,8 @@ export default class TestLogisticsRaw {
             elementId = window.outputDeployDatabaseElement;
         } else if ('LogisticsCore' == contractName) {
             elementId = window.outputDeployCoreElement;
+        } else if ('LogisticsAnalytics' == contractName) {
+            elementId = window.outputDeployAnalyticsElement;
         } else {
             elementId = window.outputDeployElement;
         }
@@ -154,6 +160,9 @@ export default class TestLogisticsRaw {
         } else if ('LogisticsCore' == contractName) {
             this[coreAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
             contract = web3.eth.contract(this[coreAbi]);
+        } else if ('LogisticsAnalytics' == contractName) {
+            this[analyticsAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
+            contract = web3.eth.contract(this[analyticsAbi]);
         } else {
             this[abi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
             contract = web3.eth.contract(this[abi]);
@@ -173,6 +182,8 @@ export default class TestLogisticsRaw {
                                 handler[databaseContractAddress] = result.contractAddress;
                             } else if ('LogisticsCore' == contractName) {
                                 handler[coreContractAddress] = result.contractAddress;
+                            } else if ('LogisticsAnalytics' == contractName) {
+                                handler[analyticsContractAddress] = result.contractAddress;
                             } else {
                                 handler[contractAddress] = result.contractAddress;
                             }
@@ -208,7 +219,12 @@ export default class TestLogisticsRaw {
                     logistics.setup(account, key, this[coreContractAddress], function(error, result) {
                         handler[commmonTransactionProc](error, result, window.outputSetupElement);
                     });
-                } else if ("LogisticsCore" == contractName) {
+                } else if ("LogisticsAnalytics" == contractName) {
+                    let logisticsAnalytics = new LogisticsAnalytics(this[abi], this[contractAddress]);
+                    logisticsAnalytics.setup(account, key, this[coreContractAddress], function(error, result) {
+                        handler[commmonTransactionProc](error, result, window.outputSetupElement);
+                    });
+                }else if ("LogisticsCore" == contractName) {
                     let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
                     logisticsCore.setup(account, key, this[databaseContractAddress], function(error, result) {
                         handler[commmonTransactionProc](error, result, window.outputSetupElement);
@@ -219,6 +235,8 @@ export default class TestLogisticsRaw {
                 break;
             case "Get":
                 if ("Logistics" == contractName) {
+                    Output(window.outputSetupElement, 'small', 'red', "Don't support now!");
+                } else if ("LogisticsAnalytics" == contractName) {
                     Output(window.outputSetupElement, 'small', 'red', "Don't support now!");
                 } else if ("LogisticsCore" == contractName) {
                     let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
@@ -798,6 +816,19 @@ export default class TestLogisticsRaw {
                     Output(window.outputReadElement, 'small', 'red', error);
                 }
             });
+        } else if ('TrackElement' == type) {
+            let tmps = para.split(",");
+            let num = tmps[0];
+            let index = tmps[1];
+            let tag = tmps[2];
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.getTrackElementByIndex(num, index, tag, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Element]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            });
         } else if ('TracksInvalid' == type) {
             let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
             let paras = para.split(",");
@@ -846,6 +877,18 @@ export default class TestLogisticsRaw {
                     Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${result}`);
                 } else {
                     Output(window.outputReadElement, 'small', 'red', `[Brief${index}]:</br>${error}`);
+                }
+            });
+        } else if ('BriefElement' == type) {
+            let tmps = para.split(",");
+            let num = tmps[0];
+            let tag = tmps[1];
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.getBriefElement(num, tag, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Element]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
                 }
             });
         } else if ('BriefInvalid' == type) {

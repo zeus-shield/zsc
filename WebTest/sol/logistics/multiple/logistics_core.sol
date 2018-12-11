@@ -267,7 +267,7 @@ contract LogisticsCore is Delegate {
         return LogisticsDatabase(databaseAddr_).getTracks(_getValidNumName(_num));
     }
 
-    function getTrackElementByIndex(string _num, uint _index, string _elementType) external view _checkDatabaseAddr returns (string) {
+    function getTrackElementByIndex(string _num, uint _index, string _tag) external view _checkDatabaseAddr returns (string) {
         // check param
         if (0 == bytes(_num).length) {
             return "";
@@ -278,7 +278,7 @@ contract LogisticsCore is Delegate {
             return "";
         }
 
-        return LogisticsDatabase(databaseAddr_).getTrackElementByIndex(_getValidNumName(_num), _index, _elementType);
+        return LogisticsDatabase(databaseAddr_).getTrackElementByIndex(_getValidNumName(_num), _index, _tag);
     }
 
     function getBrief(string _num) external view _checkDatabaseAddr returns (string, string, string, uint16, uint8) {
@@ -331,6 +331,20 @@ contract LogisticsCore is Delegate {
         string memory num = numNames_[_index];
 
         return LogisticsDatabase(databaseAddr_).getBriefEx(num, _getValidNumName(num));
+    }
+
+    function getBriefElement(string _num, string _tag) external view _checkDatabaseAddr returns (string) {
+        // check param
+        if (0 == bytes(_num).length) {
+            return ("");
+        }
+
+        // check num exist
+        if (!numExists_[_num]) {
+            return ("");
+        }
+
+        return LogisticsDatabase(databaseAddr_).getBriefElement(_getValidNumName(_num), _tag);
     }
 
     function getBriefInvalid(string _num, uint _invalidIndex) external view _checkDatabaseAddr returns (string, string, string, uint16, uint8) {

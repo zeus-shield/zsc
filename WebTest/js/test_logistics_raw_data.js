@@ -306,12 +306,12 @@ export default class TestLogisticsRawData {
 
     buildAnalyticsAmountData() {
         // 中国(t0) -> 俄罗斯(t1)，签收
-        let num0 = "JNTCU0600046683YQ";
-        let transNum0 = "订单描述：（中国 -> 俄罗斯，签收）";
-        let model0 = "J-NET俄全通：（Russia, GTMS_SIGNED）"; 
-        let destinationCountry0 = 7; // Russia
-        let lastStatus0 = 28;        // GTMS_SIGNED("用户签收","Delivered")
-        let tracks0 = 
+        let num3 = "JNTCU0600046683YQ";
+        let transNum3 = "订单描述：（中国 -> 俄罗斯，签收）";
+        let model3 = "J-NET俄全通：（Russia, GTMS_SIGNED）"; 
+        let destinationCountry3 = 7; // Russia
+        let lastStatus3 = 28;        // GTMS_SIGNED("用户签收","Delivered")
+        let tracks3 = 
             "{" +
                 "\"trackElementList\":[{" +
                     "\"type\":\"01\"," +            // OC
@@ -335,8 +335,8 @@ export default class TestLogisticsRawData {
             "}";
         
         // 中国(t1) -> 美国(t2) -> 俄罗斯(t0)，签收
-        let num1 = "JNTCU0600046684YQ";
-        let info1 = 
+        let num4 = "JNTCU0600046684YQ";
+        let info4 = 
             "{" +
                 "\"error\":null," +
                 "\"num\":\"JNTCU0600046684YQ\"," +
@@ -375,12 +375,12 @@ export default class TestLogisticsRawData {
             "}";
         
         // 中国(t3) -> 法国(t1) -> 美国(t0) -> 俄罗斯(t2)，转运中
-        let num2 = "JNTCU0600046685YQ";
-        let transNum2 = "订单描述：（中国 -> 法国 -> 美国 -> 俄罗斯，转运中）";
-        let model2 = "J-NET俄全通：（Russia, VISIBLE_UNKOWN）"; 
-        let destinationCountry2 = 7;                // Russia
-        let lastStatus2 = 37;                       // VISIBLE_UNKOWN("转运","transfer")
-        let tracks2 =
+        let num5 = "JNTCU0600046685YQ";
+        let transNum5 = "订单描述：（中国 -> 法国 -> 美国 -> 俄罗斯，转运中）";
+        let model5 = "J-NET俄全通：（Russia, VISIBLE_UNKOWN）"; 
+        let destinationCountry5 = 7;                // Russia
+        let lastStatus5 = 37;                       // VISIBLE_UNKOWN("转运","transfer")
+        let tracks5 =
             "{" +
                 "\"trackElementList\":[{" +
                     "\"type\":\"2\"," +             // DC
@@ -425,26 +425,26 @@ export default class TestLogisticsRawData {
 
         data.push({
                     type: "update",
-                    num: num0,
-                    transNum: transNum0,
-                    model: model0,
-                    destinationCountry: destinationCountry0,
-                    lastStatus: lastStatus0,
-                    tracks: tracks0
+                    num: num3,
+                    transNum: transNum3,
+                    model: model3,
+                    destinationCountry: destinationCountry3,
+                    lastStatus: lastStatus3,
+                    tracks: tracks3
                 });
         data.push({
                     type: "updateEx",
-                    num: num1,
-                    info: info1
+                    num: num4,
+                    info: info4
                 });
         data.push({
                     type: "update",
-                    num: num2,
-                    transNum: transNum2,
-                    model: model2,
-                    destinationCountry: destinationCountry2,
-                    lastStatus: lastStatus2,
-                    tracks: tracks2
+                    num: num5,
+                    transNum: transNum5,
+                    model: model5,
+                    destinationCountry: destinationCountry5,
+                    lastStatus: lastStatus5,
+                    tracks: tracks5
                 });
 
         return data;

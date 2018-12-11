@@ -515,6 +515,54 @@ export default class LogisticsCore {
         });
     }
 
+    getTrackElementByIndex(_num, _index, _tag, _func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.getTrackElementByIndex.estimateGas(_num, _index, _tag, {from: this[account]}, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("===== LogisticsCore.getTrackElementByIndex(string, uint, string) =====");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("======================================================================");
+                        // call 'LogisticsCore.getTrackElementByIndex(string, uint, string)'
+                        contractInstance.getTrackElementByIndex.call(_num, _index, _tag, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                console.log("[Element]:", result);
+                                if (null != _func) {
+                                    _func(null, result);
+                                }
+                            } else {
+                                console.log(error);
+                                if (null != _func) {
+                                    _func(error);
+                                }
+                            }
+                        });
+                    } else {
+                        console.log(error);
+                        if (null != _func) {
+                            _func(error);
+                        }
+                    }
+                });
+            } else {
+                console.log(error);
+                if (null != _func) {
+                    _func(error);
+                }
+            }
+        });
+    }
+
     getBrief(_num, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
@@ -703,6 +751,54 @@ export default class LogisticsCore {
                 console.log(error);
                 if (null != _func) {
                     _func(error, _index);
+                }
+            }
+        });
+    }
+
+    getBriefElement(_num, _tag, _func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.getBriefElement.estimateGas(_num, _tag, {from: this[account]}, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("=========== LogisticsCore.getBriefElement(string, string) ===========");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("=====================================================================");
+                        // call 'LogisticsCore.getBriefElement(string, string)'
+                        contractInstance.getBriefElement.call(_num, _tag, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                console.log("[Element]:", result);
+                                if (null != _func) {
+                                    _func(null, result);
+                                }
+                            } else {
+                                console.log(error);
+                                if (null != _func) {
+                                    _func(error);
+                                }
+                            }
+                        });
+                    } else {
+                        console.log(error);
+                        if (null != _func) {
+                            _func(error);
+                        }
+                    }
+                });
+            } else {
+                console.log(error);
+                if (null != _func) {
+                    _func(error);
                 }
             }
         });

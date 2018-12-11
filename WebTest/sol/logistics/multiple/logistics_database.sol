@@ -280,7 +280,7 @@ contract LogisticsDatabase is Delegate {
         return str;
     }
 
-    function getTrackElementByIndex(string _num, uint _index, string _elementType) external view returns (string) {
+    function getTrackElementByIndex(string _num, uint _index, string _tag) external view returns (string) {
         string memory trackName = "";
 
         // check param
@@ -290,21 +290,21 @@ contract LogisticsDatabase is Delegate {
 
         trackName = _num.concat("-", _index.toString());
 
-        if (_elementType.equals("city")) {
+        if (_tag.equals("city")) {
             return uint(uint16(tracks_[trackName].data_ & uint16(-1))).toString();
-        } else if (_elementType.equals("country")) {
+        } else if (_tag.equals("country")) {
             return uint(uint16((tracks_[trackName].data_ & uint32(-1) << 16) >> 16)).toString();
-        } else if (_elementType.equals("time")) {
+        } else if (_tag.equals("time")) {
             return uint(uint64((tracks_[trackName].data_ & uint96(-1) << (16+16)) >> (16+16))).toString();
-        } else if (_elementType.equals("timezone")) {
+        } else if (_tag.equals("timezone")) {
             return int(int8((tracks_[trackName].data_ & uint104(-1) << (16+16+64)) >> (16+16+64))).toString();
-        } else if (_elementType.equals("actionCode")) {
+        } else if (_tag.equals("actionCode")) {
             return uint(uint8((tracks_[trackName].data_ & uint112(-1) << (16+16+64+8)) >> (16+16+64+8)) & (uint8(-1) >> (112-16-16-64-8-6))).toString();
-        } else if (_elementType.equals("type")) {
+        } else if (_tag.equals("type")) {
             return uint(uint8((tracks_[trackName].data_ & uint112(-1) << (16+16+64+8+6)) >> (16+16+64+8+6))).toString();
-        } else if (_elementType.equals("facilityName")) {
+        } else if (_tag.equals("facilityName")) {
             return tracks_[trackName].facilityName_;
-        } else if (_elementType.equals("desc")) {
+        } else if (_tag.equals("desc")) {
             return tracks_[trackName].desc_;
         } else {
             return "";
@@ -325,5 +325,19 @@ contract LogisticsDatabase is Delegate {
         str = str.concat(uint(briefs_[_num].lastStatus_).toString().toKeyValue("lastStatus"), "}");
 
         return str;
+    }
+
+    function getBriefElement(string _num, string _tag) external view returns (string) {
+        if (_tag.equals("transNum")) {
+            return briefs_[_num].transNum_;
+        } else if (_tag.equals("model")) {
+            return briefs_[_num].model_;
+        } else if (_tag.equals("destinationCountry")) {
+            return uint(briefs_[_num].destinationCountry_).toString();
+        } else if (_tag.equals("lastStatus")) {
+            return uint(briefs_[_num].lastStatus_).toString();
+        } else {
+            return "";
+        }
     }
 }

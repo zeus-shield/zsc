@@ -58,6 +58,8 @@ export default function file(module, contractName, input) {
                         elementId = window.outputDeployDatabaseElement;
                     } else if ('LogisticsCore' == contractName) {
                         elementId = window.outputDeployCoreElement;
+                    } else if ('LogisticsAnalytics' == contractName) {
+                        elementId = window.outputDeployAnalyticsElement;
                     } else {
                         elementId = window.outputDeployElement;
                     }
