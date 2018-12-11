@@ -266,48 +266,4 @@ contract logisticsAnalytics {
 
         return amount;
     }
-
-    // _type: 0 means 'sent', 1 means 'received'
-    function getParcelCountByCountry(uint8 _type, uint16 _country) external view _checkCoreAddr returns (uint)  {
-        uint i = 0;
-        uint j = 0;
-        uint count = 0;
-
-        if (0 == _type) {
-            uint64 timeMin = uint64(-1);
-            uint64 time = 0;
-            uint16 country = 0;
-            for (i=0; i<LogisticsCore(coreAddr_).number(); i++) {
-                // find first track's country
-                string  memory num = LogisticsCore(coreAddr_).getNumByIndex(i);
-                uint trackCount = LogisticsCore(coreAddr_).numberOfTracks(num);
-                for (j=0; j<trackCount; j++) {
-                    time = uint64(LogisticsCore(coreAddr_).getTrackElementByIndex(num, j, "time").toUint());
-                    if (time < timeMin) {
-                        country = uint16(LogisticsCore(coreAddr_).getTrackElementByIndex(num, j, "country").toUint());
-                        timeMin = time;
-                    }
-                }
-
-                if (_country == country) {
-                    count ++;
-                }
-
-            }
-        } else if (1 == _type) {
-            string memory originalNum = "";
-            string memory transNum = "";
-            string memory model = "";
-            uint16 destinationCountry = 0;
-            uint8 lastStatus = 0;
-            for (i=0; i<LogisticsCore(coreAddr_).number(); i++) {
-                (originalNum, transNum, model, destinationCountry, lastStatus) = LogisticsCore(coreAddr_).getBriefByIndex(i);
-                if (_country == destinationCountry) {
-                    count ++;
-                }
-            }
-        } else {}
-
-        return count;
-    }
 }
