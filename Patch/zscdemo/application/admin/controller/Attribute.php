@@ -34,4 +34,22 @@ class Attribute extends Admin {
 		$this->the_time  = array(0 => '请选择', '3' => '始 终', '1' => '新 增', '2' => '编 辑');
 		$this->field     = $this->getField();
 	}
+
+		public function index($model_id = null) {
+		$map['model_id'] = $model_id;
+		if (!$model_id) {
+			return $this->error("非法操作！");
+		}
+
+		$list = model('Attribute')->where($map)->order('id desc')->paginate(25);
+
+		$data = array(
+			'list'     => $list,
+			'model_id' => $model_id,
+			'page'     => $list->render(),
+		);
+		$this->assign($data);
+		$this->setMeta('字段管理');
+		return $this->fetch();
+	}
 }
