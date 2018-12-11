@@ -198,7 +198,12 @@ contract logisticsAnalytics {
                 amount = _getParcelAmountByDestCountry(_destCountry, _startTime, _endTime);
             }
         } else {
+            if (0 == _destCountry) {
+                // src country's sent parcel amounts
+                amount = _getParcelAmountBySrcCountry(_srcCountry, _startTime, _endTime);
+            } else {
 
+            }
         }
 
         return amount;
