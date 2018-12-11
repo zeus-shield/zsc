@@ -97,4 +97,18 @@ class Attribute extends Admin {
 			return $this->fetch('public/edit');
 		}
 	}
+
+		public function del() {
+		$id = input('id', '', 'trim,intval');
+		if (!$id) {
+			return $this->error("非法操作！");
+		}
+
+		$result = $this->model->del($id);
+		if ($result) {
+			return $this->success("删除成功！");
+		} else {
+			return $this->error($this->model->getError());
+		}
+	}
 }
