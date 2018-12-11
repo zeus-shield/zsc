@@ -901,13 +901,13 @@ export default class LogisticsCore {
         });
     }
 
-    getDatabaseAddr(_account, _func) {
+    getDatabaseAddr(_func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getDatabaseContractAddress.estimateGas({from: _account}, function(error, result) {
+        contractInstance.getDatabaseContractAddress.estimateGas({from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
@@ -915,12 +915,12 @@ export default class LogisticsCore {
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
                         console.log("============= LogisticsCore.getDatabaseContractAddress() ==============");
-                        console.log("from:    ", _account);
+                        console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
                         console.log("=======================================================================");
                         // call 'LogisticsCore.getDatabaseContractAddress()'
-                        contractInstance.getDatabaseContractAddress.call({from: _account, gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        contractInstance.getDatabaseContractAddress.call({from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[DatabaseContractAddress]: %s", result);
                                 if (null != _func) {
