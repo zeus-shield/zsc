@@ -25,4 +25,11 @@ class Category extends Admin {
 		return $this->fetch();
 	}
 
+	/* 单字段编辑 */
+	public function editable($name = null, $value = null, $pk = null) {
+		if ($name && ($value != null || $value != '') && $pk) {
+			db('Category')->where(array('id' => $pk))->setField($name, $value);
+		}
+	}
+
 }
