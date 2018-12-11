@@ -240,7 +240,7 @@ export default class TestLogisticsRaw {
                     Output(window.outputSetupElement, 'small', 'red', "Don't support now!");
                 } else if ("LogisticsCore" == contractName) {
                     let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-                    logisticsCore.getDatabaseAddr(account, function(error, result) {
+                    logisticsCore.getDatabaseAddr(function(error, result) {
                         if (!error) {
                             Output(window.outputSetupElement, 'small', 'red', `[DatabaseContractAddress]: ${result}`);
                         } else {
@@ -1005,8 +1005,43 @@ export default class TestLogisticsRaw {
 
     analytics(cmd, paras) {
         console.log('TestLogisticsRaw.Analytics(%s, %s)', cmd, paras);
+        let handler = this;
+        let tmps = this[getCommonAccount]();
+        if (0 == tmps[0]) {
+            Output(window.outputAnalyticsElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = tmps[0];
+        let key = tmps[1];
 
         switch (cmd) {
+            case "ActionCode":
+                let tmps = paras.split(",");
+                let op = tmps[0];
+
+                if ("Set" == op) {
+                    let tag = tmps[1];
+                    let actionCode = tmps[2];
+                    let logisticsAnalytics = new LogisticsAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
+                    logisticsAnalytics.setActionCode(account, key, tag, actionCode, function(error, result) {
+                        handler[commmonTransactionProc](error, result, window.outputAnalyticsElement);
+                    });
+                } else if ("Get" == op) {
+                    let tag = tmps[1];
+                    let logisticsAnalytics = new LogisticsAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
+                    logisticsAnalytics.getActionCode(tag, function(error, result) {
+                        if (!error) {
+                            Output(window.outputAnalyticsElement, 'small', 'red', `[ActionCode]:${result}`);
+                        } else {
+                            Output(window.outputAnalyticsElement, 'small', 'red', error);
+                        }
+                    })  
+                } else {
+                    Output(window.outputAnalyticsElement, 'small', 'red', "Command Error!");
+                }
+
+                break;
             case "Amount":
                 break;
             default:
