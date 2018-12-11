@@ -230,12 +230,13 @@ contract logisticsAnalytics {
     function setActionCode(string _tag, uint8 _value) external {
         actionCodes_[_tag] = _value;
     }
-    /** [desc] Get parcel amount.
+
+    /** [desc] Get parcel amounts.
       * [param] _srcCountry: country code of parcels sent (0: means all countries).
       * [param] _destCountry: country code of parcels received (0: means all countries).
       * [param] _startTime: start time (0: means ignore time).
       * [param] _endTime: end time (0: means ignore time).
-      * [return] parcel amount.
+      * [return] parcel amounts.
       */
     function getParcelAmount(uint16 _srcCountry, uint16 _destCountry, uint64 _startTime, uint64 _endTime) external view _checkCoreAddr returns (uint)  {
         uint amount = 0;
@@ -258,7 +259,8 @@ contract logisticsAnalytics {
                 // src country's sent parcel amounts
                 amount = _getParcelAmountBySrcCountry(_srcCountry, _startTime, _endTime);
             } else {
-
+                // src country's sent and dest country's received parcel amounts
+                amount = _getParcelAmountByCountry(_srcCountry, _destCountry, _startTime, _endTime);
             }
         }
 
