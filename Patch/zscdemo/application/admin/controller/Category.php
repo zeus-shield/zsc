@@ -11,4 +11,18 @@ class Category extends Admin {
 		$this->getContentMenu();
 	}
 
+	public function index() {
+		$map  = array('status' => array('gt', -1));
+		$list = db('Category')->where($map)->order('sort asc,id asc')->column('*', 'id');
+
+		if (!empty($list)) {
+			$tree = new \com\Tree();
+			$list = $tree->toFormatTree($list);
+		}
+
+		$this->assign('tree', $list);
+		$this->setMeta('栏目列表');
+		return $this->fetch();
+	}
+
 }
