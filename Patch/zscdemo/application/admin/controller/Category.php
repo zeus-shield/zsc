@@ -63,6 +63,37 @@ class Category extends Admin {
 			$this->setMeta('编辑分类');
 			return $this->fetch();
 		}
-	}	
+	}
+
+	/* 新增分类 */
+	public function add($pid = 0) {
+		$Category = model('Category');
+
+		if (IS_POST) {
+			//提交表单
+			$id = $Category->change();
+			if (false !== $id) {
+				action_log('update_category', 'category', $id, session('user_auth.uid'));
+				return $this->success('新增成功！', url('index'));
+			} else {
+				$error = $Category->getError();
+				return $this->error(empty($error) ? '未知错误！' : $error);
+			}
+		} else {
+			$cate = array();
+			if ($pid) {
+				/* 获取上级分类信息 */
+				$cate = $Category->info($pid, 'id,name,title,status');
+				if (!($cate && 1 == $cate['status'])) {
+					return $this->error('指定的上级分类不存在或被禁用！');
+				}
+			}
+			/* 获取分类信息 */
+			$this->assign('info', null);
+			$this->assign('category', $cate);
+			$this->setMeta('新增分类');
+			return $this->fetch('edit');
+		}
+	}		
 
 }
