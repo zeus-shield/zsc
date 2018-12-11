@@ -1040,9 +1040,21 @@ export default class TestLogisticsRaw {
                 } else {
                     Output(window.outputAnalyticsElement, 'small', 'red', "Command Error!");
                 }
-
                 break;
             case "Amount":
+                let srcCountry = 0;
+                let destCountry = 0; 
+                let startTime = 0;
+                let endTime = 0;
+
+                let logisticsAnalytics = new LogisticsAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
+                logisticsAnalytics.getParcelAmount(srcCountry, destCountry, startTime, endTime, function(error, result) {
+                    if (!error) {
+                        Output(window.outputAnalyticsElement, 'small', 'red', `[Amount]:${result}`);
+                    } else {
+                        Output(window.outputAnalyticsElement, 'small', 'red', error);
+                    }
+                })
                 break;
             default:
                 Output(window.outputAnalyticsElement, 'small', 'red', "Command Error!");
