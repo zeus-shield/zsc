@@ -94,6 +94,31 @@ class Category extends Admin {
 			$this->setMeta('新增分类');
 			return $this->fetch('edit');
 		}
+	}	
+
+	public function remove($id) {
+		if (empty($id)) {
+			return $this->error('参数错误!');
+		}
+		//判断该分类下有没有子分类，有则不允许删除
+		$child = db('Category')->where(array('pid' => $id))->field('id')->select();
+		if (!empty($child)) {
+			return $this->error('请先删除该分类下的子分类');
+		}
+		//判断该分类下有没有内容
+		$document_list = db('Document')->where(array('category_id' => $id))->field('id')->select();
+		if (!empty($document_list)) {
+			return $this->error('请先删除该分类下的文章（包含回收站）');
+		}
+		//删除该分类信息
+		$res = db('Category')->where(array('id' => $id))->delete();
+		if ($res !== false) {
+			//记录行为
+			action_log('update_category', 'category', $id, session('user_auth.uid'));
+			return $this->success('删除分类成功！');
+		} else {
+			return $this->error('删除分类失败！');
+		}
 	}		
 
 }
