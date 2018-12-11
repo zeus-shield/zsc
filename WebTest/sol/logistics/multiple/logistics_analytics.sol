@@ -80,16 +80,6 @@ contract logisticsAnalytics {
         return index;
     }
 
-    function setup(address _coreAddr) external {
-        // check core and databaseaddress
-        require(0 != _coreAddr);
-        coreAddr_ = _coreAddr;
-    }
-
-    function setActionCode(string _tag, uint8 _value) external {
-        actionCodes_[_tag] = _value;
-    }
-
     /** [desc] Get dest country's received parcel amounts.
       * [param] _destCountry: country code of parcels received (> 0).
       * [param] _startTime: start time (0: means ignore time).
@@ -174,6 +164,15 @@ contract logisticsAnalytics {
         return amount;
     }
 
+    function setup(address _coreAddr) external {
+        // check core and databaseaddress
+        require(0 != _coreAddr);
+        coreAddr_ = _coreAddr;
+    }
+
+    function setActionCode(string _tag, uint8 _value) external {
+        actionCodes_[_tag] = _value;
+    }
     /** [desc] Get parcel amount.
       * [param] _srcCountry: country code of parcels sent (0: means all countries).
       * [param] _destCountry: country code of parcels received (0: means all countries).
