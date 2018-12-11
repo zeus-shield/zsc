@@ -126,6 +126,12 @@
                     main('LogisticsRaw', 'GetNumber', document.getElementById("s_get_number_type").value, document.getElementById("get_number_para").value);
                 }
 
+                document.getElementById("b_analytics_action_code_submit").onclick = function() {
+                    let op = document.getElementById("s_analytics_action_code_op").value;
+                    let para = document.getElementById("i_analytics_action_code").value;
+                    main('LogisticsRaw', 'Analytics', 'ActionCode', `${op},${para}`);
+                }
+
                 document.getElementById("b_analytics_amount_submit").onclick = function() {
                     let countrySent = document.getElementById("s_analytics_amount_sent_country").value;
                     let countryReceived = document.getElementById("s_analytics_amount_received_country").value;
@@ -345,9 +351,22 @@
             <p>
                 <div class="well" id="block">
                     <h4>6. Analytics</h4>
+
                     <div id="element">
-                        <h5>Parcel Amount:</h5>
-                        <button type="button" id="b_analytics_amount_dummy_data" onclick="main('LogisticsRaw', 'DummyData', 'Analytics', 'Amount')">Dummy Data</button><br>
+                        <h5>Config Action Code:</h5>
+                        Select Operation:<br>
+                        <select id="s_analytics_action_code_op">
+                            <option value ="Set">Set</option>
+                            <option value ="Get">Get</option>
+                        </select><br>
+                        Action Code:<br>
+                        <input type="text" id="i_analytics_action_code"><br>
+                        <button type="button" id="b_analytics_action_code_submit">Submit</button><br>
+                    </div>
+
+                    <div id="element">
+                        <h5>Statistics Parcel Amount:</h5>
+                        <button type="button" id="b_analytics_amount_dummy_data" onclick="main('LogisticsRaw', 'DummyData', 'Analytics', 'Amount')">Dummy Data</button><br><br>
                         Country(sent):<br>
                         <select id="s_analytics_amount_sent_country", >
                             <option value ="Russia">All</option>
