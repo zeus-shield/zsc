@@ -84,7 +84,7 @@ contract logisticsAnalytics {
       * [param] _destCountry: country code of parcels received (> 0).
       * [param] _startTime: start time (0: means ignore time).
       * [param] _endTime: end time (0: means ignore time).
-      * [return] parcel amount.
+      * [return] parcel amounts.
       */
     function _getParcelAmountByDestCountry(uint16 _destCountry, uint64 _startTime, uint64 _endTime) private view returns (uint)  {
         uint i = 0;
@@ -124,10 +124,10 @@ contract logisticsAnalytics {
     }
 
     /** [desc] Get src country's sent parcel amounts.
-      * [param] _srcCountry: country code of parcels sent > 0£©.
+      * [param] _srcCountry: country code of parcels sent (> 0).
       * [param] _startTime: start time (0: means ignore time).
       * [param] _endTime: end time (0: means ignore time).
-      * [return] parcel amount.
+      * [return] parcel amounts.
       */
     function _getParcelAmountBySrcCountry(uint16 _srcCountry, uint64 _startTime, uint64 _endTime) private view returns (uint)  {
         uint i = 0;
@@ -155,6 +155,63 @@ contract logisticsAnalytics {
                 } else {
                     // _startTime <= firstTrackTime <= _endTime
                     if ((_startTime <= firstTrackTime) && (_endTime >= firstTrackTime)) {
+                        amount ++;
+                    }
+                }
+            }
+        }
+
+        return amount;
+    }
+
+    /** [desc] Get parcel amounts by countries.
+      * [param] _srcCountry: country code of parcels sent (> 0).
+      * [param] _destCountry: country code of parcels received (> 0).
+      * [param] _startTime: start time (0: means ignore time).
+      * [param] _endTime: end time (0: means ignore time).
+      * [return] parcel amounts.
+      */
+    function _getParcelAmountByCountry(uint16 _srcCountry, uint16 _destCountry, uint64 _startTime, uint64 _endTime) private view returns (uint)  {
+        uint i = 0;
+        uint index = 0;
+        uint amount = 0;
+        uint8 lastStatus = 0;
+        uint16 srcCountry = 0;
+        uint16 destCountry = 0;
+        uint64 firstTrackTime = 0;
+        uint64 lastTrackTime = 0;
+        string memory num = "";
+
+        // check param
+        if ((0 == _srcCountry) || (0 == _destCountry) || (_startTime > _endTime)) {
+            return 0;
+        }
+
+        for (i=0; i<LogisticsCore(coreAddr_).number(); i++) {
+            num = LogisticsCore(coreAddr_).getNumByIndex(i);
+            
+            index = _getFirstOrLastTrackIndex(0, num);
+            firstTrackTime = uint64(LogisticsCore(coreAddr_).getTrackElementByIndex(num, index, "time").toUint());
+            srcCountry = uint16(LogisticsCore(coreAddr_).getTrackElementByIndex(num, index, "country").toUint());
+
+            lastStatus = uint8(LogisticsCore(coreAddr_).getBriefElement(num, "lastStatus").toUint());
+            destCountry = uint16(LogisticsCore(coreAddr_).getBriefElement(num, "destinationCountry").toUint());
+            index = _getFirstOrLastTrackIndex(1, num);
+            lastTrackTime = uint64(LogisticsCore(coreAddr_).getTrackElementByIndex(num, index, "time").toUint());
+
+            if ((srcCountry == _srcCountry)
+                && (destCountry == _destCountry)
+                && (actionCodes_["GTMS_SIGNED"] == lastStatus)) {
+                if ((0 == _startTime) && (0 == _endTime)) {
+                    // ignore time
+                    amount ++;
+                } else {
+                    // _startTime <= firstTrackTime <= _endTime
+                    // _startTime <= lastTrackTime <= _endTime
+                    if ((_startTime <= firstTrackTime)
+                        && (_endTime >= firstTrackTime)
+                        && (_startTime <= lastTrackTime)
+                        && (_endTime >= lastTrackTime)) {
                         amount ++;
                     }
                 }
