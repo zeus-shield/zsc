@@ -52,4 +52,28 @@ class Attribute extends Admin {
 		$this->setMeta('字段管理');
 		return $this->fetch();
 	}
+
+
+		public function add() {
+		$model_id = input('model_id', '', 'trim,intval');
+		if (IS_POST) {
+			$result = $this->model->change();
+			if ($result) {
+				return $this->success("创建成功！", url('Attribute/index', array('model_id' => $model_id)));
+			} else {
+				return $this->error($this->model->getError());
+			}
+		} else {
+			if (!$model_id) {
+				return $this->error('非法操作！');
+			}
+			$data = array(
+				'info'       => array('model_id' => $model_id),
+				'fieldGroup' => $this->field,
+			);
+			$this->assign($data);
+			$this->setMeta('添加字段');
+			return $this->fetch('public/edit');
+		}
+	}
 }
