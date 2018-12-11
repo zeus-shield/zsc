@@ -19,7 +19,7 @@ contract LogisticsCore {
     function getBriefElement(string _num, string _tag) external view returns (string);
 }
 
-contract logisticsAnalytics {
+contract LogisticsAnalytics {
 
     using LibString for *;
     // using LibInt for *;
