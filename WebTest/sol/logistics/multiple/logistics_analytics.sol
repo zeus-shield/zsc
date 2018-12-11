@@ -231,6 +231,10 @@ contract LogisticsAnalytics {
         actionCodes_[_tag] = _value;
     }
 
+    function getActionCode(string _tag) external returns (uint8) {
+        return actionCodes_[_tag];
+    }
+
     /** [desc] Get parcel amounts.
       * [param] _srcCountry: country code of parcels sent (0: means all countries).
       * [param] _destCountry: country code of parcels received (0: means all countries).
