@@ -8,6 +8,7 @@ MODE="multiple"
 IMPORTPATH="/=/"
 SOURCES=(
 logistics_core
+logistics_analytics
 logistics
 )
 BUILDPATH="./build"
