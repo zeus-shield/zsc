@@ -133,6 +133,47 @@ contract logisticsAnalytics {
         return amount;
     }
 
+    /** [desc] Get src country's sent parcel amounts.
+      * [param] _srcCountry: country code of parcels sent > 0£©.
+      * [param] _startTime: start time (0: means ignore time).
+      * [param] _endTime: end time (0: means ignore time).
+      * [return] parcel amount.
+      */
+    function _getParcelAmountBySrcCountry(uint16 _srcCountry, uint64 _startTime, uint64 _endTime) private view returns (uint)  {
+        uint i = 0;
+        uint index = 0;
+        uint amount = 0;
+        uint16 srcCountry = 0;
+        uint64 firstTrackTime = 0;
+        string memory num = "";
+
+        // check param
+        if ((0 == _srcCountry) || (_startTime > _endTime)) {
+            return 0;
+        }
+
+        for (i=0; i<LogisticsCore(coreAddr_).number(); i++) {
+            num = LogisticsCore(coreAddr_).getNumByIndex(i);
+            index = _getFirstOrLastTrackIndex(0, num);
+            firstTrackTime = uint64(LogisticsCore(coreAddr_).getTrackElementByIndex(num, index, "time").toUint());
+            srcCountry = uint16(LogisticsCore(coreAddr_).getTrackElementByIndex(num, index, "country").toUint());
+
+            if (srcCountry == _srcCountry) {
+                if ((0 == _startTime) && (0 == _endTime)) {
+                    // ignore time
+                    amount ++;
+                } else {
+                    // _startTime <= firstTrackTime <= _endTime
+                    if ((_startTime <= firstTrackTime) && (_endTime >= firstTrackTime)) {
+                        amount ++;
+                    }
+                }
+            }
+        }
+
+        return amount;
+    }
+
     /** [desc] Get parcel amount.
       * [param] _srcCountry: country code of parcels sent (0: means all countries).
       * [param] _destCountry: country code of parcels received (0: means all countries).
