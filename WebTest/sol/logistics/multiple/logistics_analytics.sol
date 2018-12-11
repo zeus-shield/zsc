@@ -44,8 +44,8 @@ contract logisticsAnalytics {
 
     /** [desc] Get first or last track index.
       * [param]  _type: first or last (0 means 'first', 1 means 'last').
-      * [param]  _num: last status (0: means ignore last status).
-      * [return] parcel amount.
+      * [param]  _num: logistics num.
+      * [return] track index.
       */
     function _getFirstOrLastTrackIndex(uint8 _type, string _num) private view returns (uint)  {
         uint i = 0;
