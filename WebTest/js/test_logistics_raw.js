@@ -11,6 +11,9 @@ const compiledJson = Symbol('compiledJson');
 const abi = Symbol('abi');
 const contractAddress = Symbol('contractAddress');
 
+const analyticsAbi = Symbol('analyticsAbi');
+const analyticsContractAddress = Symbol('analyticsContractAddress');
+
 const coreAbi = Symbol('coreAbi');
 const coreContractAddress = Symbol('coreContractAddress');
 
@@ -105,6 +108,8 @@ export default class TestLogisticsRaw {
             elementId = window.outputDeployDatabaseElement;
         } else if ('LogisticsCore' == contractName) {
             elementId = window.outputDeployCoreElement;
+        } else if ('LogisticsAnalytics' == contractName) {
+            elementId = window.outputDeployAnalyticsElement;
         } else {
             elementId = window.outputDeployElement;
         }
@@ -154,6 +159,9 @@ export default class TestLogisticsRaw {
         } else if ('LogisticsCore' == contractName) {
             this[coreAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
             contract = web3.eth.contract(this[coreAbi]);
+        } else if ('LogisticsAnalytics' == contractName) {
+            this[analyticsAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
+            contract = web3.eth.contract(this[analyticsAbi]);
         } else {
             this[abi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
             contract = web3.eth.contract(this[abi]);
@@ -173,6 +181,8 @@ export default class TestLogisticsRaw {
                                 handler[databaseContractAddress] = result.contractAddress;
                             } else if ('LogisticsCore' == contractName) {
                                 handler[coreContractAddress] = result.contractAddress;
+                            } else if ('LogisticsAnalytics' == contractName) {
+                                handler[analyticsContractAddress] = result.contractAddress;
                             } else {
                                 handler[contractAddress] = result.contractAddress;
                             }
