@@ -120,5 +120,36 @@ class Category extends Admin {
 			return $this->error('删除分类失败！');
 		}
 	}		
+	public function operate($type = 'move', $from = '') {
+		//检查操作参数
+		if ($type == 'move') {
+			$operate = '移动';
+		} elseif ($type == 'merge') {
+			$operate = '合并';
+		} else {
+			return $this->error('参数错误！');
+		}
 
+		if (empty($from)) {
+			return $this->error('参数错误！');
+		}
+		//获取分类
+		$map  = array('status' => 1, 'id' => array('neq', $from));
+		$list = db('Category')->where($map)->field('id,pid,title')->select();
+		//移动分类时增加移至根分类
+		if ($type == 'move') {
+			//不允许移动至其子孙分类
+			$list = tree_to_list(list_to_tree($list));
+
+			$pid = db('Category')->getFieldById($from, 'pid');
+			$pid && array_unshift($list, array('id' => 0, 'title' => '根分类'));
+		}
+
+		$this->assign('type', $type);
+		$this->assign('operate', $operate);
+		$this->assign('from', $from);
+		$this->assign('list', $list);
+		$this->setMeta($operate . '分类');
+		return $this->fetch();
+	}
 }
