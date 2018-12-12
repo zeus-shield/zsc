@@ -346,28 +346,28 @@ export default class TestLogisticsRawData {
                 "\"lastStatus\":\"028\"," +             // GTMS_SIGNED("用户签收","Delivered")
                 "\"trackElementList\":[{" +
                     "\"type\":\"02\"," +                // DC 
-                    "\"time\":\"1538797740\"," +        // 2018-10-06 11:49:00
+                    "\"time\":\"1533527340\"," +        // 2018-08-06 11:49:00
                     "\"country\":\"0643\", " +          // Russia
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(2) -> track(0)描述：（DC, 2018-10-06 11:49:00, Russia, GTMS_SIGNED）\"," +
+                    "\"facilityName\":\"time(2) -> track(0)描述：（DC, 2018-08-06 11:49:00, Russia, GTMS_SIGNED）\"," +
                     "\"timeZone\":\"+3\"," +            // +3
                     "\"desc\":\"Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\"," +
                     "\"actionCode\":\"028\"" +          // GTMS_SIGNED("用户签收","Delivered")
                 "}&{" +
                     "\"type\":\"1\"," +                 // OC
-                    "\"time\":\"1537924497\"," +        // 2018-09-26 09:14:57
+                    "\"time\":\"1524705297\"," +        // 2018-04-26 09:14:57
                     "\"country\":\"156\"," +            // China
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(0) -> track(1)描述：（OC, 2018-09-26 09:14:57, China, PU_PICKUP_SUCCESS）\"," +
+                    "\"facilityName\":\"time(0) -> track(1)描述：（OC, 2018-04-26 09:14:57, China, PU_PICKUP_SUCCESS）\"," +
                     "\"timeZone\":\"+8\", " +           // +8
                     "\"desc\":\"上海市闵行区宜山路2016号合川大厦6H上海德铎泰信息科技有限公司揽件成功！\"," +
                     "\"actionCode\":\"1\"" +            // PU_PICKUP_SUCCESS("揽收成功","Item picked up by courier")
                 "}&{" +
                     "\"type\":\"002\"," +               // DC
-                    "\"time\":\"1538365740\"," +        // 2018-10-01 11:49:00
+                    "\"time\":\"1525146540\"," +        // 2018-05-01 11:49:00
                     "\"country\":\"00840\"," +          // USA
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(1) -> track(2)描述：（DC, 2018-10-01 11:49:00, USA, VISIBLE_UNKOWN）\"," +
+                    "\"facilityName\":\"time(1) -> track(2)描述：（DC, 2018-05-01 11:49:00, USA, VISIBLE_UNKOWN）\"," +
                     "\"timeZone\":\"-5\"," +            // -5
                     "\"desc\":\"The parcel is ready to transfer to the courier\"," +
                     "\"actionCode\":\"0037\"" +         // VISIBLE_UNKOWN("转运","transfer")     
@@ -379,7 +379,7 @@ export default class TestLogisticsRawData {
         let transNum5 = "订单描述：（中国 -> 法国 -> 美国 -> 俄罗斯，转运中）";
         let model5 = "J-NET俄全通：（Russia, VISIBLE_UNKOWN）"; 
         let destinationCountry5 = 643;              // Russia
-        let lastStatus5 = 37;                       // VISIBLE_UNKOWN("转运","transfer")
+        let lastStatus5 = 25;                       // GTMS_DELIVERING("开始投递","Delivery scheduled")
         let tracks5 =
             "{" +
                 "\"trackElementList\":[{" +
@@ -402,13 +402,13 @@ export default class TestLogisticsRawData {
                     "\"actionCode\":\"37\"" +       // VISIBLE_UNKOWN("转运","transfer")
                 "}&{" +
                     "\"type\":\"2\"," +             // DC
-                    "\"time\":\"1542079440\"," +    // 2018-11-13 11:24:00
+                    "\"time\":\"1544671440\"," +    // 2018-12-13 11:24:00
                     "\"country\":\"643\"," +        // Russia
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(3) -> track(2)描述：（DC, 2018-11-13 11:24:00, Russia, VISIBLE_UNKOWN）\"," +
+                    "\"facilityName\":\"time(3) -> track(2)描述：（DC, 2018-12-13 11:24:00, Russia, GTMS_DELIVERING）\"," +
                     "\"timeZone\":\"+3\"," +        // +3
                     "\"desc\":\"Принят на транзитный склад\"," +      
-                    "\"actionCode\":\"37\"" +       // VISIBLE_UNKOWN("转运","transfer")
+                    "\"actionCode\":\"25\"" +       // GTMS_DELIVERING("开始投递","Delivery scheduled")
                 "}&{" +
                     "\"type\":\"1\"," +             // OC
                     "\"time\":\"1540966156\"," +    // 2018-10-31 14:09:16
