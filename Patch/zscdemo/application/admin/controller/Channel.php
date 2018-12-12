@@ -75,4 +75,44 @@ class Channel extends Admin {
 		}
 	}
 
+	public function edit($id = 0) {
+		if (IS_POST) {
+			$Channel = model('Channel');
+			$data    = $this->request->post();
+			if ($data) {
+				if (false !== $Channel->save($data, array('id' => $data['id']))) {
+					//记录行为
+					action_log('update_channel', 'channel', $data['id'], session('user_auth.uid'));
+					return $this->success('编辑成功', url('index'));
+				} else {
+					return $this->error('编辑失败');
+				}
+			} else {
+				return $this->error($Channel->getError());
+			}
+		} else {
+			$info = array();
+			/* 获取数据 */
+			$info = db('Channel')->find($id);
+
+			if (false === $info) {
+				return $this->error('获取配置信息错误');
+			}
+
+			$pid = input('pid', 0);
+			//获取父导航
+			if (!empty($pid)) {
+				$parent = db('Channel')->where(array('id' => $pid))->field('title')->find();
+				$this->assign('parent', $parent);
+			}
+
+			$pnav = db('Channel')->where(array('pid' => '0'))->select();
+			$this->assign('pnav', $pnav);
+			$this->assign('pid', $pid);
+			$this->assign('info', $info);
+			$this->setMeta('编辑导航');
+			return $this->fetch();
+		}
+	}
+
 }
