@@ -152,4 +152,15 @@ class Category extends Admin {
 		$this->setMeta($operate . '分类');
 		return $this->fetch();
 	}
+
+	public function move() {
+		$to   = input('post.to');
+		$from = input('post.from');
+		$res  = db('Category')->where(array('id' => $from))->setField('pid', $to);
+		if ($res !== false) {
+			return $this->success('分类移动成功！', url('index'));
+		} else {
+			return $this->error('分类移动失败！');
+		}
+	}
 }
