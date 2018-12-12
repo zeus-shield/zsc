@@ -196,4 +196,21 @@ class Category extends Admin {
 			return $this->error('合并分类失败！');
 		}
 	}
+
+	public function status() {
+		$id     = $this->getArrayParam('id');
+		$status = input('status', '0', 'trim,intval');
+
+		if (!$id) {
+			return $this->error("非法操作！");
+		}
+
+		$map['id'] = array('IN', $id);
+		$result    = db('Category')->where($map)->setField('status', $status);
+		if ($result) {
+			return $this->success("设置成功！");
+		} else {
+			return $this->error("设置失败！");
+		}
+	}
 }
