@@ -166,4 +166,21 @@ class Channel extends Admin {
 		}
 	}
 
+	public function setStatus() {
+		$id     = array_unique((array) input('ids', 0));
+		$status = input('status', '0', 'trim');
+
+		if (empty($id)) {
+			return $this->error('请选择要操作的数据!');
+		}
+
+		$map    = array('id' => array('in', $id));
+		$result = db('Channel')->where($map)->update(array('status' => $status));
+		if ($result) {
+			return $this->success("操作成功！");
+		} else {
+			return $this->error("操作失败！");
+		}
+	}
+
 }
