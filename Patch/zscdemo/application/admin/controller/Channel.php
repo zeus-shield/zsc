@@ -132,4 +132,38 @@ class Channel extends Admin {
 		}
 	}
 
+		public function sort() {
+		if (IS_GET) {
+			$ids = input('ids');
+			$pid = input('pid');
+			//获取排序的数据
+			$map = array('status' => array('gt', -1));
+			if (!empty($ids)) {
+				$map['id'] = array('in', $ids);
+			} else {
+				if ($pid !== '') {
+					$map['pid'] = $pid;
+				}
+			}
+			$list = db('Channel')->where($map)->field('id,title')->order('sort asc,id asc')->select();
+
+			$this->assign('list', $list);
+			$this->setMeta('导航排序');
+			return $this->fetch();
+		} elseif (IS_POST) {
+			$ids = input('post.ids');
+			$ids = explode(',', $ids);
+			foreach ($ids as $key => $value) {
+				$res = db('Channel')->where(array('id' => $value))->setField('sort', $key + 1);
+			}
+			if ($res !== false) {
+				return $this->success('排序成功！', url('admin/channel/index'));
+			} else {
+				return $this->error('排序失败！');
+			}
+		} else {
+			return $this->error('非法请求！');
+		}
+	}
+
 }
