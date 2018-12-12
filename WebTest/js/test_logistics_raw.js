@@ -1056,7 +1056,7 @@ export default class TestLogisticsRaw {
                     let tag = tmps[1];
                     let actionCode = tmps[2];
                     let logisticsAnalytics = new LogisticsAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
-                    logisticsAnalytics.setActionCode(account, key, tag, actionCode, function(error, result) {
+                    logisticsAnalytics.setActionCode(account, key, tag, parseInt(actionCode), function(error, result) {
                         handler[commmonTransactionProc](error, result, window.outputAnalyticsElement);
                     });
                 } else if ("Get" == op) {
@@ -1083,7 +1083,7 @@ export default class TestLogisticsRaw {
                 let endTime = date[1];
 
                 let logisticsAnalytics = new LogisticsAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
-                logisticsAnalytics.getParcelAmount(srcCountry, destCountry, startTime, endTime, function(error, result) {
+                logisticsAnalytics.getParcelAmount(parseInt(srcCountry), parseInt(destCountry), startTime, endTime, function(error, result) {
                     if (!error) {
                         Output(window.outputAnalyticsElement, 'small', 'red', `[Amount]:${result}`);
                     } else {
