@@ -1018,17 +1018,21 @@ export default class TestLogisticsRaw {
         let startTime = 0;
         let endTime = 0;
 
-        start = start.concat(year, "-", month, "-01 00:00:00");
-        date = new Date(parseInt(year), parseInt(month), 0);
-        end = end.concat(year, "-", month, "-", date.getDate().toString(10), " 23:59:59");
+        if ("0" == year) {
+            return new Array(0, 0);
+        } else {
+            start = start.concat(year, "-", month, "-01 00:00:00");
+            date = new Date(parseInt(year), parseInt(month), 0);
+            end = end.concat(year, "-", month, "-", date.getDate().toString(10), " 23:59:59");
 
-        date = new Date(start);
-        startTime = date.getTime()/1000;
+            date = new Date(start);
+            startTime = date.getTime()/1000;
 
-        date = new Date(end);
-        endTime = date.getTime()/1000; 
+            date = new Date(end);
+            endTime = date.getTime()/1000; 
 
-        return new Array(startTime, endTime);
+            return new Array(startTime, endTime);
+        }
     }
 
     analytics(cmd, paras) {
