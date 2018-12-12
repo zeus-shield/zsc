@@ -899,6 +899,18 @@ export default class TestLogisticsRaw {
                     Output(window.outputReadElement, 'small', 'red', error);
                 }
             });
+        } else if ('BriefElementByIndex' == type) {
+            let tmps = para.split(",");
+            let index = tmps[0];
+            let tag = tmps[1];
+            let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
+            logisticsCore.getBriefElementByIndex(parseInt(index), tag, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Element]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            });
         } else if ('BriefInvalid' == type) {
             let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
             let paras = para.split(",");
