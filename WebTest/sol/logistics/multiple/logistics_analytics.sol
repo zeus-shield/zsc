@@ -231,7 +231,11 @@ contract LogisticsAnalytics {
         actionCodes_[_tag] = _value;
     }
 
-    function getActionCode(string _tag) external returns (uint8) {
+    function getCoreAddr() external view returns (address) {
+        return coreAddr_;
+    }
+
+    function getActionCode(string _tag) external view returns (uint8) {
         return actionCodes_[_tag];
     }
 
