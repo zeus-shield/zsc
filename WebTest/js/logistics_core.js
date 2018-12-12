@@ -804,6 +804,54 @@ export default class LogisticsCore {
         });
     }
 
+    getBriefElementByIndex(_index, _tag, _func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.getBriefElementByIndex.estimateGas(_index, _tag, {from: this[account]}, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("=========== LogisticsCore.getBriefElementByIndex(uint, string) ===========");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("=====================================================================");
+                        // call 'LogisticsCore.getBriefElementByIndex(uint, string)'
+                        contractInstance.getBriefElementByIndex.call(_index, _tag, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                console.log("[Element]:", result);
+                                if (null != _func) {
+                                    _func(null, result);
+                                }
+                            } else {
+                                console.log(error);
+                                if (null != _func) {
+                                    _func(error);
+                                }
+                            }
+                        });
+                    } else {
+                        console.log(error);
+                        if (null != _func) {
+                            _func(error);
+                        }
+                    }
+                });
+            } else {
+                console.log(error);
+                if (null != _func) {
+                    _func(error);
+                }
+            }
+        });
+    }
+
     getBriefInvalid(_num, _invalidIndex, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
