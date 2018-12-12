@@ -115,4 +115,21 @@ class Channel extends Admin {
 		}
 	}
 
+	public function del() {
+		$id = $this->getArrayParam('id');
+
+		if (empty($id)) {
+			return $this->error('请选择要操作的数据!');
+		}
+
+		$map = array('id' => array('in', $id));
+		if (db('Channel')->where($map)->delete()) {
+			//记录行为
+			action_log('update_channel', 'channel', $id, session('user_auth.uid'));
+			return $this->success('删除成功');
+		} else {
+			return $this->error('删除失败！');
+		}
+	}
+
 }
