@@ -120,5 +120,97 @@ class Category extends Admin {
 			return $this->error('删除分类失败！');
 		}
 	}		
+	public function operate($type = 'move', $from = '') {
+		//检查操作参数
+		if ($type == 'move') {
+			$operate = '移动';
+		} elseif ($type == 'merge') {
+			$operate = '合并';
+		} else {
+			return $this->error('参数错误！');
+		}
 
+		if (empty($from)) {
+			return $this->error('参数错误！');
+		}
+		//获取分类
+		$map  = array('status' => 1, 'id' => array('neq', $from));
+		$list = db('Category')->where($map)->field('id,pid,title')->select();
+		//移动分类时增加移至根分类
+		if ($type == 'move') {
+			//不允许移动至其子孙分类
+			$list = tree_to_list(list_to_tree($list));
+
+			$pid = db('Category')->getFieldById($from, 'pid');
+			$pid && array_unshift($list, array('id' => 0, 'title' => '根分类'));
+		}
+
+		$this->assign('type', $type);
+		$this->assign('operate', $operate);
+		$this->assign('from', $from);
+		$this->assign('list', $list);
+		$this->setMeta($operate . '分类');
+		return $this->fetch();
+	}
+
+	public function move() {
+		$to   = input('post.to');
+		$from = input('post.from');
+		$res  = db('Category')->where(array('id' => $from))->setField('pid', $to);
+		if ($res !== false) {
+			return $this->success('分类移动成功！', url('index'));
+		} else {
+			return $this->error('分类移动失败！');
+		}
+	}
+
+	public function merge() {
+		$to    = input('post.to');
+		$from  = input('post.from');
+		$Model = model('Category');
+		//检查分类绑定的模型
+		$from_models = explode(',', $Model->getFieldById($from, 'model'));
+		$to_models   = explode(',', $Model->getFieldById($to, 'model'));
+		foreach ($from_models as $value) {
+			if (!in_array($value, $to_models)) {
+				return $this->error('请给目标分类绑定' . get_document_model($value, 'title') . '模型');
+			}
+		}
+		//检查分类选择的文档类型
+		$from_types = explode(',', $Model->getFieldById($from, 'type'));
+		$to_types   = explode(',', $Model->getFieldById($to, 'type'));
+		foreach ($from_types as $value) {
+			if (!in_array($value, $to_types)) {
+				$types = config('document_model_type');
+				return $this->error('请给目标分类绑定文档类型：' . $types[$value]);
+			}
+		}
+		//合并文档
+		$res = db('Document')->where(array('category_id' => $from))->setField('category_id', $to);
+
+		if ($res !== false) {
+			//删除被合并的分类
+			$Model->delete($from);
+			return $this->success('合并分类成功！', url('index'));
+		} else {
+			return $this->error('合并分类失败！');
+		}
+	}
+
+	public function status() {
+		$id     = $this->getArrayParam('id');
+		$status = input('status', '0', 'trim,intval');
+
+		if (!$id) {
+			return $this->error("非法操作！");
+		}
+
+		$map['id'] = array('IN', $id);
+		$result    = db('Category')->where($map)->setField('status', $status);
+		if ($result) {
+			return $this->success("设置成功！");
+		} else {
+			return $this->error("设置失败！");
+		}
+	}
 }
