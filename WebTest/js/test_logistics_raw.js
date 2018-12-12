@@ -221,11 +221,11 @@ export default class TestLogisticsRaw {
                         handler[commmonTransactionProc](error, result, window.outputSetupElement);
                     });
                 } else if ("LogisticsAnalytics" == contractName) {
-                    let logisticsAnalytics = new LogisticsAnalytics(this[abi], this[contractAddress]);
+                    let logisticsAnalytics = new LogisticsAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
                     logisticsAnalytics.setup(account, key, this[coreContractAddress], function(error, result) {
                         handler[commmonTransactionProc](error, result, window.outputSetupElement);
                     });
-                }else if ("LogisticsCore" == contractName) {
+                } else if ("LogisticsCore" == contractName) {
                     let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
                     logisticsCore.setup(account, key, this[databaseContractAddress], function(error, result) {
                         handler[commmonTransactionProc](error, result, window.outputSetupElement);
@@ -238,7 +238,14 @@ export default class TestLogisticsRaw {
                 if ("Logistics" == contractName) {
                     Output(window.outputSetupElement, 'small', 'red', "Don't support now!");
                 } else if ("LogisticsAnalytics" == contractName) {
-                    Output(window.outputSetupElement, 'small', 'red', "Don't support now!");
+                    let logisticsAnalytics = new LogisticsAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
+                    logisticsAnalytics.getCoreAddr(function(error, result) {
+                        if (!error) {
+                            Output(window.outputSetupElement, 'small', 'red', `[CoreContractAddress]: ${result}`);
+                        } else {
+                            Output(window.outputSetupElement, 'small', 'red', error);
+                        }
+                    });
                 } else if ("LogisticsCore" == contractName) {
                     let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
                     logisticsCore.getDatabaseAddr(function(error, result) {
