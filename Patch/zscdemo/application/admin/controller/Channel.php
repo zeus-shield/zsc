@@ -35,4 +35,11 @@ class Channel extends Admin {
 		return $this->fetch();
 	}
 
+		/* 单字段编辑 */
+	public function editable($name = null, $value = null, $pk = null) {
+		if ($name && ($value != null || $value != '') && $pk) {
+			model('Channel')->where(array('id' => $pk))->setField($name, $value);
+		}
+	}
+
 }
