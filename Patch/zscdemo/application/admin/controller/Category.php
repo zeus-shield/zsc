@@ -163,4 +163,37 @@ class Category extends Admin {
 			return $this->error('分类移动失败！');
 		}
 	}
+
+	public function merge() {
+		$to    = input('post.to');
+		$from  = input('post.from');
+		$Model = model('Category');
+		//检查分类绑定的模型
+		$from_models = explode(',', $Model->getFieldById($from, 'model'));
+		$to_models   = explode(',', $Model->getFieldById($to, 'model'));
+		foreach ($from_models as $value) {
+			if (!in_array($value, $to_models)) {
+				return $this->error('请给目标分类绑定' . get_document_model($value, 'title') . '模型');
+			}
+		}
+		//检查分类选择的文档类型
+		$from_types = explode(',', $Model->getFieldById($from, 'type'));
+		$to_types   = explode(',', $Model->getFieldById($to, 'type'));
+		foreach ($from_types as $value) {
+			if (!in_array($value, $to_types)) {
+				$types = config('document_model_type');
+				return $this->error('请给目标分类绑定文档类型：' . $types[$value]);
+			}
+		}
+		//合并文档
+		$res = db('Document')->where(array('category_id' => $from))->setField('category_id', $to);
+
+		if ($res !== false) {
+			//删除被合并的分类
+			$Model->delete($from);
+			return $this->success('合并分类成功！', url('index'));
+		} else {
+			return $this->error('合并分类失败！');
+		}
+	}
 }
