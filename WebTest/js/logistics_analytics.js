@@ -154,26 +154,26 @@ export default class LogisticsAnalytics {
         });
     }
 
-    getParcelAmount(_srcCountry, _destCountry, _startTime, _endTime, _func) {
+    getParcelAmount(_direction, _srcCountry, _destCountry, _startTime, _endTime, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getParcelAmount.estimateGas(_srcCountry, _destCountry, _startTime, _endTime, {from: this[account]}, function(error, result) {
+        contractInstance.getParcelAmount.estimateGas(_direction, _srcCountry, _destCountry, _startTime, _endTime, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("===== LogisticsAnalytics.getParcelAmount(uint16, uint16, uint64, uint64) =====");
+                        console.log("===== LogisticsAnalytics.getParcelAmount(uint8, uint16, uint16, uint64, uint64) =====");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("==============================================================================");
-                        // call 'LogisticsCore.getParcelAmount(uint16, uint16, uint64, uint64)'
-                        contractInstance.getParcelAmount.call(_srcCountry, _destCountry, _startTime, _endTime, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        console.log("=====================================================================================");
+                        // call 'LogisticsCore.getParcelAmount(uint8, uint16, uint16, uint64, uint64)'
+                        contractInstance.getParcelAmount.call(_direction, _srcCountry, _destCountry, _startTime, _endTime, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[Amount]: %s", result);
                                 if (null != _func) {
