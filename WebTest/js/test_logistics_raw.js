@@ -830,7 +830,7 @@ export default class TestLogisticsRaw {
             let index = tmps[1];
             let tag = tmps[2];
             let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
-            logisticsCore.getTrackElementByIndex(num, index, tag, function(error, result) {
+            logisticsCore.getTrackElement(num, index, tag, function(error, result) {
                 if (!error) {
                     Output(window.outputReadElement, 'small', 'red', `[Element]:</br>${result}`);
                 } else {
@@ -1087,15 +1087,16 @@ export default class TestLogisticsRaw {
                 break;
             case "Amount":
                 let para = paras.split(",");
-                let srcCountry = para[0];
-                let destCountry = para[1];
+                let direction = para[0];
+                let src = para[1];
+                let dest = para[2];
 
-                let date = this[getTimeStamp](para[2], para[3]);
+                let date = this[getTimeStamp](para[3], para[4]);
                 let startTime = date[0];
                 let endTime = date[1];
 
                 let logisticsAnalytics = new LogisticsAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
-                logisticsAnalytics.getParcelAmount(parseInt(srcCountry), parseInt(destCountry), startTime, endTime, function(error, result) {
+                logisticsAnalytics.getParcelAmount(parseInt(direction), parseInt(src), parseInt(dest), startTime, endTime, function(error, result) {
                     if (!error) {
                         Output(window.outputAnalyticsElement, 'small', 'red', `[Amount]:${result}`);
                     } else {
