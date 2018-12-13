@@ -280,7 +280,7 @@ contract LogisticsDatabase is Delegate {
         return str;
     }
 
-    function getTrackElementByIndex(string _num, uint _index, string _tag) external view returns (string) {
+    function getTrackElement(string _num, uint _index, string _tag) external view returns (string) {
         string memory trackName = "";
 
         // check param
