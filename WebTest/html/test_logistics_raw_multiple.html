@@ -133,11 +133,12 @@
                 }
 
                 document.getElementById("b_analytics_amount_submit").onclick = function() {
-                    let countrySent = document.getElementById("s_analytics_amount_sent_country").value;
-                    let countryReceived = document.getElementById("s_analytics_amount_received_country").value;
+                    let direction = document.getElementById("s_analytics_amount_direction").value;
+                    let src = document.getElementById("s_analytics_amount_src_country").value;
+                    let dest = document.getElementById("s_analytics_amount_dest_country").value;
                     let year = document.getElementById("s_analytics_amount_year").value;
                     let month = document.getElementById("s_analytics_amount_month").value;
-                    main('LogisticsRaw', 'Analytics', 'Amount', `${countrySent},${countryReceived},${year},${month}`);
+                    main('LogisticsRaw', 'Analytics', 'Amount', `${direction},${src},${dest},${year},${month}`);
                 }
             }
         </script>
@@ -368,16 +369,21 @@
                     <div id="element">
                         <h5>Statistics Parcel Amount:</h5>
                         <button type="button" id="b_analytics_amount_dummy_data" onclick="main('LogisticsRaw', 'DummyData', 'Analytics', 'Amount')">Dummy Data</button><br><br>
-                        Country(sent):<br>
-                        <select id="s_analytics_amount_sent_country", >
+                        Direction:<br>
+                        <select id="s_analytics_amount_direction", >
+                            <option value ="0">Sent</option>
+                            <option value ="1">Received</option>
+                        </select><br>
+                        Country(src):<br>
+                        <select id="s_analytics_amount_src_country", >
                             <option value ="0">All</option>
                             <option value ="156" selected="selected">China</option>
                             <option value ="250">France</option>
                             <option value ="840">USA</option>
                             <option value ="643">Russia</option>
                         </select><br>
-                        Country(received):<br>
-                        <select id="s_analytics_amount_received_country">
+                        Country(dest):<br>
+                        <select id="s_analytics_amount_dest_country">
                             <option value ="0">All</option>
                             <option value ="156" >China</option>
                             <option value ="250">France</option>
