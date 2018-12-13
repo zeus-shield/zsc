@@ -127,7 +127,7 @@ export default class LogisticsAnalytics {
                         // call 'LogisticsCore.getActionCode(string)'
                         contractInstance.getActionCode.call(_tag, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                console.log("[ActionCode]: %s", result);
+                                console.log("[ActionCode]: %s", result.toString(10));
                                 if (null != _func) {
                                     _func(null, result);
                                 }
@@ -175,7 +175,7 @@ export default class LogisticsAnalytics {
                         // call 'LogisticsCore.getParcelAmount(uint8, uint16, uint16, uint64, uint64)'
                         contractInstance.getParcelAmount.call(_direction, _srcCountry, _destCountry, _startTime, _endTime, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                console.log("[Amount]: %s", result);
+                                console.log("[Amount]: %s", result.toString(10));
                                 if (null != _func) {
                                     _func(null, result);
                                 }
