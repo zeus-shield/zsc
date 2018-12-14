@@ -83,4 +83,17 @@ class Seo extends Admin {
 			return $this->error("删除失败！");
 		}
 	}
+
+
+	public function rewrite() {
+		$list = db('Rewrite')->paginate(10);
+
+		$data = array(
+			'list' => $list,
+			'page' => $list->render(),
+		);
+		$this->assign($data);
+		$this->setMeta("路由规则");
+		return $this->fetch();
+	}	
 }
