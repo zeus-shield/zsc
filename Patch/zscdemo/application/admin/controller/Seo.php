@@ -49,4 +49,26 @@ class Seo extends Admin {
 		}
 	}
 
+	public function edit($id = null) {
+		if (IS_POST) {
+			$data   = $this->request->post();
+			$result = $this->seo->save($data, array('id' => $data['id']));
+			if (false !== $result) {
+				return $this->success("修改成功！");
+			} else {
+				return $this->error("修改失败！");
+			}
+		} else {
+			$id   = input('id', '', 'trim,intval');
+			$info = $this->seo->where(array('id' => $id))->find();
+			$data = array(
+				'info'    => $info,
+				'keyList' => $this->seo->keyList,
+			);
+			$this->assign($data);
+			$this->setMeta("编辑规则");
+			return $this->fetch('public/edit');
+		}
+	}
+
 }
