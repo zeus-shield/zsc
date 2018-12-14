@@ -17,3 +17,5 @@ export const getNums    = params => { return instance.post(`${base}/Order/getNum
 export const addOrder   = params => { return instance.post(`${base}/Order/add`,  params ).then(res => res.data ); };
 
 export const getOrder   = params => { return instance.get(`${base}/Order/getOrder`, { params: params }); };
+
+export const getContractInfo   = params => { return instance.get(`${base}/Order/getContractInfo`, { params: params }); };
