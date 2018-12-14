@@ -10,10 +10,10 @@ let instance = axios.create({
 
 //jnet
 
-export const getTrack   = params => { return instance.post(`${base}/user/getTrack`,params).then(res => res.data); };
+export const getTrack   = params => { return instance.post(`${base}/Order/getTrack`,params).then(res => res.data); };
 
-export const getNums    = params => { return instance.post(`${base}/user/getNums`,params).then(res => res.data); };
+export const getNums    = params => { return instance.post(`${base}/Order/getNums`,params).then(res => res.data); };
 
-export const addOrder   = params => { return instance.post(`${base}/user/add`,  params ).then(res => res.data ); };
+export const addOrder   = params => { return instance.post(`${base}/Order/add`,  params ).then(res => res.data ); };
 
-export const getOrder   = params => { return instance.get(`${base}/user/getOrder`, { params: params }); };
+export const getOrder   = params => { return instance.get(`${base}/Order/getOrder`, { params: params }); };
