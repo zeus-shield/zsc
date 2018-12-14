@@ -100,7 +100,7 @@ contract LogisticsAnalytics {
       * [param] _index: parcel index.
       * [return] true/false.
       */
-    function _check(uint8 _direction, uint _index) private view returns (bool) {
+    function _checkValid(uint8 _direction, uint _index) private view returns (bool) {
         if (0 == _direction) {
             // Parcel has been sent ?
             string memory num = LogisticsCore(coreAddr_).getNumByIndex(_index);
@@ -157,6 +157,26 @@ contract LogisticsAnalytics {
         }
     }
 
+    /** [desc] Parse condition.
+      * [param] _condition: condition array.
+      * [return] src/dest country and start/end time array.
+      */
+    function _parseCondition(bytes32[] _condition) private pure returns (uint16[], uint16[], uint64[], uint64[]) {
+        uint16[] memory src = new uint16[](_condition.length);
+        uint16[] memory dest = new uint16[](_condition.length);
+        uint64[] memory startTime = new uint64[](_condition.length);
+        uint64[] memory endTime = new uint64[](_condition.length);
+
+        for (uint i=0; i<_condition.length; i++) {
+            src[i] = uint16(_condition[i] >> (256-16));
+            dest[i] = uint16(_condition[i] >> (256-16-16));
+            startTime[i] = uint64(_condition[i] >> (256-16-16-64));
+            endTime[i] = uint64(_condition[i] >> (256-16-16-64-64));
+        }
+
+        return (src, dest, startTime, endTime);
+    }
+
     function setup(address _coreAddr) external {
         // check core and databaseaddress
         require(0 != _coreAddr);
@@ -175,13 +195,13 @@ contract LogisticsAnalytics {
         return actionCodes_[_tag];
     }
 
-    /** [desc] Get parcel amounts.
+    /** [desc] Get parcel's amount.
       * [param] _direction: parcel's direction (0: means sent, 1: means received).
       * [param] _srcCountry: country code of parcels sent (0: means all countries).
       * [param] _destCountry: country code of parcels received (0: means all countries).
       * [param] _startTime: start time (0: means ignore time).
       * [param] _endTime: end time (0: means ignore time).
-      * [return] parcel amounts.
+      * [return] parcel amount.
       */
     function getParcelAmount(uint8 _direction, uint16 _srcCountry, uint16 _destCountry, uint64 _startTime, uint64 _endTime) external view _checkCoreAddr returns (uint) {
         uint i = 0;
@@ -194,7 +214,7 @@ contract LogisticsAnalytics {
         require(_startTime <= _endTime);
 
         for (i=0; i<LogisticsCore(coreAddr_).number(); i++) {
-            if(_check(_direction, i)) {
+            if(_checkValid(_direction, i)) {
                 srcCountry = uint16(_getParcelTrackElement(i, 0, "country").toUint());
                 destCountry = uint16(LogisticsCore(coreAddr_).getBriefElementByIndex(i, "destinationCountry").toUint());
                 // 1. all -> all
