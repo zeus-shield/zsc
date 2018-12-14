@@ -59,3 +59,23 @@ export default class LogisticsCore {
             }
         });
     }
+
+    updateBrief(_account, _key, _num, _transNum, _model, _destinationCountry, _lastStatus, _func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+        let data = contractInstance.updateBrief.getData(_num, _transNum, _model, _destinationCountry, _lastStatus);
+
+        contractInstance.updateBrief.estimateGas(_num, _transNum, _model, _destinationCountry, _lastStatus, {from: _account}, function(error, result) {
+            if (!error) {
+                let transaction = new Transaction(_account, _key);
+                if('undefined' != typeof transaction) {
+                    transaction.do("transaction", data, result, handler[contractAddress], _func);
+                }
+            } else {
+                console.log(error);
+                if (null != _func) {
+                    _func(error);
+                }
+            }
+        });
+    }
