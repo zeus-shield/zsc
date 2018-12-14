@@ -237,4 +237,67 @@ contract LogisticsAnalytics {
         }
         return amount;
     }
+
+    /** [desc] Get parcel's amount array.
+      * [param] _direction: parcel's direction (0: means sent, 1: means received).
+      * [param] _mulMatch: multiple match flag (false: means parcel only match one condition, true: means parcel match conditions).
+      * [param] _condition: condition array.
+      * [return] parcel amount array.
+      */
+    function getParcelAmountArray(uint8 _direction, bool _mulMatch, bytes32[] _condition) external view _checkCoreAddr returns (uint[]) {
+        uint i = 0;
+        uint j = 0;
+        uint length = _condition.length;
+        uint16 srcCountry = 0;
+        uint16 destCountry = 0;
+        uint[] memory amount;
+        uint16[] memory src;
+        uint16[] memory dest;
+        uint64[] memory startTime;
+        uint64[] memory endTime;
+
+        // check param
+        require((0 == _direction) || (1 == _direction));
+        require(0 < length);
+
+        // parse condition
+        (src, dest, startTime, endTime) = _parseCondition(_condition);
+
+        for (i=0; i<length; i++) {
+            require(startTime[i] <= endTime[i]);
+        }
+
+        for (i=0; i<LogisticsCore(coreAddr_).number(); i++) {
+            if(_checkValid(_direction, i)) {
+                srcCountry = uint16(_getParcelTrackElement(i, 0, "country").toUint());
+                destCountry = uint16(LogisticsCore(coreAddr_).getBriefElementByIndex(i, "destinationCountry").toUint());
+                // 1. all -> all
+                // 2. all -> dest
+                // 3. src -> all
+                // 4. src -> dest
+                for (j=0; j<length; j++) {
+                    if (((0 == src[j]) && (0 == dest[j]))
+                    || ((0 == src[j]) && (0 != dest[j]) && (dest[j] == destCountry))
+                    || ((0 != src[j]) && (0 == dest[j]) && (src[j] == srcCountry))
+                    || ((0 != src[j]) && (0 != dest[j]) && (src[j] == srcCountry) && (dest[j] == destCountry))) {
+                        if ((0 == startTime[j]) && (0 == endTime[j])) {
+                            amount[j] ++;
+                            if (!_mulMatch) {
+                                break;
+                            }
+                        } else {
+                            if (_checkTime(_direction, i, startTime[j], endTime[j])) {
+                                amount[j] ++;
+                                if (!_mulMatch) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }       
+        return amount;
+    }
 }
+
