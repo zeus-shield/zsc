@@ -38,6 +38,7 @@ const invalidBatch = Symbol('invalidBatch');
 const getDelegateInstance = Symbol('getDelegateInstance');
 const getTimeStamp = Symbol('getTimeStamp');
 const supplement0 = Symbol('supplement0');
+const conditionBuild = Symbol('conditionBuild');
 
 export default class TestLogisticsRaw {
 
@@ -1055,6 +1056,14 @@ export default class TestLogisticsRaw {
         let s = supplement0 + value;
         return s.substr(value.length, s.length);
     }
+
+    [conditionBuild](src, dest, startTime, endTime){
+        let bytes2 = "0000";
+        let bytes8 = "0000000000000000";
+        return "0x" + this[supplement0](src, bytes2) + this[supplement0](dest, bytes2)
+                    + this[supplement0](startTime, bytes8) + this[supplement0](endTime, bytes8);
+    }
+
     analytics(cmd, paras) {
         console.log('TestLogisticsRaw.Analytics(%s, %s)', cmd, paras);
         let handler = this;
