@@ -1112,7 +1112,12 @@ export default class TestLogisticsRaw {
                 let startTime = date[0];
                 let endTime = date[1];
 
+                let condition = this[conditionBuild](parseInt(src), parseInt(dest), startTime, endTime);
+                let conditionArray = new Array();
+                conditionArray.push(condition);
+
                 let logisticsAnalytics = new LogisticsAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
+                // logisticsAnalytics.getParcelAmountArray(parseInt(direction), false, conditionArray, function(error, result) {
                 logisticsAnalytics.getParcelAmount(parseInt(direction), parseInt(src), parseInt(dest), startTime, endTime, function(error, result) {
                     if (!error) {
                         Output(window.outputAnalyticsElement, 'small', 'red', `[Amount]:${result}`);
