@@ -936,7 +936,7 @@ export default class TestLogisticsRaw {
             //         Output(window.outputReadElement, 'small', 'red', error);
             //     }
             // });
-            Output(window.outputReadElement, 'small', 'Do not support now!');
+            Output(window.outputReadElement, 'small', 'red', 'Do not support now!');
         } else {}
     }
 
