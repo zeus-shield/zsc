@@ -19,3 +19,6 @@ export const addOrder   = params => { return instance.post(`${base}/Order/add`, 
 export const getOrder   = params => { return instance.get(`${base}/Order/getOrder`, { params: params }); };
 
 export const getContractInfo   = params => { return instance.get(`${base}/Order/getContractInfo`, { params: params }); };
+
+export const getContractInfoForAdm   = params => { return instance.get(`${base}/Order/getContractInfoForAdm`, { params: params }); };
+
