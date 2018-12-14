@@ -37,6 +37,7 @@ const getInvalid = Symbol('getInvalid');
 const invalidBatch = Symbol('invalidBatch');
 const getDelegateInstance = Symbol('getDelegateInstance');
 const getTimeStamp = Symbol('getTimeStamp');
+const supplement0 = Symbol('supplement0');
 
 export default class TestLogisticsRaw {
 
@@ -1049,6 +1050,11 @@ export default class TestLogisticsRaw {
         }
     }
 
+    [supplement0](value, supplement0) {
+        value = value.toString(16);
+        let s = supplement0 + value;
+        return s.substr(value.length, s.length);
+    }
     analytics(cmd, paras) {
         console.log('TestLogisticsRaw.Analytics(%s, %s)', cmd, paras);
         let handler = this;
