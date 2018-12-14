@@ -40,3 +40,15 @@ export default class LogisticsCore {
             }
         });
     }
+
+    getLogisticsInfo(_num, _func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.getLogisticsInfo.estimateGas(_num, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
