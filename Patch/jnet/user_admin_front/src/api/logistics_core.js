@@ -4,3 +4,11 @@
 
 import Receipt from './receipt.js';
 import Transaction from './transaction_raw.js';
+const Web3 = require('web3');
+//private member
+const account = Symbol('account');
+
+const contractAbi = Symbol('contractAbi');
+const contractAddress = Symbol('contractAddress');
+const web3 = new Web3(new Web3.providers.HttpProvider("https://rinkeby.infura.io/v3/0a2f1fc6246240f0b1e12aec6f3d8ed7"));
+window.web3 = web3;
