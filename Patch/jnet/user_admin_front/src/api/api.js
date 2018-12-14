@@ -1,4 +1,5 @@
 import axios from 'axios';
+axios.defaults.withCredentials = false;
 let instance = axios.create({
     headers: {'content-type': 'application/x-www-form-urlencoded'}
 });
