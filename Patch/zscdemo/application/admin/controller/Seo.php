@@ -30,4 +30,23 @@ class Seo extends Admin {
 		return $this->fetch();
 	}
 
+	public function add() {
+		if (IS_POST) {
+			$data   = $this->request->post();
+			$result = $this->seo->save($data);
+			if ($result) {
+				return $this->success("添加成功！");
+			} else {
+				return $this->error("添加失败！");
+			}
+		} else {
+			$data = array(
+				'keyList' => $this->seo->keyList,
+			);
+			$this->assign($data);
+			$this->setMeta("添加规则");
+			return $this->fetch('public/edit');
+		}
+	}
+
 }
