@@ -925,6 +925,8 @@ export default class TestLogisticsRaw {
                     Output(window.outputReadElement, 'small', 'red', `[${num}-${index}]:</br>${error}`);
                 }
             })
+        } else if ('Test' == type) {
+            Output(window.outputReadElement, 'small', 'Do not support now!');
         } else {}
     }
 
