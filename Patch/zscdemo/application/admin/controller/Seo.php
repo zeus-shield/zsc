@@ -71,4 +71,16 @@ class Seo extends Admin {
 		}
 	}
 
+	public function del() {
+		$id = $this->getArrayParam('id');
+		if (empty($id)) {
+			return $this->error("非法操作！");
+		}
+		$result = $this->seo->where(array('id' => array('IN', $id)))->delete();
+		if ($result) {
+			return $this->success("删除成功！");
+		} else {
+			return $this->error("删除失败！");
+		}
+	}
 }
