@@ -202,4 +202,51 @@ export default class LogisticsAnalytics {
         });
     }
 
+    getParcelAmountArray(_direction, _mulMatch, _condition, _func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.getParcelAmountArray.estimateGas(_direction, _mulMatch, _condition, {from: this[account]}, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("========== LogisticsAnalytics.getParcelAmountArray(uint8, bool, bytes32[]) ==========");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("=====================================================================================");
+                        // call 'LogisticsCore.getParcelAmountArray(uint8, bool, bytes32[])'
+                        contractInstance.getParcelAmountArray.call(_direction, _mulMatch, _condition, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                console.log("[Amount]: %s", result.toString(10));
+                                if (null != _func) {
+                                    _func(null, result);
+                                }
+                            } else {
+                                console.log(error);
+                                if (null != _func) {
+                                    _func(error);
+                                }
+                            }
+                        });
+                    } else {
+                        console.log(error);
+                        if (null != _func) {
+                            _func(error);
+                        }
+                    }
+                });
+            } else {
+                console.log(error);
+                if (null != _func) {
+                    _func(error);
+                }
+            }
+        });
+    }
 }
