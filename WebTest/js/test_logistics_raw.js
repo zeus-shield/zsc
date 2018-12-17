@@ -928,14 +928,14 @@ export default class TestLogisticsRaw {
                 }
             })
         } else if ('Test' == type) {
-            let logisticsAnalytics = new LogisticsAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
-            logisticsAnalytics.test(10, function(error, result) {
-                if (!error) {
-                    Output(window.outputReadElement, 'small', 'red', `[Element]:</br>${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', error);
-                }
-            });
+            // let logisticsAnalytics = new LogisticsAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
+            // logisticsAnalytics.test(10, function(error, result) {
+            //     if (!error) {
+            //         Output(window.outputReadElement, 'small', 'red', `[Element]:</br>${result}`);
+            //     } else {
+            //         Output(window.outputReadElement, 'small', 'red', error);
+            //     }
+            // });
             Output(window.outputReadElement, 'small', 'red', 'Do not support now!');
         } else {}
     }
