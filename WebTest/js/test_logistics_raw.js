@@ -219,7 +219,7 @@ export default class TestLogisticsRaw {
             case "Set":
                 if ("Logistics" == contractName) {
                     let logistics = new Logistics(this[abi], this[contractAddress]);
-                    logistics.setup(account, key, this[coreContractAddress], function(error, result) {
+                    logistics.setup(account, key, this[coreContractAddress], this[analyticsContractAddress], function(error, result) {
                         handler[commmonTransactionProc](error, result, window.outputSetupElement);
                     });
                 } else if ("LogisticsAnalytics" == contractName) {
@@ -792,7 +792,7 @@ export default class TestLogisticsRaw {
         
         if ('LogisticsInfo' == type) {
             let logistics = new Logistics(this[abi], this[contractAddress]);
-            logistics.getLogisticsInfo(para, function(error, result) {
+            logistics.info(para, function(error, result) {
                 if (!error) {
                     Output(window.outputReadElement, 'small', 'red', `[Info]:</br>${result}`);
                 } else {
@@ -944,6 +944,8 @@ export default class TestLogisticsRaw {
         let delegate = null;
         if ("Logistics" == contract) {
             delegate = new Delegate(this[abi], this[contractAddress]);
+        } else if ("LogisticsAnalytics" == contract) {
+            delegate = new Delegate(this[analyticsAbi], this[analyticsContractAddress]);
         } else if ("LogisticsCore" == contract) {
             delegate = new Delegate(this[coreAbi], this[coreContractAddress]);
         } else if ("LogisticsDatabase" == contract) {
@@ -1112,11 +1114,12 @@ export default class TestLogisticsRaw {
                 break;
             case "Amount":
                 let para = paras.split(",");
-                let direction = para[0];
-                let src = para[1];
-                let dest = para[2];
+                let contract = para[0];
+                let direction = para[1];
+                let src = para[2];
+                let dest = para[3];
 
-                let date = this[getTimeStamp](para[3], para[4]);
+                let date = this[getTimeStamp](para[4], para[5]);
                 let startTime = date[0];
                 let endTime = date[1];
 
@@ -1124,15 +1127,29 @@ export default class TestLogisticsRaw {
                 let conditionArray = new Array();
                 conditionArray.push(condition);
 
-                let logisticsAnalytics = new LogisticsAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
-                logisticsAnalytics.getParcelAmountArray(parseInt(direction), false, conditionArray, function(error, result) {
-                // logisticsAnalytics.getParcelAmount(parseInt(direction), parseInt(src), parseInt(dest), startTime, endTime, function(error, result) {
-                    if (!error) {
-                        Output(window.outputAnalyticsElement, 'small', 'red', `[Amount]:${result}`);
-                    } else {
-                        Output(window.outputAnalyticsElement, 'small', 'red', error);
-                    }
-                })
+                if ("Logistics" == contract) {
+                    let logistics = new Logistics(this[abi], this[contractAddress]);
+                    logistics.numbers(parseInt(direction), false, conditionArray, function(error, result) {
+                    // logistics.number(parseInt(direction), parseInt(src), parseInt(dest), startTime, endTime, function(error, result) {
+                        if (!error) {
+                            Output(window.outputAnalyticsElement, 'small', 'red', `[Number]:${result}`);
+                        } else {
+                            Output(window.outputAnalyticsElement, 'small', 'red', error);
+                        }
+                    })
+                } else if ("LogisticsAnalytics" == contract) {
+                    let logisticsAnalytics = new LogisticsAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
+                    logisticsAnalytics.getParcelAmountArray(parseInt(direction), false, conditionArray, function(error, result) {
+                    // logisticsAnalytics.getParcelAmount(parseInt(direction), parseInt(src), parseInt(dest), startTime, endTime, function(error, result) {
+                        if (!error) {
+                            Output(window.outputAnalyticsElement, 'small', 'red', `[Amount]:${result}`);
+                        } else {
+                            Output(window.outputAnalyticsElement, 'small', 'red', error);
+                        }
+                    })
+                } else {
+                    Output(window.outputAnalyticsElement, 'small', 'red', "Contract Error!");
+                }
                 break;
             default:
                 Output(window.outputAnalyticsElement, 'small', 'red', "Command Error!");
