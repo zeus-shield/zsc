@@ -42,4 +42,19 @@ contract Logistics is Delegate {
 
         return LogisticsCore(coreAddr_).getParcelEx(_num);
     }
+
+    /** [desc] Get number of parcels.
+      * [param] _direction: parcel's direction (0: means sent, 1: means received).
+      * [param] _srcCountry: country code of parcels sent (0: means all countries).
+      * [param] _destCountry: country code of parcels received (0: means all countries).
+      * [param] _startTime: start time (0: means ignore time).
+      * [param] _endTime: end time (0: means ignore time).
+      * [return] number of parcels.
+      */
+    function number(uint8 _direction, uint16 _srcCountry, uint16 _destCountry, uint64 _startTime, uint64 _endTime) external view _checkAnalyticsAddr returns (uint) {
+        // check param
+        require((0 == _direction) || (1 == _direction));
+        require(_startTime <= _endTime);
+        return LogisticsAnalytics(analyticsAddr_).getParcelAmount(_direction, _srcCountry, _destCountry, _startTime, _endTime);
+    }
 }
