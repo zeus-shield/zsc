@@ -38,26 +38,26 @@ export default class LogisticsCore {
         });
     }
 
-    getLogisticsInfo(_num, _func) {
+    info(_num, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getLogisticsInfo.estimateGas(_num, {from: this[account]}, function(error, result) {
+        contractInstance.info.estimateGas(_num, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("============= Logistics.getLogisticsInfo(string) ==============");
+                        console.log("============= Logistics.info(string) =============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("===============================================================");
-                        // call 'Logistics.getLogisticsInfo(string)'
-                        contractInstance.getLogisticsInfo.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        console.log("==================================================");
+                        // call 'Logistics.info(string)'
+                        contractInstance.info.call(_num, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[Parcel]:", result);
                                 if (null != _func) {
