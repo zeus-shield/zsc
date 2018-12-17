@@ -250,7 +250,7 @@ contract LogisticsAnalytics {
         uint length = _condition.length;
         uint16 srcCountry = 0;
         uint16 destCountry = 0;
-        uint[] memory amount;
+        uint[] memory amount = new uint[](length);
         uint16[] memory src;
         uint16[] memory dest;
         uint64[] memory startTime;
@@ -296,7 +296,7 @@ contract LogisticsAnalytics {
                     }
                 }
             }
-        }       
+        }
         return amount;
     }
 }
