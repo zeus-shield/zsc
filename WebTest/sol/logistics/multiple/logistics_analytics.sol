@@ -7,7 +7,6 @@ pragma solidity ^0.4.25;
 // pragma experimental ABIEncoderV2;
 
 import "../../utillib/LibString.sol";
-// import "../../utillib/LibInt.sol";
 // import "../../common/delegate.sol";
 
 contract LogisticsCore {
@@ -21,7 +20,6 @@ contract LogisticsCore {
 contract LogisticsAnalytics {
 
     using LibString for *;
-    // using LibInt for *;
 
     /** @desc core address */
     address private coreAddr_; 
@@ -177,20 +175,37 @@ contract LogisticsAnalytics {
         return (src, dest, startTime, endTime);
     }
 
+    /** [desc] Setup module.
+      * [param] _coreAddr: logistics core contract address.
+      * [return] none.
+      */
     function setup(address _coreAddr) external {
         // check core and databaseaddress
         require(0 != _coreAddr);
         coreAddr_ = _coreAddr;
     }
 
+    /** [desc] Set action code.
+      * [param] _tag: action code tag.
+      * [param] _value: action code value.
+      * [return] none.
+      */
     function setActionCode(string _tag, uint8 _value) external {
         actionCodes_[_tag] = _value;
     }
 
+    /** [desc] Get logistics core contract address.
+      * [param] none.
+      * [return] logistics core contract address.
+      */
     function getCoreAddr() external view returns (address) {
         return coreAddr_;
     }
 
+    /** [desc] Get action code.
+      * [param] _tag: action code tag.
+      * [return] action code value.
+      */
     function getActionCode(string _tag) external view returns (uint8) {
         return actionCodes_[_tag];
     }
