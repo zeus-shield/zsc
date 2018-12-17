@@ -13,14 +13,22 @@ contract LogisticsCore {
     function getParcelEx(string _num) external view returns (string);
 }
 
+contract LogisticsAnalytics {
+    function getParcelAmount(uint8 _direction, uint16 _srcCountry, uint16 _destCountry, uint64 _startTime, uint64 _endTime) external view returns (uint);
+    function getParcelAmountArray(uint8 _direction, bool _mulMatch, bytes32[] _condition) external view returns (uint[]);
+}
+
 contract Logistics is Delegate {
 
-    /** @desc core address */
+    /** @desc core contract address */
     address private coreAddr_; 
 
-    // Constructor
+    /** @desc analytics contract address */
+    address private analyticsAddr_;
+
     constructor() public {
         coreAddr_ = 0;
+        analyticsAddr_ = 0;
     }
 
     modifier _checkCoreAddr() {
@@ -28,13 +36,29 @@ contract Logistics is Delegate {
         _;
     }
 
-    function setup(address _coreAddr) external _onlyOwner {
-        // check core address
-        require(0 != _coreAddr);
-        coreAddr_ = _coreAddr;
+    modifier _checkAnalyticsAddr() {
+        require(0 != analyticsAddr_);
+        _;
     }
 
-    function getLogisticsInfo(string _num) external view _checkCoreAddr returns (string) {
+    /** [desc] Setup module.
+      * [param] _coreAddr: core contract address.
+      * [param] _analyticsAddr: analytics contract address.
+      * [return] none.
+      */
+    function setup(address _coreAddr, address _analyticsAddr) external _onlyOwner {
+        // check core contract address
+        require(0 != _coreAddr);
+        require(0 != _analyticsAddr);
+        coreAddr_ = _coreAddr;
+        analyticsAddr_ = _analyticsAddr;
+    }
+
+    /** [desc] Get info of parcel.
+      * [param] _num: parcel num.
+      * [return] info of parcel.
+      */
+    function info(string _num) external view _checkCoreAddr returns (string) {
         // check param
         if (0 == bytes(_num).length) {
             return "";
