@@ -7,7 +7,7 @@ pragma solidity ^0.4.25;
 // pragma experimental ABIEncoderV2;
 
 import "../../utillib/LibString.sol";
-// import "../../common/delegate.sol";
+import "../../common/delegate.sol";
 
 contract LogisticsCore {
     function number() external view returns (uint);
@@ -17,7 +17,7 @@ contract LogisticsCore {
     function getBriefElementByIndex(uint _index, string _tag) external view returns (string);
 }
 
-contract LogisticsAnalytics {
+contract LogisticsAnalytics is Delegate {
 
     using LibString for *;
 
@@ -39,12 +39,17 @@ contract LogisticsAnalytics {
         _;
     }
 
+    modifier _onlyAdminOrHigher() {
+        require(checkDelegate(msg.sender, 2));
+        _;
+    }
+
     /** [desc] Get first or last track index.
       * [param] _num: logistics parcel num.
       * [param] _position: track position (0: means first track, 1: means last track).
       * [return] track index.
       */
-    function _getTrackIndex(string _num, uint8 _position) private view returns (uint)  {
+    function _getTrackIndex(string _num, uint8 _position) private view returns (uint) {
         uint i = 0;
         uint index = 0;
         uint trackCount = 0;
@@ -179,7 +184,7 @@ contract LogisticsAnalytics {
       * [param] _coreAddr: logistics core contract address.
       * [return] none.
       */
-    function setup(address _coreAddr) external {
+    function setup(address _coreAddr) external _onlyOwner {
         // check core and databaseaddress
         require(0 != _coreAddr);
         coreAddr_ = _coreAddr;
@@ -190,7 +195,7 @@ contract LogisticsAnalytics {
       * [param] _value: action code value.
       * [return] none.
       */
-    function setActionCode(string _tag, uint8 _value) external {
+    function setActionCode(string _tag, uint8 _value) external _onlyAdminOrHigher {
         actionCodes_[_tag] = _value;
     }
 
