@@ -928,14 +928,14 @@ export default class TestLogisticsRaw {
                 }
             })
         } else if ('Test' == type) {
-            // let logisticsAnalytics = new LogisticsAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
-            // logisticsAnalytics.test(["0x009c0283000000005bd9470c000000005c11d0d0"], function(error, result) {
-            //     if (!error) {
-            //         Output(window.outputReadElement, 'small', 'red', `[Element]:</br>${result}`);
-            //     } else {
-            //         Output(window.outputReadElement, 'small', 'red', error);
-            //     }
-            // });
+            let logisticsAnalytics = new LogisticsAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
+            logisticsAnalytics.test(10, function(error, result) {
+                if (!error) {
+                    Output(window.outputReadElement, 'small', 'red', `[Element]:</br>${result}`);
+                } else {
+                    Output(window.outputReadElement, 'small', 'red', error);
+                }
+            });
             Output(window.outputReadElement, 'small', 'red', 'Do not support now!');
         } else {}
     }
@@ -1125,8 +1125,8 @@ export default class TestLogisticsRaw {
                 conditionArray.push(condition);
 
                 let logisticsAnalytics = new LogisticsAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
-                // logisticsAnalytics.getParcelAmountArray(parseInt(direction), false, conditionArray, function(error, result) {
-                logisticsAnalytics.getParcelAmount(parseInt(direction), parseInt(src), parseInt(dest), startTime, endTime, function(error, result) {
+                logisticsAnalytics.getParcelAmountArray(parseInt(direction), false, conditionArray, function(error, result) {
+                // logisticsAnalytics.getParcelAmount(parseInt(direction), parseInt(src), parseInt(dest), startTime, endTime, function(error, result) {
                     if (!error) {
                         Output(window.outputAnalyticsElement, 'small', 'red', `[Amount]:${result}`);
                     } else {
