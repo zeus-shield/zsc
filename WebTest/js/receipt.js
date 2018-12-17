@@ -40,11 +40,13 @@ export default class Receipt {
         let j = 0;
         for (i=0; i<logs.length; i++) {
             console.log("==================================== logs%d ====================================", i);
-            console.log("data(hex): %s", logs[i].data);
-            console.log("data(str): %s", handler[_hexToString](logs[i].data));
+            console.log("data(hex):  %s", logs[i].data);
+            console.log("data(uint): %s", parseInt(logs[i].data));
+            // console.log("data(str):  %s", handler[_hexToString](logs[i].data));
             for (j=0; j<logs[i].topics.length; j++) {
-                console.log("topics[%d](hex): %s", j, logs[i].topics[j]);
-                console.log("topics[%d](str): %s", j, handler[_hexToString](logs[i].topics[j]));
+                console.log("topics[%d](hex):  %s", j, logs[i].topics[j]);
+                console.log("topics[%d](uint): %s", j, parseInt(logs[i].topics[j]));
+                // console.log("topics[%d](str):  %s", j, handler[_hexToString](logs[i].topics[j]));
             }
         }
     }
