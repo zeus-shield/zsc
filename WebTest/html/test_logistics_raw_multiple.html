@@ -133,12 +133,13 @@
                 }
 
                 document.getElementById("b_analytics_amount_submit").onclick = function() {
+                    let contract = document.getElementById("s_analytics_contract").value;
                     let direction = document.getElementById("s_analytics_amount_direction").value;
                     let src = document.getElementById("s_analytics_amount_src_country").value;
                     let dest = document.getElementById("s_analytics_amount_dest_country").value;
                     let year = document.getElementById("s_analytics_amount_year").value;
                     let month = document.getElementById("s_analytics_amount_month").value;
-                    main('LogisticsRaw', 'Analytics', 'Amount', `${direction},${src},${dest},${year},${month}`);
+                    main('LogisticsRaw', 'Analytics', 'Amount', `${contract},${direction},${src},${dest},${year},${month}`);
                 }
             }
         </script>
@@ -226,6 +227,7 @@
                     <h4>4. Delegate</h4>
                     <select id="s_delegate_debug_contract">
                         <option value ="Logistics">Logistics</option>
+                        <option value ="LogisticsAnalytics">LogisticsAnalytics</option>
                         <option value ="LogisticsCore">LogisticsCore</option>
                         <option value ="LogisticsDatabase">LogisticsDatabase</option>
                     </select>
@@ -236,6 +238,7 @@
                         Select Contract:<br>
                         <select id="s_delegate_update_contract">
                             <option value ="Logistics">Logistics</option>
+                            <option value ="LogisticsAnalytics">LogisticsAnalytics</option>
                             <option value ="LogisticsCore">LogisticsCore</option>
                             <option value ="LogisticsDatabase">LogisticsDatabase</option>
                         </select><br>
@@ -248,6 +251,7 @@
                         Select Contract:<br>
                         <select id="s_delegate_remove_contract">
                             <option value ="Logistics">Logistics</option>
+                            <option value ="LogisticsAnalytics">LogisticsAnalytics</option>
                             <option value ="LogisticsCore">LogisticsCore</option>
                             <option value ="LogisticsDatabase">LogisticsDatabase</option>
                         </select><br>
@@ -260,6 +264,7 @@
                         Select Contract:<br>
                         <select id="s_delegate_transfer_contract">
                             <option value ="Logistics">Logistics</option>
+                            <option value ="LogisticsAnalytics">LogisticsAnalytics</option>
                             <option value ="LogisticsCore">LogisticsCore</option>
                             <option value ="LogisticsDatabase">LogisticsDatabase</option>
                         </select><br>
@@ -370,45 +375,50 @@
                     <div id="element">
                         <h5>Statistics Parcel Amount:</h5>
                         <button type="button" id="b_analytics_amount_dummy_data" onclick="main('LogisticsRaw', 'DummyData', 'Analytics', 'Amount')">Dummy Data</button><br><br>
+                        Contract:<br>
+                        <select id="s_analytics_contract", >
+                            <option value="Logistics">Logistics</option>
+                            <option value="LogisticsAnalytics" selected="selected">LogisticsAnalytics</option>
+                        </select><br>
                         Direction:<br>
                         <select id="s_analytics_amount_direction", >
-                            <option value ="0">Sent</option>
-                            <option value ="1">Received</option>
+                            <option value="0">Sent</option>
+                            <option value="1">Received</option>
                         </select><br>
                         Country(src):<br>
                         <select id="s_analytics_amount_src_country", >
-                            <option value ="0">All</option>
-                            <option value ="156" selected="selected">China</option>
-                            <option value ="250">France</option>
-                            <option value ="840">USA</option>
-                            <option value ="643">Russia</option>
+                            <option value="0">All</option>
+                            <option value="156" selected="selected">China</option>
+                            <option value="250">France</option>
+                            <option value="840">USA</option>
+                            <option value="643">Russia</option>
                         </select><br>
                         Country(dest):<br>
                         <select id="s_analytics_amount_dest_country">
-                            <option value ="0">All</option>
-                            <option value ="156" >China</option>
-                            <option value ="250">France</option>
-                            <option value ="840">USA</option>
-                            <option value ="643" selected="selected">Russia</option>
+                            <option value="0">All</option>
+                            <option value="156" >China</option>
+                            <option value="250">France</option>
+                            <option value="840">USA</option>
+                            <option value="643" selected="selected">Russia</option>
                         </select><br>
                         Year/Month:<br>
                         <select id="s_analytics_amount_year">
-                            <option value ="2018">2018</option>
-                            <option value ="0">All</option>
+                            <option value="2018">2018</option>
+                            <option value="0">All</option>
                         </select>
                         <select id="s_analytics_amount_month">
-                            <option value ="1">January</option>
-                            <option value ="2">February</option>
-                            <option value ="3">March</option>
-                            <option value ="4">April</option>
-                            <option value ="5">May</option>
-                            <option value ="6">June</option>
-                            <option value ="7">July</option>
-                            <option value ="8">August</option>
-                            <option value ="9">September</option>
-                            <option value ="10">October</option>
-                            <option value ="11">November</option>
-                            <option value ="12" selected="selected">December</option>
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12" selected="selected">December</option>
                         </select><br>
                         <button type="button" id="b_analytics_amount_submit">Submit</button>
                     </div>
