@@ -57,4 +57,17 @@ contract Logistics is Delegate {
         require(_startTime <= _endTime);
         return LogisticsAnalytics(analyticsAddr_).getParcelAmount(_direction, _srcCountry, _destCountry, _startTime, _endTime);
     }
+
+    /** [desc] Get number array of parcels.
+      * [param] _direction: parcel's direction (0: means sent, 1: means received).
+      * [param] _mulMatch: multiple match flag (false: means parcel only match one condition, true: means parcel match conditions).
+      * [param] _condition: condition array.
+      * [return] number array of parcels.
+      */
+    function numbers(uint8 _direction, bool _mulMatch, bytes32[] _condition) external view _checkAnalyticsAddr returns (uint[]) {
+        // check param
+        require((0 == _direction) || (1 == _direction));
+        require(0 < _condition.length);
+        return LogisticsAnalytics(analyticsAddr_).getParcelAmountArray(_direction, _mulMatch, _condition);
+    }
 }
