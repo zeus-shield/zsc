@@ -18,12 +18,12 @@ export default class LogisticsCore {
         this[contractAddress] = _contractAddr; 
     }
 
-    setup(_account, _key, _coreAddr, _func) {
+    setup(_account, _key, _coreAddr, _analyticsAddr, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-        let data = contractInstance.setup.getData(_coreAddr);
+        let data = contractInstance.setup.getData(_coreAddr, _analyticsAddr);
 
-        contractInstance.setup.estimateGas(_coreAddr, {from: _account}, function(error, result) {
+        contractInstance.setup.estimateGas(_coreAddr, _analyticsAddr, {from: _account}, function(error, result) {
             if (!error) {
                 let transaction = new Transaction(_account, _key);
                 if('undefined' != typeof transaction) {
