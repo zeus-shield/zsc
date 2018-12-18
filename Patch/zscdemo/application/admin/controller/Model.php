@@ -107,4 +107,13 @@ class Model extends Admin {
 		}
 	}	
 
+	public function update() {
+		$res = \think\Loader::model('Model')->change();
+		if ($res['status']) {
+			return $this->success($res['info'], url('index'));
+		} else {
+			return $this->error($res['info']);
+		}
+	}	
+
 }
