@@ -29,5 +29,15 @@ class Model extends Admin {
 		$this->setMeta('模型管理');
 		return $this->fetch();
 	}
-	
+
+	public function add() {
+
+		//获取所有的模型
+		$models = db('Model')->where(array('extend' => 0))->field('id,title')->select();
+
+		$this->assign('models', $models);
+		$this->setMeta('新增模型');
+		return $this->fetch();
+	}	
+
 }
