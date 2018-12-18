@@ -115,4 +115,27 @@ class Seo extends Admin {
 			return $this->fetch('public/edit');
 		}
 	}	
+
+
+
+	public function editrewrite() {
+		if (IS_POST) {
+			$result = model('Rewrite')->change();
+			if (false != $result) {
+				return $this->success("更新成功！", url('admin/seo/rewrite'));
+			} else {
+				return $this->error(model('Rewrite')->getError());
+			}
+		} else {
+			$id   = input('id', '', 'trim,intval');
+			$info = db('Rewrite')->where(array('id' => $id))->find();
+			$data = array(
+				'info'    => $info,
+				'keyList' => $this->rewrite->keyList,
+			);
+			$this->assign($data);
+			$this->setMeta("编辑路由规则");
+			return $this->fetch('public/edit');
+		}
+	}	
 }
