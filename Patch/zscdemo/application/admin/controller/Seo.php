@@ -96,4 +96,23 @@ class Seo extends Admin {
 		$this->setMeta("路由规则");
 		return $this->fetch();
 	}	
+
+
+	public function addrewrite() {
+		if (IS_POST) {
+			$result = model('Rewrite')->change();
+			if (false != $result) {
+				return $this->success("添加成功！", url('admin/seo/rewrite'));
+			} else {
+				return $this->error(model('Rewrite')->getError());
+			}
+		} else {
+			$data = array(
+				'keyList' => $this->rewrite->keyList,
+			);
+			$this->assign($data);
+			$this->setMeta("添加路由规则");
+			return $this->fetch('public/edit');
+		}
+	}	
 }
