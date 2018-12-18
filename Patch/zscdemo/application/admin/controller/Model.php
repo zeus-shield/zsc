@@ -97,4 +97,14 @@ class Model extends Admin {
 		return $this->fetch();
 	}	
 
+	public function del() {
+		$mdoel  = model('Model');
+		$result = $mdoel->del();
+		if ($result) {
+			return $this->success('删除模型成功！');
+		} else {
+			return $this->error($mdoel->getError());
+		}
+	}	
+
 }
