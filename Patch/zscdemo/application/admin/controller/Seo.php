@@ -137,5 +137,19 @@ class Seo extends Admin {
 			$this->setMeta("编辑路由规则");
 			return $this->fetch('public/edit');
 		}
-	}	
+	}
+
+
+	public function delrewrite() {
+		$id = $this->getArrayParam('id');
+		if (empty($id)) {
+			return $this->error("非法操作！");
+		}
+		$result = db('Rewrite')->where(array('id' => array('IN', $id)))->delete();
+		if ($result) {
+			return $this->success("删除成功！");
+		} else {
+			return $this->error("删除失败！");
+		}
+	}		
 }
