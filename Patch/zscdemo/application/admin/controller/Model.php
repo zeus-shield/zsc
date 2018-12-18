@@ -116,4 +116,26 @@ class Model extends Admin {
 		}
 	}	
 
+
+	public function status() {
+	$map['id'] = $this->request->param('ids');
+	if (null == $map['id']) {
+		return $this->error('参数不正确！');
+	}
+
+	$data['status'] = input('get.status');
+
+	if (null == $data['status']) {
+		//实现单条数据数据修改
+		$status         = db('Model')->where($map)->field('status')->find();
+		$data['status'] = $status['status'] ? 0 : 1;
+		db('Model')->where($map)->update($data);
+	} else {
+		//实现多条数据同时修改
+		$map['id'] = array('IN', $map['id']);
+		db('Model')->where($map)->update($data);
+	}
+	return $this->success('状态设置成功！');
+}
+
 }
