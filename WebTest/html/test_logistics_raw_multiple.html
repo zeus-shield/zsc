@@ -56,22 +56,23 @@
 
         <script type="text/javascript">
             window.onload = function () {
-                window.outputProviderElement = 'output_provider';
-                window.outputDeployDatabaseElement = 'output_deploy_database';
-                window.outputDeployCoreElement = 'output_deploy_core';
-                window.outputDeployAnalyticsElement = 'output_deploy_analytics';
-                window.outputDeployAnalyticsMinElement = 'output_deploy_analytics_min';
-                window.outputDeployElement = 'output_deploy';
-                window.outputSetupElement = 'output_setup';
+                window.outputProviderElement = 'p_output_provider';
+                window.outputDeployDatabaseElement = 'p_output_deploy_database';
+                window.outputDeployCoreElement = 'p_output_deploy_core';
+                window.outputDeployAnalyticsElement = 'p_output_deploy_analytics';
+                window.outputDeployAnalyticsMinElement = 'p_output_deploy_analytics_min';
+                window.outputDeployElement = 'p_output_deploy';
+                window.outputSetupElement = 'p_output_setup';
                 window.outputDelegateWriteElement = 'p_output_delegate_write';
                 window.outputDelegateReadElement = 'p_output_delegate_read';
-                window.outputCommonElement = 'output_common';
-                window.outputWriteElement = 'output_write';
-                window.outputReadElement = 'output_read';
+                window.outputCommonElement = 'p_output_common';
+                window.outputWriteElement = 'p_output_write';
+                window.outputReadElement = 'p_output_read';
                 window.outputAnalyticsElement = 'p_output_analytics';
+                window.outputAnalyticsMinElement = 'p_output_analytics_min';
 
                 provider(false);
-                document.getElementById("s_provider").addEventListener('change',function(){
+                document.getElementById("s_provider").addEventListener('change', function(){
                      if('injected' == this.value) {
                         provider(true);
                      } else {
@@ -142,6 +143,12 @@
                     let month = document.getElementById("s_analytics_amount_month").value;
                     main('LogisticsRaw', 'Analytics', 'Amount', `${contract},${direction},${src},${dest},${year},${month}`);
                 }
+
+                document.getElementById("b_analytics_min_submit").onclick = function() {
+                    let op = document.getElementById("s_analytics_min_op").value;
+                    let params = document.getElementById("i_analytics_min_params").value;
+                    main('LogisticsRaw', 'AnalyticsMin', `${op}`, `${params}`);
+                }
             }
         </script>
     </head>
@@ -161,7 +168,7 @@
                       <option value="local">Localhost</option>
                       <option value="injected">Injected Web3</option>
                     </select>
-                    <p id="output_provider"></p>
+                    <p id="p_output_provider"></p>
                 </div>
             </p>
 
@@ -173,7 +180,7 @@
                         <label id="l_logistics_database" for="logistics_database_file">Upload</label>
                         <input type="file" id="logistics_database_file" onchange="file('LogisticsRaw', 'LogisticsDatabase', this)" />
                         <button type="button" id="b_deploy" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsDatabase', '')">Deploy</button>
-                        <p id="output_deploy_database"></p>
+                        <p id="p_output_deploy_database"></p>
                     </div>
 
                     <div id="element">
@@ -181,7 +188,7 @@
                         <label id="l_logistics_core" for="logistics_core_file">Upload</label>
                         <input type="file" id="logistics_core_file" onchange="file('LogisticsRaw', 'LogisticsCore', this)" />
                         <button type="button" id="b_deploy" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsCore', '')">Deploy</button>
-                        <p id="output_deploy_core"></p>
+                        <p id="p_output_deploy_core"></p>
                     </div>                   
 
                     <div id="element">
@@ -189,7 +196,7 @@
                         <label id="l_logistics_analytics" for="logistics_analytics_file">Upload</label>
                         <input type="file" id="logistics_analytics_file" onchange="file('LogisticsRaw', 'LogisticsAnalytics', this)" />
                         <button type="button" id="b_deploy" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsAnalytics', '')">Deploy</button>
-                        <p id="output_deploy_analytics"></p>
+                        <p id="p_output_deploy_analytics"></p>
                     </div>
 
                     <div id="element">
@@ -197,7 +204,7 @@
                         <label id="l_logistics_analytics_min" for="logistics_analytics_min_file">Upload</label>
                         <input type="file" id="logistics_analytics_min_file" onchange="file('LogisticsRaw', 'LogisticsAnalyticsMin', this)" />
                         <button type="button" id="b_deploy" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsAnalyticsMin', '')">Deploy</button>
-                        <p id="output_deploy_analytics_min"></p>
+                        <p id="p_output_deploy_analytics_min"></p>
                     </div>
 
                     <div id="element">
@@ -205,7 +212,7 @@
                         <label id="l_logistics" for="logistics_file">Upload</label>
                         <input type="file" id="logistics_file" onchange="file('LogisticsRaw', 'Logistics', this)" />
                         <button type="button" id="b_deploy" onclick="main('LogisticsRaw', 'Deploy', 'Logistics', '')">Deploy</button>
-                        <p id="output_deploy"></p>
+                        <p id="p_output_deploy"></p>
                     </div>
                     <div style="clear:left"></div>
                 </div>
@@ -227,7 +234,7 @@
                         <option value="LogisticsCore">LogisticsCore</option>
                     </select>
                     <button type="button" id="b_get_sub_contract_addr">GetSubContractAddress</button>
-                    <p id="output_setup"></p>
+                    <p id="p_output_setup"></p>
                 </div>
             </p>
 
@@ -295,7 +302,7 @@
                     <button type="button" id="b_common_test" onclick="main('LogisticsRaw', 'Remove', 'Batch', '')">Remove</button>
                     <button type="button" id="b_common_test" onclick="main('LogisticsRaw', 'Invalid', 'Batch', '')">Invalid</button>
                     <button type="button" id="b_common_test" onclick="main('LogisticsRaw', 'DebugBrief', '', '')">DebugBrief</button>
-                    <p id="output_common"></p>
+                    <p id="p_output_common"></p>
 
                     <h5>Write Test:</h5>
                     <div id="element">
@@ -322,7 +329,7 @@
                         <button type="button" id="b_invalid_submit">Submit</button>
                     </div>
                     <div style="clear: left"></div>
-                    <p id="output_write"></p>
+                    <p id="p_output_write"></p>
 
                     <h5>Read Test:</h5>
                     <div id="element">
@@ -361,7 +368,7 @@
                         <button type="button" id="b_get_number_submit">Submit</button>
                     </div>
                     <div style="clear: left"></div>
-                    <p id="output_read"></p>
+                    <p id="p_output_read"></p>
                 </div>
             </p>
 
@@ -435,6 +442,27 @@
                     <p id="p_output_analytics"></p>
                 </div>
             </p>
+
+            <p>
+                <div class="well" id="block">
+                    <h4>7. Analytics Min</h4>
+
+                    <div id="element">
+                        Select Operation:<br>
+                        <select id="s_analytics_min_op">
+                            <option value="Update">Update</option>
+                            <option value="Get">Get</option>
+                        </select><br>
+                        Params:<br>
+                        <input type="text" id="i_analytics_min_params"><br>
+                        <button type="button" id="b_analytics_min_submit">Submit</button><br>
+                    </div>
+
+                    <div style="clear: left"></div>
+                    <p id="p_output_analytics_min"></p>
+                </div>
+            </p>
+
         </div>
     </div> 
     </body>
