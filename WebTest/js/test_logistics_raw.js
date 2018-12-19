@@ -4,6 +4,7 @@ import Transaction from './transaction_raw.js';
 import Delegate from './delegate.js';
 import Logistics from './logistics.js';
 import LogisticsAnalytics from './logistics_analytics.js';
+import LogisticsAnalyticsMin from './logistics_analytics_min.js';
 import LogisticsCore from './logistics_core.js';
 import LogisticsTestData from './test_logistics_raw_data.js';
 
@@ -14,6 +15,9 @@ const contractAddress = Symbol('contractAddress');
 
 const analyticsAbi = Symbol('analyticsAbi');
 const analyticsContractAddress = Symbol('analyticsContractAddress');
+
+const analyticsMinAbi = Symbol('analyticsMinAbi');
+const analyticsMinContractAddress = Symbol('analyticsMinContractAddress');
 
 const coreAbi = Symbol('coreAbi');
 const coreContractAddress = Symbol('coreContractAddress');
@@ -114,6 +118,8 @@ export default class TestLogisticsRaw {
             elementId = window.outputDeployCoreElement;
         } else if ('LogisticsAnalytics' == contractName) {
             elementId = window.outputDeployAnalyticsElement;
+        } else if ('LogisticsAnalyticsMin' == contractName) {
+            elementId = window.outputDeployAnalyticsMinElement;
         } else {
             elementId = window.outputDeployElement;
         }
@@ -166,6 +172,9 @@ export default class TestLogisticsRaw {
         } else if ('LogisticsAnalytics' == contractName) {
             this[analyticsAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
             contract = web3.eth.contract(this[analyticsAbi]);
+        } else if ('LogisticsAnalyticsMin' == contractName) {
+            this[analyticsMinAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
+            contract = web3.eth.contract(this[analyticsMinAbi]);
         } else {
             this[abi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
             contract = web3.eth.contract(this[abi]);
@@ -187,6 +196,8 @@ export default class TestLogisticsRaw {
                                 handler[coreContractAddress] = result.contractAddress;
                             } else if ('LogisticsAnalytics' == contractName) {
                                 handler[analyticsContractAddress] = result.contractAddress;
+                            } else if ('LogisticsAnalyticsMin' == contractName) {
+                                handler[analyticsMinContractAddress] = result.contractAddress;
                             } else {
                                 handler[contractAddress] = result.contractAddress;
                             }
