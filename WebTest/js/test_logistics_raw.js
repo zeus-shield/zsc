@@ -957,6 +957,8 @@ export default class TestLogisticsRaw {
             delegate = new Delegate(this[abi], this[contractAddress]);
         } else if ("LogisticsAnalytics" == contract) {
             delegate = new Delegate(this[analyticsAbi], this[analyticsContractAddress]);
+        } else if ("LogisticsAnalyticsMin" == contract) {
+            delegate = new Delegate(this[analyticsMinAbi], this[analyticsMinContractAddress]);
         } else if ("LogisticsCore" == contract) {
             delegate = new Delegate(this[coreAbi], this[coreContractAddress]);
         } else if ("LogisticsDatabase" == contract) {
