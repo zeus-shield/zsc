@@ -81,6 +81,7 @@ contract LogisticsAnalyticsMin is Delegate {
 
         // check param
         require(sum_ > _index);
+        require(0 < _count);
 
         if (sum_ < _index + _count) {
             count = sum_ - _index;
