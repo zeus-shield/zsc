@@ -1097,20 +1097,21 @@ export default class TestLogisticsRaw {
         let account = tmps[0];
         let key = tmps[1];
 
+        let para;
         switch (cmd) {
             case "ActionCode":
-                let tmps = paras.split(",");
-                let op = tmps[0];
+                para = paras.split(",");
+                let op = para[0];
 
                 if ("Set" == op) {
-                    let tag = tmps[1];
-                    let actionCode = tmps[2];
+                    let tag = para[1];
+                    let actionCode = para[2];
                     let logisticsAnalytics = new LogisticsAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
                     logisticsAnalytics.setActionCode(account, key, tag, parseInt(actionCode), function(error, result) {
                         handler[commmonTransactionProc](error, result, window.outputAnalyticsElement);
                     });
                 } else if ("Get" == op) {
-                    let tag = tmps[1];
+                    let tag = para[1];
                     let logisticsAnalytics = new LogisticsAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
                     logisticsAnalytics.getActionCode(tag, function(error, result) {
                         if (!error) {
@@ -1124,7 +1125,7 @@ export default class TestLogisticsRaw {
                 }
                 break;
             case "Amount":
-                let para = paras.split(",");
+                para = paras.split(",");
                 let contract = para[0];
                 let direction = para[1];
                 let src = para[2];
@@ -1168,6 +1169,49 @@ export default class TestLogisticsRaw {
         }
     }
 
+    analyticsMin(cmd, paras) {
+        console.log('TestLogisticsRaw.analyticsMin(%s, %s)', cmd, paras);
+        let handler = this;
+        let tmps = this[getCommonAccount]();
+        if (0 == tmps[0]) {
+            Output(window.outputAnalyticsMinElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = tmps[0];
+        let key = tmps[1];
+
+        let para;
+        let logisticsAnalyticsMin;
+        switch (cmd) {
+            case "Update":
+                para = paras.split(",");
+                let num = para[0];
+                let parcel = para[1];
+                logisticsAnalyticsMin = new LogisticsAnalyticsMin(this[analyticsMinAbi], this[analyticsMinContractAddress]);
+                logisticsAnalyticsMin.update(account, key, num, parcel, function(error, result) {
+                    handler[commmonTransactionProc](error, result, window.outputAnalyticsMinElement);
+                });
+                break;
+            case "Get":
+                para = paras.split(",");
+                let index = para[0];
+                let count = para[1];
+                logisticsAnalyticsMin = new LogisticsAnalyticsMin(this[analyticsMinAbi], this[analyticsMinContractAddress]);
+                logisticsAnalyticsMin.get(index, count, function(error, result) {
+                    if (!error) {
+                        Output(window.outputAnalyticsMinElement, 'small', 'red', `[Parcels]:${result}`);
+                    } else {
+                        Output(window.outputAnalyticsMinElement, 'small', 'red', error);
+                    }
+                })
+                break;
+            default:
+                Output(window.outputAnalyticsMinElement, 'small', 'red', "Command Error!");
+                break;
+        }
+    }
+
     do(operation, para1, para2) {
         console.log('TestLogisticsRaw.do(%s, %s, %s)', operation, para1, para2);
         switch(operation) {
@@ -1203,6 +1247,8 @@ export default class TestLogisticsRaw {
                 break;
             case 'Analytics':
                 this.analytics(para1, para2);
+            case 'AnalyticsMin':
+                this.analyticsMin(para1, para2);
             default:
                 Output(window.outputCommonElement, 'small', 'red', 'Operation Error!');
                 break;
