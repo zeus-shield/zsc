@@ -262,6 +262,12 @@ contract LogisticsAnalytics is Delegate {
       * [param] _direction: parcel's direction (0: means sent, 1: means received).
       * [param] _mulMatch: multiple match flag (false: means parcel only match one condition, true: means parcel match conditions).
       * [param] _condition: condition array.
+      *         srcCountry(uint16) + destCountry(uint16) + startTime(uint64) + endTime(uint64)
+      *         eg. srcCountry(Russia: 0x0283) +
+      *             destCountry(China: 0x009c) +
+      *             startTime(2018-12-31 23:59:59: 0x000000005c015e80) +
+      *             endTime(2018-12-01 00:00:00: 0x000000005c2a3cff)
+      *             0x0283009c000000005c015e80000000005c2a3cff
       * [return] parcel amount array.
       */
     function getParcelAmountArray(uint8 _direction, bool _mulMatch, bytes32[] _condition) external view _checkCoreAddr returns (uint[]) {
