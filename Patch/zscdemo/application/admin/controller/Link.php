@@ -75,4 +75,20 @@ class Link extends Admin {
 			return $this->fetch('public/edit');
 		}
 	}
+
+	public function delete() {
+		$id = $this->getArrayParam('id');
+		if (empty($id)) {
+			return $this->error('非法操作！');
+		}
+		$link = db('Link');
+
+		$map    = array('id' => array('IN', $id));
+		$result = $link->where($map)->delete();
+		if ($result) {
+			return $this->success("删除成功！");
+		} else {
+			return $this->error("删除失败！");
+		}
+	}	
 }
