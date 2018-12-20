@@ -63,4 +63,36 @@ class Menu extends Admin {
 			return $this->fetch('edit');
 		}
 	}	
+
+
+	public function edit($id = 0) {
+		if (IS_POST) {
+			$Menu = model('Menu');
+			$data = input('post.');
+			if ($Menu->save($data, array('id' => $data['id'])) !== false) {
+				session('admin_menu_list', null);
+				//记录行为
+				action_log('update_menu', 'Menu', $data['id'], session('user_auth.uid'));
+				return $this->success('更新成功', Cookie('__forward__'));
+			} else {
+				return $this->error('更新失败');
+			}
+		} else {
+			$info = array();
+			/* 获取数据 */
+			$info  = db('Menu')->field(true)->find($id);
+			$menus = db('Menu')->field(true)->select();
+			$tree  = new \com\Tree();
+			$menus = $tree->toFormatTree($menus);
+
+			$menus = array_merge(array(0 => array('id' => 0, 'title_show' => '顶级菜单')), $menus);
+			$this->assign('Menus', $menus);
+			if (false === $info) {
+				return $this->error('获取后台菜单信息错误');
+			}
+			$this->assign('info', $info);
+			$this->setMeta('编辑后台菜单');
+			return $this->fetch();
+		}
+	}	
 }
