@@ -25,14 +25,26 @@ contract Container is Ownable {
         sum_ = 0;
     }
 
+    /** [desc] Kill the contract.
+      * [param] none.
+      * [return] none.
+      */
     function kill() external _onlyOwner {
         selfdestruct(owner_);   
     }
 
     /** [desc] This unnamed function is called whenever someone tries to send ether to it.
+      * [param] none.
+      * [return] none.
       */
     function() external payable { revert(); }
 
+    /** [desc] Set data.
+      * [param] _key: key using for mapping data.
+      * [param] _data0: data for bytes32.
+      * [param] _data1: data for string.
+      * [return] none.
+      */
     function set(bytes32 _key, bytes32 _data0, string _data1) external _onlyOwner {
         if (exists_[_key]) {
             datas_[_key].data0_ = _data0;
@@ -48,6 +60,11 @@ contract Container is Ownable {
         }
     }
 
+    /** [desc] Swap data.
+      * [param] _key1: key using for mapping data.
+      * [param] _key2: key using for mapping data.
+      * [return] none.
+      */
     function swap(bytes32 _key1, bytes32 _key2) external _onlyOwner {
         uint id1 = 0;
         uint id2 = 0;
@@ -65,6 +82,10 @@ contract Container is Ownable {
         ids_[_key2] = id1;
     }
 
+    /** [desc] Remove data.
+      * [param] _key: key using for mapping data.
+      * [return] none.
+      */
     function remove(bytes32 _key) external _onlyOwner {
         bytes32 key2 = bytes32(0);
 
@@ -81,15 +102,27 @@ contract Container is Ownable {
         sum_ --;
     }
 
+    /** [desc] Get number of data.
+      * [param] none.
+      * [return] none.
+      */
     function number() external view _onlyOwner returns (uint) {
         return sum_;
     }
 
+    /** [desc] Get data by key.
+      * [param] _key: key using for mapping data.
+      * [return] data.
+      */
     function get(bytes32 _key) external view _onlyOwner returns (bytes32, string) {
         require(exists_[_key]);
         return (datas_[_key].data0_, datas_[_key].data1_);
     }
 
+    /** [desc] Get data by id.
+      * [param] _id: id of data.
+      * [return] key and data.
+      */
     function get(uint _id) external view _onlyOwner returns (bytes32, bytes32, string) {
         require(_id < sum_);
         require(exists_[keys_[_id]]);
