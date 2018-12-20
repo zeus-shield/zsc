@@ -21,3 +21,10 @@ router.get('/getCode', function (req, res) {
         })
    })
 })
+
+router.post('/saveCode', function(req, res, next) {
+    let code = {
+        key:    req.body.key,
+        value:  req.body.value
+    };
+    
