@@ -28,3 +28,5 @@ export const getContractInfoForAnalytics   = params => { return instance.get(`${
 export const saveCode   = params => { return instance.post(`${base}/Code/saveCode`,  params ).then(res => res.data ); };
 
 export const getCode   = params => { return instance.get(`${base}/Code/getCode`, { params: params }); };
+
+export const setInfo   = params => { return instance.post(`${base}/ContractInfo/setInfo`,  params ).then(res => res.data ); };
