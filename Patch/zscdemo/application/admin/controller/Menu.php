@@ -197,4 +197,40 @@ class Menu extends Admin {
 			return $this->fetch();
 		}
 	}	
+
+	public function sort() {
+		if (IS_GET) {
+			$ids = input('ids');
+			$pid = input('pid');
+
+			//获取排序的数据
+			$map = array('status' => array('gt', -1));
+			if (!empty($ids)) {
+				$map['id'] = array('in', $ids);
+			} else {
+				if ($pid !== '') {
+					$map['pid'] = $pid;
+				}
+			}
+			$list = db('Menu')->where($map)->field('id,title')->order('sort asc,id asc')->select();
+
+			$this->assign('list', $list);
+			$this->setMeta('菜单排序');
+			return $this->fetch();
+		} elseif (IS_POST) {
+			$ids = input('post.ids');
+			$ids = explode(',', $ids);
+			foreach ($ids as $key => $value) {
+				$res = db('Menu')->where(array('id' => $value))->setField('sort', $key + 1);
+			}
+			if ($res !== false) {
+				session('admin_menu_list', null);
+				return $this->success('排序成功！');
+			} else {
+				return $this->error('排序失败！');
+			}
+		} else {
+			return $this->error('非法请求！');
+		}
+	}	
 }
