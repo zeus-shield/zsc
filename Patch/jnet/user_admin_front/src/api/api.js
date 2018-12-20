@@ -30,3 +30,5 @@ export const saveCode   = params => { return instance.post(`${base}/Code/saveCod
 export const getCode   = params => { return instance.get(`${base}/Code/getCode`, { params: params }); };
 
 export const setInfo   = params => { return instance.post(`${base}/ContractInfo/setInfo`,  params ).then(res => res.data ); };
+
+export const getInfo   = params => { return instance.get(`${base}/ContractInfo/getInfo`, { params: params }); };
