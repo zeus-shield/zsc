@@ -23,10 +23,19 @@ contract Container {
         sum_ = 0;
     }
 
-    function update(bytes32 _key, bytes32 _data) external {
-    }
+    function set(bytes32 _key, bytes32 _data0, string _data1) external {
+        if (exists_[_key]) {
+            datas_[_key].data0_ = _data0;
+            datas_[_key].data1_ = _data1;
+        } else {
+            keys_[sum_] = _key;
+            ids_[_key] = sum_;
+            exists_[_key] = true;
+            sum_ ++;
 
-    function update(bytes32 _key, string _data) external {
+            datas_[_key].data0_ = _data0;
+            datas_[_key].data1_ = _data1;
+        }
     }
 
     function swap(bytes32 _key1, bytes32 _key2) external {
