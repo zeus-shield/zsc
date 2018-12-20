@@ -6,7 +6,9 @@
 pragma solidity ^0.4.25;
 // pragma experimental ABIEncoderV2;
 
-contract Container {
+import "./ownable.sol";
+
+contract Container is Ownable {
 
     struct Data {
         bytes32 data0_;
@@ -23,7 +25,15 @@ contract Container {
         sum_ = 0;
     }
 
-    function set(bytes32 _key, bytes32 _data0, string _data1) external {
+    function kill() external _onlyOwner {
+        selfdestruct(owner_);   
+    }
+
+    /** [desc] This unnamed function is called whenever someone tries to send ether to it.
+      */
+    function() external payable { revert(); }
+
+    function set(bytes32 _key, bytes32 _data0, string _data1) external _onlyOwner {
         if (exists_[_key]) {
             datas_[_key].data0_ = _data0;
             datas_[_key].data1_ = _data1;
@@ -38,7 +48,7 @@ contract Container {
         }
     }
 
-    function swap(bytes32 _key1, bytes32 _key2) external {
+    function swap(bytes32 _key1, bytes32 _key2) external _onlyOwner {
         uint id1 = 0;
         uint id2 = 0;
 
@@ -55,7 +65,7 @@ contract Container {
         ids_[_key2] = id1;
     }
 
-    function remove(bytes32 _key) external {
+    function remove(bytes32 _key) external _onlyOwner {
         bytes32 key2 = bytes32(0);
 
         require(exists_[_key]);
@@ -71,16 +81,16 @@ contract Container {
         sum_ --;
     }
 
-    function number() external view returns (uint) {
+    function number() external view _onlyOwner returns (uint) {
         return sum_;
     }
 
-    function get(bytes32 _key) external view returns (bytes32, string) {
+    function get(bytes32 _key) external view _onlyOwner returns (bytes32, string) {
         require(exists_[_key]);
         return (datas_[_key].data0_, datas_[_key].data1_);
     }
 
-    function get(uint _id) external view returns (bytes32, bytes32, string) {
+    function get(uint _id) external view _onlyOwner returns (bytes32, bytes32, string) {
         require(_id < sum_);
         require(exists_[keys_[_id]]);
         require(ids_[keys_[_id]] == _id);
