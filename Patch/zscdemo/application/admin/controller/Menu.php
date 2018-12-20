@@ -159,4 +159,42 @@ class Menu extends Admin {
 			}
 		}
 	}	
+
+
+	public function import() {
+		if (IS_POST) {
+			$tree      = input('post.tree');
+			$lists     = explode(PHP_EOL, $tree);
+			$menuModel = db('Menu');
+			if ($lists == array()) {
+				return $this->error('请按格式填写批量导入的菜单，至少一个菜单');
+			} else {
+				$pid = input('post.pid');
+				foreach ($lists as $key => $value) {
+					$record = explode('|', $value);
+					if (count($record) == 4) {
+						$menuModel->add(array(
+							'title'  => $record[0],
+							'url'    => $record[1],
+							'pid'    => $record[2],
+							'sort'   => 0,
+							'hide'   => 0,
+							'tip'    => '',
+							'is_dev' => 0,
+							'group'  => $record[3],
+						));
+					}
+				}
+				session('admin_menu_list', null);
+				return $this->success('导入成功', url('index?pid=' . $pid));
+			}
+		} else {
+			$this->setMeta('批量导入后台菜单');
+			$pid = (int) input('get.pid');
+			$this->assign('pid', $pid);
+			$data = db('Menu')->where("id={$pid}")->field(true)->find();
+			$this->assign('data', $data);
+			return $this->fetch();
+		}
+	}	
 }
