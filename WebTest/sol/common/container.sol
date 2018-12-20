@@ -40,6 +40,10 @@ contract Container {
     function get(bytes32 _key) external view returns (bytes32, string) {
     }
 
-    function get(uint _id) external view returns (bytes32, string) {
+    function get(uint _id) external view returns (bytes32, bytes32, string) {
+        require(_id < sum_);
+        require(exists_[keys_[_id]]);
+        require(ids_[keys_[_id]] == _id);
+        return (keys_[_id], datas_[keys_[_id]].data0_, datas_[keys_[_id]].data1_);
     }
 }
