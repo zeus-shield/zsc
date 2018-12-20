@@ -27,4 +27,10 @@ class Menu extends Admin {
 		$this->assign('list', $list);
 		return $this->fetch();
 	}	
+
+	public function editable($name = null, $value = null, $pk = null) {
+		if ($name && ($value != null || $value != '') && $pk) {
+			db('Menu')->where(array('id' => $pk))->setField($name, $value);
+		}
+	}	
 }
