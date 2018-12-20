@@ -33,4 +33,34 @@ class Menu extends Admin {
 			db('Menu')->where(array('id' => $pk))->setField($name, $value);
 		}
 	}	
+
+	public function add() {
+		if (IS_POST) {
+			$Menu = model('Menu');
+			$data = input('post.');
+			$id   = $Menu->save($data);
+			if ($id) {
+				session('admin_menu_list', null);
+				//记录行为
+				action_log('update_menu', 'Menu', $id, session('user_auth.uid'));
+				return $this->success('新增成功', Cookie('__forward__'));
+			} else {
+				return $this->error('新增失败');
+			}
+		} else {
+			$this->assign('info', array('pid' => input('pid')));
+			$menus = db('Menu')->select();
+			$tree  = new \com\Tree();
+			$menus = $tree->toFormatTree($menus);
+			if (!empty($menus)) {
+				$menus = array_merge(array(0 => array('id' => 0, 'title_show' => '顶级菜单')), $menus);
+			} else {
+				$menus = array(0 => array('id' => 0, 'title_show' => '顶级菜单'));
+			}
+
+			$this->assign('Menus', $menus);
+			$this->setMeta('新增菜单');
+			return $this->fetch('edit');
+		}
+	}	
 }
