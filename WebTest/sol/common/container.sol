@@ -31,6 +31,19 @@ contract Container {
     }
 
     function remove(bytes32 _key) external {
+        bytes32 key2 = bytes32(0);
+
+        require(exists_[_key]);
+
+        key2 = keys_[sum_-1];
+
+        this.swap(_key, key2);
+
+        delete keys_[sum_-1];
+        delete ids_[_key];
+        exists_[_key] = false;
+
+        sum_ --;
     }
 
     function number() external view returns (uint) {
