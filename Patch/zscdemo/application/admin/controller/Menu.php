@@ -95,4 +95,22 @@ class Menu extends Admin {
 			return $this->fetch();
 		}
 	}	
+
+	public function del() {
+		$id = $this->getArrayParam('id');
+
+		if (empty($id)) {
+			return $this->error('请选择要操作的数据!');
+		}
+
+		$map = array('id' => array('in', $id));
+		if (db('Menu')->where($map)->delete()) {
+			session('admin_menu_list', null);
+			//记录行为
+			action_log('update_menu', 'Menu', $id, session('user_auth.uid'));
+			return $this->success('删除成功');
+		} else {
+			return $this->error('删除失败！');
+		}
+	}	
 }
