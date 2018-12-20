@@ -51,6 +51,8 @@ contract Container {
     }
 
     function get(bytes32 _key) external view returns (bytes32, string) {
+        require(exists_[_key]);
+        return (datas_[_key].data0_, datas_[_key].data1_);
     }
 
     function get(uint _id) external view returns (bytes32, bytes32, string) {
