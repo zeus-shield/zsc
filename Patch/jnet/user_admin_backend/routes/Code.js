@@ -28,3 +28,30 @@ router.post('/saveCode', function(req, res, next) {
         value:  req.body.value
     };
     
+    Code.findOne(code, (err, doc) => {
+        if (err) {
+            return console.log(err);
+        }
+        if (doc) {
+            Code.remove(code, (err, result) => {
+                if (err) {
+                    return console.log(err);
+                 }else {
+                 new Code(req.body).save();
+                 res.json({
+			status:4,
+			msg:"添加成功",
+			result:'',
+                 })
+	          }
+            })
+        } else {
+	    new Code(req.body).save();
+	    res.json({
+		status:4,
+		msg:"添加成功",
+		result:'',		
+	    })
+	}
+   })
+})
