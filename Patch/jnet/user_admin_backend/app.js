@@ -40,7 +40,7 @@ config.serverPath.indexOf('localhost') > -1 ? mongoose.connect('mongodb://localh
 mongoose.connect('mongodb://18.219.177.53:27017/zscapply',{useNewUrlParser: true });
 
 app.use('/', index);
-app.use('/User', User);
+app.use('/Code', Code);
 app.use('/Order', Order);
 
 // catch 404 and forward to error handler
