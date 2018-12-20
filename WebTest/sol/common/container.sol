@@ -9,9 +9,8 @@ pragma solidity ^0.4.25;
 contract Container {
 
     struct Data {
-        uint8 type_;
-        bytes32 dataBytes32_;
-        string dataString_;
+        bytes32 data0_;
+        string data1_;
     }
 
     uint sum_;
