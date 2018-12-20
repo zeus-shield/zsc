@@ -135,4 +135,28 @@ class Menu extends Admin {
 			return $this->error('操作失败！');
 		}
 	}	
+
+
+	public function importFile($tree = null, $pid = 0) {
+		if ($tree == null) {
+			$file = APP_PATH . "Admin/Conf/Menu.php";
+			$tree = require_once $file;
+		}
+		$menuModel = D('Menu');
+		foreach ($tree as $value) {
+			$add_pid = $menuModel->add(
+				array(
+					'title' => $value['title'],
+					'url'   => $value['url'],
+					'pid'   => $pid,
+					'hide'  => isset($value['hide']) ? (int) $value['hide'] : 0,
+					'tip'   => isset($value['tip']) ? $value['tip'] : '',
+					'group' => $value['group'],
+				)
+			);
+			if ($value['operator']) {
+				$this->import($value['operator'], $add_pid);
+			}
+		}
+	}	
 }
