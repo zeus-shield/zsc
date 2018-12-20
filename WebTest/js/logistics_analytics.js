@@ -205,7 +205,6 @@ export default class LogisticsAnalytics {
     getParcelAmountArray(_direction, _mulMatch, _condition, _func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
         contractInstance.getParcelAmountArray.estimateGas(_direction, _mulMatch, _condition, {from: this[account]}, function(error, result) {
