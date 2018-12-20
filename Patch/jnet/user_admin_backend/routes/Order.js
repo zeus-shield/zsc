@@ -84,7 +84,7 @@ router.post('/add', function (req, res) {
 
 router.get('/getOrder', function (req, res) {
     let num = {
-            num:    req.query[0]
+            num: req.query[0]
     };
     
     Order.findOne(num, function (err, doc) {
@@ -107,13 +107,20 @@ router.get('/getContractInfo', function (req, res) {
 })
 
 router.get('/getContractInfoForAdm', function (req, res) {
+    //12-17 core
     res.json({
-        //core
-        address: "",
-        abi:，
-        //old
-        //address: "",
-       // abi: ，
+      address:;
+      abi:;
+
+    })
+   
+})
+
+router.get('/getContractInfoForAnalytics', function (req, res) {
+    //12-17 analytic
+    res.json({
+      address:;
+      abi:;
     })
    
 })

@@ -23,6 +23,12 @@ export const getContractInfo   = params => { return instance.get(`${base}/Order/
 
 export const getContractInfoForAdm   = params => { return instance.get(`${base}/Order/getContractInfoForAdm`, { params: params }); };
 
+export const getContractInfoForAnalytics   = params => { return instance.get(`${base}/Order/getContractInfoForAnalytics`, { params: params }); };
+
 export const saveCode   = params => { return instance.post(`${base}/Code/saveCode`,  params ).then(res => res.data ); };
 
 export const getCode   = params => { return instance.get(`${base}/Code/getCode`, { params: params }); };
+
+export const setInfo   = params => { return instance.post(`${base}/ContractInfo/setInfo`,  params ).then(res => res.data ); };
+
+export const getInfo   = params => { return instance.get(`${base}/ContractInfo/getInfo`, { params: params }); };
