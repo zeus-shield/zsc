@@ -124,4 +124,15 @@ class Menu extends Admin {
 			return $this->error('操作失败！');
 		}
 	}	
+
+
+	public function toogleDev($id, $value = 1) {
+		session('admin_menu_list', null);
+		$result = db('Menu')->where(array('id' => $id))->setField(array('is_dev' => $value));
+		if ($result !== false) {
+			return $this->success('操作成功！');
+		} else {
+			return $this->error('操作失败！');
+		}
+	}	
 }
