@@ -98,4 +98,11 @@ contract LogisticsAnalyticsMin is Delegate {
 
         return parcels;
     }
+
+    /** [desc] Get number of parcels.
+      * [return] number of parcels.
+      */
+    function number() external view returns (uint) {
+        return sum_;
+    }
 }
