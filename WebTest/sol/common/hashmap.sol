@@ -15,7 +15,7 @@ contract Hashmap is Ownable {
         string data1_;
     }
 
-    uint sum_;
+    uint private sum_;
     mapping (uint => bytes32) private keys_;
     mapping (bytes32 => uint) private ids_;
     mapping (bytes32 => bool) private exists_;
@@ -104,7 +104,7 @@ contract Hashmap is Ownable {
 
     /** [desc] Get size of data.
       * [param] none.
-      * [return] none.
+      * [return] size of data.
       */
     function size() external view _onlyOwner returns (uint) {
         return sum_;
