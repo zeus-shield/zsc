@@ -102,11 +102,11 @@ contract Container is Ownable {
         sum_ --;
     }
 
-    /** [desc] Get number of data.
+    /** [desc] Get size of data.
       * [param] none.
       * [return] none.
       */
-    function number() external view _onlyOwner returns (uint) {
+    function size() external view _onlyOwner returns (uint) {
         return sum_;
     }
 
