@@ -1,0 +1,107 @@
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script type="text/javascript" src="../js/ethereumjs-tx-1.3.7/conv/ethereumjs-tx.min.js"></script>
+        <script type="text/javascript" src="../js/ethereumjs-util-5.2.0/conv/ethereumjs-util.min.js"></script>
+        <script type="text/javascript" src="../js/web3.js-0.20.6/dist/web3.js"></script>
+        <script type="module" src="../js/main.js"></script>
+        <script type="module" src="../js/file.js"></script>
+        <script type="module" src="../js/provider.js"></script>
+        <style>
+            #l_insurance_template{
+                width: 60px;
+                height: 25px;
+                line-height: 15px;
+                text-align: center;
+/*                display: block;*/
+                background: #ccc;
+                border: 5px solid #ccc;
+            }
+            #header {
+                background-color:black;
+                padding:5px;
+                color:white;
+                text-align:center;
+            }
+            #section {
+                background-color:white;
+/*                width:900px;*/
+                padding:10px;
+            }
+            #f_insurance_template {
+                display: none;
+            }
+            #block {
+/*                background-color:#e3e3e3;*/
+                padding:10px;
+                clear:left;
+            }
+            #element {
+/*                width:418px;*/
+                padding:10px;
+                border:1px solid black;
+                float:left;
+            }
+            #footer {
+                background-color:black;
+                padding:5px; 
+                color:white;
+                clear:both;
+                text-align:center;     
+            }
+        </style>
+
+        <script type="text/javascript">
+            window.onload = function () {
+                window.outputProviderElement = 'p_output_provider';
+                window.outputDeployDatabaseElement = 'p_output_deploy_template';
+
+                provider(false);
+                document.getElementById("s_provider").addEventListener('change', function(){
+                     if('injected' == this.value) {
+                        provider(true);
+                     } else {
+                        provider(false);
+                     }
+                },false);
+            }
+        </script>
+    </head>
+    <body id="test_insurance">
+
+        <div id="header">
+            <h1>Insurance Module</h1>
+        </div>
+
+        <div id="section">
+            <p><a href="../index.html" title="Back">Back</a></p>
+
+            <p>
+                <div class="well" id="block">
+                    <h4>1. Please select web3 provider:</h4>
+                    <select id="s_provider">
+                      <option value="local">Localhost</option>
+                      <option value="injected">Injected Web3</option>
+                    </select>
+                    <p id="p_output_provider"></p>
+                </div>
+            </p>
+
+            <p>
+                <div class="well" id="block">
+                    <h4>2. Deploy:</h4>
+                    <div id="element">
+                        <h5>Deploy [insurance_template]</h5>
+                        <label id="l_insurance_template" for="f_insurance_template">Upload</label>
+                        <input type="file" id="f_insurance_template" onchange="file('Insurance', 'InsuranceTemplate', this)" />
+                        <button type="button" id="b_deploy" onclick="main('Insurance', 'Deploy', 'InsuranceTemplate', '')">Deploy</button>
+                        <p id="p_output_deploy_template"></p>
+                    </div>
+                    <div style="clear:left"></div>
+                </div>
+            </p>
+        </div>
+    </div> 
+    </body>
+</html>
