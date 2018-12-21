@@ -8,7 +8,7 @@ pragma solidity ^0.4.25;
 
 import "./ownable.sol";
 
-contract Container is Ownable {
+contract Hashmap is Ownable {
 
     struct Data {
         bytes32 data0_;
