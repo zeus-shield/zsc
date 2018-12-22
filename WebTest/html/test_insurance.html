@@ -7,12 +7,12 @@
         <script type="text/javascript" src="../js/ethereumjs-util-5.2.0/conv/ethereumjs-util.min.js"></script>
         <script type="text/javascript" src="../js/web3.js-0.20.6/dist/web3.js"></script>
         <script type="module" src="../js/main.js"></script>
-        <script type="module" src="../js/file.js"></script>
-        <script type="module" src="../js/provider.js"></script>
+        <script type="module" src="../js/common/file.js"></script>
+        <script type="module" src="../js/common/provider.js"></script>
         <script type="text/javascript">
             window.onload = function () {
                 window.outputProviderElement = 'p_output_provider';
-                window.outputDeployDatabaseElement = 'p_output_deploy_template';
+                window.outputDeployTemplateElement = 'p_output_deploy_template';
 
                 provider(false);
                 document.getElementById("s_provider").addEventListener('change', function(){
