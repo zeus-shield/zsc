@@ -1,7 +1,7 @@
 
-import Deploy from './deploy.js';
-import Output from './output.js';
-import ZSCLogistics from './zsc_logistics.js';
+import Deploy from '../common/deploy.js';
+import Output from '../common/output.js';
+import ZSCLogistics from '../zsc/zsc_logistics.js';
 
 //private member
 const contractName = Symbol('contractName');

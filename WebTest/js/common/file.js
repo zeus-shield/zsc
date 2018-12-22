@@ -1,9 +1,10 @@
 
-import TestSearch from './test_search.js';
-import TestRaw from './test_raw.js';
-import TestLogistics from './test_logistics.js';
-import TestLogisticsRaw from './test_logistics_raw.js';
-import TestAnalysis from './test_analysis.js';
+import TestSearch from '../test/test_search.js';
+import TestRaw from '../test/test_raw.js';
+import TestLogistics from '../test/test_logistics.js';
+import TestLogisticsRaw from '../test/test_logistics_raw.js';
+import TestAnalysis from '../test/test_analysis.js';
+import TestInsurance from '../test/test_insurance.js';
 import Output from './output.js';
 
 export default function file(module, contractName, input) {
@@ -73,6 +74,20 @@ export default function file(module, contractName, input) {
                         window.testAnalysisClass = test;
                     } else {
                         test = window.testAnalysisClass;
+                    }
+                    break;
+                }
+                case 'Insurance': {
+                    if('undefined' == typeof window.testInsuranceClass) {
+                        test = new TestInsurance();
+                        window.testInsuranceClass = test;
+                    } else {
+                        test = window.testInsuranceClass;
+                    }
+                    if ('InsuranceTemplate' == contractName) {
+                        elementId = window.outputDeployTemplateElement;
+                    } else {
+                        elementId = window.outputDeployElement;
                     }
                     break;
                 }

@@ -2,7 +2,7 @@
  Copyright (c) 2018 ZSC Dev Team
 */
 
-import Output from './output.js';
+import Output from '../common/output.js';
 
 //private member
 const constractAbi = Symbol('abi');

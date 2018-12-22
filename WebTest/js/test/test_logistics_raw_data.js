@@ -4,12 +4,12 @@ export default class TestLogisticsRawData {
     constructor() {}
 
     buildTestCreateData() {
-        // �й�(t0) -> ����˹(t1)��ǩ��
+        // 中国(t0) -> 俄罗斯(t1)，签收
         let num3 = "JNTCU0600046683YQ";
-        let transNum3 = "�������������й� -> ����˹��ǩ�գ�";
-        let model3 = "J-NET��ȫͨ����Russia, GTMS_SIGNED��"; 
+        let transNum3 = "订单描述：（中国 -> 俄罗斯，签收）";
+        let model3 = "J-NET俄全通：（Russia, GTMS_SIGNED）"; 
         let destinationCountry3 = 643;              // Russia
-        let lastStatus3 = 28;                       // GTMS_SIGNED("�û�ǩ��","Delivered")
+        let lastStatus3 = 28;                       // GTMS_SIGNED("用户签收","Delivered")
         let tracks3 = 
             "{" +
                 "\"trackElementList\":[{" +
@@ -17,68 +17,68 @@ export default class TestLogisticsRawData {
                     "\"time\":\"1537924497\"," +    // 2018-09-26 09:14:57
                     "\"country\":\"0156\"," +       // China
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(0) -> track(0)��������OC, 2018-09-26 09:14:57, China, PU_PICKUP_SUCCESS��\"," +
+                    "\"facilityName\":\"time(0) -> track(0)描述：（OC, 2018-09-26 09:14:57, China, PU_PICKUP_SUCCESS）\"," +
                     "\"timeZone\":\"+8\"," +        // +8
-                    "\"desc\":\"�Ϻ�����������ɽ·2016�źϴ�����6H�Ϻ�����̩��Ϣ�Ƽ����޹�˾�����ɹ���\"," +
-                    "\"actionCode\":\"001\"" +      // PU_PICKUP_SUCCESS("���ճɹ�","Item picked up by courier")
+                    "\"desc\":\"上海市闵行区宜山路2016号合川大厦6H上海德铎泰信息科技有限公司揽件成功！\"," +
+                    "\"actionCode\":\"001\"" +      // PU_PICKUP_SUCCESS("揽收成功","Item picked up by courier")
                 "}&{" +
                     "\"type\":\"02\"," +            // DC
                     "\"time\":\"1539854640\"," +    // 2018-10-18 17:24:00
                     "\"country\":\"0643\"," +       // Russia
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(1) -> track(1)��������DC, 2018-10-18 17:24:00, Russia, GTMS_SIGNED��\"," +
+                    "\"facilityName\":\"time(1) -> track(1)描述：（DC, 2018-10-18 17:24:00, Russia, GTMS_SIGNED）\"," +
                     "\"timeZone\":\"+3\"," +        // +3
-                    "\"desc\":\"����ӧѧ� �ҧ��� ����֧�ߧ� �է���ѧӧݧ֧� ���ݧ��ѧ�֧ݧ�. ����ѧ�ڧҧ� ���� �ӧ����ݧ�٧�ӧѧݧڧ�� �ߧѧ�ڧާ� ���ݧ�ԧѧާ�\"," +
-                    "\"actionCode\":\"028\"" +      // GTMS_SIGNED("�û�ǩ��","Delivered")
+                    "\"desc\":\"Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\"," +
+                    "\"actionCode\":\"028\"" +      // GTMS_SIGNED("用户签收","Delivered")
                 "}]" +
             "}";
         
-        // �й�(t1) -> ����(t2) -> ����˹(t0)��ǩ��
+        // 中国(t1) -> 美国(t2) -> 俄罗斯(t0)，签收
         let num4 = "JNTCU0600046684YQ";
         let info4 = 
             "{" +
                 "\"error\":null," +
                 "\"num\":\"JNTCU0600046684YQ\"," +
-                "\"transNum\":\"�������������й� -> ���� -> ����˹��ǩ�գ�\"," +
-                "\"model\":\"J-NET��ȫͨ����Russia, GTMS_SIGNED��\"," +
+                "\"transNum\":\"订单描述：（中国 -> 美国 -> 俄罗斯，签收）\"," +
+                "\"model\":\"J-NET俄全通：（Russia, GTMS_SIGNED）\"," +
                 "\"destinationCountry\":\"0643\"," +    // Russia
-                "\"lastStatus\":\"028\"," +             // GTMS_SIGNED("�û�ǩ��","Delivered")
+                "\"lastStatus\":\"028\"," +             // GTMS_SIGNED("用户签收","Delivered")
                 "\"trackElementList\":[{" +
                     "\"type\":\"02\"," +                // DC 
                     "\"time\":\"1538797740\"," +        // 2018-10-06 11:49:00
                     "\"country\":\"0643\", " +          // Russia
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(2) -> track(0)��������DC, 2018-10-06 11:49:00, Russia, GTMS_SIGNED��\"," +
+                    "\"facilityName\":\"time(2) -> track(0)描述：（DC, 2018-10-06 11:49:00, Russia, GTMS_SIGNED）\"," +
                     "\"timeZone\":\"+3\"," +            // +3
-                    "\"desc\":\"����ӧѧ� �ҧ��� ����֧�ߧ� �է���ѧӧݧ֧� ���ݧ��ѧ�֧ݧ�. ����ѧ�ڧҧ� ���� �ӧ����ݧ�٧�ӧѧݧڧ�� �ߧѧ�ڧާ� ���ݧ�ԧѧާ�\"," +
-                    "\"actionCode\":\"028\"" +          // GTMS_SIGNED("�û�ǩ��","Delivered")
+                    "\"desc\":\"Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\"," +
+                    "\"actionCode\":\"028\"" +          // GTMS_SIGNED("用户签收","Delivered")
                 "}&{" +
                     "\"type\":\"1\"," +                 // OC
                     "\"time\":\"1537924497\"," +        // 2018-09-26 09:14:57
                     "\"country\":\"156\"," +            // China
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(0) -> track(1)��������OC, 2018-09-26 09:14:57, China, PU_PICKUP_SUCCESS��\"," +
+                    "\"facilityName\":\"time(0) -> track(1)描述：（OC, 2018-09-26 09:14:57, China, PU_PICKUP_SUCCESS）\"," +
                     "\"timeZone\":\"+8\", " +           // +8
-                    "\"desc\":\"�Ϻ�����������ɽ·2016�źϴ�����6H�Ϻ�����̩��Ϣ�Ƽ����޹�˾�����ɹ���\"," +
-                    "\"actionCode\":\"1\"" +            // PU_PICKUP_SUCCESS("���ճɹ�","Item picked up by courier")
+                    "\"desc\":\"上海市闵行区宜山路2016号合川大厦6H上海德铎泰信息科技有限公司揽件成功！\"," +
+                    "\"actionCode\":\"1\"" +            // PU_PICKUP_SUCCESS("揽收成功","Item picked up by courier")
                 "}&{" +
                     "\"type\":\"002\"," +               // DC
                     "\"time\":\"1538365740\"," +        // 2018-10-01 11:49:00
                     "\"country\":\"00840\"," +          // USA
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(1) -> track(2)��������DC, 2018-10-01 11:49:00, USA, VISIBLE_UNKOWN��\"," +
+                    "\"facilityName\":\"time(1) -> track(2)描述：（DC, 2018-10-01 11:49:00, USA, VISIBLE_UNKOWN）\"," +
                     "\"timeZone\":\"-5\"," +            // -5
                     "\"desc\":\"The parcel is ready to transfer to the courier\"," +
-                    "\"actionCode\":\"0037\"" +         // VISIBLE_UNKOWN("ת��","transfer")     
+                    "\"actionCode\":\"0037\"" +         // VISIBLE_UNKOWN("转运","transfer")     
                 "}]" +
             "}";
         
-        // �й�(t3) -> ����(t1) -> ����(t0) -> ����˹(t2)��ת����
+        // 中国(t3) -> 法国(t1) -> 美国(t0) -> 俄罗斯(t2)，转运中
         let num5 = "JNTCU0600046685YQ";
-        let transNum5 = "�������������й� -> ���� -> ���� -> ����˹��ת���У�";
-        let model5 = "J-NET��ȫͨ����Russia, VISIBLE_UNKOWN��"; 
+        let transNum5 = "订单描述：（中国 -> 法国 -> 美国 -> 俄罗斯，转运中）";
+        let model5 = "J-NET俄全通：（Russia, VISIBLE_UNKOWN）"; 
         let destinationCountry5 = 643;              // Russia
-        let lastStatus5 = 37;                       // VISIBLE_UNKOWN("ת��","transfer")
+        let lastStatus5 = 37;                       // VISIBLE_UNKOWN("转运","transfer")
         let tracks5 =
             "{" +
                 "\"trackElementList\":[{" +
@@ -86,37 +86,37 @@ export default class TestLogisticsRawData {
                     "\"time\":\"1541991540\"," +    // 2018-11-12 10:59:00
                     "\"country\":\"840\"," +        // USA
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(2) -> track(0)��������DC, 2018-11-12 10:59:00, USA, VISIBLE_UNKOWN��\"," +
+                    "\"facilityName\":\"time(2) -> track(0)描述：（DC, 2018-11-12 10:59:00, USA, VISIBLE_UNKOWN）\"," +
                     "\"timeZone\":\"-5\"," +        // -5
                     "\"desc\":\"International shipment release - Export\"," +
-                    "\"actionCode\":\"37\"" +       // VISIBLE_UNKOWN("ת��","transfer")
+                    "\"actionCode\":\"37\"" +       // VISIBLE_UNKOWN("转运","transfer")
                 "}&{" +
                     "\"type\":\"2\"," +             // DC
                     "\"time\":\"1541813640\"," +    // 2018-11-10 09:34:00
                     "\"country\":\"250\"," +        // France
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(1) -> track(1)��������DC, 2018-11-10 09:34:00, France, VISIBLE_UNKOWN��\"," +
+                    "\"facilityName\":\"time(1) -> track(1)描述：（DC, 2018-11-10 09:34:00, France, VISIBLE_UNKOWN）\"," +
                     "\"timeZone\":\"+0\"," +        // +0
                     "\"desc\":\"Transport de marchandises\"," +
-                    "\"actionCode\":\"37\"" +       // VISIBLE_UNKOWN("ת��","transfer")
+                    "\"actionCode\":\"37\"" +       // VISIBLE_UNKOWN("转运","transfer")
                 "}&{" +
                     "\"type\":\"2\"," +             // DC
                     "\"time\":\"1542079440\"," +    // 2018-11-13 11:24:00
                     "\"country\":\"643\"," +        // Russia
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(3) -> track(2)��������DC, 2018-11-13 11:24:00, Russia, VISIBLE_UNKOWN��\"," +
+                    "\"facilityName\":\"time(3) -> track(2)描述：（DC, 2018-11-13 11:24:00, Russia, VISIBLE_UNKOWN）\"," +
                     "\"timeZone\":\"+3\"," +        // +3
-                    "\"desc\":\"����ڧߧ�� �ߧ� ���ѧߧ٧ڧ�ߧ��� ��ܧݧѧ�\"," +      
-                    "\"actionCode\":\"37\"" +       // VISIBLE_UNKOWN("ת��","transfer")
+                    "\"desc\":\"Принят на транзитный склад\"," +      
+                    "\"actionCode\":\"37\"" +       // VISIBLE_UNKOWN("转运","transfer")
                 "}&{" +
                     "\"type\":\"1\"," +             // OC
                     "\"time\":\"1540966156\"," +    // 2018-10-31 14:09:16
                     "\"country\":\"156\"," +        // China
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(0) -> track(3)��������OC, 2018-10-31 14:09:16, China, PU_PICKUP_SUCCESS��\"," +
+                    "\"facilityName\":\"time(0) -> track(3)描述：（OC, 2018-10-31 14:09:16, China, PU_PICKUP_SUCCESS）\"," +
                     "\"timeZone\":\"+8\"," +        // +8
-                    "\"desc\":\"�Ϻ�����������ɽ·2016�źϴ�����6H�Ϻ�����̩��Ϣ�Ƽ����޹�˾�����ɹ���\"," +      
-                    "\"actionCode\":\"1\"" +        // PU_PICKUP_SUCCESS("���ճɹ�","Item picked up by courier")
+                    "\"desc\":\"上海市闵行区宜山路2016号合川大厦6H上海德铎泰信息科技有限公司揽件成功！\"," +      
+                    "\"actionCode\":\"1\"" +        // PU_PICKUP_SUCCESS("揽收成功","Item picked up by courier")
                 "}]" +
             "}";
         
@@ -125,7 +125,7 @@ export default class TestLogisticsRawData {
             "{\"error\":null," +
                 "\"num\":\"JNTCU0600046686YQ\"," +
                 "\"transNum\":\"MSK0000027696\"," +
-                "\"model\":\"J-NET��ȫͨINFO6\"," +
+                "\"model\":\"J-NET俄全通INFO6\"," +
                 "\"destinationCountry\":\"0086\"," +
                 "\"lastStatus\":\"77\"," +
                 "\"trackElementList\":[{" +
@@ -160,7 +160,7 @@ export default class TestLogisticsRawData {
         
         let num7 = "JNTCU0600046687YQ";
         let transNum7 = "MSK0000027697";
-        let model7 = "J-NET��ȫͨINFO7"; 
+        let model7 = "J-NET俄全通INFO7"; 
         let destinationCountry7 = 7;
         let lastStatus7 = 38;
         let tracks7 =
@@ -241,7 +241,7 @@ export default class TestLogisticsRawData {
     buildTestUpdateData() {
         let num8 = "JNTCU0600046688YQ";
         let transNum8 = "MSK0000027698";
-        let model8 = "�Ϻ�����̩��Ϣ�Ƽ����޹�˾ �Ϻ�����������ɽ·2016�źϴ�����6H"; 
+        let model8 = "上海德铎泰信息科技有限公司 上海市闵行区宜山路2016号合川大厦6H"; 
         let destinationCountry8 = 7;
         let lastStatus8 = 38;
 
@@ -251,7 +251,7 @@ export default class TestLogisticsRawData {
                 "\"error\":null," +
                 "\"num\":\"JNTCU0600046689YQ\"," +
                 "\"transNum\":\"MSK0000027699\"," +
-                "\"model\":\"J-NET��ȫͨINFO9\"," +
+                "\"model\":\"J-NET俄全通INFO9\"," +
                 "\"destinationCountry\":\"07\"," +
                 "\"lastStatus\":\"10\"" +
             "}";
@@ -266,7 +266,7 @@ export default class TestLogisticsRawData {
                     "\"city\":\"0021\"," +
                     "\"facilityName\":\"NewTrack5-1\"," +
                     "\"timeZone\":\"-3\"," +
-                    "\"desc\":\"�Ϻ�����̩��Ϣ�Ƽ����޹�˾ �Ϻ�����������ɽ·2016�źϴ�����6H\"," +
+                    "\"desc\":\"上海德铎泰信息科技有限公司 上海市闵行区宜山路2016号合川大厦6H\"," +
                     "\"actionCode\":\"18\"" +
                 "}&{" +
                     "\"type\":\"0\"," +
@@ -305,12 +305,12 @@ export default class TestLogisticsRawData {
     }
 
     buildAnalyticsAmountData() {
-        // �й�(t0) -> ����˹(t1)��ǩ��
+        // 中国(t0) -> 俄罗斯(t1)，签收
         let num3 = "JNTCU0600046683YQ";
-        let transNum3 = "�������������й� -> ����˹��ǩ�գ�";
-        let model3 = "J-NET��ȫͨ����Russia, GTMS_SIGNED��"; 
+        let transNum3 = "订单描述：（中国 -> 俄罗斯，签收）";
+        let model3 = "J-NET俄全通：（Russia, GTMS_SIGNED）"; 
         let destinationCountry3 = 643;              // Russia
-        let lastStatus3 = 28;                       // GTMS_SIGNED("�û�ǩ��","Delivered")
+        let lastStatus3 = 28;                       // GTMS_SIGNED("用户签收","Delivered")
         let tracks3 = 
             "{" +
                 "\"trackElementList\":[{" +
@@ -318,68 +318,68 @@ export default class TestLogisticsRawData {
                     "\"time\":\"1537924497\"," +    // 2018-09-26 09:14:57
                     "\"country\":\"0156\"," +       // China
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(0) -> track(0)��������OC, 2018-09-26 09:14:57, China, PU_PICKUP_SUCCESS��\"," +
+                    "\"facilityName\":\"time(0) -> track(0)描述：（OC, 2018-09-26 09:14:57, China, PU_PICKUP_SUCCESS）\"," +
                     "\"timeZone\":\"+8\"," +        // +8
-                    "\"desc\":\"�Ϻ�����������ɽ·2016�źϴ�����6H�Ϻ�����̩��Ϣ�Ƽ����޹�˾�����ɹ���\"," +
-                    "\"actionCode\":\"001\"" +      // PU_PICKUP_SUCCESS("���ճɹ�","Item picked up by courier")
+                    "\"desc\":\"上海市闵行区宜山路2016号合川大厦6H上海德铎泰信息科技有限公司揽件成功！\"," +
+                    "\"actionCode\":\"001\"" +      // PU_PICKUP_SUCCESS("揽收成功","Item picked up by courier")
                 "}&{" +
                     "\"type\":\"02\"," +            // DC
                     "\"time\":\"1539854640\"," +    // 2018-10-18 17:24:00
                     "\"country\":\"0643\"," +       // Russia
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(1) -> track(1)��������DC, 2018-10-18 17:24:00, Russia, GTMS_SIGNED��\"," +
+                    "\"facilityName\":\"time(1) -> track(1)描述：（DC, 2018-10-18 17:24:00, Russia, GTMS_SIGNED）\"," +
                     "\"timeZone\":\"+3\"," +        // +3
-                    "\"desc\":\"����ӧѧ� �ҧ��� ����֧�ߧ� �է���ѧӧݧ֧� ���ݧ��ѧ�֧ݧ�. ����ѧ�ڧҧ� ���� �ӧ����ݧ�٧�ӧѧݧڧ�� �ߧѧ�ڧާ� ���ݧ�ԧѧާ�\"," +
-                    "\"actionCode\":\"028\"" +      // GTMS_SIGNED("�û�ǩ��","Delivered")
+                    "\"desc\":\"Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\"," +
+                    "\"actionCode\":\"028\"" +      // GTMS_SIGNED("用户签收","Delivered")
                 "}]" +
             "}";
         
-        // �й�(t1) -> ����(t2) -> ����˹(t0)��ǩ��
+        // 中国(t1) -> 美国(t2) -> 俄罗斯(t0)，签收
         let num4 = "JNTCU0600046684YQ";
         let info4 = 
             "{" +
                 "\"error\":null," +
                 "\"num\":\"JNTCU0600046684YQ\"," +
-                "\"transNum\":\"�������������й� -> ���� -> ����˹��ǩ�գ�\"," +
-                "\"model\":\"J-NET��ȫͨ����Russia, GTMS_SIGNED��\"," +
+                "\"transNum\":\"订单描述：（中国 -> 美国 -> 俄罗斯，签收）\"," +
+                "\"model\":\"J-NET俄全通：（Russia, GTMS_SIGNED）\"," +
                 "\"destinationCountry\":\"0643\"," +    // Russia
-                "\"lastStatus\":\"028\"," +             // GTMS_SIGNED("�û�ǩ��","Delivered")
+                "\"lastStatus\":\"028\"," +             // GTMS_SIGNED("用户签收","Delivered")
                 "\"trackElementList\":[{" +
                     "\"type\":\"02\"," +                // DC 
                     "\"time\":\"1533527340\"," +        // 2018-08-06 11:49:00
                     "\"country\":\"0643\", " +          // Russia
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(2) -> track(0)��������DC, 2018-08-06 11:49:00, Russia, GTMS_SIGNED��\"," +
+                    "\"facilityName\":\"time(2) -> track(0)描述：（DC, 2018-08-06 11:49:00, Russia, GTMS_SIGNED）\"," +
                     "\"timeZone\":\"+3\"," +            // +3
-                    "\"desc\":\"����ӧѧ� �ҧ��� ����֧�ߧ� �է���ѧӧݧ֧� ���ݧ��ѧ�֧ݧ�. ����ѧ�ڧҧ� ���� �ӧ����ݧ�٧�ӧѧݧڧ�� �ߧѧ�ڧާ� ���ݧ�ԧѧާ�\"," +
-                    "\"actionCode\":\"028\"" +          // GTMS_SIGNED("�û�ǩ��","Delivered")
+                    "\"desc\":\"Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\"," +
+                    "\"actionCode\":\"028\"" +          // GTMS_SIGNED("用户签收","Delivered")
                 "}&{" +
                     "\"type\":\"1\"," +                 // OC
                     "\"time\":\"1524705297\"," +        // 2018-04-26 09:14:57
                     "\"country\":\"156\"," +            // China
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(0) -> track(1)��������OC, 2018-04-26 09:14:57, China, PU_PICKUP_SUCCESS��\"," +
+                    "\"facilityName\":\"time(0) -> track(1)描述：（OC, 2018-04-26 09:14:57, China, PU_PICKUP_SUCCESS）\"," +
                     "\"timeZone\":\"+8\", " +           // +8
-                    "\"desc\":\"�Ϻ�����������ɽ·2016�źϴ�����6H�Ϻ�����̩��Ϣ�Ƽ����޹�˾�����ɹ���\"," +
-                    "\"actionCode\":\"1\"" +            // PU_PICKUP_SUCCESS("���ճɹ�","Item picked up by courier")
+                    "\"desc\":\"上海市闵行区宜山路2016号合川大厦6H上海德铎泰信息科技有限公司揽件成功！\"," +
+                    "\"actionCode\":\"1\"" +            // PU_PICKUP_SUCCESS("揽收成功","Item picked up by courier")
                 "}&{" +
                     "\"type\":\"002\"," +               // DC
                     "\"time\":\"1525146540\"," +        // 2018-05-01 11:49:00
                     "\"country\":\"00840\"," +          // USA
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(1) -> track(2)��������DC, 2018-05-01 11:49:00, USA, VISIBLE_UNKOWN��\"," +
+                    "\"facilityName\":\"time(1) -> track(2)描述：（DC, 2018-05-01 11:49:00, USA, VISIBLE_UNKOWN）\"," +
                     "\"timeZone\":\"-5\"," +            // -5
                     "\"desc\":\"The parcel is ready to transfer to the courier\"," +
-                    "\"actionCode\":\"0037\"" +         // VISIBLE_UNKOWN("ת��","transfer")     
+                    "\"actionCode\":\"0037\"" +         // VISIBLE_UNKOWN("转运","transfer")     
                 "}]" +
             "}";
         
-        // �й�(t3) -> ����(t1) -> ����(t0) -> ����˹(t2)��ת����
+        // 中国(t3) -> 法国(t1) -> 美国(t0) -> 俄罗斯(t2)，转运中
         let num5 = "JNTCU0600046685YQ";
-        let transNum5 = "�������������й� -> ���� -> ���� -> ����˹��ת���У�";
-        let model5 = "J-NET��ȫͨ����Russia, VISIBLE_UNKOWN��"; 
+        let transNum5 = "订单描述：（中国 -> 法国 -> 美国 -> 俄罗斯，转运中）";
+        let model5 = "J-NET俄全通：（Russia, VISIBLE_UNKOWN）"; 
         let destinationCountry5 = 643;              // Russia
-        let lastStatus5 = 25;                       // GTMS_DELIVERING("��ʼͶ��","Delivery scheduled")
+        let lastStatus5 = 25;                       // GTMS_DELIVERING("开始投递","Delivery scheduled")
         let tracks5 =
             "{" +
                 "\"trackElementList\":[{" +
@@ -387,37 +387,37 @@ export default class TestLogisticsRawData {
                     "\"time\":\"1541991540\"," +    // 2018-11-12 10:59:00
                     "\"country\":\"840\"," +        // USA
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(2) -> track(0)��������DC, 2018-11-12 10:59:00, USA, VISIBLE_UNKOWN��\"," +
+                    "\"facilityName\":\"time(2) -> track(0)描述：（DC, 2018-11-12 10:59:00, USA, VISIBLE_UNKOWN）\"," +
                     "\"timeZone\":\"-5\"," +        // -5
                     "\"desc\":\"International shipment release - Export\"," +
-                    "\"actionCode\":\"37\"" +       // VISIBLE_UNKOWN("ת��","transfer")
+                    "\"actionCode\":\"37\"" +       // VISIBLE_UNKOWN("转运","transfer")
                 "}&{" +
                     "\"type\":\"2\"," +             // DC
                     "\"time\":\"1541813640\"," +    // 2018-11-10 09:34:00
                     "\"country\":\"250\"," +        // France
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(1) -> track(1)��������DC, 2018-11-10 09:34:00, France, VISIBLE_UNKOWN��\"," +
+                    "\"facilityName\":\"time(1) -> track(1)描述：（DC, 2018-11-10 09:34:00, France, VISIBLE_UNKOWN）\"," +
                     "\"timeZone\":\"+0\"," +        // +0
                     "\"desc\":\"Transport de marchandises\"," +
-                    "\"actionCode\":\"37\"" +       // VISIBLE_UNKOWN("ת��","transfer")
+                    "\"actionCode\":\"37\"" +       // VISIBLE_UNKOWN("转运","transfer")
                 "}&{" +
                     "\"type\":\"2\"," +             // DC
                     "\"time\":\"1544671440\"," +    // 2018-12-13 11:24:00
                     "\"country\":\"643\"," +        // Russia
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(3) -> track(2)��������DC, 2018-12-13 11:24:00, Russia, GTMS_DELIVERING��\"," +
+                    "\"facilityName\":\"time(3) -> track(2)描述：（DC, 2018-12-13 11:24:00, Russia, GTMS_DELIVERING）\"," +
                     "\"timeZone\":\"+3\"," +        // +3
-                    "\"desc\":\"����ڧߧ�� �ߧ� ���ѧߧ٧ڧ�ߧ��� ��ܧݧѧ�\"," +      
-                    "\"actionCode\":\"25\"" +       // GTMS_DELIVERING("��ʼͶ��","Delivery scheduled")
+                    "\"desc\":\"Принят на транзитный склад\"," +      
+                    "\"actionCode\":\"25\"" +       // GTMS_DELIVERING("开始投递","Delivery scheduled")
                 "}&{" +
                     "\"type\":\"1\"," +             // OC
                     "\"time\":\"1540966156\"," +    // 2018-10-31 14:09:16
                     "\"country\":\"156\"," +        // China
                     "\"city\":\"\"," +
-                    "\"facilityName\":\"time(0) -> track(3)��������OC, 2018-10-31 14:09:16, China, PU_PICKUP_SUCCESS��\"," +
+                    "\"facilityName\":\"time(0) -> track(3)描述：（OC, 2018-10-31 14:09:16, China, PU_PICKUP_SUCCESS）\"," +
                     "\"timeZone\":\"+8\"," +        // +8
-                    "\"desc\":\"�Ϻ�����������ɽ·2016�źϴ�����6H�Ϻ�����̩��Ϣ�Ƽ����޹�˾�����ɹ���\"," +      
-                    "\"actionCode\":\"1\"" +        // PU_PICKUP_SUCCESS("���ճɹ�","Item picked up by courier")
+                    "\"desc\":\"上海市闵行区宜山路2016号合川大厦6H上海德铎泰信息科技有限公司揽件成功！\"," +      
+                    "\"actionCode\":\"1\"" +        // PU_PICKUP_SUCCESS("揽收成功","Item picked up by courier")
                 "}]" +
             "}";
 

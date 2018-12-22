@@ -1,7 +1,7 @@
 
-import Transaction from './transaction_raw.js';
-import Output from './output.js';
-import ZSCRaw from './zsc_raw.js';
+import Transaction from '../common/transaction_raw.js';
+import Output from '../common/output.js';
+import ZSCRaw from '../zsc/zsc_raw.js';
 
 //private member
 const contractName = Symbol('contractName');

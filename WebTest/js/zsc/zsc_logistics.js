@@ -2,8 +2,8 @@
  Copyright (c) 2018 ZSC Dev Team
 */
 
-import Receipt from './receipt.js';
-import Output from './output.js';
+import Receipt from '../common/receipt.js';
+import Output from '../common/output.js';
 
 //private member
 const constractAbi = Symbol('abi');
