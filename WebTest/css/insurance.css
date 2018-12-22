@@ -1,0 +1,41 @@
+#l_insurance_template{
+    width: 60px;
+    height: 25px;
+    line-height: 15px;
+    text-align: center;
+/*    display: block;*/
+    background: #ccc;
+    border: 5px solid #ccc;
+}
+#header {
+    background-color:black;
+    padding:5px;
+    color:white;
+    text-align:center;
+}
+#section {
+    background-color:white;
+/*    width:900px;*/
+    padding:10px;
+}
+#f_insurance_template {
+    display: none;
+}
+#block {
+/*    background-color:#e3e3e3;*/
+    padding:10px;
+    clear:left;
+}
+#element {
+/*    width:418px;*/
+    padding:10px;
+    border:1px solid black;
+    float:left;
+}
+#footer {
+    background-color:black;
+    padding:5px; 
+    color:white;
+    clear:both;
+    text-align:center;     
+}
