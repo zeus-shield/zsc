@@ -9,11 +9,12 @@ require.config({
 
 require(['test_search', 'test_analysis'], function (){});
 */
-import TestSearch from './test_search.js';
-import TestRaw from './test_raw.js';
-import TestLogistics from './test_logistics.js';
-import TestLogisticsRaw from './test_logistics_raw.js';
-import TestAnalysis from './test_analysis.js';
+import TestSearch from './test/test_search.js';
+import TestRaw from './test/test_raw.js';
+import TestLogistics from './test/test_logistics.js';
+import TestLogisticsRaw from './test/test_logistics_raw.js';
+import TestAnalysis from './test/test_analysis.js';
+import TestInsurance from './test/test_insurance.js';
 
 export default function main(module, operation, para1, para2) {
     let test = 0;
@@ -69,6 +70,15 @@ export default function main(module, operation, para1, para2) {
                 test = window.testAnalysisClass;
             }
             test.setContractName('AIAnalysis');
+            break;
+        }
+        case 'Insurance': {
+            if('undefined' == typeof window.testInsuranceClass) {
+                test = new TestInsurance();
+                window.testInsuranceClass = test;
+            } else {
+                test = window.testInsuranceClass;
+            }
             break;
         }
         default:
