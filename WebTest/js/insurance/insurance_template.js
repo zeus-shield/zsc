@@ -87,4 +87,43 @@ export default class InsuranceTemplate {
             }
         });
     }
+
+    get(id, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.get.estimateGas(id, {from: this[account]}, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("=============== InsuranceTemplate.get(uint) ===============");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("===========================================================");
+                        // call 'InsuranceTemplate.get(uint)'
+                        contractInstance.get.call(id, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                console.log("[Template]: %s", result);
+                                if (null != func) {
+                                    func(null, result);
+                                }
+                            } else {
+                                handler[notifyError](error, func);
+                            }
+                        });
+                    } else {
+                        handler[notifyError](error, func);
+                    }
+                });
+            } else {
+                handler[notifyError](error, func);
+            }
+        });
+    }
 }
