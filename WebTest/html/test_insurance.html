@@ -13,6 +13,7 @@
             window.onload = function () {
                 window.outputProviderElement = 'p_output_provider';
                 window.outputDeployTemplateElement = 'p_output_deploy_template';
+                window.outputTemplateElement = 'p_output_template';
 
                 provider(false);
                 document.getElementById("s_provider").addEventListener('change', function(){
@@ -22,6 +23,11 @@
                         provider(false);
                      }
                 },false);
+
+                document.getElementById("b_template_create_submit").onclick = function() {
+                    let params = document.getElementById("i_template_create_params").value;
+                    main("Insurance", "Create", "Template", params);
+                }
             }
         </script>
     </head>
@@ -58,6 +64,22 @@
                     <div style="clear:left"></div>
                 </div>
             </p>
+
+            <p>
+                <div class="well" id="block">
+                    <h4>3. Template</h4>
+                    <div id="element">
+                        <h5>Create:</h5>
+                        Params:<br>
+                        <input type="text" id="i_template_create_params"><br>
+                        <button type="button" id="b_template_create_submit">Submit</button>
+                    </div>
+                    <div style="clear: left"></div>
+                    <p id="p_output_template"></p>
+                </div>
+            </p>
+
+
         </div>
     </div> 
     </body>
