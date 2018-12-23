@@ -6,7 +6,7 @@
 import Output from '../common/output.js';
 import Transaction from '../common/transaction_raw.js';
 import Delegate from '../common/delegate.js';
-// import Logistics from '../insurance/insurance_template.js';
+import Logistics from '../insurance/insurance_template.js';
 
 //private member
 const compiledJson = Symbol('compiledJson');
