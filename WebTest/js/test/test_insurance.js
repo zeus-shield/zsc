@@ -150,11 +150,25 @@ export default class TestInsurance {
         });
     }
 
+    create(module, params) {
+        console.log('TestInsurance.create(%s, %s)', module, params);
+    }
+
+    Get(module, params) {
+        console.log('TestInsurance.create(%s, %s)', module, params);
+    }
+
     do(operation, para1, para2) {
         console.log('TestInsurance.do(%s, %s, %s)', operation, para1, para2);
         switch(operation) {
             case 'Deploy':
                 this.deploy(para1);
+                break;
+            case 'Create':
+                this.create(para1, para2);
+                break;
+            case 'Get':
+                this.create(para1, para2);
                 break;
             default:
                 console.log('Operation Error!');
