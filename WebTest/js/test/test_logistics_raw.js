@@ -114,7 +114,6 @@ export default class TestLogisticsRaw {
     deploy(contractName) {
         console.log('TestLogisticsRaw.deploy(%s)', contractName);
         let elementId;
-        let channels = window.channelClass.get("idle");
 
         if ('LogisticsDatabase' == contractName) {
             elementId = window.outputDeployDatabaseElement;
