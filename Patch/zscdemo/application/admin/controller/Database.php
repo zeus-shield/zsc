@@ -191,6 +191,62 @@ class Database extends Admin {
 			//出错
 			return $this->error('参数错误！');
 		}
+	}	
+
+	public function import($time = 0, $part = null, $start = null) {
+		if (is_numeric($time) && is_null($part) && is_null($start)) {
+			//初始化
+			//获取备份文件信息
+			$name  = date('Ymd-His', $time) . '-*.sql*';
+			$path  = realpath(config('data_backup_path')) . DIRECTORY_SEPARATOR . $name;
+			$files = glob($path);
+			$list  = array();
+			foreach ($files as $name) {
+				$basename        = basename($name);
+				$match           = sscanf($basename, '%4s%2s%2s-%2s%2s%2s-%d');
+				$gz              = preg_match('/^\d{8,8}-\d{6,6}-\d+\.sql.gz$/', $basename);
+				$list[$match[6]] = array($match[6], $name, $gz);
+			}
+			ksort($list);
+			//检测文件正确性
+			$last = end($list);
+			if (count($list) === $last[0]) {
+				session('backup_list', $list); //缓存备份列表
+				return $this->success('初始化完成！', '', array('part' => 1, 'start' => 0));
+			} else {
+				return $this->error('备份文件可能已经损坏，请检查！');
+			}
+		} elseif (is_numeric($part) && is_numeric($start)) {
+			$list = session('backup_list');
+
+			$db = new \com\Database($list[$part], array('path' => realpath(config('data_backup_path')) . DIRECTORY_SEPARATOR, 'compress' => $list[$part][2]));
+
+			$start = $db->import($start);
+
+			if (false === $start) {
+				return $this->error('还原数据出错！');
+			} elseif (0 === $start) {
+				//下一卷
+				if (isset($list[++$part])) {
+					$data = array('part' => $part, 'start' => 0);
+					return $this->success("正在还原...#{$part}", '', $data);
+				} else {
+					session('backup_list', null);
+					return $this->success('还原完成！');
+				}
+			} else {
+				$data = array('part' => $part, 'start' => $start[0]);
+				if ($start[1]) {
+					$rate = floor(100 * ($start[0] / $start[1]));
+					return $this->success("正在还原...#{$part} ({$rate}%)", '', $data);
+				} else {
+					$data['gz'] = 1;
+					return $this->success("正在还原...#{$part}", '', $data);
+				}
+			}
+		} else {
+			return $this->error('参数错误！');
+		}
 	}		
 
 }	
