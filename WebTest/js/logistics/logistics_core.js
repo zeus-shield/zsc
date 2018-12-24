@@ -43,161 +43,73 @@ export default class LogisticsCore {
     setup(account, key, databaseAddr, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-        let data = contractInstance.setup.getData(databaseAddr);
 
-        contractInstance.setup.estimateGas(databaseAddr, {from: account}, function(error, result) {
-            if (!error) {
-                let transaction = new Transaction(account, key);
-                if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[contractAddress], func);
-                }
-            } else {
-                console.log(error);
-                if (null != func) {
-                    func(error);
-                }
-            }
+        contractInstance.setup.estimateGas(databaseAddr, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, key, contractInstance.setup.getData(databaseAddr), error, gasRequired, func);
         });
     }
 
     updateTracks(account, key, num, tracks, updateType, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-        let data = contractInstance.updateTracks.getData(num, tracks, updateType);
 
-        contractInstance.updateTracks.estimateGas(num, tracks, updateType, {from: account}, function(error, result) {
-            if (!error) {
-                let transaction = new Transaction(account, key);
-                if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[contractAddress], func);
-                }
-            } else {
-                console.log(error);
-                if (null != func) {
-                    func(error);
-                }
-            }
+        contractInstance.updateTracks.estimateGas(num, tracks, updateType, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, key, contractInstance.updateTracks.getData(num, tracks, updateType), error, gasRequired, func);
         });
     }
 
     updateBrief(account, key, num, transNum, model, destinationCountry, lastStatus, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-        let data = contractInstance.updateBrief.getData(num, transNum, model, destinationCountry, lastStatus);
 
-        contractInstance.updateBrief.estimateGas(num, transNum, model, destinationCountry, lastStatus, {from: account}, function(error, result) {
-            if (!error) {
-                let transaction = new Transaction(account, key);
-                if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[contractAddress], func);
-                }
-            } else {
-                console.log(error);
-                if (null != func) {
-                    func(error);
-                }
-            }
+        contractInstance.updateBrief.estimateGas(num, transNum, model, destinationCountry, lastStatus, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, key, contractInstance.updateBrief.getData(num, transNum, model, destinationCountry, lastStatus), error, gasRequired, func);
         });
     }
 
     updateBriefEx(account, key, num, brief, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-        let data = contractInstance.updateBriefEx.getData(num, brief);
 
-        contractInstance.updateBriefEx.estimateGas(num, brief, {from: account}, function(error, result) {
-            if (!error) {
-                let transaction = new Transaction(account, key);
-                if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[contractAddress], func);
-                }
-            } else {
-                console.log(error);
-                if (null != func) {
-                    func(error);
-                }
-            }
+        contractInstance.updateBriefEx.estimateGas(num, brief, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, key, contractInstance.updateBriefEx.getData(num, brief), error, gasRequired, func);
         });
     }
 
     update(account, key, num, transNum, model, destinationCountry, lastStatus, tracks, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-        let data = contractInstance.update.getData(num, transNum, model, destinationCountry, lastStatus, tracks);
 
-        contractInstance.update.estimateGas(num, transNum, model, destinationCountry, lastStatus, tracks, {from: account}, function(error, result) {
-        //contractInstance.update.estimateGas(num, transNum, model, destinationCountry, lastStatus, tracks, {from: account, data: data}, function(error, result) {
-            if (!error) {
-                let transaction = new Transaction(account, key);
-                if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[contractAddress], func);
-                }
-            } else {
-                console.log(error);
-                if (null != func) {
-                    func(error);
-                }
-            }
+        contractInstance.update.estimateGas(num, transNum, model, destinationCountry, lastStatus, tracks, {from: account}, function(error, gasRequired) {
+        //contractInstance.update.estimateGas(num, transNum, model, destinationCountry, lastStatus, tracks, {from: account, data: data}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, key, contractInstance.update.getData(num, transNum, model, destinationCountry, lastStatus, tracks), error, gasRequired, func);
         });
     }
 
     updateEx(account, key, num, info, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-        let data = contractInstance.updateEx.getData(num, info);
 
-        contractInstance.updateEx.estimateGas(num, info, {from: account}, function(error, result) {
-            if (!error) {
-                let transaction = new Transaction(account, key);
-                if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[contractAddress], func);
-                }
-            } else {
-                console.log(error);
-                if (null != func) {
-                    func(error);
-                }
-            }
+        contractInstance.updateEx.estimateGas(num, info, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, key, contractInstance.updateEx.getData(num, info), error, gasRequired, func);
         });
     }
 
     remove(account, key, num, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-        let data = contractInstance.remove.getData(num);
 
-        contractInstance.remove.estimateGas(num, {from: account}, function(error, result) {
-            if (!error) {
-                let transaction = new Transaction(account, key);
-                if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[contractAddress], func);
-                }
-            } else {
-                console.log(error);
-                if (null != func) {
-                    func(error);
-                }
-            }
+        contractInstance.remove.estimateGas(num, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, key, contractInstance.remove.getData(num), error, gasRequired, func);
         });       
     }
 
     invalid(account, key, num, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-        let data = contractInstance.invalid.getData(num);
 
-        contractInstance.invalid.estimateGas(num, {from: account}, function(error, result) {
-            if (!error) {
-                let transaction = new Transaction(account, key);
-                if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[contractAddress], func);
-                }
-            } else {
-                console.log(error);
-                if (null != func) {
-                    func(error);
-                }
-            }
+        contractInstance.invalid.estimateGas(num, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, key, contractInstance.invalid.getData(num), error, gasRequired, func);
         });       
     }
 
