@@ -32,6 +32,14 @@ contract LogisticsAnalyticsMin is Delegate {
       */
     mapping(string => bytes32) private parcels_;
 
+    /**************************************************************************************/
+
+    /** @desc uint(time id: month/day) => (bytes32(city) => uint(amounts)) */
+    mapping(uint => mapping(bytes32 => uint)) private cityTimeParcelAmounts_;
+
+    /** @desc bytes32(city) => uint(amounts) */
+    mapping(bytes32 => uint) private citySumParcelAmounts_;
+
     // Constructor
     constructor() public {}
 
@@ -49,9 +57,9 @@ contract LogisticsAnalyticsMin is Delegate {
         exists_[_num] = true;
     }
 
-    /** [desc] Update parcel.
+    /** [desc] Update parcel base info.
       * [param] _num: num of parcel.
-      * [param] _parcel: info of parcel.
+      * [param] _parcel: base info of parcel.
       * [return] none.
       */
     function update(string _num, bytes32 _parcel) external _onlyAdminOrHigher {
@@ -68,10 +76,35 @@ contract LogisticsAnalyticsMin is Delegate {
         parcels_[_num] = _parcel;
     }
 
-    /** [desc] Get parcels' array.
+    /** [desc] Add parcels' amounts by city and time id.
+      * [param] _citys: city array.
+      * [param] _timeIds: time Id array.
+      * [param] _amounts: parcels' amount array.
+      * [return] none.
+      */
+    function addParcelAmount(bytes32[] _citys, uint[] _timeIds, uint[] _amounts) external _onlyAdminOrHigher {
+        uint length = _citys.length;
+
+        // check param
+        require((0 != length) && (length == _timeIds.length) && (length == _amounts.length));
+
+        for (uint i=0; i<length; i++)  {
+            citySumParcelAmounts_[_citys[i]] += _amounts[i];
+            cityTimeParcelAmounts_[_timeIds[i]][_citys[i]] += _amounts[i];
+        }
+    }
+
+    /** [desc] Get number of parcels.
+      * [return] number of parcels.
+      */
+    function number() external view returns (uint) {
+        return sum_;
+    }
+
+    /** [desc] Get parcels' base info array.
       * [param] _index: start index of parcels.
       * [param] _count: count of parcels.
-      * [return] info array of parcels.
+      * [return] base info array of parcels.
       */
     function get(uint _index, uint _count) external view returns (bytes32[]) {
         uint i = 0;
@@ -99,10 +132,31 @@ contract LogisticsAnalyticsMin is Delegate {
         return parcels;
     }
 
-    /** [desc] Get number of parcels.
-      * [return] number of parcels.
+    /** [desc] Get parcels' amounts by city and time id.
+      * [param] _citys: city array.
+      * [param] _timeIds: time Id array.
+      * [return] parcels' amount array.
       */
-    function number() external view returns (uint) {
-        return sum_;
+    function getParcelAmount(bytes32[] _citys, uint[] _timeIds) external view returns (uint[]) {
+        uint i = 0;
+        uint length = _citys.length;
+        uint[] memory amounts;
+
+        require(0 != length);
+        amounts = new uint[](length);
+
+        if (0 == _timeIds.length) {
+            for(i=0; i<length; i++) {
+                amounts[i] = citySumParcelAmounts_[_citys[i]];
+            }
+        } else {
+            require(length == _timeIds.length);
+
+            for(i=0; i<length; i++) {
+                amounts[i] = cityTimeParcelAmounts_[_timeIds[i]][_citys[i]];
+            }
+        }
+
+        return amounts;
     }
 }
