@@ -4,20 +4,21 @@
  */
 
 import Output from "../common/output.js";
-import Transaction from '../common/transaction_raw.js';
-import Delegate from '../common/delegate.js';
-import InsuranceTemplate from '../insurance/insurance_template.js';
+import Transaction from "../common/transaction_raw.js";
+import Delegate from "../common/delegate.js";
+import InsuranceTemplate from "../insurance/insurance_template.js";
 
 //private member
-const compiledJson = Symbol('compiledJson');
+const compiledJson = Symbol("compiledJson");
 
-const templateAbi = Symbol('templateAbi');
-const templateContractAddress = Symbol('templateContractAddress');
+const templateAbi = Symbol("templateAbi");
+const templateContractAddress = Symbol("templateContractAddress");
 
 //private function
-const getAccount = Symbol('getAccount');
-const transactionProc = Symbol('transactionProc');
-const hexToString = Symbol('hexToString');
+const getAccount = Symbol("getAccount");
+const transactionProc = Symbol("transactionProc");
+const hexToString = Symbol("hexToString");
+const templateBatch = Symbol("templateBatch");
 
 export default class TestInsurance {
 
@@ -39,7 +40,7 @@ export default class TestInsurance {
         return new Array(channels[0].account, channels[0].key);
     }
 
-    [transactionProc](error, result, output) { 
+    [transactionProc](error, result, output, func) { 
         if (!error) {
             if ("" != result.status) {
                 let status;
@@ -49,7 +50,11 @@ export default class TestInsurance {
                     status = "failure";
                 }
                 let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
-                Output(output, 'small', 'red', string);
+                Output(output, "small", "red", string);
+
+                if (("succeeded" == status) && (null != func) && ("" != func)) {
+                    func();
+                }
             } else {
                 let status = "Try to get status again!";
                 let string = `[TransactionHash]:${result.transactionHash}</br>[Status]:${status}</br>[Try]:${result.tryTimes}(times)`;
@@ -170,6 +175,79 @@ export default class TestInsurance {
         });
     }
 
+    [templateBatch](handler, account, key, cmd, type) {
+        let insuranceTemplate;
+        switch (cmd) {
+            case "Create":
+                insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
+                
+                if ("User" == type) {
+                    insuranceTemplate.create(account, key, "UserPhoneSignIn", "手机号&密码", function(error, result) {
+                        handler[transactionProc](error, result, window.outputTemplateElement, function() {
+                            insuranceTemplate.create(account, key, "UserEmailSignIn", "邮箱&密码", function(error, result) {
+                                handler[transactionProc](error, result, window.outputTemplateElement, function() {
+                                    insuranceTemplate.create(account, key, "UserPhoneSignUp", "手机号&短信验证码&密码&确认密码", function(error, result) {
+                                        handler[transactionProc](error, result, window.outputTemplateElement, function() {
+                                            insuranceTemplate.create(account, key, "UserEmailSignUp", "邮箱&邮箱验证码&密码&确认密码", function(error, result) {
+                                                handler[transactionProc](error, result, window.outputTemplateElement, function() {
+                                                    insuranceTemplate.create(account, key, "UserForgetPassword", "邮箱/手机号", function(error, result) {
+                                                        handler[transactionProc](error, result, window.outputTemplateElement, function() {                   
+                                                        });
+                                                     });          
+                                                });
+                                             });          
+                                        });
+                                     });
+                                });
+                            });
+                        });
+                    });
+                } else {
+                    Output(window.outputTemplateElement, "small", "red", "Type Error!");
+                }
+                break;
+            case "Debug":
+                insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
+
+                if ("User" == type) {
+                    insuranceTemplate.size(function(error, result) {
+                        if (!error) {
+                            let sum = parseInt(result.toString(10));
+                            let logs = new Array(sum);
+                            let count = 0;
+                            for (let i=0; i<sum; i++) {
+                                insuranceTemplate.get(i, function(error, id, result) {
+                                    if (!error) {
+                                        let name = handler[hexToString](result[0]);
+                                        let data = result[1];
+                                        logs[id] = `[Template${id}]:${name} => ${data}`;
+                                        count ++;
+                                        if (count == sum) {
+                                            let str = "";
+                                            for (let j=0; j<logs.length; j++) {
+                                                str = str.concat(`${logs[j]}<br>`);
+                                            }
+                                            Output(window.outputTemplateElement, 'small', 'red', str);
+                                        }
+                                    } else {
+                                        Output(window.outputTemplateElement, 'small', 'red', `[Template${id}]:</br>${error}`);
+                                    }
+                                })
+                            }
+                        } else {
+                            Output(window.outputCommonElement, 'small', 'red', error);
+                        }
+                    })
+                } else {
+                    Output(window.outputTemplateElement, "small", "red", "Type Error!");
+                }
+                break;
+            default:
+                Output(window.outputTemplateElement, "small", "red", "Command Error!");
+                break;
+        }
+    }
+
     template(operation, params) {
         console.log("TestInsurance.template(%s, %s)", operation, params);
 
@@ -191,6 +269,12 @@ export default class TestInsurance {
 
         let insuranceTemplate;
         switch (operation) {
+            case "Batch":
+                tmps = params.split(",");
+                let cmd = tmps[0];
+                let type = tmps[1];
+                handler[templateBatch](handler, account, key, cmd, type);
+                break;
             case "Create":
                 tmps = params.split(",");
                 let name = tmps[0];
@@ -203,7 +287,7 @@ export default class TestInsurance {
 
                 insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
                 insuranceTemplate.create(account, key, name, data, function(error, result) {
-                    handler[transactionProc](error, result, window.outputTemplateElement);
+                    handler[transactionProc](error, result, window.outputTemplateElement, null);
                 });
                 break;
             case "Get":
