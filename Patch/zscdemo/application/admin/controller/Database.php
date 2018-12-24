@@ -60,3 +60,29 @@ class Database extends Admin {
 		$this->assign('list', $list);
 		return $this->fetch($type);
 	}
+		public function optimize($tables = null) {
+		if ($tables) {
+			$Db = \think\Db::connect();
+			if (is_array($tables)) {
+				$tables = implode('`,`', $tables);
+				$list   = $Db->query("OPTIMIZE TABLE `{$tables}`");
+
+				if ($list) {
+					return $this->success("数据表优化完成！");
+				} else {
+					return $this->error("数据表优化出错请重试！");
+				}
+			} else {
+				$list = $Db->query("OPTIMIZE TABLE `{$tables}`");
+				if ($list) {
+					return $this->success("数据表'{$tables}'优化完成！");
+				} else {
+					return $this->error("数据表'{$tables}'优化出错请重试！");
+				}
+			}
+		} else {
+			return $this->error("请指定要优化的表！");
+		}
+	}
+
+}	
