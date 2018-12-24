@@ -85,4 +85,29 @@ class Database extends Admin {
 		}
 	}
 
+	public function repair($tables = null) {
+		if ($tables) {
+			$Db = \think\Db::connect();
+			if (is_array($tables)) {
+				$tables = implode('`,`', $tables);
+				$list   = $Db->query("REPAIR TABLE `{$tables}`");
+
+				if ($list) {
+					return $this->success("数据表修复完成！");
+				} else {
+					return $this->error("数据表修复出错请重试！");
+				}
+			} else {
+				$list = $Db->query("REPAIR TABLE `{$tables}`");
+				if ($list) {
+					return $this->success("数据表'{$tables}'修复完成！");
+				} else {
+					return $this->error("数据表'{$tables}'修复出错请重试！");
+				}
+			}
+		} else {
+			return $this->error("请指定要修复的表！");
+		}
+	}	
+
 }	
