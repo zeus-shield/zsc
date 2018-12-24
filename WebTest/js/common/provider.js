@@ -79,20 +79,18 @@ export default function provider(injected) {
         channel.clear();
 
         if (web3.currentProvider.isMetaMask) {
-            channel.set(web3.eth.accounts[0], "0x68bd023921c785ed112fafb2cdf6437609e80456805a68bc125bdb5b9bb7d4e1");
-            channel.set("0xf31cbe0ba29c559297505cddcfee15573625bd26", "0xbf0dda742ed1d2c154f00615727bc9c82ccb95d8d5ab8832c849dde0f83517b3");
-            // channel.set("0x6A76fb522F948CfB7d6d929408D6aD5876E7139F", "0x805fd8b8d4aeee085b220b44caa5a73af77aa23fbebfc1a7e09d2150887c6e21");
+            channel.set(web3.eth.accounts[0], "");
+            channel.set("", "");
         } else {
             // geth
             if ("http://localhost:8545" === web3.currentProvider.host) {
-                channel.set(web3.eth.accounts[0], "0x748443675b8cc68e225d4d7f266d2e57a7157e28b55b7cf66409f76a02bd49ca");
-                // channel.set(web3.eth.accounts[1], "0xbd435949a06911c2469d9eecafbbe4b4369d9a3d4b32e548082693fea122ad6e");
-                // channel.set(web3.eth.accounts[2], "0xc5e2bad43d6fa36b5a300a297ff159aca19b43578e03c1bc49b097f628dd0c34");
-                // channel.set(web3.eth.accounts[3], "0xf190443041cb11441b397d4c2053aa25e5080d65723f6e2ea42756e73324a77e");
+                channel.set(web3.eth.accounts[0], "");
+                channel.set("", "");
+
             } else {
                 // ganache
-                channel.set(web3.eth.accounts[0], "0x549eda549a75bc75cab5bb9ad34c0d8dd6a81ab415978cbeac11777db546219c");
-                channel.set(web3.eth.accounts[1], "0x7b8afaa612588030d01ba30767bda19cee74e2f697c441dcb5b10d236100e75c");
+                channel.set(web3.eth.accounts[0], "");
+                channel.set("", "");
             }
  
         }
