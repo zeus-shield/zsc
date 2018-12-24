@@ -174,43 +174,4 @@ export default class LogisticsAnalyticsMin {
             }
         });
     }
-
-    test(param, func) {
-        let handler = this;
-        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-
-        // estimate gas
-        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.test.estimateGas(param, {from: this[account]}, function(error, result) {
-            if(!error) {
-                let gasRequired = result;
-                // get gas price
-                // MetaMask Web3 object does not support synchronous methods without a callback parameter
-                web3.eth.getGasPrice(function(error, result) {
-                    if(!error) {
-                        console.log("===== LogisticsAnalyticsMin.test(uint8, uint16, uint16, uint64, uint64) =============");
-                        console.log("from:    ", handler[account]);
-                        console.log("gas:     ", gasRequired);
-                        console.log("gasPrice:", result.toString(10));
-                        console.log("=====================================================================================");
-                        // call 'LogisticsCore.test(uint8, uint16, uint16, uint64, uint64)'
-                        contractInstance.test.call(param, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
-                            if(!error) {
-                                console.log("[Amount]: %s", result.toString(10));
-                                if (null != func) {
-                                    func(null, result);
-                                }
-                            } else {
-                                handler[notifyError](error, func);
-                            }
-                        });
-                    } else {
-                        handler[notifyError](error, func);
-                    }
-                });
-            } else {
-                handler[notifyError](error, func);
-            }
-        });
-    }
 }
