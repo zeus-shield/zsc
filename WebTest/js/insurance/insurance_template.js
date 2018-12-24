@@ -40,12 +40,12 @@ export default class InsuranceTemplate {
         }
     }
 
-    create(account, key, name, data, func) {
+    update(account, key, name, data, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.create.estimateGas(name, data, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, key, contractInstance.create.getData(name, data), error, gasRequired, func);
+        contractInstance.update.estimateGas(name, data, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, key, contractInstance.update.getData(name, data), error, gasRequired, func);
         });
     }
 
@@ -109,9 +109,9 @@ export default class InsuranceTemplate {
                         // call 'InsuranceTemplate.get(uint)'
                         contractInstance.get.call(id, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                console.log("[Template]: %s", result);
+                                console.log("[Template%s]: %s", id, result.toString(10));
                                 if (null != func) {
-                                    func(null, result);
+                                    func(null, id, result);
                                 }
                             } else {
                                 handler[notifyError](error, func);
