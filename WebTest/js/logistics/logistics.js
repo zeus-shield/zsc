@@ -44,7 +44,7 @@ export default class LogisticsCore {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.setup.estimateGas(coreAddr, analyticsAddr, {from: account}, function(error, result) {
+        contractInstance.setup.estimateGas(coreAddr, analyticsAddr, {from: account}, function(error, gasRequired) {
             handler[transactionProc](handler, account, key, contractInstance.setup.getData(coreAddr, analyticsAddr), error, gasRequired, func);
         });
     }
