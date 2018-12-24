@@ -11,6 +11,10 @@ const account = Symbol('account');
 const contractAbi = Symbol('contractAbi');
 const contractAddress = Symbol('contractAddress');
 
+//private function
+const transactionProc = Symbol('transactionProc');
+const notifyError = Symbol('notifyError');
+
 export default class LogisticsAnalytics {
     constructor(abi, contractAddr) {
         this[account] = web3.eth.coinbase;
