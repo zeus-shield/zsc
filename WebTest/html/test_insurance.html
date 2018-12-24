@@ -24,6 +24,16 @@
                      }
                 },false);
 
+                document.getElementById("b_template_batch_create").onclick = function() {
+                    let type = document.getElementById("s_template_type").value;
+                    main("Insurance", "Template", "Batch", `Create,${type}`);
+                }
+
+                document.getElementById("b_template_batch_debug").onclick = function() {
+                    let type = document.getElementById("s_template_type").value;
+                    main("Insurance", "Template", "Batch", `Debug,${type}`);
+                }
+
                 document.getElementById("b_template_submit").onclick = function() {
                     let op = document.getElementById("s_template_op").value;
                     let params = document.getElementById("i_template_create_params").value;
@@ -69,6 +79,15 @@
             <p>
                 <div class="well" id="block">
                     <h4>3. Template</h4>
+                    <div id="element">
+                        Batch Test:<br>
+                        Select Type
+                        <select id="s_template_type">
+                            <option value="User">User</option>
+                        </select><br>
+                        <button type="button" id="b_template_batch_create">Create</button>
+                        <button type="button" id="b_template_batch_debug">Debug</button>
+                    </div>
                     <div id="element">
                         Select Operation:<br>
                         <select id="s_template_op">
