@@ -1001,16 +1001,20 @@ export default class TestLogisticsRaw {
                 // number
                 delegate.number(function(error, result) {
                     if (!error) {
-                        let sum = result;
-                        let logs = "";
+                        let sum = parseInt(result.toString(10));
+                        let logs = new Array(sum);
                         let count = 0;
                         for (let i=0; i<sum; i++) {
                             delegate.getInfoById(i, function(error, id, result) {
                                 if (!error) {
-                                    logs = logs.concat(`[Delegate${id}]: ${result}</br>`);
+                                    logs[id] = `[Delegate${id}]: ${result}`;
                                     count ++;
                                     if (count == sum) {
-                                        Output(window.outputDelegateReadElement, 'small', 'red', logs);
+                                        let str = "";
+                                        for (let j=0; j<logs.length; j++) {
+                                            str = str.concat(`${logs[j]}<br>`);
+                                        }
+                                        Output(window.outputDelegateReadElement, 'small', 'red', str);
                                     }                                 
                                 } else {
                                     Output(window.outputDelegateReadElement, 'small', 'red', `[Delegate${id}]:</br>${error}`);
