@@ -12,53 +12,49 @@ const contractAbi = Symbol('contractAbi');
 const contractAddress = Symbol('contractAddress');
 
 export default class LogisticsAnalytics {
-    constructor(_abi, _contractAddr) {
+    constructor(abi, contractAddr) {
         this[account] = web3.eth.coinbase;
-        this[contractAbi] = _abi;
-        this[contractAddress] = _contractAddr; 
+        this[contractAbi] = abi;
+        this[contractAddress] = contractAddr; 
     }
 
-    setup(_account, _key, _coreAddr, _func) {
+    [notifyError](error, func) {
+        console.log(error);
+        if (null != func) {
+            func(error);
+        }
+    }
+
+    [transactionProc](handler, account, key, data, error, gasRequired, func) {
+        if (!error) {
+            let transaction = new Transaction(account, key);
+            if('undefined' != typeof transaction) {
+                transaction.do("transaction", data, gasRequired, handler[contractAddress], func);
+            }
+        } else {
+            handler[notifyError](error, func);
+        }
+    }
+
+    setup(account, key, coreAddr, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-        let data = contractInstance.setup.getData(_coreAddr);
 
-        contractInstance.setup.estimateGas(_coreAddr, {from: _account}, function(error, result) {
-            if (!error) {
-                let transaction = new Transaction(_account, _key);
-                if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[contractAddress], _func);
-                }
-            } else {
-                console.log(error);
-                if (null != _func) {
-                    _func(error);
-                }
-            }
+        contractInstance.setup.estimateGas(coreAddr, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, key, contractInstance.setup.getData(coreAddr), error, gasRequired, func);
         });
     }
 
-    setActionCode(_account, _key, _tag, _value, _func) {
+    setActionCode(account, key, tag, value, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-        let data = contractInstance.setActionCode.getData(_tag, _value);
 
-        contractInstance.setActionCode.estimateGas(_tag, _value, {from: _account}, function(error, result) {
-            if (!error) {
-                let transaction = new Transaction(_account, _key);
-                if('undefined' != typeof transaction) {
-                    transaction.do("transaction", data, result, handler[contractAddress], _func);
-                }
-            } else {
-                console.log(error);
-                if (null != _func) {
-                    _func(error);
-                }
-            }
+        contractInstance.setActionCode.estimateGas(tag, value, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, key, contractInstance.setActionCode.getData(tag, value), error, gasRequired, func);
         });
     }
 
-    getCoreAddr(_func) {
+    getCoreAddr(func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
@@ -80,39 +76,30 @@ export default class LogisticsAnalytics {
                         contractInstance.getCoreAddr.call({from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[ActionCode]: %s", result);
-                                if (null != _func) {
-                                    _func(null, result);
+                                if (null != func) {
+                                    func(null, result);
                                 }
                             } else {
-                                console.log(error);
-                                if (null != _func) {
-                                    _func(error);
-                                }
+                                handler[notifyError](error, func);
                             }
                         });
                     } else {
-                        console.log(error);
-                        if (null != _func) {
-                            _func(error);
-                        }
+                        handler[notifyError](error, func);
                     }
                 });
             } else {
-                console.log(error);
-                if (null != _func) {
-                    _func(error);
-                }
+                handler[notifyError](error, func);
             }
         });
     }
 
-    getActionCode(_tag, _func) {
+    getActionCode(tag, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getActionCode.estimateGas(_tag, {from: this[account]}, function(error, result) {
+        contractInstance.getActionCode.estimateGas(tag, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
@@ -125,42 +112,33 @@ export default class LogisticsAnalytics {
                         console.log("gasPrice:", result.toString(10));
                         console.log("====================================================================");
                         // call 'LogisticsCore.getActionCode(string)'
-                        contractInstance.getActionCode.call(_tag, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        contractInstance.getActionCode.call(tag, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[ActionCode]: %s", result.toString(10));
-                                if (null != _func) {
-                                    _func(null, result);
+                                if (null != func) {
+                                    func(null, result);
                                 }
                             } else {
-                                console.log(error);
-                                if (null != _func) {
-                                    _func(error);
-                                }
+                                handler[notifyError](error, func);
                             }
                         });
                     } else {
-                        console.log(error);
-                        if (null != _func) {
-                            _func(error);
-                        }
+                        handler[notifyError](error, func);
                     }
                 });
             } else {
-                console.log(error);
-                if (null != _func) {
-                    _func(error);
-                }
+                handler[notifyError](error, func);
             }
         });
     }
 
-    getParcelAmount(_direction, _srcCountry, _destCountry, _startTime, _endTime, _func) {
+    getParcelAmount(direction, srcCountry, destCountry, startTime, endTime, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getParcelAmount.estimateGas(_direction, _srcCountry, _destCountry, _startTime, _endTime, {from: this[account]}, function(error, result) {
+        contractInstance.getParcelAmount.estimateGas(direction, srcCountry, destCountry, startTime, endTime, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
@@ -173,41 +151,32 @@ export default class LogisticsAnalytics {
                         console.log("gasPrice:", result.toString(10));
                         console.log("=====================================================================================");
                         // call 'LogisticsCore.getParcelAmount(uint8, uint16, uint16, uint64, uint64)'
-                        contractInstance.getParcelAmount.call(_direction, _srcCountry, _destCountry, _startTime, _endTime, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        contractInstance.getParcelAmount.call(direction, srcCountry, destCountry, startTime, endTime, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[Amount]: %s", result.toString(10));
-                                if (null != _func) {
-                                    _func(null, result);
+                                if (null != func) {
+                                    func(null, result);
                                 }
                             } else {
-                                console.log(error);
-                                if (null != _func) {
-                                    _func(error);
-                                }
+                                handler[notifyError](error, func);
                             }
                         });
                     } else {
-                        console.log(error);
-                        if (null != _func) {
-                            _func(error);
-                        }
+                        handler[notifyError](error, func);
                     }
                 });
             } else {
-                console.log(error);
-                if (null != _func) {
-                    _func(error);
-                }
+                handler[notifyError](error, func);
             }
         });
     }
 
-    getParcelAmountArray(_direction, _mulMatch, _condition, _func) {
+    getParcelAmountArray(direction, mulMatch, condition, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getParcelAmountArray.estimateGas(_direction, _mulMatch, _condition, {from: this[account]}, function(error, result) {
+        contractInstance.getParcelAmountArray.estimateGas(direction, mulMatch, condition, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
@@ -220,31 +189,22 @@ export default class LogisticsAnalytics {
                         console.log("gasPrice:", result.toString(10));
                         console.log("=====================================================================================");
                         // call 'LogisticsCore.getParcelAmountArray(uint8, bool, bytes32[])'
-                        contractInstance.getParcelAmountArray.call(_direction, _mulMatch, _condition, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        contractInstance.getParcelAmountArray.call(direction, mulMatch, condition, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[Amount]: %s", result.toString(10));
-                                if (null != _func) {
-                                    _func(null, result);
+                                if (null != func) {
+                                    func(null, result);
                                 }
                             } else {
-                                console.log(error);
-                                if (null != _func) {
-                                    _func(error);
-                                }
+                                handler[notifyError](error, func);
                             }
                         });
                     } else {
-                        console.log(error);
-                        if (null != _func) {
-                            _func(error);
-                        }
+                        handler[notifyError](error, func);
                     }
                 });
             } else {
-                console.log(error);
-                if (null != _func) {
-                    _func(error);
-                }
+                handler[notifyError](error, func);
             }
         });
     }
