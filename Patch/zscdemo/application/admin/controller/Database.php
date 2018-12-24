@@ -123,6 +123,74 @@ class Database extends Admin {
 		} else {
 			return $this->error('参数错误！');
 		}
+	}	
+
+	public function export($tables = null, $id = null, $start = null) {
+		if (IS_POST && !empty($tables) && is_array($tables)) {
+			//初始化
+			$path = config('data_backup_path');
+			if (!is_dir($path)) {
+				mkdir($path, 0755, true);
+			}
+			//读取备份配置
+			$config = array('path' => realpath($path) . DIRECTORY_SEPARATOR, 'part' => config('data_backup_part_size'), 'compress' => config('data_backup_compress'), 'level' => config('data_backup_compress_level'));
+			//检查是否有正在执行的任务
+			$lock = "{$config['path']}backup.lock";
+			if (is_file($lock)) {
+				return $this->error('检测到有一个备份任务正在执行，请稍后再试！');
+			} else {
+				//创建锁文件
+				file_put_contents($lock, time());
+			}
+			//检查备份目录是否可写
+			if (!is_writeable($config['path'])) {
+				return $this->error('备份目录不存在或不可写，请检查后重试！');
+			}
+			session('backup_config', $config);
+			//生成备份文件信息
+			$file = array('name' => date('Ymd-His', time()), 'part' => 1);
+			session('backup_file', $file);
+			//缓存要备份的表
+			session('backup_tables', $tables);
+			//创建备份文件
+			$Database = new \com\Database($file, $config);
+			if (false !== $Database->create()) {
+				$tab = array('id' => 0, 'start' => 0);
+				return $this->success('初始化成功！', '', array('tables' => $tables, 'tab' => $tab));
+			} else {
+				return $this->error('初始化失败，备份文件创建失败！');
+			}
+		} elseif (IS_GET && is_numeric($id) && is_numeric($start)) {
+			//备份数据
+			$tables = session('backup_tables');
+			//备份指定表
+			$Database = new \com\Database(session('backup_file'), session('backup_config'));
+			$start    = $Database->backup($tables[$id], $start);
+			if (false === $start) {
+				//出错
+				return $this->error('备份出错！');
+			} elseif (0 === $start) {
+				//下一表
+				if (isset($tables[++$id])) {
+					$tab = array('id' => $id, 'start' => 0);
+					return $this->success('备份完成！', '', array('tab' => $tab));
+				} else {
+					//备份完成，清空缓存
+					unlink(session('backup_config.path') . 'backup.lock');
+					session('backup_tables', null);
+					session('backup_file', null);
+					session('backup_config', null);
+					return $this->success('备份完成！');
+				}
+			} else {
+				$tab  = array('id' => $id, 'start' => $start[0]);
+				$rate = floor(100 * ($start[0] / $start[1]));
+				return $this->success("正在备份...({$rate}%)", '', array('tab' => $tab));
+			}
+		} else {
+			//出错
+			return $this->error('参数错误！');
+		}
 	}		
 
 }	
