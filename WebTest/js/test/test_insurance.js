@@ -178,19 +178,19 @@ export default class TestInsurance {
     [templateBatch](handler, account, key, cmd, type) {
         let insuranceTemplate;
         switch (cmd) {
-            case "Create":
+            case "Update":
                 insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
                 
                 if ("User" == type) {
-                    insuranceTemplate.create(account, key, "UserPhoneSignIn", "手机号&密码", function(error, result) {
+                    insuranceTemplate.update(account, key, "UserPhoneSignIn", "手机号&密码", function(error, result) {
                         handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                            insuranceTemplate.create(account, key, "UserEmailSignIn", "邮箱&密码", function(error, result) {
+                            insuranceTemplate.update(account, key, "UserEmailSignIn", "邮箱&密码", function(error, result) {
                                 handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                                    insuranceTemplate.create(account, key, "UserPhoneSignUp", "手机号&短信验证码&密码&确认密码", function(error, result) {
+                                    insuranceTemplate.update(account, key, "UserPhoneSignUp", "手机号&短信验证码&密码&确认密码", function(error, result) {
                                         handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                                            insuranceTemplate.create(account, key, "UserEmailSignUp", "邮箱&邮箱验证码&密码&确认密码", function(error, result) {
+                                            insuranceTemplate.update(account, key, "UserEmailSignUp", "邮箱&邮箱验证码&密码&确认密码", function(error, result) {
                                                 handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                                                    insuranceTemplate.create(account, key, "UserForgetPassword", "邮箱/手机号", function(error, result) {
+                                                    insuranceTemplate.update(account, key, "UserForgetPassword", "邮箱/手机号", function(error, result) {
                                                         handler[transactionProc](error, result, window.outputTemplateElement, function() {                   
                                                         });
                                                      });          
@@ -220,7 +220,7 @@ export default class TestInsurance {
                                     if (!error) {
                                         let name = handler[hexToString](result[0]);
                                         let data = result[1];
-                                        logs[id] = `[Template${id}]:${name} => ${data}`;
+                                        logs[id] = `[Template${id}]: ${name} => ${data}`;
                                         count ++;
                                         if (count == sum) {
                                             let str = "";
@@ -275,7 +275,7 @@ export default class TestInsurance {
                 let type = tmps[1];
                 handler[templateBatch](handler, account, key, cmd, type);
                 break;
-            case "Create":
+            case "Update":
                 tmps = params.split(",");
                 let name = tmps[0];
                 let data = tmps[1];
@@ -286,16 +286,16 @@ export default class TestInsurance {
                 }
 
                 insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
-                insuranceTemplate.create(account, key, name, data, function(error, result) {
+                insuranceTemplate.update(account, key, name, data, function(error, result) {
                     handler[transactionProc](error, result, window.outputTemplateElement, null);
                 });
                 break;
             case "Get":
                 insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
-                insuranceTemplate.get(params, function(error, result) {
+                insuranceTemplate.get(params, function(error, id, result) {
                     if (!error) {
                         let name = handler[hexToString](result[0]);
-                        Output(window.outputTemplateElement, "small", "red", `[Template]:</br>${name},${result[1]}`);
+                        Output(window.outputTemplateElement, "small", "red", `[Template${id}]: ${name} => ${result[1]}`);
                     } else {
                         Output(window.outputTemplateElement, "small", "red", error);
                     }
