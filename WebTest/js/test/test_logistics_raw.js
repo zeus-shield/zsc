@@ -43,6 +43,7 @@ const getDelegateInstance = Symbol('getDelegateInstance');
 const getTimeStamp = Symbol('getTimeStamp');
 const supplement0 = Symbol('supplement0');
 const conditionBuild = Symbol('conditionBuild');
+const arrayBuild = Symbol('arrayBuild');
 
 export default class TestLogisticsRaw {
 
@@ -942,38 +943,19 @@ export default class TestLogisticsRaw {
                 }
             })
         } else if ('Test' == type) {
-            let handler = this;
-            let logisticsAnalyticsMin = new LogisticsAnalyticsMin(this[analyticsMinAbi], this[analyticsMinContractAddress]);
-            logisticsAnalyticsMin.test("1234567890helloworldhelloworld", function(error, result) {
-                if (!error) {
-                    // let str = handler._hexToString(result);
-                    Output(window.outputReadElement, 'small', 'red', `[Test]:</br>${result}`);
-                } else {
-                    Output(window.outputReadElement, 'small', 'red', error);
-                }
-            });
+            // let handler = this;
+            // let logisticsAnalyticsMin = new LogisticsAnalyticsMin(this[analyticsMinAbi], this[analyticsMinContractAddress]);
+            // logisticsAnalyticsMin.test("1234567890helloworldhelloworld", function(error, result) {
+            //     if (!error) {
+            //         // let str = handler._hexToString(result);
+            //         Output(window.outputReadElement, 'small', 'red', `[Test]:</br>${result}`);
+            //     } else {
+            //         Output(window.outputReadElement, 'small', 'red', error);
+            //     }
+            // });
             Output(window.outputReadElement, 'small', 'red', 'Do not support now!');
         } else {}
     }
-
-    _hexToString(str) {
-        let value = "";
-        let byte = "";
-        let code = "";
-
-        str = str.substr(str.indexOf("0x")+2);
-
-        for(let i=0; i<str.length/2; i++) {
-            byte = str.substring(i*2, i*2+2);
-            code = parseInt(byte, 16);
-            if ("0" == code) {
-                break;
-            }
-            value += String.fromCharCode(code);
-        }
-
-        return value;
-  }
 
     [getDelegateInstance](contract) {
         let delegate = null;
@@ -1195,8 +1177,22 @@ export default class TestLogisticsRaw {
         }
     }
 
-    analyticsMin(cmd, paras) {
-        console.log('TestLogisticsRaw.analyticsMin(%s, %s)', cmd, paras);
+    [arrayBuild](data) {
+        let array = new Array();
+
+        if (undefined == data || "" == data) {
+            return array;
+        }
+
+        let tmps = data.split("&");
+        for (let i=0; i<tmps.length; i++) {
+            array.push(tmps[i]);
+        }
+        return array;
+    }
+
+    analyticsMin(cmd, params) {
+        console.log('TestLogisticsRaw.analyticsMin(%s, %s)', cmd, params);
         let handler = this;
         let tmps = this[getCommonAccount]();
         if (0 == tmps[0]) {
@@ -1207,30 +1203,62 @@ export default class TestLogisticsRaw {
         let account = tmps[0];
         let key = tmps[1];
 
-        let para;
+        let param;
+        let type;
         let logisticsAnalyticsMin;
         switch (cmd) {
             case "Update":
-                para = paras.split(",");
-                let num = para[0];
-                let parcel = para[1];
-                logisticsAnalyticsMin = new LogisticsAnalyticsMin(this[analyticsMinAbi], this[analyticsMinContractAddress]);
-                logisticsAnalyticsMin.update(account, key, num, parcel, function(error, result) {
-                    handler[commmonTransactionProc](error, result, window.outputAnalyticsMinElement);
-                });
+                param = params.split(",");
+                type = param[0];
+
+                if ("Country" == type) {
+                    let num = param[1];
+                    let parcel = param[2];
+                    logisticsAnalyticsMin = new LogisticsAnalyticsMin(this[analyticsMinAbi], this[analyticsMinContractAddress]);
+                    logisticsAnalyticsMin.update(account, key, num, parcel, function(error, result) {
+                        handler[commmonTransactionProc](error, result, window.outputAnalyticsMinElement);
+                    });
+                } else if ("City" == type) {
+                    let citys = handler[arrayBuild](param[1]);
+                    let timeIds = handler[arrayBuild](param[2]);
+                    let amounts = handler[arrayBuild](param[3]);
+                    logisticsAnalyticsMin = new LogisticsAnalyticsMin(this[analyticsMinAbi], this[analyticsMinContractAddress]);
+                    logisticsAnalyticsMin.addParcelAmount(account, key, citys, timeIds, amounts, function(error, result) {
+                        handler[commmonTransactionProc](error, result, window.outputAnalyticsMinElement);
+                    });                   
+                } else {
+                    Output(window.outputAnalyticsMinElement, 'small', 'red', "Type Error!");
+                }
                 break;
             case "Get":
-                para = paras.split(",");
-                let index = para[0];
-                let count = para[1];
-                logisticsAnalyticsMin = new LogisticsAnalyticsMin(this[analyticsMinAbi], this[analyticsMinContractAddress]);
-                logisticsAnalyticsMin.get(index, count, function(error, result) {
-                    if (!error) {
-                        Output(window.outputAnalyticsMinElement, 'small', 'red', `[Parcels]:${result}`);
-                    } else {
-                        Output(window.outputAnalyticsMinElement, 'small', 'red', error);
-                    }
-                })
+                param = params.split(",");
+                type = param[0];
+
+                if ("Country" == type) {
+                    let index = param[1];
+                    let count = param[2];
+                    logisticsAnalyticsMin = new LogisticsAnalyticsMin(this[analyticsMinAbi], this[analyticsMinContractAddress]);
+                    logisticsAnalyticsMin.get(index, count, function(error, result) {
+                        if (!error) {
+                            Output(window.outputAnalyticsMinElement, 'small', 'red', `[Parcels]:${result}`);
+                        } else {
+                            Output(window.outputAnalyticsMinElement, 'small', 'red', error);
+                        }
+                    })
+                } else if ("City" == type) {
+                    let citys = handler[arrayBuild](param[1]);
+                    let timeIds = handler[arrayBuild](param[2]);
+                    logisticsAnalyticsMin = new LogisticsAnalyticsMin(this[analyticsMinAbi], this[analyticsMinContractAddress]);
+                    logisticsAnalyticsMin.getParcelAmount(citys, timeIds, function(error, result) {
+                        if (!error) {
+                            Output(window.outputAnalyticsMinElement, 'small', 'red', `[Amounts]:${result}`);
+                        } else {
+                            Output(window.outputAnalyticsMinElement, 'small', 'red', error);
+                        }
+                    })
+                } else {
+                    Output(window.outputAnalyticsMinElement, 'small', 'red', "Type Error!");
+                }
                 break;
             default:
                 Output(window.outputAnalyticsMinElement, 'small', 'red', "Command Error!");
