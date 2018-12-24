@@ -103,8 +103,9 @@
 
                 document.getElementById("b_analytics_min_submit").onclick = function() {
                     let op = document.getElementById("s_analytics_min_op").value;
+                    let type = document.getElementById("s_analytics_min_type").value;
                     let params = document.getElementById("i_analytics_min_params").value;
-                    main('LogisticsRaw', 'AnalyticsMin', `${op}`, `${params}`);
+                    main('LogisticsRaw', 'AnalyticsMin', op, `${type},${params}`);
                 }
             }
         </script>
@@ -413,6 +414,11 @@
                         <select id="s_analytics_min_op">
                             <option value="Update">Update</option>
                             <option value="Get">Get</option>
+                        </select><br>
+                        Select Type:<br>
+                        <select id="s_analytics_min_type">
+                            <option value="Country">Country</option>
+                            <option value="City">City</option>
                         </select><br>
                         Params:<br>
                         <input type="text" id="i_analytics_min_params"><br>
