@@ -31,12 +31,12 @@ contract InsuranceTemplate is Ownable {
       */
     function() external payable { revert(); }
 
-    /** [desc] create template.
+    /** [desc] update template.
       * [param] _name: name of template.
       * [param] _data: data of template.
       * [return] none.
       */
-    function create(bytes32 _name, string _data) external _onlyOwner {
+    function update(bytes32 _name, string _data) external _onlyOwner {
         // check param
         require(bytes32(0) != _name);
         Hashmap(tempMgr).set(_name, bytes32(0), _data);
