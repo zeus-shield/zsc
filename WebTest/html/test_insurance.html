@@ -24,9 +24,9 @@
                      }
                 },false);
 
-                document.getElementById("b_template_batch_create").onclick = function() {
+                document.getElementById("b_template_batch_up").onclick = function() {
                     let type = document.getElementById("s_template_type").value;
-                    main("Insurance", "Template", "Batch", `Create,${type}`);
+                    main("Insurance", "Template", "Batch", `Update,${type}`);
                 }
 
                 document.getElementById("b_template_batch_debug").onclick = function() {
@@ -85,13 +85,13 @@
                         <select id="s_template_type">
                             <option value="User">User</option>
                         </select><br>
-                        <button type="button" id="b_template_batch_create">Create</button>
+                        <button type="button" id="b_template_batch_up">Update</button>
                         <button type="button" id="b_template_batch_debug">Debug</button>
                     </div>
                     <div id="element">
                         Select Operation:<br>
                         <select id="s_template_op">
-                            <option value="Create">Create</option>
+                            <option value="Update">Update</option>
                             <option value="Get">Get</option>
                         </select><br>
                         Params:<br>
