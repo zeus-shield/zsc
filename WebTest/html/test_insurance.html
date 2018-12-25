@@ -13,6 +13,8 @@
             window.onload = function () {
                 window.outputProviderElement = 'p_output_provider';
                 window.outputDeployTemplateElement = 'p_output_deploy_template';
+                window.outputDeployUserElement = 'p_output_deploy_user';
+                window.outputSetupElement = 'p_output_setup';
                 window.outputTemplateElement = 'p_output_template';
 
                 provider(false);
@@ -23,6 +25,17 @@
                         provider(false);
                      }
                 },false);
+
+
+                document.getElementById("b_setup").onclick = function() {
+                    let contract = document.getElementById("s_setup_contract").value;
+                    main('Insurance', 'Setup', 'Set', contract);
+                }
+
+                document.getElementById("b_get_sub_contract_addr").onclick = function() {
+                    let contract = document.getElementById("s_get_sub_contract_addr").value;
+                    main('Insurance', 'Setup', 'Get', contract);
+                }
 
                 document.getElementById("b_template_batch_up").onclick = function() {
                     let type = document.getElementById("s_template_type").value;
@@ -72,13 +85,36 @@
                         <button type="button" id="b_deploy" onclick="main('Insurance', 'Deploy', 'InsuranceTemplate', '')">Deploy</button>
                         <p id="p_output_deploy_template"></p>
                     </div>
+                    <div id="element">
+                        <h5>Deploy [insurance_user]</h5>
+                        <label id="l_insurance_user" for="f_insurance_user">Upload</label>
+                        <input type="file" id="f_insurance_user" onchange="file('Insurance', 'InsuranceUser', this)" />
+                        <button type="button" id="b_deploy" onclick="main('Insurance', 'Deploy', 'InsuranceUser', '')">Deploy</button>
+                        <p id="p_output_deploy_user"></p>
+                    </div>
                     <div style="clear:left"></div>
                 </div>
             </p>
 
             <p>
                 <div class="well" id="block">
-                    <h4>3. Template</h4>
+                    <h4>3. Setup</h4>
+                    <select id="s_setup_contract">
+                        <option value="InsuranceUser">InsuranceUser</option>
+                    </select>
+                    <button type="button" id="b_setup">Setup</button><br>
+
+                    <select id="s_get_sub_contract_addr">
+                        <option value="InsuranceUser">InsuranceUser</option>
+                    </select>
+                    <button type="button" id="b_get_sub_contract_addr">GetSubContractAddress</button>
+                    <p id="p_output_setup"></p>
+                </div>
+            </p>
+
+            <p>
+                <div class="well" id="block">
+                    <h4>4. Template</h4>
                     <div id="element">
                         Batch Test:<br>
                         Select Type
