@@ -6,6 +6,7 @@ MODULE="insurance"
 IMPORTPATH="/=/"
 SOURCES=(
 insurance_template
+insurance_user
 )
 BUILDPATH="../build"
 
