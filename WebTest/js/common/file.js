@@ -86,6 +86,8 @@ export default function file(module, contractName, input) {
                     }
                     if ('InsuranceTemplate' == contractName) {
                         elementId = window.outputDeployTemplateElement;
+                    } else if ('InsuranceUser' == contractName) {
+                        elementId = window.outputDeployUserElement;
                     } else {
                         elementId = window.outputDeployElement;
                     }
