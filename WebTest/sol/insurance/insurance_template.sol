@@ -10,10 +10,10 @@ import "../common/hashmap.sol";
 
 contract InsuranceTemplate is Ownable {
 
-    address private tempMgr;
+    address private tempMgr_;
 
     constructor() public {
-        tempMgr = new Hashmap();
+        tempMgr_ = new Hashmap();
     }
 
     /** [desc] Kill the contract.
@@ -21,7 +21,7 @@ contract InsuranceTemplate is Ownable {
       * [return] none.
       */
     function kill() external _onlyOwner {
-        Hashmap(tempMgr).kill();
+        Hashmap(tempMgr_).kill();
         selfdestruct(owner_);   
     }
 
@@ -39,31 +39,49 @@ contract InsuranceTemplate is Ownable {
     function update(bytes32 _name, string _data) external _onlyOwner {
         // check param
         require(bytes32(0) != _name);
-        Hashmap(tempMgr).set(_name, bytes32(0), _data);
+        Hashmap(tempMgr_).set(_name, bytes32(0), _data, address(0));
     }
 
     /** [desc] Get size of templates.
       * [param] none.
       * [return] size of templates.
       */
-    function size() external view _onlyOwner returns (uint) {
-        return Hashmap(tempMgr).size();
+    function size() external view returns (uint) {
+        return Hashmap(tempMgr_).size();
     }
 
     /** [desc] Get template by id.
-      * [param] _name: _id of template.
-      * [return] template.
+      * [param] _id: _id of template.
+      * [return] template name and data.
       */
-    function get(uint _id) external view _onlyOwner returns (bytes32, string) {
+    function getById(uint _id) external view returns (bytes32, string) {
         bytes32 name = bytes32(0);
         bytes32 data0 = bytes32(0);
         string memory data1 = "";
+        address data2 = address(0);
 
         // check param
-        require(Hashmap(tempMgr).size() > _id);
+        require(Hashmap(tempMgr_).size() > _id);
 
-        (name, data0, data1) = Hashmap(tempMgr).get(_id);
+        (name, data0, data1, data2) = Hashmap(tempMgr_).get(_id);
         
         return (name, data1);
+    }
+
+    /** [desc] Get template by name.
+      * [param] _name: name of template.
+      * [return] template data.
+      */
+    function getByName(bytes32 _name) external view returns (string) {
+        bytes32 data0 = bytes32(0);
+        string memory data1 = "";
+        address data2 = address(0);
+
+        // check param
+        require(0 != byte(_name).length);
+
+        (data0, data1, data2) = Hashmap(tempMgr_).get(_name);
+        
+        return data1;
     }
 }
