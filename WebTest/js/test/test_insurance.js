@@ -7,12 +7,16 @@ import Output from "../common/output.js";
 import Transaction from "../common/transaction_raw.js";
 import Delegate from "../common/delegate.js";
 import InsuranceTemplate from "../insurance/insurance_template.js";
+import InsuranceUser from "../insurance/insurance_user.js";
 
 //private member
 const compiledJson = Symbol("compiledJson");
 
 const templateAbi = Symbol("templateAbi");
 const templateContractAddress = Symbol("templateContractAddress");
+
+const userAbi = Symbol("userAbi");
+const userContractAddress = Symbol("userContractAddress");
 
 //private function
 const getAccount = Symbol("getAccount");
@@ -26,8 +30,10 @@ export default class TestInsurance {
         this[compiledJson] = [];
 
         this[templateAbi] = [];
+        this[userAbi] = [];
 
         this[templateContractAddress] = "";
+        this[userContractAddress] = "";
     }
 
     [getAccount]() { 
@@ -94,6 +100,8 @@ export default class TestInsurance {
 
         if ("InsuranceTemplate" == contractName) {
             elementId = window.outputDeployTemplateElement;
+        } else if ("InsuranceUser" == contractName) {
+            elementId = window.outputDeployUserElement;
         } else {
             console.log("Contract name Error!");
             return;
@@ -141,6 +149,9 @@ export default class TestInsurance {
         if ("InsuranceTemplate" == contractName) {
             this[templateAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
             contract = web3.eth.contract(this[templateAbi]);
+        } else if ("InsuranceUser" == contractName) {
+            this[userAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
+            contract = web3.eth.contract(this[userAbi]);
         } else {
             console.log("Contract name Error!");
             return;
@@ -158,6 +169,8 @@ export default class TestInsurance {
                         if (!error) {
                             if ("InsuranceTemplate" == contractName) {
                                 handler[templateContractAddress] = result.contractAddress;
+                            } else if ("InsuranceUser" == contractName) {
+                                handler[userContractAddress] = result.contractAddress;
                             } else {
                                 console.log("Contract name Error!");
                                 return;
@@ -173,6 +186,49 @@ export default class TestInsurance {
                 Output(elementId, "small", "red", error);
             }
         });
+    }
+
+    setup(cmd, contractName) {
+        console.log('TestInsurance.setup(%s, %s)', cmd, contractName);
+        let handler = this;
+        let tmps = this[getAccount]();
+        if (0 == tmps[0]) {
+            Output(window.outputSetupElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = tmps[0];
+        let key = tmps[1];
+
+        switch (cmd) {
+            case "Set":
+                if ("InsuranceUser" == contractName) {
+                    let insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
+                    insuranceUser.setup(account, key, this[templateContractAddress], function(error, result) {
+                        handler[transactionProc](error, result, window.outputSetupElement);
+                    });
+                } else {
+                    Output(window.outputSetupElement, 'small', 'red', "Contract name Error!");
+                }
+                break;
+            case "Get":
+                if ("InsuranceUser" == contractName) {
+                    let insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
+                    insuranceUser.getTemplateAddr(function(error, result) {
+                        if (!error) {
+                            Output(window.outputSetupElement, 'small', 'red', `[CoreContractAddress]: ${result}`);
+                        } else {
+                            Output(window.outputSetupElement, 'small', 'red', error);
+                        }
+                    });
+                } else {
+                    Output(window.outputSetupElement, 'small', 'red', "Contract name Error!");
+                }
+                break;
+            default:
+                Output(window.outputSetupElement, 'small', 'red', "Command Error!");
+                break;
+        }
     }
 
     [templateBatch](handler, account, key, cmd, type) {
@@ -216,7 +272,7 @@ export default class TestInsurance {
                             let logs = new Array(sum);
                             let count = 0;
                             for (let i=0; i<sum; i++) {
-                                insuranceTemplate.get(i, function(error, id, result) {
+                                insuranceTemplate.getById(i, function(error, id, result) {
                                     if (!error) {
                                         let name = handler[hexToString](result[0]);
                                         let data = result[1];
@@ -292,7 +348,7 @@ export default class TestInsurance {
                 break;
             case "Get":
                 insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
-                insuranceTemplate.get(params, function(error, id, result) {
+                insuranceTemplate.getById(params, function(error, id, result) {
                     if (!error) {
                         let name = handler[hexToString](result[0]);
                         Output(window.outputTemplateElement, "small", "red", `[Template${id}]: ${name} => ${result[1]}`);
@@ -312,6 +368,9 @@ export default class TestInsurance {
         switch(operation) {
             case "Deploy":
                 this.deploy(para1);
+                break;
+            case "Setup":
+                this.setup(para1, para2);
                 break;
             case "Template":
                 this.template(para1, para2);
