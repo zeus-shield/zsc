@@ -10,7 +10,7 @@ import "../utillib/LibString.sol";
 import "../common/hashmap.sol";
 
 contract InsuranceTemplate {
-    function get(bytes32 _name) external view returns (string);
+    function getByName(bytes32 _name) external view returns (string);
 }
 
 contract InsuranceUser is Ownable {
@@ -69,7 +69,7 @@ contract InsuranceUser is Ownable {
 
         address user = new Hashmap();
 
-        string memory template = InsuranceTemplate(templateAddr_).get("[DB]User");
+        string memory template = InsuranceTemplate(templateAddr_).getByName("[DB]User");
         template.split("#", params_);
         for (uint i=0; i<params_.length; i++) { 
             if (_data.keyExists(params_[i])) {
