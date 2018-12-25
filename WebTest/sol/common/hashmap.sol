@@ -13,6 +13,7 @@ contract Hashmap is Ownable {
     struct Data {
         bytes32 data0_;
         string data1_;
+        address data2_;
     }
 
     uint private sum_;
@@ -43,12 +44,14 @@ contract Hashmap is Ownable {
       * [param] _key: key using for mapping data.
       * [param] _data0: data for bytes32.
       * [param] _data1: data for string.
+      * [param] _data2: data for address.
       * [return] none.
       */
-    function set(bytes32 _key, bytes32 _data0, string _data1) external _onlyOwner {
+    function set(bytes32 _key, bytes32 _data0, string _data1, address _data2) external _onlyOwner {
         if (exists_[_key]) {
             datas_[_key].data0_ = _data0;
             datas_[_key].data1_ = _data1;
+            datas_[_key].data2_ = _data2;
         } else {
             keys_[sum_] = _key;
             ids_[_key] = sum_;
@@ -57,6 +60,7 @@ contract Hashmap is Ownable {
 
             datas_[_key].data0_ = _data0;
             datas_[_key].data1_ = _data1;
+            datas_[_key].data2_ = _data2;
         }
     }
 
@@ -114,19 +118,19 @@ contract Hashmap is Ownable {
       * [param] _key: key using for mapping data.
       * [return] data.
       */
-    function get(bytes32 _key) external view _onlyOwner returns (bytes32, string) {
+    function get(bytes32 _key) external view _onlyOwner returns (bytes32, string, address) {
         require(exists_[_key]);
-        return (datas_[_key].data0_, datas_[_key].data1_);
+        return (datas_[_key].data0_, datas_[_key].data1_, datas_[_key].data2_);
     }
 
     /** [desc] Get data by id.
       * [param] _id: id of data.
       * [return] key and data.
       */
-    function get(uint _id) external view _onlyOwner returns (bytes32, bytes32, string) {
+    function get(uint _id) external view _onlyOwner returns (bytes32, bytes32, string, address) {
         require(_id < sum_);
         require(exists_[keys_[_id]]);
         require(ids_[keys_[_id]] == _id);
-        return (keys_[_id], datas_[keys_[_id]].data0_, datas_[keys_[_id]].data1_);
+        return (keys_[_id], datas_[keys_[_id]].data0_, datas_[keys_[_id]].data1_, datas_[keys_[_id]].data2_);
     }
 }
