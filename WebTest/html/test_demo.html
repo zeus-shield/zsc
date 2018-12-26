@@ -1,0 +1,90 @@
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../css/demo.css">
+        <script type="text/javascript" src="../js/lib/ethereumjs-tx-1.3.7/conv/ethereumjs-tx.min.js"></script>
+        <script type="text/javascript" src="../js/lib/ethereumjs-util-5.2.0/conv/ethereumjs-util.min.js"></script>
+        <script type="text/javascript" src="../js/lib/web3.js-0.20.6/dist/web3.js"></script>
+        <script type="module" src="../js/main.js"></script>
+        <script type="module" src="../js/common/file.js"></script>
+        <script type="module" src="../js/common/provider.js"></script>
+        <script type="text/javascript">
+            window.onload = function () {
+                window.outputProviderElement = 'p_output_provider';
+                window.outputDeployDemoElement = 'p_output_deploy_demo';
+                window.outputDemoElement = 'p_output_demo';
+
+                provider(false);
+                document.getElementById("s_provider").addEventListener('change', function(){
+                     if('injected' == this.value) {
+                        provider(true);
+                     } else {
+                        provider(false);
+                     }
+                },false);
+
+                document.getElementById("b_demo_submit").onclick = function() {
+                    let op = document.getElementById("s_demo_op").value;
+                    let params = document.getElementById("i_demo_params").value;
+                    main("Demo", "Demo", op, params);
+                }
+            }
+        </script>
+    </head>
+    <body id="test_insurance">
+
+        <div id="header">
+            <h1>Demo Module</h1>
+        </div>
+
+        <div id="section">
+            <p><a href="../index.html" title="Back">Back</a></p>
+
+            <p>
+                <div class="well" id="block">
+                    <h4>1. Please select web3 provider:</h4>
+                    <select id="s_provider">
+                      <option value="local">Localhost</option>
+                      <option value="injected">Injected Web3</option>
+                    </select>
+                    <p id="p_output_provider"></p>
+                </div>
+            </p>
+
+            <p>
+                <div class="well" id="block">
+                    <h4>2. Deploy:</h4>
+                    <div id="element">
+                        <h5>Deploy [demo]</h5>
+                        <label id="l_demo" for="f_demo">Upload</label>
+                        <input type="file" id="f_demo" onchange="file('Demo', 'Demo', this)" />
+                        <button type="button" id="b_deploy" onclick="main('Demo', 'Deploy', 'Demo', '')">Deploy</button>
+                        <p id="p_output_deploy_demo"></p>
+                    </div>
+                    <div style="clear:left"></div>
+                </div>
+            </p>
+
+            <p>
+                <div class="well" id="block">
+                    <h4>3. Test</h4>
+                    <div id="element">
+                        Select Operation:<br>
+                        <select id="s_demo_op">
+                            <option value="Set">Set</option>
+                            <option value="Get">Get</option>
+                        </select><br>
+                        Params:<br>
+                        <input type="text" id="i_demo_params"><br>
+                        <button type="button" id="b_demo_submit">Submit</button>
+                    </div>
+                    <div style="clear: left"></div>
+                    <p id="p_output_demo"></p>
+                </div>
+            </p>
+
+        </div>
+    </div> 
+    </body>
+</html>
