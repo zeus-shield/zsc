@@ -16,6 +16,7 @@
                 window.outputDeployUserElement = 'p_output_deploy_user';
                 window.outputSetupElement = 'p_output_setup';
                 window.outputTemplateElement = 'p_output_template';
+                window.outputUserElement = 'p_output_user';
 
                 provider(false);
                 document.getElementById("s_provider").addEventListener('change', function(){
@@ -49,8 +50,14 @@
 
                 document.getElementById("b_template_submit").onclick = function() {
                     let op = document.getElementById("s_template_op").value;
-                    let params = document.getElementById("i_template_create_params").value;
+                    let params = document.getElementById("i_template_params").value;
                     main("Insurance", "Template", op, params);
+                }
+
+                document.getElementById("b_user_submit").onclick = function() {
+                    let op = document.getElementById("s_user_op").value;
+                    let params = document.getElementById("i_user_params").value;
+                    main("Insurance", "User", op, params);
                 }
             }
         </script>
@@ -128,10 +135,11 @@
                         Select Operation:<br>
                         <select id="s_template_op">
                             <option value="Update">Update</option>
-                            <option value="Get">Get</option>
+                            <option value="GetById">GetById</option>
+                            <option value="GetByName">GetByName</option>
                         </select><br>
                         Params:<br>
-                        <input type="text" id="i_template_create_params"><br>
+                        <input type="text" id="i_template_params"><br>
                         <button type="button" id="b_template_submit">Submit</button>
                     </div>
                     <div style="clear: left"></div>
@@ -139,6 +147,23 @@
                 </div>
             </p>
 
+            <p>
+                <div class="well" id="block">
+                    <h4>4. User</h4>
+                    <div id="element">
+                        Select Operation:<br>
+                        <select id="s_user_op">
+                            <option value="SignUp">SignUp</option>
+                            <option value="Get">Get</option>
+                        </select><br>
+                        Params:<br>
+                        <input type="text" id="i_user_params"><br>
+                        <button type="button" id="b_user_submit">Submit</button>
+                    </div>
+                    <div style="clear: left"></div>
+                    <p id="p_output_user"></p>
+                </div>
+            </p>
 
         </div>
     </div> 
