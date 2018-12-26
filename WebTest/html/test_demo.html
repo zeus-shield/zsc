@@ -13,7 +13,7 @@
             window.onload = function () {
                 window.outputProviderElement = 'p_output_provider';
                 window.outputDeployDemoElement = 'p_output_deploy_demo';
-                window.outputDemoElement = 'p_output_demo';
+                window.outputDemoTestElement = 'p_output_demo_test';
 
                 provider(false);
                 document.getElementById("s_provider").addEventListener('change', function(){
@@ -24,10 +24,10 @@
                      }
                 },false);
 
-                document.getElementById("b_demo_submit").onclick = function() {
-                    let op = document.getElementById("s_demo_op").value;
-                    let params = document.getElementById("i_demo_params").value;
-                    main("Demo", "Demo", op, params);
+                document.getElementById("b_demo_test_submit").onclick = function() {
+                    let op = document.getElementById("s_demo_test_op").value;
+                    let params = document.getElementById("i_demo_test_params").value;
+                    main("Demo", "Test", op, params);
                 }
             }
         </script>
@@ -71,16 +71,16 @@
                     <h4>3. Test</h4>
                     <div id="element">
                         Select Operation:<br>
-                        <select id="s_demo_op">
+                        <select id="s_demo_test_op">
                             <option value="Set">Set</option>
                             <option value="Get">Get</option>
                         </select><br>
                         Params:<br>
-                        <input type="text" id="i_demo_params"><br>
-                        <button type="button" id="b_demo_submit">Submit</button>
+                        <input type="text" id="i_demo_test_params"><br>
+                        <button type="button" id="b_demo_test_submit">Submit</button>
                     </div>
                     <div style="clear: left"></div>
-                    <p id="p_output_demo"></p>
+                    <p id="p_output_demo_test"></p>
                 </div>
             </p>
 
