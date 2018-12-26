@@ -52,36 +52,45 @@ contract InsuranceTemplate is Ownable {
 
     /** [desc] Get template by id.
       * [param] _id: _id of template.
-      * [return] template name and data.
+      * [return] error code and template name/data.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: inner error
       */
-    function getById(uint _id) external view returns (bytes32, string) {
+    function getById(uint _id) external view returns (int, bytes32, string) {
+        // check param
+        if (Hashmap(tempMgr_).size() <= _id) {
+            return (-1, bytes32(0), "");
+        }
+
+        int error = 0;
         bytes32 name = bytes32(0);
         bytes32 data0 = bytes32(0);
         string memory data1 = "";
         address data2 = address(0);
 
-        // check param
-        require(Hashmap(tempMgr_).size() > _id);
-
-        (name, data0, data1, data2) = Hashmap(tempMgr_).get(_id);
+        (error, name, data0, data1, data2) = Hashmap(tempMgr_).get(_id);
         
-        return (name, data1);
+        return (error, name, data1);
     }
 
     /** [desc] Get template by name.
       * [param] _name: name of template.
-      * [return] template data.
+      * [return] error code and template data.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: inner error
       */
-    function getByName(bytes32 _name) external view returns (string) {
+    function getByName(bytes32 _name) external view returns (int, string) {
+        int error = 0;
         bytes32 data0 = bytes32(0);
         string memory data1 = "";
         address data2 = address(0);
 
-        // check param
-        require(0 != byte(_name).length);
-
-        (data0, data1, data2) = Hashmap(tempMgr_).get(_name);
+        (error, data0, data1, data2) = Hashmap(tempMgr_).get(_name);
         
-        return data1;
+        return (error, data1);
     }
 }
