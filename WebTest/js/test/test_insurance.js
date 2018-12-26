@@ -302,9 +302,6 @@ export default class TestInsurance {
 
         let insuranceTemplate;
         switch (operation) {
-            case "Batch":
-                handler[templateBatch](handler, account, key, params);
-                break;
             case "Debug":
                 insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
                 insuranceTemplate.size(function(error, result) {
@@ -343,6 +340,9 @@ export default class TestInsurance {
                     }
                 })
                 break;
+            case "Batch":
+                handler[templateBatch](handler, account, key, params);
+                break;
             case "Update":
                 tmps = params.split(",");
                 let name = tmps[0];
@@ -356,6 +356,16 @@ export default class TestInsurance {
                 insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
                 insuranceTemplate.update(account, key, name, data, function(error, result) {
                     handler[transactionProc](error, result, window.outputTemplateElement, null);
+                });
+                break;
+            case "Size":
+                insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
+                insuranceTemplate.size(function(error, result) {
+                    if (!error) {
+                        Output(window.outputTemplateElement, "small", "red", `[Size]: ${result.toString(10)}`);
+                    } else {
+                        Output(window.outputTemplateElement, "small", "red", error);
+                    }
                 });
                 break;
             case "GetById":

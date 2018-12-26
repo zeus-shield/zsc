@@ -70,7 +70,7 @@ export default class InsuranceTemplate {
                         // call 'InsuranceTemplate.size()'
                         contractInstance.size.call({from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                console.log("[Size]: %s", result);
+                                console.log("[Size]: %s", result.toString(10));
                                 if (null != func) {
                                     func(null, result);
                                 }
