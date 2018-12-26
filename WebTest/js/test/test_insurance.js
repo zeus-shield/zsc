@@ -420,6 +420,7 @@ export default class TestInsurance {
         let key = tmps[1];
 
         let insuranceUser;
+        let type;
         switch (operation) {
             case "SignUp":
                 insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
@@ -427,9 +428,22 @@ export default class TestInsurance {
                     handler[transactionProc](error, result, window.outputUserElement, null);
                 });
                 break;
-            case "GetByName":
+            case "Size":
                 insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
-                insuranceUser.getByName(params, function(error, result) {
+                insuranceUser.size(function(error, result) {
+                    if (!error) {
+                        Output(window.outputUserElement, "small", "red", `[Size]: ${result.toString(10)}`);
+                    } else {
+                        Output(window.outputUserElement, "small", "red", error);
+                    }
+                });
+                break;
+            case "GetByName":
+                tmps = params.split(",");
+                type = tmps[0];
+                let name = tmps[1];
+                insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
+                insuranceUser.getByName(type, name, function(error, result) {
                     if (!error) {
                         let errorStr = handler[getErrorStr](result[0].toString(10));
                         Output(window.outputUserElement, "small", "red", `[User]:<br>(${errorStr}) ${result[1]}`);
@@ -439,8 +453,11 @@ export default class TestInsurance {
                 });
                 break;
             case "GetById":
+                tmps = params.split(",");
+                type = tmps[0];
+                let id = tmps[1];
                 insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
-                insuranceUser.getById(params, function(error, result) {
+                insuranceUser.getById(type, id, function(error, result) {
                     if (!error) {
                         let errorStr = handler[getErrorStr](result[0].toString(10));
                         Output(window.outputUserElement, "small", "red", `[User]:<br>(${errorStr}) ${result[1]}`);
