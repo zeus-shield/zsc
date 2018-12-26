@@ -156,4 +156,31 @@ class Company extends Admin {
 			$this->error('操作失败',url('company/product'));
 		}
 	}	
+
+
+	public function statuss()
+	{
+		$status = input('status');
+
+		$pid 	= input('pid');
+
+		if($status==1){
+			//上架时间
+			$arr = ['status'=>$status,'addedTime'=>time()];
+		}else{
+			$arr = ['status'=>$status];
+		}
+
+		$res = Db::name('product')->where('pid',$pid)->update($arr);
+
+		if($res===false){
+			$this->error('操作失败',url('company/product'));
+		}
+
+		if($res>0){
+			$this->success('操作成功',url('company/product'));
+		}else{
+			$this->error('操作失败',url('company/product'));
+		}
+	}	
 }
