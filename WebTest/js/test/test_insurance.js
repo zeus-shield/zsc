@@ -427,9 +427,20 @@ export default class TestInsurance {
                     handler[transactionProc](error, result, window.outputUserElement, null);
                 });
                 break;
-            case "Get":
+            case "GetByName":
                 insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
-                insuranceUser.get(params, function(error, result) {
+                insuranceUser.getByName(params, function(error, result) {
+                    if (!error) {
+                        let errorStr = handler[getErrorStr](result[0].toString(10));
+                        Output(window.outputUserElement, "small", "red", `[User]:<br>(${errorStr}) ${result[1]}`);
+                    } else {
+                        Output(window.outputUserElement, "small", "red", error);
+                    }
+                });
+                break;
+            case "GetById":
+                insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
+                insuranceUser.getById(params, function(error, result) {
                     if (!error) {
                         let errorStr = handler[getErrorStr](result[0].toString(10));
                         Output(window.outputUserElement, "small", "red", `[User]:<br>(${errorStr}) ${result[1]}`);
