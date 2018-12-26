@@ -83,5 +83,30 @@ class Company extends Admin {
 
 		return $this->fetch();
 	}
-		
+
+	public function addProduct()
+	{
+		$uid = input('id');
+
+		if(IS_POST){
+			$msg = input('post.');
+			$msg['addTime'] = time();
+			$res = Db::name('product')->insert($msg);
+
+			if($res){
+				$this->success('添加成功',url('company/product'));
+			}else{
+				$this->success('操作失败');
+			}
+		}else{
+			$data = array(
+				'keyList' => $this->model->addfield,
+				'info'    => ['uid'=>$uid]
+			);
+			$this->assign($data);
+			$this->setMeta('添加产品');
+			return $this->fetch('public/edit');
+		}
+	}	
+
 }
