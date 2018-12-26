@@ -46,4 +46,32 @@ class Index extends Admin {
 		$this->redirect('admin/index/login');
 	}	
 
+	public function clear() {
+		if (IS_POST) {
+			$clear = input('post.clear/a', array());
+			foreach ($clear as $key => $value) {
+				if ($value == 'cache') {
+					\think\Cache::clear(); // 清空缓存数据
+				} elseif ($value == 'log') {
+					\think\Log::clear();
+				}
+			}
+			return $this->success("更新成功！", url('admin/index/index'));
+		} else {
+			$keylist = array(
+				array('name' => 'clear', 'title' => '更新缓存', 'type' => 'checkbox', 'help' => '', 'option' => array(
+					'cache' => '缓存数据',
+					'log'   => '日志数据',
+				),
+				),
+			);
+			$data = array(
+				'keyList' => $keylist,
+			);
+			$this->assign($data);
+			$this->setMeta("更新缓存");
+			return $this->fetch('public/edit');
+		}
+	}	
+
 }
