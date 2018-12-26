@@ -67,4 +67,21 @@ class Company extends Admin {
 		}
 
 	}	
+
+	public function product()
+	{
+		$list = Db::name('product')->paginate(15);
+
+		$data = array(
+			'list'=>$list,
+			'page'=>$list->render(),
+		);
+
+		$this->assign($data);
+
+		$this->setMeta('产品信息');
+
+		return $this->fetch();
+	}
+		
 }
