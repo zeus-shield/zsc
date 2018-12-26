@@ -108,5 +108,32 @@ class Company extends Admin {
 			return $this->fetch('public/edit');
 		}
 	}	
+	public function editProduct()
+	{
+		$uid = input('id');
 
+		if(IS_POST){
+			$msg = input('post.');
+
+			$res = Db::name('product')->where('pid',$msg['pid'])->update($msg);
+
+			if($res){
+				$this->success('编辑成功成功',url('company/product'));
+			}else{
+				$this->success('操作失败');
+			}
+		}else{
+			$pid  = input('pid');
+
+			$info = Db::name('product')->find($pid);
+
+			$data = array(
+				'keyList' => $this->model->addfield,
+				'info'    => $info
+			);
+			$this->assign($data);
+			$this->setMeta('添加产品');
+			return $this->fetch('public/edit');
+		}
+	}
 }
