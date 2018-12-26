@@ -46,9 +46,15 @@
                     main("Insurance", "Template", "Debug", "");
                 }
 
-                document.getElementById("b_template_submit").onclick = function() {
-                    let op = document.getElementById("s_template_op").value;
-                    let params = document.getElementById("i_template_params").value;
+                document.getElementById("b_template_write_submit").onclick = function() {
+                    let op = document.getElementById("s_template_write_op").value;
+                    let params = document.getElementById("i_template_write_params").value;
+                    main("Insurance", "Template", op, params);
+                }
+
+                document.getElementById("b_template_read_submit").onclick = function() {
+                    let op = document.getElementById("s_template_read_op").value;
+                    let params = document.getElementById("i_template_read_params").value;
                     main("Insurance", "Template", op, params);
                 }
 
@@ -130,15 +136,23 @@
                     <button type="button" id="b_template_debug">Debug</button>
                     <button type="button" id="b_template_batch_up">Update(Batch)</button><br><br>
                     <div id="element">
-                        Select Operation:<br>
-                        <select id="s_template_op">
+                        Select Operation(Write):<br>
+                        <select id="s_template_write_op">
                             <option value="Update">Update</option>
+                        </select><br>
+                        Params:<br>
+                        <input type="text" id="i_template_write_params"><br>
+                        <button type="button" id="b_template_write_submit">Submit</button>
+                    </div>
+                    <div id="element">
+                        Select Operation(Read):<br>
+                        <select id="s_template_read_op">
                             <option value="GetById">GetById</option>
                             <option value="GetByName">GetByName</option>
                         </select><br>
                         Params:<br>
-                        <input type="text" id="i_template_params"><br>
-                        <button type="button" id="b_template_submit">Submit</button>
+                        <input type="text" id="i_template_read_params"><br>
+                        <button type="button" id="b_template_read_submit">Submit</button>
                     </div>
                     <div style="clear: left"></div>
                     <p id="p_output_template"></p>
