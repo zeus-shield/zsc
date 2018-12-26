@@ -136,4 +136,24 @@ class Company extends Admin {
 			return $this->fetch('public/edit');
 		}
 	}
+
+
+	public function recommend()
+	{
+		$status = input('recommend');
+
+		$pid 	= input('pid');
+
+		$res = Db::name('product')->where('pid',$pid)->update(['recommend'=>$status]);
+
+		if($res===false){
+			$this->error('操作失败',url('company/product'));
+		}
+
+		if($res>0){
+			$this->success('操作成功',url('company/product'));
+		}else{
+			$this->error('操作失败',url('company/product'));
+		}
+	}	
 }
