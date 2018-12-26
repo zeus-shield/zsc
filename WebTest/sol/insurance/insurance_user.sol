@@ -39,6 +39,35 @@ contract InsuranceUser is Ownable {
         selfdestruct(owner_);   
     }
 
+    /** [desc] Get user info.
+      * [param] _user: user info address.
+      * [return] user info for json data.
+      */
+    function _getUserInfo(address _user) private view returns (string) {
+        string memory str = "{";
+
+        uint len = Hashmap(_user).size();
+        for (uint i=0; i<len; i++) {
+            int error = 0;
+            bytes32 param = bytes32(0);
+            bytes32 data1 = bytes32(0);
+            string memory value = "";
+            address data3 = address(0);
+            (error, param, data1, value, data3) = Hashmap(_user).get(i);
+            if (0 == error) {
+                if ((len -1) == i) {
+                    str = str.concat(value.toKeyValue(param.bytes32ToString()));
+                } else {
+                    str = str.concat(value.toKeyValue(param.bytes32ToString()), ",");
+                }
+            }
+        }
+
+        str = str.concat("}");
+
+        return str;
+    }
+
     /** [desc] Setup.
       * [param] _templateAddr: template contract address.
       * [return] none.
@@ -69,7 +98,8 @@ contract InsuranceUser is Ownable {
         require(0 == error);
         template.split("#", params_);
 
-        bytes32 userId = bytes32(0);
+        bool valid = false;
+        bytes32 name = bytes32(0);
         address user = new Hashmap();
 
         for (uint i=0; i<params_.length; i++) { 
@@ -78,13 +108,17 @@ contract InsuranceUser is Ownable {
                 string memory value = _data.getStringValueByKey(params_[i]);
                 Hashmap(user).set(param, bytes32(0), value, address(0));
 
-                if (params_[i].equals("UserId")) {
-                    userId = value.toBytes32();
+                if (params_[i].equals("Name")) {
+                    name = value.toBytes32();
                 }
+
+                valid = true;
             }
         }
 
-        Hashmap(userMgr_).set(userId, bytes32(0), "", user);
+        require(valid);
+
+        Hashmap(userMgr_).set(name, bytes32(0), "", user);
     }
 
     /** [desc] Get size of users.
@@ -95,54 +129,51 @@ contract InsuranceUser is Ownable {
         return Hashmap(userMgr_).size();
     }
 
-    /** [desc] Get user info.
-      * [param] _userId: user id.
+    /** [desc] Get user info by name.
+      * [param] _name: user name.
       * [return] error code and user info for json data.
       *           0: success
       *          -1: params error
       *          -2: no data
       *          -3: inner error   
       */
-    function get(string _userId) external view _checkTemplateAddr returns (int, string) {
+    function getByName(string _name) external view returns (int, string) {
         int error = 0;
         bytes32 data0 = bytes32(0);
         string memory data1 = "";
         address data2 = address(0);
-        bytes32 userId = _userId.toBytes32();
+        bytes32 name = _name.toBytes32();
 
-        (error, data0, data1, data2) = Hashmap(userMgr_).get(userId);
+        (error, data0, data1, data2) = Hashmap(userMgr_).get(name);
         if (0 != error) {
             return (error, "{}");
         }
 
-        address user = data2;
-        string memory str = "{";
+        string memory str = _getUserInfo(data2);
+        return (0, str);
+    }
 
-        // string memory template = InsuranceTemplate(templateAddr_).get("[DB]User");
-        // template.split("#", params_);
-        // for (uint i=0; i<params_.length; i++) {
-        //     (data0, data1, data2) = Hashmap(user).get(params_[i].toBytes32());
-        //     if ((params_.length -1) == i) {
-        //         str = str.concat(data1.toKeyValue(params_[i]));
-        //     } else {
-        //         str = str.concat(data1.toKeyValue(params_[i]), ",");
-        //     }
-        // }
-        uint len = Hashmap(user).size();
-        for (uint i=0; i<len; i++) {
-            bytes32 param = bytes32(0);
-            (error, param, data0, data1, data2) = Hashmap(user).get(i);
-            if (0 == error) {
-                if ((len -1) == i) {
-                    str = str.concat(data1.toKeyValue(param.bytes32ToString()));
-                } else {
-                    str = str.concat(data1.toKeyValue(param.bytes32ToString()), ",");
-                }
-            }
-        }       
+    /** [desc] Get user info by id.
+      * [param] _name: user id.
+      * [return] error code and user info for json data.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: inner error   
+      */
+    function getById(uint id) external view returns (int, string) {
+        int error = 0;
+        bytes32 name = bytes32(0);
+        bytes32 data0 = bytes32(0);
+        string memory data1 = "";
+        address data2 = address(0);
 
-        str = str.concat("}");
+        (error, name, data0, data1, data2) = Hashmap(userMgr_).get(id);
+        if (0 != error) {
+            return (error, "{}");
+        }
 
+        string memory str =_getUserInfo(data2);
         return (0, str);
     }
 
