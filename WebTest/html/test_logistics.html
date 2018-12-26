@@ -38,57 +38,57 @@
                 },false);
 
                 document.getElementById("b_setup").onclick = function() {
-                    main('LogisticsRaw', 'Setup', 'Set', document.getElementById("s_setup_contract").value);
+                    main('Logistics', 'Setup', 'Set', document.getElementById("s_setup_contract").value);
                 }
 
                 document.getElementById("b_get_sub_contract_addr").onclick = function() {
-                    main('LogisticsRaw', 'Setup', 'Get', document.getElementById("s_get_sub_contract_addr").value);
+                    main('Logistics', 'Setup', 'Get', document.getElementById("s_get_sub_contract_addr").value);
                 }
 
                 document.getElementById("b_delegate").onclick = function() {
                     let contract = document.getElementById("s_delegate_debug_contract").value;
-                    main('LogisticsRaw', 'Delegate', `Debug,${contract}`, '');
+                    main('Logistics', 'Delegate', `Debug,${contract}`, '');
                 }
 
                 document.getElementById("b_delegate_update_submit").onclick = function() {
                     let contract = document.getElementById("s_delegate_update_contract").value;
-                    main('LogisticsRaw', 'Delegate', `Update,${contract}`, document.getElementById("i_delegate_update_para").value);
+                    main('Logistics', 'Delegate', `Update,${contract}`, document.getElementById("i_delegate_update_para").value);
                 }
 
                 document.getElementById("b_delegate_remove_submit").onclick = function() {
                     let contract = document.getElementById("s_delegate_remove_contract").value;
-                    main('LogisticsRaw', 'Delegate', `Remove,${contract}`, document.getElementById("i_delegate_remove_para").value);
+                    main('Logistics', 'Delegate', `Remove,${contract}`, document.getElementById("i_delegate_remove_para").value);
                 }
 
                 document.getElementById("b_delegate_transfer_submit").onclick = function() {
                     let contract = document.getElementById("s_delegate_transfer_contract").value;
-                    main('LogisticsRaw', 'Delegate', `Transfer,${contract}`, document.getElementById("i_delegate_transfer_para").value);
+                    main('Logistics', 'Delegate', `Transfer,${contract}`, document.getElementById("i_delegate_transfer_para").value);
                 }
 
                 document.getElementById("b_update_submit").onclick = function() {
-                    main('LogisticsRaw', 'Update', document.getElementById("s_update_type").value, document.getElementById("i_update_para").value);
+                    main('Logistics', 'Update', document.getElementById("s_update_type").value, document.getElementById("i_update_para").value);
                 }
 
                 document.getElementById("b_remove_submit").onclick = function() {
-                    main('LogisticsRaw', 'Remove', 'Common', document.getElementById("remove_para").value);
+                    main('Logistics', 'Remove', 'Common', document.getElementById("remove_para").value);
                 }
 
                 document.getElementById("b_invalid_submit").onclick = function() {
-                    main('LogisticsRaw', 'Invalid', 'Common', document.getElementById("invalid_para").value);
+                    main('Logistics', 'Invalid', 'Common', document.getElementById("invalid_para").value);
                 }
 
                 document.getElementById("b_get_info_submit").onclick = function() {
-                    main('LogisticsRaw', 'GetInfo', document.getElementById("s_get_info_type").value, document.getElementById("get_info_para").value);
+                    main('Logistics', 'GetInfo', document.getElementById("s_get_info_type").value, document.getElementById("get_info_para").value);
                 }
 
                 document.getElementById("b_get_number_submit").onclick = function() {
-                    main('LogisticsRaw', 'GetNumber', document.getElementById("s_get_number_type").value, document.getElementById("get_number_para").value);
+                    main('Logistics', 'GetNumber', document.getElementById("s_get_number_type").value, document.getElementById("get_number_para").value);
                 }
 
                 document.getElementById("b_analytics_action_code_submit").onclick = function() {
                     let op = document.getElementById("s_analytics_action_code_op").value;
                     let para = document.getElementById("i_analytics_action_code").value;
-                    main('LogisticsRaw', 'Analytics', 'ActionCode', `${op},${para}`);
+                    main('Logistics', 'Analytics', 'ActionCode', `${op},${para}`);
                 }
 
                 document.getElementById("b_analytics_amount_submit").onclick = function() {
@@ -98,14 +98,14 @@
                     let dest = document.getElementById("s_analytics_amount_dest_country").value;
                     let year = document.getElementById("s_analytics_amount_year").value;
                     let month = document.getElementById("s_analytics_amount_month").value;
-                    main('LogisticsRaw', 'Analytics', 'Amount', `${contract},${direction},${src},${dest},${year},${month}`);
+                    main('Logistics', 'Analytics', 'Amount', `${contract},${direction},${src},${dest},${year},${month}`);
                 }
 
                 document.getElementById("b_analytics_min_submit").onclick = function() {
                     let op = document.getElementById("s_analytics_min_op").value;
                     let type = document.getElementById("s_analytics_min_type").value;
                     let params = document.getElementById("i_analytics_min_params").value;
-                    main('LogisticsRaw', 'AnalyticsMin', op, `${type},${params}`);
+                    main('Logistics', 'AnalyticsMin', op, `${type},${params}`);
                 }
             }
         </script>
@@ -136,40 +136,40 @@
                     <div id="element">
                         <h5>Deploy [logistics_database]</h5>
                         <label id="l_logistics_database" for="logistics_database_file">Upload</label>
-                        <input type="file" id="logistics_database_file" onchange="file('LogisticsRaw', 'LogisticsDatabase', this)" />
-                        <button type="button" id="b_deploy" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsDatabase', '')">Deploy</button>
+                        <input type="file" id="logistics_database_file" onchange="file('Logistics', 'LogisticsDatabase', this)" />
+                        <button type="button" id="b_deploy" onclick="main('Logistics', 'Deploy', 'LogisticsDatabase', '')">Deploy</button>
                         <p id="p_output_deploy_database"></p>
                     </div>
 
                     <div id="element">
                         <h5>Deploy [logistics_core]</h5>
                         <label id="l_logistics_core" for="logistics_core_file">Upload</label>
-                        <input type="file" id="logistics_core_file" onchange="file('LogisticsRaw', 'LogisticsCore', this)" />
-                        <button type="button" id="b_deploy" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsCore', '')">Deploy</button>
+                        <input type="file" id="logistics_core_file" onchange="file('Logistics', 'LogisticsCore', this)" />
+                        <button type="button" id="b_deploy" onclick="main('Logistics', 'Deploy', 'LogisticsCore', '')">Deploy</button>
                         <p id="p_output_deploy_core"></p>
                     </div>                   
 
                     <div id="element">
                         <h5>Deploy [logistics_analytics]</h5>
                         <label id="l_logistics_analytics" for="logistics_analytics_file">Upload</label>
-                        <input type="file" id="logistics_analytics_file" onchange="file('LogisticsRaw', 'LogisticsAnalytics', this)" />
-                        <button type="button" id="b_deploy" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsAnalytics', '')">Deploy</button>
+                        <input type="file" id="logistics_analytics_file" onchange="file('Logistics', 'LogisticsAnalytics', this)" />
+                        <button type="button" id="b_deploy" onclick="main('Logistics', 'Deploy', 'LogisticsAnalytics', '')">Deploy</button>
                         <p id="p_output_deploy_analytics"></p>
                     </div>
 
                     <div id="element">
                         <h5>Deploy [logistics_analytics_min]</h5>
                         <label id="l_logistics_analytics_min" for="logistics_analytics_min_file">Upload</label>
-                        <input type="file" id="logistics_analytics_min_file" onchange="file('LogisticsRaw', 'LogisticsAnalyticsMin', this)" />
-                        <button type="button" id="b_deploy" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsAnalyticsMin', '')">Deploy</button>
+                        <input type="file" id="logistics_analytics_min_file" onchange="file('Logistics', 'LogisticsAnalyticsMin', this)" />
+                        <button type="button" id="b_deploy" onclick="main('Logistics', 'Deploy', 'LogisticsAnalyticsMin', '')">Deploy</button>
                         <p id="p_output_deploy_analytics_min"></p>
                     </div>
 
                     <div id="element">
                         <h5>Deploy [logistics]</h5>
                         <label id="l_logistics" for="logistics_file">Upload</label>
-                        <input type="file" id="logistics_file" onchange="file('LogisticsRaw', 'Logistics', this)" />
-                        <button type="button" id="b_deploy" onclick="main('LogisticsRaw', 'Deploy', 'Logistics', '')">Deploy</button>
+                        <input type="file" id="logistics_file" onchange="file('Logistics', 'Logistics', this)" />
+                        <button type="button" id="b_deploy" onclick="main('Logistics', 'Deploy', 'Logistics', '')">Deploy</button>
                         <p id="p_output_deploy"></p>
                     </div>
                     <div style="clear:left"></div>
@@ -259,11 +259,11 @@
                 <div class="well" id="block">
                     <h4>5. Test</h4>
                     <h5>Common Test(Batch Mode):</h5>
-                    <button type="button" id="b_common_test" onclick="main('LogisticsRaw', 'DummyData', 'Test', 'Create')">Create</button>
-                    <button type="button" id="b_common_test" onclick="main('LogisticsRaw', 'DummyData', 'Test', 'Update')">Update</button>
-                    <button type="button" id="b_common_test" onclick="main('LogisticsRaw', 'Remove', 'Batch', '')">Remove</button>
-                    <button type="button" id="b_common_test" onclick="main('LogisticsRaw', 'Invalid', 'Batch', '')">Invalid</button>
-                    <button type="button" id="b_common_test" onclick="main('LogisticsRaw', 'DebugBrief', '', '')">DebugBrief</button>
+                    <button type="button" id="b_common_test" onclick="main('Logistics', 'DummyData', 'Test', 'Create')">Create</button>
+                    <button type="button" id="b_common_test" onclick="main('Logistics', 'DummyData', 'Test', 'Update')">Update</button>
+                    <button type="button" id="b_common_test" onclick="main('Logistics', 'Remove', 'Batch', '')">Remove</button>
+                    <button type="button" id="b_common_test" onclick="main('Logistics', 'Invalid', 'Batch', '')">Invalid</button>
+                    <button type="button" id="b_common_test" onclick="main('Logistics', 'DebugBrief', '', '')">DebugBrief</button>
                     <p id="p_output_common"></p>
 
                     <h5>Write Test:</h5>
@@ -352,7 +352,7 @@
 
                     <div id="element">
                         <h5>Statistics Parcel Amount:</h5>
-                        <button type="button" id="b_analytics_amount_dummy_data" onclick="main('LogisticsRaw', 'DummyData', 'Analytics', 'Amount')">Dummy Data</button><br><br>
+                        <button type="button" id="b_analytics_amount_dummy_data" onclick="main('Logistics', 'DummyData', 'Analytics', 'Amount')">Dummy Data</button><br><br>
                         Contract:<br>
                         <select id="s_analytics_contract", >
                             <option value="Logistics">Logistics</option>
