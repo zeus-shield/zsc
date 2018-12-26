@@ -1,9 +1,6 @@
 
 import TestSearch from '../test/test_search.js';
-import TestRaw from '../test/test_raw.js';
 import TestLogistics from '../test/test_logistics.js';
-import TestLogisticsRaw from '../test/test_logistics_raw.js';
-import TestAnalysis from '../test/test_analysis.js';
 import TestInsurance from '../test/test_insurance.js';
 import TestDemo from '../test/test_demo.js';
 import Output from './output.js';
@@ -30,28 +27,12 @@ export default function file(module, contractName, input) {
                         test = window.testSearchClass;
                     }
                     break;
-                case 'Raw':
-                    if('undefined' == typeof window.testRawClass) {
-                        test = new TestRaw();
-                        window.testRawClass = test;
-                    } else {
-                        test = window.testRawClass;
-                    }
-                    break;
                 case 'Logistics':
                     if('undefined' == typeof window.testLogisticsClass) {
                         test = new TestLogistics();
                         window.testLogisticsClass = test;
                     } else {
                         test = window.testLogisticsClass;
-                    }
-                    break;
-                case 'LogisticsRaw':
-                    if('undefined' == typeof window.testLogisticsRawClass) {
-                        test = new TestLogisticsRaw();
-                        window.testLogisticsRawClass = test;
-                    } else {
-                        test = window.testLogisticsRawClass;
                     }
                     if ('LogisticsDatabase' == contractName) {
                         elementId = window.outputDeployDatabaseElement;
@@ -63,14 +44,6 @@ export default function file(module, contractName, input) {
                         elementId = window.outputDeployAnalyticsMinElement;
                     } else {
                         elementId = window.outputDeployElement;
-                    }
-                    break;
-                case 'Analysis':
-                    if('undefined' == typeof window.testAnalysisClass) {
-                        test = new TestAnalysis();
-                        window.testAnalysisClass = test;
-                    } else {
-                        test = window.testAnalysisClass;
                     }
                     break;
                 case 'Insurance':
