@@ -84,13 +84,23 @@ contract InsuranceUser is Ownable {
         }
 
         Hashmap(userMgr_).set(userId, bytes32(0), "", user);
+        log2(userId, bytes32(user), bytes32(0));
+
+        bytes32 data0 = bytes32(0);
+        string memory data1 = "";
+        address data2 = address(0);
+        bytes32 key = bytes32(0);
+
+        (key, data0, data1, data2) = Hashmap(userMgr_).get(uint(0));
+        log2(key, bytes32(data2), data0);
+
     }
 
     /** [desc] Get user info.
       * [param] _userId: user id.
       * [return] user info for json data.
       */
-    function get(bytes32 _userId) external view _checkTemplateAddr returns (string) {
+    function get(bytes32 _userId) external _checkTemplateAddr returns (string) {
         // check param
         require(bytes32(0) != _userId);
 
@@ -99,8 +109,10 @@ contract InsuranceUser is Ownable {
         bytes32 data0 = bytes32(0);
         string memory data1 = "";
         address data2 = address(0);
-
+        bytes32 key = bytes32(0);
+        
         (data0, data1, data2) = Hashmap(userMgr_).get(_userId);
+
         address user = data2;
  
         // string memory template = InsuranceTemplate(templateAddr_).get("[DB]User");
