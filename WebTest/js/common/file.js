@@ -5,6 +5,7 @@ import TestLogistics from '../test/test_logistics.js';
 import TestLogisticsRaw from '../test/test_logistics_raw.js';
 import TestAnalysis from '../test/test_analysis.js';
 import TestInsurance from '../test/test_insurance.js';
+import TestDemo from '../test/test_demo.js';
 import Output from './output.js';
 
 export default function file(module, contractName, input) {
@@ -21,7 +22,7 @@ export default function file(module, contractName, input) {
             //alert(this.result);
 
             switch(module) {
-                case 'Search': {
+                case 'Search':
                     if('undefined' == typeof window.testSearchClass) {
                         test = new TestSearch();
                         window.testSearchClass = test;
@@ -29,8 +30,7 @@ export default function file(module, contractName, input) {
                         test = window.testSearchClass;
                     }
                     break;
-                }
-                case 'Raw': {
+                case 'Raw':
                     if('undefined' == typeof window.testRawClass) {
                         test = new TestRaw();
                         window.testRawClass = test;
@@ -38,8 +38,7 @@ export default function file(module, contractName, input) {
                         test = window.testRawClass;
                     }
                     break;
-                }
-                case 'Logistics': {
+                case 'Logistics':
                     if('undefined' == typeof window.testLogisticsClass) {
                         test = new TestLogistics();
                         window.testLogisticsClass = test;
@@ -47,8 +46,7 @@ export default function file(module, contractName, input) {
                         test = window.testLogisticsClass;
                     }
                     break;
-                }
-                case 'LogisticsRaw': {
+                case 'LogisticsRaw':
                     if('undefined' == typeof window.testLogisticsRawClass) {
                         test = new TestLogisticsRaw();
                         window.testLogisticsRawClass = test;
@@ -67,8 +65,7 @@ export default function file(module, contractName, input) {
                         elementId = window.outputDeployElement;
                     }
                     break;
-                }
-                case 'Analysis': {
+                case 'Analysis':
                     if('undefined' == typeof window.testAnalysisClass) {
                         test = new TestAnalysis();
                         window.testAnalysisClass = test;
@@ -76,8 +73,7 @@ export default function file(module, contractName, input) {
                         test = window.testAnalysisClass;
                     }
                     break;
-                }
-                case 'Insurance': {
+                case 'Insurance':
                     if('undefined' == typeof window.testInsuranceClass) {
                         test = new TestInsurance();
                         window.testInsuranceClass = test;
@@ -92,7 +88,19 @@ export default function file(module, contractName, input) {
                         elementId = window.outputDeployElement;
                     }
                     break;
-                }
+                case 'Demo':
+                    if('undefined' == typeof window.testDemoClass) {
+                        test = new TestDemo();
+                        window.testDemoClass = test;
+                    } else {
+                        test = window.testDemoClass;
+                    }
+                    if ('Demo' == contractName) {
+                        elementId = window.outputDeployDemoElement;
+                    } else {
+                        elementId = window.outputDeployElement;
+                    }
+                    break;
                 default:
                     let error = `Module:[${module}] Error!`;
                     alert(error);
