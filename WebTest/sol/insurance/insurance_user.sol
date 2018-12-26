@@ -10,7 +10,7 @@ import "../utillib/LibString.sol";
 import "../common/hashmap.sol";
 
 contract InsuranceTemplate {
-    function getByName(bytes32 _name) external view returns (string);
+    function getByName(bytes32 _name) external view returns (int, string);
 }
 
 contract InsuranceUser is Ownable {
@@ -63,18 +63,18 @@ contract InsuranceUser is Ownable {
         // check param
         require(0 != bytes(_data).length);
 
-        bytes32 userId = bytes32(0);
-        bytes32 param = bytes32(0);
-        string memory value = "";
+        string memory template = "";
+        int error = 0;
+        (error, template) = InsuranceTemplate(templateAddr_).getByName("[DB]User");
+        template.split("#", params_);
 
+        bytes32 userId = bytes32(0);
         address user = new Hashmap();
 
-        string memory template = InsuranceTemplate(templateAddr_).getByName("[DB]User");
-        template.split("#", params_);
         for (uint i=0; i<params_.length; i++) { 
             if (_data.keyExists(params_[i])) {
-                param = params_[i].toBytes32();
-                value = _data.getStringValueByKey(params_[i]);
+                bytes32 param = params_[i].toBytes32();
+                string memory value = _data.getStringValueByKey(params_[i]);
                 Hashmap(user).set(param, bytes32(0), value, address(0));
 
                 if (params_[i].equals("UserId")) {
@@ -84,37 +84,38 @@ contract InsuranceUser is Ownable {
         }
 
         Hashmap(userMgr_).set(userId, bytes32(0), "", user);
-        log2(userId, bytes32(user), bytes32(0));
+    }
 
-        bytes32 data0 = bytes32(0);
-        string memory data1 = "";
-        address data2 = address(0);
-        bytes32 key = bytes32(0);
-
-        (key, data0, data1, data2) = Hashmap(userMgr_).get(uint(0));
-        log2(key, bytes32(data2), data0);
-
+    /** [desc] Get size of users.
+      * [param] none.
+      * [return] size of users.
+      */
+    function size() external view returns (uint) {
+        return Hashmap(userMgr_).size();
     }
 
     /** [desc] Get user info.
       * [param] _userId: user id.
-      * [return] user info for json data.
+      * [return] error code and user info for json data.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: inner error   
       */
-    function get(bytes32 _userId) external _checkTemplateAddr returns (string) {
-        // check param
-        require(bytes32(0) != _userId);
-
-        string memory str = "{";
-
+    function get(bytes32 _userId) external view _checkTemplateAddr returns (int, string) {
+        int error = 0;
         bytes32 data0 = bytes32(0);
         string memory data1 = "";
         address data2 = address(0);
-        bytes32 key = bytes32(0);
-        
-        (data0, data1, data2) = Hashmap(userMgr_).get(_userId);
+
+        (error, data0, data1, data2) = Hashmap(userMgr_).get(_userId);
+        if (0 != error) {
+            return (error, "{}");
+        }
 
         address user = data2;
- 
+        string memory str = "{";
+
         // string memory template = InsuranceTemplate(templateAddr_).get("[DB]User");
         // template.split("#", params_);
         // for (uint i=0; i<params_.length; i++) {
@@ -125,20 +126,22 @@ contract InsuranceUser is Ownable {
         //         str = str.concat(data1.toKeyValue(params_[i]), ",");
         //     }
         // }
-        uint size = Hashmap(user).size();
-        for (uint i=0; i<size; i++) {
+        uint len = Hashmap(user).size();
+        for (uint i=0; i<len; i++) {
             bytes32 param = bytes32(0);
-            (param, data0, data1, data2) = Hashmap(user).get(i);
-            if ((size -1) == i) {
-                str = str.concat(data1.toKeyValue(param.bytes32ToString()));
-            } else {
-                str = str.concat(data1.toKeyValue(param.bytes32ToString()), ",");
+            (error, param, data0, data1, data2) = Hashmap(user).get(i);
+            if (0 == error) {
+                if ((len -1) == i) {
+                    str = str.concat(data1.toKeyValue(param.bytes32ToString()));
+                } else {
+                    str = str.concat(data1.toKeyValue(param.bytes32ToString()), ",");
+                }
             }
         }       
 
         str = str.concat("}");
 
-        return str;
+        return (0, str);
     }
 
     function getTemplateAddr() external view _onlyOwner returns (address) {
