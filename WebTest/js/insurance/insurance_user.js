@@ -58,26 +58,65 @@ export default class InsuranceUser {
         });
     }
 
-    getByName(name, func) {
+    size(func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getByName.estimateGas(name, {from: this[account]}, function(error, result) {
+        contractInstance.size.estimateGas({from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("=============== InsuranceUser.getByName(string) ===============");
+                        console.log("=============== InsuranceUser.size() ===============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("===============================================================");
-                        // call 'InsuranceUser.getByName(string)'
-                        contractInstance.getByName.call(name, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        console.log("====================================================");
+                        // call 'InsuranceUser.size()'
+                        contractInstance.size.call({from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                console.log("[User]: %s", result.toString(10));
+                                if (null != func) {
+                                    func(null, result);
+                                }
+                            } else {
+                                handler[notifyError](error, func);
+                            }
+                        });
+                    } else {
+                        handler[notifyError](error, func);
+                    }
+                });
+            } else {
+                handler[notifyError](error, func);
+            }
+        });
+    }
+
+    getByName(type, name, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.getByName.estimateGas(type, name, {from: this[account]}, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("=============== InsuranceUser.getByName(uint8, string) ===============");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("======================================================================");
+                        // call 'InsuranceUser.getByName(uint8, string)'
+                        contractInstance.getByName.call(type, name, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[User]: %s", result);
                                 if (null != func) {
@@ -97,26 +136,26 @@ export default class InsuranceUser {
         });
     }
 
-    getById(id, func) {
+    getById(type, id, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getById.estimateGas(id, {from: this[account]}, function(error, result) {
+        contractInstance.getById.estimateGas(type, id, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("=============== InsuranceUser.getById(uint) ===============");
+                        console.log("=============== InsuranceUser.getById(uint8, uint) ===============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("===========================================================");
-                        // call 'InsuranceUser.getById(uint)'
-                        contractInstance.getById.call(id, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        console.log("==================================================================");
+                        // call 'InsuranceUser.getById(uint8, uint)'
+                        contractInstance.getById.call(type, id, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[User]: %s", result);
                                 if (null != func) {
