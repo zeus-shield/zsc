@@ -40,4 +40,10 @@ class Index extends Admin {
 		}
 	}	
 
+	public function logout() {
+		$user = model('User');
+		$user->logout();
+		$this->redirect('admin/index/login');
+	}	
+
 }
