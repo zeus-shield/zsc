@@ -316,7 +316,7 @@ export default class TestInsurance {
         let handler = this;
         let tmps = this[getAccount]();
         if (0 == tmps[0]) {
-            Output(window.outputDelegateWriteElement, 'small', 'red', "No channnel(idle)!");
+            Output(window.outputTemplateElement, 'small', 'red', "No channnel(idle)!");
             return;
         }
 
@@ -346,7 +346,7 @@ export default class TestInsurance {
                     handler[transactionProc](error, result, window.outputTemplateElement, null);
                 });
                 break;
-            case "Get":
+            case "GetById":
                 insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
                 insuranceTemplate.getById(params, function(error, id, result) {
                     if (!error) {
@@ -357,8 +357,61 @@ export default class TestInsurance {
                     }
                 });
                 break;
+            case "GetByName":
+                insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
+                insuranceTemplate.getByName(params, function(error, result) {
+                    if (!error) {
+                        Output(window.outputTemplateElement, "small", "red", `[Template]: ${params} => ${result}`);
+                    } else {
+                        Output(window.outputTemplateElement, "small", "red", error);
+                    }
+                });
+                break;
             default:
                 Output(window.outputTemplateElement, "small", "red", "Operation Error!");
+                break;
+        }
+    }
+
+    user(operation, params) {
+        console.log("TestInsurance.user(%s, %s)", operation, params);
+
+        // check param
+        if (("" == operation) || ("" == params)) {
+            Output(window.outputUserElement, "small", "red", "Please input correct input!");
+            return;
+        }
+
+        let handler = this;
+        let tmps = this[getAccount]();
+        if (0 == tmps[0]) {
+            Output(window.outputUserElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = tmps[0];
+        let key = tmps[1];
+
+        let insuranceUser;
+        switch (operation) {
+            case "SignUp":
+                insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
+                insuranceUser.signUp(account, key, params, function(error, result) {
+                    handler[transactionProc](error, result, window.outputUserElement, null);
+                });
+                break;
+            case "Get":
+                insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
+                insuranceUser.get(params, function(error, result) {
+                    if (!error) {
+                        Output(window.outputUserElement, "small", "red", `[User]:<br>${result}`);
+                    } else {
+                        Output(window.outputUserElement, "small", "red", error);
+                    }
+                });
+                break;
+            default:
+                Output(window.outputUserElement, "small", "red", "Operation Error!");
                 break;
         }
     }
@@ -374,6 +427,9 @@ export default class TestInsurance {
                 break;
             case "Template":
                 this.template(para1, para2);
+                break;
+            case "User":
+                this.user(para1, para2);
                 break;
             default:
                 console.log("Operation Error!");
