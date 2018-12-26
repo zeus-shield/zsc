@@ -1,121 +1,436 @@
 <html>
     <head>
-        <!-- <script type="text/javascript" src="../../WebClient/web3.js/dist/web3.js"></script> -->
-        <!--script type="text/javascript" src="require.mini.js" defer async="true" ></script-->
-        <!--script type="text/javascript" src="require.mini.js" data-main="main"></script-->
-        <script type="text/javascript" src="../js/ethereumjs-tx-1.3.7/conv/ethereumjs-tx.min.js"></script>
-        <script type="text/javascript" src="../js/ethereumjs-util-5.2.0/conv/ethereumjs-util.min.js"></script>
-        <script type="text/javascript" src="../js/web3.js-0.20.6/dist/web3.js"></script>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../css/logistics.css">
+<!--         <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> -->
+        <script type="text/javascript" src="../js/lib/ethereumjs-tx-1.3.7/conv/ethereumjs-tx.min.js"></script>
+        <script type="text/javascript" src="../js/lib/ethereumjs-util-5.2.0/conv/ethereumjs-util.min.js"></script>
+        <script type="text/javascript" src="../js/lib/web3.js-0.20.6/dist/web3.js"></script>
         <script type="module" src="../js/main.js"></script>
-        <script type="module" src="../js/file.js"></script>
-        <script type="module" src="../js/provider.js"></script>
-        <style>
-            label {
-                width: 60px;
-                height: 15px;
-                line-height: 15px;
-                text-align: center;
-/*                display: block;*/
-                background: #ccc;
-                border: 5px solid #ccc;
-            }
-            input {
-                display: none;
-            }
-
-            #header {
-                background-color:black;
-                color:white;
-                text-align:center;
-                padding:5px;
-            }
-
-            #section {
-                width:900px;
-                float:left;
-                padding:10px;        
-            }
-
-            #footer {
-                background-color:black;
-                color:white;
-                clear:both;
-                text-align:center;
-                padding:5px;      
-            }
-        </style>
-
+        <script type="module" src="../js/common/file.js"></script>
+        <script type="module" src="../js/common/provider.js"></script>
         <script type="text/javascript">
             window.onload = function () {
-                window.outputProviderElement = 'output_provider';
-                window.outputDeployTrackElement = 'output_deploy_track';
-                window.outputDeployElement = 'output_deploy';
-                window.outputSetupElement = 'output_setup';
-                window.outputOperationElement = 'output_operation';
+                window.outputProviderElement = 'p_output_provider';
+                window.outputDeployDatabaseElement = 'p_output_deploy_database';
+                window.outputDeployCoreElement = 'p_output_deploy_core';
+                window.outputDeployAnalyticsElement = 'p_output_deploy_analytics';
+                window.outputDeployAnalyticsMinElement = 'p_output_deploy_analytics_min';
+                window.outputDeployElement = 'p_output_deploy';
+                window.outputSetupElement = 'p_output_setup';
+                window.outputDelegateWriteElement = 'p_output_delegate_write';
+                window.outputDelegateReadElement = 'p_output_delegate_read';
+                window.outputCommonElement = 'p_output_common';
+                window.outputWriteElement = 'p_output_write';
+                window.outputReadElement = 'p_output_read';
+                window.outputAnalyticsElement = 'p_output_analytics';
+                window.outputAnalyticsMinElement = 'p_output_analytics_min';
+
                 provider(false);
-                document.getElementById('provider').addEventListener('change',function(){
+                document.getElementById("s_provider").addEventListener('change', function(){
                      if('injected' == this.value) {
                         provider(true);
                      } else {
                         provider(false);
                      }
                 },false);
+
+                document.getElementById("b_setup").onclick = function() {
+                    main('LogisticsRaw', 'Setup', 'Set', document.getElementById("s_setup_contract").value);
+                }
+
+                document.getElementById("b_get_sub_contract_addr").onclick = function() {
+                    main('LogisticsRaw', 'Setup', 'Get', document.getElementById("s_get_sub_contract_addr").value);
+                }
+
+                document.getElementById("b_delegate").onclick = function() {
+                    let contract = document.getElementById("s_delegate_debug_contract").value;
+                    main('LogisticsRaw', 'Delegate', `Debug,${contract}`, '');
+                }
+
+                document.getElementById("b_delegate_update_submit").onclick = function() {
+                    let contract = document.getElementById("s_delegate_update_contract").value;
+                    main('LogisticsRaw', 'Delegate', `Update,${contract}`, document.getElementById("i_delegate_update_para").value);
+                }
+
+                document.getElementById("b_delegate_remove_submit").onclick = function() {
+                    let contract = document.getElementById("s_delegate_remove_contract").value;
+                    main('LogisticsRaw', 'Delegate', `Remove,${contract}`, document.getElementById("i_delegate_remove_para").value);
+                }
+
+                document.getElementById("b_delegate_transfer_submit").onclick = function() {
+                    let contract = document.getElementById("s_delegate_transfer_contract").value;
+                    main('LogisticsRaw', 'Delegate', `Transfer,${contract}`, document.getElementById("i_delegate_transfer_para").value);
+                }
+
+                document.getElementById("b_update_submit").onclick = function() {
+                    main('LogisticsRaw', 'Update', document.getElementById("s_update_type").value, document.getElementById("i_update_para").value);
+                }
+
+                document.getElementById("b_remove_submit").onclick = function() {
+                    main('LogisticsRaw', 'Remove', 'Common', document.getElementById("remove_para").value);
+                }
+
+                document.getElementById("b_invalid_submit").onclick = function() {
+                    main('LogisticsRaw', 'Invalid', 'Common', document.getElementById("invalid_para").value);
+                }
+
+                document.getElementById("b_get_info_submit").onclick = function() {
+                    main('LogisticsRaw', 'GetInfo', document.getElementById("s_get_info_type").value, document.getElementById("get_info_para").value);
+                }
+
+                document.getElementById("b_get_number_submit").onclick = function() {
+                    main('LogisticsRaw', 'GetNumber', document.getElementById("s_get_number_type").value, document.getElementById("get_number_para").value);
+                }
+
+                document.getElementById("b_analytics_action_code_submit").onclick = function() {
+                    let op = document.getElementById("s_analytics_action_code_op").value;
+                    let para = document.getElementById("i_analytics_action_code").value;
+                    main('LogisticsRaw', 'Analytics', 'ActionCode', `${op},${para}`);
+                }
+
+                document.getElementById("b_analytics_amount_submit").onclick = function() {
+                    let contract = document.getElementById("s_analytics_contract").value;
+                    let direction = document.getElementById("s_analytics_amount_direction").value;
+                    let src = document.getElementById("s_analytics_amount_src_country").value;
+                    let dest = document.getElementById("s_analytics_amount_dest_country").value;
+                    let year = document.getElementById("s_analytics_amount_year").value;
+                    let month = document.getElementById("s_analytics_amount_month").value;
+                    main('LogisticsRaw', 'Analytics', 'Amount', `${contract},${direction},${src},${dest},${year},${month}`);
+                }
+
+                document.getElementById("b_analytics_min_submit").onclick = function() {
+                    let op = document.getElementById("s_analytics_min_op").value;
+                    let type = document.getElementById("s_analytics_min_type").value;
+                    let params = document.getElementById("i_analytics_min_params").value;
+                    main('LogisticsRaw', 'AnalyticsMin', op, `${type},${params}`);
+                }
             }
         </script>
     </head>
-    <body id="test_logistics_raw">
-<!--         <div id="logistics_raw"> -->
+    <body id="test_logistics_raw_multiple">
 
         <div id="header">
-            <h1>Logistics(Raw) Module</h1>
+            <h1>Logistics Module</h1>
         </div>
 
         <div id="section">
             <p><a href="../index.html" title="Back">Back</a></p>
 
-            <p><h4>1. Please select web3 provider:</h4></p>
             <p>
-                <select id="provider">
-                  <option value ="local">Localhost</option>
-                  <option value ="injected">Injected Web3</option>
-                </select>
-            </p>
-            <p id="output_provider"></p>
-
-<!--             <p><h4>2. [logisticsTrack] Please compile solidity file and upload compiled json file at first, then deploy!</h4></p>
-            <p>
-                <label for="file_track">Upload</label>
-                <input type="file" id="file_track" onchange="file('LogisticsTrackRaw', this)" />
-                <button type="button" id="deploy" onclick="main('LogisticsRaw', 'DeployTrack')">Deploy</button>
-            </p>
-            <p id="output_deploy_track"></p> -->
-
-            <p><h4>2. [Logistics] Please compile solidity file and upload compiled json file at first, then deploy!</h4></p>
-            <p>
-                <label for="file">Upload</label>
-                <input type="file" id="file" onchange="file('LogisticsRaw', this)" />
-                <button type="button" id="deploy" onclick="main('LogisticsRaw', 'Deploy')">Deploy</button>
-            </p>
-            <p id="output_deploy"></p>
-
-<!--             <p><h4>4. Setup</h4></p>
-            <p>
-                <button type="button" id="setup" onclick="main('LogisticsRaw', 'Setup')">Setup</button>
-            </p>
-            <p id="output_setup"></p> -->
-
-            <p><h4>3. Operation</h4></p>
-            <p>
-                <button type="button" id="create" onclick="main('LogisticsRaw', 'Create')">Create</button>
-                <button type="button" id="update" onclick="main('LogisticsRaw', 'Update')">Update</button>
-                <button type="button" id="update" onclick="main('LogisticsRaw', 'Remove')">Remove</button>
-                <button type="button" id="update" onclick="main('LogisticsRaw', 'DebugBrief')">DebugBrief</button>
-                <button type="button" id="get" onclick="main('LogisticsRaw', 'Misc')">Misc</button>
+                <div class="well" id="block">
+                    <h4>1. Please select web3 provider:</h4>
+                    <select id="s_provider">
+                      <option value="local">Localhost</option>
+                      <option value="injected">Injected Web3</option>
+                    </select>
+                    <p id="p_output_provider"></p>
+                </div>
             </p>
 
-            <p id="output_operation"></p>
+            <p>
+                <div class="well" id="block">
+                    <h4>2. Deploy:</h4>
+                    <div id="element">
+                        <h5>Deploy [logistics_database]</h5>
+                        <label id="l_logistics_database" for="logistics_database_file">Upload</label>
+                        <input type="file" id="logistics_database_file" onchange="file('LogisticsRaw', 'LogisticsDatabase', this)" />
+                        <button type="button" id="b_deploy" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsDatabase', '')">Deploy</button>
+                        <p id="p_output_deploy_database"></p>
+                    </div>
+
+                    <div id="element">
+                        <h5>Deploy [logistics_core]</h5>
+                        <label id="l_logistics_core" for="logistics_core_file">Upload</label>
+                        <input type="file" id="logistics_core_file" onchange="file('LogisticsRaw', 'LogisticsCore', this)" />
+                        <button type="button" id="b_deploy" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsCore', '')">Deploy</button>
+                        <p id="p_output_deploy_core"></p>
+                    </div>                   
+
+                    <div id="element">
+                        <h5>Deploy [logistics_analytics]</h5>
+                        <label id="l_logistics_analytics" for="logistics_analytics_file">Upload</label>
+                        <input type="file" id="logistics_analytics_file" onchange="file('LogisticsRaw', 'LogisticsAnalytics', this)" />
+                        <button type="button" id="b_deploy" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsAnalytics', '')">Deploy</button>
+                        <p id="p_output_deploy_analytics"></p>
+                    </div>
+
+                    <div id="element">
+                        <h5>Deploy [logistics_analytics_min]</h5>
+                        <label id="l_logistics_analytics_min" for="logistics_analytics_min_file">Upload</label>
+                        <input type="file" id="logistics_analytics_min_file" onchange="file('LogisticsRaw', 'LogisticsAnalyticsMin', this)" />
+                        <button type="button" id="b_deploy" onclick="main('LogisticsRaw', 'Deploy', 'LogisticsAnalyticsMin', '')">Deploy</button>
+                        <p id="p_output_deploy_analytics_min"></p>
+                    </div>
+
+                    <div id="element">
+                        <h5>Deploy [logistics]</h5>
+                        <label id="l_logistics" for="logistics_file">Upload</label>
+                        <input type="file" id="logistics_file" onchange="file('LogisticsRaw', 'Logistics', this)" />
+                        <button type="button" id="b_deploy" onclick="main('LogisticsRaw', 'Deploy', 'Logistics', '')">Deploy</button>
+                        <p id="p_output_deploy"></p>
+                    </div>
+                    <div style="clear:left"></div>
+                </div>
+            </p>
+
+            <p>
+                <div class="well" id="block">
+                    <h4>3. Setup</h4>
+                    <select id="s_setup_contract">
+                        <option value="Logistics">Logistics</option>
+                        <option value="LogisticsAnalytics">LogisticsAnalytics</option>
+                        <option value="LogisticsCore">LogisticsCore</option>
+                    </select>
+                    <button type="button" id="b_setup">Setup</button><br>
+
+                    <select id="s_get_sub_contract_addr">
+                        <option value="Logistics">Logistics</option>
+                        <option value="LogisticsAnalytics">LogisticsAnalytics</option>
+                        <option value="LogisticsCore">LogisticsCore</option>
+                    </select>
+                    <button type="button" id="b_get_sub_contract_addr">GetSubContractAddress</button>
+                    <p id="p_output_setup"></p>
+                </div>
+            </p>
+
+            <p>
+                <div class="well" id="block">
+                    <h4>4. Delegate</h4>
+                    <select id="s_delegate_debug_contract">
+                        <option value="Logistics">Logistics</option>
+                        <option value="LogisticsAnalytics">LogisticsAnalytics</option>
+                        <option value="LogisticsAnalyticsMin">LogisticsAnalyticsMin</option>
+                        <option value="LogisticsCore">LogisticsCore</option>
+                        <option value="LogisticsDatabase">LogisticsDatabase</option>
+                    </select>
+                    <button type="button" id="b_delegate">Debug</button>
+                    <p id="p_output_delegate_read"></p>
+                    <div id="element">
+                        <h5>Update:</h5>
+                        Select Contract:<br>
+                        <select id="s_delegate_update_contract">
+                            <option value="Logistics">Logistics</option>
+                            <option value="LogisticsAnalytics">LogisticsAnalytics</option>
+                            <option value="LogisticsAnalyticsMin">LogisticsAnalyticsMin</option>
+                            <option value="LogisticsCore">LogisticsCore</option>
+                            <option value="LogisticsDatabase">LogisticsDatabase</option>
+                        </select><br>
+                        Address:<br>
+                        <input type="text" id="i_delegate_update_para"><br>
+                        <button type="button" id="b_delegate_update_submit">Submit</button>
+                    </div>
+                    <div id="element">
+                        <h5>Remove:</h5>
+                        Select Contract:<br>
+                        <select id="s_delegate_remove_contract">
+                            <option value="Logistics">Logistics</option>
+                            <option value="LogisticsAnalytics">LogisticsAnalytics</option>
+                            <option value="LogisticsAnalyticsMin">LogisticsAnalyticsMin</option>
+                            <option value="LogisticsCore">LogisticsCore</option>
+                            <option value="LogisticsDatabase">LogisticsDatabase</option>
+                        </select><br>
+                        Address:<br>
+                        <input type="text" id="i_delegate_remove_para"><br>
+                        <button type="button" id="b_delegate_remove_submit">Submit</button>
+                    </div>
+                    <div id="element">
+                        <h5>Transfer Ownersihp:</h5>
+                        Select Contract:<br>
+                        <select id="s_delegate_transfer_contract">
+                            <option value="Logistics">Logistics</option>
+                            <option value="LogisticsAnalytics">LogisticsAnalytics</option>
+                            <option value="LogisticsAnalyticsMin">LogisticsAnalyticsMin</option>
+                            <option value="LogisticsCore">LogisticsCore</option>
+                            <option value="LogisticsDatabase">LogisticsDatabase</option>
+                        </select><br>
+                        Address:<br>
+                        <input type="text" id="i_delegate_transfer_para"><br>
+                        <button type="button" id="b_delegate_transfer_submit">Submit</button>
+                    </div>
+                    <div style="clear: left"></div>
+                    <p id="p_output_delegate_write"></p>
+                </div>
+            </p>
+
+            <p>
+                <div class="well" id="block">
+                    <h4>5. Test</h4>
+                    <h5>Common Test(Batch Mode):</h5>
+                    <button type="button" id="b_common_test" onclick="main('LogisticsRaw', 'DummyData', 'Test', 'Create')">Create</button>
+                    <button type="button" id="b_common_test" onclick="main('LogisticsRaw', 'DummyData', 'Test', 'Update')">Update</button>
+                    <button type="button" id="b_common_test" onclick="main('LogisticsRaw', 'Remove', 'Batch', '')">Remove</button>
+                    <button type="button" id="b_common_test" onclick="main('LogisticsRaw', 'Invalid', 'Batch', '')">Invalid</button>
+                    <button type="button" id="b_common_test" onclick="main('LogisticsRaw', 'DebugBrief', '', '')">DebugBrief</button>
+                    <p id="p_output_common"></p>
+
+                    <h5>Write Test:</h5>
+                    <div id="element">
+                        <h5>Update Info:</h5>
+                        Select Type:<br>
+                        <select id="s_update_type">
+                            <option value="All">All</option>
+                            <option value="Tracks">Tracks</option>
+                        </select><br>
+                        Params:<br>
+                        <input type="text" id="i_update_para"><br>
+                        <button type="button" id="b_update_submit">Submit</button>
+                    </div>
+                    <div id="element">
+                        <h5>Remove:</h5>
+                        Num:<br>
+                        <input type="text" id="remove_para"><br>
+                        <button type="button" id="b_remove_submit">Submit</button>
+                    </div>
+                    <div id="element">
+                        <h5>Invalid:</h5>
+                        Num:<br>
+                        <input type="text" id="invalid_para"><br>
+                        <button type="button" id="b_invalid_submit">Submit</button>
+                    </div>
+                    <div style="clear: left"></div>
+                    <p id="p_output_write"></p>
+
+                    <h5>Read Test:</h5>
+                    <div id="element">
+                        <h5>Get Info:</h5>
+                        Select Type:<br>
+                        <select id="s_get_info_type">
+                            <option value="LogisticsInfo">LogisticsInfo</option>
+                            <option value="Parcel">Parcel</option>
+                            <option value="ParcelEx">ParcelEx</option>
+                            <option value="Brief">Brief</option>
+                            <option value="BriefEx">BriefEx</option>
+                            <option value="BriefByIndex">BriefByIndex</option>
+                            <option value="BriefExByIndex">BriefExByIndex</option>
+                            <option value="BriefElement">BriefElement</option>
+                            <option value="BriefElementByIndex">BriefElementByIndex</option>
+                            <option value="BriefInvalid">BriefInvalid</option>
+                            <option value="Tracks">Tracks</option>
+                            <option value="TrackElement">TrackElement</option>
+                            <option value="TracksInvalid">TracksInvalid</option>
+                            <option value="Test">Test</option>
+                        </select><br>
+                        Params:<br>
+                        <input type="text" id="get_info_para"><br>
+                        <button type="button" id="b_get_info_submit">Submit</button>
+                    </div>
+                    <div id="element">
+                        <h5>Get Number:</h5>
+                        Select Type:<br>
+                        <select id="s_get_number_type">
+                            <option value="Num">Num</option>
+                            <option value="Tracks">Tracks</option>
+                            <option value="Invalid">Invalid</option>
+                        </select><br>
+                        Params:<br>
+                        <input type="text" id="get_number_para"><br>
+                        <button type="button" id="b_get_number_submit">Submit</button>
+                    </div>
+                    <div style="clear: left"></div>
+                    <p id="p_output_read"></p>
+                </div>
+            </p>
+
+            <p>
+                <div class="well" id="block">
+                    <h4>6. Analytics</h4>
+
+                    <div id="element">
+                        <h5>Config Action Code:</h5>
+                        Select Operation:<br>
+                        <select id="s_analytics_action_code_op">
+                            <option value="Set">Set</option>
+                            <option value="Get">Get</option>
+                        </select><br>
+                        Action Code:<br>
+                        <input type="text" id="i_analytics_action_code"><br>
+                        <button type="button" id="b_analytics_action_code_submit">Submit</button><br>
+                    </div>
+
+                    <div id="element">
+                        <h5>Statistics Parcel Amount:</h5>
+                        <button type="button" id="b_analytics_amount_dummy_data" onclick="main('LogisticsRaw', 'DummyData', 'Analytics', 'Amount')">Dummy Data</button><br><br>
+                        Contract:<br>
+                        <select id="s_analytics_contract", >
+                            <option value="Logistics">Logistics</option>
+                            <option value="LogisticsAnalytics" selected="selected">LogisticsAnalytics</option>
+                        </select><br>
+                        Direction:<br>
+                        <select id="s_analytics_amount_direction", >
+                            <option value="0">Sent</option>
+                            <option value="1">Received</option>
+                        </select><br>
+                        Country(src):<br>
+                        <select id="s_analytics_amount_src_country", >
+                            <option value="0">All</option>
+                            <option value="156" selected="selected">China</option>
+                            <option value="250">France</option>
+                            <option value="840">USA</option>
+                            <option value="643">Russia</option>
+                        </select><br>
+                        Country(dest):<br>
+                        <select id="s_analytics_amount_dest_country">
+                            <option value="0">All</option>
+                            <option value="156" >China</option>
+                            <option value="250">France</option>
+                            <option value="840">USA</option>
+                            <option value="643" selected="selected">Russia</option>
+                        </select><br>
+                        Year/Month:<br>
+                        <select id="s_analytics_amount_year">
+                            <option value="2018">2018</option>
+                            <option value="0">All</option>
+                        </select>
+                        <select id="s_analytics_amount_month">
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12" selected="selected">December</option>
+                        </select><br>
+                        <button type="button" id="b_analytics_amount_submit">Submit</button>
+                    </div>
+                    <div style="clear: left"></div>
+                    <p id="p_output_analytics"></p>
+                </div>
+            </p>
+
+            <p>
+                <div class="well" id="block">
+                    <h4>7. Analytics Min</h4>
+
+                    <div id="element">
+                        Select Operation:<br>
+                        <select id="s_analytics_min_op">
+                            <option value="Update">Update</option>
+                            <option value="Get">Get</option>
+                        </select><br>
+                        Select Type:<br>
+                        <select id="s_analytics_min_type">
+                            <option value="Country">Country</option>
+                            <option value="City">City</option>
+                        </select><br>
+                        Params:<br>
+                        <input type="text" id="i_analytics_min_params"><br>
+                        <button type="button" id="b_analytics_min_submit">Submit</button><br>
+                    </div>
+
+                    <div style="clear: left"></div>
+                    <p id="p_output_analytics_min"></p>
+                </div>
+            </p>
+
         </div>
-
-        <div id="footer">Copyright ? deduotech.com</div>
+    </div> 
     </body>
 </html>
