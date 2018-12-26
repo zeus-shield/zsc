@@ -39,11 +39,11 @@ contract InsuranceUser is Ownable {
         selfdestruct(owner_);   
     }
 
-    /** [desc] Get user info.
+    /** [desc] Get user detail info.
       * [param] _user: user info address.
       * [return] user info for json data.
       */
-    function _getUserInfo(address _user) private view returns (string) {
+    function _getUserDetailInfo(address _user) private view returns (string) {
         string memory str = "{";
 
         uint len = Hashmap(_user).size();
@@ -64,6 +64,23 @@ contract InsuranceUser is Ownable {
         }
 
         str = str.concat("}");
+
+        return str;
+    }
+
+    /** [desc] Get user brief info.
+      * [param] _name: user name.
+      * [param] _user: user info address.
+      * [return] user info for json data.
+      */
+    function _getUserBriefInfo(bytes32 _name, address _user) private pure returns (string) {
+        string memory str = "{";
+        string memory user = "0x";
+
+        user = user.concat(_user.addrToAsciiString());
+
+        str = str.concat(_name.bytes32ToString().toKeyValue("Name"), ",");
+        str = str.concat(user.toKeyValue("Address"), "}");
 
         return str;
     }
@@ -130,6 +147,7 @@ contract InsuranceUser is Ownable {
     }
 
     /** [desc] Get user info by name.
+      * [param] _type: info type (0: detail, 1: brief).
       * [param] _name: user name.
       * [return] error code and user info for json data.
       *           0: success
@@ -137,7 +155,12 @@ contract InsuranceUser is Ownable {
       *          -2: no data
       *          -3: inner error   
       */
-    function getByName(string _name) external view returns (int, string) {
+    function getByName(uint8 _type, string _name) external view returns (int, string) {
+        // check param
+        if ((1 < _type) || (0 == bytes(_name).length)) {
+            return (-1, "{}");
+        }
+
         int error = 0;
         bytes32 data0 = bytes32(0);
         string memory data1 = "";
@@ -149,11 +172,18 @@ contract InsuranceUser is Ownable {
             return (error, "{}");
         }
 
-        string memory str = _getUserInfo(data2);
+        string memory str = "";
+        if (0 == _type) {
+            str = _getUserDetailInfo(data2);
+        } else {
+            str = _getUserBriefInfo(name, data2);
+        }
+
         return (0, str);
     }
 
     /** [desc] Get user info by id.
+      * [param] _type: info type (0: detail, 1: brief).
       * [param] _name: user id.
       * [return] error code and user info for json data.
       *           0: success
@@ -161,7 +191,12 @@ contract InsuranceUser is Ownable {
       *          -2: no data
       *          -3: inner error   
       */
-    function getById(uint id) external view returns (int, string) {
+    function getById(uint8 _type, uint id) external view returns (int, string) {
+        // check param
+        if ((1 < _type) || (this.size() <= id)) {
+            return (-1, "{}");
+        }
+
         int error = 0;
         bytes32 name = bytes32(0);
         bytes32 data0 = bytes32(0);
@@ -173,7 +208,14 @@ contract InsuranceUser is Ownable {
             return (error, "{}");
         }
 
-        string memory str =_getUserInfo(data2);
+        string memory str = "";
+
+        if (0 == _type) {
+            str = _getUserDetailInfo(data2);
+        } else {
+            str = _getUserBriefInfo(name, data2);
+        }
+
         return (0, str);
     }
 
