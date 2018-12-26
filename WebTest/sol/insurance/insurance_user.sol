@@ -66,6 +66,7 @@ contract InsuranceUser is Ownable {
         string memory template = "";
         int error = 0;
         (error, template) = InsuranceTemplate(templateAddr_).getByName("[DB]User");
+        require(0 == error);
         template.split("#", params_);
 
         bytes32 userId = bytes32(0);
@@ -102,13 +103,14 @@ contract InsuranceUser is Ownable {
       *          -2: no data
       *          -3: inner error   
       */
-    function get(bytes32 _userId) external view _checkTemplateAddr returns (int, string) {
+    function get(string _userId) external view _checkTemplateAddr returns (int, string) {
         int error = 0;
         bytes32 data0 = bytes32(0);
         string memory data1 = "";
         address data2 = address(0);
+        bytes32 userId = _userId.toBytes32();
 
-        (error, data0, data1, data2) = Hashmap(userMgr_).get(_userId);
+        (error, data0, data1, data2) = Hashmap(userMgr_).get(userId);
         if (0 != error) {
             return (error, "{}");
         }
