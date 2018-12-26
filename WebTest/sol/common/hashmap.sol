@@ -116,21 +116,40 @@ contract Hashmap is Ownable {
 
     /** [desc] Get data by key.
       * [param] _key: key using for mapping data.
-      * [return] data.
+      * [return] error code and data.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: inner error   
       */
-    function get(bytes32 _key) external view _onlyOwner returns (bytes32, string, address) {
-        require(exists_[_key]);
-        return (datas_[_key].data0_, datas_[_key].data1_, datas_[_key].data2_);
+    function get(bytes32 _key) external view _onlyOwner returns (int, bytes32, string, address) {
+        if (!exists_[_key]) {
+            return (-2, bytes32(0), "", address(0));
+        }
+        return (0, datas_[_key].data0_, datas_[_key].data1_, datas_[_key].data2_);
     }
 
     /** [desc] Get data by id.
       * [param] _id: id of data.
-      * [return] key and data.
+      * [return] error code and key/data.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: inner error   
       */
-    function get(uint _id) external view _onlyOwner returns (bytes32, bytes32, string, address) {
-        require(_id < sum_);
-        require(exists_[keys_[_id]]);
-        require(ids_[keys_[_id]] == _id);
-        return (keys_[_id], datas_[keys_[_id]].data0_, datas_[keys_[_id]].data1_, datas_[keys_[_id]].data2_);
+    function get(uint _id) external view _onlyOwner returns (int, bytes32, bytes32, string, address) {
+        if (_id >= sum_) {
+            return (-1, bytes32(0), bytes32(0), "", address(0));
+        }
+
+        if (!exists_[keys_[_id]]) {
+            return (-2, bytes32(0), bytes32(0), "", address(0));
+        }
+
+        if (ids_[keys_[_id]] != _id) {
+            return (-3, bytes32(0), bytes32(0), "", address(0));
+        }
+
+        return (0, keys_[_id], datas_[keys_[_id]].data0_, datas_[keys_[_id]].data1_, datas_[keys_[_id]].data2_);
     }
 }
