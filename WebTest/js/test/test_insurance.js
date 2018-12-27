@@ -8,6 +8,7 @@ import Transaction from "../common/transaction_raw.js";
 import Delegate from "../common/delegate.js";
 import InsuranceTemplate from "../insurance/insurance_template.js";
 import InsuranceUser from "../insurance/insurance_user.js";
+import InsurancePolicy from "../insurance/insurance_policy.js";
 
 //private member
 const compiledJson = Symbol("compiledJson");
@@ -17,6 +18,9 @@ const templateContractAddress = Symbol("templateContractAddress");
 
 const userAbi = Symbol("userAbi");
 const userContractAddress = Symbol("userContractAddress");
+
+const policyAbi = Symbol("policyAbi");
+const policyContractAddress = Symbol("policyContractAddress");
 
 //private function
 const getAccount = Symbol("getAccount");
@@ -32,9 +36,11 @@ export default class TestInsurance {
 
         this[templateAbi] = [];
         this[userAbi] = [];
+        this[policyAbi] = [];
 
         this[templateContractAddress] = "";
         this[userContractAddress] = "";
+        this[policyContractAddress] = "";
     }
 
     [getAccount]() { 
@@ -120,6 +126,8 @@ export default class TestInsurance {
             elementId = window.outputDeployTemplateElement;
         } else if ("InsuranceUser" == contractName) {
             elementId = window.outputDeployUserElement;
+        } else if ("InsurancePolicy" == contractName) {
+            elementId = window.outputDeployPolicyElement;
         } else {
             console.log("Contract name Error!");
             return;
@@ -170,6 +178,9 @@ export default class TestInsurance {
         } else if ("InsuranceUser" == contractName) {
             this[userAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
             contract = web3.eth.contract(this[userAbi]);
+        } else if ("InsurancePolicy" == contractName) {
+            this[policyAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
+            contract = web3.eth.contract(this[policyAbi]);
         } else {
             console.log("Contract name Error!");
             return;
@@ -189,6 +200,8 @@ export default class TestInsurance {
                                 handler[templateContractAddress] = result.contractAddress;
                             } else if ("InsuranceUser" == contractName) {
                                 handler[userContractAddress] = result.contractAddress;
+                            } else if ("InsurancePolicy" == contractName) {
+                                handler[policyContractAddress] = result.contractAddress;
                             } else {
                                 console.log("Contract name Error!");
                                 return;
@@ -225,6 +238,11 @@ export default class TestInsurance {
                     insuranceUser.setup(account, privateKey, this[templateContractAddress], function(error, result) {
                         handler[transactionProc](error, result, window.outputSetupElement);
                     });
+                } else if ("InsurancePolicy" == contractName) {
+                    let insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
+                    insurancePolicy.setup(account, privateKey, this[templateContractAddress], function(error, result) {
+                        handler[transactionProc](error, result, window.outputSetupElement);
+                    });
                 } else {
                     Output(window.outputSetupElement, 'small', 'red', "Contract name Error!");
                 }
@@ -233,6 +251,15 @@ export default class TestInsurance {
                 if ("InsuranceUser" == contractName) {
                     let insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
                     insuranceUser.getTemplateAddr(function(error, result) {
+                        if (!error) {
+                            Output(window.outputSetupElement, 'small', 'red', `[CoreContractAddress]: ${result}`);
+                        } else {
+                            Output(window.outputSetupElement, 'small', 'red', error);
+                        }
+                    });
+                } else if ("InsurancePolicy" == contractName) {
+                    let insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
+                    insurancePolicy.getTemplateAddr(function(error, result) {
                         if (!error) {
                             Output(window.outputSetupElement, 'small', 'red', `[CoreContractAddress]: ${result}`);
                         } else {
@@ -497,6 +524,110 @@ export default class TestInsurance {
         }
     }
 
+    policy(operation, params) {
+        console.log("TestInsurance.policy(%s, %s)", operation, params);
+
+        // check param
+        if (("" == operation) || ("" == params)) {
+            Output(window.outputPolicyElement, "small", "red", "Please input correct input!");
+            return;
+        }
+
+        let handler = this;
+        let tmps = this[getAccount]();
+        if (0 == tmps[0]) {
+            Output(window.outputPolicyElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = tmps[0];
+        let privateKey = tmps[1];
+
+        let insurancePolicy;
+        switch (operation) {
+            case "Debug":
+                insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
+                insurancePolicy.size(function(error, result) {
+                    if (!error) {
+                        let sum = parseInt(result.toString(10));
+                        let logs = new Array(sum);
+                        let count = 0;
+
+                        if (0 == sum) {
+                            Output(window.outputPolicyElement, "small", "red", "No Data!");
+                            return;
+                        }
+
+                        for (let i=0; i<sum; i++) {
+                            insurancePolicy.getById(params, i, function(error, id, result) {
+                                if (!error) {
+                                    let errorStr = handler[getErrorStr](result[0].toString(10));
+                                    logs[id] = `[User${id}]: (${errorStr}) ${result[1]}`;
+                                    count ++;
+                                    if (count == sum) {
+                                        let str = "";
+                                        for (let j=0; j<logs.length; j++) {
+                                            str = str.concat(`${logs[j]}<br>`);
+                                        }
+                                        Output(window.outputPolicyElement, 'small', 'red', str);
+                                    }
+                                } else {
+                                    Output(window.outputPolicyElement, 'small', 'red', `[Template${id}]:</br>${error}`);
+                                }
+                            })
+                        }
+                    } else {
+                        Output(window.outputPolicyElement, "small", "red", error);
+                    }
+                })                
+                break;
+            case "Submit":
+                tmps = params.split("#");
+                insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
+                insurancePolicy.submit(account, privateKey, tmps[0], tmps[1], function(error, result) {
+                    handler[transactionProc](error, result, window.outputPolicyElement, null);
+                });
+                break;
+            case "Size":
+                insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
+                insurancePolicy.size(function(error, result) {
+                    if (!error) {
+                        Output(window.outputPolicyElement, "small", "red", `[Size]: ${result.toString(10)}`);
+                    } else {
+                        Output(window.outputPolicyElement, "small", "red", error);
+                    }
+                });
+                break;
+            case "GetByKey":
+                tmps = params.split(",");
+                insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
+                insurancePolicy.getByKey(tmps[0], tmps[1], function(error, result) {
+                    if (!error) {
+                        let errorStr = handler[getErrorStr](result[0].toString(10));
+                        Output(window.outputPolicyElement, "small", "red", `[User]:<br>(${errorStr}) ${result[1]}`);
+                    } else {
+                        Output(window.outputPolicyElement, "small", "red", error);
+                    }
+                });
+                break;
+            case "GetById":
+                tmps = params.split(",");
+                insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
+                insurancePolicy.getById(tmps[0], tmps[1], function(error, id, result) {
+                    if (!error) {
+                        let errorStr = handler[getErrorStr](result[0].toString(10));
+                        Output(window.outputPolicyElement, "small", "red", `[User${id}]:<br>(${errorStr}) ${result[1]}`);
+                    } else {
+                        Output(window.outputPolicyElement, "small", "red", error);
+                    }
+                });
+                break;
+            default:
+                Output(window.outputPolicyElement, "small", "red", "Operation Error!");
+                break;
+        }
+    }
+
     do(operation, para1, para2) {
         console.log("TestInsurance.do(%s, %s, %s)", operation, para1, para2);
         switch(operation) {
@@ -509,8 +640,11 @@ export default class TestInsurance {
             case "Template":
                 this.template(para1, para2);
                 break;
-            case "User":
+            case "User" :
                 this.user(para1, para2);
+                break;
+            case "Policy":
+                this.policy(para1, para2);
                 break;
             default:
                 console.log("Operation Error!");
