@@ -44,7 +44,7 @@ contract InsuranceUser is Ownable {
       * [param] _user: user info address.
       * [return] user info for json data.
       */
-    function _getUserDetailInfo(address _user) private view returns (string) {
+    function _getDetailInfo(address _user) private view returns (string) {
         string memory str = "{";
 
         uint len = Hashmap(_user).size();
@@ -74,7 +74,7 @@ contract InsuranceUser is Ownable {
       * [param] _user: user info address.
       * [return] user info for json data.
       */
-    function _getUserBriefInfo(string _key, address _user) private pure returns (string) {
+    function _getBriefInfo(string _key, address _user) private pure returns (string) {
         string memory str = "{";
         string memory user = "0x";
 
@@ -173,9 +173,9 @@ contract InsuranceUser is Ownable {
 
         string memory str = "";
         if (0 == _type) {
-            str = _getUserDetailInfo(user);
+            str = _getDetailInfo(user);
         } else {
-            str = _getUserBriefInfo(_key, user);
+            str = _getBriefInfo(_key, user);
         }
 
         return (0, str);
@@ -209,9 +209,9 @@ contract InsuranceUser is Ownable {
         string memory str = "";
 
         if (0 == _type) {
-            str = _getUserDetailInfo(user);
+            str = _getDetailInfo(user);
         } else {
-            str = _getUserBriefInfo(key, user);
+            str = _getBriefInfo(key, user);
         }
 
         return (0, str);
