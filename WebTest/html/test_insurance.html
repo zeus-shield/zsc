@@ -39,25 +39,36 @@
                 }
 
                 document.getElementById("b_template_batch_up").onclick = function() {
-                    let type = document.getElementById("s_template_type").value;
-                    main("Insurance", "Template", "Batch", `Update,${type}`);
+                    main("Insurance", "Template", "Batch", "Update");
                 }
 
-                document.getElementById("b_template_batch_debug").onclick = function() {
-                    let type = document.getElementById("s_template_type").value;
-                    main("Insurance", "Template", "Batch", `Debug,${type}`);
+                document.getElementById("b_template_debug").onclick = function() {
+                    main("Insurance", "Template", "Debug", "");
                 }
 
-                document.getElementById("b_template_submit").onclick = function() {
-                    let op = document.getElementById("s_template_op").value;
-                    let params = document.getElementById("i_template_params").value;
+                document.getElementById("b_template_write_submit").onclick = function() {
+                    let op = document.getElementById("s_template_write_op").value;
+                    let params = document.getElementById("i_template_write_params").value;
                     main("Insurance", "Template", op, params);
                 }
 
-                document.getElementById("b_user_submit").onclick = function() {
-                    let op = document.getElementById("s_user_op").value;
-                    let params = document.getElementById("i_user_params").value;
+                document.getElementById("b_template_read_submit").onclick = function() {
+                    let op = document.getElementById("s_template_read_op").value;
+                    let params = document.getElementById("i_template_read_params").value;
+                    main("Insurance", "Template", op, params);
+                }
+
+                document.getElementById("b_user_write_submit").onclick = function() {
+                    let op = document.getElementById("s_user_write_op").value;
+                    let params = document.getElementById("i_user_write_params").value;
                     main("Insurance", "User", op, params);
+                }
+
+                document.getElementById("b_user_read_submit").onclick = function() {
+                    let op = document.getElementById("s_user_read_op").value;
+                    let type = document.getElementById("s_user_read_type").value;
+                    let params = document.getElementById("i_user_read_params").value;
+                    main("Insurance", "User", op, `${type},${params}`);
                 }
             }
         </script>
@@ -122,25 +133,27 @@
             <p>
                 <div class="well" id="block">
                     <h4>4. Template</h4>
+                    <button type="button" id="b_template_debug">Debug</button>
+                    <button type="button" id="b_template_batch_up">Update(Batch)</button><br><br>
                     <div id="element">
-                        Batch Test:<br>
-                        Select Type
-                        <select id="s_template_type">
-                            <option value="User">User</option>
+                        Select Operation(Write):<br>
+                        <select id="s_template_write_op">
+                            <option value="Update">Update</option>
                         </select><br>
-                        <button type="button" id="b_template_batch_up">Update</button>
-                        <button type="button" id="b_template_batch_debug">Debug</button>
+                        Params:<br>
+                        <input type="text" id="i_template_write_params"><br>
+                        <button type="button" id="b_template_write_submit">Submit</button>
                     </div>
                     <div id="element">
-                        Select Operation:<br>
-                        <select id="s_template_op">
-                            <option value="Update">Update</option>
+                        Select Operation(Read):<br>
+                        <select id="s_template_read_op">
+                            <option value="Size">Size</option>
                             <option value="GetById">GetById</option>
                             <option value="GetByName">GetByName</option>
                         </select><br>
                         Params:<br>
-                        <input type="text" id="i_template_params"><br>
-                        <button type="button" id="b_template_submit">Submit</button>
+                        <input type="text" id="i_template_read_params"><br>
+                        <button type="button" id="b_template_read_submit">Submit</button>
                     </div>
                     <div style="clear: left"></div>
                     <p id="p_output_template"></p>
@@ -151,14 +164,29 @@
                 <div class="well" id="block">
                     <h4>4. User</h4>
                     <div id="element">
-                        Select Operation:<br>
-                        <select id="s_user_op">
+                        Select Operation(Write):<br>
+                        <select id="s_user_write_op">
                             <option value="SignUp">SignUp</option>
-                            <option value="Get">Get</option>
                         </select><br>
                         Params:<br>
-                        <input type="text" id="i_user_params"><br>
-                        <button type="button" id="b_user_submit">Submit</button>
+                        <input type="text" id="i_user_write_params"><br>
+                        <button type="button" id="b_user_write_submit">Submit</button>
+                    </div>
+                    <div id="element">
+                        Select Operation(Read):<br>
+                        <select id="s_user_read_op">
+                            <option value="Size">Size</option>
+                            <option value="GetByName">GetByName</option>
+                            <option value="GetById">GetById</option>
+                        </select><br>
+                        Select Type:<br>
+                        <select id="s_user_read_type">
+                            <option value="0">Detail</option>
+                            <option value="1">Brief</option>
+                        </select><br>
+                        Params:<br>
+                        <input type="text" id="i_user_read_params"><br>
+                        <button type="button" id="b_user_read_submit">Submit</button>
                     </div>
                     <div style="clear: left"></div>
                     <p id="p_output_user"></p>

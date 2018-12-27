@@ -6,7 +6,7 @@ import Logistics from '../logistics/logistics.js';
 import LogisticsAnalytics from '../logistics/logistics_analytics.js';
 import LogisticsAnalyticsMin from '../logistics/logistics_analytics_min.js';
 import LogisticsCore from '../logistics/logistics_core.js';
-import LogisticsTestData from './test_logistics_raw_data.js';
+import LogisticsTestData from './test_logistics_data.js';
 
 //private member
 const compiledJson = Symbol('compiledJson');
