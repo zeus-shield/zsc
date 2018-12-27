@@ -28,6 +28,7 @@ contract InsuranceUser is Ownable {
 
     constructor() public {
         userMgr_ = new Hashmap();
+        templateAddr_ = address(0);
     }
 
     /** [desc] Kill the contract.
@@ -86,6 +87,12 @@ contract InsuranceUser is Ownable {
         return str;
     }
 
+    /** [desc] This unnamed function is called whenever someone tries to send ether to it.
+      * [param] none.
+      * [return] none.
+      */
+    function() external payable { revert(); }
+
     /** [desc] Setup.
       * [param] _templateAddr: template contract address.
       * [return] none.
@@ -95,12 +102,6 @@ contract InsuranceUser is Ownable {
         require(0 != _templateAddr);
         templateAddr_ = _templateAddr;
     }
-
-    /** [desc] This unnamed function is called whenever someone tries to send ether to it.
-      * [param] none.
-      * [return] none.
-      */
-    function() external payable { revert(); }
 
     /** [desc] User sign up.
       * [param] _data: json data.
@@ -126,7 +127,7 @@ contract InsuranceUser is Ownable {
                 string memory value = _data.getStringValueByKey(params_[i]);
                 Hashmap(user).set(param, bytes32(0), value, address(0), uint(0));
 
-                if (params_[i].equals("Name")) {
+                if (params_[i].equals("Key")) {
                     name = value.toBytes32();
                 }
 
