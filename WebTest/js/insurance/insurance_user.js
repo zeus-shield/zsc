@@ -157,9 +157,9 @@ export default class InsuranceUser {
                         // call 'InsuranceUser.getById(uint8, uint)'
                         contractInstance.getById.call(type, id, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                console.log("[User]: %s", result);
+                                console.log("[User%s]: %s", id, result.toString(10));
                                 if (null != func) {
-                                    func(null, result);
+                                    func(null, id, result);
                                 }
                             } else {
                                 handler[notifyError](error, func);
