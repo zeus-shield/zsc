@@ -39,7 +39,7 @@ contract InsuranceTemplate is Ownable {
     function update(string _key, string _data) external _onlyOwner {
         // check param
         require(0 != bytes(_key).length);
-        Hashmap(tempMgr_).set(_key, bytes32(0), _data, address(0), uint(0));
+        Hashmap(tempMgr_).set(_key, _data, address(0), uint(0));
     }
 
     /** [desc] Get size of templates.
@@ -66,14 +66,13 @@ contract InsuranceTemplate is Ownable {
 
         int error = 0;
         string memory key = "";
-        bytes32 data0 = bytes32(0);
-        string memory data1 = "";
-        address data2 = address(0);
-        uint data3 = uint(0);
+        string memory value = "";
+        address data1 = address(0);
+        uint data2 = uint(0);
 
-        (error, key, data0, data1, data2, data3) = Hashmap(tempMgr_).get(_id);
+        (error, key, value, data1, data2) = Hashmap(tempMgr_).get(_id);
         
-        return (error, key, data1);
+        return (error, key, value);
     }
 
     /** [desc] Get template by key.
@@ -86,13 +85,12 @@ contract InsuranceTemplate is Ownable {
       */
     function getByKey(string _key) external view returns (int, string) {
         int error = 0;
-        bytes32 data0 = bytes32(0);
-        string memory data1 = "";
-        address data2 = address(0);
-        uint data3 = uint(0);
+        string memory value = "";
+        address data1 = address(0);
+        uint data2 = uint(0);
 
-        (error, data0, data1, data2, data3) = Hashmap(tempMgr_).get(_key);
+        (error, value, data1, data2) = Hashmap(tempMgr_).get(_key);
         
-        return (error, data1);
+        return (error, value);
     }
 }
