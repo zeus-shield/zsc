@@ -10,7 +10,7 @@ import "../utillib/LibString.sol";
 import "../common/hashmap.sol";
 
 contract InsuranceTemplate {
-    function getByName(bytes32 _name) external view returns (int, string);
+    function getByKey(string _key) external view returns (int, string);
 }
 
 contract InsuranceUser is Ownable {
@@ -19,7 +19,7 @@ contract InsuranceUser is Ownable {
 
     address private userMgr_;
     address private templateAddr_;
-    string[] private params_;
+    string[] private keys_;
 
     modifier _checkTemplateAddr() {
         require(0 != templateAddr_);
@@ -50,17 +50,17 @@ contract InsuranceUser is Ownable {
         uint len = Hashmap(_user).size();
         for (uint i=0; i<len; i++) {
             int error = 0;
-            bytes32 param = bytes32(0);
+            string memory key = "";
             bytes32 data0 = bytes32(0);
             string memory value = "";
             address data2 = address(0);
             uint data3 = uint(0);
-            (error, param, data0, value, data2, data3) = Hashmap(_user).get(i);
+            (error, key, data0, value, data2, data3) = Hashmap(_user).get(i);
             if (0 == error) {
                 if ((len -1) == i) {
-                    str = str.concat(value.toKeyValue(param.bytes32ToString()));
+                    str = str.concat(value.toKeyValue(key));
                 } else {
-                    str = str.concat(value.toKeyValue(param.bytes32ToString()), ",");
+                    str = str.concat(value.toKeyValue(key), ",");
                 }
             }
         }
@@ -71,17 +71,17 @@ contract InsuranceUser is Ownable {
     }
 
     /** [desc] Get user brief info.
-      * [param] _name: user name.
+      * [param] _key: user key.
       * [param] _user: user info address.
       * [return] user info for json data.
       */
-    function _getUserBriefInfo(bytes32 _name, address _user) private pure returns (string) {
+    function _getUserBriefInfo(string _key, address _user) private pure returns (string) {
         string memory str = "{";
         string memory user = "0x";
 
         user = user.concat(_user.addrToAsciiString());
 
-        str = str.concat(_name.bytes32ToString().toKeyValue("Name"), ",");
+        str = str.concat(_key.toKeyValue("Key"), ",");
         str = str.concat(user.toKeyValue("Address"), "}");
 
         return str;
@@ -107,28 +107,28 @@ contract InsuranceUser is Ownable {
       * [param] _data: json data.
       * [return] none.
       */
-    function signUp(string _data) external _onlyOwner _checkTemplateAddr {
+    // function signUp(string _data) external _onlyOwner _checkTemplateAddr {
+    function signUp(string _data) external _checkTemplateAddr {
         // check param
         require(0 != bytes(_data).length);
 
         string memory template = "";
         int error = 0;
-        (error, template) = InsuranceTemplate(templateAddr_).getByName("[DB]User");
+        (error, template) = InsuranceTemplate(templateAddr_).getByKey("[DB]User");
         require(0 == error);
-        template.split("#", params_);
+        template.split("#", keys_);
 
         bool valid = false;
-        bytes32 name = bytes32(0);
+        string memory key = "";
         address user = new Hashmap();
 
-        for (uint i=0; i<params_.length; i++) { 
-            if (_data.keyExists(params_[i])) {
-                bytes32 param = params_[i].toBytes32();
-                string memory value = _data.getStringValueByKey(params_[i]);
-                Hashmap(user).set(param, bytes32(0), value, address(0), uint(0));
+        for (uint i=0; i<keys_.length; i++) { 
+            if (_data.keyExists(keys_[i])) {
+                string memory value = _data.getStringValueByKey(keys_[i]);
+                Hashmap(user).set(keys_[i], bytes32(0), value, address(0), uint(0));
 
-                if (params_[i].equals("Key")) {
-                    name = value.toBytes32();
+                if (keys_[i].equals("Key")) {
+                    key = value;
                 }
 
                 valid = true;
@@ -137,7 +137,7 @@ contract InsuranceUser is Ownable {
 
         require(valid);
 
-        Hashmap(userMgr_).set(name, bytes32(0), "", user, uint(0));
+        Hashmap(userMgr_).set(key, bytes32(0), "", user, uint(0));
     }
 
     /** [desc] Get size of users.
@@ -148,18 +148,18 @@ contract InsuranceUser is Ownable {
         return Hashmap(userMgr_).size();
     }
 
-    /** [desc] Get user info by name.
+    /** [desc] Get user info by key.
       * [param] _type: info type (0: detail, 1: brief).
-      * [param] _name: user name.
+      * [param] _key: user key.
       * [return] error code and user info for json data.
       *           0: success
       *          -1: params error
       *          -2: no data
       *          -3: inner error   
       */
-    function getByName(uint8 _type, string _name) external view returns (int, string) {
+    function getByKey(uint8 _type, string _key) external view returns (int, string) {
         // check param
-        if ((1 < _type) || (0 == bytes(_name).length)) {
+        if ((1 < _type) || (0 == bytes(_key).length)) {
             return (-1, "{}");
         }
 
@@ -167,9 +167,8 @@ contract InsuranceUser is Ownable {
         bytes32 data0 = bytes32(0);
         string memory data1 = "";
         address user = address(0);
-        bytes32 name = _name.toBytes32();
         uint data3 = uint(0);
-        (error, data0, data1, user, data3) = Hashmap(userMgr_).get(name);
+        (error, data0, data1, user, data3) = Hashmap(userMgr_).get(_key);
         if (0 != error) {
             return (error, "{}");
         }
@@ -178,7 +177,7 @@ contract InsuranceUser is Ownable {
         if (0 == _type) {
             str = _getUserDetailInfo(user);
         } else {
-            str = _getUserBriefInfo(name, user);
+            str = _getUserBriefInfo(_key, user);
         }
 
         return (0, str);
@@ -186,26 +185,26 @@ contract InsuranceUser is Ownable {
 
     /** [desc] Get user info by id.
       * [param] _type: info type (0: detail, 1: brief).
-      * [param] _name: user id.
+      * [param] _id: user id.
       * [return] error code and user info for json data.
       *           0: success
       *          -1: params error
       *          -2: no data
       *          -3: inner error   
       */
-    function getById(uint8 _type, uint id) external view returns (int, string) {
+    function getById(uint8 _type, uint _id) external view returns (int, string) {
         // check param
-        if ((1 < _type) || (this.size() <= id)) {
+        if ((1 < _type) || (this.size() <= _id)) {
             return (-1, "{}");
         }
 
         int error = 0;
-        bytes32 name = bytes32(0);
+        string memory key = "";
         bytes32 data0 = bytes32(0);
         string memory data1 = "";
         address user = address(0);
         uint data3 = uint(0);
-        (error, name, data0, data1, user, data3) = Hashmap(userMgr_).get(id);
+        (error, key, data0, data1, user, data3) = Hashmap(userMgr_).get(_id);
         if (0 != error) {
             return (error, "{}");
         }
@@ -215,7 +214,7 @@ contract InsuranceUser is Ownable {
         if (0 == _type) {
             str = _getUserDetailInfo(user);
         } else {
-            str = _getUserBriefInfo(name, user);
+            str = _getUserBriefInfo(key, user);
         }
 
         return (0, str);
