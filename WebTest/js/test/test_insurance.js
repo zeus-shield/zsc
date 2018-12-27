@@ -419,6 +419,42 @@ export default class TestInsurance {
         let insuranceUser;
         let type;
         switch (operation) {
+            case "Debug":
+                insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
+                insuranceUser.size(function(error, result) {
+                    if (!error) {
+                        let sum = parseInt(result.toString(10));
+                        let logs = new Array(sum);
+                        let count = 0;
+
+                        if (0 == sum) {
+                            Output(window.outputUserElement, "small", "red", "No Data!");
+                            return;
+                        }
+
+                        for (let i=0; i<sum; i++) {
+                            insuranceUser.getById(params, i, function(error, id, result) {
+                                if (!error) {
+                                    let errorStr = handler[getErrorStr](result[0].toString(10));
+                                    logs[id] = `[User${id}]: (${errorStr}) ${result[1]}`;
+                                    count ++;
+                                    if (count == sum) {
+                                        let str = "";
+                                        for (let j=0; j<logs.length; j++) {
+                                            str = str.concat(`${logs[j]}<br>`);
+                                        }
+                                        Output(window.outputUserElement, 'small', 'red', str);
+                                    }
+                                } else {
+                                    Output(window.outputUserElement, 'small', 'red', `[Template${id}]:</br>${error}`);
+                                }
+                            })
+                        }
+                    } else {
+                        Output(window.outputUserElement, "small", "red", error);
+                    }
+                })                
+                break;
             case "SignUp":
                 insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
                 insuranceUser.signUp(account, key, params, function(error, result) {
