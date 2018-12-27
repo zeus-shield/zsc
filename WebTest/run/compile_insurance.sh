@@ -7,6 +7,7 @@ IMPORTPATH="/=/"
 SOURCES=(
 insurance_template
 insurance_user
+insurance_policy
 )
 BUILDPATH="../build"
 
