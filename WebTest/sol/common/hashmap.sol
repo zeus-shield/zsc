@@ -18,10 +18,10 @@ contract Hashmap is Ownable {
     }
 
     uint private sum_;
-    mapping (uint => bytes32) private keys_;
-    mapping (bytes32 => uint) private ids_;
-    mapping (bytes32 => bool) private exists_;
-    mapping (bytes32 => Data) private datas_;
+    mapping (uint => string) private keys_;
+    mapping (string => uint) private ids_;
+    mapping (string => bool) private exists_;
+    mapping (string => Data) private datas_;
 
     constructor() public {
         sum_ = 0;
@@ -49,7 +49,7 @@ contract Hashmap is Ownable {
       * [param] _data3: data for uint.
       * [return] none.
       */
-    function set(bytes32 _key, bytes32 _data0, string _data1, address _data2, uint _data3) external _onlyOwner {
+    function set(string _key, bytes32 _data0, string _data1, address _data2, uint _data3) external _onlyOwner {
         if (exists_[_key]) {
             datas_[_key].data0_ = _data0;
             datas_[_key].data1_ = _data1;
@@ -73,7 +73,7 @@ contract Hashmap is Ownable {
       * [param] _key2: key using for mapping data.
       * [return] none.
       */
-    function swap(bytes32 _key1, bytes32 _key2) external _onlyOwner {
+    function swap(string _key1, string _key2) external _onlyOwner {
         uint id1 = 0;
         uint id2 = 0;
 
@@ -94,8 +94,8 @@ contract Hashmap is Ownable {
       * [param] _key: key using for mapping data.
       * [return] none.
       */
-    function remove(bytes32 _key) external _onlyOwner {
-        bytes32 key2 = bytes32(0);
+    function remove(string _key) external _onlyOwner {
+        string memory key2 = "";
 
         require(exists_[_key]);
 
@@ -126,7 +126,7 @@ contract Hashmap is Ownable {
       *          -2: no data
       *          -3: inner error   
       */
-    function get(bytes32 _key) external view _onlyOwner returns (int, bytes32, string, address, uint) {
+    function get(string _key) external view _onlyOwner returns (int, bytes32, string, address, uint) {
         if (!exists_[_key]) {
             return (-2, bytes32(0), "", address(0), uint(0));
         }
@@ -141,17 +141,17 @@ contract Hashmap is Ownable {
       *          -2: no data
       *          -3: inner error   
       */
-    function get(uint _id) external view _onlyOwner returns (int, bytes32, bytes32, string, address, uint) {
+    function get(uint _id) external view _onlyOwner returns (int, string, bytes32, string, address, uint) {
         if (_id >= sum_) {
-            return (-1, bytes32(0), bytes32(0), "", address(0), uint(0));
+            return (-1, "", bytes32(0), "", address(0), uint(0));
         }
 
         if (!exists_[keys_[_id]]) {
-            return (-2, bytes32(0), bytes32(0), "", address(0), uint(0));
+            return (-2, "", bytes32(0), "", address(0), uint(0));
         }
 
         if (ids_[keys_[_id]] != _id) {
-            return (-3, bytes32(0), bytes32(0), "", address(0), uint(0));
+            return (-3, "", bytes32(0), "", address(0), uint(0));
         }
 
         return (0, keys_[_id], datas_[keys_[_id]].data0_, datas_[keys_[_id]].data1_, datas_[keys_[_id]].data2_, datas_[keys_[_id]].data3_);
