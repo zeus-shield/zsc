@@ -417,7 +417,6 @@ export default class TestInsurance {
         let key = tmps[1];
 
         let insuranceUser;
-        let type;
         switch (operation) {
             case "Debug":
                 insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
@@ -473,10 +472,8 @@ export default class TestInsurance {
                 break;
             case "GetByName":
                 tmps = params.split(",");
-                type = tmps[0];
-                let name = tmps[1];
                 insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
-                insuranceUser.getByName(type, name, function(error, result) {
+                insuranceUser.getByName(tmps[0], tmps[1], function(error, result) {
                     if (!error) {
                         let errorStr = handler[getErrorStr](result[0].toString(10));
                         Output(window.outputUserElement, "small", "red", `[User]:<br>(${errorStr}) ${result[1]}`);
@@ -487,13 +484,11 @@ export default class TestInsurance {
                 break;
             case "GetById":
                 tmps = params.split(",");
-                type = tmps[0];
-                let id = tmps[1];
                 insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
-                insuranceUser.getById(type, id, function(error, result) {
+                insuranceUser.getById(tmps[0], tmps[1], function(error, id, result) {
                     if (!error) {
                         let errorStr = handler[getErrorStr](result[0].toString(10));
-                        Output(window.outputUserElement, "small", "red", `[User]:<br>(${errorStr}) ${result[1]}`);
+                        Output(window.outputUserElement, "small", "red", `[User${id}]:<br>(${errorStr}) ${result[1]}`);
                     } else {
                         Output(window.outputUserElement, "small", "red", error);
                     }
