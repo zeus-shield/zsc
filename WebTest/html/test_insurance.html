@@ -14,9 +14,11 @@
                 window.outputProviderElement = 'p_output_provider';
                 window.outputDeployTemplateElement = 'p_output_deploy_template';
                 window.outputDeployUserElement = 'p_output_deploy_user';
+                window.outputDeployPolicyElement = 'p_output_deploy_policy';
                 window.outputSetupElement = 'p_output_setup';
                 window.outputTemplateElement = 'p_output_template';
                 window.outputUserElement = 'p_output_user';
+                window.outputPolicyElement = 'p_output_policy';
 
                 provider(false);
                 document.getElementById("s_provider").addEventListener('change', function(){
@@ -73,6 +75,23 @@
                     let params = document.getElementById("i_user_read_params").value;
                     main("Insurance", "User", op, `${type},${params}`);
                 }
+
+                document.getElementById("b_policy_debug").onclick = function() {
+                    main("Insurance", "Policy", "Debug", "0");
+                }
+
+                document.getElementById("b_policy_write_submit").onclick = function() {
+                    let op = document.getElementById("s_policy_write_op").value;
+                    let params = document.getElementById("i_policy_write_params").value;
+                    main("Insurance", "Policy", op, params);
+                }
+
+                document.getElementById("b_policy_read_submit").onclick = function() {
+                    let op = document.getElementById("s_policy_read_op").value;
+                    let type = document.getElementById("s_policy_read_type").value;
+                    let params = document.getElementById("i_policy_read_params").value;
+                    main("Insurance", "Policy", op, `${type},${params}`);
+                }
             }
         </script>
     </head>
@@ -113,6 +132,13 @@
                         <button type="button" id="b_deploy" onclick="main('Insurance', 'Deploy', 'InsuranceUser', '')">Deploy</button>
                         <p id="p_output_deploy_user"></p>
                     </div>
+                    <div id="element">
+                        <h5>Deploy [insurance_policy]</h5>
+                        <label id="l_insurance_policy" for="f_insurance_policy">Upload</label>
+                        <input type="file" id="f_insurance_policy" onchange="file('Insurance', 'InsurancePolicy', this)" />
+                        <button type="button" id="b_deploy" onclick="main('Insurance', 'Deploy', 'InsurancePolicy', '')">Deploy</button>
+                        <p id="p_output_deploy_policy"></p>
+                    </div>
                     <div style="clear:left"></div>
                 </div>
             </p>
@@ -122,11 +148,13 @@
                     <h4>3. Setup</h4>
                     <select id="s_setup_contract">
                         <option value="InsuranceUser">InsuranceUser</option>
+                        <option value="InsurancePolicy">InsurancePolicy</option>
                     </select>
                     <button type="button" id="b_setup">Setup</button><br>
 
                     <select id="s_get_sub_contract_addr">
                         <option value="InsuranceUser">InsuranceUser</option>
+                        <option value="InsurancePolicy">InsurancePolicy</option>
                     </select>
                     <button type="button" id="b_get_sub_contract_addr">GetSubContractAddress</button>
                     <p id="p_output_setup"></p>
@@ -197,6 +225,39 @@
                 </div>
             </p>
 
+            <p>
+                <div class="well" id="block">
+                    <h4>6. Policy</h4>
+                    <button type="button" id="b_policy_debug">Debug</button><br><br>
+                    <div id="element">
+                        Select Operation(Write):<br>
+                        <select id="s_policy_write_op">
+                            <option value="Submit">Submit</option>
+                        </select><br>
+                        Params:<br>
+                        <input type="text" id="i_policy_write_params"><br>
+                        <button type="button" id="b_policy_write_submit">Submit</button>
+                    </div>
+                    <div id="element">
+                        Select Operation(Read):<br>
+                        <select id="s_policy_read_op">
+                            <option value="Size">Size</option>
+                            <option value="GetByKey">GetByKey</option>
+                            <option value="GetById">GetById</option>
+                        </select><br>
+                        Select Type:<br>
+                        <select id="s_policy_read_type">
+                            <option value="0">Detail</option>
+                            <option value="1">Brief</option>
+                        </select><br>
+                        Params:<br>
+                        <input type="text" id="i_policy_read_params"><br>
+                        <button type="button" id="b_policy_read_submit">Submit</button>
+                    </div>
+                    <div style="clear: left"></div>
+                    <p id="p_output_policy"></p>
+                </div>
+            </p>
         </div>
     </div> 
     </body>
