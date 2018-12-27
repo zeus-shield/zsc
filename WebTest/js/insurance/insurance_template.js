@@ -29,9 +29,9 @@ export default class InsuranceTemplate {
         }
     }
 
-    [transactionProc](handler, account, key, data, error, gasRequired, func) {
+    [transactionProc](handler, account, privateKey, data, error, gasRequired, func) {
         if (!error) {
-            let transaction = new Transaction(account, key);
+            let transaction = new Transaction(account, privateKey);
             if('undefined' != typeof transaction) {
                 transaction.do("transaction", data, gasRequired, handler[contractAddress], func);
             }
@@ -40,12 +40,12 @@ export default class InsuranceTemplate {
         }
     }
 
-    update(account, key, name, data, func) {
+    update(account, privateKey, key, data, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.update.estimateGas(name, data, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, key, contractInstance.update.getData(name, data), error, gasRequired, func);
+        contractInstance.update.estimateGas(key, data, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.update.getData(key, data), error, gasRequired, func);
         });
     }
 
@@ -127,26 +127,26 @@ export default class InsuranceTemplate {
         });
     }
 
-    getByName(name, func) {
+    getByKey(key, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getByName.estimateGas(name, {from: this[account]}, function(error, result) {
+        contractInstance.getByKey.estimateGas(key, {from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("=============== InsuranceTemplate.getByName(bytes32) ===============");
+                        console.log("=============== InsuranceTemplate.getByKey(string) ===============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("===============================================================");
-                        // call 'InsuranceTemplate.getByName(bytes32)'
-                        contractInstance.getByName.call(name, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        console.log("==================================================================");
+                        // call 'InsuranceTemplate.getByKey(string)'
+                        contractInstance.getByKey.call(key, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
                                 console.log("[Template]: %s", result.toString(10));
                                 if (null != func) {
