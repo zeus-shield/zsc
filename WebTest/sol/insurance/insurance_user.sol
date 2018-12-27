@@ -51,11 +51,10 @@ contract InsuranceUser is Ownable {
         for (uint i=0; i<len; i++) {
             int error = 0;
             string memory key = "";
-            bytes32 data0 = bytes32(0);
             string memory value = "";
-            address data2 = address(0);
-            uint data3 = uint(0);
-            (error, key, data0, value, data2, data3) = Hashmap(_user).get(i);
+            address data1 = address(0);
+            uint data2 = uint(0);
+            (error, key, value, data1, data2) = Hashmap(_user).get(i);
             if (0 == error) {
                 if ((len -1) == i) {
                     str = str.concat(value.toKeyValue(key));
@@ -125,8 +124,8 @@ contract InsuranceUser is Ownable {
         for (uint i=0; i<keys_.length; i++) { 
             if (_data.keyExists(keys_[i])) {
                 string memory value = _data.getStringValueByKey(keys_[i]);
-                Hashmap(user).set(keys_[i], bytes32(0), value, address(0), uint(0));
-
+                Hashmap(user).set(keys_[i], value, address(0), uint(0));
+                
                 if (keys_[i].equals("Key")) {
                     key = value;
                 }
@@ -137,7 +136,7 @@ contract InsuranceUser is Ownable {
 
         require(valid);
 
-        Hashmap(userMgr_).set(key, bytes32(0), "", user, uint(0));
+        Hashmap(userMgr_).set(key, "", user, uint(0));
     }
 
     /** [desc] Get size of users.
@@ -164,11 +163,10 @@ contract InsuranceUser is Ownable {
         }
 
         int error = 0;
-        bytes32 data0 = bytes32(0);
-        string memory data1 = "";
+        string memory data0 = "";
         address user = address(0);
-        uint data3 = uint(0);
-        (error, data0, data1, user, data3) = Hashmap(userMgr_).get(_key);
+        uint data2 = uint(0);
+        (error, data0, user, data2) = Hashmap(userMgr_).get(_key);
         if (0 != error) {
             return (error, "{}");
         }
@@ -200,11 +198,10 @@ contract InsuranceUser is Ownable {
 
         int error = 0;
         string memory key = "";
-        bytes32 data0 = bytes32(0);
-        string memory data1 = "";
+        string memory data0 = "";
         address user = address(0);
-        uint data3 = uint(0);
-        (error, key, data0, data1, user, data3) = Hashmap(userMgr_).get(_id);
+        uint data2 = uint(0);
+        (error, key, data0, user, data2) = Hashmap(userMgr_).get(_id);
         if (0 != error) {
             return (error, "{}");
         }
