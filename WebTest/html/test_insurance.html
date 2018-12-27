@@ -58,6 +58,10 @@
                     main("Insurance", "Template", op, params);
                 }
 
+                document.getElementById("b_user_debug").onclick = function() {
+                    main("Insurance", "User", "Debug", "0");
+                }
+
                 document.getElementById("b_user_write_submit").onclick = function() {
                     let op = document.getElementById("s_user_write_op").value;
                     let params = document.getElementById("i_user_write_params").value;
@@ -162,7 +166,8 @@
 
             <p>
                 <div class="well" id="block">
-                    <h4>4. User</h4>
+                    <h4>5. User</h4>
+                    <button type="button" id="b_user_debug">Debug</button><br><br>
                     <div id="element">
                         Select Operation(Write):<br>
                         <select id="s_user_write_op">
