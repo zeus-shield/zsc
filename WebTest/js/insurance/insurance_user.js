@@ -175,28 +175,28 @@ export default class InsuranceUser {
         });
     }
 
-    getTemplateAddr(func) {
+    getAddr(func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
         // estimate gas
         // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getTemplateAddr.estimateGas({from: this[account]}, function(error, result) {
+        contractInstance.getAddr.estimateGas({from: this[account]}, function(error, result) {
             if(!error) {
                 let gasRequired = result;
                 // get gas price
                 // MetaMask Web3 object does not support synchronous methods without a callback parameter
                 web3.eth.getGasPrice(function(error, result) {
                     if(!error) {
-                        console.log("=============== InsuranceUser.getTemplateAddr() ===============");
+                        console.log("=============== InsuranceUser.getAddr() ===============");
                         console.log("from:    ", handler[account]);
                         console.log("gas:     ", gasRequired);
                         console.log("gasPrice:", result.toString(10));
-                        console.log("===============================================================");
-                        // call 'InsuranceUser.getTemplateAddr()'
-                        contractInstance.getTemplateAddr.call({from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                        console.log("=======================================================");
+                        // call 'InsuranceUser.getAddr()'
+                        contractInstance.getAddr.call({from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                console.log("[Address]: %s", result);
+                                console.log("[Address]: template(%s)", result);
                                 if (null != func) {
                                     func(null, result);
                                 }
