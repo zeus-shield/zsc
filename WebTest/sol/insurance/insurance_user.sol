@@ -149,10 +149,10 @@ contract InsuranceUser is Ownable {
             }
         }
 
-        address policies = new Hashmap();
-        Hashmap(user).set("Policies", 1, "", policies, uint(0));
-        address receipts = new Hashmap();
-        Hashmap(user).set("Receipts", 1, "", receipts, uint(0)); 
+        // address policies = new Hashmap();
+        // Hashmap(user).set("Policies", 1, "", policies, uint(0));
+        // address receipts = new Hashmap();
+        // Hashmap(user).set("Receipts", 1, "", receipts, uint(0)); 
 
         require(valid);
 

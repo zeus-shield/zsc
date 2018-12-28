@@ -53,13 +53,18 @@ contract InsurancePolicy is Ownable {
         selfdestruct(owner_);   
     }
 
-    function _bindUser(string _userKey, string _key, address _policy) private {
-        int error = 0;
-        string memory user = "";
+    // function _bindUser(string _userKey, string _key, address _policy) private {
+    //     int error = 0;
+    //     string memory user = "";
 
-        (error, user) = InsuranceUser(userAddr_).getByKey(0, _userKey);
-        require(0 == error);
-    }
+    //     (error, user) = InsuranceUser(userAddr_).getByKey(0, _userKey);
+    //     require(0 == error);
+
+    //     if (user.keyExists("Policies")) {
+    //         address policies = user.getStringValueByKey("Policies").toAddress();
+    //         Hashmap(policies).set(key, 1, "", policy, uint(0));
+    //     }
+    // }
 
     /** [desc] Get policy detail info.
       * [param] _policy: policy info address.
@@ -179,7 +184,7 @@ contract InsurancePolicy is Ownable {
 
         Hashmap(policyMgr_).set(key, 1, "", policy, uint(0));
 
-        _bindUser(_userKey, key, policy);
+        // _bindUser(_userKey, key, policy);
     }
 
     /** [desc] Get size of users.
