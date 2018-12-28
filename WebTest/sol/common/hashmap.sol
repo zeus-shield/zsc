@@ -11,6 +11,7 @@ import "./ownable.sol";
 contract Hashmap is Ownable {
 
     struct Data {
+        uint8 position_;
         string data0_;
         address data1_;
         uint data2_;
@@ -47,8 +48,9 @@ contract Hashmap is Ownable {
       * [param] _data2: data for uint.
       * [return] none.
       */
-    function set(string _key, string _data0, address _data1, uint _data2) external _onlyOwner {
+    function set(string _key, uint8 _position, string _data0, address _data1, uint _data2) external _onlyOwner {
         if (exists_[_key]) {
+            datas_[_key].position_ = _position;
             datas_[_key].data0_ = _data0;
             datas_[_key].data1_ = _data1;
             datas_[_key].data2_ = _data2;
@@ -58,6 +60,7 @@ contract Hashmap is Ownable {
             exists_[_key] = true;
             sum_ ++;
 
+            datas_[_key].position_ = _position;
             datas_[_key].data0_ = _data0;
             datas_[_key].data1_ = _data1;
             datas_[_key].data2_ = _data2;
@@ -122,11 +125,11 @@ contract Hashmap is Ownable {
       *          -2: no data
       *          -3: inner error   
       */
-    function get(string _key) external view _onlyOwner returns (int, string, address, uint) {
+    function get(string _key) external view _onlyOwner returns (int, uint8, string, address, uint) {
         if (!exists_[_key]) {
-            return (-2, "", address(0), uint(0));
+            return (-2, 0, "", address(0), uint(0));
         }
-        return (0, datas_[_key].data0_, datas_[_key].data1_, datas_[_key].data2_);
+        return (0, datas_[_key].position_, datas_[_key].data0_, datas_[_key].data1_, datas_[_key].data2_);
     }
 
     /** [desc] Get data by id.
@@ -137,19 +140,19 @@ contract Hashmap is Ownable {
       *          -2: no data
       *          -3: inner error   
       */
-    function get(uint _id) external view _onlyOwner returns (int, string, string, address, uint) {
+    function get(uint _id) external view _onlyOwner returns (int, string, uint8, string, address, uint) {
         if (_id >= sum_) {
-            return (-1, "", "", address(0), uint(0));
+            return (-1, "", 0, "", address(0), uint(0));
         }
 
         if (!exists_[keys_[_id]]) {
-            return (-2, "", "", address(0), uint(0));
+            return (-2, "", 0, "", address(0), uint(0));
         }
 
         if (ids_[keys_[_id]] != _id) {
-            return (-3, "", "", address(0), uint(0));
+            return (-3, "", 0, "", address(0), uint(0));
         }
 
-        return (0, keys_[_id], datas_[keys_[_id]].data0_, datas_[keys_[_id]].data1_, datas_[keys_[_id]].data2_);
+        return (0, keys_[_id], datas_[keys_[_id]].position_, datas_[keys_[_id]].data0_, datas_[keys_[_id]].data1_, datas_[keys_[_id]].data2_);
     }
 }
