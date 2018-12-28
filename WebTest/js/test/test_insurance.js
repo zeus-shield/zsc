@@ -240,7 +240,7 @@ export default class TestInsurance {
                     });
                 } else if ("InsurancePolicy" == contractName) {
                     let insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
-                    insurancePolicy.setup(account, privateKey, this[templateContractAddress], function(error, result) {
+                    insurancePolicy.setup(account, privateKey, this[templateContractAddress], this[userContractAddress], function(error, result) {
                         handler[transactionProc](error, result, window.outputSetupElement);
                     });
                 } else {
@@ -250,18 +250,18 @@ export default class TestInsurance {
             case "Get":
                 if ("InsuranceUser" == contractName) {
                     let insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
-                    insuranceUser.getTemplateAddr(function(error, result) {
+                    insuranceUser.getAddr(function(error, result) {
                         if (!error) {
-                            Output(window.outputSetupElement, 'small', 'red', `[CoreContractAddress]: ${result}`);
+                            Output(window.outputSetupElement, 'small', 'red', `[Address]: template(${result})`);
                         } else {
                             Output(window.outputSetupElement, 'small', 'red', error);
                         }
                     });
                 } else if ("InsurancePolicy" == contractName) {
                     let insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
-                    insurancePolicy.getTemplateAddr(function(error, result) {
+                    insurancePolicy.getAddr(function(error, result) {
                         if (!error) {
-                            Output(window.outputSetupElement, 'small', 'red', `[CoreContractAddress]: ${result}`);
+                            Output(window.outputSetupElement, 'small', 'red', `[Address]: template(${result[0]}), user(${result[1]})`);
                         } else {
                             Output(window.outputSetupElement, 'small', 'red', error);
                         }
@@ -584,7 +584,7 @@ export default class TestInsurance {
             case "Submit":
                 tmps = params.split("#");
                 insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
-                insurancePolicy.submit(account, privateKey, tmps[0], tmps[1], function(error, result) {
+                insurancePolicy.submit(account, privateKey, tmps[0], tmps[1], tmps[2], function(error, result) {
                     handler[transactionProc](error, result, window.outputPolicyElement, null);
                 });
                 break;
