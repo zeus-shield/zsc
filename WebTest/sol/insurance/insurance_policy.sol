@@ -7,18 +7,25 @@ pragma solidity ^0.4.25;
 // pragma experimental ABIEncoderV2;
 
 import "../utillib/LibString.sol";
+import "../utillib/LibInt.sol";
 import "../common/hashmap.sol";
 
 contract InsuranceTemplate {
     function getByKey(string _key) external view returns (int, string);
 }
 
+contract InsuranceUser {
+    function getByKey(uint8 _type, string _key) external view returns (int, string);
+}
+
 contract InsurancePolicy is Ownable {
 
     using LibString for *;
+    using LibInt for *;
 
     address private policyMgr_;
     address private templateAddr_;
+    address private userAddr_;
     string[] private keys_;
 
     modifier _checkTemplateAddr() {
@@ -26,9 +33,15 @@ contract InsurancePolicy is Ownable {
         _;
     }
 
+    modifier _checkUserAddr() {
+        require(0 != userAddr_);
+        _;
+    }
+
     constructor() public {
         policyMgr_ = new Hashmap();
         templateAddr_ = address(0);
+        userAddr_ = address(0);
     }
 
     /** [desc] Kill the contract.
@@ -40,41 +53,62 @@ contract InsurancePolicy is Ownable {
         selfdestruct(owner_);   
     }
 
+    function _bindUser(string _userKey, string _key, address _policy) private {
+        int error = 0;
+        string memory user = "";
+
+        (error, user) = InsuranceUser(userAddr_).getByKey(0, _userKey);
+        require(0 == error);
+    }
+
     /** [desc] Get policy detail info.
       * [param] _policy: policy info address.
-      * [return] policy info for json data.
+      * [return] error code and policy info for json data.
       */
-    function _getDetailInfo(address _policy) private view returns (string) {
+    function _getDetailInfo(address _policy) private view returns (int, string) {
         string memory str = "{";
 
         uint len = Hashmap(_policy).size();
         for (uint i=0; i<len; i++) {
             int error = 0;
             string memory key = "";
-            string memory value = "";
+            uint8 position = 0;
+            string memory data0 = "";
             address data1 = address(0);
             uint data2 = uint(0);
-            (error, key, value, data1, data2) = Hashmap(_policy).get(i);
-            if (0 == error) {
-                if ((len -1) == i) {
-                    str = str.concat(value.toKeyValue(key));
-                } else {
-                    str = str.concat(value.toKeyValue(key), ",");
-                }
+            (error, key, position, data0, data1, data2) = Hashmap(_policy).get(i);
+            if (0 != error) {
+                return (error, "{}");
+            }
+
+            if (0 == position) {
+                str = str.concat(data0.toKeyValue(key));
+            } else if (1 == position) {
+                string memory data = "0x";
+                data = data.concat(data1.addrToAsciiString());
+                str = str.concat(data.toKeyValue(key));
+            } else if (2 == position) {
+                str = str.concat(data2.toKeyValue(key));
+            } else {
+                return (-2, "{}");
+            }
+
+            if ((len -1) > i) {
+                str = str.concat(",");
             }
         }
 
         str = str.concat("}");
 
-        return str;
+        return (0, str);
     }
 
     /** [desc] Get policy brief info.
       * [param] _key: policy key.
       * [param] _policy: policy info address.
-      * [return] policy info for json data.
+      * [return] error code policy info for json data.
       */
-    function _getBriefInfo(string _key, address _policy) private pure returns (string) {
+    function _getBriefInfo(string _key, address _policy) private pure returns (int, string) {
         string memory str = "{";
         string memory user = "0x";
 
@@ -83,7 +117,7 @@ contract InsurancePolicy is Ownable {
         str = str.concat(_key.toKeyValue("Key"), ",");
         str = str.concat(user.toKeyValue("Address"), "}");
 
-        return str;
+        return (0, str);
     }
 
     /** [desc] This unnamed function is called whenever someone tries to send ether to it.
@@ -94,12 +128,16 @@ contract InsurancePolicy is Ownable {
 
     /** [desc] Setup.
       * [param] _templateAddr: template contract address.
+      * [param] _userAddr: user contract address.
       * [return] none.
       */
-    function setup(address _templateAddr) external _onlyOwner {
-        // check template address
+    function setup(address _templateAddr, address _userAddr) external _onlyOwner {
+        // check params
         require(0 != _templateAddr);
+        require(0 != _userAddr);
+
         templateAddr_ = _templateAddr;
+        userAddr_ = _userAddr;
     }
 
     /** [desc] Policy submit.
@@ -107,9 +145,10 @@ contract InsurancePolicy is Ownable {
       * [param] _data: json data.
       * [return] none.
       */
-    // function submit(string _templateKey, string _data) external _onlyOwner _checkTemplateAddr {
-    function submit(string _templateKey, string _data) external _checkTemplateAddr {
+    // function submit(string _templateKey, string _data) external _onlyOwner _checkTemplateAddr _checkUserAddr {
+    function submit(string _userKey, string _templateKey, string _data) external _checkTemplateAddr _checkUserAddr {
         // check param
+        require(0 != bytes(_userKey).length);
         require(0 != bytes(_templateKey).length);
         require(0 != bytes(_data).length);
 
@@ -126,7 +165,7 @@ contract InsurancePolicy is Ownable {
         for (uint i=0; i<keys_.length; i++) { 
             if (_data.keyExists(keys_[i])) {
                 string memory value = _data.getStringValueByKey(keys_[i]);
-                Hashmap(policy).set(keys_[i], value, address(0), uint(0));
+                Hashmap(policy).set(keys_[i], 0, value, address(0), uint(0));
                 
                 if (keys_[i].equals("Key")) {
                     key = value;
@@ -138,7 +177,9 @@ contract InsurancePolicy is Ownable {
 
         require(valid);
 
-        Hashmap(policyMgr_).set(key, "", policy, uint(0));
+        Hashmap(policyMgr_).set(key, 1, "", policy, uint(0));
+
+        _bindUser(_userKey, key, policy);
     }
 
     /** [desc] Get size of users.
@@ -165,22 +206,23 @@ contract InsurancePolicy is Ownable {
         }
 
         int error = 0;
+        uint8 position = 0;
         string memory data0 = "";
         address policy = address(0);
         uint data2 = uint(0);
-        (error, data0, policy, data2) = Hashmap(policyMgr_).get(_key);
+        (error, position, data0, policy, data2) = Hashmap(policyMgr_).get(_key);
         if (0 != error) {
             return (error, "{}");
         }
-
-        string memory str = "";
-        if (0 == _type) {
-            str = _getDetailInfo(policy);
-        } else {
-            str = _getBriefInfo(_key, policy);
+        if (1 != position) {
+            return (-2, "{}");
         }
 
-        return (0, str);
+        if (0 == _type) {
+            return _getDetailInfo(policy);
+        } else {
+            return _getBriefInfo(_key, policy);
+        }
     }
 
     /** [desc] Get policy info by id.
@@ -200,26 +242,26 @@ contract InsurancePolicy is Ownable {
 
         int error = 0;
         string memory key = "";
+        uint position = 0;
         string memory data0 = "";
         address policy = address(0);
         uint data2 = uint(0);
-        (error, key, data0, policy, data2) = Hashmap(policyMgr_).get(_id);
+        (error, key, position, data0, policy, data2) = Hashmap(policyMgr_).get(_id);
         if (0 != error) {
             return (error, "{}");
         }
-
-        string memory str = "";
-
-        if (0 == _type) {
-            str = _getDetailInfo(policy);
-        } else {
-            str = _getBriefInfo(key, policy);
+        if (1 != position) {
+            return (-2, "{}");
         }
 
-        return (0, str);
+        if (0 == _type) {
+            return _getDetailInfo(policy);
+        } else {
+            return _getBriefInfo(key, policy);
+        }
     }
 
-    function getTemplateAddr() external view _onlyOwner returns (address) {
-        return templateAddr_;
+    function getAddr() external view _onlyOwner returns (address, address) {
+        return (templateAddr_, userAddr_);
     }
 }
