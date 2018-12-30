@@ -26,4 +26,14 @@ class Form extends Admin {
 			return $this->fetch('public/edit');
 		}
 	}	
+
+
+	public function edit(){
+		if (IS_POST) {
+			# code...
+		}else{
+			return $this->fetch('public/edit');
+		}
+	}
+
 }
