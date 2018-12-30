@@ -18,4 +18,12 @@ class Form extends Admin {
 		$this->assign($data);
 		return $this->fetch();
 	}
+
+	public function add(){
+		if (IS_POST) {
+			# code...
+		}else{
+			return $this->fetch('public/edit');
+		}
+	}	
 }
