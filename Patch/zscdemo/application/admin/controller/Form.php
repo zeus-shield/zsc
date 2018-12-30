@@ -36,4 +36,14 @@ class Form extends Admin {
 		}
 	}
 
+	public function del(){
+		$id = $this->getArrayParam('id');
+		$result = false;
+		if (false !== $result) {
+			return $this->success('删除成功！');
+		}else{
+			return $this->error('删除失败！');
+		}
+	}	
+
 }
