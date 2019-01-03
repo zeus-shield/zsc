@@ -15,6 +15,7 @@ contract InsuranceTemplate {
 }
 
 contract InsuranceUser {
+    function setPolicy(string _key, string _policyKey, address _policy) external;
     function getByKey(uint8 _type, string _key) external view returns (int, string);
 }
 
@@ -52,19 +53,6 @@ contract InsurancePolicy is Ownable {
         Hashmap(policyMgr_).kill();
         selfdestruct(owner_);   
     }
-
-    // function _bindUser(string _userKey, string _key, address _policy) private {
-    //     int error = 0;
-    //     string memory user = "";
-
-    //     (error, user) = InsuranceUser(userAddr_).getByKey(0, _userKey);
-    //     require(0 == error);
-
-    //     if (user.keyExists("Policies")) {
-    //         address policies = user.getStringValueByKey("Policies").toAddress();
-    //         Hashmap(policies).set(key, 1, "", policy, uint(0));
-    //     }
-    // }
 
     /** [desc] Get policy detail info.
       * [param] _policy: policy info address.
@@ -184,7 +172,7 @@ contract InsurancePolicy is Ownable {
 
         Hashmap(policyMgr_).set(key, 1, "", policy, uint(0));
 
-        // _bindUser(_userKey, key, policy);
+        InsuranceUser(userAddr_).setPolicy(_userKey, key, policy);
     }
 
     /** [desc] remove policy.
