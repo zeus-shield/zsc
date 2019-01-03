@@ -187,6 +187,17 @@ contract InsurancePolicy is Ownable {
         // _bindUser(_userKey, key, policy);
     }
 
+    /** [desc] remove policy.
+      * [param] _key: key of user.
+      * [return] none.
+      */
+    // function remove(string _key) external _onlyOwner {
+    function remove(string _key) external {
+        // check param
+        require(0 != bytes(_key).length);
+        Hashmap(policyMgr_).remove(_key);
+    }
+
     /** [desc] Get size of users.
       * [param] none.
       * [return] size of users.
