@@ -50,6 +50,7 @@ contract InsuranceUser is Ownable {
         string memory str = "{";
 
         uint len = Hashmap(_user).size();
+        str = str.concat(len.toKeyValue("Size"), ",");
         for (uint i=0; i<len; i++) {
             int error = 0;
             string memory key = "";
@@ -149,11 +150,6 @@ contract InsuranceUser is Ownable {
             }
         }
 
-        // address policies = new Hashmap();
-        // Hashmap(user).set("Policies", 1, "", policies, uint(0));
-        // address receipts = new Hashmap();
-        // Hashmap(user).set("Receipts", 1, "", receipts, uint(0)); 
-
         require(valid);
 
         Hashmap(userMgr_).set(key, 1, "", user, uint(0));
@@ -168,6 +164,38 @@ contract InsuranceUser is Ownable {
         // check param
         require(0 != bytes(_key).length);
         Hashmap(userMgr_).remove(_key);
+    }
+
+    /** [desc] Set policy (only called by 'submit function in insurance_policy.sol' now).
+      * [param] _key: key of user.
+      * [param] _key: key of policy.
+      * [param] _key: address of policy.
+      * [return] none.
+      */
+    // function setPolicy(string _key, string _policyKey, address _policy) external _onlyOwner {
+    function setPolicy(string _key, string _policyKey, address _policy) external {
+        // check param
+        require(0 != bytes(_key).length);
+        require(0 != bytes(_policyKey).length);
+        require(address(0) != _policy);
+
+        int error = 0;
+        uint position = 0;
+        string memory data0 = "";
+        address user = address(0);
+        uint data2 = uint(0);
+        (error, position, data0, user, data2) = Hashmap(userMgr_).get(_key);
+        require(0 == error);
+        require(1 == position);
+
+        address policies = address(0);
+        (error, position, data0, policies, data2) = Hashmap(user).get("Policies");
+        if (address(0) == policies) {
+            policies = new Hashmap();
+            Hashmap(user).set("Policies", 1, "", policies, uint(0));
+        }
+
+        Hashmap(policies).set(_policyKey, 1, "", _policy, uint(0));
     }
 
     /** [desc] Get size of users.
