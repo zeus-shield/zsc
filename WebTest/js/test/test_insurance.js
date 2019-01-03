@@ -505,8 +505,24 @@ export default class TestInsurance {
                 })                
                 break;
             case "SignUp":
+                if (undefined == params) {
+                    Output(window.outputUserElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
                 insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
                 insuranceUser.signUp(account, privateKey, params, function(error, result) {
+                    handler[transactionProc](error, result, window.outputUserElement, null);
+                });
+                break;
+            case "Remove":
+                if (undefined == params) {
+                    Output(window.outputUserElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
+                insuranceUser.remove(account, privateKey, params, function(error, result) {
                     handler[transactionProc](error, result, window.outputUserElement, null);
                 });
                 break;
@@ -521,6 +537,11 @@ export default class TestInsurance {
                 });
                 break;
             case "GetByKey":
+                if (undefined == params) {
+                    Output(window.outputUserElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
                 tmps = params.split(",");
                 insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
                 insuranceUser.getByKey(tmps[0], tmps[1], function(error, result) {
@@ -533,6 +554,11 @@ export default class TestInsurance {
                 });
                 break;
             case "GetById":
+                if (undefined == params) {
+                    Output(window.outputUserElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
                 tmps = params.split(",");
                 insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
                 insuranceUser.getById(tmps[0], tmps[1], function(error, id, result) {
