@@ -43,6 +43,17 @@ contract InsuranceTemplate is Ownable {
         Hashmap(tempMgr_).set(_key, 0, _data, address(0), uint(0));
     }
 
+    /** [desc] remove template.
+      * [param] _key: key of template.
+      * [return] none.
+      */
+    // function remove(string _key) external _onlyOwner {
+    function remove(string _key) external {
+        // check param
+        require(0 != bytes(_key).length);
+        Hashmap(tempMgr_).remove(_key);
+    }
+
     /** [desc] Get size of templates.
       * [param] none.
       * [return] size of templates.
