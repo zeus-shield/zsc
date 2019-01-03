@@ -128,7 +128,7 @@ contract InsuranceUser is Ownable {
 
         string memory template = "";
         int error = 0;
-        (error, template) = InsuranceTemplate(templateAddr_).getByKey("[DB]User");
+        (error, template) = InsuranceTemplate(templateAddr_).getByKey("[DB][User]");
         require(0 == error);
         template.split("#", keys_);
 
@@ -157,6 +157,17 @@ contract InsuranceUser is Ownable {
         require(valid);
 
         Hashmap(userMgr_).set(key, 1, "", user, uint(0));
+    }
+
+    /** [desc] remove user.
+      * [param] _key: key of user.
+      * [return] none.
+      */
+    // function remove(string _key) external _onlyOwner {
+    function remove(string _key) external {
+        // check param
+        require(0 != bytes(_key).length);
+        Hashmap(userMgr_).remove(_key);
     }
 
     /** [desc] Get size of users.
