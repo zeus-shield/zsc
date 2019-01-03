@@ -277,6 +277,45 @@ contract InsuranceUser is Ownable {
         }
     }
 
+    /** [desc] Get user policies info by key.
+      * [param] _key: user key.
+      * [return] error code and user policies info for json data.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: inner error   
+      */
+    function getPolicies(string _key) external view returns (int, string) {
+        // check param
+        if (0 == bytes(_key).length) {
+            return (-1, "{}");
+        }
+
+        int error = 0;
+        uint position = 0;
+        string memory data0 = "";
+        address user = address(0);
+        uint data2 = uint(0);
+        (error, position, data0, user, data2) = Hashmap(userMgr_).get(_key);
+        if (0 != error) {
+            return (error, "{}");
+        }
+        if (1 != position) {
+            return (-2, "{}");
+        }
+
+        address policies = address(0);
+        (error, position, data0, policies, data2) = Hashmap(user).get("Policies");
+        if (0 != error) {
+            return (error, "{}");
+        }
+        if (1 != position) {
+            return (-2, "{}");
+        }       
+
+        return  _getDetailInfo(policies);
+    }
+
     function getAddr() external view _onlyOwner returns (address) {
         return templateAddr_;
     }
