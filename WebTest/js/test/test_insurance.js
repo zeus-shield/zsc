@@ -281,15 +281,15 @@ export default class TestInsurance {
         switch (cmd) {
             case "Update":
                 insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
-                insuranceTemplate.update(account, privateKey, "[UI]UserPhoneSignIn", "手机号&密码", function(error, result) {
+                insuranceTemplate.update(account, privateKey, "[UI][User][PhoneSignIn]", "手机号&密码", function(error, result) {
                     handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                        insuranceTemplate.update(account, privateKey, "[UI]UserEmailSignIn", "邮箱&密码", function(error, result) {
+                        insuranceTemplate.update(account, privateKey, "[UI][User][EmailSignIn]", "邮箱&密码", function(error, result) {
                             handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                                insuranceTemplate.update(account, privateKey, "[UI]UserPhoneSignUp", "手机号&短信验证码&密码&确认密码", function(error, result) {
+                                insuranceTemplate.update(account, privateKey, "[UI][User][PhoneSignUp]", "手机号&短信验证码&密码&确认密码", function(error, result) {
                                     handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                                        insuranceTemplate.update(account, privateKey, "[UI]UserEmailSignUp", "邮箱&邮箱验证码&密码&确认密码", function(error, result) {
+                                        insuranceTemplate.update(account, privateKey, "[UI][User][EmailSignUp]", "邮箱&邮箱验证码&密码&确认密码", function(error, result) {
                                             handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                                                insuranceTemplate.update(account, privateKey, "[UI]UserForgetPassword", "邮箱/手机号", function(error, result) {
+                                                insuranceTemplate.update(account, privateKey, "[UI][User][ForgetPassword]", "邮箱/手机号", function(error, result) {
                                                     handler[transactionProc](error, result, window.outputTemplateElement, function() {                   
                                                     });
                                                  });          
@@ -373,7 +373,7 @@ export default class TestInsurance {
                     Output(window.outputTemplateElement, "small", "red", "Please input correct params!");
                     return;
                 }
-            
+
                 tmps = params.split(",");
                 let key = tmps[0];
                 let data = tmps[1];
