@@ -35,6 +35,25 @@ contract Hashmap is Ownable {
         selfdestruct(owner_);   
     }
 
+    /** [desc] Swap data.
+      * [param] _key1: key using for mapping data.
+      * [param] _key2: key using for mapping data.
+      * [return] none.
+      */
+    function _swap(string _key1, string _key2) private {
+        uint id1 = 0;
+        uint id2 = 0;
+
+        id1 = ids_[_key1];
+        id2 = ids_[_key2];
+
+        keys_[id1] = _key2;
+        keys_[id2] = _key1;
+
+        ids_[_key1] = id2;
+        ids_[_key2] = id1;
+    }
+
     /** [desc] This unnamed function is called whenever someone tries to send ether to it.
       * [param] none.
       * [return] none.
@@ -73,20 +92,9 @@ contract Hashmap is Ownable {
       * [return] none.
       */
     function swap(string _key1, string _key2) external _onlyOwner {
-        uint id1 = 0;
-        uint id2 = 0;
-
         require(exists_[_key1]);
         require(exists_[_key2]);
-
-        id1 = ids_[_key1];
-        id2 = ids_[_key2];
-
-        keys_[id1] = _key2;
-        keys_[id2] = _key1;
-
-        ids_[_key1] = id2;
-        ids_[_key2] = id1;
+        _swap(_key1, _key2);
     }
 
     /** [desc] Remove data.
@@ -94,13 +102,12 @@ contract Hashmap is Ownable {
       * [return] none.
       */
     function remove(string _key) external _onlyOwner {
-        string memory key2 = "";
+        string memory key2 = keys_[sum_-1];
 
         require(exists_[_key]);
+        require(exists_[key2]);
 
-        key2 = keys_[sum_-1];
-
-        this.swap(_key, key2);
+        _swap(_key, key2);
 
         delete keys_[sum_-1];
         delete ids_[_key];
