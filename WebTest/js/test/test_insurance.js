@@ -369,6 +369,11 @@ export default class TestInsurance {
                 handler[templateBatch](handler, account, privateKey, params);
                 break;
             case "Update":
+                if (undefined == params) {
+                    Output(window.outputTemplateElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+            
                 tmps = params.split(",");
                 let key = tmps[0];
                 let data = tmps[1];
@@ -383,6 +388,17 @@ export default class TestInsurance {
                     handler[transactionProc](error, result, window.outputTemplateElement, null);
                 });
                 break;
+            case "Remove":
+                if (undefined == params) {
+                    Output(window.outputTemplateElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
+                insuranceTemplate.remove(account, privateKey, params, function(error, result) {
+                    handler[transactionProc](error, result, window.outputTemplateElement, null);
+                });
+                break;
             case "Size":
                 insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
                 insuranceTemplate.size(function(error, result) {
@@ -394,6 +410,11 @@ export default class TestInsurance {
                 });
                 break;
             case "GetById":
+                if (undefined == params) {
+                    Output(window.outputTemplateElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
                 insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
                 insuranceTemplate.getById(params, function(error, id, result) {
                     if (!error) {
@@ -405,6 +426,11 @@ export default class TestInsurance {
                 });
                 break;
             case "GetByKey":
+                if (undefined == params) {
+                    Output(window.outputTemplateElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
                 insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
                 insuranceTemplate.getByKey(params, function(error, result) {
                     if (!error) {
