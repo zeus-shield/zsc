@@ -55,13 +55,14 @@ contract InsurancePolicy is Ownable {
     }
 
     /** [desc] Get policy detail info.
-      * [param] _policy: policy info address.
-      * [return] error code and policy info for json data.
+      * [param] _addr: info address.
+      * [return] error code and info for json data.
       */
-    function _getDetailInfo(address _policy) private view returns (int, string) {
+    function _getDetailInfo(address _addr) private view returns (int, string) {
         string memory str = "{";
 
-        uint len = Hashmap(_policy).size();
+        uint len = Hashmap(_addr).size();
+        str = str.concat(len.toKeyValue("Size"), ",");
         for (uint i=0; i<len; i++) {
             int error = 0;
             string memory key = "";
@@ -69,7 +70,7 @@ contract InsurancePolicy is Ownable {
             string memory data0 = "";
             address data1 = address(0);
             uint data2 = uint(0);
-            (error, key, position, data0, data1, data2) = Hashmap(_policy).get(i);
+            (error, key, position, data0, data1, data2) = Hashmap(_addr).get(i);
             if (0 != error) {
                 return (error, "{}");
             }
@@ -98,14 +99,14 @@ contract InsurancePolicy is Ownable {
 
     /** [desc] Get policy brief info.
       * [param] _key: policy key.
-      * [param] _policy: policy info address.
+      * [param] _addr: info address.
       * [return] error code policy info for json data.
       */
-    function _getBriefInfo(string _key, address _policy) private pure returns (int, string) {
+    function _getBriefInfo(string _key, address _addr) private pure returns (int, string) {
         string memory str = "{";
         string memory user = "0x";
 
-        user = user.concat(_policy.addrToAsciiString());
+        user = user.concat(_addr.addrToAsciiString());
 
         str = str.concat(_key.toKeyValue("Key"), ",");
         str = str.concat(user.toKeyValue("Address"), "}");
