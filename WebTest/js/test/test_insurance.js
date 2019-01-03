@@ -634,9 +634,25 @@ export default class TestInsurance {
                 })                
                 break;
             case "Submit":
+                if (undefined == params) {
+                    Output(window.outputPolicyElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
                 tmps = params.split("#");
                 insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
                 insurancePolicy.submit(account, privateKey, tmps[0], tmps[1], tmps[2], function(error, result) {
+                    handler[transactionProc](error, result, window.outputPolicyElement, null);
+                });
+                break;
+            case "Remove":
+                if (undefined == params) {
+                    Output(window.outputPolicyElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
+                insurancePolicy.remove(account, privateKey, params, function(error, result) {
                     handler[transactionProc](error, result, window.outputPolicyElement, null);
                 });
                 break;
@@ -651,6 +667,11 @@ export default class TestInsurance {
                 });
                 break;
             case "GetByKey":
+                if (undefined == params) {
+                    Output(window.outputPolicyElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
                 tmps = params.split(",");
                 insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
                 insurancePolicy.getByKey(tmps[0], tmps[1], function(error, result) {
@@ -663,6 +684,11 @@ export default class TestInsurance {
                 });
                 break;
             case "GetById":
+                if (undefined == params) {
+                    Output(window.outputPolicyElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
                 tmps = params.split(",");
                 insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
                 insurancePolicy.getById(tmps[0], tmps[1], function(error, id, result) {
