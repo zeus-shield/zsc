@@ -570,6 +570,23 @@ export default class TestInsurance {
                     }
                 });
                 break;
+            case "GetPolicies":
+                if (undefined == params) {
+                    Output(window.outputUserElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                tmps = params.split(",");
+                insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
+                insuranceUser.getPolicies(tmps[1], function(error, result) {
+                    if (!error) {
+                        let errorStr = handler[getErrorStr](result[0].toString(10));
+                        Output(window.outputUserElement, "small", "red", `[UserPolicies]:<br>(${errorStr}) ${result[1]}`);
+                    } else {
+                        Output(window.outputUserElement, "small", "red", error);
+                    }
+                });
+                break;
             default:
                 Output(window.outputUserElement, "small", "red", "Operation Error!");
                 break;
