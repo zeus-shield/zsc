@@ -95,7 +95,7 @@ contract InsuranceUser is Ownable {
       * [return] error code and info for json data.
       */
     function _getBriefInfo(string _key, address _addr) private pure returns (int, string) {
-        string memory str = "{";
+        string memory str = "{\"Size\":2,";
         string memory user = "0x";
 
         user = user.concat(_addr.addrToAsciiString());
