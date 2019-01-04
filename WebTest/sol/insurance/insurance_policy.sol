@@ -183,18 +183,22 @@ contract InsurancePolicy is Ownable {
 
     /** [desc] remove policy.
       * [param] _key: key of user.
+      * [param] _removeUserPolicy: the flag that remove policy for user.
       * [return] none.
       */
-    // function remove(string _key) external _onlyOwner _checkUserAddr {
-    function remove(string _key) external _checkUserAddr {
+    // function remove(string _key, bool _removeUserPolicy) external _onlyOwner _checkUserAddr {
+    function remove(string _key, bool _removeUserPolicy) external _checkUserAddr {
         // check param
         require(0 != bytes(_key).length);
 
-        // get user key
-        _key.split("_", keys_);
+        if (_removeUserPolicy) {
+            // get user key
+            _key.split("_", keys_);
 
-        // remove policy for insurance_user.sol
-        InsuranceUser(userAddr_).removePolicy(keys_[0], _key);
+            // remove policy for insurance_user.sol
+            InsuranceUser(userAddr_).removePolicy(keys_[0], _key); 
+        }
+
 
         Hashmap(policyMgr_).remove(_key);
     }
