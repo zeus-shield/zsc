@@ -49,12 +49,12 @@ export default class InsuranceUser {
         });
     }
 
-    signUp(account, privateKey, data, func) {
+    signUp(account, privateKey, templateKey, data, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.signUp.estimateGas(data, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.signUp.getData(data), error, gasRequired, func);
+        contractInstance.signUp.estimateGas(templateKey, data, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.signUp.getData(templateKey, data), error, gasRequired, func);
         });
     }
 
