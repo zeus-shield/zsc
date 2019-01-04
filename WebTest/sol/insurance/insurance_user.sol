@@ -137,17 +137,19 @@ contract InsuranceUser is Ownable {
     }
 
     /** [desc] User sign up.
+      * [param] _templateKey: user template key.
       * [param] _data: json data.
       * [return] none.
       */
-    // function signUp(string _data) external _onlyOwner _checkTemplateAddr {
-    function signUp(string _data) external _checkTemplateAddr {
+    // function signUp(string _templateKey, string _data) external _onlyOwner _checkTemplateAddr {
+    function signUp(string _templateKey, string _data) external _checkTemplateAddr {
         // check param
+        require(0 != bytes(_templateKey).length);
         require(0 != bytes(_data).length);
 
         string memory template = "";
         int error = 0;
-        (error, template) = InsuranceTemplate(templateAddr_).getByKey("[DB][User]");
+        (error, template) = InsuranceTemplate(templateAddr_).getByKey(_templateKey);
         require(0 == error);
         template.split("#", keys_);
 

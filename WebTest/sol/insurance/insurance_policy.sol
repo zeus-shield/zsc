@@ -140,7 +140,7 @@ contract InsurancePolicy is Ownable {
     }
 
     /** [desc] Policy submit.
-      * [param] _templateKey: template key.
+      * [param] _templateKey: policy template key.
       * [param] _data: json data.
       * [return] none.
       */
