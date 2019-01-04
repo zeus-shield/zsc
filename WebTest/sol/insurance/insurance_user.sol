@@ -50,7 +50,11 @@ contract InsuranceUser is Ownable {
         string memory str = "{";
 
         uint len = Hashmap(_addr).size();
-        str = str.concat(len.toKeyValue("Size"), ",");
+        if (0 < len) {
+            str = str.concat(len.toKeyValue("Size"), ",");
+        } else {
+            return (-2, "{}");
+        }
         for (uint i=0; i<len; i++) {
             int error = 0;
             string memory key = "";
@@ -166,10 +170,18 @@ contract InsuranceUser is Ownable {
         Hashmap(userMgr_).remove(_key);
     }
 
+    /** [desc] Get size of users.
+      * [param] none.
+      * [return] size of users.
+      */
+    function size() external view returns (uint) {
+        return Hashmap(userMgr_).size();
+    }
+
     /** [desc] Set policy (only called by 'submit function in insurance_policy.sol' now).
       * [param] _key: key of user.
-      * [param] _key: key of policy.
-      * [param] _key: address of policy.
+      * [param] _policyKey: key of policy.
+      * [param] _policy: address of policy.
       * [return] none.
       */
     // function setPolicy(string _key, string _policyKey, address _policy) external _onlyOwner {
@@ -198,12 +210,31 @@ contract InsuranceUser is Ownable {
         Hashmap(policies).set(_policyKey, 1, "", _policy, uint(0));
     }
 
-    /** [desc] Get size of users.
-      * [param] none.
-      * [return] size of users.
+    /** [desc] Remove policy (only called by 'remove function in insurance_policy.sol' now).
+      * [param] _key: key of user.
+      * [param] _key: key of policy.
+      * [return] none.
       */
-    function size() external view returns (uint) {
-        return Hashmap(userMgr_).size();
+    // function removePolicy(string _key, string _policyKey) external _onlyOwner {
+    function removePolicy(string _key, string _policyKey) external {
+        // check param
+        require(0 != bytes(_key).length);
+        require(0 != bytes(_policyKey).length);
+ 
+        int error = 0;
+        uint position = 0;
+        string memory data0 = "";
+        address user = address(0);
+        uint data2 = uint(0);
+        (error, position, data0, user, data2) = Hashmap(userMgr_).get(_key);
+        require(0 == error);
+        require(1 == position);
+
+        address policies = address(0);
+        (error, position, data0, policies, data2) = Hashmap(user).get("Policies");
+        require(address(0) != policies);
+
+        Hashmap(policies).remove(_policyKey);
     }
 
     /** [desc] Get user info by key.
