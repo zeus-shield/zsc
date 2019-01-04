@@ -175,12 +175,48 @@ contract InsuranceUser is Ownable {
 
     /** [desc] remove user.
       * [param] _key: key of user.
+      * [param] _removePolicy: the flag that remove policy.
       * [return] none.
       */
-    // function remove(string _key) external _onlyOwner {
-    function remove(string _key) external {
+    // function remove(string _key) external _onlyOwner _checkPolicyAddr {
+    function remove(string _key, bool _removePolicy) external _checkPolicyAddr {
         // check param
         require(0 != bytes(_key).length);
+
+        if (_removePolicy) {
+            int error = 0;
+            uint position = 0;
+            string memory data0 = "";
+            address user = address(0);
+            uint data2 = uint(0);
+            (error, position, data0, user, data2) = Hashmap(userMgr_).get(_key);
+            require(0 == error);
+            require(1 == position);
+
+            address policies = address(0);
+            (error, position, data0, policies, data2) = Hashmap(user).get("Policies");
+            // require(address(0) != policies);
+            if (address(0) != policies) {
+              uint size = Hashmap(policies).size();
+              for (uint i=0; i<size; i++) {
+                  string memory policyKey = "";
+                  address policy = address(0);
+                  // (error, policyKey, position, data0, policy, data2) = Hashmap(policies).get(i);
+                  // require(0 == error);
+                  // require(1 == position);
+                  // // remove policy
+                  // InsurancePolicy(policyAddr_).remove(policyKey, false);
+
+                  (error, policyKey, position, data0, policy, data2) = Hashmap(policies).get(0);
+                  require(0 == error);
+                  require(1 == position);
+
+                  // remove user policy and policy
+                  InsurancePolicy(policyAddr_).remove(policyKey, true);
+              }
+            }
+        }
+
         Hashmap(userMgr_).remove(_key);
     }
 
@@ -192,14 +228,14 @@ contract InsuranceUser is Ownable {
         return Hashmap(userMgr_).size();
     }
 
-    /** [desc] Set policy (only called by 'submit function in insurance_policy.sol' now).
+    /** [desc] Add policy (only called by 'submit function in insurance_policy.sol' now).
       * [param] _key: key of user.
       * [param] _policyKey: key of policy.
       * [param] _policy: address of policy.
       * [return] none.
       */
-    // function setPolicy(string _key, string _policyKey, address _policy) external _onlyOwner {
-    function setPolicy(string _key, string _policyKey, address _policy) external {
+    // function addPolicy(string _key, string _policyKey, address _policy) external _onlyOwner {
+    function addPolicy(string _key, string _policyKey, address _policy) external {
         // check param
         require(0 != bytes(_key).length);
         require(0 != bytes(_policyKey).length);
