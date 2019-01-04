@@ -16,6 +16,7 @@ contract InsuranceTemplate {
 
 contract InsuranceUser {
     function setPolicy(string _key, string _policyKey, address _policy) external;
+    function removePolicy(string _key, string _policyKey) external;
     function getByKey(uint8 _type, string _key) external view returns (int, string);
 }
 
@@ -62,7 +63,11 @@ contract InsurancePolicy is Ownable {
         string memory str = "{";
 
         uint len = Hashmap(_addr).size();
-        str = str.concat(len.toKeyValue("Size"), ",");
+        if (0 < len) {
+            str = str.concat(len.toKeyValue("Size"), ",");
+        } else {
+            return (-2, "{}");
+        }
         for (uint i=0; i<len; i++) {
             int error = 0;
             string memory key = "";
@@ -180,10 +185,17 @@ contract InsurancePolicy is Ownable {
       * [param] _key: key of user.
       * [return] none.
       */
-    // function remove(string _key) external _onlyOwner {
-    function remove(string _key) external {
+    // function remove(string _key) external _onlyOwner _checkUserAddr {
+    function remove(string _key) external _checkUserAddr {
         // check param
         require(0 != bytes(_key).length);
+
+        // get user key
+        _key.split("_", keys_);
+
+        // remove policy for insurance_user.sol
+        InsuranceUser(userAddr_).removePolicy(keys_[0], _key);
+
         Hashmap(policyMgr_).remove(_key);
     }
 
