@@ -281,15 +281,35 @@ export default class TestInsurance {
         switch (cmd) {
             case "Update":
                 insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
-                insuranceTemplate.update(account, privateKey, "[UI][User][PhoneSignIn]", "手机号&密码", function(error, result) {
+                // insuranceTemplate.update(account, privateKey, "[UI][User][PhoneSignUpneSignIn]", "手机号&密码", function(error, result) {
+                //     handler[transactionProc](error, result, window.outputTemplateElement, function() {
+                //         insuranceTemplate.update(account, privateKey, "[UI][User][EmailSignIn]", "邮箱&密码", function(error, result) {
+                //             handler[transactionProc](error, result, window.outputTemplateElement, function() {
+                //                 insuranceTemplate.update(account, privateKey, "[UI][User][PhoneSignUp]", "手机号&短信验证码&密码&确认密码", function(error, result) {
+                //                     handler[transactionProc](error, result, window.outputTemplateElement, function() {
+                //                         insuranceTemplate.update(account, privateKey, "[UI][User][EmailSignUp]", "邮箱&邮箱验证码&密码&确认密码", function(error, result) {
+                //                             handler[transactionProc](error, result, window.outputTemplateElement, function() {
+                //                                 insuranceTemplate.update(account, privateKey, "[UI][User][ForgetPassword]", "邮箱/手机号", function(error, result) {
+                //                                     handler[transactionProc](error, result, window.outputTemplateElement, function() {                   
+                //                                     });
+                //                                  });          
+                //                             });
+                //                          });          
+                //                     });
+                //                  });
+                //             });
+                //         });
+                //     });
+                // });
+                insuranceTemplate.update(account, privateKey, "[DB][User]", "Key#Password#NickName#SignUpTime#UpdateTime#Policies#Receipts", function(error, result) {
                     handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                        insuranceTemplate.update(account, privateKey, "[UI][User][EmailSignIn]", "邮箱&密码", function(error, result) {
+                        insuranceTemplate.update(account, privateKey, "[DB][Policy][PingAnLife]", "Key#UserKey#Insurant#Sex#Age#Amount#StartTime#Period#Description", function(error, result) {
                             handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                                insuranceTemplate.update(account, privateKey, "[UI][User][PhoneSignUp]", "手机号&短信验证码&密码&确认密码", function(error, result) {
+                                insuranceTemplate.update(account, privateKey, "[DB][Policy][PingAnAuto]", "Key#UserKey#Insurant#Amount#StartTime#EndTime#City#PlateNumber#Description", function(error, result) {
                                     handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                                        insuranceTemplate.update(account, privateKey, "[UI][User][EmailSignUp]", "邮箱&邮箱验证码&密码&确认密码", function(error, result) {
+                                        insuranceTemplate.update(account, privateKey, "[DB][Policy][CPICAccident]", "Key#UserKey#Insurant#Passport#Amount#StartTime#EndTime#Vehicle#Country#City#Description", function(error, result) {
                                             handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                                                insuranceTemplate.update(account, privateKey, "[UI][User][ForgetPassword]", "邮箱/手机号", function(error, result) {
+                                                insuranceTemplate.update(account, privateKey, "[DB][Policy][AIAUnemployment]", "Key#UserKey#Insurant#Sex#Age#ID#Amount#StartTime#Period#City#Company#Description", function(error, result) {
                                                     handler[transactionProc](error, result, window.outputTemplateElement, function() {                   
                                                     });
                                                  });          
