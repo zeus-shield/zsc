@@ -14,6 +14,10 @@ contract InsuranceTemplate {
     function getByKey(string _key) external view returns (int, string);
 }
 
+contract InsurancePolicy {
+  function remove(string _key, bool _removeUserPolicy) external;
+}
+
 contract InsuranceUser is Ownable {
 
     using LibString for *;
@@ -21,6 +25,7 @@ contract InsuranceUser is Ownable {
 
     address private userMgr_;
     address private templateAddr_;
+    address private policyAddr_;
     string[] private keys_;
 
     modifier _checkTemplateAddr() {
@@ -28,9 +33,15 @@ contract InsuranceUser is Ownable {
         _;
     }
 
+    modifier _checkPolicyAddr() {
+        require(0 != policyAddr_);
+        _;
+    }
+
     constructor() public {
         userMgr_ = new Hashmap();
         templateAddr_ = address(0);
+        policyAddr_ = address(0);
     }
 
     /** [desc] Kill the contract.
@@ -114,12 +125,15 @@ contract InsuranceUser is Ownable {
 
     /** [desc] Setup.
       * [param] _templateAddr: template contract address.
+      * [param] _policyAddr: policy contract address.
       * [return] none.
       */
-    function setup(address _templateAddr) external _onlyOwner {
+    function setup(address _templateAddr, address _policyAddr) external _onlyOwner {
         // check template address
-        require(0 != _templateAddr);
+        require(address(0) != _templateAddr);
+        require(address(0) != _policyAddr);
         templateAddr_ = _templateAddr;
+        policyAddr_ = _policyAddr;
     }
 
     /** [desc] User sign up.
@@ -347,7 +361,7 @@ contract InsuranceUser is Ownable {
         return  _getDetailInfo(policies);
     }
 
-    function getAddr() external view _onlyOwner returns (address) {
-        return templateAddr_;
+    function getAddr() external view _onlyOwner returns (address, address) {
+        return (templateAddr_, policyAddr_);
     }
 }
