@@ -15,7 +15,7 @@ contract InsuranceTemplate {
 }
 
 contract InsuranceUser {
-    function setPolicy(string _key, string _policyKey, address _policy) external;
+    function addPolicy(string _key, string _policyKey, address _policy) external;
     function removePolicy(string _key, string _policyKey) external;
     function getByKey(uint8 _type, string _key) external view returns (int, string);
 }
@@ -178,7 +178,7 @@ contract InsurancePolicy is Ownable {
 
         Hashmap(policyMgr_).set(key, 1, "", policy, uint(0));
 
-        InsuranceUser(userAddr_).setPolicy(_userKey, key, policy);
+        InsuranceUser(userAddr_).addPolicy(_userKey, key, policy);
     }
 
     /** [desc] remove policy.
