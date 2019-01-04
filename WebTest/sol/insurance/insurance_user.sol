@@ -285,6 +285,10 @@ contract InsuranceUser is Ownable {
         require(address(0) != policies);
 
         Hashmap(policies).remove(_policyKey);
+
+        if (0 == Hashmap(policies).size()) {
+            Hashmap(user).remove("Policies");
+        }
     }
 
     /** [desc] Get user info by key.
