@@ -58,12 +58,12 @@ export default class InsuranceUser {
         });
     }
 
-    remove(account, privateKey, key, func) {
+    remove(account, privateKey, key, removePolicy, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.remove.estimateGas(key, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.remove.getData(key), error, gasRequired, func);
+        contractInstance.remove.estimateGas(key, removePolicy, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.remove.getData(key, removePolicy), error, gasRequired, func);
         });
     }
 
@@ -127,7 +127,7 @@ export default class InsuranceUser {
                         // call 'InsuranceUser.getByKey(uint8, string)'
                         contractInstance.getByKey.call(type, key, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                console.log("[User]: %s", result);
+                                console.log("[User]: %s", result.toString(10));
                                 if (null != func) {
                                     func(null, result);
                                 }
@@ -205,7 +205,7 @@ export default class InsuranceUser {
                         // call 'InsuranceUser.getPolicies(string)'
                         contractInstance.getPolicies.call(key, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                console.log("[User]: %s", result);
+                                console.log("[User]: %s", result.toString(10));
                                 if (null != func) {
                                     func(null, result);
                                 }
