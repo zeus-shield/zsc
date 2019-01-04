@@ -689,7 +689,7 @@ export default class TestInsurance {
                 }
 
                 insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
-                insurancePolicy.remove(account, privateKey, params, function(error, result) {
+                insurancePolicy.remove(account, privateKey, params, true, function(error, result) {
                     handler[transactionProc](error, result, window.outputPolicyElement, null);
                 });
                 break;
