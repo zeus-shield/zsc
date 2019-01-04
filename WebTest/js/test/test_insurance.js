@@ -542,7 +542,7 @@ export default class TestInsurance {
                 }
 
                 insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
-                insuranceUser.remove(account, privateKey, params, function(error, result) {
+                insuranceUser.remove(account, privateKey, params, true, function(error, result) {
                     handler[transactionProc](error, result, window.outputUserElement, null);
                 });
                 break;
