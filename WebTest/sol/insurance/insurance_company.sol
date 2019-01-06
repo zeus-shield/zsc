@@ -101,5 +101,17 @@ contract InsuranceCompany is Ownable {
       *          -3: inner error
       */
     function getByKey(string _key) external view returns (int, string) {
+        int error = 0;
+        uint8 positon = 0;
+        string memory value = "";
+        address data1 = address(0);
+        uint data2 = uint(0);
+
+        (error, positon, value, data1, data2) = Hashmap(companyMgr_).get(_key);
+        if (0 != positon) {
+            return (-2, "{}");
+        }
+        
+        return (error, value);
     }
 }
