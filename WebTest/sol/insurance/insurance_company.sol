@@ -20,7 +20,9 @@ contract InsuranceCompany is Ownable {
       * [param] none.
       * [return] none.
       */
-    function kill() external _onlyOwner {  
+    function kill() external _onlyOwner {
+        Hashmap(companyMgr_).kill();
+        selfdestruct(owner_);   
     }
 
     /** [desc] This unnamed function is called whenever someone tries to send ether to it.
