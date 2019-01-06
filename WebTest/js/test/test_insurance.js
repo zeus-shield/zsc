@@ -289,8 +289,175 @@ export default class TestInsurance {
         }
     }
 
-    company(operation, params) {
+    [companyBatch](handler, account, privateKey, cmd) {
+        let insuranceCompany;
+        switch (cmd) {
+            case "Update":
+                insuranceCompany = new InsuranceCompany(this[companyAbi], this[companyContractAddress]);
+                insuranceCompany.update(account, privateKey, "PingAn", "Life#Auto#Accident#Unemployment", function(error, result) {
+                    handler[transactionProc](error, result, window.outputCompanyElement, function() {
+                        insuranceCompany.update(account, privateKey, "CPIC", "Accident#Unemployment", function(error, result) {
+                            handler[transactionProc](error, result, window.outputCompanyElement, function() {
+                                insuranceCompany.update(account, privateKey, "AIA", "Unemployment", function(error, result) {
+                                    handler[transactionProc](error, result, window.outputCompanyElement, function() {
+                                        // insuranceCompany.update(account, privateKey, "DB_Policy_CPIC_Accident", "Key#UserKey#Insurant#Passport#Amount#StartTime#EndTime#Vehicle#Country#City#Description", function(error, result) {
+                                        //     handler[transactionProc](error, result, window.outputCompanyElement, function() {
+                                        //         insuranceCompany.update(account, privateKey, "DB_Policy_AIA_Unemployment", "Key#UserKey#Insurant#Sex#Age#ID#Amount#StartTime#Period#City#Company#Description", function(error, result) {
+                                        //             handler[transactionProc](error, result, window.outputCompanyElement, function() {                   
+                                        //             });
+                                        //          });          
+                                        //     });
+                                        //  });          
+                                    });
+                                 });
+                            });
+                        });
+                    });
+                });
+                break;
+            default:
+                Output(window.outputCompanyElement, "small", "red", "Command Error!");
+                break;
+        }
+    }
 
+    company(operation, params) {
+        console.log("TestInsurance.company(%s, %s)", operation, params);
+
+        // check param
+        if ("" == operation) {
+            Output(window.outputCompanyElement, "small", "red", "Please input correct input!");
+            return;
+        }
+
+        let handler = this;
+        let tmps = this[getAccount]();
+        if (0 == tmps[0]) {
+            Output(window.outputCompanyElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = tmps[0];
+        let privateKey = tmps[1];
+
+        let insuranceCompany;
+        switch (operation) {
+            case "Debug":
+                insuranceCompany = new InsuranceCompany(this[companyAbi], this[companyContractAddress]);
+                insuranceCompany.size(function(error, result) {
+                    if (!error) {
+                        let sum = parseInt(result.toString(10));
+                        let logs = new Array(sum);
+                        let count = 0;
+
+                        if (0 == sum) {
+                            Output(window.outputCompanyElement, "small", "red", "No Data!");
+                            return;
+                        }
+
+                        for (let i=0; i<sum; i++) {
+                            insuranceCompany.getById(i, function(error, id, result) {
+                                if (!error) {
+                                    let errorStr = handler[getErrorStr](result[0].toString(10));
+                                    logs[id] = `[Company${id}]: (${errorStr}) ${result[1]} => ${result[2]}`;
+                                    count ++;
+                                    if (count == sum) {
+                                        let str = "";
+                                        for (let j=0; j<logs.length; j++) {
+                                            str = str.concat(`${logs[j]}<br>`);
+                                        }
+                                        Output(window.outputCompanyElement, 'small', 'red', str);
+                                    }
+                                } else {
+                                    Output(window.outputCompanyElement, 'small', 'red', `[Company${id}]:</br>${error}`);
+                                }
+                            })
+                        }
+                    } else {
+                        Output(window.outputCompanyElement, "small", "red", error);
+                    }
+                })
+                break;
+            case "Batch":
+                handler[companyBatch](handler, account, privateKey, params);
+                break;
+            case "Update":
+                if (undefined == params) {
+                    Output(window.outputCompanyElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                tmps = params.split(",");
+                let key = tmps[0];
+                let data = tmps[1];
+
+                if ((undefined == key) || (undefined == data)) {
+                    Output(window.outputCompanyElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                insuranceCompany = new InsuranceCompany(this[companyAbi], this[companyContractAddress]);
+                insuranceCompany.update(account, privateKey, key, data, function(error, result) {
+                    handler[transactionProc](error, result, window.outputCompanyElement, null);
+                });
+                break;
+            case "Remove":
+                if (undefined == params) {
+                    Output(window.outputCompanyElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                insuranceCompany = new InsuranceCompany(this[companyAbi], this[companyContractAddress]);
+                insuranceCompany.remove(account, privateKey, params, function(error, result) {
+                    handler[transactionProc](error, result, window.outputCompanyElement, null);
+                });
+                break;
+            case "Size":
+                insuranceCompany = new InsuranceCompany(this[companyAbi], this[companyContractAddress]);
+                insuranceCompany.size(function(error, result) {
+                    if (!error) {
+                        Output(window.outputCompanyElement, "small", "red", `[Size]: ${result.toString(10)}`);
+                    } else {
+                        Output(window.outputCompanyElement, "small", "red", error);
+                    }
+                });
+                break;
+            case "GetById":
+                if (undefined == params) {
+                    Output(window.outputCompanyElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                insuranceCompany = new InsuranceCompany(this[companyAbi], this[companyContractAddress]);
+                insuranceCompany.getById(params, function(error, id, result) {
+                    if (!error) {
+                        let errorStr = handler[getErrorStr](result[0].toString(10));
+                        Output(window.outputCompanyElement, "small", "red", `[Company${id}]: (${errorStr}) ${result[1]} => ${result[2]}`);
+                    } else {
+                        Output(window.outputCompanyElement, "small", "red", error);
+                    }
+                });
+                break;
+            case "GetByKey":
+                if (undefined == params) {
+                    Output(window.outputCompanyElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                insuranceCompany = new InsuranceCompany(this[companyAbi], this[companyContractAddress]);
+                insuranceCompany.getByKey(params, function(error, result) {
+                    if (!error) {
+                        let errorStr = handler[getErrorStr](result[0].toString(10));
+                        Output(window.outputCompanyElement, "small", "red", `[Company]: (${errorStr}) ${params} => ${result[1]}`);
+                    } else {
+                        Output(window.outputCompanyElement, "small", "red", error);
+                    }
+                });
+                break;
+            default:
+                Output(window.outputCompanyElement, "small", "red", "Operation Error!");
+                break;
+        }
     }
 
     [templateBatch](handler, account, privateKey, cmd) {
