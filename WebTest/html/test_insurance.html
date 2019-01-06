@@ -17,6 +17,7 @@
                 window.outputDeployUserElement = 'p_output_deploy_user';
                 window.outputDeployPolicyElement = 'p_output_deploy_policy';
                 window.outputSetupElement = 'p_output_setup';
+                window.outputCompanyElement = 'p_output_company';
                 window.outputTemplateElement = 'p_output_template';
                 window.outputUserElement = 'p_output_user';
                 window.outputPolicyElement = 'p_output_policy';
@@ -38,6 +39,26 @@
                 document.getElementById("b_get_sub_contract_addr").onclick = function() {
                     let contract = document.getElementById("s_get_sub_contract_addr").value;
                     main('Insurance', 'Setup', 'Get', contract);
+                }
+
+                document.getElementById("b_company_batch_up").onclick = function() {
+                    main("Insurance", "Company", "Batch", "Update");
+                }
+
+                document.getElementById("b_company_debug").onclick = function() {
+                    main("Insurance", "Company", "Debug", "");
+                }
+
+                document.getElementById("b_company_write_submit").onclick = function() {
+                    let op = document.getElementById("s_company_write_op").value;
+                    let params = document.getElementById("i_company_write_params").value;
+                    main("Insurance", "Company", op, params);
+                }
+
+                document.getElementById("b_company_read_submit").onclick = function() {
+                    let op = document.getElementById("s_company_read_op").value;
+                    let params = document.getElementById("i_company_read_params").value;
+                    main("Insurance", "Company", op, params);
                 }
 
                 document.getElementById("b_template_batch_up").onclick = function() {
