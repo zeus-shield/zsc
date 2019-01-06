@@ -72,6 +72,24 @@ contract InsuranceCompany is Ownable {
       *          -3: inner error
       */
     function getById(uint _id) external view returns (int, string, string) {
+        // check param
+        if (Hashmap(companyMgr_).size() <= _id) {
+            return (-1, "", "");
+        }
+
+        int error = 0;
+        string memory key = "";
+        uint8 positon = 0;
+        string memory value = "";
+        address data1 = address(0);
+        uint data2 = uint(0);
+
+        (error, key, positon, value, data1, data2) = Hashmap(companyMgr_).get(_id);
+        if (0 != positon) {
+            return (-2, "{}", "{}");
+        }
+        
+        return (error, key, value);
     }
 
     /** [desc] Get company by key.
