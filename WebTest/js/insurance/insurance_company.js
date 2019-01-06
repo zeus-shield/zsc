@@ -50,6 +50,12 @@ export default class InsuranceCompany {
     }
 
     remove(account, privateKey, key, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        contractInstance.remove.estimateGas(key, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.remove.getData(key), error, gasRequired, func);
+        });
     }
 
     size(func) {
