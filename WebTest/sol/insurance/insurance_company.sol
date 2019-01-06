@@ -38,6 +38,10 @@ contract InsuranceCompany is Ownable {
       */
     // function update(string _key, string _data) external _onlyOwner {
     function update(string _key, string _data) external {
+        // check param
+        require(0 != bytes(_key).length);
+        require(0 != bytes(_data).length);
+        Hashmap(companyMgr_).set(_key, 0, _data, address(0), uint(0));
     }
 
     /** [desc] remove company.
