@@ -192,7 +192,38 @@
 
             <p>
                 <div class="well" id="block">
-                    <h4>4. Template</h4>
+                    <h4>4. Company</h4>
+                    <button type="button" id="b_company_debug">Debug</button>
+                    <button type="button" id="b_company_batch_up">Update(Batch)</button><br><br>
+                    <div id="element">
+                        Select Operation(Write):<br>
+                        <select id="s_company_write_op">
+                            <option value="Update">Update</option>
+                            <option value="Remove">Remove</option>
+                        </select><br>
+                        Params:<br>
+                        <input type="text" id="i_company_write_params"><br>
+                        <button type="button" id="b_company_write_submit">Submit</button>
+                    </div>
+                    <div id="element">
+                        Select Operation(Read):<br>
+                        <select id="s_company_read_op">
+                            <option value="Size">Size</option>
+                            <option value="GetById">GetById</option>
+                            <option value="GetByKey">GetByKey</option>
+                        </select><br>
+                        Params:<br>
+                        <input type="text" id="i_company_read_params"><br>
+                        <button type="button" id="b_company_read_submit">Submit</button>
+                    </div>
+                    <div style="clear: left"></div>
+                    <p id="p_output_company"></p>
+                </div>
+            </p>
+
+            <p>
+                <div class="well" id="block">
+                    <h4>5. Template</h4>
                     <button type="button" id="b_template_debug">Debug</button>
                     <button type="button" id="b_template_batch_up">Update(Batch)</button><br><br>
                     <div id="element">
@@ -223,7 +254,7 @@
 
             <p>
                 <div class="well" id="block">
-                    <h4>5. User</h4>
+                    <h4>6. User</h4>
                     <button type="button" id="b_user_debug">Debug</button><br><br>
                     <div id="element">
                         Select Operation(Write):<br>
@@ -259,7 +290,7 @@
 
             <p>
                 <div class="well" id="block">
-                    <h4>6. Policy</h4>
+                    <h4>7. Policy</h4>
                     <button type="button" id="b_policy_debug">Debug</button><br><br>
                     <div id="element">
                         Select Operation(Write):<br>
