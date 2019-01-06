@@ -5,6 +5,7 @@ CORE="sol"
 MODULE="insurance"
 IMPORTPATH="/=/"
 SOURCES=(
+insurance_company
 insurance_template
 insurance_user
 insurance_policy
