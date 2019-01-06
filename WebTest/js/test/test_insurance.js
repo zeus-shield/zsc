@@ -6,6 +6,7 @@
 import Output from "../common/output.js";
 import Transaction from "../common/transaction_raw.js";
 import Delegate from "../common/delegate.js";
+import InsuranceCompany from "../insurance/insurance_company.js";
 import InsuranceTemplate from "../insurance/insurance_template.js";
 import InsuranceUser from "../insurance/insurance_user.js";
 import InsurancePolicy from "../insurance/insurance_policy.js";
@@ -30,6 +31,7 @@ const getAccount = Symbol("getAccount");
 const transactionProc = Symbol("transactionProc");
 const hexToString = Symbol("hexToString");
 const getErrorStr = Symbol("getErrorStr");
+const companyBatch = Symbol("companyBatch");
 const templateBatch = Symbol("templateBatch");
 
 export default class TestInsurance {
