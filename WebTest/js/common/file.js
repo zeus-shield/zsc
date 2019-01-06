@@ -53,7 +53,9 @@ export default function file(module, contractName, input) {
                     } else {
                         test = window.testInsuranceClass;
                     }
-                    if ('InsuranceTemplate' == contractName) {
+                    if ('InsuranceCompany' == contractName) {
+                        elementId = window.outputDeployCompanyElement;
+                    } else if ('InsuranceTemplate' == contractName) {
                         elementId = window.outputDeployTemplateElement;
                     } else if ('InsuranceUser' == contractName) {
                         elementId = window.outputDeployUserElement;
