@@ -13,6 +13,9 @@ import InsurancePolicy from "../insurance/insurance_policy.js";
 //private member
 const compiledJson = Symbol("compiledJson");
 
+const companyAbi = Symbol("companyAbi");
+const companyContractAddress = Symbol("companyContractAddress");
+
 const templateAbi = Symbol("templateAbi");
 const templateContractAddress = Symbol("templateContractAddress");
 
@@ -34,10 +37,11 @@ export default class TestInsurance {
     constructor() {
         this[compiledJson] = [];
 
+        this[companyAbi] = [];
         this[templateAbi] = [];
         this[userAbi] = [];
         this[policyAbi] = [];
-
+        this[companyContractAddress] = "";
         this[templateContractAddress] = "";
         this[userContractAddress] = "";
         this[policyContractAddress] = "";
@@ -122,7 +126,9 @@ export default class TestInsurance {
         console.log("TestInsurance.deploy(%s)", contractName);
         let elementId;
 
-        if ("InsuranceTemplate" == contractName) {
+        if ("InsuranceCompany" == contractName) {
+            elementId = window.outputDeployCompanyElement;
+        } else if ("InsuranceTemplate" == contractName) {
             elementId = window.outputDeployTemplateElement;
         } else if ("InsuranceUser" == contractName) {
             elementId = window.outputDeployUserElement;
@@ -172,7 +178,10 @@ export default class TestInsurance {
         }     
 
         byteCode = "0x" + this[compiledJson].contracts[fullName].bin;
-        if ("InsuranceTemplate" == contractName) {
+        if ("InsuranceCompany" == contractName) {
+            this[companyAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
+            contract = web3.eth.contract(this[companyAbi]);
+        } else if ("InsuranceTemplate" == contractName) {
             this[templateAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
             contract = web3.eth.contract(this[templateAbi]);
         } else if ("InsuranceUser" == contractName) {
@@ -196,7 +205,9 @@ export default class TestInsurance {
                 if ("undefined" != typeof transaction) {
                     transaction.do("deploy", data, result, null, function(error, result) {
                         if (!error) {
-                            if ("InsuranceTemplate" == contractName) {
+                            if ("InsuranceCompany" == contractName) {
+                                handler[companyContractAddress] = result.contractAddress;
+                            } else if ("InsuranceTemplate" == contractName) {
                                 handler[templateContractAddress] = result.contractAddress;
                             } else if ("InsuranceUser" == contractName) {
                                 handler[userContractAddress] = result.contractAddress;
