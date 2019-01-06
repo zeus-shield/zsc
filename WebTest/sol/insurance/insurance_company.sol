@@ -60,6 +60,7 @@ contract InsuranceCompany is Ownable {
       * [return] size of companies.
       */
     function size() external view returns (uint) {
+        return Hashmap(companyMgr_).size();
     }
 
     /** [desc] Get company by id.
