@@ -287,6 +287,10 @@ export default class TestInsurance {
         }
     }
 
+    company(operation, params) {
+
+    }
+
     [templateBatch](handler, account, privateKey, cmd) {
         let insuranceTemplate;
         switch (cmd) {
@@ -763,6 +767,9 @@ export default class TestInsurance {
                 break;
             case "Setup":
                 this.setup(para1, para2);
+                break;
+            case "Company":
+                this.company(para1, para2);
                 break;
             case "Template":
                 this.template(para1, para2);
