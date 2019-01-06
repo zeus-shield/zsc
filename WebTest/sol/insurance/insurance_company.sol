@@ -50,6 +50,9 @@ contract InsuranceCompany is Ownable {
       */
     // function remove(string _key) external _onlyOwner {
     function remove(string _key) external {
+        // check param
+        require(0 != bytes(_key).length);
+        Hashmap(companyMgr_).remove(_key);
     }
 
     /** [desc] Get size of companies.
