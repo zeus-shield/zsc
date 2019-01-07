@@ -28,6 +28,7 @@ contract InsuranceTemplate is Delegate {
       */
     function destroy() external _onlyOwner {
         Hashmap(tempMgr_).kill();
+        tempMgr_ = address(0);
         super.kill();
     }
 
