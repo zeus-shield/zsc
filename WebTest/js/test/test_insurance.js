@@ -434,7 +434,7 @@ export default class TestInsurance {
         console.log("TestInsurance.company(%s, %s)", operation, params);
 
         // check param
-        if ("" == operation) {
+        if ((undefined == operation) || ("" == operation)) {
             Output(window.outputCompanyElement, "small", "red", "Please input correct input!");
             return;
         }
@@ -491,7 +491,7 @@ export default class TestInsurance {
                 handler[companyBatch](handler, account, privateKey, params);
                 break;
             case "Update":
-                if (undefined == params) {
+                if ((undefined == params) || ("" == params)) {
                     Output(window.outputCompanyElement, "small", "red", "Please input correct params!");
                     return;
                 }
@@ -511,13 +511,19 @@ export default class TestInsurance {
                 });
                 break;
             case "Remove":
-                if (undefined == params) {
+                if ((undefined == params) || ("" == params)) {
                     Output(window.outputCompanyElement, "small", "red", "Please input correct params!");
                     return;
                 }
 
                 insuranceCompany = new InsuranceCompany(this[companyAbi], this[companyContractAddress]);
                 insuranceCompany.remove(account, privateKey, params, function(error, result) {
+                    handler[transactionProc](error, result, window.outputCompanyElement, null);
+                });
+                break;
+            case "Destroy":
+                insuranceCompany = new InsuranceCompany(this[companyAbi], this[companyContractAddress]);
+                insuranceCompany.destroy(account, privateKey, function(error, result) {
                     handler[transactionProc](error, result, window.outputCompanyElement, null);
                 });
                 break;
@@ -532,7 +538,7 @@ export default class TestInsurance {
                 });
                 break;
             case "GetById":
-                if (undefined == params) {
+                if ((undefined == params) || ("" == params)) {
                     Output(window.outputCompanyElement, "small", "red", "Please input correct params!");
                     return;
                 }
@@ -548,7 +554,7 @@ export default class TestInsurance {
                 });
                 break;
             case "GetByKey":
-                if (undefined == params) {
+                if ((undefined == params) || ("" == params)) {
                     Output(window.outputCompanyElement, "small", "red", "Please input correct params!");
                     return;
                 }
@@ -625,7 +631,7 @@ export default class TestInsurance {
         console.log("TestInsurance.template(%s, %s)", operation, params);
 
         // check param
-        if ("" == operation) {
+        if ((undefined == operation) || ("" == operation)) {
             Output(window.outputTemplateElement, "small", "red", "Please input correct input!");
             return;
         }
@@ -682,7 +688,7 @@ export default class TestInsurance {
                 handler[templateBatch](handler, account, privateKey, params);
                 break;
             case "Update":
-                if (undefined == params) {
+                if ((undefined == params) || ("" == params)) {
                     Output(window.outputTemplateElement, "small", "red", "Please input correct params!");
                     return;
                 }
@@ -702,13 +708,19 @@ export default class TestInsurance {
                 });
                 break;
             case "Remove":
-                if (undefined == params) {
+                if ((undefined == params) || ("" == params)) {
                     Output(window.outputTemplateElement, "small", "red", "Please input correct params!");
                     return;
                 }
 
                 insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
                 insuranceTemplate.remove(account, privateKey, params, function(error, result) {
+                    handler[transactionProc](error, result, window.outputTemplateElement, null);
+                });
+                break;
+            case "Destroy":
+                insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
+                insuranceTemplate.destroy(account, privateKey, function(error, result) {
                     handler[transactionProc](error, result, window.outputTemplateElement, null);
                 });
                 break;
@@ -723,7 +735,7 @@ export default class TestInsurance {
                 });
                 break;
             case "GetById":
-                if (undefined == params) {
+                if ((undefined == params) || ("" == params)) {
                     Output(window.outputTemplateElement, "small", "red", "Please input correct params!");
                     return;
                 }
@@ -739,7 +751,7 @@ export default class TestInsurance {
                 });
                 break;
             case "GetByKey":
-                if (undefined == params) {
+                if ((undefined == params) || ("" == params)) {
                     Output(window.outputTemplateElement, "small", "red", "Please input correct params!");
                     return;
                 }
@@ -764,7 +776,7 @@ export default class TestInsurance {
         console.log("TestInsurance.user(%s, %s)", operation, params);
 
         // check param
-        if (("" == operation) || ("" == params)) {
+        if ((undefined == operation) || ("" == operation)) {
             Output(window.outputUserElement, "small", "red", "Please input correct input!");
             return;
         }
@@ -818,7 +830,7 @@ export default class TestInsurance {
                 })                
                 break;
             case "SignUp":
-                if (undefined == params) {
+                if ((undefined == params) || ("" == params)) {
                     Output(window.outputUserElement, "small", "red", "Please input correct params!");
                     return;
                 }
@@ -830,13 +842,19 @@ export default class TestInsurance {
                 });
                 break;
             case "Remove":
-                if (undefined == params) {
+                if ((undefined == params) || ("" == params)) {
                     Output(window.outputUserElement, "small", "red", "Please input correct params!");
                     return;
                 }
 
                 insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
                 insuranceUser.remove(account, privateKey, params, true, function(error, result) {
+                    handler[transactionProc](error, result, window.outputUserElement, null);
+                });
+                break;
+            case "Destroy":
+                insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
+                insuranceUser.destroy(account, privateKey, function(error, result) {
                     handler[transactionProc](error, result, window.outputUserElement, null);
                 });
                 break;
@@ -851,7 +869,7 @@ export default class TestInsurance {
                 });
                 break;
             case "GetByKey":
-                if (undefined == params) {
+                if ((undefined == params) || ("" == params)) {
                     Output(window.outputUserElement, "small", "red", "Please input correct params!");
                     return;
                 }
@@ -868,7 +886,7 @@ export default class TestInsurance {
                 });
                 break;
             case "GetById":
-                if (undefined == params) {
+                if ((undefined == params) || ("" == params)) {
                     Output(window.outputUserElement, "small", "red", "Please input correct params!");
                     return;
                 }
@@ -885,7 +903,7 @@ export default class TestInsurance {
                 });
                 break;
             case "GetPolicies":
-                if (undefined == params) {
+                if ((undefined == params) || ("" == params)) {
                     Output(window.outputUserElement, "small", "red", "Please input correct params!");
                     return;
                 }
@@ -911,7 +929,7 @@ export default class TestInsurance {
         console.log("TestInsurance.policy(%s, %s)", operation, params);
 
         // check param
-        if (("" == operation) || ("" == params)) {
+        if ((undefined == operation) || ("" == operation)) {
             Output(window.outputPolicyElement, "small", "red", "Please input correct input!");
             return;
         }
@@ -965,7 +983,7 @@ export default class TestInsurance {
                 })                
                 break;
             case "Submit":
-                if (undefined == params) {
+                if ((undefined == params) || ("" == params)) {
                     Output(window.outputPolicyElement, "small", "red", "Please input correct params!");
                     return;
                 }
@@ -977,13 +995,19 @@ export default class TestInsurance {
                 });
                 break;
             case "Remove":
-                if (undefined == params) {
+                if ((undefined == params) || ("" == params)) {
                     Output(window.outputPolicyElement, "small", "red", "Please input correct params!");
                     return;
                 }
 
                 insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
                 insurancePolicy.remove(account, privateKey, params, true, function(error, result) {
+                    handler[transactionProc](error, result, window.outputPolicyElement, null);
+                });
+                break;
+            case "Destroy":
+                insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
+                insurancePolicy.destroy(account, privateKey, function(error, result) {
                     handler[transactionProc](error, result, window.outputPolicyElement, null);
                 });
                 break;
@@ -998,7 +1022,7 @@ export default class TestInsurance {
                 });
                 break;
             case "GetByKey":
-                if (undefined == params) {
+                if ((undefined == params) || ("" == params)) {
                     Output(window.outputPolicyElement, "small", "red", "Please input correct params!");
                     return;
                 }
@@ -1015,7 +1039,7 @@ export default class TestInsurance {
                 });
                 break;
             case "GetById":
-                if (undefined == params) {
+                if ((undefined == params) || ("" == params)) {
                     Output(window.outputPolicyElement, "small", "red", "Please input correct params!");
                     return;
                 }
