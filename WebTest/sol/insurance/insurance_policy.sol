@@ -9,6 +9,7 @@ pragma solidity ^0.4.25;
 import "../utillib/LibString.sol";
 import "../utillib/LibInt.sol";
 import "../common/hashmap.sol";
+import "../common/delegate.sol";
 
 contract InsuranceTemplate {
     function getByKey(string _key) external view returns (int, string);
@@ -20,7 +21,7 @@ contract InsuranceUser {
     function getByKey(uint8 _type, string _key) external view returns (int, string);
 }
 
-contract InsurancePolicy is Ownable {
+contract InsurancePolicy is Delegate {
 
     using LibString for *;
     using LibInt for *;
@@ -40,19 +41,24 @@ contract InsurancePolicy is Ownable {
         _;
     }
 
+    modifier _onlyAdminOrHigher() {
+        require(checkDelegate(msg.sender, 2));
+        _;
+    }
+
     constructor() public {
         policyMgr_ = new Hashmap();
         templateAddr_ = address(0);
         userAddr_ = address(0);
     }
 
-    /** [desc] Kill the contract.
+    /** [desc] Destroy the contract.
       * [param] none.
       * [return] none.
       */
-    function kill() external _onlyOwner {
+    function destroy() public _onlyOwner {
         Hashmap(policyMgr_).kill();
-        selfdestruct(owner_);   
+        super.kill();
     }
 
     /** [desc] Get policy detail info.
@@ -119,12 +125,6 @@ contract InsurancePolicy is Ownable {
         return (0, str);
     }
 
-    /** [desc] This unnamed function is called whenever someone tries to send ether to it.
-      * [param] none.
-      * [return] none.
-      */
-    function() external payable { revert(); }
-
     /** [desc] Setup.
       * [param] _templateAddr: template contract address.
       * [param] _userAddr: user contract address.
@@ -140,12 +140,12 @@ contract InsurancePolicy is Ownable {
     }
 
     /** [desc] Policy submit.
+      * [param] _userKey: user key.
       * [param] _templateKey: policy template key.
       * [param] _data: json data.
       * [return] none.
       */
-    // function submit(string _templateKey, string _data) external _onlyOwner _checkTemplateAddr _checkUserAddr {
-    function submit(string _userKey, string _templateKey, string _data) external _checkTemplateAddr _checkUserAddr {
+    function submit(string _userKey, string _templateKey, string _data) external _onlyAdminOrHigher _checkTemplateAddr _checkUserAddr {
         // check param
         require(0 != bytes(_userKey).length);
         require(0 != bytes(_templateKey).length);
@@ -186,8 +186,7 @@ contract InsurancePolicy is Ownable {
       * [param] _removeUserPolicy: the flag that remove policy for user.
       * [return] none.
       */
-    // function remove(string _key, bool _removeUserPolicy) external _onlyOwner _checkUserAddr {
-    function remove(string _key, bool _removeUserPolicy) external _checkUserAddr {
+    function remove(string _key, bool _removeUserPolicy) external _onlyAdminOrHigher _checkUserAddr {
         // check param
         require(0 != bytes(_key).length);
 
