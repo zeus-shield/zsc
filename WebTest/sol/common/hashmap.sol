@@ -31,7 +31,7 @@ contract Hashmap is Ownable {
       * [param] none.
       * [return] none.
       */
-    function kill() external _onlyOwner {
+    function kill() public _onlyOwner {
         selfdestruct(owner_);   
     }
 
