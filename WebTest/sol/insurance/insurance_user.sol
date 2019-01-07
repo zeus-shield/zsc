@@ -9,6 +9,7 @@ pragma solidity ^0.4.25;
 import "../utillib/LibString.sol";
 import "../utillib/LibInt.sol";
 import "../common/hashmap.sol";
+import "../common/delegate.sol";
 
 contract InsuranceTemplate {
     function getByKey(string _key) external view returns (int, string);
@@ -18,7 +19,7 @@ contract InsurancePolicy {
   function remove(string _key, bool _removeUserPolicy) external;
 }
 
-contract InsuranceUser is Ownable {
+contract InsuranceUser is Delegate {
 
     using LibString for *;
     using LibInt for *;
@@ -38,19 +39,24 @@ contract InsuranceUser is Ownable {
         _;
     }
 
+    modifier _onlyAdminOrHigher() {
+        require(checkDelegate(msg.sender, 2));
+        _;
+    }
+
     constructor() public {
         userMgr_ = new Hashmap();
         templateAddr_ = address(0);
         policyAddr_ = address(0);
     }
 
-    /** [desc] Kill the contract.
+    /** [desc] Destroy the contract.
       * [param] none.
       * [return] none.
       */
-    function kill() external _onlyOwner {
+    function destroy() public _onlyOwner {
         Hashmap(userMgr_).kill();
-        selfdestruct(owner_);   
+        super.kill();
     }
 
     /** [desc] Get detail info.
@@ -117,12 +123,6 @@ contract InsuranceUser is Ownable {
         return (0, str);
     }
 
-    /** [desc] This unnamed function is called whenever someone tries to send ether to it.
-      * [param] none.
-      * [return] none.
-      */
-    function() external payable { revert(); }
-
     /** [desc] Setup.
       * [param] _templateAddr: template contract address.
       * [param] _policyAddr: policy contract address.
@@ -141,8 +141,7 @@ contract InsuranceUser is Ownable {
       * [param] _data: json data.
       * [return] none.
       */
-    // function signUp(string _templateKey, string _data) external _onlyOwner _checkTemplateAddr {
-    function signUp(string _templateKey, string _data) external _checkTemplateAddr {
+    function signUp(string _templateKey, string _data) external _onlyAdminOrHigher _checkTemplateAddr {
         // check param
         require(0 != bytes(_templateKey).length);
         require(0 != bytes(_data).length);
@@ -180,8 +179,7 @@ contract InsuranceUser is Ownable {
       * [param] _removePolicy: the flag that remove policy.
       * [return] none.
       */
-    // function remove(string _key) external _onlyOwner _checkPolicyAddr {
-    function remove(string _key, bool _removePolicy) external _checkPolicyAddr {
+    function remove(string _key, bool _removePolicy) external _onlyAdminOrHigher _checkPolicyAddr {
         // check param
         require(0 != bytes(_key).length);
 
@@ -222,22 +220,13 @@ contract InsuranceUser is Ownable {
         Hashmap(userMgr_).remove(_key);
     }
 
-    /** [desc] Get size of users.
-      * [param] none.
-      * [return] size of users.
-      */
-    function size() external view returns (uint) {
-        return Hashmap(userMgr_).size();
-    }
-
     /** [desc] Add policy (only called by 'submit function in insurance_policy.sol' now).
       * [param] _key: key of user.
       * [param] _policyKey: key of policy.
       * [param] _policy: address of policy.
       * [return] none.
       */
-    // function addPolicy(string _key, string _policyKey, address _policy) external _onlyOwner {
-    function addPolicy(string _key, string _policyKey, address _policy) external {
+    function addPolicy(string _key, string _policyKey, address _policy) external _onlyAdminOrHigher {
         // check param
         require(0 != bytes(_key).length);
         require(0 != bytes(_policyKey).length);
@@ -267,8 +256,7 @@ contract InsuranceUser is Ownable {
       * [param] _key: key of policy.
       * [return] none.
       */
-    // function removePolicy(string _key, string _policyKey) external _onlyOwner {
-    function removePolicy(string _key, string _policyKey) external {
+    function removePolicy(string _key, string _policyKey) external _onlyAdminOrHigher {
         // check param
         require(0 != bytes(_key).length);
         require(0 != bytes(_policyKey).length);
@@ -291,6 +279,14 @@ contract InsuranceUser is Ownable {
         if (0 == Hashmap(policies).size()) {
             Hashmap(user).remove("Policies");
         }
+    }
+
+    /** [desc] Get size of users.
+      * [param] none.
+      * [return] size of users.
+      */
+    function size() external view returns (uint) {
+        return Hashmap(userMgr_).size();
     }
 
     /** [desc] Get user info by key.
