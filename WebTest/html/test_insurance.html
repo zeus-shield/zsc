@@ -11,20 +11,22 @@
         <script type="module" src="../js/common/provider.js"></script>
         <script type="text/javascript">
             window.onload = function () {
-                window.outputProviderElement = 'p_output_provider';
-                window.outputDeployCompanyElement = 'p_output_deploy_company';
-                window.outputDeployTemplateElement = 'p_output_deploy_template';
-                window.outputDeployUserElement = 'p_output_deploy_user';
-                window.outputDeployPolicyElement = 'p_output_deploy_policy';
-                window.outputSetupElement = 'p_output_setup';
-                window.outputCompanyElement = 'p_output_company';
-                window.outputTemplateElement = 'p_output_template';
-                window.outputUserElement = 'p_output_user';
-                window.outputPolicyElement = 'p_output_policy';
+                window.outputProviderElement = "p_output_provider";
+                window.outputDeployCompanyElement = "p_output_deploy_company";
+                window.outputDeployTemplateElement = "p_output_deploy_template";
+                window.outputDeployUserElement = "p_output_deploy_user";
+                window.outputDeployPolicyElement = "p_output_deploy_policy";
+                window.outputSetupElement = "p_output_setup";
+                window.outputDelegateReadElement = "p_output_delegate_read";
+                window.outputDelegateWriteElement = "p_output_delegate_write";
+                window.outputCompanyElement = "p_output_company";
+                window.outputTemplateElement = "p_output_template";
+                window.outputUserElement = "p_output_user";
+                window.outputPolicyElement = "p_output_policy";
 
                 provider(false);
-                document.getElementById("s_provider").addEventListener('change', function(){
-                     if('injected' == this.value) {
+                document.getElementById("s_provider").addEventListener("change", function(){
+                     if("injected" == this.value) {
                         provider(true);
                      } else {
                         provider(false);
@@ -33,12 +35,35 @@
 
                 document.getElementById("b_setup").onclick = function() {
                     let contract = document.getElementById("s_setup_contract").value;
-                    main('Insurance', 'Setup', 'Set', contract);
+                    main("Insurance", "Setup", "Set", contract);
                 }
 
                 document.getElementById("b_get_sub_contract_addr").onclick = function() {
                     let contract = document.getElementById("s_get_sub_contract_addr").value;
-                    main('Insurance', 'Setup', 'Get', contract);
+                    main("Insurance", "Setup", "Get", contract);
+                }
+
+                document.getElementById("b_delegate_debug").onclick = function() {
+                    let contract = document.getElementById("s_delegate_debug_contract").value;
+                    main("Insurance", "Delegate", "Debug", contract);
+                }
+
+                document.getElementById("b_delegate_update_submit").onclick = function() {
+                    let contract = document.getElementById("s_delegate_update_contract").value;
+                    let params = document.getElementById("i_delegate_update_params").value;
+                    main("Insurance", "Delegate", "Update", `${contract},${params}`);
+                }
+
+                document.getElementById("b_delegate_remove_submit").onclick = function() {
+                    let contract = document.getElementById("s_delegate_remove_contract").value;
+                    let params = document.getElementById("i_delegate_remove_params").value;
+                    main("Insurance", "Delegate", "Remove", `${contract},${params}`);
+                }
+
+                document.getElementById("b_delegate_transfer_submit").onclick = function() {
+                    let contract = document.getElementById("s_delegate_transfer_contract").value;
+                    let params = document.getElementById("i_delegate_transfer_params").value;
+                    main("Insurance", "Delegate", "Transfer", `${contract},${params}`);
                 }
 
                 document.getElementById("b_company_batch_up").onclick = function() {
@@ -192,7 +217,62 @@
 
             <p>
                 <div class="well" id="block">
-                    <h4>4. Company</h4>
+                    <h4>4. Delegate</h4>
+                    <select id="s_delegate_debug_contract">
+                        <option value="InsuranceCompany">InsuranceCompany</option>
+                        <option value="InsuranceTemplate">InsuranceTemplate</option>
+                        <option value="InsuranceUser">InsuranceUser</option>
+                        <option value="InsurancePolicy">InsurancePolicy</option>
+                    </select>
+                    <button type="button" id="b_delegate_debug">Debug</button>
+                    <p id="p_output_delegate_read"></p>
+                    <div id="element">
+                        <h5>Update:</h5>
+                        Select Contract:<br>
+                        <select id="s_delegate_update_contract">
+                            <option value="InsuranceCompany">InsuranceCompany</option>
+                            <option value="InsuranceTemplate">InsuranceTemplate</option>
+                            <option value="InsuranceUser">InsuranceUser</option>
+                            <option value="InsurancePolicy">InsurancePolicy</option>
+                        </select><br>
+                        Address:<br>
+                        <input type="text" id="i_delegate_update_params"><br>
+                        <button type="button" id="b_delegate_update_submit">Submit</button>
+                    </div>
+                    <div id="element">
+                        <h5>Remove:</h5>
+                        Select Contract:<br>
+                        <select id="s_delegate_remove_contract">
+                            <option value="InsuranceCompany">InsuranceCompany</option>
+                            <option value="InsuranceTemplate">InsuranceTemplate</option>
+                            <option value="InsuranceUser">InsuranceUser</option>
+                            <option value="InsurancePolicy">InsurancePolicy</option>
+                        </select><br>
+                        Address:<br>
+                        <input type="text" id="i_delegate_remove_params"><br>
+                        <button type="button" id="b_delegate_remove_submit">Submit</button>
+                    </div>
+                    <div id="element">
+                        <h5>Transfer Ownersihp:</h5>
+                        Select Contract:<br>
+                        <select id="s_delegate_transfer_contract">
+                            <option value="InsuranceCompany">InsuranceCompany</option>
+                            <option value="InsuranceTemplate">InsuranceTemplate</option>
+                            <option value="InsuranceUser">InsuranceUser</option>
+                            <option value="InsurancePolicy">InsurancePolicy</option>
+                        </select><br>
+                        Address:<br>
+                        <input type="text" id="i_delegate_transfer_params"><br>
+                        <button type="button" id="b_delegate_transfer_submit">Submit</button>
+                    </div>
+                    <div style="clear: left"></div>
+                    <p id="p_output_delegate_write"></p>
+                </div>
+            </p>
+
+            <p>
+                <div class="well" id="block">
+                    <h4>5. Company</h4>
                     <button type="button" id="b_company_debug">Debug</button>
                     <button type="button" id="b_company_batch_up">Update(Batch)</button><br><br>
                     <div id="element">
@@ -223,7 +303,7 @@
 
             <p>
                 <div class="well" id="block">
-                    <h4>5. Template</h4>
+                    <h4>6. Template</h4>
                     <button type="button" id="b_template_debug">Debug</button>
                     <button type="button" id="b_template_batch_up">Update(Batch)</button><br><br>
                     <div id="element">
@@ -254,7 +334,7 @@
 
             <p>
                 <div class="well" id="block">
-                    <h4>6. User</h4>
+                    <h4>7. User</h4>
                     <button type="button" id="b_user_debug">Debug</button><br><br>
                     <div id="element">
                         Select Operation(Write):<br>
@@ -290,7 +370,7 @@
 
             <p>
                 <div class="well" id="block">
-                    <h4>7. Policy</h4>
+                    <h4>8. Policy</h4>
                     <button type="button" id="b_policy_debug">Debug</button><br><br>
                     <div id="element">
                         Select Operation(Write):<br>
