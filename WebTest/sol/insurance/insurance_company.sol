@@ -28,6 +28,7 @@ contract InsuranceCompany is Delegate {
       */
     function destroy() public _onlyOwner {
         Hashmap(companyMgr_).kill();
+        companyMgr_ = address(0);
         super.kill();
     }
 
