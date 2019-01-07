@@ -45,7 +45,7 @@ const supplement0 = Symbol('supplement0');
 const conditionBuild = Symbol('conditionBuild');
 const arrayBuild = Symbol('arrayBuild');
 
-export default class TestLogisticsRaw {
+export default class TestLogistics {
 
     constructor() {
         this[compiledJson] = [];
@@ -113,7 +113,7 @@ export default class TestLogisticsRaw {
     }
 
     deploy(contractName) {
-        console.log('TestLogisticsRaw.deploy(%s)', contractName);
+        console.log('TestLogistics.deploy(%s)', contractName);
         let elementId;
 
         if ('LogisticsDatabase' == contractName) {
@@ -219,7 +219,7 @@ export default class TestLogisticsRaw {
     }
 
     setup(cmd, contractName) {
-        console.log('TestLogisticsRaw.setup(%s, %s)', cmd, contractName);
+        console.log('TestLogistics.setup(%s, %s)', cmd, contractName);
         let handler = this;
         let tmps = this[getCommonAccount]();
         if (0 == tmps[0]) {
@@ -419,7 +419,7 @@ export default class TestLogisticsRaw {
     }
 
     dummyData(para1, para2) {
-        console.log('TestLogisticsRaw.dummyData(%s, %s)', para1, para2);
+        console.log('TestLogistics.dummyData(%s, %s)', para1, para2);
         // Analytics, Amount
         let data;
         let blockCount;
@@ -482,7 +482,7 @@ export default class TestLogisticsRaw {
     }
 
     debugBrief() {
-        console.log('TestLogisticsRaw.debugBrief()');
+        console.log('TestLogistics.debugBrief()');
         let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
 
         // number
@@ -507,7 +507,7 @@ export default class TestLogisticsRaw {
     }
 
     update(type, para) {
-        console.log('TestLogisticsRaw.update(%s)', type);
+        console.log('TestLogistics.update(%s)', type);
         let handler = this;
         let tmps = this[getCommonAccount]();
         if (0 == tmps[0]) {
@@ -539,7 +539,7 @@ export default class TestLogisticsRaw {
     }
 
     [removeBatch](account, key, handler) {
-        console.log('TestLogisticsRaw.removeBatch()');
+        console.log('TestLogistics.removeBatch()');
 
         // create and update at first
 
@@ -568,7 +568,7 @@ export default class TestLogisticsRaw {
     }
 
     remove(type, para) {
-        console.log('TestLogisticsRaw.remove(%s, %s)', type, para);
+        console.log('TestLogistics.remove(%s, %s)', type, para);
         let handler = this;
         let tmps = this[getCommonAccount]();
         if (0 == tmps[0]) {
@@ -613,7 +613,7 @@ export default class TestLogisticsRaw {
 
     // invalid -> update -> invalid -> updateEx -> invalid
     [invalidBatch](account, key, handler) {
-        console.log('TestLogisticsRaw.invalidBatch()');
+        console.log('TestLogistics.invalidBatch()');
         let tracks5_invalid1 = "{\"trackElementList\":[{\"time\":\"1543830482\",\"facilityName\":\"invalid(1-1)\",\"desc\":\"invalid(1-1)\"}&{\"time\":\"1543830482\",\"facilityName\":\"invalid(1-2)\",\"desc\":\"invalid(1-2) Груз отправлен со склада хранения (<a href= >КСЭ</a>, номер накладной <a href=$f=$http://cse.ru/track.php?order=waybill%amp;number=JNTCU0600639867YQ$ tar target=$_blank$>JNTCU0600639867YQ</a>)\"}]}";
         let info5_invalid2 = "{\"error\":null,\"num\":\"JNTCU0600046685YQ\",\"transNum\":\"invalid(2) 上海市宜山路900号科技大楼A栋6楼，邮编：200233\",\"model\":\"invalid(2) J-NET俄全通INFO5\",\"destinationCountry\":\"07\",\"lastStatus\":\"23\",\"trackElementList\":[{\"type\":\"1\",\"time\":\"1543830694\",\"country\":\"0086\",\"city\":\"021\",\"facilityName\":\"invalid(2-1)\",\"timeZone\":\"1543830694\",\"desc\":\"invalid(2-1) Товар был успешно доставлен получателю. Спасибо что воспользовались нашими услугами\",\"actionCode\":\"21\"}&{\"type\":\"0\",\"time\":\"1543830694\",\"country\":\"021\",\"city\":\"0571\",\"facilityName\":\"invalid(2-2)\",\"timeZone\":\"+3\",\"desc\":\"invalid(2-2) Order received successfully\",\"actionCode\":\"22\"}&{\"type\":\"1\",\"time\":\"1543830694\",\"country\":\"007\",\"city\":\"0724\",\"facilityName\":\"invalid(2-3)\",\"timeZone\":\"-7\",\"desc\":\"invalid(2-3) The parcel is ready to transfer to the courier\",\"actionCode\":\"23\"}]}";
         
@@ -746,7 +746,7 @@ export default class TestLogisticsRaw {
     }
 
     invalid(type, para) {
-        console.log('TestLogisticsRaw.invalid(%s, %s)', type, para);
+        console.log('TestLogistics.invalid(%s, %s)', type, para);
         let handler = this;
         let tmps = this[getCommonAccount]();
         if (0 == tmps[0]) {
@@ -770,7 +770,7 @@ export default class TestLogisticsRaw {
     }
 
     getNumber(type, para) {
-        console.log('TestLogisticsRaw.getNumber(%s)', type);
+        console.log('TestLogistics.getNumber(%s)', type);
         let logisticsCore = new LogisticsCore(this[coreAbi], this[coreContractAddress]);
 
         if ("Num" == type) {
@@ -803,7 +803,7 @@ export default class TestLogisticsRaw {
     }
 
     getInfo(type, para) {
-        console.log('TestLogisticsRaw.getInfo(%s, %s)', type, para);
+        console.log('TestLogistics.getInfo(%s, %s)', type, para);
         
         if ('LogisticsInfo' == type) {
             let logistics = new Logistics(this[abi], this[contractAddress]);
@@ -975,7 +975,7 @@ export default class TestLogisticsRaw {
     }
 
     delegate(cmds, paras) {
-        console.log('TestLogisticsRaw.delegate(%s; %s)', cmds, paras);
+        console.log('TestLogistics.delegate(%s; %s)', cmds, paras);
         let handler = this;
         let tmps = this[getCommonAccount]();
         if (0 == tmps[0]) {
@@ -1098,7 +1098,7 @@ export default class TestLogisticsRaw {
     }
 
     analytics(cmd, paras) {
-        console.log('TestLogisticsRaw.Analytics(%s, %s)', cmd, paras);
+        console.log('TestLogistics.Analytics(%s, %s)', cmd, paras);
         let handler = this;
         let tmps = this[getCommonAccount]();
         if (0 == tmps[0]) {
@@ -1196,7 +1196,7 @@ export default class TestLogisticsRaw {
     }
 
     analyticsMin(cmd, params) {
-        console.log('TestLogisticsRaw.analyticsMin(%s, %s)', cmd, params);
+        console.log('TestLogistics.analyticsMin(%s, %s)', cmd, params);
         let handler = this;
         let tmps = this[getCommonAccount]();
         if (0 == tmps[0]) {
@@ -1271,7 +1271,7 @@ export default class TestLogisticsRaw {
     }
 
     do(operation, para1, para2) {
-        console.log('TestLogisticsRaw.do(%s, %s, %s)', operation, para1, para2);
+        console.log('TestLogistics.do(%s, %s, %s)', operation, para1, para2);
         switch(operation) {
             case 'Deploy':
                 this.deploy(para1);
