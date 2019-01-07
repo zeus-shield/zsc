@@ -9,14 +9,20 @@ pragma solidity ^0.4.25;
 contract Ownable {
   address internal owner_;
 
-  constructor() public {
-    owner_ = msg.sender;
-  }
-
   modifier _onlyOwner() {
     require(msg.sender == owner_);
     _;
   }
+
+  constructor() public {
+    owner_ = msg.sender;
+  }
+
+  function kill() public _onlyOwner {
+      selfdestruct(owner_);   
+  }
+
+  function() external payable { revert(); }
 
   function transferOwnership(address _newOwner) external _onlyOwner {
     if (0 != _newOwner) {
