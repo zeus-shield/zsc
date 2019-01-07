@@ -56,6 +56,7 @@ contract InsuranceUser is Delegate {
       */
     function destroy() public _onlyOwner {
         Hashmap(userMgr_).kill();
+        userMgr_ = address(0);
         super.kill();
     }
 
