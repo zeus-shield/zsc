@@ -31,6 +31,7 @@ const getAccount = Symbol("getAccount");
 const transactionProc = Symbol("transactionProc");
 const hexToString = Symbol("hexToString");
 const getErrorStr = Symbol("getErrorStr");
+const getDelegateInstance = Symbol("getDelegateInstance");
 const companyBatch = Symbol("companyBatch");
 const templateBatch = Symbol("templateBatch");
 
@@ -317,6 +318,106 @@ export default class TestInsurance {
                 break;
             default:
                 Output(window.outputCompanyElement, "small", "red", "Command Error!");
+                break;
+        }
+    }
+
+    [getDelegateInstance](contract) {
+        let delegate = null;
+        if ("InsuranceCompany" == contract) {
+            delegate = new Delegate(this[companyAbi], this[companyContractAddress]);
+        } else if ("InsuranceTemplate" == contract) {
+            delegate = new Delegate(this[templateAbi], this[templateContractAddress]);
+        } else if ("InsuranceUser" == contract) {
+            delegate = new Delegate(this[userAbi], this[userContractAddress]);
+        } else if ("InsurancePolicy" == contract) {
+            delegate = new Delegate(this[policyAbi], this[policyContractAddress]);
+        } else {}
+
+        return delegate;       
+    }
+
+    delegate(cmd, params) {
+        console.log('TestInsurance.delegate(%s; %s)', cmd, params);
+        let handler = this;
+        let tmps = this[getAccount]();
+        if (0 == tmps[0]) {
+            Output(window.outputDelegateReadElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = tmps[0];
+        let key = tmps[1];
+
+        tmps = params.split(",");
+        let contract = tmps[0];
+        let param = tmps[1];
+
+        let delegate = this[getDelegateInstance](contract);
+        if (null == delegate) {
+            Output(window.outputDelegateReadElement, 'small', 'red', "Delegate instance Error!");
+            return;
+        }
+
+        switch (cmd) {
+            case "Debug":
+                delegate.number(function(error, result) {
+                    if (!error) {
+                        let sum = parseInt(result.toString(10));
+                        let logs = new Array(sum);
+                        let count = 0;
+                        for (let i=0; i<sum; i++) {
+                            delegate.getInfoById(i, function(error, id, result) {
+                                if (!error) {
+                                    logs[id] = `[Delegate${id}]: ${result}`;
+                                    count ++;
+                                    if (count == sum) {
+                                        let str = "";
+                                        for (let j=0; j<logs.length; j++) {
+                                            str = str.concat(`${logs[j]}<br>`);
+                                        }
+                                        Output(window.outputDelegateReadElement, 'small', 'red', str);
+                                    }                                 
+                                } else {
+                                    Output(window.outputDelegateReadElement, 'small', 'red', `[Delegate${id}]:</br>${error}`);
+                                }
+                            })
+                        }
+                    } else {
+                        Output(window.outputDelegateReadElement, 'small', 'red', error);
+                    }
+                })               
+                break;
+            case "Update":
+                tmps = param.split(",");
+                let address = tmps[0];
+                let priority = tmps[1];
+
+                if (undefined == priority) {
+                    Output(window.outputDelegateWriteElement, 'small', 'red', "Please input priority!");
+                    return;
+                }
+
+                // update
+                delegate.update(account, key, address, priority, function(error, result) {
+                    handler[transactionProc](error, result, window.outputDelegateWriteElement);
+                });
+
+                break;
+            case "Remove":
+                // remove
+                delegate.remove(account, key, param, function(error, result) {
+                    handler[transactionProc](error, result, window.outputDelegateWriteElement);
+                });
+                break;
+            case "Transfer":
+                // transferOwnership
+                delegate.transferOwnership(account, key, param, 2, function(error, result) {
+                    handler[transactionProc](error, result, window.outputDelegateWriteElement);
+                });                
+                break;
+            default:
+                Output(window.outputDelegateReadElement, 'small', 'red', "Command Error!");
                 break;
         }
     }
@@ -936,6 +1037,9 @@ export default class TestInsurance {
                 break;
             case "Setup":
                 this.setup(para1, para2);
+                break;
+            case 'Delegate':
+                this.delegate(para1, para2);
                 break;
             case "Company":
                 this.company(para1, para2);
