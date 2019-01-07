@@ -351,7 +351,7 @@ export default class TestInsurance {
 
         tmps = params.split(",");
         let contract = tmps[0];
-        let param = tmps[1];
+        let address = tmps[1];
 
         let delegate = this[getDelegateInstance](contract);
         if (null == delegate) {
@@ -389,12 +389,10 @@ export default class TestInsurance {
                 })               
                 break;
             case "Update":
-                tmps = param.split(",");
-                let address = tmps[0];
-                let priority = tmps[1];
+                let priority = tmps[2];
 
-                if (undefined == priority) {
-                    Output(window.outputDelegateWriteElement, 'small', 'red', "Please input priority!");
+                if ((undefined == address) || ("" == address) ||(undefined == priority)) {
+                    Output(window.outputDelegateWriteElement, 'small', 'red', "Please input address/priority!");
                     return;
                 }
 
@@ -405,14 +403,24 @@ export default class TestInsurance {
 
                 break;
             case "Remove":
+                if ((undefined == address) || ("" == address)) {
+                    Output(window.outputDelegateWriteElement, 'small', 'red', "Please input address/priority!");
+                    return;
+                }
+
                 // remove
-                delegate.remove(account, key, param, function(error, result) {
+                delegate.remove(account, key, address, function(error, result) {
                     handler[transactionProc](error, result, window.outputDelegateWriteElement);
                 });
                 break;
             case "Transfer":
+                if ((undefined == address) || ("" == address)) {
+                    Output(window.outputDelegateWriteElement, 'small', 'red', "Please input address/priority!");
+                    return;
+                }
+
                 // transferOwnership
-                delegate.transferOwnership(account, key, param, 2, function(error, result) {
+                delegate.transferOwnership(account, key, address, 2, function(error, result) {
                     handler[transactionProc](error, result, window.outputDelegateWriteElement);
                 });                
                 break;
