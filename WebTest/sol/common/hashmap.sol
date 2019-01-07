@@ -27,14 +27,6 @@ contract Hashmap is Ownable {
         sum_ = 0;
     }
 
-    /** [desc] Kill the contract.
-      * [param] none.
-      * [return] none.
-      */
-    function kill() public _onlyOwner {
-        selfdestruct(owner_);   
-    }
-
     /** [desc] Swap data.
       * [param] _key1: key using for mapping data.
       * [param] _key2: key using for mapping data.
@@ -53,12 +45,6 @@ contract Hashmap is Ownable {
         ids_[_key1] = id2;
         ids_[_key2] = id1;
     }
-
-    /** [desc] This unnamed function is called whenever someone tries to send ether to it.
-      * [param] none.
-      * [return] none.
-      */
-    function() external payable { revert(); }
 
     /** [desc] Set data.
       * [param] _key: key using for mapping data.
