@@ -7,37 +7,36 @@ pragma solidity ^0.4.25;
 // pragma experimental ABIEncoderV2;
 
 import "../common/hashmap.sol";
+import "../common/delegate.sol";
 
-contract InsuranceCompany is Ownable {
+contract InsuranceCompany is Delegate {
 
     address private companyMgr_;
+
+    modifier _onlyAdminOrHigher() {
+        require(checkDelegate(msg.sender, 2));
+        _;
+    }
 
     constructor() public {
         companyMgr_ = new Hashmap();
     }
 
-    /** [desc] Kill the contract.
+    /** [desc] Destroy the contract.
       * [param] none.
       * [return] none.
       */
-    function kill() external _onlyOwner {
+    function destroy() public _onlyOwner {
         Hashmap(companyMgr_).kill();
-        selfdestruct(owner_);   
+        super.kill();
     }
-
-    /** [desc] This unnamed function is called whenever someone tries to send ether to it.
-      * [param] none.
-      * [return] none.
-      */
-    function() external payable { revert(); }
 
     /** [desc] update company.
       * [param] _key: key of company.
       * [param] _data: data of company.
       * [return] none.
       */
-    // function update(string _key, string _data) external _onlyOwner {
-    function update(string _key, string _data) external {
+    function update(string _key, string _data) external _onlyAdminOrHigher {
         // check param
         require(0 != bytes(_key).length);
         require(0 != bytes(_data).length);
@@ -48,8 +47,7 @@ contract InsuranceCompany is Ownable {
       * [param] _key: key of company.
       * [return] none.
       */
-    // function remove(string _key) external _onlyOwner {
-    function remove(string _key) external {
+    function remove(string _key) external _onlyAdminOrHigher {
         // check param
         require(0 != bytes(_key).length);
         Hashmap(companyMgr_).remove(_key);
