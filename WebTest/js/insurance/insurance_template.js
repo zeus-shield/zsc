@@ -40,6 +40,15 @@ export default class InsuranceTemplate {
         }
     }
 
+    destroy(account, privateKey, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        contractInstance.destroy.estimateGas({from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.destroy.getData(), error, gasRequired, func);
+        });
+    }
+
     update(account, privateKey, key, data, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
