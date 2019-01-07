@@ -18,6 +18,14 @@ contract Delegate {
     mapping (address => uint) private ids_;
     mapping (address => bool) private exists_;
 
+    modifier _onlyOwner() {
+        require(exists_[msg.sender]);
+        require(0 == ids_[msg.sender]);
+        require(addrs_[0] == msg.sender);
+        require(1 == prios_[0]);
+        _;
+    }
+
     constructor() public {
         addrs_[0] = msg.sender;
         prios_[0] = 1;
@@ -26,12 +34,8 @@ contract Delegate {
         sum_ = 1;
     }
 
-    modifier _onlyOwner() {
-        require(exists_[msg.sender]);
-        require(0 == ids_[msg.sender]);
-        require(addrs_[0] == msg.sender);
-        require(1 == prios_[0]);
-        _;
+    function kill() public _onlyOwner {
+        selfdestruct(addrs_[0]);   
     }
 
     function _update(address _addr, uint _prio) private {
@@ -84,10 +88,6 @@ contract Delegate {
 
     // This unnamed function is called whenever someone tries to send ether to it
     function() external payable { revert(); }
-
-    function kill() external _onlyOwner {
-        selfdestruct(addrs_[0]);   
-    }
 
     function transferOwnership(address _newOwner, uint _degradePrio) external _onlyOwner {
         require(0 != _newOwner);
