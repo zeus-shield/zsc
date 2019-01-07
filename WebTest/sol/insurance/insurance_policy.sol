@@ -58,6 +58,7 @@ contract InsurancePolicy is Delegate {
       */
     function destroy() public _onlyOwner {
         Hashmap(policyMgr_).kill();
+        policyMgr_ = address(0);
         super.kill();
     }
 
