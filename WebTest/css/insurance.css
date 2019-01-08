@@ -1,4 +1,4 @@
-#l_insurance_company,#l_insurance_template,#l_insurance_user,#l_insurance_policy {
+#l_insurance_company,#l_insurance_template,#l_insurance_user,#l_insurance_policy,#l_insurance_user_policy {
     width: 60px;
     height: 25px;
     line-height: 15px;
@@ -18,7 +18,7 @@
 /*    width:900px;*/
     padding:10px;
 }
-#f_insurance_company,#f_insurance_template,#f_insurance_user,#f_insurance_policy {
+#f_insurance_company,#f_insurance_template,#f_insurance_user,#f_insurance_policy,#f_insurance_user_policy {
     display: none;
 }
 #block {
