@@ -61,6 +61,8 @@ export default function file(module, contractName, input) {
                         elementId = window.outputDeployUserElement;
                     } else if ('InsurancePolicy' == contractName) {
                         elementId = window.outputDeployPolicyElement;
+                    } else if ('InsuranceUserPolicy' == contractName) {
+                        elementId = window.outputDeployUserPolicyElement;
                     } else {
                         elementId = window.outputDeployElement;
                     }
