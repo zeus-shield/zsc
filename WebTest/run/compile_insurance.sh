@@ -9,6 +9,7 @@ insurance_company
 insurance_template
 insurance_user
 insurance_policy
+insurance_user_policy
 )
 BUILDPATH="../build"
 
