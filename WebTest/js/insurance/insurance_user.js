@@ -49,12 +49,12 @@ export default class InsuranceUser {
         });
     }
 
-    setup(account, privateKey, templateAddr, policyAddr, func) {
+    setup(account, privateKey, templateAddr, userPolicyAddr, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.setup.estimateGas(templateAddr, policyAddr, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.setup.getData(templateAddr, policyAddr), error, gasRequired, func);
+        contractInstance.setup.estimateGas(templateAddr, userPolicyAddr, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.setup.getData(templateAddr, userPolicyAddr), error, gasRequired, func);
         });
     }
 
@@ -67,12 +67,12 @@ export default class InsuranceUser {
         });
     }
 
-    remove(account, privateKey, key, removePolicy, func) {
+    remove(account, privateKey, key, _removeUserPolicies, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.remove.estimateGas(key, removePolicy, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.remove.getData(key, removePolicy), error, gasRequired, func);
+        contractInstance.remove.estimateGas(key, _removeUserPolicies, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.remove.getData(key, _removeUserPolicies), error, gasRequired, func);
         });
     }
 
@@ -193,45 +193,6 @@ export default class InsuranceUser {
         });
     }
 
-    getPolicies(key, func) {
-        let handler = this;
-        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-
-        // estimate gas
-        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getPolicies.estimateGas(key, {from: this[account]}, function(error, result) {
-            if(!error) {
-                let gasRequired = result;
-                // get gas price
-                // MetaMask Web3 object does not support synchronous methods without a callback parameter
-                web3.eth.getGasPrice(function(error, result) {
-                    if(!error) {
-                        console.log("=============== InsuranceUser.getPolicies(string) ===============");
-                        console.log("from:    ", handler[account]);
-                        console.log("gas:     ", gasRequired);
-                        console.log("gasPrice:", result.toString(10));
-                        console.log("=================================================================");
-                        // call 'InsuranceUser.getPolicies(string)'
-                        contractInstance.getPolicies.call(key, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
-                            if(!error) {
-                                console.log("[User]: %s", result.toString(10));
-                                if (null != func) {
-                                    func(null, result);
-                                }
-                            } else {
-                                handler[notifyError](error, func);
-                            }
-                        });
-                    } else {
-                        handler[notifyError](error, func);
-                    }
-                });
-            } else {
-                handler[notifyError](error, func);
-            }
-        });
-    }
-
     getAddr(func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
@@ -253,7 +214,7 @@ export default class InsuranceUser {
                         // call 'InsuranceUser.getAddr()'
                         contractInstance.getAddr.call({from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                console.log("[Address]: template(%s), policy(%s)", result[0], result[1]);
+                                console.log("[Address]: template(%s), userPolicy(%s)", result[0], result[1]);
                                 if (null != func) {
                                     func(null, result);
                                 }
