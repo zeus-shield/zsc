@@ -10,6 +10,7 @@ import InsuranceCompany from "../insurance/insurance_company.js";
 import InsuranceTemplate from "../insurance/insurance_template.js";
 import InsuranceUser from "../insurance/insurance_user.js";
 import InsurancePolicy from "../insurance/insurance_policy.js";
+import InsuranceUserPolicy from "../insurance/insurance_user_policy.js";
 
 //private member
 const compiledJson = Symbol("compiledJson");
@@ -25,6 +26,9 @@ const userContractAddress = Symbol("userContractAddress");
 
 const policyAbi = Symbol("policyAbi");
 const policyContractAddress = Symbol("policyContractAddress");
+
+const userPolicyAbi = Symbol("userPolicyAbi");
+const userPolicyContractAddress = Symbol("userPolicyContractAddress");
 
 //private function
 const getAccount = Symbol("getAccount");
@@ -44,10 +48,12 @@ export default class TestInsurance {
         this[templateAbi] = [];
         this[userAbi] = [];
         this[policyAbi] = [];
+        this[userPolicyAbi] = [];
         this[companyContractAddress] = "";
         this[templateContractAddress] = "";
         this[userContractAddress] = "";
         this[policyContractAddress] = "";
+        this[userPolicyContractAddress] = "";
     }
 
     [getAccount]() { 
@@ -137,6 +143,8 @@ export default class TestInsurance {
             elementId = window.outputDeployUserElement;
         } else if ("InsurancePolicy" == contractName) {
             elementId = window.outputDeployPolicyElement;
+        } else if ("InsuranceUserPolicy" == contractName) {
+            elementId = window.outputDeployUserPolicyElement;
         } else {
             console.log("Contract name Error!");
             return;
@@ -193,6 +201,9 @@ export default class TestInsurance {
         } else if ("InsurancePolicy" == contractName) {
             this[policyAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
             contract = web3.eth.contract(this[policyAbi]);
+        } else if ("InsuranceUserPolicy" == contractName) {
+            this[userPolicyAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
+            contract = web3.eth.contract(this[userPolicyAbi]);
         } else {
             console.log("Contract name Error!");
             return;
@@ -216,6 +227,8 @@ export default class TestInsurance {
                                 handler[userContractAddress] = result.contractAddress;
                             } else if ("InsurancePolicy" == contractName) {
                                 handler[policyContractAddress] = result.contractAddress;
+                            } else if ("InsuranceUserPolicy" == contractName) {
+                                handler[userPolicyContractAddress] = result.contractAddress;
                             } else {
                                 console.log("Contract name Error!");
                                 return;
@@ -249,12 +262,17 @@ export default class TestInsurance {
             case "Set":
                 if ("InsuranceUser" == contractName) {
                     let insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
-                    insuranceUser.setup(account, privateKey, this[templateContractAddress], this[policyContractAddress], function(error, result) {
+                    insuranceUser.setup(account, privateKey, this[templateContractAddress], this[userPolicyContractAddress], function(error, result) {
                         handler[transactionProc](error, result, window.outputSetupElement);
                     });
                 } else if ("InsurancePolicy" == contractName) {
                     let insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
-                    insurancePolicy.setup(account, privateKey, this[templateContractAddress], this[userContractAddress], function(error, result) {
+                    insurancePolicy.setup(account, privateKey, this[templateContractAddress], this[userPolicyContractAddress], function(error, result) {
+                        handler[transactionProc](error, result, window.outputSetupElement);
+                    });
+                } else if ("InsuranceUserPolicy" == contractName) {
+                    let insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                    insuranceUserPolicy.setup(account, privateKey, this[policyContractAddress], function(error, result) {
                         handler[transactionProc](error, result, window.outputSetupElement);
                     });
                 } else {
@@ -266,7 +284,7 @@ export default class TestInsurance {
                     let insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
                     insuranceUser.getAddr(function(error, result) {
                         if (!error) {
-                            Output(window.outputSetupElement, 'small', 'red', `[Address]: template(${result[0]}), policy(${result[1]})`);
+                            Output(window.outputSetupElement, 'small', 'red', `[Address]: template(${result[0]}), userPolicy(${result[1]})`);
                         } else {
                             Output(window.outputSetupElement, 'small', 'red', error);
                         }
@@ -275,7 +293,16 @@ export default class TestInsurance {
                     let insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
                     insurancePolicy.getAddr(function(error, result) {
                         if (!error) {
-                            Output(window.outputSetupElement, 'small', 'red', `[Address]: template(${result[0]}), user(${result[1]})`);
+                            Output(window.outputSetupElement, 'small', 'red', `[Address]: template(${result[0]}), userPolicy(${result[1]})`);
+                        } else {
+                            Output(window.outputSetupElement, 'small', 'red', error);
+                        }
+                    });
+                } else if ("InsuranceUserPolicy" == contractName) {
+                    let insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                    insuranceUserPolicy.getAddr(function(error, result) {
+                        if (!error) {
+                            Output(window.outputSetupElement, 'small', 'red', `[Address]: policy(${result})`);
                         } else {
                             Output(window.outputSetupElement, 'small', 'red', error);
                         }
@@ -332,6 +359,8 @@ export default class TestInsurance {
             delegate = new Delegate(this[userAbi], this[userContractAddress]);
         } else if ("InsurancePolicy" == contract) {
             delegate = new Delegate(this[policyAbi], this[policyContractAddress]);
+        } else if ("InsuranceUserPolicy" == contract) {
+            delegate = new Delegate(this[userPolicyAbi], this[userPolicyContractAddress]);
         } else {}
 
         return delegate;       
@@ -909,8 +938,8 @@ export default class TestInsurance {
                 }
 
                 tmps = params.split(",");
-                insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
-                insuranceUser.getPolicies(tmps[1], function(error, result) {
+                let insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.getPolicies(tmps[1], function(error, result) {
                     if (!error) {
                         let errorStr = handler[getErrorStr](result[0].toString(10));
                         Output(window.outputUserElement, "small", "red", `[UserPolicies]:<br>(${errorStr}) ${result[1]}`);
