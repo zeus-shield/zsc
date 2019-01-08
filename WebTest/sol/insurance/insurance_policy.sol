@@ -15,10 +15,9 @@ contract InsuranceTemplate {
     function getByKey(string _key) external view returns (int, string);
 }
 
-contract InsuranceUser {
-    function addPolicy(string _key, string _policyKey, address _policy) external;
-    function removePolicy(string _key, string _policyKey) external;
-    function getByKey(uint8 _type, string _key) external view returns (int, string);
+contract InsuranceUserPolicy {
+    function addPolicy(string _userKey, string _policyKey, address _policy) external;
+    function removePolicy(string _userKey, string _policyKey) external;
 }
 
 contract InsurancePolicy is Delegate {
@@ -28,7 +27,7 @@ contract InsurancePolicy is Delegate {
 
     address private policyMgr_;
     address private templateAddr_;
-    address private userAddr_;
+    address private userPolicyAddr_;
     string[] private keys_;
 
     modifier _checkTemplateAddr() {
@@ -36,8 +35,8 @@ contract InsurancePolicy is Delegate {
         _;
     }
 
-    modifier _checkUserAddr() {
-        require(0 != userAddr_);
+    modifier _checkUserPolicyAddr() {
+        require(0 != userPolicyAddr_);
         _;
     }
 
@@ -49,7 +48,7 @@ contract InsurancePolicy is Delegate {
     constructor() public {
         policyMgr_ = new Hashmap();
         templateAddr_ = address(0);
-        userAddr_ = address(0);
+        userPolicyAddr_ = address(0);
     }
 
     /** [desc] Destroy the contract.
@@ -128,16 +127,16 @@ contract InsurancePolicy is Delegate {
 
     /** [desc] Setup.
       * [param] _templateAddr: template contract address.
-      * [param] _userAddr: user contract address.
+      * [param] _userPolicyAddr: user policy relationship contract address.
       * [return] none.
       */
-    function setup(address _templateAddr, address _userAddr) external _onlyOwner {
+    function setup(address _templateAddr, address _userPolicyAddr) external _onlyOwner {
         // check params
         require(0 != _templateAddr);
-        require(0 != _userAddr);
+        require(0 != _userPolicyAddr);
 
         templateAddr_ = _templateAddr;
-        userAddr_ = _userAddr;
+        userPolicyAddr_ = _userPolicyAddr;
     }
 
     /** [desc] Policy submit.
@@ -146,7 +145,7 @@ contract InsurancePolicy is Delegate {
       * [param] _data: json data.
       * [return] none.
       */
-    function submit(string _userKey, string _templateKey, string _data) external _onlyAdminOrHigher _checkTemplateAddr _checkUserAddr {
+    function submit(string _userKey, string _templateKey, string _data) external _onlyAdminOrHigher _checkTemplateAddr _checkUserPolicyAddr {
         // check param
         require(0 != bytes(_userKey).length);
         require(0 != bytes(_templateKey).length);
@@ -179,15 +178,15 @@ contract InsurancePolicy is Delegate {
 
         Hashmap(policyMgr_).set(key, 1, "", policy, uint(0));
 
-        InsuranceUser(userAddr_).addPolicy(_userKey, key, policy);
+        InsuranceUserPolicy(userPolicyAddr_).addPolicy(_userKey, key, policy);
     }
 
     /** [desc] remove policy.
       * [param] _key: key of user.
-      * [param] _removeUserPolicy: the flag that remove policy for user.
+      * [param] _removeUserPolicy: the flag that remove user policy.
       * [return] none.
       */
-    function remove(string _key, bool _removeUserPolicy) external _onlyAdminOrHigher _checkUserAddr {
+    function remove(string _key, bool _removeUserPolicy) external _onlyAdminOrHigher _checkUserPolicyAddr {
         // check param
         require(0 != bytes(_key).length);
 
@@ -195,8 +194,8 @@ contract InsurancePolicy is Delegate {
             // get user key
             _key.split("_", keys_);
 
-            // remove policy for insurance_user.sol
-            InsuranceUser(userAddr_).removePolicy(keys_[0], _key); 
+            // remove policy for insurance_user_policy.sol
+            InsuranceUserPolicy(userPolicyAddr_).removePolicy(keys_[0], _key); 
         }
 
 
@@ -283,6 +282,6 @@ contract InsurancePolicy is Delegate {
     }
 
     function getAddr() external view _onlyOwner returns (address, address) {
-        return (templateAddr_, userAddr_);
+        return (templateAddr_, userPolicyAddr_);
     }
 }
