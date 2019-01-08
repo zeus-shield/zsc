@@ -15,8 +15,9 @@ contract InsuranceTemplate {
     function getByKey(string _key) external view returns (int, string);
 }
 
-contract InsurancePolicy {
-  function remove(string _key, bool _removeUserPolicy) external;
+contract InsuranceUserPolicy {
+  function size() external view returns (uint);
+  function removePolicies(string _key, bool _removePolicy) external;
 }
 
 contract InsuranceUser is Delegate {
@@ -26,7 +27,7 @@ contract InsuranceUser is Delegate {
 
     address private userMgr_;
     address private templateAddr_;
-    address private policyAddr_;
+    address private userPolicyAddr_;
     string[] private keys_;
 
     modifier _checkTemplateAddr() {
@@ -34,8 +35,8 @@ contract InsuranceUser is Delegate {
         _;
     }
 
-    modifier _checkPolicyAddr() {
-        require(0 != policyAddr_);
+    modifier _checkUserPolicyAddr() {
+        require(0 != userPolicyAddr_);
         _;
     }
 
@@ -47,7 +48,7 @@ contract InsuranceUser is Delegate {
     constructor() public {
         userMgr_ = new Hashmap();
         templateAddr_ = address(0);
-        policyAddr_ = address(0);
+        userPolicyAddr_ = address(0);
     }
 
     /** [desc] Destroy the contract.
@@ -126,15 +127,15 @@ contract InsuranceUser is Delegate {
 
     /** [desc] Setup.
       * [param] _templateAddr: template contract address.
-      * [param] _policyAddr: policy contract address.
+      * [param] _userPolicyAddr: user policy relationship contract address.
       * [return] none.
       */
-    function setup(address _templateAddr, address _policyAddr) external _onlyOwner {
-        // check template address
+    function setup(address _templateAddr, address _userPolicyAddr) external _onlyOwner {
+        // check params
         require(address(0) != _templateAddr);
-        require(address(0) != _policyAddr);
+        require(address(0) != _userPolicyAddr);
         templateAddr_ = _templateAddr;
-        policyAddr_ = _policyAddr;
+        userPolicyAddr_ = _userPolicyAddr;
     }
 
     /** [desc] User sign up.
@@ -177,109 +178,18 @@ contract InsuranceUser is Delegate {
 
     /** [desc] remove user.
       * [param] _key: key of user.
-      * [param] _removePolicy: the flag that remove policy.
+      * [param] _removeUserPolicies: the flag that remove user policies.
       * [return] none.
       */
-    function remove(string _key, bool _removePolicy) external _onlyAdminOrHigher _checkPolicyAddr {
+    function remove(string _key, bool _removeUserPolicies) external _onlyAdminOrHigher _checkUserPolicyAddr {
         // check param
         require(0 != bytes(_key).length);
 
-        if (_removePolicy) {
-            int error = 0;
-            uint position = 0;
-            string memory data0 = "";
-            address user = address(0);
-            uint data2 = uint(0);
-            (error, position, data0, user, data2) = Hashmap(userMgr_).get(_key);
-            require(0 == error);
-            require(1 == position);
-
-            address policies = address(0);
-            (error, position, data0, policies, data2) = Hashmap(user).get("Policies");
-            // require(address(0) != policies);
-            if (address(0) != policies) {
-              uint size = Hashmap(policies).size();
-              for (uint i=0; i<size; i++) {
-                  string memory policyKey = "";
-                  address policy = address(0);
-                  // (error, policyKey, position, data0, policy, data2) = Hashmap(policies).get(i);
-                  // require(0 == error);
-                  // require(1 == position);
-                  // // remove policy
-                  // InsurancePolicy(policyAddr_).remove(policyKey, false);
-
-                  (error, policyKey, position, data0, policy, data2) = Hashmap(policies).get(0);
-                  require(0 == error);
-                  require(1 == position);
-
-                  // remove user policy and policy
-                  InsurancePolicy(policyAddr_).remove(policyKey, true);
-              }
-            }
+        if ((0 < InsuranceUserPolicy(userPolicyAddr_).size()) &&_removeUserPolicies) {
+            InsuranceUserPolicy(userPolicyAddr_).removePolicies(_key, true);
         }
 
         Hashmap(userMgr_).remove(_key);
-    }
-
-    /** [desc] Add policy (only called by 'submit function in insurance_policy.sol' now).
-      * [param] _key: key of user.
-      * [param] _policyKey: key of policy.
-      * [param] _policy: address of policy.
-      * [return] none.
-      */
-    function addPolicy(string _key, string _policyKey, address _policy) external _onlyAdminOrHigher {
-        // check param
-        require(0 != bytes(_key).length);
-        require(0 != bytes(_policyKey).length);
-        require(address(0) != _policy);
-
-        int error = 0;
-        uint position = 0;
-        string memory data0 = "";
-        address user = address(0);
-        uint data2 = uint(0);
-        (error, position, data0, user, data2) = Hashmap(userMgr_).get(_key);
-        require(0 == error);
-        require(1 == position);
-
-        address policies = address(0);
-        (error, position, data0, policies, data2) = Hashmap(user).get("Policies");
-        if (address(0) == policies) {
-            policies = new Hashmap();
-            Hashmap(user).set("Policies", 1, "", policies, uint(0));
-        }
-
-        Hashmap(policies).set(_policyKey, 1, "", _policy, uint(0));
-    }
-
-    /** [desc] Remove policy (only called by 'remove function in insurance_policy.sol' now).
-      * [param] _key: key of user.
-      * [param] _key: key of policy.
-      * [return] none.
-      */
-    function removePolicy(string _key, string _policyKey) external _onlyAdminOrHigher {
-        // check param
-        require(0 != bytes(_key).length);
-        require(0 != bytes(_policyKey).length);
- 
-        int error = 0;
-        uint position = 0;
-        string memory data0 = "";
-        address user = address(0);
-        uint data2 = uint(0);
-        (error, position, data0, user, data2) = Hashmap(userMgr_).get(_key);
-        require(0 == error);
-        require(1 == position);
-
-        address policies = address(0);
-        (error, position, data0, policies, data2) = Hashmap(user).get("Policies");
-        require(address(0) != policies);
-
-        Hashmap(policies).remove(_policyKey);
-
-        if (0 == Hashmap(policies).size()) {
-            Hashmap(user).remove("Policies");
-        }
     }
 
     /** [desc] Get size of users.
@@ -361,46 +271,7 @@ contract InsuranceUser is Delegate {
         }
     }
 
-    /** [desc] Get user policies info by key.
-      * [param] _key: user key.
-      * [return] error code and user policies info for json data.
-      *           0: success
-      *          -1: params error
-      *          -2: no data
-      *          -3: inner error   
-      */
-    function getPolicies(string _key) external view returns (int, string) {
-        // check param
-        if (0 == bytes(_key).length) {
-            return (-1, "{}");
-        }
-
-        int error = 0;
-        uint position = 0;
-        string memory data0 = "";
-        address user = address(0);
-        uint data2 = uint(0);
-        (error, position, data0, user, data2) = Hashmap(userMgr_).get(_key);
-        if (0 != error) {
-            return (error, "{}");
-        }
-        if (1 != position) {
-            return (-2, "{}");
-        }
-
-        address policies = address(0);
-        (error, position, data0, policies, data2) = Hashmap(user).get("Policies");
-        if (0 != error) {
-            return (error, "{}");
-        }
-        if (1 != position) {
-            return (-2, "{}");
-        }       
-
-        return  _getDetailInfo(policies);
-    }
-
     function getAddr() external view _onlyOwner returns (address, address) {
-        return (templateAddr_, policyAddr_);
+        return (templateAddr_, userPolicyAddr_);
     }
 }
