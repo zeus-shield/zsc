@@ -598,6 +598,17 @@ export default class TestInsurance {
                     }
                 });
                 break;
+            case "GetAll":
+                insuranceCompany = new InsuranceCompany(this[companyAbi], this[companyContractAddress]);
+                insuranceCompany.getAll(function(error, result) {
+                    if (!error) {
+                        let errorStr = handler[getErrorStr](result[0].toString(10));
+                        Output(window.outputCompanyElement, "small", "red", `[Company]: (${errorStr}) ${result[1]}`);
+                    } else {
+                        Output(window.outputCompanyElement, "small", "red", error);
+                    }
+                });
+                break;
             default:
                 Output(window.outputCompanyElement, "small", "red", "Operation Error!");
                 break;
