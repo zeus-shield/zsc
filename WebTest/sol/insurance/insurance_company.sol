@@ -6,10 +6,15 @@
 pragma solidity ^0.4.25;
 // pragma experimental ABIEncoderV2;
 
+import "../utillib/LibString.sol";
+import "../utillib/LibInt.sol";
 import "../common/hashmap.sol";
 import "../common/delegate.sol";
 
 contract InsuranceCompany is Delegate {
+
+    using LibString for *;
+    using LibInt for *;
 
     address private companyMgr_;
 
@@ -112,5 +117,43 @@ contract InsuranceCompany is Delegate {
         }
         
         return (error, value);
+    }
+
+    /** [desc] Get all companies' info.
+      * [return] error code and all companies' data.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: inner error
+      */
+    function getAll() external view returns (int, string) {
+        string memory str = "{";
+        uint len = Hashmap(companyMgr_).size();
+        if (0 < len) {
+            str = str.concat(len.toKeyValue("Size"), ",");
+        } else {
+            return (-2, "{}");
+        }
+
+        int error = 0;
+        string memory key = "";
+        string memory data = "";
+
+        for (uint i=0; i<len; i++) {
+            (error, key, data) = this.getById(i);
+            if (0 != error) {
+                return (error, "{}");
+            }
+
+            str = str.concat(data.toKeyValue(key));
+
+            if ((len -1) > i) {
+                str = str.concat(",");
+            }
+        }
+
+        str = str.concat("}");
+
+        return (error, str);
     }
 }
