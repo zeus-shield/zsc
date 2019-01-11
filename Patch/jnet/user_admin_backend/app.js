@@ -50,6 +50,12 @@ mongoose.connect('mongodb://18.219.177.53:27017/zscapply',{useNewUrlParser: true
 app.use('/', index);
 app.use('/Code', Code);
 app.use('/Order', Order);
+app.use('/WechatIndex', WechatIndex);
+app.use('/WechatTem', WechatTem);
+app.use('/WechatUser', WechatUser);
+app.use('/WechatPolicy', WechatPolicy);
+app.use('/WechatCompany', WechatCompany);
+app.use('/WechatuserPolicy', WechatuserPolicy);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
