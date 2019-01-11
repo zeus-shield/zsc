@@ -173,3 +173,5 @@ router.get('/getAll', function (req, res) {
         }
     })
 })
+
+module.exports = router;
