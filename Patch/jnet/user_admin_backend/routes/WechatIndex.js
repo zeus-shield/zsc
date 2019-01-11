@@ -61,3 +61,65 @@ router.post('/login', function (req, res) {
                                 })
                             } else {
                                 result[0] = result[0].toString(10);
+                                console.log(result);
+                                if(result[0] == -3) {//判断状态值//inner error
+                                    res.json({
+                                        status:"success",
+                                        code:"-3",
+                                        msg:"合约出现问题，请稍后再试或联系管理员",
+                                        data:null
+                                    })
+                                } else if (result[0] == -1) {//params error
+                                    res.json({
+                                        status:"success",
+                                        code:"-1",
+                                        msg:"账号有问题，请检查是否输入正确",
+                                        data:null
+                                    })
+                                } else if (result[0] == 0) {//success
+                                    res.json({
+                                        status:"success",
+                                        code:"3",
+                                        msg:"已有该用户，登录成功",
+                                        data:key
+                                    })
+                                }  else if (result[0] == -2) {//no data
+                                    let para = {Key:key};
+                                    para = JSON.stringify(para);
+                                    insurance_user.signUp(account,accountkey,temKey,para,function(error, result) {
+                                        if(error) {
+                                            res.json({
+                                                status:"error",
+                                                code:"-9",
+                                                msg:"交易报错",
+                                                error:error.toString(10)
+                                            })
+                                        } else {
+                                            if(result.status == ""){
+                                                console.log("=====padding=====")
+                                            } else {
+                                                if(result.status == "0x0") {
+                                                    res.json({
+                                                        status:"fail",
+                                                        code:"-6",
+                                                        msg:"交易失败",
+                                                        data:null
+                                                    })
+                                                } else {
+                                                    res.json({
+                                                        status:"success",
+                                                        code:"0",
+                                                        msg:"注册成功",
+                                                        data:key
+                                                    })
+                                                }
+                                            }
+                                        }
+                                    })
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+           
