@@ -41,3 +41,23 @@ router.post('/login', function (req, res) {
                 let insurance_user = new Insurance_user(userAbi,userAddress);
                 insurance_user.getByKey(0,key,function(error, result) {
                     if(error) {
+                        console.log(error);
+                        res.json({
+                            status:"error",
+                            code:"-9",
+                            msg:"交易报错",
+                            error:error.toString(10)
+                        })
+                    } else {
+                        if(result.status == ""){
+                            console.log("=====padding=====")
+                        } else {
+                            if(result.status == "0x0") {
+                                res.json({
+                                    status:"fail",
+                                    code:"-6",
+                                    msg:"交易失败",
+                                    data:null
+                                })
+                            } else {
+                                result[0] = result[0].toString(10);
