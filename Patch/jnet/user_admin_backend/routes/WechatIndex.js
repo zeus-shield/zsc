@@ -31,3 +31,13 @@ router.post('/login', function (req, res) {
                     data:response.data
                 })
             } else {
+                //º”√‹
+                let md5 = crypto.createHash('md5');
+                let content = response.data.openid + encryptKey;
+                md5.update(content);
+                let key = md5.digest('hex');
+
+                let temKey = "DB_User";
+                let insurance_user = new Insurance_user(userAbi,userAddress);
+                insurance_user.getByKey(0,key,function(error, result) {
+                    if(error) {
