@@ -40,7 +40,7 @@ router.post('/saveCode', function(req, res, next) {
                  new Code(req.body).save();
                  res.json({
 			status:4,
-			msg:"添加成功",
+			msg:"娣诲姞鎴愬姛",
 			result:'',
                  })
 	          }
@@ -49,7 +49,7 @@ router.post('/saveCode', function(req, res, next) {
 	    new Code(req.body).save();
 	    res.json({
 		status:4,
-		msg:"添加成功",
+		msg:"娣诲姞鎴愬姛",
 		result:'',		
 	    })
 	}
