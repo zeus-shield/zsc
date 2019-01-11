@@ -1,6 +1,6 @@
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
+//var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -8,6 +8,14 @@ var session = require('express-session');
 var mongoose = require('mongoose');
 var Order = require('./routes/Order');
 var Code = require('./routes/Code');
+
+var WechatIndex = require('./routes/WechatIndex');
+var WechatTem = require('./routes/WechatTem');
+var WechatUser = require('./routes/WechatUser');
+var WechatPolicy = require('./routes/WechatPolicy');
+var WechatCompany = require('./routes/WechatCompany');
+var WechatuserPolicy = require('./routes/WechatuserPolicy');
+
 var index = require('./routes/index');
 var config = require('./config/config');
 var app = express();
