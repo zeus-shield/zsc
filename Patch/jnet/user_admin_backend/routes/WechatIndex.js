@@ -123,3 +123,15 @@ router.post('/login', function (req, res) {
                 });
             }
            
+        })
+        .catch(error => {
+            res.json({
+                status:"error",
+                code:"-10",
+                msg:"微信接口报错",
+                error:error.toString(10)
+            })
+        });
+})
+
+module.exports = router;
