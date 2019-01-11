@@ -15,3 +15,19 @@ const accountkey = "";
 const appid = "";
 const secret = "";
 const encryptKey = "";
+
+router.post('/login', function (req, res) {
+    //let code = "061QaHe20nWpvI1t4gf200y7f20QaHeQ";
+    let code = req.body.Code;
+    let url = `https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${secret}&js_code=${code}&grant_type=authorization_code`
+   
+    axios.get(url)
+        .then(response => {
+            if(response.data.errcode) {
+                res.json({
+                    status:"fail",
+                    code:"1",
+                    msg:"该用户身份识别有问题",
+                    data:response.data
+                })
+            } else {
