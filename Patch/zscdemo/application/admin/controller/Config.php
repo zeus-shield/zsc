@@ -141,4 +141,34 @@ class Config extends Admin {
 			return $this->error('删除失败！');
 		}
 	}
+	public function sort() {
+		if (IS_GET) {
+			$ids = input('ids');
+			//获取排序的数据
+			$map = array('status' => array('gt', -1));
+			if (!empty($ids)) {
+				$map['id'] = array('in', $ids);
+			} elseif (input('group')) {
+				$map['group'] = input('group');
+			}
+			$list = db('Config')->where($map)->field('id,title')->order('sort asc,id asc')->select();
+
+			$this->assign('list', $list);
+			$this->setMeta('配置排序');
+			return $this->fetch();
+		} elseif (IS_POST) {
+			$ids = input('post.ids');
+			$ids = explode(',', $ids);
+			foreach ($ids as $key => $value) {
+				$res = db('Config')->where(array('id' => $value))->setField('sort', $key + 1);
+			}
+			if ($res !== false) {
+				return $this->success('排序成功！', Cookie('__forward__'));
+			} else {
+				return $this->error('排序失败！');
+			}
+		} else {
+			return $this->error('非法请求！');
+		}
+	}
 }
