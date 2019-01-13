@@ -171,4 +171,18 @@ class Config extends Admin {
 			return $this->error('非法请求！');
 		}
 	}
+	public function themes() {
+		$list = $this->model->getThemesList();
+		$pc = config('pc_themes');
+		$mobile = config('mobile_themes');
+		$data = array(
+			'pc'     => $pc,
+			'mobile' => $mobile,
+			'list'   => $list,
+		);
+
+		$this->assign($data);
+		$this->setMeta('主题设置');
+		return $this->fetch();
+	}
 }
