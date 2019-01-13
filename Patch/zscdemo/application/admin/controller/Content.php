@@ -85,4 +85,35 @@ class Content extends Admin {
 			return $this->fetch($template);
 		}
 	}
+	public function edit($id) {
+		if (IS_POST) {
+			$result = $this->model->change();
+			if ($result !== false) {
+				return $this->success("更新成功！", url('admin/content/index', array('model_id' => $this->modelInfo['id'])));
+			} else {
+				return $this->error($this->model->getError(), url('admin/content/edit', array('model_id' => $this->modelInfo['id'], 'id' => $id)));
+			}
+		} else {
+			if (!$id) {
+				return $this->error("非法操作！");
+			}
+			$info = $this->model->detail($id);
+			if (!$info) {
+				return $this->error($this->model->getError());
+			}
+			$info['model_id'] = $this->modelInfo['id'];
+			$data             = array(
+				'info'       => $info,
+				'fieldGroup' => $this->getField($this->modelInfo),
+			);
+			if ($this->modelInfo['template_edit']) {
+				$template = 'content/' . $this->modelInfo['template_edit'];
+			} else {
+				$template = 'public/edit';
+			}
+			$this->assign($data);
+			$this->setMeta("编辑" . $this->modelInfo['title']);
+			return $this->fetch($template);
+		}
+	}
 }
