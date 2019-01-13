@@ -29,4 +29,34 @@ class Content extends Admin {
 		$this->assign('model_id', $model_id);
 		$this->assign('model_list', $list);
 	}
+	public function index() {
+		if ($this->modelInfo['list_grid'] == '') {
+			return $this->error("列表定义不正确！", url('admin/model/edit', array('id' => $this->modelInfo['id'])));
+		}
+		$grid_list = get_grid_list($this->modelInfo['list_grid']);
+		$order     = "id desc";
+		$map       = $this->buildMap();
+		$field     = array_filter($grid_list['fields']);
+		if ($this->modelInfo['extend'] == 1) {
+			array_push($field, 'is_top');
+		} else {
+			unset($map['model_id']);
+		}
+
+		$list = $this->model->lists($map, $order);
+
+		$data = array(
+			'grid' => $grid_list,
+			'list' => $list,
+			'page' => $list->render(),
+		);
+		if ($this->modelInfo['template_list']) {
+			$template = 'content/' . $this->modelInfo['template_list'];
+		} else {
+			$template = 'content/index';
+		}
+		$this->assign($data);
+		$this->setMeta($this->modelInfo['title'] . "列表");
+		return $this->fetch($template);
+	}
 }
