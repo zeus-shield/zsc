@@ -131,4 +131,15 @@ class Content extends Admin {
 			return $this->error("删除失败！");
 		}
 	}
+	public function status($id, $status) {
+		$model = $this->model;
+
+		$map['id'] = $id;
+		$result    = $model::where($map)->setField('status', $status);
+		if (false !== $result) {
+			return $this->success("操作成功！");
+		} else {
+			return $this->error("操作失败！！");
+		}
+	}
 }
