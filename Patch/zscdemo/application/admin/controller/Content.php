@@ -59,4 +59,30 @@ class Content extends Admin {
 		$this->setMeta($this->modelInfo['title'] . "列表");
 		return $this->fetch($template);
 	}
+	public function add() {
+		if (IS_POST) {
+			$result = $this->model->change();
+			if ($result) {
+				return $this->success("添加成功！", url('admin/content/index', array('model_id' => $this->modelInfo['id'])));
+			} else {
+				return $this->error($this->model->getError(), url('admin/content/add', array('model_id' => $this->modelInfo['id'])));
+			}
+		} else {
+			$info = array(
+				'model_id' => $this->modelInfo['id'],
+			);
+			$data = array(
+				'info'       => $info,
+				'fieldGroup' => $this->getField($this->modelInfo),
+			);
+			if ($this->modelInfo['template_add']) {
+				$template = 'content/' . $this->modelInfo['template_add'];
+			} else {
+				$template = 'public/edit';
+			}
+			$this->assign($data);
+			$this->setMeta("添加" . $this->modelInfo['title']);
+			return $this->fetch($template);
+		}
+	}
 }
