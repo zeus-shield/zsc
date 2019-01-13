@@ -83,4 +83,34 @@ class Config extends Admin {
 			return $this->fetch('edit');
 		}
 	}
+	public function edit($id = 0) {
+		if (IS_POST) {
+			$config = model('Config');
+			$data   = $this->request->post();
+			if ($data) {
+				$result = $config->validate('Config.edit')->save($data, array('id' => $data['id']));
+				if (false !== $result) {
+					cache('db_config_data', null);
+					//记录行为
+					action_log('update_config', 'config', $data['id'], session('user_auth.uid'));
+					return $this->success('更新成功', Cookie('__forward__'));
+				} else {
+					return $this->error($config->getError(), '');
+				}
+			} else {
+				return $this->error($config->getError());
+			}
+		} else {
+			$info = array();
+			/* 获取数据 */
+			$info = db('Config')->field(true)->find($id);
+
+			if (false === $info) {
+				return $this->error('获取配置信息错误');
+			}
+			$this->assign('info', $info);
+			$this->setMeta('编辑配置');
+			return $this->fetch();
+		}
+	}
 }
