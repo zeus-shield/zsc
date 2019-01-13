@@ -225,4 +225,20 @@ class Content extends Admin {
 		$this->assign($data);
 		return $map;
 	}
+	protected function checkDynamic() {
+		$model_id = $this->request->param('model_id');
+		if (IS_ROOT) {
+			return true; //管理员允许访问任何页面
+		}
+		$models = model('AuthGroup')->getAuthModels(session('user_auth.uid'));
+		if (!$model_id) {
+			return false;
+		} elseif (in_array($model_id, $models)) {
+			//返回null继续判断操作权限
+			return null;
+		} else {
+			return false; //无权限
+		}
+		return false;
+	}
 }
