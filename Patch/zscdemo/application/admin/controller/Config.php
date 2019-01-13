@@ -113,4 +113,15 @@ class Config extends Admin {
 			return $this->fetch();
 		}
 	}
+	public function save($config) {
+		if ($config && is_array($config)) {
+			$Config = db('Config');
+			foreach ($config as $name => $value) {
+				$map = array('name' => $name);
+				$Config->where($map)->setField('value', $value);
+			}
+		}
+		cache('db_config_data', null);
+		return $this->success('±£´æ³É¹¦£¡');
+	}
 }
