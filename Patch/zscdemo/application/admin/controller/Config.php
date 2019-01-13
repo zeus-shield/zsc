@@ -124,4 +124,21 @@ class Config extends Admin {
 		cache('db_config_data', null);
 		return $this->success('保存成功！');
 	}
+	public function del() {
+		$id = array_unique((array) input('id', 0));
+
+		if (empty($id)) {
+			return $this->error('请选择要操作的数据!');
+		}
+
+		$map = array('id' => array('in', $id));
+		if (db('Config')->where($map)->delete()) {
+			cache('DB_CONFIG_DATA', null);
+			//记录行为
+			action_log('update_config', 'config', $id, session('user_auth.uid'));
+			return $this->success('删除成功');
+		} else {
+			return $this->error('删除失败！');
+		}
+	}
 }
