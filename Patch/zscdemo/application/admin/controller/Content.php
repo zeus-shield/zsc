@@ -197,4 +197,32 @@ class Content extends Admin {
 		}
 		return $data;
 	}
+	protected function buildMap() {
+		$map  = array();
+		$data = $this->request->get();
+		foreach ($data as $key => $value) {
+			if ($value) {
+				if ($key == 'keyword') {
+					$map['title'] = array("LIKE", "%$value%");
+				} elseif ($key == 'category') {
+					$map['category_id'] = $value;
+				} elseif ($key == 'create_time') {
+					$map['create_time'] = array('BETWEEN', array(strtotime($value[0]), strtotime($value[1])));
+				} else {
+					$map[$key] = $value;
+				}
+			}
+		}
+		if (isset($map['page'])) {
+			unset($map['page']);
+		}
+		if ($this->modelInfo['extend'] == 1) {
+			$category  = isset($data['category']) ? $data['category'] : '';
+			$cate_list = parse_field_bind('category', $category, 0);
+			$map['model_id'] = $this->model_id;
+			$this->assign('cate_list', $cate_list);
+		}
+		$this->assign($data);
+		return $map;
+	}
 }
