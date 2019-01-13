@@ -60,4 +60,27 @@ class Config extends Admin {
 			return $this->fetch();
 		}
 	}
+	public function add() {
+		if (IS_POST) {
+			$config = model('Config');
+			$data   = $this->request->post();
+			if ($data) {
+				$id = $config->validate(true)->save($data);
+				if ($id) {
+					cache('db_config_data', null);
+					//记录行为
+					action_log('update_config', 'config', $id, session('user_auth.uid'));
+					return $this->success('新增成功', url('index'));
+				} else {
+					return $this->error('新增失败');
+				}
+			} else {
+				return $this->error($config->getError());
+			}
+		} else {
+			$this->setMeta('新增配置');
+			$this->assign('info', null);
+			return $this->fetch('edit');
+		}
+	}
 }
