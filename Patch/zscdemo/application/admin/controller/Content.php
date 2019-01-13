@@ -153,4 +153,48 @@ class Content extends Admin {
 			return $this->error("操作失败！！");
 		}
 	}
+	protected function getField() {
+		$field_group = parse_config_attr($this->modelInfo['field_group']);
+		$field_sort  = json_decode($this->modelInfo['field_sort'], true);
+
+		if ($this->modelInfo['extend'] > 1) {
+			$map['model_id'] = $this->modelInfo['id'];
+		} else {
+			$model_id[]      = $this->modelInfo['id'];
+			$model_id[]      = 1;
+			$map['model_id'] = array('IN', $model_id);
+		}
+		if ($this->request->action() == 'add') {
+			$map['is_show'] = array('in', array('1', '2'));
+		} elseif ($this->request->action() == 'edit') {
+			$map['is_show'] = array('in', array('1', '3'));
+		}
+
+		//获得数组的第一条数组
+		$first_key = array_keys($field_group);
+		$fields    = model('Attribute')->getFieldlist($map);
+		if (!empty($field_sort)) {
+			foreach ($field_sort as $key => $value) {
+				foreach ($value as $index) {
+					if (isset($fields[$index])) {
+						$groupfield[$key][] = $fields[$index];
+						unset($fields[$index]);
+					}
+				}
+			}
+		}
+		//未进行排序的放入第一组中
+		$fields[] = array('name' => 'model_id', 'type' => 'hidden'); //加入模型ID值
+		$fields[] = array('name' => 'id', 'type' => 'hidden'); //加入模型ID值
+		foreach ($fields as $key => $value) {
+			$groupfield[$first_key[0]][] = $value;
+		}
+
+		foreach ($field_group as $key => $value) {
+			if ($groupfield[$key]) {
+				$data[$value] = $groupfield[$key];
+			}
+		}
+		return $data;
+	}
 }
