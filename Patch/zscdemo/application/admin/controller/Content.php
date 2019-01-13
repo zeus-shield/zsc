@@ -142,4 +142,15 @@ class Content extends Admin {
 			return $this->error("操作失败！！");
 		}
 	}
+	public function settop($id, $is_top) {
+		$model = $this->model;
+
+		$map['id'] = $id;
+		$result    = $model::where($map)->setField('is_top', $is_top);
+		if (false !== $result) {
+			return $this->success("操作成功！");
+		} else {
+			return $this->error("操作失败！！");
+		}
+	}
 }
