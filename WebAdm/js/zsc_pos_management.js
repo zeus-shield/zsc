@@ -179,9 +179,21 @@ ZSCPosManagement.prototype.setUnitCategory = function(hashID, ctgName, unitName,
         });
 }
 
-ZSCPosManagement.prototype.emergentTransfer = function(hashID, srcAdr, dstAdr, robotId) {
-    this.myPosManager.emergentTransfer(
+ZSCPosManagement.prototype.emergentTransferUnit = function(hashID, srcAdr, dstAdr, robotId) {
+    this.myPosManager.emergentTransferUnit(
         srcAdr, dstAdr, robotId,
+        {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
+        function(error, result){ 
+            if(!error) cC_showHashResultTest(hashID, result, function(){});
+            else console.log("error: " + error);
+        });
+}
+
+ZSCPosManagement.prototype.emergentTransferToken = function(hashID, controlApiAdr, controlApiAbi, tokenSymbol, srcAdr, dstAdr,  tokenAmount) {
+    var myControlApi = web3.eth.contract(controlApiAbi).at(controlApiAdr);
+
+    myControlApi.emergentTransferToken(
+        tokenSymbol, srcAdr, dstAdr, web3.toWei(tokenAmount, 'ether'),
         {from: this.account, gasPrice: this.gasPrice, gas: this.gasLimit},
         function(error, result){ 
             if(!error) cC_showHashResultTest(hashID, result, function(){});
