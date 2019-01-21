@@ -158,4 +158,22 @@ class Group extends Admin {
 			foreach ($row as $key => $value) {
 				$list[$value['group']][] = $value;
 			}
+			//模块
+			$model = db('model')->field('id,title,name')
+				->where(array('status' => array('gt', 0), 'extend' => array('gt', 0)))
+				->select();
+			//扩展权限
+			$extend_auth = db('AuthExtend')->where(array('group_id' => $id, 'type' => 2))->column('extend_id');
+			$data        = array(
+				'list'        => $list,
+				'model'       => $model,
+				'extend_auth' => $extend_auth,
+				'auth_list'   => explode(',', $group['rules']),
+				'id'          => $id,
+			);
+			$this->assign($data);
+			$this->setMeta('授权');
+			return $this->fetch();
+		}
+	}
 }
