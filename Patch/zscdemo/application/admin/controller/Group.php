@@ -110,4 +110,10 @@ class Group extends Admin {
 		$this->setMeta('权限节点');
 		return $this->fetch();
 	}
+	//根据菜单更新节点
+	public function upnode($type) {
+		$rule = model('Menu')->getAuthNodes($type);
+		$reuslt = $this->rule->uprule($rule, $type);
+		return $this->success("更新成功！");
+	}
 }
