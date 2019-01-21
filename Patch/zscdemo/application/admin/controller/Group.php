@@ -176,4 +176,22 @@ class Group extends Admin {
 			return $this->fetch();
 		}
 	}
+	public function addnode($type = 'admin') {
+		if (IS_POST) {
+			$result = $this->rule->change();
+			if ($result) {
+				return $this->success("创建成功！", url('admin/group/access'));
+			} else {
+				return $this->error($this->rule->getError());
+			}
+		} else {
+			$data = array(
+				'info'    => array('module' => $type, 'status' => 1),
+				'keyList' => $this->rule->keyList,
+			);
+			$this->assign($data);
+			$this->setMeta('添加节点');
+			return $this->fetch('public/edit');
+		}
+	}
 }
