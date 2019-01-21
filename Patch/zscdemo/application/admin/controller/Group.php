@@ -47,4 +47,27 @@ class Group extends Admin {
 			return $this->fetch('public/edit');
 		}
 	}
+	//会员分组编辑控制器
+	public function edit($id) {
+		if (!$id) {
+			return $this->error("非法操作！");
+		}
+		if (IS_POST) {
+			$result = $this->group->change();
+			if ($result) {
+				return $this->success("编辑成功！", url('admin/group/index'));
+			} else {
+				return $this->error("编辑失败！");
+			}
+		} else {
+			$info = $this->group->where(array('id' => $id))->find();
+			$data = array(
+				'info'    => $info,
+				'keyList' => $this->group->keyList,
+			);
+			$this->assign($data);
+			$this->setMeta('编辑用户组');
+			return $this->fetch('public/edit');
+		}
+	}
 }
