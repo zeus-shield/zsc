@@ -70,4 +70,16 @@ class Group extends Admin {
 			return $this->fetch('public/edit');
 		}
 	}
+	//会员分组编辑字段控制器
+	public function editable() {
+		$pk     = input('pk', '', 'trim,intval');
+		$name   = input('name', '', 'trim');
+		$value  = input('value', '', 'trim');
+		$result = $this->group->where(array('id' => $pk))->setField($name, $value);
+		if ($result) {
+			return $this->success("删除成功！");
+		} else {
+			return $this->error("删除失败！");
+		}
+	}
 }
