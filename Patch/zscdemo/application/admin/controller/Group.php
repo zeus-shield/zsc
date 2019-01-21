@@ -194,4 +194,26 @@ class Group extends Admin {
 			return $this->fetch('public/edit');
 		}
 	}
+	public function editnode($id) {
+		if (IS_POST) {
+			$result = $this->rule->change();
+			if (false !== $result) {
+				return $this->success("更新成功！", url('admin/group/access'));
+			} else {
+				return $this->error("更新失败！");
+			}
+		} else {
+			if (!$id) {
+				return $this->error("非法操作！");
+			}
+			$info = $this->rule->find($id);
+			$data = array(
+				'info'    => $info,
+				'keyList' => $this->rule->keyList,
+			);
+			$this->assign($data);
+			$this->setMeta('编辑节点');
+			return $this->fetch('public/edit');
+		}
+	}
 }
