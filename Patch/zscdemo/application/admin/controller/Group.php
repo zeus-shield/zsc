@@ -95,4 +95,19 @@ class Group extends Admin {
 			return $this->error("删除失败！");
 		}
 	}
+	//权限节点控制器
+	public function access($type = 'admin') {
+		$map['module'] = $type;
+
+		$list = db('AuthRule')->where($map)->order('id desc')->paginate(15);
+
+		$data = array(
+			'list' => $list,
+			'page' => $list->render(),
+			'type' => $type,
+		);
+		$this->assign($data);
+		$this->setMeta('权限节点');
+		return $this->fetch();
+	}
 }
