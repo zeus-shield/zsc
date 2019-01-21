@@ -82,4 +82,17 @@ class Group extends Admin {
 			return $this->error("删除失败！");
 		}
 	}
+	//会员分组删除控制器
+	public function del() {
+		$id = $this->getArrayParam('id');
+		if (empty($id)) {
+			return $this->error("非法操作！");
+		}
+		$result = $this->group->where(array('id' => array('IN', $id)))->delete();
+		if ($result) {
+			return $this->success("删除成功！");
+		} else {
+			return $this->error("删除失败！");
+		}
+	}
 }
