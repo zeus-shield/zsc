@@ -116,4 +116,46 @@ class Group extends Admin {
 		$reuslt = $this->rule->uprule($rule, $type);
 		return $this->success("更新成功！");
 	}
+	/**
+	 * 授权
+	 */
+	public function auth($id) {
+		if (!$id) {
+			return $this->error("非法操作！");
+		}
+		if (IS_POST) {
+			$rule          = $this->request->post('rule/a', array());
+			$extend_rule   = $this->request->post('extend_rule/a', array());
+			$extend_result = $rule_result = false;
+			//扩展权限
+			$extend_data = array();
+			foreach ($extend_rule as $key => $value) {
+				foreach ($value as $item) {
+					$extend_data[] = array('group_id' => $id, 'extend_id' => $item, 'type' => $key);
+				}
+			}
+			if (!empty($extend_data)) {
+				db('AuthExtend')->where(array('group_id' => $id))->delete();
+				$extend_result = db('AuthExtend')->insertAll($extend_data);
+			}
+			if ($rule) {
+				$rules       = implode(',', $rule);
+				$rule_result = $this->group->where(array('id' => $id))->setField('rules', $rules);
+			}
+
+			if ($rule_result !== false || $extend_result !== false) {
+				return $this->success("授权成功！", url('admin/group/index'));
+			} else {
+				return $this->error("授权失败！");
+			}
+		} else {
+			$group = $this->group->where(array('id' => $id))->find();
+
+			$map['module'] = $group['module'];
+			$row           = db('AuthRule')->where($map)->order('id desc')->select();
+
+			$list = array();
+			foreach ($row as $key => $value) {
+				$list[$value['group']][] = $value;
+			}
 }
