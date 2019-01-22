@@ -58,12 +58,12 @@ export default class InsuranceUserPolicy {
         });
     }
 
-    submit(account, privateKey, userAddr, templateKey, policyKey, data, func) {
+    submit(account, privateKey, userKey, templateKey, policyKey, data, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.submit.estimateGas(userAddr, templateKey, policyKey, data, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.submit.getData(userAddr, templateKey, policyKey, data), error, gasRequired, func);
+        contractInstance.submit.estimateGas(userKey, templateKey, policyKey, data, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.submit.getData(userKey, templateKey, policyKey, data), error, gasRequired, func);
         });
     }
 
