@@ -30,7 +30,7 @@ contract InsurancePolicy is Delegate {
     }
 
     modifier _onlyAdminOrHigher() {
-        // require(checkDelegate(msg.sender, 2));
+        require(checkDelegate(msg.sender, 2));
         _;
     }
 
