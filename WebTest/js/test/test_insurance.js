@@ -1047,6 +1047,18 @@ export default class TestInsurance {
                     handler[transactionProc](error, result, window.outputPolicyElement, null);
                 });
                 break;
+            case "AddElement":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputPolicyElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                tmps = params.split(",");
+                insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
+                insurancePolicy.addElement(account, privateKey, tmps[0], tmps[1], tmps[2], function(error, result) {
+                    handler[transactionProc](error, result, window.outputPolicyElement, null);
+                });
+                break;
             case "Destroy":
                 insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
                 insurancePolicy.destroy(account, privateKey, function(error, result) {
