@@ -262,17 +262,17 @@ export default class TestInsurance {
             case "Set":
                 if ("InsuranceUser" == contractName) {
                     let insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
-                    insuranceUser.setup(account, privateKey, this[templateContractAddress], this[userPolicyContractAddress], function(error, result) {
+                    insuranceUser.setup(account, privateKey, this[templateContractAddress], function(error, result) {
                         handler[transactionProc](error, result, window.outputSetupElement);
                     });
                 } else if ("InsurancePolicy" == contractName) {
                     let insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
-                    insurancePolicy.setup(account, privateKey, this[templateContractAddress], this[userPolicyContractAddress], function(error, result) {
+                    insurancePolicy.setup(account, privateKey, this[templateContractAddress], function(error, result) {
                         handler[transactionProc](error, result, window.outputSetupElement);
                     });
                 } else if ("InsuranceUserPolicy" == contractName) {
                     let insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
-                    insuranceUserPolicy.setup(account, privateKey, this[policyContractAddress], function(error, result) {
+                    insuranceUserPolicy.setup(account, privateKey, this[userContractAddress], this[policyContractAddress], function(error, result) {
                         handler[transactionProc](error, result, window.outputSetupElement);
                     });
                 } else {
@@ -284,7 +284,7 @@ export default class TestInsurance {
                     let insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
                     insuranceUser.getAddr(function(error, result) {
                         if (!error) {
-                            Output(window.outputSetupElement, 'small', 'red', `[Address]: template(${result[0]}), userPolicy(${result[1]})`);
+                            Output(window.outputSetupElement, 'small', 'red', `[Address]: template(${result})`);
                         } else {
                             Output(window.outputSetupElement, 'small', 'red', error);
                         }
@@ -293,7 +293,7 @@ export default class TestInsurance {
                     let insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
                     insurancePolicy.getAddr(function(error, result) {
                         if (!error) {
-                            Output(window.outputSetupElement, 'small', 'red', `[Address]: template(${result[0]}), userPolicy(${result[1]})`);
+                            Output(window.outputSetupElement, 'small', 'red', `[Address]: template(${result})`);
                         } else {
                             Output(window.outputSetupElement, 'small', 'red', error);
                         }
@@ -302,7 +302,7 @@ export default class TestInsurance {
                     let insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
                     insuranceUserPolicy.getAddr(function(error, result) {
                         if (!error) {
-                            Output(window.outputSetupElement, 'small', 'red', `[Address]: policy(${result})`);
+                            Output(window.outputSetupElement, 'small', 'red', `[Address]: user(${result[0]}), policy(${result[1]})`);
                         } else {
                             Output(window.outputSetupElement, 'small', 'red', error);
                         }
@@ -832,6 +832,7 @@ export default class TestInsurance {
         let privateKey = tmps[1];
 
         let insuranceUser;
+        let insuranceUserPolicy;
         switch (operation) {
             case "Debug":
                 insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
@@ -887,8 +888,8 @@ export default class TestInsurance {
                     return;
                 }
 
-                insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
-                insuranceUser.remove(account, privateKey, params, true, function(error, result) {
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.remove(account, privateKey, "0", params, function(error, result) {
                     handler[transactionProc](error, result, window.outputUserElement, null);
                 });
                 break;
@@ -949,7 +950,7 @@ export default class TestInsurance {
                 }
 
                 tmps = params.split(",");
-                let insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
                 insuranceUserPolicy.getPolicies(tmps[1], function(error, result) {
                     if (!error) {
                         let errorStr = handler[getErrorStr](result[0].toString(10));
@@ -985,6 +986,7 @@ export default class TestInsurance {
         let privateKey = tmps[1];
 
         let insurancePolicy;
+        let insuranceUserPolicy;
         switch (operation) {
             case "Debug":
                 insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
@@ -1029,8 +1031,8 @@ export default class TestInsurance {
                 }
 
                 tmps = params.split("#");
-                insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
-                insurancePolicy.submit(account, privateKey, tmps[0], tmps[1], tmps[2], function(error, result) {
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.submit(account, privateKey, tmps[0], tmps[1], tmps[2], tmps[3], function(error, result) {
                     handler[transactionProc](error, result, window.outputPolicyElement, null);
                 });
                 break;
@@ -1040,8 +1042,8 @@ export default class TestInsurance {
                     return;
                 }
 
-                insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
-                insurancePolicy.remove(account, privateKey, params, true, function(error, result) {
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.remove(account, privateKey, "1", params, function(error, result) {
                     handler[transactionProc](error, result, window.outputPolicyElement, null);
                 });
                 break;
