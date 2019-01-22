@@ -49,12 +49,30 @@ export default class InsuranceUserPolicy {
         });
     }
 
-    setup(account, privateKey, policyAddr, func) {
+    setup(account, privateKey, userAddr, policyAddr, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.setup.estimateGas(policyAddr, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.setup.getData(policyAddr), error, gasRequired, func);
+        contractInstance.setup.estimateGas(userAddr, policyAddr, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.setup.getData(userAddr, policyAddr), error, gasRequired, func);
+        });
+    }
+
+    submit(account, privateKey, userAddr, templateKey, policyKey, data, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        contractInstance.submit.estimateGas(userAddr, templateKey, policyKey, data, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.submit.getData(userAddr, templateKey, policyKey, data), error, gasRequired, func);
+        });
+    }
+
+    remove(account, privateKey, type, key, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        contractInstance.remove.estimateGas(type, key, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.remove.getData(type, key), error, gasRequired, func);
         });
     }
 
@@ -118,7 +136,7 @@ export default class InsuranceUserPolicy {
                         // call 'InsuranceUserPolicy.getAddr()'
                         contractInstance.getAddr.call({from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                console.log("[Address]: policy(%s)", result.toString(10));
+                                console.log("[Address]: user(%s), policy(%s)", result[0], result[1]);
                                 if (null != func) {
                                     func(null, result);
                                 }
