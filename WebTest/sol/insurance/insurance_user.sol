@@ -15,11 +15,6 @@ contract InsuranceTemplate {
     function getByKey(string _key) external view returns (int, string);
 }
 
-contract InsuranceUserPolicy {
-  function size() external view returns (uint);
-  function removePolicies(string _key, bool _removePolicy) external;
-}
-
 contract InsuranceUser is Delegate {
 
     using LibString for *;
@@ -27,7 +22,6 @@ contract InsuranceUser is Delegate {
 
     address private userMgr_;
     address private templateAddr_;
-    address private userPolicyAddr_;
     string[] private keys_;
 
     modifier _checkTemplateAddr() {
@@ -35,20 +29,14 @@ contract InsuranceUser is Delegate {
         _;
     }
 
-    modifier _checkUserPolicyAddr() {
-        require(0 != userPolicyAddr_);
-        _;
-    }
-
     modifier _onlyAdminOrHigher() {
-        require(checkDelegate(msg.sender, 2));
+        // require(checkDelegate(msg.sender, 2));
         _;
     }
 
     constructor() public {
         userMgr_ = new Hashmap();
         templateAddr_ = address(0);
-        userPolicyAddr_ = address(0);
     }
 
     /** [desc] Destroy the contract.
@@ -127,15 +115,12 @@ contract InsuranceUser is Delegate {
 
     /** [desc] Setup.
       * [param] _templateAddr: template contract address.
-      * [param] _userPolicyAddr: user policy relationship contract address.
       * [return] none.
       */
-    function setup(address _templateAddr, address _userPolicyAddr) external _onlyOwner {
+    function setup(address _templateAddr) external _onlyOwner {
         // check params
         require(address(0) != _templateAddr);
-        require(address(0) != _userPolicyAddr);
         templateAddr_ = _templateAddr;
-        userPolicyAddr_ = _userPolicyAddr;
     }
 
     /** [desc] User sign up.
@@ -178,17 +163,11 @@ contract InsuranceUser is Delegate {
 
     /** [desc] remove user.
       * [param] _key: key of user.
-      * [param] _removeUserPolicies: the flag that remove user policies.
       * [return] none.
       */
-    function remove(string _key, bool _removeUserPolicies) external _onlyAdminOrHigher _checkUserPolicyAddr {
+    function remove(string _key) external _onlyAdminOrHigher {
         // check param
         require(0 != bytes(_key).length);
-
-        if ((0 < InsuranceUserPolicy(userPolicyAddr_).size()) &&_removeUserPolicies) {
-            InsuranceUserPolicy(userPolicyAddr_).removePolicies(_key, true);
-        }
-
         Hashmap(userMgr_).remove(_key);
     }
 
@@ -271,7 +250,10 @@ contract InsuranceUser is Delegate {
         }
     }
 
-    function getAddr() external view _onlyOwner returns (address, address) {
-        return (templateAddr_, userPolicyAddr_);
+    /** [desc] Get contract related address.
+      * [return] contract related address.
+      */
+    function getAddr() external view _onlyOwner returns (address) {
+        return templateAddr_;
     }
 }
