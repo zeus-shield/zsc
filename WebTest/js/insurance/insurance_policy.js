@@ -49,30 +49,21 @@ export default class InsurancePolicy {
         });
     }
 
-    setup(account, privateKey, templateAddr, userPolicyAddr, func) {
+    setup(account, privateKey, templateAddr, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.setup.estimateGas(templateAddr, userPolicyAddr, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.setup.getData(templateAddr, userPolicyAddr), error, gasRequired, func);
+        contractInstance.setup.estimateGas(templateAddr, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.setup.getData(templateAddr), error, gasRequired, func);
         });
     }
 
-    submit(account, privateKey, userKey, templateKey, data, func) {
+    addElement(account, privateKey, key, elementKey, data, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.submit.estimateGas(userKey, templateKey, data, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.submit.getData(userKey, templateKey, data), error, gasRequired, func);
-        });
-    }
-
-    remove(account, privateKey, key, _removeUserPolicy, func) {
-        let handler = this;
-        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-
-        contractInstance.remove.estimateGas(key, _removeUserPolicy, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.remove.getData(key, _removeUserPolicy), error, gasRequired, func);
+        contractInstance.addElement.estimateGas(key, elementKey, data, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.addElement.getData(key, elementKey, data), error, gasRequired, func);
         });
     }
 
@@ -214,7 +205,7 @@ export default class InsurancePolicy {
                         // call 'InsurancePolicy.getAddr()'
                         contractInstance.getAddr.call({from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                console.log("[Address]: template(%s), userPolicy(%s)", result[0], result[1]);
+                                console.log("[Address]: template(%s)", result.toString(10));
                                 if (null != func) {
                                     func(null, result);
                                 }
