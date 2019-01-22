@@ -49,12 +49,12 @@ export default class InsuranceUser {
         });
     }
 
-    setup(account, privateKey, templateAddr, userPolicyAddr, func) {
+    setup(account, privateKey, templateAddr, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.setup.estimateGas(templateAddr, userPolicyAddr, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.setup.getData(templateAddr, userPolicyAddr), error, gasRequired, func);
+        contractInstance.setup.estimateGas(templateAddr, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.setup.getData(templateAddr), error, gasRequired, func);
         });
     }
 
@@ -64,15 +64,6 @@ export default class InsuranceUser {
 
         contractInstance.signUp.estimateGas(templateKey, data, {from: account}, function(error, gasRequired) {
             handler[transactionProc](handler, account, privateKey, contractInstance.signUp.getData(templateKey, data), error, gasRequired, func);
-        });
-    }
-
-    remove(account, privateKey, key, _removeUserPolicies, func) {
-        let handler = this;
-        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-
-        contractInstance.remove.estimateGas(key, _removeUserPolicies, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.remove.getData(key, _removeUserPolicies), error, gasRequired, func);
         });
     }
 
@@ -214,7 +205,7 @@ export default class InsuranceUser {
                         // call 'InsuranceUser.getAddr()'
                         contractInstance.getAddr.call({from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                console.log("[Address]: template(%s), userPolicy(%s)", result[0], result[1]);
+                                console.log("[Address]: template(%s)", result.toString(10));
                                 if (null != func) {
                                     func(null, result);
                                 }
