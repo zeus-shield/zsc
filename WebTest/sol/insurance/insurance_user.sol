@@ -56,7 +56,7 @@ contract InsuranceUser is Delegate {
     function _getDetailInfo(address _addr) private view returns (int, string) {
         string memory str = "{";
 
-        uint len = Hashmap(_addr).size();
+        uint len = Hashmap(_addr).size(true);
         if (0 < len) {
             str = str.concat(len.toKeyValue("Size"), ",");
         } else {
@@ -69,7 +69,7 @@ contract InsuranceUser is Delegate {
             string memory data0 = "";
             address data1 = address(0);
             uint data2 = uint(0);
-            (error, key, position, data0, data1, data2) = Hashmap(_addr).get(i);
+            (error, key, position, data0, data1, data2) = Hashmap(_addr).get(i, true);
             if (0 != error) {
                 return (error, "{}");
             }
@@ -176,7 +176,7 @@ contract InsuranceUser is Delegate {
       * [return] size of users.
       */
     function size() external view returns (uint) {
-        return Hashmap(userMgr_).size();
+        return Hashmap(userMgr_).size(true);
     }
 
     /** [desc] Get user info by key.
@@ -199,7 +199,7 @@ contract InsuranceUser is Delegate {
         string memory data0 = "";
         address user = address(0);
         uint data2 = uint(0);
-        (error, position, data0, user, data2) = Hashmap(userMgr_).get(_key);
+        (error, position, data0, user, data2) = Hashmap(userMgr_).get(_key, true);
         if (0 != error) {
             return (error, "{}");
         }
@@ -235,7 +235,7 @@ contract InsuranceUser is Delegate {
         string memory data0 = "";
         address user = address(0);
         uint data2 = uint(0);
-        (error, key, position, data0, user, data2) = Hashmap(userMgr_).get(_id);
+        (error, key, position, data0, user, data2) = Hashmap(userMgr_).get(_id, true);
         if (0 != error) {
             return (error, "{}");
         }
