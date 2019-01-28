@@ -17,6 +17,7 @@
                 window.outputDeployUserElement = "p_output_deploy_user";
                 window.outputDeployPolicyElement = "p_output_deploy_policy";
                 window.outputDeployUserPolicyElement = "p_output_deploy_user_policy";
+                window.outputDeployAnalyticsElement = "p_output_deploy_analytics";
                 window.outputSetupElement = "p_output_setup";
                 window.outputDelegateReadElement = "p_output_delegate_read";
                 window.outputDelegateWriteElement = "p_output_delegate_write";
@@ -140,6 +141,12 @@
                     let params = document.getElementById("i_policy_read_params").value;
                     main("Insurance", "Policy", op, `${type},${params}`);
                 }
+
+                document.getElementById("b_analytics_read_submit").onclick = function() {
+                    let op = document.getElementById("s_analytics_read_op").value;
+                    let params = document.getElementById("i_analytics_read_params").value;
+                    main("Insurance", "Analytics", op, params);
+                }
             }
         </script>
     </head>
@@ -202,6 +209,13 @@
                         <button type="button" id="b_deploy" onclick="main('Insurance', 'Deploy', 'InsuranceUserPolicy', '')">Deploy</button>
                         <p id="p_output_deploy_user_policy"></p>
                     </div>
+                    <div id="element">
+                        <h5>Deploy [analytics]</h5>
+                        <label id="l_insurance_analytics" for="f_insurance_analytics">Upload</label>
+                        <input type="file" id="f_insurance_analytics" onchange="file('Insurance', 'InsuranceAnalytics', this)" />
+                        <button type="button" id="b_deploy" onclick="main('Insurance', 'Deploy', 'InsuranceAnalytics', '')">Deploy</button>
+                        <p id="p_output_deploy_analytics"></p>
+                    </div>
                     <div style="clear:left"></div>
                 </div>
             </p>
@@ -213,6 +227,7 @@
                         <option value="InsuranceUser">InsuranceUser</option>
                         <option value="InsurancePolicy">InsurancePolicy</option>
                         <option value="InsuranceUserPolicy">InsuranceUserPolicy</option>
+                        <option value="InsuranceUserPolicy">InsuranceAnalytics</option>
                     </select>
                     <button type="button" id="b_setup">Setup</button><br>
 
@@ -220,6 +235,7 @@
                         <option value="InsuranceUser">InsuranceUser</option>
                         <option value="InsurancePolicy">InsurancePolicy</option>
                         <option value="InsuranceUserPolicy">InsuranceUserPolicy</option>
+                        <option value="InsuranceUserPolicy">InsuranceAnalytics</option>
                     </select>
                     <button type="button" id="b_get_sub_contract_addr">GetSubContractAddress</button>
                     <p id="p_output_setup"></p>
@@ -423,6 +439,24 @@
                     <p id="p_output_policy"></p>
                 </div>
             </p>
+
+            <p>
+                <div class="well" id="block">
+                    <h4>9. Analytics</h4>
+                    <div id="element">
+                        Select Operation(Read):<br>
+                        <select id="s_analytics_read_op">
+                            <option value="getKeys">getKeys</option>
+                        </select><br>
+                        Params:<br>
+                        <input type="text" id="i_analytics_read_params"><br>
+                        <button type="button" id="b_analytics_read_submit">Submit</button>
+                    </div>
+                    <div style="clear: left"></div>
+                    <p id="p_output_analytics"></p>
+                </div>
+            </p>
+
         </div>
     </div> 
     </body>
