@@ -35,10 +35,10 @@ contract InsuranceUserPolicy is Delegate {
     address private policyAddr_;
     string[] private keys_;
 
-    /** @desc string(original policy key) => uint(sum)
+    /** @desc string(original policy key) => uint(max id)
         @eg ddroyce@163.com_PingAn_Life => 9
       */
-    mapping(string => uint) private sums_;
+    mapping(string => uint) private maxIds_;
 
     /** @desc string(user key) => strArray(policy keys) */
     mapping(string => strArray) private policyKeys_;
@@ -115,7 +115,7 @@ contract InsuranceUserPolicy is Delegate {
 
         delete policyKeys_[_userKey].strs_[sum];
         policyKeys_[_userKey].ids_[_policyKey] = 0;
-        sum_ --;
+        policyKeys_[_userKey].sum_ --;
     }
 
     /** [desc] Remove policy.
@@ -128,12 +128,6 @@ contract InsuranceUserPolicy is Delegate {
         // 1. remove policy key for insurance_user_policy.sol
         _removePolicyKey(keys_[0], _policyKey);
 
-        string memory key = keys_[0];
-        key = key.concat("_", keys_[1]);
-        key = key.concat("_", keys_[2]);
-        if (sums_[key] > 0) {
-            sums_[key] --;
-        }
 
         // 2. remove policy for insurance_policy.sol
         InsurancePolicy(policyAddr_).remove(_policyKey);
@@ -166,12 +160,12 @@ contract InsuranceUserPolicy is Delegate {
         require(0 != bytes(_policyKey).length);
         require(0 != bytes(_data).length);
 
-        string memory policyKey = _policyKey.concat("_", sums_[_policyKey].toString());
+        string memory policyKey = _policyKey.concat("_", maxIds_[_policyKey].toString());
         InsurancePolicy(policyAddr_).submit(_userKey, _templateKey, policyKey, _data);
 
         _addPolicyKey(_userKey, policyKey);
 
-        sums_[_policyKey] ++;
+        maxIds_[_policyKey] ++;
     }
 
     /** [desc] remove user or policy.
