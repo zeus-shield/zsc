@@ -10,6 +10,7 @@ insurance_template
 insurance_user
 insurance_policy
 insurance_user_policy
+insurance_analytics
 )
 BUILDPATH="../build"
 
