@@ -52,16 +52,20 @@ contract InsuranceUser is Delegate {
     /** [desc] Get detail info.
       * [param] _addr: info address.
       * [return] error code and info for json data.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: no authority
+      *          -9: inner error  
       */
     function _getDetailInfo(address _addr) private view returns (int, string) {
-        string memory str = "{";
-
         uint len = Hashmap(_addr).size(true);
-        if (0 < len) {
-            str = str.concat(len.toKeyValue("Size"), ",");
-        } else {
-            return (-2, "{}");
+        if (0 == len) {
+            return (-2, "");
         }
+
+        string memory str = "{";
+        str = str.concat(len.toKeyValue("Size"), ",");
         for (uint i=0; i<len; i++) {
             int error = 0;
             string memory key = "";
@@ -71,7 +75,7 @@ contract InsuranceUser is Delegate {
             uint data2 = uint(0);
             (error, key, position, data0, data1, data2) = Hashmap(_addr).get(i, true);
             if (0 != error) {
-                return (error, "{}");
+                return (error, "");
             }
 
             if (0 == position) {
@@ -83,7 +87,7 @@ contract InsuranceUser is Delegate {
             } else if (2 == position) {
                 str = str.concat(data2.toKeyValue(key));
             } else {
-                return (-2, "{}");
+                return (-9, "");
             }
 
             if ((len -1) > i) {
@@ -100,6 +104,7 @@ contract InsuranceUser is Delegate {
       * [param] _key: user key.
       * [param] _addr: nfo address.
       * [return] error code and info for json data.
+      *           0: success
       */
     function _getBriefInfo(string _key, address _addr) private pure returns (int, string) {
         string memory str = "{\"Size\":2,";
@@ -186,12 +191,13 @@ contract InsuranceUser is Delegate {
       *           0: success
       *          -1: params error
       *          -2: no data
-      *          -3: inner error   
+      *          -3: no authority
+      *          -9: inner error  
       */
     function getByKey(uint8 _type, string _key) external view returns (int, string) {
         // check param
         if ((1 < _type) || (0 == bytes(_key).length)) {
-            return (-1, "{}");
+            return (-1, "");
         }
 
         int error = 0;
@@ -201,10 +207,10 @@ contract InsuranceUser is Delegate {
         uint data2 = uint(0);
         (error, position, data0, user, data2) = Hashmap(userMgr_).get(_key, true);
         if (0 != error) {
-            return (error, "{}");
+            return (error, "");
         }
         if (1 != position) {
-            return (-2, "{}");
+            return (-9, "");
         }
 
         if (0 == _type) {
@@ -221,12 +227,13 @@ contract InsuranceUser is Delegate {
       *           0: success
       *          -1: params error
       *          -2: no data
-      *          -3: inner error   
+      *          -3: no authority
+      *          -9: inner error     
       */
     function getById(uint8 _type, uint _id) external view returns (int, string) {
         // check param
         if ((1 < _type) || (this.size() <= _id)) {
-            return (-1, "{}");
+            return (-1, "");
         }
 
         int error = 0;
@@ -237,10 +244,10 @@ contract InsuranceUser is Delegate {
         uint data2 = uint(0);
         (error, key, position, data0, user, data2) = Hashmap(userMgr_).get(_id, true);
         if (0 != error) {
-            return (error, "{}");
+            return (error, "");
         }
         if (1 != position) {
-            return (-2, "{}");
+            return (-9, "");
         }
 
         if (0 == _type) {
