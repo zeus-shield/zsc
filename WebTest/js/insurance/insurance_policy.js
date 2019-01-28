@@ -88,7 +88,7 @@ export default class InsurancePolicy {
                         // call 'InsurancePolicy.size()'
                         contractInstance.size.call({from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                console.log("[User]: %s", result.toString(10));
+                                console.log("[Policy]: %s", result.toString(10));
                                 if (null != func) {
                                     func(null, result);
                                 }
@@ -127,7 +127,7 @@ export default class InsurancePolicy {
                         // call 'InsurancePolicy.getByKey(uint8, string)'
                         contractInstance.getByKey.call(type, key, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                console.log("[User]: %s", result);
+                                console.log("[Policy]: %s", result);
                                 if (null != func) {
                                     func(null, result);
                                 }
@@ -166,7 +166,7 @@ export default class InsurancePolicy {
                         // call 'InsurancePolicy.getById(uint8, uint)'
                         contractInstance.getById.call(type, id, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                console.log("[User%s]: %s", id, result.toString(10));
+                                console.log("[Policy%s]: %s", id, result.toString(10));
                                 if (null != func) {
                                     func(null, id, result);
                                 }
