@@ -8,7 +8,6 @@ pragma solidity ^0.4.25;
 
 import "../utillib/LibString.sol";
 import "../utillib/LibInt.sol";
-import "../common/hashmap.sol";
 import "../common/delegate.sol";
 
 contract InsuranceUser {
@@ -18,7 +17,6 @@ contract InsuranceUser {
 contract InsurancePolicy {
     function submit(string _userKey, string _templateKey, string _policyKey, string _data) external;
     function remove(string _key) external;
-    function getPolicyMgr() external view returns (int, address);
 }
 
 contract InsuranceUserPolicy is Delegate {
@@ -26,7 +24,13 @@ contract InsuranceUserPolicy is Delegate {
     using LibString for *;
     using LibInt for *;
 
-    address private userPolicyMgr_;
+    struct strArray {
+        // id start from '1', '0' means no exists
+        mapping(string => uint) ids_;
+        mapping(uint => string) strs_;
+        uint sum_;
+    }
+
     address private userAddr_;
     address private policyAddr_;
     string[] private keys_;
@@ -35,6 +39,9 @@ contract InsuranceUserPolicy is Delegate {
         @eg ddroyce@163.com_PingAn_Life => 9
       */
     mapping(string => uint) private sums_;
+
+    /** @desc string(user key) => strArray(policy keys) */
+    mapping(string => strArray) private policyKeys_;
 
     modifier _checkUserAddr() {
         require(0 != userAddr_);
@@ -52,7 +59,6 @@ contract InsuranceUserPolicy is Delegate {
     }
 
     constructor() public {
-        userPolicyMgr_ = new Hashmap();
         userAddr_ = address(0);
         policyAddr_ = address(0);
     }
@@ -62,77 +68,54 @@ contract InsuranceUserPolicy is Delegate {
       * [return] none.
       */
     function destroy() public _onlyOwner {
-        Hashmap(userPolicyMgr_).kill();
-        userPolicyMgr_ = address(0);
         super.kill();
     }
 
-    /** [desc] Get detail info.
-      * [param] _addr: info address.
-      * [return] error code and info for json data.
-      */
-    function _getDetailInfo(address _addr) private view returns (int, string) {
-        string memory str = "{";
-
-        uint len = Hashmap(_addr).size(true);
-        if (0 < len) {
-            str = str.concat(len.toKeyValue("Size"), ",");
-        } else {
-            return (-2, "{}");
-        }
-        for (uint i=0; i<len; i++) {
-            int error = 0;
-            string memory key = "";
-            uint8 position = 0;
-            string memory data0 = "";
-            address data1 = address(0);
-            uint data2 = uint(0);
-            (error, key, position, data0, data1, data2) = Hashmap(_addr).get(i,true);
-            if (0 != error) {
-                return (error, "{}");
-            }
-
-            if (0 == position) {
-                str = str.concat(data0.toKeyValue(key));
-            } else if (1 == position) {
-                string memory data = "0x";
-                data = data.concat(data1.addrToAsciiString());
-                str = str.concat(data.toKeyValue(key));
-            } else if (2 == position) {
-                str = str.concat(data2.toKeyValue(key));
-            } else {
-                return (-2, "{}");
-            }
-
-            if ((len -1) > i) {
-                str = str.concat(",");
-            }
-        }
-
-        str = str.concat("}");
-
-        return (0, str);
-    }
-
-    /** [desc] Add policy.
+    /** [desc] Add policy key.
       * [param] _userKey: key of user.
       * [param] _policyKey: key of policy.
-      * [param] _policy: address of policy.
       * [return] none.
       */
-    function _addPolicy(string _userKey, string _policyKey, address _policy) private {
-        int error = 0;
-        uint position = 0;
-        string memory data0 = "";
-        address policies = address(0);
-        uint data2 = uint(0);
-        (error, position, data0, policies, data2) = Hashmap(userPolicyMgr_).get(_userKey,true);
-        if (address(0) == policies) {
-            policies = new Hashmap();
-            Hashmap(userPolicyMgr_).set(_userKey, 1, "", policies, uint(0));
+    function _addPolicyKey(string _userKey, string _policyKey) private {
+        // check exists
+        if (0 != policyKeys_[_userKey].ids_[_policyKey]) {
+            return;
         }
 
-        Hashmap(policies).set(_policyKey, 1, "", _policy, uint(0));
+        uint sum = ++policyKeys_[_userKey].sum_;
+        policyKeys_[_userKey].ids_[_policyKey] = sum;
+        policyKeys_[_userKey].strs_[sum] = _policyKey;
+    }
+
+    /** [desc] Remove policy key.
+      * [param] _userKey: key of user.
+      * [param] _policyKey: key of policy.
+      * [return] none.
+      */
+    function _removePolicyKey(string _userKey, string _policyKey) private {
+        uint sum = policyKeys_[_userKey].sum_;
+        // check sum
+        require(0 != sum);
+        // check exists
+        require(0 != policyKeys_[_userKey].ids_[_policyKey]);
+
+        string memory key2 = policyKeys_[_userKey].strs_[sum];
+        // check exists
+        require(0 != policyKeys_[_userKey].ids_[key2]);
+
+        // swap
+        uint id1 = policyKeys_[_userKey].ids_[_policyKey];
+        uint id2 = policyKeys_[_userKey].ids_[key2];
+
+        policyKeys_[_userKey].strs_[id1] = key2;
+        policyKeys_[_userKey].strs_[id2] = _policyKey;
+
+        policyKeys_[_userKey].ids_[_policyKey] = id2;
+        policyKeys_[_userKey].ids_[key2] = id1;
+
+        delete policyKeys_[_userKey].strs_[sum];
+        policyKeys_[_userKey].ids_[_policyKey] = 0;
+        sum_ --;
     }
 
     /** [desc] Remove policy.
@@ -142,25 +125,10 @@ contract InsuranceUserPolicy is Delegate {
     function _removePolicy(string _policyKey) private {
         _policyKey.split("_", keys_);
 
-        string memory userKey = keys_[0];
+        // 1. remove policy key for insurance_user_policy.sol
+        _removePolicyKey(keys_[0], _policyKey);
 
-        // 1. remove policy for insurance.sol
-        int error = 0;
-        uint position = 0;
-        string memory data0 = "";
-        address policies = address(0);
-        uint data2 = uint(0);
-        (error, position, data0, policies, data2) = Hashmap(userPolicyMgr_).get(userKey, true);
-        require(0 == error);
-        require(1 == position);
-        require(address(0) != policies);
-
-        Hashmap(policies).remove(_policyKey);
-        if (0 == Hashmap(policies).size(true)) {
-            Hashmap(userPolicyMgr_).remove(userKey);
-        }
-
-        string memory key = userKey;
+        string memory key = keys_[0];
         key = key.concat("_", keys_[1]);
         key = key.concat("_", keys_[2]);
         if (sums_[key] > 0) {
@@ -169,34 +137,6 @@ contract InsuranceUserPolicy is Delegate {
 
         // 2. remove policy for insurance_policy.sol
         InsurancePolicy(policyAddr_).remove(_policyKey);
-    }
-
-    /** [desc] Remove policies
-      * [param] _userKey: key of user.
-      * [return] none.
-      */
-    function _removePolicies(string _userKey) private {
-        int error = 0;
-        uint position = 0;
-        string memory data0 = "";
-        address policies = address(0);
-        uint data2 = uint(0);
-        (error, position, data0, policies, data2) = Hashmap(userPolicyMgr_).get(_userKey, true);
-        require(0 == error);
-        require(1 == position);
-        require(address(0) != policies);
-
-        uint size = Hashmap(policies).size(true);
-        for (uint i=0; i<size; i++) {
-            string memory policyKey = "";
-            address policy = address(0);
-
-            (error, policyKey, position, data0, policy, data2) = Hashmap(policies).get(0, true);
-            require(0 == error);
-            require(1 == position);
-
-            _removePolicy(policyKey);
-        }
     }
 
     /** [desc] Setup.
@@ -228,31 +168,10 @@ contract InsuranceUserPolicy is Delegate {
 
         string memory policyKey = _policyKey.concat("_", sums_[_policyKey].toString());
         InsurancePolicy(policyAddr_).submit(_userKey, _templateKey, policyKey, _data);
-        
-        string memory key = "";
-        address policy = address(0);
-        (key, policy) = _getPolicyMap(policyKey);
 
-        _addPolicy(_userKey, policyKey, policy);
+        _addPolicyKey(_userKey, policyKey);
 
         sums_[_policyKey] ++;
-    }
-
-    function _getPolicyMap(string _key) private view returns (string, address) {
-        int error = 0;
-        address policyMgr = address(0);
-        uint8 position = 0;
-        string memory data0 = "";
-        address policy = address(0);
-        uint data2 = uint(0);
-        
-        (error, policyMgr) = InsurancePolicy(policyAddr_).getPolicyMgr();
-        (error, position, data0, policy, data2) = Hashmap(policyMgr).get(_key, false);
-        if (0 != error) {
-            return ("", address(0));
-        }
-
-        return (_key, policy);
     }
 
     /** [desc] remove user or policy.
@@ -265,8 +184,11 @@ contract InsuranceUserPolicy is Delegate {
         require(0 != bytes(_key).length);
 
         if (0 == _type) {
-            if (0 < Hashmap(userPolicyMgr_).size(true)) {
-                _removePolicies(_key);
+            // remove policies
+            uint size = policyKeys_[_key].sum_;
+            for (uint i=0; i<size; i++) {
+                string memory policyKey = policyKeys_[_key].strs_[1];
+                _removePolicy(policyKey);
             }
             InsuranceUser(userAddr_).remove(_key);
         } else if (1 == _type) {
@@ -282,28 +204,29 @@ contract InsuranceUserPolicy is Delegate {
       *           0: success
       *          -1: params error
       *          -2: no data
-      *          -3: inner error   
+      *          -3: no authority
+      *          -9: inner error   
       */
     function getPolicies(string _userKey) external view returns (int, string) {
         // check param
         if (0 == bytes(_userKey).length) {
-            return (-1, "{}");
+            return (-1, "");
+        }
+        
+        uint sum = policyKeys_[_userKey].sum_;
+        if (0 == sum) {
+            return (-2, "");
         }
 
-        int error = 0;
-        uint position = 0;
-        string memory data0 = "";
-        address policies = address(0);
-        uint data2 = uint(0);
-        (error, position, data0, policies, data2) = Hashmap(userPolicyMgr_).get(_userKey, true);
-        if (0 != error) {
-            return (error, "{}");
-        }
-        if (1 != position) {
-            return (-2, "{}");
+        string memory str = "";
+        for (uint i=1; i<=sum; i++) {
+            str = str.concat(policyKeys_[_userKey].strs_[i]);
+            if (sum > i) {
+                str = str.concat(",");
+            }
         }
 
-        return _getDetailInfo(policies);
+        return (0, str);
     }
 
     /** [desc] Get contract related address.
