@@ -59,14 +59,13 @@ contract InsurancePolicy is Delegate {
       *          -9: inner error 
       */
     function _getDetailInfo(address _addr) private view returns (int, string) {
-        string memory str = "{";
-
         uint len = Hashmap(_addr).size(true);
-        if (0 < len) {
-            str = str.concat(len.toKeyValue("Size"), ",");
-        } else {
-            return (-2, "{}");
+        if (0 == len) {
+            return (-2, "");
         }
+
+        string memory str = "{";
+        str = str.concat(len.toKeyValue("Size"), ",");
         for (uint i=0; i<len; i++) {
             int error = 0;
             string memory key = "";
@@ -76,7 +75,7 @@ contract InsurancePolicy is Delegate {
             uint data2 = uint(0);
             (error, key, position, data0, data1, data2) = Hashmap(_addr).get(i, true);
             if (0 != error) {
-                return (error, "{}");
+                return (error, "");
             }
 
             if (0 == position) {
@@ -88,7 +87,7 @@ contract InsurancePolicy is Delegate {
             } else if (2 == position) {
                 str = str.concat(data2.toKeyValue(key));
             } else {
-                return (-9, "{}");
+                return (-9, "");
             }
 
             if ((len -1) > i) {
@@ -105,6 +104,7 @@ contract InsurancePolicy is Delegate {
       * [param] _key: policy key.
       * [param] _addr: info address.
       * [return] error code policy info for json data.
+      *           0: success
       */
     function _getBriefInfo(string _key, address _addr) private pure returns (int, string) {
         string memory str = "{\"Size\":2,";
@@ -137,10 +137,10 @@ contract InsurancePolicy is Delegate {
       */
     function submit(string _userKey, string _templateKey, string _policyKey, string _data) external _onlyAdminOrHigher _checkTemplateAddr {
         // check param
-        // require(0 != bytes(_userKey).length);
-        // require(0 != bytes(_templateKey).length);
-        // require(0 != bytes(_policyKey).length);
-        // require(0 != bytes(_data).length);
+        require(0 != bytes(_userKey).length);
+        require(0 != bytes(_templateKey).length);
+        require(0 != bytes(_policyKey).length);
+        require(0 != bytes(_data).length);
 
         string memory template = "";
         int error = 0;
@@ -199,7 +199,7 @@ contract InsurancePolicy is Delegate {
       */
     function remove(string _key) external _onlyAdminOrHigher {
         // check param
-        // require(0 != bytes(_key).length);
+        require(0 != bytes(_key).length);
         Hashmap(policyMgr_).remove(_key);
     }
 
@@ -242,7 +242,7 @@ contract InsurancePolicy is Delegate {
     function getByKey(uint8 _type, string _key) external view returns (int, string) {
         // check param
         if ((1 < _type) || (0 == bytes(_key).length)) {
-            return (-1, "{}");
+            return (-1, "");
         }
 
         int error = 0;
@@ -252,10 +252,10 @@ contract InsurancePolicy is Delegate {
         uint data2 = uint(0);
         (error, position, data0, policy, data2) = Hashmap(policyMgr_).get(_key, true);
         if (0 != error) {
-            return (error, "{}");
+            return (error, "");
         }
         if (1 != position) {
-            return (-9, "{}");
+            return (-9, "");
         }
 
         if (0 == _type) {
@@ -278,7 +278,7 @@ contract InsurancePolicy is Delegate {
     function getById(uint8 _type, uint _id) external view returns (int, string) {
         // check param
         if ((1 < _type) || (this.size() <= _id)) {
-            return (-1, "{}");
+            return (-1, "");
         }
 
         int error = 0;
@@ -289,10 +289,10 @@ contract InsurancePolicy is Delegate {
         uint data2 = uint(0);
         (error, key, position, data0, policy, data2) = Hashmap(policyMgr_).get(_id, true);
         if (0 != error) {
-            return (error, "{}");
+            return (error, "");
         }
         if (1 != position) {
-            return (-9, "{}");
+            return (-9, "");
         }
 
         if (0 == _type) {
