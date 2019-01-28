@@ -59,7 +59,7 @@ contract InsuranceTemplate is Delegate {
       * [return] size of templates.
       */
     function size() external view returns (uint) {
-        return Hashmap(tempMgr_).size();
+        return Hashmap(tempMgr_).size(true);
     }
 
     /** [desc] Get template by id.
@@ -72,7 +72,7 @@ contract InsuranceTemplate is Delegate {
       */
     function getById(uint _id) external view returns (int, string, string) {
         // check param
-        if (Hashmap(tempMgr_).size() <= _id) {
+        if (Hashmap(tempMgr_).size(true) <= _id) {
             return (-1, "", "");
         }
 
@@ -83,7 +83,7 @@ contract InsuranceTemplate is Delegate {
         address data1 = address(0);
         uint data2 = uint(0);
 
-        (error, key, positon, value, data1, data2) = Hashmap(tempMgr_).get(_id);
+        (error, key, positon, value, data1, data2) = Hashmap(tempMgr_).get(_id, true);
         if (0 != positon) {
             return (-2, "{}", "{}");
         }
@@ -106,7 +106,7 @@ contract InsuranceTemplate is Delegate {
         address data1 = address(0);
         uint data2 = uint(0);
 
-        (error, positon, value, data1, data2) = Hashmap(tempMgr_).get(_key);
+        (error, positon, value, data1, data2) = Hashmap(tempMgr_).get(_key, true);
         if (0 != positon) {
             return (-2, "{}");
         }
