@@ -119,6 +119,8 @@ export default class TestInsurance {
         } else if ("-2" == error) {
             str = "NO DATA     ";
         } else if ("-3" == error) {
+            str = "NO AUTH     ";
+        } else if ("-9" == error) {
             str = "INNER ERROR ";
         } else {
             str = "UNKNOW ERROR";
