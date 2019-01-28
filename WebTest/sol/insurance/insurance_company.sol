@@ -73,7 +73,8 @@ contract InsuranceCompany is Delegate {
       *           0: success
       *          -1: params error
       *          -2: no data
-      *          -3: inner error
+      *          -3: no authority
+      *          -9: inner error 
       */
     function getById(uint _id) external view returns (int, string, string) {
         // check param
@@ -88,11 +89,7 @@ contract InsuranceCompany is Delegate {
         address data1 = address(0);
         uint data2 = uint(0);
 
-        (error, key, positon, value, data1, data2) = Hashmap(companyMgr_).get(_id, true);
-        if (0 != positon) {
-            return (-2, "{}", "{}");
-        }
-        
+        (error, key, positon, value, data1, data2) = Hashmap(companyMgr_).get(_id, true);        
         return (error, key, value);
     }
 
@@ -102,7 +99,8 @@ contract InsuranceCompany is Delegate {
       *           0: success
       *          -1: params error
       *          -2: no data
-      *          -3: inner error
+      *          -3: no authority
+      *          -9: inner error 
       */
     function getByKey(string _key) external view returns (int, string) {
         int error = 0;
@@ -111,11 +109,7 @@ contract InsuranceCompany is Delegate {
         address data1 = address(0);
         uint data2 = uint(0);
 
-        (error, positon, value, data1, data2) = Hashmap(companyMgr_).get(_key, true);
-        if (0 != positon) {
-            return (-2, "{}");
-        }
-        
+        (error, positon, value, data1, data2) = Hashmap(companyMgr_).get(_key, true);        
         return (error, value);
     }
 
@@ -124,25 +118,26 @@ contract InsuranceCompany is Delegate {
       *           0: success
       *          -1: params error
       *          -2: no data
-      *          -3: inner error
+      *          -3: no authority
+      *          -9: inner error
       */
     function getAll() external view returns (int, string) {
-        string memory str = "{";
         uint len = Hashmap(companyMgr_).size(true);
-        if (0 < len) {
-            str = str.concat(len.toKeyValue("Size"), ",");
-        } else {
-            return (-2, "{}");
+        if (0 == len) {
+            return (-2, "");
         }
 
         int error = 0;
         string memory key = "";
         string memory data = "";
+        string memory str = "{";
+
+        str = str.concat(len.toKeyValue("Size"), ",");
 
         for (uint i=0; i<len; i++) {
             (error, key, data) = this.getById(i);
             if (0 != error) {
-                return (error, "{}");
+                return (error, "");
             }
 
             str = str.concat(data.toKeyValue(key));
@@ -154,6 +149,6 @@ contract InsuranceCompany is Delegate {
 
         str = str.concat("}");
 
-        return (error, str);
+        return (0, str);
     }
 }
