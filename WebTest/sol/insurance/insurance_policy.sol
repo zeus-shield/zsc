@@ -52,11 +52,16 @@ contract InsurancePolicy is Delegate {
     /** [desc] Get policy detail info.
       * [param] _addr: info address.
       * [return] error code and info for json data.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: no authority
+      *          -9: inner error 
       */
     function _getDetailInfo(address _addr) private view returns (int, string) {
         string memory str = "{";
 
-        uint len = Hashmap(_addr).size();
+        uint len = Hashmap(_addr).size(true);
         if (0 < len) {
             str = str.concat(len.toKeyValue("Size"), ",");
         } else {
@@ -69,7 +74,7 @@ contract InsurancePolicy is Delegate {
             string memory data0 = "";
             address data1 = address(0);
             uint data2 = uint(0);
-            (error, key, position, data0, data1, data2) = Hashmap(_addr).get(i);
+            (error, key, position, data0, data1, data2) = Hashmap(_addr).get(i, true);
             if (0 != error) {
                 return (error, "{}");
             }
@@ -83,7 +88,7 @@ contract InsurancePolicy is Delegate {
             } else if (2 == position) {
                 str = str.concat(data2.toKeyValue(key));
             } else {
-                return (-2, "{}");
+                return (-9, "{}");
             }
 
             if ((len -1) > i) {
@@ -103,12 +108,12 @@ contract InsurancePolicy is Delegate {
       */
     function _getBriefInfo(string _key, address _addr) private pure returns (int, string) {
         string memory str = "{\"Size\":2,";
-        string memory user = "0x";
+        string memory policy = "0x";
 
-        user = user.concat(_addr.addrToAsciiString());
+        policy = policy.concat(_addr.addrToAsciiString());
 
         str = str.concat(_key.toKeyValue("Key"), ",");
-        str = str.concat(user.toKeyValue("Address"), "}");
+        str = str.concat(policy.toKeyValue("Address"), "}");
 
         return (0, str);
     }
@@ -132,10 +137,10 @@ contract InsurancePolicy is Delegate {
       */
     function submit(string _userKey, string _templateKey, string _policyKey, string _data) external _onlyAdminOrHigher _checkTemplateAddr {
         // check param
-        require(0 != bytes(_userKey).length);
-        require(0 != bytes(_templateKey).length);
-        require(0 != bytes(_policyKey).length);
-        require(0 != bytes(_data).length);
+        // require(0 != bytes(_userKey).length);
+        // require(0 != bytes(_templateKey).length);
+        // require(0 != bytes(_policyKey).length);
+        // require(0 != bytes(_data).length);
 
         string memory template = "";
         int error = 0;
@@ -180,7 +185,7 @@ contract InsurancePolicy is Delegate {
         string memory data0 = "";
         address policy = address(0);
         uint data2 = uint(0);
-        (error, position, data0, policy, data2) = Hashmap(policyMgr_).get(_key);
+        (error, position, data0, policy, data2) = Hashmap(policyMgr_).get(_key, true);
         require(0 == error);
         require(1 == position);
         require(0 != policy);
@@ -194,7 +199,7 @@ contract InsurancePolicy is Delegate {
       */
     function remove(string _key) external _onlyAdminOrHigher {
         // check param
-        require(0 != bytes(_key).length);
+        // require(0 != bytes(_key).length);
         Hashmap(policyMgr_).remove(_key);
     }
 
@@ -203,37 +208,25 @@ contract InsurancePolicy is Delegate {
       * [return] size of users.
       */
     function size() external view returns (uint) {
-        return Hashmap(policyMgr_).size();
+        return Hashmap(policyMgr_).size(true);
     }
 
-    /** [desc] Get policy address by key.
-      * [param] _key: policy key.
-      * [return] error code and policy address.
+    /** [desc] Get policy manager address.
+      * [param] _key: none.
+      * [return] error code and policy manager address.
       *           0: success
       *          -1: params error
       *          -2: no data
-      *          -3: inner error   
+      *          -3: no authority
+      *          -9: inner error    
       */
-    function getPolicyAddr(string _key) external view returns (int, address) {
-        // check param
-        if (0 == bytes(_key).length) {
-            return (-1, address(0));
+    function getPolicyMgr() external view returns (int, address) {
+        // check authority
+        if (!checkDelegate(msg.sender, 2)) {
+            return (-3, address(0));
         }
 
-        int error = 0;
-        uint8 position = 0;
-        string memory data0 = "";
-        address policy = address(0);
-        uint data2 = uint(0);
-        (error, position, data0, policy, data2) = Hashmap(policyMgr_).get(_key);
-        if (0 != error) {
-            return (error, address(0));
-        }
-        if (1 != position) {
-            return (-2, address(0));
-        }
-
-        return (0, policy);
+        return (0, policyMgr_);
     }
 
     /** [desc] Get policy info by key.
@@ -243,7 +236,8 @@ contract InsurancePolicy is Delegate {
       *           0: success
       *          -1: params error
       *          -2: no data
-      *          -3: inner error   
+      *          -3: no authority
+      *          -9: inner error
       */
     function getByKey(uint8 _type, string _key) external view returns (int, string) {
         // check param
@@ -256,12 +250,12 @@ contract InsurancePolicy is Delegate {
         string memory data0 = "";
         address policy = address(0);
         uint data2 = uint(0);
-        (error, position, data0, policy, data2) = Hashmap(policyMgr_).get(_key);
+        (error, position, data0, policy, data2) = Hashmap(policyMgr_).get(_key, true);
         if (0 != error) {
             return (error, "{}");
         }
         if (1 != position) {
-            return (-2, "{}");
+            return (-9, "{}");
         }
 
         if (0 == _type) {
@@ -278,7 +272,8 @@ contract InsurancePolicy is Delegate {
       *           0: success
       *          -1: params error
       *          -2: no data
-      *          -3: inner error   
+      *          -3: no authority
+      *          -9: inner error 
       */
     function getById(uint8 _type, uint _id) external view returns (int, string) {
         // check param
@@ -292,12 +287,12 @@ contract InsurancePolicy is Delegate {
         string memory data0 = "";
         address policy = address(0);
         uint data2 = uint(0);
-        (error, key, position, data0, policy, data2) = Hashmap(policyMgr_).get(_id);
+        (error, key, position, data0, policy, data2) = Hashmap(policyMgr_).get(_id, true);
         if (0 != error) {
             return (error, "{}");
         }
         if (1 != position) {
-            return (-2, "{}");
+            return (-9, "{}");
         }
 
         if (0 == _type) {
