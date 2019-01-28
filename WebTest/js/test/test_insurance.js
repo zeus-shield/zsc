@@ -11,6 +11,7 @@ import InsuranceTemplate from "../insurance/insurance_template.js";
 import InsuranceUser from "../insurance/insurance_user.js";
 import InsurancePolicy from "../insurance/insurance_policy.js";
 import InsuranceUserPolicy from "../insurance/insurance_user_policy.js";
+import InsuranceAnalytics from "../insurance/insurance_analytics.js";
 
 //private member
 const compiledJson = Symbol("compiledJson");
@@ -29,6 +30,9 @@ const policyContractAddress = Symbol("policyContractAddress");
 
 const userPolicyAbi = Symbol("userPolicyAbi");
 const userPolicyContractAddress = Symbol("userPolicyContractAddress");
+
+const analyticsAbi = Symbol("analyticsAbi");
+const analyticsContractAddress = Symbol("analyticsContractAddress");
 
 //private function
 const getAccount = Symbol("getAccount");
@@ -49,11 +53,13 @@ export default class TestInsurance {
         this[userAbi] = [];
         this[policyAbi] = [];
         this[userPolicyAbi] = [];
+        this[analyticsAbi] = [];
         this[companyContractAddress] = "";
         this[templateContractAddress] = "";
         this[userContractAddress] = "";
         this[policyContractAddress] = "";
         this[userPolicyContractAddress] = "";
+        this[analyticsContractAddress] = "";
     }
 
     [getAccount]() { 
@@ -147,6 +153,8 @@ export default class TestInsurance {
             elementId = window.outputDeployPolicyElement;
         } else if ("InsuranceUserPolicy" == contractName) {
             elementId = window.outputDeployUserPolicyElement;
+        } else if ("InsuranceAnalytics" == contractName) {
+            elementId = window.outputDeployAnalyticsElement;
         } else {
             console.log("Contract name Error!");
             return;
@@ -206,6 +214,9 @@ export default class TestInsurance {
         } else if ("InsuranceUserPolicy" == contractName) {
             this[userPolicyAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
             contract = web3.eth.contract(this[userPolicyAbi]);
+        } else if ("InsuranceAnalytics" == contractName) {
+            this[analyticsAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
+            contract = web3.eth.contract(this[analyticsAbi]);
         } else {
             console.log("Contract name Error!");
             return;
@@ -231,6 +242,8 @@ export default class TestInsurance {
                                 handler[policyContractAddress] = result.contractAddress;
                             } else if ("InsuranceUserPolicy" == contractName) {
                                 handler[userPolicyContractAddress] = result.contractAddress;
+                            } else if ("InsuranceAnalytics" == contractName) {
+                                handler[analyticsContractAddress] = result.contractAddress;
                             } else {
                                 console.log("Contract name Error!");
                                 return;
@@ -277,6 +290,11 @@ export default class TestInsurance {
                     insuranceUserPolicy.setup(account, privateKey, this[userContractAddress], this[policyContractAddress], function(error, result) {
                         handler[transactionProc](error, result, window.outputSetupElement);
                     });
+                } else if ("InsuranceAnalytics" == contractName) {
+                    let insuranceAnalytics = new InsuranceAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
+                    insuranceAnalytics.setup(account, privateKey, this[policyContractAddress], function(error, result) {
+                        handler[transactionProc](error, result, window.outputSetupElement);
+                    });
                 } else {
                     Output(window.outputSetupElement, 'small', 'red', "Contract name Error!");
                 }
@@ -305,6 +323,15 @@ export default class TestInsurance {
                     insuranceUserPolicy.getAddr(function(error, result) {
                         if (!error) {
                             Output(window.outputSetupElement, 'small', 'red', `[Address]: user(${result[0]}), policy(${result[1]})`);
+                        } else {
+                            Output(window.outputSetupElement, 'small', 'red', error);
+                        }
+                    });
+                } else if ("InsuranceAnalytics" == contractName) {
+                    let insuranceAnalytics = new InsuranceAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
+                    insuranceAnalytics.getAddr(function(error, result) {
+                        if (!error) {
+                            Output(window.outputSetupElement, 'small', 'red', `[Address]: policy(${result})`);
                         } else {
                             Output(window.outputSetupElement, 'small', 'red', error);
                         }
@@ -363,6 +390,8 @@ export default class TestInsurance {
             delegate = new Delegate(this[policyAbi], this[policyContractAddress]);
         } else if ("InsuranceUserPolicy" == contract) {
             delegate = new Delegate(this[userPolicyAbi], this[userPolicyContractAddress]);
+        } else if ("InsuranceAnalytics" == contract) {
+            delegate = new Delegate(this[analyticsAbi], this[analyticsContractAddress]);
         } else {}
 
         return delegate;       
