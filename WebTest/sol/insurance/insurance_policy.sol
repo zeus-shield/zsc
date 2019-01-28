@@ -103,7 +103,7 @@ contract InsurancePolicy is Delegate {
     /** [desc] Get policy brief info.
       * [param] _key: policy key.
       * [param] _addr: info address.
-      * [return] error code policy info for json data.
+      * [return] error code and info for json data.
       *           0: success
       */
     function _getBriefInfo(string _key, address _addr) private pure returns (int, string) {

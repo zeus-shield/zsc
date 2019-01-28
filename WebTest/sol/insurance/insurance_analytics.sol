@@ -43,6 +43,38 @@ contract InsuranceAnalytics is Delegate {
         super.kill();
     }
 
+    /** [desc] Get policy map from insurance_policy.sol.
+      * [param] _id: policy id.
+      * [return] error code and map info(key => policy address).
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: no authority
+      *          -9: inner error 
+      */
+    function _getPolicyMap(uint _id) private view returns (int, string, address) {
+        // check authority
+        if (0 == policyAddr_) {
+            return (-1, "", address(0));
+        }
+
+        int error = 0;
+        address policyMgr = address(0);
+        string memory key = "";
+        uint8 position = 0;
+        string memory data0 = "";
+        address policy = address(0);
+        uint data2 = uint(0);
+        
+        (error, policyMgr) = InsurancePolicy(policyAddr_).getPolicyMgr();
+        if ((0 != error) || (address(0) == policyMgr)) {
+            return (error, "", address(0));
+        }
+
+        (error, key, position, data0, policy, data2) = Hashmap(policyMgr).get(_id, false);
+        return (error, key, policy);
+    }
+
     /** [desc] Setup.
       * [param] _policyAddr: policy contract address.
       * [return] none.
@@ -53,47 +85,49 @@ contract InsuranceAnalytics is Delegate {
         policyAddr_ = _policyAddr;
     }
 
-    function getKeys(uint _id, uint _count) external view _checkPolicyAddr returns (int, string) {
+    /** [desc] Get policy keys.
+      * [param] _id: policy starting id.
+      * [param] _count: wanted count(include starting id).
+      * [return] error code and info.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: no authority
+      *          -9: inner error 
+      */
+    function getKeys(uint _id, uint _count) external view returns (int, string) {
         uint count = 0;
         uint sum = InsurancePolicy(policyAddr_).size();
 
         // check param
-        require(sum > _id);
-        require(0 < _count);
+        if ((sum <= _id) || (0 == _count)) {
+            return (-1, "");
+        }
 
-        if (sum_ < _id + _count) {
-            count = sum_ - _id;
+        if (sum < _id + _count) {
+            count = sum - _id;
         } else {
             count = _count;
         }
 
+        int error = 0;
         string memory key = "";
+        address policy = address(0);
         string memory keys = "";
         for (uint i=0; i<count; i++) {
-            key = _getPolicyKey(_id+i);
+            (error, key, policy) = _getPolicyMap(_id+i);
+            if (0 != error) {
+                return (error, "");
+            }
+
             keys = keys.concat(key);
             if ((count -1) > i) {
-                keys = keys.concat("#");
+                keys = keys.concat(",");
             }
         }
 
         return (0, keys);
     }
-
-    function _getPolicyKey(uint _id) private view returns (string) {
-        int error = 0;
-        address policyMgr = address(0);
-        string memory key = "";
-        uint8 position = 0;
-        string memory data0 = "";
-        address policy = address(0);
-        uint data2 = uint(0);
-        
-        (error, policyMgr) = InsurancePolicy(policyAddr_).getPolicyMgr();
-        (error, key, position, data0, policy, data2) = Hashmap(policyMgr).get(_id, false);
-
-        return key;
-    }    
 
     /** [desc] Get contract related address.
       * [return] contract related address.
