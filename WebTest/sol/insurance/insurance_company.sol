@@ -103,6 +103,11 @@ contract InsuranceCompany is Delegate {
       *          -9: inner error 
       */
     function getByKey(string _key) external view returns (int, string) {
+        // check param
+        if (0 == bytes(_key).length) {
+            return (-1, "");
+        }
+
         int error = 0;
         uint8 positon = 0;
         string memory value = "";
