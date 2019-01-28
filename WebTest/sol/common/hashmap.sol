@@ -103,37 +103,60 @@ contract Hashmap is Ownable {
     }
 
     /** [desc] Get size of data.
-      * [param] none.
+      * [param] onlyOwner: flag using for checking owner.
       * [return] size of data.
       */
-    function size() external view _onlyOwner returns (uint) {
+    function size(bool onlyOwner) external view returns (uint) {
+        if (onlyOwner) {
+            if (msg.sender != owner_) {
+                return 0;
+            }
+        }
+
         return sum_;
     }
 
     /** [desc] Get data by key.
       * [param] _key: key using for mapping data.
+      * [param] onlyOwner: flag using for checking owner.
       * [return] error code and data.
       *           0: success
       *          -1: params error
       *          -2: no data
-      *          -3: inner error   
+      *          -3: no authority
+      *          -9: inner error   
       */
-    function get(string _key) external view _onlyOwner returns (int, uint8, string, address, uint) {
+    function get(string _key, bool onlyOwner) external view returns (int, uint8, string, address, uint) {
+        // check param
+        if (0 == bytes(_key).length) {
+            return (-1, 0, "", address(0), uint(0));
+        }
+
         if (!exists_[_key]) {
             return (-2, 0, "", address(0), uint(0));
         }
+
+        if (onlyOwner) {
+            if (msg.sender != owner_) {
+                return (-3, 0, "", address(0), uint(0));
+            }
+        }
+
         return (0, datas_[_key].position_, datas_[_key].data0_, datas_[_key].data1_, datas_[_key].data2_);
     }
 
     /** [desc] Get data by id.
       * [param] _id: id of data.
+      * [param] onlyOwner: flag using for checking owner.
       * [return] error code and key/data.
       *           0: success
       *          -1: params error
       *          -2: no data
-      *          -3: inner error   
+      *          -3: no authority
+      *          -9: inner error   
       */
-    function get(uint _id) external view _onlyOwner returns (int, string, uint8, string, address, uint) {
+    function get(uint _id, bool onlyOwner) external view returns (int, string, uint8, string, address, uint) {
+        // check param
         if (_id >= sum_) {
             return (-1, "", 0, "", address(0), uint(0));
         }
@@ -142,8 +165,14 @@ contract Hashmap is Ownable {
             return (-2, "", 0, "", address(0), uint(0));
         }
 
+        if (onlyOwner) {
+            if (msg.sender != owner_) {
+                return (-3, "", 0, "", address(0), uint(0));
+            }
+        }
+
         if (ids_[keys_[_id]] != _id) {
-            return (-3, "", 0, "", address(0), uint(0));
+            return (-9, "", 0, "", address(0), uint(0));
         }
 
         return (0, keys_[_id], datas_[keys_[_id]].position_, datas_[keys_[_id]].data0_, datas_[keys_[_id]].data1_, datas_[keys_[_id]].data2_);
