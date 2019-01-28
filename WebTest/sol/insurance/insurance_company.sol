@@ -64,7 +64,7 @@ contract InsuranceCompany is Delegate {
       * [return] size of companies.
       */
     function size() external view returns (uint) {
-        return Hashmap(companyMgr_).size();
+        return Hashmap(companyMgr_).size(true);
     }
 
     /** [desc] Get company by id.
@@ -77,7 +77,7 @@ contract InsuranceCompany is Delegate {
       */
     function getById(uint _id) external view returns (int, string, string) {
         // check param
-        if (Hashmap(companyMgr_).size() <= _id) {
+        if (Hashmap(companyMgr_).size(true) <= _id) {
             return (-1, "", "");
         }
 
@@ -88,7 +88,7 @@ contract InsuranceCompany is Delegate {
         address data1 = address(0);
         uint data2 = uint(0);
 
-        (error, key, positon, value, data1, data2) = Hashmap(companyMgr_).get(_id);
+        (error, key, positon, value, data1, data2) = Hashmap(companyMgr_).get(_id, true);
         if (0 != positon) {
             return (-2, "{}", "{}");
         }
@@ -111,7 +111,7 @@ contract InsuranceCompany is Delegate {
         address data1 = address(0);
         uint data2 = uint(0);
 
-        (error, positon, value, data1, data2) = Hashmap(companyMgr_).get(_key);
+        (error, positon, value, data1, data2) = Hashmap(companyMgr_).get(_key, true);
         if (0 != positon) {
             return (-2, "{}");
         }
@@ -128,7 +128,7 @@ contract InsuranceCompany is Delegate {
       */
     function getAll() external view returns (int, string) {
         string memory str = "{";
-        uint len = Hashmap(companyMgr_).size();
+        uint len = Hashmap(companyMgr_).size(true);
         if (0 < len) {
             str = str.concat(len.toKeyValue("Size"), ",");
         } else {
