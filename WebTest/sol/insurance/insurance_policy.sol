@@ -151,7 +151,7 @@ contract InsurancePolicy is Delegate {
         bool valid = false;
         address policy = new Hashmap();
 
-        for (uint i=0; i<keys_.length; i++) { 
+        for (uint i=0; i<keys_.length; i++) {
             if (_data.keyExists(keys_[i])) {
                 if (keys_[i].equals("Key")) {
                     Hashmap(policy).set(keys_[i], 0, _policyKey, address(0), uint(0));
