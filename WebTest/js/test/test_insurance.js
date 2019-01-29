@@ -1146,6 +1146,51 @@ export default class TestInsurance {
         }
     }
 
+    analytics(operation, params) {
+        console.log("TestInsurance.analytics(%s, %s)", operation, params);
+
+        // check param
+        if ((undefined == operation) || ("" == operation)) {
+            Output(window.outputCompanyElement, "small", "red", "Please input correct input!");
+            return;
+        }
+
+        let handler = this;
+        let tmps = this[getAccount]();
+        if (0 == tmps[0]) {
+            Output(window.outputCompanyElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = tmps[0];
+        let privateKey = tmps[1];
+
+        let insuranceAnalytics;
+        switch (operation) {
+            case "getKeys":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputAnalyticsElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                tmps = params.split(",");
+
+                insuranceAnalytics = new InsuranceAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
+                insuranceAnalytics.getKeys(tmps[0], tmps[1], function(error, result) {
+                    if (!error) {
+                        let errorStr = handler[getErrorStr](result[0].toString(10));
+                        Output(window.outputAnalyticsElement, "small", "red", `[Keys]: (${errorStr}) ${result[1]}`);
+                    } else {
+                        Output(window.outputAnalyticsElement, "small", "red", error);
+                    }
+                });
+                break;
+            default:
+                Output(window.outputCompanyElement, "small", "red", "Operation Error!");
+                break;
+        }
+    }
+
     do(operation, para1, para2) {
         console.log("TestInsurance.do(%s, %s, %s)", operation, para1, para2);
         switch(operation) {
@@ -1169,6 +1214,9 @@ export default class TestInsurance {
                 break;
             case "Policy":
                 this.policy(para1, para2);
+                break;
+            case "Analytics":
+                this.analytics(para1, para2);
                 break;
             default:
                 console.log("Operation Error!");
