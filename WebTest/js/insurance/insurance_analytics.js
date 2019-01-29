@@ -81,7 +81,7 @@ export default class InsuranceAnalytics {
                             if(!error) {
                                 console.log("[Keys]: %s", result.toString(10));
                                 if (null != func) {
-                                    func(null, id, result);
+                                    func(null, result);
                                 }
                             } else {
                                 handler[notifyError](error, func);
