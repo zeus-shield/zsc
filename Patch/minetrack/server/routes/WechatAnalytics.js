@@ -15,3 +15,12 @@ router.get('/getKeys', function (req, res) {
     let insurance_analytics = new Insurance_analytics(analyticsAbi,analyticsAddress);
     let id = 0;
     let count = 100;
+    insurance_analytics.getKeys(id,count,function(error, result) {
+        if(error) {
+            res.json({
+                status:"error",
+                code:"-9",
+                msg:"交易报错",
+                error:error.toString(10)
+            })
+        } else {
