@@ -17,5 +17,19 @@ router.get('/getKeys', function (req, res) {
     insurance_analytics.getKeys(id,count,function(error, result) {
         if(error) {
             res.json({
+                status:"error",
+                code:"-9",
+                msg:"交易报错",
+                error:error.toString(10)
+            })
+        } else {
+            if(result[0] == -3) {//判断状态值//inner error
+                res.json({
+                    status:"success",
+                    code:"-3",
+                    msg:"合约出现问题，请稍后再试或联系管理员",
+                    data:null
+                })
+            } else if (result[0] == -1) {//params error
 })
 module.exports = router;
