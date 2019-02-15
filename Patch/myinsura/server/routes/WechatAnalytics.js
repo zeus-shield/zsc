@@ -44,3 +44,15 @@ router.get('/getKeys', function (req, res) {
                     msg:"没有公司及险种",
                     data:null
                 })
+            }  else if (result[0] == 0) {//success
+                res.json({
+                    status:"success",
+                    code:"0",
+                    msg:"订单获取成功",
+                    data:result
+                })
+            }
+        }
+    })
+})
+module.exports = router;
