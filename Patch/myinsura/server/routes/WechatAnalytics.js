@@ -19,17 +19,15 @@ router.get('/getKeys', function (req, res) {
             res.json({
                 status:"error",
                 code:"-9",
-                msg:"½»Ò×±¨´í",
+                msg:"äº¤æ˜“æŠ¥é”™",
                 error:error.toString(10)
             })
         } else {
-            if(result[0] == -3) {//ÅĞ¶Ï×´Ì¬Öµ//inner error
+            if(result[0] == -3) {//åˆ¤æ–­çŠ¶æ€å€¼//inner error
                 res.json({
                     status:"success",
                     code:"-3",
-                    msg:"ºÏÔ¼³öÏÖÎÊÌâ£¬ÇëÉÔºóÔÙÊÔ»òÁªÏµ¹ÜÀíÔ±",
+                    msg:"åˆçº¦å‡ºç°é—®é¢˜ï¼Œè¯·ç¨åå†è¯•æˆ–è”ç³»ç®¡ç†å‘˜",
                     data:null
                 })
             } else if (result[0] == -1) {//params error
-})
-module.exports = router;
