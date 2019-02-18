@@ -6,3 +6,6 @@ import ContractInfo from '../public/js/ContractInfo';
 
 const companyAbi = ContractInfo.companyAbi;
 const companyAddress = ContractInfo.companyAddress;
+
+const account = "";
+const accountkey = "";
