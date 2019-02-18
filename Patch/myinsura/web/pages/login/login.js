@@ -46,4 +46,9 @@ Page({
       hasUserInfo: true
     })
   },
+  jmp2getOpenID:function(){
+    wx.switchTab({
+      url: '../companyAndPolicy/companyAndPolicy'
+    })
+  },
 })
