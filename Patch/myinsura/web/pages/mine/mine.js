@@ -179,4 +179,12 @@ Page({
       userAllPolicyHiddenValue: temp,
     })
   },
+  //Ìø×ªÖÁÇø¿éÁ´
+  jmp2rinkeby:function(e){
+    console.log(e)
+    wx.navigateTo({
+      url: "../rinkeby/rinkeby?id=" + e.currentTarget.id,
+    })
+
+  },
 })
