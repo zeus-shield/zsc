@@ -187,4 +187,15 @@ Page({
     })
 
   },
+  switchIdHidden: function() {
+    if(this.data.isIdHidden == false) {
+      this.setData({
+        isIdHidden:true
+      });
+    } else {
+      this.setData({
+        isIdHidden: false
+      });
+    }
+  },
 })
