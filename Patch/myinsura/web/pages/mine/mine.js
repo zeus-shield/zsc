@@ -30,4 +30,17 @@ Page({
     this.getAllPolicy();
     wx.stopPullDownRefresh();
   },
+  //获取用户所有保单信息
+  getAllPolicy:function() {
+    let handler = this;
+    let userKey = app.globalData.code;
+    //let userKey ="ddroyce@163.com";
+
+    if (handler.data.userAllPolicy = [0]) {
+      wx.showToast({
+        title: '数据加载中',
+        icon: 'loading',
+        duration: 10000
+      })
+    }
 })
