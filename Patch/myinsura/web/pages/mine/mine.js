@@ -198,4 +198,20 @@ Page({
       });
     }
   },
+  switchHashHidden: function(e) {
+    let index = parseInt(e.currentTarget.id);
+    if (this.data.isHashHidden[index] == false) {
+      let temp = this.data.isHashHidden;
+      temp[index] = true;
+      this.setData({
+        isHashHidden: temp
+      });
+    } else {
+      let temp = this.data.isHashHidden;
+      temp[index] = false;
+      this.setData({
+        isHashHidden: temp
+      });
+    }
+  }
 })
