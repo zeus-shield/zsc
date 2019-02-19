@@ -97,4 +97,64 @@ Page({
       },
     })
   },
+  //获取特定保单的所有信息
+  getPolicyInfo: function(i){
+    let handler = this;
+    let key = handler.data.userAllPolicytemp[i].key;
+    wx.request({
+      url: 'http://minetrack.io:3001/WechatPolicy/getByKey',
+      method: 'post',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      data: {
+        Key: key
+      },
+      success(res) {
+        if (res.data.code == "-1" || res.data.code == "-2" || res.data.code == "-3") {//交易成功没拿到值
+          wx.showToast({
+            title: '您目前没有保单',
+            icon: 'success',
+            duration: 2000
+          })
+          handler.setData({
+            hasPolicy: false
+          })
+        } else if (res.data.code == "-9") {
+          handler.getPolicyInfo(i);
+          wx.showToast({
+            title: '交易报错',
+            icon: 'success',
+            duration: 2000
+          })
+        } else if (res.data.code == "0") {
+          let temp = JSON.parse(res.data.data[1]);
+          console.log(temp);
+          delete temp.Size;
+          delete temp.Key;
+          delete temp.UserKey;
+          handler.data.userAllPolicytemp[i].value = temp
+          handler.data.isGet[i] = true;
+
+          if(handler.check() == true) {
+            let temp = [];
+            for (let i = 0; i < handler.data.userAllPolicytemp.length; i++) {
+              temp.push(true);
+            }
+            handler.setData({
+              userAllPolicy:handler.data.userAllPolicytemp,
+              userAllPolicyHiddenValue:temp,
+              hasPolicy: true
+            })
+          }
+        }
+      },
+      fail(error) {
+        wx.showToast({
+          title: '网络故障',
+          icon: 'success',
+          duration: 2000
+        })
+        console.log("网络故障");
+      },
+    })
+  },
 })
