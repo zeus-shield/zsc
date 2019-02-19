@@ -157,4 +157,13 @@ Page({
       },
     })
   },
+  //检查是否获取保单信息
+  check: function() {
+    for(let i = 0; i < this.data.isGet.length; i++) {
+      if(this.data.isGet[i] == false) {
+        return false;
+      }
+    }
+    return true;
+  },
 })
