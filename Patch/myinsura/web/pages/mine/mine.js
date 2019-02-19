@@ -166,4 +166,17 @@ Page({
     }
     return true;
   },
+  //订单详情展示
+  show: function(e) {
+    let id = parseInt(e.currentTarget.id);
+    let temp = this.data.userAllPolicyHiddenValue;
+    if (temp[id] == false) {
+      temp[id] = true;
+    } else {
+      temp[id] = false;
+    }
+    this.setData({
+      userAllPolicyHiddenValue: temp,
+    })
+  },
 })
