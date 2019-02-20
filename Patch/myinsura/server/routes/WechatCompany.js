@@ -76,3 +76,13 @@ router.post('/getById', function (req, res) {
         }
     })
 })
+
+router.post('/getByKey', function (req, res) {
+    //let Key = "PingAn";
+    let Key = req.body.Key;
+    let insurance_company = new Insurance_company(companyAbi,companyAddress);
+    insurance_company.getByKey(Key,function(error, result) {
+        if(error) {
+            res.json({
+                status:"error",
+                code:"-9",
