@@ -131,4 +131,14 @@ Page({
     wx.navigateTo({
       url: "../policyInput/policyInput?id=" + this.data.policyKey    })
   },
+
+  //¹«Ë¾ÇÐ»»
+  tabClick: function (e) {
+    
+    this.setData({
+      sliderOffset: e.currentTarget.offsetLeft,
+      activeIndex: e.currentTarget.id,
+      policyKey: "DB_Policy_" + this.data.tabs[e.currentTarget.id] + "_" + this.data.grids[e.currentTarget.id][0]
+    });
+  }
 })
