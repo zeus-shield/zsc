@@ -97,4 +97,17 @@ Page({
       policyInfo: PolicyInfo
 
     })
+    wx.getSystemInfo({
+      success: function (res) {
+        that.setData({
+          windowHeight:res.windowHeight-51,
+          windowWidth:res.windowWidth,
+          //sliderLeft: (res.windowWidth / that.data.tabs.length - sliderWidth) / 2,
+          //sliderOffset: res.windowWidth / that.data.tabs.length * that.data.activeIndex
+          sliderOffset:0
+        });
+        wx.hideToast();
+      }
+    });
+  },
 })
