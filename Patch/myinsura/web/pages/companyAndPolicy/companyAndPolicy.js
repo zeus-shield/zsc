@@ -31,4 +31,15 @@ Page({
     this.getAllComapnyAndPolicy();
     wx.stopPullDownRefresh();
   },
+  //请求获取公司及险种
+  getAllComapnyAndPolicy: function () {
+    let handler = this;
+ 
+    if (handler.data.company = {}) {
+      wx.showToast({
+        title: '数据加载中',
+        icon: 'loading',
+        duration: 10000
+      })
+    }
 })
