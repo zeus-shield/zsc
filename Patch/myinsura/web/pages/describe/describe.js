@@ -1,5 +1,7 @@
 
 Page({
 
-
+  onPullDownRefresh() {
+    wx.stopPullDownRefresh();
+  },
 })
