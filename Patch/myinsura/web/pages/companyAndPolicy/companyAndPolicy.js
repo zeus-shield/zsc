@@ -15,4 +15,20 @@ Page({
     //九宫格被选中选项
     policyKey: "DB_Policy_中国人保_寿险鑫利年金险",
 
+    //公司及险种数据
+    company: {},
+    policyInfo:{},
+
+    adding:"",
+    isLoaded:false
+  },
+
+  onLoad: function () {
+    this.getAllComapnyAndPolicy();
+  },
+
+  onPullDownRefresh() {
+    this.getAllComapnyAndPolicy();
+    wx.stopPullDownRefresh();
+  },
 })
