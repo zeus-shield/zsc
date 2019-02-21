@@ -126,4 +126,9 @@ Page({
     
 
   },
+  //跳转至录入页面
+  jmp2policy:function(){
+    wx.navigateTo({
+      url: "../policyInput/policyInput?id=" + this.data.policyKey    })
+  },
 })
