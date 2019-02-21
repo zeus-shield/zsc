@@ -146,3 +146,13 @@ router.get('/getAll', function (req, res) {
                 res.json({
                     status:"success",
                     code:"-3",
+                    msg:"合约出现问题，请稍后再试或联系管理员",
+                    data:null
+                })
+            } else if (result[0] == -1) {//params error
+                res.json({
+                    status:"success",
+                    code:"-1",
+                    msg:"参数有问题，请检查是否输入正确",
+                    data:null
+                })
