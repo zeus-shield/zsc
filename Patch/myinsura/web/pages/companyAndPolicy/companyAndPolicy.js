@@ -110,4 +110,20 @@ Page({
       }
     });
   },
+  //九宫格更新
+  gridsChange: function (e) {
+    if (e.currentTarget.id == "待添加中") {
+      this.setData({
+        adding: e.currentTarget.id,
+        policyKey: e.currentTarget.id
+      })
+    } else {
+      this.setData({
+        adding: e.currentTarget.id,
+        policyKey: "DB_Policy_" + this.data.tabs[this.data.activeIndex] + "_" + e.currentTarget.id
+      })
+    }
+    
+
+  },
 })
