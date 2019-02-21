@@ -130,3 +130,19 @@ router.post('/getByKey', function (req, res) {
         }
     })
 })
+
+router.get('/getAll', function (req, res) {
+    let insurance_company = new Insurance_company(companyAbi,companyAddress);
+    insurance_company.getAll(function(error, result) {
+        if(error) {
+            res.json({
+                status:"error",
+                code:"-9",
+                msg:"交易报错",
+                error:error.toString(10)
+            })
+        } else {
+            if(result[0] == -3) {//判断状态值//inner error
+                res.json({
+                    status:"success",
+                    code:"-3",
