@@ -112,3 +112,21 @@ router.post('/getByKey', function (req, res) {
                         data:null
                     })
                 } else if (result[0] == -2) {//no data
+                    res.json({
+                        status:"success",
+                        code:"-2",
+                        msg:"该公司没有险种",
+                        data:null
+                    })
+                }  else if (result[0] == 0) {//success
+                    res.json({
+                        status:"success",
+                        code:"0",
+                        msg:"公司所有险种获取成功",
+                        data:result
+                    })
+                }
+            }
+        }
+    })
+})
