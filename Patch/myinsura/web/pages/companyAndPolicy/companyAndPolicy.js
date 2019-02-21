@@ -42,4 +42,40 @@ Page({
         duration: 10000
       })
     }
+    wx.request({
+      url: 'http://minetrack.io:3001/WechatCompany/getAll',
+      method: 'get',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      data: {},
+      success(res) {
+        if (res.data.code == "-1" || res.data.code == "-2" || res.data.code == "-3") {//交易成功没拿到值
+          wx.showToast({
+            title: '没拿到值',
+            icon: 'success',
+            duration: 2000
+          })
+        } else if (res.data.code == "-9") {
+          wx.showToast({
+            title: '交易报错',
+            icon: 'success',
+            duration: 2000
+          })
+        } else if (res.data.code == "0") {
+          let temp = JSON.parse(res.data.data[1]);
+          delete temp.Size
+          handler.setData({
+            company: temp
+          })
+          handler.showCompanyAndPolicy();
+        }
+      },
+      fail(error) {
+        wx.showToast({
+          title: '网络故障',
+          icon: 'success',
+          duration: 2000
+        })
+      },
+    })
+  },
 })
