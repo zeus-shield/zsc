@@ -78,4 +78,23 @@ Page({
       },
     })
   },
+  //‰÷»æ“≥√Ê
+  showCompanyAndPolicy:function() {
+    var that = this;
+    let para = [];
+    let para1 = [];
+    for (var key in that.data.company) {
+      para.push(that.data.company[key].split("#"));
+      para1.push(key);
+    }
+    // for (var i = 0; i < para.length; i++) {
+    //   para[i].push("¥˝ÃÌº”÷–")
+    // }
+    that.setData({
+      isLoaded:true,
+      tabs: para1,
+      grids: para,
+      policyInfo: PolicyInfo
+
+    })
 })
