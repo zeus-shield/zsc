@@ -42,3 +42,11 @@ router.post('/login', function (req, res) {
                 let insurance_user = new Insurance_user(userAbi,userAddress);
                 insurance_user.getByKey(0,key,function(error, result) {
                     if(error) {
+                        console.log(error);
+                        res.json({
+                            status:"error",
+                            code:"-9",
+                            msg:"½»Ò×±¨´í",
+                            error:error.toString(10)
+                        })
+                    } else {
