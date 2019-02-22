@@ -8,3 +8,12 @@ import ContractInfo from '../public/js/ContractInfo';
 
 const userAbi = ContractInfo.userAbi;
 const userAddress = ContractInfo.userAddress;
+
+const account = "";
+const accountkey = "";
+
+const appid = "";
+const secret = "";
+
+//const appid = "";
+//const secret = "";
