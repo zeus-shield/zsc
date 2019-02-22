@@ -26,3 +26,19 @@ router.post('/login', function (req, res) {
     let nickName = req.body.NickName;
     let url = `https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${secret}&js_code=${code}&grant_type=authorization_code`
    
+    axios.get(url)
+        .then(response => {
+            if(response.data.errcode) {
+                res.json({
+                    status:"fail",
+                    code:"1",
+                    msg:"该用户身份识别有问题",
+                    data:response.data
+                })
+            } else {
+                //加密
+
+                let temKey = "DB_User";
+                let insurance_user = new Insurance_user(userAbi,userAddress);
+                insurance_user.getByKey(0,key,function(error, result) {
+                    if(error) {
