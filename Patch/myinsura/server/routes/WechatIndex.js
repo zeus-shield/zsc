@@ -17,3 +17,5 @@ const secret = "";
 
 //const appid = "";
 //const secret = "";
+
+const encryptKey = "";
