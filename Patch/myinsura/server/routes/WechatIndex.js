@@ -19,3 +19,10 @@ const secret = "";
 //const secret = "";
 
 const encryptKey = "";
+
+router.post('/login', function (req, res) {
+    //let code = "sss";
+    let code = req.body.Code;
+    let nickName = req.body.NickName;
+    let url = `https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${secret}&js_code=${code}&grant_type=authorization_code`
+   
