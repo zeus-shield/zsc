@@ -85,3 +85,15 @@ router.post('/login', function (req, res) {
                                         msg:"已有该用户，登录成功",
                                         data:key
                                     })
+                                }  else if (result[0] == -2) {//no data
+                                    let para = {Key:key,
+                                                CodeID:code,
+                                                Name:nickName};
+                                    para = JSON.stringify(para);
+                                    insurance_user.signUp(account,accountkey,temKey,para,function(error, result) {
+                                        if(error) {
+                                            res.json({
+                                                status:"error",
+                                                code:"-9",
+                                                msg:"交易报错",
+                                                error:error.toString(10)
