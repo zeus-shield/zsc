@@ -78,3 +78,10 @@ router.post('/login', function (req, res) {
                                         msg:"账号有问题，请检查是否输入正确",
                                         data:null
                                     })
+                                } else if (result[0] == 0) {//success
+                                    res.json({
+                                        status:"success",
+                                        code:"3",
+                                        msg:"已有该用户，登录成功",
+                                        data:key
+                                    })
