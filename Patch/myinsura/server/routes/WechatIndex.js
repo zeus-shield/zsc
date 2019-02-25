@@ -32,11 +32,12 @@ router.post('/login', function (req, res) {
                 res.json({
                     status:"fail",
                     code:"1",
-                    msg:"该用户身份识别有问题",
+                    msg:"璇ョ敤鎴疯韩浠借瘑鍒湁闂",
                     data:response.data
                 })
             } else {
-                //加密
+                //鍔犲瘑
+               
 
                 let temKey = "DB_User";
                 let insurance_user = new Insurance_user(userAbi,userAddress);
@@ -46,7 +47,7 @@ router.post('/login', function (req, res) {
                         res.json({
                             status:"error",
                             code:"-9",
-                            msg:"交易报错",
+                            msg:"浜ゆ槗鎶ラ敊",
                             error:error.toString(10)
                         })
                     } else {
