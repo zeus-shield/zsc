@@ -248,4 +248,71 @@ Page({
       })
     }
   },
+  changeValue: function (e) {
+    if (e.target.id == "投保人") {//组合输入框
+      this.data.policyTempData[e.target.id] = e.detail.value;
+    } else if (e.target.id == "保单编号") {//组合输入框
+      this.data.policyTempData[e.target.id] = e.detail.value;
+    } else if (e.target.id == "被保人") {//组合输入框
+      this.data.policyTempData[e.target.id] = e.detail.value;
+    } else if (e.target.id == "保障额度") {//输入框
+      this.data.policyTempData[e.target.id] = e.detail.value;
+    } else if (e.target.id == "开始时间") {//时间控件
+      this.data.policyTempData[e.target.id] = e.detail.value;
+      this.setData({
+        date: e.detail.value
+      })
+    } else if (e.target.id == "结束时间") {//时间控件
+      this.data.policyTempData[e.target.id] = e.detail.value;
+      this.setData({
+        date1: e.detail.value
+      })
+
+    } else if (e.target.id == "保障期限") {// 滚动控件
+      this.data.policyTempData[e.target.id] = parseInt(e.detail.value) + 1;
+      this.setData({
+        accountIndex: e.detail.value
+      })
+    } else if (e.target.id == "缴费方式") {//单选radio
+      var radioItems = this.data.radio;
+      for (var i = 0, len = radioItems.length; i < len; ++i) {
+        radioItems[i].checked = radioItems[i].value == e.detail.value;
+      }
+      this.setData({
+        radio: radioItems
+      });
+      for (let i = 0; i < this.data.radio.length; i++) {
+        if (this.data.radio[i].value == e.detail.value) {
+          this.data.policyTempData[e.target.id] = this.data.radio[i].value;
+        }
+      }
+    } else if (e.target.id == "自动续保") {//布尔
+      if (e.detail.value == "true") {
+        this.data.policyTempData[e.target.id] = "不自动续保";
+      } else {
+        this.data.policyTempData[e.target.id] = "自动续保";
+      }
+    } else if (e.target.id == "描述") {//多行文本框
+      this.data.policyTempData[e.target.id] = e.detail.value;
+    } else if (e.target.id == "有无社保（被保人）") {//布尔
+      if (e.detail.value == "true") {
+        this.data.policyTempData[e.target.id] = "无社保";
+      } else {
+        this.data.policyTempData[e.target.id] = "有社保";
+      }
+    } else if (e.target.id == "车牌号") {//输入框
+      this.data.policyTempData[e.target.id] = e.detail.value;
+    } else if (e.target.id == "车龄") {// 滚动控件
+      this.data.policyTempData[e.target.id] = parseInt(e.detail.value) + 1;
+      this.setData({
+        accountIndex1: e.detail.value
+      })
+    } else if (e.target.id == "有无交通事故") {//布尔
+      if (e.detail.value == "true") {
+        this.data.policyTempData[e.target.id] = "无交通事故";
+      } else {
+        this.data.policyTempData[e.target.id] = "有交通事故";
+      }
+    }
+  }
 })
