@@ -81,4 +81,49 @@ Page({
     })
 
   },
+  //获取保单模板
+  getPolicyTemp: function (policyTemKey) {
+    let handler = this;
+ 
+    let key = policyTemKey;
+    wx.request({
+      url: 'http://minetrack.io:3001/WechatTem/getByKey',
+      method: 'post',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      data: {
+        Key: key
+      },
+      success(res) {
+        if (res.data.code == "-1" || res.data.code == "-2" || res.data.code == "-3") {
+          //edit  交易成功没拿到值
+          wx.showToast({
+            title: '没有保单模板',
+            icon: 'success',
+            duration: 2000
+          })
+        } else if (res.data.code == "-9") {
+          //edit  交易失败
+          wx.showToast({
+            title: '交易报错',
+            icon: 'success',
+            duration: 2000
+          })
+        } else if (res.data.code == "0") {
+          //edit
+          handler.setData({
+            policyTemp: res.data.data,
+            bol: true
+          })
+          handler.createPolicyTemp();
+        }
+      },
+      fail(error) {
+        wx.showToast({
+          title: '网络故障',
+          icon: 'success',
+          duration: 2000
+        })
+      },
+    })
+  },
 })
