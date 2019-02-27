@@ -17,14 +17,22 @@ router.get('/size', function (req, res) {
             res.json({
                 status:"error",
                 code:"-9",
-                msg:"交易报错",
+                msg:"浜ゆ槗鎶ラ敊",
                 error:error.toString(10)
             })
         } else {
             res.json({
                 status:"success",
                 code:"0",
-                msg:"获取成功",
+                msg:"鑾峰彇鎴愬姛",
+                data:result
+            })
+        }
+    })
+})
+       
+                code:"0",
+                msg:"禄帽脠隆鲁脡鹿娄",
                 data:result
             })
         }
