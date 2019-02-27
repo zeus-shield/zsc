@@ -6,3 +6,6 @@ import ContractInfo from '../public/js/ContractInfo';
 
 const policyAbi = ContractInfo.policyAbi;
 const policyAddress = ContractInfo.policyAddress;
+
+const account = "";
+const accountkey = "";
