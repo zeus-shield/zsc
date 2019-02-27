@@ -126,4 +126,41 @@ Page({
       },
     })
   },
+  createPolicyTemp: function () {
+    let tempArray = this.data.policyTemp.split("#");
+    for (let i = 0; i < tempArray.length; i++) {
+      if (tempArray[i] == "Key" || tempArray[i] == "UserKey") {
+        tempArray.splice(i, 1);
+        i--;
+      }
+    }
+    let policyTempDataPara = {};
+    for (var i in tempArray) {
+      if (tempArray[i] == "有无社保（被保人）") {
+        policyTempDataPara[tempArray[i]] = "无社保";
+      } else if (tempArray[i] == "有无交通事故") {
+        policyTempDataPara[tempArray[i]] = "无交通事故";
+      } else if (tempArray[i] == "自动续保") {
+        policyTempDataPara[tempArray[i]] = "不自动续保";
+      } else if (tempArray[i] == "缴费方式") {
+        policyTempDataPara[tempArray[i]] = "年交";
+      } else if (tempArray[i] == "车龄") {
+        policyTempDataPara[tempArray[i]] = "1年";
+      } else if (tempArray[i] == "保障年限") {
+        policyTempDataPara[tempArray[i]] = "1年";
+      } else {
+        policyTempDataPara[tempArray[i]] = "";
+      }
+    }
+    this.setData({
+      policyTempArray: [],
+    })
+    this.setData({
+      policyTempArray: tempArray,
+      policyTempData: policyTempDataPara
+    })
+
+    console.log(this.data.policyTempArray)
+
+  },
 })
