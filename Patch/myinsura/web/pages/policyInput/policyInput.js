@@ -42,5 +42,20 @@ Page({
     })
     this.getPolicyTemp();
   },
+  //‘ÿ»Î“≥√Ê
+  onLoad: function (option) {
+    this.initData();
+    this.getPolicyTemp(option.id);
+    this.setData({
+      para: option.id
+    })
+
+    let temp = option.id.split("_");
+    this.setData({
+      title: temp[2]+"-"+temp[3]
+    })
+   
+
+  },
 	
 })
