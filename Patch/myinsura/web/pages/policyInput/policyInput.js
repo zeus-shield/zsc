@@ -57,5 +57,28 @@ Page({
    
 
   },
-	
+  //下拉刷新
+  onPullDownRefresh() {
+   
+  },
+
+  initData: function(){
+    let handler = this;
+    let arr = []
+    for (var i = 0; i < 100; i++) {
+      arr.push(i + "年");
+    }
+    handler.setData({
+      accounts: arr
+    })
+
+    let arr1 = []
+    for (var i = 0; i < 100; i++) {
+      arr1.push(i + "年");
+    }
+    handler.setData({
+      accounts1: arr1
+    })
+
+  },
 })
