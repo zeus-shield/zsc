@@ -35,5 +35,12 @@ Page({
 
 
   },
+  //用户点击确认选择公司和保单
+  bindMultiPickerChange: function (e) {
+    this.setData({
+      multiIndex: e.detail.value
+    })
+    this.getPolicyTemp();
+  },
 	
 })
