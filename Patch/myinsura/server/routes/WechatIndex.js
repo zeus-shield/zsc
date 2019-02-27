@@ -109,3 +109,22 @@ router.post('/login', function (req, res) {
                                                         msg:"交易失败",
                                                         data:null
                                                     })
+                                                } else {
+                                                    res.json({
+                                                        status:"success",
+                                                        code:"0",
+                                                        msg:"注册成功",
+                                                        data:key
+                                                    })
+                                                }
+                                            }
+                                        }
+                                    })
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+           
+        })
