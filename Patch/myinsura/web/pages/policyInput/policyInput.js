@@ -163,4 +163,89 @@ Page({
     console.log(this.data.policyTempArray)
 
   },
+  submitPolicy: function () {
+    let isInputed = true;
+    for (let key in this.data.policyTempData) {
+      if (this.data.policyTempData[key] == "") {
+        wx.showToast({
+          title: '请填入' + key,
+          duration: 1000
+        });
+        isInputed = false;
+        break;
+      }
+    }
+    console.log(this.data.policyTempData);
+    if (isInputed == true) {
+
+      wx.showToast({
+        title: '数据提交中',
+        icon: 'loading',
+        duration: 1000000
+      })
+      let handler = this;
+      let a = this.data.para.split("_");
+
+
+      let company = a[2];
+      let policyName = a[3] ;
+      let userKey = app.globalData.code;
+      let data = this.data.policyTempData;
+      let temKey = "DB_Policy_" + company + "_" + policyName;
+      data.Key = userKey + "_" + company + "_" + policyName;
+      data.UserKey = userKey;
+      let policyKey = data.Key;
+      data = JSON.stringify(data);
+      console.log(data);
+      wx.request({
+        url: 'http://minetrack.io:3001/WechatuserPolicy/submit',
+        method: 'post',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        data: {
+          UserKey: userKey,
+          TemKey: temKey,
+          Data: data,
+          PolicyKey:policyKey
+        },
+        success(res) {
+          wx.hideToast;
+          if (res.data.code == "-6") {//交易失败  
+            wx.showToast({
+              title: '交易失败',
+              icon: 'success',
+              duration: 2000
+            })
+          } else if (res.data.code == "0") {//交易成功
+            wx.showToast({
+              title: '提交成功',
+              icon: 'success',
+              duration: 2500
+            })
+            handler.setData({
+              policyTempArray: [],
+              bol: false
+            })
+
+            wx.switchTab({
+              url: '../companyAndPolicy/companyAndPolicy',
+            })
+          } else if (res.data.code == "-9") {//交易报错
+            wx.showToast({
+              title: '交易报错',
+              icon: 'success',
+              duration: 2000
+            })
+          }
+        },
+        fail(error) {
+          wx.hideToast;
+          wx.showToast({
+            title: '网络故障',
+            icon: 'success',
+            duration: 2000
+          })
+        },
+      })
+    }
+  },
 })
