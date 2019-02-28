@@ -91,4 +91,49 @@ Page({
       },
     })
   },
+
+  //统计数据
+  statisticData:function(data) {
+    let userKey = app.globalData.code;
+    console.log(data);
+    if(data){
+      for (var i in data) {
+        let temp = data[i].substr(userKey.length + 1, data[i].length).split("_");
+
+        let policyisfind = false;
+        for (var j in this.data.policyDatatemp) {
+          if (temp[0] + temp[1] == this.data.policyDatatemp[j].name) {
+            this.data.policyDatatemp[j].data++;
+            policyisfind = true;
+          }
+        }
+        if (policyisfind == false) {
+          this.data.policyDatatemp.push({ name: temp[0] + temp[1],data:1});
+        }
+
+
+
+        let companyisfind = false;
+        for (var k in this.data.companyDatatemp.categories) {
+          if ((temp[0]) == this.data.companyDatatemp.categories[k]){
+            this.data.companyDatatemp.data[k]++;
+            companyisfind = true;
+          }
+        }
+        if (companyisfind == false) {
+          this.data.companyDatatemp.categories.push(temp[0]);
+          this.data.companyDatatemp.data.push(1);
+        }
+      }
+
+      this.sortData();
+      
+    } else {
+      wx.showToast({
+        title: '没有有效保险数据',
+        icon: 'success',
+        duration: 2000
+      })
+    }
+  },
 })
