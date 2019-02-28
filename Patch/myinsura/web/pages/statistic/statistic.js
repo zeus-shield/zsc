@@ -199,4 +199,50 @@ Page({
   pieTouchHandler: function (e) {
     console.log(pieChart.getCurrentDataIndex(e));
   }, 
+  //柱状图
+  createColumn: function() {
+    var windowWidth = 320;
+    try {
+      var res = wx.getSystemInfoSync();
+      windowWidth = res.windowWidth;
+    } catch (e) {
+      console.error('getSystemInfoSync failed!');
+    }
+
+    columnChart = new wxCharts({
+      canvasId: 'columnCanvas',
+      type: 'column',
+      animation: true,
+      categories: this.data.companyData.categories,
+      series: [{
+        name: '成交量',
+        data: this.data.companyData.data,
+        format: function (val, name) {
+          return val;
+        }
+      }],
+      yAxis: {
+        format: function (val) {
+          return val;
+        },
+        title: '保单数',
+        min: 0
+      },
+      xAxis: {
+        disableGrid: false,
+        type: 'calibration'
+      },
+      extra: {
+        column: {
+          width: 15
+        }
+      },
+      width: windowWidth,
+      height: 200,
+    });
+  },
+
+  colunmTouchHandler: function (e) {
+    console.log(columnChart.getCurrentDataIndex(e));
+  },
 })
