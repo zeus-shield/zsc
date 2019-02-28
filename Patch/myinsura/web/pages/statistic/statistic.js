@@ -258,4 +258,11 @@ Page({
       }
     });
   },
+  tabClick: function (e) {
+
+    this.setData({
+      sliderOffset: e.currentTarget.offsetLeft,
+      activeIndex: e.currentTarget.id,
+    });
+  }
 })
