@@ -136,4 +136,43 @@ Page({
       })
     }
   },
+  sortData:function() {
+    for (let i = 0; i < this.data.policyDatatemp.length; i++) {
+      for (let j = 0; j < this.data.policyDatatemp.length-i-1; j++){
+        if (this.data.policyDatatemp[j].data < this.data.policyDatatemp[j+1].data) {
+          let temp = this.data.policyDatatemp[j];
+          this.data.policyDatatemp[j] = this.data.policyDatatemp[j + 1];
+          this.data.policyDatatemp[j + 1] = temp;
+        }
+      }
+    };
+
+    for (let i = 0; i < this.data.companyDatatemp.data.length; i++) {
+      for (let j = 0; j < this.data.companyDatatemp.data.length - i - 1; j++) {
+        if (this.data.companyDatatemp.data[j] < this.data.companyDatatemp.data[j + 1]) {
+          let temp1 = this.data.companyDatatemp.data[j];
+          let temp2 = this.data.companyDatatemp.categories[j];
+          this.data.companyDatatemp.data[j] = this.data.companyDatatemp.data[j + 1];
+          this.data.companyDatatemp.categories[j] = this.data.companyDatatemp.categories[j + 1];
+          this.data.companyDatatemp.data[j + 1] = temp1;
+          this.data.companyDatatemp.categories[j + 1] = temp2;
+        }
+      }
+    };
+    if (this.data.policyDatatemp.length>5) {
+      this.data.policyDatatemp = this.data.policyDatatemp.slice(0, 5);
+    }
+    if (this.data.companyDatatemp.data.length>5) {
+      this.data.companyDatatemp.data = this.data.companyDatatemp.data.slice(0, 5);
+      this.data.companyDatatemp.categories = this.data.companyDatatemp.categories.slice(0, 5);
+    }
+
+    this.setData({
+      companyData:this.data.companyDatatemp,
+      policyData:this.data.policyDatatemp
+    })
+
+    this.createPie();
+    this.createColumn();
+  },
 })
