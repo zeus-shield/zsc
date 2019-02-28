@@ -175,4 +175,28 @@ Page({
     this.createPie();
     this.createColumn();
   },
+  //±ý×´Í¼
+  createPie:function() {
+    var windowWidth = 320;
+    try {
+      var res = wx.getSystemInfoSync();
+      windowWidth = res.windowWidth;
+    } catch (e) {
+      console.error('getSystemInfoSync failed!');
+    }
+
+    pieChart = new wxCharts({
+      animation: true,
+      canvasId: 'pieCanvas',
+      type: 'pie',
+      series: this.data.policyData,
+      width: windowWidth,
+      height: 300,
+      dataLabel: true,
+    });
+  },
+
+  pieTouchHandler: function (e) {
+    console.log(pieChart.getCurrentDataIndex(e));
+  }, 
 })
