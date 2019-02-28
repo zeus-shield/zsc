@@ -40,4 +40,9 @@ Page({
     this.navbarShow();
     this.getData();
   },
+  //ÏÂÀ­Ë¢ÐÂ
+  onPullDownRefresh() {
+    this.getData();
+    wx.stopPullDownRefresh();
+  },
 })
