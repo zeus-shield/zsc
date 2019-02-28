@@ -26,4 +26,18 @@ Page({
       categories: []
     },
   
+    chartTitle: '总成交量',
+
+    tabs: ["险种排行榜","公司排行榜"],
+    activeIndex: 0,
+    sliderOffset: 0,
+    sliderLeft: 0,
+    windowHeight:0,
+    windowWidth:0,
+  },
+ 
+  onLoad: function () {
+    this.navbarShow();
+    this.getData();
+  },
 })
