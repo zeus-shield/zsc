@@ -245,4 +245,17 @@ Page({
   colunmTouchHandler: function (e) {
     console.log(columnChart.getCurrentDataIndex(e));
   },
+  //navbarœ‡πÿ
+  navbarShow: function() {
+    let that = this;
+    wx.getSystemInfo({
+      success: function (res) {
+        that.setData({
+          windowHeight: res.windowHeight - 51,
+          windowWidth: res.windowWidth,
+          sliderOffset: 0,
+        });
+      }
+    });
+  },
 })
