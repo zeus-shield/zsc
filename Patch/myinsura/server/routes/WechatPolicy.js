@@ -83,3 +83,10 @@ router.post('/getByKey', function (req, res) {
     let key = req.body.Key;
     let insurance_policy = new Insurance_policy(policyAbi,policyAddress);
     insurance_policy.getByKey(0,key,function(error, result) {
+        if(error) {
+            res.json({
+                status:"error",
+                code:"-9",
+                msg:"交易报错",
+                error:error.toString(10)
+            })
