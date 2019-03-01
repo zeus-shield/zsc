@@ -30,7 +30,7 @@ router.get('/size', function (req, res) {
         }
     })
 })
-       
+
 
 router.post('/getById', function (req, res) {
     //let id = 0;
@@ -38,3 +38,10 @@ router.post('/getById', function (req, res) {
     let insurance_policy = new Insurance_policy(policyAbi,policyAddress);
     insurance_policy.getById(0,id,function(error, result) {
         if(error) {
+            res.json({
+                status:"error",
+                code:"-9",
+                msg:"交易报错",
+                error:error.toString(10)
+            })
+        } else {
