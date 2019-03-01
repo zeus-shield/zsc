@@ -77,3 +77,9 @@ router.post('/getById', function (req, res) {
         }
     })
 })
+
+router.post('/getByKey', function (req, res) {
+    //let key = "ddroyce@163.com_PingAn_Life";
+    let key = req.body.Key;
+    let insurance_policy = new Insurance_policy(policyAbi,policyAddress);
+    insurance_policy.getByKey(0,key,function(error, result) {
