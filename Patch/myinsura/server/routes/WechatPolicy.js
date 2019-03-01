@@ -31,10 +31,10 @@ router.get('/size', function (req, res) {
     })
 })
        
-                code:"0",
-                msg:"»ñÈ¡³É¹¦",
-                data:result
-            })
-        }
-    })
-})
+
+router.post('/getById', function (req, res) {
+    //let id = 0;
+    let id = req.body.Id;
+    let insurance_policy = new Insurance_policy(policyAbi,policyAddress);
+    insurance_policy.getById(0,id,function(error, result) {
+        if(error) {
