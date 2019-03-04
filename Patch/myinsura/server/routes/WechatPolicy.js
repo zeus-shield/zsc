@@ -113,3 +113,28 @@ router.post('/getByKey', function (req, res) {
                         msg:"参数有问题，请检查是否输入正确",
                         data:null
                     })
+                } else if (result[0] == -2) {//no data
+                    res.json({
+                        status:"success",
+                        code:"-2",
+                        msg:"该保单不存在",
+                        data:null
+                    })
+                }  else if (result[0] == 0) {//success
+                    res.json({
+                        status:"success",
+                        code:"0",
+                        msg:"保单获取成功",
+                        data:result
+                    })
+                }
+            }
+        }
+    })
+})
+
+
+
+
+
+module.exports = router;
