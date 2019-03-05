@@ -11,6 +11,7 @@ insurance_user
 insurance_policy
 insurance_user_policy
 insurance_analytics
+insurance_integral
 )
 BUILDPATH="../build"
 
