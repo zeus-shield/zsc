@@ -15,6 +15,11 @@ contract InsuranceIntegral is ERC20Pausable, Delegate {
     string private symbol_;
     uint8 private decimals_;
 
+    modifier _onlyAdminOrHigher() {
+        require(checkDelegate(msg.sender, 2));
+        _;
+    }
+
     /**
      * @dev Construct the contract.
      * @param _name The name of the integral.
