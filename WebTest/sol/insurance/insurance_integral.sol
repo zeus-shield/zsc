@@ -9,6 +9,10 @@ pragma solidity ^0.4.25;
 import "../token/ERC20/ERC20.sol";
 
 contract InsuranceIntegral is ERC20 {
-    constructor() public {
+    uint private cap_;
+
+    constructor (uint _cap) public {
+        require(cap_ > 0);
+        cap_ = _cap;
     }
 }
