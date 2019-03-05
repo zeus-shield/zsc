@@ -51,13 +51,30 @@ contract InsuranceIntegral is ERC20 {
     }
 
     /**
-     * @dev Function to mint integrals
-     * @param to The address that will receive the minted tokens.
-     * @param value The amount of tokens to mint.
+     * @dev Function to mint integrals.
+     * @param _account The address that will receive the minted tokens.
+     * @param _value The amount of tokens to mint.
      * @return A boolean that indicates if the operation was successful.
      */
     function mint(address _account, uint _value) external {
         require(totalSupply().add(_value) <= cap_);
         _mint(_account, _value);
+    }
+
+    /**
+     * @dev Burns a specific amount of integrals.
+     * @param _value The amount of token to be burned.
+     */
+    function burn(uint _value) public {
+        _burn(msg.sender, _value);
+    }
+
+    /**
+     * @dev Burns a specific amount of tokens from the target address and decrements allowance
+     * @param _from The account whose tokens will be burned.
+     * @param _value The amount of token to be burned.
+     */
+    function burnFrom(address _from, uint _value) public {
+        _burnFrom(_from, _value);
     }
 }
