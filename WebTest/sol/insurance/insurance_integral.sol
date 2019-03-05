@@ -18,4 +18,11 @@ contract InsuranceIntegral is ERC20 {
         require(cap_ > 0);
         cap_ = _cap;
     }
+
+    /**
+     * @return the cap for the integral.
+     */
+    function cap() external view returns (uint) {
+        return cap_;
+    }
 }
