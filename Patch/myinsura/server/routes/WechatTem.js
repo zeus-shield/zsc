@@ -17,6 +17,17 @@ router.get('/size', function (req, res) {
             res.json({
                 status:"error",
                 code:"-9",
-                msg:"½»Ò×±¨´í",
+                msg:"äº¤æ˜“æŠ¥é”™",
                 error:error.toString(10)
             })
+        } else {
+            res.json({
+                status:"success",
+                code:"0",
+                msg:"è·å–æˆåŠŸ",
+                data:result
+            })
+        }
+    })
+})
+   
