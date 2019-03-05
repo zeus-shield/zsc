@@ -10,6 +10,9 @@ import "../token/ERC20/ERC20.sol";
 
 contract InsuranceIntegral is ERC20 {
     uint private cap_;
+    string private name_;
+    string private symbol_;
+    uint8 private decimals_;
 
     constructor (uint _cap) public {
         require(cap_ > 0);
