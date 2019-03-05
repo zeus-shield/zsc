@@ -6,7 +6,7 @@
 pragma solidity ^0.4.25;
 
 import "./IERC20.sol";
-import "../../math/SafeMath.sol";
+import "../../utillib/LibSafeMath.sol";
 
 /**
  * @title Standard ERC20 token
@@ -21,7 +21,7 @@ import "../../math/SafeMath.sol";
  * compliant implementations may not do it.
  */
 contract ERC20 is IERC20 {
-    using SafeMath for uint256;
+    using LibSafeMath for uint256;
 
     mapping (address => uint256) private _balances;
 
