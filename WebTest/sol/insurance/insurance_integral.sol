@@ -25,4 +25,9 @@ contract InsuranceIntegral is ERC20 {
     function cap() external view returns (uint) {
         return cap_;
     }
+
+    function mint(address _account, uint _value) external {
+        require(totalSupply().add(_value) <= cap_);
+        _mint(_account, _value);
+    }
 }
