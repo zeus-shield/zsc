@@ -4,11 +4,11 @@
  */
 
 pragma solidity ^0.4.25;
-// pragma experimental ABIEncoderV2;
 
-import "../token/ERC20/ERC20.sol";
+import "../token/ERC20/ERC20Pausable.sol";
+import "../common/pausable.sol";
 
-contract InsuranceIntegral is ERC20 {
+contract InsuranceIntegral is ERC20Pausable {
     uint private cap_;
     string private name_;
     string private symbol_;
@@ -52,11 +52,11 @@ contract InsuranceIntegral is ERC20 {
 
     /**
      * @dev Function to mint integrals.
-     * @param _account The address that will receive the minted tokens.
-     * @param _value The amount of tokens to mint.
+     * @param _account The address that will receive the minted integrals.
+     * @param _value The amount of integrals to mint.
      * @return A boolean that indicates if the operation was successful.
      */
-    function mint(address _account, uint _value) external {
+    function mint(address _account, uint _value) public whenNotPaused {
         require(totalSupply().add(_value) <= cap_);
         _mint(_account, _value);
     }
@@ -65,16 +65,16 @@ contract InsuranceIntegral is ERC20 {
      * @dev Burns a specific amount of integrals.
      * @param _value The amount of token to be burned.
      */
-    function burn(uint _value) public {
+    function burn(uint _value) public whenNotPaused {
         _burn(msg.sender, _value);
     }
 
     /**
-     * @dev Burns a specific amount of tokens from the target address and decrements allowance
-     * @param _from The account whose tokens will be burned.
+     * @dev Burns a specific amount of integrals from the target address and decrements allowance
+     * @param _from The account whose integrals will be burned.
      * @param _value The amount of token to be burned.
      */
-    function burnFrom(address _from, uint _value) public {
+    function burnFrom(address _from, uint _value) public whenNotPaused {
         _burnFrom(_from, _value);
     }
 }
