@@ -71,6 +71,15 @@ contract InsuranceIntegral is ERC20Pausable, Delegate {
     }
 
     /**
+     * @dev Update cap of integrals.
+     * @param _newCap The new cap of integrals.
+     */
+    function updateCap(uint _newCap) public whenNotPaused {
+        require((_newCap > totalSupply()) && (_newCap > cap_));
+        cap_ = _newCap;
+    }
+
+    /**
      * @dev Mint integrals.
      * @param _account The address that will receive the minted integrals.
      * @param _value The amount of integrals to mint.
