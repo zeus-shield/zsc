@@ -14,8 +14,11 @@ contract InsuranceIntegral is ERC20 {
     string private symbol_;
     uint8 private decimals_;
 
-    constructor (uint _cap) public {
+    constructor (string memory _name, string memory _symbol, uint8 _decimals, uint _cap) public {
         require(cap_ > 0);
+        name_ = _name;
+        symbol_ = _symbol;
+        decimals_ = _decimals;
         cap_ = _cap;
     }
 
