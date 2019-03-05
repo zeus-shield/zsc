@@ -29,6 +29,33 @@ contract InsuranceIntegral is ERC20 {
         return cap_;
     }
 
+    /**
+     * @return the name of the token.
+     */
+    function name() external view returns (string memory) {
+        return name_;
+    }
+
+    /**
+     * @return the symbol of the token.
+     */
+    function symbol() external view returns (string memory) {
+        return symbol_;
+    }
+
+    /**
+     * @return the number of decimals of the token.
+     */
+    function decimals() external view returns (uint8) {
+        return decimals_;
+    }
+
+    /**
+     * @dev Function to mint integrals
+     * @param to The address that will receive the minted tokens.
+     * @param value The amount of tokens to mint.
+     * @return A boolean that indicates if the operation was successful.
+     */
     function mint(address _account, uint _value) external {
         require(totalSupply().add(_value) <= cap_);
         _mint(_account, _value);
