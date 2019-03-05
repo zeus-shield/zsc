@@ -76,3 +76,16 @@ router.post('/getById', function (req, res) {
         }
     })
 })
+
+router.post('/getByKey', function (req, res) {
+    //let key = "DB_User";
+    let key = req.body.Key;
+    let insurance_template = new Insurance_template(temAbi,temAddress);
+    insurance_template.getByKey(key,function(error, result) {
+        if(error) {
+            res.json({
+                status:"error",
+                code:"-9",
+                msg:"交易报错",
+                error:error.toString(10)
+            })
