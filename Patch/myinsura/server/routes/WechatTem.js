@@ -58,3 +58,10 @@ router.post('/getById', function (req, res) {
                     msg:"参数有问题，请检查是否输入正确",
                     data:null
                 })
+            } else if (result[0] == -2) {//no data
+                res.json({
+                    status:"success",
+                    code:"-2",
+                    msg:"该模板不存在",
+                    data:null
+                })
