@@ -7,15 +7,23 @@ pragma solidity ^0.4.25;
 
 import "../token/ERC20/ERC20Pausable.sol";
 import "../common/pausable.sol";
+import "../common/delegate.sol";
 
-contract InsuranceIntegral is ERC20Pausable {
+contract InsuranceIntegral is ERC20Pausable, Delegate {
     uint private cap_;
     string private name_;
     string private symbol_;
     uint8 private decimals_;
 
+    /**
+     * @dev Construct the contract.
+     * @param _name The name of the integral.
+     * @param _symbol The symbol of the integral.
+     * @param _decimals The symbol of the integral.
+     * @param _cap The cap of the integral.
+     */
     constructor (string memory _name, string memory _symbol, uint8 _decimals, uint _cap) public {
-        require(cap_ > 0);
+        // require(cap_ > 0);
         name_ = _name;
         symbol_ = _symbol;
         decimals_ = _decimals;
@@ -23,38 +31,44 @@ contract InsuranceIntegral is ERC20Pausable {
     }
 
     /**
-     * @return the cap for the integral.
+     * @dev Destroy the contract.
+     */
+    function destroy() public {
+        super.kill();
+    }
+
+    /**
+     * @return The cap for the integral.
      */
     function cap() external view returns (uint) {
         return cap_;
     }
 
     /**
-     * @return the name of the token.
+     * @return The name of the integral.
      */
     function name() external view returns (string memory) {
         return name_;
     }
 
     /**
-     * @return the symbol of the token.
+     * @return The symbol of the integral.
      */
     function symbol() external view returns (string memory) {
         return symbol_;
     }
 
     /**
-     * @return the number of decimals of the token.
+     * @return the number of decimals of the integral.
      */
     function decimals() external view returns (uint8) {
         return decimals_;
     }
 
     /**
-     * @dev Function to mint integrals.
+     * @dev Mint integrals.
      * @param _account The address that will receive the minted integrals.
      * @param _value The amount of integrals to mint.
-     * @return A boolean that indicates if the operation was successful.
      */
     function mint(address _account, uint _value) public whenNotPaused {
         require(totalSupply().add(_value) <= cap_);
@@ -63,7 +77,7 @@ contract InsuranceIntegral is ERC20Pausable {
 
     /**
      * @dev Burns a specific amount of integrals.
-     * @param _value The amount of token to be burned.
+     * @param _value The amount of integral to be burned.
      */
     function burn(uint _value) public whenNotPaused {
         _burn(msg.sender, _value);
@@ -72,7 +86,7 @@ contract InsuranceIntegral is ERC20Pausable {
     /**
      * @dev Burns a specific amount of integrals from the target address and decrements allowance
      * @param _from The account whose integrals will be burned.
-     * @param _value The amount of token to be burned.
+     * @param _value The amount of integral to be burned.
      */
     function burnFrom(address _from, uint _value) public whenNotPaused {
         _burnFrom(_from, _value);
