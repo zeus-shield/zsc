@@ -6,5 +6,9 @@
 pragma solidity ^0.4.25;
 // pragma experimental ABIEncoderV2;
 
-contract InsuranceIntegral {
+import "../token/ERC20/ERC20.sol";
+
+contract InsuranceIntegral is ERC20 {
+    constructor() public {
+    }
 }
