@@ -1,4 +1,9 @@
-pragma solidity ^0.5.2;
+/**
+  Copyright (c) 2018, ZSC Dev Team
+  2018-10-19: v0.00.01
+ */
+
+pragma solidity ^0.4.25;
 
 import "./IERC20.sol";
 import "../../math/SafeMath.sol";
