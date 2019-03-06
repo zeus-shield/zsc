@@ -85,6 +85,24 @@ export default class InsuranceIntegral {
         });
     }
 
+    pause(account, privateKey, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        contractInstance.pause.estimateGas({from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.pause.getData(), error, gasRequired, func);
+        });
+    }
+
+    unpause(account, privateKey, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        contractInstance.unpause.estimateGas({from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.unpause.getData(), error, gasRequired, func);
+        });
+    }
+
     cap(func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
