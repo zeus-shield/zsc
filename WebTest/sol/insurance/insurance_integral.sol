@@ -71,6 +71,27 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
     }
 
     /**
+     * @dev Transfer integral to a specified address
+     * @param _owner address The address which owns the integrals.
+     * @param _to The address to transfer to.
+     * @param _value The amount to be transferred.
+     */
+    function transfer(address _owner, address _to, uint256 _value) public whenNotPaused returns (bool) {
+        return super.transfer(_owner, _to, _value);
+    }
+
+    /**
+     * @dev Transfer integrals from one address to another.
+     * Note that while this function emits an Approval event, this is not required as per the specification,
+     * and other compliant implementations may not emit the event.
+     * @param _from address The address which you want to send integrals from
+     * @param _to address The address which you want to transfer to
+     * @param _spender The address which will spend the integrals.
+     * @param _value uint256 the amount of integrals to be transferred
+     */
+    function transferFrom(address _from, address _to, address _spender, uint256 _value) public whenNotPaused returns (bool) {
+        return super.transferFrom(_from, _to, _spender, _value);
+    }
      * @dev Mint integrals.
      * @param _account The address that will receive the minted integrals.
      * @param _value The amount of integrals to mint.
