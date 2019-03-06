@@ -106,6 +106,36 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
     function approve(address _owner, address _spender, uint256 _value) public whenNotPaused returns (bool) {
         return super.approve(_owner, _spender, _value);
     }
+
+    /**
+     * @dev Increase the amount of integrals that an owner allowed to a spender.
+     * approve should be called when _allowed[owner][spender] == 0. To increment
+     * allowed value is better to use this function to avoid 2 calls (and wait until
+     * the first transaction is mined)
+     * Emits an Approval event.
+     * @param _owner address The address which owns the integrals.
+     * @param _spender The address which will spend the integrals.
+     * @param _addedValue The amount of integrals to increase the allowance by.
+     */
+    function increaseAllowance(address _owner, address _spender, uint _addedValue) public whenNotPaused returns (bool success) {
+        return super.increaseAllowance(_owner, _spender, _addedValue);
+    }
+
+    /**
+     * @dev Decrease the amount of integrals that an owner allowed to a spender.
+     * approve should be called when _allowed[owner][spender] == 0. To decrement
+     * allowed value is better to use this function to avoid 2 calls (and wait until
+     * the first transaction is mined)
+     * Emits an Approval event.
+     * @param _owner address The address which owns the integrals.
+     * @param _spender The address which will spend the integrals.
+     * @param _subtractedValue The amount of integrals to decrease the allowance by.
+     */
+    function decreaseAllowance(address _owner, address _spender, uint _subtractedValue) public whenNotPaused returns (bool success) {
+        return super.decreaseAllowance(_owner, _spender, _subtractedValue);
+    }
+
+    /**
      * @dev Mint integrals.
      * @param _account The address that will receive the minted integrals.
      * @param _value The amount of integrals to mint.
@@ -117,10 +147,11 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
 
     /**
      * @dev Burns a specific amount of integrals.
+     * @param _account The account whose integrals will be burnt.
      * @param _value The amount of integral to be burned.
      */
-    function burn(uint _value) public whenNotPaused {
-        _burn(msg.sender, _value);
+    function burn(address _account, uint _value) public whenNotPaused {
+        _burn(_account, _value);
     }
 
     /**
