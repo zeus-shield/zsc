@@ -39,7 +39,7 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
      * @param _to The address to transfer to.
      * @param _value The amount to be transferred.
      */
-    function transfer(address _owner, address _to, uint256 _value) public whenNotPaused returns (bool) {
+    function transfer(address _owner, address _to, uint _value) public whenNotPaused returns (bool) {
         return super.transfer(_owner, _to, _value);
     }
 
@@ -50,9 +50,9 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
      * @param _from address The address which you want to send integrals from
      * @param _to address The address which you want to transfer to
      * @param _spender The address which will spend the integrals.
-     * @param _value uint256 the amount of integrals to be transferred
+     * @param _value uint the amount of integrals to be transferred
      */
-    function transferFrom(address _from, address _to, address _spender, uint256 _value) public whenNotPaused returns (bool) {
+    function transferFrom(address _from, address _to, address _spender, uint _value) public whenNotPaused returns (bool) {
         return super.transferFrom(_from, _to, _spender, _value);
     }
 
@@ -66,7 +66,7 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
      * @param _spender The address which will spend the integrals.
      * @param _value The amount of integrals to be spent.
      */
-    function approve(address _owner, address _spender, uint256 _value) public whenNotPaused returns (bool) {
+    function approve(address _owner, address _spender, uint _value) public whenNotPaused returns (bool) {
         return super.approve(_owner, _spender, _value);
     }
 
@@ -134,5 +134,12 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
     function updateCap(uint _newCap) public whenNotPaused {
         require((_newCap > totalSupply()) && (_newCap > cap_));
         cap_ = _newCap;
+    }
+
+    /**
+     * @return The cap for the integral.
+     */
+    function cap() public view returns (uint) {
+        return cap_;
     }
 }
