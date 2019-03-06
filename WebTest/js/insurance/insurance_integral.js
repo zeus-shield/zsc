@@ -58,12 +58,21 @@ export default class InsuranceIntegral {
         });
     }
 
-    mint(account, privateKey, account, value, func) {
+    mint(account, privateKey, owner, value, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.mint.estimateGas(account, value, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.mint.getData(account, value), error, gasRequired, func);
+        contractInstance.mint.estimateGas(owner, value, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.mint.getData(owner, value), error, gasRequired, func);
+        });
+    }
+
+    burn(account, privateKey, owner, value, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        contractInstance.burn.estimateGas(owner, value, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.burn.getData(owner, value), error, gasRequired, func);
         });
     }
 
