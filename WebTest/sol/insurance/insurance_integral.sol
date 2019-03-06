@@ -11,9 +11,6 @@ import "../common/delegate.sol";
 
 contract InsuranceIntegral is Integral, Pausable, Delegate {
     uint private cap_;
-    string private name_;
-    string private symbol_;
-    uint8 private decimals_;
 
     modifier _onlyAdminOrHigher() {
         require(checkDelegate(msg.sender, 2));
@@ -22,16 +19,10 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
 
     /**
      * @dev Construct the contract.
-     * @param _name The name of the integral.
-     * @param _symbol The symbol of the integral.
-     * @param _decimals The symbol of the integral.
      * @param _cap The cap of the integral.
      */
-    constructor (string memory _name, string memory _symbol, uint8 _decimals, uint _cap) public {
+    constructor (uint _cap) public {
         // require(cap_ > 0);
-        name_ = _name;
-        symbol_ = _symbol;
-        decimals_ = _decimals;
         cap_ = _cap;
     }
 
@@ -40,34 +31,6 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
      */
     function destroy() public {
         super.kill();
-    }
-
-    /**
-     * @return The cap for the integral.
-     */
-    function cap() external view returns (uint) {
-        return cap_;
-    }
-
-    /**
-     * @return The name of the integral.
-     */
-    function name() external view returns (string memory) {
-        return name_;
-    }
-
-    /**
-     * @return The symbol of the integral.
-     */
-    function symbol() external view returns (string memory) {
-        return symbol_;
-    }
-
-    /**
-     * @return the number of decimals of the integral.
-     */
-    function decimals() external view returns (uint8) {
-        return decimals_;
     }
 
     /**
