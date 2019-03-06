@@ -5,11 +5,11 @@
 
 pragma solidity ^0.4.25;
 
-import "../token/ERC20/ERC20Pausable.sol";
+import "../common/integral.sol";
 import "../common/pausable.sol";
 import "../common/delegate.sol";
 
-contract InsuranceIntegral is ERC20Pausable, Delegate {
+contract InsuranceIntegral is Integral, Pausable, Delegate {
     uint private cap_;
     string private name_;
     string private symbol_;
@@ -71,15 +71,6 @@ contract InsuranceIntegral is ERC20Pausable, Delegate {
     }
 
     /**
-     * @dev Update cap of integrals.
-     * @param _newCap The new cap of integrals.
-     */
-    function updateCap(uint _newCap) public whenNotPaused {
-        require((_newCap > totalSupply()) && (_newCap > cap_));
-        cap_ = _newCap;
-    }
-
-    /**
      * @dev Mint integrals.
      * @param _account The address that will receive the minted integrals.
      * @param _value The amount of integrals to mint.
@@ -100,9 +91,19 @@ contract InsuranceIntegral is ERC20Pausable, Delegate {
     /**
      * @dev Burns a specific amount of integrals from the target address and decrements allowance
      * @param _from The account whose integrals will be burned.
+     * @param _spender The address that will spend the integrals.
      * @param _value The amount of integral to be burned.
      */
-    function burnFrom(address _from, uint _value) public whenNotPaused {
-        _burnFrom(_from, _value);
+    function burnFrom(address _from, address _spender, uint _value) public whenNotPaused {
+        _burnFrom(_from, _spender, _value);
+    }
+
+    /**
+     * @dev Update cap of integrals.
+     * @param _newCap The new cap of integrals.
+     */
+    function updateCap(uint _newCap) public whenNotPaused {
+        require((_newCap > totalSupply()) && (_newCap > cap_));
+        cap_ = _newCap;
     }
 }
