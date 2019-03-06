@@ -19,11 +19,9 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
 
     /**
      * @dev Construct the contract.
-     * @param _cap The cap of the integral.
      */
-    constructor (uint _cap) public {
-        // require(cap_ > 0);
-        cap_ = _cap;
+    constructor () public {
+        cap_ = 0;
     }
 
     /**
