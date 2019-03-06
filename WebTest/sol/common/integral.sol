@@ -63,8 +63,8 @@ contract Integral {
      * @param to The address to transfer to.
      * @param value The amount to be transferred.
      */
-    function transfer(address to, uint256 value) public returns (bool) {
-        _transfer(msg.sender, to, value);
+    function transfer(address owner, address to, uint256 value) public returns (bool) {
+        _transfer(owner, to, value);
         return true;
     }
 
@@ -77,8 +77,8 @@ contract Integral {
      * @param spender The address which will spend the funds.
      * @param value The amount of tokens to be spent.
      */
-    function approve(address spender, uint256 value) public returns (bool) {
-        _approve(msg.sender, spender, value);
+    function approve(address owner, address spender, uint256 value) public returns (bool) {
+        _approve(owner, spender, value);
         return true;
     }
 
@@ -90,9 +90,9 @@ contract Integral {
      * @param to address The address which you want to transfer to
      * @param value uint256 the amount of tokens to be transferred
      */
-    function transferFrom(address from, address to, uint256 value) public returns (bool) {
+    function transferFrom(address from, address to, address spender, uint256 value) public returns (bool) {
         _transfer(from, to, value);
-        _approve(from, msg.sender, _allowed[from][msg.sender].sub(value));
+        _approve(from, spender, _allowed[from][spender].sub(value));
         return true;
     }
 
@@ -106,8 +106,8 @@ contract Integral {
      * @param spender The address which will spend the funds.
      * @param addedValue The amount of tokens to increase the allowance by.
      */
-    function increaseAllowance(address spender, uint256 addedValue) public returns (bool) {
-        _approve(msg.sender, spender, _allowed[msg.sender][spender].add(addedValue));
+    function increaseAllowance(address owner, address spender, uint256 addedValue) public returns (bool) {
+        _approve(owner, spender, _allowed[owner][spender].add(addedValue));
         return true;
     }
 
@@ -121,8 +121,8 @@ contract Integral {
      * @param spender The address which will spend the funds.
      * @param subtractedValue The amount of tokens to decrease the allowance by.
      */
-    function decreaseAllowance(address spender, uint256 subtractedValue) public returns (bool) {
-        _approve(msg.sender, spender, _allowed[msg.sender][spender].sub(subtractedValue));
+    function decreaseAllowance(address owner, address spender, uint256 subtractedValue) public returns (bool) {
+        _approve(owner, spender, _allowed[owner][spender].sub(subtractedValue));
         return true;
     }
 
@@ -191,8 +191,8 @@ contract Integral {
      * @param account The account whose tokens will be burnt.
      * @param value The amount that will be burnt.
      */
-    function _burnFrom(address account, uint256 value) internal {
+    function _burnFrom(address account, address spender, uint256 value) internal {
         _burn(account, value);
-        _approve(account, msg.sender, _allowed[account][msg.sender].sub(value));
+        _approve(account, spender, _allowed[account][spender].sub(value));
     }
 }
