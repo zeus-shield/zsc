@@ -92,6 +92,20 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
     function transferFrom(address _from, address _to, address _spender, uint256 _value) public whenNotPaused returns (bool) {
         return super.transferFrom(_from, _to, _spender, _value);
     }
+
+    /**
+     * @dev Approve the passed address to spend the specified amount of integrals on behalf of owner.
+     * Beware that changing an allowance with this method brings the risk that someone may use both the old
+     * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this
+     * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards:
+     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
+     * @param _owner address The address which owns the integrals.
+     * @param _spender The address which will spend the integrals.
+     * @param _value The amount of integrals to be spent.
+     */
+    function approve(address _owner, address _spender, uint256 _value) public whenNotPaused returns (bool) {
+        return super.approve(_owner, _spender, _value);
+    }
      * @dev Mint integrals.
      * @param _account The address that will receive the minted integrals.
      * @param _value The amount of integrals to mint.
