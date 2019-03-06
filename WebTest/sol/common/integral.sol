@@ -8,12 +8,9 @@ pragma solidity ^0.4.25;
 import "../utillib/LibSafeMath.sol";
 
 /**
- * @title Standard ERC20 token
+ * @title Standard integral
  *
- * @dev Implementation of the basic standard token.
- * https://eips.ethereum.org/EIPS/eip-20
- * Originally based on code by FirstBlood:
- * https://github.com/Firstbloodio/token/blob/master/smart_contract/FirstBloodToken.sol
+ * @dev Implementation of the basic standard integral.
  *
  * This implementation emits additional Approval events, allowing applications to reconstruct the allowance status for
  * all accounts just by listening to said events. Note that this isn't required by the specification, and other
@@ -33,7 +30,7 @@ contract Integral {
     event Approval(address indexed owner, address indexed spender, uint256 value);
 
     /**
-     * @dev Total number of tokens in existence
+     * @dev Total number of integrals in existence
      */
     function totalSupply() public view returns (uint256) {
         return _totalSupply;
@@ -49,17 +46,18 @@ contract Integral {
     }
 
     /**
-     * @dev Function to check the amount of tokens that an owner allowed to a spender.
-     * @param owner address The address which owns the funds.
-     * @param spender address The address which will spend the funds.
-     * @return A uint256 specifying the amount of tokens still available for the spender.
+     * @dev Function to check the amount of integrals that an owner allowed to a spender.
+     * @param owner address The address which owns the integrals.
+     * @param spender address The address which will spend the integrals.
+     * @return A uint256 specifying the amount of integrals still available for the spender.
      */
     function allowance(address owner, address spender) public view returns (uint256) {
         return _allowed[owner][spender];
     }
 
     /**
-     * @dev Transfer token to a specified address
+     * @dev Transfer integral to a specified address
+     * @param owner address The address which owns the integrals.
      * @param to The address to transfer to.
      * @param value The amount to be transferred.
      */
@@ -69,13 +67,14 @@ contract Integral {
     }
 
     /**
-     * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.
+     * @dev Approve the passed address to spend the specified amount of integrals on behalf of owner.
      * Beware that changing an allowance with this method brings the risk that someone may use both the old
      * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this
      * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards:
      * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
-     * @param spender The address which will spend the funds.
-     * @param value The amount of tokens to be spent.
+     * @param owner address The address which owns the integrals.
+     * @param spender The address which will spend the integrals.
+     * @param value The amount of integrals to be spent.
      */
     function approve(address owner, address spender, uint256 value) public returns (bool) {
         _approve(owner, spender, value);
@@ -83,12 +82,13 @@ contract Integral {
     }
 
     /**
-     * @dev Transfer tokens from one address to another.
+     * @dev Transfer integrals from one address to another.
      * Note that while this function emits an Approval event, this is not required as per the specification,
      * and other compliant implementations may not emit the event.
-     * @param from address The address which you want to send tokens from
+     * @param from address The address which you want to send integrals from
      * @param to address The address which you want to transfer to
-     * @param value uint256 the amount of tokens to be transferred
+     * @param spender The address which will spend the integrals.
+     * @param value uint256 the amount of integrals to be transferred
      */
     function transferFrom(address from, address to, address spender, uint256 value) public returns (bool) {
         _transfer(from, to, value);
@@ -97,14 +97,14 @@ contract Integral {
     }
 
     /**
-     * @dev Increase the amount of tokens that an owner allowed to a spender.
-     * approve should be called when _allowed[msg.sender][spender] == 0. To increment
+     * @dev Increase the amount of integrals that an owner allowed to a spender.
+     * approve should be called when _allowed[owner][spender] == 0. To increment
      * allowed value is better to use this function to avoid 2 calls (and wait until
      * the first transaction is mined)
-     * From MonolithDAO Token.sol
      * Emits an Approval event.
-     * @param spender The address which will spend the funds.
-     * @param addedValue The amount of tokens to increase the allowance by.
+     * @param owner address The address which owns the integrals.
+     * @param spender The address which will spend the integrals.
+     * @param addedValue The amount of integrals to increase the allowance by.
      */
     function increaseAllowance(address owner, address spender, uint256 addedValue) public returns (bool) {
         _approve(owner, spender, _allowed[owner][spender].add(addedValue));
@@ -112,14 +112,14 @@ contract Integral {
     }
 
     /**
-     * @dev Decrease the amount of tokens that an owner allowed to a spender.
-     * approve should be called when _allowed[msg.sender][spender] == 0. To decrement
+     * @dev Decrease the amount of integrals that an owner allowed to a spender.
+     * approve should be called when _allowed[owner][spender] == 0. To decrement
      * allowed value is better to use this function to avoid 2 calls (and wait until
      * the first transaction is mined)
-     * From MonolithDAO Token.sol
      * Emits an Approval event.
-     * @param spender The address which will spend the funds.
-     * @param subtractedValue The amount of tokens to decrease the allowance by.
+     * @param owner address The address which owns the integrals.
+     * @param spender The address which will spend the integrals.
+     * @param subtractedValue The amount of integrals to decrease the allowance by.
      */
     function decreaseAllowance(address owner, address spender, uint256 subtractedValue) public returns (bool) {
         _approve(owner, spender, _allowed[owner][spender].sub(subtractedValue));
@@ -127,7 +127,7 @@ contract Integral {
     }
 
     /**
-     * @dev Transfer token for a specified addresses
+     * @dev Transfer integral for a specified addresses
      * @param from The address to transfer from.
      * @param to The address to transfer to.
      * @param value The amount to be transferred.
@@ -141,10 +141,10 @@ contract Integral {
     }
 
     /**
-     * @dev Internal function that mints an amount of the token and assigns it to
+     * @dev Internal function that mints an amount of the integral and assigns it to
      * an account. This encapsulates the modification of balances such that the
      * proper events are emitted.
-     * @param account The account that will receive the created tokens.
+     * @param account The account that will receive the created integrals.
      * @param value The amount that will be created.
      */
     function _mint(address account, uint256 value) internal {
@@ -156,9 +156,9 @@ contract Integral {
     }
 
     /**
-     * @dev Internal function that burns an amount of the token of a given
+     * @dev Internal function that burns an amount of the integral of a given
      * account.
-     * @param account The account whose tokens will be burnt.
+     * @param account The account whose integrals will be burnt.
      * @param value The amount that will be burnt.
      */
     function _burn(address account, uint256 value) internal {
@@ -170,10 +170,10 @@ contract Integral {
     }
 
     /**
-     * @dev Approve an address to spend another addresses' tokens.
-     * @param owner The address that owns the tokens.
-     * @param spender The address that will spend the tokens.
-     * @param value The number of tokens that can be spent.
+     * @dev Approve an address to spend another addresses' integrals.
+     * @param owner The address that owns the integrals.
+     * @param spender The address that will spend the integrals.
+     * @param value The number of integrals that can be spent.
      */
     function _approve(address owner, address spender, uint256 value) internal {
         require(spender != address(0));
@@ -184,11 +184,12 @@ contract Integral {
     }
 
     /**
-     * @dev Internal function that burns an amount of the token of a given
-     * account, deducting from the sender's allowance for said account. Uses the
+     * @dev Internal function that burns an amount of the integral of a given
+     * account, deducting from the spender's allowance for said account. Uses the
      * internal burn function.
      * Emits an Approval event (reflecting the reduced allowance).
-     * @param account The account whose tokens will be burnt.
+     * @param account The account whose integrals will be burnt.
+     * @param spender The address that will spend the integrals.
      * @param value The amount that will be burnt.
      */
     function _burnFrom(address account, address spender, uint256 value) internal {
