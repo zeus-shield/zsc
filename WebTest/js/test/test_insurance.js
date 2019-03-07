@@ -1276,33 +1276,18 @@ export default class TestInsurance {
                 });
                 break;
             case "Pause":
-                if ((undefined == params) || ("" == params)) {
-                    Output(window.outputIntegralElement, "small", "red", "Please input correct params!");
-                    return;
-                }
-
                 insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
                 insuranceIntegral.pause(account, privateKey, function(error, result) {
                     handler[transactionProc](error, result, window.outputIntegralElement, null);
                 });
                 break;
             case "Unpause":
-                if ((undefined == params) || ("" == params)) {
-                    Output(window.outputIntegralElement, "small", "red", "Please input correct params!");
-                    return;
-                }
-
                 insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
                 insuranceIntegral.unpause(account, privateKey, function(error, result) {
                     handler[transactionProc](error, result, window.outputIntegralElement, null);
                 });
                 break;
             case "Total":
-                if ((undefined == params) || ("" == params)) {
-                    Output(window.outputIntegralElement, "small", "red", "Please input correct params!");
-                    return;
-                }
-
                 insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
                 insuranceIntegral.totalSupply(function(error, result) {
                     if (!error) {
@@ -1328,11 +1313,6 @@ export default class TestInsurance {
                 });
                 break;
             case "Cap":
-                if ((undefined == params) || ("" == params)) {
-                    Output(window.outputIntegralElement, "small", "red", "Please input correct params!");
-                    return;
-                }
-
                 insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
                 insuranceIntegral.cap(function(error, result) {
                     if (!error) {
@@ -1343,11 +1323,6 @@ export default class TestInsurance {
                 });
                 break;
             case "Paused":
-                if ((undefined == params) || ("" == params)) {
-                    Output(window.outputIntegralElement, "small", "red", "Please input correct params!");
-                    return;
-                }
-
                 insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
                 insuranceIntegral.cap(function(error, result) {
                     if (!error) {
