@@ -1164,14 +1164,14 @@ export default class TestInsurance {
 
         // check param
         if ((undefined == operation) || ("" == operation)) {
-            Output(window.outputCompanyElement, "small", "red", "Please input correct input!");
+            Output(window.outputAnalyticsElement, "small", "red", "Please input correct input!");
             return;
         }
 
         let handler = this;
         let tmps = this[getAccount]();
         if (0 == tmps[0]) {
-            Output(window.outputCompanyElement, 'small', 'red', "No channnel(idle)!");
+            Output(window.outputAnalyticsElement, 'small', 'red', "No channnel(idle)!");
             return;
         }
 
@@ -1199,7 +1199,166 @@ export default class TestInsurance {
                 });
                 break;
             default:
-                Output(window.outputCompanyElement, "small", "red", "Operation Error!");
+                Output(window.outputAnalyticsElement, "small", "red", "Operation Error!");
+                break;
+        }
+    }
+
+    integral(operation, params) {
+        console.log("TestInsurance.integral(%s, %s)", operation, params);
+
+        // check param
+        if ((undefined == operation) || ("" == operation)) {
+            Output(window.outputIntegralElement, "small", "red", "Please input correct input!");
+            return;
+        }
+
+        let handler = this;
+        let tmps = this[getAccount]();
+        if (0 == tmps[0]) {
+            Output(window.outputIntegralElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = tmps[0];
+        let privateKey = tmps[1];
+
+        let insuranceIntegral;
+        let insuranceUser;
+        switch (operation) {
+            case "Debug":           
+                break;
+            case "UpdateCap":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputIntegralElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
+                insuranceIntegral.updateCap(account, privateKey, params, function(error, result) {
+                    handler[transactionProc](error, result, window.outputIntegralElement, null);
+                });
+                break;
+            case "Transfer":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputIntegralElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                tmps = params.split(",");
+                insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
+                insuranceIntegral.transfer(account, privateKey, tmps[0], tmps[1], tmps[2], function(error, result) {
+                    handler[transactionProc](error, result, window.outputIntegralElement, null);
+                });
+                break;
+            case "Mint":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputIntegralElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                tmps = params.split(",");
+                insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
+                insuranceIntegral.mint(account, privateKey, tmps[0], tmps[1], function(error, result) {
+                    handler[transactionProc](error, result, window.outputIntegralElement, null);
+                });
+                break;
+            case "Burn":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputIntegralElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                tmps = params.split(",");
+                insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
+                insuranceIntegral.burn(account, privateKey, tmps[0], tmps[1], function(error, result) {
+                    handler[transactionProc](error, result, window.outputIntegralElement, null);
+                });
+                break;
+            case "Pause":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputIntegralElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
+                insuranceIntegral.pause(account, privateKey, function(error, result) {
+                    handler[transactionProc](error, result, window.outputIntegralElement, null);
+                });
+                break;
+            case "Unpause":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputIntegralElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
+                insuranceIntegral.unpause(account, privateKey, function(error, result) {
+                    handler[transactionProc](error, result, window.outputIntegralElement, null);
+                });
+                break;
+            case "Total":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputIntegralElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
+                insuranceIntegral.totalSupply(function(error, result) {
+                    if (!error) {
+                        Output(window.outputIntegralElement, "small", "red", `[Total]: ${result}`);
+                    } else {
+                        Output(window.outputIntegralElement, "small", "red", error);
+                    }
+                });
+                break;
+            case "Balance":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputIntegralElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
+                insuranceIntegral.balanceOf(params, function(error, result) {
+                    if (!error) {
+                        Output(window.outputIntegralElement, "small", "red", `[Balance]: ${result}`);
+                    } else {
+                        Output(window.outputIntegralElement, "small", "red", error);
+                    }
+                });
+                break;
+            case "Cap":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputIntegralElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
+                insuranceIntegral.cap(function(error, result) {
+                    if (!error) {
+                        Output(window.outputIntegralElement, "small", "red", `[Cap]: ${result}`);
+                    } else {
+                        Output(window.outputIntegralElement, "small", "red", error);
+                    }
+                });
+                break;
+            case "Paused":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputIntegralElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
+                insuranceIntegral.cap(function(error, result) {
+                    if (!error) {
+                        Output(window.outputIntegralElement, "small", "red", `[Paused]: ${result}`);
+                    } else {
+                        Output(window.outputIntegralElement, "small", "red", error);
+                    }
+                });
+                break;
+            default:
+                Output(window.outputIntegralElement, "small", "red", "Operation Error!");
                 break;
         }
     }
@@ -1230,6 +1389,9 @@ export default class TestInsurance {
                 break;
             case "Analytics":
                 this.analytics(para1, para2);
+                break;
+            case "Integral":
+                this.integral(para1, para2);
                 break;
             default:
                 console.log("Operation Error!");
