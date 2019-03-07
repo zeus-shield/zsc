@@ -12,6 +12,7 @@ import InsuranceUser from "../insurance/insurance_user.js";
 import InsurancePolicy from "../insurance/insurance_policy.js";
 import InsuranceUserPolicy from "../insurance/insurance_user_policy.js";
 import InsuranceAnalytics from "../insurance/insurance_analytics.js";
+import InsuranceIntegral from "../insurance/insurance_integral.js";
 
 //private member
 const compiledJson = Symbol("compiledJson");
@@ -34,6 +35,9 @@ const userPolicyContractAddress = Symbol("userPolicyContractAddress");
 const analyticsAbi = Symbol("analyticsAbi");
 const analyticsContractAddress = Symbol("analyticsContractAddress");
 
+const integralAbi = Symbol("integralAbi");
+const integralContractAddress = Symbol("integralContractAddress");
+
 //private function
 const getAccount = Symbol("getAccount");
 const transactionProc = Symbol("transactionProc");
@@ -54,12 +58,14 @@ export default class TestInsurance {
         this[policyAbi] = [];
         this[userPolicyAbi] = [];
         this[analyticsAbi] = [];
+        this[integralAbi] = [];
         this[companyContractAddress] = "";
         this[templateContractAddress] = "";
         this[userContractAddress] = "";
         this[policyContractAddress] = "";
         this[userPolicyContractAddress] = "";
         this[analyticsContractAddress] = "";
+        this[integralContractAddress] = "";
     }
 
     [getAccount]() { 
@@ -155,6 +161,8 @@ export default class TestInsurance {
             elementId = window.outputDeployUserPolicyElement;
         } else if ("InsuranceAnalytics" == contractName) {
             elementId = window.outputDeployAnalyticsElement;
+        } else if ("InsuranceIntegral" == contractName) {
+            elementId = window.outputDeployIntegralElement;
         } else {
             console.log("Contract name Error!");
             return;
@@ -217,6 +225,9 @@ export default class TestInsurance {
         } else if ("InsuranceAnalytics" == contractName) {
             this[analyticsAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
             contract = web3.eth.contract(this[analyticsAbi]);
+        } else if ("InsuranceIntegral" == contractName) {
+            this[integralAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
+            contract = web3.eth.contract(this[integralAbi]);
         } else {
             console.log("Contract name Error!");
             return;
@@ -244,6 +255,8 @@ export default class TestInsurance {
                                 handler[userPolicyContractAddress] = result.contractAddress;
                             } else if ("InsuranceAnalytics" == contractName) {
                                 handler[analyticsContractAddress] = result.contractAddress;
+                            } else if ("InsuranceIntegral" == contractName) {
+                                handler[integralContractAddress] = result.contractAddress;
                             } else {
                                 console.log("Contract name Error!");
                                 return;
