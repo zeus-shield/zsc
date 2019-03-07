@@ -475,6 +475,41 @@
                 </div>
             </p>
 
+            <p>
+                <div class="well" id="block">
+                    <h4>10. Integral</h4>
+                    <button type="button" id="b_integral_debug">Debug</button><br><br>
+                    <div id="element">
+                        Select Operation(Write):<br>
+                        <select id="s_integral_write_op">
+                            <option value="UpdateCap">UpdateCap</option>
+                            <option value="Transfer">Transfer</option>
+                            <option value="Mint">Mint</option>
+                            <option value="Burn">Burn</option>
+                            <option value="Pause">Pause</option>
+                            <option value="Unpause">Unpause</option>
+                        </select><br>
+                        Params:<br>
+                        <input type="text" id="i_integral_write_params"><br>
+                        <button type="button" id="b_integral_write_submit">Submit</button>
+                    </div>
+                    <div id="element">
+                        Select Operation(Read):<br>
+                        <select id="s_integral_read_op">
+                            <option value="Total">Total</option>
+                            <option value="Balance">Balance</option>
+                            <option value="Cap">Cap</option>
+                            <option value="Paused">Paused</option>
+                        </select><br>
+                        Params:<br>
+                        <input type="text" id="i_integral_read_params"><br>
+                        <button type="button" id="b_integral_read_submit">Submit</button>
+                    </div>
+                    <div style="clear: left"></div>
+                    <p id="p_output_integral"></p>
+                </div>
+            </p>
+
         </div>
     </div> 
     </body>
