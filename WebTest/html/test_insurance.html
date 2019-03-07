@@ -18,6 +18,7 @@
                 window.outputDeployPolicyElement = "p_output_deploy_policy";
                 window.outputDeployUserPolicyElement = "p_output_deploy_user_policy";
                 window.outputDeployAnalyticsElement = "p_output_deploy_analytics";
+                window.outputDeployIntegralElement = "p_output_deploy_integral";
                 window.outputSetupElement = "p_output_setup";
                 window.outputDelegateReadElement = "p_output_delegate_read";
                 window.outputDelegateWriteElement = "p_output_delegate_write";
@@ -26,6 +27,7 @@
                 window.outputUserElement = "p_output_user";
                 window.outputPolicyElement = "p_output_policy";
                 window.outputAnalyticsElement = "p_output_analytics";
+                window.outputIntegralElement = "p_output_integral";
 
                 provider(false);
                 document.getElementById("s_provider").addEventListener("change", function(){
@@ -216,6 +218,13 @@
                         <input type="file" id="f_insurance_analytics" onchange="file('Insurance', 'InsuranceAnalytics', this)" />
                         <button type="button" id="b_deploy" onclick="main('Insurance', 'Deploy', 'InsuranceAnalytics', '')">Deploy</button>
                         <p id="p_output_deploy_analytics"></p>
+                    </div>
+                    <div id="element">
+                        <h5>Deploy [integral]</h5>
+                        <label id="l_insurance_integral" for="f_insurance_integral">Upload</label>
+                        <input type="file" id="f_insurance_integral" onchange="file('Insurance', 'InsuranceIntegral', this)" />
+                        <button type="button" id="b_deploy" onclick="main('Insurance', 'Deploy', 'InsuranceIntegral', '')">Deploy</button>
+                        <p id="p_output_deploy_integral"></p>
                     </div>
                     <div style="clear:left"></div>
                 </div>
