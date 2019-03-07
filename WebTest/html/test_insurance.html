@@ -150,6 +150,22 @@
                     let params = document.getElementById("i_analytics_read_params").value;
                     main("Insurance", "Analytics", op, params);
                 }
+
+                document.getElementById("b_integral_debug").onclick = function() {
+                    main("Insurance", "Integral", "Debug", "0");
+                }
+
+                document.getElementById("b_integral_write_submit").onclick = function() {
+                    let op = document.getElementById("s_integral_write_op").value;
+                    let params = document.getElementById("i_integral_write_params").value;
+                    main("Insurance", "Integral", op, params);
+                }
+
+                document.getElementById("b_integral_read_submit").onclick = function() {
+                    let op = document.getElementById("s_integral_read_op").value;
+                    let params = document.getElementById("i_integral_read_params").value;
+                    main("Insurance", "Integral", op, params);
+                }
             }
         </script>
     </head>
