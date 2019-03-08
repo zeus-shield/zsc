@@ -140,3 +140,11 @@ router.post('/update', function (req, res) {
     let key = req.body.Key;
     let data = req.body.Data;
     let insurance_template = new Insurance_template(temAbi,temAddress);
+    insurance_template.update(account,accountkey,key,data,function(error, result) {
+        if(error) {
+            res.json({
+                status:"error",
+                code:"-9",
+                msg:"交易报错",
+                error:error.toString(10)
+            })
