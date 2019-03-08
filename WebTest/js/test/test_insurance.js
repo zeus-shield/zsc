@@ -937,17 +937,27 @@ export default class TestInsurance {
                     handler[transactionProc](error, result, window.outputUserElement, null);
                 });
                 break;
-            case "Destroy":
-                insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
-                insuranceUser.destroy(account, privateKey, function(error, result) {
-                    handler[transactionProc](error, result, window.outputUserElement, null);
-                });
-                break;
             case "Size":
                 insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
                 insuranceUser.size(function(error, result) {
                     if (!error) {
                         Output(window.outputUserElement, "small", "red", `[Size]: ${result.toString(10)}`);
+                    } else {
+                        Output(window.outputUserElement, "small", "red", error);
+                    }
+                });
+                break;
+            case "Exist":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputUserElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                tmps = params.split(",");
+                insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
+                insuranceUser.exist(tmps[1], function(error, result) {
+                    if (!error) {
+                        Output(window.outputUserElement, "small", "red", `[Exist]: ${result.toString(10)}`);
                     } else {
                         Output(window.outputUserElement, "small", "red", error);
                     }
@@ -1324,7 +1334,7 @@ export default class TestInsurance {
                 break;
             case "Paused":
                 insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
-                insuranceIntegral.cap(function(error, result) {
+                insuranceIntegral.paused(function(error, result) {
                     if (!error) {
                         Output(window.outputIntegralElement, "small", "red", `[Paused]: ${result}`);
                     } else {
