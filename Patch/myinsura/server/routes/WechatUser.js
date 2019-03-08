@@ -40,3 +40,13 @@ router.post('/signUp', function (req, res) {
     para = JSON.stringify(para);
     let temKey = "DB_User";
     let insurance_user = new Insurance_user(userAbi,userAddress);
+    insurance_user.getByKey(0,key,function(error, result) {
+        if(error) {
+            console.log(error);
+            res.json({
+                status:"error",
+                code:"-9",
+                msg:"交易报错",
+                error:error.toString(10)
+            })
+        } else {
