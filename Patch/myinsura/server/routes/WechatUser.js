@@ -20,3 +20,13 @@ router.get('/size', function (req, res) {
                 msg:"交易报错",
                 error:error.toString(10)
             })
+        } else {
+            res.json({
+                status:"success",
+                code:"0",
+                msg:"获取成功",
+                data:result
+            })
+        }
+    })
+})
