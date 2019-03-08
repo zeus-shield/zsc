@@ -131,3 +131,12 @@ router.post('/getByKey', function (req, res) {
         }
     })
 })
+
+router.post('/update', function (req, res) {
+    //let key = "DB_User";
+    //let data = "Key#Password#NickName#SignUpTime#UpdateTime#Policies#Receipts";
+    //let key = "DB_Policy_PingAn_Life";
+    //let data = "Key#UserKey#Insurant#Sex#Age#Amount#StartTime#Period#Description";
+    let key = req.body.Key;
+    let data = req.body.Data;
+    let insurance_template = new Insurance_template(temAbi,temAddress);
