@@ -59,6 +59,7 @@ export default class TestInsurance {
         this[userPolicyAbi] = [];
         this[analyticsAbi] = [];
         this[integralAbi] = [];
+
         this[companyContractAddress] = "";
         this[templateContractAddress] = "";
         this[userContractAddress] = "";
@@ -143,6 +144,9 @@ export default class TestInsurance {
 
     setCompiledJson(data) {
         this[compiledJson] = JSON.parse(data);
+    }
+
+    live() {
     }
 
     deploy(contractName) {
@@ -1351,6 +1355,9 @@ export default class TestInsurance {
     do(operation, para1, para2) {
         console.log("TestInsurance.do(%s, %s, %s)", operation, para1, para2);
         switch(operation) {
+            case "Live":
+                this.live();
+                break;
             case "Deploy":
                 this.deploy(para1);
                 break;
