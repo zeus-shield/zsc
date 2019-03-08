@@ -184,6 +184,39 @@ contract InsuranceUser is Delegate {
         return Hashmap(userMgr_).size(true);
     }
 
+    /** [desc] Check user exist
+      * [param] _type: info type (0: key is string, 1: key is address).
+      * [param] _key0: user key for string.
+      * [param] _key0: user key for address.
+      * [return] true/false.
+      */
+    function exist(uint8 _type, string _key0, address _key1) external view returns (bool) {
+        // check param
+        if (((0 == _type) && (0 == bytes(_key0).length)) 
+          || (((1 == _type)) && (address(0) == _key1)) || (_type > 1)) {
+            return false;
+        }
+
+        string memory key = "";
+        if (0 == _type) {
+            key = _key0;
+        } else {
+            key = key.concat("0x", _key1.addrToAsciiString());
+        }
+
+        int error = 0;
+        uint position = 0;
+        string memory data0 = "";
+        address user = address(0);
+        uint data2 = uint(0);
+        (error, position, data0, user, data2) = Hashmap(userMgr_).get(key, true);
+        if ((0 != error) || (1 != position)) {
+            return false;
+        }
+
+        return true;
+    }
+
     /** [desc] Get user info by key.
       * [param] _type: info type (0: detail, 1: brief).
       * [param] _key: user key.
