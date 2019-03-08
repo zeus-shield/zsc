@@ -30,3 +30,13 @@ router.get('/size', function (req, res) {
         }
     })
 })
+
+//注册
+router.post('/signUp', function (req, res) {
+    //let key = "ddroyce@163.com";
+    //let para = {"Key": "13661505315","Password": "12345678","NickName": "贝克小将","SignUpTime": "1538797740","UpdateTime": "1538797750"};
+    let key = req.body.Key ;
+    let para = req.body;
+    para = JSON.stringify(para);
+    let temKey = "DB_User";
+    let insurance_user = new Insurance_user(userAbi,userAddress);
