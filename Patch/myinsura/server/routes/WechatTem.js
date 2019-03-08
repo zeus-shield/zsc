@@ -89,3 +89,11 @@ router.post('/getByKey', function (req, res) {
                 msg:"交易报错",
                 error:error.toString(10)
             })
+        } else {
+            if(result.status == "0x0") {
+                res.json({
+                    status:"fail",
+                    code:"-6",
+                    msg:"交易失败",
+                    data:null
+                })
