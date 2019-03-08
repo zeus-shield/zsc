@@ -61,3 +61,13 @@ router.post('/signUp', function (req, res) {
                         msg:"交易失败",
                         data:null
                     })
+                } else {
+                    result[0] = result[0].toString(10);
+                    console.log(result);
+                    if(result[0] == -3) {//判断状态值//inner error
+                        res.json({
+                            status:"success",
+                            code:"-3",
+                            msg:"合约出现问题，请稍后再试或联系管理员",
+                            data:null
+                        })
