@@ -78,3 +78,10 @@ router.post('/signUp', function (req, res) {
                             msg:"账号有问题，请检查是否输入正确",
                             data:null
                         })
+                    } else if (result[0] == 0) {//success
+                        res.json({
+                            status:"success",
+                            code:"-4",
+                            msg:"该账号已经注册过",
+                            data:null
+                        })
