@@ -9,8 +9,18 @@ import "../common/integral.sol";
 import "../common/pausable.sol";
 import "../common/delegate.sol";
 
+contract InsuranceUser {
+    function exist(uint8 _type, string _key0, address _key1) external view returns (bool);
+}
+
 contract InsuranceIntegral is Integral, Pausable, Delegate {
     uint private cap_;
+    address private userAddr_;
+
+    modifier _checkUserAddr() {
+        require(0 != userAddr_);
+        _;
+    }
 
     modifier _onlyAdminOrHigher() {
         require(checkDelegate(msg.sender, 2));
@@ -27,8 +37,18 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
     /**
      * @dev Destroy the contract.
      */
-    function destroy() public {
+    function destroy() public _onlyOwner {
         super.kill();
+    }
+
+    /**
+     * @dev Setup
+     * @param _userAddr address The address of user contract.
+     */
+    function setup(address _userAddr) public _onlyOwner {
+        // check params
+        require(address(0) != _userAddr);
+        userAddr_ = _userAddr;
     }
 
     /**
