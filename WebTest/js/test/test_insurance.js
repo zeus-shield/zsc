@@ -1261,7 +1261,59 @@ export default class TestInsurance {
         let insuranceIntegral;
         let insuranceUser;
         switch (operation) {
-            case "Debug":           
+            case "Watch":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputIntegralWatchElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                tmps = params.split(",");
+                insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
+                if ("Start" == tmps[0]) {
+                    if ("Transfer" == tmps[1]) {
+                        let result = this[watch].get("integral", "transfer");
+                        if (0 == result.length) {
+                            Output(window.outputIntegralWatchElement, "small", "red", "Can't find event!");
+                        } else {
+                            if (null != result[0].handle) {
+                                Output(window.outputIntegralWatchElement, "small", "red", "Event watcher has already started!");
+                            } else {
+                                let handle = insuranceIntegral.watchTransfer(function(error, from, to, value) {
+                                    Output(window.outputIntegralWatchElement, "small", "red", `[Event]: Transfer(${from}, ${to}, ${value})`);
+                                });
+                                this[watch].update("integral", "transfer", handle);
+                                Output(window.outputIntegralWatchElement, "small", "red", "Event watcher start.");
+                            }
+                        }
+                    } else if ("Approval" == tmps[1]) {
+                        Output(window.outputIntegralWatchElement, "small", "red", "Event don't support now!");
+                    } else {
+                        Output(window.outputIntegralWatchElement, "small", "red", "Event Error!");
+                    }
+                } else if ("Stop" == tmps[0]) {
+                    if ("Transfer" == tmps[1]) {
+                        let result = this[watch].get("integral", "transfer");
+                        if (0 == result.length) {
+                            Output(window.outputIntegralWatchElement, "small", "red", "Can't find event!");
+                        } else {
+                            if (null == result[0].handle) {
+                                Output(window.outputIntegralWatchElement, "small", "red", "Event watcher has already stopped!");
+                            } else {
+                                insuranceIntegral.stopWatch(result[0].handle);
+                                this[watch].update("integral", "transfer", null);
+                                Output(window.outputIntegralWatchElement, "small", "red", "Event watcher stop.");
+                            }
+                        }
+                    } else if ("Approval" == tmps[1]) {
+                        Output(window.outputIntegralWatchElement, "small", "red", "Event don't support now!");
+                    } else {
+                        Output(window.outputIntegralWatchElement, "small", "red", "Event Error!");
+                    }
+                } else {
+                    Output(window.outputIntegralWatchElement, "small", "red", "Operation Error!");
+                }
+                break;
+            case "Debug":
                 break;
             case "UpdateCap":
                 if ((undefined == params) || ("" == params)) {
