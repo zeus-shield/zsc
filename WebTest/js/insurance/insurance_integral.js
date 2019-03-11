@@ -64,6 +64,11 @@ export default class InsuranceIntegral {
 
         return event;
     }
+
+    stopWatch(event) {
+        event.stopWatching();
+    }
+
     setup(account, privateKey, userAddr, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
