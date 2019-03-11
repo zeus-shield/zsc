@@ -40,6 +40,30 @@ export default class InsuranceIntegral {
         }
     }
 
+    watchTransfer(func) {
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+        let event = contractInstance.Transfer();
+
+        event.watch(function(error, result) {
+            
+            if (null === error) {
+                for(let key in result["args"]) {
+                    console.log(key + " : " + result["args"][key]);
+                }
+
+                let from = result["args"]["from"];
+                let to = result["args"]["to"];
+                let value = result["args"]["value"].toString(10);
+
+                console.log("[Event]: Transfer(%s, %s, %s)", from, to, value);
+                func(error, from, to, value);
+            } else {
+                func(error, 0, 0, 0);
+            }
+        });
+
+        return event;
+    }
     setup(account, privateKey, userAddr, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
