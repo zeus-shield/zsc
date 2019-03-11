@@ -6,6 +6,7 @@
 import Output from "../common/output.js";
 import Transaction from "../common/transaction_raw.js";
 import Delegate from "../common/delegate.js";
+import Watch from "../common/watch.js";
 import InsuranceCompany from "../insurance/insurance_company.js";
 import InsuranceTemplate from "../insurance/insurance_template.js";
 import InsuranceUser from "../insurance/insurance_user.js";
@@ -38,6 +39,8 @@ const analyticsContractAddress = Symbol("analyticsContractAddress");
 const integralAbi = Symbol("integralAbi");
 const integralContractAddress = Symbol("integralContractAddress");
 
+const watch = Symbol("watch");
+
 //private function
 const getAccount = Symbol("getAccount");
 const transactionProc = Symbol("transactionProc");
@@ -67,6 +70,10 @@ export default class TestInsurance {
         this[userPolicyContractAddress] = "";
         this[analyticsContractAddress] = "";
         this[integralContractAddress] = "";
+
+        this[watch] = new Watch();
+        this[watch].add("integral", "transfer");
+        this[watch].add("integral", "approval");
     }
 
     [getAccount]() { 
