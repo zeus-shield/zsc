@@ -19,7 +19,7 @@ export default class InsuranceIntegral {
     constructor(abi, contractAddr) {
         this[account] = web3.eth.coinbase;
         this[contractAbi] = abi;
-        this[contractAddress] = contractAddr; 
+        this[contractAddress] = contractAddr;
     }
 
     [notifyError](error, func) {

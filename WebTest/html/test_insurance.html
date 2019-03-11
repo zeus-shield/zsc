@@ -28,6 +28,7 @@
                 window.outputPolicyElement = "p_output_policy";
                 window.outputAnalyticsElement = "p_output_analytics";
                 window.outputIntegralElement = "p_output_integral";
+                window.outputIntegralWatchElement = "p_output_integral_watch";
 
                 provider(false);
                 document.getElementById("s_provider").addEventListener("change", function(){
@@ -166,6 +167,12 @@
                     let op = document.getElementById("s_integral_read_op").value;
                     let params = document.getElementById("i_integral_read_params").value;
                     main("Insurance", "Integral", op, params);
+                }
+
+                document.getElementById("b_integral_watch_submit").onclick = function() {
+                    let op = document.getElementById("s_integral_watch_op").value;
+                    let event = document.getElementById("s_integral_watch_event").value;
+                    main("Insurance", "Integral", "Watch", `${op},${event}`);
                 }
             }
         </script>
@@ -499,6 +506,21 @@
                     <h4>10. Integral</h4>
                     <button type="button" id="b_integral_debug">Debug</button><br><br>
                     <div id="element">
+                        Watch Operation:<br>
+                        <select id="s_integral_watch_op">
+                            <option value="Start">Start</option>
+                            <option value="Stop">Stop</option>
+                        </select><br>
+                        Event:<br>
+                        <select id="s_integral_watch_event">
+                            <option value="Transfer">Transfer</option>
+                            <option value="Approval">Approval</option>
+                        </select><br>
+                        <button type="button" id="b_integral_watch_submit">Submit</button>
+                    </div>
+                    <div style="clear: left"></div>
+                    <p id="p_output_integral_watch"></p>
+                    <div id="element">
                         Select Operation(Write):<br>
                         <select id="s_integral_write_op">
                             <option value="UpdateCap">UpdateCap</option>
@@ -515,9 +537,9 @@
                     <div id="element">
                         Select Operation(Read):<br>
                         <select id="s_integral_read_op">
+                            <option value="Cap">Cap</option>
                             <option value="Total">Total</option>
                             <option value="Balance">Balance</option>
-                            <option value="Cap">Cap</option>
                             <option value="Paused">Paused</option>
                         </select><br>
                         Params:<br>
