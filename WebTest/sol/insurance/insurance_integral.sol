@@ -32,6 +32,7 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
      */
     constructor () public {
         cap_ = 0;
+        userAddr_ = address(0);
     }
 
     /**
@@ -121,7 +122,8 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
      * @param _account The address that will receive the minted integrals.
      * @param _value The amount of integrals to mint.
      */
-    function mint(address _account, uint _value) public whenNotPaused {
+    function mint(address _account, uint _value) public whenNotPaused _checkUserAddr {
+        require(InsuranceUser(_account).exist(1, "", _account));
         require(totalSupply().add(_value) <= cap_);
         _mint(_account, _value);
     }
@@ -159,5 +161,16 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
      */
     function cap() public view returns (uint) {
         return cap_;
+    }
+
+    /** [desc] Get contract related address.
+      * [return] contract related address.
+      */
+    /**
+     * @dev Get contract related address.
+     * @return The address related .
+     */
+    function getAddr() public view _onlyOwner returns (address) {
+        return userAddr_;
     }
 }
