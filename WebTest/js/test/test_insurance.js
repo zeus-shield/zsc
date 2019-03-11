@@ -312,6 +312,11 @@ export default class TestInsurance {
                     insuranceAnalytics.setup(account, privateKey, this[policyContractAddress], function(error, result) {
                         handler[transactionProc](error, result, window.outputSetupElement);
                     });
+                } else if ("InsuranceIntegral" == contractName) {
+                    let insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
+                    insuranceIntegral.setup(account, privateKey, this[userContractAddress], function(error, result) {
+                        handler[transactionProc](error, result, window.outputSetupElement);
+                    });
                 } else {
                     Output(window.outputSetupElement, 'small', 'red', "Contract name Error!");
                 }
@@ -349,6 +354,15 @@ export default class TestInsurance {
                     insuranceAnalytics.getAddr(function(error, result) {
                         if (!error) {
                             Output(window.outputSetupElement, 'small', 'red', `[Address]: policy(${result})`);
+                        } else {
+                            Output(window.outputSetupElement, 'small', 'red', error);
+                        }
+                    });
+                } else if ("InsuranceIntegral" == contractName) {
+                    let insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
+                    insuranceIntegral.getAddr(function(error, result) {
+                        if (!error) {
+                            Output(window.outputSetupElement, 'small', 'red', `[Address]: user(${result})`);
                         } else {
                             Output(window.outputSetupElement, 'small', 'red', error);
                         }
