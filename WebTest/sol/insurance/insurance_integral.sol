@@ -123,7 +123,7 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
      * @param _value The amount of integrals to mint.
      */
     function mint(address _account, uint _value) public whenNotPaused _checkUserAddr {
-        require(InsuranceUser(_account).exist(1, "", _account));
+        require(InsuranceUser(userAddr_).exist(1, "", _account));
         require(totalSupply().add(_value) <= cap_);
         _mint(_account, _value);
     }
