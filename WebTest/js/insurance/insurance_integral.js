@@ -40,6 +40,15 @@ export default class InsuranceIntegral {
         }
     }
 
+    setup(account, privateKey, userAddr, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        contractInstance.setup.estimateGas(userAddr, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.setup.getData(userAddr), error, gasRequired, func);
+        });
+    }
+
     transfer(account, privateKey, owner, to, value, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
