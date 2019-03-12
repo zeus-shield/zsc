@@ -930,14 +930,14 @@ export default class TestInsurance {
                                         Output(window.outputUserElement, 'small', 'red', str);
                                     }
                                 } else {
-                                    Output(window.outputUserElement, 'small', 'red', `[Template${id}]:</br>${error}`);
+                                    Output(window.outputUserElement, 'small', 'red', `[User${id}]:</br>${error}`);
                                 }
                             })
                         }
                     } else {
                         Output(window.outputUserElement, "small", "red", error);
                     }
-                })                
+                })
                 break;
             case "SignUp":
                 if ((undefined == params) || ("" == params)) {
@@ -1094,7 +1094,7 @@ export default class TestInsurance {
                                         Output(window.outputPolicyElement, 'small', 'red', str);
                                     }
                                 } else {
-                                    Output(window.outputPolicyElement, 'small', 'red', `[Template${id}]:</br>${error}`);
+                                    Output(window.outputPolicyElement, 'small', 'red', `[Policy${id}]:</br>${error}`);
                                 }
                             })
                         }
@@ -1261,6 +1261,70 @@ export default class TestInsurance {
         let insuranceIntegral;
         let insuranceUser;
         switch (operation) {
+            case "Debug":
+                insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
+                insuranceIntegral.cap(function(error, result) {
+                    if (!error) {
+                        let cap = parseInt(result.toString(10));
+                        insuranceIntegral.totalSupply(function(error, result) {
+                            if (!error) {
+                                let total = parseInt(result.toString(10));
+                                insuranceUser = new InsuranceUser(handler[userAbi], handler[userContractAddress]);
+                                insuranceUser.size(function(error, result) {
+                                    if (!error) {
+                                        let sum = parseInt(result.toString(10));
+                                        let logs = new Array(sum + 1);
+                                        let count = 0;
+
+                                        logs[0] = `##### Cap: ${cap} | Total: ${total} #####`;
+                                        count ++;
+
+                                        if (0 == sum) {
+                                            Output(window.outputIntegralDebugElement, "small", "red", "No Data!");
+                                            return;
+                                        }
+
+                                        for (let i=0; i<sum; i++) {
+                                            insuranceUser.getById(params, i, function(error, id, result) {
+                                                if (!error) {
+
+                                                    let json = JSON.parse(result[1]);
+                                                    let key = json["Key"];
+
+                                                    insuranceIntegral.balanceOf(key, function(error, owner, result) {
+                                                        if (!error) {
+                                                            logs[count] = `[${count}] ${owner}: ${result}`;
+                                                            count ++;
+                                                            if (count == sum + 1) {
+                                                                let str = "";
+                                                                for (let j=0; j<logs.length; j++) {
+                                                                    str = str.concat(`${logs[j]}<br>`);
+                                                                }
+                                                                Output(window.outputIntegralDebugElement, 'small', 'red', str);
+                                                            }
+
+                                                        } else {
+                                                            Output(window.outputIntegralDebugElement, 'small', 'red', `Get balance error!</br>${error}`);
+                                                        }
+                                                    })
+                                                } else {
+                                                    Output(window.outputIntegralDebugElement, 'small', 'red', `[User${id}]:</br>${error}`);
+                                                }
+                                            })
+                                        }
+                                    } else {
+                                        Output(window.outputIntegralDebugElement, "small", "red", error);
+                                    }
+                                })
+                            } else {
+                                Output(window.outputIntegralDebugElement, "small", "red", error);
+                            }
+                        })
+                    } else {
+                        Output(window.outputIntegralDebugElement, "small", "red", error);
+                    }
+                })
+                break;
             case "Watch":
                 if ((undefined == params) || ("" == params)) {
                     Output(window.outputIntegralWatchElement, "small", "red", "Please input correct params!");
@@ -1312,8 +1376,6 @@ export default class TestInsurance {
                 } else {
                     Output(window.outputIntegralWatchElement, "small", "red", "Operation Error!");
                 }
-                break;
-            case "Debug":
                 break;
             case "UpdateCap":
                 if ((undefined == params) || ("" == params)) {
@@ -1391,9 +1453,9 @@ export default class TestInsurance {
                 }
 
                 insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
-                insuranceIntegral.balanceOf(params, function(error, result) {
+                insuranceIntegral.balanceOf(params, function(error, owner, result) {
                     if (!error) {
-                        Output(window.outputIntegralElement, "small", "red", `[Balance]: ${result}`);
+                        Output(window.outputIntegralElement, "small", "red", `[Balance] ${owner}: ${result}`);
                     } else {
                         Output(window.outputIntegralElement, "small", "red", error);
                     }
