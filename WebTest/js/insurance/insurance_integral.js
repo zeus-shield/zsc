@@ -42,10 +42,7 @@ export default class InsuranceIntegral {
 
     watchTransfer(func) {
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-        let event = contractInstance.Transfer();
-
-        event.watch(function(error, result) {
-            
+        let event = contractInstance.Transfer(function(error, result) {
             if (null === error) {
                 for(let key in result["args"]) {
                     console.log(key + " : " + result["args"][key]);
