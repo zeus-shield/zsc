@@ -62,6 +62,25 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
     }
 
     /**
+     * @dev Claim integrals.
+     * @param _type uint8 The types of bonus integrals.
+     *         0: User sign up.
+     *         1: User submit data.
+     *         2: User check in everyday.
+     *         3: User invite others.
+     *         4: User share to Wechat.
+     *         5: User share to QQ.
+     *         6: User share to Microblog.
+     *         7: User click advertisements.
+     * @param _account The address that will claim the integrals.
+     */
+    function claim(uint8 _type, address _account) public {
+        require(0 <= _type && 8 > _type);
+        log0(bytes32(_account));
+        mint(_account, threshold(_type));
+    }    
+
+    /**
      * @dev Transfer integral to a specified address
      * @param _owner address The address which owns the integrals.
      * @param _to The address to transfer to.
@@ -159,7 +178,6 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
     /**
      * @dev Update the threshold of different types of bonus integrals.
      * @param _type uint8 The types of bonus integrals.
-     * @param _threshold uint The threshold of different types of bonus integrals.
      *         0: User sign up.
      *         1: User submit data.
      *         2: User check in everyday.
@@ -168,6 +186,7 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
      *         5: User share to QQ.
      *         6: User share to Microblog.
      *         7: User click advertisements.
+     * @param _threshold uint The threshold of different types of bonus integrals.
      */
     function updateThreshold(uint8 _type, uint _threshold) public whenNotPaused _onlyOwner {
         // check params
