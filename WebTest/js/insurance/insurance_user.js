@@ -40,12 +40,12 @@ export default class InsuranceUser {
         }
     }
 
-    setup(account, privateKey, templateAddr, func) {
+    setup(account, privateKey, templateAddr, integralAddr, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.setup.estimateGas(templateAddr, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.setup.getData(templateAddr), error, gasRequired, func);
+        contractInstance.setup.estimateGas(templateAddr, integralAddr, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.setup.getData(templateAddr, integralAddr), error, gasRequired, func);
         });
     }
 
@@ -235,7 +235,7 @@ export default class InsuranceUser {
                         // call 'InsuranceUser.getAddr()'
                         contractInstance.getAddr.call({from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                console.log("[Address]: template(%s)", result.toString(10));
+                                console.log("[Address]: template(%s), integral(%s)", result[0], result[1]);
                                 if (null != func) {
                                     func(null, result);
                                 }
