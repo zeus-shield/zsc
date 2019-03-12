@@ -231,9 +231,9 @@ export default class InsuranceIntegral {
                         // call 'InsuranceIntegral.balanceOf(address)'
                         contractInstance.balanceOf.call(owner, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                console.log("[Balance]: %s", result.toString(10));
+                                console.log("[Balance]: %s: %s", owner, result.toString(10));
                                 if (null != func) {
-                                    func(null, result);
+                                    func(null, owner, result);
                                 }
                             } else {
                                 handler[notifyError](error, func);
