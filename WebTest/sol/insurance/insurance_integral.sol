@@ -14,8 +14,9 @@ contract InsuranceUser {
 }
 
 contract InsuranceIntegral is Integral, Pausable, Delegate {
-    uint private cap_;
     address private userAddr_;
+    uint private cap_;
+    mapping (uint8 => uint) private threshold_;
 
     modifier _checkUserAddr() {
         require(0 != userAddr_);
@@ -31,8 +32,16 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
      * @dev Construct the contract.
      */
     constructor () public {
-        cap_ = 0;
         userAddr_ = address(0);
+        cap_ = 100000;
+        threshold_[0] = 40;
+        threshold_[1] = 20;
+        threshold_[2] = 20;
+        threshold_[3] = 20;
+        threshold_[4] = 20;
+        threshold_[5] = 20;
+        threshold_[6] = 20;
+        threshold_[7] = 20;
     }
 
     /**
