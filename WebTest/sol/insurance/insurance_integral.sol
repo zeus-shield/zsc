@@ -157,6 +157,25 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
     }
 
     /**
+     * @dev Update the threshold of different types of bonus integrals.
+     * @param _type uint8 The types of bonus integrals.
+     * @param _threshold uint The threshold of different types of bonus integrals.
+     *         0: User sign up.
+     *         1: User submit data.
+     *         2: User check in everyday.
+     *         3: User invite others.
+     *         4: User share to Wechat.
+     *         5: User share to QQ.
+     *         6: User share to Microblog.
+     *         7: User click advertisements.
+     */
+    function updateThreshold(uint8 _type, uint _threshold) public whenNotPaused _onlyOwner {
+        // check params
+        require(0 <= _type && 8 > _type);
+        threshold_[_type] = _threshold;
+    }
+
+    /**
      * @dev Update cap of integrals.
      * @param _newCap The new cap of integrals.
      */
