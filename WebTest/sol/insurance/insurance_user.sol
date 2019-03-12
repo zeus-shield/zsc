@@ -15,6 +15,10 @@ contract InsuranceTemplate {
     function getByKey(string _key) external view returns (int, string);
 }
 
+contract InsuranceIntegral {
+    function claim(uint8 _type, address _account) public;
+}
+
 contract InsuranceUser is Delegate {
 
     using LibString for *;
@@ -22,10 +26,16 @@ contract InsuranceUser is Delegate {
 
     address private userMgr_;
     address private templateAddr_;
+    address private integralAddr_;
     string[] private keys_;
 
     modifier _checkTemplateAddr() {
         require(0 != templateAddr_);
+        _;
+    }
+
+    modifier _checkIntegralAddr() {
+        require(0 != integralAddr_);
         _;
     }
 
@@ -37,6 +47,7 @@ contract InsuranceUser is Delegate {
     constructor() public {
         userMgr_ = new Hashmap();
         templateAddr_ = address(0);
+        integralAddr_ = address(0);
     }
 
     /** [desc] Destroy the contract.
@@ -120,12 +131,15 @@ contract InsuranceUser is Delegate {
 
     /** [desc] Setup.
       * [param] _templateAddr: template contract address.
+      * [param] _integralAddr: integral contract address.
       * [return] none.
       */
-    function setup(address _templateAddr) external _onlyOwner {
+    function setup(address _templateAddr, address _integralAddr) external _onlyOwner {
         // check params
         require(address(0) != _templateAddr);
+	require(address(0) != _integralAddr);
         templateAddr_ = _templateAddr;
+        integralAddr_ = _integralAddr;
     }
 
     /** [desc] User sign up.
@@ -133,7 +147,7 @@ contract InsuranceUser is Delegate {
       * [param] _data: json data.
       * [return] none.
       */
-    function signUp(string _templateKey, string _data) external _onlyAdminOrHigher _checkTemplateAddr {
+    function signUp(string _templateKey, string _data) external _onlyAdminOrHigher _checkTemplateAddr _checkIntegralAddr {
         // check param
         require(0 != bytes(_templateKey).length);
         require(0 != bytes(_data).length);
@@ -161,9 +175,12 @@ contract InsuranceUser is Delegate {
             }
         }
 
+        require(!exist(0, key, 0));
         require(valid);
 
         Hashmap(userMgr_).set(key, 1, "", user, uint(0));
+
+        InsuranceIntegral(integralAddr_).claim(0, key.toAddress());
     }
 
     /** [desc] remove user.
@@ -180,7 +197,7 @@ contract InsuranceUser is Delegate {
       * [param] none.
       * [return] size of users.
       */
-    function size() external view returns (uint) {
+    function size() public view returns (uint) {
         return Hashmap(userMgr_).size(true);
     }
 
@@ -190,7 +207,7 @@ contract InsuranceUser is Delegate {
       * [param] _key0: user key for address.
       * [return] true/false.
       */
-    function exist(uint8 _type, string _key0, address _key1) external view returns (bool) {
+    function exist(uint8 _type, string _key0, address _key1) public view returns (bool) {
         // check param
         if (((0 == _type) && (0 == bytes(_key0).length)) 
           || (((1 == _type)) && (address(0) == _key1)) || (_type > 1)) {
@@ -265,7 +282,7 @@ contract InsuranceUser is Delegate {
       */
     function getById(uint8 _type, uint _id) external view returns (int, string) {
         // check param
-        if ((1 < _type) || (this.size() <= _id)) {
+        if ((1 < _type) || (size() <= _id)) {
             return (-1, "");
         }
 
@@ -293,7 +310,7 @@ contract InsuranceUser is Delegate {
     /** [desc] Get contract related address.
       * [return] contract related address.
       */
-    function getAddr() external view _onlyOwner returns (address) {
-        return templateAddr_;
+    function getAddr() external view _onlyOwner returns (address, address) {
+        return (templateAddr_, integralAddr_);
     }
 }
