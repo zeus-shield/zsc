@@ -179,21 +179,36 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
      * @dev Update cap of integrals.
      * @param _newCap The new cap of integrals.
      */
-    function updateCap(uint _newCap) public whenNotPaused {
+    function updateCap(uint _newCap) public whenNotPaused _onlyOwner {
         require((_newCap > totalSupply()) && (_newCap > cap_));
         cap_ = _newCap;
     }
 
     /**
-     * @return The cap for the integral.
+     * @dev Get the threshold of different types of bonus integrals.
+     * @param _type uint8 The types of bonus integrals.
+     *         0: User sign up.
+     *         1: User submit data.
+     *         2: User check in everyday.
+     *         3: User invite others.
+     *         4: User share to Wechat.
+     *         5: User share to QQ.
+     *         6: User share to Microblog.
+     *         7: User click advertisements.
+     * @return The threshold of different types of bonus integrals.
+     */
+    function threshold(uint8 _type) public view returns (uint) {
+        return threshold_[_type];
+    }
+
+    /**
+     * @dev Get the cap of integrals.
+     * @return The cap of integrals.
      */
     function cap() public view returns (uint) {
         return cap_;
     }
 
-    /** [desc] Get contract related address.
-      * [return] contract related address.
-      */
     /**
      * @dev Get contract related address.
      * @return The address related .
