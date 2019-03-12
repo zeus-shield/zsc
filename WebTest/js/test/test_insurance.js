@@ -301,7 +301,7 @@ export default class TestInsurance {
             case "Set":
                 if ("InsuranceUser" == contractName) {
                     let insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
-                    insuranceUser.setup(account, privateKey, this[templateContractAddress], function(error, result) {
+                    insuranceUser.setup(account, privateKey, this[templateContractAddress], this[integralContractAddress], function(error, result) {
                         handler[transactionProc](error, result, window.outputSetupElement);
                     });
                 } else if ("InsurancePolicy" == contractName) {
@@ -333,7 +333,7 @@ export default class TestInsurance {
                     let insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
                     insuranceUser.getAddr(function(error, result) {
                         if (!error) {
-                            Output(window.outputSetupElement, 'small', 'red', `[Address]: template(${result})`);
+                            Output(window.outputSetupElement, 'small', 'red', `[Address]: template(${result[0]}), integral(${result[1]})`);
                         } else {
                             Output(window.outputSetupElement, 'small', 'red', error);
                         }
