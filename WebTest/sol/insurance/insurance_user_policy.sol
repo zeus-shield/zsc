@@ -1,7 +1,6 @@
-/**
-  Copyright (c) 2018, ZSC Dev Team
-  2018-10-19: v0.00.01
- */
+/** Copyright (c) 2018, ZSC Dev Team
+  * 2018-10-19: v0.00.01
+  */
 
 pragma solidity ^0.4.25;
 // pragma experimental ABIEncoderV2;
@@ -10,13 +9,27 @@ import "../utillib/LibString.sol";
 import "../utillib/LibInt.sol";
 import "../common/delegate.sol";
 
+contract InsuranceTemplate {
+    function getByKey(string _key) external view returns (int, string);
+}
+
 contract InsuranceUser {
+    function add(string _userKey, string _template, string _data) external;
     function remove(string _key) external;
+    function exist(uint8 _type, string _key0, address _key1) public view returns (bool);
 }
 
 contract InsurancePolicy {
     function submit(string _userKey, string _templateKey, string _policyKey, string _data) external;
     function remove(string _key) external;
+}
+
+contract InsuranceIntegral {
+    function mint(address _account, uint _value) public;
+    function claim(uint8 _type, address _account) public;
+    function burn(address _account, uint _value) public;
+    function transfer(address _owner, address _to, uint _value) public returns (bool);
+    function balanceOf(address owner) public view returns (uint);
 }
 
 contract InsuranceUserPolicy is Delegate {
@@ -25,23 +38,30 @@ contract InsuranceUserPolicy is Delegate {
     using LibInt for *;
 
     struct strArray {
-        // id start from '1', '0' means no exists
+        /** @dev id start from '1', '0' means no exists */
         mapping(string => uint) ids_;
         mapping(uint => string) strs_;
         uint sum_;
     }
 
+    address private templateAddr_;
     address private userAddr_;
     address private policyAddr_;
+    address private integralAddr_;
     string[] private keys_;
 
-    /** @desc string(original policy key) => uint(max id)
-        @eg ddroyce@163.com_PingAn_Life => 9
+    /** @dev string(original policy key) => uint(max id)
+      * @eg ddroyce@163.com_PingAn_Life => 9
       */
     mapping(string => uint) private maxIds_;
 
-    /** @desc string(user key) => strArray(policy keys) */
+    /** @dev string(user key) => strArray(policy keys) */
     mapping(string => strArray) private policyKeys_;
+
+    modifier _checkTemplateAddr() {
+        require(0 != templateAddr_);
+        _;
+    }
 
     modifier _checkUserAddr() {
         require(0 != userAddr_);
@@ -53,28 +73,31 @@ contract InsuranceUserPolicy is Delegate {
         _;
     }
 
+    modifier _checkIntegralAddr() {
+        require(0 != integralAddr_);
+        _;
+    }
+
     modifier _onlyAdminOrHigher() {
         require(checkDelegate(msg.sender, 2));
         _;
     }
 
     constructor() public {
+        templateAddr_ = address(0);
         userAddr_ = address(0);
         policyAddr_ = address(0);
+        integralAddr_ = address(0);
     }
 
-    /** [desc] Destroy the contract.
-      * [param] none.
-      * [return] none.
-      */
+    /** @dev Destroy the contract. */
     function destroy() public _onlyOwner {
         super.kill();
     }
 
-    /** [desc] Add policy key.
-      * [param] _userKey: key of user.
-      * [param] _policyKey: key of policy.
-      * [return] none.
+    /** @dev Add policy key.
+      * @param _userKey string The key of user.
+      * @param _policyKey string The key of policy.
       */
     function _addPolicyKey(string _userKey, string _policyKey) private {
         // check exists
@@ -87,10 +110,9 @@ contract InsuranceUserPolicy is Delegate {
         policyKeys_[_userKey].strs_[sum] = _policyKey;
     }
 
-    /** [desc] Remove policy key.
-      * [param] _userKey: key of user.
-      * [param] _policyKey: key of policy.
-      * [return] none.
+    /** @dev Remove policy key.
+      * @param _userKey string The key of user.
+      * @param _policyKey string The key of policy.
       */
     function _removePolicyKey(string _userKey, string _policyKey) private {
         uint sum = policyKeys_[_userKey].sum_;
@@ -118,9 +140,8 @@ contract InsuranceUserPolicy is Delegate {
         policyKeys_[_userKey].sum_ --;
     }
 
-    /** [desc] Remove policy.
-      * [param] _policyKey: key of policy.
-      * [return] none.
+    /** @dev Remove policy.
+      * @param _policyKey string The key of policy.
       */
     function _removePolicy(string _policyKey) private {
         _policyKey.split("_", keys_);
@@ -133,27 +154,51 @@ contract InsuranceUserPolicy is Delegate {
         InsurancePolicy(policyAddr_).remove(_policyKey);
     }
 
-    /** [desc] Setup.
-      * [param] _userAddr: user contract address.
-      * [param] _policyAddr: policy contract address.
-      * [return] none.
+    /** @dev Setup.
+      * @param _templateAddr address The address of template contract.
+      * @param _userAddr address The address of user contract.
+      * @param _policyAddr address The address of policy contract.
+      * @param _integralAddr address The address of integral contract.
       */
-    function setup(address _userAddr, address _policyAddr) external _onlyOwner {
+    function setup(address _templateAddr, address _userAddr, address _policyAddr, address _integralAddr) external _onlyOwner {
         // check params
+        require(address(0) != _templateAddr);
         require(address(0) != _userAddr);
         require(address(0) != _policyAddr);
+        require(address(0) != _integralAddr);
+        templateAddr_ = _templateAddr;
         userAddr_ = _userAddr;
         policyAddr_ = _policyAddr;
+        integralAddr_ = _integralAddr;
     }
 
-    /** [desc] Policy submit.
-      * [param] _userKey: user key.
-      * [param] _templateKey: policy template key.
-      * [param] _policyKey: policy key.
-      * [param] _data: json data.
-      * [return] none.
+    /** @dev Add user.
+      * @param _userKey string The key of user.
+      * @param _templateKey string The key of user template.
+      * @param _data string The JSON data of user.
       */
-    function submit(string _userKey, string _templateKey, string _policyKey, string _data) external _onlyAdminOrHigher _checkPolicyAddr {
+    function userAdd(string _userKey, string _templateKey, string _data) external _onlyAdminOrHigher _checkTemplateAddr _checkUserAddr _checkIntegralAddr {
+        // check param
+        require(0 != bytes(_userKey).length);
+        require(0 != bytes(_templateKey).length);
+        require(0 != bytes(_data).length);
+
+        string memory template = "";
+        int error = 0;
+        (error, template) = InsuranceTemplate(templateAddr_).getByKey(_templateKey);
+        require(0 == error);
+
+        InsuranceUser(userAddr_).add(_userKey, template, _data);
+        InsuranceIntegral(integralAddr_).claim(0, _userKey.toAddress());
+    }
+
+    /** @dev Add policy.
+      * @param _userKey string The key of user.
+      * @param _templateKey string The key of policy template.
+      * @param _policyKey string The key of policy.
+      * @param _data string The JSON data of policy.
+      */
+    function policyAdd(string _userKey, string _templateKey, string _policyKey, string _data) external _onlyAdminOrHigher _checkPolicyAddr {
         // check param
         require(0 != bytes(_userKey).length);
         require(0 != bytes(_templateKey).length);
@@ -168,10 +213,55 @@ contract InsuranceUserPolicy is Delegate {
         maxIds_[_policyKey] ++;
     }
 
-    /** [desc] remove user or policy.
-      * [param] _type: type of module(0: user, 1: policy).
-      * [param] _key: key of user or policy.
-      * [return] none.
+    /** @dev Claim integrals.
+      * @param _type uint8 The types of bonus integrals.
+      *         0: User sign up.
+      *         1: User submit data.
+      *         2: User check in everyday.
+      *         3: User invite others.
+      *         4: User share to Wechat.
+      *         5: User share to QQ.
+      *         6: User share to Microblog.
+      *         7: User click advertisements.
+      * @param _account address The address that will claim the integrals.
+      */
+    function integralClaim(uint8 _type, address _account) external _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
+        require(InsuranceUser(userAddr_).exist(1, "", _account));
+        InsuranceIntegral(integralAddr_).claim(_type, _account);
+    }
+
+    /** @dev Mint integrals.
+      * @param _account address The address that will receive the minted integrals.
+      * @param _value uint The amount of integrals to mint.
+      */
+    function integralMint(address _account, uint _value) external _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
+        require(InsuranceUser(userAddr_).exist(1, "", _account));
+        InsuranceIntegral(integralAddr_).mint(_account, _value);
+    }
+
+    /** @dev Burns a specific amount of integrals.
+      * @param _account address The account whose integrals will be burnt.
+      * @param _value uint The amount of integral to be burned.
+      */
+    function integralBurn(address _account, uint _value) external _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
+        require(InsuranceUser(userAddr_).exist(1, "", _account));
+        InsuranceIntegral(integralAddr_).burn(_account, _value);
+    }
+
+    /** @dev Transfer integral to a specified address
+      * @param _owner address The address which owns the integrals.
+      * @param _to address The address to transfer to.
+      * @param _value uint The amount to be transferred.
+      */
+    function integralTransfer(address _owner, address _to, uint _value) external _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
+        require(InsuranceUser(userAddr_).exist(1, "", _owner));
+        require(InsuranceUser(userAddr_).exist(1, "", _to));
+        require(InsuranceIntegral(integralAddr_).transfer(_owner, _to, _value));
+    }
+
+    /** @dev Remove user or policy.
+      * @param _type uint8 The type of module(0: user, 1: policy).
+      * @param _key string The key of user or policy.
       */
     function remove(uint8 _type, string _key) external _onlyAdminOrHigher _checkUserAddr _checkPolicyAddr {
         // check param
@@ -192,14 +282,22 @@ contract InsuranceUserPolicy is Delegate {
         }
     }
 
-    /** [desc] Get user policies info by key.
-      * [param] _userKey: user key.
-      * [return] error code and user policies info for json data.
+    /** @dev Gets the balance of the specified address.
+      * @param _owner address The address to query the balance of.
+      * @return A uint representing the amount owned by the passed address.
+      */
+    function integral(address _owner) external view _checkIntegralAddr returns (uint) {
+        return InsuranceIntegral(integralAddr_).balanceOf(_owner);
+    }
+
+    /** @dev Get user policies info by key.
+      * @param _userKey string The key of user.
+      * @return Error code and user policies info for json data.
       *           0: success
       *          -1: params error
       *          -2: no data
       *          -3: no authority
-      *          -9: inner error   
+      *          -9: inner error
       */
     function getPolicies(string _userKey) external view returns (int, string) {
         // check param
@@ -223,10 +321,10 @@ contract InsuranceUserPolicy is Delegate {
         return (0, str);
     }
 
-    /** [desc] Get contract related address.
-      * [return] contract addresses.
+    /** @dev Get contract related address.
+      * @return The addresses of contract related.
       */
-    function getAddr() external view _onlyOwner returns (address, address) {
-        return (userAddr_, policyAddr_);
+    function getAddr() external view _onlyOwner returns (address, address, address, address) {
+        return (templateAddr_, userAddr_, policyAddr_, integralAddr_);
     }
 }
