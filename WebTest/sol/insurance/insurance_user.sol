@@ -11,33 +11,13 @@ import "../utillib/LibInt.sol";
 import "../common/hashmap.sol";
 import "../common/delegate.sol";
 
-contract InsuranceTemplate {
-    function getByKey(string _key) external view returns (int, string);
-}
-
-contract InsuranceIntegral {
-    function claim(uint8 _type, address _account) public;
-}
-
 contract InsuranceUser is Delegate {
 
     using LibString for *;
     using LibInt for *;
 
     address private userMgr_;
-    address private templateAddr_;
-    address private integralAddr_;
     string[] private keys_;
-
-    modifier _checkTemplateAddr() {
-        require(0 != templateAddr_);
-        _;
-    }
-
-    modifier _checkIntegralAddr() {
-        require(0 != integralAddr_);
-        _;
-    }
 
     modifier _onlyAdminOrHigher() {
         require(checkDelegate(msg.sender, 2));
@@ -46,8 +26,6 @@ contract InsuranceUser is Delegate {
 
     constructor() public {
         userMgr_ = new Hashmap();
-        templateAddr_ = address(0);
-        integralAddr_ = address(0);
     }
 
     /** [desc] Destroy the contract.
@@ -129,58 +107,35 @@ contract InsuranceUser is Delegate {
         return (0, str);
     }
 
-    /** [desc] Setup.
-      * [param] _templateAddr: template contract address.
-      * [param] _integralAddr: integral contract address.
-      * [return] none.
-      */
-    function setup(address _templateAddr, address _integralAddr) external _onlyOwner {
-        // check params
-        require(address(0) != _templateAddr);
-	require(address(0) != _integralAddr);
-        templateAddr_ = _templateAddr;
-        integralAddr_ = _integralAddr;
-    }
-
     /** [desc] User sign up.
-      * [param] _templateKey: user template key.
+      * [param] _userKey: user key.
+      * [param] _template: user template data.
       * [param] _data: json data.
       * [return] none.
       */
-    function signUp(string _templateKey, string _data) external _onlyAdminOrHigher _checkTemplateAddr _checkIntegralAddr {
+    function add(string _userKey, string _template, string _data) external _onlyAdminOrHigher {
         // check param
-        require(0 != bytes(_templateKey).length);
+        require(0 != bytes(_userKey).length);
+        require(0 != bytes(_template).length);
         require(0 != bytes(_data).length);
+        require(!exist(0, _userKey, 0));
 
-        string memory template = "";
-        int error = 0;
-        (error, template) = InsuranceTemplate(templateAddr_).getByKey(_templateKey);
-        require(0 == error);
-        template.split("#", keys_);
+        _template.split("#", keys_);
 
         bool valid = false;
-        string memory key = "";
         address user = new Hashmap();
 
         for (uint i=0; i<keys_.length; i++) { 
             if (_data.keyExists(keys_[i])) {
                 string memory value = _data.getStringValueByKey(keys_[i]);
                 Hashmap(user).set(keys_[i], 0, value, address(0), uint(0));
-                
-                if (keys_[i].equals("Key")) {
-                    key = value;
-                }
-
                 valid = true;
             }
         }
 
-        require(!exist(0, key, 0));
         require(valid);
 
-        Hashmap(userMgr_).set(key, 1, "", user, uint(0));
-
-        InsuranceIntegral(integralAddr_).claim(0, key.toAddress());
+        Hashmap(userMgr_).set(_userKey, 1, "", user, uint(0));
     }
 
     /** [desc] remove user.
@@ -305,12 +260,5 @@ contract InsuranceUser is Delegate {
         } else {
             return _getBriefInfo(key, user);
         }
-    }
-
-    /** [desc] Get contract related address.
-      * [return] contract related address.
-      */
-    function getAddr() external view _onlyOwner returns (address, address) {
-        return (templateAddr_, integralAddr_);
     }
 }
