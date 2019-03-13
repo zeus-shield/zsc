@@ -259,20 +259,16 @@
                 <div class="well" id="block">
                     <h4>3. Setup</h4>
                     <select id="s_setup_contract">
-                        <option value="InsuranceUser">InsuranceUser</option>
                         <option value="InsurancePolicy">InsurancePolicy</option>
                         <option value="InsuranceUserPolicy">InsuranceUserPolicy</option>
                         <option value="InsuranceAnalytics">InsuranceAnalytics</option>
-                        <option value="InsuranceIntegral">InsuranceIntegral</option>
                     </select>
                     <button type="button" id="b_setup">Setup</button><br>
 
                     <select id="s_get_sub_contract_addr">
-                        <option value="InsuranceUser">InsuranceUser</option>
                         <option value="InsurancePolicy">InsurancePolicy</option>
                         <option value="InsuranceUserPolicy">InsuranceUserPolicy</option>
                         <option value="InsuranceAnalytics">InsuranceAnalytics</option>
-                        <option value="InsuranceIntegral">InsuranceIntegral</option>
                     </select>
                     <button type="button" id="b_get_sub_contract_addr">GetSubContractAddress</button>
                     <p id="p_output_setup"></p>
@@ -418,7 +414,7 @@
                     <div id="element">
                         Select Operation(Write):<br>
                         <select id="s_user_write_op">
-                            <option value="SignUp">SignUp</option>
+                            <option value="Add">Add</option>
                             <option value="Remove">Remove</option>
                         </select><br>
                         Params:<br>
@@ -528,6 +524,7 @@
                             <option value="Mint">Mint</option>
                             <option value="Transfer">Transfer</option>
                             <option value="Burn">Burn</option>
+                            <option value="Claim">Claim</option>
                             <option value="UpdateCap">UpdateCap</option>
                             <option value="UpdateThreshold">UpdateThreshold</option>
                             <option value="Pause">Pause</option>
@@ -540,10 +537,10 @@
                     <div id="element">
                         Select Operation(Read):<br>
                         <select id="s_integral_read_op">
-                            <option value="Cap">Cap</option>
-                            <option value="Total">Total</option>
                             <option value="Balance">Balance</option>
                             <option value="Threshold">Threshold</option>
+                            <option value="Cap">Cap</option>
+                            <option value="Total">Total</option>
                             <option value="Paused">Paused</option>
                         </select><br>
                         Params:<br>
