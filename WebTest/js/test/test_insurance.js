@@ -860,12 +860,11 @@ export default class TestInsurance {
         let account = tmps[0];
         let privateKey = tmps[1];
 
-        let insuranceUser;
         let insuranceUserPolicy;
         switch (operation) {
             case "Debug":
-                insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
-                insuranceUser.size(function(error, result) {
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.userSize(function(error, result) {
                     if (!error) {
                         let sum = parseInt(result.toString(10));
                         let logs = new Array(sum);
@@ -877,7 +876,7 @@ export default class TestInsurance {
                         }
 
                         for (let i=0; i<sum; i++) {
-                            insuranceUser.getById(params, i, function(error, id, result) {
+                            insuranceUserPolicy.userGetById(params, i, function(error, id, result) {
                                 if (!error) {
                                     let errorStr = handler[getErrorStr](result[0].toString(10));
                                     logs[id] = `[User${id}]: (${errorStr}) ${result[1]}`;
@@ -923,8 +922,8 @@ export default class TestInsurance {
                 });
                 break;
             case "Size":
-                insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
-                insuranceUser.size(function(error, result) {
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.userSize(function(error, result) {
                     if (!error) {
                         Output(window.outputUserElement, "small", "red", `[Size]: ${result.toString(10)}`);
                     } else {
@@ -939,8 +938,8 @@ export default class TestInsurance {
                 }
 
                 tmps = params.split(",");
-                insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
-                insuranceUser.exist(tmps[1], function(error, result) {
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.userExist(tmps[1], function(error, result) {
                     if (!error) {
                         Output(window.outputUserElement, "small", "red", `[Exist]: ${result.toString(10)}`);
                     } else {
@@ -955,8 +954,8 @@ export default class TestInsurance {
                 }
 
                 tmps = params.split(",");
-                insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
-                insuranceUser.getByKey(tmps[0], tmps[1], function(error, result) {
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.userGetByKey(tmps[0], tmps[1], function(error, result) {
                     if (!error) {
                         let errorStr = handler[getErrorStr](result[0].toString(10));
                         Output(window.outputUserElement, "small", "red", `[User]:<br>(${errorStr}) ${result[1]}`);
@@ -972,8 +971,8 @@ export default class TestInsurance {
                 }
 
                 tmps = params.split(",");
-                insuranceUser = new InsuranceUser(this[userAbi], this[userContractAddress]);
-                insuranceUser.getById(tmps[0], tmps[1], function(error, id, result) {
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.userGetById(tmps[0], tmps[1], function(error, id, result) {
                     if (!error) {
                         let errorStr = handler[getErrorStr](result[0].toString(10));
                         Output(window.outputUserElement, "small", "red", `[User${id}]:<br>(${errorStr}) ${result[1]}`);
@@ -1213,7 +1212,6 @@ export default class TestInsurance {
         let privateKey = tmps[1];
 
         let insuranceIntegral;
-        let insuranceUser;
         let insuranceUserPolicy;
         switch (operation) {
             case "Debug":
@@ -1225,8 +1223,7 @@ export default class TestInsurance {
                         insuranceIntegral.totalSupply(function(error, result) {
                             if (!error) {
                                 let total = parseInt(result.toString(10));
-                                insuranceUser = new InsuranceUser(handler[userAbi], handler[userContractAddress]);
-                                insuranceUser.size(function(error, result) {
+                                insuranceUserPolicy.userSize(function(error, result) {
                                     if (!error) {
                                         let sum = parseInt(result.toString(10));
                                         let logs = new Array(sum + 1);
@@ -1241,7 +1238,7 @@ export default class TestInsurance {
                                         }
 
                                         for (let i=0; i<sum; i++) {
-                                            insuranceUser.getById(params, i, function(error, id, result) {
+                                            insuranceUserPolicy.userGetById(params, i, function(error, id, result) {
                                                 if (!error) {
 
                                                     let json = JSON.parse(result[1]);
