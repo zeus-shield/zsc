@@ -21,13 +21,7 @@ contract InsurancePolicy is Delegate {
     using LibInt for *;
 
     address private policyMgr_;
-    address private templateAddr_;
     string[] private keys_;
-
-    modifier _checkTemplateAddr() {
-        require(0 != templateAddr_);
-        _;
-    }
 
     modifier _onlyAdminOrHigher() {
         require(checkDelegate(msg.sender, 2));
@@ -36,7 +30,6 @@ contract InsurancePolicy is Delegate {
 
     constructor() public {
         policyMgr_ = new Hashmap();
-        templateAddr_ = address(0);
     }
 
     /** [desc] Destroy the contract.
@@ -118,35 +111,21 @@ contract InsurancePolicy is Delegate {
         return (0, str);
     }
 
-    /** [desc] Setup.
-      * [param] _templateAddr: template contract address.
-      * [return] none.
-      */
-    function setup(address _templateAddr) external _onlyOwner {
-        // check params
-        require(0 != _templateAddr);
-        templateAddr_ = _templateAddr;
-    }
-
     /** [desc] Policy add.
       * [param] _userKey: user key.
-      * [param] _templateKey: policy template key.
       * [param] _policyKey: policy key.
+      * [param] _template: policy template.
       * [param] _data: json data.
       * [return] none.
       */
-    function add(string _userKey, string _templateKey, string _policyKey, string _data) external _onlyAdminOrHigher _checkTemplateAddr {
+    function add(string _userKey, string _policyKey, string _template, string _data) external _onlyAdminOrHigher {
         // check param
         require(0 != bytes(_userKey).length);
-        require(0 != bytes(_templateKey).length);
         require(0 != bytes(_policyKey).length);
+        require(0 != bytes(_template).length);
         require(0 != bytes(_data).length);
 
-        string memory template = "";
-        int error = 0;
-        (error, template) = InsuranceTemplate(templateAddr_).getByKey(_templateKey);
-        require(0 == error);
-        template.split("#", keys_);
+        _template.split("#", keys_);
 
         bool valid = false;
         address policy = new Hashmap();
@@ -159,7 +138,6 @@ contract InsurancePolicy is Delegate {
                     string memory value = _data.getStringValueByKey(keys_[i]);
                     Hashmap(policy).set(keys_[i], 0, value, address(0), uint(0));
                 }
-
                 valid = true;
             }
         }
@@ -300,12 +278,5 @@ contract InsurancePolicy is Delegate {
         } else {
             return _getBriefInfo(key, policy);
         }
-    }
-
-    /** [desc] Get contract related address.
-      * [return] contract related address.
-      */
-    function getAddr() external view _onlyOwner returns (address) {
-        return templateAddr_;
     }
 }
