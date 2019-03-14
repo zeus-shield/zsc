@@ -1077,7 +1077,7 @@ export default class TestInsurance {
                     }
                 })                
                 break;
-            case "Submit":
+            case "Add":
                 if ((undefined == params) || ("" == params)) {
                     Output(window.outputPolicyElement, "small", "red", "Please input correct params!");
                     return;
@@ -1085,7 +1085,7 @@ export default class TestInsurance {
 
                 tmps = params.split("#");
                 insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
-                insuranceUserPolicy.submit(account, privateKey, tmps[0], tmps[1], tmps[2], tmps[3], function(error, result) {
+                insuranceUserPolicy.policyAdd(account, privateKey, tmps[0], tmps[1], tmps[2], tmps[3], function(error, result) {
                     handler[transactionProc](error, result, window.outputPolicyElement, null);
                 });
                 break;
