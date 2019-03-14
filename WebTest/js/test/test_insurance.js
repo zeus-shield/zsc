@@ -977,7 +977,7 @@ export default class TestInsurance {
 
                 tmps = params.split(",");
                 insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
-                insuranceUserPolicy.getPolicies(tmps[1], function(error, result) {
+                insuranceUserPolicy.userGetPolicies(tmps[1], function(error, result) {
                     if (!error) {
                         let errorStr = handler[getErrorStr](result[0].toString(10));
                         Output(window.outputUserElement, "small", "red", `[UserPolicies]:<br>(${errorStr}) ${result[1]}`);
@@ -1123,6 +1123,24 @@ export default class TestInsurance {
                     if (!error) {
                         let errorStr = handler[getErrorStr](result[0].toString(10));
                         Output(window.outputPolicyElement, "small", "red", `[User${id}]:<br>(${errorStr}) ${result[1]}`);
+                    } else {
+                        Output(window.outputPolicyElement, "small", "red", error);
+                    }
+                });
+                break;
+            case "GetKeys":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputPolicyElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                tmps = params.split(",");
+
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.policyGetKeys(tmps[1], tmps[2], function(error, result) {
+                    if (!error) {
+                        let errorStr = handler[getErrorStr](result[0].toString(10));
+                        Output(window.outputPolicyElement, "small", "red", `[Keys]: (${errorStr}) ${result[1]}`);
                     } else {
                         Output(window.outputPolicyElement, "small", "red", error);
                     }
