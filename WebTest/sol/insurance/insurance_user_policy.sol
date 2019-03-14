@@ -39,9 +39,10 @@ contract InsurancePolicy {
     function add(string _userKey, string _templateKey, string _policyKey, string _data) external;
     function addElement(string _key, string _elementKey, string _data) external;
     function remove(string _key) external;
-    function size() external view returns (uint);
+    function size() public view returns (uint);
     function getByKey(uint8 _type, string _key) external view returns (int, string);
     function getById(uint8 _type, uint _id) external view returns (int, string);
+    function getKeys(uint _id, uint _count) external view returns (int, string);
 }
 
 contract InsuranceIntegral {
@@ -399,6 +400,37 @@ contract InsuranceUserPolicy is Delegate {
         return InsuranceUser(userAddr_).getById(_type, _id);
     }
 
+    /** @dev Get user policies by key.
+      * @param _userKey string The key of user.
+      * @return Error code and user policies info for JSON data.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: no authority
+      *          -9: inner error
+      */
+    function userGetPolicies(string _userKey) external view returns (int, string) {
+        // check param
+        if (0 == bytes(_userKey).length) {
+            return (-1, "");
+        }
+        
+        uint sum = policyKeys_[_userKey].sum_;
+        if (0 == sum) {
+            return (-2, "");
+        }
+
+        string memory str = "";
+        for (uint i=1; i<=sum; i++) {
+            str = str.concat(policyKeys_[_userKey].strs_[i]);
+            if (sum > i) {
+                str = str.concat(",");
+            }
+        }
+
+        return (0, str);
+    }
+
     /** @dev Add policy.
       * @param _userKey string The key of user.
       * @param _templateKey string The key of policy template.
@@ -478,6 +510,20 @@ contract InsuranceUserPolicy is Delegate {
         return InsurancePolicy(policyAddr_).getById(_type, _id);
     }    
 
+    /** @dev Get policy keys.
+      * @param _id uint The starting id of policy.
+      * @param _count uint The count wanted(include starting id).
+      * @return The error code and the info
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: no authority
+      *          -9: inner error 
+      */
+    function policyGetKeys(uint _id, uint _count) external view returns (int, string) {
+        return InsurancePolicy(policyAddr_).getKeys(_id, _count);
+    }
+
     /** @dev Claim integrals.
       * @param _type uint8 The types of bonus integrals.
       *         0: User sign up.
@@ -530,37 +576,6 @@ contract InsuranceUserPolicy is Delegate {
       */
     function integral(address _owner) external view _checkIntegralAddr returns (uint) {
         return InsuranceIntegral(integralAddr_).balanceOf(_owner);
-    }
-
-    /** @dev Get user policies info by key.
-      * @param _userKey string The key of user.
-      * @return Error code and user policies info for json data.
-      *           0: success
-      *          -1: params error
-      *          -2: no data
-      *          -3: no authority
-      *          -9: inner error
-      */
-    function getPolicies(string _userKey) external view returns (int, string) {
-        // check param
-        if (0 == bytes(_userKey).length) {
-            return (-1, "");
-        }
-        
-        uint sum = policyKeys_[_userKey].sum_;
-        if (0 == sum) {
-            return (-2, "");
-        }
-
-        string memory str = "";
-        for (uint i=1; i<=sum; i++) {
-            str = str.concat(policyKeys_[_userKey].strs_[i]);
-            if (sum > i) {
-                str = str.concat(",");
-            }
-        }
-
-        return (0, str);
     }
 
     /** @dev Get contract related address.
