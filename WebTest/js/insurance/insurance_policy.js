@@ -40,15 +40,6 @@ export default class InsurancePolicy {
         }
     }
 
-    addElement(account, privateKey, key, elementKey, data, func) {
-        let handler = this;
-        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-
-        contractInstance.addElement.estimateGas(key, elementKey, data, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.addElement.getData(key, elementKey, data), error, gasRequired, func);
-        });
-    }
-
     size(func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
