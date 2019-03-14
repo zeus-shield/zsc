@@ -1093,8 +1093,8 @@ export default class TestInsurance {
                 }
 
                 tmps = params.split(",");
-                insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
-                insurancePolicy.addElement(account, privateKey, tmps[0], tmps[1], tmps[2], function(error, result) {
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.policyAddElement(account, privateKey, tmps[0], tmps[1], tmps[2], function(error, result) {
                     handler[transactionProc](error, result, window.outputPolicyElement, null);
                 });
                 break;
