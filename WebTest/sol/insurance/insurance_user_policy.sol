@@ -10,7 +10,11 @@ import "../utillib/LibInt.sol";
 import "../common/delegate.sol";
 
 contract InsuranceTemplate {
+    function update(string _key, string _data) external;
+    function remove(string _key) external;
+    function size() external view returns (uint);
     function getByKey(string _key) external view returns (int, string);
+    function getById(uint _id) external view returns (int, string, string);
 }
 
 contract InsuranceUser {
@@ -177,6 +181,54 @@ contract InsuranceUserPolicy is Delegate {
         userAddr_ = _userAddr;
         policyAddr_ = _policyAddr;
         integralAddr_ = _integralAddr;
+    }
+
+    /** @dev Update template.
+      * @param _key string The key of template.
+      * @param _data string The data of template.
+      */
+    function templateUpdate(string _key, string _data) external _onlyAdminOrHigher _checkTemplateAddr {
+        InsuranceTemplate(templateAddr_).update(_key, _data);
+    }
+
+    /** @dev Remove template.
+      * @param _key string The key of template.
+      */
+    function templateRemove(string _key) external _onlyAdminOrHigher _checkTemplateAddr {
+        InsuranceTemplate(templateAddr_).remove(_key);
+    }
+
+    /** @dev Get size of template.
+      * @return The size of template.
+      */
+    function templateSize() external _checkTemplateAddr view returns (uint) {
+        return InsuranceTemplate(templateAddr_).size();
+    }
+
+    /** @dev Get template info by key.
+      * @param _key string The key of template.
+      * @return The error code and the data of template info.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: no authority
+      *          -9: inner error  
+      */
+    function templateGetByKey(string _key) external _checkTemplateAddr view returns (int, string) {
+        return InsuranceTemplate(templateAddr_).getByKey(_key);
+    }
+
+    /** @dev Get template info by id.
+      * @param _id uint The id of template.
+      * @return The error code and the key/data of template info.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: no authority
+      *          -9: inner error  
+      */
+    function templateGetById(uint _id) external _checkTemplateAddr view returns (int, string, string) {
+        return InsuranceTemplate(templateAddr_).getById(_id);
     }
 
     /** @dev Add user.
