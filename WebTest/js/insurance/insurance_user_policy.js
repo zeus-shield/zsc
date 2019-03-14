@@ -532,6 +532,45 @@ export default class InsuranceUserPolicy {
         });
     }
 
+    userGetPolicies(userKey, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.userGetPolicies.estimateGas(userKey, {from: this[account]}, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("=============== Insurance.userGetPolicies(string) ===============");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("=================================================================");
+                        // call 'Insurance.userGetPolicies(string)'
+                        contractInstance.userGetPolicies.call(userKey, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                console.log("[UserPolicies]: %s", result.toString(10));
+                                if (null != func) {
+                                    func(null, result);
+                                }
+                            } else {
+                                handler[notifyError](error, func);
+                            }
+                        });
+                    } else {
+                        handler[notifyError](error, func);
+                    }
+                });
+            } else {
+                handler[notifyError](error, func);
+            }
+        });
+    }
+
     policyAdd(account, privateKey, userKey, templateKey, policyKey, data, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
@@ -676,6 +715,45 @@ export default class InsuranceUserPolicy {
         });
     }
 
+    policyGetKeys(id, count, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.policyGetKeys.estimateGas(id, count, {from: this[account]}, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("=============== Insurance.policyGetKeys(uint, uint) ===============");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("===================================================================");
+                        // call 'Insurance.policyGetKeys(uint, uint)'
+                        contractInstance.policyGetKeys.call(id, count, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                console.log("[Keys]: %s", result.toString(10));
+                                if (null != func) {
+                                    func(null, result);
+                                }
+                            } else {
+                                handler[notifyError](error, func);
+                            }
+                        });
+                    } else {
+                        handler[notifyError](error, func);
+                    }
+                });
+            } else {
+                handler[notifyError](error, func);
+            }
+        });
+    }
+
     integralClaim(account, privateKey, type, owner, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
@@ -736,45 +814,6 @@ export default class InsuranceUserPolicy {
                                 console.log("[Integral] %s: %s", owner, result.toString(10));
                                 if (null != func) {
                                     func(null, owner, result);
-                                }
-                            } else {
-                                handler[notifyError](error, func);
-                            }
-                        });
-                    } else {
-                        handler[notifyError](error, func);
-                    }
-                });
-            } else {
-                handler[notifyError](error, func);
-            }
-        });
-    }
-
-    getPolicies(userKey, func) {
-        let handler = this;
-        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-
-        // estimate gas
-        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getPolicies.estimateGas(userKey, {from: this[account]}, function(error, result) {
-            if(!error) {
-                let gasRequired = result;
-                // get gas price
-                // MetaMask Web3 object does not support synchronous methods without a callback parameter
-                web3.eth.getGasPrice(function(error, result) {
-                    if(!error) {
-                        console.log("=============== InsuranceUserPolicy.getPolicies(string) ===============");
-                        console.log("from:    ", handler[account]);
-                        console.log("gas:     ", gasRequired);
-                        console.log("gasPrice:", result.toString(10));
-                        console.log("=======================================================================");
-                        // call 'InsuranceUserPolicy.getPolicies(string)'
-                        contractInstance.getPolicies.call(userKey, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
-                            if(!error) {
-                                console.log("[UserPolicies]: %s", result.toString(10));
-                                if (null != func) {
-                                    func(null, result);
                                 }
                             } else {
                                 handler[notifyError](error, func);
