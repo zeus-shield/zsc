@@ -192,6 +192,23 @@ contract InsuranceUserPolicy is Delegate {
         InsuranceIntegral(integralAddr_).claim(0, _userKey.toAddress());
     }
 
+    /** @dev Remove user.
+      * @param _key string The key of user.
+      */
+    function userRemove(string _key) external _onlyAdminOrHigher _checkUserAddr _checkPolicyAddr {
+        // check param
+        require(0 != bytes(_key).length);
+
+        // remove policies
+        uint size = policyKeys_[_key].sum_;
+        for (uint i=0; i<size; i++) {
+            string memory policyKey = policyKeys_[_key].strs_[1];
+            _removePolicy(policyKey);
+        }
+        // remove user
+        InsuranceUser(userAddr_).remove(_key);
+    }
+
     /** @dev Add policy.
       * @param _userKey string The key of user.
       * @param _templateKey string The key of policy template.
@@ -211,6 +228,15 @@ contract InsuranceUserPolicy is Delegate {
         _addPolicyKey(_userKey, policyKey);
 
         maxIds_[_policyKey] ++;
+    }
+
+    /** @dev Remove policy.
+      * @param _key string The key of policy.
+      */
+    function policyRemove(string _key) external _onlyAdminOrHigher _checkPolicyAddr {
+        // check param
+        require(0 != bytes(_key).length);
+        _removePolicy(_key);
     }
 
     /** @dev Claim integrals.
@@ -257,29 +283,6 @@ contract InsuranceUserPolicy is Delegate {
         require(InsuranceUser(userAddr_).exist(1, "", _owner));
         require(InsuranceUser(userAddr_).exist(1, "", _to));
         require(InsuranceIntegral(integralAddr_).transfer(_owner, _to, _value));
-    }
-
-    /** @dev Remove user or policy.
-      * @param _type uint8 The type of module(0: user, 1: policy).
-      * @param _key string The key of user or policy.
-      */
-    function remove(uint8 _type, string _key) external _onlyAdminOrHigher _checkUserAddr _checkPolicyAddr {
-        // check param
-        require(0 != bytes(_key).length);
-
-        if (0 == _type) {
-            // remove policies
-            uint size = policyKeys_[_key].sum_;
-            for (uint i=0; i<size; i++) {
-                string memory policyKey = policyKeys_[_key].strs_[1];
-                _removePolicy(policyKey);
-            }
-            InsuranceUser(userAddr_).remove(_key);
-        } else if (1 == _type) {
-            _removePolicy(_key);
-        } else {
-            require(false);
-        }
     }
 
     /** @dev Gets the balance of the specified address.
