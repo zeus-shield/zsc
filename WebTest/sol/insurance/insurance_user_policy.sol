@@ -9,6 +9,15 @@ import "../utillib/LibString.sol";
 import "../utillib/LibInt.sol";
 import "../common/delegate.sol";
 
+contract InsuranceCompany {
+    function update(string _key, string _data) external;
+    function remove(string _key) external;
+    function size() external view returns (uint);
+    function getByKey(string _key) external view returns (int, string);
+    function getById(uint _id) external view returns (int, string, string);
+    function getAll() external view returns (int, string);
+}
+
 contract InsuranceTemplate {
     function update(string _key, string _data) external;
     function remove(string _key) external;
@@ -55,6 +64,7 @@ contract InsuranceUserPolicy is Delegate {
         uint sum_;
     }
 
+    address private companyAddr_;
     address private templateAddr_;
     address private userAddr_;
     address private policyAddr_;
@@ -68,6 +78,11 @@ contract InsuranceUserPolicy is Delegate {
 
     /** @dev string(user key) => strArray(policy keys) */
     mapping(string => strArray) private policyKeys_;
+
+    modifier _checkCompanyAddr() {
+        require(0 != companyAddr_);
+        _;
+    }
 
     modifier _checkTemplateAddr() {
         require(0 != templateAddr_);
@@ -95,6 +110,7 @@ contract InsuranceUserPolicy is Delegate {
     }
 
     constructor() public {
+        companyAddr_ = address(0);
         templateAddr_ = address(0);
         userAddr_ = address(0);
         policyAddr_ = address(0);
@@ -166,17 +182,20 @@ contract InsuranceUserPolicy is Delegate {
     }
 
     /** @dev Setup.
+      * @param _companyAddr address The address of template contract.
       * @param _templateAddr address The address of template contract.
       * @param _userAddr address The address of user contract.
       * @param _policyAddr address The address of policy contract.
       * @param _integralAddr address The address of integral contract.
       */
-    function setup(address _templateAddr, address _userAddr, address _policyAddr, address _integralAddr) external _onlyOwner {
+    function setup(address _companyAddr, address _templateAddr, address _userAddr, address _policyAddr, address _integralAddr) external _onlyOwner {
         // check params
+        require(address(0) != _companyAddr);
         require(address(0) != _templateAddr);
         require(address(0) != _userAddr);
         require(address(0) != _policyAddr);
         require(address(0) != _integralAddr);
+        companyAddr_ = _companyAddr;
         templateAddr_ = _templateAddr;
         userAddr_ = _userAddr;
         policyAddr_ = _policyAddr;
@@ -487,7 +506,7 @@ contract InsuranceUserPolicy is Delegate {
     /** @dev Get contract related address.
       * @return The addresses of contract related.
       */
-    function getAddr() external view _onlyOwner returns (address, address, address, address) {
-        return (templateAddr_, userAddr_, policyAddr_, integralAddr_);
+    function getAddr() external view _onlyOwner returns (address, address, address, address, address) {
+        return (companyAddr_, templateAddr_, userAddr_, policyAddr_, integralAddr_);
     }
 }
