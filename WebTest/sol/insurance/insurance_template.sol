@@ -62,6 +62,31 @@ contract InsuranceTemplate is Delegate {
         return Hashmap(tempMgr_).size(true);
     }
 
+    /** [desc] Get template by key.
+      * [param] _key: key of template.
+      * [return] error code and template data.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: no authority
+      *          -9: inner error 
+      */
+    function getByKey(string _key) external view returns (int, string) {
+        // check param
+        if (0 == bytes(_key).length) {
+            return (-1, "");
+        }
+
+        int error = 0;
+        uint8 positon = 0;
+        string memory value = "";
+        address data1 = address(0);
+        uint data2 = uint(0);
+
+        (error, positon, value, data1, data2) = Hashmap(tempMgr_).get(_key, true);        
+        return (error, value);
+    }
+
     /** [desc] Get template by id.
       * [param] _id: _id of template.
       * [return] error code and template key/data.
@@ -86,30 +111,5 @@ contract InsuranceTemplate is Delegate {
 
         (error, key, positon, value, data1, data2) = Hashmap(tempMgr_).get(_id, true);        
         return (error, key, value);
-    }
-
-    /** [desc] Get template by key.
-      * [param] _key: key of template.
-      * [return] error code and template data.
-      *           0: success
-      *          -1: params error
-      *          -2: no data
-      *          -3: no authority
-      *          -9: inner error 
-      */
-    function getByKey(string _key) external view returns (int, string) {
-        // check param
-        if (0 == bytes(_key).length) {
-            return (-1, "");
-        }
-
-        int error = 0;
-        uint8 positon = 0;
-        string memory value = "";
-        address data1 = address(0);
-        uint data2 = uint(0);
-
-        (error, positon, value, data1, data2) = Hashmap(tempMgr_).get(_key, true);        
-        return (error, value);
     }
 }
