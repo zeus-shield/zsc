@@ -299,12 +299,7 @@ export default class TestInsurance {
 
         switch (cmd) {
             case "Set":
-                if ("InsurancePolicy" == contractName) {
-                    let insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
-                    insurancePolicy.setup(account, privateKey, this[templateContractAddress], function(error, result) {
-                        handler[transactionProc](error, result, window.outputSetupElement);
-                    });
-                } else if ("InsuranceUserPolicy" == contractName) {
+                if ("InsuranceUserPolicy" == contractName) {
                     let insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
                     insuranceUserPolicy.setup(account, privateKey, this[templateContractAddress], this[userContractAddress], this[policyContractAddress], this[integralContractAddress], function(error, result) {
                         handler[transactionProc](error, result, window.outputSetupElement);
@@ -319,16 +314,7 @@ export default class TestInsurance {
                 }
                 break;
             case "Get":
-                if ("InsurancePolicy" == contractName) {
-                    let insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
-                    insurancePolicy.getAddr(function(error, result) {
-                        if (!error) {
-                            Output(window.outputSetupElement, 'small', 'red', `[Address]: template(${result})`);
-                        } else {
-                            Output(window.outputSetupElement, 'small', 'red', error);
-                        }
-                    });
-                } else if ("InsuranceUserPolicy" == contractName) {
+                if ("InsuranceUserPolicy" == contractName) {
                     let insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
                     insuranceUserPolicy.getAddr(function(error, result) {
                         if (!error) {
