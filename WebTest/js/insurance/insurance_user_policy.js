@@ -58,6 +58,141 @@ export default class InsuranceUserPolicy {
         });
     }
 
+    templateUpdate(account, privateKey, key, data, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        contractInstance.templateUpdate.estimateGas(key, data, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.templateUpdate.getData(key, data), error, gasRequired, func);
+        });
+    }
+
+    templateRemove(account, privateKey, key, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        contractInstance.templateRemove.estimateGas(key, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.templateRemove.getData(key), error, gasRequired, func);
+        });
+    }
+
+    templateSize(func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.templateSize.estimateGas({from: this[account]}, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("=============== Insurance.templateSize() ===============");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("========================================================");
+                        // call 'Insurance.templateSize()'
+                        contractInstance.templateSize.call({from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                console.log("[TemplateSize]: %s", result.toString(10));
+                                if (null != func) {
+                                    func(null, result);
+                                }
+                            } else {
+                                handler[notifyError](error, func);
+                            }
+                        });
+                    } else {
+                        handler[notifyError](error, func);
+                    }
+                });
+            } else {
+                handler[notifyError](error, func);
+            }
+        });
+    }
+
+    templateGetByKey(key, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.templateGetByKey.estimateGas(key, {from: this[account]}, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("=============== Insurance.templateGetByKey(string) ===============");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("==================================================================");
+                        // call 'Insurance.templateGetByKey(string)'
+                        contractInstance.templateGetByKey.call(key, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                console.log("[Template]: %s", result.toString(10));
+                                if (null != func) {
+                                    func(null, result);
+                                }
+                            } else {
+                                handler[notifyError](error, func);
+                            }
+                        });
+                    } else {
+                        handler[notifyError](error, func);
+                    }
+                });
+            } else {
+                handler[notifyError](error, func);
+            }
+        });
+    }
+
+    templateGetById(id, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.templateGetById.estimateGas(id, {from: this[account]}, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("=============== Insurance.templateGetById(uint) ===============");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("===============================================================");
+                        // call 'Insurance.templateGetById(uint)'
+                        contractInstance.templateGetById.call(id, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                console.log("[Template%s]: %s", id, result.toString(10));
+                                if (null != func) {
+                                    func(null, id, result);
+                                }
+                            } else {
+                                handler[notifyError](error, func);
+                            }
+                        });
+                    } else {
+                        handler[notifyError](error, func);
+                    }
+                });
+            } else {
+                handler[notifyError](error, func);
+            }
+        });
+    }
+
     userAdd(account, privateKey, userKey, templateKey, data, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
