@@ -85,6 +85,15 @@ export default class InsuranceUserPolicy {
         });
     }
 
+    policyAddElement(account, privateKey, key, elementKey, data, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        contractInstance.policyAddElement.estimateGas(key, elementKey, data, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.policyAddElement.getData(key, elementKey, data), error, gasRequired, func);
+        });
+    }
+
     policyRemove(account, privateKey, key, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
