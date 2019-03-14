@@ -1112,12 +1112,6 @@ export default class TestInsurance {
                     handler[transactionProc](error, result, window.outputPolicyElement, null);
                 });
                 break;
-            case "Destroy":
-                insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
-                insurancePolicy.destroy(account, privateKey, function(error, result) {
-                    handler[transactionProc](error, result, window.outputPolicyElement, null);
-                });
-                break;
             case "Size":
                 insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
                 insurancePolicy.size(function(error, result) {
