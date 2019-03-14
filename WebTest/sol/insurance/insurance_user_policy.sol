@@ -202,6 +202,66 @@ contract InsuranceUserPolicy is Delegate {
         integralAddr_ = _integralAddr;
     }
 
+    /** @dev Update company.
+      * @param _key string The key of company.
+      * @param _data string The data of company.
+      */
+    function companyUpdate(string _key, string _data) external _onlyAdminOrHigher _checkCompanyAddr {
+        InsuranceCompany(companyAddr_).update(_key, _data);
+    }
+
+    /** @dev Remove company.
+      * @param _key string The key of company.
+      */
+    function companyRemove(string _key) external _onlyAdminOrHigher _checkCompanyAddr {
+        InsuranceCompany(companyAddr_).remove(_key);
+    }
+
+    /** @dev Get size of company.
+      * @return The size of company.
+      */
+    function companySize() external _checkCompanyAddr view returns (uint) {
+        return InsuranceCompany(companyAddr_).size();
+    }
+
+    /** @dev Get company info by key.
+      * @param _key string The key of company.
+      * @return The error code and the data of template info.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: no authority
+      *          -9: inner error  
+      */
+    function companyGetByKey(string _key) external _checkCompanyAddr view returns (int, string) {
+        return InsuranceCompany(companyAddr_).getByKey(_key);
+    }
+
+    /** @dev Get company info by id.
+      * @param _id uint The id of company.
+      * @return The error code and the key/data of company.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: no authority
+      *          -9: inner error  
+      */
+    function companyGetById(uint _id) external _checkCompanyAddr view returns (int, string, string) {
+        return InsuranceCompany(companyAddr_).getById(_id);
+    }
+
+    /** @dev Get all companies' info.
+      * @return The error code and the all companies' data.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: no authority
+      *          -9: inner error  
+      */
+    function companyGetAll() external _checkCompanyAddr view returns (int, string) {
+        return InsuranceCompany(companyAddr_).getAll();
+    }
+
     /** @dev Update template.
       * @param _key string The key of template.
       * @param _data string The data of template.
@@ -239,7 +299,7 @@ contract InsuranceUserPolicy is Delegate {
 
     /** @dev Get template info by id.
       * @param _id uint The id of template.
-      * @return The error code and the key/data of template info.
+      * @return The error code and the key/data of template.
       *           0: success
       *          -1: params error
       *          -2: no data
