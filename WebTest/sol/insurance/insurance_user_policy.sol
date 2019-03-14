@@ -16,7 +16,10 @@ contract InsuranceTemplate {
 contract InsuranceUser {
     function add(string _userKey, string _template, string _data) external;
     function remove(string _key) external;
+    function size() public view returns (uint);
     function exist(uint8 _type, string _key0, address _key1) public view returns (bool);
+    function getByKey(uint8 _type, string _key) external view returns (int, string);
+    function getById(uint8 _type, uint _id) external view returns (int, string);
 }
 
 contract InsurancePolicy {
@@ -215,6 +218,51 @@ contract InsuranceUserPolicy is Delegate {
         }
         // remove user
         InsuranceUser(userAddr_).remove(_key);
+    }
+
+    /** @dev Get size of users.
+      * @return The size of users.
+      */
+    function userSize() external _checkUserAddr view returns (uint) {
+        return InsuranceUser(userAddr_).size();
+    }
+
+    /** @dev Check that if user exist
+      * @param _type uint8 The info type (0: key is string, 1: key is address).
+      * @param _key0 string The key of user for string.
+      * @param _key1 address The key of user for address.
+      * @return true/false.
+      */
+    function userExist(uint8 _type, string _key0, address _key1) external _checkUserAddr view returns (bool) {
+        return InsuranceUser(userAddr_).exist(_type, _key0, _key1);
+    }
+
+    /** @dev Get user info by key.
+      * @param _type uint8 The info type (0: detail, 1: brief).
+      * @param _key string The key of user.
+      * @return The error code and the JSON data of user info.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: no authority
+      *          -9: inner error  
+      */
+    function userGetByKey(uint8 _type, string _key) external _checkUserAddr view returns (int, string) {
+        return InsuranceUser(userAddr_).getByKey(_type, _key);
+    }
+
+    /** @dev Get user info by id.
+      * @param _type uint8 The info type (0: detail, 1: brief).
+      * @param _id uint The id of user.
+      * @return The error code and the JSON data of user info.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: no authority
+      *          -9: inner error  
+      */
+    function userGetById(uint8 _type, uint _id) external _checkUserAddr view returns (int, string) {
+        return InsuranceUser(userAddr_).getById(_type, _id);
     }
 
     /** @dev Add policy.
