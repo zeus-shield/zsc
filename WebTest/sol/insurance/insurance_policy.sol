@@ -11,10 +11,6 @@ import "../utillib/LibInt.sol";
 import "../common/hashmap.sol";
 import "../common/delegate.sol";
 
-contract InsuranceTemplate {
-    function getByKey(string _key) external view returns (int, string);
-}
-
 contract InsurancePolicy is Delegate {
 
     using LibString for *;
@@ -185,7 +181,7 @@ contract InsurancePolicy is Delegate {
       * [param] none.
       * [return] size of users.
       */
-    function size() external view returns (uint) {
+    function size() public view returns (uint) {
         return Hashmap(policyMgr_).size(true);
     }
 
@@ -255,7 +251,7 @@ contract InsurancePolicy is Delegate {
       */
     function getById(uint8 _type, uint _id) external view returns (int, string) {
         // check param
-        if ((1 < _type) || (this.size() <= _id)) {
+        if ((1 < _type) || (size() <= _id)) {
             return (-1, "");
         }
 
@@ -278,5 +274,51 @@ contract InsurancePolicy is Delegate {
         } else {
             return _getBriefInfo(key, policy);
         }
+    }
+
+    /** [desc] Get policy keys.
+      * [param] _id: policy starting id.
+      * [param] _count: wanted count(include starting id).
+      * [return] error code and info.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: no authority
+      *          -9: inner error 
+      */
+    function getKeys(uint _id, uint _count) external view returns (int, string) {
+        uint count = 0;
+
+        // check param
+        if ((size() <= _id) || (0 == _count)) {
+            return (-1, "");
+        }
+
+        if (size() < _id + _count) {
+            count =  size() - _id;
+        } else {
+            count = _count;
+        }
+
+        int error = 0;
+        string memory key = "";
+        uint8 position = 0;
+        string memory data0 = "";
+        address policy = address(0);
+        uint data2 = uint(0);
+        string memory keys = "";
+        for (uint i=0; i<count; i++) {
+            (error, key, position, data0, policy, data2) = Hashmap(policyMgr_).get(_id+i, true);
+            if (0 != error) {
+                return (error, "");
+            }
+
+            keys = keys.concat(key);
+            if ((count -1) > i) {
+                keys = keys.concat(",");
+            }
+        }
+
+        return (0, keys);
     }
 }
