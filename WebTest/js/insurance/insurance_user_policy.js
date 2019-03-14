@@ -67,12 +67,30 @@ export default class InsuranceUserPolicy {
         });
     }
 
+    userRemove(account, privateKey, key, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        contractInstance.userRemove.estimateGas(key, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.userRemove.getData(key), error, gasRequired, func);
+        });
+    }
+
     policyAdd(account, privateKey, userKey, templateKey, policyKey, data, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
         contractInstance.policyAdd.estimateGas(userKey, templateKey, policyKey, data, {from: account}, function(error, gasRequired) {
             handler[transactionProc](handler, account, privateKey, contractInstance.policyAdd.getData(userKey, templateKey, policyKey, data), error, gasRequired, func);
+        });
+    }
+
+    policyRemove(account, privateKey, key, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        contractInstance.policyRemove.estimateGas(key, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.policyRemove.getData(key), error, gasRequired, func);
         });
     }
 
@@ -109,15 +127,6 @@ export default class InsuranceUserPolicy {
 
         contractInstance.integralTransfer.estimateGas(owner, to, value, {from: account}, function(error, gasRequired) {
             handler[transactionProc](handler, account, privateKey, contractInstance.integralTransfer.getData(owner, to, value), error, gasRequired, func);
-        });
-    }
-
-    remove(account, privateKey, type, key, func) {
-        let handler = this;
-        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-
-        contractInstance.remove.estimateGas(type, key, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.remove.getData(type, key), error, gasRequired, func);
         });
     }
 
