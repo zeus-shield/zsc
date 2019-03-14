@@ -932,7 +932,7 @@ export default class TestInsurance {
                 }
 
                 insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
-                insuranceUserPolicy.remove(account, privateKey, "0", params, function(error, result) {
+                insuranceUserPolicy.userRemove(account, privateKey, params, function(error, result) {
                     handler[transactionProc](error, result, window.outputUserElement, null);
                 });
                 break;
@@ -1096,7 +1096,7 @@ export default class TestInsurance {
                 }
 
                 insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
-                insuranceUserPolicy.remove(account, privateKey, "1", params, function(error, result) {
+                insuranceUserPolicy.policyRemove(account, privateKey, params, function(error, result) {
                     handler[transactionProc](error, result, window.outputPolicyElement, null);
                 });
                 break;
