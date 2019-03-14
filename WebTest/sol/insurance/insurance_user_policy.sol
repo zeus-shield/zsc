@@ -21,6 +21,7 @@ contract InsuranceUser {
 
 contract InsurancePolicy {
     function add(string _userKey, string _templateKey, string _policyKey, string _data) external;
+    function addElement(string _key, string _elementKey, string _data) external;
     function remove(string _key) external;
 }
 
@@ -240,6 +241,15 @@ contract InsuranceUserPolicy is Delegate {
         _addPolicyKey(_userKey, policyKey);
 
         maxIds_[_policyKey] ++;
+    }
+
+    /** @dev Add policy's element.
+      * @param _key string The key of policy.
+      * @param _elementKey string The key of policy element.
+      * @param _data string The element data of policy.
+      */
+    function policyAddElement(string _key, string _elementKey, string _data) external _onlyAdminOrHigher _checkPolicyAddr {
+        InsurancePolicy(policyAddr_).addElement(_key, _elementKey, _data);
     }
 
     /** @dev Remove policy.
