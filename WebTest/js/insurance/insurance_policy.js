@@ -40,15 +40,6 @@ export default class InsurancePolicy {
         }
     }
 
-    setup(account, privateKey, templateAddr, func) {
-        let handler = this;
-        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-
-        contractInstance.setup.estimateGas(templateAddr, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.setup.getData(templateAddr), error, gasRequired, func);
-        });
-    }
-
     addElement(account, privateKey, key, elementKey, data, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
@@ -160,45 +151,6 @@ export default class InsurancePolicy {
                                 console.log("[Policy%s]: %s", id, result.toString(10));
                                 if (null != func) {
                                     func(null, id, result);
-                                }
-                            } else {
-                                handler[notifyError](error, func);
-                            }
-                        });
-                    } else {
-                        handler[notifyError](error, func);
-                    }
-                });
-            } else {
-                handler[notifyError](error, func);
-            }
-        });
-    }
-
-    getAddr(func) {
-        let handler = this;
-        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-
-        // estimate gas
-        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
-        contractInstance.getAddr.estimateGas({from: this[account]}, function(error, result) {
-            if(!error) {
-                let gasRequired = result;
-                // get gas price
-                // MetaMask Web3 object does not support synchronous methods without a callback parameter
-                web3.eth.getGasPrice(function(error, result) {
-                    if(!error) {
-                        console.log("=============== InsurancePolicy.getAddr() ===============");
-                        console.log("from:    ", handler[account]);
-                        console.log("gas:     ", gasRequired);
-                        console.log("gasPrice:", result.toString(10));
-                        console.log("=========================================================");
-                        // call 'InsurancePolicy.getAddr()'
-                        contractInstance.getAddr.call({from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
-                            if(!error) {
-                                console.log("[Address]: template(%s)", result.toString(10));
-                                if (null != func) {
-                                    func(null, result);
                                 }
                             } else {
                                 handler[notifyError](error, func);
