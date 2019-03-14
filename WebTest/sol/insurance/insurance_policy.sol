@@ -128,14 +128,14 @@ contract InsurancePolicy is Delegate {
         templateAddr_ = _templateAddr;
     }
 
-    /** [desc] Policy submit.
+    /** [desc] Policy add.
       * [param] _userKey: user key.
       * [param] _templateKey: policy template key.
       * [param] _policyKey: policy key.
       * [param] _data: json data.
       * [return] none.
       */
-    function submit(string _userKey, string _templateKey, string _policyKey, string _data) external _onlyAdminOrHigher _checkTemplateAddr {
+    function add(string _userKey, string _templateKey, string _policyKey, string _data) external _onlyAdminOrHigher _checkTemplateAddr {
         // check param
         require(0 != bytes(_userKey).length);
         require(0 != bytes(_templateKey).length);
