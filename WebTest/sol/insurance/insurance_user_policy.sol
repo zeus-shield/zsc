@@ -195,9 +195,16 @@ contract InsuranceUserPolicy is Delegate {
     /** @dev Remove user.
       * @param _key string The key of user.
       */
-    function userRemove(string _key) external _onlyAdminOrHigher _checkUserAddr _checkPolicyAddr {
+    function userRemove(string _key) external _onlyAdminOrHigher _checkUserAddr _checkPolicyAddr _checkIntegralAddr {
         // check param
         require(0 != bytes(_key).length);
+
+        // remove integral
+        address account = _key.toAddress();
+        uint value = InsuranceIntegral(integralAddr_).balanceOf(account);
+        if (0 < value) {
+            integralBurn(account, value);
+        }
 
         // remove policies
         uint size = policyKeys_[_key].sum_;
@@ -269,7 +276,7 @@ contract InsuranceUserPolicy is Delegate {
       * @param _account address The account whose integrals will be burnt.
       * @param _value uint The amount of integral to be burned.
       */
-    function integralBurn(address _account, uint _value) external _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
+    function integralBurn(address _account, uint _value) public _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
         require(InsuranceUser(userAddr_).exist(1, "", _account));
         InsuranceIntegral(integralAddr_).burn(_account, _value);
     }
