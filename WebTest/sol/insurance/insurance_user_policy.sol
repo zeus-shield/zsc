@@ -26,11 +26,14 @@ contract InsurancePolicy {
     function add(string _userKey, string _templateKey, string _policyKey, string _data) external;
     function addElement(string _key, string _elementKey, string _data) external;
     function remove(string _key) external;
+    function size() external view returns (uint);
+    function getByKey(uint8 _type, string _key) external view returns (int, string);
+    function getById(uint8 _type, uint _id) external view returns (int, string);
 }
 
 contract InsuranceIntegral {
-    function mint(address _account, uint _value) public;
     function claim(uint8 _type, address _account) public;
+    function mint(address _account, uint _value) public;
     function burn(address _account, uint _value) public;
     function transfer(address _owner, address _to, uint _value) public returns (bool);
     function balanceOf(address owner) public view returns (uint);
@@ -308,6 +311,41 @@ contract InsuranceUserPolicy is Delegate {
         require(0 != bytes(_key).length);
         _removePolicy(_key);
     }
+
+    /** @dev Get size of policies.
+      * @return The size of policies.
+      */
+    function policySize() external _checkPolicyAddr view returns (uint) {
+        return InsurancePolicy(policyAddr_).size();
+    }
+
+    /** @dev Get policy info by key.
+      * @param _type uint8 The info type (0: detail, 1: brief).
+      * @param _key string The key of policy.
+      * @return The error code and the JSON data of policy info.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: no authority
+      *          -9: inner error  
+      */
+    function policyGetByKey(uint8 _type, string _key) external _checkPolicyAddr view returns (int, string) {
+        return InsurancePolicy(policyAddr_).getByKey(_type, _key);
+    }
+
+    /** @dev Get policy info by id.
+      * @param _type uint8 The info type (0: detail, 1: brief).
+      * @param _id uint The id of policy.
+      * @return The error code and the JSON data of policy info.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: no authority
+      *          -9: inner error  
+      */
+    function policyGetById(uint8 _type, uint _id) external _checkPolicyAddr view returns (int, string) {
+        return InsurancePolicy(policyAddr_).getById(_type, _id);
+    }    
 
     /** @dev Claim integrals.
       * @param _type uint8 The types of bonus integrals.
