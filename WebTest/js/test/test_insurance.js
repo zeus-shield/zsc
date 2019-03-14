@@ -1023,12 +1023,11 @@ export default class TestInsurance {
         let account = tmps[0];
         let privateKey = tmps[1];
 
-        let insurancePolicy;
         let insuranceUserPolicy;
         switch (operation) {
             case "Debug":
-                insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
-                insurancePolicy.size(function(error, result) {
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.policySize(function(error, result) {
                     if (!error) {
                         let sum = parseInt(result.toString(10));
                         let logs = new Array(sum);
@@ -1040,7 +1039,7 @@ export default class TestInsurance {
                         }
 
                         for (let i=0; i<sum; i++) {
-                            insurancePolicy.getById(params, i, function(error, id, result) {
+                            insuranceUserPolicy.policyGetById(params, i, function(error, id, result) {
                                 if (!error) {
                                     let errorStr = handler[getErrorStr](result[0].toString(10));
                                     logs[id] = `[User${id}]: (${errorStr}) ${result[1]}`;
@@ -1098,8 +1097,8 @@ export default class TestInsurance {
                 });
                 break;
             case "Size":
-                insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
-                insurancePolicy.size(function(error, result) {
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.policySize(function(error, result) {
                     if (!error) {
                         Output(window.outputPolicyElement, "small", "red", `[Size]: ${result.toString(10)}`);
                     } else {
@@ -1114,8 +1113,8 @@ export default class TestInsurance {
                 }
 
                 tmps = params.split(",");
-                insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
-                insurancePolicy.getByKey(tmps[0], tmps[1], function(error, result) {
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.policyGetByKey(tmps[0], tmps[1], function(error, result) {
                     if (!error) {
                         let errorStr = handler[getErrorStr](result[0].toString(10));
                         Output(window.outputPolicyElement, "small", "red", `[User]:<br>(${errorStr}) ${result[1]}`);
@@ -1131,8 +1130,8 @@ export default class TestInsurance {
                 }
 
                 tmps = params.split(",");
-                insurancePolicy = new InsurancePolicy(this[policyAbi], this[policyContractAddress]);
-                insurancePolicy.getById(tmps[0], tmps[1], function(error, id, result) {
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.policyGetById(tmps[0], tmps[1], function(error, id, result) {
                     if (!error) {
                         let errorStr = handler[getErrorStr](result[0].toString(10));
                         Output(window.outputPolicyElement, "small", "red", `[User${id}]:<br>(${errorStr}) ${result[1]}`);
