@@ -20,7 +20,7 @@ contract InsuranceUser {
 }
 
 contract InsurancePolicy {
-    function submit(string _userKey, string _templateKey, string _policyKey, string _data) external;
+    function add(string _userKey, string _templateKey, string _policyKey, string _data) external;
     function remove(string _key) external;
 }
 
@@ -206,7 +206,7 @@ contract InsuranceUserPolicy is Delegate {
         require(0 != bytes(_data).length);
 
         string memory policyKey = _policyKey.concat("_", maxIds_[_policyKey].toString());
-        InsurancePolicy(policyAddr_).submit(_userKey, _templateKey, policyKey, _data);
+        InsurancePolicy(policyAddr_).add(_userKey, _templateKey, policyKey, _data);
 
         _addPolicyKey(_userKey, policyKey);
 
