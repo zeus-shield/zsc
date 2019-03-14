@@ -645,19 +645,19 @@ export default class TestInsurance {
     }
 
     [templateBatch](handler, account, privateKey, cmd) {
-        let insuranceTemplate;
+        let insuranceUserPolicy;
         switch (cmd) {
             case "Update":
-                insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
-                // insuranceTemplate.update(account, privateKey, "UI_User_PhoneSignIn", "手机号&密码", function(error, result) {
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                // insuranceUserPolicy.templateUpdate(account, privateKey, "UI_User_PhoneSignIn", "手机号&密码", function(error, result) {
                 //     handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                //         insuranceTemplate.update(account, privateKey, "UI_User_EmailSignIn", "邮箱&密码", function(error, result) {
+                //         insuranceUserPolicy.templateUpdate(account, privateKey, "UI_User_EmailSignIn", "邮箱&密码", function(error, result) {
                 //             handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                //                 insuranceTemplate.update(account, privateKey, "UI_User_PhoneSignUp", "手机号&短信验证码&密码&确认密码", function(error, result) {
+                //                 insuranceUserPolicy.templateUpdate(account, privateKey, "UI_User_PhoneSignUp", "手机号&短信验证码&密码&确认密码", function(error, result) {
                 //                     handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                //                         insuranceTemplate.update(account, privateKey, "UI_User_EmailSignUp", "邮箱&邮箱验证码&密码&确认密码", function(error, result) {
+                //                         insuranceUserPolicy.templateUpdate(account, privateKey, "UI_User_EmailSignUp", "邮箱&邮箱验证码&密码&确认密码", function(error, result) {
                 //                             handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                //                                 insuranceTemplate.update(account, privateKey, "UI_User_ForgetPassword", "邮箱/手机号", function(error, result) {
+                //                                 insuranceUserPolicy.templateUpdate(account, privateKey, "UI_User_ForgetPassword", "邮箱/手机号", function(error, result) {
                 //                                     handler[transactionProc](error, result, window.outputTemplateElement, function() {                   
                 //                                     });
                 //                                  });          
@@ -669,15 +669,15 @@ export default class TestInsurance {
                 //         });
                 //     });
                 // });
-                insuranceTemplate.update(account, privateKey, "DB_User", "Key#Password#NickName#SignUpTime#UpdateTime#Policies#Receipts", function(error, result) {
+                insuranceUserPolicy.templateUpdate(account, privateKey, "DB_User", "Key#Password#NickName#SignUpTime#UpdateTime#Policies#Receipts", function(error, result) {
                     handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                        insuranceTemplate.update(account, privateKey, "DB_Policy_PingAn_Life", "Key#UserKey#Insurant#Sex#Age#Amount#StartTime#Period#Description", function(error, result) {
+                        insuranceUserPolicy.templateUpdate(account, privateKey, "DB_Policy_PingAn_Life", "Key#UserKey#Insurant#Sex#Age#Amount#StartTime#Period#Description", function(error, result) {
                             handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                                insuranceTemplate.update(account, privateKey, "DB_Policy_PingAn_Auto", "Key#UserKey#Insurant#Amount#StartTime#EndTime#City#PlateNumber#Description", function(error, result) {
+                                insuranceUserPolicy.templateUpdate(account, privateKey, "DB_Policy_PingAn_Auto", "Key#UserKey#Insurant#Amount#StartTime#EndTime#City#PlateNumber#Description", function(error, result) {
                                     handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                                        insuranceTemplate.update(account, privateKey, "DB_Policy_CPIC_Accident", "Key#UserKey#Insurant#Passport#Amount#StartTime#EndTime#Vehicle#Country#City#Description", function(error, result) {
+                                        insuranceUserPolicy.templateUpdate(account, privateKey, "DB_Policy_CPIC_Accident", "Key#UserKey#Insurant#Passport#Amount#StartTime#EndTime#Vehicle#Country#City#Description", function(error, result) {
                                             handler[transactionProc](error, result, window.outputTemplateElement, function() {
-                                                insuranceTemplate.update(account, privateKey, "DB_Policy_AIA_Unemployment", "Key#UserKey#Insurant#Sex#Age#ID#Amount#StartTime#Period#City#Company#Description", function(error, result) {
+                                                insuranceUserPolicy.templateUpdate(account, privateKey, "DB_Policy_AIA_Unemployment", "Key#UserKey#Insurant#Sex#Age#ID#Amount#StartTime#Period#City#Company#Description", function(error, result) {
                                                     handler[transactionProc](error, result, window.outputTemplateElement, function() {                   
                                                     });
                                                  });          
@@ -715,11 +715,11 @@ export default class TestInsurance {
         let account = tmps[0];
         let privateKey = tmps[1];
 
-        let insuranceTemplate;
+        let insuranceUserPolicy;
         switch (operation) {
             case "Debug":
-                insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
-                insuranceTemplate.size(function(error, result) {
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.templateSize(function(error, result) {
                     if (!error) {
                         let sum = parseInt(result.toString(10));
                         let logs = new Array(sum);
@@ -731,7 +731,7 @@ export default class TestInsurance {
                         }
 
                         for (let i=0; i<sum; i++) {
-                            insuranceTemplate.getById(i, function(error, id, result) {
+                            insuranceUserPolicy.templateGetById(i, function(error, id, result) {
                                 if (!error) {
                                     let errorStr = handler[getErrorStr](result[0].toString(10));
                                     logs[id] = `[Template${id}]: (${errorStr}) ${result[1]} => ${result[2]}`;
@@ -771,8 +771,8 @@ export default class TestInsurance {
                     return;
                 }
 
-                insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
-                insuranceTemplate.update(account, privateKey, key, data, function(error, result) {
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.templateUpdate(account, privateKey, key, data, function(error, result) {
                     handler[transactionProc](error, result, window.outputTemplateElement, null);
                 });
                 break;
@@ -782,38 +782,16 @@ export default class TestInsurance {
                     return;
                 }
 
-                insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
-                insuranceTemplate.remove(account, privateKey, params, function(error, result) {
-                    handler[transactionProc](error, result, window.outputTemplateElement, null);
-                });
-                break;
-            case "Destroy":
-                insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
-                insuranceTemplate.destroy(account, privateKey, function(error, result) {
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.templateRemove(account, privateKey, params, function(error, result) {
                     handler[transactionProc](error, result, window.outputTemplateElement, null);
                 });
                 break;
             case "Size":
-                insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
-                insuranceTemplate.size(function(error, result) {
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.templateSize(function(error, result) {
                     if (!error) {
                         Output(window.outputTemplateElement, "small", "red", `[Size]: ${result.toString(10)}`);
-                    } else {
-                        Output(window.outputTemplateElement, "small", "red", error);
-                    }
-                });
-                break;
-            case "GetById":
-                if ((undefined == params) || ("" == params)) {
-                    Output(window.outputTemplateElement, "small", "red", "Please input correct params!");
-                    return;
-                }
-
-                insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
-                insuranceTemplate.getById(params, function(error, id, result) {
-                    if (!error) {
-                        let errorStr = handler[getErrorStr](result[0].toString(10));
-                        Output(window.outputTemplateElement, "small", "red", `[Template${id}]: (${errorStr}) ${result[1]} => ${result[2]}`);
                     } else {
                         Output(window.outputTemplateElement, "small", "red", error);
                     }
@@ -825,11 +803,27 @@ export default class TestInsurance {
                     return;
                 }
 
-                insuranceTemplate = new InsuranceTemplate(this[templateAbi], this[templateContractAddress]);
-                insuranceTemplate.getByKey(params, function(error, result) {
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.templateGetByKey(params, function(error, result) {
                     if (!error) {
                         let errorStr = handler[getErrorStr](result[0].toString(10));
                         Output(window.outputTemplateElement, "small", "red", `[Template]: (${errorStr}) ${params} => ${result[1]}`);
+                    } else {
+                        Output(window.outputTemplateElement, "small", "red", error);
+                    }
+                });
+                break;
+            case "GetById":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputTemplateElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.templateGetById(params, function(error, id, result) {
+                    if (!error) {
+                        let errorStr = handler[getErrorStr](result[0].toString(10));
+                        Output(window.outputTemplateElement, "small", "red", `[Template${id}]: (${errorStr}) ${result[1]} => ${result[2]}`);
                     } else {
                         Output(window.outputTemplateElement, "small", "red", error);
                     }
