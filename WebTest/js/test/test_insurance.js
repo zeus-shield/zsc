@@ -301,7 +301,7 @@ export default class TestInsurance {
             case "Set":
                 if ("InsuranceUserPolicy" == contractName) {
                     let insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
-                    insuranceUserPolicy.setup(account, privateKey, this[templateContractAddress], this[userContractAddress], this[policyContractAddress], this[integralContractAddress], function(error, result) {
+                    insuranceUserPolicy.setup(account, privateKey, this[companyContractAddress], this[templateContractAddress], this[userContractAddress], this[policyContractAddress], this[integralContractAddress], function(error, result) {
                         handler[transactionProc](error, result, window.outputSetupElement);
                     });
                 } else if ("InsuranceAnalytics" == contractName) {
@@ -318,7 +318,7 @@ export default class TestInsurance {
                     let insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
                     insuranceUserPolicy.getAddr(function(error, result) {
                         if (!error) {
-                            Output(window.outputSetupElement, 'small', 'red', `[Address]: template(${result[0]}), user(${result[1]}), policy(${result[2]}), integral(${result[3]}`);
+                            Output(window.outputSetupElement, 'small', 'red', `[Address]: company(${result[0]}), template(${result[1]}), user(${result[2]}), policy(${result[3]}), integral(${result[4]}`);
                         } else {
                             Output(window.outputSetupElement, 'small', 'red', error);
                         }
@@ -576,12 +576,6 @@ export default class TestInsurance {
 
                 insuranceCompany = new InsuranceCompany(this[companyAbi], this[companyContractAddress]);
                 insuranceCompany.remove(account, privateKey, params, function(error, result) {
-                    handler[transactionProc](error, result, window.outputCompanyElement, null);
-                });
-                break;
-            case "Destroy":
-                insuranceCompany = new InsuranceCompany(this[companyAbi], this[companyContractAddress]);
-                insuranceCompany.destroy(account, privateKey, function(error, result) {
                     handler[transactionProc](error, result, window.outputCompanyElement, null);
                 });
                 break;
