@@ -40,21 +40,12 @@ export default class InsuranceUserPolicy {
         }
     }
 
-    destroy(account, privateKey, func) {
+    setup(account, privateKey, companyAddr, templateAddr, userAddr, policyAddr, integralAddr, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.destroy.estimateGas({from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.destroy.getData(), error, gasRequired, func);
-        });
-    }
-
-    setup(account, privateKey, templateAddr, userAddr, policyAddr, integralAddr, func) {
-        let handler = this;
-        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
-
-        contractInstance.setup.estimateGas(templateAddr, userAddr, policyAddr, integralAddr, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.setup.getData(templateAddr, userAddr, policyAddr, integralAddr), error, gasRequired, func);
+        contractInstance.setup.estimateGas(companyAddr, templateAddr, userAddr, policyAddr, integralAddr, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.setup.getData(companyAddr, templateAddr, userAddr, policyAddr, integralAddr), error, gasRequired, func);
         });
     }
 
@@ -646,7 +637,7 @@ export default class InsuranceUserPolicy {
                         // call 'InsuranceUserPolicy.getAddr()'
                         contractInstance.getAddr.call({from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
                             if(!error) {
-                                console.log("[Address]: template(%s), user(%s), policy(%s), integral(%s)", result[0], result[1], result[2], result[3]);
+                                console.log("[Address]: company(%s), template(%s), user(%s), policy(%s), integral(%s)", result[0], result[1], result[2], result[3], result[4]);
                                 if (null != func) {
                                     func(null, result);
                                 }
