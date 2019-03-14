@@ -67,6 +67,31 @@ contract InsuranceCompany is Delegate {
         return Hashmap(companyMgr_).size(true);
     }
 
+    /** [desc] Get company by key.
+      * [param] _key: key of company.
+      * [return] error code and company data.
+      *           0: success
+      *          -1: params error
+      *          -2: no data
+      *          -3: no authority
+      *          -9: inner error 
+      */
+    function getByKey(string _key) external view returns (int, string) {
+        // check param
+        if (0 == bytes(_key).length) {
+            return (-1, "");
+        }
+
+        int error = 0;
+        uint8 positon = 0;
+        string memory value = "";
+        address data1 = address(0);
+        uint data2 = uint(0);
+
+        (error, positon, value, data1, data2) = Hashmap(companyMgr_).get(_key, true);        
+        return (error, value);
+    }
+
     /** [desc] Get company by id.
       * [param] _id: _id of company.
       * [return] error code and company key/data.
@@ -91,31 +116,6 @@ contract InsuranceCompany is Delegate {
 
         (error, key, positon, value, data1, data2) = Hashmap(companyMgr_).get(_id, true);        
         return (error, key, value);
-    }
-
-    /** [desc] Get company by key.
-      * [param] _key: key of company.
-      * [return] error code and company data.
-      *           0: success
-      *          -1: params error
-      *          -2: no data
-      *          -3: no authority
-      *          -9: inner error 
-      */
-    function getByKey(string _key) external view returns (int, string) {
-        // check param
-        if (0 == bytes(_key).length) {
-            return (-1, "");
-        }
-
-        int error = 0;
-        uint8 positon = 0;
-        string memory value = "";
-        address data1 = address(0);
-        uint data2 = uint(0);
-
-        (error, positon, value, data1, data2) = Hashmap(companyMgr_).get(_key, true);        
-        return (error, value);
     }
 
     /** [desc] Get all companies' info.
