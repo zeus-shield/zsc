@@ -229,8 +229,13 @@ contract InsuranceUserPolicy is Delegate {
         require(0 != bytes(_policyKey).length);
         require(0 != bytes(_data).length);
 
+        string memory template = "";
+        int error = 0;
+        (error, template) = InsuranceTemplate(templateAddr_).getByKey(_templateKey);
+        require(0 == error);
+
         string memory policyKey = _policyKey.concat("_", maxIds_[_policyKey].toString());
-        InsurancePolicy(policyAddr_).add(_userKey, _templateKey, policyKey, _data);
+        InsurancePolicy(policyAddr_).add(_userKey, policyKey, template, _data);
 
         _addPolicyKey(_userKey, policyKey);
 
