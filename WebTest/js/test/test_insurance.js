@@ -12,7 +12,6 @@ import InsuranceTemplate from "../insurance/insurance_template.js";
 import InsuranceUser from "../insurance/insurance_user.js";
 import InsurancePolicy from "../insurance/insurance_policy.js";
 import InsuranceUserPolicy from "../insurance/insurance_user_policy.js";
-import InsuranceAnalytics from "../insurance/insurance_analytics.js";
 import InsuranceIntegral from "../insurance/insurance_integral.js";
 
 //private member
@@ -170,8 +169,6 @@ export default class TestInsurance {
             elementId = window.outputDeployPolicyElement;
         } else if ("InsuranceUserPolicy" == contractName) {
             elementId = window.outputDeployUserPolicyElement;
-        } else if ("InsuranceAnalytics" == contractName) {
-            elementId = window.outputDeployAnalyticsElement;
         } else if ("InsuranceIntegral" == contractName) {
             elementId = window.outputDeployIntegralElement;
         } else {
@@ -233,9 +230,6 @@ export default class TestInsurance {
         } else if ("InsuranceUserPolicy" == contractName) {
             this[userPolicyAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
             contract = web3.eth.contract(this[userPolicyAbi]);
-        } else if ("InsuranceAnalytics" == contractName) {
-            this[analyticsAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
-            contract = web3.eth.contract(this[analyticsAbi]);
         } else if ("InsuranceIntegral" == contractName) {
             this[integralAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
             contract = web3.eth.contract(this[integralAbi]);
@@ -264,8 +258,6 @@ export default class TestInsurance {
                                 handler[policyContractAddress] = result.contractAddress;
                             } else if ("InsuranceUserPolicy" == contractName) {
                                 handler[userPolicyContractAddress] = result.contractAddress;
-                            } else if ("InsuranceAnalytics" == contractName) {
-                                handler[analyticsContractAddress] = result.contractAddress;
                             } else if ("InsuranceIntegral" == contractName) {
                                 handler[integralContractAddress] = result.contractAddress;
                             } else {
@@ -304,11 +296,6 @@ export default class TestInsurance {
                     insuranceUserPolicy.setup(account, privateKey, this[companyContractAddress], this[templateContractAddress], this[userContractAddress], this[policyContractAddress], this[integralContractAddress], function(error, result) {
                         handler[transactionProc](error, result, window.outputSetupElement);
                     });
-                } else if ("InsuranceAnalytics" == contractName) {
-                    let insuranceAnalytics = new InsuranceAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
-                    insuranceAnalytics.setup(account, privateKey, this[policyContractAddress], function(error, result) {
-                        handler[transactionProc](error, result, window.outputSetupElement);
-                    });
                 } else {
                     Output(window.outputSetupElement, 'small', 'red', "Contract name Error!");
                 }
@@ -319,15 +306,6 @@ export default class TestInsurance {
                     insuranceUserPolicy.getAddr(function(error, result) {
                         if (!error) {
                             Output(window.outputSetupElement, 'small', 'red', `[Address]: company(${result[0]}), template(${result[1]}), user(${result[2]}), policy(${result[3]}), integral(${result[4]}`);
-                        } else {
-                            Output(window.outputSetupElement, 'small', 'red', error);
-                        }
-                    });
-                } else if ("InsuranceAnalytics" == contractName) {
-                    let insuranceAnalytics = new InsuranceAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
-                    insuranceAnalytics.getAddr(function(error, result) {
-                        if (!error) {
-                            Output(window.outputSetupElement, 'small', 'red', `[Address]: policy(${result})`);
                         } else {
                             Output(window.outputSetupElement, 'small', 'red', error);
                         }
@@ -386,8 +364,6 @@ export default class TestInsurance {
             delegate = new Delegate(this[policyAbi], this[policyContractAddress]);
         } else if ("InsuranceUserPolicy" == contract) {
             delegate = new Delegate(this[userPolicyAbi], this[userPolicyContractAddress]);
-        } else if ("InsuranceAnalytics" == contract) {
-            delegate = new Delegate(this[analyticsAbi], this[analyticsContractAddress]);
         } else if ("InsuranceIntegral" == contract) {
             delegate = new Delegate(this[integralAbi], this[integralContractAddress]);
         } else {}
@@ -1163,51 +1139,6 @@ export default class TestInsurance {
         }
     }
 
-    analytics(operation, params) {
-        console.log("TestInsurance.analytics(%s, %s)", operation, params);
-
-        // check param
-        if ((undefined == operation) || ("" == operation)) {
-            Output(window.outputAnalyticsElement, "small", "red", "Please input correct input!");
-            return;
-        }
-
-        let handler = this;
-        let tmps = this[getAccount]();
-        if (0 == tmps[0]) {
-            Output(window.outputAnalyticsElement, 'small', 'red', "No channnel(idle)!");
-            return;
-        }
-
-        let account = tmps[0];
-        let privateKey = tmps[1];
-
-        let insuranceAnalytics;
-        switch (operation) {
-            case "getKeys":
-                if ((undefined == params) || ("" == params)) {
-                    Output(window.outputAnalyticsElement, "small", "red", "Please input correct params!");
-                    return;
-                }
-
-                tmps = params.split(",");
-
-                insuranceAnalytics = new InsuranceAnalytics(this[analyticsAbi], this[analyticsContractAddress]);
-                insuranceAnalytics.getKeys(tmps[0], tmps[1], function(error, result) {
-                    if (!error) {
-                        let errorStr = handler[getErrorStr](result[0].toString(10));
-                        Output(window.outputAnalyticsElement, "small", "red", `[Keys]: (${errorStr}) ${result[1]}`);
-                    } else {
-                        Output(window.outputAnalyticsElement, "small", "red", error);
-                    }
-                });
-                break;
-            default:
-                Output(window.outputAnalyticsElement, "small", "red", "Operation Error!");
-                break;
-        }
-    }
-
     integral(operation, params) {
         console.log("TestInsurance.integral(%s, %s)", operation, params);
 
@@ -1553,9 +1484,6 @@ export default class TestInsurance {
                 break;
             case "Policy":
                 this.policy(para1, para2);
-                break;
-            case "Analytics":
-                this.analytics(para1, para2);
                 break;
             case "Integral":
                 this.integral(para1, para2);
