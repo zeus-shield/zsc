@@ -42,7 +42,7 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
     constructor () public {
         cap_ = 100000;
         threshold_[0] = 40;
-        threshold_[1] = 20;
+        threshold_[1] = 30;
         threshold_[2] = 20;
         threshold_[3] = 20;
         threshold_[4] = 20;
@@ -60,6 +60,7 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
 
     /**
      * @dev Claim integrals.
+     * @param _account address The address that will claim the integrals.
      * @param _type uint8 The types of bonus integrals.
      *         0: User sign up.
      *         1: User submit data.
@@ -69,9 +70,8 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
      *         5: User share to QQ.
      *         6: User share to Microblog.
      *         7: User click advertisements.
-     * @param _account address The address that will claim the integrals.
      */
-    function claim(uint8 _type, address _account) public _onlyAdminOrHigher whenNotPaused {
+    function claim(address _account, uint8 _type) public _onlyAdminOrHigher whenNotPaused {
         require(0 <= _type && 8 > _type);
         mint(_account, threshold_[_type]);
     }    
