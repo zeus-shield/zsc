@@ -61,12 +61,10 @@ export default function file(module, contractName, input) {
                         elementId = window.outputDeployUserElement;
                     } else if ('InsurancePolicy' == contractName) {
                         elementId = window.outputDeployPolicyElement;
-                    } else if ('InsuranceUserPolicy' == contractName) {
-                        elementId = window.outputDeployUserPolicyElement;
-                    } else if ('InsuranceAnalytics' == contractName) {
-                        elementId = window.outputDeployAnalyticsElement;
                     } else if ('InsuranceIntegral' == contractName) {
                         elementId = window.outputDeployIntegralElement;
+                    } else if ('Insurance' == contractName) {
+                        elementId = window.outputDeployMainElement;
                     } else {
                         elementId = window.outputDeployElement;
                     }
