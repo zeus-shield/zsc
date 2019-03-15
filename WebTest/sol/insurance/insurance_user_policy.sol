@@ -46,7 +46,7 @@ contract InsurancePolicy {
 }
 
 contract InsuranceIntegral {
-    function claim(uint8 _type, address _account) public;
+    function claim(address _account, uint8 _type) public;
     function mint(address _account, uint _value) public;
     function burn(address _account, uint _value) public;
     function transfer(address _owner, address _to, uint _value) public returns (bool);
@@ -331,7 +331,10 @@ contract InsuranceUserPolicy is Delegate {
         require(0 == error);
 
         InsuranceUser(userAddr_).add(_userKey, template, _data);
-        InsuranceIntegral(integralAddr_).claim(0, _userKey.toAddress());
+
+        address account = _userKey.toAddress();
+        InsuranceIntegral(integralAddr_).claim(account, 0);
+        InsuranceIntegral(integralAddr_).updateTrace(account, 0, now);
     }
 
     /** @dev Remove user.
@@ -343,9 +346,11 @@ contract InsuranceUserPolicy is Delegate {
 
         // remove integral
         address account = _key.toAddress();
+        require(InsuranceUser(userAddr_).exist(1, "", account));
+
         uint value = InsuranceIntegral(integralAddr_).balanceOf(account);
         if (0 < value) {
-            integralBurn(account, value);
+            InsuranceIntegral(integralAddr_).burn(account, value);
         }
 
         // remove policies
@@ -364,7 +369,7 @@ contract InsuranceUserPolicy is Delegate {
     function userCheckIn(address _account) public _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
         require(InsuranceUser(userAddr_).exist(1, "", _account));
         require(0 == InsuranceIntegral(integralAddr_).traceSize(_account, 2, now));
-        InsuranceIntegral(integralAddr_).claim(2, _account);
+        InsuranceIntegral(integralAddr_).claim(_account, 2);
         InsuranceIntegral(integralAddr_).updateTrace(_account, 2, now);
     }
 
@@ -450,7 +455,7 @@ contract InsuranceUserPolicy is Delegate {
       * @param _policyKey string The key of policy.
       * @param _data string The JSON data of policy.
       */
-    function policyAdd(string _userKey, string _templateKey, string _policyKey, string _data) external _onlyAdminOrHigher _checkPolicyAddr {
+    function policyAdd(string _userKey, string _templateKey, string _policyKey, string _data) external _onlyAdminOrHigher _checkPolicyAddr _checkIntegralAddr {
         // check param
         require(0 != bytes(_userKey).length);
         require(0 != bytes(_templateKey).length);
@@ -468,6 +473,10 @@ contract InsuranceUserPolicy is Delegate {
         _addPolicyKey(_userKey, policyKey);
 
         maxIds_[_policyKey] ++;
+
+        address account = _userKey.toAddress();
+        InsuranceIntegral(integralAddr_).claim(account, 1);
+        InsuranceIntegral(integralAddr_).updateTrace(account, 1, now);
     }
 
     /** @dev Add policy's element.
@@ -538,6 +547,7 @@ contract InsuranceUserPolicy is Delegate {
     }
 
     /** @dev Claim integrals.
+      * @param _account address The address that will claim the integrals.
       * @param _type uint8 The types of bonus integrals.
       *         0: User sign up.
       *         1: User submit data.
@@ -547,11 +557,10 @@ contract InsuranceUserPolicy is Delegate {
       *         5: User share to QQ.
       *         6: User share to Microblog.
       *         7: User click advertisements.
-      * @param _account address The address that will claim the integrals.
       */
-    function integralClaim(uint8 _type, address _account) external _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
+    function integralClaim(address _account, uint8 _type) external _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
         require(InsuranceUser(userAddr_).exist(1, "", _account));
-        InsuranceIntegral(integralAddr_).claim(_type, _account);
+        InsuranceIntegral(integralAddr_).claim(_account, _type);
     }
 
     /** @dev Mint integrals.
