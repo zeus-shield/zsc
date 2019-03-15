@@ -16,9 +16,8 @@
                 window.outputDeployTemplateElement = "p_output_deploy_template";
                 window.outputDeployUserElement = "p_output_deploy_user";
                 window.outputDeployPolicyElement = "p_output_deploy_policy";
-                window.outputDeployUserPolicyElement = "p_output_deploy_user_policy";
-                window.outputDeployAnalyticsElement = "p_output_deploy_analytics";
                 window.outputDeployIntegralElement = "p_output_deploy_integral";
+                window.outputDeployMainElement = "p_output_deploy_main_policy";
                 window.outputSetupElement = "p_output_setup";
                 window.outputDelegateReadElement = "p_output_delegate_read";
                 window.outputDelegateWriteElement = "p_output_delegate_write";
@@ -222,20 +221,19 @@
                         <button type="button" id="b_deploy" onclick="main('Insurance', 'Deploy', 'InsurancePolicy', '')">Deploy</button>
                         <p id="p_output_deploy_policy"></p>
                     </div>
-                    <div style="clear:left"></div>
                     <div id="element">
-                        <h5>Deploy [insurance_user_policy]</h5>
-                        <label id="l_insurance_user_policy" for="f_insurance_user_policy">Upload</label>
-                        <input type="file" id="f_insurance_user_policy" onchange="file('Insurance', 'InsuranceUserPolicy', this)" />
-                        <button type="button" id="b_deploy" onclick="main('Insurance', 'Deploy', 'InsuranceUserPolicy', '')">Deploy</button>
-                        <p id="p_output_deploy_user_policy"></p>
-                    </div>
-                    <div id="element">
-                        <h5>Deploy [integral]</h5>
+                        <h5>Deploy [insurance_integral]</h5>
                         <label id="l_insurance_integral" for="f_insurance_integral">Upload</label>
                         <input type="file" id="f_insurance_integral" onchange="file('Insurance', 'InsuranceIntegral', this)" />
                         <button type="button" id="b_deploy" onclick="main('Insurance', 'Deploy', 'InsuranceIntegral', '')">Deploy</button>
                         <p id="p_output_deploy_integral"></p>
+                    </div>
+                    <div id="element">
+                        <h5>Deploy [insurance]</h5>
+                        <label id="l_insurance" for="f_insurance">Upload</label>
+                        <input type="file" id="f_insurance" onchange="file('Insurance', 'Insurance', this)" />
+                        <button type="button" id="b_deploy" onclick="main('Insurance', 'Deploy', 'Insurance', '')">Deploy</button>
+                        <p id="p_output_deploy_main_policy"></p>
                     </div>
                     <div style="clear:left"></div>
                 </div>
@@ -245,12 +243,12 @@
                 <div class="well" id="block">
                     <h4>3. Setup</h4>
                     <select id="s_setup_contract">
-                        <option value="InsuranceUserPolicy">InsuranceUserPolicy</option>
+                        <option value="Insurance">Insurance</option>
                     </select>
                     <button type="button" id="b_setup">Setup</button><br>
 
                     <select id="s_get_sub_contract_addr">
-                        <option value="InsuranceUserPolicy">InsuranceUserPolicy</option>
+                        <option value="Insurance">Insurance</option>
                     </select>
                     <button type="button" id="b_get_sub_contract_addr">GetSubContractAddress</button>
                     <p id="p_output_setup"></p>
@@ -265,8 +263,8 @@
                         <option value="InsuranceTemplate">InsuranceTemplate</option>
                         <option value="InsuranceUser">InsuranceUser</option>
                         <option value="InsurancePolicy">InsurancePolicy</option>
-                        <option value="InsuranceUserPolicy">InsuranceUserPolicy</option>
                         <option value="InsuranceIntegral">InsuranceIntegral</option>
+                        <option value="Insurance">Insurance</option>
                     </select>
                     <button type="button" id="b_delegate_debug">Debug</button>
                     <p id="p_output_delegate_read"></p>
@@ -278,8 +276,8 @@
                             <option value="InsuranceTemplate">InsuranceTemplate</option>
                             <option value="InsuranceUser">InsuranceUser</option>
                             <option value="InsurancePolicy">InsurancePolicy</option>
-                            <option value="InsuranceUserPolicy">InsuranceUserPolicy</option>
                             <option value="InsuranceIntegral">InsuranceIntegral</option>
+                            <option value="Insurance">Insurance</option>
                         </select><br>
                         Address:<br>
                         <input type="text" id="i_delegate_update_params"><br>
@@ -293,8 +291,8 @@
                             <option value="InsuranceTemplate">InsuranceTemplate</option>
                             <option value="InsuranceUser">InsuranceUser</option>
                             <option value="InsurancePolicy">InsurancePolicy</option>
-                            <option value="InsuranceUserPolicy">InsuranceUserPolicy</option>
                             <option value="InsuranceIntegral">InsuranceIntegral</option>
+                            <option value="Insurance">Insurance</option>
                         </select><br>
                         Address:<br>
                         <input type="text" id="i_delegate_remove_params"><br>
@@ -308,8 +306,8 @@
                             <option value="InsuranceTemplate">InsuranceTemplate</option>
                             <option value="InsuranceUser">InsuranceUser</option>
                             <option value="InsurancePolicy">InsurancePolicy</option>
-                            <option value="InsuranceUserPolicy">InsuranceUserPolicy</option>
                             <option value="InsuranceIntegral">InsuranceIntegral</option>
+                            <option value="Insurance">Insurance</option>
                         </select><br>
                         Address:<br>
                         <input type="text" id="i_delegate_transfer_params"><br>
