@@ -13,6 +13,24 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
     uint private cap_;
     mapping (uint8 => uint) private threshold_;
 
+    /** @dev Trace info */
+    struct Trace {
+        uint8 type_;
+        uint id_;
+        uint time_;
+        uint value_;
+    }
+
+    /** @dev Trace for one day */
+    struct TraceDay {
+        uint8 type_;
+        uint size_;
+        mapping (uint => Trace) list_;
+    }
+
+    /** @dev address => bonus type => day index => TraceDay */
+    mapping (address => mapping (uint8 => mapping (uint => TraceDay))) private trace_;
+
     modifier _onlyAdminOrHigher() {
         require(checkDelegate(msg.sender, 2));
         _;
@@ -45,7 +63,7 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
      * @param _type uint8 The types of bonus integrals.
      *         0: User sign up.
      *         1: User submit data.
-     *         2: User check in everyday.
+     *         2: User check in every day.
      *         3: User invite others.
      *         4: User share to Wechat.
      *         5: User share to QQ.
@@ -153,11 +171,40 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
     }
 
     /**
+     * @dev Update trace.
+     * @param _account address The address that will claim the integrals.
+     * @param _type uint8 The types of claiming integrals.
+     *         0: User sign up.
+     *         1: User submit data.
+     *         2: User check in every day.
+     *         3: User invite others.
+     *         4: User share to Wechat.
+     *         5: User share to QQ.
+     *         6: User share to Microblog.
+     *         7: User click advertisements.
+     * @param _traceTime uint The time for tracing.
+     */
+    function updateTrace(address _account, uint8 _type, uint _traceTime) public _onlyAdminOrHigher whenNotPaused {
+        require(address(0) != _account);
+        require(0 <= _type && 8 > _type);
+
+        uint day = (_traceTime + 8 hours)/(1 days);
+        uint id = trace_[_account][_type][day].size_;
+
+        trace_[_account][_type][day].type_ = _type;
+        trace_[_account][_type][day].list_[id].type_ = _type;
+        trace_[_account][_type][day].list_[id].id_ = id;
+        trace_[_account][_type][day].list_[id].time_ = _traceTime;
+        trace_[_account][_type][day].list_[id].value_ = threshold_[_type];
+        trace_[_account][_type][day].size_ ++;
+    }
+
+    /**
      * @dev Update the threshold of different types of bonus integrals.
      * @param _type uint8 The types of bonus integrals.
      *         0: User sign up.
      *         1: User submit data.
-     *         2: User check in everyday.
+     *         2: User check in every day.
      *         3: User invite others.
      *         4: User share to Wechat.
      *         5: User share to QQ.
@@ -181,11 +228,57 @@ contract InsuranceIntegral is Integral, Pausable, Delegate {
     }
 
     /**
+     * @dev Get the claiming trace size.
+     * @param _account address The address that will claim the integrals.
+     * @param _type uint8 The types of claiming integrals.
+     *         0: User sign up.
+     *         1: User submit data.
+     *         2: User check in every day.
+     *         3: User invite others.
+     *         4: User share to Wechat.
+     *         5: User share to QQ.
+     *         6: User share to Microblog.
+     *         7: User click advertisements.
+     * @param _time uint The time for searching.
+     * @return The claiming trace size.
+     */
+    function traceSize(address _account, uint8 _type, uint _time) public view whenNotPaused returns (uint) {
+        require(address(0) != _account);
+        require(0 <= _type && 8 > _type);
+        uint day = (_time + 8 hours)/(1 days);
+        return trace_[_account][_type][day].size_;
+    }
+
+    /**
+     * @dev Get the claiming trace info.
+     * @param _account address The address that will claim the integrals.
+     * @param _type uint8 The types of claiming integrals.
+     *         0: User sign up.
+     *         1: User submit data.
+     *         2: User check in every day.
+     *         3: User invite others.
+     *         4: User share to Wechat.
+     *         5: User share to QQ.
+     *         6: User share to Microblog.
+     *         7: User click advertisements.
+     * @param _time uint The time for searching.
+     * @param _id uint The id of recording.
+     * @return The time and value for tracing.
+     */
+    function trace(address _account, uint8 _type, uint _time, uint _id) public view whenNotPaused returns (uint, uint) {
+        require(address(0) != _account);
+        require(0 <= _type && 8 > _type);
+        uint day = (_time + 8 hours)/(1 days);
+        require(trace_[_account][_type][day].size_ > _id);
+        return (trace_[_account][_type][day].list_[_id].time_, trace_[_account][_type][day].list_[_id].value_);
+    }
+
+    /**
      * @dev Get the threshold of different types of bonus integrals.
      * @param _type uint8 The types of bonus integrals.
      *         0: User sign up.
      *         1: User submit data.
-     *         2: User check in everyday.
+     *         2: User check in every day.
      *         3: User invite others.
      *         4: User share to Wechat.
      *         5: User share to QQ.
