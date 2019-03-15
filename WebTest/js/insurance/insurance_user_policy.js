@@ -376,6 +376,15 @@ export default class InsuranceUserPolicy {
         });
     }
 
+    userCheckIn(account, privateKey, key, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        contractInstance.userCheckIn.estimateGas(key, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.userCheckIn.getData(key), error, gasRequired, func);
+        });
+    }
+
     userSize(func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
@@ -814,6 +823,84 @@ export default class InsuranceUserPolicy {
                                 console.log("[Integral] %s: %s", owner, result.toString(10));
                                 if (null != func) {
                                     func(null, owner, result);
+                                }
+                            } else {
+                                handler[notifyError](error, func);
+                            }
+                        });
+                    } else {
+                        handler[notifyError](error, func);
+                    }
+                });
+            } else {
+                handler[notifyError](error, func);
+            }
+        });
+    }
+
+    integralTraceSize(owner, type, time, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.integralTraceSize.estimateGas(owner, type, time, {from: this[account]}, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("=============== Insurance.integralTraceSize(address, uint8, uint) ===============");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("=================================================================================");
+                        // call 'Insurance.integralTraceSize(address, uint8, uint)'
+                        contractInstance.integralTraceSize.call(owner, type, time, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                console.log("[TraceSize] %s", result.toString(10));
+                                if (null != func) {
+                                    func(null, result);
+                                }
+                            } else {
+                                handler[notifyError](error, func);
+                            }
+                        });
+                    } else {
+                        handler[notifyError](error, func);
+                    }
+                });
+            } else {
+                handler[notifyError](error, func);
+            }
+        });
+    }
+
+    integralTrace(owner, type, time, id, func) {
+        let handler = this;
+        let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
+
+        // estimate gas
+        // The MetaMask Web3 object does not support synchronous methods without a callback parameter
+        contractInstance.integralTrace.estimateGas(owner, type, time, id, {from: this[account]}, function(error, result) {
+            if(!error) {
+                let gasRequired = result;
+                // get gas price
+                // MetaMask Web3 object does not support synchronous methods without a callback parameter
+                web3.eth.getGasPrice(function(error, result) {
+                    if(!error) {
+                        console.log("=============== Insurance.integralTrace(address, uint8, uint, uint) ===============");
+                        console.log("from:    ", handler[account]);
+                        console.log("gas:     ", gasRequired);
+                        console.log("gasPrice:", result.toString(10));
+                        console.log("===================================================================================");
+                        // call 'Insurance.integralTrace(address, uint8, uint, uint)'
+                        contractInstance.integralTrace.call(owner, type, time, id, {from: handler[account], gas: gasRequired, gasPrice: result}, function(error, result) { 
+                            if(!error) {
+                                console.log("[Trace] owner(%s), type(%s), time(%s), id(%s), result(%s)", owner, type, time, id, result.toString(10));
+                                if (null != func) {
+                                    func(null, owner, type, time, id, result);
                                 }
                             } else {
                                 handler[notifyError](error, func);
