@@ -50,6 +50,9 @@ contract InsuranceIntegral {
     function mint(address _account, uint _value) public;
     function burn(address _account, uint _value) public;
     function transfer(address _owner, address _to, uint _value) public returns (bool);
+    function updateTrace(address _account, uint8 _type, uint _traceTime) public;
+    function traceSize(address _account, uint8 _type, uint _time) public view returns (uint);
+    function trace(address _account, uint8 _type, uint _time, uint _id) public view returns (uint, uint);
     function balanceOf(address owner) public view returns (uint);
 }
 
@@ -355,6 +358,16 @@ contract InsuranceUserPolicy is Delegate {
         InsuranceUser(userAddr_).remove(_key);
     }
 
+    /** @dev User check in.
+     *  @param _account address The user address.
+     */
+    function userCheckIn(address _account) public _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
+        require(InsuranceUser(userAddr_).exist(1, "", _account));
+        require(0 == InsuranceIntegral(integralAddr_).traceSize(_account, 2, now));
+        InsuranceIntegral(integralAddr_).claim(2, _account);
+        InsuranceIntegral(integralAddr_).updateTrace(_account, 2, now);
+    }
+
     /** @dev Get size of users.
       * @return The size of users.
       */
@@ -528,7 +541,7 @@ contract InsuranceUserPolicy is Delegate {
       * @param _type uint8 The types of bonus integrals.
       *         0: User sign up.
       *         1: User submit data.
-      *         2: User check in everyday.
+      *         2: User check in every day.
       *         3: User invite others.
       *         4: User share to Wechat.
       *         5: User share to QQ.
@@ -576,6 +589,45 @@ contract InsuranceUserPolicy is Delegate {
       */
     function integral(address _owner) external view _checkIntegralAddr returns (uint) {
         return InsuranceIntegral(integralAddr_).balanceOf(_owner);
+    }
+
+    /**@dev Get the claiming trace size.
+      * @param _account address The address that will claim the integrals.
+      * @param _type uint8 The types of claiming integrals.
+      *         0: User sign up.
+      *         1: User submit data.
+      *         2: User check in every day.
+      *         3: User invite others.
+      *         4: User share to Wechat.
+      *         5: User share to QQ.
+      *         6: User share to Microblog.
+      *         7: User click advertisements.
+      * @param _time uint The time for searching.
+      * @return The claiming trace size.
+      */
+    function integralTraceSize(address _account, uint8 _type, uint _time) public view _checkUserAddr _checkIntegralAddr returns (uint) {
+        require(InsuranceUser(userAddr_).exist(1, "", _account));
+        return InsuranceIntegral(integralAddr_).traceSize(_account, _type, _time);
+    }
+
+    /** @dev Get the claiming trace info.
+      * @param _account address The address that will claim the integrals.
+      * @param _type uint8 The types of claiming integrals.
+      *         0: User sign up.
+      *         1: User submit data.
+      *         2: User check in every day.
+      *         3: User invite others.
+      *         4: User share to Wechat.
+      *         5: User share to QQ.
+      *         6: User share to Microblog.
+      *         7: User click advertisements.
+      * @param _time uint The time for searching.
+      * @param _id uint The id of recording.
+      * @return The time and value for tracing.
+      */
+    function integralTrace(address _account, uint8 _type, uint _time, uint _id) public view _checkUserAddr _checkIntegralAddr returns (uint, uint) {
+        require(InsuranceUser(userAddr_).exist(1, "", _account));
+        return InsuranceIntegral(integralAddr_).trace(_account, _type, _time, _id);
     }
 
     /** @dev Get contract related address.
