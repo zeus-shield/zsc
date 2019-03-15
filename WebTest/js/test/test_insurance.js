@@ -909,6 +909,17 @@ export default class TestInsurance {
                     handler[transactionProc](error, result, window.outputUserElement, null);
                 });
                 break;
+            case "CheckIn":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputUserElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.userCheckIn(account, privateKey, params, function(error, result) {
+                    handler[transactionProc](error, result, window.outputUserElement, null);
+                });
+                break;
             case "Size":
                 insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
                 insuranceUserPolicy.userSize(function(error, result) {
@@ -1463,6 +1474,38 @@ export default class TestInsurance {
                 insuranceIntegral.threshold(params, function(error, result) {
                     if (!error) {
                         Output(window.outputIntegralElement, "small", "red", `[Threshold]: ${result}`);
+                    } else {
+                        Output(window.outputIntegralElement, "small", "red", error);
+                    }
+                });
+                break;
+            case "TraceSize":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputIntegralElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                tmps = params.split(",");
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.integralTraceSize(tmps[0], tmps[1], tmps[2], function(error, result) {
+                    if (!error) {
+                        Output(window.outputIntegralElement, "small", "red", `[TraceSize]: ${result}`);
+                    } else {
+                        Output(window.outputIntegralElement, "small", "red", error);
+                    }
+                });
+                break;
+            case "Trace":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputIntegralElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                tmps = params.split(",");
+                insuranceUserPolicy = new InsuranceUserPolicy(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insuranceUserPolicy.integralTrace(tmps[0], tmps[1], tmps[2], tmps[3], function(error, owner, type, time, id, result) {
+                    if (!error) {
+                        Output(window.outputIntegralElement, "small", "red", `[Trace]: owner(${owner}), type(${type}), time(${time}), id(${id}), traceTime(${result[0]}, value(${result[1]})`);
                     } else {
                         Output(window.outputIntegralElement, "small", "red", error);
                     }
