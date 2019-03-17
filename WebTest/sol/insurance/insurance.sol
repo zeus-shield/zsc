@@ -7,6 +7,7 @@ pragma solidity ^0.4.25;
 
 import "../utillib/LibString.sol";
 import "../utillib/LibInt.sol";
+import "../common/pausable.sol";
 import "../common/delegate.sol";
 
 contract InsuranceCompany {
@@ -50,13 +51,15 @@ contract InsuranceIntegral {
     function mint(address _account, uint _value) public;
     function burn(address _account, uint _value) public;
     function transfer(address _owner, address _to, uint _value) public returns (bool);
-    function updateTrace(address _account, uint8 _type, uint _traceTime) public;
-    function traceSize(address _account, uint8 _type, uint _time) public view returns (uint);
-    function trace(address _account, uint8 _type, uint _time, uint _id) public view returns (uint, uint);
-    function balanceOf(address owner) public view returns (uint);
+    function updateThreshold(uint8 _type, uint _threshold) public;
+    function updateCap(uint _newCap) public;
+    function threshold(uint8 _type) public view returns (uint);
+    function cap() public view returns (uint);
+    function totalSupply() public view returns (uint);
+    function balanceOf(address _owner) public view returns (uint);
 }
 
-contract Insurance is Delegate {
+contract Insurance is Pausable, Delegate {
 
     using LibString for *;
     using LibInt for *;
@@ -110,6 +113,11 @@ contract Insurance is Delegate {
 
     modifier _onlyAdminOrHigher() {
         require(checkDelegate(msg.sender, 2));
+        _;
+    }
+
+    modifier _onlyReaderOrHigher() {
+        require(checkDelegate(msg.sender, 3));
         _;
     }
 
@@ -334,7 +342,7 @@ contract Insurance is Delegate {
 
         address account = _userKey.toAddress();
         InsuranceIntegral(integralAddr_).claim(account, 0);
-        InsuranceIntegral(integralAddr_).updateTrace(account, 0, now);
+        // InsuranceIntegral(integralAddr_).updateTrace(account, 0, now);
     }
 
     /** @dev Remove user.
@@ -366,11 +374,11 @@ contract Insurance is Delegate {
     /** @dev User check in.
      *  @param _account address The user address.
      */
-    function userCheckIn(address _account) public _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
+    function userCheckIn(address _account) external _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
         require(InsuranceUser(userAddr_).exist(1, "", _account));
-        require(0 == InsuranceIntegral(integralAddr_).traceSize(_account, 2, now));
+        // require(0 == InsuranceIntegral(integralAddr_).traceSize(_account, 2, now));
         InsuranceIntegral(integralAddr_).claim(_account, 2);
-        InsuranceIntegral(integralAddr_).updateTrace(_account, 2, now);
+        // InsuranceIntegral(integralAddr_).updateTrace(_account, 2, now);
     }
 
     /** @dev Get size of users.
@@ -476,7 +484,7 @@ contract Insurance is Delegate {
 
         address account = _userKey.toAddress();
         InsuranceIntegral(integralAddr_).claim(account, 1);
-        InsuranceIntegral(integralAddr_).updateTrace(account, 1, now);
+        // InsuranceIntegral(integralAddr_).updateTrace(account, 1, now);
     }
 
     /** @dev Add policy's element.
@@ -558,7 +566,7 @@ contract Insurance is Delegate {
       *         6: User share to Microblog.
       *         7: User click advertisements.
       */
-    function integralClaim(address _account, uint8 _type) external _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
+    function integralClaim(address _account, uint8 _type) external whenNotPaused _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
         require(InsuranceUser(userAddr_).exist(1, "", _account));
         InsuranceIntegral(integralAddr_).claim(_account, _type);
     }
@@ -567,7 +575,7 @@ contract Insurance is Delegate {
       * @param _account address The address that will receive the minted integrals.
       * @param _value uint The amount of integrals to mint.
       */
-    function integralMint(address _account, uint _value) external _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
+    function integralMint(address _account, uint _value) external whenNotPaused _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
         require(InsuranceUser(userAddr_).exist(1, "", _account));
         InsuranceIntegral(integralAddr_).mint(_account, _value);
     }
@@ -576,7 +584,7 @@ contract Insurance is Delegate {
       * @param _account address The account whose integrals will be burnt.
       * @param _value uint The amount of integral to be burned.
       */
-    function integralBurn(address _account, uint _value) public _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
+    function integralBurn(address _account, uint _value) external whenNotPaused _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
         require(InsuranceUser(userAddr_).exist(1, "", _account));
         InsuranceIntegral(integralAddr_).burn(_account, _value);
     }
@@ -586,57 +594,71 @@ contract Insurance is Delegate {
       * @param _to address The address to transfer to.
       * @param _value uint The amount to be transferred.
       */
-    function integralTransfer(address _owner, address _to, uint _value) external _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
+    function integralTransfer(address _owner, address _to, uint _value) external whenNotPaused _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
         require(InsuranceUser(userAddr_).exist(1, "", _owner));
         require(InsuranceUser(userAddr_).exist(1, "", _to));
         require(InsuranceIntegral(integralAddr_).transfer(_owner, _to, _value));
+    }
+
+    /** @dev Update the threshold of different types of bonus integrals.
+      * @param _type uint8 The types of bonus integrals.
+      *         0: User sign up.
+      *         1: User submit data.
+      *         2: User check in every day.
+      *         3: User invite others.
+      *         4: User share to Wechat.
+      *         5: User share to QQ.
+      *         6: User share to Microblog.
+      *         7: User click advertisements.
+      * @param _threshold uint The threshold of different types of bonus integrals.
+      */
+    function integralUpdateThreshold(uint8 _type, uint _threshold) external whenNotPaused _onlyOwner _checkIntegralAddr {
+        InsuranceIntegral(integralAddr_).updateThreshold(_type, _threshold);
+    }
+
+    /** @dev Update cap of integrals.
+      * @param _newCap uint The new cap of integrals.
+      */
+    function integralUpdateCap(uint _newCap) external whenNotPaused _onlyOwner _checkIntegralAddr {
+        InsuranceIntegral(integralAddr_).updateCap(_newCap);
+    }
+
+    /** @dev Get the threshold of different types of bonus integrals.
+      * @param _type uint8 The types of bonus integrals.
+      *         0: User sign up.
+      *         1: User submit data.
+      *         2: User check in every day.
+      *         3: User invite others.
+      *         4: User share to Wechat.
+      *         5: User share to QQ.
+      *         6: User share to Microblog.
+      *         7: User click advertisements.
+      * @return The threshold of different types of bonus integrals.
+      */
+    function integralThreshold(uint8 _type) external view whenNotPaused _onlyOwner _checkIntegralAddr returns (uint) {
+        return InsuranceIntegral(integralAddr_).threshold(_type);
+    }
+
+    /** @dev Get the cap of integrals.
+      * @return The cap of integrals.
+      */
+    function integralCap() external view whenNotPaused _onlyOwner _checkIntegralAddr returns (uint) {
+        return InsuranceIntegral(integralAddr_).cap();
+    }
+
+    /** @dev Total number of integrals in existence
+      * @return The total number of integrals.
+      */
+    function integralTotal() external view whenNotPaused _onlyOwner _checkIntegralAddr returns (uint) {
+        return InsuranceIntegral(integralAddr_).totalSupply();
     }
 
     /** @dev Gets the balance of the specified address.
       * @param _owner address The address to query the balance of.
       * @return A uint representing the amount owned by the passed address.
       */
-    function integral(address _owner) external view _checkIntegralAddr returns (uint) {
+    function integralBalanceOf(address _owner) external view whenNotPaused _onlyReaderOrHigher _checkIntegralAddr returns (uint) {
         return InsuranceIntegral(integralAddr_).balanceOf(_owner);
-    }
-
-    /**@dev Get the claiming trace size.
-      * @param _account address The address that will claim the integrals.
-      * @param _type uint8 The types of claiming integrals.
-      *         0: User sign up.
-      *         1: User submit data.
-      *         2: User check in every day.
-      *         3: User invite others.
-      *         4: User share to Wechat.
-      *         5: User share to QQ.
-      *         6: User share to Microblog.
-      *         7: User click advertisements.
-      * @param _time uint The time for searching.
-      * @return The claiming trace size.
-      */
-    function integralTraceSize(address _account, uint8 _type, uint _time) public view _checkUserAddr _checkIntegralAddr returns (uint) {
-        require(InsuranceUser(userAddr_).exist(1, "", _account));
-        return InsuranceIntegral(integralAddr_).traceSize(_account, _type, _time);
-    }
-
-    /** @dev Get the claiming trace info.
-      * @param _account address The address that will claim the integrals.
-      * @param _type uint8 The types of claiming integrals.
-      *         0: User sign up.
-      *         1: User submit data.
-      *         2: User check in every day.
-      *         3: User invite others.
-      *         4: User share to Wechat.
-      *         5: User share to QQ.
-      *         6: User share to Microblog.
-      *         7: User click advertisements.
-      * @param _time uint The time for searching.
-      * @param _id uint The id of recording.
-      * @return The time and value for tracing.
-      */
-    function integralTrace(address _account, uint8 _type, uint _time, uint _id) public view _checkUserAddr _checkIntegralAddr returns (uint, uint) {
-        require(InsuranceUser(userAddr_).exist(1, "", _account));
-        return InsuranceIntegral(integralAddr_).trace(_account, _type, _time, _id);
     }
 
     /** @dev Get contract related address.
