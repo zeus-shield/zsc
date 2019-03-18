@@ -212,6 +212,41 @@ contract InsuranceIntegral is Delegate, Integral {
         
         json = json.concat("]}");
     }
+
+    /**
+     * @dev Get trace size.
+     * @param _account address The account whose integrals will be traced.
+     * @param _time uint The search time of trace(UTC), including TZ and DST.
+     * @param _type uint8 The types of bonus integrals.
+     *         0: User sign up.
+     *         1: User submit data.
+     *         2: User check in every day.
+     *         3: User invite others.
+     *         4: User share to Wechat.
+     *         5: User share to QQ.
+     *         6: User share to Microblog.
+     *         7: User click advertisements.
+     */
+    function traceSize(address _account, uint _time, uint8 _type) public view _onlyReaderOrHigher returns (uint) {
+        // check params
+        require(address(0) != _account);
+        require(0 <= _type && 8 > _type);
+
+        uint size = 0;
+        uint Id = (_time)/(1 days);
+        uint dayId = 0;
+        for (uint i=0; i<traces_[_account].size_; i++) {
+            dayId = traces_[_account].dayIds_[i];
+            if (Id == dayId) {
+                for (uint j=0; j<traces_[_account].days_[dayId].size_; j++) {
+                    if (traces_[_account].days_[dayId].infos_[j].type_ == _type) {
+                        size ++;
+                    }
+                }
+            }
+        }
+
+        return size;
     }
 
     /**
