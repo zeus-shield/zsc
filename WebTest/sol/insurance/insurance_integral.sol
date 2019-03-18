@@ -177,6 +177,44 @@ contract InsuranceIntegral is Delegate, Integral {
     }
 
     /**
+     * @dev Get trace.
+     * @param _account address The account whose integrals will be traced.
+     * @param _startTime uint The start time of trace(UTC), including TZ and DST.
+     * @param _endTime uint The end time of trace(UTC), including TZ and DST.
+     */
+    function trace(address _account, uint _startTime, uint _endTime) public view _onlyReaderOrHigher returns (string) {
+        // check params
+        require(address(0) != _account);
+        require(_startTime <= _endTime);
+
+        uint dayId = 0;
+        uint startId = (_startTime)/(1 days);
+        uint endId = (_endTime)/(1 days);
+        string memory json = "{\"list\":[";
+
+        uint size = traces_[_account].size_;
+        for (uint i=0; i<size; i++) {
+            dayId = traces_[_account].dayIds_[i];
+            if ((startId <= dayId) && (dayId <= endId)) {
+                uint claimType = 1;
+                uint time = 1552882248;
+                uint value = 100;
+                json = json.concat("{", claimType.toKeyValue("type"), ",");
+                json = json.concat(time.toKeyValue("time"), ",");
+                json = json.concat(value.toKeyValue("value"), "},");
+            }
+        }
+
+        uint reserve = 0;
+        json = json.concat("{", reserve.toKeyValue("type"), ",");
+        json = json.concat(reserve.toKeyValue("time"), ",");
+        json = json.concat(reserve.toKeyValue("value"), "}");
+        
+        json = json.concat("]}");
+    }
+    }
+
+    /**
      * @dev Get the threshold of different types of bonus integrals.
      * @param _type uint8 The types of bonus integrals.
      *         0: User sign up.
