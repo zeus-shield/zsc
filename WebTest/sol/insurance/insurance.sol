@@ -51,8 +51,11 @@ contract InsuranceIntegral {
     function mint(address _account, uint _value) public;
     function burn(address _account, uint _value) public;
     function transfer(address _owner, address _to, uint _value) public returns (bool);
+    function addTrace(address _account, uint8 _type, uint _time) public;
     function updateThreshold(uint8 _type, uint _threshold) public;
     function updateCap(uint _newCap) public;
+    function trace(address _account, uint _startTime, uint _endTime) public view returns (string);
+    function traceSize(address _account, uint _time, uint8 _type) public view returns (uint);
     function threshold(uint8 _type) public view returns (uint);
     function cap() public view returns (uint);
     function totalSupply() public view returns (uint);
@@ -621,6 +624,16 @@ contract Insurance is Pausable, Delegate {
       */
     function integralUpdateCap(uint _newCap) external whenNotPaused _onlyOwner _checkIntegralAddr {
         InsuranceIntegral(integralAddr_).updateCap(_newCap);
+    }
+
+    /** @dev Get trace.
+      * @param _account address The account whose integrals will be traced.
+      * @param _startTime uint The start time of trace(UTC), including TZ and DST.
+      * @param _endTime uint The end time of trace(UTC), including TZ and DST.
+      */
+    function integralTrace(address _account, uint _startTime, uint _endTime) external view whenNotPaused _onlyReaderOrHigher _checkUserAddr _checkIntegralAddr returns (string) {
+        require(InsuranceUser(userAddr_).exist(1, "", _account));
+        InsuranceIntegral(integralAddr_).trace(_account, _startTime, _endTime);
     }
 
     /** @dev Get the threshold of different types of bonus integrals.
