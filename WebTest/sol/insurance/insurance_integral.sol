@@ -146,6 +146,20 @@ contract InsuranceIntegral is Delegate, Integral {
         traces_[_account].days_[dayId].infos_[traces_[_account].days_[dayId].size_].time_ = _time;
         traces_[_account].days_[dayId].infos_[traces_[_account].days_[dayId].size_].value_ = threshold_[_type];
         traces_[_account].days_[dayId].size_ ++;
+    /**
+     * @dev Remove trace.
+     * @param _account address The account whose integrals have be traced.
+     */
+    function removeTrace(address _account) public _onlyAdminOrHigher {
+        // check params
+        require(address(0) != _account);
+
+        // loop trace day size
+        for (uint i=0; i<traces_[_account].size_; i++) {
+            traces_[_account].days_[traces_[_account].dayIds_[i]].size_ = 0;
+        }
+
+        traces_[_account].size_ = 0;
     }
 
     /**
