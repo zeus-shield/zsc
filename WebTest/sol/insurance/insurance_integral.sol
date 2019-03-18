@@ -206,7 +206,7 @@ contract InsuranceIntegral is Delegate, Integral {
 
     /**
      * @dev Get trace.
-     * @param _account address The account whose integrals will be traced.
+     * @param _account address The account whose integrals have be traced.
      * @param _startTime uint The start time of trace(UTC), including TZ and DST.
      * @param _endTime uint The end time of trace(UTC), including TZ and DST.
      */
@@ -215,30 +215,35 @@ contract InsuranceIntegral is Delegate, Integral {
         require(address(0) != _account);
         require(_startTime <= _endTime);
 
-        uint dayId = 0;
-        uint startId = (_startTime)/(1 days);
-        uint endId = (_endTime)/(1 days);
+        uint size = 0;
         string memory json = "{\"list\":[";
-
-        uint size = traces_[_account].size_;
-        for (uint i=0; i<size; i++) {
-            dayId = traces_[_account].dayIds_[i];
-            if ((startId <= dayId) && (dayId <= endId)) {
-                uint claimType = 1;
-                uint time = 1552882248;
-                uint value = 100;
-                json = json.concat("{", claimType.toKeyValue("type"), ",");
-                json = json.concat(time.toKeyValue("time"), ",");
-                json = json.concat(value.toKeyValue("value"), "},");
+        // loop trace day size
+        for (uint i=0; i<traces_[_account].size_; i++) {
+            uint dayId = traces_[_account].dayIds_[i];
+            if (((_startTime/(1 days)) <= dayId) && (dayId <= (_endTime/(1 days)))) {
+                // loop trace info size for one day
+                for (uint j=0; j<traces_[_account].days_[dayId].size_; j++) {
+                    uint claimType = traces_[_account].days_[dayId].infos_[j].type_;
+                    uint time = traces_[_account].days_[dayId].infos_[j].time_;
+                    uint value = traces_[_account].days_[dayId].infos_[j].value_;
+                    json = json.concat("{", claimType.toKeyValue("type"), ",");
+                    json = json.concat(time.toKeyValue("time"), ",");
+                    json = json.concat(value.toKeyValue("value"), "},");
+                    size ++;
+                }
             }
         }
 
-        uint reserve = 0;
-        json = json.concat("{", reserve.toKeyValue("type"), ",");
-        json = json.concat(reserve.toKeyValue("time"), ",");
-        json = json.concat(reserve.toKeyValue("value"), "}");
+        if (0 < size) {
+            uint reserve = 0;
+            json = json.concat("{", reserve.toKeyValue("type"), ",");
+            json = json.concat(reserve.toKeyValue("time"), ",");
+            json = json.concat(reserve.toKeyValue("value"), "}");
+        }
         
         json = json.concat("]}");
+
+        return json;
     }
 
     /**
