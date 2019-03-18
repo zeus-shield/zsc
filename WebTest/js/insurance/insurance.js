@@ -358,12 +358,12 @@ export default class Insurance {
         });
     }
 
-    userAdd(account, privateKey, userKey, templateKey, data, func) {
+    userAdd(account, privateKey, userKey, templateKey, data, time, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.userAdd.estimateGas(userKey, templateKey, data, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.userAdd.getData(userKey, templateKey, data), error, gasRequired, func);
+        contractInstance.userAdd.estimateGas(userKey, templateKey, data, time, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.userAdd.getData(userKey, templateKey, data, time), error, gasRequired, func);
         });
     }
 
@@ -376,12 +376,12 @@ export default class Insurance {
         });
     }
 
-    userCheckIn(account, privateKey, key, func) {
+    userCheckIn(account, privateKey, key, time, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.userCheckIn.estimateGas(key, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.userCheckIn.getData(key), error, gasRequired, func);
+        contractInstance.userCheckIn.estimateGas(key, time, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.userCheckIn.getData(key, time), error, gasRequired, func);
         });
     }
 
@@ -580,12 +580,12 @@ export default class Insurance {
         });
     }
 
-    policyAdd(account, privateKey, userKey, templateKey, policyKey, data, func) {
+    policyAdd(account, privateKey, userKey, templateKey, policyKey, data, time, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.policyAdd.estimateGas(userKey, templateKey, policyKey, data, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.policyAdd.getData(userKey, templateKey, policyKey, data), error, gasRequired, func);
+        contractInstance.policyAdd.estimateGas(userKey, templateKey, policyKey, data, time, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.policyAdd.getData(userKey, templateKey, policyKey, data, time), error, gasRequired, func);
         });
     }
 
