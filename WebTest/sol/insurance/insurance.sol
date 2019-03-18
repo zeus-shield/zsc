@@ -329,8 +329,9 @@ contract Insurance is Pausable, Delegate {
       * @param _userKey string The key of user.
       * @param _templateKey string The key of user template.
       * @param _data string The JSON data of user.
+      * @param _time uint The trace time(UTC), including TZ and DST.
       */
-    function userAdd(string _userKey, string _templateKey, string _data) external _onlyAdminOrHigher _checkTemplateAddr _checkUserAddr _checkIntegralAddr {
+    function userAdd(string _userKey, string _templateKey, string _data, uint _time) external _onlyAdminOrHigher _checkTemplateAddr _checkUserAddr _checkIntegralAddr {
         // check param
         require(0 != bytes(_userKey).length);
         require(0 != bytes(_templateKey).length);
@@ -345,7 +346,7 @@ contract Insurance is Pausable, Delegate {
 
         address account = _userKey.toAddress();
         InsuranceIntegral(integralAddr_).claim(account, 0);
-        // InsuranceIntegral(integralAddr_).updateTrace(account, 0, now);
+        InsuranceIntegral(integralAddr_).addTrace(account, 0, _time);
     }
 
     /** @dev Remove user.
@@ -375,13 +376,14 @@ contract Insurance is Pausable, Delegate {
     }
 
     /** @dev User check in.
-     *  @param _account address The user address.
-     */
-    function userCheckIn(address _account) external _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
+      * @param _account address The user address.
+      * @param _time uint The trace time(UTC), including TZ and DST.
+      */
+    function userCheckIn(address _account, uint _time) external _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
         require(InsuranceUser(userAddr_).exist(1, "", _account));
-        // require(0 == InsuranceIntegral(integralAddr_).traceSize(_account, 2, now));
+        require(0 == InsuranceIntegral(integralAddr_).traceSize(_account, _time, 2));
         InsuranceIntegral(integralAddr_).claim(_account, 2);
-        // InsuranceIntegral(integralAddr_).updateTrace(_account, 2, now);
+        InsuranceIntegral(integralAddr_).addTrace(_account, 2, _time);
     }
 
     /** @dev Get size of users.
@@ -465,8 +467,9 @@ contract Insurance is Pausable, Delegate {
       * @param _templateKey string The key of policy template.
       * @param _policyKey string The key of policy.
       * @param _data string The JSON data of policy.
+      * @param _time uint The trace time(UTC), including TZ and DST.
       */
-    function policyAdd(string _userKey, string _templateKey, string _policyKey, string _data) external _onlyAdminOrHigher _checkPolicyAddr _checkIntegralAddr {
+    function policyAdd(string _userKey, string _templateKey, string _policyKey, string _data, uint _time) external _onlyAdminOrHigher _checkPolicyAddr _checkIntegralAddr {
         // check param
         require(0 != bytes(_userKey).length);
         require(0 != bytes(_templateKey).length);
@@ -487,7 +490,7 @@ contract Insurance is Pausable, Delegate {
 
         address account = _userKey.toAddress();
         InsuranceIntegral(integralAddr_).claim(account, 1);
-        // InsuranceIntegral(integralAddr_).updateTrace(account, 1, now);
+        InsuranceIntegral(integralAddr_).addTrace(account, 1, _time);
     }
 
     /** @dev Add policy's element.
