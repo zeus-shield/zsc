@@ -138,14 +138,28 @@ contract InsuranceIntegral is Delegate, Integral {
         require(address(0) != _account);
         require(0 <= _type && 8 > _type);
 
+        bool exist = false;
         uint dayId = (_time)/(1 days);
-        traces_[_account].dayIds_[traces_[_account].size_] = dayId;
-        traces_[_account].size_ ++;
+
+        // check day id exist ?
+        for (uint i=0; i<traces_[_account].size_; i++) {
+            if (dayId == traces_[_account].dayIds_[i]) {
+                exist = true;
+                break;
+            }
+        }
+
+        if (!exist) {
+            traces_[_account].dayIds_[traces_[_account].size_] = dayId;
+            traces_[_account].size_ ++;
+        } 
 
         traces_[_account].days_[dayId].infos_[traces_[_account].days_[dayId].size_].type_ = _type;
         traces_[_account].days_[dayId].infos_[traces_[_account].days_[dayId].size_].time_ = _time;
         traces_[_account].days_[dayId].infos_[traces_[_account].days_[dayId].size_].value_ = threshold_[_type];
         traces_[_account].days_[dayId].size_ ++;
+    }
+
     /**
      * @dev Remove trace.
      * @param _account address The account whose integrals have be traced.
