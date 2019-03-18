@@ -829,6 +829,7 @@ export default class TestInsurance {
         let account = tmps[0];
         let privateKey = tmps[1];
 
+        let time;
         let insurance;
         switch (operation) {
             case "Debug":
@@ -875,7 +876,8 @@ export default class TestInsurance {
 
                 tmps = params.split("#");
                 insurance = new Insurance(this[userPolicyAbi], this[userPolicyContractAddress]);
-                insurance.userAdd(account, privateKey, tmps[0], tmps[1], tmps[2], function(error, result) {
+                time = this[getLocalTime]();
+                insurance.userAdd(account, privateKey, tmps[0], tmps[1], tmps[2], time, function(error, result) {
                     handler[transactionProc](error, result, window.outputUserElement, null);
                 });
                 break;
@@ -897,7 +899,8 @@ export default class TestInsurance {
                 }
 
                 insurance = new Insurance(this[userPolicyAbi], this[userPolicyContractAddress]);
-                insurance.userCheckIn(account, privateKey, params, function(error, result) {
+                time = this[getLocalTime]();
+                insurance.userCheckIn(account, privateKey, params, time, function(error, result) {
                     handler[transactionProc](error, result, window.outputUserElement, null);
                 });
                 break;
@@ -1049,7 +1052,8 @@ export default class TestInsurance {
 
                 tmps = params.split("#");
                 insurance = new Insurance(this[userPolicyAbi], this[userPolicyContractAddress]);
-                insurance.policyAdd(account, privateKey, tmps[0], tmps[1], tmps[2], tmps[3], function(error, result) {
+                let time = this[getLocalTime]();
+                insurance.policyAdd(account, privateKey, tmps[0], tmps[1], tmps[2], tmps[3], time, function(error, result) {
                     handler[transactionProc](error, result, window.outputPolicyElement, null);
                 });
                 break;
@@ -1350,6 +1354,22 @@ export default class TestInsurance {
                 insurance = new Insurance(this[userPolicyAbi], this[userPolicyContractAddress]);
                 insurance.integralUpdateCap(account, privateKey, params, function(error, result) {
                     handler[transactionProc](error, result, window.outputIntegralElement, null);
+                });
+                break;
+            case "Trace":
+                if ((undefined == params) || ("" == params)) {
+                    Output(window.outputIntegralElement, "small", "red", "Please input correct params!");
+                    return;
+                }
+
+                tmps = params.split(",");
+                insurance = new Insurance(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insurance.integralTrace(tmps[0], tmps[1], tmps[2], function(error, result) {
+                    if (!error) {
+                        Output(window.outputIntegralElement, "small", "red", `[Trace]: ${result}`);
+                    } else {
+                        Output(window.outputIntegralElement, "small", "red", error);
+                    }
                 });
                 break;
             case "Threshold":
