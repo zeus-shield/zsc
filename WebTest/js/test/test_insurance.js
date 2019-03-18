@@ -37,6 +37,7 @@ const integralContractAddress = Symbol("integralContractAddress");
 const watch = Symbol("watch");
 
 //private function
+const getLocalTime = Symbol("getLocalTime");
 const getAccount = Symbol("getAccount");
 const transactionProc = Symbol("transactionProc");
 const hexToString = Symbol("hexToString");
@@ -69,6 +70,14 @@ export default class TestInsurance {
         this[watch] = new Watch();
         this[watch].add("integral", "transfer");
         this[watch].add("integral", "approval");
+    }
+
+    [getLocalTime]() {
+        let date = new Date();
+        let utc = parseInt(date.getTime()/1000);
+        let timeZone = date.getTimezoneOffset();
+        let time = utc - timeZone*60;
+        return time;
     }
 
     [getAccount]() { 
