@@ -110,13 +110,42 @@ contract InsuranceIntegral is Delegate, Integral {
     }
 
     /**
-     * @dev Transfer integral to a specified address
+     * @dev Transfer integral to a specified address.
      * @param _owner address The address which owns the integrals.
      * @param _to address The address to transfer to.
      * @param _value uint The amount to be transferred.
      */
     function transfer(address _owner, address _to, uint _value) public _onlyAdminOrHigher returns (bool) {
         return super.transfer(_owner, _to, _value);
+    }
+
+    /**
+     * @dev Add trace.
+     * @param _account address The account whose integrals will be traced.
+     * @param _type uint8 The types of bonus integrals.
+     *         0: User sign up.
+     *         1: User submit data.
+     *         2: User check in every day.
+     *         3: User invite others.
+     *         4: User share to Wechat.
+     *         5: User share to QQ.
+     *         6: User share to Microblog.
+     *         7: User click advertisements.
+     * @param _time uint The trace time(UTC), including TZ and DST.
+     */
+    function addTrace(address _account, uint8 _type, uint _time) public _onlyAdminOrHigher {
+        // check params
+        require(address(0) != _account);
+        require(0 <= _type && 8 > _type);
+
+        uint dayId = (_time)/(1 days);
+        traces_[_account].dayIds_[traces_[_account].size_] = dayId;
+        traces_[_account].size_ ++;
+
+        traces_[_account].days_[dayId].infos_[traces_[_account].days_[dayId].size_].type_ = _type;
+        traces_[_account].days_[dayId].infos_[traces_[_account].days_[dayId].size_].time_ = _time;
+        traces_[_account].days_[dayId].infos_[traces_[_account].days_[dayId].size_].value_ = threshold_[_type];
+        traces_[_account].days_[dayId].size_ ++;
     }
 
     /**
