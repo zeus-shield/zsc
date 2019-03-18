@@ -52,6 +52,7 @@ contract InsuranceIntegral {
     function burn(address _account, uint _value) public;
     function transfer(address _owner, address _to, uint _value) public returns (bool);
     function addTrace(address _account, uint8 _type, uint _time) public;
+    function removeTrace(address _account) public;
     function updateThreshold(uint8 _type, uint _threshold) public;
     function updateCap(uint _newCap) public;
     function trace(address _account, uint _startTime, uint _endTime) public view returns (string);
@@ -365,6 +366,9 @@ contract Insurance is Pausable, Delegate {
             InsuranceIntegral(integralAddr_).burn(account, value);
         }
 
+        // remove integral trace
+        InsuranceIntegral(integralAddr_).removeTrace(account);
+
         // remove policies
         uint size = policyKeys_[_key].sum_;
         for (uint i=0; i<size; i++) {
@@ -636,7 +640,7 @@ contract Insurance is Pausable, Delegate {
       */
     function integralTrace(address _account, uint _startTime, uint _endTime) external view whenNotPaused _onlyReaderOrHigher _checkUserAddr _checkIntegralAddr returns (string) {
         require(InsuranceUser(userAddr_).exist(1, "", _account));
-        InsuranceIntegral(integralAddr_).trace(_account, _startTime, _endTime);
+        return InsuranceIntegral(integralAddr_).trace(_account, _startTime, _endTime);
     }
 
     /** @dev Get the threshold of different types of bonus integrals.
