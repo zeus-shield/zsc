@@ -194,14 +194,14 @@ contract InsurancePolicy is Delegate {
       *          -3: no authority
       *          -9: inner error    
       */
-    function getPolicyMgr() external view returns (int, address) {
-        // check authority
-        if (!checkDelegate(msg.sender, 2)) {
-            return (-3, address(0));
-        }
+    // function getPolicyMgr() external view returns (int, address) {
+    //     // check authority
+    //     if (!checkDelegate(msg.sender, 2)) {
+    //         return (-3, address(0));
+    //     }
 
-        return (0, policyMgr_);
-    }
+    //     return (0, policyMgr_);
+    // }
 
     /** [desc] Get policy info by key.
       * [param] _type: info type (0: detail, 1: brief).
