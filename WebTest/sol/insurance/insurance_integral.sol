@@ -5,30 +5,40 @@
 
 pragma solidity ^0.4.25;
 
+import "../utillib/LibString.sol";
+import "../utillib/LibInt.sol";
 import "../common/delegate.sol";
 import "../common/integral.sol";
 
 contract InsuranceIntegral is Delegate, Integral {
-    uint private cap_;
-    mapping (uint8 => uint) private threshold_;
 
-    /** @dev Trace info */
+    using LibString for *;
+    using LibInt for *;
+
     struct Trace {
         uint8 type_;
-        uint id_;
         uint time_;
         uint value_;
     }
 
-    /** @dev Trace for one day */
     struct TraceDay {
-        uint8 type_;
         uint size_;
-        mapping (uint => Trace) list_;
+        /** @dev id => trace info */
+        mapping (uint => Trace) infos_;
     }
 
-    /** @dev address => bonus type => day index => TraceDay */
-    mapping (address => mapping (uint8 => mapping (uint => TraceDay))) private trace_;
+    struct TraceList {
+        /** @dev day size */
+        uint size_;
+        /** @dev id => day id */
+        mapping (uint => uint) dayIds_;
+        /** @dev day id => day info */
+        mapping (uint => TraceDay) days_;
+    }
+
+    uint private cap_;
+    mapping (uint8 => uint) private threshold_;
+    mapping (address => TraceList) private traces_;
 
     modifier _onlyAdminOrHigher() {
         require(checkDelegate(msg.sender, 2));
