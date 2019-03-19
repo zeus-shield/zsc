@@ -347,8 +347,8 @@ export default class TestInsurance {
         }
     }
 
-    pause(cmd) {
-        console.log('TestInsurance.pasue(%s)', cmd);
+    pause(contract, cmd) {
+        console.log('TestInsurance.pasue(%s, %s)', contract, cmd);
         let handler = this;
         let tmps = this[getAccount]();
         if (0 == tmps[0]) {
@@ -361,19 +361,31 @@ export default class TestInsurance {
         let insurance;
         switch (cmd) {
             case "Pause":
-                insurance = new Insurance(this[abi], this[contractAddress]);
+                if ("Insurance" == contract) {
+                    insurance = new Insurance(this[abi], this[contractAddress]);
+                } else {
+                    insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
+                }
                 insurance.pause(account, privateKey, function(error, result) {
                     handler[transactionProc](error, result, window.outputSetupPauseElement);
                 });
                 break;
             case "UnPause":
-                insurance = new Insurance(this[abi], this[contractAddress]);
+                if ("Insurance" == contract) {
+                    insurance = new Insurance(this[abi], this[contractAddress]);
+                } else {
+                    insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
+                }
                 insurance.unpause(account, privateKey, function(error, result) {
                     handler[transactionProc](error, result, window.outputSetupPauseElement);
                 });
                 break;
             case "Paused":
-                insurance = new Insurance(this[abi], this[contractAddress]);
+                if ("Insurance" == contract) {
+                    insurance = new Insurance(this[abi], this[contractAddress]);
+                } else {
+                    insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
+                }
                 insurance.paused(function(error, result) {
                     if (!error) {
                         Output(window.outputSetupPauseElement, 'small', 'red', `[Paused]: ${result}`);
@@ -1506,7 +1518,7 @@ export default class TestInsurance {
                 this.setup(para1, para2);
                 break;
             case "Pause":
-                this.pause(para1);
+                this.pause(para1, para2);
                 break;
             case 'Delegate':
                 this.delegate(para1, para2);
