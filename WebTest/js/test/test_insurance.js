@@ -700,7 +700,7 @@ export default class TestInsurance {
         let insurance;
         switch (cmd) {
             case "Update":
-                insurance = new Insurance(this[abi], this[contractAddress]);
+                insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
                 // insurance.templateUpdate(account, privateKey, "UI_User_PhoneSignIn", "手机号&密码", function(error, result) {
                 //     handler[transactionProc](error, result, window.outputTemplateElement, function() {
                 //         insurance.templateUpdate(account, privateKey, "UI_User_EmailSignIn", "邮箱&密码", function(error, result) {
@@ -770,7 +770,7 @@ export default class TestInsurance {
         let insurance;
         switch (operation) {
             case "Debug":
-                insurance = new Insurance(this[abi], this[contractAddress]);
+                insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
                 insurance.templateSize(function(error, result) {
                     if (!error) {
                         let sum = parseInt(result.toString(10));
@@ -823,7 +823,7 @@ export default class TestInsurance {
                     return;
                 }
 
-                insurance = new Insurance(this[abi], this[contractAddress]);
+                insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
                 insurance.templateUpdate(account, privateKey, key, data, function(error, result) {
                     handler[transactionProc](error, result, window.outputTemplateElement, null);
                 });
@@ -834,13 +834,13 @@ export default class TestInsurance {
                     return;
                 }
 
-                insurance = new Insurance(this[abi], this[contractAddress]);
+                insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
                 insurance.templateRemove(account, privateKey, params, function(error, result) {
                     handler[transactionProc](error, result, window.outputTemplateElement, null);
                 });
                 break;
             case "Size":
-                insurance = new Insurance(this[abi], this[contractAddress]);
+                insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
                 insurance.templateSize(function(error, result) {
                     if (!error) {
                         Output(window.outputTemplateElement, "small", "red", `[Size]: ${result.toString(10)}`);
@@ -871,7 +871,7 @@ export default class TestInsurance {
                     return;
                 }
 
-                insurance = new Insurance(this[abi], this[contractAddress]);
+                insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
                 insurance.templateGetById(params, function(error, id, result) {
                     if (!error) {
                         let errorStr = handler[getErrorStr](result[0].toString(10));
