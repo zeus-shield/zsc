@@ -400,38 +400,6 @@ export default class TestInsurance {
         }
     }
 
-    [companyBatch](handler, account, privateKey, cmd) {
-        let insurance;
-        switch (cmd) {
-            case "Update":
-                insurance = new Insurance(this[abi], this[contractAddress]);
-                insurance.companyUpdate(account, privateKey, "PingAn", "Life#Auto#Accident#Unemployment", function(error, result) {
-                    handler[transactionProc](error, result, window.outputCompanyElement, function() {
-                        insurance.companyUpdate(account, privateKey, "CPIC", "Accident#Unemployment", function(error, result) {
-                            handler[transactionProc](error, result, window.outputCompanyElement, function() {
-                                insurance.companyUpdate(account, privateKey, "AIA", "Unemployment", function(error, result) {
-                                    handler[transactionProc](error, result, window.outputCompanyElement, function() {
-                                        // insurance.companyUpdate(account, privateKey, "DB_Policy_CPIC_Accident", "Key#UserKey#Insurant#Passport#Amount#StartTime#EndTime#Vehicle#Country#City#Description", function(error, result) {
-                                        //     handler[transactionProc](error, result, window.outputCompanyElement, function() {
-                                        //         insurance.companyUpdate(account, privateKey, "DB_Policy_AIA_Unemployment", "Key#UserKey#Insurant#Sex#Age#ID#Amount#StartTime#Period#City#Company#Description", function(error, result) {
-                                        //             handler[transactionProc](error, result, window.outputCompanyElement, function() {                   
-                                        //             });
-                                        //          });          
-                                        //     });
-                                        //  });          
-                                    });
-                                 });
-                            });
-                        });
-                    });
-                });
-                break;
-            default:
-                Output(window.outputCompanyElement, "small", "red", "Command Error!");
-                break;
-        }
-    }
-
     [getDelegateInstance](contract) {
         let delegate = null;
         if ("InsuranceCompany" == contract) {
@@ -546,6 +514,38 @@ export default class TestInsurance {
         }
     }
 
+    [companyBatch](handler, account, privateKey, cmd) {
+        let insurance;
+        switch (cmd) {
+            case "Update":
+                insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
+                insurance.companyUpdate(account, privateKey, "PingAn", "Life#Auto#Accident#Unemployment", function(error, result) {
+                    handler[transactionProc](error, result, window.outputCompanyElement, function() {
+                        insurance.companyUpdate(account, privateKey, "CPIC", "Accident#Unemployment", function(error, result) {
+                            handler[transactionProc](error, result, window.outputCompanyElement, function() {
+                                insurance.companyUpdate(account, privateKey, "AIA", "Unemployment", function(error, result) {
+                                    handler[transactionProc](error, result, window.outputCompanyElement, function() {
+                                        // insurance.companyUpdate(account, privateKey, "DB_Policy_CPIC_Accident", "Key#UserKey#Insurant#Passport#Amount#StartTime#EndTime#Vehicle#Country#City#Description", function(error, result) {
+                                        //     handler[transactionProc](error, result, window.outputCompanyElement, function() {
+                                        //         insurance.companyUpdate(account, privateKey, "DB_Policy_AIA_Unemployment", "Key#UserKey#Insurant#Sex#Age#ID#Amount#StartTime#Period#City#Company#Description", function(error, result) {
+                                        //             handler[transactionProc](error, result, window.outputCompanyElement, function() {                   
+                                        //             });
+                                        //          });          
+                                        //     });
+                                        //  });          
+                                    });
+                                 });
+                            });
+                        });
+                    });
+                });
+                break;
+            default:
+                Output(window.outputCompanyElement, "small", "red", "Command Error!");
+                break;
+        }
+    }
+
     company(operation, params) {
         console.log("TestInsurance.company(%s, %s)", operation, params);
 
@@ -568,7 +568,7 @@ export default class TestInsurance {
         let insurance;
         switch (operation) {
             case "Debug":
-                insurance = new Insurance(this[abi], this[contractAddress]);
+                insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
                 insurance.companySize(function(error, result) {
                     if (!error) {
                         let sum = parseInt(result.toString(10));
@@ -621,7 +621,7 @@ export default class TestInsurance {
                     return;
                 }
 
-                insurance = new Insurance(this[abi], this[contractAddress]);
+                insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
                 insurance.companyUpdate(account, privateKey, key, data, function(error, result) {
                     handler[transactionProc](error, result, window.outputCompanyElement, null);
                 });
@@ -632,13 +632,13 @@ export default class TestInsurance {
                     return;
                 }
 
-                insurance = new Insurance(this[abi], this[contractAddress]);
+                insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
                 insurance.companyRemove(account, privateKey, params, function(error, result) {
                     handler[transactionProc](error, result, window.outputCompanyElement, null);
                 });
                 break;
             case "Size":
-                insurance = new Insurance(this[abi], this[contractAddress]);
+                insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
                 insurance.companySize(function(error, result) {
                     if (!error) {
                         Output(window.outputCompanyElement, "small", "red", `[Size]: ${result.toString(10)}`);
@@ -653,7 +653,7 @@ export default class TestInsurance {
                     return;
                 }
 
-                insurance = new Insurance(this[abi], this[contractAddress]);
+                insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
                 insurance.companyGetByKey(params, function(error, result) {
                     if (!error) {
                         let errorStr = handler[getErrorStr](result[0].toString(10));
@@ -669,7 +669,7 @@ export default class TestInsurance {
                     return;
                 }
 
-                insurance = new Insurance(this[abi], this[contractAddress]);
+                insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
                 insurance.companyGetById(params, function(error, id, result) {
                     if (!error) {
                         let errorStr = handler[getErrorStr](result[0].toString(10));
