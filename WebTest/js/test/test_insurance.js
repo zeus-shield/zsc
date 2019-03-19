@@ -910,7 +910,7 @@ export default class TestInsurance {
         let insurance;
         switch (operation) {
             case "Debug":
-                insurance = new Insurance(this[abi], this[contractAddress]);
+                insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
                 insurance.userSize(function(error, result) {
                     if (!error) {
                         let sum = parseInt(result.toString(10));
@@ -982,7 +982,7 @@ export default class TestInsurance {
                 });
                 break;
             case "Size":
-                insurance = new Insurance(this[abi], this[contractAddress]);
+                insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
                 insurance.userSize(function(error, result) {
                     if (!error) {
                         Output(window.outputUserElement, "small", "red", `[Size]: ${result.toString(10)}`);
@@ -1031,7 +1031,7 @@ export default class TestInsurance {
                 }
 
                 tmps = params.split(",");
-                insurance = new Insurance(this[abi], this[contractAddress]);
+                insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);       
                 insurance.userGetById(tmps[0], tmps[1], function(error, id, result) {
                     if (!error) {
                         let errorStr = handler[getErrorStr](result[0].toString(10));
@@ -1245,6 +1245,7 @@ export default class TestInsurance {
         let privateKey = tmps[1];
 
         let insurance;
+        let insuranceExtension;
         let insuranceIntegral;
         switch (operation) {
             case "Debug":
@@ -1255,7 +1256,8 @@ export default class TestInsurance {
                         insurance.integralTotal(function(error, result) {
                             if (!error) {
                                 let total = parseInt(result.toString(10));
-                                insurance.userSize(function(error, result) {
+                                insuranceExtension = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
+                                insuranceExtension.userSize(function(error, result) {
                                     if (!error) {
                                         let sum = parseInt(result.toString(10));
                                         let logs = new Array(sum + 1);
@@ -1270,7 +1272,7 @@ export default class TestInsurance {
                                         }
 
                                         for (let i=0; i<sum; i++) {
-                                            insurance.userGetById(params, i, function(error, id, result) {
+                                            insuranceExtension.userGetById(params, i, function(error, id, result) {
                                                 if (!error) {
 
                                                     let json = JSON.parse(result[1]);
