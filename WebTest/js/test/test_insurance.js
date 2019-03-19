@@ -31,6 +31,9 @@ const integralContractAddress = Symbol("integralContractAddress");
 const abi = Symbol("abi");
 const contractAddress = Symbol("contractAddress");
 
+const extensionAbi = Symbol("extensionAbi");
+const extensionContractAddress = Symbol("extensionContractAddress");
+
 const watch = Symbol("watch");
 
 //private function
@@ -54,6 +57,7 @@ export default class TestInsurance {
         this[policyAbi] = [];
         this[integralAbi] = [];
         this[abi] = [];
+        this[extensionAbi] = [];
 
         this[companyContractAddress] = "";
         this[templateContractAddress] = "";
@@ -61,6 +65,7 @@ export default class TestInsurance {
         this[policyContractAddress] = "";
         this[integralContractAddress] = "";
         this[contractAddress] = "";
+        this[extensionContractAddress] = [];
 
         this[watch] = new Watch();
         this[watch].add("integral", "transfer");
@@ -170,7 +175,9 @@ export default class TestInsurance {
         } else if ("InsuranceIntegral" == contractName) {
             elementId = window.outputDeployIntegralElement;
         } else if ("Insurance" == contractName) {
-            elementId = window.outputDeployMainElement;
+            elementId = window.outputDeployElement;
+        } else if ("InsuranceExtension" == contractName) {
+            elementId = window.outputDeployExtensionElement;
         } else {
             console.log("Contract name Error!");
             return;
@@ -233,6 +240,9 @@ export default class TestInsurance {
         } else if ("Insurance" == contractName) {
             this[abi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
             contract = web3.eth.contract(this[abi]);
+        } else if ("InsuranceExtension" == contractName) {
+            this[extensionAbi] = JSON.parse(this[compiledJson].contracts[fullName].abi);
+            contract = web3.eth.contract(this[extensionAbi]);
         } else {
             console.log("Contract name Error!");
             return;
@@ -260,6 +270,8 @@ export default class TestInsurance {
                                 handler[integralContractAddress] = result.contractAddress;
                             } else if ("Insurance" == contractName) {
                                 handler[contractAddress] = result.contractAddress;
+                            } else if ("InsuranceExtension" == contractName) {
+                                handler[extensionContractAddress] = result.contractAddress;
                             } else {
                                 console.log("Contract name Error!");
                                 return;
@@ -407,6 +419,8 @@ export default class TestInsurance {
             delegate = new Delegate(this[abi], this[contractAddress]);
         } else if ("InsuranceIntegral" == contract) {
             delegate = new Delegate(this[integralAbi], this[integralContractAddress]);
+        } else if ("InsuranceExtension" == contract) {
+            delegate = new Delegate(this[extensionAbi], this[extensionContractAddress]);
         } else {}
 
         return delegate;       
