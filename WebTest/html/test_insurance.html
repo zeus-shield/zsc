@@ -51,8 +51,9 @@
                 }
 
                 document.getElementById("b_pause").onclick = function() {
-                    let pause = document.getElementById("s_pause").value;
-                    main("Insurance", "Pause", pause, "");
+                    let contract = document.getElementById("s_pause_contract").value;
+                    let op = document.getElementById("s_pause_op").value;
+                    main("Insurance", "Pause", contract, op);
                 }
 
                 document.getElementById("b_delegate_debug").onclick = function() {
@@ -266,7 +267,11 @@
                         <option value="InsuranceExtension">InsuranceExtension</option>
                     </select>
                     <button type="button" id="b_get_sub_contract_addr">GetSubContractAddress</button><br>
-                    <select id="s_pause">
+                    <select id="s_pause_contract">
+                        <option value="Insurance">Insurance</option>
+                        <option value="InsuranceExtension">InsuranceExtension</option>
+                    </select>
+                    <select id="s_pause_op">
                         <option value="Paused">Paused</option>
                         <option value="UnPause">UnPause</option>
                         <option value="Pause">Pause</option>
