@@ -17,8 +17,8 @@
                 window.outputDeployUserElement = "p_output_deploy_user";
                 window.outputDeployPolicyElement = "p_output_deploy_policy";
                 window.outputDeployIntegralElement = "p_output_deploy_integral";
-                window.outputDeployElement = "p_output_deploy_policy";
-                window.outputDeployExtensionElement = "p_output_deploy_extension_policy";
+                window.outputDeployElement = "p_output_deploy";
+                window.outputDeployExtensionElement = "p_output_deploy_extension";
                 window.outputSetupPauseElement = "p_output_setup_pause";
                 window.outputDelegateReadElement = "p_output_delegate_read";
                 window.outputDelegateWriteElement = "p_output_delegate_write";
@@ -239,14 +239,14 @@
                         <label id="l_insurance" for="f_insurance">Upload</label>
                         <input type="file" id="f_insurance" onchange="file('Insurance', 'Insurance', this)" />
                         <button type="button" id="b_deploy" onclick="main('Insurance', 'Deploy', 'Insurance', '')">Deploy</button>
-                        <p id="p_output_deploy_policy"></p>
+                        <p id="p_output_deploy"></p>
                     </div>
                     <div id="element">
                         <h5>Deploy [insurance_extension]</h5>
                         <label id="l_insurance_extension" for="f_insurance_extension">Upload</label>
                         <input type="file" id="f_insurance_extension" onchange="file('Insurance', 'InsuranceExtension', this)" />
                         <button type="button" id="b_deploy" onclick="main('Insurance', 'Deploy', 'InsuranceExtension', '')">Deploy</button>
-                        <p id="p_output_deploy_extension_policy"></p>
+                        <p id="p_output_deploy_extension"></p>
                     </div>
                     <div style="clear:left"></div>
                 </div>
@@ -257,11 +257,13 @@
                     <h4>3. Setup & Pause</h4>
                     <select id="s_setup_contract">
                         <option value="Insurance">Insurance</option>
+                        <option value="InsuranceExtension">InsuranceExtension</option>
                     </select>
                     <button type="button" id="b_setup">Setup</button><br>
 
                     <select id="s_get_sub_contract_addr">
                         <option value="Insurance">Insurance</option>
+                        <option value="InsuranceExtension">InsuranceExtension</option>
                     </select>
                     <button type="button" id="b_get_sub_contract_addr">GetSubContractAddress</button><br>
                     <select id="s_pause">
