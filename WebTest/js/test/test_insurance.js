@@ -287,7 +287,7 @@ export default class TestInsurance {
         let handler = this;
         let tmps = this[getAccount]();
         if (0 == tmps[0]) {
-            Output(window.outputSetupElement, 'small', 'red', "No channnel(idle)!");
+            Output(window.outputSetupPauseElement, 'small', 'red', "No channnel(idle)!");
             return;
         }
 
@@ -299,10 +299,10 @@ export default class TestInsurance {
                 if ("Insurance" == contractName) {
                     let insurance = new Insurance(this[userPolicyAbi], this[userPolicyContractAddress]);
                     insurance.setup(account, privateKey, this[companyContractAddress], this[templateContractAddress], this[userContractAddress], this[policyContractAddress], this[integralContractAddress], function(error, result) {
-                        handler[transactionProc](error, result, window.outputSetupElement);
+                        handler[transactionProc](error, result, window.outputSetupPauseElement);
                     });
                 } else {
-                    Output(window.outputSetupElement, 'small', 'red', "Contract name Error!");
+                    Output(window.outputSetupPauseElement, 'small', 'red', "Contract name Error!");
                 }
                 break;
             case "Get":
@@ -310,17 +310,58 @@ export default class TestInsurance {
                     let insurance = new Insurance(this[userPolicyAbi], this[userPolicyContractAddress]);
                     insurance.getAddr(function(error, result) {
                         if (!error) {
-                            Output(window.outputSetupElement, 'small', 'red', `[Address]: company(${result[0]}), template(${result[1]}), user(${result[2]}), policy(${result[3]}), integral(${result[4]}`);
+                            Output(window.outputSetupPauseElement, 'small', 'red', `[Address]: company(${result[0]}), template(${result[1]}), user(${result[2]}), policy(${result[3]}), integral(${result[4]}`);
                         } else {
-                            Output(window.outputSetupElement, 'small', 'red', error);
+                            Output(window.outputSetupPauseElement, 'small', 'red', error);
                         }
                     });
                 } else {
-                    Output(window.outputSetupElement, 'small', 'red', "Contract name Error!");
+                    Output(window.outputSetupPauseElement, 'small', 'red', "Contract name Error!");
                 }
                 break;
             default:
-                Output(window.outputSetupElement, 'small', 'red', "Command Error!");
+                Output(window.outputSetupPauseElement, 'small', 'red', "Command Error!");
+                break;
+        }
+    }
+
+    pause(cmd) {
+        console.log('TestInsurance.pasue(%s)', cmd);
+        let handler = this;
+        let tmps = this[getAccount]();
+        if (0 == tmps[0]) {
+            Output(window.outputSetupPauseElement, 'small', 'red', "No channnel(idle)!");
+            return;
+        }
+
+        let account = tmps[0];
+        let privateKey = tmps[1];
+        let insurance;
+        switch (cmd) {
+            case "Pause":
+                insurance = new Insurance(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insurance.pause(account, privateKey, function(error, result) {
+                    handler[transactionProc](error, result, window.outputSetupPauseElement);
+                });
+                break;
+            case "UnPause":
+                insurance = new Insurance(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insurance.unpause(account, privateKey, function(error, result) {
+                    handler[transactionProc](error, result, window.outputSetupPauseElement);
+                });
+                break;
+            case "Paused":
+                insurance = new Insurance(this[userPolicyAbi], this[userPolicyContractAddress]);
+                insurance.paused(function(error, result) {
+                    if (!error) {
+                        Output(window.outputSetupPauseElement, 'small', 'red', `[Paused]: ${result}`);
+                    } else {
+                        Output(window.outputSetupPauseElement, 'small', 'red', error);
+                    }
+                });
+                break;
+            default:
+                Output(window.outputSetupPauseElement, 'small', 'red', "Command Error!");
                 break;
         }
     }
@@ -1439,6 +1480,9 @@ export default class TestInsurance {
                 break;
             case "Setup":
                 this.setup(para1, para2);
+                break;
+            case "Pause":
+                this.pause(para1);
                 break;
             case 'Delegate':
                 this.delegate(para1, para2);
