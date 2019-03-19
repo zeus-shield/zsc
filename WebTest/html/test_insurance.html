@@ -18,7 +18,7 @@
                 window.outputDeployPolicyElement = "p_output_deploy_policy";
                 window.outputDeployIntegralElement = "p_output_deploy_integral";
                 window.outputDeployMainElement = "p_output_deploy_main_policy";
-                window.outputSetupElement = "p_output_setup";
+                window.outputSetupPauseElement = "p_output_setup_pause";
                 window.outputDelegateReadElement = "p_output_delegate_read";
                 window.outputDelegateWriteElement = "p_output_delegate_write";
                 window.outputCompanyElement = "p_output_company";
@@ -47,6 +47,11 @@
                 document.getElementById("b_get_sub_contract_addr").onclick = function() {
                     let contract = document.getElementById("s_get_sub_contract_addr").value;
                     main("Insurance", "Setup", "Get", contract);
+                }
+
+                document.getElementById("b_pause").onclick = function() {
+                    let pause = document.getElementById("s_pause").value;
+                    main("Insurance", "Pause", pause, "");
                 }
 
                 document.getElementById("b_delegate_debug").onclick = function() {
@@ -241,7 +246,7 @@
 
             <p>
                 <div class="well" id="block">
-                    <h4>3. Setup</h4>
+                    <h4>3. Setup & Pause</h4>
                     <select id="s_setup_contract">
                         <option value="Insurance">Insurance</option>
                     </select>
@@ -250,8 +255,14 @@
                     <select id="s_get_sub_contract_addr">
                         <option value="Insurance">Insurance</option>
                     </select>
-                    <button type="button" id="b_get_sub_contract_addr">GetSubContractAddress</button>
-                    <p id="p_output_setup"></p>
+                    <button type="button" id="b_get_sub_contract_addr">GetSubContractAddress</button><br>
+                    <select id="s_pause">
+                        <option value="Paused">Paused</option>
+                        <option value="UnPause">UnPause</option>
+                        <option value="Pause">Pause</option>
+                    </select>
+                    <button type="button" id="b_pause">Submit</button><br>
+                    <p id="p_output_setup_pause"></p>
                 </div>
             </p>
 
