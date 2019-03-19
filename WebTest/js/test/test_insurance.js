@@ -9,6 +9,7 @@ import Delegate from "../common/delegate.js";
 import Watch from "../common/watch.js";
 import InsuranceIntegral from "../insurance/insurance_integral.js";
 import Insurance from "../insurance/insurance.js";
+import InsuranceExtension from "../insurance/insurance_extension.js";
 
 //private member
 const compiledJson = Symbol("compiledJson");
@@ -308,6 +309,11 @@ export default class TestInsurance {
                     insurance.setup(account, privateKey, this[companyContractAddress], this[templateContractAddress], this[userContractAddress], this[policyContractAddress], this[integralContractAddress], function(error, result) {
                         handler[transactionProc](error, result, window.outputSetupPauseElement);
                     });
+                } else if ("InsuranceExtension" == contractName) {
+                    let insuranceExtension = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
+                    insuranceExtension.setup(account, privateKey, this[companyContractAddress], this[templateContractAddress], this[userContractAddress], this[policyContractAddress], this[integralContractAddress], function(error, result) {
+                        handler[transactionProc](error, result, window.outputSetupPauseElement);
+                    });
                 } else {
                     Output(window.outputSetupPauseElement, 'small', 'red', "Contract name Error!");
                 }
@@ -316,6 +322,15 @@ export default class TestInsurance {
                 if ("Insurance" == contractName) {
                     let insurance = new Insurance(this[abi], this[contractAddress]);
                     insurance.getAddr(function(error, result) {
+                        if (!error) {
+                            Output(window.outputSetupPauseElement, 'small', 'red', `[Address]: company(${result[0]}), template(${result[1]}), user(${result[2]}), policy(${result[3]}), integral(${result[4]}`);
+                        } else {
+                            Output(window.outputSetupPauseElement, 'small', 'red', error);
+                        }
+                    });
+                } else if ("InsuranceExtension" == contractName) {
+                    let insuranceExtension = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
+                    insuranceExtension.getAddr(function(error, result) {
                         if (!error) {
                             Output(window.outputSetupPauseElement, 'small', 'red', `[Address]: company(${result[0]}), template(${result[1]}), user(${result[2]}), policy(${result[3]}), integral(${result[4]}`);
                         } else {
