@@ -200,7 +200,7 @@ contract InsuranceIntegral is Delegate, Integral {
      * @param _newCap uint The new cap of integrals.
      */
     function updateCap(uint _newCap) public _onlyAdminOrHigher {
-        require(_newCap > totalSupply());
+        require(_newCap >= totalSupply());
         cap_ = _newCap;
     }
 
