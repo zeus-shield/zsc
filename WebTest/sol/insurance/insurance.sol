@@ -204,7 +204,7 @@ contract Insurance is Pausable, Delegate {
       * @param _policyAddr address The address of policy contract.
       * @param _integralAddr address The address of integral contract.
       */
-    function setup(address _companyAddr, address _templateAddr, address _userAddr, address _policyAddr, address _integralAddr) external _onlyOwner {
+    function setup(address _companyAddr, address _templateAddr, address _userAddr, address _policyAddr, address _integralAddr) external whenNotPaused _onlyOwner {
         // check params
         require(address(0) != _companyAddr);
         require(address(0) != _templateAddr);
@@ -216,6 +216,24 @@ contract Insurance is Pausable, Delegate {
         userAddr_ = _userAddr;
         policyAddr_ = _policyAddr;
         integralAddr_ = _integralAddr;
+    }
+
+    /** @dev called by the owner to pause, triggers stopped state
+      */
+    function pause() public whenNotPaused _onlyOwner {
+        super.pause();
+    }
+
+    /** @dev called by the owner to unpause, returns to normal state
+      */
+    function unpause() public whenPaused _onlyOwner {
+        super.unpause();
+    }
+
+    /** @return true if the contract is paused, false otherwise.
+      */
+    function paused() public view _onlyOwner returns (bool) {
+        return super.paused();
     }
 
     /** @dev Update company.
@@ -684,7 +702,7 @@ contract Insurance is Pausable, Delegate {
     /** @dev Get contract related address.
       * @return The addresses of contract related.
       */
-    function getAddr() external view _onlyOwner returns (address, address, address, address, address) {
+    function getAddr() external view whenNotPaused _onlyOwner returns (address, address, address, address, address) {
         return (companyAddr_, templateAddr_, userAddr_, policyAddr_, integralAddr_);
     }
 }
