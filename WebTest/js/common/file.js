@@ -64,10 +64,10 @@ export default function file(module, contractName, input) {
                     } else if ('InsuranceIntegral' == contractName) {
                         elementId = window.outputDeployIntegralElement;
                     } else if ('Insurance' == contractName) {
-                        elementId = window.outputDeployMainElement;
-                    } else {
                         elementId = window.outputDeployElement;
-                    }
+                    } else if ('InsuranceExtension' == contractName) {
+                        elementId = window.outputDeployExtensionElement;
+                    } else {}
                     break;
                 case 'Demo':
                     if('undefined' == typeof window.testDemoClass) {
