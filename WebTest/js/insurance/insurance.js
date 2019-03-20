@@ -433,12 +433,12 @@ export default class Insurance {
         });
     }
 
-    integralClaim(account, privateKey, owner, type, time, func) {
+    integralClaim(account, privateKey, owner, scene, time, type, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.integralClaim.estimateGas(owner, type, time, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.integralClaim.getData(owner, type, time), error, gasRequired, func);
+        contractInstance.integralClaim.estimateGas(owner, scene, time, type, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.integralClaim.getData(owner, scene, time, type), error, gasRequired, func);
         });
     }
 
