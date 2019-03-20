@@ -1372,7 +1372,7 @@ export default class TestInsurance {
                 tmps = params.split(",");
                 time = this[getLocalTime]();
                 insurance = new Insurance(this[abi], this[contractAddress]);
-                insurance.integralClaim(account, privateKey, tmps[0], tmps[1], time, function(error, result) {
+                insurance.integralClaim(account, privateKey, tmps[0], tmps[1], time, tmps[1], function(error, result) {
                     handler[transactionProc](error, result, window.outputIntegralElement, null);
                 });
                 break;
