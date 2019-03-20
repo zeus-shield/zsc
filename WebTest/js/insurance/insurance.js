@@ -433,30 +433,30 @@ export default class Insurance {
         });
     }
 
-    integralClaim(account, privateKey, owner, type, func) {
+    integralClaim(account, privateKey, owner, type, time, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.integralClaim.estimateGas(owner, type, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.integralClaim.getData(owner, type), error, gasRequired, func);
+        contractInstance.integralClaim.estimateGas(owner, type, time, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.integralClaim.getData(owner, type, time), error, gasRequired, func);
         });
     }
 
-    integralBurn(account, privateKey, owner, value, func) {
+    integralBurn(account, privateKey, owner, time, value, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.integralBurn.estimateGas(owner, value, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.integralBurn.getData(owner, value), error, gasRequired, func);
+        contractInstance.integralBurn.estimateGas(owner, time, value, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.integralBurn.getData(owner, time, value), error, gasRequired, func);
         });
     }
 
-    integralTransfer(account, privateKey, owner, to, value, func) {
+    integralTransfer(account, privateKey, owner, to, time, value, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.integralTransfer.estimateGas(owner, to, value, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.integralTransfer.getData(owner, to, value), error, gasRequired, func);
+        contractInstance.integralTransfer.estimateGas(owner, to, time, value, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.integralTransfer.getData(owner, to, time, value), error, gasRequired, func);
         });
     }
 
