@@ -1244,6 +1244,7 @@ export default class TestInsurance {
         let account = tmps[0];
         let privateKey = tmps[1];
 
+        let time;
         let insurance
         let insuranceExtension;
         let insuranceIntegral;
@@ -1273,7 +1274,6 @@ export default class TestInsurance {
                                         for (let i=0; i<sum; i++) {
                                             insuranceExtension.userGetById(params, i, function(error, id, result) {
                                                 if (!error) {
-
                                                     let json = JSON.parse(result[1]);
                                                     let key = json["Key"];
                                                     insurance = new Insurance(handler[abi], handler[contractAddress]);
@@ -1370,8 +1370,9 @@ export default class TestInsurance {
                 }
 
                 tmps = params.split(",");
+                time = this[getLocalTime]();
                 insurance = new Insurance(this[abi], this[contractAddress]);
-                insurance.integralClaim(account, privateKey, tmps[0], tmps[1], function(error, result) {
+                insurance.integralClaim(account, privateKey, tmps[0], tmps[1], time, function(error, result) {
                     handler[transactionProc](error, result, window.outputIntegralElement, null);
                 });
                 break;
@@ -1382,8 +1383,9 @@ export default class TestInsurance {
                 }
 
                 tmps = params.split(",");
+                time = this[getLocalTime]();
                 insurance = new InsuranceExtension(this[extensionAbi], this[extensionContractAddress]);
-                insurance.integralMint(account, privateKey, tmps[0], tmps[1], function(error, result) {
+                insurance.integralMint(account, privateKey, tmps[0], time, tmps[1], function(error, result) {
                     handler[transactionProc](error, result, window.outputIntegralElement, null);
                 });
                 break;
@@ -1394,8 +1396,9 @@ export default class TestInsurance {
                 }
 
                 tmps = params.split(",");
+                time = this[getLocalTime]();
                 insurance = new Insurance(this[abi], this[contractAddress]);
-                insurance.integralBurn(account, privateKey, tmps[0], tmps[1], function(error, result) {
+                insurance.integralBurn(account, privateKey, tmps[0], time, tmps[1], function(error, result) {
                     handler[transactionProc](error, result, window.outputIntegralElement, null);
                 });
                 break;
@@ -1406,8 +1409,9 @@ export default class TestInsurance {
                 }
 
                 tmps = params.split(",");
+                time = this[getLocalTime]();
                 insurance = new Insurance(this[abi], this[contractAddress]);
-                insurance.integralTransfer(account, privateKey, tmps[0], tmps[1], tmps[2], function(error, result) {
+                insurance.integralTransfer(account, privateKey, tmps[0], tmps[1], time, tmps[2], function(error, result) {
                     handler[transactionProc](error, result, window.outputIntegralElement, null);
                 });
                 break;
