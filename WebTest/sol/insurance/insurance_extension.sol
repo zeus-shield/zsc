@@ -49,12 +49,12 @@ contract InsuranceIntegral {
     function mint(address _account, uint _value) public returns (bool);
     // function burn(address _account, uint _value) public;
     function transfer(address _owner, address _to, uint _value) public returns (bool);
-    function addTrace(address _account, uint8 _type, uint _time, uint _value, address _from, address _to) public;
+    function addTrace(address _account, uint8 _scene, uint _time, uint _value, address _from, address _to) public;
     // function removeTrace(address _account) public;
     function updateThreshold(uint8 _type, uint _threshold) public;
     function updateCap(uint _newCap) public;
     // function trace(address _account, uint _startTime, uint _endTime) public view returns (string);
-    // function traceSize(address _account, uint _time, uint8 _type) public view returns (uint);
+    // function traceSize(address _account, uint8 _scene, uint _time) public view returns (uint);
     function threshold(uint8 _type) public view returns (uint);
     function cap() public view returns (uint);
     function totalSupply() public view returns (uint);
@@ -289,7 +289,7 @@ contract InsuranceExtension is Pausable, Delegate {
     function integralMint(address _account, uint _time, uint _value) external whenNotPaused _onlyOwner _checkUserAddr _checkIntegralAddr {
         require(InsuranceUser(userAddr_).exist(1, "", _account));
         if (InsuranceIntegral(integralAddr_).mint(_account, _value)) {
-            InsuranceIntegral(integralAddr_).addTrace(_account, 8, _time, _value, 0, 0);
+            InsuranceIntegral(integralAddr_).addTrace(_account, 8, _time, _value, integralAddr_, _account);
         }
     }
 
