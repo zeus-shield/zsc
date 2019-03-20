@@ -493,12 +493,12 @@ export default class InsuranceExtension {
         });
     }
 
-    integralMint(account, privateKey, owner, value, func) {
+    integralMint(account, privateKey, owner, time, value, func) {
         let handler = this;
         let contractInstance = web3.eth.contract(this[contractAbi]).at(this[contractAddress]);
 
-        contractInstance.integralMint.estimateGas(owner, value, {from: account}, function(error, gasRequired) {
-            handler[transactionProc](handler, account, privateKey, contractInstance.integralMint.getData(owner, value), error, gasRequired, func);
+        contractInstance.integralMint.estimateGas(owner, time, value, {from: account}, function(error, gasRequired) {
+            handler[transactionProc](handler, account, privateKey, contractInstance.integralMint.getData(owner, time, value), error, gasRequired, func);
         });
     }
 
