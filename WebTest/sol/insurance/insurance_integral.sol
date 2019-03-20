@@ -16,7 +16,7 @@ contract InsuranceIntegral is Delegate, Integral {
     using LibInt for *;
 
     struct Trace {
-        uint8 type_;
+        uint8 scene_;
         uint time_;
         uint value_;
         address from_;
@@ -132,7 +132,7 @@ contract InsuranceIntegral is Delegate, Integral {
     /**
      * @dev Add trace.
      * @param _account address The account whose integrals will be traced.
-     * @param _type uint8 The types of bonus integrals.
+     * @param _scene uint8 The types of bonus integrals.
      *         0: User sign up.
      *         1: User submit data.
      *         2: User check in every day.
@@ -143,17 +143,17 @@ contract InsuranceIntegral is Delegate, Integral {
      *         7: User click advertisements.
      *         8: Administrator award.
      *         9: Integrals spent.
-     *        10: Integrals transfer to someone.
-     *        11: Integrals transfer from someone.
+     *        10: Integrals transfer to someone(sender).
+     *        11: Integrals transfer from someone(receiver).
      * @param _time uint The trace time(UTC), including TZ and DST.
      * @param _value The amount of integral.
-     * @param _from address The address which you want to send integrals from
-     * @param _to address The address which you want to transfer to
+     * @param _from address The address which send integrals
+     * @param _to address The address which receive integrals
      */
-    function addTrace(address _account, uint8 _type, uint _time, uint _value, address _from, address _to) public _onlyAdminOrHigher {
+    function addTrace(address _account, uint8 _scene, uint _time, uint _value, address _from, address _to) public _onlyAdminOrHigher {
         // check params
         require(address(0) != _account);
-        require(0 <= _type && 12 > _type);
+        require(0 <= _scene && 12 > _scene);
 
         bool exist = false;
         uint dayId = (_time)/(1 days);
@@ -171,7 +171,7 @@ contract InsuranceIntegral is Delegate, Integral {
             traces_[_account].size_ ++;
         } 
 
-        traces_[_account].days_[dayId].infos_[traces_[_account].days_[dayId].size_].type_ = _type;
+        traces_[_account].days_[dayId].infos_[traces_[_account].days_[dayId].size_].scene_ = _scene;
         traces_[_account].days_[dayId].infos_[traces_[_account].days_[dayId].size_].time_ = _time;
         traces_[_account].days_[dayId].infos_[traces_[_account].days_[dayId].size_].value_ = _value;
         traces_[_account].days_[dayId].infos_[traces_[_account].days_[dayId].size_].from_ = _from;
@@ -245,7 +245,7 @@ contract InsuranceIntegral is Delegate, Integral {
                     // uint claimType = traces_[_account].days_[dayId].infos_[j].type_;
                     // uint time = traces_[_account].days_[dayId].infos_[j].time_;
                     // uint value = traces_[_account].days_[dayId].infos_[j].value_;
-                    json = json.concat("{", uint(traces_[_account].days_[dayId].infos_[j].type_).toKeyValue("type"), ",");
+                    json = json.concat("{", uint(traces_[_account].days_[dayId].infos_[j].scene_).toKeyValue("scene"), ",");
                     json = json.concat(traces_[_account].days_[dayId].infos_[j].time_.toKeyValue("time"), ",");
                     json = json.concat(traces_[_account].days_[dayId].infos_[j].value_.toKeyValue("value"), ",");
                     json = json.concat(traces_[_account].days_[dayId].infos_[j].from_.toKeyValue("from"), ",");
@@ -270,8 +270,7 @@ contract InsuranceIntegral is Delegate, Integral {
     /**
      * @dev Get trace size.
      * @param _account address The account whose integrals will be traced.
-     * @param _time uint The search time of trace(UTC), including TZ and DST.
-     * @param _type uint8 The types of bonus integrals.
+     * @param _scene uint8 The types of bonus integrals.
      *         0: User sign up.
      *         1: User submit data.
      *         2: User check in every day.
@@ -284,11 +283,12 @@ contract InsuranceIntegral is Delegate, Integral {
      *         9: Integrals spent.
      *        10: Integrals transfer to someone.
      *        11: Integrals transfer from someone.
+     * @param _time uint The search time of trace(UTC), including TZ and DST.
      */
-    function traceSize(address _account, uint _time, uint8 _type) public view _onlyReaderOrHigher returns (uint) {
+    function traceSize(address _account, uint8 _scene, uint _time) public view _onlyReaderOrHigher returns (uint) {
         // check params
         require(address(0) != _account);
-        require(0 <= _type && 12 > _type);
+        require(0 <= _scene && 12 > _scene);
 
         uint size = 0;
         uint Id = (_time)/(1 days);
@@ -297,7 +297,7 @@ contract InsuranceIntegral is Delegate, Integral {
             dayId = traces_[_account].dayIds_[i];
             if (Id == dayId) {
                 for (uint j=0; j<traces_[_account].days_[dayId].size_; j++) {
-                    if (traces_[_account].days_[dayId].infos_[j].type_ == _type) {
+                    if (traces_[_account].days_[dayId].infos_[j].scene_ == _scene) {
                         size ++;
                     }
                 }
