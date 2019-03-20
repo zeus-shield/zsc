@@ -47,17 +47,17 @@ contract InsurancePolicy {
 }
 
 contract InsuranceIntegral {
-    function claim(address _account, uint8 _type) public;
-    // function mint(address _account, uint _value) public;
+    function claim(address _account, uint8 _type) public returns (bool);
+    // function mint(address _account, uint _value) public returns (bool);
     function burn(address _account, uint _value) public;
     function transfer(address _owner, address _to, uint _value) public returns (bool);
-    function addTrace(address _account, uint8 _type, uint _time) public;
+    function addTrace(address _account, uint8 _type, uint _time, uint _value, address _from, address _to) public;
     function removeTrace(address _account) public;
     // function updateThreshold(uint8 _type, uint _threshold) public;
     // function updateCap(uint _newCap) public;
     function trace(address _account, uint _startTime, uint _endTime) public view returns (string);
     function traceSize(address _account, uint _time, uint8 _type) public view returns (uint);
-    // function threshold(uint8 _type) public view returns (uint);
+    function threshold(uint8 _type) public view returns (uint);
     // function cap() public view returns (uint);
     // function totalSupply() public view returns (uint);
     function balanceOf(address _owner) public view returns (uint);
@@ -281,8 +281,9 @@ contract Insurance is Pausable, Delegate {
         InsuranceUser(userAddr_).add(_userKey, template, _data);
 
         address account = _userKey.toAddress();
-        InsuranceIntegral(integralAddr_).claim(account, 0);
-        InsuranceIntegral(integralAddr_).addTrace(account, 0, _time);
+        if (InsuranceIntegral(integralAddr_).claim(account, 0)) {
+            InsuranceIntegral(integralAddr_).addTrace(account, 0, _time, InsuranceIntegral(integralAddr_).threshold(0), 0, 0);
+        }
     }
 
     /** @dev Remove user.
@@ -321,8 +322,9 @@ contract Insurance is Pausable, Delegate {
     function userCheckIn(address _account, uint _time) external whenNotPaused _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
         require(InsuranceUser(userAddr_).exist(1, "", _account));
         require(0 == InsuranceIntegral(integralAddr_).traceSize(_account, _time, 2));
-        InsuranceIntegral(integralAddr_).claim(_account, 2);
-        InsuranceIntegral(integralAddr_).addTrace(_account, 2, _time);
+        if (InsuranceIntegral(integralAddr_).claim(_account, 2)) {
+          InsuranceIntegral(integralAddr_).addTrace(_account, 2, _time, InsuranceIntegral(integralAddr_).threshold(2), 0, 0);
+        }
     }
 
     /** @dev Check that if user exist
@@ -407,8 +409,9 @@ contract Insurance is Pausable, Delegate {
         maxIds_[_policyKey] ++;
 
         address account = _userKey.toAddress();
-        InsuranceIntegral(integralAddr_).claim(account, 1);
-        InsuranceIntegral(integralAddr_).addTrace(account, 1, _time);
+        if (InsuranceIntegral(integralAddr_).claim(account, 1)) {
+            InsuranceIntegral(integralAddr_).addTrace(account, 1, _time, InsuranceIntegral(integralAddr_).threshold(1), 0, 0);
+        }
     }
 
     /** @dev Remove policy.
@@ -468,30 +471,38 @@ contract Insurance is Pausable, Delegate {
       *         5: User share to QQ.
       *         6: User share to Microblog.
       *         7: User click advertisements.
+      * @param _time uint The trace time(UTC), including TZ and DST.
       */
-    function integralClaim(address _account, uint8 _type) external whenNotPaused _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
+    function integralClaim(address _account, uint8 _type, uint _time) external whenNotPaused _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
         require(InsuranceUser(userAddr_).exist(1, "", _account));
-        InsuranceIntegral(integralAddr_).claim(_account, _type);
+        if (InsuranceIntegral(integralAddr_).claim(_account, _type)) {
+            InsuranceIntegral(integralAddr_).addTrace(_account, _type, _time, InsuranceIntegral(integralAddr_).threshold(_type), 0, 0);
+        }
     }
 
     /** @dev Burns a specific amount of integrals.
       * @param _account address The account whose integrals will be burnt.
+      * @param _time uint The trace time(UTC), including TZ and DST.
       * @param _value uint The amount of integral to be burned.
       */
-    function integralBurn(address _account, uint _value) external whenNotPaused _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
+    function integralBurn(address _account, uint _time, uint _value) external whenNotPaused _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
         require(InsuranceUser(userAddr_).exist(1, "", _account));
         InsuranceIntegral(integralAddr_).burn(_account, _value);
+        InsuranceIntegral(integralAddr_).addTrace(_account, 9, _time, _value, 0, 0);
     }
 
     /** @dev Transfer integral to a specified address
       * @param _owner address The address which owns the integrals.
       * @param _to address The address to transfer to.
+      * @param _time uint The trace time(UTC), including TZ and DST.
       * @param _value uint The amount to be transferred.
       */
-    function integralTransfer(address _owner, address _to, uint _value) external whenNotPaused _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
+    function integralTransfer(address _owner, address _to, uint _time, uint _value) external whenNotPaused _onlyAdminOrHigher _checkUserAddr _checkIntegralAddr {
         require(InsuranceUser(userAddr_).exist(1, "", _owner));
         require(InsuranceUser(userAddr_).exist(1, "", _to));
         require(InsuranceIntegral(integralAddr_).transfer(_owner, _to, _value));
+        InsuranceIntegral(integralAddr_).addTrace(_owner, 10, _time, _value, _owner, _to);
+        InsuranceIntegral(integralAddr_).addTrace(_to, 11, _time, _value, _owner, _to);
     }
 
     /** @dev Get trace.
