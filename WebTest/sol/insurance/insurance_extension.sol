@@ -45,11 +45,11 @@ contract InsurancePolicy {
 }
 
 contract InsuranceIntegral {
-    // function claim(address _account, uint8 _type) public;
-    function mint(address _account, uint _value) public;
+    // function claim(address _account, uint8 _type) public returns (bool);
+    function mint(address _account, uint _value) public returns (bool);
     // function burn(address _account, uint _value) public;
     function transfer(address _owner, address _to, uint _value) public returns (bool);
-    // function addTrace(address _account, uint8 _type, uint _time) public;
+    function addTrace(address _account, uint8 _type, uint _time, uint _value, address _from, address _to) public;
     // function removeTrace(address _account) public;
     function updateThreshold(uint8 _type, uint _threshold) public;
     function updateCap(uint _newCap) public;
@@ -283,11 +283,14 @@ contract InsuranceExtension is Pausable, Delegate {
 
     /** @dev Mint integrals.
       * @param _account address The address that will receive the minted integrals.
+      * @param _time uint The trace time(UTC), including TZ and DST.
       * @param _value uint The amount of integrals to mint.
       */
-    function integralMint(address _account, uint _value) external whenNotPaused _onlyOwner _checkUserAddr _checkIntegralAddr {
+    function integralMint(address _account, uint _time, uint _value) external whenNotPaused _onlyOwner _checkUserAddr _checkIntegralAddr {
         require(InsuranceUser(userAddr_).exist(1, "", _account));
-        InsuranceIntegral(integralAddr_).mint(_account, _value);
+        if (InsuranceIntegral(integralAddr_).mint(_account, _value)) {
+            InsuranceIntegral(integralAddr_).addTrace(_account, 8, _time, _value, 0, 0);
+        }
     }
 
     /** @dev Update the threshold of different types of bonus integrals.
