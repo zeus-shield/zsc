@@ -7,9 +7,9 @@ import Output from "../common/output.js";
 import Transaction from "../common/transaction_raw.js";
 import Delegate from "../common/delegate.js";
 import Watch from "../common/watch.js";
-import InsuranceIntegral from "../insurance/insurance_integral.js";
 import Insurance from "../insurance/insurance.js";
 import InsuranceExtension from "../insurance/insurance_extension.js";
+import InsuranceWatch from "../insurance/insurance_watch.js";
 
 //private member
 const compiledJson = Symbol("compiledJson");
@@ -1318,7 +1318,7 @@ export default class TestInsurance {
                 }
 
                 tmps = params.split(",");
-                insuranceIntegral = new InsuranceIntegral(this[integralAbi], this[integralContractAddress]);
+                let insuranceWatch = new InsuranceWatch();
                 if ("Start" == tmps[0]) {
                     if ("Transfer" == tmps[1]) {
                         let result = this[watch].get("integral", "transfer");
@@ -1328,11 +1328,15 @@ export default class TestInsurance {
                             if (null != result[0].handle) {
                                 Output(window.outputIntegralWatchElement, "small", "red", "Event watcher has already started!");
                             } else {
-                                let handle = insuranceIntegral.watchTransfer(function(error, from, to, value) {
+                                let handle = insuranceWatch.start(this[integralAbi], this[integralContractAddress], "InsuranceIntegralTransfer", function(error, from, to, value) {
                                     Output(window.outputIntegralWatchElement, "small", "red", `[Event]: Transfer(${from}, ${to}, ${value})`);
                                 });
-                                this[watch].update("integral", "transfer", handle);
-                                Output(window.outputIntegralWatchElement, "small", "red", "Event watcher start.");
+                                if (null == handle) {
+                                    Output(window.outputIntegralWatchElement, "small", "red", `Event is null!`);
+                                } else {
+                                    this[watch].update("integral", "transfer", handle);
+                                    Output(window.outputIntegralWatchElement, "small", "red", "Event watcher start.");
+                                }
                             }
                         }
                     } else if ("Approval" == tmps[1]) {
@@ -1349,7 +1353,7 @@ export default class TestInsurance {
                             if (null == result[0].handle) {
                                 Output(window.outputIntegralWatchElement, "small", "red", "Event watcher has already stopped!");
                             } else {
-                                insuranceIntegral.stopWatch(result[0].handle);
+                                insuranceWatch.stop(result[0].handle);
                                 this[watch].update("integral", "transfer", null);
                                 Output(window.outputIntegralWatchElement, "small", "red", "Event watcher stop.");
                             }
