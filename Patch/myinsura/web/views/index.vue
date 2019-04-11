@@ -58,3 +58,12 @@
     </div> 
   </section>
   <!-- one section end -->
+
+  <!-- one section 产品优势-->   
+  <section class="wrapper100percent section1" id="menu3" style="background:#F5F5F5;">
+    <div class="sectionwrapper"></div> 
+    <div class="mainheadlinewrapper">
+      <div class="mainheadline">
+        <h2>{{language.index.menu3.title}}</h2>
+      </div>
+    </div>
