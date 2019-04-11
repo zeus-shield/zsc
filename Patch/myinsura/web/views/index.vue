@@ -246,3 +246,7 @@ export default {
      language:api.getCookie('language') == 'en' ? en_GB : zh_CN,
     };
   },
+  methods: {
+      getImgUrl(item) {
+          return require("../assets/images/slider"+(item+6)+".jpg");
+      },
