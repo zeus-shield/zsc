@@ -250,3 +250,7 @@ export default {
       getImgUrl(item) {
           return require("../assets/images/slider"+(item+6)+".jpg");
       },
+
+      changeFun(val, oldVal){
+        this.activeIndex = val;
+      },
