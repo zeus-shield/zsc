@@ -203,3 +203,25 @@
     </div>
   </section>
   <!-- one section end --> 
+
+
+  <!-- one section 联系方式-->  
+  <section class="wrapper100percent section" id="menu5">
+    <div class="sectionwrapper"></div> 
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="address">
+          <h4>{{language.index.menu5.title}}</h4>
+        	<ul class="ul-list">
+            <li>
+              <i class="fa fa-envelope"></i> info@myinsura.io
+            </li>
+          </ul>
+          </div>
+        </div>
+        </div>
+    </div>
+    <br> 
+  </section>
+  <!-- one section end -->  
