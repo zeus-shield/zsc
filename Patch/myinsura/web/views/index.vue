@@ -1,6 +1,6 @@
 <template>
 <div class="page-body">
-   <!-- slider ÂÖ²¥-->  
+   <!-- slider è½®æ’­-->  
   <section class="wrapper100percent" id="menu1"> 
     <el-carousel trigger="click" :height="imgHeight" >
       <el-carousel-item v-for="item in 3" :key="item">
@@ -24,4 +24,4 @@
                   </div>
               </div>
             </div>
-          </div>  
+          </div> 
