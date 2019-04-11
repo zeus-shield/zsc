@@ -254,3 +254,8 @@ export default {
       changeFun(val, oldVal){
         this.activeIndex = val;
       },
+
+      changeFunTwo(val, oldVal){
+        this.activeIndexTwo = val;
+      }
+    
