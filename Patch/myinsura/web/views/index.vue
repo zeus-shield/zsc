@@ -25,3 +25,16 @@
               </div>
             </div>
           </div> 
+          <div class="flex-caption flex-caption1" v-if="item == 3">
+            <div class="container">
+              <div class="row">
+                  <div style="text-align:center;">
+                    <h1 style="font-size:35px">{{language.index.menu1.title3}}</h1>
+                    <p>{{language.index.menu1.page3}}</p>
+                  </div>
+              </div>
+            </div>
+          </div> 
+      </el-carousel-item>
+    </el-carousel>
+  </section>
