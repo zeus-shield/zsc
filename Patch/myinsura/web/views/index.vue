@@ -233,3 +233,16 @@
 import api from '../common/api'
 import en_GB from '../common/language/en-GB.js';
 import zh_CN from '../common/language/zh-CN.js';
+
+
+export default {
+  data() {
+    return {
+     imgHeight:'0px',
+     cardHeight:'0px',
+     activeIndex:0,
+     activeIndexTwo:0,
+     imgHeightTemp:0,
+     language:api.getCookie('language') == 'en' ? en_GB : zh_CN,
+    };
+  },
