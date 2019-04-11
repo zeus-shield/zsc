@@ -98,3 +98,16 @@
                     </div>
                   </div>
                 </div>
+                <div :class="activeIndex == 2?'test':'test-hover'" v-if="item==3">
+                  <div class="col-sm-8 homeblog" style="width:90%;margin-top:10px;padding:0;left:50%">
+                    <div style="position:relative;right:50%">
+                      <figure class="view1 view-first1">
+                        <img src="../assets/images/team2.jpg" alt=""> 
+                      </figure> 
+                      <div class="wrapper100percent">
+                        <h4>{{language.index.menu3.title3}}</h4>
+                        <p class="pageforPhone">{{language.index.menu3.page3}}</p>           
+                      </div> 
+                    </div>
+                  </div>
+                </div>
