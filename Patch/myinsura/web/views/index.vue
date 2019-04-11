@@ -124,3 +124,23 @@
                     </div>
                   </div>
                 </div>
+                <div :class="activeIndex == 4?'test':'test-hover'" v-if="item==5">
+                  <div class="col-sm-8 homeblog" style="width:90%;margin-top:10px;padding:0;left:50%">
+                    <div style="position:relative;right:50%">
+                    <figure class="view1 view-first1">
+                      <img src="../assets/images/team4.jpg" alt=""> 
+                    </figure> 
+                    <div class="wrapper100percent">
+                          <h4>{{language.index.menu3.title5}}</h4>
+                          <p class="pageforPhone">{{language.index.menu3.page5}}</p>         
+                    </div> 
+                    </div>
+                  </div>
+                </div>
+            </el-carousel-item>
+          </el-carousel>
+        </div>
+      </div>    
+    </div>
+  </section>
+  <!-- one section end --> 
