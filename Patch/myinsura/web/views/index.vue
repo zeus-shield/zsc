@@ -67,3 +67,21 @@
         <h2>{{language.index.menu3.title}}</h2>
       </div>
     </div>
+    <div class="container">
+      <div class="row">
+        <div class="wrapper100percent" >
+         <el-carousel indicator-position="outside" id="test" :interval="4000" type="card" :height="cardHeight" v-on:change="changeFun">
+            <el-carousel-item v-for="item in 5" :key="item"  class="el-carousel__mini_item"  style="background:white;border: 1px solid rgba(187, 187, 187, 1); ">
+                <div :class="activeIndex == 0?'test':'test-hover'" v-if="item==1">
+                  <div class="col-sm-8 homeblog" style="width:90%;margin-top:10px;padding:0;left:50%;">
+                    <div style="position:relative;right:50%;">
+                      <figure class="view1 view-first1">
+                        <img src="../assets/images/team1.jpg" alt=""> 
+                      </figure> 
+                      <div class="wrapper100percent">
+                        <h4>{{language.index.menu3.title1}}</h4>
+                        <p class="pageforPhone">{{language.index.menu3.page1}}</p>         
+                      </div> 
+                    </div>
+                  </div>
+                </div>
