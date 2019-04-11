@@ -144,3 +144,12 @@
     </div>
   </section>
   <!-- one section end --> 
+
+  <!-- one section 产品特色-->   
+  <section class="wrapper100percent section1"  id="menu4">
+    <div class="sectionwrapper"></div> 
+    <div class="mainheadlinewrapper">
+      <div class="mainheadline">
+        <h2>{{language.index.menu4.title}}</h2>
+      </div>
+    </div>
