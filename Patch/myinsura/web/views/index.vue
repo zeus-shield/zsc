@@ -184,3 +184,22 @@
               </div>
             </el-card>
           </el-col>
+          <el-col :span="20" :offset=2 :md="{span: 8, offset: 0}">
+            <el-card class="box-card" style="margin-bottom:10px;">
+              <div class="homeblog" style="width:90%;margin-top:10px;padding:0;left:50%">
+                <div style="position:relative;right:50%">
+                <figure class="view1 view-first1">
+                  <img src="../assets/images/feature3.jpg" alt=""> 
+                </figure> 
+                <div class="wrapper100percent">
+                  <p>{{language.index.menu4.page3}}</p>           
+                </div> 
+                </div>
+              </div>
+            </el-card>
+          </el-col>
+        </div>
+      </el-row>
+    </div>
+  </section>
+  <!-- one section end --> 
