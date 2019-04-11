@@ -259,3 +259,8 @@ export default {
         this.activeIndexTwo = val;
       }
     
+  },
+  watch: {
+     activeIndex(val, oldVal) {
+  
+    },
