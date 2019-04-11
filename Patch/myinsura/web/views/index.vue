@@ -38,3 +38,23 @@
       </el-carousel-item>
     </el-carousel>
   </section>
+
+  <!-- one section 产品介绍-->    
+  <section class="wrapper100percent section" id="menu2" style="color:rgb(128,128,128)">
+    <div class="sectionwrapper"></div> 
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12" style="text-align:center">
+          <br> 
+          <h3>{{language.index.menu2.title}}</h3>
+          <br>
+          <ul class="ul-list">
+            <li>
+                {{language.index.menu2.page}}
+            </li>
+          </ul>
+        </div>
+      </div>  
+    </div> 
+  </section>
+  <!-- one section end -->
