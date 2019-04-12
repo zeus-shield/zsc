@@ -60,3 +60,6 @@ export default {
     watch: {
         
     },
+    mounted() {
+   
+    },
