@@ -274,3 +274,16 @@ export default {
     if(temp == undefined) {
       api.setCookie("isLogin",false);
     }
+
+    let imgHeightTemp = window.screen.width;
+    if(imgHeightTemp >= 992) {
+      this.imgHeight = 416 +"px";
+      this.cardHeight = api.getCookie('language') == 'en' ? '350px' : '300px';
+    } else if(imgHeightTemp >=768){
+      this.cardHeight = api.getCookie('language') == 'en' ? '350px' : '300px';
+    } else if(imgHeightTemp >=668){
+      this.cardHeight = api.getCookie('language') == 'en' ? '350px' : '250px';
+    } else {
+      this.imgHeight = window.screen.width * 500 / 1190 + "px";
+      this.cardHeight = api.getCookie('language') == 'en' ? '400px' : '250px';
+    }
