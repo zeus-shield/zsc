@@ -63,3 +63,7 @@ export default {
     mounted() {
    
     },
+    created() {
+        
+    },
+};
