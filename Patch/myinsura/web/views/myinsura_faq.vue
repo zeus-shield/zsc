@@ -46,3 +46,11 @@
 import en_GB from '../common/language/en-GB.js';
 import zh_CN from '../common/language/zh-CN.js';
 import api from '../common/api'
+
+export default {
+    data() {
+        return {
+            activeName: '',
+            language:api.getCookie('language') == 'en' ? en_GB : zh_CN,
+        };
+    },
