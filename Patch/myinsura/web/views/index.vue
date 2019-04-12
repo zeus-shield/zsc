@@ -287,3 +287,20 @@ export default {
       this.imgHeight = window.screen.width * 500 / 1190 + "px";
       this.cardHeight = api.getCookie('language') == 'en' ? '400px' : '250px';
     }
+
+
+    const handler = this;
+    api.addEventOnResize(function(){
+      let imgHeightTemp = document.body.clientWidth;
+      if(imgHeightTemp >= 992) {
+        handler.imgHeight = 416 +"px";
+        handler.cardHeight = api.getCookie('language') == 'en' ? '350px' : '300px';
+      } else if(imgHeightTemp >=768){
+        handler.cardHeight = api.getCookie('language') == 'en' ? '350px' : '300px';
+      } else if(imgHeightTemp >=668){
+        handler.cardHeight = api.getCookie('language') == 'en' ? '350px' : '250px';
+      } else {
+        handler.imgHeight = document.body.clientWidth * 500 / 1190 + "px";
+        handler.cardHeight = api.getCookie('language') == 'en' ? '400px' : '250px';
+      }
+    })
