@@ -264,3 +264,8 @@ export default {
      activeIndex(val, oldVal) {
   
     },
+
+    activeIndexTwo(val, oldVal) {
+  
+    },
+  },
