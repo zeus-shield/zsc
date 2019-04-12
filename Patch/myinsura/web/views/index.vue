@@ -304,3 +304,12 @@ export default {
         handler.cardHeight = api.getCookie('language') == 'en' ? '400px' : '250px';
       }
     })
+
+
+
+  },
+  created() {
+
+  }
+};
+</script>
