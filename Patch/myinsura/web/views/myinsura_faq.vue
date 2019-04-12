@@ -28,3 +28,16 @@
                     <div>{{language.FAQ.answer1.p11}}</div>
                     <div>{{language.FAQ.answer1.p12}}</div>
                 </el-collapse-item>
+                <el-collapse-item  name="2">
+                    <template slot="title">
+                     <span class="FAQ-title" style="line-height:13px">{{language.FAQ.question2}}</span>&nbsp;&nbsp;<i class="header-icon el-icon-info"></i>
+                    </template>
+                    <div>{{language.FAQ.answer2.p1}}</div>
+                </el-collapse-item>
+            </el-collapse>
+        </el-col>
+    </el-row>
+    <br>
+    <br>
+</div>
+</template>
