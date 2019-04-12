@@ -313,3 +313,13 @@ export default {
   }
 };
 </script>
+
+  
+<style lang="less" scoped>
+  .el-carousel__item h3 {
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 140px;
+    margin: 0;
+    
+  }
