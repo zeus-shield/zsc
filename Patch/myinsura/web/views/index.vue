@@ -269,3 +269,8 @@ export default {
   
     },
   },
+  mounted() {
+    let temp = api.getCookie("Code");
+    if(temp == undefined) {
+      api.setCookie("isLogin",false);
+    }
