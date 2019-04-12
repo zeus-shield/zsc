@@ -24,7 +24,7 @@
                   </div>
               </div>
             </div>
-          </div> 
+          </div>  
           <div class="flex-caption flex-caption1" v-if="item == 3">
             <div class="container">
               <div class="row">
