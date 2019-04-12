@@ -335,3 +335,12 @@ export default {
   .pageforPhone{
     font-size:15px;
   }
+  @media (max-width: 980px) {
+    .pageforPhone{
+      font-size:12px;
+    }
+  }
+
+
+
+</style>
