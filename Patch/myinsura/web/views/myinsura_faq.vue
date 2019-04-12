@@ -41,3 +41,8 @@
     <br>
 </div>
 </template>
+
+<script>
+import en_GB from '../common/language/en-GB.js';
+import zh_CN from '../common/language/zh-CN.js';
+import api from '../common/api'
