@@ -332,3 +332,6 @@ export default {
     height:100%;
     background:#EDEDED
   }
+  .pageforPhone{
+    font-size:15px;
+  }
