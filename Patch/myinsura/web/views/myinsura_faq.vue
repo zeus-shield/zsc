@@ -9,3 +9,22 @@
                 <el-collapse-item name="1">
                     <template slot="title">
                     <span class="FAQ-title">{{language.FAQ.question1}}</span>&nbsp;&nbsp;<i class="header-icon el-icon-info"></i>
+                    </template>
+                    <div>{{language.FAQ.answer1.p1}}</div>
+                    <div>{{language.FAQ.answer1.p2}}</div>
+                    <br>
+                    <div>{{language.FAQ.answer1.p3}}</div>
+                    <div>{{language.FAQ.answer1.p4}}</div>
+                    <br>
+                    <div>{{language.FAQ.answer1.p5}}</div>
+                    <div>{{language.FAQ.answer1.p6}}</div>
+                    <br>
+                    <div>{{language.FAQ.answer1.p7}}</div>
+                    <div>{{language.FAQ.answer1.p8}}</div>
+                    <br>
+                    <div>{{language.FAQ.answer1.p9}}</div>
+                    <div>{{language.FAQ.answer1.p10}}</div>
+                    <br>
+                    <div>{{language.FAQ.answer1.p11}}</div>
+                    <div>{{language.FAQ.answer1.p12}}</div>
+                </el-collapse-item>
