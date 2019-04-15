@@ -67,3 +67,22 @@ export default {
         
     },
 };
+</script>
+
+<style lang="scss" scoped>
+    .page-body{
+        width:80%;
+        margin:56px auto auto auto;
+    }
+    // .FAQ-title{
+    //     font-size:14px;
+    // }
+
+    @media (min-width: 980px) {
+        .FAQ-title{
+            font-size:20px;
+        }
+    }
+
+  
+</style>
