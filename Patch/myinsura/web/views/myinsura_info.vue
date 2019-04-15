@@ -33,3 +33,15 @@ import policyInfo_EN from '../api/policyInfo-en.js'
 import api from '../common/api'
 import en_GB from '../common/language/en-GB.js';
 import zh_CN from '../common/language/zh-CN.js';
+
+export default {
+    data() {
+        return {
+            policyInfotemp:api.getCookie('language') == 'en' ? policyInfo_EN : policyInfo,
+            policyName:"",
+            policyinfo:{},
+            islogin:"",
+            language:"",
+            language:api.getCookie('language') == 'en' ? en_GB : zh_CN,
+        };
+    },
