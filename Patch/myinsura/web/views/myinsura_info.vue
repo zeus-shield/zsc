@@ -73,3 +73,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .page-body{
+        width:80%;
+        margin:56px auto auto auto;
+    }
