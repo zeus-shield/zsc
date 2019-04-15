@@ -117,3 +117,12 @@ export default {
         width:100%;
         margin-top:15px;
     }
+    .up-card-page-title{
+        // width:30%;
+        // height:100%;
+        // float:left;
+        font-size:25px;
+        width:100%;
+        text-align:center;
+        margin:20px 0 20px 0;
+    }
