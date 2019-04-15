@@ -113,3 +113,7 @@ export default {
         height:32px;
         background:url(../assets/images/test.png)
     }
+    .up-card-page{
+        width:100%;
+        margin-top:15px;
+    }
