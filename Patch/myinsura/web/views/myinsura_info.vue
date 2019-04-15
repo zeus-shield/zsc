@@ -102,3 +102,9 @@ export default {
         text-align: center;
         color:black
     }        
+    .up-card-title{
+        width:100%;
+        text-align:center;
+        line-height:60px;
+        font-size:30px
+    }
