@@ -97,3 +97,8 @@ export default {
         font-family: Arial;
         border: 1px solid rgba(187, 187, 187, 1);
     }
+    .up-card{
+        
+        text-align: center;
+        color:black
+    }        
