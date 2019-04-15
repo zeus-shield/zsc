@@ -45,3 +45,16 @@ export default {
             language:api.getCookie('language') == 'en' ? en_GB : zh_CN,
         };
     },
+    methods: {
+        check:function(){
+            if(this.islogin == false || this.islogin == null) {
+                this.$message({
+                    message: this.language.message.needlogin,
+                    type: 'warning'
+                });
+            } else {
+                this.$router.push({path: this.$route.path,query: {input: 'true'}});
+            }
+        },
+
+    
