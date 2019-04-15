@@ -63,3 +63,8 @@ export default {
     watch: {
         
     },
+    mounted() {
+        this.policyName = "DB_Policy_"+this.$route.params.id;
+        this.policyinfo = this.policyInfotemp[this.policyName];
+        this.islogin = window.sessionStorage.getItem("isLogin");
+    },
