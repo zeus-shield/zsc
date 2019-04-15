@@ -26,3 +26,10 @@
         </div>
     </div>
 </template>
+
+<script>
+import policyInfo from '../api/policyInfo.js'
+import policyInfo_EN from '../api/policyInfo-en.js'
+import api from '../common/api'
+import en_GB from '../common/language/en-GB.js';
+import zh_CN from '../common/language/zh-CN.js';
