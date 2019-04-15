@@ -108,3 +108,8 @@ export default {
         line-height:60px;
         font-size:30px
     }
+    .up-card-page-line{
+        width:10%;
+        height:32px;
+        background:url(../assets/images/test.png)
+    }
