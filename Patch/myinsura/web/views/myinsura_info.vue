@@ -68,3 +68,8 @@ export default {
         this.policyinfo = this.policyInfotemp[this.policyName];
         this.islogin = window.sessionStorage.getItem("isLogin");
     },
+    created() {
+        
+    },
+};
+</script>
