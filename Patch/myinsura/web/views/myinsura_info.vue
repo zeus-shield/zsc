@@ -14,3 +14,15 @@
                                 </div>
                                 <div class="up-card-page-item" v-for="(dataItem) in item.data" :key="dataItem">
                                     <span>{{dataItem}}</span>
+                                </div>
+                            </el-card>
+                        </div>
+                    </div>
+                    <div class="bottom-card">
+                        <button class="bottom-button" @click="check()">{{language.info.button}}</button>
+                    </div>
+                </el-col>
+            </el-row>
+        </div>
+    </div>
+</template>
