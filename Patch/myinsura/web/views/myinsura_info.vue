@@ -85,3 +85,15 @@ export default {
         text-align: center;
         //border-right: 1px solid rgba(187, 187, 187, 1);
     }
+    .bottom-button {
+        margin-bottom:20px;
+        width: 180px;
+        height: 50px;
+        border-radius: 5px;
+        background-color: rgb(102, 177, 255);
+        color: white;
+        font-size: 20px;
+        text-align: center;
+        font-family: Arial;
+        border: 1px solid rgba(187, 187, 187, 1);
+    }
