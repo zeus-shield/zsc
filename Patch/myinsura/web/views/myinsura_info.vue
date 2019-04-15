@@ -79,3 +79,9 @@ export default {
         width:80%;
         margin:56px auto auto auto;
     }
+    .bottom-card{
+        margin:56px auto auto auto;
+        height: 300px;
+        text-align: center;
+        //border-right: 1px solid rgba(187, 187, 187, 1);
+    }
