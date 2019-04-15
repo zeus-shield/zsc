@@ -126,3 +126,14 @@ export default {
         text-align:center;
         margin:20px 0 20px 0;
     }
+    .up-card-page-item{
+        // width:70%;
+        // float:right;
+        text-align:justify;
+        font-size:12px;
+        
+        width: 100%;
+    }
+
+  
+</style>
