@@ -50,3 +50,12 @@
                         <div class="card-title">
                             <span>我的保单</span>
                         </div>
+                        <el-collapse v-model="activeName" accordion>
+                            <el-collapse-item v-for="(policy,key) in userAllPolicy" :title="policy.name" :name="key" :key="key">
+                                <div class="right-card-policyInfo" v-for="(value,info) in policy.value" :key="info">
+                                    <div v-if="info == 'Hash'">
+                                        <div class="right-card-policyInfo-left">{{info}}</div>
+                                        <div class="right-card-policyInfo-right">
+                                            <a target="_blank" :href='getUrl(value)'>{{value.slice(0,12)}}...{{value.slice(-12)}}</a>
+                                        </div>
+                                    </div>
