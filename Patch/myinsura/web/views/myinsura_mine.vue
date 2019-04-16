@@ -43,3 +43,10 @@
                     </el-timeline>
                 </div>
             </el-col>
+
+            <el-col :span="24" :md="16">
+                <div class="right-card">
+                    <div v-if="userAllPolicy!=[]" style="margin:10px">
+                        <div class="card-title">
+                            <span>我的保单</span>
+                        </div>
