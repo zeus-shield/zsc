@@ -127,3 +127,19 @@ export default {
 
         };
     },
+    methods: {
+        //获取用户所有保单
+        getUserPolicies:function () {
+            let handler = this;
+            //let userKey = "ddroyce@163.com";
+            let userKey = handler.code;
+            userKey = Encrypt.encryptCode(userKey);
+            let insurance = new Insurance(insuranceAbi,insuranceAddress);
+            insurance.userGetPolicies(userKey,function(error, result) {
+                if(error) {
+                    res.json({
+                        status:"error",
+                        code:"-9",
+                        msg:"交易报错",
+                        error:error.toString(10)
+                    })
