@@ -157,3 +157,9 @@ export default {
                                 type: 'warning'
                             });
                         }
+                    } else if (result[0] == -2) {//no data
+                        handler.checkisLoadingOk(0);
+                        handler.$message({
+                            message: '用户没有保单',
+                            type: 'warning'
+                        }); 
