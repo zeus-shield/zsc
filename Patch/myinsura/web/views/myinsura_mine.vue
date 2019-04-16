@@ -59,3 +59,11 @@
                                             <a target="_blank" :href='getUrl(value)'>{{value.slice(0,12)}}...{{value.slice(-12)}}</a>
                                         </div>
                                     </div>
+                                    <div v-else>
+                                        <div class="right-card-policyInfo-left">{{info}}</div>
+                                        <div class="right-card-policyInfo-right">{{value}}</div>
+                                    </div>
+                                </div>
+                            </el-collapse-item>
+                        </el-collapse>
+                    </div>
