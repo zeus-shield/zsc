@@ -67,3 +67,14 @@
                             </el-collapse-item>
                         </el-collapse>
                     </div>
+                    <div v-else>
+                        <div class="card-title">
+                            <span>您没有保单</span>
+                        </div>
+                    </div>
+                </div>
+            </el-col>
+        </el-row>
+    </div>
+</div>
+</template>
