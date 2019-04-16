@@ -110,3 +110,20 @@ export default {
             isHashHidden:[],
             userAllPolicy:[],
             userAllPolicyHiddenValue:[],
+
+            islogin:false,
+            code:"登录后查看积分",
+            
+            integralBalance:"0",
+
+            isloadingOK:[],
+            timeLineShow:false,
+            reverse: false,
+            activities: [],
+            isTimeLineLoaded:false,
+            startTime:"",
+            endTime:"",
+            status:0,   //0:保单载入，1:签到，2：赠送，3：查询，4:积分加载
+
+        };
+    },
