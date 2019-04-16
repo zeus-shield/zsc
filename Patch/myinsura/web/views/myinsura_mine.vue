@@ -163,3 +163,8 @@ export default {
                             message: '用户没有保单',
                             type: 'warning'
                         }); 
+                    }  else if (result[0] == 0) {//success
+                        let userPolicy = result[1].split(",");
+                        for (var i in userPolicy) {
+                            handler.isGet.push(false);
+                        }
