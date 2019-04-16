@@ -78,3 +78,11 @@
     </div>
 </div>
 </template>
+
+<script>
+import {getUserPolicies,getPolicyInfo,userLogin,getIntegralBalance,userCheckIn,integralTransfer} from '../api/api'
+import api from '../common/api'
+
+import Insurance from '../api/insurance.js';
+import ContractInfo from '../api/ContractInfo';
+import Encrypt from '../api/encrypt';
