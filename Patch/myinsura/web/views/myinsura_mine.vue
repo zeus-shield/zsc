@@ -143,3 +143,11 @@ export default {
                         msg:"交易报错",
                         error:error.toString(10)
                     })
+                } else {
+                    if(result[0] == -3 || result[0] == -1) {//判断状态值//inner error
+                        handler.checkisLoadingOk(0);
+                        if(handler.islogin == false) {
+                            handler.$message({
+                                message: '登录后可查看保单',
+                                type: 'warning'
+                            });
