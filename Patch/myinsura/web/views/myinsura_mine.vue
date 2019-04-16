@@ -151,3 +151,9 @@ export default {
                                 message: '登录后可查看保单',
                                 type: 'warning'
                             });
+                        } else {
+                            handler.$message({
+                                message: '信息查询有误，请联系管理员',
+                                type: 'warning'
+                            });
+                        }
