@@ -177,3 +177,11 @@ export default {
                                 value: {}
                             });
                             handler.isHashHidden.push(false);
+                        }
+                        for (let i = 0; i < handler.userAllPolicytemp.length; i++) {
+                            handler.getPolicyInfo(i);
+                        }
+                    }
+                }
+            })
+        },
