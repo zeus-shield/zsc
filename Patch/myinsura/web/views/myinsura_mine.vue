@@ -23,3 +23,11 @@
                         </div>
                     </div>
                 </div>
+
+                <div  class="left-card" v-if="isTimeLineLoaded">
+                    <div class="card-icon">
+                        <i :class="!timeLineShow?'el-icon-arrow-down':'el-icon-arrow-up'" @click="hiddenTimeLine()"></i>
+                    </div>
+                    <div class="card-title">
+                        <span>积分记录</span>
+                    </div>
