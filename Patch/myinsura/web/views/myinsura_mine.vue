@@ -7,3 +7,10 @@
                     <div class="card-title">
                         <span>{{code}}</span>
                     </div>
+                    <div class="left-card-integral">
+                        <span>积分</span>
+                        <span>{{integralBalance}}</span>
+                    </div>
+                    <div class="left-card-integral-operation">
+                        <div class="left-card-integral-operation-block">
+                            <button class="left-button" @click="userCheckIn()">签到</button>
