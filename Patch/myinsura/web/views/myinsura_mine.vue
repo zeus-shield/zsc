@@ -31,3 +31,15 @@
                     <div class="card-title">
                         <span>积分记录</span>
                     </div>
+                    <div class="card-time">
+                        <span >{{startTime}} - {{endTime}}</span>
+                    </div>
+                    <el-timeline :reverse="reverse" style="margin-left:10%;margin-top:10px" v-if="timeLineShow">
+                        <el-timeline-item    v-for="(activity, index) in activities"
+                                            :key="index"
+                                            :timestamp="activity.timestamp">
+                                            {{activity.content}}
+                        </el-timeline-item>
+                    </el-timeline>
+                </div>
+            </el-col>
