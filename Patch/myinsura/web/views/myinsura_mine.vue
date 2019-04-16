@@ -168,3 +168,12 @@ export default {
                         for (var i in userPolicy) {
                             handler.isGet.push(false);
                         }
+                        let isHashhiddentemp = [];
+                        for (var i in userPolicy) {
+                            let temp = userPolicy[i].substr(43, userPolicy[i].length).split("_");
+                            handler.userAllPolicytemp.push({
+                                name: temp[0] + "公司" + temp[1],
+                                key: userPolicy[i],
+                                value: {}
+                            });
+                            handler.isHashHidden.push(false);
