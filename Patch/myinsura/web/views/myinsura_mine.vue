@@ -247,3 +247,10 @@ export default {
                         type: 'warning'
                     });
                     handler.checkisLoadingOk(1);
+                } else {
+                    handler.integralBalance = parseInt(result);
+                    window.sessionStorage.setItem("Integral",handler.integralBalance);
+                    handler.checkisLoadingOk(1);
+                }
+            })
+        },
