@@ -254,3 +254,13 @@ export default {
                 }
             })
         },
+
+        //用户签到
+        userCheckIn: function() {
+            let handler = this;
+            handler.status = 1;
+            handler.loading = true; 
+            let para = [];
+            para.push(`Owner=${handler.code}`)
+            userCheckIn(para.join("&"))
+            .then((res) => {
