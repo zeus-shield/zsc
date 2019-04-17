@@ -322,3 +322,26 @@ export default {
                 this.loading = false;
             }
         },
+
+        //获取积分记录
+        integralTrace: function(startTime,endTime){
+            let handler = this;
+            let key = Encrypt.encryptCode(handler.code);
+            let insurance = new Insurance(insuranceAbi,insuranceAddress);
+            insurance.integralTrace(key,startTime,endTime,function(error, result) {
+                if(error) {
+                    handler.$message({
+                        message: '区块链服务有误，请联系管理员或稍后查询',
+                        type: 'warning'
+                    });
+                    handler.status = 0;
+                    handler.loading = false;
+                } else {
+                    handler.startTime = handler.timestampToStringNotime(startTime);
+                    handler.endTime = handler.timestampToStringNotime(endTime);
+                    window.sessionStorage.setItem("StartTime","2");
+                    window.sessionStorage.setItem("EndTime","2");
+                    handler.showTimeLine(result);
+                }
+            })
+        },
