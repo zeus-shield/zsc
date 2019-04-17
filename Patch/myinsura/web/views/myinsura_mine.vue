@@ -221,3 +221,14 @@ export default {
                 }
             })
         },
+        
+
+        //检查是否获取保单信息
+        check: function() {
+            for(let i = 0; i < this.isGet.length; i++) {
+                if(this.isGet[i] == false) {
+                    return false;
+                }
+            }
+            return true;
+        },
