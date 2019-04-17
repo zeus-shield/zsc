@@ -307,3 +307,18 @@ export default {
         trace: function(){
           this.$router.push({path: this.$route.path,query: {trace: 'true'}});
         },
+
+        //检查积分和保单是否都获取成功
+        checkisLoadingOk: function (int) {
+            this.isloadingOK[int] = true;
+            let temp = true;
+            for(var key in this.isloadingOK) {
+                if(this.isloadingOK[key] == false){
+                    temp = false;
+                }
+            }
+            if(temp == true) {
+                this.status = 0;
+                this.loading = false;
+            }
+        },
