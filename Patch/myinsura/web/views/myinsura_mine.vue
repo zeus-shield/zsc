@@ -358,3 +358,8 @@ export default {
                             content:"注册获得"+data.list[key].value+"积分",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else if (data.list[key].scene == 1) {//提交保单上链
+                        handler.activities.push({
+                            content:"提交保单上链获得"+data.list[key].value+"积分",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
