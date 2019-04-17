@@ -209,3 +209,15 @@ export default {
                         delete temp.UserKey;
                         handler.userAllPolicytemp[i].value = temp
                         handler.isGet[i] = true;
+
+                        if(handler.check() == true) {
+                            for (let i = 0; i < handler.userAllPolicytemp.length; i++) {
+                                handler.userAllPolicyHiddenValue.push(true);
+                            }
+                            handler.userAllPolicy = handler.userAllPolicytemp;
+                            handler.checkisLoadingOk(0);
+                        }
+                    }
+                }
+            })
+        },
