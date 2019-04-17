@@ -232,3 +232,9 @@ export default {
             }
             return true;
         },
+
+        //获取用户积分余额
+        getIntegralBalance: function () {
+            let handler = this;
+            let owner = handler.code;
+            owner = Encrypt.encryptCode(owner);
