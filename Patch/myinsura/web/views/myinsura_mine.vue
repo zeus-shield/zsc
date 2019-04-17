@@ -264,3 +264,10 @@ export default {
             para.push(`Owner=${handler.code}`)
             userCheckIn(para.join("&"))
             .then((res) => {
+                if (res.code == "-6") {//交易失败 
+                    handler.status = 0;
+                    handler.loading = false; 
+                    this.$message({
+                        message: '签到失败，请稍后再试或联系管理员',
+                        type: 'warning'
+                    });
