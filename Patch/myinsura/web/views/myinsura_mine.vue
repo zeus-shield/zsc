@@ -271,3 +271,10 @@ export default {
                         message: '签到失败，请稍后再试或联系管理员',
                         type: 'warning'
                     });
+                } else if (res.code == "0") {//交易成功
+                    handler.status = 0;
+                    handler.loading = false; 
+                    this.$message({
+                        message: '签到成功',
+                    });
+                    window.location.href="/mine";
