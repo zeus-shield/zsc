@@ -238,3 +238,12 @@ export default {
             let handler = this;
             let owner = handler.code;
             owner = Encrypt.encryptCode(owner);
+
+            let insurance = new Insurance(insuranceAbi,insuranceAddress);
+            insurance.integralBalanceOf(owner,function(error, result) {
+                if(error) {
+                    handler.$message({
+                        message: '区块链服务有误，请联系管理员',
+                        type: 'warning'
+                    });
+                    handler.checkisLoadingOk(1);
