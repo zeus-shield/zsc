@@ -202,3 +202,10 @@ export default {
                             message: '信息查询有误，请联系管理员',
                             type: 'warning'
                         });
+                    }  else if (result[0] == 0) {//success
+                        let temp = JSON.parse(result[1]);
+                        delete temp.Size;
+                        delete temp.Key;
+                        delete temp.UserKey;
+                        handler.userAllPolicytemp[i].value = temp
+                        handler.isGet[i] = true;
