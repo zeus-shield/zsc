@@ -185,3 +185,14 @@ export default {
                 }
             })
         },
+
+        //获取特定保单的所有信息
+        getPolicyInfo: function (i) {
+            let handler = this;
+            //let key = "ddroyce@163.com_PingAn_Life";
+            let key = handler.userAllPolicytemp[i].key;
+            let insurance = new Insurance(insuranceAbi,insuranceAddress);
+            insurance.policyGetByKey(0,key,function(error, result) {
+                if(error) {
+                    handler.getPolicyInfo(i);
+                } else {
