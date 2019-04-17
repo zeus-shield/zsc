@@ -196,3 +196,9 @@ export default {
                 if(error) {
                     handler.getPolicyInfo(i);
                 } else {
+                    if(result[0] == -3 || result[0] == -1 || result[0] == -2) {//判断状态值//inner error
+                        handler.checkisLoadingOk(0);
+                        handler.$message({
+                            message: '信息查询有误，请联系管理员',
+                            type: 'warning'
+                        });
