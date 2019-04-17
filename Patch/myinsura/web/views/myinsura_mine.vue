@@ -302,3 +302,8 @@ export default {
         transfer:function(){
             this.$router.push({path: this.$route.path,query: {transfer: 'true'}});
         },
+
+        //弹出查询时间对话框
+        trace: function(){
+          this.$router.push({path: this.$route.path,query: {trace: 'true'}});
+        },
