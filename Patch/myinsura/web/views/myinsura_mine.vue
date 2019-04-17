@@ -297,3 +297,8 @@ export default {
                 console.log(error);
             })
         },
+
+        //弹出赠送对话框
+        transfer:function(){
+            this.$router.push({path: this.$route.path,query: {transfer: 'true'}});
+        },
