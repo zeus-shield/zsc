@@ -278,3 +278,12 @@ export default {
                         message: '签到成功',
                     });
                     window.location.href="/mine";
+                } else if (res.code == "-9") {//交易报错
+                    handler.status = 0;
+                    handler.loading = false; 
+                    this.$message({
+                        message: '今天已签到',
+                        type: 'warning'
+                    });
+                }
+            })
