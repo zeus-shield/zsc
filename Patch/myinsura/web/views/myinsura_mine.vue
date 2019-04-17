@@ -345,3 +345,9 @@ export default {
                 }
             })
         },
+
+        //显示积分记录
+        showTimeLine: function(data) {
+            let handler = this;
+            handler.activities = [];
+            data = JSON.parse(data)
