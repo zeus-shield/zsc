@@ -48,3 +48,10 @@
                 </el-form-item>
               </div> 
             </el-form>
+            <div >
+              <div class="card-s-button-block">
+                <a class="card-s-button" @click="switchState()">{{language.login.login}}</a>
+              </div>
+              <div class="card-xs-button-block">
+                <el-button type="primary" style="width:100%;" @click="onSubmit('regform')">{{language.login.register}}</el-button>
+              </div>
