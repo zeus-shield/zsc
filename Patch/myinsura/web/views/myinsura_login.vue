@@ -16,3 +16,16 @@
                 <el-form-item :label="language.login.p2" prop="password">
                   <el-input v-model="form.password" show-password></el-input>
                 </el-form-item>
+              </div> 
+            </el-form>
+            <div>
+              <div class="card-s-button-block">
+                <a class="card-s-button" @click="switchState()">{{language.login.register}}</a>
+              </div>
+              <div class="card-xs-button-block">
+                <el-button type="primary" style="width:100%;" @click="onSubmit('form')">{{language.login.login}}</el-button>
+              </div>
+            </div>
+            <div class="card-none-block"></div>
+          </el-card>
+        </div>
