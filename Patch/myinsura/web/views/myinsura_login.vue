@@ -42,3 +42,9 @@
                 </el-form-item>
                 <el-form-item :label="language.login.p2" prop="password">
                   <el-input v-model="regform.password"  show-password></el-input>
+                </el-form-item>
+                <el-form-item :label="language.login.p3" prop="repassword">
+                  <el-input v-model="regform.repassword" show-password></el-input>
+                </el-form-item>
+              </div> 
+            </el-form>
