@@ -93,3 +93,9 @@ export default {
             callback(new Error(api.getCookie('language') == 'en' ? 'Phone number or email incorrect!' : '请输入正确的手机号或邮箱地址'));
         }
     };
+  
+    return {
+      loading:false,
+      dialogFormVisible:true,
+      dialogWidth:"",
+      language:api.getCookie('language') == 'en' ? en_GB : zh_CN,
