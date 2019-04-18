@@ -99,3 +99,8 @@ export default {
       dialogFormVisible:true,
       dialogWidth:"",
       language:api.getCookie('language') == 'en' ? en_GB : zh_CN,
+
+      form:{
+        code:"",
+        password:"",
+      },
