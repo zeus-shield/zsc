@@ -35,3 +35,10 @@
             <div class="card-title">
               <span>{{language.login.register}}</span>
             </div>
+            <el-form ref="regform" :model="regform" :rules="regrules" label-width="80px">
+              <div>
+                <el-form-item :label="language.login.p1" prop="code">
+                  <el-input v-model="regform.code" :placeholder="language.login.p4"></el-input>
+                </el-form-item>
+                <el-form-item :label="language.login.p2" prop="password">
+                  <el-input v-model="regform.password"  show-password></el-input>
