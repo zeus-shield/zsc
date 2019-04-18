@@ -132,3 +132,8 @@ export default {
           { min: 6, message: api.getCookie('language') == 'en' ? 'More than 6 characters' : '长度不得少于6个字符', trigger: 'blur'},
           { validator: checkRepassword, trigger: 'blur' }
         ],
+        code: [
+          { required: true, message: api.getCookie('language') == 'en' ? 'The account cannot blank！' : '账号不能为空', trigger: 'blur'},
+          { validator: checkCode, trigger: 'blur' }
+        ],
+      },
