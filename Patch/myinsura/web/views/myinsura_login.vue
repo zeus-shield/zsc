@@ -141,3 +141,11 @@ export default {
       isRegister:false
     };
   },
+  methods: {
+    switchState() {
+      if(this.isRegister == false) {
+        this.isRegister = true;
+      } else {
+        this.isRegister = false;
+      }
+    },
