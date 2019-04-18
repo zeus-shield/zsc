@@ -55,3 +55,14 @@
               <div class="card-xs-button-block">
                 <el-button type="primary" style="width:100%;" @click="onSubmit('regform')">{{language.login.register}}</el-button>
               </div>
+            </div>
+            <div class="card-none-block"></div>
+          </el-card>
+        </div>
+      </el-col>
+    </el-row>
+    <br>
+    <br>
+  </div>
+</div>
+</template>
