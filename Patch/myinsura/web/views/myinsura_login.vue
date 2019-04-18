@@ -174,3 +174,9 @@ export default {
       para.push(`Password=${handler.form.password}`);
       userLogin(para.join("&"))
       .then((res) => {
+          if (res.code == "-1" || res.code == "-2" || res.code == "-3") {
+              handler.loading = false;
+              handler.$message({
+                  message: handler.language.message.dataError,
+                  type: 'warning'
+              });
