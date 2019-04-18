@@ -165,3 +165,12 @@ export default {
             }
         })
     },
+
+    userLogin() {
+      let handler = this;
+      let para = [];
+      handler.loading = true;
+      para.push(`Code=${handler.form.code}`);
+      para.push(`Password=${handler.form.password}`);
+      userLogin(para.join("&"))
+      .then((res) => {
