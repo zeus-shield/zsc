@@ -137,3 +137,7 @@ export default {
           { validator: checkCode, trigger: 'blur' }
         ],
       },
+
+      isRegister:false
+    };
+  },
