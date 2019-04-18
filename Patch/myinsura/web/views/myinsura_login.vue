@@ -7,3 +7,12 @@
           <el-card class="box-card" shadow="hover"> 
             <div class="card-title">
               <span>{{language.login.login}}</span>
+            </div>
+            <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+              <div>
+                <el-form-item :label="language.login.p1" prop="code">
+                  <el-input v-model="form.code" :placeholder="language.login.p4"></el-input>
+                </el-form-item>
+                <el-form-item :label="language.login.p2" prop="password">
+                  <el-input v-model="form.password" show-password></el-input>
+                </el-form-item>
