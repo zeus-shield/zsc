@@ -149,3 +149,19 @@ export default {
         this.isRegister = false;
       }
     },
+    
+    onSubmit(formName) {
+      let handler = this;
+        handler.$refs[formName].validate((valid) => {
+            if (valid) {
+              if(formName == 'form') {
+                handler.userLogin();
+              } else {
+                handler.userRegister();
+              }
+            } else {
+                console.log('error submit!!');
+                return false;
+            }
+        })
+    },
