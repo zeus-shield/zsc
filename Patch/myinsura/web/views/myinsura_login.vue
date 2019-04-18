@@ -104,3 +104,9 @@ export default {
         code:"",
         password:"",
       },
+
+      regform:{
+        code:"",
+        password:"",
+        repassword:"",
+      },
