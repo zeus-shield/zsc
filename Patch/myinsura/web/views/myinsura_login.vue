@@ -83,3 +83,13 @@ export default {
             callback(new Error(api.getCookie('language') == 'en' ? 'The passwords are not the same!' : '请确保两次输入的密码相同'));
         }
     };
+
+    var checkCode = (rule, value, callback) => {
+        if (/^1[34578]\d{9}$/.test(value)) {
+            callback();
+        } else if (/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(value)){
+            callback();
+        } else {
+            callback(new Error(api.getCookie('language') == 'en' ? 'Phone number or email incorrect!' : '请输入正确的手机号或邮箱地址'));
+        }
+    };
