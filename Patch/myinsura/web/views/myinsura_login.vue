@@ -186,3 +186,12 @@ export default {
                   message: handler.language.message.trackError,
                   type: 'warning'
               });
+          } else if (res.code == "1") {//µÇÂ¼³É¹¦
+              api.setCookie("Code",handler.form.code);
+              api.setCookie("Password",handler.form.password);
+              window.sessionStorage.setItem("isLogin",true);
+              handler.loading = false;
+              window.location.href="/mine";
+              // handler.$router.push({
+              //     path: "/mine",
+              // })
