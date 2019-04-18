@@ -29,3 +29,9 @@
             <div class="card-none-block"></div>
           </el-card>
         </div>
+
+        <div v-if="isRegister">
+          <el-card class="box-card" shadow="hover">
+            <div class="card-title">
+              <span>{{language.login.register}}</span>
+            </div>
