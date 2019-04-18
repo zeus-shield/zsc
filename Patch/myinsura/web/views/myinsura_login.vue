@@ -73,3 +73,13 @@ import { log } from 'util';
 import api from '../common/api'
 import en_GB from '../common/language/en-GB.js';
 import zh_CN from '../common/language/zh-CN.js';
+
+export default {
+  data() {
+    var checkRepassword = (rule, value, callback) => {
+        if (value == this.regform.password) {
+            callback();
+        } else {
+            callback(new Error(api.getCookie('language') == 'en' ? 'The passwords are not the same!' : '请确保两次输入的密码相同'));
+        }
+    };
