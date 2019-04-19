@@ -299,3 +299,9 @@ export default {
     float:right;
     margin-left:2%
   }
+  .card-s-button{
+    width:30px;
+    font-size:12px;
+    line-height:40px;
+    float:left
+  }
