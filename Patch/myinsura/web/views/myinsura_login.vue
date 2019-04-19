@@ -288,3 +288,9 @@ export default {
       width:100%;
       margin:56px auto auto auto;
   }
+  .card-title{
+    font-size:30px;
+    line-height:30px;
+    text-align:center;
+    margin-bottom:15px
+  }
