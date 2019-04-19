@@ -195,3 +195,9 @@ export default {
               // handler.$router.push({
               //     path: "/mine",
               // })
+          } else if (res.code == "2") {//µÇÂ¼Ê§°Ü
+              handler.loading = false;
+              handler.$message({
+                  message: handler.language.message.loginFail,
+                  type: 'warning'
+              });
