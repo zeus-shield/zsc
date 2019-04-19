@@ -282,3 +282,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+ .page-body{
+      width:100%;
+      margin:56px auto auto auto;
+  }
