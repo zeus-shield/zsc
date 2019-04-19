@@ -218,3 +218,12 @@ export default {
           console.log(error);
       })
     },
+
+    userRegister() {
+      let handler = this;
+      let para = [];
+      handler.loading = true;
+      para.push(`Code=${handler.regform.code}`);
+      para.push(`Password=${handler.regform.password}`);
+      userRegister(para.join("&"))
+      .then((res) => {
