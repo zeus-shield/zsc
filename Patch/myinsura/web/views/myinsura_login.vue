@@ -294,3 +294,8 @@ export default {
     text-align:center;
     margin-bottom:15px
   }
+  .card-s-button-block{
+    width:30%;
+    float:right;
+    margin-left:2%
+  }
