@@ -201,3 +201,11 @@ export default {
                   message: handler.language.message.loginFail,
                   type: 'warning'
               });
+          } else if (res.code == "3") {//ц╩спук╨е
+              handler.loading = false;
+              handler.$message({
+                  message: handler.language.message.noAccount,
+                  type: 'warning'
+              });
+          }
+      })
