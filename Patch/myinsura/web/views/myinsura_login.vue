@@ -244,3 +244,12 @@ export default {
               api.setCookie("Password",handler.regform.password);
               window.sessionStorage.setItem("isLogin",true);
               handler.loading = false;
+              this.$message({
+                  message: handler.language.message.registerSuccess,
+              });
+              window.location.href="/mine";
+              // handler.$router.push({
+              //     path: "/mine",
+              // })
+          }
+      })
