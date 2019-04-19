@@ -305,3 +305,8 @@ export default {
     line-height:40px;
     float:left
   }
+  .card-xs-button-block{
+    width:36%;
+    height:100%;
+    float:right;
+  }
