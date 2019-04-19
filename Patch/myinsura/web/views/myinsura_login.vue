@@ -227,3 +227,9 @@ export default {
       para.push(`Password=${handler.regform.password}`);
       userRegister(para.join("&"))
       .then((res) => {
+          if (res.code == "-1" || res.code == "-2" || res.code == "-3") {
+              this.loading = false;
+              this.$message({
+                  message: handler.language.message.dataError,
+                  type: 'warning'
+              });
