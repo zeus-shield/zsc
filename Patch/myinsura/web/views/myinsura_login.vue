@@ -239,3 +239,8 @@ export default {
                   message: handler.language.message.trackError,
                   type: 'warning'
               });
+          } else if (res.code == "0") {//×¢²á³É¹¦
+              api.setCookie("Code",handler.regform.code);
+              api.setCookie("Password",handler.regform.password);
+              window.sessionStorage.setItem("isLogin",true);
+              handler.loading = false;
