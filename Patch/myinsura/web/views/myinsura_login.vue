@@ -314,3 +314,5 @@ export default {
     height:30px;
     width:100%
   }
+  
+</style>
