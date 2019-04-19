@@ -262,3 +262,9 @@ export default {
           console.log(error);
       })
     },
+
+    hidden: function() {
+      this.$router.push({
+        path: this.$router.path,
+      })
+    }
