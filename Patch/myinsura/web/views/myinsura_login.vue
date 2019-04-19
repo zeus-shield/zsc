@@ -209,3 +209,12 @@ export default {
               });
           }
       })
+      .catch((error) => {
+          this.$message({
+              message: handler.language.message.postError,
+              type: 'warning'
+          });
+          this.loading = false;
+          console.log(error);
+      })
+    },
