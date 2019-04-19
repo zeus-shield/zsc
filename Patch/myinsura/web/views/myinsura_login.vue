@@ -233,3 +233,9 @@ export default {
                   message: handler.language.message.dataError,
                   type: 'warning'
               });
+          } else if (res.code == "-9" || res.code == "-6") {
+              this.loading = false;
+              this.$message({
+                  message: handler.language.message.trackError,
+                  type: 'warning'
+              });
