@@ -310,3 +310,7 @@ export default {
     height:100%;
     float:right;
   }
+  .card-none-block{
+    height:30px;
+    width:100%
+  }
