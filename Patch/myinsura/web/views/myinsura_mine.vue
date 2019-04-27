@@ -1,6 +1,6 @@
 <template>
 <div class="page-body">
-    <div v-loading.fullscreen.lock="loading" :element-loading-text="status == 0 ? '个人信息载入中':(status == 1?'用户签到处理中':(status == 2? '积分赠送处理中':(status == 3?'积分查询处理中':'积分加载中')))">
+    <div v-loading.fullscreen.lock="loading" :element-loading-text="status == 0 ? language.loading.p7:(status == 1?language.loading.p8:(status == 2? language.loading.p9:(status == 3?language.loading.p10:language.loading.p11)))">
        <el-row :gutter="40">
             <el-col :span="24" :md="8">
                 <div class="left-card" >
