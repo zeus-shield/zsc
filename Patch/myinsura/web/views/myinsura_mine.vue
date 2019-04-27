@@ -109,7 +109,7 @@ export default {
             userAllPolicyHiddenValue:[],
 
             islogin:false,
-            code:"登录后查看积分",
+            code:api.getCookie('language') == 'en' ? "Check the point after login" : "登录后查看积分",
             
             integralBalance:"0",
 
