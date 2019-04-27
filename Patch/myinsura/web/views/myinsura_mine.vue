@@ -184,7 +184,7 @@ export default {
                     } else if (result[0] == -2) {//no data
                         handler.checkisLoadingOk(0);
                         handler.$message({
-                            message: '用户没有保单',
+                            message: handler.language.message.noPolicy,
                             type: 'warning'
                         }); 
                     }  else if (result[0] == 0) {//success
