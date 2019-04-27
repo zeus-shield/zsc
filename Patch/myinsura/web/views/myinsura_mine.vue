@@ -143,6 +143,11 @@ export default {
                 有无社保:"Guarantee",
                 有无交通事故:"Accident",
                 缴费方式:"Payment",
+                按年缴费:"Premium paid each year",
+                按月缴费:"premium paid each month",
+                描述:"Description",
+                Hash:"Hash"
+            },
 
         };
     },
