@@ -47,8 +47,8 @@
             <el-col :span="24" :md="16">
                 <div class="right-card">
                     <div v-if="userAllPolicy!=[]" style="margin:10px">
-                        <div class="card-title">
-                            <span>我的保单</span>
+                        <div class="card-title" style="line-height:40px">
+                            <span>{{language.mine.policy.title}}</span>
                         </div>
                         <el-collapse v-model="activeName" accordion>
                             <el-collapse-item v-for="(policy,key) in userAllPolicy" :title="policy.name" :name="key" :key="key">
