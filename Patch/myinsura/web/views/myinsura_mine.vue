@@ -177,7 +177,7 @@ export default {
                             });
                         } else {
                             handler.$message({
-                                message: '信息查询有误，请联系管理员',
+                                message: handler.language.message.dataError,
                                 type: 'warning'
                             });
                         }
