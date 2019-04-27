@@ -80,7 +80,7 @@ export default {
         if (value == this.regform.password) {
             callback();
         } else {
-            callback(new Error(api.getCookie('language') == 'en' ? 'The passwords are not the same!' : 'ÇëÈ·±£Á½´ÎÊäÈëµÄÃÜÂëÏàÍ¬'));
+            callback(new Error(api.getCookie('language') == 'en' ? 'The passwords are not the same!' : 'è¯·ç¡®ä¿ä¸¤æ¬¡è¾“å…¥çš„å¯†ç ç›¸åŒ'));
         }
     };
 
@@ -90,7 +90,7 @@ export default {
         } else if (/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(value)){
             callback();
         } else {
-            callback(new Error(api.getCookie('language') == 'en' ? 'Phone number or email incorrect!' : 'ÇëÊäÈëÕıÈ·µÄÊÖ»úºÅ»òÓÊÏäµØÖ·'));
+            callback(new Error(api.getCookie('language') == 'en' ? 'Phone number or email incorrect!' : 'è¯·è¾“å…¥æ­£ç¡®çš„æ‰‹æœºå·æˆ–é‚®ç®±åœ°å€'));
         }
     };
   
@@ -113,27 +113,27 @@ export default {
 
       rules: {
         password:[
-          { required: true, message: api.getCookie('language') == 'en' ? 'The password cannot blank£¡' : 'ÃÜÂë²»ÄÜÎª¿Õ', trigger: 'blur'},
-          { min: 6, message: api.getCookie('language') == 'en' ? 'More than 6 characters' : '³¤¶È²»µÃÉÙÓÚ6¸ö×Ö·û', trigger: 'blur'}
+          { required: true, message: api.getCookie('language') == 'en' ? 'The password cannot blankï¼' : 'å¯†ç ä¸èƒ½ä¸ºç©º', trigger: 'blur'},
+          { min: 6, message: api.getCookie('language') == 'en' ? 'More than 6 characters' : 'é•¿åº¦ä¸å¾—å°‘äº6ä¸ªå­—ç¬¦', trigger: 'blur'}
         ],
         code: [
-          { required: true, message: api.getCookie('language') == 'en' ? 'The account cannot blank£¡' : 'ÕËºÅ²»ÄÜÎª¿Õ', trigger: 'blur'},
+          { required: true, message: api.getCookie('language') == 'en' ? 'The account cannot blankï¼' : 'è´¦å·ä¸èƒ½ä¸ºç©º', trigger: 'blur'},
           { validator: checkCode, trigger: 'blur' }
         ],
       },
 
       regrules: {
         password:[
-          { required: true, message: api.getCookie('language') == 'en' ? 'The password cannot blank£¡' : 'ÃÜÂë²»ÄÜÎª¿Õ', trigger: 'blur'},
-          { min: 6, message: api.getCookie('language') == 'en' ? 'More than 6 characters' : '³¤¶È²»µÃÉÙÓÚ6¸ö×Ö·û', trigger: 'blur'}
+          { required: true, message: api.getCookie('language') == 'en' ? 'The password cannot blankï¼' : 'å¯†ç ä¸èƒ½ä¸ºç©º', trigger: 'blur'},
+          { min: 6, message: api.getCookie('language') == 'en' ? 'More than 6 characters' : 'é•¿åº¦ä¸å¾—å°‘äº6ä¸ªå­—ç¬¦', trigger: 'blur'}
         ],
         repassword:[
-          { required: true, message: api.getCookie('language') == 'en' ? 'The password cannot blank£¡' : 'ÃÜÂë²»ÄÜÎª¿Õ', trigger: 'blur'},
-          { min: 6, message: api.getCookie('language') == 'en' ? 'More than 6 characters' : '³¤¶È²»µÃÉÙÓÚ6¸ö×Ö·û', trigger: 'blur'},
+          { required: true, message: api.getCookie('language') == 'en' ? 'The password cannot blankï¼' : 'å¯†ç ä¸èƒ½ä¸ºç©º', trigger: 'blur'},
+          { min: 6, message: api.getCookie('language') == 'en' ? 'More than 6 characters' : 'é•¿åº¦ä¸å¾—å°‘äº6ä¸ªå­—ç¬¦', trigger: 'blur'},
           { validator: checkRepassword, trigger: 'blur' }
         ],
         code: [
-          { required: true, message: api.getCookie('language') == 'en' ? 'The account cannot blank£¡' : 'ÕËºÅ²»ÄÜÎª¿Õ', trigger: 'blur'},
+          { required: true, message: api.getCookie('language') == 'en' ? 'The account cannot blankï¼' : 'è´¦å·ä¸èƒ½ä¸ºç©º', trigger: 'blur'},
           { validator: checkCode, trigger: 'blur' }
         ],
       },
@@ -186,7 +186,7 @@ export default {
                   message: handler.language.message.trackError,
                   type: 'warning'
               });
-          } else if (res.code == "1") {//µÇÂ¼³É¹¦
+          } else if (res.code == "1") {//ç™»å½•æˆåŠŸ
               api.setCookie("Code",handler.form.code);
               api.setCookie("Password",handler.form.password);
               window.sessionStorage.setItem("isLogin",true);
@@ -195,13 +195,13 @@ export default {
               // handler.$router.push({
               //     path: "/mine",
               // })
-          } else if (res.code == "2") {//µÇÂ¼Ê§°Ü
+          } else if (res.code == "2") {//ç™»å½•å¤±è´¥
               handler.loading = false;
               handler.$message({
                   message: handler.language.message.loginFail,
                   type: 'warning'
               });
-          } else if (res.code == "3") {//Ã»ÓĞÕËºÅ
+          } else if (res.code == "3") {//æ²¡æœ‰è´¦å·
               handler.loading = false;
               handler.$message({
                   message: handler.language.message.noAccount,
@@ -239,7 +239,7 @@ export default {
                   message: handler.language.message.trackError,
                   type: 'warning'
               });
-          } else if (res.code == "0") {//×¢²á³É¹¦
+          } else if (res.code == "0") {//æ³¨å†ŒæˆåŠŸ
               api.setCookie("Code",handler.regform.code);
               api.setCookie("Password",handler.regform.password);
               window.sessionStorage.setItem("isLogin",true);
