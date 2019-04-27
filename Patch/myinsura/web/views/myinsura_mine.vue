@@ -197,7 +197,7 @@ export default {
                             let temp = userPolicy[i].substr(43, userPolicy[i].length).split("_");
                             let policyName = handler.generatePolicyName(temp)
                             handler.userAllPolicytemp.push({
-                                name: temp[0] + "公司" + temp[1],
+                                name: policyName,
                                 key: userPolicy[i],
                                 value: {}
                             });
