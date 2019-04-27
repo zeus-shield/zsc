@@ -29,7 +29,7 @@
                         <i :class="!timeLineShow?'el-icon-arrow-down':'el-icon-arrow-up'" @click="hiddenTimeLine()"></i>
                     </div>
                     <div class="card-title">
-                        <span>积分记录</span>
+                        <span>{{language.mine.integralLine.title}}</span>
                     </div>
                     <div class="card-time">
                         <span >{{startTime}} - {{endTime}}</span>
