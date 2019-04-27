@@ -195,6 +195,7 @@ export default {
                         let isHashhiddentemp = [];
                         for (var i in userPolicy) {
                             let temp = userPolicy[i].substr(43, userPolicy[i].length).split("_");
+                            let policyName = handler.generatePolicyName(temp)
                             handler.userAllPolicytemp.push({
                                 name: temp[0] + "公司" + temp[1],
                                 key: userPolicy[i],
