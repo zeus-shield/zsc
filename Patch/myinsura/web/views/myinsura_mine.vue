@@ -72,7 +72,7 @@
                     </div>
                     <div v-else>
                         <div class="card-title">
-                            <span>您没有保单</span>
+                            <span>{{language.mine.policy.nopolicy}}</span>
                         </div>
                     </div>
                 </div>
