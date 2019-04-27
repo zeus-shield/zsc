@@ -136,6 +136,13 @@ export default {
                 保单编号:"Number",
                 保障期限:"Period",
                 车牌号:"Car No.",
+                车龄:"Car Age",
+                开始时间:"StartTime",
+                结束时间:"EndTime",
+                自动续保:"Renewal",
+                有无社保:"Guarantee",
+                有无交通事故:"Accident",
+                缴费方式:"Payment",
 
         };
     },
