@@ -121,6 +121,14 @@ export default {
             startTime:"",
             endTime:"",
             status:0,   //0:保单载入，1:签到，2：赠送，3：查询，4:积分加载
+            language:api.getCookie('language') == 'en' ? en_GB : zh_CN,
+             companyListCNToEN:{
+                中国人保:"PICC",
+                中国平安:"PING AN",
+                中国太平洋:"CPIC",
+                中国人寿:"CHINA LIFE",
+                新华保险:"NCI",
+            },
 
         };
     },
