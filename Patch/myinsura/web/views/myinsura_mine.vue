@@ -99,16 +99,6 @@ const insuranceAddress = ContractInfo.insuranceAddress;
 
 export default {
     data() {
-        var checkCode = (rule, value, callback) => {
-            if (/^1[34578]\d{9}$/.test(value)) {
-                callback();
-            } else if (/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(value)){
-                callback(new Error('请输入正确的手机号或邮箱地址'));
-            } else {
-                callback(new Error('请输入正确的手机号或邮箱地址'));
-            }
-        };
-
         return {
             loading:false,
             activeName: '1',
