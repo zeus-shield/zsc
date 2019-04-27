@@ -51,7 +51,10 @@
                             <span>{{language.mine.policy.title}}</span>
                         </div>
                         <el-collapse v-model="activeName" accordion>
-                            <el-collapse-item v-for="(policy,key) in userAllPolicy" :title="policy.name" :name="key" :key="key">
+                            <el-collapse-item v-for="(policy,key) in userAllPolicy"  :name="key" :key="key">
+                                <template slot="title">
+                                    <span style="line-height:13px">{{policy.name}}</span>
+                                </template>
                                 <div class="right-card-policyInfo" v-for="(value,info) in policy.value" :key="info">
                                     <div v-if="info == 'Hash'">
                                         <div class="right-card-policyInfo-left">{{info}}</div>
