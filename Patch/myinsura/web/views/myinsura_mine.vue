@@ -129,6 +129,13 @@ export default {
                 中国人寿:"CHINA LIFE",
                 新华保险:"NCI",
             },
+            policyKeyCNToEN:{
+                投保人:"Applicant",
+                被保人:"Insured",
+                保障额度:"Amount",
+                保单编号:"Number",
+                保障期限:"Period",
+                车牌号:"Car No.",
 
         };
     },
