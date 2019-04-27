@@ -16,7 +16,7 @@
                             <button class="left-button" @click="userCheckIn()">{{language.mine.integral.button1}}</button>
                         </div>
                         <div class="left-card-integral-operation-block">
-                            <button class="left-button" @click="transfer()">赠送</button>
+                            <button class="left-button" @click="transfer()">{{language.mine.integral.button2}}</button>
                         </div>
                         <div class="left-card-integral-operation-block">
                             <button class="left-button" @click="trace()">查询</button>
