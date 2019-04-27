@@ -8,7 +8,7 @@
                         <span>{{code}}</span>
                     </div>
                     <div class="left-card-integral">
-                        <span>积分</span>
+                        <span>{{language.mine.integral.title}}</span>
                         <span>{{integralBalance}}</span>
                     </div>
                     <div class="left-card-integral-operation">
