@@ -172,7 +172,7 @@ export default {
                         handler.checkisLoadingOk(0);
                         if(handler.islogin == false) {
                             handler.$message({
-                                message: '登录后可查看保单',
+                                message: handler.language.message.needlogin2,
                                 type: 'warning'
                             });
                         } else {
