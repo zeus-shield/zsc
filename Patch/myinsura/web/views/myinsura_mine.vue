@@ -238,6 +238,13 @@ export default {
                             } else if(key == "保障期限" || key == "车龄") {
                                 temp[key] += api.getCookie('language') == 'en' ? " years" : " 年";
                             } else if(key == "自动续保") {
+                                if(api.getCookie('language') == 'en') {
+                                    if(temp[key] == "不自动续保") {
+                                        temp[key] = "No"
+                                    } else {
+                                        temp[key] = "Yes"
+                                    }
+                                }
                         handler.userAllPolicytemp[i].value = temp
                         handler.isGet[i] = true;
 
