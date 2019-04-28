@@ -445,3 +445,8 @@ export default {
                             content:"签到获得"+data.list[key].value+"积分",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else if (data.list[key].scene == 3) {//邀请其他用户
+                        handler.activities.push({
+                            content:"邀请其他用户获得"+data.list[key].value+"积分",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
