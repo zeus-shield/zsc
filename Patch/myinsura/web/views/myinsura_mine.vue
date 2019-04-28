@@ -245,6 +245,14 @@ export default {
                                         temp[key] = "Yes"
                                     }
                                 }
+                            } else if(key == "有无社保（投保人）") {
+                                if(api.getCookie('language') == 'en') {
+                                    if(temp[key] == "无社保") {
+                                        temp[key] = "No"
+                                    } else {
+                                        temp[key] = "Yes"
+                                    }
+                                }
                         handler.userAllPolicytemp[i].value = temp
                         handler.isGet[i] = true;
 
