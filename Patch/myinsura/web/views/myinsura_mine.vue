@@ -359,7 +359,7 @@ export default {
                     handler.status = 0;
                     handler.loading = false; 
                     this.$message({
-                        message: '今天已签到',
+                        message: handler.language.message.trackError,
                         type: 'warning'
                     });
                 }
