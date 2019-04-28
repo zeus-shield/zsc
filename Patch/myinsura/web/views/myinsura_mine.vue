@@ -366,7 +366,7 @@ export default {
             })
             .catch((error) => {
                 this.$message({
-                    message: '网络波动，请稍后刷新重试',
+                    message: handler.language.message.postError,
                     type: 'warning'
                 });
                 this.status = 0;
