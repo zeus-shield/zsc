@@ -490,3 +490,6 @@ export default {
                             content:"获得其他用户赠送的"+data.list[key].value+"积分",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else {
+                        console.log(data.list[key]);
+                    }
