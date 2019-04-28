@@ -345,7 +345,7 @@ export default {
                     handler.status = 0;
                     handler.loading = false; 
                     this.$message({
-                        message: '签到失败，请稍后再试或联系管理员',
+                        message: handler.language.message.checkInFail,
                         type: 'warning'
                     });
                 } else if (res.code == "0") {//交易成功
