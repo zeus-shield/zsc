@@ -429,7 +429,7 @@ export default {
             handler.activities = [];
             data = JSON.parse(data)
             for (var key in data.list) {
-                if(data.list[key].scene != undefined) {
+                if(data.list[key].scene != undefined && api.getCookie('language') != 'en') {
                     if(data.list[key].scene == 0) {//用户注册
                         handler.activities.push({
                             content:"注册获得"+data.list[key].value+"积分",
