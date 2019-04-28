@@ -475,3 +475,8 @@ export default {
                             content:"管理员发送"+data.list[key].value+"积分",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else if (data.list[key].scene == 9) {//使用积分
+                        handler.activities.push({
+                            content:"使用积分消耗"+data.list[key].value+"积分",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
