@@ -253,6 +253,14 @@ export default {
                                         temp[key] = "Yes"
                                     }
                                 }
+                            } else if(key == "有无交通事故") {
+                                if(api.getCookie('language') == 'en') {
+                                    if(temp[key] == "无交通事故") {
+                                        temp[key] = "No"
+                                    } else {
+                                        temp[key] = "Yes"
+                                    }
+                                }
                         handler.userAllPolicytemp[i].value = temp
                         handler.isGet[i] = true;
 
