@@ -470,3 +470,8 @@ export default {
                             content:"点击广告获得"+data.list[key].value+"积分",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else if (data.list[key].scene == 8) {//管理员奖励
+                        handler.activities.push({
+                            content:"管理员发送"+data.list[key].value+"积分",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
