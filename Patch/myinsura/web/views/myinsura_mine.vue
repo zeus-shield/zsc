@@ -261,6 +261,16 @@ export default {
                                         temp[key] = "Yes"
                                     }
                                 }
+                            } else if(key == "缴费方式") {
+                                if(api.getCookie('language') == 'en') {
+                                    if(temp[key] == "按年缴费") {
+                                        temp[key] = "Year pay"
+                                    } else {
+                                        temp[key] = "Month pay"
+                                    }
+                                }
+                            }
+                        }
                         handler.userAllPolicytemp[i].value = temp
                         handler.isGet[i] = true;
 
