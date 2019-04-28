@@ -455,3 +455,8 @@ export default {
                             content:"分享至微信获得"+data.list[key].value+"积分",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else if (data.list[key].scene == 5) {//分享至QQ
+                        handler.activities.push({
+                            content:"分享至QQ获得"+data.list[key].value+"积分",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
