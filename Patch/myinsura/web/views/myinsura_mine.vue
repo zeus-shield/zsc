@@ -271,6 +271,12 @@ export default {
                                 }
                             }
                         }
+                        for(var key in temp) {
+                            if(api.getCookie('language') == 'en') {
+                                if(key == "有无社保（被保人）"){
+                                    let valTemp = temp[key];
+                                    delete temp[key];
+                                    temp[handler.policyKeyCNToEN.有无社保] = valTemp;
                         handler.userAllPolicytemp[i].value = temp
                         handler.isGet[i] = true;
 
