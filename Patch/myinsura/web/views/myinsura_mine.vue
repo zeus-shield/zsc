@@ -480,3 +480,8 @@ export default {
                             content:"使用积分消耗"+data.list[key].value+"积分",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else if (data.list[key].scene == 10) {//积分赠送
+                        handler.activities.push({
+                            content:"赠送其他用户"+data.list[key].value+"积分",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
