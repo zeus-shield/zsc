@@ -408,7 +408,7 @@ export default {
             insurance.integralTrace(key,startTime,endTime,function(error, result) {
                 if(error) {
                     handler.$message({
-                        message: '区块链服务有误，请联系管理员或稍后查询',
+                        message: handler.language.message.trackError,
                         type: 'warning'
                     });
                     handler.status = 0;
