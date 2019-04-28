@@ -277,6 +277,13 @@ export default {
                                     let valTemp = temp[key];
                                     delete temp[key];
                                     temp[handler.policyKeyCNToEN.有无社保] = valTemp;
+                                } else {
+                                    let valTemp = temp[key];
+                                    delete temp[key];
+                                    temp[handler.policyKeyCNToEN[key]] = valTemp;
+                                }
+                            }
+                        }
                         handler.userAllPolicytemp[i].value = temp
                         handler.isGet[i] = true;
 
