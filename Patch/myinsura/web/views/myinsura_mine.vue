@@ -320,7 +320,7 @@ export default {
             insurance.integralBalanceOf(owner,function(error, result) {
                 if(error) {
                     handler.$message({
-                        message: '区块链服务有误，请联系管理员',
+                        message: handler.language.message.trackError,
                         type: 'warning'
                     });
                     handler.checkisLoadingOk(1);
