@@ -465,3 +465,8 @@ export default {
                             content:"分享至微博获得"+data.list[key].value+"积分",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else if (data.list[key].scene == 7) {//点击广告
+                        handler.activities.push({
+                            content:"点击广告获得"+data.list[key].value+"积分",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
