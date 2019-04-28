@@ -485,3 +485,8 @@ export default {
                             content:"赠送其他用户"+data.list[key].value+"积分",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else if (data.list[key].scene == 11) {//积分接受赠送
+                        handler.activities.push({
+                            content:"获得其他用户赠送的"+data.list[key].value+"积分",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
