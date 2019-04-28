@@ -352,7 +352,7 @@ export default {
                     handler.status = 0;
                     handler.loading = false; 
                     this.$message({
-                        message: '签到成功',
+                        message: handler.language.message.checkInSuccess,
                     });
                     window.location.href="/mine";
                 } else if (res.code == "-9") {//交易报错
