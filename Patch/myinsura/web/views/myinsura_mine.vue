@@ -440,3 +440,8 @@ export default {
                             content:"提交保单上链获得"+data.list[key].value+"积分",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else if (data.list[key].scene == 2) {//签到
+                        handler.activities.push({
+                            content:"签到获得"+data.list[key].value+"积分",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
