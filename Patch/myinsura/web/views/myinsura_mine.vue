@@ -232,6 +232,12 @@ export default {
                         delete temp.Size;
                         delete temp.Key;
                         delete temp.UserKey;
+                        for(var key in temp) {
+                            if(key == "保障额度") {
+                                temp[key] += "RMB";
+                            } else if(key == "保障期限" || key == "车龄") {
+                                temp[key] += api.getCookie('language') == 'en' ? " years" : " 年";
+                            } else if(key == "自动续保") {
                         handler.userAllPolicytemp[i].value = temp
                         handler.isGet[i] = true;
 
