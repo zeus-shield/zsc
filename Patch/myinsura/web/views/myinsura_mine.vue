@@ -529,3 +529,8 @@ export default {
                             content:"Share to weibo for "+data.list[key].value+" integrals.",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else if (data.list[key].scene == 7) {//点击广告
+                        handler.activities.push({
+                            content:"Click advertisement for "+data.list[key].value+" integrals.",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
