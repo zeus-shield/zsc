@@ -514,3 +514,8 @@ export default {
                             content:"Invite others for "+data.list[key].value+" integrals.",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else if (data.list[key].scene == 4) {//分享至微信
+                        handler.activities.push({
+                            content:"Share to wechat for "+data.list[key].value+" integrals.",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
