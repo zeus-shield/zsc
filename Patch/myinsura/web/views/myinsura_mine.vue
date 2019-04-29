@@ -554,3 +554,8 @@ export default {
                             content:"Recieve "+data.list[key].value+" integrals from others.",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else {
+                        console.log(data.list[key]);
+                    }
+                }
+            }
