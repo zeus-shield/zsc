@@ -493,3 +493,9 @@ export default {
                     } else {
                         console.log(data.list[key]);
                     }
+                } else {
+                     if(data.list[key].scene == 0) {//用户注册
+                        handler.activities.push({
+                            content:"Sign up for "+data.list[key].value+" integrals.",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
