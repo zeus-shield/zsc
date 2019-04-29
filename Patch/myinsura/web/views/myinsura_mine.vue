@@ -524,3 +524,8 @@ export default {
                             content:"Share to QQ for "+data.list[key].value+" integrals.",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else if (data.list[key].scene == 6) {//分享至微博
+                        handler.activities.push({
+                            content:"Share to weibo for "+data.list[key].value+" integrals.",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
