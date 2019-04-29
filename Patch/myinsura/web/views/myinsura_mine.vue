@@ -544,3 +544,8 @@ export default {
                             content:"Consume "+data.list[key].value+" integrals.",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else if (data.list[key].scene == 10) {//积分赠送
+                        handler.activities.push({
+                            content:"Send "+data.list[key].value+" integrals to others.",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
