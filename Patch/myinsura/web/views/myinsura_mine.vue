@@ -594,3 +594,14 @@ export default {
                 this.timeLineShow = false;
             }
         },
+
+        getTimeData: function() {
+            let startTime = window.sessionStorage.getItem("StartTime");
+            let endTime = window.sessionStorage.getItem("EndTime");
+            if(startTime != null && startTime != "2") {
+                this.timeLineShow = false;
+                this.status = 3;
+                this.loading = true;
+                this.integralTrace(startTime,endTime) ;
+            }
+        },
