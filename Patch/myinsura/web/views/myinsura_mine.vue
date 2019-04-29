@@ -585,3 +585,12 @@ export default {
         add0: function(m){
             return m<10?'0'+m:m 
         },
+
+        //积分记录的显示/隐藏
+        hiddenTimeLine: function() {
+            if(this.timeLineShow == false) {
+                this.timeLineShow = true;
+            } else {
+                this.timeLineShow = false;
+            }
+        },
