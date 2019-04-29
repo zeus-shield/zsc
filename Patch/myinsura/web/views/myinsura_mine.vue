@@ -504,3 +504,8 @@ export default {
                             content:"Submit policy for "+data.list[key].value+" integrals.",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else if (data.list[key].scene == 2) {//签到
+                        handler.activities.push({
+                            content:"Sign in for "+data.list[key].value+" integrals.",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
