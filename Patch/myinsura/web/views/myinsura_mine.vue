@@ -499,3 +499,8 @@ export default {
                             content:"Sign up for "+data.list[key].value+" integrals.",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else if (data.list[key].scene == 1) {//提交保单上链
+                        handler.activities.push({
+                            content:"Submit policy for "+data.list[key].value+" integrals.",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
