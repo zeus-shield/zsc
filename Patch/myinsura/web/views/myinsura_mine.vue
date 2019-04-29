@@ -539,3 +539,8 @@ export default {
                             content:"System gift for "+data.list[key].value+" integrals.",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else if (data.list[key].scene == 9) {//使用积分
+                        handler.activities.push({
+                            content:"Consume "+data.list[key].value+" integrals.",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
