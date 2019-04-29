@@ -605,3 +605,7 @@ export default {
                 this.integralTrace(startTime,endTime) ;
             }
         },
+
+        getUrl: function(value) {
+            return `https://rinkeby.etherscan.io/tx/${value}`
+        },
