@@ -570,3 +570,14 @@ export default {
         timestampToStringNotime: function(int) {
             return new Date(parseInt(int) * 1000).toLocaleString().slice(0,9).replace(/:\d{1,2}$/,' ');
         },
+
+        timestampToString: function(int){
+            var time = new Date((int - 28800)*1000);
+            var y = time.getFullYear();
+            var m = time.getMonth()+1;
+            var d = time.getDate();
+            var h = time.getHours();
+            var mm = time.getMinutes();
+            var s = time.getSeconds();
+            return y+'-'+this.add0(m)+'-'+this.add0(d)+' '+this.add0(h)+':'+this.add0(mm)+':'+this.add0(s);
+        },
