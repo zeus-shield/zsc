@@ -509,3 +509,8 @@ export default {
                             content:"Sign in for "+data.list[key].value+" integrals.",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else if (data.list[key].scene == 3) {//邀请其他用户
+                        handler.activities.push({
+                            content:"Invite others for "+data.list[key].value+" integrals.",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
