@@ -534,3 +534,8 @@ export default {
                             content:"Click advertisement for "+data.list[key].value+" integrals.",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else if (data.list[key].scene == 8) {//管理员奖励
+                        handler.activities.push({
+                            content:"System gift for "+data.list[key].value+" integrals.",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
