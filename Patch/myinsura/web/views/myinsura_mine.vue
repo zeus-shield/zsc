@@ -559,3 +559,9 @@ export default {
                     }
                 }
             }
+
+            handler.timeLineShow = true;
+            handler.isTimeLineLoaded = true;
+            handler.status = 0;
+            handler.loading = false;
+        },
