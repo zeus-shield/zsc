@@ -549,3 +549,8 @@ export default {
                             content:"Send "+data.list[key].value+" integrals to others.",
                             timestamp:handler.timestampToString(data.list[key].time)
                         })
+                    } else if (data.list[key].scene == 11) {//积分接受赠送
+                        handler.activities.push({
+                            content:"Recieve "+data.list[key].value+" integrals from others.",
+                            timestamp:handler.timestampToString(data.list[key].time)
+                        })
