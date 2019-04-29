@@ -565,3 +565,8 @@ export default {
             handler.status = 0;
             handler.loading = false;
         },
+
+        //时间戳转特定字符串
+        timestampToStringNotime: function(int) {
+            return new Date(parseInt(int) * 1000).toLocaleString().slice(0,9).replace(/:\d{1,2}$/,' ');
+        },
