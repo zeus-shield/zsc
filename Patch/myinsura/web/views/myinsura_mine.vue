@@ -680,3 +680,10 @@ export default {
         line-height:30px;
         font-size:15px
     }
+    .card-icon{
+        width:100%;
+        height:20px;
+        text-align:center;
+        line-height:40px;
+        font-size:30px
+    }
