@@ -731,3 +731,10 @@ export default {
         text-align:right;
         font-size: 12px
     }
+    @media (max-width:775px) {
+        .right-card-policyInfo-right-hash{
+            clear: both;
+            transform-origin: right top;
+            transform:scale(0.65);
+        }
+    }
