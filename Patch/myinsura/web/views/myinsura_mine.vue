@@ -738,3 +738,17 @@ export default {
             transform:scale(0.65);
         }
     }
+
+    .left-button {
+        margin:10px 0 20px 0;
+        height: 40px;
+        border-radius: 5px;
+        background-color: rgb(102, 177, 255);
+        color: white;
+        font-size: 14px;
+        text-align: center;
+        font-family: Arial;
+        border: 1px solid rgba(187, 187, 187, 1);
+        width:80%;
+    }
+     
