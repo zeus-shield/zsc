@@ -609,3 +609,14 @@ export default {
         getUrl: function(value) {
             return `https://rinkeby.etherscan.io/tx/${value}`
         },
+
+        generatePolicyName(array){
+            if(api.getCookie('language') == 'en') {
+                let policyInfoTemp = policyInfo_EN;
+                let temp = "DB_Policy_"+array[0]+"_"+array[1];
+                return this.companyListCNToEN[array[0]] + " - " + policyInfoTemp[temp].title.split("-")[1].slice(1)
+            } else {
+                return array[0] + "公司" + array[1];
+            }
+        },
+          
