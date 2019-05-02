@@ -665,3 +665,18 @@ export default {
         margin-bottom:10px;
         color:black
     } 
+
+    .card-title{
+        width:100%;
+        text-align:center;
+        line-height:60px;
+        font-size:30px
+    }
+
+    .card-time{
+        width:100%;
+        height:30px;
+        text-align:center;
+        line-height:30px;
+        font-size:15px
+    }
