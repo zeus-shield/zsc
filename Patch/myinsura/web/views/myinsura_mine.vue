@@ -709,3 +709,7 @@ export default {
         height:100%;
         float:left;
     }
+
+    .right-card-policyInfo{
+        height:30px;
+    }
