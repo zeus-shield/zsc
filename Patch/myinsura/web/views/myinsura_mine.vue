@@ -717,3 +717,7 @@ export default {
         float:left;
         text-align:left
     }
+    .right-card-policyInfo-right{
+        float:right;
+        text-align:right
+    }
