@@ -625,3 +625,11 @@ export default {
     watch: {
         "$route": "getTimeData"
     },
+    mounted() {
+        let temp = window.sessionStorage.getItem("isLogin");
+        if(!temp|| temp == undefined || temp == null){
+            this.$message({
+                message: this.language.message.needlogin3,
+                type: 'warning'
+            });
+            window.location.href="/";
