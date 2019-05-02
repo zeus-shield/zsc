@@ -694,3 +694,13 @@ export default {
         line-height:40px;
         font-size:20px
     }
+    .left-card-integral-operation{
+        width:100%;
+        height:20px;
+        text-align:center;
+        line-height:40px;
+        font-size:20px;
+        padding-top: 0px;
+        margin-bottom: 40px;
+        border-top: 1px solid rgba(187, 187, 187, 1);
+    }
