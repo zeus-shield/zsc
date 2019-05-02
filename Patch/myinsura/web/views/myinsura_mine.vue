@@ -704,3 +704,8 @@ export default {
         margin-bottom: 40px;
         border-top: 1px solid rgba(187, 187, 187, 1);
     }
+    .left-card-integral-operation-block{
+        width:33.33%;
+        height:100%;
+        float:left;
+    }
