@@ -633,3 +633,12 @@ export default {
                 type: 'warning'
             });
             window.location.href="/";
+        } else {
+            this.status = 0;
+            this.loading = true;
+            this.code = api.getCookie("Code");
+            this.isloadingOK.push(false);
+            this.getIntegralBalance();
+            this.isloadingOK.push(false);
+            this.getUserPolicies();
+        }
