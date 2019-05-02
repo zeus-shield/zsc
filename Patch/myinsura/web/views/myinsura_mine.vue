@@ -655,3 +655,13 @@ export default {
         margin:56px auto auto auto;
     }
    .left-card{
+        border: 1px solid rgba(187, 187, 187, 1);
+        margin-bottom:20px;
+        color:black
+    }
+  
+   .right-card{
+        border: 1px solid rgba(187, 187, 187, 1);
+        margin-bottom:10px;
+        color:black
+    } 
