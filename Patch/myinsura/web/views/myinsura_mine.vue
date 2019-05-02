@@ -713,3 +713,7 @@ export default {
     .right-card-policyInfo{
         height:30px;
     }
+    .right-card-policyInfo-left{
+        float:left;
+        text-align:left
+    }
