@@ -726,3 +726,8 @@ export default {
         text-align:left;
         font-size: 12px
     }
+    .right-card-policyInfo-right-hash{
+        float:right;
+        text-align:right;
+        font-size: 12px
+    }
