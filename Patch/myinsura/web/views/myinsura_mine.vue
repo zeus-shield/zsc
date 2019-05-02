@@ -620,3 +620,8 @@ export default {
             }
         },
           
+        
+    },
+    watch: {
+        "$route": "getTimeData"
+    },
