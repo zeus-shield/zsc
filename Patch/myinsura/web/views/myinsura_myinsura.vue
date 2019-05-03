@@ -48,3 +48,16 @@ export default {
             focusName:"",
             //公司列表
             companyList:[],
+            companyListShow: [  {name:'0',title:"中国人保"},
+                                {name:'1',title:"中国平安"},
+                                {name:'2',title:"中国太平洋"},
+                                {name:'3',title:"中国人寿"},
+                                {name:'4',title:"新华保险"}],
+
+            companyListCNToEN:{
+                中国人保:"PICC",
+                中国平安:"PING AN",
+                中国太平洋:"CPIC",
+                中国人寿:"CHINA LIFE",
+                新华保险:"NCI",
+            },
