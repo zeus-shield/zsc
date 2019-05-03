@@ -12,3 +12,13 @@
                                 </div>
                                 <div class="square-card-page">
                                     <span>{{generatePolicy(tabitem.title,item)}}</span>
+                                </div>
+                            </router-link>
+                        </div>
+                    </el-col>
+                </el-row>
+            </div>
+        </el-tab-pane>
+    </el-tabs>
+</div>
+</template>
