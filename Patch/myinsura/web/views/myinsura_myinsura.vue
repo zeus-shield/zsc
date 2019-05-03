@@ -105,3 +105,11 @@ export default {
         //             handler.showCompanyAndPolicy();
         //         }
         //     })
+        //     .catch((error) => {
+        //         this.$message({
+        //             message: '网络波动，请稍后刷新重试',
+        //             type: 'warning'
+        //         });
+        //         handler.loading = false;
+        //     })
+        // },
