@@ -85,3 +85,9 @@ export default {
         //     let handler = this;
         //     getAllcompanyAndpolicy()
         //     .then((res) => {
+        //         if (res.data.code == "-1" || res.data.code == "-2" || res.data.code == "-3") {//交易成功没拿到值
+        //             this.$message({
+        //                 message: '区块链服务出错，请联系管理员',
+        //                 type: 'warning'
+        //             });
+        //             handler.loading = false;
