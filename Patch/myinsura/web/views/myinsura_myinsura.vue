@@ -113,3 +113,13 @@ export default {
         //         handler.loading = false;
         //     })
         // },
+            
+        //渲染页面
+        // showCompanyAndPolicy:function() {
+        //     var handler = this;
+        //     let companyList = [];
+        //     let policyList = [];
+        //     for (var key in handler.companyAndPolicy) {
+        //         policyList.push(handler.companyAndPolicy[key].split("#"));
+        //         companyList.push(key);
+        //     }
