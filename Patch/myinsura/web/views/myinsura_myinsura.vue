@@ -123,3 +123,11 @@ export default {
         //         policyList.push(handler.companyAndPolicy[key].split("#"));
         //         companyList.push(key);
         //     }
+
+        //     for( var key in companyList) {
+        //         handler.companyListShow.push({title: companyList[key],name: `${key}`});
+        //     }
+        //     handler.policyListShow = policyList;
+        //     handler.focusCompany = companyList[2];
+        //     handler.loading = false;
+        // },
