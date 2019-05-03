@@ -8,3 +8,7 @@
                         <div class="square-card" >
                             <router-link :to="`/info/${focusCompany}_${item}`">
                                 <div class="square-card-image">
+                                    <img :src="getImgUrl(item)">
+                                </div>
+                                <div class="square-card-page">
+                                    <span>{{generatePolicy(tabitem.title,item)}}</span>
