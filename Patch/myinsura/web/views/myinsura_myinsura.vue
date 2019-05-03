@@ -37,3 +37,8 @@ import ContractInfo from '../api/ContractInfo';
 const insuranceExAbi = ContractInfo.insuranceExAbi;
 const insuranceExAddress = ContractInfo.insuranceExAddress;
 
+
+export default {
+    data() {
+        return {
+            //公司部分
