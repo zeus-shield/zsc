@@ -42,3 +42,9 @@ export default {
     data() {
         return {
             //公司部分
+            activeName: '0',
+            //当前公司
+            focusCompany:"",
+            focusName:"",
+            //公司列表
+            companyList:[],
