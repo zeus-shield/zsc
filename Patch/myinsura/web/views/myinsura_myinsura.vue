@@ -97,3 +97,11 @@ export default {
         //                 type: 'warning'
         //             });
         //             handler.loading = false;
+        //         } else if (res.data.code == "0") {
+        //             let temp = JSON.parse(res.data.data[1]);
+        //             delete temp.Size
+        //             handler.companyAndPolicy = temp;
+        //             window.sessionStorage.setItem("companyAndPolicy",JSON.stringify(temp));
+        //             handler.showCompanyAndPolicy();
+        //         }
+        //     })
