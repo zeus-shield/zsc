@@ -67,3 +67,15 @@ export default {
             companyAndPolicy: {},
             loading:false,
             language:api.getCookie('language') == 'en' ? en_GB : zh_CN,
+        };
+    },
+    methods: {
+        //tab切换
+        handleClick(tab, event) {
+            this.focusCompany = this.companyListShow[tab.$attrs.id].title;
+            this.focusName = this.companyListShow[tab.$attrs.id].name;
+            if(this.policyListShow[this.focusName].length == 0){
+                this.loading = true;
+                this.companyGetByKey(this.focusCompany);
+            }
+        },
