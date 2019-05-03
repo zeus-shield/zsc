@@ -61,3 +61,9 @@ export default {
                 中国人寿:"CHINA LIFE",
                 新华保险:"NCI",
             },
+            //保险部分
+            policyListShow:[[],[],[],[],[]],
+            //data
+            companyAndPolicy: {},
+            loading:false,
+            language:api.getCookie('language') == 'en' ? en_GB : zh_CN,
