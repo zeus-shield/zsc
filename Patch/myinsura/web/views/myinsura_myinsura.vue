@@ -131,3 +131,10 @@ export default {
         //     handler.focusCompany = companyList[2];
         //     handler.loading = false;
         // },
+        
+        //获取特定公司的所有险种
+        companyGetByKey: function(company){
+            let handler = this;
+            let key = company;
+            let insurance_extension = new Insurance_extension(insuranceExAbi,insuranceExAddress);
+            insurance_extension.companyGetByKey(key,function(error, result) {
