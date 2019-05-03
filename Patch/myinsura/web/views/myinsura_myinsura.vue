@@ -79,3 +79,9 @@ export default {
                 this.companyGetByKey(this.focusCompany);
             }
         },
+
+        //获取数据
+        // getAllfromServer: function() {
+        //     let handler = this;
+        //     getAllcompanyAndpolicy()
+        //     .then((res) => {
