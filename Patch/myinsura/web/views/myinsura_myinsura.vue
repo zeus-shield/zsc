@@ -91,3 +91,9 @@ export default {
         //                 type: 'warning'
         //             });
         //             handler.loading = false;
+        //         } else if (res.data.code == "-9") {
+        //             this.$message({
+        //                 message: '信息获取失败，请联系管理员',
+        //                 type: 'warning'
+        //             });
+        //             handler.loading = false;
