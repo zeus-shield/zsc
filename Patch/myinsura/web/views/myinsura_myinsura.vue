@@ -159,3 +159,9 @@ export default {
                 }
             })
         },
+
+        showPolicy: function(data) {
+            this.policyListShow[this.focusName] = data.split("#");
+            window.sessionStorage.setItem("Policy",this.policyListShow.join("&"));
+            this.loading = false;
+        },
