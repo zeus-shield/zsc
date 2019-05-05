@@ -197,3 +197,6 @@ export default {
     mounted() {
         this.focusCompany = this.companyListShow[0].title;
         this.focusName = this.companyListShow[0].name;
+
+        let temp = window.sessionStorage.getItem("Policy");
+        this.loading = true;
