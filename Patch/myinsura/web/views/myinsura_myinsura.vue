@@ -183,3 +183,8 @@ export default {
                 return str;
             }
         },
+
+        //获取图片
+        getImgUrl(item) {
+           return require("../assets/images/"+policyInfo.image[item]);
+        }
