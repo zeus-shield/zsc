@@ -207,3 +207,9 @@ export default {
             temp = temp.split("&");
             if(temp[0] == ""){
                 this.companyGetByKey(this.focusCompany);
+            } else {
+                for(var key in temp) {
+                    if(temp[key] != "") {
+                        this.policyListShow[key] = temp[key].split(",");
+                    }
+                }
