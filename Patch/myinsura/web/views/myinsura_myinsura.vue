@@ -213,3 +213,7 @@ export default {
                         this.policyListShow[key] = temp[key].split(",");
                     }
                 }
+                this.loading = false;
+            }
+        }
+    },
