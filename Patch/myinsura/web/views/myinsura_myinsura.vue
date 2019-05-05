@@ -188,3 +188,7 @@ export default {
         getImgUrl(item) {
            return require("../assets/images/"+policyInfo.image[item]);
         }
+
+        
+    },
+    watch: {
