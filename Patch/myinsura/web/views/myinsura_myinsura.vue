@@ -239,3 +239,13 @@ export default {
         height:70%;
         background:#FFF0F5
    }
+   .square-card-page{
+        width:100%;
+        text-align:center;
+        line-height:50px;
+        font-size:16px;
+        color:black;
+        border: 1px solid #f4f4f4;
+        border-bottom-left-radius: 30px;
+        border-bottom-right-radius: 30px;
+   }
