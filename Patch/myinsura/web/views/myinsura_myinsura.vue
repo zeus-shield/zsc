@@ -152,3 +152,10 @@ export default {
                                 message: handler.language.message.dataError,
                                 type: 'warning'
                             });
+                        }  else if (result[0] == 0) {//success
+                            handler.showPolicy(result[1]);
+                        }
+                    }
+                }
+            })
+        },
