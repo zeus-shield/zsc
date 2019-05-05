@@ -234,3 +234,8 @@ export default {
         margin-bottom:20px;
         
    }
+   .square-card-image{
+        width:100%;
+        height:70%;
+        background:#FFF0F5
+   }
