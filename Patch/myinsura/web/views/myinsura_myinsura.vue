@@ -228,3 +228,9 @@ export default {
         width:80%;
         margin:56px auto auto auto;
     }
+    .square-card{
+        // background-color: rgba(228, 231, 247, 1);
+        //box-shadow: 2px 2px 1px 1px rgba(155, 166, 225, 1);
+        margin-bottom:20px;
+        
+   }
