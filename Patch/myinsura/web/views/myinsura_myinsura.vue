@@ -146,3 +146,9 @@ export default {
                 } else {
                     if(result.status == "0x0") {
                         console.log("====padding====")
+                    } else {
+                        if (result[0] == "-1" || result[0] == "-2" || result[0] == "-3") {//交易成功没拿到值
+                            handler.$message({
+                                message: handler.language.message.dataError,
+                                type: 'warning'
+                            });
