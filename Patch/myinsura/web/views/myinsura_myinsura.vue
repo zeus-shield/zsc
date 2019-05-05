@@ -192,3 +192,8 @@ export default {
         
     },
     watch: {
+        
+    },
+    mounted() {
+        this.focusCompany = this.companyListShow[0].title;
+        this.focusName = this.companyListShow[0].name;
