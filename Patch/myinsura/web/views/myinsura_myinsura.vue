@@ -165,3 +165,13 @@ export default {
             window.sessionStorage.setItem("Policy",this.policyListShow.join("&"));
             this.loading = false;
         },
+
+        generatePolicy(tabkey,str){
+            if(api.getCookie('language') == 'en') {
+                let policyInfoTemp = policyInfo_EN;
+                let temp = "DB_Policy_"+tabkey+"_"+str;
+                return policyInfoTemp[temp].title.split("-")[1].slice(1)
+            } else {
+                return str;
+            }
+        },
