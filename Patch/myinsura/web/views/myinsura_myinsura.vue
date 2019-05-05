@@ -138,3 +138,8 @@ export default {
             let key = company;
             let insurance_extension = new Insurance_extension(insuranceExAbi,insuranceExAddress);
             insurance_extension.companyGetByKey(key,function(error, result) {
+                if(error) {
+                    handler.$message({
+                        message: handler.language.message.trackError,
+                        type: 'warning'
+                    });
