@@ -203,3 +203,7 @@ export default {
         if(!temp|| temp == undefined || temp == null){
             this.loading = true;
             this.companyGetByKey(this.focusCompany);
+        } else {
+            temp = temp.split("&");
+            if(temp[0] == ""){
+                this.companyGetByKey(this.focusCompany);
