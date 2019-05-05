@@ -143,3 +143,6 @@ export default {
                         message: handler.language.message.trackError,
                         type: 'warning'
                     });
+                } else {
+                    if(result.status == "0x0") {
+                        console.log("====padding====")
