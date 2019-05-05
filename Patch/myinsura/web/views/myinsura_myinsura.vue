@@ -200,3 +200,6 @@ export default {
 
         let temp = window.sessionStorage.getItem("Policy");
         this.loading = true;
+        if(!temp|| temp == undefined || temp == null){
+            this.loading = true;
+            this.companyGetByKey(this.focusCompany);
