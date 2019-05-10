@@ -12,3 +12,7 @@
                     <div id="chartLine" class="echarts"></div>
                 </div>
             </el-col>
+        </el-row>
+    </div>
+</div>
+</template>
