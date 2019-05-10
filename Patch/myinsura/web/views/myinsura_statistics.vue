@@ -96,3 +96,9 @@ export default {
             let id = 0;
             let count = 100;
             insurance.policyGetKeys(id,count,function(error, result) {
+                if(error) {
+                    handler.$message({
+                        message: handler.language.message.trackError,
+                        type: 'warning'
+                    });
+                    handler.loading = false;
