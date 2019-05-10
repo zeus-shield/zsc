@@ -31,3 +31,8 @@ import ContractInfo from '../api/ContractInfo';
 
 const insuranceAbi = ContractInfo.insuranceAbi;
 const insuranceAddress = ContractInfo.insuranceAddress;
+
+export default {
+    data() {
+        return {
+            loading:false,
