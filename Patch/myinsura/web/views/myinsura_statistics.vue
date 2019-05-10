@@ -58,3 +58,7 @@ export default {
     },
     methods: {
         //获取数据
+        getStatisticData: function() {
+            let handler = this;
+            getStatisticData()
+            .then((res) => {
