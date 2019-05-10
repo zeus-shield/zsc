@@ -62,3 +62,21 @@ export default {
             let handler = this;
             getStatisticData()
             .then((res) => {
+                if (res.data.code == "-1" || res.data.code == "-2" || res.data.code == "-3") {//交易成功没拿到值
+                    handler.$message({
+                        message: handler.language.message.dataError,
+                        type: 'warning'
+                    });
+                    handler.loading = false;
+                } else if (res.data.code == "-9") {
+                    handler.$message({
+                        message: handler.language.message.trackError,
+                        type: 'warning'
+                    });
+                    handler.loading = false;
+                } else if (res.data.code == "0") {
+                    let temp = res.data.data[1].split(",");
+                    window.sessionStorage.setItem("statisticData",JSON.stringify(temp))
+                    handler.statisticData(temp);
+                }
+            })
