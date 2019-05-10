@@ -89,3 +89,10 @@ export default {
                 handler.loading = false;
             })
         },
+
+        getStatisticData: function () {
+            let handler = this;
+            let insurance = new Insurance(insuranceAbi,insuranceAddress);
+            let id = 0;
+            let count = 100;
+            insurance.policyGetKeys(id,count,function(error, result) {
