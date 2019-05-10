@@ -249,3 +249,10 @@ export default {
         border-bottom-left-radius: 30px;
         border-bottom-right-radius: 30px;
    }
+   .image {
+    width: 100%;
+    display: block;
+  }
+
+  
+</style>
