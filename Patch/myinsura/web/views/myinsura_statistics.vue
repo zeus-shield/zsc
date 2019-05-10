@@ -36,3 +36,9 @@ export default {
     data() {
         return {
             loading:false,
+            policyDatatemp:[],
+            companyDatatemp:{
+                title: api.getCookie('language') == 'en' ? 'The top five total input' : '总录入量前五',
+                data: [],
+                categories: []
+            },
