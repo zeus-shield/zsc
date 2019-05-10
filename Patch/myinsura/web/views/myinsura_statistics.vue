@@ -42,3 +42,7 @@ export default {
                 data: [],
                 categories: []
             },
+            chartPie:null,
+            chartLine:null,
+            ischartOK:[false,false],
+            language:api.getCookie('language') == 'en' ? en_GB : zh_CN,
