@@ -56,3 +56,5 @@ export default {
             },
         };
     },
+    methods: {
+        //获取数据
