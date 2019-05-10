@@ -46,3 +46,13 @@ export default {
             chartLine:null,
             ischartOK:[false,false],
             language:api.getCookie('language') == 'en' ? en_GB : zh_CN,
+
+            companyListCNToEN:{
+                中国人保:"PICC",
+                中国平安:"PING AN",
+                中国太平洋:"CPIC",
+                中国人寿:"CHINA LIFE",
+                新华保险:"NCI",
+            },
+        };
+    },
