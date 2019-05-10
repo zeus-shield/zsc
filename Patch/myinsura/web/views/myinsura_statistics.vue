@@ -80,3 +80,12 @@ export default {
                     handler.statisticData(temp);
                 }
             })
+            .catch((error) => {
+                console.log(error);
+                handler.$message({
+                    message: handler.language.message.postError,
+                    type: 'warning'
+                });
+                handler.loading = false;
+            })
+        },
