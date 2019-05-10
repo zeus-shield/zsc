@@ -16,3 +16,8 @@
     </div>
 </div>
 </template>
+
+<script>
+import {getStatisticData} from '../api/api'
+import echarts from 'echarts'
+import api from '../common/api'
