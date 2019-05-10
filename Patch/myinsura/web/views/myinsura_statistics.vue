@@ -109,3 +109,12 @@ export default {
                             type: 'warning'
                         });
                         handler.loading = false;
+                    }  else if (result[0] == 0) {//success
+                        let temp = result[1].split(",");
+                        window.sessionStorage.setItem("statisticData",JSON.stringify(temp))
+                        handler.statisticData(temp);
+                    }
+                }
+            })
+        },
+
