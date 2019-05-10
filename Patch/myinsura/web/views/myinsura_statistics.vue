@@ -102,3 +102,10 @@ export default {
                         type: 'warning'
                     });
                     handler.loading = false;
+                } else {
+                    if(result[0] == -3 || result[0] == -1 || result[0] == -2) {//判断状态值//inner error
+                        handler.$message({
+                            message: handler.language.message.dataError,
+                            type: 'warning'
+                        });
+                        handler.loading = false;
