@@ -200,3 +200,7 @@ export default {
             this.createPie();
             this.createLine();
         },
+
+        //绘制饼图
+        createPie: function() {
+            this.chartPie = echarts.init(document.getElementById('chartPie'));
