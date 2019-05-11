@@ -123,3 +123,12 @@ export default {
         statisticData:function(data) {
             if(data){
                 for (var i in data) {
+                    let temp = data[i].substr(43, data[i].length).split("_");
+
+                    let policyisfind = false;
+                    for (var j in this.policyDatatemp) {
+                        if (this.generatePolicy(temp[0],temp[1]) == this.policyDatatemp[j].name) {
+                            this.policyDatatemp[j].value++;
+                            policyisfind = true;
+                        }
+                    }
