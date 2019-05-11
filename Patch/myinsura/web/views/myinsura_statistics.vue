@@ -132,3 +132,9 @@ export default {
                             policyisfind = true;
                         }
                     }
+                    if (policyisfind == false) {
+                        this.policyDatatemp.push({ value : 1 , name: this.generatePolicy(temp[0],temp[1])});
+                    }
+
+                    let companyisfind = false;
+                    for (var k in this.companyDatatemp.categories) {
