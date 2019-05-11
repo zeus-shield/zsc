@@ -260,3 +260,7 @@ export default {
             var data = this.companyDatatemp.data;
             var yMax = this.companyDatatemp.data[0];
             var dataShadow = [];
+
+            for (var i = 0; i < data.length; i++) {
+                dataShadow.push(yMax);
+            }
