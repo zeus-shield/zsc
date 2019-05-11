@@ -147,3 +147,8 @@ export default {
                         this.companyDatatemp.categories.push(temp[0]);
                         this.companyDatatemp.data.push(1);
                     }
+                }
+
+                this.sortData();
+                
+            } else {
