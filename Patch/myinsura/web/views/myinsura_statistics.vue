@@ -189,3 +189,6 @@ export default {
                     }
                 }
             };
+            if (this.policyDatatemp.length>5) {
+                this.policyDatatemp = this.policyDatatemp.slice(0, 5);
+            }
