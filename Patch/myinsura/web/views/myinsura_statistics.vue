@@ -252,3 +252,11 @@ export default {
             this.ischartOK[0] = true;
             this.check();
         },
+
+        //绘制柱状图
+        createLine: function() {
+            this.chartLine = echarts.init(document.getElementById('chartLine'));
+            var dataAxis = this.companyDatatemp.categories;
+            var data = this.companyDatatemp.data;
+            var yMax = this.companyDatatemp.data[0];
+            var dataShadow = [];
