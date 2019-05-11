@@ -219,3 +219,10 @@ export default {
                     trigger: 'item',
                     formatter: "{a} <br/>{b}: {c} ({d}%)"
                 },
+                series: [
+                    {
+                        name:api.getCookie('language') == 'en' ? 'Policy :' : '险种 :',
+                        type:'pie',
+                        radius: ['50%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
