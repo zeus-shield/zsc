@@ -176,3 +176,6 @@ export default {
                     }
                 }
             };
+
+            for (let i = 0; i < this.companyDatatemp.data.length; i++) {
+                for (let j = 0; j < this.companyDatatemp.data.length - i - 1; j++) {
