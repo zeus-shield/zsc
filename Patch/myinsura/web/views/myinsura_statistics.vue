@@ -264,3 +264,13 @@ export default {
             for (var i = 0; i < data.length; i++) {
                 dataShadow.push(yMax);
             }
+
+            let option = {
+                title: {
+                    text: api.getCookie('language') == 'en' ? 'Company ranking' : '公司排行榜',
+                    left: 'center',
+                    top: 20,
+                    textStyle: {
+                        color: '#000000',
+                        fontSize:36,
+                    }
