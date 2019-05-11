@@ -204,3 +204,14 @@ export default {
         //绘制饼图
         createPie: function() {
             this.chartPie = echarts.init(document.getElementById('chartPie'));
+
+            let option = {
+                title: {
+                    text: api.getCookie('language') == 'en' ? 'Insurance ranking' : '险种排行榜',
+                    left: 'center',
+                    top: 10,
+                    textStyle: {
+                        color: '#000000',
+                        fontSize :36,
+                    }
+                },
