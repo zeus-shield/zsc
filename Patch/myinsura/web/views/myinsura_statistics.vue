@@ -152,3 +152,10 @@ export default {
                 this.sortData();
                 
             } else {
+                this.$message({
+                    message: handler.language.message.noData,
+                    type: 'warning'
+                });
+                this.loading = false;
+            }
+        },
