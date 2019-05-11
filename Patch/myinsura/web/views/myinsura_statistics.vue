@@ -274,3 +274,13 @@ export default {
                         color: '#000000',
                         fontSize:36,
                     }
+                },
+                xAxis: {
+                    data: dataAxis,
+                    axisLabel: {
+                        inside: true,
+                        textStyle: {
+                            color: '#fff',
+                            fontSize: 12
+                        }
+                    },
