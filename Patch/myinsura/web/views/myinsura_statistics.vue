@@ -192,3 +192,8 @@ export default {
             if (this.policyDatatemp.length>5) {
                 this.policyDatatemp = this.policyDatatemp.slice(0, 5);
             }
+            if (this.companyDatatemp.data.length>5) {
+                this.companyDatatemp.data = this.companyDatatemp.data.slice(0, 5);
+                this.companyDatatemp.categories = this.companyDatatemp.categories.slice(0, 5);
+            }
+            
