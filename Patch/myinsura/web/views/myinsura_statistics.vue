@@ -159,3 +159,20 @@ export default {
                 this.loading = false;
             }
         },
+
+        //排序
+        sortData:function() {
+            for (var i in this.companyDatatemp.categories) {
+                if(api.getCookie('language') == 'en') {
+                    this.companyDatatemp.categories[i] = this.generateCompany(this.companyDatatemp.categories[i])
+                }
+            }
+            for (let i = 0; i < this.policyDatatemp.length; i++) {
+                for (let j = 0; j < this.policyDatatemp.length-i-1; j++){
+                    if (this.policyDatatemp[j].data < this.policyDatatemp[j+1].data) {
+                        let temp = this.policyDatatemp[j];
+                        this.policyDatatemp[j] = this.policyDatatemp[j + 1];
+                        this.policyDatatemp[j + 1] = temp;
+                    }
+                }
+            };
