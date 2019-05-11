@@ -215,3 +215,7 @@ export default {
                         fontSize :36,
                     }
                 },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                },
