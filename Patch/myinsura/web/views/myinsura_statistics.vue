@@ -138,3 +138,8 @@ export default {
 
                     let companyisfind = false;
                     for (var k in this.companyDatatemp.categories) {
+                        if ((temp[0]) == this.companyDatatemp.categories[k]){
+                            this.companyDatatemp.data[k]++;
+                            companyisfind = true;
+                        }
+                    }
