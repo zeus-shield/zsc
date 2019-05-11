@@ -118,3 +118,8 @@ export default {
             })
         },
 
+
+        //分析数据
+        statisticData:function(data) {
+            if(data){
+                for (var i in data) {
