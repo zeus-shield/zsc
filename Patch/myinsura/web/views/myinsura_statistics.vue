@@ -230,3 +230,10 @@ export default {
                                 show: false,
                                 position: 'center'
                             },
+                            emphasis: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '20',
+                                    fontWeight: 'bold'
+                                }
+                            }
