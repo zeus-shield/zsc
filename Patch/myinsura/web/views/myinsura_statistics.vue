@@ -179,3 +179,13 @@ export default {
 
             for (let i = 0; i < this.companyDatatemp.data.length; i++) {
                 for (let j = 0; j < this.companyDatatemp.data.length - i - 1; j++) {
+                    if (this.companyDatatemp.data[j] < this.companyDatatemp.data[j + 1]) {
+                        let temp1 = this.companyDatatemp.data[j];
+                        let temp2 = this.companyDatatemp.categories[j];
+                        this.companyDatatemp.data[j] = this.companyDatatemp.data[j + 1];
+                        this.companyDatatemp.categories[j] = this.companyDatatemp.categories[j + 1];
+                        this.companyDatatemp.data[j + 1] = temp1;
+                        this.companyDatatemp.categories[j + 1] = temp2;
+                    }
+                }
+            };
