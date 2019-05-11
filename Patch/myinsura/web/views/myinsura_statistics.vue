@@ -197,3 +197,6 @@ export default {
                 this.companyDatatemp.categories = this.companyDatatemp.categories.slice(0, 5);
             }
             
+            this.createPie();
+            this.createLine();
+        },
