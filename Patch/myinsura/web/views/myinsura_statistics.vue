@@ -226,3 +226,7 @@ export default {
                         radius: ['50%', '70%'],
                         avoidLabelOverlap: false,
                         label: {
+                            normal: {
+                                show: false,
+                                position: 'center'
+                            },
