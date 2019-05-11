@@ -143,3 +143,7 @@ export default {
                             companyisfind = true;
                         }
                     }
+                    if (companyisfind == false) {
+                        this.companyDatatemp.categories.push(temp[0]);
+                        this.companyDatatemp.data.push(1);
+                    }
