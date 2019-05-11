@@ -237,3 +237,10 @@ export default {
                                     fontWeight: 'bold'
                                 }
                             }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data:this.policyDatatemp
