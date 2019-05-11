@@ -244,3 +244,11 @@ export default {
                             }
                         },
                         data:this.policyDatatemp
+                    }
+                ]
+            };
+
+            this.chartPie.setOption(option);
+            this.ischartOK[0] = true;
+            this.check();
+        },
