@@ -376,3 +376,7 @@ export default {
         generateCompany(str){
             if(api.getCookie('language') == 'en') {
                 return this.companyListCNToEN[str]
+            } else {
+                return str;
+            }
+        },
