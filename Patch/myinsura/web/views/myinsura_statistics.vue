@@ -350,3 +350,9 @@ export default {
                     }
                 ]
             };
+
+
+            this.chartLine.setOption(option)
+            this.ischartOK[1] = true;
+            this.check();
+        },
