@@ -297,3 +297,6 @@ export default {
                     axisLine: {
                         show: false
                     },
+                    axisTick: {
+                        show: false,
+                    },
