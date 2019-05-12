@@ -284,3 +284,6 @@ export default {
                             fontSize: 12
                         }
                     },
+                    axisTick: {
+                        show: false,
+                    },
