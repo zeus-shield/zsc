@@ -290,3 +290,10 @@ export default {
                     axisLine: {
                         show: false
                     },
+                    z: 10
+                },
+                yAxis: {
+                    scale:true,
+                    axisLine: {
+                        show: false
+                    },
