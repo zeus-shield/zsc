@@ -407,3 +407,8 @@ export default {
         width:80%;
         margin:56px auto auto auto;
     }
+    .echarts-card{
+        text-align: center;
+        background:#FFF0F5;
+        margin-bottom:20px;
+    }
