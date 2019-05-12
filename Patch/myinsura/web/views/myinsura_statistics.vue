@@ -356,3 +356,9 @@ export default {
             this.ischartOK[1] = true;
             this.check();
         },
+
+        check: function() {
+            if(this.ischartOK[0] == true && this.ischartOK[1] == true) {
+                this.loading = false;
+            }
+        },
