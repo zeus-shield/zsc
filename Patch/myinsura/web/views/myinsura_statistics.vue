@@ -306,3 +306,8 @@ export default {
                         }
                     }
                 },
+                dataZoom: [
+                    {
+                        type: 'inside'
+                    }
+                ],
