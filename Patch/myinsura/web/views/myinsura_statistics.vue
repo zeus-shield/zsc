@@ -362,3 +362,13 @@ export default {
                 this.loading = false;
             }
         },
+
+        generatePolicy(tabkey,str){
+            if(api.getCookie('language') == 'en') {
+                let policyInfoTemp = policyInfo_EN;
+                let temp = "DB_Policy_"+tabkey+"_"+str;
+                return this.companyListCNToEN[tabkey] +" - "+policyInfoTemp[temp].title.split("-")[1].slice(1)
+            } else {
+                return str;
+            }
+        },
