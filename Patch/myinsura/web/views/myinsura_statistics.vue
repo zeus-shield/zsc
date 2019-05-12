@@ -385,3 +385,11 @@ export default {
     watch: {
         
     },
+    mounted() {
+        // let temp = window.sessionStorage.getItem("statisticData");
+        // if(!temp|| temp == undefined || temp == null){
+        //     this.loading = true;
+        //     this.getStatisticData();
+        // } else {
+        //     this.statisticData(JSON.parse(temp));
+        // }
