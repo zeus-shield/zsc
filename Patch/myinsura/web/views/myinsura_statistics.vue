@@ -311,3 +311,9 @@ export default {
                         type: 'inside'
                     }
                 ],
+                series: [
+                    { // For shadow
+                        type: 'bar',
+                        itemStyle: {
+                            normal: {color: 'rgba(0,0,0,0.05)'}
+                        },
