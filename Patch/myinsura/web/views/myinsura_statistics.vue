@@ -393,3 +393,10 @@ export default {
         // } else {
         //     this.statisticData(JSON.parse(temp));
         // }
+        this.loading = true;
+        this.getStatisticData();
+    },
+    created() {
+        
+    },
+};
