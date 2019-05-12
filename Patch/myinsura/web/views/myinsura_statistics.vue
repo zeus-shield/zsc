@@ -300,3 +300,9 @@ export default {
                     axisTick: {
                         show: false,
                     },
+                    axisLabel: {
+                        textStyle: {
+                            color: '#999'
+                        }
+                    }
+                },
