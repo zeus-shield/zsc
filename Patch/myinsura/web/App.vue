@@ -80,3 +80,5 @@ export default {
       } else {
         this.isTransfer = false;
       }
+      if (this.$route.query.trace != undefined) {
+        this.isTrace = true;
