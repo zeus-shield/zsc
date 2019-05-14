@@ -82,3 +82,7 @@ export default {
       }
       if (this.$route.query.trace != undefined) {
         this.isTrace = true;
+      } else {
+        this.isTrace = false;
+      }
+    },
