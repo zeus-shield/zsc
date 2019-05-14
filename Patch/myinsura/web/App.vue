@@ -49,3 +49,13 @@ export default {
       reload:this.reload
     }
   },
+
+  data() {
+    return {
+      // reload: false,
+      isInput: false,
+      isTransfer:false,
+      isTrace:false,
+      isRouterAlive:true
+    }
+  },
