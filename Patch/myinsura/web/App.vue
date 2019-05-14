@@ -43,3 +43,9 @@ export default {
     }]
 		
   },
+  
+  provide(){
+    return{
+      reload:this.reload
+    }
+  },
