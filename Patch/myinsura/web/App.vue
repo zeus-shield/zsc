@@ -59,3 +59,11 @@ export default {
       isRouterAlive:true
     }
   },
+  components: {
+    HeadMain,
+    inputs,
+    FooterMain,
+    integralTransfer,
+    integralTrace,
+    
+  },
