@@ -67,3 +67,5 @@ export default {
     integralTrace,
     
   },
+  methods: {
+    setReload() {
