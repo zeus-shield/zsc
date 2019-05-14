@@ -29,3 +29,7 @@ import integralTrace from './components/integralTrace';
 
 import HeadMain from './components/header';
 import FooterMain from './components/footer';
+
+export default {
+  name: 'app',
+  metaInfo: {
