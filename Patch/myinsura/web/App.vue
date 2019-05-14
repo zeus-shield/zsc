@@ -14,3 +14,8 @@
     <div v-if="isTransfer">
 			<integral-transfer></integral-transfer>
 		</div>
+    <div v-if="isTrace">
+			<integral-trace></integral-trace>
+		</div>
+	</div>
+</template>
