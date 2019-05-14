@@ -25,3 +25,7 @@
 import inputs from './components/input';
 import integralTransfer from './components/integralTransfer';
 import integralTrace from './components/integralTrace';
+
+
+import HeadMain from './components/header';
+import FooterMain from './components/footer';
