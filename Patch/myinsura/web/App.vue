@@ -77,3 +77,6 @@ export default {
       }
       if (this.$route.query.transfer != undefined) {
         this.isTransfer = true;
+      } else {
+        this.isTransfer = false;
+      }
