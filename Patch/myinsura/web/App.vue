@@ -7,3 +7,7 @@
 		<head-main v-if="isRouterAlive"></head-main>
 	  <router-view v-if="isRouterAlive"></router-view>
     <footer-main></footer-main>
+
+		<div v-if="isInput">
+			<inputs></inputs>
+		</div>
