@@ -75,3 +75,5 @@ export default {
       } else {
         this.isInput = false;
       }
+      if (this.$route.query.transfer != undefined) {
+        this.isTransfer = true;
