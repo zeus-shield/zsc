@@ -19,3 +19,9 @@
 		</div>
 	</div>
 </template>
+
+<script>
+//引入全局登录窗口
+import inputs from './components/input';
+import integralTransfer from './components/integralTransfer';
+import integralTrace from './components/integralTrace';
