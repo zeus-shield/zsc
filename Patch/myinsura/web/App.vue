@@ -72,3 +72,6 @@ export default {
       // this.reload = !this.reload;
       if (this.$route.query.input != undefined) {
         this.isInput = true;
+      } else {
+        this.isInput = false;
+      }
