@@ -11,3 +11,6 @@
 		<div v-if="isInput">
 			<inputs></inputs>
 		</div>
+    <div v-if="isTransfer">
+			<integral-transfer></integral-transfer>
+		</div>
