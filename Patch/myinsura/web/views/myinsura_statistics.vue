@@ -412,3 +412,7 @@ export default {
         background:#FFF0F5;
         margin-bottom:20px;
     }
+    .echarts{
+        width:100%; 
+        height:400px;
+    }
