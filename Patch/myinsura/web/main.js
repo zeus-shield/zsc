@@ -9,6 +9,12 @@ import VueRouter from 'vue-router'
 import store from './vuex/store'
 import Vuex from 'vuex'
 import routes from './routes'
+
+import "./assets/style/index.css"; //引入CSS
+import "./assets/style/colorbox.css"; //引入CSS
+import "./assets/style/bootstrap.css"; //引入CSS
+import "./assets/style/font-awesome.css"; //引入CSS
+import "./assets/style/style.css"; //引入CSS
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)
