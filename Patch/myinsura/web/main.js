@@ -12,3 +12,11 @@ import routes from './routes'
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)
+new Vue({
+  el: '#app',
+  // template: '<App/>',
+  router,
+  store,
+  //components: { App }
+  render: h => h(App)
+}).$mount('#app')
