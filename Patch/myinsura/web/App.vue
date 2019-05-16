@@ -100,3 +100,9 @@ export default {
   watch: {
     "$route": "setReload",
   }
+}
+</script>
+
+<style lang="scss">
+
+</style>
