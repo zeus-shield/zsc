@@ -97,3 +97,6 @@ export default {
   mounted() {
     
   },
+  watch: {
+    "$route": "setReload",
+  }
