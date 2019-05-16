@@ -24,6 +24,12 @@ Vue.use(Meta, {
   ssrAttribute: 'data-vue-meta-server-rendered', // the attribute name that lets vue-meta know that meta info has already been server-rendered
   tagIDKeyName: 'vmid' // the property name that vue-meta uses to determine whether to overwrite or append a tag
 })
+
+const router = new VueRouter({
+  mode: 'history',
+  routes
+})
+
 router.beforeEach((to, from, next) => {
   // NProgress.start();
   // if (to.path == '/login') {
