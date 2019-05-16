@@ -15,6 +15,15 @@ import "./assets/style/colorbox.css"; //引入CSS
 import "./assets/style/bootstrap.css"; //引入CSS
 import "./assets/style/font-awesome.css"; //引入CSS
 import "./assets/style/style.css"; //引入CSS
+
+
+
+import Meta from 'vue-meta'
+import MetaInfo from 'vue-meta-info'
+
+
+
+
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)
