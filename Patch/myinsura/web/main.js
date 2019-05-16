@@ -12,6 +12,10 @@ import routes from './routes'
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)
+
+//router.afterEach(transition => {
+//NProgress.done();
+//});
 new Vue({
   el: '#app',
   // template: '<App/>',
