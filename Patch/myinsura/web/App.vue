@@ -86,3 +86,11 @@ export default {
         this.isTrace = false;
       }
     },
+
+    reload(){
+      this.isRouterAlive = false;
+      this.$nextTick(function(){
+        this.isRouterAlive = true;
+      })
+    }
+  },
