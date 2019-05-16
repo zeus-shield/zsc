@@ -12,10 +12,24 @@ import routes from './routes'
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)
+router.beforeEach((to, from, next) => {
+  // NProgress.start();
+  // if (to.path == '/login') {
+  //   sessionStorage.removeItem('user');
+  // }
+  // let user = JSON.parse(sessionStorage.getItem('user'));
+  // if (!user && to.path != '/login') {
+  //   next({ path: '/login' })
+  // } else {
+  //   next()
+  // }
+  next();
+})
 
 //router.afterEach(transition => {
 //NProgress.done();
 //});
+
 new Vue({
   el: '#app',
   // template: '<App/>',
@@ -24,3 +38,5 @@ new Vue({
   //components: { App }
   render: h => h(App)
 }).$mount('#app')
+
+
