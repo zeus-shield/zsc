@@ -13,6 +13,11 @@ let routes = [
         hidden: true,
         redirect: '/'
     },
+    {
+        path: '/',
+        name:'index',
+        component: Index,
+    },
 ];
 
 export default routes;
