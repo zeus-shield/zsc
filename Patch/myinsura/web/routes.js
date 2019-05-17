@@ -21,6 +21,11 @@ let routes = [
         component: myinsura,
     },
     {
+        path: '/mine',
+        name:'mine',
+        component: myinsuraMine,
+    },
+    {
         path: '/',
         name:'index',
         component: Index,
