@@ -23,6 +23,11 @@ let routes = [
         component: myinsura,
     },
     {
+        path: '/info/:id',
+        name:'info',
+        component: myinsuraInfo,
+    },
+    {
         path: '/mine',
         name:'mine',
         component: myinsuraMine,
