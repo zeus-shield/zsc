@@ -7,6 +7,11 @@ let routes = [
         name: '',
         hidden: true
     },
+    {
+        path: '*',
+        hidden: true,
+        redirect: '/'
+    },
 ];
 
 export default routes;
