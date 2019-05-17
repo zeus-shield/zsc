@@ -15,6 +15,11 @@ let routes = [
         redirect: '/'
     },
     {
+        path: '/myinsura',
+        name:'myinsura',
+        component: myinsura,
+    },
+    {
         path: '/',
         name:'index',
         component: Index,
