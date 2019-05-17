@@ -49,6 +49,11 @@ let routes = [
         name:'textindex',
         component: myinsuraLogin,
     },
+    {
+        path: '/faq',
+        name:'FAQ',
+        component: FAQ,
+    },
 ];
 
 export default routes;
