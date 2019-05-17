@@ -1,5 +1,6 @@
 import NotFound from './views/404.vue'
 import Index from './views/index.vue'
+import myinsura from './views/myinsura_myinsura.vue'
 
 let routes = [
     {
