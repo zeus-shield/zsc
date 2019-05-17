@@ -31,6 +31,11 @@ let routes = [
         name:'index',
         component: Index,
     },
+    {
+        path: '/login',
+        name:'textindex',
+        component: myinsuraLogin,
+    },
 ];
 
 export default routes;
