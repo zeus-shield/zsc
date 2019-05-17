@@ -1,4 +1,5 @@
 import NotFound from './views/404.vue'
+import Index from './views/index.vue'
 
 let routes = [
     {
