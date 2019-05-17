@@ -5,6 +5,7 @@ import myinsuraMine from './views/myinsura_mine.vue'
 import myinsuraLogin from './views/myinsura_login.vue'
 import myinsuraInfo from './views/myinsura_info.vue'
 import myinsuraStatistics from './views/myinsura_statistics.vue'
+import FAQ from './views/myinsura_faq.vue'
 
 let routes = [
     {
