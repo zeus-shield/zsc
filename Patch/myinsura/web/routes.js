@@ -2,6 +2,7 @@ import NotFound from './views/404.vue'
 import Index from './views/index.vue'
 import myinsura from './views/myinsura_myinsura.vue'
 import myinsuraMine from './views/myinsura_mine.vue'
+import myinsuraLogin from './views/myinsura_login.vue'
 
 let routes = [
     {
