@@ -19,3 +19,6 @@ export default {
      
     };
   },
+  methods: {
+
+  },
