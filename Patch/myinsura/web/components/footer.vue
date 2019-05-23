@@ -27,3 +27,6 @@ export default {
   mounted() {
     
   },
+  created() {
+    
+  },
