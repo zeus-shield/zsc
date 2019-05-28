@@ -1,3 +1,10 @@
 <template>
   <div>
     <el-menu 
+        :default-active="activeIndex" 
+        class="el-menu-demo" 
+        mode="horizontal"
+        background-color="#545c64" 
+        @select="handleSelect" 
+        text-color="#fff"
+        active-text-color="#ffd04b">
