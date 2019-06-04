@@ -133,3 +133,12 @@ export default {
             // 一旦监听到的screenWidth值改变，就将其重新赋给data里的screenWidth
             this.screenWidth = val
             this.timer = true
+            let handler = this
+            setTimeout(function(){
+                // 打印screenWidth变化的值
+                // console.log(handler.screenWidth);
+                handler.timer = false
+            },400)
+        }
+    },
+  },
