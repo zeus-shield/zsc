@@ -96,3 +96,8 @@ export default {
           window.location.href="https://myinsura.io/Myinsura_白皮书_v0.00.02.pdf";
         }
         
+      } else if (key == 5) {
+        this.isPhoneOn=false
+        this.$router.push({
+            path: "/mine",
+        })
