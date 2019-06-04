@@ -55,3 +55,7 @@ import zh_CN from '../common/language/zh-CN.js';
 export default {
   inject:['reload'],
   data() {
+    return {
+      isPhoneOn:false,
+      activeIndex:"1",
+      screenWidth: document.body.clientWidth,
