@@ -27,3 +27,6 @@
         <span class="head-icon">Myinsura</span>
         </div>
         <el-collapse-transition>
+          <div v-show="isPhoneOn" style="text-align:center">
+          <el-menu-item class="head-item"  index="1">{{language.header.p1}}</el-menu-item>
+          <el-menu-item class="head-item" index="2">{{language.header.p2}}</el-menu-item>
