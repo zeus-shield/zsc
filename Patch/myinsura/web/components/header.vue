@@ -30,3 +30,5 @@
           <div v-show="isPhoneOn" style="text-align:center">
           <el-menu-item class="head-item"  index="1">{{language.header.p1}}</el-menu-item>
           <el-menu-item class="head-item" index="2">{{language.header.p2}}</el-menu-item>
+          <el-menu-item class="head-item" index="3">{{language.header.p3}}</el-menu-item>
+          <el-menu-item class="head-item"  index="4">{{language.header.p4}}</el-menu-item>
