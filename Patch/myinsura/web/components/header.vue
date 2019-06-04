@@ -89,3 +89,7 @@ export default {
         this.$router.push({
             path: "/statistics",
         })
+      } else if (key == 4) {
+        if(api.getCookie('language') == 'en') {
+          window.location.href="https://myinsura.io/Myinsura_whitepaper_v0.00.02.pdf";
+        } else {
