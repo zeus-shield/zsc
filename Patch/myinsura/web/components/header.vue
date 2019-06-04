@@ -84,3 +84,8 @@ export default {
         this.$router.push({
             path: "/myinsura",
         })
+      } else if (key == 3) {
+        this.isPhoneOn=false
+        this.$router.push({
+            path: "/statistics",
+        })
