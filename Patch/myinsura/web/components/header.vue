@@ -32,3 +32,5 @@
           <el-menu-item class="head-item" index="2">{{language.header.p2}}</el-menu-item>
           <el-menu-item class="head-item" index="3">{{language.header.p3}}</el-menu-item>
           <el-menu-item class="head-item"  index="4">{{language.header.p4}}</el-menu-item>
+          <el-menu-item class="head-item"  index="5" v-if="isLogin">{{language.header.p5}}</el-menu-item>
+          <el-menu-item class="head-item"  index="6" v-if="!isLogin">{{language.header.p6}}</el-menu-item>
