@@ -36,3 +36,6 @@
           <el-menu-item class="head-item"  index="6" v-if="!isLogin">{{language.header.p6}}</el-menu-item>
           <el-menu-item class="head-item" index="7" >{{language.header.p7}}</el-menu-item>
           <el-menu-item class="head-item" index="8" @click="changeLanguage()">{{language.header.p8}}</el-menu-item>
+          <!-- <el-submenu index="8">
+          <template slot="title">语言</template>
+            <el-menu-item @click="changeLanguage()" class="head-item" index="7-1">中文</el-menu-item>
