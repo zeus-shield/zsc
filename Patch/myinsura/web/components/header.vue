@@ -120,3 +120,9 @@ export default {
         api.setCookie('language','en');
         this.reload();
       } else {
+        api.setCookie('language','cn');
+        this.reload();
+      }
+    }
+    
+  },
