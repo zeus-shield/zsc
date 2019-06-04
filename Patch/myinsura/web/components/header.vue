@@ -126,3 +126,10 @@ export default {
     }
     
   },
+  watch: {
+    screenWidth(val){
+        // 为了避免频繁触发resize函数导致页面卡顿，使用定时器
+        if(!this.timer){
+            // 一旦监听到的screenWidth值改变，就将其重新赋给data里的screenWidth
+            this.screenWidth = val
+            this.timer = true
