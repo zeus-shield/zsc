@@ -59,3 +59,8 @@ export default {
       isPhoneOn:false,
       activeIndex:"1",
       screenWidth: document.body.clientWidth,
+      isphone: true,
+      isLogin:false,
+      language:api.getCookie('language') == 'en' ? en_GB : zh_CN,
+    };
+  },
