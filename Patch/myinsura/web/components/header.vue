@@ -72,3 +72,10 @@ export default {
         this.isPhoneOn = false;
       }
     },
+
+    handleSelect(key, keyPath) {
+      if(key == 1) {
+        this.isPhoneOn=false
+        this.$router.push({
+            path: "/",
+        })
