@@ -93,3 +93,6 @@ export default {
         if(api.getCookie('language') == 'en') {
           window.location.href="https://myinsura.io/Myinsura_whitepaper_v0.00.02.pdf";
         } else {
+          window.location.href="https://myinsura.io/Myinsura_白皮书_v0.00.02.pdf";
+        }
+        
