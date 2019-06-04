@@ -34,3 +34,5 @@
           <el-menu-item class="head-item"  index="4">{{language.header.p4}}</el-menu-item>
           <el-menu-item class="head-item"  index="5" v-if="isLogin">{{language.header.p5}}</el-menu-item>
           <el-menu-item class="head-item"  index="6" v-if="!isLogin">{{language.header.p6}}</el-menu-item>
+          <el-menu-item class="head-item" index="7" >{{language.header.p7}}</el-menu-item>
+          <el-menu-item class="head-item" index="8" @click="changeLanguage()">{{language.header.p8}}</el-menu-item>
