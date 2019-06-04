@@ -113,3 +113,10 @@ export default {
         })
       } 
     },
+
+    changeLanguage() {
+      let temp = api.getCookie('language');
+      if(temp == null || temp == 'cn') {
+        api.setCookie('language','en');
+        this.reload();
+      } else {
