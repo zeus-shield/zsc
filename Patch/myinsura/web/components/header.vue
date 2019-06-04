@@ -21,3 +21,9 @@
             <el-menu-item @click="changeLanguage()" index="7-1">中文</el-menu-item>
             <el-menu-item @click="changeLanguage()" index="7-2">英文</el-menu-item>
         </el-submenu> -->
+
+        <div style="height:56px">
+        <i v-if="isphone" class="el-icon-tickets" style="font-size:40px;color:#808080;margin-left:20px;margin-top:8px;" @click="switchHeader()"></i>
+        <span class="head-icon">Myinsura</span>
+        </div>
+        <el-collapse-transition>
