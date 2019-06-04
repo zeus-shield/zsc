@@ -64,3 +64,7 @@ export default {
       language:api.getCookie('language') == 'en' ? en_GB : zh_CN,
     };
   },
+  methods: {
+    switchHeader: function() {
+      if(this.isPhoneOn == false) {
+        this.isPhoneOn = true;
