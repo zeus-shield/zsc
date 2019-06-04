@@ -68,3 +68,7 @@ export default {
     switchHeader: function() {
       if(this.isPhoneOn == false) {
         this.isPhoneOn = true;
+      } else {
+        this.isPhoneOn = false;
+      }
+    },
