@@ -39,3 +39,10 @@
           <!-- <el-submenu index="8">
           <template slot="title">语言</template>
             <el-menu-item @click="changeLanguage()" class="head-item" index="7-1">中文</el-menu-item>
+            <el-menu-item @click="changeLanguage()" class="head-item" index="7-2">英文</el-menu-item>
+        </el-submenu> -->
+        </div>
+        </el-collapse-transition>
+    </el-menu>
+  </div>
+</template>
