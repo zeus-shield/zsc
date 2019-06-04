@@ -101,3 +101,8 @@ export default {
         this.$router.push({
             path: "/mine",
         })
+      } else if (key == 6) {
+        this.isPhoneOn=false
+        this.$router.push({
+            path: "/login",
+        })
