@@ -106,3 +106,10 @@ export default {
         this.$router.push({
             path: "/login",
         })
+      } else if (key == 7) {
+        this.isPhoneOn=false
+        this.$router.push({
+            path: "/faq",
+        })
+      } 
+    },
