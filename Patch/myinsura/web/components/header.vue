@@ -180,3 +180,8 @@ export default {
     .head-item {
         font-size:16px;
     }
+    .head-icon {
+        height: 56px;
+        line-height: 56px;
+        font-size: 30px;
+        color: #fff;
