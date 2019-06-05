@@ -151,3 +151,6 @@ export default {
       this.isphone = false;
     }
     const handler = this
+  
+    api.addEventOnResize(function(){
+          window.screenWidth = document.body.clientWidth;
