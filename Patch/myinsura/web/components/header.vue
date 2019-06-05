@@ -175,3 +175,8 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+    .head-item {
+        font-size:16px;
+    }
