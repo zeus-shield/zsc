@@ -142,3 +142,6 @@ export default {
         }
     },
   },
+  mounted() {
+    window.screenWidth = document.body.clientWidth;
+    this.screenWidth = window.screenWidth;
