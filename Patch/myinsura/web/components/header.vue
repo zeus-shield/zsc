@@ -167,3 +167,7 @@ export default {
     if(temp == null || temp == false || temp == undefined) {
       handler.isLogin = false;
     } else {
+      handler.isLogin = true
+    }
+  },
+  created() {
