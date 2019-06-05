@@ -148,3 +148,6 @@ export default {
     if(this.screenWidth <= 980) {
       this.isphone = true;
     } else {
+      this.isphone = false;
+    }
+    const handler = this
