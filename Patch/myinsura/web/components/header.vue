@@ -154,3 +154,6 @@ export default {
   
     api.addEventOnResize(function(){
           window.screenWidth = document.body.clientWidth;
+          handler.screenWidth = window.screenWidth;
+          if(handler.screenWidth <= 980) {
+            handler.isphone = true;
