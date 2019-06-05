@@ -157,3 +157,7 @@ export default {
           handler.screenWidth = window.screenWidth;
           if(handler.screenWidth <= 980) {
             handler.isphone = true;
+          } else {
+            handler.isphone = false;
+            handler.isPhoneOn=false;
+          }
