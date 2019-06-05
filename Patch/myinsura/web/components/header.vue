@@ -161,3 +161,6 @@ export default {
             handler.isphone = false;
             handler.isPhoneOn=false;
           }
+    })
+
+    let temp = window.sessionStorage.getItem("isLogin");
