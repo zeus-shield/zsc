@@ -164,3 +164,6 @@ export default {
     })
 
     let temp = window.sessionStorage.getItem("isLogin");
+    if(temp == null || temp == false || temp == undefined) {
+      handler.isLogin = false;
+    } else {
