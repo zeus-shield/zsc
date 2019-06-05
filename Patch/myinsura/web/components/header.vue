@@ -145,3 +145,6 @@ export default {
   mounted() {
     window.screenWidth = document.body.clientWidth;
     this.screenWidth = window.screenWidth;
+    if(this.screenWidth <= 980) {
+      this.isphone = true;
+    } else {
