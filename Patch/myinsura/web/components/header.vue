@@ -185,3 +185,12 @@ export default {
         line-height: 56px;
         font-size: 30px;
         color: #fff;
+        padding: 0 20px;
+        cursor: pointer;
+        position: relative;
+        transition: border-color .3s,background-color .3s,color .3s;
+        box-sizing: border-box;
+        white-space: nowrap;
+        float:right
+    }
+</style>
