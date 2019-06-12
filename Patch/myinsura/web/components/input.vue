@@ -12,3 +12,6 @@
         <el-form-item v-else-if="item == '保障额度'" :label="language.input.p3" prop="保障额度">
             <el-input v-model.number="form.保障额度" ><template slot="append">RMB</template></el-input>
         </el-form-item>
+        <el-form-item v-else-if="item == '保单编号'" :label="language.input.p4" prop="保单编号">
+            <el-input v-model="form.保单编号" ></el-input>
+        </el-form-item>
