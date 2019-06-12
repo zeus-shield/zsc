@@ -39,3 +39,9 @@
         <el-form-item v-else-if="item == '有无交通事故'" :label="language.input.p12">
             <el-switch v-model="form.有无交通事故" active-value="有交通事故" inactive-value="无交通事故"></el-switch>
         </el-form-item>
+        <el-form-item v-else-if="item == '缴费方式'" :label="language.input.p13">
+            <el-radio-group v-model="form.缴费方式">
+            <el-radio :label="language.input.p14"></el-radio>
+            <el-radio :label="language.input.p15"></el-radio>
+            </el-radio-group>
+        </el-form-item>
