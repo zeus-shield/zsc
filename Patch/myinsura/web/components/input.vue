@@ -66,3 +66,6 @@ import en_GB from '../common/language/en-GB.js';
 import zh_CN from '../common/language/zh-CN.js';
 import policyInfo from '../api/policyInfo.js'
 import policyInfo_EN from '../api/policyInfo-en.js'
+
+import Insurance from '../api/insurance.js';
+import ContractInfo from '../api/ContractInfo';
