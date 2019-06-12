@@ -33,3 +33,6 @@
         <el-form-item v-else-if="item == '自动续保'" :label="language.input.p10" :content="form.自动续保" placement="top">
             <el-switch v-model="form.自动续保" active-value="自动续保" inactive-value="不自动续保"></el-switch>
         </el-form-item>
+        <el-form-item v-else-if="item == '有无社保（被保人）'" :label="language.input.p11">
+            <el-switch v-model="form.有无社保" active-value="有社保" inactive-value="无社保"></el-switch>
+        </el-form-item>
