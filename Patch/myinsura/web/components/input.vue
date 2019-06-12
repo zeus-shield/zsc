@@ -45,3 +45,6 @@
             <el-radio :label="language.input.p15"></el-radio>
             </el-radio-group>
         </el-form-item>
+        <el-form-item v-else-if="item == 'ÃèÊö'" :label="language.input.p16">
+            <el-input type="textarea" v-model="form.ÃèÊö"></el-input>
+        </el-form-item>
