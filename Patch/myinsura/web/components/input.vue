@@ -30,3 +30,6 @@
         <el-form-item v-else-if="item == '结束时间'" :label="language.input.p9" prop="结束时间">
           <el-date-picker style="width:100%" item="date" v-model="form.结束时间" ></el-date-picker>
         </el-form-item>
+        <el-form-item v-else-if="item == '自动续保'" :label="language.input.p10" :content="form.自动续保" placement="top">
+            <el-switch v-model="form.自动续保" active-value="自动续保" inactive-value="不自动续保"></el-switch>
+        </el-form-item>
