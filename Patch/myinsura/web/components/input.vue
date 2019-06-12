@@ -57,3 +57,6 @@
   </el-dialog>
 </div>
 </template>
+
+<script>
+import {getPolicyTemp,submitPolicy} from '../api/api'
