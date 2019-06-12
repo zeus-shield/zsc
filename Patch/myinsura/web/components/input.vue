@@ -36,3 +36,6 @@
         <el-form-item v-else-if="item == '有无社保（被保人）'" :label="language.input.p11">
             <el-switch v-model="form.有无社保" active-value="有社保" inactive-value="无社保"></el-switch>
         </el-form-item>
+        <el-form-item v-else-if="item == '有无交通事故'" :label="language.input.p12">
+            <el-switch v-model="form.有无交通事故" active-value="有交通事故" inactive-value="无交通事故"></el-switch>
+        </el-form-item>
