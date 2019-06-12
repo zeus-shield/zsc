@@ -18,3 +18,6 @@
         <el-form-item v-else-if="item == '保障期限'" :label="language.input.p5" prop="保障期限">
             <el-input v-model.number="form.保障期限"><template slot="append">{{language.input.p17}}</template></el-input>
         </el-form-item>
+        <el-form-item v-else-if="item == '车牌号'" :label="language.input.p6" prop="车牌号">
+            <el-input v-model="form.车牌号" ></el-input>
+        </el-form-item>
