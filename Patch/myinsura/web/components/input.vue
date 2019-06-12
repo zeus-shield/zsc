@@ -6,3 +6,6 @@
         <el-form-item v-if="item == '投保人'" :label="language.input.p1" prop="投保人">
             <el-input v-model="form.投保人"></el-input>
         </el-form-item>
+        <el-form-item v-else-if="item == '被保人'" :label="language.input.p2" prop="被保人">
+            <el-input v-model="form.被保人"></el-input>
+        </el-form-item>
