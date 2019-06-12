@@ -27,3 +27,6 @@
         <el-form-item v-else-if="item == '开始时间'" :label="language.input.p8"  prop="开始时间">
           <el-date-picker style="width:100%" type="date" v-model="form.开始时间" ></el-date-picker>
         </el-form-item>
+        <el-form-item v-else-if="item == '结束时间'" :label="language.input.p9" prop="结束时间">
+          <el-date-picker style="width:100%" item="date" v-model="form.结束时间" ></el-date-picker>
+        </el-form-item>
