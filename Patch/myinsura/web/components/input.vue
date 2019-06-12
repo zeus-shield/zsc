@@ -21,3 +21,6 @@
         <el-form-item v-else-if="item == '³µÅÆºÅ'" :label="language.input.p6" prop="³µÅÆºÅ">
             <el-input v-model="form.³µÅÆºÅ" ></el-input>
         </el-form-item>
+        <el-form-item v-else-if="item == '³µÁä'" :label="language.input.p7" prop="³µÁä">
+            <el-input v-model.number="form.³µÁä" ><template slot="append">{{language.input.p17}}</template></el-input>
+        </el-form-item>
