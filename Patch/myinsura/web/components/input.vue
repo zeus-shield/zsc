@@ -48,3 +48,5 @@
         <el-form-item v-else-if="item == 'ÃèÊö'" :label="language.input.p16">
             <el-input type="textarea" v-model="form.ÃèÊö"></el-input>
         </el-form-item>
+      </div> 
+    </el-form>
