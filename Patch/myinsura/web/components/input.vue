@@ -24,3 +24,6 @@
         <el-form-item v-else-if="item == '车龄'" :label="language.input.p7" prop="车龄">
             <el-input v-model.number="form.车龄" ><template slot="append">{{language.input.p17}}</template></el-input>
         </el-form-item>
+        <el-form-item v-else-if="item == '开始时间'" :label="language.input.p8"  prop="开始时间">
+          <el-date-picker style="width:100%" type="date" v-model="form.开始时间" ></el-date-picker>
+        </el-form-item>
