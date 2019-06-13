@@ -72,3 +72,8 @@ import ContractInfo from '../api/ContractInfo';
 
 const insuranceAbi = ContractInfo.insuranceAbi;
 const insuranceAddress = ContractInfo.insuranceAddress;
+
+export default {
+  data() {
+
+    var checkTime = (rule, value, callback) => {
