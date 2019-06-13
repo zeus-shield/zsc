@@ -123,3 +123,6 @@ export default {
         被保人: [
           { required: true, message: api.getCookie('language') == 'en' ? 'Please enter the correct name' : '请输入正确的姓名', trigger: 'blur' },
         ],
+        保单编号: [
+          { required: true, message: api.getCookie('language') == 'en' ? 'The number cannot blank' : '保单编号不能为空', trigger: 'blur' },
+        ],
