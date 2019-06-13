@@ -69,3 +69,6 @@ import policyInfo_EN from '../api/policyInfo-en.js'
 
 import Insurance from '../api/insurance.js';
 import ContractInfo from '../api/ContractInfo';
+
+const insuranceAbi = ContractInfo.insuranceAbi;
+const insuranceAddress = ContractInfo.insuranceAddress;
