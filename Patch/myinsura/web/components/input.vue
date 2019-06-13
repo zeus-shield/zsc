@@ -141,3 +141,6 @@ export default {
           { required: true, message: api.getCookie('language') == 'en' ? 'Vehicle Age cannot blank' : '车龄不能为空', trigger: 'blur' },
           { type: 'number', message: api.getCookie('language') == 'en' ? 'Vehicle Age must be a numeric value' : '车龄必须为数字值', trigger: 'blur' }
         ],
+        开始时间: [
+          { type: 'date', required: true, message: api.getCookie('language') == 'en' ? 'Select time please' : '请选择时间', trigger: 'change' },
+        ],
