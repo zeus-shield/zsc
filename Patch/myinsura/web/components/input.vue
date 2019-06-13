@@ -134,3 +134,6 @@ export default {
           { required: true, message: api.getCookie('language') == 'en' ? 'Insurance Amount cannot blank' : '保障额度不能为空', trigger: 'blur' },
           { type: 'number', message: api.getCookie('language') == 'en' ? 'Insurance Amount must be a numeric value' : '保障额度必须为数字值', trigger: 'blur' }
         ],
+        车牌号:[
+          { required: true, message: api.getCookie('language') == 'en' ? 'Car License Number cannot blank' : '车牌号不能为空', trigger: 'blur'},
+        ],
