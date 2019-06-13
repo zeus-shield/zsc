@@ -126,3 +126,7 @@ export default {
         保单编号: [
           { required: true, message: api.getCookie('language') == 'en' ? 'The number cannot blank' : '保单编号不能为空', trigger: 'blur' },
         ],
+        保障期限:[
+          { required: true, message: api.getCookie('language') == 'en' ? 'Insurance Period cannot blank' : '保障期限不能为空', trigger: 'blur' },
+          { type: 'number', message: api.getCookie('language') == 'en' ? 'Insurance Period must be a numeric value' : '保障期限必须为数字值', trigger: 'blur' }
+        ],
