@@ -130,3 +130,7 @@ export default {
           { required: true, message: api.getCookie('language') == 'en' ? 'Insurance Period cannot blank' : '保障期限不能为空', trigger: 'blur' },
           { type: 'number', message: api.getCookie('language') == 'en' ? 'Insurance Period must be a numeric value' : '保障期限必须为数字值', trigger: 'blur' }
         ],
+        保障额度:[
+          { required: true, message: api.getCookie('language') == 'en' ? 'Insurance Amount cannot blank' : '保障额度不能为空', trigger: 'blur' },
+          { type: 'number', message: api.getCookie('language') == 'en' ? 'Insurance Amount must be a numeric value' : '保障额度必须为数字值', trigger: 'blur' }
+        ],
