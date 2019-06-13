@@ -137,3 +137,7 @@ export default {
         车牌号:[
           { required: true, message: api.getCookie('language') == 'en' ? 'Car License Number cannot blank' : '车牌号不能为空', trigger: 'blur'},
         ],
+        车龄:[
+          { required: true, message: api.getCookie('language') == 'en' ? 'Vehicle Age cannot blank' : '车龄不能为空', trigger: 'blur' },
+          { type: 'number', message: api.getCookie('language') == 'en' ? 'Vehicle Age must be a numeric value' : '车龄必须为数字值', trigger: 'blur' }
+        ],
