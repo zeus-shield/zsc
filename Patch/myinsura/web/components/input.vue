@@ -87,3 +87,7 @@ export default {
           } else {
             callback();
           }
+        } else {
+          callback();
+        }
+      };
