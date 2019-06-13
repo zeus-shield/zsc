@@ -115,3 +115,8 @@ export default {
         缴费方式: "按年缴费",
         描述:  ""
       },
+
+      rules: {
+        投保人: [
+          { required: true, message: api.getCookie('language') == 'en' ? 'Please enter the correct name' : '请输入正确的姓名', trigger: 'blur' },
+        ],
