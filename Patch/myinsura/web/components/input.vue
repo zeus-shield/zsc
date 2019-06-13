@@ -94,3 +94,7 @@ export default {
 
     return {
       policyName:"",
+      dialogFormVisible:true,
+      title:"",
+      form:{
+        Õ∂±£»À:"",
