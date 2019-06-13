@@ -120,3 +120,6 @@ export default {
         投保人: [
           { required: true, message: api.getCookie('language') == 'en' ? 'Please enter the correct name' : '请输入正确的姓名', trigger: 'blur' },
         ],
+        被保人: [
+          { required: true, message: api.getCookie('language') == 'en' ? 'Please enter the correct name' : '请输入正确的姓名', trigger: 'blur' },
+        ],
