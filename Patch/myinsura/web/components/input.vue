@@ -235,3 +235,7 @@ export default {
             if(data.缴费方式) {
               if(data.缴费方式 == "Premium paid each year") {
                 data.缴费方式 = "按年缴费";
+              } else if(data.缴费方式 == "Premium paid each month") {
+                data.缴费方式 = "按月缴费";
+              }
+            }
