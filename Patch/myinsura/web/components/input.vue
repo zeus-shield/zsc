@@ -185,3 +185,8 @@ export default {
         }
       })
     },
+      
+    //创建保单
+    createPolicyTemp: function (policyTemp) {
+      this.policyTemArray = policyTemp.split("#");
+      for (let i = 0; i < this.policyTemArray.length; i++) {
