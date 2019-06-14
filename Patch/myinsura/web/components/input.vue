@@ -261,3 +261,7 @@ export default {
                 });
               } else if (res.code == "0") {//交易成功
                 handler.isInput = false;
+                handler.loading = false; 
+                handler.hidden();
+                this.$message({
+                  message: handler.language.message.submitSuccess,
