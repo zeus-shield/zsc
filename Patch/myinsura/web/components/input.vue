@@ -256,3 +256,8 @@ export default {
                 handler.isInput = false;
                 handler.loading = false; 
                 this.$message({
+                  message: handler.language.message.submitfail,
+                  type: 'warning'
+                });
+              } else if (res.code == "0") {//交易成功
+                handler.isInput = false;
