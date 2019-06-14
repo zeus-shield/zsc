@@ -196,3 +196,8 @@ export default {
           }
       }
       for(var key in this.form) {
+        let isfind = false;
+
+        for(var i in this.policyTemArray) {
+          if(key == "有无社保") {
+            let keyTemp = key+"（被保人）";
