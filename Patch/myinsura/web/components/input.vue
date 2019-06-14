@@ -214,3 +214,5 @@ export default {
           delete this.form[key];
         }
       }
+      this.loading = false;
+    },
