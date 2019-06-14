@@ -201,3 +201,6 @@ export default {
         for(var i in this.policyTemArray) {
           if(key == "有无社保") {
             let keyTemp = key+"（被保人）";
+            if(this.policyTemArray[i] == keyTemp) {
+              isfind = true;
+            }
