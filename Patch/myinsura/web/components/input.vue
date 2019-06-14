@@ -216,3 +216,8 @@ export default {
       }
       this.loading = false;
     },
+
+    //提交保单
+    onSubmit(formName) {
+      let handler = this;
+      handler.$refs[formName].validate((valid) => {
