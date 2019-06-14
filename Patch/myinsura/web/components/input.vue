@@ -265,3 +265,13 @@ export default {
                 handler.hidden();
                 this.$message({
                   message: handler.language.message.submitSuccess,
+                });
+              } else if (res.code == "-9") {//½»Ò×±¨´í
+                handler.isInput = false;
+                handler.loading = false; 
+                this.$message({
+                  message: handler.language.message.trackError,
+                  type: 'warning'
+                });
+              }
+            })
