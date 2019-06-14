@@ -275,3 +275,8 @@ export default {
                 });
               }
             })
+            .catch((error) => {
+              console.log(error);
+              handler.isInput = false;
+              handler.loading = false; 
+              this.$message({
