@@ -231,3 +231,7 @@ export default {
             handler.isInput = true;
             handler.loading = true;
             let userKey = handler.code;
+            let data = handler.form;
+            if(data.缴费方式) {
+              if(data.缴费方式 == "Premium paid each year") {
+                data.缴费方式 = "按年缴费";
