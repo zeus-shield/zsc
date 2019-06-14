@@ -164,3 +164,9 @@ export default {
     getPolicyTemp: function () {
       let handler = this;
       let key = "DB_Policy_"+this.policyName;
+      let insurance = new Insurance(insuranceAbi,insuranceAddress);
+      insurance.templateGetByKey(key,function(error, result) {
+        if(error) {
+            handler.$message({
+              message: handler.language.message.trackError,
+              type: 'warning'
