@@ -250,3 +250,9 @@ export default {
             para.push(`UserKey=${userKey}`);
             para.push(`PolicyName=${handler.policyName}`);
             para.push(`Data=${data}`);
+            submitPolicy(para.join("&"))
+            .then((res) => {
+              if (res.code == "-6") {//½»Ò×Ê§°Ü 
+                handler.isInput = false;
+                handler.loading = false; 
+                this.$message({
