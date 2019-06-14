@@ -224,3 +224,6 @@ export default {
         if (valid) {
           if(handler.code == null) {
             this.$message({
+              message: handler.language.message.needlogin,
+              type: 'warning'
+            });
