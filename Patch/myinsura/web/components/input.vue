@@ -239,3 +239,9 @@ export default {
                 data.缴费方式 = "按月缴费";
               }
             }
+            for(var key in data) {
+              if(typeof data[key] == "number") {
+                data[key] = data[key].toString()
+              }
+            }
+            data = JSON.stringify(data);
