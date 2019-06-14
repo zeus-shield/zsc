@@ -245,3 +245,8 @@ export default {
               }
             }
             data = JSON.stringify(data);
+
+            let para = [];
+            para.push(`UserKey=${userKey}`);
+            para.push(`PolicyName=${handler.policyName}`);
+            para.push(`Data=${data}`);
