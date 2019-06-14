@@ -177,3 +177,11 @@ export default {
               handler.$message({
                 message: handler.language.message.noPolicy2,
                 type: 'warning'
+              });
+              handler.loading = false;
+          }  else if (result[0] == 0) {//success
+            handler.createPolicyTemp(result[1]);
+          }
+        }
+      })
+    },
