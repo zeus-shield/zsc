@@ -159,3 +159,8 @@ export default {
       language:api.getCookie('language') == 'en' ? en_GB : zh_CN,
     };
   },
+  methods: {
+    //获取数据
+    getPolicyTemp: function () {
+      let handler = this;
+      let key = "DB_Policy_"+this.policyName;
