@@ -204,3 +204,9 @@ export default {
             if(this.policyTemArray[i] == keyTemp) {
               isfind = true;
             }
+          } else {
+            if(this.policyTemArray[i] == key) {
+              isfind = true;
+            }
+          }
+        }
