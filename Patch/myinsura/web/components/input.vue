@@ -190,3 +190,9 @@ export default {
     createPolicyTemp: function (policyTemp) {
       this.policyTemArray = policyTemp.split("#");
       for (let i = 0; i < this.policyTemArray.length; i++) {
+          if (this.policyTemArray[i] == "Key" || this.policyTemArray[i] == "UserKey") {
+              this.policyTemArray.splice(i, 1);
+              i--;
+          }
+      }
+      for(var key in this.form) {
