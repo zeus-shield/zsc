@@ -170,3 +170,10 @@ export default {
             handler.$message({
               message: handler.language.message.trackError,
               type: 'warning'
+            });
+            handler.loading = false;
+        } else {
+          if(result[0] == -3 || result[0] == -1 || result[0] == -2) {//�ж�״ֵ̬//inner error
+              handler.$message({
+                message: handler.language.message.noPolicy2,
+                type: 'warning'
