@@ -149,3 +149,13 @@ export default {
           { validator: checkTime, trigger: 'blur' }
         ],
       },
+            
+      loading:false,
+      policyTemArray:[],
+      policyTemData:{},
+      code:"",
+      dialogWidth:"",
+      isInput:false,
+      language:api.getCookie('language') == 'en' ? en_GB : zh_CN,
+    };
+  },
