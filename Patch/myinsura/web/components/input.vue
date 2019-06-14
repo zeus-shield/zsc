@@ -227,3 +227,7 @@ export default {
               message: handler.language.message.needlogin,
               type: 'warning'
             });
+          } else {
+            handler.isInput = true;
+            handler.loading = true;
+            let userKey = handler.code;
