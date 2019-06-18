@@ -297,3 +297,7 @@ export default {
         path: this.$router.path,
       })
     },
+
+    generatePolicy(str){
+      if(api.getCookie('language') == 'en') {
+          let policyInfoTemp = policyInfo_EN;
