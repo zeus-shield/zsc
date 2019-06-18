@@ -305,3 +305,8 @@ export default {
           return policyInfoTemp[temp].title.split("-")[1].slice(1)
       } else {
           return str;
+      }
+    },
+
+  },
+  watch: {
