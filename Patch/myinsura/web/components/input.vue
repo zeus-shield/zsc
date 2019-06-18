@@ -334,3 +334,9 @@ export default {
       let clientWidth = document.body.clientWidth;
       if(clientWidth >= 992) {
         handler.dialogWidth = "50%";
+      } else if (clientWidth <= 375){
+        handler.dialogWidth = "100%";
+      } else {
+        handler.dialogWidth = (1.3 - clientWidth / 1234)*100 + "%" ;
+      }
+    })
