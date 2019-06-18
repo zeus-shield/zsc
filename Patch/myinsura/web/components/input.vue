@@ -284,3 +284,8 @@ export default {
                 type: 'warning'
               });
             })
+          }
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
