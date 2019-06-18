@@ -310,3 +310,14 @@ export default {
 
   },
   watch: {
+  },
+  mounted() {
+    
+    this.isInput = false;
+    this.loading = true;
+    this.policyName = this.$route.params.id;
+    this.title = this.generatePolicy(this.policyName);
+    this.code = api.getCookie("Code");
+    this.getPolicyTemp();
+    api.hidden(this);
+    let clientWidth = document.body.clientWidth;
