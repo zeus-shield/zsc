@@ -328,3 +328,6 @@ export default {
     } else {
       this.dialogWidth = (1.3 - clientWidth / 1234)*100 + "%" ;
     }
+    
+    let handler = this;
+    api.addEventOnResize(function(){
