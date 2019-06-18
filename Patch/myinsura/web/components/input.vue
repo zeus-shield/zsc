@@ -3,50 +3,50 @@
   <el-dialog :title="title" :visible.sync="dialogFormVisible" center :width="dialogWidth">
     <el-form ref="form" :model="form" :rules="rules" label-width="80px">
       <div v-for="(item,key) in policyTemArray" :key="key">
-        <el-form-item v-if="item == 'Í¶±£ÈË'" :label="language.input.p1" prop="Í¶±£ÈË">
-            <el-input v-model="form.Í¶±£ÈË"></el-input>
+        <el-form-item v-if="item == 'æŠ•ä¿äºº'" :label="language.input.p1" prop="æŠ•ä¿äºº">
+            <el-input v-model="form.æŠ•ä¿äºº"></el-input>
         </el-form-item>
-        <el-form-item v-else-if="item == '±»±£ÈË'" :label="language.input.p2" prop="±»±£ÈË">
-            <el-input v-model="form.±»±£ÈË"></el-input>
+        <el-form-item v-else-if="item == 'è¢«ä¿äºº'" :label="language.input.p2" prop="è¢«ä¿äºº">
+            <el-input v-model="form.è¢«ä¿äºº"></el-input>
         </el-form-item>
-        <el-form-item v-else-if="item == '±£ÕÏ¶î¶È'" :label="language.input.p3" prop="±£ÕÏ¶î¶È">
-            <el-input v-model.number="form.±£ÕÏ¶î¶È" ><template slot="append">RMB</template></el-input>
+        <el-form-item v-else-if="item == 'ä¿éšœé¢åº¦'" :label="language.input.p3" prop="ä¿éšœé¢åº¦">
+            <el-input v-model.number="form.ä¿éšœé¢åº¦" ><template slot="append">RMB</template></el-input>
         </el-form-item>
-        <el-form-item v-else-if="item == '±£µ¥±àºÅ'" :label="language.input.p4" prop="±£µ¥±àºÅ">
-            <el-input v-model="form.±£µ¥±àºÅ" ></el-input>
+        <el-form-item v-else-if="item == 'ä¿å•ç¼–å·'" :label="language.input.p4" prop="ä¿å•ç¼–å·">
+            <el-input v-model="form.ä¿å•ç¼–å·" ></el-input>
         </el-form-item>
-        <el-form-item v-else-if="item == '±£ÕÏÆÚÏŞ'" :label="language.input.p5" prop="±£ÕÏÆÚÏŞ">
-            <el-input v-model.number="form.±£ÕÏÆÚÏŞ"><template slot="append">{{language.input.p17}}</template></el-input>
+        <el-form-item v-else-if="item == 'ä¿éšœæœŸé™'" :label="language.input.p5" prop="ä¿éšœæœŸé™">
+            <el-input v-model.number="form.ä¿éšœæœŸé™"><template slot="append">{{language.input.p17}}</template></el-input>
         </el-form-item>
-        <el-form-item v-else-if="item == '³µÅÆºÅ'" :label="language.input.p6" prop="³µÅÆºÅ">
-            <el-input v-model="form.³µÅÆºÅ" ></el-input>
+        <el-form-item v-else-if="item == 'è½¦ç‰Œå·'" :label="language.input.p6" prop="è½¦ç‰Œå·">
+            <el-input v-model="form.è½¦ç‰Œå·" ></el-input>
         </el-form-item>
-        <el-form-item v-else-if="item == '³µÁä'" :label="language.input.p7" prop="³µÁä">
-            <el-input v-model.number="form.³µÁä" ><template slot="append">{{language.input.p17}}</template></el-input>
+        <el-form-item v-else-if="item == 'è½¦é¾„'" :label="language.input.p7" prop="è½¦é¾„">
+            <el-input v-model.number="form.è½¦é¾„" ><template slot="append">{{language.input.p17}}</template></el-input>
         </el-form-item>
-        <el-form-item v-else-if="item == '¿ªÊ¼Ê±¼ä'" :label="language.input.p8"  prop="¿ªÊ¼Ê±¼ä">
-          <el-date-picker style="width:100%" type="date" v-model="form.¿ªÊ¼Ê±¼ä" ></el-date-picker>
+        <el-form-item v-else-if="item == 'å¼€å§‹æ—¶é—´'" :label="language.input.p8"  prop="å¼€å§‹æ—¶é—´">
+          <el-date-picker style="width:100%" type="date" v-model="form.å¼€å§‹æ—¶é—´" ></el-date-picker>
         </el-form-item>
-        <el-form-item v-else-if="item == '½áÊøÊ±¼ä'" :label="language.input.p9" prop="½áÊøÊ±¼ä">
-          <el-date-picker style="width:100%" item="date" v-model="form.½áÊøÊ±¼ä" ></el-date-picker>
+        <el-form-item v-else-if="item == 'ç»“æŸæ—¶é—´'" :label="language.input.p9" prop="ç»“æŸæ—¶é—´">
+          <el-date-picker style="width:100%" item="date" v-model="form.ç»“æŸæ—¶é—´" ></el-date-picker>
         </el-form-item>
-        <el-form-item v-else-if="item == '×Ô¶¯Ğø±£'" :label="language.input.p10" :content="form.×Ô¶¯Ğø±£" placement="top">
-            <el-switch v-model="form.×Ô¶¯Ğø±£" active-value="×Ô¶¯Ğø±£" inactive-value="²»×Ô¶¯Ğø±£"></el-switch>
+        <el-form-item v-else-if="item == 'è‡ªåŠ¨ç»­ä¿'" :label="language.input.p10" :content="form.è‡ªåŠ¨ç»­ä¿" placement="top">
+            <el-switch v-model="form.è‡ªåŠ¨ç»­ä¿" active-value="è‡ªåŠ¨ç»­ä¿" inactive-value="ä¸è‡ªåŠ¨ç»­ä¿"></el-switch>
         </el-form-item>
-        <el-form-item v-else-if="item == 'ÓĞÎŞÉç±££¨±»±£ÈË£©'" :label="language.input.p11">
-            <el-switch v-model="form.ÓĞÎŞÉç±£" active-value="ÓĞÉç±£" inactive-value="ÎŞÉç±£"></el-switch>
+        <el-form-item v-else-if="item == 'æœ‰æ— ç¤¾ä¿ï¼ˆè¢«ä¿äººï¼‰'" :label="language.input.p11">
+            <el-switch v-model="form.æœ‰æ— ç¤¾ä¿" active-value="æœ‰ç¤¾ä¿" inactive-value="æ— ç¤¾ä¿"></el-switch>
         </el-form-item>
-        <el-form-item v-else-if="item == 'ÓĞÎŞ½»Í¨ÊÂ¹Ê'" :label="language.input.p12">
-            <el-switch v-model="form.ÓĞÎŞ½»Í¨ÊÂ¹Ê" active-value="ÓĞ½»Í¨ÊÂ¹Ê" inactive-value="ÎŞ½»Í¨ÊÂ¹Ê"></el-switch>
+        <el-form-item v-else-if="item == 'æœ‰æ— äº¤é€šäº‹æ•…'" :label="language.input.p12">
+            <el-switch v-model="form.æœ‰æ— äº¤é€šäº‹æ•…" active-value="æœ‰äº¤é€šäº‹æ•…" inactive-value="æ— äº¤é€šäº‹æ•…"></el-switch>
         </el-form-item>
-        <el-form-item v-else-if="item == '½É·Ñ·½Ê½'" :label="language.input.p13">
-            <el-radio-group v-model="form.½É·Ñ·½Ê½">
+        <el-form-item v-else-if="item == 'ç¼´è´¹æ–¹å¼'" :label="language.input.p13">
+            <el-radio-group v-model="form.ç¼´è´¹æ–¹å¼">
             <el-radio :label="language.input.p14"></el-radio>
             <el-radio :label="language.input.p15"></el-radio>
             </el-radio-group>
         </el-form-item>
-        <el-form-item v-else-if="item == 'ÃèÊö'" :label="language.input.p16">
-            <el-input type="textarea" v-model="form.ÃèÊö"></el-input>
+        <el-form-item v-else-if="item == 'æè¿°'" :label="language.input.p16">
+            <el-input type="textarea" v-model="form.æè¿°"></el-input>
         </el-form-item>
       </div> 
     </el-form>
@@ -78,12 +78,12 @@ export default {
 
     var checkTime = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error(api.getCookie('language') == 'en' ? 'Select time please' : 'ÇëÑ¡ÔñÊ±¼ä'));
-        } else if (this.form.¿ªÊ¼Ê±¼ä) {
-          if(this.form.¿ªÊ¼Ê±¼ä === ''){
-            callback(new Error(api.getCookie('language') == 'en' ? 'Select start time please' : 'ÇëÏÈÑ¡Ôñ¿ªÊ¼Ê±¼ä'));
-          } else if(this.form.¿ªÊ¼Ê±¼ä >= value){
-            callback(new Error(api.getCookie('language') == 'en' ? 'The end time has to be earlier than the beginning time' : '½áÊøÊ±¼ä²»µÃÔçÓÚ¿ªÊ¼Ê±¼ä'));
+          callback(new Error(api.getCookie('language') == 'en' ? 'Select time please' : 'è¯·é€‰æ‹©æ—¶é—´'));
+        } else if (this.form.å¼€å§‹æ—¶é—´) {
+          if(this.form.å¼€å§‹æ—¶é—´ === ''){
+            callback(new Error(api.getCookie('language') == 'en' ? 'Select start time please' : 'è¯·å…ˆé€‰æ‹©å¼€å§‹æ—¶é—´'));
+          } else if(this.form.å¼€å§‹æ—¶é—´ >= value){
+            callback(new Error(api.getCookie('language') == 'en' ? 'The end time has to be earlier than the beginning time' : 'ç»“æŸæ—¶é—´ä¸å¾—æ—©äºå¼€å§‹æ—¶é—´'));
           } else {
             callback();
           }
@@ -97,55 +97,55 @@ export default {
       dialogFormVisible:true,
       title:"",
       form:{
-        Í¶±£ÈË:"",
-        ±»±£ÈË:"",
-        ±£µ¥±àºÅ: "",
-        ±£ÕÏÆÚÏŞ:  "",
-        ±£ÕÏ¶î¶È: "",
-        ³µÅÆºÅ:"",
-        ³µÁä:"",
+        æŠ•ä¿äºº:"",
+        è¢«ä¿äºº:"",
+        ä¿å•ç¼–å·: "",
+        ä¿éšœæœŸé™:  "",
+        ä¿éšœé¢åº¦: "",
+        è½¦ç‰Œå·:"",
+        è½¦é¾„:"",
 
-        ¿ªÊ¼Ê±¼ä: "",
-        ½áÊøÊ±¼ä:"",
+        å¼€å§‹æ—¶é—´: "",
+        ç»“æŸæ—¶é—´:"",
 
-        ×Ô¶¯Ğø±£:"²»×Ô¶¯Ğø·Ñ",
-        ÓĞÎŞÉç±£:"ÎŞÉç±£",
-        ÓĞÎŞ½»Í¨ÊÂ¹Ê:"ÎŞ½»Í¨ÊÂ¹Ê",
+        è‡ªåŠ¨ç»­ä¿:"ä¸è‡ªåŠ¨ç»­è´¹",
+        æœ‰æ— ç¤¾ä¿:"æ— ç¤¾ä¿",
+        æœ‰æ— äº¤é€šäº‹æ•…:"æ— äº¤é€šäº‹æ•…",
         
-        ½É·Ñ·½Ê½: "°´Äê½É·Ñ",
-        ÃèÊö:  ""
+        ç¼´è´¹æ–¹å¼: "æŒ‰å¹´ç¼´è´¹",
+        æè¿°:  ""
       },
 
       rules: {
-        Í¶±£ÈË: [
-          { required: true, message: api.getCookie('language') == 'en' ? 'Please enter the correct name' : 'ÇëÊäÈëÕıÈ·µÄĞÕÃû', trigger: 'blur' },
+        æŠ•ä¿äºº: [
+          { required: true, message: api.getCookie('language') == 'en' ? 'Please enter the correct name' : 'è¯·è¾“å…¥æ­£ç¡®çš„å§“å', trigger: 'blur' },
         ],
-        ±»±£ÈË: [
-          { required: true, message: api.getCookie('language') == 'en' ? 'Please enter the correct name' : 'ÇëÊäÈëÕıÈ·µÄĞÕÃû', trigger: 'blur' },
+        è¢«ä¿äºº: [
+          { required: true, message: api.getCookie('language') == 'en' ? 'Please enter the correct name' : 'è¯·è¾“å…¥æ­£ç¡®çš„å§“å', trigger: 'blur' },
         ],
-        ±£µ¥±àºÅ: [
-          { required: true, message: api.getCookie('language') == 'en' ? 'The number cannot blank' : '±£µ¥±àºÅ²»ÄÜÎª¿Õ', trigger: 'blur' },
+        ä¿å•ç¼–å·: [
+          { required: true, message: api.getCookie('language') == 'en' ? 'The number cannot blank' : 'ä¿å•ç¼–å·ä¸èƒ½ä¸ºç©º', trigger: 'blur' },
         ],
-        ±£ÕÏÆÚÏŞ:[
-          { required: true, message: api.getCookie('language') == 'en' ? 'Insurance Period cannot blank' : '±£ÕÏÆÚÏŞ²»ÄÜÎª¿Õ', trigger: 'blur' },
-          { type: 'number', message: api.getCookie('language') == 'en' ? 'Insurance Period must be a numeric value' : '±£ÕÏÆÚÏŞ±ØĞëÎªÊı×ÖÖµ', trigger: 'blur' }
+        ä¿éšœæœŸé™:[
+          { required: true, message: api.getCookie('language') == 'en' ? 'Insurance Period cannot blank' : 'ä¿éšœæœŸé™ä¸èƒ½ä¸ºç©º', trigger: 'blur' },
+          { type: 'number', message: api.getCookie('language') == 'en' ? 'Insurance Period must be a numeric value' : 'ä¿éšœæœŸé™å¿…é¡»ä¸ºæ•°å­—å€¼', trigger: 'blur' }
         ],
-        ±£ÕÏ¶î¶È:[
-          { required: true, message: api.getCookie('language') == 'en' ? 'Insurance Amount cannot blank' : '±£ÕÏ¶î¶È²»ÄÜÎª¿Õ', trigger: 'blur' },
-          { type: 'number', message: api.getCookie('language') == 'en' ? 'Insurance Amount must be a numeric value' : '±£ÕÏ¶î¶È±ØĞëÎªÊı×ÖÖµ', trigger: 'blur' }
+        ä¿éšœé¢åº¦:[
+          { required: true, message: api.getCookie('language') == 'en' ? 'Insurance Amount cannot blank' : 'ä¿éšœé¢åº¦ä¸èƒ½ä¸ºç©º', trigger: 'blur' },
+          { type: 'number', message: api.getCookie('language') == 'en' ? 'Insurance Amount must be a numeric value' : 'ä¿éšœé¢åº¦å¿…é¡»ä¸ºæ•°å­—å€¼', trigger: 'blur' }
         ],
-        ³µÅÆºÅ:[
-          { required: true, message: api.getCookie('language') == 'en' ? 'Car License Number cannot blank' : '³µÅÆºÅ²»ÄÜÎª¿Õ', trigger: 'blur'},
+        è½¦ç‰Œå·:[
+          { required: true, message: api.getCookie('language') == 'en' ? 'Car License Number cannot blank' : 'è½¦ç‰Œå·ä¸èƒ½ä¸ºç©º', trigger: 'blur'},
         ],
-        ³µÁä:[
-          { required: true, message: api.getCookie('language') == 'en' ? 'Vehicle Age cannot blank' : '³µÁä²»ÄÜÎª¿Õ', trigger: 'blur' },
-          { type: 'number', message: api.getCookie('language') == 'en' ? 'Vehicle Age must be a numeric value' : '³µÁä±ØĞëÎªÊı×ÖÖµ', trigger: 'blur' }
+        è½¦é¾„:[
+          { required: true, message: api.getCookie('language') == 'en' ? 'Vehicle Age cannot blank' : 'è½¦é¾„ä¸èƒ½ä¸ºç©º', trigger: 'blur' },
+          { type: 'number', message: api.getCookie('language') == 'en' ? 'Vehicle Age must be a numeric value' : 'è½¦é¾„å¿…é¡»ä¸ºæ•°å­—å€¼', trigger: 'blur' }
         ],
-        ¿ªÊ¼Ê±¼ä: [
-          { type: 'date', required: true, message: api.getCookie('language') == 'en' ? 'Select time please' : 'ÇëÑ¡ÔñÊ±¼ä', trigger: 'change' },
+        å¼€å§‹æ—¶é—´: [
+          { type: 'date', required: true, message: api.getCookie('language') == 'en' ? 'Select time please' : 'è¯·é€‰æ‹©æ—¶é—´', trigger: 'change' },
         ],
-        ½áÊøÊ±¼ä: [
-          { type: 'date', required: true, message: api.getCookie('language') == 'en' ? 'Select time please' : 'ÇëÑ¡ÔñÊ±¼ä', trigger: 'change' },
+        ç»“æŸæ—¶é—´: [
+          { type: 'date', required: true, message: api.getCookie('language') == 'en' ? 'Select time please' : 'è¯·é€‰æ‹©æ—¶é—´', trigger: 'change' },
           { validator: checkTime, trigger: 'blur' }
         ],
       },
@@ -160,7 +160,7 @@ export default {
     };
   },
   methods: {
-    //»ñÈ¡Êı¾İ
+    //è·å–æ•°æ®
     getPolicyTemp: function () {
       let handler = this;
       let key = "DB_Policy_"+this.policyName;
@@ -173,7 +173,7 @@ export default {
             });
             handler.loading = false;
         } else {
-          if(result[0] == -3 || result[0] == -1 || result[0] == -2) {//ÅĞ¶Ï×´Ì¬Öµ//inner error
+          if(result[0] == -3 || result[0] == -1 || result[0] == -2) {//åˆ¤æ–­çŠ¶æ€å€¼//inner error
               handler.$message({
                 message: handler.language.message.noPolicy2,
                 type: 'warning'
@@ -186,7 +186,7 @@ export default {
       })
     },
       
-    //´´½¨±£µ¥
+    //åˆ›å»ºä¿å•
     createPolicyTemp: function (policyTemp) {
       this.policyTemArray = policyTemp.split("#");
       for (let i = 0; i < this.policyTemArray.length; i++) {
@@ -199,8 +199,8 @@ export default {
         let isfind = false;
 
         for(var i in this.policyTemArray) {
-          if(key == "ÓĞÎŞÉç±£") {
-            let keyTemp = key+"£¨±»±£ÈË£©";
+          if(key == "æœ‰æ— ç¤¾ä¿") {
+            let keyTemp = key+"ï¼ˆè¢«ä¿äººï¼‰";
             if(this.policyTemArray[i] == keyTemp) {
               isfind = true;
             }
@@ -217,7 +217,7 @@ export default {
       this.loading = false;
     },
 
-    //Ìá½»±£µ¥
+    //æäº¤ä¿å•
     onSubmit(formName) {
       let handler = this;
       handler.$refs[formName].validate((valid) => {
@@ -232,11 +232,11 @@ export default {
             handler.loading = true;
             let userKey = handler.code;
             let data = handler.form;
-            if(data.½É·Ñ·½Ê½) {
-              if(data.½É·Ñ·½Ê½ == "Premium paid each year") {
-                data.½É·Ñ·½Ê½ = "°´Äê½É·Ñ";
-              } else if(data.½É·Ñ·½Ê½ == "Premium paid each month") {
-                data.½É·Ñ·½Ê½ = "°´ÔÂ½É·Ñ";
+            if(data.ç¼´è´¹æ–¹å¼) {
+              if(data.ç¼´è´¹æ–¹å¼ == "Premium paid each year") {
+                data.ç¼´è´¹æ–¹å¼ = "æŒ‰å¹´ç¼´è´¹";
+              } else if(data.ç¼´è´¹æ–¹å¼ == "Premium paid each month") {
+                data.ç¼´è´¹æ–¹å¼ = "æŒ‰æœˆç¼´è´¹";
               }
             }
             for(var key in data) {
@@ -252,21 +252,21 @@ export default {
             para.push(`Data=${data}`);
             submitPolicy(para.join("&"))
             .then((res) => {
-              if (res.code == "-6") {//½»Ò×Ê§°Ü 
+              if (res.code == "-6") {//äº¤æ˜“å¤±è´¥ 
                 handler.isInput = false;
                 handler.loading = false; 
                 this.$message({
                   message: handler.language.message.submitfail,
                   type: 'warning'
                 });
-              } else if (res.code == "0") {//½»Ò×³É¹¦
+              } else if (res.code == "0") {//äº¤æ˜“æˆåŠŸ
                 handler.isInput = false;
                 handler.loading = false; 
                 handler.hidden();
                 this.$message({
                   message: handler.language.message.submitSuccess,
                 });
-              } else if (res.code == "-9") {//½»Ò×±¨´í
+              } else if (res.code == "-9") {//äº¤æ˜“æŠ¥é”™
                 handler.isInput = false;
                 handler.loading = false; 
                 this.$message({
