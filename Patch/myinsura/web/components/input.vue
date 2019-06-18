@@ -280,3 +280,7 @@ export default {
               handler.isInput = false;
               handler.loading = false; 
               this.$message({
+                message: handler.language.message.postError,
+                type: 'warning'
+              });
+            })
