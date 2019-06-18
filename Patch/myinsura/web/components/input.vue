@@ -301,3 +301,7 @@ export default {
     generatePolicy(str){
       if(api.getCookie('language') == 'en') {
           let policyInfoTemp = policyInfo_EN;
+          let temp = "DB_Policy_"+str;
+          return policyInfoTemp[temp].title.split("-")[1].slice(1)
+      } else {
+          return str;
