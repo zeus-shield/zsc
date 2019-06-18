@@ -293,3 +293,7 @@ export default {
     },
 
     hidden: function() {
+      this.$router.push({
+        path: this.$router.path,
+      })
+    },
