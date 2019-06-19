@@ -12,3 +12,6 @@
           </div> 
         </el-form>
         <span slot="footer" class="dialog-footer">
+            <el-button type="primary"  @click="onSubmit('form')">{{language.integralTrace.button.p1}}</el-button>
+            <el-button id="cancel" @click="hidden()">{{language.integralTrace.button.p2}}</el-button>
+        </span>
