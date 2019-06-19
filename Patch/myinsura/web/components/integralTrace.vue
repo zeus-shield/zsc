@@ -46,3 +46,6 @@ export default {
 
     return {
       code:'',
+      loading:false,
+      dialogFormVisible:true,
+      integral:0,
