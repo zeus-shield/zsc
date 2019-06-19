@@ -72,3 +72,7 @@ export default {
     onSubmit(formName) {
       let handler = this;
       handler.$refs[formName].validate((valid) => {
+          if (valid) {
+            handler.backToMine();
+          } else {
+              console.log('error submit!!');
