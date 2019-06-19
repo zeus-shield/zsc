@@ -43,3 +43,6 @@ export default {
         callback();
       }
     };
+
+    return {
+      code:'',
