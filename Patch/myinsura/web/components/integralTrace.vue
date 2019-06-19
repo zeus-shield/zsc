@@ -56,3 +56,8 @@ export default {
         startTime:"",
         endTime:"",
       },
+
+      rules: {
+        startTime: [
+          { type: 'date', required: true, message: api.getCookie('language') == 'en' ? 'Select time please' : '请选择时间', trigger: 'change' },
+        ],
