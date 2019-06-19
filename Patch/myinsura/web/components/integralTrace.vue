@@ -9,3 +9,6 @@
             <el-form-item :label="language.integralTrace.p2" prop="endTime">
               <el-date-picker style="width:100%" type="date" :placeholder="language.integralTrace.p2" v-model="form.endTime" ></el-date-picker>
             </el-form-item>
+          </div> 
+        </el-form>
+        <span slot="footer" class="dialog-footer">
