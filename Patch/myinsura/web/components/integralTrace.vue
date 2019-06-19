@@ -68,3 +68,7 @@ export default {
       },
     };
   },
+  methods: {
+    onSubmit(formName) {
+      let handler = this;
+      handler.$refs[formName].validate((valid) => {
