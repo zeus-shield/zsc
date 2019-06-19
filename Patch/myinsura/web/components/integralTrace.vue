@@ -35,3 +35,6 @@ export default {
         if(this.form.startTime === ''){
           callback(new Error(api.getCookie('language') == 'en' ? 'Select start time please' : '请先选择开始时间'));
         } else if(this.form.startTime >= value){
+          callback(new Error(api.getCookie('language') == 'en' ? 'The end time has to be earlier than the beginning time' : '结束时间不得早于开始时间'));
+        } else {
+          callback();
