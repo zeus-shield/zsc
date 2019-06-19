@@ -29,3 +29,6 @@ import zh_CN from '../common/language/zh-CN.js';
 export default {
   data() {
     var checkTime = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(api.getCookie('language') == 'en' ? 'Select time please' : '请选择时间'));
+      } else if (this.form.startTime) {
