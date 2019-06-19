@@ -38,3 +38,8 @@ export default {
           callback(new Error(api.getCookie('language') == 'en' ? 'The end time has to be earlier than the beginning time' : '结束时间不得早于开始时间'));
         } else {
           callback();
+        }
+      } else {
+        callback();
+      }
+    };
