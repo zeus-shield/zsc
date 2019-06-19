@@ -65,3 +65,6 @@ export default {
           { type: 'date', required: true, message: api.getCookie('language') == 'en' ? 'Select time please' : '请选择时间', trigger: 'change' },
           { validator: checkTime, trigger: 'blur' }
         ],
+      },
+    };
+  },
