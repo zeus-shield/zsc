@@ -76,3 +76,7 @@ export default {
             handler.backToMine();
           } else {
               console.log('error submit!!');
+              return false;
+          }
+      })
+    },
