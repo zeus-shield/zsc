@@ -5,3 +5,7 @@
           <div>
             <el-form-item :label="language.integralTrace.p1"  prop="startTime">
               <el-date-picker style="width:100%" type="date" :placeholder="language.integralTrace.p1" v-model="form.startTime" ></el-date-picker>
+            </el-form-item>
+            <el-form-item :label="language.integralTrace.p2" prop="endTime">
+              <el-date-picker style="width:100%" type="date" :placeholder="language.integralTrace.p2" v-model="form.endTime" ></el-date-picker>
+            </el-form-item>
