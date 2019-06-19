@@ -18,3 +18,7 @@
     </el-dialog>
 </div>
 </template>
+
+<script>
+import {integralTransfer} from '../api/api'
+import { log } from 'util';
