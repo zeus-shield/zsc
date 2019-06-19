@@ -49,3 +49,5 @@ export default {
       loading:false,
       dialogFormVisible:true,
       integral:0,
+      dialogWidth:"",
+      language:api.getCookie('language') == 'en' ? en_GB : zh_CN,
