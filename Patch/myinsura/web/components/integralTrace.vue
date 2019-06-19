@@ -25,3 +25,7 @@ import { log } from 'util';
 import api from '../common/api'
 import en_GB from '../common/language/en-GB.js';
 import zh_CN from '../common/language/zh-CN.js';
+
+export default {
+  data() {
+    var checkTime = (rule, value, callback) => {
