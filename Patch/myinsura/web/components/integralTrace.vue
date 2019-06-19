@@ -51,3 +51,8 @@ export default {
       integral:0,
       dialogWidth:"",
       language:api.getCookie('language') == 'en' ? en_GB : zh_CN,
+
+      form:{
+        startTime:"",
+        endTime:"",
+      },
