@@ -108,3 +108,6 @@ export default {
   },
   watch: {
     
+  },
+  mounted() {
+    this.code = api.getCookie("Code");
