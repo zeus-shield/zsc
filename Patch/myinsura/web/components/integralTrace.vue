@@ -135,3 +135,5 @@ export default {
         handler.dialogWidth = (1.3 - clientWidth / 1234)*100 + "%" ;
       }
     })
+  },
+  created() {
