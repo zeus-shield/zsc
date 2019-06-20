@@ -80,3 +80,6 @@ export default {
           }
       })
     },
+
+    //获取积分记录
+    backToMine: function(){
