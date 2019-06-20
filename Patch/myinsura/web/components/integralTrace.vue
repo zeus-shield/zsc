@@ -128,3 +128,5 @@ export default {
     api.addEventOnResize(function(){
       let clientWidth = document.body.clientWidth;
       if(clientWidth >= 992) {
+        handler.dialogWidth = "50%";
+      } else if (clientWidth <= 375){
