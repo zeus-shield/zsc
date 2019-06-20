@@ -87,3 +87,7 @@ export default {
         let endTime = this.getTime(this.form.endTime);
         window.sessionStorage.setItem("StartTime",startTime);
         window.sessionStorage.setItem("EndTime",endTime);
+        this.$router.push({
+          path: this.$router.path,
+        })
+    },
