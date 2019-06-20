@@ -111,3 +111,6 @@ export default {
   },
   mounted() {
     this.code = api.getCookie("Code");
+    this.integral = window.sessionStorage.getItem("Integral");
+
+    api.hidden(this);
