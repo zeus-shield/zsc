@@ -97,3 +97,10 @@ export default {
         let utc = parseInt(date.getTime()/1000);
         return utc;
     },
+
+    hidden: function() {
+      this.$router.push({
+        path: this.$router.path,
+      })
+    }
+  
