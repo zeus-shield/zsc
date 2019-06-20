@@ -83,3 +83,5 @@ export default {
 
     //获取积分记录
     backToMine: function(){
+        let startTime = this.getTime(this.form.startTime);
+        let endTime = this.getTime(this.form.endTime);
