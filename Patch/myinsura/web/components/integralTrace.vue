@@ -85,3 +85,5 @@ export default {
     backToMine: function(){
         let startTime = this.getTime(this.form.startTime);
         let endTime = this.getTime(this.form.endTime);
+        window.sessionStorage.setItem("StartTime",startTime);
+        window.sessionStorage.setItem("EndTime",endTime);
