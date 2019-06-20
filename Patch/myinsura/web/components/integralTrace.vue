@@ -130,3 +130,5 @@ export default {
       if(clientWidth >= 992) {
         handler.dialogWidth = "50%";
       } else if (clientWidth <= 375){
+        handler.dialogWidth = "100%";
+      } else {
