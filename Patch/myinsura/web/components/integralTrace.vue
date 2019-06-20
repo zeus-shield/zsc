@@ -91,6 +91,9 @@ export default {
           path: this.$router.path,
         })
     },
+
     getTime(str) {
         let date = new Date(str);
         let utc = parseInt(date.getTime()/1000);
+        return utc;
+    },
