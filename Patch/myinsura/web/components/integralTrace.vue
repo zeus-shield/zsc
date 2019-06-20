@@ -114,3 +114,6 @@ export default {
     this.integral = window.sessionStorage.getItem("Integral");
 
     api.hidden(this);
+
+    let clientWidth = document.body.clientWidth;
+    if(clientWidth >= 992) {
