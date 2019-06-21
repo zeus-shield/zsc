@@ -21,3 +21,5 @@
 
 <script>
 import {integralTransfer} from '../api/api'
+import { log } from 'util';
+import api from '../common/api'
