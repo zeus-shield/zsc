@@ -31,3 +31,8 @@ export default {
   data() {
     var checkIntegral = (rule, value, callback) => {
         if (value > this.integral) {
+          callback(new Error(api.getCookie('language') == 'en' ? 'More than the number of owned!' : '大于已拥有的积分数'));
+        } else {
+          callback();
+        }
+      };
