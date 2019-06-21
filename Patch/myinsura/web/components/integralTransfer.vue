@@ -29,3 +29,5 @@ import zh_CN from '../common/language/zh-CN.js';
 
 export default {
   data() {
+    var checkIntegral = (rule, value, callback) => {
+        if (value > this.integral) {
