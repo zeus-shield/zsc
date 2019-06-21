@@ -44,3 +44,13 @@ export default {
       integral:0,
       dialogWidth:"",
       language:api.getCookie('language') == 'en' ? en_GB : zh_CN,
+
+      form:{
+        code:"",
+        value:"",
+      },
+
+
+      rules: {
+        value:[
+          { required: true, message: api.getCookie('language') == 'en' ? 'No blank!' : '赠送金额不能为空', trigger: 'blur'},
