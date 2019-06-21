@@ -9,3 +9,7 @@
         <el-form-item :label="language.integralTransfer.p2" prop="value">
           <el-input v-model.number="form.value"  :placeholder="language.integralTransfer.p4"></el-input>
         </el-form-item>
+      </div> 
+    </el-form>
+    <span slot="footer" class="dialog-footer">
+        <el-button type="primary"  @click="onSubmit('form')">{{language.integralTransfer.button.p1}}</el-button>
