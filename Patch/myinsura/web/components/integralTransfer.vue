@@ -57,3 +57,11 @@ export default {
           { type: 'number', message: api.getCookie('language') == 'en' ? 'Must be a numeric value!' : '赠送金额必须为数字值', trigger: 'blur' },
           { validator: checkIntegral, trigger: 'blur' }
         ],
+        code: [
+          { required: true, message: api.getCookie('language') == 'en' ? 'No blank!' : '账号不能为空', trigger: 'blur'},
+        ],
+      },
+    };
+  },
+  methods: {
+    onSubmit(formName) {
