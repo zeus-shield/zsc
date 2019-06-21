@@ -16,3 +16,5 @@
         <el-button id="cancel" @click="hidden()">{{language.integralTransfer.button.p2}}</el-button>
     </span>
   </el-dialog>
+</div>
+</template>
