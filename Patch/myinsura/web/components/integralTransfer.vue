@@ -6,3 +6,6 @@
         <el-form-item :label="language.integralTransfer.p1" prop="code">
           <el-input v-model="form.code" :placeholder="language.integralTransfer.p3"></el-input>
         </el-form-item>
+        <el-form-item :label="language.integralTransfer.p2" prop="value">
+          <el-input v-model.number="form.value"  :placeholder="language.integralTransfer.p4"></el-input>
+        </el-form-item>
