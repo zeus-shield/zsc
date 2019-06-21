@@ -54,3 +54,6 @@ export default {
       rules: {
         value:[
           { required: true, message: api.getCookie('language') == 'en' ? 'No blank!' : '赠送金额不能为空', trigger: 'blur'},
+          { type: 'number', message: api.getCookie('language') == 'en' ? 'Must be a numeric value!' : '赠送金额必须为数字值', trigger: 'blur' },
+          { validator: checkIntegral, trigger: 'blur' }
+        ],
