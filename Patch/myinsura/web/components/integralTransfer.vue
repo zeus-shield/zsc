@@ -137,3 +137,6 @@ export default {
     api.hidden(this);
     let clientWidth = document.body.clientWidth;
     if(clientWidth >= 992) {
+      this.dialogWidth = "50%";
+    } else if (clientWidth <= 375){
+      this.dialogWidth = "100%";
