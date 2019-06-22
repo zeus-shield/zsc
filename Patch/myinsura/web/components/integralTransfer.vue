@@ -80,3 +80,8 @@ export default {
     //赠送积分
     integralTransfer: function() {
         let handler = this;
+        let para = [];
+        para.push(`Owner=${handler.code}`);
+        para.push(`ToOwner=${handler.form.code}`);
+        para.push(`Value=${handler.form.value}`);
+        integralTransfer(para.join("&"))
