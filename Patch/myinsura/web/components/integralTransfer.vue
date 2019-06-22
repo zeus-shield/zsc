@@ -102,3 +102,8 @@ export default {
                 // })
                 window.location.href="/mine";
             } else {
+                handler.$message({
+                    message: handler.language.message.postError,
+                    type: 'warning'
+                });
+                this.loading = false;
