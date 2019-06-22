@@ -88,3 +88,7 @@ export default {
         .then((res) => {
             if(res.code == "-9") {
                 handler.$message({
+                    message: handler.language.message.trackError,
+                    type: 'warning'
+                });
+                this.loading = false;
