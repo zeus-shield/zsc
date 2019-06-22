@@ -128,3 +128,8 @@ export default {
 
   },
   watch: {
+    
+  },
+  mounted() {
+    this.code = api.getCookie("Code");
+    this.integral = window.sessionStorage.getItem("Integral");
