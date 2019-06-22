@@ -92,3 +92,6 @@ export default {
                     type: 'warning'
                 });
                 this.loading = false;
+            } else if(res.code == "0"){
+                handler.$message({
+                    message: handler.language.message.transferSuccess,
