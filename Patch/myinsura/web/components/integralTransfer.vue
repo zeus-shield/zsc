@@ -113,3 +113,8 @@ export default {
             handler.$message({
                 message: handler.language.message.postError,
                 type: 'warning'
+            });
+            this.loading = false;
+            console.log(error);
+        })
+    },
