@@ -76,3 +76,7 @@ export default {
           }
       })
     },
+
+    //赠送积分
+    integralTransfer: function() {
+        let handler = this;
