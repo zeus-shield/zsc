@@ -110,3 +110,6 @@ export default {
             }
         })
         .catch((error) => {
+            handler.$message({
+                message: handler.language.message.postError,
+                type: 'warning'
