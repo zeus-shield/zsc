@@ -68,3 +68,5 @@ export default {
       let handler = this;
       handler.$refs[formName].validate((valid) => {
           if (valid) {
+            handler.loading = true;
+            handler.integralTransfer();
