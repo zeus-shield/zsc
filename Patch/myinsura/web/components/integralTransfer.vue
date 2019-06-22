@@ -140,3 +140,6 @@ export default {
       this.dialogWidth = "50%";
     } else if (clientWidth <= 375){
       this.dialogWidth = "100%";
+    } else {
+      this.dialogWidth = (1.3 - clientWidth / 1234)*100 + "%" ;
+    }
