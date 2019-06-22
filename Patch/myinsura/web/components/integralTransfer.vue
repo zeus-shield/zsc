@@ -70,3 +70,9 @@ export default {
           if (valid) {
             handler.loading = true;
             handler.integralTransfer();
+          } else {
+              console.log('error submit!!');
+              return false;
+          }
+      })
+    },
