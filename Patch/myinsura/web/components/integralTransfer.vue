@@ -107,3 +107,6 @@ export default {
                     type: 'warning'
                 });
                 this.loading = false;
+            }
+        })
+        .catch((error) => {
