@@ -95,3 +95,10 @@ export default {
             } else if(res.code == "0"){
                 handler.$message({
                     message: handler.language.message.transferSuccess,
+                    type: 'warning'
+                });
+                // handler.$router.push({
+                //   path: "/mine",
+                // })
+                window.location.href="/mine";
+            } else {
