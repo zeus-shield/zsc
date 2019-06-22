@@ -85,3 +85,6 @@ export default {
         para.push(`ToOwner=${handler.form.code}`);
         para.push(`Value=${handler.form.value}`);
         integralTransfer(para.join("&"))
+        .then((res) => {
+            if(res.code == "-9") {
+                handler.$message({
