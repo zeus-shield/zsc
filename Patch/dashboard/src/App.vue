@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <el-container>
+    </el-container>
   </div>
 </template>
 
