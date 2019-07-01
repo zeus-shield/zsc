@@ -1,5 +1,6 @@
 <template>
   <div class="footer">
+    <p>Copyright? 2018-2019 Dashboard(mobile)</p>
   </div>
 </template>
 
