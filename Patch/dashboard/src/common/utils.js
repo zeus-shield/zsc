@@ -1,6 +1,8 @@
 
 const utils = {
   storage: {
+    cookie: {
+    }
   }
 };
 
