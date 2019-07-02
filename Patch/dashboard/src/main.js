@@ -10,6 +10,7 @@ import App from './App';
 
 Vue.use(ElementUI);
 
+Vue.use(Meta);
 new Vue({
   router,
   store,
