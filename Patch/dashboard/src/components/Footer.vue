@@ -7,4 +7,6 @@
 <style lang="scss" scoped>
   .footer {
   }
+  .footer p {
+  }
 </style>
