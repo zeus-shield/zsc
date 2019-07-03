@@ -9,6 +9,9 @@ const Certificate = resolve => require.ensure([], () => resolve(require('@/views
 const Analytics = resolve => require.ensure([], () => resolve(require('@/views/Analytics')), 'lazy');
 Vue.use(Router);
 
-let router = new Router({});
+let router = new Router({
+  routes: [
+  ]
+});
 
 export default router;
