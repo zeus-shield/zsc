@@ -9,4 +9,6 @@
   }
   .footer p {
   }
+  .footer a {
+  }
 </style>
