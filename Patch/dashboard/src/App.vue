@@ -5,6 +5,9 @@
         <header-pc :activeIndex="activeIndex"></header-pc>
       </el-header>
       <header-m v-else :activeIndex="activeIndex"></header-m>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </div>
 </template>
