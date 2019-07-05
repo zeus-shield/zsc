@@ -11,6 +11,7 @@ const utils = {
       get(key) {
       },
       remove(key) {
+        this.set(key, '', -1);
       }
     }
   }
