@@ -9,6 +9,8 @@
         <router-view></router-view>
       </el-main>
       <el-footer>
+        <footer-pc v-if="device == 'pc'"></footer-pc>
+        <footer-m v-else></footer-m>
       </el-footer>
     </el-container>
   </div>
