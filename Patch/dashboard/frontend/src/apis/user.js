@@ -1,4 +1,6 @@
+'use strict';
 
+import axios from 'axios';
 const user = {
   login(user, password, func) {
     setTimeout(() => {
