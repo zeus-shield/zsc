@@ -14,6 +14,9 @@ const utils = {
         this.set(key, '', -1);
       }
     }
+  },
+  notice: {
+    }
   }
 };
 
