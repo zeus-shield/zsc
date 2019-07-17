@@ -5,6 +5,7 @@ const en = {
     insurance: 'Insurance',
     certificate: 'Certificate',
     analytics: 'Analytics',
+    whitePaper: 'White Paper',
   }
 };
 export default en;
