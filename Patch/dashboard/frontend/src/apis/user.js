@@ -6,7 +6,8 @@ const user = {
     setTimeout(() => {
       func(0);
     }, 500);
-  }
+  },
+  info(func) {}
 };
 
 export default user;
