@@ -1,11 +1,17 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+'use strict'
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const debug = require('debug')('backend:server');
+
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const cors = require('cors');
+const log4js = require('log4js');
+const {settings, logConfig} = require('./config');
+
+const app = express();
+const routes = require('./app/routes');
 
 var app = express();
 
