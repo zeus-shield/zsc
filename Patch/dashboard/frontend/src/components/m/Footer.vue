@@ -8,6 +8,8 @@
   .footer {
   }
   .footer p {
+    margin-top: 15px;
+    color:RGB(154,157,160)
   }
   .footer a {
   }
