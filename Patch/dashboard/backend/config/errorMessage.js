@@ -9,6 +9,11 @@ module.exports = {
     status: 500,
     errorCode: 10001,
     errorMessage: 'jwt expired'
+  },
+  'jwt malformed': {
+    status: 500,
+    errorCode: 10002,
+    errorMessage: 'jwt malformed'
   }
   }
 }
