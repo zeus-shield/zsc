@@ -14,6 +14,11 @@ module.exports = {
     status: 500,
     errorCode: 10002,
     errorMessage: 'jwt malformed'
+  },
+  'invalid signature': {
+    status: 500,
+    errorCode: 10003,
+    errorMessage: 'invalid signature'
   }
   }
 }
