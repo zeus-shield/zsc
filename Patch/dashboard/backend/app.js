@@ -13,6 +13,7 @@ const {settings, logConfig} = require('./config');
 const app = express();
 const routes = require('./app/routes');
 
+const mongoose = require('mongoose');
 
 
 app.use(logger('dev'));
