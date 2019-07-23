@@ -19,6 +19,11 @@ module.exports = {
     status: 500,
     errorCode: 10003,
     errorMessage: 'invalid signature'
+  },
+  TOKEN_IS_MISSING: {
+    status: 500,
+    errorCode: 20000,
+    errorMessage: 'TOKEN_IS_MISSING'
   }
   }
 }
