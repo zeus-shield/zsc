@@ -6,6 +6,7 @@ const en = {
     certificate: 'Certificate',
     analytics: 'Analytics',
     whitePaper: 'White Paper',
+    faq: 'FAQ',
   }
 };
 export default en;
