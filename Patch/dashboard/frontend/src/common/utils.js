@@ -17,7 +17,11 @@ const utils = {
       },
 
       get(key) {
+        let arr = document.cookie.match(new RegExp(`(^| )${key}=([^;]*)(;|$)`));
+        if (arr != null) return (arr[2]);
+        return null;
       },
+
       remove(key) {
         this.set(key, '', -1);
       }
