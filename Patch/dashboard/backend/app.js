@@ -33,6 +33,9 @@ function _normalizePort(val) {
 
   return false;
 }
+
+log4js.configure(logConfig)
+global.logger = log4js.getLogger();
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
