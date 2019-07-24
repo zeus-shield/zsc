@@ -9,6 +9,8 @@ const instance = axios.create({
 });
 
 const user = {
+  signUpCommon(account, password, func) {
+  },
   loginCommon(account, password, func) {
     let params = new URLSearchParams();
     params.append('account', account);
