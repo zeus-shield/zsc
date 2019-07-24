@@ -17,6 +17,9 @@
 </template>
 
 <style lang="scss">
+.el-header, .el-footer {
+  padding: 0;
+}
 </style>
 
 <script>
