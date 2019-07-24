@@ -28,6 +28,7 @@ const utils = {
     }
   },
   notice: {
+    alert(vm, type, title, msg, buttonText, showClose, showCenter, func) {
     }
   }
 };
