@@ -6,6 +6,6 @@ const log4js = config.get('Customer.log4js');
 
 const configs = {};
 
-
+configs.settings = require(`./${settings}`);
 
 module.exports = configs;
