@@ -37,10 +37,10 @@ function _normalizePort(val) {
 log4js.configure(logConfig)
 global.logger = log4js.getLogger();
 
-// á??óêy?Y?a
-// ??mongoose×?éíμ?promiseì?′ú?aES6μ?promise
+// 连接数据库
+// 将mongoose自身的promise替代为ES6的promise
 // mongoose.Promise = global.Promise
-// MongoDBéy??μ?4.0??oó￡?Dèòa?óuseNewUrlParser2?êyoíuseCreateIndex2?êy
+// MongoDB升级到4.0之后，需要加useNewUrlParser参数和useCreateIndex参数
 mongoose.connect(settings.dbConfig.URL, { useNewUrlParser: true, useCreateIndex: true }).then(
   () => {
     debug('Dashboard mongoose connected!');
@@ -54,6 +54,18 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+let options = {
+  origin: "http://localhost:8085",
+  credentials: true
+};
+app.use(cors(options));
+// app.use('/', (req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "http://localhost:8085");
+//   res.header("Access-Control-Allow-Credentials", "true");
+//   next();
+// });
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 
