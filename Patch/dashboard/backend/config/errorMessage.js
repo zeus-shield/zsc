@@ -29,6 +29,11 @@ module.exports = {
     status: 500,
     errorCode: 20100,
     errorMessage: 'USER_HAS_EXIST'
+  },
+  USER_NOT_EXIST: {
+    status: 500,
+    errorCode: 20101,
+    errorMessage: 'USER_NOT_EXIST'
   }
   }
 }
