@@ -10,6 +10,14 @@ const instance = axios.create({
 
 const user = {
   signUpCommon(account, password, func) {
+    let params = new URLSearchParams();
+    params.append('account', account);
+    params.append('password', password);
+    return instance.post('user', params).then(res => {
+              func(0, res.data);
+            }).catch(err => {
+              func(err, err.response.data);
+            });
   },
   loginCommon(account, password, func) {
     let params = new URLSearchParams();
