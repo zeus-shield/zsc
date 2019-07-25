@@ -9,6 +9,10 @@ const en = {
     faq: 'FAQ',
     login: 'Login',
     signUp: 'Sign Up',
+    mine: 'Mine',
+    logout: 'Logout',
+    lang: 'English'
+  },
   }
 };
 export default en;
