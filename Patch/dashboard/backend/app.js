@@ -36,6 +36,20 @@ function _normalizePort(val) {
 
 log4js.configure(logConfig)
 global.logger = log4js.getLogger();
+
+// ¨¢??¨®¨ºy?Y?a
+// ??mongoose¡Á?¨¦¨ª¦Ì?promise¨¬?¡ä¨²?aES6¦Ì?promise
+// mongoose.Promise = global.Promise
+// MongoDB¨¦y??¦Ì?4.0??o¨®¡ê?D¨¨¨°a?¨®useNewUrlParser2?¨ºyo¨ªuseCreateIndex2?¨ºy
+mongoose.connect(settings.dbConfig.URL, { useNewUrlParser: true, useCreateIndex: true }).then(
+  () => {
+    debug('Dashboard mongoose connected!');
+  },
+  err => {
+    debug('Dashboard mongoose connect error(%s)!', err);
+  });
+// mongoose.set('debug', settings.mongooseDebug)
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
