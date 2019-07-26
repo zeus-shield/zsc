@@ -1,5 +1,12 @@
 {
   "appenders":  {
+    "request": {
+    },
+    "application": {
+    },
+    "err": {
+    }
+  },
   "categories": {
     "default": { "appenders": ["application", "request"], "level": "info" }
   }
