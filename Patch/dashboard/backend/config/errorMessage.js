@@ -20,6 +20,11 @@ module.exports = {
     errorCode: 10003,
     errorMessage: 'invalid signature'
   },
+  'No recipients defined': {
+    status: 500,
+    errorCode: 10004,
+    errorMessage: 'No recipients defined'
+  },
   TOKEN_IS_MISSING: {
     status: 500,
     errorCode: 20000,
