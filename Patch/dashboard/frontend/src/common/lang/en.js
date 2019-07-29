@@ -13,6 +13,7 @@ const en = {
     logout: 'Logout',
     lang: 'English'
   },
+  login: {
   }
 };
 export default en;
