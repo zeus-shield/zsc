@@ -13,6 +13,7 @@
     "http-errors": "^1.7.3",
     "jsonwebtoken": "^8.5.1",
     "log4js": "^4.4.0",
+    "moment": "^2.24.0",
     "morgan": "^1.9.1",
   },
   "devDependencies": {
