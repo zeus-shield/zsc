@@ -18,6 +18,10 @@ const cn = {
     
     lang: 'ÖĞÎÄ£¨¼òÌå£©' // 8
   },
+  login: {
+  },
+  signUp: {
+
   }
 };
 export default cn;
