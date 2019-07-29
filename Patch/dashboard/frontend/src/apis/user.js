@@ -29,7 +29,7 @@ const user = {
               func(err, err.response.data);
             });
   },
-
+  infoCommon(id, account, token, func) {},
   info(func) {}
 };
 
