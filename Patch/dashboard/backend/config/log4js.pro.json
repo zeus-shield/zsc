@@ -1,6 +1,11 @@
 {
   "appenders":  {
     "request": {
+      "type": "DateFile",
+      "filename": "./logs/access",
+      "pattern": "-yyyy-MM-dd.log",
+      "alwaysIncludePattern": true,
+      "category": "http"
     },
     "application": {
     }
