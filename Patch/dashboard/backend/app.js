@@ -37,10 +37,10 @@ function _normalizePort(val) {
 log4js.configure(logConfig)
 global.logger = log4js.getLogger();
 
-// 连接数据库
-// 将mongoose自身的promise替代为ES6的promise
+// ?????
+// ?mongoose???promise???ES6?promise
 // mongoose.Promise = global.Promise
-// MongoDB升级到4.0之后，需要加useNewUrlParser参数和useCreateIndex参数
+// MongoDB???4.0??,???useNewUrlParser???useCreateIndex??
 mongoose.connect(settings.dbConfig.URL, { useNewUrlParser: true, useCreateIndex: true }).then(
   () => {
     debug('Dashboard mongoose connected!');
@@ -68,5 +68,12 @@ app.use(cors(options));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+routes(app);
+
+/**
+ * Get port from environment and store in Express.
+ */
+let port = _normalizePort(process.env.PORT || '3000');
+app.listen(port, () => debug('Dashboard backend listening on port %s!', port));
 
 module.exports = app;
