@@ -21,6 +21,8 @@ const cn = {
   login: {
   },
   signUp: {
+  },
+  message: {
 
   }
 };
