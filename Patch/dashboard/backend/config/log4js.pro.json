@@ -8,6 +8,8 @@
       "category": "http"
     },
     "application": {
+    },
+    "errorFile": {
     }
   }
 }
