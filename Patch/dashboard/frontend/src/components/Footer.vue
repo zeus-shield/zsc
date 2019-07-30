@@ -9,6 +9,8 @@
   }
   .footer p {
   }
+  .footer a {
+  }
 </style>
 <script>
 export default {
