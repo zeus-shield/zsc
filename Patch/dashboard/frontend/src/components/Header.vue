@@ -12,6 +12,12 @@
       </el-col>
 
       <el-col :xs="{span: 12}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 12}">
+        <el-menu
+          mode="horizontal"
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b">
+        </el-menu>
       </el-col>
     </el-row>
   </div>
