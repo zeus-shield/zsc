@@ -14,6 +14,8 @@ const en = {
     lang: 'English'
   },
   login: {
+  },
+  signUp: {
   }
 };
 export default en;
