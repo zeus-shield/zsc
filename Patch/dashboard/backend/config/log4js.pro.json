@@ -8,6 +8,10 @@
       "category": "http"
     },
     "application": {
+      "type": "DateFile",
+      "filename": "./logs/application",
+      "pattern": "-yyyy-MM-dd.log",
+      "alwaysIncludePattern": true
     },
     "errorFile": {
     }
