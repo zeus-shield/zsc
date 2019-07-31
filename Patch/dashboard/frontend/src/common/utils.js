@@ -30,6 +30,15 @@ const utils = {
   notice: {
     alert(vm, type, title, msg, buttonText, showClose, showCenter, func) {
       vm.$alert(msg, title, {
+        confirmButtonText: buttonText,
+        type: type,
+        center: showCenter,
+        showClose: showClose,
+        customClass: 'utils-alert',
+        // confirmButtonClass: 'utils-alert-button',
+        callback: action => {
+          func(action);
+        }
       });
     }
   }
