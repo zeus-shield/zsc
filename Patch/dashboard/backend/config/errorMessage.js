@@ -49,6 +49,11 @@ module.exports = {
     status: 500,
     errorCode: 20103,
     errorMessage: 'USER_PASSWORD_WRONG'
+  },
+  USER_CODE_WRONG: {
+    status: 500,
+    errorCode: 20104,
+    errorMessage: 'USER_CODE_WRONG'
   }
   }
 }
