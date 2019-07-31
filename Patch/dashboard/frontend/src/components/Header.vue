@@ -17,6 +17,12 @@
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
+
+          <!-- home -->
+          <el-menu-item index="1">
+            <!-- <router-link tag="span" to="/home">{{langSet[lang].header.home}}</router-link> -->
+            {{langSet.header.home}}
+          </el-menu-item>
         </el-menu>
       </el-col>
     </el-row>
