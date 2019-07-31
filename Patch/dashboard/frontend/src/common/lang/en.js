@@ -9,11 +9,15 @@ const en = {
     faq: 'FAQ',
     login: 'Login',
     signUp: 'Sign Up',
-    mine: 'Mine',
+    user: 'User',
     logout: 'Logout',
     lang: 'English'
   },
   login: {
+    title: 'LOGIN',
+    account: 'Phone Number/Email',
+    password: 'Password',
+    submit: 'Login'
   },
   signUp: {
   }
