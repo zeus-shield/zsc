@@ -32,6 +32,7 @@ const user = {
   infoCommon(id, account, token, func) {},
   signUpPromise(account, password) {},
   loginPromise(account, password) {},
+  async buildEmailCode(account) {},
   info(func) {}
 };
 
