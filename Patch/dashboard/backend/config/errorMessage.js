@@ -54,6 +54,11 @@ module.exports = {
     status: 500,
     errorCode: 20104,
     errorMessage: 'USER_CODE_WRONG'
-  }
+  },
+  USER_LOGIN_FAILED: {
+    status: 500,
+    errorCode: 20105,
+    errorMessage: 'USER_LOGIN_FAILED'
+  },
   }
 }
