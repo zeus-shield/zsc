@@ -20,6 +20,8 @@ const en = {
     submit: 'Login'
   },
   signUp: {
+  },
+  message: {
   }
 };
 export default en;
