@@ -14,6 +14,8 @@
       "alwaysIncludePattern": true
     },
     "errorFile": {
+    },
+    "errors": {
     }
   }
 }
