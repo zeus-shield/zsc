@@ -27,6 +27,7 @@ const cn = {
   signUp: {
   },
   message: {
+    info: {},
 
   }
 };
