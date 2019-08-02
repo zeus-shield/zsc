@@ -22,6 +22,7 @@ const en = {
   signUp: {
   },
   message: {
+    info: {},
   }
 };
 export default en;
