@@ -33,6 +33,7 @@ const user = {
   signUpPromise(account, password) {},
   loginPromise(account, password) {},
   async buildEmailCode(account) {},
+  async login(account, password) {},
   info(func) {}
 };
 
