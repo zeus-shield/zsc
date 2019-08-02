@@ -27,6 +27,9 @@
           <!-- insurance -->
           <el-submenu index="2">
           </el-submenu>
+          <!-- white paper -->
+          <el-menu-item index="3">
+          </el-menu-item>
         </el-menu>
       </el-col>
     </el-row>
