@@ -28,6 +28,7 @@ const cn = {
   },
   message: {
     info: {},
+    warning: {},
 
   }
 };
