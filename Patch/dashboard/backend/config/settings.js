@@ -7,4 +7,6 @@ module.exports = {
   stmpConfig: {
     host: 'smtp.163.com',
   },
+  adminConfig: {
+  }
 }
