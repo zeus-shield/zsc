@@ -33,6 +33,9 @@
 .el-button {
   border-radius: 0px;
 }
+.el-button--small {
+  border-radius: 0px;
+}
 </style>
 
 <script>
