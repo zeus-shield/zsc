@@ -2,4 +2,6 @@
 
 module.exports = {
   mongooseDebug: false
+  adminConfig: {
+  },
 }
