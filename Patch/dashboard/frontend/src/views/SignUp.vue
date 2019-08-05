@@ -1,6 +1,9 @@
 <template>
-  <div class="signUp">
-    Sign Up
+  <div class="signup">
+    <div>
+      <el-row :gutter="0">
+      </el-row>
+    </div>
   </div>
 </template>
 <script>
