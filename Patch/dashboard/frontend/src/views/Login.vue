@@ -1,5 +1,7 @@
 <template>
   <div class="login">
+    <el-row :gutter="0">
+    </el-row>
   </div>
 </template>
 
