@@ -30,6 +30,9 @@
   fill: currentColor;
   overflow: hidden;
 }
+.el-button {
+  border-radius: 0px;
+}
 </style>
 
 <script>
