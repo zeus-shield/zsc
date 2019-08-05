@@ -60,5 +60,10 @@ module.exports = {
     errorCode: 20105,
     errorMessage: 'USER_LOGIN_FAILED'
   },
+  USER_ADD_FAILED: {
+    status: 500,
+    errorCode: 20106,
+    errorMessage: 'USER_ADD_FAILED'
+  }
   }
 }
