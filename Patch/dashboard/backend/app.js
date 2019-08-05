@@ -56,7 +56,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 let options = {
-  origin: "http://localhost:8085",
+  origin: settings.dbConfig.ORIGIN,
   credentials: true
 };
 app.use(cors(options));
