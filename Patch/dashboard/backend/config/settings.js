@@ -8,5 +8,7 @@ module.exports = {
     host: 'smtp.163.com',
   },
   adminConfig: {
+  },
+  qiniuConfig: {
   }
 }
