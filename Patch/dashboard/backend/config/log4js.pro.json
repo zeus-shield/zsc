@@ -16,6 +16,9 @@
     "errorFile": {
     },
     "errors": {
+      "type": "logLevelFilter",
+      "level": "ERROR",
+      "appender": "errorFile"
     }
   }
 }
