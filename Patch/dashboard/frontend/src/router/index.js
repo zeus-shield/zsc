@@ -15,6 +15,12 @@ let router = new Router({
     {
       path: '*',
       component: NotFound
+    },
+    {
+      path: '/',
+      name: '',
+      redirect: '/home'
+    }
     }
     }
   ]
