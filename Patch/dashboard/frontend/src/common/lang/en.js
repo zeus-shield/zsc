@@ -23,6 +23,7 @@ const en = {
   },
   message: {
     info: {},
+    warning: {},
   }
 };
 export default en;
