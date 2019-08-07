@@ -24,6 +24,7 @@ const en = {
   message: {
     info: {},
     warning: {},
+    error: {},
   }
 };
 export default en;
