@@ -8,6 +8,7 @@ const Home = resolve => require.ensure([], () => resolve(require('@/views/Home')
 const Certificate = resolve => require.ensure([], () => resolve(require('@/views/Certificate')), 'lazy');
 const Analytics = resolve => require.ensure([], () => resolve(require('@/views/Analytics')), 'lazy');
 const FAQ = resolve => require.ensure([], () => resolve(require('@/views/FAQ')), 'lazy');
+const Login = resolve => require.ensure([], () => resolve(require('@/views/Login')), 'lazy');
 Vue.use(Router);
 
 let router = new Router({
