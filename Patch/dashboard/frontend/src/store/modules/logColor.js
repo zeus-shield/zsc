@@ -2,4 +2,6 @@
 
 // initial state
 const state = () => {
+  return {
+  };
 };
