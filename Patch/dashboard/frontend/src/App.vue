@@ -36,6 +36,14 @@
 .el-button--small {
   border-radius: 0px;
 }
+.el-menu-item, .el-submenu__title {
+  font-size: 15px;
+  /*padding: 0;*/
+
+  /*display: flex;
+  justify-content: center;
+  align-items: center;*/
+}
 </style>
 
 <script>
