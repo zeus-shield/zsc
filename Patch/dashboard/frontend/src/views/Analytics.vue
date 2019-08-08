@@ -6,5 +6,8 @@
 <script>
 
 export default {
+  name: 'Analytics',
+  // components: {
+  // },
 };
 </script>
