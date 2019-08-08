@@ -69,6 +69,11 @@ module.exports = {
     status: 500,
     errorCode: 20107,
     errorMessage: 'USER_DELETE_FAILED'
+  },
+  USER_UPDATE_FAILED: {
+    status: 500,
+    errorCode: 20108,
+    errorMessage: 'USER_UPDATE_FAILED'
   }
   }
 }
