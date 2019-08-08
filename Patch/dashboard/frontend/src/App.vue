@@ -36,6 +36,10 @@
 .el-button--small {
   border-radius: 0px;
 }
+.el-dialog__header {
+  // padding: 16px 20px;
+  border-bottom: 1px solid rgba(0,0,0,.05);
+}
 .el-menu-item, .el-submenu__title {
   font-size: 15px;
   /*padding: 0;*/
