@@ -1,4 +1,5 @@
 'use strict'
-const middlewares = {}
+const middlewares = {};
 
-middlewares.resExtend = require('./resExtend')
+middlewares.resExtend = require('./resExtend');
+middlewares.verifyToken = require('./verifyToken');
