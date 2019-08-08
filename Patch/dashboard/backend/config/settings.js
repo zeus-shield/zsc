@@ -7,6 +7,9 @@ module.exports = {
   stmpConfig: {
     host: 'smtp.163.com',
   },
+  totpConfig: {
+    issuer: 'Dashboard'
+  },
   adminConfig: {
   },
   qiniuConfig: {
