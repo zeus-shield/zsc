@@ -11,6 +11,8 @@ const store = new Vuex.Store({
     logColor,
     lang
   },
+  strict: debug,
+  // plugins: debug ? [createLogger()] : [],
 });
 
 // if (module.hot) {
