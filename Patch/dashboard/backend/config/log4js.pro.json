@@ -14,6 +14,10 @@
       "alwaysIncludePattern": true
     },
     "errorFile": {
+      "type": "DateFile",
+      "filename": "./logs/errors",
+      "pattern": "-yyyy-MM-dd.log",
+      "alwaysIncludePattern": true
     },
     "errors": {
       "type": "logLevelFilter",
