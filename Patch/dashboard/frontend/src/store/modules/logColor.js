@@ -5,3 +5,6 @@ const state = () => {
   return {
   };
 };
+
+// getters
+const getters = {};
