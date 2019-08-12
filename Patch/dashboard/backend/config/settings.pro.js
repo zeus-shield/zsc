@@ -1,7 +1,9 @@
 'use strict'
 
 module.exports = {
-  mongooseDebug: false
+  mongooseDebug: false,
   adminConfig: {
   },
+  qiniuConfig: {
+  }
 }
