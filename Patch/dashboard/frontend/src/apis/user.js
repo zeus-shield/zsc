@@ -29,7 +29,19 @@ const user = {
               func(err, err.response.data);
             });
   },
-  infoCommon(id, account, token, func) {},
+  infoCommon(id, account, token, func) {
+    let config = {
+      headers: {
+        'token': token,
+        '_id': id
+      }
+    };
+    return instance.get(`user/${account}`, config).then(res => {
+              func(0, res.data);
+            }).catch(err => {
+              func(err, err.response.data);
+            });
+  },
   signUpPromise(account, password) {},
   loginPromise(account, password) {},
   async buildEmailCode(account) {},
