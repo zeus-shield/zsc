@@ -37,7 +37,9 @@ const utils = {
         customClass: 'utils-alert',
         // confirmButtonClass: 'utils-alert-button',
         callback: action => {
-          func(action);
+          if (func !== null) {
+            func(action);
+          }
         }
       });
     }
