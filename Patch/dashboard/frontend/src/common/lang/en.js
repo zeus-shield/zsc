@@ -21,6 +21,8 @@ const en = {
   },
   signUp: {
   },
+  userAside: {
+  },
   message: {
     info: {},
     warning: {},
