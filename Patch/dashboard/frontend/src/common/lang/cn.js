@@ -26,6 +26,8 @@ const cn = {
   },
   signUp: {
   },
+  userAside: {
+  },
   message: {
     info: {},
     warning: {},
