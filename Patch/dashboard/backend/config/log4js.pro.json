@@ -24,5 +24,9 @@
       "level": "ERROR",
       "appender": "errorFile"
     }
+  },
+  "categories": {
+    "default": { "appenders": ["application", "request"], "level": "info" },
+    "error": { "appenders": ["errors"], "level": "error" }
   }
 }
