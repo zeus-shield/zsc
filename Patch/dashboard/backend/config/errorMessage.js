@@ -74,6 +74,11 @@ module.exports = {
     status: 500,
     errorCode: 20108,
     errorMessage: 'USER_UPDATE_FAILED'
+  },
+  USER_QUERY_FAILED: {
+    status: 500,
+    errorCode: 20109,
+    errorMessage: 'USER_QUERY_FAILED'
   }
   }
 }
