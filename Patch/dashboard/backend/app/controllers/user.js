@@ -2,6 +2,9 @@
 
 
 const emailCode = async (req, res) => {
+  try {
+  } catch (err) {
+  }
 };
 const signUp = async (req, res) => {
 };
