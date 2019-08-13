@@ -28,6 +28,8 @@ const cn = {
   },
   userAside: {
   },
+  userDetail: {
+  },
   message: {
     info: {},
     warning: {},
