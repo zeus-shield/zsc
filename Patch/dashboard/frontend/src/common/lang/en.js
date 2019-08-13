@@ -23,6 +23,8 @@ const en = {
   },
   userAside: {
   },
+  userDetail: {
+  },
   message: {
     info: {},
     warning: {},
