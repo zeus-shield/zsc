@@ -13,6 +13,8 @@ const store = new Vuex.Store({
   },
   strict: debug,
   // plugins: debug ? [createLogger()] : [],
+  state() {
+  }
 });
 
 // if (module.hot) {
