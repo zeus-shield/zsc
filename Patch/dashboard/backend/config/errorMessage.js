@@ -79,6 +79,11 @@ module.exports = {
     status: 500,
     errorCode: 20109,
     errorMessage: 'USER_QUERY_FAILED'
-  }
+  },
+  USER_FIND_FAILED: {
+    status: 500,
+    errorCode: 20110,
+    errorMessage: 'USER_FIND_FAILED'
+  },
   }
 }
