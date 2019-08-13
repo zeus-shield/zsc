@@ -37,6 +37,11 @@ let router = new Router({
       path: '/',
       name: '',
       redirect: '/home'
+    },
+    {
+      path: '/account',
+      name: 'account',
+      redirect: '/account/user'
     }
     }
     }
