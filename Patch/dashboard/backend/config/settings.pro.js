@@ -5,5 +5,7 @@ module.exports = {
   adminConfig: {
   },
   qiniuConfig: {
+  },
+  upload: {
   }
 }
