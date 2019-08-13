@@ -43,6 +43,8 @@ const utils = {
         }
       });
     }
+  },
+  errCommonHandle(msg, vm) {
   }
 };
 
