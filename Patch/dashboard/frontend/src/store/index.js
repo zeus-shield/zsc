@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import logColor from './modules/logColor';
+import lang from './modules/lang';
 Vue.use(Vuex);
 
 const debug = process.env.NODE_ENV !== 'production';
