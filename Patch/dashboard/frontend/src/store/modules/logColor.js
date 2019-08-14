@@ -8,3 +8,6 @@ const state = () => {
 
 // getters
 const getters = {};
+
+// mutations
+const mutations = {};
