@@ -27,6 +27,11 @@ const cn = {
   signUp: {
   },
   userAside: {
+    title1: '个人信息',
+    item11: '账户和安全',
+    title2: '支持',
+    item21: '问题反馈',
+    item22: '问题列表'
   },
   userDetail: {
   },
