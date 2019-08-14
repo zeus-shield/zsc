@@ -43,7 +43,20 @@ const user = {
               func(err, err.response.data);
             });
   },
-  signUpPromise(account, password) {},
+  signUpPromise(account, password) {
+    let params = new URLSearchParams();
+    params.append('account', account);
+    params.append('password', password);
+    return new Promise((resolve, reject) => {
+      instance.post('user', params).then(res => {
+        // func(0, res.data);
+        resolve(res.data);
+      }).catch(err => {
+        // func(err, err.response.data);
+        reject(err.response.data);
+      });
+    });
+  },
   loginPromise(account, password) {},
   async buildEmailCode(account) {},
   async login(account, password) {},
