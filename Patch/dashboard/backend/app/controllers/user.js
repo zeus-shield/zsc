@@ -7,6 +7,10 @@ const emailCode = async (req, res) => {
   }
 };
 const signUp = async (req, res) => {
+  try {
+  } catch (err) {
+    res.sendErr(err);
+  }
 };
 const login = async (req, res) => {
 };
