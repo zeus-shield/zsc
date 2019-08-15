@@ -59,6 +59,7 @@ const user = {
   },
   loginPromise(account, password) {},
   async buildEmailCode(account) {},
+  async signUp(account, code, password) {};
   async login(account, password) {},
   info(func) {}
 };
