@@ -17,7 +17,9 @@ const en = {
     title: 'LOGIN',
     account: 'Phone Number/Email',
     password: 'Password',
-    submit: 'Login'
+    submit: 'Login',
+    dialog: {
+    }
   },
   signUp: {
   },
