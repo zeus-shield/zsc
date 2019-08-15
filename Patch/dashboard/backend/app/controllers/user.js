@@ -13,4 +13,8 @@ const signUp = async (req, res) => {
   }
 };
 const login = async (req, res) => {
+  try {
+  } catch (err) {
+    res.sendErr(err);
+  }
 };
