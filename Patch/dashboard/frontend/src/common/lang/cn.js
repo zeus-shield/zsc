@@ -22,7 +22,9 @@ const cn = {
     title: '用户登录',
     account: '请输入手机号或邮箱地址',
     password: '请输入登录密码',
-    submit: '登录'
+    submit: '登录',
+    dialog: {
+    }
   },
   signUp: {
   },
