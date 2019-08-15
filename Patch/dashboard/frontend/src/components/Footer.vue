@@ -21,7 +21,10 @@
     font-weight: 600;
   }
 </style>
+
 <script>
+import { mapState } from 'vuex';
+
 export default {
 };
 </script>
