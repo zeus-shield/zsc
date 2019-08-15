@@ -45,6 +45,13 @@ const utils = {
     }
   },
   errCommonHandle(msg, vm) {
+    let result = false;
+    if (msg === 'jwt expired') {
+    } else if (msg === 'jwt malformed') {
+    } else if (msg === 'invalid token') {
+    } else if (msg === 'USER_NOT_EXIST') {
+    } else {}
+    return result;
   }
 };
 
