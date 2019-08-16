@@ -15,7 +15,9 @@ const store = new Vuex.Store({
   strict: debug,
   // plugins: debug ? [createLogger()] : [],
   state() {
-  }
+    return {
+      activeIndex: '1'
+    };
 });
 
 // if (module.hot) {
