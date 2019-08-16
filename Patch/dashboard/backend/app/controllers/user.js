@@ -18,3 +18,5 @@ const login = async (req, res) => {
     res.sendErr(err);
   }
 };
+const detail = async (req, res) => {
+};
