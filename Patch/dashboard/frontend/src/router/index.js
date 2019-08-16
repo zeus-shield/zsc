@@ -42,7 +42,16 @@ let router = new Router({
       path: '/account',
       name: 'account',
       redirect: '/account/user'
-    }
+    },
+    {
+      path: '/home',
+      name: 'home',
+      component: Home
+      // beforeEnter: (to, from, next) => {
+      //   console.log('[R1]beforeEnter: (%s) => (%s)', from.fullPath, to.fullPath);
+      //   next();
+      // }
+    },
     }
     }
   ]
