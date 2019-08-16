@@ -11,3 +11,6 @@ const getters = {};
 
 // mutations
 const mutations = {};
+
+// actions
+const actions = {};
