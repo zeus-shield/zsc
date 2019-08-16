@@ -14,6 +14,8 @@
       <el-col :xs="{span: 12}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 12}">
         <el-menu
           mode="horizontal"
+          :default-active="activeIndex"
+          @select="handleSelect"
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
