@@ -85,5 +85,10 @@ module.exports = {
     errorCode: 20110,
     errorMessage: 'USER_FIND_FAILED'
   },
+  USER_TOTP_NOT_SET: {
+    status: 200,
+    errorCode: 20111,
+    errorMessage: 'USER_TOTP_NOT_SET'
+  },
   }
 }
