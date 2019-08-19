@@ -19,6 +19,9 @@ const en = {
     password: 'Password',
     submit: 'Login',
     dialog: {
+      title: 'Google Authenticator',
+      placeholder: 'Please enter the 6-digit Google code',
+      buttonText: 'Confirm'
     }
   },
   signUp: {
