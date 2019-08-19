@@ -61,6 +61,7 @@ const user = {
   async buildEmailCode(account) {},
   async signUp(account, code, password) {};
   async login(account, password) {},
+  async setTOTP(id, token, cmd) {},
   info(func) {}
 };
 
