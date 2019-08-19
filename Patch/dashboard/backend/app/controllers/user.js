@@ -20,3 +20,5 @@ const login = async (req, res) => {
 };
 const detail = async (req, res) => {
 };
+const setTOTP = async (req, res) => {
+};
