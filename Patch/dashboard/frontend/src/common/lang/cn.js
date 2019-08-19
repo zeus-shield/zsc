@@ -24,6 +24,9 @@ const cn = {
     password: '请输入登录密码',
     submit: '登录',
     dialog: {
+      title: '谷歌验证',
+      placeholder: '请输入谷歌验证码',
+      buttonText: '确认'
     }
   },
   signUp: {
