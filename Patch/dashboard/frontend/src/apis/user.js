@@ -62,7 +62,7 @@ const user = {
   async signUp(account, code, password) {};
   async login(account, password) {},
   async setTOTP(id, token, cmd) {},
-  info(func) {}
+  async info(id, token) {
 };
 
 export default user;
