@@ -22,3 +22,6 @@ const detail = async (req, res) => {
 };
 const setTOTP = async (req, res) => {
 };
+
+const saveTOTP = async (req, res) => {
+};
