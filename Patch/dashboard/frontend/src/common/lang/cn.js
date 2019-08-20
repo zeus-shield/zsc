@@ -39,6 +39,7 @@ const cn = {
     item22: '问题列表'
   },
   userDetail: {
+    title: '账户和安全',
   },
   message: {
     info: {},
