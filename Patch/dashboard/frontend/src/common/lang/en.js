@@ -30,6 +30,8 @@ const en = {
   },
   userDetail: {
   },
+  userGoogle: {
+  },
   message: {
     info: {},
     warning: {},
