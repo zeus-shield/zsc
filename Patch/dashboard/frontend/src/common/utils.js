@@ -46,7 +46,15 @@ const utils = {
   },
   errCommonHandle(msg, vm) {
     let result = false;
+
     if (msg === 'jwt expired') {
+      result = true;
+      this.storage.cookie.remove('login_id');
+      this.storage.cookie.remove('login_account');
+      this.storage.cookie.remove('login_token');
+      this.notice.alert(vm, 'warning', vm.langSet.component.alert.warningTitle, vm.langSet.message.warning.jwtExpires, vm.langSet.component.button.confirm, false, true, (action) => {
+        vm.$router.push({name: 'login'});
+      });
     } else if (msg === 'jwt malformed') {
     } else if (msg === 'invalid token') {
     } else if (msg === 'USER_NOT_EXIST') {
