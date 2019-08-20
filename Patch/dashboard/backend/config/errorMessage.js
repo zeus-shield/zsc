@@ -90,5 +90,10 @@ module.exports = {
     errorCode: 20111,
     errorMessage: 'USER_TOTP_NOT_SET'
   },
+  USER_TOTP_SETTED: {
+    status: 200,
+    errorCode: 20112,
+    errorMessage: 'USER_TOTP_SETTED'
+  },
   }
 }
