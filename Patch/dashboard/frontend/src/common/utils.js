@@ -56,6 +56,13 @@ const utils = {
         vm.$router.push({name: 'login'});
       });
     } else if (msg === 'jwt malformed') {
+      result = true;
+      this.storage.cookie.remove('login_id');
+      this.storage.cookie.remove('login_account');
+      this.storage.cookie.remove('login_token');
+      this.notice.alert(vm, 'warning', vm.langSet.component.alert.warningTitle, vm.langSet.message.warning.jwtMalformed, vm.langSet.component.button.confirm, false, true, (action) => {
+        vm.$router.push({name: 'login'});
+      });
     } else if (msg === 'invalid token') {
     } else if (msg === 'USER_NOT_EXIST') {
     } else {}
