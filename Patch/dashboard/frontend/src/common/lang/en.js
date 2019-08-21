@@ -36,6 +36,8 @@ const en = {
     info: {},
     warning: {},
     error: {},
+  },
+  component: {
   }
 };
 export default en;
