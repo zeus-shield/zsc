@@ -52,6 +52,9 @@ let router = new Router({
       //   next();
       // }
     },
+    {
+      path: '/certificate'
+    },
     }
     }
   ]
