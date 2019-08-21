@@ -25,3 +25,6 @@ const setTOTP = async (req, res) => {
 
 const saveTOTP = async (req, res) => {
 };
+
+const updateTOTP = async (req, res) => {
+};
