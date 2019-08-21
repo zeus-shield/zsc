@@ -62,6 +62,7 @@ const user = {
   async signUp(account, code, password) {};
   async login(account, password) {},
   async setTOTP(id, token, cmd) {},
+  async saveTOTP(id, token, code, key) {},
   async info(id, token) {
 };
 
