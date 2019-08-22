@@ -26,11 +26,19 @@ const en = {
   },
   signUp: {
   },
-  userAside: {
+  insurance: {
   },
-  userDetail: {
-  },
-  userGoogle: {
+  user: {
+        },
+    detail: {
+      },
+      info: {
+
+      },
+    },
+
+    google: {
+    }
   },
   message: {
     info: {},
