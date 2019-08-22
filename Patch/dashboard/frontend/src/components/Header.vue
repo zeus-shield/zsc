@@ -31,6 +31,10 @@
             <template slot="title">
               {{langSet.header.insurance}}
             </template>
+            <el-menu-item index="21">
+              <!-- <router-link tag="span" to="/insurance">{{langSet[lang].header.insurance}}</router-link> -->
+              {{langSet.header.insurance}}
+            </el-menu-item>
           </el-submenu>
           <!-- white paper -->
           <el-menu-item index="3">
