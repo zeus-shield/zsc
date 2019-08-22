@@ -40,5 +40,8 @@ export default {
       logColor: state => state.logColor.footer
     })
   },
+  created() {
+    console.log('%c[Footer]created()', `color:${this.logColor}`);
+  },
 };
 </script>
