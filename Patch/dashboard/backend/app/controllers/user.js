@@ -28,3 +28,4 @@ const saveTOTP = async (req, res) => {
 
 const updateTOTP = async (req, res) => {
 };
+const list = async (req, res) => {};
