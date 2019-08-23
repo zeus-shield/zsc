@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "node": "set DEBUG=backend:* & node ./server.js",
+    "babel": "set DEBUG=backend:* & babel-node ./server.js",
   },
   "dependencies": {
     "cookie-parser": "^1.4.4",
