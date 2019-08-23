@@ -29,3 +29,4 @@ const saveTOTP = async (req, res) => {
 const updateTOTP = async (req, res) => {
 };
 const list = async (req, res) => {};
+module.exports = {emailCode, signUp, login, detail, setTOTP, saveTOTP, updateTOTP, list};
