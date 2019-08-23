@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import VueQriously from 'vue-qriously';
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
@@ -19,6 +20,7 @@ import store from './store';
 // import app from './components/navigation/navmenu/navmenu';
 import App from './App';
 
+Vue.use(VueQriously);
 // import locale from 'element-ui/lib/locale/lang/en';
 // Vue.use(ElementUI, { locale });
 Vue.use(ElementUI);
