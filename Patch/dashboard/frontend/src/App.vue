@@ -5,7 +5,7 @@
         <header-pc :activeIndex="activeIndex"></header-pc>
       </el-header>
       <header-m v-else :activeIndex="activeIndex"></header-m>
-      <el-main>
+      <el-main v-if="!reload">
         <router-view></router-view>
       </el-main>
       <el-footer>
