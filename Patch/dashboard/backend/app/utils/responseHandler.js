@@ -4,4 +4,6 @@
 const {errMsg} = require('../../config');
 
 module.exports = {
+  getErrorRes(err) {
+  };
 }
