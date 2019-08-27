@@ -11,4 +11,5 @@ module.exports = (app) => {
   // res extend
   app.use(middlewares.resExtend);
   app.post('/user/emailCode', wrap(controllers.user.emailCode));
+  app.post('/user/signUp', wrap(controllers.user.signUp));
 };
