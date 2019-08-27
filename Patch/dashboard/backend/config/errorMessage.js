@@ -95,5 +95,10 @@ module.exports = {
     errorCode: 20112,
     errorMessage: 'USER_TOTP_SETTED'
   },
+  USER_TOTP_VERIFY_ERR: {
+    status: 200,
+    errorCode: 20113,
+    errorMessage: 'USER_TOTP_VERIFY_ERR'
+  },
   }
 }
