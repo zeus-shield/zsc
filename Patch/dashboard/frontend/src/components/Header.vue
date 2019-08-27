@@ -43,6 +43,7 @@
 
           <!-- white paper -->
           <el-menu-item index="3">
+            {{langSet.header.whitePaper}}
           </el-menu-item>
         </el-menu>
       </el-col>
