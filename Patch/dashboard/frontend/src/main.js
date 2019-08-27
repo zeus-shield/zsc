@@ -10,8 +10,8 @@ import 'element-ui/lib/theme-chalk/index.css';
 
 // iconfont can be imported in 'index.tpl'
 // if we use svg only, 'iconfont.css' is not necessary.
-// import './assets/iconfont/iconfont.css';
-// import './assets/iconfont/iconfont.js';
+import './assets/iconfont/iconfont.css';
+import './assets/iconfont/iconfont.js';
 
 import Meta from 'vue-meta';
 
