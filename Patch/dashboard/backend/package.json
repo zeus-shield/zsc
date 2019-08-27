@@ -5,6 +5,7 @@
   "scripts": {
     "node": "set DEBUG=backend:* & node ./server.js",
     "babel": "set DEBUG=backend:* & babel-node ./server.js",
+    "pm2": "set DEBUG=backend:* & pm2 start ./server.js --name dashboard --watch",
   },
   "dependencies": {
     "cookie-parser": "^1.4.4",
