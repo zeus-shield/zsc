@@ -100,5 +100,10 @@ module.exports = {
     errorCode: 20113,
     errorMessage: 'USER_TOTP_VERIFY_ERR'
   },
+  ROUTE_NOT_EXIST: {
+    status: 500,
+    errorCode: 20201,
+    errorMessage: 'ROUTE_NOT_EXIST'
+  },
   }
 }
