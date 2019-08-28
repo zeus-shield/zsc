@@ -12,5 +12,11 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'Home',
+  // components: {
+  // },
+  data() {
+    return {
+    };
+  },
 };
 </script>
