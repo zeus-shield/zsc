@@ -43,6 +43,13 @@
 .el-dialog__body {
   padding: 0px 40px 0px;
 }
+.el-dialog__footer {
+  font-size: 0;
+  padding: 10px 40px 20px;
+  text-align: center;
+  white-space: nowrap;
+  border-top: 1px solid rgba(0,0,0,.05);
+}
 .el-menu-item, .el-submenu__title {
   font-size: 15px;
   /*padding: 0;*/
