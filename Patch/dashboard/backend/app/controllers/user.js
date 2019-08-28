@@ -29,5 +29,9 @@ const saveTOTP = async (req, res) => {
 
 const updateTOTP = async (req, res) => {
 };
-const list = async (req, res) => {};
+
+const list = async (req, res) => {
+  debug("list()");
+  res.send('/users/list');
+};
 module.exports = {emailCode, signUp, login, detail, setTOTP, saveTOTP, updateTOTP, list};
