@@ -32,6 +32,8 @@ const cn = {
   signUp: {
   },
   insurance: {
+    aside: {
+    }
   },
   user: {
   },
