@@ -27,6 +27,8 @@ const en = {
   signUp: {
   },
   insurance: {
+    aside: {
+    }
   },
   user: {
         },
