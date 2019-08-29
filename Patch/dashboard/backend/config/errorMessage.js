@@ -105,5 +105,9 @@ module.exports = {
     errorCode: 20201,
     errorMessage: 'ROUTE_NOT_EXIST'
   },
+  UNKNOWN: {
+    status: 500,
+    errorCode: 90000,
+    errorMessage: 'UNKNOWN'
   }
 }
