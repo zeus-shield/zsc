@@ -57,7 +57,9 @@ const user = {
       });
     });
   },
-  loginPromise(account, password) {},
+  loginPromise(account, password) {
+    let params = new URLSearchParams();
+  },
   async buildEmailCode(account) {},
   async signUp(account, code, password) {};
   async login(account, password) {},
