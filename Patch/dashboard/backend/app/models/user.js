@@ -6,6 +6,7 @@ const {settings} = require('../../config');
 
 const Schema = mongoose.Schema;
 const UserSchema = new Schema({
+  account: { type: String, required: 'account is required!' },
 }
 );
 
