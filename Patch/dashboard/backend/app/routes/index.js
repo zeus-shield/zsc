@@ -13,4 +13,5 @@ module.exports = (app) => {
   app.post('/user/emailCode', wrap(controllers.user.emailCode));
   app.post('/user/signUp', wrap(controllers.user.signUp));
   app.post('/user/login', wrap(controllers.user.login));
+  app.use(middlewaresArr);
 };
