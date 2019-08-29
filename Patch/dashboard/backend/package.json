@@ -7,6 +7,7 @@
     "babel": "set DEBUG=backend:* & babel-node ./server.js",
     "pm2": "set DEBUG=backend:* & pm2 start ./server.js --name dashboard --watch",
     "pm2-all": "set DEBUG=backend:* & pm2 start ./server.js --name dashboard --watch -i max",
+    "pm2-all-build": "set NODE_ENV=production & pm2 start ./server.js --name dashboard --watch -i max"
   },
   "dependencies": {
     "cookie-parser": "^1.4.4",
