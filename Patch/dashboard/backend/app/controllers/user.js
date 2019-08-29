@@ -28,6 +28,13 @@ const saveTOTP = async (req, res) => {
 };
 
 const updateTOTP = async (req, res) => {
+  debug("updateTOTP(%s, %s)", req.headers._id, req.headers.code);
+  try {
+    const result = await services.users.updateTOTP(req.headers._id, req.headers.code, req.body);
+    res.sendOk(result);
+  } catch(err) {
+    res.sendErr(err);
+  }
 };
 
 const list = async (req, res) => {
