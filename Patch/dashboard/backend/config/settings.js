@@ -12,6 +12,7 @@ module.exports = {
     issuer: 'Dashboard'
   },
   adminConfig: {
+    role: 'ordinary users'
   },
   qiniuConfig: {
   },
