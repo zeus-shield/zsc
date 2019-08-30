@@ -9,6 +9,9 @@ module.exports = {
     if (err.message !== undefined) {
       result.errorMessage = err.message;
     }
+    if (err.status !== undefined) {
+      result.status = err.status;
+    }
     return result;
   };
 }
