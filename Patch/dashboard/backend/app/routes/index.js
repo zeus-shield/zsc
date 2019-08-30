@@ -14,4 +14,5 @@ module.exports = (app) => {
   app.post('/user/signUp', wrap(controllers.user.signUp));
   app.post('/user/login', wrap(controllers.user.login));
   app.use(middlewaresArr);
+  require('./user')(app);
 };
