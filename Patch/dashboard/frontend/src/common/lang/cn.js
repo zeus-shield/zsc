@@ -33,6 +33,8 @@ const cn = {
   },
   insurance: {
     aside: {
+      slot: [
+      ]
     }
   },
   user: {
