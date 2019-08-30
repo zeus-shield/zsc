@@ -5,6 +5,7 @@ module.exports = {
   adminConfig: {
   },
   qiniuConfig: {
+    originUrl: ''
   },
   upload: {
   }
