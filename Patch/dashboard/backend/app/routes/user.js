@@ -9,4 +9,7 @@ module.exports = (app) => {
   app.route('/user').get(wrap(controllers.user.list));
   app.route('/user/detail')
     .get(wrap(controllers.user.detail));
+    // .put(controllers.user.update)
+    // .delete(controllers.user.destroy)
+  app.route('/user/setTOTP').post(wrap(controllers.user.setTOTP));
 };
