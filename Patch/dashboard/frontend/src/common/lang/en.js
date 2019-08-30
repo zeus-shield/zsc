@@ -31,6 +31,7 @@ const en = {
     }
   },
   user: {
+    aside: {
         },
     detail: {
       },
