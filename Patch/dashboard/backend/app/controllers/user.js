@@ -1,6 +1,7 @@
 'use strict'
 
 const services = require('../services');
+const {auth} = require('../utils');
 
 const emailCode = async (req, res) => {
   try {
