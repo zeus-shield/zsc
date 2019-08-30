@@ -100,6 +100,12 @@ module.exports = {
     errorCode: 20113,
     errorMessage: 'USER_TOTP_VERIFY_ERR'
   },
+  // // 路由管理模块错误
+  // ROUTER_HAS_EXITS: {
+  //   status: 500,
+  //   errorCode: 20200,
+  //   errorMsg: '该路由已经存在'
+  // },
   ROUTE_NOT_EXIST: {
     status: 500,
     errorCode: 20201,
