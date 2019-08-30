@@ -11,6 +11,7 @@ const UserSchema = new Schema({
 );
 
 UserSchema.set('toJSON', { getters: true, virtuals: true });
+UserSchema.set('toObject', { getters: true, virtuals: true });
 UserSchema.statics = {
 };
 
