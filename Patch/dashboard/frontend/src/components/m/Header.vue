@@ -5,6 +5,8 @@
       <span class="header-title">Dashboard</span>
     </div>
     <el-collapse-transition>
+      <el-menu>
+      </el-menu>
     </el-collapse-transition>
   </div>
 </template>
