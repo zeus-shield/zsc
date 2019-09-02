@@ -45,6 +45,8 @@
           <el-menu-item index="3">
             {{langSet.header.whitePaper}}
           </el-menu-item>
+          <el-menu-item index="4" >
+          </el-menu-item>
         </el-menu>
       </el-col>
     </el-row>
