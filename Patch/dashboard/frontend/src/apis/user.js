@@ -59,6 +59,8 @@ const user = {
   },
   loginPromise(account, password) {
     let params = new URLSearchParams();
+    params.append('account', account);
+    params.append('password', password);
   },
   async buildEmailCode(account) {},
   async signUp(account, code, password) {};
