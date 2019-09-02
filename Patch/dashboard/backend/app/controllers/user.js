@@ -2,6 +2,7 @@
 
 const services = require('../services');
 const {auth} = require('../utils');
+const {settings} = require('../../config');
 
 const emailCode = async (req, res) => {
   try {
