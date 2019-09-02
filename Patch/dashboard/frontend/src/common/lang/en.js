@@ -28,6 +28,8 @@ const en = {
   },
   insurance: {
     aside: {
+      slot: [
+      ]
     }
   },
   user: {
