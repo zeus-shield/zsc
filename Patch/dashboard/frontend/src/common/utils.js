@@ -72,6 +72,7 @@ const utils = {
         vm.$router.push({name: 'login'});
       });
     } else if (msg === 'USER_NOT_EXIST') {
+      result = true;
     } else {}
     return result;
   }
