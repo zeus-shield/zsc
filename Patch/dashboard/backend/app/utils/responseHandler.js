@@ -12,6 +12,9 @@ module.exports = {
     if (err.status !== undefined) {
       result.status = err.status;
     }
+    if (err.name !== undefined) {
+      result.name = err.name;
+    }
     return result;
   };
 }
