@@ -58,6 +58,8 @@
   justify-content: center;
   align-items: center;*/
 }
+.el-dropdown-menu {
+}
 </style>
 
 <script>
