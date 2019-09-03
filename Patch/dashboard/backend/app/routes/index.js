@@ -17,4 +17,7 @@ module.exports = (app) => {
   require('./user')(app);
   // catch 404 and forward to error handler
   app.use(middlewares.notFind);
+
+  // error handler
+  app.use(middlewares.errorHandler);
 };
