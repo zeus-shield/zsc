@@ -1,8 +1,10 @@
-'use strict'
+'use strict';
 
 const services = require('../services');
 const {auth} = require('../utils');
 const {settings} = require('../../config');
+
+const debug = require('debug')('backend:app:controllers:users');
 
 const emailCode = async (req, res) => {
   try {
