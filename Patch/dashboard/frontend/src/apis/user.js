@@ -62,7 +62,10 @@ const user = {
     params.append('account', account);
     params.append('password', password);
   },
-  async buildEmailCode(account) {},
+  async buildEmailCode(account) {
+    let params = new URLSearchParams();
+    params.append('account', account);
+  },
   async signUp(account, code, password) {};
   async login(account, password) {},
   async setTOTP(id, token, cmd) {},
