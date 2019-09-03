@@ -73,6 +73,9 @@ const utils = {
       });
     } else if (msg === 'USER_NOT_EXIST') {
       result = true;
+      this.storage.cookie.remove('login_id');
+      this.storage.cookie.remove('login_account');
+      this.storage.cookie.remove('login_token');
     } else {}
     return result;
   }
