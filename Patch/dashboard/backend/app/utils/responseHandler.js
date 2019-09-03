@@ -17,4 +17,6 @@ module.exports = {
     }
     return result;
   };
+  getModelError(model) {
+  };
 }
