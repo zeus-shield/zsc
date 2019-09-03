@@ -18,4 +18,5 @@
 </style>
 
 <script>
+import { mapState } from 'vuex';
 </script>
