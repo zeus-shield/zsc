@@ -52,5 +52,7 @@ export default {
   updated() {
     console.log('%c[Footer]updated()', `color:${this.logColor}`);
   },
+  methods: {
+  }
 };
 </script>
