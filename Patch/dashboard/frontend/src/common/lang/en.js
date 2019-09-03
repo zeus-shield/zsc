@@ -34,7 +34,9 @@ const en = {
   },
   user: {
     aside: {
-        },
+      slot: [
+      ]
+    },
     detail: {
       },
       info: {
