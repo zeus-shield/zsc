@@ -45,8 +45,13 @@
           <el-menu-item index="3">
             {{langSet.header.whitePaper}}
           </el-menu-item>
+
+          <!-- faq -->
           <el-menu-item index="4" >
+            <!-- <router-link tag="span" to="/faq">{{langSet[lang].header.faq}}</router-link> -->
+            {{langSet.header.faq}}
           </el-menu-item>
+
         </el-menu>
       </el-col>
     </el-row>
