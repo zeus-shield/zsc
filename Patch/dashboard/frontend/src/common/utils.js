@@ -76,6 +76,9 @@ const utils = {
       this.storage.cookie.remove('login_id');
       this.storage.cookie.remove('login_account');
       this.storage.cookie.remove('login_token');
+      this.notice.alert(vm, 'warning', vm.langSet.component.alert.errorTitle, vm.langSet.message.error.USER_NOT_EXIST, vm.langSet.component.button.confirm, false, true, (action) => {
+        vm.$router.push({name: 'login'});
+      });
     } else {}
     return result;
   }
