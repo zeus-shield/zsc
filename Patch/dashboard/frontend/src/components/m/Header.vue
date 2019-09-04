@@ -5,7 +5,7 @@
       <span class="header-title">Dashboard</span>
     </div>
     <el-collapse-transition>
-      <el-menu v-if="!hide" class="header-memu">
+      <el-menu v-if="!hide" class="header-memu" mode="vertical">
       </el-menu>
     </el-collapse-transition>
   </div>
