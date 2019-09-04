@@ -15,6 +15,8 @@ module.exports = (app) => {
   app.post('/user/login', wrap(controllers.user.login));
   app.use(middlewaresArr);
   require('./user')(app);
+  require('./category')(app);
+  require('./article')(app);
   // catch 404 and forward to error handler
   app.use(middlewares.notFind);
 
