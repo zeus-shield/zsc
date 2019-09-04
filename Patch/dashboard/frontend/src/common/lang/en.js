@@ -37,10 +37,13 @@ const en = {
       slot: [
       ]
     },
+
     detail: {
       },
       info: {
 
+      },
+      securitySetting: {
       },
     },
 
