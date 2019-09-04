@@ -61,6 +61,8 @@ const user = {
     let params = new URLSearchParams();
     params.append('account', account);
     params.append('password', password);
+    return new Promise((resolve, reject) => {
+    });
   },
   async buildEmailCode(account) {
     let params = new URLSearchParams();
