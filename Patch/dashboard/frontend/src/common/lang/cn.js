@@ -51,6 +51,8 @@ const cn = {
       },
       info: {
       },
+      securitySetting: {
+      },
   },
   message: {
     info: {},
