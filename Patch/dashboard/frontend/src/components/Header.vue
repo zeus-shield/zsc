@@ -59,4 +59,6 @@
 </template>
 
 <style lang="scss" scoped>
+.header-menu {
+}
 </style>
