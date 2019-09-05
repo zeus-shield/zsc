@@ -53,6 +53,9 @@ const cn = {
       },
       securitySetting: {
       },
+      dialog: {
+      }
+    },
   },
   message: {
     info: {},
