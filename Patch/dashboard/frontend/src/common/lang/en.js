@@ -45,6 +45,8 @@ const en = {
       },
       securitySetting: {
       },
+      dialog: {
+      }
     },
 
     google: {
