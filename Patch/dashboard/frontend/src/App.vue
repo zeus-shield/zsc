@@ -59,6 +59,10 @@
   align-items: center;*/
 }
 .el-dropdown-menu {
+  background-color: #545c64;
+  padding: 5px 0px;
+  border: none;
+  border-radius: 2px;
 }
 </style>
 
