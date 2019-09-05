@@ -61,4 +61,6 @@
 <style lang="scss" scoped>
 .header-menu {
 }
+.header-logo {
+}
 </style>
