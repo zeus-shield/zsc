@@ -33,6 +33,10 @@ const detail = async (req, res) => {
 };
 
 const setTOTP = async (req, res) => {
+  try {
+  } catch(err) {
+    res.sendErr(err);
+  }
 };
 
 const saveTOTP = async (req, res) => {
