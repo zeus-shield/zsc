@@ -14,3 +14,6 @@ const mutations = {};
 
 // actions
 const actions = {};
+
+export default {
+};
