@@ -68,7 +68,12 @@ const user = {
     let params = new URLSearchParams();
     params.append('account', account);
   },
-  async signUp(account, code, password) {};
+  async signUp(account, code, password) {
+    try {
+    } catch (err) {
+      throw err.response.data;
+    }
+  },
   async login(account, password) {},
   async setTOTP(id, token, cmd) {},
   async saveTOTP(id, token, code, key) {},
