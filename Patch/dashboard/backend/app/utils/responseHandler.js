@@ -6,6 +6,8 @@ const {errMsg} = require('../../config');
 module.exports = {
   getSuccessMsg (succMsg) {
   },
+  getErrorMsg (error) {
+  },
   getErrorRes(err) {
     const result = errMsg[err.message] ? errMsg[err.message] : errMsg['SERVER_ERROR'];
     if (err.message !== undefined) {
