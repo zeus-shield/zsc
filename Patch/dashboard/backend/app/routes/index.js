@@ -17,6 +17,7 @@ module.exports = (app) => {
   require('./user')(app);
   require('./category')(app);
   require('./article')(app);
+  app.route('/upload');
   // catch 404 and forward to error handler
   app.use(middlewares.notFind);
 
