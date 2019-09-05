@@ -21,5 +21,8 @@
 import { mapState } from 'vuex';
 
 export default {
+  name: 'Footer',
+  // components: {
+  // },
 };
 </script>
