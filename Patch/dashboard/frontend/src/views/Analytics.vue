@@ -10,5 +10,9 @@ export default {
   name: 'Analytics',
   // components: {
   // },
+  data() {
+    return {
+    };
+  },
 };
 </script>
