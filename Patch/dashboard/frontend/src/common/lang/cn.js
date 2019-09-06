@@ -52,6 +52,8 @@ const cn = {
       info: {
       },
       securitySetting: {
+        google: {
+        }
       },
       dialog: {
       }
