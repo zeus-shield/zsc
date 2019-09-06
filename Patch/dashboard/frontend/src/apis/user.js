@@ -67,6 +67,10 @@ const user = {
   async buildEmailCode(account) {
     let params = new URLSearchParams();
     params.append('account', account);
+    try {
+    } catch (err) {
+      throw err.response.data;
+    }
   },
   async signUp(account, code, password) {
     try {
