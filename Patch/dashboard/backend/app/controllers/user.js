@@ -40,6 +40,10 @@ const setTOTP = async (req, res) => {
 };
 
 const saveTOTP = async (req, res) => {
+  try {
+  } catch(err) {
+    res.sendErr(err);
+  }
 };
 
 const updateTOTP = async (req, res) => {
