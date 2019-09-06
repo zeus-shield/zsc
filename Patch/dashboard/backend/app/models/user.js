@@ -15,6 +15,8 @@ UserSchema.set('toJSON', { getters: true, virtuals: true });
 UserSchema.set('toObject', { getters: true, virtuals: true });
 UserSchema.statics = {
   findAge: async function (age) {
+    const findRes = await this.find({age: age});
+    return findRes;
   }
 };
 
