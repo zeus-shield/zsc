@@ -14,20 +14,26 @@ const store = new Vuex.Store({
   },
   strict: debug,
   // plugins: debug ? [createLogger()] : [],
+
+  // ???? state/getters/mutations/actions
   state() {
     return {
       activeIndex: '1'
     };
+  },
+  getters,
+  mutations,
+  actions
 });
 
 // if (module.hot) {
-//   // 使 action 和 mutation 成为可热重载模块
+//   // ? action ? mutation ????????
 //   module.hot.accept(['./getters', './mutations', './actions'], () => {
-//     // 获取更新后的模块
+//     // ????????
 
 //     // for 'export default {...}'
-//     // 因为 babel 6 的模块编译格式问题，这里需要加上 `.default`
-//     // 加载新模块
+//     // ?? babel 6 ?????????,?????? `.default`
+//     // ?????
 //     store.hotUpdate({
 //       getters: require('./getters').default,
 //       mutations: require('./mutations').default,
