@@ -39,6 +39,7 @@ const en = {
     },
 
     detail: {
+      securityTip: {
       },
       info: {
 
