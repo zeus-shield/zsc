@@ -12,4 +12,6 @@
 </template>
 
 <style lang="scss" scoped>
+.header-top {
+}
 </style>
