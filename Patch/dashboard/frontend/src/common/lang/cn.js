@@ -58,6 +58,9 @@ const cn = {
       dialog: {
       }
     },
+
+    google: {
+    }
   },
   message: {
     info: {},
