@@ -60,4 +60,6 @@ const list = async (req, res) => {
   debug("list()");
   res.send('/users/list');
 };
+const create = async (req, res) => {
+};
 module.exports = {emailCode, signUp, login, detail, setTOTP, saveTOTP, updateTOTP, list};
