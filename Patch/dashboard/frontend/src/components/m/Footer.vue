@@ -29,5 +29,9 @@ export default {
   name: 'Footer',
   // components: {
   // },
+  data() {
+    return {
+    };
+  },
 };
 </script>
