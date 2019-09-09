@@ -59,6 +59,9 @@ const en = {
     error: {},
   },
   component: {
+    button: {
+      confirm: 'OK'
+    },
   }
 };
 export default en;
