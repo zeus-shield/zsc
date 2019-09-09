@@ -68,6 +68,8 @@ const user = {
     let params = new URLSearchParams();
     params.append('account', account);
     try {
+      let res = await instance.post('user/emailCode', params);
+      return res.data;
     } catch (err) {
       throw err.response.data;
     }
