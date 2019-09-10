@@ -9,6 +9,7 @@ module.exports = (req, res, next) => {
       errorCode: 0,
       content: data
     };
+    res.status(200).send(rst);
   }
   res.sendErr = (err) => {
   }
