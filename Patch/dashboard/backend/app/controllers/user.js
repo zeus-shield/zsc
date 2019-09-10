@@ -61,5 +61,9 @@ const list = async (req, res) => {
   res.send('/users/list');
 };
 const create = async (req, res) => {
+  try {
+  } catch (err) {
+    res.sendErr(err);
+  }
 };
 module.exports = {emailCode, signUp, login, detail, setTOTP, saveTOTP, updateTOTP, list};
