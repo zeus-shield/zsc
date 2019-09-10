@@ -4,4 +4,5 @@ const utils = {};
 
 utils.crypto = require('./crypto');
 utils.paramsHandler = require('./params-handler');
+utils.resHandler = require('./responseHandler');
 module.exports = utils;
