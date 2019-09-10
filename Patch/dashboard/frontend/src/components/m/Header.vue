@@ -13,5 +13,6 @@
 
 <style lang="scss" scoped>
 .header-top {
+   background-color: #545c64;
 }
 </style>
