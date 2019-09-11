@@ -15,4 +15,6 @@
 .header-top {
    background-color: #545c64;
 }
+.header-logo {
+}
 </style>
