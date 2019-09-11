@@ -35,6 +35,11 @@ module.exports = {
     errorCode: 20000,
     errorMessage: 'TOKEN_IS_MISSING'
   },
+  TOKEN_IS_INVALID: {
+    status: 500,
+    errorCode: 20001,
+    errorMsg: 'token??'
+   },
   USER_HAS_EXIST: {
     status: 500,
     errorCode: 20100,
