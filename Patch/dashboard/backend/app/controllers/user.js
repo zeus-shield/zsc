@@ -62,6 +62,8 @@ const list = async (req, res) => {
 };
 const create = async (req, res) => {
   try {
+    const result = await services.users.addUser(req.body);
+    res.sendOk(result);
   } catch (err) {
     res.sendErr(err);
   }
