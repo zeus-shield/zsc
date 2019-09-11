@@ -6,4 +6,6 @@ const moment = require('moment');
 module.exports = {
   formatDate(date) {
   },
+  user(data) {
+  }
 };
