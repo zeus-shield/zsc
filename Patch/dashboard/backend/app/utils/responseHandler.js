@@ -6,6 +6,7 @@ const {errMsg} = require('../../config');
 module.exports = {
   getSuccessMsg (succMsg) {
     const successRes = successMsg[succMsg] ? successMsg[succMsg] : successMsg['OPTION_SUCCESS']
+    return successRes
   },
   getErrorMsg (error) {
   },
