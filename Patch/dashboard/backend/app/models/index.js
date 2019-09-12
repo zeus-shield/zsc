@@ -1,7 +1,9 @@
-'use strict'
+'use strict';
 
 const mdbs = {};
 mdbs.User = require('./user');
+mdbs.Company = require('./company');
+mdbs.Insurance = require('./insurance');
 // mdbs.Role = require('./role');
 // mdbs.Right = require('./right');
 // mdbs.Article = require('./article');
