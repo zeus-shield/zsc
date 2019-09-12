@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const controllers = require('../controllers');
 const middlewares = require('../middlewares');
@@ -15,6 +15,8 @@ module.exports = (app) => {
   app.post('/user/login', wrap(controllers.user.login));
   app.use(middlewaresArr);
   require('./user')(app);
+
+  require('./company')(app);
   require('./category')(app);
   require('./article')(app);
   app.route('/upload').post(Controllers.article.upload);
