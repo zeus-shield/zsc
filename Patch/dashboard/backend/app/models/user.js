@@ -1,8 +1,8 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const moment = require('moment');
-const {settings} = require('../../config');
+// const moment = require('moment');
+// const {settings} = require('../../config');
 
 const Schema = mongoose.Schema;
 const UserSchema = new Schema({
