@@ -4,7 +4,7 @@ const services = require('../services');
 const {auth} = require('../utils');
 const {settings} = require('../../config');
 
-const debug = require('debug')('backend:app:controllers:users');
+const debug = require('debug')('backend:app:controllers:user');
 
 const emailCode = async (req, res) => {
   try {
@@ -60,12 +60,14 @@ const list = async (req, res) => {
   debug("list()");
   res.send('/users/list');
 };
-const create = async (req, res) => {
-  try {
-    const result = await services.users.addUser(req.body);
-    res.sendOk(result);
-  } catch (err) {
-    res.sendErr(err);
-  }
-};
+// const create = async (req, res) => {
+//   debug("create()");
+//   try {
+//     const result = await services.users.addUser(req.body);
+//     res.sendOk(result);
+//   } catch (err) {
+//     res.sendErr(err);
+//   }
+// };
+
 module.exports = {emailCode, signUp, login, detail, setTOTP, saveTOTP, updateTOTP, list};
