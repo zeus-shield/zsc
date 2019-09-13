@@ -17,12 +17,15 @@ module.exports = (app) => {
   require('./user')(app);
 
   require('./company')(app);
-  require('./category')(app);
-  require('./article')(app);
-  app.route('/upload').post(Controllers.article.upload);
-  app.route('/test').post(Controllers.test.testResponse);
-  app.post(Controllers.test.test);
-  app.use('/test1', Controllers.test.test);
+  // require('./category')(app);
+  // require('./article')(app);
+  // app.route('/upload').post(Controllers.article.upload);
+  // app.route('/test').post(Controllers.test.testResponse);
+
+  // app.post(Controllers.test.test)
+
+  // app.use('/test1', Controllers.test.test);
+
   // catch 404 and forward to error handler
   app.use(middlewares.notFind);
 
