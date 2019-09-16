@@ -66,4 +66,6 @@
 }
 .header-logo {
 }
+.header-memu-slot {
+}
 </style>
