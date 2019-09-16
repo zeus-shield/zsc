@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 
 import logColor from './modules/logColor';
 import lang from './modules/lang';
+import getters from './getters';
 Vue.use(Vuex);
 
 const debug = process.env.NODE_ENV !== 'production';
