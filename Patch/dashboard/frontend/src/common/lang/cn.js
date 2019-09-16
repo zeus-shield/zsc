@@ -67,6 +67,8 @@ const cn = {
     warning: {},
     error: {},
 
+  },
+  component: {
   }
 };
 export default cn;
