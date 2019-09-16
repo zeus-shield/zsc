@@ -10,5 +10,9 @@ export default {
   name: 'Mine',
   // components: {
   // },
+  data() {
+    return {
+    };
+  },
 };
 </script>
