@@ -62,6 +62,8 @@ const en = {
     button: {
       confirm: 'OK'
     },
+    alert: {
+    }
   }
 };
 export default en;
