@@ -85,6 +85,10 @@ const user = {
   async saveTOTP(id, token, code, key) {},
   async setTOTPOn(token, code, id, on) {};
   async info(id, token) {
+    try {
+    } catch (err) {
+      throw err.response.data;
+    }
 };
 
 export default user;
