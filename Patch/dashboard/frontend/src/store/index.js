@@ -4,6 +4,8 @@ import Vuex from 'vuex';
 import logColor from './modules/logColor';
 import lang from './modules/lang';
 import getters from './getters';
+import mutations from './mutations';
+import actions from './actions';
 Vue.use(Vuex);
 
 const debug = process.env.NODE_ENV !== 'production';
