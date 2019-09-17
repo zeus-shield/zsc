@@ -18,5 +18,7 @@ export default {
     return {
     };
   },
+  props: {
+  },
 };
 </script>
