@@ -64,6 +64,10 @@
   border: none;
   border-radius: 2px;
 }
+.el-dropdown-menu__item {
+  color: #fff;
+  padding: 0px 10px;
+}
 </style>
 
 <script>
