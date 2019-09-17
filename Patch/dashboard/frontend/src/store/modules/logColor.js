@@ -3,6 +3,8 @@
 // initial state
 const state = () => {
   return {
+    insurance: {
+    },
   };
 };
 
