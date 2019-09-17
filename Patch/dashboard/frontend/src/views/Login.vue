@@ -11,6 +11,10 @@
   padding: 0px;
   border: 1px solid #E6A23C;
 }
+.login-form-title {
+  text-align: center;
+  font-size: 15px;
+}
 </style>
 <script>
 </script>
