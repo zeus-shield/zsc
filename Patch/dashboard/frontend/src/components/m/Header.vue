@@ -16,5 +16,8 @@
    background-color: #545c64;
 }
 .header-logo {
+  font-size: 40px;
+  color: #808080;
+  margin: 10px;
 }
 </style>
