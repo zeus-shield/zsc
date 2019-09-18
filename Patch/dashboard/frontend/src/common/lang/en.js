@@ -29,6 +29,10 @@ const en = {
   insurance: {
     aside: {
       slot: [
+        {
+          title: 'Company',
+          item: ['PICC', 'PING AN', 'CPIC', 'CHINA LIFE', 'NCI']
+        }
       ]
     }
   },
