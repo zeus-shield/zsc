@@ -62,6 +62,13 @@ const user = {
     params.append('account', account);
     params.append('password', password);
     return new Promise((resolve, reject) => {
+      instance.post('user/login', params).then(res => {
+        // func(0, res.data);
+        resolve(res.data);
+      }).catch(err => {
+        // func(err, err.response.data);
+        reject(err.response.data);
+      });
     });
   },
   async buildEmailCode(account) {
