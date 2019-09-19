@@ -54,6 +54,8 @@ const cn = {
         description: '为了您的账户安全，请检查访问网址，开启安全认证，不要透露短信和谷歌验证码给任何人，包括Dashboard客服'
       },
       info: {
+        title1: '账户',
+        title2: '上次登录时间'
       },
       securitySetting: {
         google: {
