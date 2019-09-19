@@ -96,17 +96,17 @@ module.exports = {
     errorMessage: 'USER_FIND_FAILED'
   },
   USER_TOTP_NOT_SET: {
-    status: 200,
+    status: 500,
     errorCode: 20111,
     errorMessage: 'USER_TOTP_NOT_SET'
   },
   USER_TOTP_SETTED: {
-    status: 200,
+    status: 500,
     errorCode: 20112,
     errorMessage: 'USER_TOTP_SETTED'
   },
   USER_TOTP_VERIFY_ERR: {
-    status: 200,
+    status: 500,
     errorCode: 20113,
     errorMessage: 'USER_TOTP_VERIFY_ERR'
   },
