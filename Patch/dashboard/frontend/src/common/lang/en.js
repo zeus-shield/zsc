@@ -41,8 +41,8 @@ const en = {
       slot: [
       ]
     },
-
     detail: {
+      title: 'Account Safety',
       securityTip: {
       },
       info: {
