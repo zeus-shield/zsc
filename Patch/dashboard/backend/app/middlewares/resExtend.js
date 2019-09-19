@@ -21,6 +21,8 @@ module.exports = (req, res, next) => {
     res.status(200).send(rst);
   }
   res.sendErr = (err) => {
+    const errRes = resHandler.getErrorRes(err);
+    logger.error(`sendErr: ${JSON.stringify(errRes)}`);
     res.status(errRes.status || 500).send(errRes);
   }
   next();
