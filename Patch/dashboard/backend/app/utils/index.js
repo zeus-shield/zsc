@@ -7,4 +7,6 @@ utils.paramsHandler = require('./params-handler');
 utils.resHandler = require('./responseHandler');
 utils.format = require('./format');
 utils.auth = require('./authentication');
+utils.validator = require('validator');
+utils.upload = require('./upload');
 module.exports = utils;
