@@ -40,7 +40,10 @@ const setTOTP = async (req, res) => {
 };
 
 const saveTOTP = async (req, res) => {
+  debug("saveTOTP(%s, %s, %s)", req.headers._id, req.headers.code, req.headers.key);
   try {
+    const result = await services.users.saveTOTP(req.headers._id, req.headers.code, req.headers.key);
+    res.sendOk(result);
   } catch(err) {
     res.sendErr(err);
   }
