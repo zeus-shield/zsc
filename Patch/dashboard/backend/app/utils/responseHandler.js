@@ -9,6 +9,10 @@ module.exports = {
     return successRes
   },
   getErrorMsg (error) {
+    const errorMessage = error.message ? error.message : 'serverError'
+    const finalError = errorSystem[errorMessage] ? errorSystem[errorMessage] : 'SERVER_ERROR'
+    const result = errorMsg[finalError]
+    return result
   },
   getErrorRes(err) {
     const result = errMsg[err.message] ? errMsg[err.message] : errMsg['SERVER_ERROR'];
