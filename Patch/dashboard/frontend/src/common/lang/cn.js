@@ -44,6 +44,10 @@ const cn = {
   user: {
     aside: {
       slot: [
+        {
+          title: '个人信息',
+          item: ['账户和安全']
+        },
       ]
     },
 
