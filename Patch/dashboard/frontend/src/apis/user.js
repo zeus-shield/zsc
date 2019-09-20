@@ -99,9 +99,12 @@ const user = {
       }
     };
     try {
+      let res = await instance.get('user/detail', config);
+      return res.data;
     } catch (err) {
       throw err.response.data;
     }
+  }
 };
 
 export default user;
