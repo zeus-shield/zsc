@@ -40,11 +40,11 @@ let router = new Router({
       name: '',
       redirect: '/home'
     },
-    {
-       path: '/insurance',
-       name: '',
-       redirect: '/insurance/picc'
-    },
+    // {
+    //   path: '/insurance',
+    //   name: '',
+    //   redirect: '/insurance/picc'
+    // },
     {
       path: '/account',
       name: 'account',
