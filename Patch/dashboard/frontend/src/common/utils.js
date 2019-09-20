@@ -79,6 +79,9 @@ const utils = {
       this.notice.alert(vm, 'error', vm.langSet.component.alert.errorTitle, vm.langSet.message.error.USER_NOT_EXIST, vm.langSet.component.button.confirm, false, true, (action) => {
         vm.$router.push({name: 'login'});
       });
+    } else if (msg === 'TOKEN_IS_MISSING') {
+      result = true;
+      this.notice.alert(vm, 'error', vm.langSet.component.alert.errorTitle, vm.langSet.message.error.TOKEN_IS_MISSING, vm.langSet.component.button.confirm, false, true, null);
     } else {}
     return result;
   }
