@@ -39,6 +39,10 @@ const en = {
   user: {
     aside: {
       slot: [
+        {
+          title: 'Profile',
+          item: ['Account Safety']
+        },
       ]
     },
     detail: {
