@@ -68,6 +68,8 @@
   color: #fff;
   padding: 0px 10px;
 }
+.el-dropdown-menudown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover {
+}
 </style>
 
 <script>
