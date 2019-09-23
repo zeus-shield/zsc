@@ -8,6 +8,8 @@
 </template>
 
 <style lang="scss" scoped>
+.signup-alert {
+}
 </style>
 
 <script>
