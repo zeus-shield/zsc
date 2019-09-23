@@ -20,5 +20,10 @@ export default {
   },
   props: {
   },
+  computed: {
+    ...mapState({
+      logColor: state => state.logColor.home
+    })
+  },
 };
 </script>
