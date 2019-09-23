@@ -21,5 +21,8 @@ export default {
       logColor: state => state.logColor.analytics
     })
   },
+  created() {
+    console.log('%c[Analytics]created()', `color:${this.logColor}`);
+  },
 };
 </script>
