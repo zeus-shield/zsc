@@ -15,6 +15,8 @@
   text-align: center;
   font-size: 15px;
 }
+.login-form-button {
+}
 </style>
 <script>
 </script>
