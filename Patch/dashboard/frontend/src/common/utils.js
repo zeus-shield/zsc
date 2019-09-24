@@ -42,6 +42,9 @@ const utils = {
           }
         }
       });
+    },
+    confirm(vm, type, title, msg, confirmButtonText, cancelButtonText,
+      showClose, showCenter, confirmFunc, cancelFunc) {
     }
   },
   errCommonHandle(msg, vm) {
