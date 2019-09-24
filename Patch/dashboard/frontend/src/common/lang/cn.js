@@ -66,6 +66,7 @@ const cn = {
         title2: '上次登录时间'
       },
       securitySetting: {
+        title: '安全设置',
         google: {
         }
       },
