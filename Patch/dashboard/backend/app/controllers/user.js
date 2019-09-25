@@ -33,7 +33,10 @@ const detail = async (req, res) => {
 };
 
 const setTOTP = async (req, res) => {
+  debug("setTOTP(%s, %s)", req.headers._id, req.headers.cmd);
   try {
+    const result = await services.users.setTOTP(req.headers._id, req.headers.cmd);
+    res.sendOk(result);
   } catch(err) {
     res.sendErr(err);
   }
