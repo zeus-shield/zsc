@@ -43,6 +43,10 @@ const en = {
           title: 'Profile',
           item: ['Account Safety']
         },
+        {
+          title: 'Support',
+          item: ['Submit a ticket', 'My tickets']
+        }
       ]
     },
     detail: {
