@@ -85,6 +85,9 @@ const utils = {
     } else if (msg === 'TOKEN_IS_MISSING') {
       result = true;
       this.notice.alert(vm, 'error', vm.langSet.component.alert.errorTitle, vm.langSet.message.error.TOKEN_IS_MISSING, vm.langSet.component.button.confirm, false, true, null);
+    } else if (msg === 'ROUTE_NOT_EXIST') {
+      result = true;
+      this.notice.alert(vm, 'error', vm.langSet.component.alert.errorTitle, vm.langSet.message.error.ROUTE_NOT_EXIST, vm.langSet.component.button.confirm, false, true, null);
     } else {}
     return result;
   }
