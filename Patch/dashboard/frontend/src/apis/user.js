@@ -82,6 +82,10 @@ const user = {
     }
   },
   async signUp(account, code, password) {
+    let params = new URLSearchParams();
+    params.append('account', account);
+    params.append('password', password);
+    params.append('code', code);
     try {
     } catch (err) {
       throw err.response.data;
