@@ -39,7 +39,12 @@ module.exports = {
     status: 500,
     errorCode: 20001,
     errorMsg: 'token??'
-   },
+  },
+  TOKEN_HAS_EXPIRED: {
+    status: 500,
+    errorCode: 20002,
+    errorMsg: 'token????'
+  },
   USER_HAS_EXIST: {
     status: 500,
     errorCode: 20100,
