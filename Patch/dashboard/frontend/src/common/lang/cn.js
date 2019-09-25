@@ -71,6 +71,9 @@ const cn = {
         }
       },
       dialog: {
+        title: '谷歌开关',
+        placeholder: '请输入谷歌验证码',
+        buttonText: '确认'
       }
     },
 
