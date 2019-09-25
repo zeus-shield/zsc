@@ -21,7 +21,10 @@ module.exports = (req, res, next) => {
     res.status(200).send(rst);
   }
   res.sendErr = (err) => {
+    logger.error(`error: [name:${err.name}][message:${err.message}][status:${err.status}]`);
     const errRes = resHandler.getErrorRes(err);
+    logger.error(`traceId: ${req.headers.traceId}`);
+    logger.error(`method: [${req.method}] req-url: ${req.url}`);
     logger.error(`sendErr: ${JSON.stringify(errRes)}`);
     res.status(errRes.status || 500).send(errRes);
   }
