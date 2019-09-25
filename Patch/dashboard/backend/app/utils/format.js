@@ -14,5 +14,8 @@ module.exports = {
     return result;
   },
   user(data) {
+  },
+  company(data) {
+    return data;
   }
 };
