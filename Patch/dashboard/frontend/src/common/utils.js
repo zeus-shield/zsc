@@ -45,6 +45,12 @@ const utils = {
     },
     confirm(vm, type, title, msg, confirmButtonText, cancelButtonText,
       showClose, showCenter, confirmFunc, cancelFunc) {
+      vm.$confirm(msg, title, {
+      }).then(() => {
+
+      }).catch(() => {
+
+      });
     }
   },
   errCommonHandle(msg, vm) {
