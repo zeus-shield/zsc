@@ -25,6 +25,9 @@ module.exports = (req, res, next) => {
     const errRes = resHandler.getErrorRes(err);
     logger.error(`traceId: ${req.headers.traceId}`);
     logger.error(`method: [${req.method}] req-url: ${req.url}`);
+    logger.error(`req-query: ${JSON.stringify(req.query)}`);
+    logger.error(`req-params: ${JSON.stringify(req.params)}`);
+    logger.error(`req-body: ${JSON.stringify(req.body)}`);
     logger.error(`sendErr: ${JSON.stringify(errRes)}`);
     res.status(errRes.status || 500).send(errRes);
   }
