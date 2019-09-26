@@ -87,6 +87,8 @@ const user = {
     params.append('password', password);
     params.append('code', code);
     try {
+      let res = await instance.post('user/signUp', params);
+      return res.data;
     } catch (err) {
       throw err.response.data;
     }
