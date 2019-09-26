@@ -27,7 +27,10 @@ const login = async (req, res) => {
 };
 
 const detail = async (req, res) => {
+  debug("detail(%s, %s)", req.headers._id);
   try {
+    const result = await services.users.detail(req.headers._id);
+    res.sendOk(result);
   } catch(err) {
   }
 };
