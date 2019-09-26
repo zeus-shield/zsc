@@ -26,9 +26,9 @@ module.exports = {
       result.name = err.name;
     }
     return result;
-  };
-  getModelError(model) {
-    const result = errorSystem[model] ? errorSystem[model] : 'SERVER_ERROR'
-    return result
-  };
+  }
+  // getModelError(model) {
+  //   const result = errorSystem[model] ? errorSystem[model] : 'SERVER_ERROR'
+  //   return result
+  // };
 }
