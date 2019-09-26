@@ -25,11 +25,12 @@ module.exports = {
     errorCode: 10004,
     errorMessage: 'No recipients defined'
   },
-  LIST_QUERY_FAILDE: {
-    status: 500,
-    errorCode: 10002,
-    errorMsg: '??????'
-  },
+  // LIST_QUERY_FAILDE: {
+  //   status: 500,
+  //   errorCode: 10002,
+  //   errorMsg: '??????'
+  // },
+  // // token??????
   TOKEN_IS_MISSING: {
     status: 500,
     errorCode: 20000,
