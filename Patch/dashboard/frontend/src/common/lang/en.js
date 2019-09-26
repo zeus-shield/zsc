@@ -52,6 +52,8 @@ const en = {
     detail: {
       title: 'Account Safety',
       securityTip: {
+        title: 'Security Tip',
+        description: 'For the safety of your account, please check carefully the domain you are visiting, enable two factor authentication, and do NOT disclose your verification codes to anyone including Dashboard staff.'
       },
       info: {
 
