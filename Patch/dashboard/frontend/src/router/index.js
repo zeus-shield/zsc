@@ -60,10 +60,10 @@ let router = new Router({
       // }
     },
     {
-      path: '/certificate'
-    },
+      path: '/insurance'
     }
-    }
+
+
   ]
 });
 
