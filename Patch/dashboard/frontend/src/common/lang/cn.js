@@ -80,6 +80,8 @@ const cn = {
     google: {
     }
   },
+  company: {
+  },
   message: {
     info: {},
     warning: {},
