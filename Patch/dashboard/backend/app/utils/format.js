@@ -14,6 +14,11 @@ module.exports = {
     return result;
   },
   user(data) {
+    // if (data.sex) {
+    //   data.reSex = enums.user[data.sex];
+    // }
+    delete data.password;
+    delete data.emailCode;
   },
   company(data) {
     return data;
