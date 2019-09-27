@@ -16,6 +16,8 @@
   font-size: 15px;
 }
 .login-form-button {
+  width: 100%;
+  font-size: 15px;
 }
 </style>
 <script>
