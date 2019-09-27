@@ -96,7 +96,11 @@ const user = {
   async login(account, password) {},
   async setTOTP(id, token, cmd) {},
   async saveTOTP(id, token, code, key) {},
-  async setTOTPOn(token, code, id, on) {};
+  async setTOTPOn(token, code, id, on) {
+    try {
+    } catch (err) {
+    }
+  };
   async info(id, token) {
     let config = {
       headers: {
