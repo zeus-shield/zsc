@@ -9,6 +9,9 @@
 
 <style lang="scss" scoped>
 .signup-alert {
+  height: 38px;
+  padding: 0px;
+  border: 1px solid #E6A23C;
 }
 </style>
 
