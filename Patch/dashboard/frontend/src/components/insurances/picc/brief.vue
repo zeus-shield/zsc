@@ -2,3 +2,5 @@
 <div class="insurance-picc-brief">
 </div>
 </template>
+<style lang="scss" scoped>
+</style>
