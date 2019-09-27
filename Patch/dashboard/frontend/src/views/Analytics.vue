@@ -24,5 +24,7 @@ export default {
   created() {
     console.log('%c[Analytics]created()', `color:${this.logColor}`);
   },
+  mounted() {
+  },
 };
 </script>
