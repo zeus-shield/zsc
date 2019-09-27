@@ -74,4 +74,6 @@
 }
 .header-signup {
 }
+.header-lang {
+}
 </style>
