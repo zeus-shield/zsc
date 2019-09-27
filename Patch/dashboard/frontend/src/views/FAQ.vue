@@ -16,5 +16,7 @@ export default {
   },
   props: {
   },
+  created() {
+  },
 };
 </script>
