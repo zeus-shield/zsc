@@ -69,6 +69,8 @@
   padding: 0px 10px;
 }
 .el-dropdown-menudown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover {
+  background-color: #434A50;
+  color: #fff; // #ffd04b;
 }
 </style>
 
