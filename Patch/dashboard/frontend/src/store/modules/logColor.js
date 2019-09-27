@@ -4,6 +4,8 @@
 const state = () => {
   return {
     insurance: {
+      pingan: {
+      }
     },
     admin: {
     }
