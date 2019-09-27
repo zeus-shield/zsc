@@ -25,5 +25,7 @@ export default {
       logColor: state => state.logColor.home
     })
   },
+  created() {
+  },
 };
 </script>
