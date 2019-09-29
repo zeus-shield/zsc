@@ -4,4 +4,6 @@
 </template>
 
 <style lang="scss" scoped>
+.insurance {
+}
 </style>
