@@ -36,11 +36,11 @@ module.exports = {
     errorCode: 20000,
     errorMessage: 'TOKEN_IS_MISSING'
   },
-  TOKEN_IS_INVALID: {
-    status: 500,
-    errorCode: 20001,
-    errorMsg: 'token??'
-  },
+  // TOKEN_IS_INVALID: {
+  //   status: 500,
+  //   errorCode: 20001,
+  //   errorMsg: 'token??'
+  // },
   TOKEN_HAS_EXPIRED: {
     status: 500,
     errorCode: 20002,
