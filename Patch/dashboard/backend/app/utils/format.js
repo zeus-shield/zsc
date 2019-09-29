@@ -19,6 +19,8 @@ module.exports = {
     // }
     delete data.password;
     delete data.emailCode;
+    data.createdAt = this.formatDate(data.createdAt);
+    data.updatedAt = this.formatDate(data.updatedAt);
   },
   company(data) {
     return data;
