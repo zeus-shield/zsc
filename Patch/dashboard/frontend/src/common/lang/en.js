@@ -56,7 +56,8 @@ const en = {
         description: 'For the safety of your account, please check carefully the domain you are visiting, enable two factor authentication, and do NOT disclose your verification codes to anyone including Dashboard staff.'
       },
       info: {
-
+        title1: 'Account',
+        title2: 'Last Login At'
       },
       securitySetting: {
       },
