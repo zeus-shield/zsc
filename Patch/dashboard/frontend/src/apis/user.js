@@ -93,7 +93,11 @@ const user = {
       throw err.response.data;
     }
   },
-  async login(account, password) {},
+  async login(account, password, code) {
+    try {
+    } catch (err) {
+    }
+  },
   async setTOTP(id, token, cmd) {},
   async saveTOTP(id, token, code, key) {},
   async setTOTPOn(token, code, id, on) {
