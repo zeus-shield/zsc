@@ -68,6 +68,8 @@ const cn = {
       securitySetting: {
         title: '∞≤»´…Ë÷√',
         google: {
+          operation: {
+          }
         }
       },
       dialog: {
