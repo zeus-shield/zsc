@@ -4,10 +4,10 @@
 const {errMsg} = require('../../config');
 
 module.exports = {
-  getSuccessMsg (succMsg) {
-    const successRes = successMsg[succMsg] ? successMsg[succMsg] : successMsg['OPTION_SUCCESS']
-    return successRes
-  },
+  // getSuccessMsg (succMsg) {
+  //   const successRes = successMsg[succMsg] ? successMsg[succMsg] : successMsg['OPTION_SUCCESS']
+  //   return successRes
+  // },
   getErrorMsg (error) {
     const errorMessage = error.message ? error.message : 'serverError'
     const finalError = errorSystem[errorMessage] ? errorSystem[errorMessage] : 'SERVER_ERROR'
