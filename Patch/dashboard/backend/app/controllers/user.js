@@ -32,6 +32,7 @@ const detail = async (req, res) => {
     const result = await services.users.detail(req.headers._id);
     res.sendOk(result);
   } catch(err) {
+    res.sendErr(err);
   }
 };
 
