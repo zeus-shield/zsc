@@ -19,6 +19,9 @@
   width: 100%;
   font-size: 15px;
 }
+.dialog .google-auth-form .space {
+}
 </style>
+
 <script>
 </script>
