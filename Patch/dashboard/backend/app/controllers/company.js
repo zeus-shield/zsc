@@ -10,3 +10,6 @@ const removeCategory = async (req, res) => {
 
 const update = async (req, res) => {
 };
+
+const list = async (req, res) => {
+};
