@@ -33,8 +33,8 @@ export default {
     return {
     };
   },
-  props: {
-  },
+  // props: {
+  // },
   computed: {
     ...mapState({
       logColor: state => state.logColor.footer
@@ -52,6 +52,7 @@ export default {
   updated() {
     console.log('%c[Footer]updated()', `color:${this.logColor}`);
   },
+  methods: {
   }
 };
 </script>
