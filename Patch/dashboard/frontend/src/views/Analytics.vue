@@ -26,5 +26,7 @@ export default {
   },
   mounted() {
   },
+  destroyed() {
+  },
 };
 </script>
