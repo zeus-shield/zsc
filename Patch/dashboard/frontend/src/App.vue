@@ -72,6 +72,8 @@
   background-color: #434A50;
   color: #fff; // #ffd04b;
 }
+.el-popper[x-placement^=bottom] {
+}
 </style>
 
 <script>
