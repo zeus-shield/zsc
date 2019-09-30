@@ -13,6 +13,8 @@
   padding: 0px;
   border: 1px solid #E6A23C;
 }
+.signup-form-button-code {
+}
 </style>
 
 <script>
