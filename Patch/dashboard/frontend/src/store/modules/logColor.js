@@ -5,6 +5,8 @@ const state = () => {
   return {
     insurance: {
       pingan: {
+      },
+      picc: {
       }
     },
     admin: {
