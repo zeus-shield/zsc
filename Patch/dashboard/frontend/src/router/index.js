@@ -69,6 +69,16 @@ let router = new Router({
       name: 'analytics',
       component: Analytics
     },
+    {
+      path: '/faq',
+      name: 'faq',
+      component: FAQ
+      // meta: { auth: true },
+      // beforeEnter: (to, from, next) => {
+      //   console.log('[R4]beforeEnter: (%s) => (%s)', from.fullPath, to.fullPath);
+      //   next();
+      // }
+    },
     }
 
 
