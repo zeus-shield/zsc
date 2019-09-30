@@ -6,6 +6,8 @@
     </div>
     <el-collapse-transition>
       <el-menu v-if="!hide" class="header-memu" mode="vertical" :default-active="activeIndex">
+        <el-menu-item class="header-item" index="1">
+        </el-menu-item>
       </el-menu>
     </el-collapse-transition>
   </div>
