@@ -8,4 +8,5 @@ const wrap = fn => (...args) => fn(...args).catch(err => {args[1].sendErr(err);}
 module.exports = (app) => {
   app.route('/company').get(wrap(controllers.company.list));
   app.route('/company/detail').get(wrap(controllers.company.detail));
+  app.route('/company/update').post(wrap(controllers.company.update));
 };
