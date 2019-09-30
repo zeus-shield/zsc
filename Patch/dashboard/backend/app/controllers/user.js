@@ -14,6 +14,8 @@ const emailCode = async (req, res) => {
 
 const signUp = async (req, res) => {
   try {
+    const result = await services.users.signUp(req.body.account, req.body.password, req.body.code);
+    res.sendOk(result);
   } catch (err) {
     res.sendErr(err);
   }
