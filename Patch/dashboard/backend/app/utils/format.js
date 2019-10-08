@@ -21,6 +21,8 @@ module.exports = {
     delete data.emailCode;
     data.createdAt = this.formatDate(data.createdAt);
     data.updatedAt = this.formatDate(data.updatedAt);
+    if (data.lastLoginAt) {
+    }
   },
   company(data) {
     return data;
