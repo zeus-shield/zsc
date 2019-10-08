@@ -86,8 +86,12 @@ const cn = {
   },
   message: {
     info: {},
-    warning: {},
-    error: {},
+    warning: {
+      reLogin: '用未登录或证书过期，请重新登录!',
+    },
+    error: {
+      USER_HAS_EXIST: '用户已存在！',
+    },
 
   },
   component: {
