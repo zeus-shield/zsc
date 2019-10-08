@@ -26,8 +26,10 @@ export default {
     })
   },
   created() {
+    console.log('%c[Home]created()', `color:${this.logColor}`);
   },
   mounted() {
+    console.log('%c[Home]mounted()', `color:${this.logColor}`);
   },
 };
 </script>
