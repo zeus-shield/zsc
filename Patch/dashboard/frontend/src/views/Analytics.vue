@@ -25,8 +25,10 @@ export default {
     console.log('%c[Analytics]created()', `color:${this.logColor}`);
   },
   mounted() {
+    console.log('%c[Analytics]mounted()', `color:${this.logColor}`);
   },
   destroyed() {
+    console.log('%c[Analytics]destroyed()', `color:${this.logColor}`);
   },
 };
 </script>
