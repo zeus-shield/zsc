@@ -68,6 +68,8 @@ const en = {
     google: {
     }
   },
+  company: {
+  },
   message: {
     info: {},
     warning: {},
