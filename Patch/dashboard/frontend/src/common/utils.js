@@ -47,7 +47,9 @@ const utils = {
       showClose, showCenter, confirmFunc, cancelFunc) {
       vm.$confirm(msg, title, {
       }).then(() => {
-
+        if (confirmFunc !== null) {
+          confirmFunc();
+        }
       }).catch(() => {
 
       });
