@@ -51,7 +51,9 @@ const utils = {
           confirmFunc();
         }
       }).catch(() => {
-
+        if (cancelFunc !== null) {
+          cancelFunc();
+        }
       });
     }
   },
