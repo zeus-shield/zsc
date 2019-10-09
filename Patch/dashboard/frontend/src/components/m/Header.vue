@@ -25,5 +25,6 @@
 .header-title {
 }
 .header-item {
+  font-size: 20px;
 }
 </style>
