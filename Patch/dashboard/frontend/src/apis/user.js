@@ -94,6 +94,10 @@ const user = {
     }
   },
   async login(account, password, code) {
+    let params = new URLSearchParams();
+    params.append('account', account);
+    params.append('password', password);
+    params.append('code', code);
     try {
     } catch (err) {
     }
