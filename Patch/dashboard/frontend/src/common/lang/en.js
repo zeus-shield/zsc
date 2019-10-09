@@ -62,9 +62,11 @@ const en = {
       securitySetting: {
       },
       dialog: {
+        title: 'Google authenticator',
+        placeholder: 'Please enter the 6-digit Google code',
+        buttonText: 'Confirm'
       }
     },
-
     google: {
     }
   },
