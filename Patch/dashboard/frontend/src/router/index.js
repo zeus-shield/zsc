@@ -84,6 +84,15 @@ let router = new Router({
       //   next();
       // }
     },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
+      // beforeEnter: (to, from, next) => {
+      //   console.log('[R5]beforeEnter: (%s) => (%s)', from.fullPath, to.fullPath);
+      //   next();
+      // }
+    },
     }
 
 
