@@ -13,3 +13,6 @@ const update = async (req, res) => {
 
 const list = async (req, res) => {
 };
+
+const detail = async (req, res) => {
+};
