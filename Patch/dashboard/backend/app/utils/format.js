@@ -23,6 +23,8 @@ module.exports = {
     data.updatedAt = this.formatDate(data.updatedAt);
     if (data.lastLoginAt) {
     }
+    if (data.activeDateExpiresAt) {
+    }
   },
   company(data) {
     return data;
