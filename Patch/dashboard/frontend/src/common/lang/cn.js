@@ -68,6 +68,8 @@ const cn = {
       securitySetting: {
         title: '安全设置',
         google: {
+          title: '谷歌验证',
+          description: '登录时，进行谷歌验证。',
           operation: {
           }
         }
