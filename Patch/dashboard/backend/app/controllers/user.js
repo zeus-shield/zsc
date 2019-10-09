@@ -8,6 +8,8 @@ const debug = require('debug')('backend:app:controllers:user');
 
 const emailCode = async (req, res) => {
   try {
+    const result = await services.users.buildEmailCode(req.body.account);
+    res.sendOk(result);
   } catch (err) {
   }
 };
