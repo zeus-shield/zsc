@@ -25,6 +25,9 @@ const signUp = async (req, res) => {
 
 const login = async (req, res) => {
   try {
+    const result = await services.users.login(req.body.account, req.body.password, req.body.code);
+    result.token = auth.createToken(result._id);
+    res.sendOk(result);
   } catch (err) {
     res.sendErr(err);
   }
