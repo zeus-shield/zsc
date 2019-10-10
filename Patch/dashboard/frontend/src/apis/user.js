@@ -99,6 +99,8 @@ const user = {
     params.append('password', password);
     params.append('code', code);
     try {
+      let res = await instance.post('user/login', params);
+      return res.data;
     } catch (err) {
     }
   },
@@ -110,7 +112,7 @@ const user = {
     try {
     } catch (err) {
     }
-  };
+  },
 
   async info(id, token) {
     let config = {
