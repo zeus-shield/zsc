@@ -22,9 +22,12 @@ module.exports = {
     data.createdAt = this.formatDate(data.createdAt);
     data.updatedAt = this.formatDate(data.updatedAt);
     if (data.lastLoginAt) {
+      data.lastLoginAt = this.formatDate(data.lastLoginAt);
     }
     if (data.activeDateExpiresAt) {
+      data.activeDateExpiresAt = this.formatDate(data.activeDateExpiresAt);
     }
+    return data;
   },
   company(data) {
     return data;
