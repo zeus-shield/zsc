@@ -71,6 +71,9 @@ const cn = {
           title: '谷歌验证',
           description: '登录时，进行谷歌验证。',
           operation: {
+            set: '设置',
+            reset: '重置',
+            open: '开启'
           }
         }
       },
