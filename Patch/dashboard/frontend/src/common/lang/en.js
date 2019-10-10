@@ -79,7 +79,8 @@ const en = {
   },
   component: {
     button: {
-      confirm: 'OK'
+      confirm: 'Confirm',
+      cancel: 'Cancel'
     },
     alert: {
     }
