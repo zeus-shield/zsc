@@ -78,4 +78,6 @@
 }
 .header-lang-item {
 }
+.iconfont-symbol {
+}
 </style>
