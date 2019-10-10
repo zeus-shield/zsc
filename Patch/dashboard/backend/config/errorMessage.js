@@ -121,6 +121,11 @@ module.exports = {
     errorCode: 20200,
     errorMessage: 'COMPANY_CATEGORIES_HAS_EXIST'
   },
+  COMPANY_CATEGORIES_NOT_EXIST: {
+    status: 500,
+    errorCode: 20201,
+    errorMessage: 'COMPANY_CATEGORIES_NOT_EXIST'
+  },
   // ROUTER_HAS_EXITS: {
   //   status: 500,
   //   errorCode: 20200,
