@@ -46,6 +46,12 @@ const utils = {
     confirm(vm, type, title, msg, confirmButtonText, cancelButtonText,
       showClose, showCenter, confirmFunc, cancelFunc) {
       vm.$confirm(msg, title, {
+        confirmButtonText: confirmButtonText,
+        cancelButtonText: cancelButtonText,
+        type: type,
+        center: showCenter,
+        showClose: showClose,
+        customClass: 'utils-confirm'
       }).then(() => {
         if (confirmFunc !== null) {
           confirmFunc();
