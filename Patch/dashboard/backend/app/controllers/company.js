@@ -16,3 +16,6 @@ const list = async (req, res) => {
 
 const detail = async (req, res) => {
 };
+
+const groupCategoriesByName = async (req, res) => {
+};
