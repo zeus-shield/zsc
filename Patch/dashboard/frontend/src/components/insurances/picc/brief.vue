@@ -11,4 +11,7 @@
 }
 .insurance .col {
 }
+
+.insurance .thumb .col {
+}
 </style>
