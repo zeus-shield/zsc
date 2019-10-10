@@ -93,6 +93,15 @@ let router = new Router({
       //   next();
       // }
     },
+    {
+      path: '/signUp',
+      name: 'signUp',
+      component: SignUp
+      // beforeEnter: (to, from, next) => {
+      //   console.log('[R6]beforeEnter: (%s) => (%s)', from.fullPath, to.fullPath);
+      //   next();
+      // }
+    },
     }
 
 
