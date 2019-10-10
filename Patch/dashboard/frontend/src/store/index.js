@@ -3,8 +3,11 @@ import Vuex from 'vuex';
 
 import logColor from './modules/logColor';
 import lang from './modules/lang';
-import createLogger from '../plugins/logger'
-import createLogger from '../../../dist/logger'
+
+// import createLogger from '../plugins/logger'
+// import createLogger from '../../../dist/logger'
+
+// for 'export default {...}'
 import getters from './getters';
 import mutations from './mutations';
 import actions from './actions';
