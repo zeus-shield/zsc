@@ -74,7 +74,9 @@ const en = {
   },
   message: {
     info: {},
-    warning: {},
+    warning: {
+      reLogin: 'User not logged in or token expires, please re-login!',
+    },
     error: {},
   },
   component: {
