@@ -30,5 +30,8 @@ export default {
   destroyed() {
     console.log('%c[Analytics]destroyed()', `color:${this.logColor}`);
   },
+  updated() {
+    console.log('%c[Analytics]updated()', `color:${this.logColor}`);
+  },
 };
 </script>
