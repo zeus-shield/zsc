@@ -73,6 +73,11 @@ let router = new Router({
       path: '/analytics',
       name: 'analytics',
       component: Analytics
+      // meta: { auth: true },
+      // beforeEnter: (to, from, next) => {
+      //   console.log('[R3]beforeEnter: (%s) => (%s)', from.fullPath, to.fullPath);
+      //   next();
+      // }
     },
     {
       path: '/faq',
