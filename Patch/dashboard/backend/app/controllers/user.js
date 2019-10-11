@@ -7,10 +7,12 @@ const {settings} = require('../../config');
 const debug = require('debug')('backend:app:controllers:user');
 
 const emailCode = async (req, res) => {
+  debug("emailCode(%s)", req.body.account);
   try {
     const result = await services.users.buildEmailCode(req.body.account);
     res.sendOk(result);
   } catch (err) {
+    res.sendErr(err);
   }
 };
 
