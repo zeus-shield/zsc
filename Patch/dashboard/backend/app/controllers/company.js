@@ -19,3 +19,5 @@ const detail = async (req, res) => {
 
 const groupCategoriesByName = async (req, res) => {
 };
+
+module.exports = {add, remove, removeCategory, update, list, detail, groupCategoriesByName};
