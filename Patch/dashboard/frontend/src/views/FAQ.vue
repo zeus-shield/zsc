@@ -22,6 +22,7 @@ export default {
     })
   },
   created() {
+    console.log('%c[FAQ]created()', `color:${this.logColor}`);
   },
 };
 </script>
