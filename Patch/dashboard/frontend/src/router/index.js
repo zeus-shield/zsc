@@ -107,8 +107,14 @@ let router = new Router({
       //   next();
       // }
     },
-    }
+    {
+      path: '/account/user',
+      name: 'user',
+      component: User,
+      meta: { auth: true },
 
+
+    },
 
   ]
 });
