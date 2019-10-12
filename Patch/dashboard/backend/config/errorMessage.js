@@ -131,6 +131,11 @@ module.exports = {
     errorCode: 20202,
     errorMessage: 'COMPANY_NOT_EXIST'
   },
+  INSURANCE_HAS_EXIST: {
+    status: 500,
+    errorCode: 20300,
+    errorMessage: 'INSURANCE_HAS_EXIST'
+  },
   // ROUTER_HAS_EXITS: {
   //   status: 500,
   //   errorCode: 20200,
