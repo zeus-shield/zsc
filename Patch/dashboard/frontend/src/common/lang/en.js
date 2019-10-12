@@ -85,6 +85,8 @@ const en = {
       cancel: 'Cancel'
     },
     alert: {
+    },
+    loading: {
     }
   }
 };
