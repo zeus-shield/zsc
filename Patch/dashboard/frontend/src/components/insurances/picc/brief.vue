@@ -16,4 +16,6 @@
 }
 .insurance .thumb .col .img {
 }
+.insurance .thumb .col .brief {
+}
 </style>
