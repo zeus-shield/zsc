@@ -24,5 +24,8 @@ export default {
   created() {
     console.log('%c[FAQ]created()', `color:${this.logColor}`);
   },
+  mounted() {
+    console.log('%c[FAQ]mounted()', `color:${this.logColor}`);
+  },
 };
 </script>
