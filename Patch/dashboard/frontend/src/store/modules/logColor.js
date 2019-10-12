@@ -10,6 +10,8 @@ const state = () => {
       }
     },
     admin: {
+      company: {
+      },
     }
   };
 };
