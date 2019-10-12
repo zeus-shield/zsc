@@ -102,6 +102,8 @@ const cn = {
   component: {
     button: {
     },
+    alert: {
+    },
   }
 };
 export default cn;
