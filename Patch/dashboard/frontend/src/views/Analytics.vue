@@ -33,5 +33,7 @@ export default {
   updated() {
     console.log('%c[Analytics]updated()', `color:${this.logColor}`);
   },
+  methods: {
+  }
 };
 </script>
