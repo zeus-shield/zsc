@@ -17,6 +17,7 @@ const emailCode = async (req, res) => {
 };
 
 const signUp = async (req, res) => {
+  debug("signUp(%s, %s, %s)", req.body.account, req.body.password, req.body.code);
   try {
     const result = await services.users.signUp(req.body.account, req.body.password, req.body.code);
     res.sendOk(result);
@@ -26,6 +27,7 @@ const signUp = async (req, res) => {
 };
 
 const login = async (req, res) => {
+  debug("login(%s, %s, %s)", req.body.account, req.body.password, req.body.code);
   try {
     const result = await services.users.login(req.body.account, req.body.password, req.body.code);
     result.token = auth.createToken(result._id);
