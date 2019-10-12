@@ -31,5 +31,8 @@ export default {
   mounted() {
     console.log('%c[Home]mounted()', `color:${this.logColor}`);
   },
+  destroyed() {
+    console.log('%c[Home]destroyed()', `color:${this.logColor}`);
+  },
 };
 </script>
