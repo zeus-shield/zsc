@@ -8,3 +8,6 @@ const debug = require('debug')('backend:app:controllers:insurance');
 
 const add = async (req, res) => {
 };
+
+const remove = async (req, res) => {
+};
