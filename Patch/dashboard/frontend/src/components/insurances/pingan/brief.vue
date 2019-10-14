@@ -19,4 +19,6 @@
 }
 .insurance .img .col .content {
 }
+.insurance .info .col {
+}
 </style>
