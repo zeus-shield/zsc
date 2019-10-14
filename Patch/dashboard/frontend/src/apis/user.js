@@ -111,6 +111,8 @@ const user = {
     let data = new URLSearchParams();
     data.append('TOTPOn', on);
     try {
+      let res = await instance.post('user/updateTOTP', data, config);
+      return res.data;
     } catch (err) {
     }
   },
