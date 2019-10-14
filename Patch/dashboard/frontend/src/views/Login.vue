@@ -21,6 +21,8 @@
 }
 .dialog .google-auth-form .space {
 }
+.dialog .button {
+}
 </style>
 
 <script>
