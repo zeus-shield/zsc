@@ -19,6 +19,8 @@ const detail = async (req, res) => {
 
 const groupCategoriesByName = async (req, res) => {
   try {
+    const result = await services.companies.groupCategoriesByName(null);
+    res.sendOk(result);
   } catch (err) {
   }
 };
