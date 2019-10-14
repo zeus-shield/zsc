@@ -112,8 +112,9 @@ let router = new Router({
       name: 'user',
       component: User,
       meta: { auth: true },
+      children: [
 
-
+      ]
     },
 
   ]
