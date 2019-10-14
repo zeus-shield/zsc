@@ -7,6 +7,8 @@
     <el-collapse-transition>
       <el-menu v-if="!hide" class="header-memu" mode="vertical" :default-active="activeIndex">
         <el-menu-item class="header-item" index="1">
+          <i class="el-icon-location"></i>
+          <router-link tag="span" to="/home">Ê×Ò³</router-link>
         </el-menu-item>
       </el-menu>
     </el-collapse-transition>
