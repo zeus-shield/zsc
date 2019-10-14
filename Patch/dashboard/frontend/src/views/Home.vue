@@ -34,5 +34,8 @@ export default {
   destroyed() {
     console.log('%c[Home]destroyed()', `color:${this.logColor}`);
   },
+  updated() {
+    console.log('%c[Home]updated()', `color:${this.logColor}`);
+  },
 };
 </script>
