@@ -92,3 +92,17 @@ const list = async (req, res) => {
 // };
 
 module.exports = {emailCode, signUp, login, detail, setTOTP, saveTOTP, updateTOTP, list};
+
+// // import user from './user'
+// export default {
+//   login: async (req, res) => {
+//     debug("login()");
+//   },
+//   list: async (req, res) => {
+//     debug("list()");
+//   },
+//   detail: async (req, res) => {
+//     debug("detail(%s)", req.params._id);
+//   }  
+// }
+
