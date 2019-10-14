@@ -18,4 +18,6 @@
 }
 .insurance .thumb .col .brief {
 }
+.insurance .thumb .col .brief strong {
+}
 </style>
