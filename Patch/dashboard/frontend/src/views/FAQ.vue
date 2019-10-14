@@ -27,5 +27,7 @@ export default {
   mounted() {
     console.log('%c[FAQ]mounted()', `color:${this.logColor}`);
   },
+  methods: {
+  }
 };
 </script>
