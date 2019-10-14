@@ -101,6 +101,8 @@ const cn = {
   },
   component: {
     button: {
+      confirm: '确认',
+      cancel: '取消'
     },
     alert: {
     },
