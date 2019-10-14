@@ -33,6 +33,8 @@ export default {
   updated() {
     console.log('%c[Analytics]updated()', `color:${this.logColor}`);
   },
+  beforeRouteLeave(to, from, next) {
+  },
   methods: {
   }
 };
