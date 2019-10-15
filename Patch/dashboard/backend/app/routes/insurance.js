@@ -11,4 +11,5 @@ module.exports = (app) => {
   app.route('/insurance/detail').get(wrap(controllers.insurance.detail));
   app.route('/insurance/add').post(wrap(controllers.insurance.add));
   app.route('/insurance/remove').post(wrap(controllers.insurance.remove));
+  app.route('/insurance/update').post(wrap(controllers.insurance.update));
 };
