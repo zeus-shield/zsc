@@ -21,4 +21,6 @@
 }
 .insurance .info .col {
 }
+.insurance .info .col .title {
+}
 </style>
