@@ -117,6 +117,11 @@ let router = new Router({
       ]
     },
 
+    {
+      path: '/admin',
+      name: '',
+      redirect: '/admin/user'
+    },
   ]
 });
 
