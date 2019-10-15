@@ -10,6 +10,8 @@
           <i class="el-icon-location"></i>
           <router-link tag="span" to="/home">Ê×Ò³</router-link>
         </el-menu-item>
+        <el-menu-item class="header-item" index="4" @click="switchLang()">
+        </el-menu-item>
       </el-menu>
     </el-collapse-transition>
   </div>
