@@ -89,6 +89,8 @@ const en = {
       warningTitle: 'Warning'
     },
     loading: {
+      login: 'User login...',
+      signUp: 'User is signing up...'
     }
   }
 };
