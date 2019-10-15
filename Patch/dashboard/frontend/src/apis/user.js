@@ -110,10 +110,15 @@ const user = {
   async setTOTPOn(token, code, id, on) {
     let data = new URLSearchParams();
     data.append('TOTPOn', on);
+
+    let config = {
+    };
+
     try {
       let res = await instance.post('user/updateTOTP', data, config);
       return res.data;
     } catch (err) {
+      throw err.response.data;
     }
   },
 
