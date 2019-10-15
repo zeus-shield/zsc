@@ -148,7 +148,7 @@ module.exports = {
   // },
   ROUTE_NOT_EXIST: {
     status: 500,
-    errorCode: 20201,
+    errorCode: 20901,
     errorMessage: 'ROUTE_NOT_EXIST'
   },
   UNKNOWN: {
