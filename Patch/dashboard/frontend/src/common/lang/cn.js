@@ -105,6 +105,8 @@ const cn = {
       cancel: '取消'
     },
     alert: {
+      errorTitle: '错误',
+      warningTitle: '提示'
     },
   }
 };
