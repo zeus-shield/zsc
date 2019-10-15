@@ -20,4 +20,6 @@
 }
 .insurance .thumb .col .brief strong {
 }
+.insurance .info .col {
+}
 </style>
