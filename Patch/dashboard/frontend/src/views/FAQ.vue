@@ -27,6 +27,9 @@ export default {
   mounted() {
     console.log('%c[FAQ]mounted()', `color:${this.logColor}`);
   },
+  destroyed() {
+    console.log('%c[FAQ]destroyed()', `color:${this.logColor}`);
+  },
   methods: {
   }
 };
