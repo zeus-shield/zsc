@@ -15,6 +15,9 @@ const list = async (req, res) => {
 };
 
 const detail = async (req, res) => {
+  try {
+  } catch (err) {
+  }
 };
 
 const groupCategoriesByName = async (req, res) => {
