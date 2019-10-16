@@ -79,7 +79,10 @@
 .header-lang-item {
 }
 .iconfont-symbol {
+  font-size: 30px;
+  margin-right: 10px;
 }
 </style>
+
 <script>
 </script>
