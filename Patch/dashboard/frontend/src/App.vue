@@ -76,6 +76,8 @@
   // margin-top:12px
   margin-top:5px
 }
+.el-popper[x-placement^=bottom] .popper__arrow {
+}
 </style>
 
 <script>
