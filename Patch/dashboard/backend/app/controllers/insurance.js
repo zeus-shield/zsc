@@ -15,4 +15,7 @@ const remove = async (req, res) => {
 const update = async (req, res) => {
 };
 const count = async (req, res) => {
+  try {
+  } catch (err) {
+  }
 };
