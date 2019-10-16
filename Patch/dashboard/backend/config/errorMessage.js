@@ -151,6 +151,11 @@ module.exports = {
     errorCode: 20901,
     errorMessage: 'ROUTE_NOT_EXIST'
   },
+  COMMON_PARAM_ERROR: {
+    status: 500,
+    errorCode: 80000,
+    errorMessage: 'COMMON_PARAM_ERROR'
+  },
   UNKNOWN: {
     status: 500,
     errorCode: 90000,
