@@ -20,6 +20,7 @@
   font-size: 15px;
 }
 .dialog .google-auth-form .space {
+  margin-top: 22px;
 }
 .dialog .button {
 }
