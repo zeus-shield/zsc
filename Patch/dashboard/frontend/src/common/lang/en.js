@@ -60,6 +60,7 @@ const en = {
         title2: 'Last Login At'
       },
       securitySetting: {
+        title: 'Security',
       },
       dialog: {
         title: 'Google authenticator',
