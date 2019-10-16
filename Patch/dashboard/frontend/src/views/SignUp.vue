@@ -14,6 +14,7 @@
   border: 1px solid #E6A23C;
 }
 .signup-form-button-code {
+  width: 100%;
 }
 </style>
 
