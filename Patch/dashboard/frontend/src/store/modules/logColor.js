@@ -13,6 +13,8 @@ const state = () => {
     admin: {
       company: {
       },
+      insurance: {
+      }
     }
   };
 };
