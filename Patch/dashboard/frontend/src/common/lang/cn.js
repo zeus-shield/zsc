@@ -108,6 +108,8 @@ const cn = {
       errorTitle: '´íÎó',
       warningTitle: 'ÌáÊ¾'
     },
+    loading: {
+    }
   }
 };
 export default cn;
