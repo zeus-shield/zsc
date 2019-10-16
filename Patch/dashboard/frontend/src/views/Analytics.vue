@@ -33,6 +33,8 @@ export default {
   updated() {
     console.log('%c[Analytics]updated()', `color:${this.logColor}`);
   },
+  beforeRouteUpdate(to, from, next) {
+  },
   beforeRouteLeave(to, from, next) {
     console.log('%c[Analytics]beforeRouteLeave(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
     next();
