@@ -4,8 +4,7 @@
   </div>
 </template>
 <script>
-import { mapState, mapGetters } from 'vuex';
-import utils from '../common/utils';
+import { mapState } from 'vuex';
 
 export default {
   name: 'Mine',
