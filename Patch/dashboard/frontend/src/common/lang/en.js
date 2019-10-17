@@ -61,6 +61,8 @@ const en = {
       },
       securitySetting: {
         title: 'Security',
+        google: {
+        }
       },
       dialog: {
         title: 'Google authenticator',
