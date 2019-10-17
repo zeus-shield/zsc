@@ -85,6 +85,7 @@ const cn = {
     },
 
     google: {
+      title: ['设置 谷歌验证', '重置 谷歌验证'],
     }
   },
   company: {
