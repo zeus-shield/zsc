@@ -26,3 +26,6 @@
 .insurance .info .col .corner {
 }
 </style>
+
+<script>
+</script>
