@@ -17,6 +17,7 @@ const list = async (req, res) => {
 const detail = async (req, res) => {
   try {
   } catch (err) {
+    res.sendErr(err);
   }
 };
 
