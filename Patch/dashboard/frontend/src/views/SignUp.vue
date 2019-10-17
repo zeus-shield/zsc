@@ -16,6 +16,8 @@
 .signup-form-button-code {
   width: 100%;
 }
+.signup-form-button-submit {
+}
 </style>
 
 <script>
