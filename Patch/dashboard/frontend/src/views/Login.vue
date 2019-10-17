@@ -23,6 +23,7 @@
   margin-top: 22px;
 }
 .dialog .button {
+  width: 50%;
 }
 </style>
 
