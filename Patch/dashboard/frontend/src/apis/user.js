@@ -106,7 +106,13 @@ const user = {
     }
   },
   async setTOTP(id, token, cmd) {},
-  async saveTOTP(id, token, code, key) {},
+  async saveTOTP(id, token, code, key) {
+    try {
+    } catch (err) {
+      throw err.response.data;
+    }
+  },
+
   async setTOTPOn(token, code, id, on) {
     let data = new URLSearchParams();
     data.append('TOTPOn', on);
