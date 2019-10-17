@@ -19,3 +19,5 @@ const count = async (req, res) => {
   } catch (err) {
   }
 };
+
+module.exports = {add, remove, update, list, detail, count};
