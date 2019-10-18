@@ -71,6 +71,8 @@
 .header-login {
 }
 .header-login:hover {
+  background-color: #434A50;
+  // color: #ffd04b;
 }
 .header-signup {
 }
