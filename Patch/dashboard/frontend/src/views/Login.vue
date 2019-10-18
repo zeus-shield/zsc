@@ -28,4 +28,6 @@
 </style>
 
 <script>
+import utils from '../common/utils';
+import user from '../apis/user';
 </script>
