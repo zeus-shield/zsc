@@ -114,7 +114,12 @@ let router = new Router({
       component: User,
       meta: { auth: true },
       children: [
-
+        {
+          path: '/account/user',
+          name: 'userDetail',
+          component: UserDetail,
+          meta: { auth: true }
+        },
       ]
     },
 
