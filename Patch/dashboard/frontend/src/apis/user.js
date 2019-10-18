@@ -107,6 +107,9 @@ const user = {
   },
   async setTOTP(id, token, cmd) {},
   async saveTOTP(id, token, code, key) {
+    let config = {
+    };
+
     try {
     } catch (err) {
       throw err.response.data;
