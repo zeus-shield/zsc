@@ -30,6 +30,8 @@ export default {
   destroyed() {
     console.log('%c[FAQ]destroyed()', `color:${this.logColor}`);
   },
+  updated() {
+  },
   methods: {
   }
 };
