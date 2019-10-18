@@ -71,6 +71,7 @@ const en = {
       }
     },
     google: {
+      title: ['Install Google Authenticator', 'Reset Google Authenticator'],
     }
   },
   company: {
