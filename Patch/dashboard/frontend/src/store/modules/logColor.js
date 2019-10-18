@@ -6,6 +6,8 @@ const state = () => {
     insurance: {
       base: 'black',
       pingan: {
+        brief: 'black',
+        detail: 'black'
       },
       picc: {
       }
