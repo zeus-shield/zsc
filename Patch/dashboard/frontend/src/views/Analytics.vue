@@ -34,6 +34,8 @@ export default {
     console.log('%c[Analytics]updated()', `color:${this.logColor}`);
   },
   beforeRouteEnter(to, from, next) {
+    next(vm => {
+    });
   },
   beforeRouteUpdate(to, from, next) {
     console.log('%c[Analytics]beforeRouteUpdate(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
