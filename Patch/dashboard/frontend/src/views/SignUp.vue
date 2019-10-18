@@ -17,6 +17,8 @@
   width: 100%;
 }
 .signup-form-button-submit {
+  width: 100%;
+  font-size: 15px;
 }
 </style>
 
