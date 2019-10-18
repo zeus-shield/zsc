@@ -16,6 +16,10 @@ const list = async (req, res) => {
 
 const detail = async (req, res) => {
   try {
+    const result = await services.companies.findByName(req.query.name, null);
+    if (!result) {
+      throw createError('COMPANY_NOT_EXIST');
+    }
   } catch (err) {
     res.sendErr(err);
   }
