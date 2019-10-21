@@ -20,6 +20,7 @@ const list = async (req, res) => {
 const count = async (req, res) => {
   try {
   } catch (err) {
+    res.sendErr(err);
   }
 };
 
