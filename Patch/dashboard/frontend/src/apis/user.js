@@ -111,6 +111,8 @@ const user = {
     };
 
     try {
+      let res = await instance.post('user/saveTOTP', null, config);
+      return res.data;
     } catch (err) {
       throw err.response.data;
     }
