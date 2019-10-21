@@ -37,5 +37,7 @@ export default {
   updated() {
     console.log('%c[Home]updated()', `color:${this.logColor}`);
   },
+  beforeRouteEnter(to, from, next) {
+  },
 };
 </script>
