@@ -29,4 +29,5 @@
 </style>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
 </script>
