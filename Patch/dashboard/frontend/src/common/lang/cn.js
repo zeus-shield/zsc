@@ -112,6 +112,8 @@ const cn = {
       warningTitle: '提示'
     },
     loading: {
+      login: '用户登录中....',
+      signUp: '用户注册中....'
     }
   }
 };
