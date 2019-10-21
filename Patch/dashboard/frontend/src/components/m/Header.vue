@@ -38,7 +38,12 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'Header',
-  components: {
+  // components: {
+  // },
+  data() {
+    return {
+      hide: true
+    };
   },
 };
 </script>
