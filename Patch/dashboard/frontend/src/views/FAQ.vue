@@ -31,6 +31,7 @@ export default {
     console.log('%c[FAQ]destroyed()', `color:${this.logColor}`);
   },
   updated() {
+    console.log('%c[FAQ]updated()', `color:${this.logColor}`);
   },
   methods: {
   }
