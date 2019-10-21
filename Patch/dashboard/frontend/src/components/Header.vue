@@ -75,6 +75,9 @@
   // color: #ffd04b;
 }
 .header-signup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .header-lang {
 }
