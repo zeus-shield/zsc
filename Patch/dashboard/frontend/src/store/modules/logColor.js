@@ -10,6 +10,8 @@ const state = () => {
         detail: 'black'
       },
       picc: {
+        brief: 'black',
+        detail: 'black'
       }
     },
     admin: {
