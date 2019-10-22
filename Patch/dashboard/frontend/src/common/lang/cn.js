@@ -30,6 +30,8 @@ const cn = {
     }
   },
   signUp: {
+    phoneTitle: 'ÊÖ»ú×¢²á',
+    emailTitle: 'ÓÊÏä×¢²á',
   },
   insurance: {
     aside: {
