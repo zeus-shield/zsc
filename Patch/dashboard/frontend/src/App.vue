@@ -80,6 +80,9 @@
 }
 .el-popper[x-placement^=bottom] .popper__arrow::after {
 }
+.utils-confirm { 
+  width: 280px;
+}
 </style>
 
 <script>
