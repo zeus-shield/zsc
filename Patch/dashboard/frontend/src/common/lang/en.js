@@ -25,6 +25,8 @@ const en = {
     }
   },
   signUp: {
+    phoneTitle: 'Phone',
+    emailTitle: 'Email',
   },
   insurance: {
     aside: {
