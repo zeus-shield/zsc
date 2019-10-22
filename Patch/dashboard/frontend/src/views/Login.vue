@@ -30,4 +30,6 @@
 <script>
 import utils from '../common/utils';
 import user from '../apis/user';
+
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
 </script>
