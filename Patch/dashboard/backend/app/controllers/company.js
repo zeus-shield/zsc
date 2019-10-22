@@ -12,6 +12,9 @@ const update = async (req, res) => {
 };
 
 const list = async (req, res) => {
+  try {
+  } catch (err) {
+  }
 };
 
 const detail = async (req, res) => {
