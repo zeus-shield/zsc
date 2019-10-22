@@ -65,6 +65,8 @@ let router = new Router({
       path: '/insurance',
       name: 'insurance',
       component: Insurance,
+      children: [
+      ]
     },
     {
       path: '/insurance',
