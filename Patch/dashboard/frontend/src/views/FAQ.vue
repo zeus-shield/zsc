@@ -33,6 +33,8 @@ export default {
   updated() {
     console.log('%c[FAQ]updated()', `color:${this.logColor}`);
   },
+  beforeRouteLeave(to, from, next) {
+  },
   methods: {
   }
 };
