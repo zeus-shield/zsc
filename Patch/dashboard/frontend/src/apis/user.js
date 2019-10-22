@@ -105,7 +105,12 @@ const user = {
       throw err.response.data;
     }
   },
-  async setTOTP(id, token, cmd) {},
+  async setTOTP(id, token, cmd) {
+    try {
+    } catch (err) {
+    }
+  },
+
   async saveTOTP(id, token, code, key) {
     let config = {
       // req.headers
