@@ -93,4 +93,5 @@
 </style>
 
 <script>
+import utils from '../common/utils';
 </script>
