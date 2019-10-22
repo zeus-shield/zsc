@@ -19,6 +19,9 @@ const list = async (req, res) => {
 };
 const count = async (req, res) => {
   try {
+    const company = req.query.company;
+    const category = req.query.category;
+    const title = req.query.title;
   } catch (err) {
     res.sendErr(err);
   }
