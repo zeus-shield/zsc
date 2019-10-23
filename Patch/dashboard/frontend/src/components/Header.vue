@@ -94,4 +94,6 @@
 
 <script>
 import utils from '../common/utils';
+import en from '../common/lang/en';
+import cn from '../common/lang/cn';
 </script>
