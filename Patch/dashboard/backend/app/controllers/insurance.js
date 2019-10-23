@@ -18,10 +18,14 @@ const update = async (req, res) => {
 const list = async (req, res) => {
 };
 const count = async (req, res) => {
+  // debug("count(%s, %s, %s)", req.query.company, req.query.category, req.query.title);
   try {
     const company = req.query.company;
     const category = req.query.category;
     const title = req.query.title;
+
+    const result = await services.insurances.count(company, category, title);
+    res.sendOk(result);
   } catch (err) {
     res.sendErr(err);
   }
