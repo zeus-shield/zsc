@@ -29,6 +29,7 @@ const SignUp = resolve => require.ensure([], () => resolve(require('@/views/Sign
 const User = resolve => require.ensure([], () => resolve(require('@/views/User')), 'lazy');
 const UserDetail = resolve => require.ensure([], () => resolve(require('@/views/UserDetail')), 'lazy');
 const UserSupport = resolve => require.ensure([], () => resolve(require('@/views/UserSupport')), 'lazy');
+const UserQuestions = resolve => require.ensure([], () => resolve(require('@/views/UserQuestions')), 'lazy');
 Vue.use(Router);
 
 let router = new Router({
