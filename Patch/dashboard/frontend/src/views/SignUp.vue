@@ -13,10 +13,10 @@
   padding: 0px;
   border: 1px solid #E6A23C;
 }
-.signup-form-title {
-   text-align: center;
-   font-size: 15px;
-}
+// .signup-form-title {
+//   text-align: center;
+//   font-size: 15px;
+// }
 .signup-form-button-code {
   width: 100%;
 }
