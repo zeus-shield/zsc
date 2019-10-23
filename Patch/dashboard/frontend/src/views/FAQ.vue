@@ -34,6 +34,8 @@ export default {
     console.log('%c[FAQ]updated()', `color:${this.logColor}`);
   },
   beforeRouteLeave(to, from, next) {
+    console.log('%c[FAQ]beforeRouteLeave(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
+    next();
   },
   methods: {
   }
