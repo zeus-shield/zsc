@@ -34,5 +34,8 @@ import user from '../apis/user';
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
+  name: 'Login',
+  components: {
+  },
 };
 </script>
