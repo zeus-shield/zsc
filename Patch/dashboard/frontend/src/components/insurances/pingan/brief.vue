@@ -18,6 +18,9 @@
 .insurance .img .col {
 }
 .insurance .img .col .content {
+  width: 100%;
+  // height: 100%;
+  height: auto;
 }
 .insurance .info .col {
   margin: 40px 20px 0px 20px;
