@@ -80,6 +80,8 @@
 }
 .el-popper[x-placement^=bottom] .popper__arrow::after {
 }
+.el-popper[x-placement^=right] {
+}
 .utils-confirm { 
   width: 280px;
 }
