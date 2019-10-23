@@ -89,6 +89,9 @@ const cn = {
     google: {
       title: ['设置 谷歌验证', '重置 谷歌验证'],
       step: [
+        {
+          title: '安装完成后打开Google Authentication，扫描下方二维码或手动输入秘钥，得到6位数验证码'
+        }
       ]
     }
   },
