@@ -37,6 +37,7 @@ export default {
   name: 'Login',
   // components: {
   // },
+  data() {
   },
 };
 </script>
