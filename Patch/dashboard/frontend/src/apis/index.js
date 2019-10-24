@@ -1,4 +1,6 @@
 'use strict';
+
+import axios from 'axios';
 class APIs {
 }
 
