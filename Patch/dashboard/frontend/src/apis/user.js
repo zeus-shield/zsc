@@ -105,7 +105,11 @@ const user = {
       throw err.response.data;
     }
   },
+
   async setTOTP(id, token, cmd) {
+    let config = {
+    };
+
     try {
       let res = await instance.post('user/setTOTP', null, config);
       return res.data;
