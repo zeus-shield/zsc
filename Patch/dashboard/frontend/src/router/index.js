@@ -30,6 +30,8 @@ const User = resolve => require.ensure([], () => resolve(require('@/views/User')
 const UserDetail = resolve => require.ensure([], () => resolve(require('@/views/UserDetail')), 'lazy');
 const UserSupport = resolve => require.ensure([], () => resolve(require('@/views/UserSupport')), 'lazy');
 const UserQuestions = resolve => require.ensure([], () => resolve(require('@/views/UserQuestions')), 'lazy');
+const UserGoogle = resolve => require.ensure([], () => resolve(require('@/views/UserGoogle')), 'lazy');
+const NotFound = resolve => require.ensure([], () => resolve(require('@/components/404')), 'lazy');
 Vue.use(Router);
 
 let router = new Router({
