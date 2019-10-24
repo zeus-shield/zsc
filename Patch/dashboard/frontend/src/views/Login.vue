@@ -35,7 +35,8 @@ import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
   name: 'Login',
-  components: {
+  // components: {
+  // },
   },
 };
 </script>
