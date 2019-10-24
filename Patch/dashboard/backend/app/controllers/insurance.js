@@ -16,6 +16,9 @@ const update = async (req, res) => {
 };
 
 const list = async (req, res) => {
+  try {
+  } catch (err) {
+  }
 };
 const count = async (req, res) => {
   // debug("count(%s, %s, %s)", req.query.company, req.query.category, req.query.title);
