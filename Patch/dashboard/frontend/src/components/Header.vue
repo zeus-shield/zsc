@@ -80,6 +80,9 @@
   align-items: center;
 }
 .header-lang {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .header-lang-item {
   display: flex;
