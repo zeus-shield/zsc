@@ -2,4 +2,6 @@
 class Wallet {
   constructor() {
   };
+  async enable() {
+  };
 }
