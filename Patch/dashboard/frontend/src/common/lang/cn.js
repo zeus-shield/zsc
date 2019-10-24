@@ -104,6 +104,7 @@ const cn = {
     },
     error: {
       USER_HAS_EXIST: '用户已存在！',
+      USER_NOT_EXIST: '用户不存在!',
     },
 
   },
