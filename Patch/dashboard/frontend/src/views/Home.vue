@@ -43,5 +43,7 @@ export default {
     console.log('%c[Home]beforeRouteUpdate(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
     next();
   },
+  beforeRouteLeave(to, from, next) {
+  },
 };
 </script>
