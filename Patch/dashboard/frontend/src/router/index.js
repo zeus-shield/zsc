@@ -126,6 +126,12 @@ let router = new Router({
           component: UserDetail,
           meta: { auth: true }
         },
+        {
+          path: '/account/user/support',
+          name: 'userSupport',
+          component: UserSupport,
+          meta: { auth: true }
+        },
       ]
     },
 
