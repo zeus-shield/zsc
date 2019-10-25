@@ -79,6 +79,10 @@
 .el-popper[x-placement^=bottom] .popper__arrow {
 }
 .el-popper[x-placement^=bottom] .popper__arrow::after {
+  top:1px;
+  margin-left:-6px;
+  border-top-width:0;
+  // border-bottom-color:#545c64
 }
 .el-popper[x-placement^=right] {
 .utils-alert { 
