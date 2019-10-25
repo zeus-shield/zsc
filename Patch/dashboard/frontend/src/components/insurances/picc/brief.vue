@@ -30,6 +30,8 @@
 }
 .insurance .info .col .title {
 }
+.insurance .info .col .corner {
+}
 </style>
 
 <script>
