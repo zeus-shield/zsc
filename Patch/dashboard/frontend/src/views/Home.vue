@@ -23,7 +23,8 @@ export default {
   computed: {
     ...mapState({
       logColor: state => state.logColor.home
-    })
+    }),
+    ...mapGetters('lang', ['langSet'])
   },
   created() {
     console.log('%c[Home]created()', `color:${this.logColor}`);
