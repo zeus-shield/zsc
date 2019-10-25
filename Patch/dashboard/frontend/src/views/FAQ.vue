@@ -33,6 +33,8 @@ export default {
   updated() {
     console.log('%c[FAQ]updated()', `color:${this.logColor}`);
   },
+  beforeRouteEnter(to, from, next) {
+  },
   beforeRouteUpdate(to, from, next) {
     console.log('%c[FAQ]beforeRouteUpdate(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
     next();
