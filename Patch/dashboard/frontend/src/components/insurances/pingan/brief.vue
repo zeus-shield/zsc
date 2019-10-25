@@ -33,6 +33,8 @@
 }
 .insurance .info .col .content {
 }
+.insurance .operation {
+}
 </style>
 
 <script>
