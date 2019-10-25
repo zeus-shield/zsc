@@ -9,6 +9,9 @@ const removeCategory = async (req, res) => {
 };
 
 const update = async (req, res) => {
+  const name = req.body.name;
+  const newName = req.body.newName;
+  const newCategoryNames = JSON.parse(req.body.newCategoryNames);
   try {
   } catch (err) {
   }
