@@ -20,6 +20,10 @@ const list = async (req, res) => {
   } catch (err) {
   }
 };
+
+const detail = async (req, res) => {
+};
+
 const count = async (req, res) => {
   // debug("count(%s, %s, %s)", req.query.company, req.query.category, req.query.title);
   try {
