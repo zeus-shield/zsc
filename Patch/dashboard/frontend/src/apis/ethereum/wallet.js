@@ -4,4 +4,7 @@ class Wallet {
   };
   async enable() {
   };
+
+  addListener() {
+  };
 }
