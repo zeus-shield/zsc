@@ -31,5 +31,7 @@
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
+    return {
+    };
 };
 </script>
