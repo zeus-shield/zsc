@@ -66,6 +66,8 @@ const en = {
         google: {
           title: 'Google Authenticator',
           description: 'Receive verification codes for login.',
+          operation: {
+          }
         }
       },
       dialog: {
