@@ -38,8 +38,11 @@ export default {
   // components: {
   // },
   data() {
+    return {
+    };
   },
-  props: {
+  // props: {
+  // },
   },
 };
 </script>
