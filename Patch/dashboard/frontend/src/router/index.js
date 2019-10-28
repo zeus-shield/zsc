@@ -132,6 +132,12 @@ let router = new Router({
           component: UserSupport,
           meta: { auth: true }
         },
+        {
+          path: '/account/user/questions',
+          name: 'userQuestions',
+          component: UserQuestions,
+          meta: { auth: true }
+        },
       ]
     },
 
