@@ -45,5 +45,9 @@ export default {
       hide: true
     };
   },
+  // props: ['activeIndex'],
+  props: {
+    activeIndex: String
+  },
 };
 </script>
