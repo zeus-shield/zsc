@@ -12,6 +12,10 @@ const update = async (req, res) => {
   const name = req.body.name;
   const newName = req.body.newName;
   const newCategoryNames = JSON.parse(req.body.newCategoryNames);
+
+  debug("update(%s, %s, %s)", name, newName, newCategoryNames);
+
+  let session = null;
   try {
   } catch (err) {
   }
