@@ -48,5 +48,7 @@ export default {
     console.log('%c[Home]beforeRouteLeave(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
     next();
   },
+  methods: {
+  }
 };
 </script>
