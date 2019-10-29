@@ -34,6 +34,8 @@
 }
 .insurance .info .col .content {
 }
+.insurance .info .col .insured-table {
+}
 </style>
 
 <script>
