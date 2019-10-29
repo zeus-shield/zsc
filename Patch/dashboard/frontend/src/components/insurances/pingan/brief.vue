@@ -34,6 +34,7 @@
 .insurance .info .col .content {
 }
 .insurance .operation {
+  background: #fff9f2;
 }
 .insurance .operation .col {
 }
