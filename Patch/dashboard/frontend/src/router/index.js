@@ -138,6 +138,14 @@ let router = new Router({
           component: UserQuestions,
           meta: { auth: true }
         },
+        {
+          path: '/account/user/google/:cmd',
+          name: 'userGoogle',
+          component: UserGoogle,
+          // props: { cmd: 'set' },
+          props: true,
+          meta: { auth: true }
+        }
       ]
     },
 
