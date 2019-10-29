@@ -85,6 +85,9 @@
   // border-bottom-color:#545c64
 }
 .el-popper[x-placement^=right] {
+}
+.el-popper[x-placement^=right] .popper__arrow {
+}
 .utils-alert { 
   width: 280px;
 }
