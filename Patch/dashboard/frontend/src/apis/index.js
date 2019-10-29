@@ -13,6 +13,8 @@ import Insurance from './insuranceClass';
 import Company from './companyClass';
 
 class APIs {
+  constructor() {
+  }
 }
 
 export default new APIs();
