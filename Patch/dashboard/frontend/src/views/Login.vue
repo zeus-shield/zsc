@@ -43,6 +43,7 @@ export default {
   },
   // props: {
   // },
+  computed: {
   },
 };
 </script>
