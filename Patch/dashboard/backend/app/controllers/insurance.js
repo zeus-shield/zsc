@@ -16,10 +16,12 @@ const update = async (req, res) => {
 };
 
 const list = async (req, res) => {
+  // debug("list()");
   try {
     const result = await services.insurances.findAll(null);
     res.sendOk(result);
   } catch (err) {
+    res.sendErr(err);
   }
 };
 
