@@ -31,6 +31,9 @@
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
+  name: 'SignUp',
+  components: {
+  },
     return {
     };
 };
