@@ -17,6 +17,9 @@ const update = async (req, res) => {
 
   let session = null;
   try {
+    let categories = [];
+    let result;
+    let ret;
   } catch (err) {
   }
 };
