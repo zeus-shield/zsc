@@ -18,6 +18,9 @@ const state = () => {
       company: {
       },
       insurance: {
+        list: 'red',
+        add: 'blue',
+        edit: 'green'
       }
     }
   };
