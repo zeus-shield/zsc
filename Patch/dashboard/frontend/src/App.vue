@@ -96,6 +96,8 @@
 <script>
 export default {
   name: 'App',
+  metaInfo: {
+  },
 };
 </script>
 
