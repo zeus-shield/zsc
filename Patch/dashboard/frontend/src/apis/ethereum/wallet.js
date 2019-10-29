@@ -1,4 +1,5 @@
 'use strict';
+
 class Wallet {
   constructor() {
   };
@@ -8,3 +9,5 @@ class Wallet {
   addListener() {
   };
 }
+
+export default Wallet;
