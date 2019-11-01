@@ -78,7 +78,11 @@ const user = {
       let res = await instance.post('user/emailCode', params);
       return res.data;
     } catch (err) {
-      throw err.response.data;
+      if (err.response !== undefined) {
+        throw err.response.data;
+      } else {
+        throw err.message;
+      }
     }
   },
   async signUp(account, code, password) {
