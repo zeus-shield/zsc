@@ -8,7 +8,7 @@ import Router from 'vue-router';
 // import User from '@/views/User';
 // import NotFound from '@/components/404';
 
-// 懒加载方式，当路由被访问的时候才加载对应组件
+// Lazy load mode: load the corresponding components when the route is accessed
 // Method 1
 // const Home = () => import(/* webpackChunkName: "lazy" */ '@/views/Home');
 // const User = () => import(/* webpackChunkName: "lazy" */ '@/views/User');
@@ -21,17 +21,18 @@ import Router from 'vue-router';
 
 // Method 3
 const Home = resolve => require.ensure([], () => resolve(require('@/views/Home')), 'lazy');
-const Insurance = resolve => require.ensure([], () => resolve(require('@/views/Insurance')), 'lazy');
+const InsuranceBase = resolve => require.ensure([], () => resolve(require('@/views/InsuranceBase')), 'lazy');
 const Analytics = resolve => require.ensure([], () => resolve(require('@/views/Analytics')), 'lazy');
 const FAQ = resolve => require.ensure([], () => resolve(require('@/views/FAQ')), 'lazy');
 const Login = resolve => require.ensure([], () => resolve(require('@/views/Login')), 'lazy');
 const SignUp = resolve => require.ensure([], () => resolve(require('@/views/SignUp')), 'lazy');
 const User = resolve => require.ensure([], () => resolve(require('@/views/User')), 'lazy');
 const UserDetail = resolve => require.ensure([], () => resolve(require('@/views/UserDetail')), 'lazy');
+const UserPolicy = resolve => require.ensure([], () => resolve(require('@/views/UserPolicy')), 'lazy');
 const UserSupport = resolve => require.ensure([], () => resolve(require('@/views/UserSupport')), 'lazy');
 const UserQuestions = resolve => require.ensure([], () => resolve(require('@/views/UserQuestions')), 'lazy');
 const UserGoogle = resolve => require.ensure([], () => resolve(require('@/views/UserGoogle')), 'lazy');
-const NotFound = resolve => require.ensure([], () => resolve(require('@/components/404')), 'lazy');
+const NotFound = resolve => require.ensure([], () => resolve(require('@/views/404')), 'lazy');
 Vue.use(Router);
 
 let router = new Router({
