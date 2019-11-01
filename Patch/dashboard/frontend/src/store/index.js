@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 
 import logColor from './modules/logColor';
 import lang from './modules/lang';
+import device from './modules/device';
 
 // import createLogger from '../plugins/logger'
 // import createLogger from '../../../dist/logger'
@@ -18,12 +19,13 @@ const debug = process.env.NODE_ENV !== 'production';
 const store = new Vuex.Store({
   modules: {
     logColor,
-    lang
+    lang,
+    device
   },
   strict: debug,
   // plugins: debug ? [createLogger()] : [],
 
-  // ???? state/getters/mutations/actions
+  // Root level state/getters/mutations/actions
   state() {
     return {
       activeIndex: '1'
