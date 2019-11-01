@@ -4,7 +4,7 @@
 const state = () => {
   return {
     insurance: {
-      base: 'black',
+      base: 'yellow',
       pingan: {
         brief: 'black',
         detail: 'black'
@@ -22,7 +22,8 @@ const state = () => {
         add: 'blue',
         edit: 'green'
       }
-    }
+    },
+    notFound: 'red'
   };
 };
 
