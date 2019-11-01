@@ -8,6 +8,8 @@ class Wallet {
 
   addListener() {
   };
+
+  info() {
 }
 
 export default Wallet;
