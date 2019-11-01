@@ -14,6 +14,8 @@ import Company from './companyClass';
 
 class APIs {
   constructor() {
+    this.ethereum = {};
+    this.ethereum.wallet = new Wallet();
   }
 }
 
