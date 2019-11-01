@@ -13,6 +13,7 @@ module.exports = (app) => {
   app.post('/user/emailCode', wrap(controllers.user.emailCode));
   app.post('/user/signUp', wrap(controllers.user.signUp));
   app.post('/user/login', wrap(controllers.user.login));
+  app.route('/statistics').get(wrap(controllers.user.statistics));
   app.use(middlewaresArr);
   require('./user')(app);
 
