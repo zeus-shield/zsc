@@ -33,14 +33,16 @@ const cn = {
     phoneTitle: '手机注册',
     emailTitle: '邮箱注册',
   },
-  insurance: {
-    aside: {
-      slot: [
-        {
-          title: '保险公司',
-          item: ['中国人保', '中国平安', '中国太平洋', '中国人寿', '新华保险']
-        }
-      ]
+  market: {
+    // aside: {
+    //   slot: [
+    //     {
+    //       title: '保险公司',
+    //       item: ['中国人保', '中国平安', '中国太平洋', '中国人寿', '新华保险']
+    //     }
+    //   ]
+    // }
+      }
     }
   },
   user: {
