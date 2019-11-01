@@ -2,14 +2,15 @@
 const en = {
   header: {
     home: 'Home',
-    insurance: 'Insurance',
-    certificate: 'Certificate',
+    insurance: 'Market',
+    market: 'Product',
     analytics: 'Analytics',
     whitePaper: 'White Paper',
     faq: 'FAQ',
     login: 'Login',
     signUp: 'Sign Up',
-    user: 'User',
+    admin: 'Admin',
+    user: 'Personal Center',
     logout: 'Logout',
     lang: 'English'
   },
