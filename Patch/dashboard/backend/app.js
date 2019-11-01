@@ -15,7 +15,6 @@ const routes = require('./app/routes');
 
 const mongoose = require('mongoose');
 
-const services = require('./app/services');
 /**
  * Normalize a port into a number, string, or false.
  */
@@ -38,10 +37,10 @@ function _normalizePort(val) {
 log4js.configure(logConfig)
 global.logger = log4js.getLogger();
 
-// ?????
-// ?mongoose???promise???ES6?promise
+// Connect to database
+// Replace mongoose's promise with ES6's promise
 // mongoose.Promise = global.Promise
-// MongoDB???4.0??,???useNewUrlParser???useCreateIndex??
+// After mongodb is upgraded to 4.0, 'useNewUrlParser' parameter and 'useCreateIndex' parameter need to be added
 mongoose.connect(settings.dbConfig.URL, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false }).then(
   () => {
     debug('Dashboard mongoose connected!');
