@@ -26,6 +26,10 @@ const list = async (req, res) => {
 };
 
 const detail = async (req, res) => {
+  // debug("detail(%s)", req.query.company, req.query.category, req.query.title);
+  try {
+  } catch (err) {
+  }
 };
 
 const count = async (req, res) => {
