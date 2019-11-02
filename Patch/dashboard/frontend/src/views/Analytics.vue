@@ -4,7 +4,12 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
+
+import echarts from 'echarts';
+
+import utils from '@/common/utils';
+import user from '@/apis/user';
 
 export default {
   name: 'Analytics',
