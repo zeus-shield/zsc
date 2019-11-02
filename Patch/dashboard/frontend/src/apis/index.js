@@ -16,6 +16,10 @@ class APIs {
   constructor() {
     this.ethereum = {};
     this.ethereum.wallet = new Wallet();
+
+    this.user = new User(instance);
+    this.company = new Company(instance);
+    this.insurance = new Insurance(instance);
   }
 }
 
