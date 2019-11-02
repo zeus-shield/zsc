@@ -10,6 +10,8 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 
+import utils from '../common/utils';
+
 export default {
   name: 'Home',
   // components: {
