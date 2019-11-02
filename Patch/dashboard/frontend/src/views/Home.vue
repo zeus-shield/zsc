@@ -26,7 +26,8 @@ export default {
     ...mapState({
       logColor: state => state.logColor.home
     }),
-    ...mapGetters('lang', ['langSet'])
+    ...mapGetters('lang', ['langSet']),
+    ...mapGetters('device', ['device'])
   },
   created() {
     console.log('%c[Home]created()', `color:${this.logColor}`);
