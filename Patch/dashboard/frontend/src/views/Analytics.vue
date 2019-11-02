@@ -24,7 +24,9 @@ export default {
   computed: {
     ...mapState({
       logColor: state => state.logColor.analytics
-    })
+    }),
+    ...mapGetters('lang', ['langSet']),
+    ...mapGetters('device', ['device'])
   },
   created() {
     console.log('%c[Analytics]created()', `color:${this.logColor}`);
