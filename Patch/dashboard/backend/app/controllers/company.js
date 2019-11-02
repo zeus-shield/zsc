@@ -10,6 +10,9 @@ const remove = async (req, res) => {
 };
 
 const removeCategory = async (req, res) => {
+  try {
+  } catch (err) {
+  }
 };
 
 const update = async (req, res) => {
