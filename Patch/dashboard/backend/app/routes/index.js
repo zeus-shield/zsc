@@ -14,6 +14,10 @@ module.exports = (app) => {
   app.post('/user/signUp', wrap(controllers.user.signUp));
   app.post('/user/login', wrap(controllers.user.login));
   app.route('/statistics').get(wrap(controllers.user.statistics));
+
+  app.route('/company').get(wrap(controllers.company.list));
+  app.route('/insurance').get(wrap(controllers.insurance.list));
+
   app.use(middlewaresArr);
   require('./user')(app);
 
