@@ -81,6 +81,9 @@ const updateTOTP = async (req, res) => {
   }
 };
 
+const statistics = async (req, res) => {
+};
+
 const list = async (req, res) => {
   debug("list()");
   res.send('/users/list');
