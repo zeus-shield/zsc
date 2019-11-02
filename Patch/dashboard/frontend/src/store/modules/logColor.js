@@ -18,9 +18,9 @@ const state = () => {
       company: {
       },
       insurance: {
-        list: 'red',
-        add: 'blue',
-        edit: 'green'
+        list: 'black',
+        add: 'black',
+        edit: 'black'
       }
     },
     notFound: 'red'
