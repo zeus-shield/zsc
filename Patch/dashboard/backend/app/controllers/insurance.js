@@ -13,6 +13,10 @@ const remove = async (req, res) => {
 };
 
 const update = async (req, res) => {
+  // debug("update(%s, %s, %s, %s)", req.body.company, req.body.category, req.body.title, req.body.update);
+  try {
+  } catch (err) {
+  }
 };
 
 const list = async (req, res) => {
