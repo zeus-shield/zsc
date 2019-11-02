@@ -44,6 +44,12 @@ export default {
   // props: {
   // },
   computed: {
+    // ...mapState({
+    //   logColor: state => state.logColor.login
+    // })
+    ...mapState('logColor', {
+      logColor: state => state.login
+    }),
   },
 };
 </script>
