@@ -36,7 +36,6 @@ export default {
   beforeRouteEnter(to, from, next) {
     console.log('%c[FAQ]beforeRouteEnter(\"%s\" => \"%s\")', 'color:black', from.fullPath, to.fullPath);
     next(vm => {
-      // 通过 `vm` 访问组件实例
       // console.log(vm);
       console.log('%c[FAQ]beforeRouteEnter(\"%s\" => \"%s\") next', `color:${vm.logColor}`, from.fullPath, to.fullPath);
     });
