@@ -52,5 +52,7 @@ export default {
     }),
     ...mapGetters('lang', ['langSet'])
   },
+  methods: {
+  }
 };
 </script>
