@@ -3,6 +3,10 @@
     Analytics
   </div>
 </template>
+
+<style lang="scss" scoped>
+</style>
+
 <script>
 import { mapState, mapGetters } from 'vuex';
 
