@@ -29,7 +29,7 @@ const en = {
     phoneTitle: 'Phone',
     emailTitle: 'Email',
   },
-  insurance: {
+  market: {
     aside: {
       slot: [
         {
@@ -44,7 +44,7 @@ const en = {
       slot: [
         {
           title: 'Profile',
-          item: ['Account Safety']
+          item: ['Account Safety', 'My Policy']
         },
         {
           title: 'Support',
