@@ -40,6 +40,7 @@ export default {
   },
   updated() {
     console.log('%c[Home]updated()', `color:${this.logColor}`);
+    this.lang = utils.storage.cookie.get('lang');
   },
   beforeRouteEnter(to, from, next) {
   },
