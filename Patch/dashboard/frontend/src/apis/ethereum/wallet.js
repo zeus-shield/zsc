@@ -2,6 +2,14 @@
 
 class Wallet {
   constructor() {
+    this.listener = false;
+    this.account = undefined;
+    this.networkId = undefined;
+    // state:
+    // 1. unstalled
+    // 2. installed
+    // 3. enabled
+    this.state = 'unstalled';
   };
   async enable() {
   };
