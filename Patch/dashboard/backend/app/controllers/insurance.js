@@ -35,6 +35,11 @@ const list = async (req, res) => {
 const detail = async (req, res) => {
   // debug("detail(%s)", req.query.company, req.query.category, req.query.title);
   try {
+    const method = req.query.method;
+    const company = req.query.company;
+    const category = req.query.category;
+    const title = req.query.title;
+    const id = req.query.id;
   } catch (err) {
   }
 };
