@@ -85,6 +85,10 @@ const updateTOTP = async (req, res) => {
 const addPolicy = async (req, res) => {
 };
 const statistics = async (req, res) => {
+  try {
+  } catch (err) {
+    throw err;
+  }
 };
 
 const list = async (req, res) => {
