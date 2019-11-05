@@ -5,6 +5,8 @@
 </template>
 
 <style lang="scss" scoped>
+.el-row {
+}
 </style>
 
 <script>
