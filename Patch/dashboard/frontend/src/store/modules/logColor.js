@@ -16,6 +16,9 @@ const state = () => {
     },
     admin: {
       company: {
+        list: 'black',
+        add: 'black',
+        edit: 'black'
       },
       insurance: {
         list: 'black',
