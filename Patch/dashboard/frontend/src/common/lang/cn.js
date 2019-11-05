@@ -2,10 +2,10 @@
 const cn = {
   header: {
     home: '首页', // 1
-    
-    insurance: '保单', // 2
-    certificate: '录入', // 21
-    analytics: '分析', // 22
+
+    insurance: '保险市场', // 2
+    market: '保险集市', // 21
+    analytics: '数据分析', // 22
 
     whitePaper: '白皮书', // 3
     faq: '常见问题', // 4
