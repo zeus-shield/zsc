@@ -14,6 +14,8 @@ const en = {
     logout: 'Logout',
     lang: 'English'
   },
+  home: {
+  },
   login: {
     title: 'LOGIN',
     account: 'Phone Number/Email',
