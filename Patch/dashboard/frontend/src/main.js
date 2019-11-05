@@ -15,6 +15,9 @@ import './assets/iconfont/iconfont.js';
 
 import Meta from 'vue-meta';
 
+// swiper
+import VueAwesomeSwiper from 'vue-awesome-swiper';
+
 import router from './router';
 import store from './store';
 // import app from './components/navigation/navmenu/navmenu';
@@ -34,6 +37,8 @@ Vue.use(ElementUI);
 // });
 
 Vue.use(Meta);
+
+Vue.use(VueAwesomeSwiper, /* { default global options } */);
 
 new Vue({
   router,
