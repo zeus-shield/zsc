@@ -5,6 +5,8 @@
 </template>
 
 <style lang="scss" scoped>
+.echarts-card {
+}
 .echarts {
 }
 </style>
