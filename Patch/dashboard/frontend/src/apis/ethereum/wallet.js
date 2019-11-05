@@ -12,6 +12,9 @@ class Wallet {
     this.state = 'unstalled';
   };
   async enable() {
+    try {
+    } catch (reason) {
+    }
   };
 
   addListener(vm) {
