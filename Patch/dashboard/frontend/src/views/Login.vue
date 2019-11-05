@@ -52,6 +52,9 @@ export default {
     }),
     ...mapGetters('lang', ['langSet'])
   },
+  created() {
+    console.log('%c[Login]created()', `color:${this.logColor}`);
+  },
   methods: {
   }
 };
