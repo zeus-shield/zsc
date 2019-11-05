@@ -29,6 +29,9 @@ const update = async (req, res) => {
     let categories = [];
     let result;
     let ret;
+
+    session = await mongoose.startSession();
+    session.startTransaction();
   } catch (err) {
   }
 };
