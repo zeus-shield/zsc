@@ -6,6 +6,10 @@
 
 <style lang="scss" scoped>
 .el-row {
+  margin-bottom: 50px;
+  &:last-child {
+    margin-bottom: 0px;
+  }
 }
 </style>
 
