@@ -175,7 +175,11 @@ const user = {
       let res = await instance.post('user/saveTOTP', null, config);
       return res.data;
     } catch (err) {
-      throw err.response.data;
+      if (err.response !== undefined) {
+        throw err.response.data;
+      } else {
+        throw err.message;
+      }
     }
   },
 
