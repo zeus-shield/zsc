@@ -55,6 +55,9 @@ export default {
   created() {
     console.log('%c[Login]created()', `color:${this.logColor}`);
   },
+  mounted() {
+    console.log('%c[Login]mounted()', `color:${this.logColor}`);
+  },
   methods: {
   }
 };
