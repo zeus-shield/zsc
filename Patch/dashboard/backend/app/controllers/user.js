@@ -105,7 +105,7 @@ const list = async (req, res) => {
 //   }
 // };
 
-module.exports = {emailCode, signUp, login, detail, setTOTP, saveTOTP, updateTOTP, list};
+module.exports = {emailCode, signUp, login, detail, setTOTP, saveTOTP, updateTOTP, addPolicy, statistics, list};
 
 // // import user from './user'
 // export default {
