@@ -6,6 +6,9 @@
 
 <style lang="scss" scoped>
 .echarts-card {
+  text-align: center;
+  // background: #FFF0F5;
+  margin-bottom: 20px;
 }
 .echarts {
   width: 100%; 
