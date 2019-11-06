@@ -15,6 +15,9 @@ const state = () => {
       }
     },
     admin: {
+      base: 'black',
+      aside: 'black',
+      user: 'black',
       company: {
         list: 'black',
         add: 'black',
