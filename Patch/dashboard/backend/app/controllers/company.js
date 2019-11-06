@@ -32,6 +32,12 @@ const update = async (req, res) => {
 
     session = await mongoose.startSession();
     session.startTransaction();
+
+    // 1. update company name and category name for 'insurances'
+    result = await services.companies.findByName(name, session);
+    if (!result) {
+      throw createError('COMPANY_NOT_EXIST');
+    }
   } catch (err) {
   }
 };
