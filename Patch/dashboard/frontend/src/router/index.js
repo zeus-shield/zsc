@@ -146,6 +146,12 @@ let router = new Router({
           meta: { auth: true }
         },
         {
+          path: '/account/user/policy',
+          name: 'userPolicy',
+          component: UserPolicy,
+          meta: { auth: true }
+        },
+        {
           path: '/account/user/support',
           name: 'userSupport',
           component: UserSupport,
