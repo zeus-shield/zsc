@@ -10,18 +10,18 @@ import 'element-ui/lib/theme-chalk/index.css';
 
 // iconfont can be imported in 'index.tpl'
 // if we use svg only, 'iconfont.css' is not necessary.
-import './assets/iconfont/iconfont.css';
-import './assets/iconfont/iconfont.js';
+import '@/assets/iconfont/iconfont.css';
+import '@/assets/iconfont/iconfont.js';
 
 import Meta from 'vue-meta';
 
 // swiper
 import VueAwesomeSwiper from 'vue-awesome-swiper';
 
-import router from './router';
-import store from './store';
+import router from '@/router';
+import store from '@/store';
 // import app from './components/navigation/navmenu/navmenu';
-import App from './App';
+import App from '@/App';
 
 Vue.use(VueQriously);
 // import locale from 'element-ui/lib/locale/lang/en';
