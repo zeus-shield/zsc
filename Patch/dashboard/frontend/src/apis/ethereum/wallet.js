@@ -24,6 +24,10 @@ class Wallet {
   };
 
   info() {
+    // if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined')) {
+    if (typeof window.ethereum !== 'undefined') {
+    } else {
+    }
 }
 
 export default Wallet;
