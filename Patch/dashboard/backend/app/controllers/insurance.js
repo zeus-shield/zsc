@@ -7,6 +7,9 @@ const services = require('../services');
 const debug = require('debug')('backend:app:controllers:insurance');
 
 const add = async (req, res) => {
+  // debug("add(%s, %s, %s, %s)", req.body.company, req.body.category,
+  //   JSON.parse(req.body.brief), JSON.parse(req.body.detail));
+  let session = null;
   try {
   } catch (err) {
   }
