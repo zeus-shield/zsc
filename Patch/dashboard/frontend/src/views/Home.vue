@@ -11,6 +11,9 @@
     margin-bottom: 0px;
   }
 }
+
+.gallery-thumbs .swiper-slide {
+}
 </style>
 
 <script>
