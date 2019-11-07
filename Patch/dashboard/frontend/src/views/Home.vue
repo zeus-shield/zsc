@@ -17,6 +17,9 @@
 </style>
 
 <script>
+import Swiper from 'swiper';
+import 'swiper/dist/css/swiper.min.css';
+
 import { mapState, mapGetters } from 'vuex';
 
 import utils from '../common/utils';
