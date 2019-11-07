@@ -36,6 +36,8 @@ const NotFound = resolve => require.ensure([], () => resolve(require('@/views/40
 
 const Admin = resolve => require.ensure([], () => resolve(require('@/views/Admin')), 'lazy');
 const AdminUser = resolve => require.ensure([], () => resolve(require('@/views/AdminUser')), 'lazy');
+const AdminCompany = resolve => require.ensure([], () => resolve(require('@/views/AdminCompany')), 'lazy');
+const AdminCompanyAdd = resolve => require.ensure([], () => resolve(require('@/views/AdminCompanyAdd')), 'lazy');
 Vue.use(Router);
 
 let router = new Router({
