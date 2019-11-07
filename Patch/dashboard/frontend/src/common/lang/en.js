@@ -87,6 +87,10 @@ const en = {
       ]
     }
   },
+  notFound: {
+    content: 'The page you visited does not exist!',
+    back: 'Back to home page!'
+  },
   company: {
   },
   message: {
