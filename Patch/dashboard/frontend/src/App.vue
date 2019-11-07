@@ -93,6 +93,7 @@
   // border-bottom-color:#545c64
 }
 .el-popper[x-placement^=right] {
+  margin-left:12px
 }
 .el-popper[x-placement^=right] .popper__arrow {
 }
