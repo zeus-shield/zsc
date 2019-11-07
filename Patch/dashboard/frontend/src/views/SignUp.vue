@@ -44,6 +44,10 @@ export default {
   // props: {
   // },
   computed: {
+  },
+  created() {
+    console.log('%c[SignUp]created()', `color:${this.logColor}`);
+  },
   }
 };
 </script>
