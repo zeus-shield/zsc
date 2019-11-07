@@ -43,7 +43,11 @@ const detail = async (req, res) => {
     const category = req.query.category;
     const title = req.query.title;
     const id = req.query.id;
+
+    let result;
+    res.sendOk(result);
   } catch (err) {
+    res.sendErr(err);
   }
 };
 
