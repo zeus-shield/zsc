@@ -38,6 +38,9 @@ const update = async (req, res) => {
     if (!result) {
       throw createError('COMPANY_NOT_EXIST');
     }
+
+    for(let i=0; i<newCategoryNames.length; i++) {
+    }
   } catch (err) {
   }
 };
