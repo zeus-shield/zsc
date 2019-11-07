@@ -84,7 +84,10 @@ const updateTOTP = async (req, res) => {
 // new interface
 const addPolicy = async (req, res) => {
 };
+
 const statistics = async (req, res) => {
+  debug("statistics(%s, %s, %s, %s, %s)", req.query.company, 
+    req.query.category, req.query.title, req.query.sort, req.query.limit);
   try {
   } catch (err) {
     throw err;
