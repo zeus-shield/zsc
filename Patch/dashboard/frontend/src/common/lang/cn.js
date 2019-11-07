@@ -44,6 +44,9 @@ const cn = {
     //   ]
     // }
     pingan: {
+      category: '保障类型：',
+      period: '保障期限：',
+      input: '录入我的保单'
     },
       }
     }
