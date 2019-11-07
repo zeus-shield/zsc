@@ -5,6 +5,10 @@
 </template>
 
 <style lang="scss" scoped>
+.page-body {
+  width:80%;
+  margin:56px auto auto auto;
+}
 .echarts-card {
   text-align: center;
   // background: #FFF0F5;
