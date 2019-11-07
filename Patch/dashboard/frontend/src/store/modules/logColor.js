@@ -3,6 +3,8 @@
 // initial state
 const state = () => {
   return {
+    app: 'black',
+    header: 'black',
     insurance: {
       base: 'yellow',
       pingan: {
