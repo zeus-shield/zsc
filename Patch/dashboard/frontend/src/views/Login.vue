@@ -58,6 +58,9 @@ export default {
   mounted() {
     console.log('%c[Login]mounted()', `color:${this.logColor}`);
   },
+  destroyed() {
+    console.log('%c[Login]destroyed()', `color:${this.logColor}`);
+  },
   methods: {
   }
 };
