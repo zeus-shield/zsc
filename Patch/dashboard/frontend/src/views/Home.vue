@@ -13,8 +13,11 @@
 }
 
 .gallery-thumbs .swiper-slide {
+  opacity: 0.4;
 }
 .slot3 .card .text .sub-title {
+  font-size: 18px;
+  font-weight: 600;
 }
 </style>
 
