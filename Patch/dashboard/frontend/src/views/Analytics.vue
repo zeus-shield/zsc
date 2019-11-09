@@ -39,6 +39,10 @@ export default {
   // },
   data() {
     return {
+      loading: false,
+
+      chartPie: null,
+      chartBar: null,
     };
   },
   // props: {
