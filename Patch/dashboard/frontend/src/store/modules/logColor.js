@@ -5,6 +5,8 @@ const state = () => {
   return {
     app: 'black',
     header: 'black',
+    footer: 'black',
+    home: 'black',
     insurance: {
       base: 'yellow',
       pingan: {
