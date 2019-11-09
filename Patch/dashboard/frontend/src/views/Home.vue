@@ -14,6 +14,8 @@
 
 .gallery-thumbs .swiper-slide {
 }
+.slot3 .card .text .sub-title {
+}
 </style>
 
 <script>
