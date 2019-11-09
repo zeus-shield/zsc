@@ -30,7 +30,11 @@ class Wallet {
         this.state = 'installed';
       }
     } else {
+      this.account = undefined;
+      this.state = 'unstalled';
     }
+    return {account: this.account, state: this.state};
+  }
 }
 
 export default Wallet;
