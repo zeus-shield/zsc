@@ -89,6 +89,11 @@ const statistics = async (req, res) => {
   debug("statistics(%s, %s, %s, %s, %s)", req.query.company, 
     req.query.category, req.query.title, req.query.sort, req.query.limit);
   try {
+    const company = req.query.company;
+    const category = req.query.category;
+    const title = req.query.title;
+    const sort = parseInt(req.query.sort);
+    const limit = parseInt(req.query.limit);
   } catch (err) {
     throw err;
   }
