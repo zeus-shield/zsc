@@ -45,6 +45,10 @@ const detail = async (req, res) => {
     const id = req.query.id;
 
     let result;
+    if(method === 'key') {
+    } else if(method === 'id') {
+    } else {
+    }
     res.sendOk(result);
   } catch (err) {
     res.sendErr(err);
