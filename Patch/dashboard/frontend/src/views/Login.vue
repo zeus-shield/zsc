@@ -61,6 +61,9 @@ export default {
   destroyed() {
     console.log('%c[Login]destroyed()', `color:${this.logColor}`);
   },
+  updated() {
+    console.log('%c[Login]updated()', `color:${this.logColor}`);
+  },
   methods: {
   }
 };
