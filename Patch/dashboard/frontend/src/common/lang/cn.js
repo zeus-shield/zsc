@@ -56,7 +56,7 @@ const cn = {
       slot: [
         {
           title: '个人信息',
-          item: ['账户和安全']
+          item: ['账户和安全', '我的保单']
         },
         {
           title: '支持',
@@ -64,7 +64,6 @@ const cn = {
         }
       ]
     },
-
     detail: {
       title: '账户和安全',
       securityTip: {
@@ -93,7 +92,6 @@ const cn = {
         buttonText: '确认'
       }
     },
-
     google: {
       title: ['设置 谷歌验证', '重置 谷歌验证'],
       step: [
