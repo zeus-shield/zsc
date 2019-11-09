@@ -48,6 +48,10 @@ export default {
   created() {
     console.log('%c[SignUp]created()', `color:${this.logColor}`);
   },
+  mounted() {
+    console.log('%c[SignUp]mounted()', `color:${this.logColor}`);
+    this.buttonCodeName = this.langSet.signUp.getCode;
+  },
   }
 };
 </script>
