@@ -52,6 +52,9 @@ export default {
     console.log('%c[SignUp]mounted()', `color:${this.logColor}`);
     this.buttonCodeName = this.langSet.signUp.getCode;
   },
+  destroyed() {
+    console.log('%c[SignUp]destroyed()', `color:${this.logColor}`);
+  },
   }
 };
 </script>
