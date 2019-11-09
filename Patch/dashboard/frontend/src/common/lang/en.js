@@ -103,7 +103,8 @@ const en = {
   component: {
     button: {
       confirm: 'Confirm',
-      cancel: 'Cancel'
+      cancel: 'Cancel',
+      save: 'Save'
     },
     alert: {
       errorTitle: 'Error',
