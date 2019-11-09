@@ -64,6 +64,8 @@ export default {
   updated() {
     console.log('%c[Login]updated()', `color:${this.logColor}`);
   },
+  beforeRouteLeave(to, from, next) {
+  },
   methods: {
   }
 };
