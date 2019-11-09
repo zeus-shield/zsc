@@ -42,6 +42,12 @@ const update = async (req, res) => {
     for(let i=0; i<newCategoryNames.length; i++) {
     }
   } catch (err) {
+    debug(err);
+    if (session !== null) {
+      await session.abortTransaction();
+      session.endSession();
+    }
+    res.sendErr(err);
   }
 };
 
