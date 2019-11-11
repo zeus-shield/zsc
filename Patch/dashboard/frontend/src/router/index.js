@@ -48,6 +48,9 @@ const AdminInsuranceEdit = resolve => require.ensure([], () => resolve(require('
 Vue.use(Router);
 
 let router = new Router({
+  mode: 'history',
+  base: '/dashboard/src/dist/',
+  linkActiveClass: 'is-active',
   routes: [
     {
       path: '*',
@@ -181,6 +184,10 @@ let router = new Router({
           meta: { auth: true }
         }
       ]
+      // beforeEnter: (to, from, next) => {
+      //   console.log('[R7]beforeEnter: (%s) => (%s)', from.fullPath, to.fullPath);
+      //   next();
+      // }
     },
 
     {
