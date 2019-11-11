@@ -18,11 +18,11 @@
   width: 100%; 
   height: 400px;
 }
-@media (min-width:980px) {
-  .echarts {
-    height:500px;
-  }
- }
+// @media (min-width:980px) {
+//   .echarts {
+//     height:500px;
+//   }
+// }
 </style>
 
 <script>
