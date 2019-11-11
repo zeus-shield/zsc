@@ -45,10 +45,15 @@ const detail = async (req, res) => {
     const id = req.query.id;
 
     let result;
+
     if(method === 'key') {
+      result = await services.insurances.find(company, category, title, null);
     } else if(method === 'id') {
+      result = await services.insurances.findById(id, null);
     } else {
+      throw createError('COMMON_PARAM_ERROR');
     }
+
     res.sendOk(result);
   } catch (err) {
     res.sendErr(err);
