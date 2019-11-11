@@ -12,7 +12,12 @@ const remove = async (req, res) => {
 };
 
 const removeCategory = async (req, res) => {
+  debug("removeCategory(%s, %s)", req.body.name, req.body.category);
+
+  let session = null;
   try {
+    session = await mongoose.startSession();
+    session.startTransaction();
   } catch (err) {
   }
 };
