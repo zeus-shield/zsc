@@ -13,6 +13,10 @@ class Wallet {
   };
   async enable() {
     try {
+      // check if wallet install ?
+      // if (typeof window.ethereum === 'undefined' && (typeof window.web3 === 'undefined')) {
+      if (typeof window.ethereum === 'undefined') {
+      }
     } catch (reason) {
     }
   };
