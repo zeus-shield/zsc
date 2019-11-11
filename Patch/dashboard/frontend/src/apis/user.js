@@ -216,7 +216,9 @@ const user = {
         throw err.message;
       }
     }
-    }
+  },
+
+  async addPolicy(token, id, policy) {
   },
 
   async info(id, token) {
