@@ -70,6 +70,9 @@ export default {
     next();
   },
   methods: {
+    getImgUrl(item) {
+      return require('@/assets/images/slider' + (item) + '.jpg');
+    },
   }
 };
 </script>
