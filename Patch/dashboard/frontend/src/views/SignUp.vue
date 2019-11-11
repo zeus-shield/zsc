@@ -55,6 +55,8 @@ export default {
   destroyed() {
     console.log('%c[SignUp]destroyed()', `color:${this.logColor}`);
   },
+  updated() {
+  },
   }
 };
 </script>
