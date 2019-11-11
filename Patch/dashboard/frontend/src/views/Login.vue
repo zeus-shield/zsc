@@ -65,6 +65,8 @@ export default {
     console.log('%c[Login]updated()', `color:${this.logColor}`);
   },
   beforeRouteLeave(to, from, next) {
+    console.log('%c[Login]beforeRouteLeave(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
+    next();
   },
   methods: {
   }
