@@ -43,6 +43,9 @@ export default {
 
       chartPie: null,
       chartBar: null,
+
+      pieLegendData: [],
+      pieSeriesData: [],
     };
   },
   // props: {
