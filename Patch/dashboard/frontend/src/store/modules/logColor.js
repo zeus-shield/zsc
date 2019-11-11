@@ -7,6 +7,8 @@ const state = () => {
     header: 'black',
     footer: 'black',
     home: 'black',
+    certificate: 'black',
+    analytics: 'black',
     insurance: {
       base: 'yellow',
       pingan: {
