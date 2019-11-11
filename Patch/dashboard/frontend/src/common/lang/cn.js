@@ -48,6 +48,8 @@ const cn = {
       period: '保障期限：',
       input: '录入我的保单'
     },
+    picc: {
+    },
       }
     }
   },
