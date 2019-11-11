@@ -111,8 +111,10 @@ const en = {
       warningTitle: 'Warning'
     },
     loading: {
-      login: 'User login...',
-      signUp: 'User is signing up...'
+      login: 'User is logging in...',
+      signUp: 'User is signing up...',
+      insurance: 'Getting insurance products...',
+      analytics: 'Analyzing data........'
     }
   }
 };
