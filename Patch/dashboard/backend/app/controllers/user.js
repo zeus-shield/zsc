@@ -94,6 +94,9 @@ const statistics = async (req, res) => {
     const title = req.query.title;
     const sort = parseInt(req.query.sort);
     const limit = parseInt(req.query.limit);
+
+    const result = await services.users.statistics(company, category, title, sort, limit);
+    res.sendOk(result);
   } catch (err) {
     throw err;
   }
