@@ -73,6 +73,8 @@ export default {
     getImgUrl(item) {
       return require('@/assets/images/slider' + (item) + '.jpg');
     },
+    updateHeight() {
+    },
   }
 };
 </script>
