@@ -60,6 +60,11 @@ export default {
     this.lang = utils.storage.cookie.get('lang');
   },
   beforeRouteEnter(to, from, next) {
+    console.log('%c[Home]beforeRouteEnter(\"%s\" => \"%s\")', 'color:black', from.fullPath, to.fullPath);
+    next(vm => {
+      // console.log(vm);
+      console.log('%c[Home]beforeRouteEnter(\"%s\" => \"%s\") next', `color:${vm.logColor}`, from.fullPath, to.fullPath);
+    });
   },
   beforeRouteUpdate(to, from, next) {
     console.log('%c[Home]beforeRouteUpdate(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
