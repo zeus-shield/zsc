@@ -80,6 +80,9 @@ export default {
     },
     updateHeight() {
     },
+    changeFun(val, oldVal) {
+      this.activeIndex = val;
+    }
   }
 };
 </script>
