@@ -219,6 +219,8 @@ const user = {
   },
 
   async addPolicy(token, id, policy) {
+    let config = {
+    };
   },
 
   async info(id, token) {
