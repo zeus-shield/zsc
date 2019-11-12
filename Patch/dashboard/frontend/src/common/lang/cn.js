@@ -49,6 +49,10 @@ const cn = {
       input: '录入我的保单'
     },
     picc: {
+      category: '保障类型：',
+      age: '适用年龄：',
+      period: '保障期限：',
+      input: '录入我的保单'
     },
       }
     }
