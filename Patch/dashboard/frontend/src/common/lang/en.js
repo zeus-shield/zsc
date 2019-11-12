@@ -32,13 +32,14 @@ const en = {
     emailTitle: 'Email',
   },
   market: {
-    aside: {
-      slot: [
-        {
-          title: 'Company',
-          item: ['PICC', 'PING AN', 'CPIC', 'CHINA LIFE', 'NCI']
-        }
-      ]
+    // aside: {
+    //   slot: [
+    //     {
+    //       title: 'Company',
+    //       item: ['PICC', 'PING AN', 'CPIC', 'CHINA LIFE', 'NCI']
+    //     }
+    //   ]
+    // }
     }
   },
   user: {
