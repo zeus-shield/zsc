@@ -72,9 +72,9 @@
   background-color: #434A50;
   color: #fff; // #ffd04b;
 }
- .el-popper[x-placement^=top] {
-  margin-bottom:12px
-}
+// .el-popper[x-placement^=top] {
+//   margin-bottom:12px
+// }
 .el-popper[x-placement^=top] .popper__arrow {
 }
 .el-popper[x-placement^=bottom] {
