@@ -48,9 +48,9 @@ const AdminInsuranceEdit = resolve => require.ensure([], () => resolve(require('
 Vue.use(Router);
 
 let router = new Router({
-  mode: 'history',
-  base: '/dashboard/src/dist/',
-  linkActiveClass: 'is-active',
+  // mode: 'history',
+  // base: '/dashboard/src/dist/',
+  // linkActiveClass: 'is-active',
   routes: [
     {
       path: '*',
