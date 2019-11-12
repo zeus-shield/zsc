@@ -44,6 +44,9 @@ export default {
   // props: {
   // },
   computed: {
+    ...mapState({
+      logColor: state => state.logColor.signUp
+    })
   },
   created() {
     console.log('%c[SignUp]created()', `color:${this.logColor}`);
