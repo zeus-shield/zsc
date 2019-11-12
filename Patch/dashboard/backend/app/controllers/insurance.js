@@ -54,6 +54,9 @@ const detail = async (req, res) => {
       throw createError('COMMON_PARAM_ERROR');
     }
 
+    if(!result) {
+      throw createError('INSURANCE_NOT_EXIST');
+    }
     res.sendOk(result);
   } catch (err) {
     res.sendErr(err);
