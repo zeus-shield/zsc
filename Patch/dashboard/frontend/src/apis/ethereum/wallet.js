@@ -24,6 +24,10 @@ class Wallet {
   addListener(vm) {
     // if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined')) {
     if (typeof window.ethereum !== 'undefined') {
+
+      if (this.state === 'unstalled') {
+        this.state = 'installed';
+      }
     } else {}
   };
 
