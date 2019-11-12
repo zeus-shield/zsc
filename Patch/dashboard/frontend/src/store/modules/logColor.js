@@ -9,6 +9,8 @@ const state = () => {
     home: 'black',
     certificate: 'black',
     analytics: 'black',
+    faq: 'black',
+    login: 'black',
     insurance: {
       base: 'yellow',
       pingan: {
