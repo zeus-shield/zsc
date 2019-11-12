@@ -46,6 +46,10 @@ export default {
 
       pieLegendData: [],
       pieSeriesData: [],
+
+      barDataAxis: [],
+      barDataShadow: [],
+      barData: []
     };
   },
   // props: {
