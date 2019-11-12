@@ -69,6 +69,8 @@ export default {
     next();
   },
   methods: {
+    dialogClose() {
+    },
   }
 };
 </script>
