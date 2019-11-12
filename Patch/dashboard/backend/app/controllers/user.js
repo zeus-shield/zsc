@@ -83,6 +83,9 @@ const updateTOTP = async (req, res) => {
 
 // new interface
 const addPolicy = async (req, res) => {
+  try {
+  } catch (err) {
+  }
 };
 
 const statistics = async (req, res) => {
