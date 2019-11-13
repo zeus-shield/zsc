@@ -222,6 +222,8 @@ const user = {
     let config = {
     };
   },
+  async statistics(token, company, category, title, sort, limit) {
+  },
 
   async info(id, token) {
     let config = {
