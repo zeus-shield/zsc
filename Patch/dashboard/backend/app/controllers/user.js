@@ -83,8 +83,10 @@ const updateTOTP = async (req, res) => {
 
 // new interface
 const addPolicy = async (req, res) => {
+  debug("addPolicy(%s, %s)", req.body.id, req.body.policy);
   try {
   } catch (err) {
+    throw err;
   }
 };
 
