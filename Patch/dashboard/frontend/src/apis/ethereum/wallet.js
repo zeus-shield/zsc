@@ -16,6 +16,13 @@ class Wallet {
       // check if wallet install ?
       // if (typeof window.ethereum === 'undefined' && (typeof window.web3 === 'undefined')) {
       if (typeof window.ethereum === 'undefined') {
+
+        this.account = undefined;
+        this.state = 'unstalled';
+
+        const reason = {};
+        reason.stack = 'unstalled';
+        throw reason;
       }
     } catch (reason) {
     }
