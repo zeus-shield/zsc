@@ -79,6 +79,12 @@ export default {
       return require('@/assets/images/slider' + (item) + '.jpg');
     },
     updateHeight() {
+      let imgHeightTemp = window.screen.width;
+      if (imgHeightTemp >= 992) {
+      } else if (imgHeightTemp >= 768) {
+      } else if (imgHeightTemp >= 668) {
+      } else {
+      }
     },
     changeFun(val, oldVal) {
       this.activeIndex = val;
