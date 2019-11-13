@@ -33,6 +33,8 @@ const cn = {
   signUp: {
     phoneTitle: '手机注册',
     emailTitle: '邮箱注册',
+    phonePlaceholder: '请输入手机号',
+    emailPlaceholder: '请输入邮箱地址',
   },
   market: {
     // aside: {
