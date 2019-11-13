@@ -104,6 +104,8 @@
   border-right-color:#EBEEF5;
   border-left-width:0
 }
+.el-popper[x-placement^=right] .popper__arrow::after {
+}
 .utils-alert { 
   width: 280px;
 }
