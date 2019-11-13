@@ -30,6 +30,8 @@ const en = {
   signUp: {
     phoneTitle: 'Phone',
     emailTitle: 'Email',
+    phonePlaceholder: 'Phone Number',
+    emailPlaceholder: 'Email',
   },
   market: {
     // aside: {
