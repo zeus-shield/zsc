@@ -198,4 +198,5 @@ let router = new Router({
   ]
 });
 
+import utils from '../common/utils';
 export default router;
