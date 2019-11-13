@@ -90,6 +90,8 @@ export default {
   methods: {
     async prePie() {
     },
+    async preBar() {
+    },
   }
 };
 </script>
