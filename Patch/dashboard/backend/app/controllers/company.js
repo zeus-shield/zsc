@@ -19,6 +19,12 @@ const removeCategory = async (req, res) => {
     session = await mongoose.startSession();
     session.startTransaction();
   } catch (err) {
+    // debug(err);
+    if (session !== null) {
+      await session.abortTransaction();
+      session.endSession();
+    }
+    res.sendErr(err);
   }
 };
 
