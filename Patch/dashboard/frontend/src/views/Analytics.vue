@@ -88,6 +88,8 @@ export default {
     next();
   },
   methods: {
+    async prePie() {
+    },
   }
 };
 </script>
