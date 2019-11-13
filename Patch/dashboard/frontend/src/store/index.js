@@ -14,6 +14,10 @@ import mutations from './mutations';
 import actions from './actions';
 // import { getters } from './getters'
 // import { mutations } from './mutations'
+// for 'export const xxx = ...'
+import * as getters from './getters'
+import * as mutations from './mutations'
+import * as actions from './actions'
 Vue.use(Vuex);
 
 const debug = process.env.NODE_ENV !== 'production';
