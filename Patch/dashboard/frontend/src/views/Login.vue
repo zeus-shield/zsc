@@ -72,6 +72,8 @@ export default {
   },
   methods: {
     dialogClose() {
+      this.$refs['googleAuthForm'].resetFields();
+      this.loading = false;
     },
   }
 };
