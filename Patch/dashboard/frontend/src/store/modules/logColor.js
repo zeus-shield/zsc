@@ -11,6 +11,8 @@ const state = () => {
     analytics: 'black',
     faq: 'black',
     login: 'black',
+    signUp: 'black',
+    user: 'black',
     insurance: {
       base: 'yellow',
       pingan: {
