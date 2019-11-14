@@ -44,9 +44,9 @@ export default {
   // props: {
   // },
   computed: {
-    ...mapState({
-      logColor: state => state.logColor.signUp
-    })
+    // ...mapState({
+    //   logColor: state => state.logColor.signUp
+    // })
     ...mapState('logColor', {
       logColor: state => state.signUp
     }),
