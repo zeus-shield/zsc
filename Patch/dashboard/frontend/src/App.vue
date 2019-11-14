@@ -123,6 +123,8 @@ export default {
   name: 'App',
   metaInfo: {
   },
+  methods: {
+  }
 };
 </script>
 
