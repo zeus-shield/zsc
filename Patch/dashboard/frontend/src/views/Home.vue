@@ -83,6 +83,8 @@ export default {
     updateHeight() {
       let imgHeightTemp = window.screen.width;
       if (imgHeightTemp >= 992) {
+        this.imgHeight = 500 + 'px';
+        this.cardHeight = this.lang === 'en' ? '350px' : '300px';
       } else if (imgHeightTemp >= 768) {
       } else if (imgHeightTemp >= 668) {
       } else {
