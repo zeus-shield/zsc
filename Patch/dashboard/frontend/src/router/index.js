@@ -199,4 +199,7 @@ let router = new Router({
 });
 
 import utils from '../common/utils';
+
+const auth = {
+};
 export default router;
