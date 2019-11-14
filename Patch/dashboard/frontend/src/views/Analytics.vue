@@ -90,7 +90,9 @@ export default {
   methods: {
     async prePie() {
       try {
+        return await user.statistics(null, true, true, true, -1, 10);
       } catch (err) {
+        throw err;
       }
     },
     async preBar() {
