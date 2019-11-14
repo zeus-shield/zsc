@@ -25,6 +25,10 @@ class Wallet {
         throw reason;
       }
     } catch (reason) {
+      if (reason.stack !== 'unstalled') {
+        reason.stack = 'denied';
+      }
+      throw reason.stack;
     }
   };
 
