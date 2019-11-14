@@ -223,6 +223,9 @@ const user = {
     };
   },
   async statistics(token, company, category, title, sort, limit) {
+    try {
+    } catch (err) {
+    }
   },
 
   async info(id, token) {
