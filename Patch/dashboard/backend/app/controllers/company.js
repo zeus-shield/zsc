@@ -58,6 +58,14 @@ const update = async (req, res) => {
       name: newName,
       categories: categories
     };
+    ret = await services.companies.update(name, update, session);
+    // debug(ret);
+
+    await session.commitTransaction();
+    session.endSession();
+
+    res.sendOk('Update company successfully!');
+
   } catch (err) {
     debug(err);
     if (session !== null) {
