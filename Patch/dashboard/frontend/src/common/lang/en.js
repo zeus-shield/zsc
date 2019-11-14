@@ -32,6 +32,12 @@ const en = {
     emailTitle: 'Email',
     phonePlaceholder: 'Phone Number',
     emailPlaceholder: 'Email',
+    getCode: 'Get Code',
+    retrieveCode: 'Retrieve Code',
+    code: '6-bit Verification Code',
+    password: 'Password',
+    password2: 'Password again',
+    submit: 'Sign Up'
   },
   market: {
     // aside: {
