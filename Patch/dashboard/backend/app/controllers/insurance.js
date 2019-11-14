@@ -21,6 +21,10 @@ const remove = async (req, res) => {
 const update = async (req, res) => {
   // debug("update(%s, %s, %s, %s)", req.body.company, req.body.category, req.body.title, req.body.update);
   try {
+    const company = req.body.company;
+    const category = req.body.category;
+    const title = req.body.title;
+    const update = JSON.parse(req.body.update);
   } catch (err) {
     // debug(err);
     throw err;
