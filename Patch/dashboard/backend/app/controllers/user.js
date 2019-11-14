@@ -85,6 +85,8 @@ const updateTOTP = async (req, res) => {
 const addPolicy = async (req, res) => {
   debug("addPolicy(%s, %s)", req.body.id, req.body.policy);
   try {
+    let policy = JSON.parse(req.body.policy);
+    policy.insurance.id = mongoose.Types.ObjectId(policy.insurance.id);
   } catch (err) {
     throw err;
   }
