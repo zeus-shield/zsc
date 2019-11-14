@@ -89,6 +89,9 @@ export default {
   },
   methods: {
     async prePie() {
+      try {
+      } catch (err) {
+      }
     },
     async preBar() {
     },
