@@ -64,6 +64,8 @@ export default {
   },
   updated() {
   },
+  beforeRouteEnter(to, from, next) {
+  },
   }
 };
 </script>
