@@ -97,6 +97,9 @@ export default {
       }
     },
     async preBar() {
+      try {
+      } catch (err) {
+      }
     },
   }
 };
