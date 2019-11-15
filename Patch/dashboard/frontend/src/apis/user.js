@@ -224,6 +224,8 @@ const user = {
   },
   async statistics(token, company, category, title, sort, limit) {
     try {
+      let res = await instance.get('statistics', config);
+      return res.data;
     } catch (err) {
     }
   },
