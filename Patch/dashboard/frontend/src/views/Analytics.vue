@@ -1,6 +1,7 @@
 <template>
   <div class="analytics">
-    Analytics
+    <div v-loading.fullscreen.lock="loading" :element-loading-text="langSet.component.loading.analytics" element-loading-spinner="el-icon-loading" >
+    </div>
   </div>
 </template>
 
