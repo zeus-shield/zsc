@@ -20,6 +20,8 @@ import * as mutations from './mutations'
 import * as actions from './actions'
 const getters = {
 }
+const mutations = {
+}
 Vue.use(Vuex);
 
 const debug = process.env.NODE_ENV !== 'production';
