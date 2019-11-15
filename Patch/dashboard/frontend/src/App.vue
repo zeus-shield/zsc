@@ -77,6 +77,8 @@
 // }
 .el-popper[x-placement^=top] .popper__arrow {
 }
+.el-popper[x-placement^=top] .popper__arrow::after {
+}
 .el-popper[x-placement^=bottom] {
   // margin-top:12px
   margin-top:5px
