@@ -201,5 +201,8 @@ let router = new Router({
 import utils from '../common/utils';
 
 const auth = {
+  checkLogin: () => {
+    return (utils.storage.cookie.get('login_token') !== null && utils.storage.cookie.get('login_account') !== null && utils.storage.cookie.get('login_id') !== null && utils.storage.cookie.get('login_token') !== 'undefined' && utils.storage.cookie.get('login_account') !== 'undefined' && utils.storage.cookie.get('login_id') !== 'undefined');
+  }
 };
 export default router;
