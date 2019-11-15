@@ -35,6 +35,8 @@ const cn = {
     emailTitle: '邮箱注册',
     phonePlaceholder: '请输入手机号',
     emailPlaceholder: '请输入邮箱地址',
+    getCode: '获取验证码',
+    retrieveCode: '重新获取',
   },
   market: {
     // aside: {
