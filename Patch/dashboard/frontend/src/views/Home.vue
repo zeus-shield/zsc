@@ -48,6 +48,8 @@ export default {
     ...mapGetters('lang', ['langSet']),
     ...mapGetters('device', ['device'])
   },
+  beforeCreate() {
+  },
   created() {
     console.log('%c[Home]created()', `color:${this.logColor}`);
   },
