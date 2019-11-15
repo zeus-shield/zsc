@@ -24,6 +24,8 @@ class Wallet {
         reason.stack = 'unstalled';
         throw reason;
       }
+      const accounts = await window.ethereum.enable();
+      this.account = accounts[0];
     } catch (reason) {
       if (reason.stack !== 'unstalled') {
         reason.stack = 'denied';
