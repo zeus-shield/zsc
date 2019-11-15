@@ -9,6 +9,9 @@ const add = async (req, res) => {
 };
 
 const remove = async (req, res) => {
+  try {
+  } catch (err) {
+  }
 };
 
 const removeCategory = async (req, res) => {
