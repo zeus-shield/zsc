@@ -93,6 +93,11 @@ const en = {
     google: {
       title: ['Install Google Authenticator', 'Reset Google Authenticator'],
       step: [
+        {
+          title: 'After installation, open Google Authenticator and scan the below or enter the key to get a 6-digit code',
+          tip: 'Please keep your private key secure to avoid login problem if you change or lose your phone.',
+          qr: 'Key'
+        },
       ]
     }
   },
