@@ -108,6 +108,8 @@
 }
 .el-popper[x-placement^=right] .popper__arrow::after {
 }
+.el-popper[x-placement^=left] {
+}
 .utils-alert { 
   width: 280px;
 }
