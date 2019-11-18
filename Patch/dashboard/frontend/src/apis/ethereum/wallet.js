@@ -24,6 +24,9 @@ class Wallet {
         reason.stack = 'unstalled';
         throw reason;
       }
+
+      this.state = 'installed';
+
       const accounts = await window.ethereum.enable();
       this.account = accounts[0];
     } catch (reason) {
