@@ -87,6 +87,7 @@ const addPolicy = async (req, res) => {
   try {
     let policy = JSON.parse(req.body.policy);
     policy.insurance.id = mongoose.Types.ObjectId(policy.insurance.id);
+    res.sendOk('Add policy successfully!');
   } catch (err) {
     throw err;
   }
