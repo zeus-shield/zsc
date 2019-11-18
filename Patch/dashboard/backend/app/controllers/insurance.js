@@ -25,6 +25,7 @@ const update = async (req, res) => {
     const category = req.body.category;
     const title = req.body.title;
     const update = JSON.parse(req.body.update);
+    res.sendOk('Update insurance successfully!');
   } catch (err) {
     // debug(err);
     throw err;
