@@ -8,7 +8,7 @@
       "category": "http"
     },
     "application": {
-      "type": "DateFile",
+      "type": "console",
       "filename": "./logs/application",
       "pattern": "-yyyy-MM-dd.log",
       "alwaysIncludePattern": true
