@@ -227,6 +227,9 @@ const user = {
       let res = await instance.get('statistics', config);
       return res.data;
     } catch (err) {
+      if (err.response !== undefined) {
+      } else {
+      }
     }
   },
 
