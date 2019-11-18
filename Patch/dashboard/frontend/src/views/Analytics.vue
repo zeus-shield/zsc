@@ -103,6 +103,8 @@ export default {
         throw err;
       }
     },
+    drawPie() {
+    },
   }
 };
 </script>
