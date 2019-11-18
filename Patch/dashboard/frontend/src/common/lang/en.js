@@ -98,6 +98,9 @@ const en = {
           tip: 'Please keep your private key secure to avoid login problem if you change or lose your phone.',
           qr: 'Key'
         },
+        {
+          title: 'Please enter the 6-digit code and SMS code to complete the settings',
+        }
       ]
     }
   },
