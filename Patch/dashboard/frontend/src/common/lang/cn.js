@@ -37,6 +37,10 @@ const cn = {
     emailPlaceholder: '请输入邮箱地址',
     getCode: '获取验证码',
     retrieveCode: '重新获取',
+    code: '请输入6位验证码',
+    password: '请输入密码',
+    password2: '请再次输入密码',
+    submit: '注册'
   },
   market: {
     // aside: {
