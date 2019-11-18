@@ -128,6 +128,9 @@ export default {
   metaInfo: {
   },
   methods: {
+    ...mapActions('device', [
+      'updateDevice'
+    ]),
   }
 };
 </script>
