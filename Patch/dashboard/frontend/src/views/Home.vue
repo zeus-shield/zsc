@@ -58,6 +58,8 @@ export default {
   },
   mounted() {
     console.log('%c[Home]mounted()', `color:${this.logColor}`);
+    this.lang = utils.storage.cookie.get('lang');
+    this.updateHeight();
   },
   destroyed() {
     console.log('%c[Home]destroyed()', `color:${this.logColor}`);
