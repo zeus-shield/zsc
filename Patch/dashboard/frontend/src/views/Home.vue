@@ -49,6 +49,9 @@ export default {
     ...mapGetters('device', ['device'])
   },
   beforeCreate() {
+    let vm = this;
+    if (process.env.NODE_ENV === 'development') {
+    }
   },
   created() {
     console.log('%c[Home]created()', `color:${this.logColor}`);
