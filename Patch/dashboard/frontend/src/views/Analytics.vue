@@ -98,7 +98,9 @@ export default {
     },
     async preBar() {
       try {
+        return await user.statistics(null, true, false, false, -1, 10);
       } catch (err) {
+        throw err;
       }
     },
   }
