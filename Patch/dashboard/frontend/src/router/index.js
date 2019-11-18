@@ -205,4 +205,7 @@ const auth = {
     return (utils.storage.cookie.get('login_token') !== null && utils.storage.cookie.get('login_account') !== null && utils.storage.cookie.get('login_id') !== null && utils.storage.cookie.get('login_token') !== 'undefined' && utils.storage.cookie.get('login_account') !== 'undefined' && utils.storage.cookie.get('login_id') !== 'undefined');
   }
 };
+
+router.beforeEach((to, from, next) => {
+});
 export default router;
