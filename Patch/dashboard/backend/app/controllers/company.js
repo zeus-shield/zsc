@@ -54,6 +54,8 @@ const update = async (req, res) => {
     }
 
     for(let i=0; i<newCategoryNames.length; i++) {
+      if (result.categories[i] !== undefined && result.categories[i] !== null) {
+      }
     }
 
     // 2. update company name and category name for 'companies'
