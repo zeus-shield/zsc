@@ -25,6 +25,12 @@ const update = async (req, res) => {
     const category = req.body.category;
     const title = req.body.title;
     const update = JSON.parse(req.body.update);
+
+    const result = await services.insurances.update(company, category, title, update, null);
+    if(!result) {
+      throw createError('INSURANCE_NOT_EXIST');
+    }    
+
     res.sendOk('Update insurance successfully!');
   } catch (err) {
     // debug(err);
