@@ -76,6 +76,11 @@
 //   margin-bottom:12px
 // }
 .el-popper[x-placement^=top] .popper__arrow {
+  bottom:-6px;
+  left:50%;
+  margin-right:3px;
+  border-top-color:#EBEEF5;
+  border-bottom-width:0
 }
 .el-popper[x-placement^=top] .popper__arrow::after {
 }
