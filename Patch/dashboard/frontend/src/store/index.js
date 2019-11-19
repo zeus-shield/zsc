@@ -21,6 +21,9 @@ import * as actions from './actions'
 const getters = {
 }
 const mutations = {
+  add: (state, payload) => {
+    state.staffs.push(payload);
+  }
 }
 const actions = {
 }
