@@ -228,7 +228,9 @@ const user = {
       return res.data;
     } catch (err) {
       if (err.response !== undefined) {
+        throw err.response.data;
       } else {
+        throw err.message;
       }
     }
   },
