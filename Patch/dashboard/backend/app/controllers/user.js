@@ -87,6 +87,13 @@ const addPolicy = async (req, res) => {
   try {
     let policy = JSON.parse(req.body.policy);
     policy.insurance.id = mongoose.Types.ObjectId(policy.insurance.id);
+
+    const update = {$push: {policies: policy}, $set: {updatedAt: Date.now()}};
+    const result = await services.users.update(req.body.id, update, null);
+    if (!result) {
+      throw createError('USER_NOT_EXIST');
+    }
+
     res.sendOk('Add policy successfully!');
   } catch (err) {
     throw err;
