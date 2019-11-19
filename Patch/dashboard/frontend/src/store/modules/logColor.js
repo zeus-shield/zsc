@@ -17,6 +17,8 @@ const state = () => {
     userDetail: 'black',
     userPolicy: 'black',
     userSupport: 'black',
+    userQuestions: 'black',
+    userGoogle: 'black',
     insurance: {
       base: 'yellow',
       pingan: {
