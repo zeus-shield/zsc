@@ -9,6 +9,9 @@ const add = async (req, res) => {
 };
 
 const remove = async (req, res) => {
+  debug("remove(%s)", req.body.name);
+
+  let session = null;
   try {
   } catch (err) {
   }
