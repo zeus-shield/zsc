@@ -100,6 +100,11 @@ const en = {
         },
         {
           title: 'Please enter the 6-digit code and SMS code to complete the settings',
+          form: {
+            label: 'New Google code',
+            placeholder: 'Please input Google code',
+            buttonText: 'Comfirm'
+          }
         }
       ]
     }
