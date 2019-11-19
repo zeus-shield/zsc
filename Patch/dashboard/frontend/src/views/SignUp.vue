@@ -68,6 +68,8 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
   },
+  beforeRouteLeave(to, from, next) {
+  },
   }
 };
 </script>
