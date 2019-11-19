@@ -20,6 +20,8 @@ const cn = {
     lang: '中文（简体）' // 8
   },
   home: {
+    menu1: {
+    },
   },
   login: {
     title: '用户登录',
