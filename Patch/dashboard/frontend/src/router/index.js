@@ -208,4 +208,6 @@ const auth = {
 
 router.beforeEach((to, from, next) => {
 });
+router.beforeResolve((to, from, next) => {
+});
 export default router;
