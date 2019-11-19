@@ -29,6 +29,10 @@ class Wallet {
 
       const accounts = await window.ethereum.enable();
       this.account = accounts[0];
+
+      this.state = 'enabled';
+
+      return this.account;
     } catch (reason) {
       if (reason.stack !== 'unstalled') {
         reason.stack = 'denied';
