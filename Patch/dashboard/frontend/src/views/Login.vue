@@ -65,6 +65,11 @@ export default {
     console.log('%c[Login]updated()', `color:${this.logColor}`);
   },
   beforeRouteEnter(to, from, next) {
+    console.log('%c[Login]beforeRouteEnter(\"%s\" => \"%s\")', 'color:black', from.fullPath, to.fullPath);
+    next(vm => {
+      // console.log(vm);
+      console.log('%c[Login]beforeRouteEnter(\"%s\" => \"%s\") next', `color:${vm.logColor}`, from.fullPath, to.fullPath);
+    });
   },
   beforeRouteUpdate(to, from, next) {
     console.log('%c[Login]beforeRouteUpdate(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
