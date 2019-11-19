@@ -19,6 +19,8 @@ const cn = {
 
     lang: '中文（简体）' // 8
   },
+  home: {
+  },
   login: {
     title: '用户登录',
     account: '请输入手机号或邮箱地址',
