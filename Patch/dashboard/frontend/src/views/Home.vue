@@ -14,6 +14,9 @@
 
 .gallery-thumbs .swiper-slide {
   opacity: 0.4;
+.slot3 .card {
+  margin-bottom: 20px
+}
 .slot3 .card .text {
   padding: 14px;
 }
