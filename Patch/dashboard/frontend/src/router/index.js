@@ -195,6 +195,11 @@ let router = new Router({
       name: '',
       redirect: '/admin/user'
     },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: Admin,
+    }
   ]
 });
 
