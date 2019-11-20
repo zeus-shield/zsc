@@ -58,6 +58,8 @@ const update = async (req, res) => {
 
     for(let i=0; i<newCategoryNames.length; i++) {
       if (result.categories[i] !== undefined && result.categories[i] !== null) {
+        ret = await services.insurances.updateByCompanyAndCategory(name, categoryName, update, true, session);
+        debug(ret);
       }
     }
 
