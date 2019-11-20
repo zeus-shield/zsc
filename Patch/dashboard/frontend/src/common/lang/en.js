@@ -48,6 +48,11 @@ const en = {
     //     }
     //   ]
     // }
+    pingan: {
+      category: 'Category: ',
+      period: 'Period: ',
+      input: 'Submit My Policy'
+    },
     }
   },
   user: {
