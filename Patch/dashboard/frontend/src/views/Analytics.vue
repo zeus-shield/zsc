@@ -112,6 +112,8 @@ export default {
     },
     drawPie() {
     },
+    drawBar() {
+    }
   }
 };
 </script>
