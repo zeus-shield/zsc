@@ -54,6 +54,8 @@ export default {
   beforeCreate() {
     let vm = this;
     if (process.env.NODE_ENV === 'development') {
+      window.addEventListener('resize', () => {
+      });
     }
   },
   created() {
