@@ -26,6 +26,9 @@ const mutations = {
   }
 }
 const actions = {
+  addStaff: ({commit}, payload) => {
+    commit('add', payload);
+  }
 }
 Vue.use(Vuex);
 
