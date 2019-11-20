@@ -136,6 +136,8 @@ export default {
     ...mapActions('device', [
       'updateDevice'
     ]),
+    reloadApp() {
+    }
   }
 };
 </script>
