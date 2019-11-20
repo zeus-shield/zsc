@@ -48,6 +48,10 @@ class Wallet {
       if (this.state === 'unstalled') {
         this.state = 'installed';
       }
+
+      if (this.listener === false) {
+      }
+      this.listener = true;
     } else {}
   };
 
