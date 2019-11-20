@@ -2,6 +2,11 @@
   <div class="analytics">
     <div v-loading.fullscreen.lock="loading" :element-loading-text="langSet.component.loading.analytics" element-loading-spinner="el-icon-loading" >
       <el-row :gutter="40">
+        <el-col :span="24" :md="12">
+          <el-card class="echarts-card" shadow="alwamys">
+            <div id="chartPie" class="echarts"></div>
+          </el-card>
+        </el-col>
       </el-row>
     </div>
   </div>
