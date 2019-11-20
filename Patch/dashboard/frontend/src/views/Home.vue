@@ -55,6 +55,9 @@ export default {
     let vm = this;
     if (process.env.NODE_ENV === 'development') {
       window.addEventListener('resize', () => {
+        if (vm.resizeFlag) {
+          clearTimeout(vm.resizeFlag);
+        }
       });
     }
   },
