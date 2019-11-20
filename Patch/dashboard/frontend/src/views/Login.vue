@@ -84,6 +84,8 @@ export default {
       this.$refs['googleAuthForm'].resetFields();
       this.loading = false;
     },
+    inputChange() {
+    },
   }
 };
 </script>
