@@ -16,6 +16,11 @@ const add = async (req, res) => {
 };
 
 const remove = async (req, res) => {
+  // debug("remove(%s, %s, %s)", req.body.company, req.body.category, req.body.title);
+  let session = null;
+  try {
+  } catch (err) {
+  }
 };
 
 const update = async (req, res) => {
