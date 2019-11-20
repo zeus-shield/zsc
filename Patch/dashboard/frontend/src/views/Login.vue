@@ -86,6 +86,8 @@ export default {
     },
     inputChange() {
     },
+    googleAuthInputChange() {
+    },
   }
 };
 </script>
