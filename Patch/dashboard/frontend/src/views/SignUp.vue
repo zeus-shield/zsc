@@ -71,6 +71,8 @@ export default {
     next();
   },
   beforeRouteLeave(to, from, next) {
+    console.log('%c[SignUp]beforeRouteLeave(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
+    next();
   },
   }
 };
