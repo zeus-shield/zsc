@@ -213,6 +213,9 @@ const auth = {
 
 router.beforeEach((to, from, next) => {
 });
+
 router.beforeResolve((to, from, next) => {
+  console.log('[G]beforeResolve: (%s) => (%s)', from.fullPath, to.fullPath);
+  next();
 });
 export default router;
