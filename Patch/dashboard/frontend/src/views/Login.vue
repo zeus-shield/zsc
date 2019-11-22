@@ -85,6 +85,10 @@ export default {
       this.loading = false;
     },
     inputChange() {
+      let vm = this;
+      vm.$refs['form'].validate((valid) => {
+        vm.buttonSubmitDisabled = !valid;
+      });
     },
     googleAuthInputChange() {
     },
