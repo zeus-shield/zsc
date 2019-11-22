@@ -7,6 +7,8 @@
             <div id="chartPie" class="echarts"></div>
           </el-card>
         </el-col>
+        <el-col :span="24" :md="12">
+        </el-col>
       </el-row>
     </div>
   </div>
