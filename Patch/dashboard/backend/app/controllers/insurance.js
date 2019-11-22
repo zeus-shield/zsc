@@ -11,6 +11,8 @@ const add = async (req, res) => {
   //   JSON.parse(req.body.brief), JSON.parse(req.body.detail));
   let session = null;
   try {
+    session = await mongoose.startSession();
+    session.startTransaction();
   } catch (err) {
   }
 };
