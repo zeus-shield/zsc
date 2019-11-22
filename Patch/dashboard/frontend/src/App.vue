@@ -137,6 +137,10 @@ export default {
       'updateDevice'
     ]),
     reloadApp() {
+      this.reload = true;
+      this.$nextTick(() => {
+        this.reload = false;
+      });
     }
   }
 };
