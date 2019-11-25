@@ -218,4 +218,9 @@ router.beforeResolve((to, from, next) => {
   console.log('[G]beforeResolve: (%s) => (%s)', from.fullPath, to.fullPath);
   next();
 });
+
+router.afterEach((to, from) => {
+  console.log('[G]afterEach: (%s) => (%s)', from.fullPath, to.fullPath);
+});
+
 export default router;
