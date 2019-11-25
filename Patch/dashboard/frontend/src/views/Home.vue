@@ -59,6 +59,8 @@ export default {
           clearTimeout(vm.resizeFlag);
         }
         vm.resizeFlag = setTimeout(() => {
+          vm.resizeFlag = null;
+          vm.updateHeight();
         }, 100);
       });
     }
