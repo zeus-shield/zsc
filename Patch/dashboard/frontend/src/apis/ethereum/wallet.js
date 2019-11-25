@@ -50,6 +50,8 @@ class Wallet {
       }
 
       if (this.listener === false) {
+        window.ethereum.on('accountsChanged', accounts => {
+        });
       }
       this.listener = true;
     } else {}
