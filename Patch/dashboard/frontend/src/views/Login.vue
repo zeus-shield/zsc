@@ -91,6 +91,10 @@ export default {
       });
     },
     googleAuthInputChange() {
+      let vm = this;
+      vm.$refs['googleAuthForm'].validate((valid) => {
+        vm.buttonGoogleAuthDisabled = !valid;
+      });
     },
   }
 };
