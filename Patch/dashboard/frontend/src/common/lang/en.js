@@ -15,6 +15,8 @@ const en = {
     lang: 'English'
   },
   home: {
+    menu1: {
+    },
   },
   login: {
     title: 'LOGIN',
