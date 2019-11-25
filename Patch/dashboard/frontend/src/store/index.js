@@ -12,8 +12,12 @@ import device from './modules/device';
 import getters from './getters';
 import mutations from './mutations';
 import actions from './actions';
+
+// for 'export const xxx = {...}'
 // import { getters } from './getters'
 // import { mutations } from './mutations'
+// import { actions } from './actions'
+
 // for 'export const xxx = ...'
 import * as getters from './getters'
 import * as mutations from './mutations'
