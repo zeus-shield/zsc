@@ -8,6 +8,9 @@
           </el-card>
         </el-col>
         <el-col :span="24" :md="12">
+          <el-card class="echarts-card" shadow="alwamys">
+            <div id="chartBar" class="echarts"></div>
+          </el-card>
         </el-col>
       </el-row>
     </div>
