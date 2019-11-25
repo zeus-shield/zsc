@@ -219,6 +219,10 @@ const user = {
   },
 
   async addPolicy(token, id, policy) {
+    let data = new URLSearchParams();
+    data.append('id', id);
+    data.append('policy', JSON.stringify(policy));
+
     let config = {
       // req.headers
       headers: {token},
