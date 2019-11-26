@@ -55,6 +55,8 @@ const en = {
       period: 'Period: ',
       input: 'Submit My Policy'
     },
+    picc: {
+    },
     }
   },
   user: {
