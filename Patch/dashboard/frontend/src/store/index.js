@@ -19,9 +19,9 @@ import actions from './actions';
 // import { actions } from './actions'
 
 // for 'export const xxx = ...'
-import * as getters from './getters'
-import * as mutations from './mutations'
-import * as actions from './actions'
+// import * as getters from './getters'
+// import * as mutations from './mutations'
+// import * as actions from './actions'
 const getters = {
 }
 const mutations = {
