@@ -116,6 +116,10 @@
   border-left-width:0
 }
 .el-popper[x-placement^=right] .popper__arrow::after {
+  bottom:-6px;
+  left:1px;
+  border-right-color:#FFF;
+  border-left-width:0
 }
 .el-popper[x-placement^=left] {
 }
