@@ -199,6 +199,8 @@ let router = new Router({
       path: '/admin',
       name: 'admin',
       component: Admin,
+      children: [
+      ]
     }
   ]
 });
