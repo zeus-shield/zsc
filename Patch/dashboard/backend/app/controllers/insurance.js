@@ -26,6 +26,8 @@ const remove = async (req, res) => {
   // debug("remove(%s, %s, %s)", req.body.company, req.body.category, req.body.title);
   let session = null;
   try {
+    session = await mongoose.startSession();
+    session.startTransaction();
   } catch (err) {
   }
 };
