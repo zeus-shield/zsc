@@ -72,6 +72,9 @@ export default {
     console.log('%c[Home]mounted()', `color:${this.logColor}`);
     this.lang = utils.storage.cookie.get('lang');
     this.updateHeight();
+
+    this.$nextTick(() => {
+    });
   },
   destroyed() {
     console.log('%c[Home]destroyed()', `color:${this.logColor}`);
