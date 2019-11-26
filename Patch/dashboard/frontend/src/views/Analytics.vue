@@ -79,6 +79,10 @@ export default {
   },
   mounted() {
     console.log('%c[Analytics]mounted()', `color:${this.logColor}`);
+    let vm = this;
+    let errorMessage = '';
+    
+    vm.loading = true;
   },
   destroyed() {
     console.log('%c[Analytics]destroyed()', `color:${this.logColor}`);
