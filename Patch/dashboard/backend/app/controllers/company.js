@@ -66,6 +66,10 @@ const update = async (req, res) => {
         };
         ret = await services.insurances.updateByCompanyAndCategory(name, categoryName, update, true, session);
         debug(ret);
+
+        let category = result.categories[i];
+        category.name = newCategoryName;
+        categories.push(category);
       }
     }
 
