@@ -18,6 +18,8 @@ const add = async (req, res) => {
     const category = req.body.category;
     const brief = JSON.parse(req.body.brief);
     const detail = JSON.parse(req.body.detail);
+    await session.commitTransaction();
+    session.endSession();
   } catch (err) {
   }
 };
