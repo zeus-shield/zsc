@@ -200,6 +200,11 @@ let router = new Router({
       name: 'admin',
       component: Admin,
       children: [
+        {
+          path: '/admin/user',
+          name: 'adminUser',
+          component: AdminUser
+        },
       ]
     }
   ]
