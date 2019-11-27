@@ -7,5 +7,8 @@
 </style>
 <script>
 export default {
+  name: 'Insurance',
+  components: {
+  },
 };
 </script>
