@@ -237,7 +237,12 @@ const user = {
       // - Node only: JSON Object
       data: querystring.parse(data.toString())
     };
+
+    try {
+    } catch (err) {
+    }
   },
+
   async statistics(token, company, category, title, sort, limit) {
     try {
       let res = await instance.get('statistics', config);
