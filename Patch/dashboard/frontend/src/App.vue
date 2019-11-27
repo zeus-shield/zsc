@@ -123,6 +123,10 @@
 }
 .el-popper[x-placement^=left] {
 }
+.el-popper[x-placement^=left] .popper__arrow {
+}
+.el-popper[x-placement^=left] .popper__arrow::after {
+}
 .utils-alert { 
   width: 280px;
 }
