@@ -96,6 +96,8 @@ export default {
         vm.buttonGoogleAuthDisabled = !valid;
       });
     },
+    submitForm(formName) {
+    },
     submitGoogleAuthForm(formName) {
     }
   }
