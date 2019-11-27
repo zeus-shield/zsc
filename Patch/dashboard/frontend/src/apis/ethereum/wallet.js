@@ -51,6 +51,10 @@ class Wallet {
 
       if (this.listener === false) {
         window.ethereum.on('accountsChanged', accounts => {
+          // const message = 'old: ' + this.account + ', new: ' + accounts[0];
+          // alert(message);
+          if ((this.account !== undefined) && (this.account !== accounts[0])) {
+          }
         });
       }
       this.listener = true;
