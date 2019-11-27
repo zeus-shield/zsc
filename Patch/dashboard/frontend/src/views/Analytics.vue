@@ -83,6 +83,9 @@ export default {
     let errorMessage = '';
     
     vm.loading = true;
+
+    vm.prePie().then(data => {
+    }); 
   },
   destroyed() {
     console.log('%c[Analytics]destroyed()', `color:${this.logColor}`);
