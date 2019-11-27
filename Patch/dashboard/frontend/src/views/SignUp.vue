@@ -63,6 +63,13 @@ export default {
     console.log('%c[SignUp]destroyed()', `color:${this.logColor}`);
   },
   updated() {
+    console.log('%c[SignUp]updated()', `color:${this.logColor}`);
+    if (this.codeStatus === 'getting') {
+    } else if (this.codeStatus === 'timeout') {
+      this.buttonCodeName = this.langSet.signUp.retrieveCode;
+    } else {
+      this.buttonCodeName = this.langSet.signUp.getCode;
+    }
   },
   beforeRouteEnter(to, from, next) {
     console.log('%c[SignUp]beforeRouteEnter(\"%s\" => \"%s\")', 'color:black', from.fullPath, to.fullPath);
