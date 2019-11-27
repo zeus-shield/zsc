@@ -14,6 +14,11 @@
 
 .gallery-thumbs .swiper-slide {
   opacity: 0.4;
+}
+// for vue-awesome-swiper
+.gallery-thumbs .swiper-slide-active {
+  opacity: 1;
+}
 .slot3 .card {
   margin-bottom: 20px
 }
