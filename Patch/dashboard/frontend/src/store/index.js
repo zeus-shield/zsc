@@ -26,6 +26,9 @@ const getters = {
   list: state => {
     return state.staffs.filter(staff => staff.employed === true)
   },
+  num: (state, getters) => {
+    return getters.list.length
+  },
 }
 const mutations = {
   add: (state, payload) => {
