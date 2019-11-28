@@ -30,6 +30,10 @@ const remove = async (req, res) => {
   try {
     session = await mongoose.startSession();
     session.startTransaction();
+
+    const company = req.body.company;
+    const category = req.body.category;
+    const title = req.body.title;
   } catch (err) {
   }
 };
