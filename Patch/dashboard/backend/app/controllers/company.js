@@ -24,6 +24,11 @@ const removeCategory = async (req, res) => {
   try {
     session = await mongoose.startSession();
     session.startTransaction();
+
+    let result = await services.companies.findByNamesAndCategory(req.body.name, req.body.category, session);
+    if (!result) {
+      throw createError('COMPANY_CATEGORIES_NOT_EXIST');
+    }
     await session.commitTransaction();
     session.endSession();
   } catch (err) {
