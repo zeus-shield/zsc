@@ -5,6 +5,9 @@
 </style>
 
 <script>
+import UserAside from '@/views/UserAside';
+import { mapState, mapGetters } from 'vuex';
+
 export default {
   methods: {
   }
