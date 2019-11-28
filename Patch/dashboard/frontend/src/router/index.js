@@ -205,6 +205,11 @@ let router = new Router({
           name: 'adminUser',
           component: AdminUser
         },
+        {
+          path: '/admin/company',
+          name: 'adminCompany',
+          component: AdminCompany
+        },
       ]
     }
   ]
