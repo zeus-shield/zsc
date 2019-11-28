@@ -2,6 +2,9 @@
   <div class="login">
     <el-row :gutter="0">
     </el-row>
+
+    <el-dialog class="dialog" :visible.sync="dialogVisible" width="30%" @close="dialogClose">
+    </el-dialog>
   </div>
 </template>
 
