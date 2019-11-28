@@ -2,6 +2,9 @@
 </template>
 
 <style lang="scss" scoped>
+.menu .menu-bottom-padding {
+  padding-bottom: 10px;
+}
 </style>
 
 <script>
