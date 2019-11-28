@@ -87,6 +87,8 @@ export default {
     next();
   },
   methods: {
+    inputChange() {
+    },
   }
 };
 </script>
