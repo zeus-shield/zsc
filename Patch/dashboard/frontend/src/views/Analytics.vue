@@ -85,6 +85,8 @@ export default {
     vm.loading = true;
 
     vm.prePie().then(data => {
+    }).then(data => {
+    }).catch(errorData => {
     }); 
   },
   destroyed() {
