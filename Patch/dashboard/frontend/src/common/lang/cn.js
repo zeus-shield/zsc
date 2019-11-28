@@ -30,6 +30,9 @@ const cn = {
 
     menu3: {
     },
+
+    menu4: {
+    },
   },
   login: {
     title: 'ÓÃ»§µÇÂ¼',
