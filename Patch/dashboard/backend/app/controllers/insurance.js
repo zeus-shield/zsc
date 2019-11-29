@@ -35,6 +35,12 @@ const remove = async (req, res) => {
     const category = req.body.category;
     const title = req.body.title;
   } catch (err) {
+    // debug(err);
+    if (session !== null) {
+      await session.abortTransaction();
+      session.endSession();
+    }
+    throw err;
   }
 };
 
