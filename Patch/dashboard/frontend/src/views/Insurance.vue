@@ -12,5 +12,9 @@ export default {
     'insurance-pingan-brief': InsurancePingAnBrief,
     'insurance-picc-brief': InsurancePICCBrief
   },
+  data() {
+  },
+  // props: {
+  // },
 };
 </script>
