@@ -29,6 +29,9 @@ const getters = {
   num: (state, getters) => {
     return getters.list.length
   },
+  getById: (state) => (id) => {
+    return state.staffs.find(staff => staff.id === id)
+  }
 }
 const mutations = {
   add: (state, payload) => {
