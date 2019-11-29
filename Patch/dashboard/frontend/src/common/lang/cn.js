@@ -33,6 +33,10 @@ const cn = {
 
     menu4: {
     },
+
+    menu5: {
+      title: '联系方式'
+    }
   },
   login: {
     title: '用户登录',
