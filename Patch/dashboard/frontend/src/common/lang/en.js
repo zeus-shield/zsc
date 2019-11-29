@@ -23,6 +23,8 @@ const en = {
     },
     menu3: {
     },
+    menu4: {
+    },
   },
   login: {
     title: 'LOGIN',
