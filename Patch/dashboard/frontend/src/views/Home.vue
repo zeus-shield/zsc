@@ -23,6 +23,8 @@
 .gallery-thumbs .swiper-slide-thumb-active {
   opacity: 1;
 }
+.swiper-button-next, .swiper-button-prev {
+}
 }
 .slot3 .card {
   margin-bottom: 20px
