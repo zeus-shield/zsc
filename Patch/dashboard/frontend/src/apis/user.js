@@ -239,6 +239,8 @@ const user = {
     };
 
     try {
+      let res = await instance.post('user/addPolicy', null, config);
+      return res.data;
     } catch (err) {
     }
   },
