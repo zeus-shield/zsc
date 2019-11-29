@@ -54,6 +54,12 @@ class Wallet {
           // const message = 'old: ' + this.account + ', new: ' + accounts[0];
           // alert(message);
           if ((this.account !== undefined) && (this.account !== accounts[0])) {
+            // TODO
+            // alert('accountsChanged');
+            this.account = accounts[0];
+            if (this.account === undefined) {
+              this.state = 'installed';
+            }
           }
         });
       }
