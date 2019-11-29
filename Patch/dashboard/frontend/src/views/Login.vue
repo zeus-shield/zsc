@@ -102,6 +102,9 @@ export default {
     submitForm(formName) {
     },
     submitGoogleAuthForm(formName) {
+      let vm = this;
+      vm.$refs[formName].validate((valid) => {
+      });
     }
   }
 };
