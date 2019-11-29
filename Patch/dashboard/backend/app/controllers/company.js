@@ -6,6 +6,9 @@ const services = require('../services');
 
 const debug = require('debug')('backend:app:controllers:company');
 const add = async (req, res) => {
+  try {
+  } catch (err) {
+  }
 };
 
 const remove = async (req, res) => {
