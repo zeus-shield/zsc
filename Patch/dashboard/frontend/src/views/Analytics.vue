@@ -125,6 +125,10 @@ export default {
       }
     },
     drawPie() {
+      this.chartPie = echarts.init(document.getElementById('chartPie'));
+
+      let option = {
+      };
     },
     drawBar() {
     }
