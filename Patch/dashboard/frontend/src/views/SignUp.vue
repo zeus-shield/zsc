@@ -89,6 +89,8 @@ export default {
   methods: {
     inputChange() {
     },
+    tabClick(tab, event) {
+    },
   }
 };
 </script>
