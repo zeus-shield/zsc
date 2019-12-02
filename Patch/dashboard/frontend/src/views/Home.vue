@@ -20,8 +20,10 @@
   opacity: 1;
 }
 // for original swiper
-.gallery-thumbs .swiper-slide-thumb-active {
-  opacity: 1;
+// .gallery-thumbs .swiper-slide-thumb-active {
+//   opacity: 1;
+// }
+.swiper-button-next, .swiper-button-prev {
 }
 .swiper-button-next, .swiper-button-prev {
 }
