@@ -6,6 +6,9 @@
 <style lang="scss">
 </style>
 <script>
+import utils from '../common/utils';
+import APIs from '../apis';
+
 export default {
   name: 'Insurance',
   components: {
