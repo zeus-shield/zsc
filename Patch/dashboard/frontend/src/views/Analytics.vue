@@ -128,6 +128,8 @@ export default {
       this.chartPie = echarts.init(document.getElementById('chartPie'));
 
       let option = {
+        title: {
+        },
       };
     },
     drawBar() {
