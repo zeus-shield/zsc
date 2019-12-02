@@ -138,6 +138,9 @@ const cn = {
         {
           title: '请将您获得的验证码填入下方输入框中，并完成验证',
           form: {
+            label: '新谷歌验证码',
+            placeholder: '请输入新谷歌验证码',
+            buttonText: '确认'
           }
         }
       ]
