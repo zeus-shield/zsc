@@ -90,6 +90,9 @@ export default {
     inputChange() {
     },
     tabClick(tab, event) {
+      console.log(tab, event);
+      this.tabIndex = tab.index;
+      this.$refs['form'].resetFields();
     },
   }
 };
