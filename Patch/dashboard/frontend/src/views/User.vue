@@ -2,6 +2,10 @@
 </template>
 
 <style lang="scss" scoped>
+.el-aside {
+}
+.el-main {
+}
 </style>
 
 <script>
