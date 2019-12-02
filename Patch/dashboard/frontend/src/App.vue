@@ -122,8 +122,14 @@
   border-left-width:0
 }
 .el-popper[x-placement^=left] {
+  margin-right:12px
 }
 .el-popper[x-placement^=left] .popper__arrow {
+  top:50%;
+  right:-6px;
+  margin-bottom:3px;
+  border-right-width:0;
+  border-left-color:#EBEEF5
 }
 .el-popper[x-placement^=left] .popper__arrow::after {
 }
