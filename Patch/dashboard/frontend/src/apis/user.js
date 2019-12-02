@@ -246,6 +246,20 @@ const user = {
   },
 
   async statistics(token, company, category, title, sort, limit) {
+    let config = {
+      // req.headers
+      headers: {token},
+
+      // req.query
+      // `params` are the URL parameters to be sent with the request
+      // Must be a plain object or a URLSearchParams object
+      params: data
+
+      // req.body
+      // Only applicable for request methods 'PUT', 'POST', and 'PATCH'
+      // - Node only: JSON Object
+      // data: querystring.parse(data.toString())
+    };
     try {
       let res = await instance.get('statistics', config);
       return res.data;
