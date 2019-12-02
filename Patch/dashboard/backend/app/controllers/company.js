@@ -32,6 +32,11 @@ const removeCategory = async (req, res) => {
     if (!result) {
       throw createError('COMPANY_CATEGORIES_NOT_EXIST');
     }
+
+    // 1. remove insurances from insurance
+    const category = result.categories.find(category => {
+      return category.name ===  req.body.category;
+    });
     await session.commitTransaction();
     session.endSession();
   } catch (err) {
