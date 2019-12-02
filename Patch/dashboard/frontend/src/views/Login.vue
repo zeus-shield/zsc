@@ -104,6 +104,12 @@ export default {
     submitGoogleAuthForm(formName) {
       let vm = this;
       vm.$refs[formName].validate((valid) => {
+        if (valid) {
+          vm.errorMessage = '';
+        } else {
+          // console.log('error submit!!');
+          return false;
+        }
       });
     }
   }
