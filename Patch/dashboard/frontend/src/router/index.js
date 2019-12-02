@@ -215,6 +215,12 @@ let router = new Router({
           name: 'adminCompanyAdd',
           component: AdminCompanyAdd
         },
+        {
+          path: '/admin/company/edit',
+          name: 'adminCompanyEdit',
+          component: AdminCompanyEdit,
+          props: (route) => ({ name: route.query.name })
+        },
       ]
     }
   ]
