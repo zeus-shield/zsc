@@ -38,11 +38,12 @@ const mutations = {
     state.staffs.push(payload);
   }
 }
-const actions = {
-  addStaff: ({commit}, payload) => {
-    commit('add', payload);
-  }
-}
+// const actions = {
+//   addStaff: ({commit}, payload) => {
+//     commit('add', payload);
+//   }
+// }
+
 Vue.use(Vuex);
 
 const debug = process.env.NODE_ENV !== 'production';
