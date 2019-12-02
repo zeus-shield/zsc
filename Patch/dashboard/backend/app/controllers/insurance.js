@@ -34,6 +34,9 @@ const remove = async (req, res) => {
     const company = req.body.company;
     const category = req.body.category;
     const title = req.body.title;
+    await session.commitTransaction();
+    session.endSession();
+    res.sendOk('Remove insurance successfully!');
   } catch (err) {
     // debug(err);
     if (session !== null) {
