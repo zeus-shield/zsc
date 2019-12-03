@@ -37,8 +37,12 @@ const removeCategory = async (req, res) => {
     const category = result.categories.find(category => {
       return category.name ===  req.body.category;
     });
+    if(category !== undefined) {
+    }
     await session.commitTransaction();
     session.endSession();
+
+    res.sendOk('Remove companie category successfully!');
   } catch (err) {
     // debug(err);
     if (session !== null) {
