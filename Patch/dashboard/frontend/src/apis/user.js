@@ -246,6 +246,13 @@ const user = {
   },
 
   async statistics(token, company, category, title, sort, limit) {
+    let data = new URLSearchParams();
+    data.append('company', company);
+    data.append('category', category);
+    data.append('title', title);
+    data.append('sort', sort);
+    data.append('limit', limit);
+
     let config = {
       // req.headers
       headers: {token},
