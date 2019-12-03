@@ -88,6 +88,11 @@ export default {
   },
   methods: {
     inputChange() {
+      let vm = this;
+      vm.$refs['form'].validate((valid) => {
+        // alert(valid);
+        vm.buttonSubmitDisabled = !valid;
+      });
     },
     tabClick(tab, event) {
       console.log(tab, event);
