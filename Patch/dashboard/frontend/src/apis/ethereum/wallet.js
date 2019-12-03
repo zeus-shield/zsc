@@ -62,6 +62,9 @@ class Wallet {
             }
           }
         });
+
+        window.ethereum.on('networkChanged', networkId => {
+        });
       }
       this.listener = true;
     } else {}
