@@ -16,6 +16,8 @@ const en = {
   },
   home: {
     menu1: {
+      title1: 'Myinsura',
+      page1: 'Innovative insurance data service platform based on blockchain technology',
     },
     menu2: {
       title: 'Product introduction',
