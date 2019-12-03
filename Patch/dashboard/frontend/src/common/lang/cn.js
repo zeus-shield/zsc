@@ -21,6 +21,8 @@ const cn = {
   },
   home: {
     menu1: {
+      title1: 'Dashboard',
+      page1: '基于区块链技术的创新型保险数据服务平台',
     },
 
     menu2: {
