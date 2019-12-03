@@ -21,6 +21,12 @@ const add = async (req, res) => {
     await session.commitTransaction();
     session.endSession();
   } catch (err) {
+    // debug(err);
+    if (session !== null) {
+      await session.abortTransaction();
+      session.endSession();
+    }
+    res.sendErr(err);
   }
 };
 
