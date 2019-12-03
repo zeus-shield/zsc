@@ -33,11 +33,12 @@ const getters = {
     return state.staffs.find(staff => staff.id === id)
   }
 }
-const mutations = {
-  add: (state, payload) => {
-    state.staffs.push(payload);
-  }
-}
+// const mutations = {
+//   add: (state, payload) => {
+//     state.staffs.push(payload);
+//   }
+// }
+
 // const actions = {
 //   addStaff: ({commit}, payload) => {
 //     commit('add', payload);
