@@ -27,6 +27,9 @@
 }
 .swiper-button-next, .swiper-button-prev {
 }
+.slot2 .content {
+  text-align: left;
+}
 }
 .slot3 .card {
   margin-bottom: 20px
