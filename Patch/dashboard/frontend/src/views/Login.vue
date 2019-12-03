@@ -106,6 +106,9 @@ export default {
       vm.$refs[formName].validate((valid) => {
         if (valid) {
           vm.errorMessage = '';
+          user.login(vm.form.account, vm.form.password, vm.googleAuthForm.code).then(data => {
+          }).catch(errorData => {
+          });
         } else {
           // console.log('error submit!!');
           return false;
