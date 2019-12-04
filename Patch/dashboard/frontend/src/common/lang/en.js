@@ -18,6 +18,10 @@ const en = {
     menu1: {
       title1: 'Myinsura',
       page1: 'Innovative insurance data service platform based on blockchain technology',
+      title2: 'Data Analysis',
+      page2: 'Data analysis based on AI',
+      title3: 'Privacy Protection',
+      page3: 'Data security and privacy protection'
     },
     menu2: {
       title: 'Product introduction',
