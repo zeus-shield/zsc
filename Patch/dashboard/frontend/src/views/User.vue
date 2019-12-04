@@ -5,6 +5,11 @@
 .el-aside {
 }
 .el-main {
+  // background-color: #E9EEF3;
+  padding-top: 0px;
+  color: #333;
+  // text-align: center;
+  // line-height: 160px;
 }
 </style>
 
