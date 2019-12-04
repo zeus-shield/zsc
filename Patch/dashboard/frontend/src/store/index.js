@@ -23,9 +23,9 @@ import actions from './actions';
 // import * as mutations from './mutations'
 // import * as actions from './actions'
 const getters = {
-  list: state => {
-    return state.staffs.filter(staff => staff.employed === true)
-  },
+//   list: state => {
+//     return state.staffs.filter(staff => staff.employed === true)
+//   },
   num: (state, getters) => {
     return getters.list.length
   },
