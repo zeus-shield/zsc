@@ -82,12 +82,12 @@
 //   border-top-color:#EBEEF5;
 //   border-bottom-width:0
 // }
-.el-popper[x-placement^=top] .popper__arrow::after {
-  bottom:1px;
-  margin-left:-6px;
-  border-top-color:#FFF;
-  border-bottom-width:0
-}
+// .el-popper[x-placement^=top] .popper__arrow::after {
+//   bottom:1px;
+//   margin-left:-6px;
+//   border-top-color:#FFF;
+//   border-bottom-width:0
+// }
 .el-popper[x-placement^=bottom] {
   // margin-top:12px
   margin-top:5px
