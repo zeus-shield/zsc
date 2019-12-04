@@ -1,5 +1,9 @@
 <template>
   <div class="insurance">
+
+    <el-tabs v-loading.fullscreen.lock="loading" :element-loading-text="langSet.component.loading.insurance" tab-position="left" v-model="companyActiveName" @tab-click="handleCompanyClick">
+    </el-tabs>
+
   </div>
 </template>
 
