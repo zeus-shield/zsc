@@ -2,6 +2,8 @@
   <div class="signup">
     <div>
       <el-row :gutter="0">
+        <el-col :xs="{span: 22, offset: 1}" :sm="{span: 14, offset: 5}" :md="{span: 12, offset: 6}" :lg="{span: 8, offset: 8}">
+        </el-col>
       </el-row>
     </div>
   </div>
