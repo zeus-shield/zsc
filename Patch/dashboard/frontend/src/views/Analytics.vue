@@ -130,6 +130,8 @@ export default {
       let option = {
         title: {
         },
+        tooltip: {
+        },
       };
     },
     drawBar() {
