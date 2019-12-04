@@ -4,6 +4,9 @@
     </el-row>
 
     <el-dialog class="dialog" :visible.sync="dialogVisible" width="30%" @close="dialogClose">
+      <div class="title" slot="title">
+        <span>{{ langSet.login.dialog.title }}</span>
+      </div>
     </el-dialog>
   </div>
 </template>
