@@ -23,6 +23,10 @@ const cn = {
     menu1: {
       title1: 'Dashboard',
       page1: '基于区块链技术的创新型保险数据服务平台',
+      title2: '大数据分析',
+      page2: '基于人工智能的大数据分析',
+      title3: '隐私安全',
+      page3: '保障数据安全和个人隐私权'
     },
 
     menu2: {
