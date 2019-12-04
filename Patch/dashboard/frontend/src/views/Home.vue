@@ -25,6 +25,8 @@
 // }
 .swiper-button-next, .swiper-button-prev {
 }
+.swiper-slot .text {
+}
 .swiper-button-next, .swiper-button-prev {
 }
 .slot2 .content {
