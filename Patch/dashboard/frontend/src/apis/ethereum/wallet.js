@@ -60,6 +60,11 @@ class Wallet {
             if (this.account === undefined) {
               this.state = 'installed';
             }
+            if (vm.$router.currentRoute.name !== 'login') {
+              vm.$router.push({name: 'login'});
+            } else {
+              vm.$router.go(0);
+            }
           }
         });
 
