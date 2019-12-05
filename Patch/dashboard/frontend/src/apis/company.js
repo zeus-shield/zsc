@@ -10,6 +10,8 @@ const instance = axios.create({
 });
 
 const company = {
+  async add(token, name, categories) {
+  },
 };
 
 export default company;
