@@ -101,6 +101,8 @@ export default {
       this.tabIndex = tab.index;
       this.$refs['form'].resetFields();
     },
+    getCode() {
+    },
   }
 };
 </script>
