@@ -132,6 +132,8 @@ export default {
         },
         tooltip: {
         },
+        legend: {
+        },
       };
     },
     drawBar() {
