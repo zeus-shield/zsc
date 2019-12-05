@@ -150,6 +150,11 @@ const cn = {
           }
         }
       ]
+    },
+    policy: {
+      title: '我的保单'
+
+      // the content follow same as market.dialog
     }
   },
   company: {
