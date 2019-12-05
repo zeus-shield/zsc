@@ -7,6 +7,9 @@
       <div class="title" slot="title">
         <span>{{ langSet.login.dialog.title }}</span>
       </div>
+      <div slot="footer">
+        <el-button class="button" type="primary" :disabled="buttonGoogleAuthDisabled" @click="submitGoogleAuthForm('googleAuthForm')">{{ langSet.login.dialog.buttonText }}</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
