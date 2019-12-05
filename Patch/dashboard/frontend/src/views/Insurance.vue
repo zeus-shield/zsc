@@ -30,5 +30,9 @@ export default {
   },
   // props: {
   // },
+  computed: {
+  },
+  created() {
+  },
 };
 </script>
