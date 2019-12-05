@@ -10,9 +10,11 @@ const instance = axios.create({
 });
 
 const insurance = {
+  async add(token, company, category, brief, detail) {
     try {
     } catch (err) {
     }
+  },
 };
 
 export default insurance;
