@@ -31,6 +31,9 @@ const en = {
     },
     menu4: {
     },
+    menu5: {
+      title: 'Contact us'
+    }
   },
   login: {
     title: 'LOGIN',
