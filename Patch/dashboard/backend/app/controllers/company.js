@@ -39,6 +39,11 @@ const removeCategory = async (req, res) => {
     });
     if(category !== undefined) {
     }
+
+    // 2. pull category from company
+    const update = {$pull: {'categories': {name: req.body.category}}};
+    result = await services.companies.update(req.body.name, update, session);
+
     await session.commitTransaction();
     session.endSession();
 
