@@ -242,6 +242,11 @@ const user = {
       let res = await instance.post('user/addPolicy', null, config);
       return res.data;
     } catch (err) {
+      if (err.response !== undefined) {
+        throw err.response.data;
+      } else {
+        throw err.message;
+      }
     }
   },
 
