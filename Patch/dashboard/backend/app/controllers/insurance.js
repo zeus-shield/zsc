@@ -40,6 +40,14 @@ const remove = async (req, res) => {
     const company = req.body.company;
     const category = req.body.category;
     const title = req.body.title;
+
+    let result = null;
+
+    // 1. delete and find insurance_id
+    result = await services.insurances.delete(company, category, title, session);
+    if(!result) {
+      throw createError('INSURANCE_NOT_EXIST');
+    }
     await session.commitTransaction();
     session.endSession();
     res.sendOk('Remove insurance successfully!');
