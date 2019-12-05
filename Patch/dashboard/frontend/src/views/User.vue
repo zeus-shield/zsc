@@ -22,6 +22,11 @@ export default {
   components: {
     'user-aside': UserAside
   },
+  data() {
+    return {
+      activeIndex: '1'
+    };
+  },
   methods: {
   }
 };
