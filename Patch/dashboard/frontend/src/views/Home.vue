@@ -24,6 +24,10 @@
 //   opacity: 1;
 // }
 .swiper-button-next, .swiper-button-prev {
+  top: 40%;
+  // width: 10%;
+  height: 20%;
+  margin-top: 0rem;
 }
 .swiper-slot .text {
 }
