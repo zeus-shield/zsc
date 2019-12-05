@@ -231,6 +231,11 @@ let router = new Router({
           name: 'adminInsuranceAdd',
           component: AdminInsuranceAdd
         },
+        {
+          path: '/admin/insurance/edit',
+          name: 'adminInsuranceEdit',
+          component: AdminInsuranceEdit,
+        }
       ]
     }
   ]
