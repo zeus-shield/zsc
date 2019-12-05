@@ -26,9 +26,9 @@ const getters = {
 //   list: state => {
 //     return state.staffs.filter(staff => staff.employed === true)
 //   },
-  num: (state, getters) => {
-    return getters.list.length
-  },
+//   num: (state, getters) => {
+//     return getters.list.length
+//   },
   getById: (state) => (id) => {
     return state.staffs.find(staff => staff.id === id)
   }
