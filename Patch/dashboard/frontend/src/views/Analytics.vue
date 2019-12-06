@@ -134,6 +134,8 @@ export default {
         },
         legend: {
         },
+        series: [
+        ]
       };
     },
     drawBar() {
