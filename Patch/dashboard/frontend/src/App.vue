@@ -132,6 +132,11 @@
   border-left-color:#EBEEF5
 }
 .el-popper[x-placement^=left] .popper__arrow::after {
+  right:1px;
+  bottom:-6px;
+  margin-left:-6px;
+  border-right-width:0;
+  border-left-color:#FFF
 }
 .utils-alert { 
   width: 280px;
