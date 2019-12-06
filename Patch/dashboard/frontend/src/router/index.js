@@ -235,6 +235,13 @@ let router = new Router({
           path: '/admin/insurance/edit',
           name: 'adminInsuranceEdit',
           component: AdminInsuranceEdit,
+          props: (route) => ({
+            method: route.query.method,
+            company: route.query.company,
+            category: route.query.category,
+            title: route.query.title,
+            id: route.query.id
+          })
         }
       ]
     }
