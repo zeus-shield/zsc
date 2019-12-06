@@ -31,8 +31,13 @@ export default {
   // props: {
   // },
   computed: {
+    ...mapState({
+      logColor: state => state.logColor.insurance.base
+    }),
+    ...mapGetters('lang', ['langSet'])
   },
   created() {
+    console.log('%c[Insurance]created()', `color:${this.logColor}`);
   },
 };
 </script>
