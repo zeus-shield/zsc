@@ -6,6 +6,8 @@
   width: 100%;
   border-right: 0px;
 }
+.menu-title {
+}
 .menu .menu-bottom-padding {
   padding-bottom: 10px;
 }
