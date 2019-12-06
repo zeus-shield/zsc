@@ -7,6 +7,12 @@
       <div class="title" slot="title">
         <span>{{ langSet.login.dialog.title }}</span>
       </div>
+      <el-form class="google-auth-form" ref="googleAuthForm" :model="googleAuthForm" label-width="0px" label-position="left" :rules="googleAuthRules">
+        <div class="space"></div>
+        <el-form-item prop="code">
+          <el-input class="input" v-model="googleAuthForm.code" prefix-icon="iconfont if-password" :placeholder="langSet.login.dialog.placeholder" @input="googleAuthInputChange"></el-input>
+        </el-form-item>
+      </el-form>
       <div slot="footer">
         <el-button class="button" type="primary" :disabled="buttonGoogleAuthDisabled" @click="submitGoogleAuthForm('googleAuthForm')">{{ langSet.login.dialog.buttonText }}</el-button>
       </div>
