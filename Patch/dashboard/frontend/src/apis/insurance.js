@@ -12,6 +12,8 @@ const instance = axios.create({
 const insurance = {
   async add(token, company, category, brief, detail) {
     try {
+      let res = await instance.post('insurance/add', null, config);
+      return res.data;
     } catch (err) {
     }
   },
