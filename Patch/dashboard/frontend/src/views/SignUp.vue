@@ -103,6 +103,8 @@ export default {
     },
     getCode() {
     },
+    submitForm(formName) {
+    }
   }
 };
 </script>
