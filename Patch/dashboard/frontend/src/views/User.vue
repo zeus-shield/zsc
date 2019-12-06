@@ -3,6 +3,12 @@
 
 <style lang="scss" scoped>
 .el-aside {
+  background-color: #fff;
+  // color: #333;
+  // text-align: center;
+  // line-height: 200px;
+  border-radius: 4px;
+  // border: 1px solid #e9e9e9;
 }
 .el-main {
   // background-color: #E9EEF3;
