@@ -70,6 +70,11 @@ class Wallet {
 
         window.ethereum.on('networkChanged', networkId => {
         });
+
+        window.ethereum.on('connect', () => {
+          const message = 'Connect';
+          alert(message);
+        });
       }
       this.listener = true;
     } else {}
