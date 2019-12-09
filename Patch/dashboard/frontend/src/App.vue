@@ -151,6 +151,11 @@ import HeaderPC from '@/views/Header';
 import FooterPC from '@/views/Footer';
 import HeaderMobile from '@/views/m/Header';
 import FooterMobile from '@/views/m/Footer';
+
+import { mapState, mapGetters, mapActions } from 'vuex';
+
+import APIs from '@/apis';
+
 export default {
   name: 'App',
   metaInfo: {
