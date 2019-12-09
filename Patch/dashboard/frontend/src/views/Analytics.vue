@@ -131,6 +131,8 @@ export default {
         title: {
         },
         tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
         legend: {
         },
