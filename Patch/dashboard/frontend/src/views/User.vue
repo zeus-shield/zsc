@@ -1,4 +1,8 @@
 <template>
+  <div class="user">
+    <el-container>
+    </el-container>
+  </div>
 </template>
 
 <style lang="scss" scoped>
