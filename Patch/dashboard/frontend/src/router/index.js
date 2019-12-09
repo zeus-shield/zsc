@@ -257,6 +257,11 @@ const auth = {
 };
 
 router.beforeEach((to, from, next) => {
+  console.log('[G]beforeEach (%s) => (%s)', from.fullPath, to.fullPath);
+
+  if (to.matched.some(data => data.meta.auth)) {
+  } else {
+  }
 });
 
 router.beforeResolve((to, from, next) => {
