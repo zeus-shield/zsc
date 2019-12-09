@@ -65,7 +65,8 @@ export default {
     ...mapState('logColor', {
       logColor: state => state.login
     }),
-    ...mapGetters('lang', ['langSet'])
+    ...mapGetters('lang', ['langSet']),
+    ...mapGetters('device', ['device'])
   },
   created() {
     console.log('%c[Login]created()', `color:${this.logColor}`);
