@@ -34,6 +34,10 @@
 .swiper-button-next, .swiper-button-prev {
 }
 .slot2 .title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #122739;
+  text-align: center;
 }
 .slot2 .content {
   text-align: left;
