@@ -93,7 +93,9 @@ const cn = {
       input: '录入我的保单'
     },
     dialog: {
+      title: '我的保单',
       policy: {
+        title: '保单信息',
       }
     }
   },
