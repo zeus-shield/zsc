@@ -40,6 +40,9 @@ export default {
   // components: {
   // },
   data() {
+    let vm = this;
+    let validatePhoneAccount = (rule, value, callback) => {
+    };
     return {
     };
   },
