@@ -15,6 +15,8 @@ const company = {
 
   async remove(token, name) {
   },
+  async groupCategoriesByName(token) {
+  }
 };
 
 export default company;
