@@ -2,11 +2,15 @@
 </template>
 
 <style lang="scss" scoped>
+.menu-container {
+}
 .menu {
   width: 100%;
   border-right: 0px;
 }
 .menu-title {
+}
+.menu .menu-item {
 }
 .menu .menu-bottom-padding {
   padding-bottom: 10px;
