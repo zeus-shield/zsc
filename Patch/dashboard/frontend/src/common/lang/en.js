@@ -78,6 +78,10 @@ const en = {
       input: 'Submit My Policy'
     },
     picc: {
+      category: 'Category: ',
+      age: 'Age',
+      period: 'Period: ',
+      input: 'Submit My Policy'
     },
     }
   },
