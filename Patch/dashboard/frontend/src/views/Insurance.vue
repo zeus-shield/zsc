@@ -39,5 +39,7 @@ export default {
   created() {
     console.log('%c[Insurance]created()', `color:${this.logColor}`);
   },
+  mounted() {
+  },
 };
 </script>
