@@ -1,17 +1,11 @@
 {
   "appenders":  {
-    "request": {
-      "type": "console",
-      "filename": "./logs/access",
-      "pattern": "-yyyy-MM-dd.log",
-      "alwaysIncludePattern": true,
-      "category": "http"
-    },
     "application": {
       "type": "console",
       "filename": "./logs/application",
       "pattern": "-yyyy-MM-dd.log",
-      "alwaysIncludePattern": true
+      "alwaysIncludePattern": true,
+      "category": "http"
     },
     "err": {
       "type": "stderr",
@@ -21,6 +15,6 @@
     }
   },
   "categories": {
-    "default": { "appenders": ["application", "request"], "level": "info" }
+    "default": { "appenders": ["application"], "level": "debug" }
   }
 }
