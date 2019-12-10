@@ -1,7 +1,7 @@
-'use strict'
+'use strict';
 
-// const {errorMsg, successMsg, errorSystem} = require('../../config')
-const {errMsg} = require('../../config');
+// const { errorMsg, successMsg, errorSystem } = require('../../config')
+const { errMsg } = require('../../config');
 
 module.exports = {
   // getSuccessMsg (succMsg) {
@@ -31,4 +31,4 @@ module.exports = {
   //   const result = errorSystem[model] ? errorSystem[model] : 'SERVER_ERROR'
   //   return result
   // };
-}
+};
