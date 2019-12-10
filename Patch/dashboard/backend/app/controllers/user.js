@@ -2,16 +2,15 @@
 
 const mongoose = require('mongoose');
 const services = require('../services');
-const {auth} = require('../utils');
-const {settings} = require('../../config');
+const { auth } = require('../utils');
 
 // for new interface
 const createError = require('http-errors');
 
 const debug = require('debug')('backend:app:controllers:user');
 
-const emailCode = async (req, res) => {
-  debug("emailCode(%s)", req.body.account);
+const emailCode = async(req, res) => {
+  debug('emailCode(%s)', req.body.account);
   try {
     const result = await services.users.buildEmailCode(req.body.account);
     res.sendOk(result);
@@ -20,8 +19,8 @@ const emailCode = async (req, res) => {
   }
 };
 
-const signUp = async (req, res) => {
-  debug("signUp(%s, %s, %s)", req.body.account, req.body.password, req.body.code);
+const signUp = async(req, res) => {
+  debug('signUp(%s, %s, %s)', req.body.account, req.body.password, req.body.code);
   try {
     const result = await services.users.signUp(req.body.account, req.body.password, req.body.code);
     res.sendOk(result);
@@ -30,8 +29,8 @@ const signUp = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
-  debug("login(%s, %s, %s)", req.body.account, req.body.password, req.body.code);
+const login = async(req, res) => {
+  debug('login(%s, %s, %s)', req.body.account, req.body.password, req.body.code);
   try {
     const result = await services.users.login(req.body.account, req.body.password, req.body.code);
     result.token = auth.createToken(result._id);
@@ -41,49 +40,49 @@ const login = async (req, res) => {
   }
 };
 
-const detail = async (req, res) => {
-  debug("detail(%s, %s)", req.headers._id);
+const detail = async(req, res) => {
+  debug('detail(%s, %s)', req.headers._id);
   try {
     const result = await services.users.detail(req.headers._id);
     res.sendOk(result);
-  } catch(err) {
+  } catch (err) {
     res.sendErr(err);
   }
 };
 
-const setTOTP = async (req, res) => {
-  debug("setTOTP(%s, %s)", req.headers._id, req.headers.cmd);
+const setTOTP = async(req, res) => {
+  debug('setTOTP(%s, %s)', req.headers._id, req.headers.cmd);
   try {
     const result = await services.users.setTOTP(req.headers._id, req.headers.cmd);
     res.sendOk(result);
-  } catch(err) {
+  } catch (err) {
     res.sendErr(err);
   }
 };
 
-const saveTOTP = async (req, res) => {
-  debug("saveTOTP(%s, %s, %s)", req.headers._id, req.headers.code, req.headers.key);
+const saveTOTP = async(req, res) => {
+  debug('saveTOTP(%s, %s, %s)', req.headers._id, req.headers.code, req.headers.key);
   try {
     const result = await services.users.saveTOTP(req.headers._id, req.headers.code, req.headers.key);
     res.sendOk(result);
-  } catch(err) {
+  } catch (err) {
     res.sendErr(err);
   }
 };
 
-const updateTOTP = async (req, res) => {
-  debug("updateTOTP(%s, %s)", req.headers._id, req.headers.code);
+const updateTOTP = async(req, res) => {
+  debug('updateTOTP(%s, %s)', req.headers._id, req.headers.code);
   try {
     const result = await services.users.updateTOTP(req.headers._id, req.headers.code, req.body);
     res.sendOk(result);
-  } catch(err) {
+  } catch (err) {
     res.sendErr(err);
   }
 };
 
 // new interface
-const addPolicy = async (req, res) => {
-  debug("addPolicy(%s, %s)", req.body.id, req.body.policy);
+const addPolicy = async(req, res) => {
+  debug('addPolicy(%s, %s)', req.body.id, req.body.policy);
   try {
     let policy = JSON.parse(req.body.policy);
     policy.insurance.id = mongoose.Types.ObjectId(policy.insurance.id);
@@ -100,15 +99,15 @@ const addPolicy = async (req, res) => {
   }
 };
 
-const statistics = async (req, res) => {
-  debug("statistics(%s, %s, %s, %s, %s)", req.query.company, 
+const statistics = async(req, res) => {
+  debug('statistics(%s, %s, %s, %s, %s)', req.query.company,
     req.query.category, req.query.title, req.query.sort, req.query.limit);
   try {
     const company = req.query.company;
     const category = req.query.category;
     const title = req.query.title;
-    const sort = parseInt(req.query.sort);
-    const limit = parseInt(req.query.limit);
+    const sort = parseInt(req.query.sort, 10);
+    const limit = parseInt(req.query.limit, 10);
 
     const result = await services.users.statistics(company, category, title, sort, limit);
     res.sendOk(result);
@@ -117,8 +116,8 @@ const statistics = async (req, res) => {
   }
 };
 
-const list = async (req, res) => {
-  debug("list()");
+const list = async(req, res) => {
+  debug('list()');
   res.send('/users/list');
 };
 // const create = async (req, res) => {
@@ -131,7 +130,7 @@ const list = async (req, res) => {
 //   }
 // };
 
-module.exports = {emailCode, signUp, login, detail, setTOTP, saveTOTP, updateTOTP, addPolicy, statistics, list};
+module.exports = { emailCode, signUp, login, detail, setTOTP, saveTOTP, updateTOTP, addPolicy, statistics, list };
 
 // // import user from './user'
 // export default {
@@ -143,6 +142,6 @@ module.exports = {emailCode, signUp, login, detail, setTOTP, saveTOTP, updateTOT
 //   },
 //   detail: async (req, res) => {
 //     debug("detail(%s)", req.params._id);
-//   }  
+//   }
 // }
 
