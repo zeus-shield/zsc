@@ -11,6 +11,6 @@ utils.auth = require('./authentication');
 // utils.upload = require('./upload');
 utils.nodemailer = require('./nodemailer');
 utils.tool = require('./tool');
-utils.totp = require('./totp');
+utils.TOTP = require('./totp');
 
 module.exports = utils;
