@@ -4,9 +4,9 @@ const mongoose = require('mongoose');
 const createError = require('http-errors');
 const services = require('../services');
 
-const debug = require('debug')('backend:app:controllers:insurance');
+// const debug = require('debug')('backend:app:controllers:insurance');
 
-const add = async (req, res) => {
+const add = async(req, res) => {
   // debug("add(%s, %s, %s, %s)", req.body.company, req.body.category,
   //   JSON.parse(req.body.brief), JSON.parse(req.body.detail));
   let session = null;
@@ -30,7 +30,7 @@ const add = async (req, res) => {
   }
 };
 
-const remove = async (req, res) => {
+const remove = async(req, res) => {
   // debug("remove(%s, %s, %s)", req.body.company, req.body.category, req.body.title);
   let session = null;
   try {
@@ -61,7 +61,7 @@ const remove = async (req, res) => {
   }
 };
 
-const update = async (req, res) => {
+const update = async(req, res) => {
   // debug("update(%s, %s, %s, %s)", req.body.company, req.body.category, req.body.title, req.body.update);
   try {
     const company = req.body.company;
@@ -70,9 +70,9 @@ const update = async (req, res) => {
     const update = JSON.parse(req.body.update);
 
     const result = await services.insurances.update(company, category, title, update, null);
-    if(!result) {
+    if (!result) {
       throw createError('INSURANCE_NOT_EXIST');
-    }    
+    }
 
     res.sendOk('Update insurance successfully!');
   } catch (err) {
@@ -81,7 +81,7 @@ const update = async (req, res) => {
   }
 };
 
-const list = async (req, res) => {
+const list = async(req, res) => {
   // debug("list()");
   try {
     const result = await services.insurances.findAll(null);
@@ -91,7 +91,7 @@ const list = async (req, res) => {
   }
 };
 
-const detail = async (req, res) => {
+const detail = async(req, res) => {
   // debug("detail(%s)", req.query.company, req.query.category, req.query.title);
   try {
     const method = req.query.method;
@@ -102,15 +102,15 @@ const detail = async (req, res) => {
 
     let result;
 
-    if(method === 'key') {
+    if (method === 'key') {
       result = await services.insurances.find(company, category, title, null);
-    } else if(method === 'id') {
+    } else if (method === 'id') {
       result = await services.insurances.findById(id, null);
     } else {
       throw createError('COMMON_PARAM_ERROR');
     }
 
-    if(!result) {
+    if (!result) {
       throw createError('INSURANCE_NOT_EXIST');
     }
     res.sendOk(result);
@@ -119,7 +119,7 @@ const detail = async (req, res) => {
   }
 };
 
-const count = async (req, res) => {
+const count = async(req, res) => {
   // debug("count(%s, %s, %s)", req.query.company, req.query.category, req.query.title);
   try {
     const company = req.query.company;
@@ -133,4 +133,4 @@ const count = async (req, res) => {
   }
 };
 
-module.exports = {add, remove, update, list, detail, count};
+module.exports = { add, remove, update, list, detail, count };
