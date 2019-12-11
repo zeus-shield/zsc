@@ -1,3 +1,4 @@
+'use strict';
 
 const utils = {
   storage: {
@@ -71,7 +72,7 @@ const utils = {
       this.storage.cookie.remove('login_id');
       this.storage.cookie.remove('login_account');
       this.storage.cookie.remove('login_token');
-      this.notice.alert(vm, 'warning', vm.langSet.component.alert.warningTitle, vm.langSet.message.warning.jwtExpires, vm.langSet.component.button.confirm, false, true, (action) => {
+      this.notice.alert(vm, 'warning', vm.langSet.component.alert.warningTitle, vm.langSet.message.warning.jwtExpires, vm.langSet.component.button.confirm, false, true, () => {
         vm.$router.push({name: 'login'});
       });
     } else if (msg === 'jwt malformed') {
@@ -79,7 +80,7 @@ const utils = {
       this.storage.cookie.remove('login_id');
       this.storage.cookie.remove('login_account');
       this.storage.cookie.remove('login_token');
-      this.notice.alert(vm, 'warning', vm.langSet.component.alert.warningTitle, vm.langSet.message.warning.jwtMalformed, vm.langSet.component.button.confirm, false, true, (action) => {
+      this.notice.alert(vm, 'warning', vm.langSet.component.alert.warningTitle, vm.langSet.message.warning.jwtMalformed, vm.langSet.component.button.confirm, false, true, () => {
         vm.$router.push({name: 'login'});
       });
     } else if (msg === 'invalid token') {
@@ -87,7 +88,7 @@ const utils = {
       this.storage.cookie.remove('login_id');
       this.storage.cookie.remove('login_account');
       this.storage.cookie.remove('login_token');
-      this.notice.alert(vm, 'warning', vm.langSet.component.alert.warningTitle, vm.langSet.message.warning.invalidToken, vm.langSet.component.button.confirm, false, true, (action) => {
+      this.notice.alert(vm, 'warning', vm.langSet.component.alert.warningTitle, vm.langSet.message.warning.invalidToken, vm.langSet.component.button.confirm, false, true, () => {
         vm.$router.push({name: 'login'});
       });
     } else if (msg === 'USER_NOT_EXIST') {
@@ -95,7 +96,7 @@ const utils = {
       this.storage.cookie.remove('login_id');
       this.storage.cookie.remove('login_account');
       this.storage.cookie.remove('login_token');
-      this.notice.alert(vm, 'error', vm.langSet.component.alert.errorTitle, vm.langSet.message.error.USER_NOT_EXIST, vm.langSet.component.button.confirm, false, true, (action) => {
+      this.notice.alert(vm, 'error', vm.langSet.component.alert.errorTitle, vm.langSet.message.error.USER_NOT_EXIST, vm.langSet.component.button.confirm, false, true, () => {
         vm.$router.push({name: 'login'});
       });
     } else if (msg === 'TOKEN_IS_MISSING') {
