@@ -3,7 +3,7 @@
     <el-row :gutter="0">
     </el-row>
 
-    <el-dialog class="dialog" :visible.sync="dialogVisible" width="30%" @close="dialogClose">
+    <el-dialog class="dialog" :visible.sync="dialogVisible" :width="dialogWidth" @close="dialogClose">
       <div class="title" slot="title">
         <span>{{ langSet.login.dialog.title }}</span>
       </div>
@@ -46,7 +46,7 @@
 import utils from '../common/utils';
 import user from '../apis/user';
 
-import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 export default {
   name: 'Login',
