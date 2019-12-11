@@ -1,3 +1,4 @@
+'use strict';
 
 const cn = {
   header: {
@@ -163,6 +164,10 @@ const cn = {
 
       // the content follow same as market.dialog
     }
+  },
+  notFound: {
+    content: '您访问的页面不存在!',
+    back: '返回首页'
   },
   company: {
   },
