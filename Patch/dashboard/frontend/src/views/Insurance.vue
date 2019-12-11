@@ -8,6 +8,11 @@
 </template>
 
 <style lang="scss">
+.tab {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>
 
 <script>
