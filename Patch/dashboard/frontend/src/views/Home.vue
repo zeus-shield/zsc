@@ -31,7 +31,11 @@
 }
 .swiper-slot .text {
 }
-.swiper-button-next, .swiper-button-prev {
+.swiper-slot .text .inner {
+}
+.swiper-slot .text .inner .title {
+}
+.swiper-slot .text .inner .content {
 }
 .slot2 .title {
   font-size: 2rem;
@@ -57,7 +61,7 @@
 </style>
 
 <script>
-import Swiper from 'swiper';
+// import Swiper from 'swiper';
 import 'swiper/dist/css/swiper.min.css';
 
 import { mapState, mapGetters } from 'vuex';
