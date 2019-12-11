@@ -1,3 +1,5 @@
+'use strict';
+
 import Vue from 'vue';
 import VueQriously from 'vue-qriously';
 
@@ -8,16 +10,14 @@ import 'element-ui/lib/theme-chalk/index.css';
 // import 'bootstrap/dist/css/bootstrap.min.css'; // conflict with element
 // import 'bootstrap-vue/dist/bootstrap-vue.css';
 
+import Meta from 'vue-meta';
+// swiper
+import VueAwesomeSwiper from 'vue-awesome-swiper';
+
 // iconfont can be imported in 'index.tpl'
 // if we use svg only, 'iconfont.css' is not necessary.
 import '@/assets/iconfont/iconfont.css';
 import '@/assets/iconfont/iconfont.js';
-
-import Meta from 'vue-meta';
-
-// swiper
-import VueAwesomeSwiper from 'vue-awesome-swiper';
-
 import router from '@/router';
 import store from '@/store';
 // import app from './components/navigation/navmenu/navmenu';
