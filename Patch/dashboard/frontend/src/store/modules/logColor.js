@@ -1,4 +1,4 @@
-// import shop from '../../apis/shop'
+'use strict';
 
 // initial state
 const state = () => {
