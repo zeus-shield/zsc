@@ -75,6 +75,10 @@ class Wallet {
           const message = 'Connect';
           alert(message);
         });
+        window.ethereum.on('close', (code, reason) => {
+          const message = 'Close ' + code + reason;
+          alert(message);
+        });
       }
       this.listener = true;
     } else {}
