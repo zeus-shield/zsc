@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Created by yqr on 2018/3/26.
  */
@@ -94,7 +96,7 @@ let router = new Router({
     //       path: '/insurance/pingan',
     //       name: 'insurancePingAn',
     //       component: InsurancePingAn
-    //     }       
+    //     }
     //   ]
     //   // meta: { auth: true },
     //   // beforeEnter: (to, from, next) => {
@@ -260,6 +262,12 @@ router.beforeEach((to, from, next) => {
   console.log('[G]beforeEach (%s) => (%s)', from.fullPath, to.fullPath);
 
   if (to.matched.some(data => data.meta.auth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (!auth.checkLogin()) {
+    } else {
+      next();
+    }
   } else {
   }
 });
