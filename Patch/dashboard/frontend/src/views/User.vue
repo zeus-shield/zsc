@@ -1,6 +1,9 @@
 <template>
   <div class="user">
     <el-container>
+      <el-aside width="198px">
+        <user-aside :activeIndex="activeIndex"></user-aside>
+      </el-aside>
     </el-container>
   </div>
 </template>
