@@ -22,6 +22,8 @@ const insurance = {
       }
     }
   },
+  async count(token, company, category, title) {
+  }
 };
 
 export default insurance;
