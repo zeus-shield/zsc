@@ -81,10 +81,17 @@ export default {
     console.log('%c[Analytics]mounted()', `color:${this.logColor}`);
     let vm = this;
     let errorMessage = '';
-    
+
     vm.loading = true;
 
     vm.prePie().then(data => {
+      data.content.forEach(element => {
+        if (vm.device === 'pc') {
+          vm.pieLegendData.push(element._id.title);
+        }
+        vm.pieSeriesData.push({value: element.count, name: element._id.title});
+      });
+      return vm.preBar();
     }).then(data => {
     }).catch(errorData => {
     }); 
