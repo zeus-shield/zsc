@@ -15,20 +15,20 @@ const user = {
     params.append('account', account);
     params.append('password', password);
     return instance.post('user', params).then(res => {
-              func(0, res.data);
-            }).catch(err => {
-              func(err, err.response.data);
-            });
+      func(0, res.data);
+    }).catch(err => {
+      func(err, err.response.data);
+    });
   },
   loginCommon(account, password, func) {
     let params = new URLSearchParams();
     params.append('account', account);
     params.append('password', password);
     return instance.post('user/login', params).then(res => {
-              func(0, res.data);
-            }).catch(err => {
-              func(err, err.response.data);
-            });
+      func(0, res.data);
+    }).catch(err => {
+      func(err, err.response.data);
+    });
   },
   infoCommon(id, account, token, func) {
     let config = {
@@ -38,10 +38,10 @@ const user = {
       }
     };
     return instance.get(`user/${account}`, config).then(res => {
-              func(0, res.data);
-            }).catch(err => {
-              func(err, err.response.data);
-            });
+      func(0, res.data);
+    }).catch(err => {
+      func(err, err.response.data);
+    });
   },
   signUpPromise(account, password) {
     let params = new URLSearchParams();
