@@ -3,6 +3,8 @@
     <div>
       <el-row :gutter="0">
         <el-col :xs="{span: 22, offset: 1}" :sm="{span: 14, offset: 5}" :md="{span: 12, offset: 6}" :lg="{span: 8, offset: 8}">
+          <el-card shadow="hover"> 
+          </el-card>
         </el-col>
       </el-row>
     </div>
@@ -33,7 +35,7 @@ import utils from '../common/utils';
 import user from '../apis/user';
 import moment from 'moment';
 
-import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 export default {
   name: 'SignUp',
