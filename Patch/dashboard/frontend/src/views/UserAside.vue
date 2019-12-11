@@ -10,6 +10,8 @@
 }
 .menu-title {
 }
+.menu-title .icon {
+}
 .menu .menu-item {
 }
 .menu .menu-bottom-padding {
@@ -29,7 +31,8 @@ import { mapState, mapGetters } from 'vuex';
 
 export default {
   name: 'UserAside',
-  components: {
+  // components: {
+  // },
   },
 };
 </script>
