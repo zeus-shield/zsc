@@ -3,9 +3,11 @@
 
 <style lang="scss" scoped>
 .header-menu {
-  background-color: #545c64;
+  background-color: #232f3e;
   height: 60px;
   padding: 0px 20px;
+}
+.header-logo {
 }
 </style>
 
