@@ -35,9 +35,16 @@ const removeCategory = async(req, res) => {
 
     // 1. remove insurances from insurance
     const category = result.categories.find(category => {
-      return category.name ===  req.body.category;
+      return category.name === req.body.category;
     });
-    if(category !== undefined) {
+    if (category !== undefined) {
+      if (category.insurance_ids.length > 0) {
+        // remove
+        for (let i = 0; i < category.insurance_ids.length; i++) {
+          await services.insurances.deleteById(category.insurance_ids[i], session);
+          // debug(result);
+        }
+      }
     }
 
     // 2. pull category from company
