@@ -20,7 +20,7 @@ const state = () => {
     userQuestions: 'black',
     userGoogle: 'black',
     insurance: {
-      base: 'yellow',
+      base: 'black',
       pingan: {
         brief: 'black',
         detail: 'black'
@@ -45,7 +45,7 @@ const state = () => {
         edit: 'black'
       }
     },
-    notFound: 'red'
+    notFound: 'black'
   };
 };
 
