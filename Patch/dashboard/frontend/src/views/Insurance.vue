@@ -46,5 +46,8 @@ export default {
   },
   mounted() {
   },
+  destroyed() {
+    console.log('%c[Insurance]destroyed()', `color:${this.logColor}`);
+  },
 };
 </script>
