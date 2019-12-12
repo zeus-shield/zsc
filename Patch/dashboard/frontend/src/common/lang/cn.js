@@ -2,6 +2,8 @@
 
 const cn = {
   header: {
+    brand: 'Dashboard',
+
     home: '首页', // 1
 
     insurance: '保险市场', // 2
@@ -36,6 +38,7 @@ const cn = {
     },
 
     menu3: {
+      title: '产品优势',
     },
 
     menu4: {
