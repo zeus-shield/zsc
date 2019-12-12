@@ -69,6 +69,8 @@ class Wallet {
         });
 
         window.ethereum.on('networkChanged', networkId => {
+          if (this.networkId !== networkId) {
+          }
         });
 
         window.ethereum.on('connect', () => {
