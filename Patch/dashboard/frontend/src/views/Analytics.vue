@@ -142,6 +142,9 @@ export default {
           formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
         legend: {
+          orient: 'vertical',
+          left: 'left',
+          data: this.pieLegendData
         },
         series: [
         ]
