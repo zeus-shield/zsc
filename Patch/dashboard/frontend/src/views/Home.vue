@@ -36,6 +36,8 @@
 .swiper-slot .text .inner .title {
 }
 .swiper-slot .text .inner .content {
+  color: #fff;
+  text-align: center;
 }
 .slot2 .title {
   font-size: 2rem;
