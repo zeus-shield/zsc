@@ -2,6 +2,7 @@
 
 const en = {
   header: {
+    brand: 'Dashboard',
     home: 'Home',
     insurance: 'Market',
     market: 'Product',
@@ -85,6 +86,7 @@ const en = {
       period: 'Period: ',
       input: 'Submit My Policy'
     },
+    dialog: {
     }
   },
   user: {
