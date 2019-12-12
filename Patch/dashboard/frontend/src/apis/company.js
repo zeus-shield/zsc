@@ -18,6 +18,10 @@ const company = {
 
   async removeCategory(token, name, category) {
   },
+
+  async detail(token, name) {
+  },
+
   async groupCategoriesByName(token) {
   }
 };
