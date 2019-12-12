@@ -22,6 +22,9 @@ const insurance = {
       }
     }
   },
+
+  async remove(token, company, category, title) {
+  },
   async count(token, company, category, title) {
   }
 };
