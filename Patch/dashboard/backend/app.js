@@ -1,19 +1,17 @@
 'use strict';
 
-const debug = require('debug')('backend:server');
-
+// const debug = require('debug')('backend:server');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+// const logger = require('morgan');
 const cors = require('cors');
 const log4js = require('log4js');
-const {settings, logConfig} = require('./config');
-
-const app = express();
-const routes = require('./app/routes');
-
 const mongoose = require('mongoose');
+const app = express();
+
+const { settings, logConfig } = require('./config');
+const routes = require('./app/routes');
 
 /**
  * Normalize a port into a number, string, or false.
