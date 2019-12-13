@@ -19,6 +19,8 @@ const company = {
   async removeCategory(token, name, category) {
   },
 
+  async update(token, name, newName, newCategoryNames) {
+  },
   async detail(token, name) {
   },
 
