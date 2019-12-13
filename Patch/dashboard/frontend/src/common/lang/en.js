@@ -112,8 +112,8 @@ const en = {
         title1: 'Account',
         title2: 'Last Login At'
       },
-      securitySetting: {
-        title: 'Security',
+      security: {
+        title: 'Security Setting',
         google: {
           title: 'Google Authenticator',
           description: 'Receive verification codes for login.',
@@ -124,7 +124,7 @@ const en = {
         }
       },
       dialog: {
-        title: 'Google authenticator',
+        title: 'Google Authenticator',
         placeholder: 'Please enter the 6-digit Google code',
         buttonText: 'Confirm'
       }
