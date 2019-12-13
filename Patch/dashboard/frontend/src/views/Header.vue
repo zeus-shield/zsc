@@ -9,6 +9,10 @@
 }
 .header-logo {
 }
+.header-memu-slot {
+}
+.header-login {
+}
 </style>
 
 <script>
