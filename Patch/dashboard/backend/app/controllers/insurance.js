@@ -18,8 +18,11 @@ const add = async(req, res) => {
     const category = req.body.category;
     const brief = JSON.parse(req.body.brief);
     const detail = JSON.parse(req.body.detail);
+
+    let result = null;
     await session.commitTransaction();
     session.endSession();
+    res.sendOk('Add new insurance successfully!');
   } catch (err) {
     // debug(err);
     if (session !== null) {
