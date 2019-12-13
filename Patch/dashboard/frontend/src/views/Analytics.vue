@@ -136,6 +136,13 @@ export default {
 
       let option = {
         title: {
+          text: utils.storage.cookie.get('lang') === 'en' ? 'Insurance ranking' : '险种热度排行榜',
+          subtext: utils.storage.cookie.get('lang') === 'en' ? '(TOP10)' : '（排列前十名的险种）',
+          x: 'center',
+          textStyle: {
+            color: '#000000',
+            fontSize: 24
+          }
         },
         tooltip: {
           trigger: 'item',
