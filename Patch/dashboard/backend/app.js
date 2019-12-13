@@ -44,16 +44,14 @@ global.logger = log4js.getLogger();
 // Replace mongoose's promise with ES6's promise
 // mongoose.Promise = global.Promise
 // After mongodb is upgraded to 4.0, 'useNewUrlParser' parameter and 'useCreateIndex' parameter need to be added
-mongoose.connect(settings.dbConfig.URL, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false }).then(
-  () => {
-    debug('Dashboard mongoose connected!');
-  },
-  err => {
-    debug('Dashboard mongoose connect error(%s)!', err);
-  });
+mongoose.connect(settings.dbConfig.URL, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true }).then(() => {
+  global.logger.info('Dashboard mongoose connected!');
+}).catch((err) => {
+  global.logger.error('Dashboard mongoose connect error(%s)!', err);
+});
 // mongoose.set('debug', settings.mongooseDebug)
 
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
