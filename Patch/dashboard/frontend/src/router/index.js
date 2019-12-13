@@ -28,7 +28,7 @@ const Analytics = resolve => require.ensure([], () => resolve(require('@/views/A
 const FAQ = resolve => require.ensure([], () => resolve(require('@/views/FAQ')), 'lazy');
 const Login = resolve => require.ensure([], () => resolve(require('@/views/Login')), 'lazy');
 const SignUp = resolve => require.ensure([], () => resolve(require('@/views/SignUp')), 'lazy');
-const UserBase = resolve => require.ensure([], () => resolve(require('@/views/UserBase')), 'lazy');
+const User = resolve => require.ensure([], () => resolve(require('@/views/User')), 'lazy');
 const UserDetail = resolve => require.ensure([], () => resolve(require('@/views/UserDetail')), 'lazy');
 const UserPolicy = resolve => require.ensure([], () => resolve(require('@/views/UserPolicy')), 'lazy');
 const UserSupport = resolve => require.ensure([], () => resolve(require('@/views/UserSupport')), 'lazy');
@@ -150,7 +150,7 @@ let router = new Router({
     {
       path: '/account/user',
       name: 'user',
-      component: UserBase,
+      component: User,
       meta: { auth: true },
       children: [
         {
