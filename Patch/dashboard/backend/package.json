@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "lint-all": "eslint ./ --ext .json,.js",
+    "lint-dashboard": "eslint ./projs/dashboard --ext .json,.js",
     "node": "set DEBUG=backend:* & node ./server.js",
     "babel": "set DEBUG=backend:* & babel-node ./server.js",
     "pm2": "set DEBUG=backend:* & pm2 start ./server.js --name dashboard --watch",
