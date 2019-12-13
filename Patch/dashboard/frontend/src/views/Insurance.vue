@@ -49,5 +49,8 @@ export default {
   destroyed() {
     console.log('%c[Insurance]destroyed()', `color:${this.logColor}`);
   },
+  updated() {
+    console.log('%c[Insurance]updated()', `color:${this.logColor}`);
+  },
 };
 </script>
