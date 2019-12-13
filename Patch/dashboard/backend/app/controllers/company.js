@@ -16,7 +16,11 @@ const remove = async(req, res) => {
 
   let session = null;
   try {
+    let result;
+    let insuranceIds = [];
+    res.sendOk('Remove company successfully!');
   } catch (err) {
+    res.sendErr(err);
   }
 };
 
