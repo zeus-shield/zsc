@@ -32,6 +32,9 @@
 .swiper-slot .text {
 }
 .swiper-slot .text .inner {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
 }
 .swiper-slot .text .inner .title {
 }
