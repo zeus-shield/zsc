@@ -14,5 +14,11 @@ export default {
   name: 'Footer',
   // components: {
   // },
+  data() {
+    return {
+    };
+  },
+  // props: {
+  // },
 };
 </script>
