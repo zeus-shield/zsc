@@ -188,15 +188,18 @@ const cn = {
   component: {
     button: {
       confirm: '确认',
-      cancel: '取消'
+      cancel: '取消',
+      save: '保存'
     },
     alert: {
       errorTitle: '错误',
       warningTitle: '提示'
     },
     loading: {
-      login: '用户登录中....',
-      signUp: '用户注册中....'
+      login: '用户登录中......',
+      signUp: '用户注册中......',
+      insurance: '保险产品获取中......',
+      analytics: '大数据分析中........'
     }
   }
 };
