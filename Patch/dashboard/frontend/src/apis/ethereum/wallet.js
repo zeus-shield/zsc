@@ -70,6 +70,9 @@ class Wallet {
 
         window.ethereum.on('networkChanged', networkId => {
           if (this.networkId !== networkId) {
+            const message = 'Network change from ' + this.networkId + ' to ' + networkId;
+            vm.$message(message);
+            this.networkId = networkId;
           }
         });
 
