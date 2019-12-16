@@ -24,6 +24,9 @@
   // text-align: center;
   // line-height: 160px;
 }
+.el-main-mobile {
+  padding: 0;
+}
 </style>
 
 <script>
