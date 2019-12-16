@@ -5,6 +5,12 @@
 </template>
 
 <style lang="scss" scoped>
+.footer {
+}
+.footer p {
+}
+.footer a {
+}
 </style>
 
 <script>
