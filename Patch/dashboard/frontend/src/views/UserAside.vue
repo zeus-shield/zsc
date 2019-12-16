@@ -4,9 +4,9 @@
 <style lang="scss" scoped>
 .menu-container {
 }
-.menu {
+.menu-container .menu {
   width: 100%;
-  border-right: 0px;
+  border-right: 0rem;
 }
 .menu-title {
 }
