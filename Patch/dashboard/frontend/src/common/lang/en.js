@@ -102,15 +102,17 @@ const en = {
         }
       ]
     },
+    // DONE
     detail: {
-      title: 'Account Safety',
-      securityTip: {
-        title: 'Security Tip',
-        description: 'For the safety of your account, please check carefully the domain you are visiting, enable two factor authentication, and do NOT disclose your verification codes to anyone including Dashboard staff.'
-      },
-      info: {
-        title1: 'Account',
-        title2: 'Last Login At'
+      account: {
+        title: 'Account Info',
+        tip: {
+          title: 'Security Tip',
+          description: 'For the safety of your account, please check carefully the domain you are visiting, enable two factor authentication, and do NOT disclose your verification codes to anyone including Dashboard staff.'
+        },
+        info: {
+          title: ['Account', 'Last Login At']
+        }
       },
       security: {
         title: 'Security Setting',
