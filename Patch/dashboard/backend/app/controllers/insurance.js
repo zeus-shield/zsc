@@ -20,6 +20,12 @@ const add = async(req, res) => {
     const detail = JSON.parse(req.body.detail);
 
     let result = null;
+
+    // 1. if company and category exist ?
+    result = await services.companies.findByNamesAndCategory(company, category, session);
+    if (!result) {
+      throw createError('COMPANY_CATEGORIES_NOT_EXIST');
+    }
     await session.commitTransaction();
     session.endSession();
     res.sendOk('Add new insurance successfully!');
