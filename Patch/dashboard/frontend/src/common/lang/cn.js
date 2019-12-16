@@ -98,6 +98,8 @@ const cn = {
     },
     dialog: {
       title: '我的保单',
+      product: {
+      },
       policy: {
         title: '保单信息',
       }
