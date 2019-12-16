@@ -45,6 +45,8 @@ export default {
     let vm = this;
     let validatePhoneAccount = (rule, value, callback) => {
     };
+    let validateEmailAccount = (rule, value, callback) => {
+    };
     return {
     };
   },
