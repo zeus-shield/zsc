@@ -13,6 +13,8 @@ const state = () => {
     login: 'black',
     signUp: 'black',
     user: {
+      container: 'black',
+      detail: 'black',
     },
     insurance: {
       base: 'black',
