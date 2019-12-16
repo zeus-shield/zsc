@@ -5,7 +5,13 @@ const createError = require('http-errors');
 const services = require('../services');
 
 const debug = require('debug')('backend:app:controllers:company');
-const add = async (req, res) => {
+
+// support:
+// 1. Add new company and new categories.
+// 2. Add new categories when company exist.
+const add = async(req, res) => {
+  debug('add(%s, %s)', req.body.name, JSON.parse(req.body.categories));
+  let session = null;
   try {
   } catch (err) {
   }
