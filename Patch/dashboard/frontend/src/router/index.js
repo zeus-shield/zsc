@@ -265,10 +265,14 @@ router.beforeEach((to, from, next) => {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (!auth.checkLogin()) {
+      setTimeout(() => { // fix active index issue for jump
+      }, 1);
+      next(); // then auth page can twinkle, but we can fix active index issue
     } else {
       next();
     }
   } else {
+    next();
   }
 });
 
