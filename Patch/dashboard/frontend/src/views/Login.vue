@@ -35,7 +35,7 @@
   font-size: 15px;
 }
 .dialog .google-auth-form .space {
-  margin-top: 22px;
+  margin-top: 1.375rem; // 22px;
 }
 .dialog .button {
   width: 50%;
@@ -73,6 +73,12 @@ export default {
   },
   mounted() {
     console.log('%c[Login]mounted()', `color:${this.logColor}`);
+    this.setDialogWidth();
+    if (this.device === 'pc') {
+      window.onresize = () => {
+        this.setDialogWidth();
+      };
+    }
   },
   destroyed() {
     console.log('%c[Login]destroyed()', `color:${this.logColor}`);
