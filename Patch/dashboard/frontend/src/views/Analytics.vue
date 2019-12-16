@@ -93,6 +93,10 @@ export default {
       });
       return vm.preBar();
     }).then(data => {
+      data.content.forEach(element => {
+        vm.barDataAxis.push(element._id.company);
+        vm.barData.push(element.count);
+      });
     }).catch(errorData => {
     }); 
   },
