@@ -37,6 +37,12 @@ function _normalizePort(val) {
  */
 function _onListening(type) {
 }
+
+/**
+ * Event listener for HTTP/HTTPS server "error" event.
+ */
+function _onError(type, error) {
+}
 log4js.configure(logConfig)
 global.logger = log4js.getLogger();
 
