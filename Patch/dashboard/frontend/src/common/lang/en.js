@@ -39,8 +39,8 @@ const en = {
       page2: 'Minetrack provides data services based on privacy protection for paying users or premium members.(Data can be used to design new types of insurance, customized policies, precision marketing, etc).',
       page3: 'The platform provides independent function module APIs for third parties, and provides charging services such as interface docking for system customization development and system integration.'
     },
-    menu5: {
-      title: 'Contact us'
+    slot5: {
+      header: 'Contact us'
     }
   },
   login: {
