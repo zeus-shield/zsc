@@ -15,6 +15,8 @@ const state = () => {
     user: {
       container: 'black',
       detail: 'black',
+      google: 'black',
+      policy: 'black',
     },
     insurance: {
       base: 'black',
