@@ -36,6 +36,12 @@ function _normalizePort(val) {
  * Event listener for HTTP/HTTPS server "listening" event.
  */
 function _onListening(type) {
+  let addr;
+  if (type === 'HTTPS') {
+    addr = httpsServer.address();
+  } else {
+    addr = httpServer.address();
+  }
 }
 
 /**
