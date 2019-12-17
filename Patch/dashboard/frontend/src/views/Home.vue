@@ -5,10 +5,10 @@
 </template>
 
 <style lang="scss" scoped>
-.el-row {
-  margin-bottom: 50px;
+.row {
+  margin-bottom: 3.125rem; // 50px;
   &:last-child {
-    margin-bottom: 0px;
+    margin-bottom: 0rem;
   }
 }
 
