@@ -24,6 +24,9 @@ const remove = async(req, res) => {
   try {
     let result;
     let insuranceIds = [];
+
+    session = await mongoose.startSession();
+    session.startTransaction();
     res.sendOk('Remove company successfully!');
   } catch (err) {
     res.sendErr(err);
