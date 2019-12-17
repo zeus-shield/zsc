@@ -102,6 +102,8 @@ export default {
     next();
   },
   methods: {
+    setDialogWidth() {
+    },
     dialogClose() {
       this.$refs['googleAuthForm'].resetFields();
       this.loading = false;
