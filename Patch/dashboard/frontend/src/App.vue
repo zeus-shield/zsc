@@ -5,7 +5,7 @@
         <header-pc :activeIndex="activeIndex"></header-pc>
       </el-header>
       <header-m v-else :activeIndex="activeIndex"></header-m>
-      <el-main v-if="!reload" :class="{'mobile-main': device !== 'pc'}">
+      <el-main v-if="!reload">
         <router-view></router-view>
       </el-main>
       <el-footer>
@@ -17,11 +17,11 @@
 </template>
 
 <style lang="scss">
-.mobile-main {
-  padding: 0px;
+.el-main {
+  padding: 0rem;
 }
 .el-header, .el-footer {
-  padding: 0;
+  padding: 0rem;
 }
 // .is-active {
 //   background-color: red;
