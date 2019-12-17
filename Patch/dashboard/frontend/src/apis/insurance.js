@@ -28,6 +28,9 @@ const insurance = {
 
   async update(token, company, category, title, update) {
   },
+
+  async list(token) {
+  },
   async count(token, company, category, title) {
   }
 };
