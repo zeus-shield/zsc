@@ -150,12 +150,15 @@ const cn = {
       title: ['设置 谷歌验证', '重置 谷歌验证'],
       step: [
         {
-          title: '安装完成后打开Google Authentication，扫描下方二维码或手动输入秘钥，得到6位数验证码',
-          tip: '请务必妥善保管谷歌验证秘钥，以免更换或丢失手机导致无法换绑。',
+          text: '安装完成后打开谷歌验证，扫描下方二维码或手动输入秘钥，得到6位数验证码。',
+          tip: {
+            title: '安全提示',
+            description: '请务必妥善保管谷歌验证秘钥，以免更换或丢失手机导致无法换绑。'
+          },
           qr: '秘钥'
         },
         {
-          title: '请将您获得的验证码填入下方输入框中，并完成验证',
+          text: '请将您获得的验证码填入下方输入框中，并完成验证。',
           form: {
             label: '新谷歌验证码',
             placeholder: '请输入新谷歌验证码',
@@ -165,8 +168,6 @@ const cn = {
       ]
     },
     policy: {
-      title: '我的保单'
-
       // the content follow same as market.dialog
     }
   },
