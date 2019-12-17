@@ -97,6 +97,9 @@ export default {
         vm.barDataAxis.push(element._id.company);
         vm.barData.push(element.count);
       });
+      vm.drawPie();
+      vm.drawBar();
+      vm.loading = false;
     }).catch(errorData => {
     }); 
   },
