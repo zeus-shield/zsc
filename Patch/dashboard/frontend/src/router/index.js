@@ -266,6 +266,11 @@ router.beforeEach((to, from, next) => {
     // if not, redirect to login page.
     if (!auth.checkLogin()) {
       setTimeout(() => { // fix active index issue for jump
+        // router.push('login');
+        next({
+          path: '/login'
+          // query: { redirect: to.fullPath }
+        });
       }, 1);
       next(); // then auth page can twinkle, but we can fix active index issue
     } else {
