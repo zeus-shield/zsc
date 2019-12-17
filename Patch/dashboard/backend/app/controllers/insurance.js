@@ -26,6 +26,12 @@ const add = async(req, res) => {
     if (!result) {
       throw createError('COMPANY_CATEGORIES_NOT_EXIST');
     }
+
+    // 2. check insurance exist ?
+    result = await services.insurances.find(company, category, brief.title, session);
+    if (result) {
+      throw createError('INSURANCE_HAS_EXIST');
+    }
     await session.commitTransaction();
     session.endSession();
     res.sendOk('Add new insurance successfully!');
