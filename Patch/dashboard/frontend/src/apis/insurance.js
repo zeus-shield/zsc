@@ -31,6 +31,10 @@ const insurance = {
 
   async list(token) {
   },
+
+  async detail(token, method, company, category, title, id) {
+  },
+
   async count(token, company, category, title) {
   }
 };
