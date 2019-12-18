@@ -7,7 +7,10 @@
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.insurance {
+  padding: 1.25rem; // 20px
+}
 .tab {
   display: flex;
   justify-content: center;
@@ -28,8 +31,8 @@ import InsurancePICCBrief from '@/views/templates/insurances/picc/brief';
 
 import { mapState, mapGetters } from 'vuex';
 
-import utils from '../common/utils';
-import APIs from '../apis';
+import utils from '@/common/utils';
+import APIs from '@/apis';
 
 export default {
   name: 'Insurance',
