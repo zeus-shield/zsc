@@ -17,6 +17,10 @@ const state = () => {
       detail: 'black',
       google: 'black',
       policy: 'black',
+      pc: {
+      },
+      mobile: {
+      }
     },
     insurance: {
       base: 'black',
