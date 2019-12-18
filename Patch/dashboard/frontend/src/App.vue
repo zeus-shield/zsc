@@ -40,7 +40,11 @@
   border-radius: 0px;
 }
 .el-dialog__header {
+  font-size: 1.125rem; // 18px;
+  font-weight: 400;
+  color: #444;
   // padding: 16px 20px;
+  text-align: center;
   border-bottom: 1px solid rgba(0,0,0,.05);
 }
 .el-dialog__body {
