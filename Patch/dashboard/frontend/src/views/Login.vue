@@ -103,6 +103,13 @@ export default {
   },
   methods: {
     setDialogWidth() {
+      var width = document.body.clientWidth;
+      if (width >= 1920) {
+      } else if (width >= 1200) {
+      } else if (width >= 992) {
+      } else if (width >= 768) {
+      } else {
+      }
     },
     dialogClose() {
       this.$refs['googleAuthForm'].resetFields();
