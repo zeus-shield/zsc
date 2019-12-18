@@ -12,6 +12,8 @@
   color: #fff; // RGB(154,157,160)
 }
 .footer a {
+  font-family: "source sans pro";
+  font-weight: 600;
 }
 </style>
 
