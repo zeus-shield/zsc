@@ -94,11 +94,11 @@ const en = {
       slot: [
         {
           title: 'Profile',
-          item: ['Account Safety', 'My Policy']
+          item: ['Account Safety', 'My Policies']
         },
         {
           title: 'Support',
-          item: ['Submit a ticket', 'My tickets']
+          item: ['Submit a ticket', 'My Tickets']
         }
       ]
     },
