@@ -21,6 +21,10 @@ const company = {
 
   async update(token, name, newName, newCategoryNames) {
   },
+
+  async list(token) {
+  },
+
   async detail(token, name) {
   },
 
