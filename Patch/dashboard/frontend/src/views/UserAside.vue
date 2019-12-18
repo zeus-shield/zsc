@@ -14,8 +14,8 @@
 }
 .menu .menu-item {
 }
-.menu .menu-bottom-padding {
-  padding-bottom: 10px;
+.menu-container .menu .bottom-padding {
+  padding-bottom: 0.625rem; // 10px;
 }
 .menu .menu-bottom-border {
   border-bottom: 1px solid #e9e9e9;
