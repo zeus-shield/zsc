@@ -101,7 +101,13 @@ export default {
       vm.drawBar();
       vm.loading = false;
     }).catch(errorData => {
-    }); 
+      vm.loading = false;
+      if (errorData.errorMessage !== undefined) {
+        errorMessage = errorData.errorMessage;
+      } else {
+        errorMessage = errorData;
+      }
+    });
   },
   destroyed() {
     console.log('%c[Analytics]destroyed()', `color:${this.logColor}`);
