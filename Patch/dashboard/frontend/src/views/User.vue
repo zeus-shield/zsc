@@ -9,6 +9,9 @@
 </template>
 
 <style lang="scss" scoped>
+.user-pc {
+  padding: 1.25rem; // 20px
+}
 .el-aside {
   background-color: #fff;
   // color: #333;
