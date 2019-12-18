@@ -47,6 +47,12 @@ export default {
     };
     let validateEmailAccount = (rule, value, callback) => {
     };
+    let validateCode = (rule, value, callback) => {
+    };
+    let validatePassword = (rule, value, callback) => {
+    };
+    let validatePassword2 = (rule, value, callback) => {
+    };
     return {
     };
   },
