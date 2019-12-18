@@ -29,7 +29,9 @@
   height: 20%;
   margin-top: 0rem;
 }
-.swiper-slot .text {
+.swiper-slot .bg {
+  // height: 100%;
+  width: 100%;
 }
 .swiper-slot .text .inner {
   display: table-cell;
