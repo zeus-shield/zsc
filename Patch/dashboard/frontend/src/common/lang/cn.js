@@ -100,6 +100,8 @@ const cn = {
       title: '我的保单',
       product: {
       },
+      user: {
+      },
       policy: {
         title: '保单信息',
       }
