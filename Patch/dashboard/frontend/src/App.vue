@@ -115,13 +115,13 @@
 // .el-popper[x-placement^=right] {
 //   margin-left:12px
 // }
-.el-popper[x-placement^=right] .popper__arrow {
-  top:50%;
-  left:-6px;
-  margin-bottom:3px;
-  border-right-color:#EBEEF5;
-  border-left-width:0
-}
+// .el-popper[x-placement^=right] .popper__arrow {
+//   top:50%;
+//   left:-6px;
+//   margin-bottom:3px;
+//   border-right-color:#EBEEF5;
+//   border-left-width:0
+// }
 .el-popper[x-placement^=right] .popper__arrow::after {
   bottom:-6px;
   left:1px;
