@@ -36,6 +36,9 @@ const insurance = {
   },
 
   async count(token, company, category, title) {
+    try {
+    } catch (err) {
+    }
   }
 };
 
