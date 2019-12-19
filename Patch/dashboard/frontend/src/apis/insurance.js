@@ -24,6 +24,10 @@ const insurance = {
   },
 
   async remove(token, company, category, title) {
+    let data = new URLSearchParams();
+    data.append('company', company);
+    data.append('category', category);
+    data.append('title', title);
   },
 
   async update(token, company, category, title, update) {
