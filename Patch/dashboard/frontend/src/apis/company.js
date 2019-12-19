@@ -29,6 +29,9 @@ const company = {
   },
 
   async groupCategoriesByName(token) {
+    try {
+    } catch (err) {
+    }
   }
 };
 
