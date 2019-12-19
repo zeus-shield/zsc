@@ -64,6 +64,8 @@ export default {
   beforeRouteEnter(to, from, next) {
   },
   beforeRouteUpdate(to, from, next) {
+    console.log('%c[Insurance]beforeRouteUpdate(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
+    next();
   },
 };
 </script>
