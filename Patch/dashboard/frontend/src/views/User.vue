@@ -17,7 +17,7 @@
   // color: #333;
   // text-align: center;
   // line-height: 200px;
-  border-radius: 4px;
+  border-radius: 0.25rem; // 4px;
   // border: 1px solid #e9e9e9;
 }
 .el-main {
@@ -26,9 +26,6 @@
   color: #333;
   // text-align: center;
   // line-height: 160px;
-}
-.el-main-mobile {
-  padding: 0;
 }
 </style>
 
