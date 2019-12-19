@@ -76,10 +76,11 @@ class Wallet {
           }
         });
 
-        window.ethereum.on('connect', () => {
-          const message = 'Connect';
-          alert(message);
-        });
+        // window.ethereum.on('connect', () => {
+        //   const message = 'Connect';
+        //   alert(message);
+        // });
+
         window.ethereum.on('close', (code, reason) => {
           const message = 'Close ' + code + reason;
           alert(message);
