@@ -105,10 +105,20 @@ export default {
     setDialogWidth() {
       var width = document.body.clientWidth;
       if (width >= 1920) {
+        this.dialogWidth = '40%'; // xl
+        // this.dialogLabelWidth = '35%';
       } else if (width >= 1200) {
+        this.dialogWidth = '40%'; // lg
+        // this.dialogLabelWidth = '35%';
       } else if (width >= 992) {
+        this.dialogWidth = '70%'; // md
+        // this.dialogLabelWidth = '35%';
       } else if (width >= 768) {
+        this.dialogWidth = '90%'; // sm
+        // this.dialogLabelWidth = '35%';
       } else {
+        this.dialogWidth = '100%'; // xs
+        // this.dialogLabelWidth = '50%';
       }
     },
     dialogClose() {
