@@ -18,6 +18,9 @@ const state = () => {
       google: 'black',
       policy: 'black',
       pc: {
+        aside: 'black',
+        support: 'black',
+        questions: 'black'
       },
       mobile: {
       }
