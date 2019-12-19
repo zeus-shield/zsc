@@ -6,6 +6,8 @@
 
 <style lang="scss" scoped>
 .footer {
+  width: 100%;
+  float: left;
 }
 .footer p {
   margin-top: 15px;
