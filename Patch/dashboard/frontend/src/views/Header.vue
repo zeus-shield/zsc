@@ -25,6 +25,12 @@
 }
 .header-signup {
 }
+.header-lang {
+}
+.header-lang-item {
+}
+.iconfont-symbol {
+}
 </style>
 
 <script>
