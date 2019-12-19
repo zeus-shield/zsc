@@ -17,7 +17,7 @@ const en = {
     lang: 'English'
   },
   home: {
-    menu1: {
+    slot1: {
       title1: 'Myinsura',
       page1: 'Innovative insurance data service platform based on blockchain technology',
       title2: 'Data Analysis',
@@ -25,14 +25,14 @@ const en = {
       title3: 'Privacy Protection',
       page3: 'Data security and privacy protection'
     },
-    menu2: {
+    slot2: {
       title: 'Product introduction',
       page: 'Myinsura is an innovative insurance platform based on blockchain technology. Upload logistics record of the users and insurance certificate information onto the Ethereum blockchain system. User information is protected without the authorization of the provider. The platform combines with artificial intelligence to conduct customized analysis of big data on the blockchain.'
     },
-    menu3: {
+    slot3: {
       title: 'Product Advantages',
     },
-    menu4: {
+    slot4: {
       title: 'Product Feature',
 
       page1: 'Ordinary users can browse the insurance products of various insurance companies through the platform, and to find suitable insurance products through big data analysis.',
