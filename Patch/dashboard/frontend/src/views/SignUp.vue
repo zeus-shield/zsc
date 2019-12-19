@@ -48,6 +48,9 @@ export default {
     let validateEmailAccount = (rule, value, callback) => {
     };
     let validateCode = (rule, value, callback) => {
+      if (value === '') {
+      } else {
+      }
     };
     let validatePassword = (rule, value, callback) => {
     };
