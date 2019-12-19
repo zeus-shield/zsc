@@ -99,6 +99,10 @@ const cn = {
     dialog: {
       title: '我的保单',
       product: {
+        title: '产品信息',
+        company: '公司名称',
+        category: '产品类别',
+        name: '产品名称'
       },
       user: {
       },
