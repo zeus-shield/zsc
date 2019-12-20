@@ -49,6 +49,9 @@ function _onListening(type) {
  */
 function _onError(type, error) {
 }
+
+function _onHTTPListening() {
+}
 log4js.configure(logConfig)
 global.logger = log4js.getLogger();
 
