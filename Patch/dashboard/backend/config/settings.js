@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 module.exports = {
   jwtExpires: 3600 * 24, //s
