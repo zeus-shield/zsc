@@ -13,6 +13,8 @@ const add = async(req, res) => {
   debug('add(%s, %s)', req.body.name, JSON.parse(req.body.categories));
   let session = null;
   try {
+    session = await mongoose.startSession();
+    session.startTransaction();
   } catch (err) {
   }
 };
