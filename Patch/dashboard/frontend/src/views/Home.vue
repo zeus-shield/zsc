@@ -16,13 +16,13 @@
   opacity: 0.4;
 }
 // for vue-awesome-swiper
-.gallery-thumbs .swiper-slide-active {
-  opacity: 1;
-}
-// for original swiper
-// .gallery-thumbs .swiper-slide-thumb-active {
+// .gallery-thumbs .swiper-slide-active {
 //   opacity: 1;
 // }
+// for original swiper
+.gallery-thumbs .swiper-slide-thumb-active {
+  opacity: 1;
+}
 .swiper-button-next, .swiper-button-prev {
   top: 40%;
   // width: 10%;
@@ -106,7 +106,7 @@ export default {
         }
         vm.resizeFlag = setTimeout(() => {
           vm.resizeFlag = null;
-          vm.updateHeight();
+          vm.updateHandle();
         }, 100);
       });
     }
@@ -117,7 +117,7 @@ export default {
   mounted() {
     console.log('%c[Home]mounted()', `color:${this.logColor}`);
     this.lang = utils.storage.cookie.get('lang');
-    this.updateHeight();
+    this.updateHandle();
 
     this.$nextTick(() => {
     });
@@ -128,6 +128,7 @@ export default {
   updated() {
     console.log('%c[Home]updated()', `color:${this.logColor}`);
     this.lang = utils.storage.cookie.get('lang');
+    this.updateHandle();
   },
   beforeRouteEnter(to, from, next) {
     console.log('%c[Home]beforeRouteEnter(\"%s\" => \"%s\")', 'color:black', from.fullPath, to.fullPath);
