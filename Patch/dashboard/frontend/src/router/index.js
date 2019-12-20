@@ -279,6 +279,9 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
+  if (to.path.startsWith('/login')) {
+  } else {
+  }
 });
 
 router.beforeResolve((to, from, next) => {
