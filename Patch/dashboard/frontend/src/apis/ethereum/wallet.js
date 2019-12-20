@@ -81,10 +81,10 @@ class Wallet {
         //   alert(message);
         // });
 
-        window.ethereum.on('close', (code, reason) => {
-          const message = 'Close ' + code + reason;
-          alert(message);
-        });
+        // window.ethereum.on('close', (code, reason) => {
+        //   const message = 'Close ' + code + reason;
+        //   alert(message);
+        // });
       }
       this.listener = true;
     } else {}
