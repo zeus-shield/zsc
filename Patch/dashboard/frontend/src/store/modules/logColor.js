@@ -23,6 +23,9 @@ const state = () => {
         questions: 'black'
       },
       mobile: {
+        header: 'black',
+        support: 'black',
+        questions: 'black'
       }
     },
     insurance: {
