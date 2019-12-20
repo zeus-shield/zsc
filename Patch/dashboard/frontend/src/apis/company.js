@@ -29,6 +29,11 @@ const company = {
   },
 
   async groupCategoriesByName(token) {
+    let config = {
+      headers: {
+        'token': token
+      }
+    };
     try {
     } catch (err) {
     }
