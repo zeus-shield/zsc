@@ -8,6 +8,9 @@
 .footer {
   width: 100%;
   float: left;
+  height:50px;
+  text-align: center;
+  background-color: #232f3e; // RGB(52,58,64)
 }
 .footer p {
   margin-top: 15px;
