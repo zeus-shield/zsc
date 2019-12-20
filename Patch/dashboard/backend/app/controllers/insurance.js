@@ -36,6 +36,13 @@ const add = async(req, res) => {
     // 3. insert insurance
     result = await services.insurances.insert(company, category, brief, detail, session);
     const insuranceId = result[0]._id;
+
+    // 4. push insurace id to company
+    result = await services.companies.pushInsuranceId(company, category, insuranceId, session);
+    if (!result) {
+      throw createError('COMPANY_NOT_EXIST');
+    }
+
     await session.commitTransaction();
     session.endSession();
     res.sendOk('Add new insurance successfully!');
