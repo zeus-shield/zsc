@@ -6,8 +6,9 @@
     "lint-all": "eslint ./ --ext .json,.js",
     "lint-dashboard": "eslint ./projs/dashboard --ext .json,.js",
     "node": "cross-env NODE_ENV=development DEBUG=backend:* node ./server.js",
-    "babel": "set DEBUG=backend:* & babel-node ./server.js",
-    "pm2": "set DEBUG=backend:* & pm2 start ./server.js --name dashboard --watch",
+    "babel": "cross-env NODE_ENV=development DEBUG=backend:* babel-node ./server.js",
+    "pm2": "cross-env NODE_ENV=development DEBUG=backend:* pm2 start ./server.js --name dashboard --watch",
+    "pm2-build": "cross-env NODE_ENV=production DEBUG=backend:* pm2 start ./server.js --name dashboard --watch",
     "pm2-all": "cross-env NODE_ENV=development DEBUG=backend:* pm2 start ./server.js --name dashboard --watch -i max",
     "pm2-all-build": "cross-env NODE_ENV=production DEBUG=backend:* pm2 start ./server.js --name dashboard --watch -i max"
   },
