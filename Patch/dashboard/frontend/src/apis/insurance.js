@@ -41,6 +41,8 @@ const insurance = {
 
   async count(token, company, category, title) {
     try {
+      let res = await instance.get('insurance/count', config);
+      return res.data;
     } catch (err) {
     }
   }
