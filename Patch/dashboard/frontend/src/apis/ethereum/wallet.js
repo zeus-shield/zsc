@@ -72,6 +72,13 @@ class Wallet {
           if (this.networkId !== networkId) {
             const message = 'Network change from ' + this.networkId + ' to ' + networkId;
             vm.$message(message);
+            if (this.networkId !== undefined) {
+              if (vm.$router.currentRoute.name !== 'login') {
+                vm.$router.push({name: 'login'});
+              } else {
+                vm.$router.go(0);
+              }
+            }
             this.networkId = networkId;
           }
         });
