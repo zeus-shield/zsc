@@ -3,6 +3,12 @@
 
 <style lang="scss" scoped>
 .menu-container {
+  background: #fff;
+  position: relative;
+  border: 0.0625rem solid #e9e9e9;
+  border-radius: 0.25rem; // 4px;
+  box-sizing: border-box;
+  width: 12.375rem; // 198px;
 }
 .menu-container .menu {
   width: 100%;
