@@ -35,6 +35,8 @@ const company = {
       }
     };
     try {
+      let res = await instance.get('company/groupCategoriesByName', config);
+      return res.data;
     } catch (err) {
     }
   }
