@@ -16,6 +16,15 @@
   align-items: center;
 }
 .header-memu-slot {
+  background-color: #232f3e;
+  height: 60px;
+
+  display: flex;
+  justify-content: flex-end;
+  // align-items: center;
+
+  // display: table-cell;
+  // vertical-align: middle;
 }
 .header-login {
 }
