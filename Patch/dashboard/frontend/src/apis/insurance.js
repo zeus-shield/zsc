@@ -44,6 +44,11 @@ const insurance = {
       let res = await instance.get('insurance/count', config);
       return res.data;
     } catch (err) {
+      if (err.response !== undefined) {
+        throw err.response.data;
+      } else {
+        throw err.message;
+      }
     }
   }
 };
