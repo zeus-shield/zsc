@@ -15,11 +15,11 @@
 .insurance {
   padding: 1.25rem; // 20px
 }
-.tab {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+// .tab {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }
 .tab-icon {
    margin-right: 5px;
    width: 20px;
