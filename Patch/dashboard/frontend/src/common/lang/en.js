@@ -131,12 +131,16 @@ const en = {
         buttonText: 'Confirm'
       }
     },
+    // DONE
     google: {
-      title: ['Install Google Authenticator', 'Reset Google Authenticator'],
+      title: ['Install Google Auth', 'Reset Google Auth'],
       step: [
         {
-          title: 'After installation, open Google Authenticator and scan the below or enter the key to get a 6-digit code',
-          tip: 'Please keep your private key secure to avoid login problem if you change or lose your phone.',
+          text: 'After installation, open Google authenticator and scan the below or enter the key to get a 6-digit code.',
+          tip: {
+            title: 'Security Tip',
+            description: 'Please keep your private key secure to avoid login problem if you change or lose your phone.'
+          },
           qr: 'Key'
         },
         {
