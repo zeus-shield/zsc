@@ -119,16 +119,17 @@ const cn = {
     },
     // DONE
     detail: {
-      title: '账户和安全',
-      securityTip: {
-        title: '安全提示',
-        description: '为了您的账户安全，请检查访问网址，开启安全认证，不要透露短信和谷歌验证码给任何人，包括Dashboard客服'
+      account: {
+        title: '账户信息',
+        tip: {
+          title: '安全提示',
+          description: '为了您的账户安全，请检查访问网址，开启安全认证，不要透露短信和谷歌验证码给任何人，包括Dashboard客服。'
+        },
+        info: {
+          title: ['账户', '上次登录时间']
+        }
       },
-      info: {
-        title1: '账户',
-        title2: '上次登录时间'
-      },
-      securitySetting: {
+      security: {
         title: '安全设置',
         google: {
           title: '谷歌验证',
