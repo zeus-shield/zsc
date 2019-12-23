@@ -54,6 +54,11 @@ export default {
   // },
   data() {
     return {
+      googleAuthRules: {
+        code: [
+          { validator: validateCode, trigger: 'blur' }
+        ]
+      }
     };
   },
   // props: {
