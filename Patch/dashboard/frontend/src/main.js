@@ -12,7 +12,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 
 import Meta from 'vue-meta';
 // swiper
-import VueAwesomeSwiper from 'vue-awesome-swiper';
+// import VueAwesomeSwiper from 'vue-awesome-swiper';
 
 // iconfont can be imported in 'index.tpl'
 // if we use svg only, 'iconfont.css' is not necessary.
@@ -38,7 +38,7 @@ Vue.use(ElementUI);
 
 Vue.use(Meta);
 
-Vue.use(VueAwesomeSwiper, /* { default global options } */);
+// Vue.use(VueAwesomeSwiper, /* { default global options } */);
 
 new Vue({
   router,
