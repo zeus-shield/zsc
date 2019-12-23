@@ -30,8 +30,10 @@
 </style>
 
 <script>
-import UserAside from '@/views/UserAside';
 import { mapState, mapGetters } from 'vuex';
+
+import UserAside from '@/views/UserAside';
+import UserHeader from '@/views/m/UserHeader';
 
 export default {
   name: 'User',
