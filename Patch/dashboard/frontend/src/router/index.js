@@ -280,6 +280,8 @@ router.beforeEach((to, from, next) => {
     next();
   }
   if (to.path.startsWith('/login')) {
+    window.localStorage.removeItem('access-user');
+    next();
   } else {
   }
 });
