@@ -33,10 +33,18 @@
   // height: 100%;
   width: 100%;
 }
-.swiper-slot .text .inner {
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center;
+.swiper-slot .cover {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0rem;
+  top: 0rem;
+
+  // display: table;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .swiper-slot .text .inner .title {
 }
