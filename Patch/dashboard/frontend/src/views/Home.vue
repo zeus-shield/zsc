@@ -46,7 +46,12 @@
   justify-content: center;
   align-items: center;
 }
-.swiper-slot .text .inner .title {
+.swiper-slot .cover .inner {
+  // display: table-cell;
+  // vertical-align: middle;
+  // text-align: center;
+
+  width: 100%;
 }
 .swiper-slot .text .inner .content {
   color: #fff;
