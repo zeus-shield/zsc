@@ -43,5 +43,8 @@ export default {
   created() {
     console.log('%c[Footer]created()', `color:${this.logColor}`);
   },
+  mounted() {
+    console.log('%c[Footer]mounted()', `color:${this.logColor}`);
+  },
 };
 </script>
