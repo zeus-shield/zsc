@@ -21,10 +21,13 @@
 //   align-items: center;
 // }
 .tab-icon {
-   margin-right: 5px;
-   width: 20px;
-   height: 18px;
-   background: url(../assets/images/insurances/picc/icons_side_menu.gif);
+  margin-right: 5px;
+  width: 20px;
+  height: 18px;
+  background: url(../assets/images/insurances/picc/icons_side_menu.gif);
+}
+.tab:hover {
+  background: white;
 }
 </style>
 
