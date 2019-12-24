@@ -128,9 +128,9 @@
 //   border-right-color:#FFF;
 //   border-left-width:0
 // }
-.el-popper[x-placement^=left] {
-  margin-right:12px
-}
+// .el-popper[x-placement^=left] {
+//   margin-right:12px
+// }
 .el-popper[x-placement^=left] .popper__arrow {
   top:50%;
   right:-6px;
