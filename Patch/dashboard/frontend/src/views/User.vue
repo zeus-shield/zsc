@@ -20,10 +20,10 @@
   border-radius: 0.25rem; // 4px;
   // border: 1px solid #e9e9e9;
 }
-.el-main {
+.el-main-pc {
   // background-color: #E9EEF3;
-  padding-top: 0px;
-  color: #333;
+  padding-left: 1.25rem; // 20px
+  // color: #333;
   // text-align: center;
   // line-height: 160px;
 }
