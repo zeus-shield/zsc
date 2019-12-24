@@ -14,7 +14,13 @@
   width: 100%;
   border-right: 0rem;
 }
-.menu-title {
+.menu-container .menu .group {
+  height: 2.25rem; // 36px;
+  line-height: 2.25rem; // 36px;
+  text-align: left;
+  border-radius: 0.25rem 0.25rem 0 0;
+  font-size: 0.75rem; // 12px;
+  color: #5c5c5c;
 }
 .menu-title .icon {
 }
