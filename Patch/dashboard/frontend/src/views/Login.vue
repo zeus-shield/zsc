@@ -53,6 +53,12 @@ export default {
   // components: {
   // },
   data() {
+    let validateAccount = (rule, value, callback) => {
+    };
+    let validatePassword = (rule, value, callback) => {
+    };
+    let validateCode = (rule, value, callback) => {
+    };
     return {
       googleAuthRules: {
         code: [
