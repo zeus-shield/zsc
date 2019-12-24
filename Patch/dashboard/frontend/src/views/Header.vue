@@ -37,6 +37,9 @@
 .header-lang {
 }
 .header-lang-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .iconfont-symbol {
   font-size: 30px;
