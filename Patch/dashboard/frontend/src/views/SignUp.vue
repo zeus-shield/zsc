@@ -44,6 +44,10 @@ export default {
   data() {
     let vm = this;
     let validatePhoneAccount = (rule, value, callback) => {
+      // skip validate email
+      if (vm.tabIndex === '0') {
+      } else {
+      }
     };
     let validateEmailAccount = (rule, value, callback) => {
     };
