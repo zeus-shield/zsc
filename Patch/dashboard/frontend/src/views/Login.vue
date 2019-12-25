@@ -56,6 +56,15 @@ export default {
     let validateAccount = (rule, value, callback) => {
     };
     let validatePassword = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.langSet['message']['error']['LOGIN_PWD_NONE']));
+      } else {
+        if (value.length < 3 || value.length > 6) {
+          callback(new Error(this.langSet['message']['error']['LOGIN_PWD_LEN_ERR']));
+        } else {
+          callback();
+        }
+      }
     };
     let validateCode = (rule, value, callback) => {
     };
