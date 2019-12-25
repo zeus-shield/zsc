@@ -53,7 +53,13 @@ export default {
     };
     let validateCode = (rule, value, callback) => {
       if (value === '') {
+        callback(new Error(vm.langSet['message']['error']['SIGNUP_CODE_NONE']));
       } else {
+        if (value.length !== 6) {
+          callback(new Error(vm.langSet['message']['error']['SIGNUP_CODE_LEN_ERR']));
+        } else {
+          callback();
+        }
       }
     };
     let validatePassword = (rule, value, callback) => {
