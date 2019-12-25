@@ -26,9 +26,9 @@
   height: 18px;
   background: url(../assets/images/insurances/picc/icons_side_menu.gif);
 }
-.tab:hover {
-  background: white;
-}
+// .tab:hover {
+//   background: white;
+// }
 </style>
 
 <script>
