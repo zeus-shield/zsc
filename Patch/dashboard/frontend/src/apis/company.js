@@ -40,6 +40,9 @@ const company = {
       // - Node only: JSON Object
       // data: querystring.parse(data.toString())
     };
+    try {
+    } catch (err) {
+    }
   },
 
   async groupCategoriesByName(token) {
