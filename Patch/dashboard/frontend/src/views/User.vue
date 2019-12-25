@@ -38,12 +38,17 @@ import UserHeader from '@/views/m/UserHeader';
 export default {
   name: 'User',
   components: {
-    'user-aside': UserAside
+    'user-aside': UserAside,
+    'user-header': UserHeader
   },
   data() {
     return {
       activeIndex: '1'
     };
+  },
+  // props: {
+  // },
+  computed: {
   },
   methods: {
   }
