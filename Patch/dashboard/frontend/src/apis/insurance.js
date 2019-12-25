@@ -46,6 +46,10 @@ const insurance = {
       // - Node only: JSON Object
       // data: querystring.parse(data.toString())
     };
+
+    try {
+    } catch (err) {
+    }
   },
 
   async update(token, company, category, title, update) {
