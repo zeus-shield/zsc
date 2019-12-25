@@ -35,6 +35,16 @@
 .header-signup {
 }
 .header-lang {
+  background-color: #232f3e;
+  color: #fff;
+  height: 60px;
+  font-size: 15px;
+  margin: 0px 10px;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .header-lang-item {
   display: flex;
