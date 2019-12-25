@@ -26,6 +26,20 @@ const company = {
   },
 
   async detail(token, name) {
+    let config = {
+      // req.headers
+      headers: {token},
+
+      // req.query
+      // `params` are the URL parameters to be sent with the request
+      // Must be a plain object or a URLSearchParams object
+      params: data
+
+      // req.body
+      // Only applicable for request methods 'PUT', 'POST', and 'PATCH'
+      // - Node only: JSON Object
+      // data: querystring.parse(data.toString())
+    };
   },
 
   async groupCategoriesByName(token) {
