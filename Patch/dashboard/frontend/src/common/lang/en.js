@@ -144,10 +144,10 @@ const en = {
           qr: 'Key'
         },
         {
-          title: 'Please enter the 6-digit code and SMS code to complete the settings',
+          text: 'Please enter the 6-digit code and SMS code to complete the settings.',
           form: {
-            label: 'New Google code',
-            placeholder: 'Please input Google code',
+            label: 'New Google authenticator code',
+            placeholder: 'Please input Google auth code',
             buttonText: 'Comfirm'
           }
         }
