@@ -52,7 +52,13 @@ function _onError(type, error) {
 
 function _onHTTPListening() {
 }
-log4js.configure(logConfig)
+
+function _onHTTPSListening() {
+}
+
+function _onHTTPError(error) {
+}
+log4js.configure(logConfig);
 global.logger = log4js.getLogger();
 
 // Connect to database
