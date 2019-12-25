@@ -53,9 +53,10 @@
 
   width: 100%;
 }
-.swiper-slot .text .inner .content {
-  color: #fff;
-  text-align: center;
+.swiper-slot .cover .inner .row-pc {
+  display: flex;
+  justify-content: left;
+  align-items: center;
 }
 .slot2 .title {
   font-size: 2rem;
