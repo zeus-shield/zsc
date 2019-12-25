@@ -29,8 +29,9 @@
 .menu-container .menu .bottom-padding {
   padding-bottom: 0.625rem; // 10px;
 }
-.menu .menu-bottom-border {
-  border-bottom: 1px solid #e9e9e9;
+// .menu-container .menu .bottom-border {
+//   border-bottom: 1px solid #e9e9e9;
+// }
 }
 .menu-container .menu .item span:hover {
   color: #f91;
