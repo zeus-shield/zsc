@@ -31,6 +31,11 @@ const remove = async(req, res) => {
     session.startTransaction();
     res.sendOk('Remove company successfully!');
   } catch (err) {
+    // debug(err);
+    if (session !== null) {
+      await session.abortTransaction();
+      session.endSession();
+    }
     res.sendErr(err);
   }
 };
