@@ -46,5 +46,8 @@ export default {
   mounted() {
     console.log('%c[Footer]mounted()', `color:${this.logColor}`);
   },
+  destroyed() {
+    console.log('%c[Footer]destroyed()', `color:${this.logColor}`);
+  },
 };
 </script>
