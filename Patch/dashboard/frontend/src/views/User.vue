@@ -49,6 +49,11 @@ export default {
   // props: {
   // },
   computed: {
+    ...mapState({
+      logColor: state => state.logColor.user.container
+    }),
+    ...mapGetters('lang', ['langSet']),
+    ...mapGetters('device', ['device'])
   },
   methods: {
   }
