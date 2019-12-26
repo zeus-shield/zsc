@@ -69,6 +69,9 @@ export default {
     let validateCode = (rule, value, callback) => {
     };
     return {
+      googleAuthForm: {
+        code: ''
+      },
       googleAuthRules: {
         code: [
           { validator: validateCode, trigger: 'blur' }
