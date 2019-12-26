@@ -32,6 +32,11 @@
 // .menu-container .menu .bottom-border {
 //   border-bottom: 1px solid #e9e9e9;
 // }
+.menu-container .menu .item.is-active {
+}
+.menu-container .menu .item:focus {
+}
+.menu-container .menu .item:hover {
 }
 .menu-container .menu .item span:hover {
   color: #f91;
