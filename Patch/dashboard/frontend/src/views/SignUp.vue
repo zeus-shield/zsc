@@ -46,7 +46,11 @@ export default {
     let validatePhoneAccount = (rule, value, callback) => {
       // skip validate email
       if (vm.tabIndex === '0') {
+        callback();
       } else {
+        if (value === '') {
+        } else {
+        }
       }
     };
     let validateEmailAccount = (rule, value, callback) => {
