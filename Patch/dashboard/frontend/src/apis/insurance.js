@@ -48,6 +48,8 @@ const insurance = {
     };
 
     try {
+      let res = await instance.post('insurance/remove', data, config);
+      return res.data;
     } catch (err) {
     }
   },
