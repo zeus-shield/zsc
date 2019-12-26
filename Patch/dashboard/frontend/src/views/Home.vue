@@ -163,23 +163,6 @@ export default {
     getImgUrl(item) {
       return require('@/assets/images/slider' + (item) + '.jpg');
     },
-    updateHeight() {
-      let imgHeightTemp = window.screen.width;
-      if (imgHeightTemp >= 992) {
-        this.imgHeight = 500 + 'px';
-        this.cardHeight = this.lang === 'en' ? '350px' : '300px';
-      } else if (imgHeightTemp >= 768) {
-        this.cardHeight = this.lang === 'en' ? '350px' : '300px';
-      } else if (imgHeightTemp >= 668) {
-        this.cardHeight = this.lang === 'en' ? '350px' : '250px';
-      } else {
-        this.imgHeight = (window.screen.width - (20 + 8) * 2) * 500 / 1190 + 'px';
-        this.cardHeight = this.lang === 'en' ? '400px' : '250px';
-      }
-    },
-    changeFun(val, oldVal) {
-      this.activeIndex = val;
-    }
   }
 };
 </script>
