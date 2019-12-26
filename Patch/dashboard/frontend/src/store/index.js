@@ -6,6 +6,7 @@ import Vuex from 'vuex';
 import logColor from './modules/logColor';
 import lang from './modules/lang';
 import device from './modules/device';
+import market from './modules/market';
 
 // import createLogger from '../plugins/logger'
 // import createLogger from '../../../dist/logger'
@@ -57,7 +58,8 @@ const store = new Vuex.Store({
   modules: {
     logColor,
     lang,
-    device
+    device,
+    market
   },
   strict: debug,
   // plugins: debug ? [createLogger()] : [],
