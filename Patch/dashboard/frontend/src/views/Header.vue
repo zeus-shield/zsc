@@ -61,4 +61,7 @@
 import utils from '../common/utils';
 
 import { mapState, mapGetters, mapActions } from 'vuex';
+
+export default {
+};
 </script>
