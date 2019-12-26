@@ -152,6 +152,9 @@ const en = {
           }
         }
       ]
+    },
+    policy: {
+      // the content follow same as market.dialog
     }
   },
   notFound: {
