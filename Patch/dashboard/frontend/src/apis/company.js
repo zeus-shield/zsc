@@ -41,6 +41,8 @@ const company = {
       // data: querystring.parse(data.toString())
     };
     try {
+      let res = await instance.get('company/detail', config);
+      return res.data;
     } catch (err) {
     }
   },
