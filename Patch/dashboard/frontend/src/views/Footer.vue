@@ -49,5 +49,10 @@ export default {
   destroyed() {
     console.log('%c[Footer]destroyed()', `color:${this.logColor}`);
   },
+  updated() {
+    console.log('%c[Footer]updated()', `color:${this.logColor}`);
+  },
+  methods: {
+  }
 };
 </script>
