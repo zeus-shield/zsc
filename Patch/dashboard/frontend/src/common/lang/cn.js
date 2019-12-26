@@ -43,7 +43,7 @@ const cn = {
 
     },
     slot5: {
-      title: '联系方式'
+      header: '联系方式'
     }
   },
   login: {
@@ -101,6 +101,8 @@ const cn = {
       },
       policy: {
         title: '保单信息',
+        period: '保障期限',
+        description: '详细描述'
       }
     }
   },
