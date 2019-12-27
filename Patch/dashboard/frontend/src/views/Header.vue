@@ -27,6 +27,19 @@
   // vertical-align: middle;
 }
 .header-login {
+  background-color: #232f3e;
+  color: #fff;
+  height: 56px;
+  width: 30px;
+  font-size: 15px;
+  padding: 0 20px;
+  border: 2px solid #232f3e;
+  margin: 0px 10px;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .header-login:hover {
   background-color: #434A50;
