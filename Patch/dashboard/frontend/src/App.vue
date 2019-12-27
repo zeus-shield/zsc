@@ -167,6 +167,8 @@ export default {
   name: 'App',
   metaInfo: {
   },
+  components: {
+  },
   methods: {
     ...mapActions('device', [
       'updateDevice'
