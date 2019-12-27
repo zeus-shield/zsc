@@ -1,10 +1,12 @@
 <template>
-  <div class="user">
-    <el-container>
-      <el-aside width="198px">
-        <user-aside :activeIndex="activeIndex"></user-aside>
-      </el-aside>
-    </el-container>
+  <div class="user" :class="{'user-pc': device === 'pc'}">
+
+    <div v-if="device === 'pc'">
+    </div>
+
+    <div v-else>
+    </div>
+
   </div>
 </template>
 
