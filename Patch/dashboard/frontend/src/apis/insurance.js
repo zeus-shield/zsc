@@ -11,6 +11,12 @@ const instance = axios.create({
 
 const insurance = {
   async add(token, company, category, brief, detail) {
+
+    let data = new URLSearchParams();
+    data.append('company', company);
+    data.append('category', category);
+    data.append('brief', JSON.stringify(brief));
+    data.append('detail', JSON.stringify(detail));
     try {
       let res = await instance.post('insurance/add', null, config);
       return res.data;
