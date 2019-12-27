@@ -198,6 +198,10 @@ export default {
       // var data = [220, 182, 191, 234, 290, 330, 310, 123, 442, 321, 90, 149, 210, 122, 133, 334, 198, 123, 125, 220];
       // var yMax = 500;
       // var dataShadow = [];
+
+      for (var i = 0; i < this.barData.length; i++) {
+        this.barDataShadow.push(20);
+      }
     }
   }
 };
