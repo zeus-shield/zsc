@@ -5,7 +5,7 @@ const en = {
     brand: 'Dashboard',
     home: 'Home',
     insurance: 'Market',
-    market: 'Product',
+    market: 'Products',
     analytics: 'Analytics',
     whitePaper: 'White Paper',
     faq: 'FAQ',
@@ -30,7 +30,8 @@ const en = {
       page: 'Myinsura is an innovative insurance platform based on blockchain technology. Upload logistics record of the users and insurance certificate information onto the Ethereum blockchain system. User information is protected without the authorization of the provider. The platform combines with artificial intelligence to conduct customized analysis of big data on the blockchain.'
     },
     slot3: {
-      title: 'Product Advantages',
+      title: 'Product introduction',
+      content: 'Dashboard is an innovative insurance platform based on blockchain technology. Upload logistics record of the users and insurance certificate information onto the Ethereum blockchain system. User information is protected without the authorization of the provider. The platform combines with artificial intelligence to conduct customized analysis of big data on the blockchain.'
     },
     slot4: {
       title: 'Product Feature',
