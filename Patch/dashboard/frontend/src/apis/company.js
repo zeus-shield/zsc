@@ -23,6 +23,11 @@ const company = {
   },
 
   async list(token) {
+    let config = {
+      headers: {
+        'token': token
+      }
+    };
   },
 
   async detail(token, name) {
