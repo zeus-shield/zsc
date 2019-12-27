@@ -22,7 +22,13 @@
   font-size: 0.75rem; // 12px;
   color: #5c5c5c;
 }
-.menu-title .icon {
+.menu-container .menu .group .icon {
+  font-size: 0.875rem; // 14px;
+  color: #9aa8b7;
+  line-height: 0rem;
+  margin-left: 0.8125rem; // 13px;
+  margin-right: 0.1875rem; // 3px;
+  vertical-align: middle;
 }
 .menu .menu-item {
 }
