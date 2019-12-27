@@ -51,12 +51,15 @@ function _onError(type, error) {
 }
 
 function _onHTTPListening() {
+  _onListening('HTTP');
 }
 
 function _onHTTPSListening() {
+  _onListening('HTTPS');
 }
 
 function _onHTTPError(error) {
+  _onError('HTTP', error);
 }
 log4js.configure(logConfig);
 global.logger = log4js.getLogger();
