@@ -54,6 +54,9 @@ export default {
   // },
   data() {
     let validateAccount = (rule, value, callback) => {
+      if (value === '') {
+      } else {
+      }
     };
     let validatePassword = (rule, value, callback) => {
       if (value === '') {
