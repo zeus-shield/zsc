@@ -58,11 +58,12 @@
   justify-content: left;
   align-items: center;
 }
-.slot2 .title {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #122739;
-  text-align: center;
+.swiper-slot .cover .inner .title {
+  font-size: 2.5rem; // 40px;
+  font-weight: 500;
+  color: #fff;
+  text-align: left;
+  margin-bottom: 1rem;
 }
 .slot2 .content {
   text-align: left;
