@@ -29,6 +29,9 @@
 // .tab:hover {
 //   background: white;
 // }
+.tab:hover .tab-icon.car {
+  background-position: -20px 0px;
+}
 </style>
 
 <script>
