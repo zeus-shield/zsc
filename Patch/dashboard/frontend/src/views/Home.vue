@@ -161,8 +161,14 @@ export default {
     next();
   },
   methods: {
-    getImgUrl(item) {
-      return require('@/assets/images/slider' + (item) + '.jpg');
+    getImgUrl(type, param1, param2) {
+      if (type === 'banner') {
+        return require('@/assets/images/banner/banner-' + (param1) + '.png');
+      } else if (type === 'banner-bg') {
+        return require('@/assets/images/banner/banner-bg-' + (param1) + '.png');
+      } else if (type === 'card') {
+        return require('@/assets/images/card/card-' + (param1) + '-' + (param2) + '.png');
+      } else {}
     },
   }
 };
