@@ -1,6 +1,13 @@
 <template>
   <div class="analytics">
-    <div v-loading.fullscreen.lock="loading" :element-loading-text="langSet.component.loading.analytics" element-loading-spinner="el-icon-loading" >
+    <div v-loading.fullscreen.lock="loading" :element-loading-text="langSet.component.loading.analytics" element-loading-spinner="el-icon-loading">
+      <div class="header">
+        <span class="sprite"></span>
+        <span>{{ langSet.header.analytics }}</span>
+      </div>
+
+      <div class="interval-md"></div>
+
       <el-row :gutter="40">
         <el-col :span="24" :md="12">
           <el-card class="echarts-card" shadow="alwamys">
