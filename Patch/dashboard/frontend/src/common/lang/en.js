@@ -68,14 +68,9 @@ const en = {
     submit: 'Sign Up'
   },
   market: {
-    // aside: {
-    //   slot: [
-    //     {
-    //       title: 'Company',
-    //       item: ['PICC', 'PING AN', 'CPIC', 'CHINA LIFE', 'NCI']
-    //     }
-    //   ]
-    // }
+    m: {
+      title: ['Select Company', 'Search for products']
+    },
     pingan: {
       category: 'Category: ',
       period: 'Period: ',
