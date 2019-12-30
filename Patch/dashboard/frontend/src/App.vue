@@ -168,6 +168,10 @@ export default {
   metaInfo: {
   },
   components: {
+    'header-pc': HeaderPC,
+    'footer-pc': FooterPC,
+    'header-m': HeaderMobile,
+    'footer-m': FooterMobile
   },
   data() {
   },
