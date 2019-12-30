@@ -57,6 +57,9 @@ export default {
     ...mapGetters('lang', ['langSet']),
     ...mapGetters('device', ['device'])
   },
+  created() {
+    console.log('%c[User]created()', `color:${this.logColor}`);
+  },
   methods: {
   }
 };
