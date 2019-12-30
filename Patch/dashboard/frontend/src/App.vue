@@ -169,6 +169,8 @@ export default {
   },
   components: {
   },
+  data() {
+  },
   methods: {
     ...mapActions('device', [
       'updateDevice'
