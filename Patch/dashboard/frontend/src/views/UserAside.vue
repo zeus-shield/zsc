@@ -30,7 +30,15 @@
   margin-right: 0.1875rem; // 3px;
   vertical-align: middle;
 }
-.menu .menu-item {
+.menu-container .menu .item {
+  width: 100%;
+  text-align: left;
+  height: 2.25rem; // 36px;
+  line-height: 2.25rem; // 36px;
+  font-size: 0.875rem; // 14px;
+  cursor: pointer;
+  box-sizing: border-box;
+  display: inline-block;
 }
 .menu-container .menu .bottom-padding {
   padding-bottom: 0.625rem; // 10px;
