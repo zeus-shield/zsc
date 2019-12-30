@@ -46,6 +46,14 @@
   // color: #ffd04b;
 }
 .header-signup {
+  background-color: rgb(236,145,45);
+  color: #fff;
+  height: 40px;
+  width: 80px;
+  font-size: 15px;
+  padding: 0 20px;
+  margin: 10px 10px;
+  cursor: pointer;
 }
 .header-lang {
   background-color: #232f3e;
