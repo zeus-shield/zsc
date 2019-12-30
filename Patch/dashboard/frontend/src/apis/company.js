@@ -31,6 +31,9 @@ const company = {
   },
 
   async detail(token, name) {
+    let data = new URLSearchParams();
+    data.append('name', name);
+
     let config = {
       // req.headers
       headers: {token},
