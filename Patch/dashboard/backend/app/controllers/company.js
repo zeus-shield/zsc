@@ -35,6 +35,12 @@ const remove = async(req, res) => {
 
     session = await mongoose.startSession();
     session.startTransaction();
+
+    // 1. collect 'insurance_id' from 'company'
+    result = await services.companies.findByName(req.body.name, session);
+    if (!result) {
+      throw createError('COMPANY_NOT_EXIST');
+    }
     await session.commitTransaction();
     session.endSession();
     res.sendOk('Remove company successfully!');
