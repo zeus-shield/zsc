@@ -55,7 +55,13 @@ export default {
   data() {
     let validateAccount = (rule, value, callback) => {
       if (value === '') {
+        callback(new Error(this.langSet['message']['error']['LOGIN_ACCOUNT_NONE']));
       } else {
+        if (value.length < 6 || value.length > 18) {
+          callback(new Error(this.langSet['message']['error']['LOGIN_ACCOUNT_LEN_ERR']));
+        } else {
+          callback();
+        }
       }
     };
     let validatePassword = (rule, value, callback) => {
