@@ -15,6 +15,10 @@ const add = async(req, res) => {
   try {
     session = await mongoose.startSession();
     session.startTransaction();
+    await session.commitTransaction();
+    session.endSession();
+    res.sendOk('Add new company successfully!');
+
   } catch (err) {
     // debug(err);
     if (session !== null) {
