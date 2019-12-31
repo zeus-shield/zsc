@@ -2,9 +2,13 @@
   <div class="user" :class="{'user-pc': device === 'pc'}">
 
     <div v-if="device === 'pc'">
+      <el-container >
+      </el-container>
     </div>
 
     <div v-else>
+      <el-container>
+      </el-container>
     </div>
 
   </div>
