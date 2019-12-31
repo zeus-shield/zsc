@@ -61,6 +61,11 @@ function _onHTTPSListening() {
 function _onHTTPError(error) {
   _onError('HTTP', error);
 }
+
+function _onHTTPSError(error) {
+  _onError('HTTPS', error);
+}
+
 log4js.configure(logConfig);
 global.logger = log4js.getLogger();
 
