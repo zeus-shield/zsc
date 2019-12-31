@@ -158,15 +158,15 @@ export default {
     },
     drawPie() {
       this.chartPie = echarts.init(document.getElementById('chartPie'));
-
       let option = {
         title: {
           text: utils.storage.cookie.get('lang') === 'en' ? 'Insurance ranking' : '???????',
           subtext: utils.storage.cookie.get('lang') === 'en' ? '(TOP10)' : '(????????)',
           x: 'center',
           textStyle: {
-            color: '#000000',
-            fontSize: 24
+            color: '#444',
+            fontSize: 18,
+            fontWeight: 700
           }
         },
         tooltip: {
