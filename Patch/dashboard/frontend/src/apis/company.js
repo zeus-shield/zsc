@@ -28,6 +28,9 @@ const company = {
         'token': token
       }
     };
+    try {
+    } catch (err) {
+    }
   },
 
   async detail(token, name) {
