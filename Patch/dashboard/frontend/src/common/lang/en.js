@@ -26,8 +26,14 @@ const en = {
       ]
     },
     slot2: {
-      title: 'Product introduction',
-      page: 'Myinsura is an innovative insurance platform based on blockchain technology. Upload logistics record of the users and insurance certificate information onto the Ethereum blockchain system. User information is protected without the authorization of the provider. The platform combines with artificial intelligence to conduct customized analysis of big data on the blockchain.'
+      header: 'Product Advantages',
+      title: ['Upload the data onto the Ethereum blockchain', 'Big Data Analysis', 'Privacy Security', 'Industry Credit'],
+      content: [
+        'Upload the insurance data onto the Ethereum blockchain. The information which built on blockchain is authentic, reliable, traceable, and the digital identity cannot be tampered with, removed, edited or forged.',
+        'Combined with artificial intelligence for customizing accurate risk control schemes for the insurance industry, pricing models, personalized policies and new types of insurance and so on to provides big data support.',
+        'The account digital identity information is highly encrypted, and the information is protected for privacy before the authorization of the provider, the data security and personal privacy will be guaranteed.',
+        'Establish the integral investigation system through block chain technology. The information shall not be tampered with or falsified to provide authentic and reliable data sources for integral investigation institutions.'
+      ]
     },
     slot3: {
       title: 'Product introduction',
