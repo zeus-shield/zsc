@@ -29,9 +29,9 @@
 // .tab:hover {
 //   background: white;
 // }
-.tab:hover .tab-icon.car {
-  background-position: -20px 0px;
-}
+// .tab:hover .tab-icon.car {
+//   background-position: -20px 0px;
+// }
 .tab-icon.travel {
   background-position: 0px -18px;
 }
