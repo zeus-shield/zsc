@@ -27,16 +27,18 @@
 <style lang="scss" scoped>
 // .page-body {
 //   width:80%;
-//   margin:56px auto auto auto;
-// }
+.interval-md {
+  margin: 0.5rem; // 8px;
+  min-height: 0.25rem; // 4px;
+}
 .echarts-card {
   text-align: center;
   // background: #FFF0F5;
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
 }
 .echarts {
   width: 100%; 
-  height: 400px;
+  height: 25rem; // 400px;
 }
 // @media (min-width:980px) {
 //   .echarts {
