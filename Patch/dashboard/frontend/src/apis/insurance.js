@@ -84,6 +84,11 @@ const insurance = {
   },
 
   async update(token, company, category, title, update) {
+    let data = new URLSearchParams();
+    data.append('company', company);
+    data.append('category', category);
+    data.append('title', title);
+    data.append('update', JSON.stringify(update));
   },
 
   async list(token) {
