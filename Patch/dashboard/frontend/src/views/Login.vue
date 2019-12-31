@@ -76,6 +76,9 @@ export default {
       }
     };
     let validateCode = (rule, value, callback) => {
+      if (value === '') {
+      } else {
+      }
     };
     return {
       googleAuthForm: {
