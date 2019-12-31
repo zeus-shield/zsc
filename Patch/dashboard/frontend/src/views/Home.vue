@@ -65,7 +65,9 @@
   text-align: left;
   margin-bottom: 1rem;
 }
-.slot2 .content {
+.swiper-slot .cover .inner .content {
+  font-size: 1.25rem; // 20px
+  color: #fff;
   text-align: left;
 }
 .slot3 .title {
