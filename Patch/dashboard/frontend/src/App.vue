@@ -166,6 +166,11 @@ import { mapState, mapGetters, mapActions } from 'vuex';
 export default {
   name: 'App',
   metaInfo: {
+    meta: [{
+      name: 'viewport',
+      content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
+      charset: 'utf-8' // unuserful
+    }],
   },
   components: {
     'header-pc': HeaderPC,
