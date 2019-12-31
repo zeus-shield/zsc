@@ -49,8 +49,10 @@
 .menu-container .menu .item.is-active {
 }
 .menu-container .menu .item:focus {
+  background-color: #fff;
 }
 .menu-container .menu .item:hover {
+  background-color: #fff;
 }
 .menu-container .menu .item span:hover {
   color: #f91;
