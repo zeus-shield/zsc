@@ -54,6 +54,10 @@
   padding: 0 20px;
   margin: 10px 10px;
   cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .header-lang {
   background-color: #232f3e;
