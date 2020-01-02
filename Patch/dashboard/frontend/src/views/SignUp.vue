@@ -56,6 +56,10 @@ export default {
             vm.buttonCodeDisabled = true;
             callback(new Error(vm.langSet['message']['error']['SIGNUP_ACCOUNT_LEN_ERR']));
           } else {
+            if (vm.codeStatus !== 'getting') {
+              vm.buttonCodeDisabled = false;
+            }
+            callback();
           }
         }
       }
