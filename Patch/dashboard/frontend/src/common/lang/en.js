@@ -40,11 +40,14 @@ const en = {
       content: 'Dashboard is an innovative insurance platform based on blockchain technology. Upload logistics record of the users and insurance certificate information onto the Ethereum blockchain system. User information is protected without the authorization of the provider. The platform combines with artificial intelligence to conduct customized analysis of big data on the blockchain.'
     },
     slot4: {
-      title: 'Product Feature',
-
-      page1: 'Ordinary users can browse the insurance products of various insurance companies through the platform, and to find suitable insurance products through big data analysis.',
-      page2: 'Minetrack provides data services based on privacy protection for paying users or premium members.(Data can be used to design new types of insurance, customized policies, precision marketing, etc).',
-      page3: 'The platform provides independent function module APIs for third parties, and provides charging services such as interface docking for system customization development and system integration.'
+      header: 'Product Feature',
+      title: ['', '', '', ''],
+      content: [
+        'Ordinary users can browse the insurance products of various insurance companies through the platform, and to find suitable insurance products through big data analysis.',
+        'Provides data services based on privacy protection for paying users or premium members.(Data can be used to design new types of insurance, customized policies, precision marketing, etc).',
+        'The platform provides independent function module APIs for third parties, and provides charging services such as interface docking for system customization development and system integration.',
+        'The intermediate cost is reduced by resource sharing. Value can be allocated to each node according to its contribution to the blockchain network,and other nodes can be encouraged to participate actively.'
+      ]
     },
     slot5: {
       header: 'Contact us'
