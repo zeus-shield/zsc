@@ -29,6 +29,8 @@ const company = {
       }
     };
     try {
+      let res = await instance.get('company', config);
+      return res.data;
     } catch (err) {
     }
   },
