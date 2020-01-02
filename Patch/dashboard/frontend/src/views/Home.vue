@@ -90,12 +90,16 @@
 </style>
 
 <script>
-// import Swiper from 'swiper';
-import 'swiper/dist/css/swiper.min.css';
+// original swiper
+import Swiper from 'swiperjs';
+import 'swiper/css/swiper.min.css'; // import in 'config.js'
+
+// vue-awesome-swiper
+// import 'swiper/dist/css/swiper.min.css';
 
 import { mapState, mapGetters } from 'vuex';
 
-import utils from '../common/utils';
+import utils from '@/common/utils';
 
 export default {
   name: 'Home',
