@@ -25,8 +25,10 @@
 </template>
 
 <style lang="scss" scoped>
-// .page-body {
-//   width:80%;
+.analytics {
+  padding: 1.25rem; // 20px
+}
+
 .interval-md {
   margin: 0.5rem; // 8px;
   min-height: 0.25rem; // 4px;
