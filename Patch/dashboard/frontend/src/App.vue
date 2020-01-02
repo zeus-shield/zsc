@@ -189,6 +189,10 @@ export default {
       reload: false
     };
   },
+  // props: {
+  // },
+  computed: {
+  },
   },
   methods: {
     ...mapActions('device', [
