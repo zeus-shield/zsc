@@ -47,6 +47,11 @@
 //   border-bottom: 1px solid #e9e9e9;
 // }
 .menu-container .menu .item.is-active {
+  // background-color: rgba(48,117,238,.05);
+  // box-shadow: inset 0.1875rem 0 0 0 #409EFF;
+  background-color: #fff;
+  font-weight: 700;
+  box-shadow: inset 0.1875rem 0 0 0 #f91;
 }
 .menu-container .menu .item:focus {
   background-color: #fff;
