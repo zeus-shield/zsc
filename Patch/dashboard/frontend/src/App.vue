@@ -181,6 +181,14 @@ export default {
     'footer-m': FooterMobile
   },
   data() {
+    return {
+      activeIndex: '1',
+      login: false,
+      // device: 'pc',
+      resizeFlag: null,
+      reload: false
+    };
+  },
   },
   methods: {
     ...mapActions('device', [
