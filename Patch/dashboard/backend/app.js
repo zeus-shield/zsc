@@ -48,6 +48,9 @@ function _onListening(type) {
  * Event listener for HTTP/HTTPS server "error" event.
  */
 function _onError(type, error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
 }
 
 function _onHTTPListening() {
