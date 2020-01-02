@@ -35,6 +35,9 @@
 .tab-icon.travel {
   background-position: 0px -18px;
 }
+.tab:hover .tab-icon.travel {
+  background-position: -20px -18px;
+}
 </style>
 
 <script>
