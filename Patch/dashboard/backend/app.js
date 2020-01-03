@@ -106,7 +106,13 @@ routes(app);
 /**
  * Get port from environment and store in Express.
  */
-let port = _normalizePort(process.env.PORT || '3000');
-app.listen(port, () => debug('Dashboard backend listening on port %s!', port));
+// let port = _normalizePort(process.env.PORT || '3000');
+// app.listen(port, () => logger.info('Dashboard backend listening on port %s!', port));
 
+// http server
+const httpServer = require('http').createServer(app);
+const httpPort = _normalizePort(process.env.PORT || '3000');
+httpServer.listen(httpPort);
+httpServer.on('error', _onHTTPError);
+httpServer.on('listening', _onHTTPListening);
 module.exports = app;
