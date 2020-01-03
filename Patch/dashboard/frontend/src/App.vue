@@ -193,6 +193,10 @@ export default {
   // },
   computed: {
   },
+  provide() {
+  },
+  beforeCreate() {
+  },
   },
   methods: {
     ...mapActions('device', [
