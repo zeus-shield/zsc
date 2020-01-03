@@ -28,7 +28,10 @@
 .analytics {
   padding: 1.25rem; // 20px
 }
-
+.header {
+}
+.header .sprite {
+}
 .interval-md {
   margin: 0.5rem; // 8px;
   min-height: 0.25rem; // 4px;
