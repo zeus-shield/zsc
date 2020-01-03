@@ -72,6 +72,11 @@ export default {
   name: 'UserAside',
   // components: {
   // },
+  data() {
+    };
+  },
+  props: {
+    activeIndex: String
   },
 };
 </script>
