@@ -78,6 +78,9 @@ export default {
       }
     };
     let validatePassword = (rule, value, callback) => {
+      if (value === '') {
+      } else {
+      }
     };
     let validatePassword2 = (rule, value, callback) => {
     };
