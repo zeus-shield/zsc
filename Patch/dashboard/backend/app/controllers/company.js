@@ -53,6 +53,23 @@ const remove = async(req, res) => {
         });
       }
     });
+
+    if (insuranceIds.length > 0) {
+      // 2. remove insurance
+      // insuranceIds.forEach(async id => {
+      //   result = await services.insurances.deleteById(id, null);
+      //   debug(result);
+      // });
+      for (let i = 0; i < insuranceIds.length; i++) {
+        await services.insurances.deleteById(insuranceIds[i], session);
+        // debug(result);
+      }
+    }
+
+    // 3. remove company
+    result = await services.companies.delete(req.body.name, session);
+    // debug(result);
+
     await session.commitTransaction();
     session.endSession();
     res.sendOk('Remove company successfully!');
