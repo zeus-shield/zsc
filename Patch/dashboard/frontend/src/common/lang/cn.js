@@ -215,7 +215,9 @@ const cn = {
       login: '用户登录中......',
       signUp: '用户注册中......',
       insurance: '保险产品获取中......',
-      analytics: '大数据分析中........'
+      analytics: '大数据分析中........',
+
+      myInsuranceSaving: '录入我的保单中......'
     }
   }
 };
