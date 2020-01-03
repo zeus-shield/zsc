@@ -200,10 +200,7 @@ export default {
           }
         ]
       };
-
       this.chartPie.setOption(option);
-      // this.ischartOK[0] = true;
-      // this.check();
     },
     drawBar() {
       this.chartBar = echarts.init(document.getElementById('chartBar'));
