@@ -70,22 +70,9 @@
   color: #fff;
   text-align: left;
 }
-.slot3 .title {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #122739;
-  text-align: center;
-  margin-bottom: 10px;
+.swiper-slot .cover .inner .space {
 }
-.slot3 .card {
-  margin-bottom: 20px
-}
-.slot3 .card .text {
-  padding: 14px;
-}
-.slot3 .card .text .sub-title {
-  font-size: 18px;
-  font-weight: 600;
+.swiper-slot .cover .inner .img {
 }
 </style>
 
