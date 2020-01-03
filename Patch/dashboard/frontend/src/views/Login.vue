@@ -87,6 +87,12 @@ export default {
       }
     };
     return {
+      errorMessage: '',
+      loading: false,
+      buttonSubmitDisabled: true,
+      buttonGoogleAuthDisabled: true,
+      dialogVisible: false,
+      dialogWidth: '0%',
       googleAuthForm: {
         code: ''
       },
