@@ -91,5 +91,10 @@ export default {
   name: 'Header',
   // components: {
   // },
+  data() {
+  },
+  // props: ['activeIndex'],
+  props: {
+  },
 };
 </script>
