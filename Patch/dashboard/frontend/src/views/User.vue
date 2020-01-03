@@ -9,6 +9,8 @@
     <div v-else>
       <el-container>
       </el-container>
+      <el-container>
+      </el-container>
     </div>
 
   </div>
