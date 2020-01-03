@@ -189,7 +189,9 @@ const en = {
       login: 'User is logging in...',
       signUp: 'User is signing up...',
       insurance: 'Getting insurance products...',
-      analytics: 'Analyzing data........'
+      analytics: 'Analyzing data........',
+
+      myInsuranceSaving: 'Saving my insurance......'
     }
   }
 };
