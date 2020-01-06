@@ -95,6 +95,9 @@ export default {
   },
   // props: ['activeIndex'],
   props: {
+    activeIndex: String
+  },
+  computed: {
   },
 };
 </script>
