@@ -109,6 +109,8 @@ const insurance = {
     };
 
     try {
+      let res = await instance.post('insurance/update', data, config);
+      return res.data;
     } catch (err) {
     }
   },
