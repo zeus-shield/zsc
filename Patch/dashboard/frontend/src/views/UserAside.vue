@@ -78,5 +78,11 @@ export default {
   props: {
     activeIndex: String
   },
+  computed: {
+    ...mapState({
+      logColor: state => state.logColor.user.pc.aside
+    }),
+    ...mapGetters('lang', ['langSet'])
+  },
 };
 </script>
