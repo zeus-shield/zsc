@@ -71,8 +71,13 @@
   text-align: left;
 }
 .swiper-slot .cover .inner .space {
+  margin: 0.625rem; // 10px;
 }
 .swiper-slot .cover .inner .img {
+  width: 100%; 
+}
+.card-slot,
+.text-slot {
 }
 </style>
 
@@ -163,6 +168,9 @@ export default {
         return require('@/assets/images/card/card-' + (param1) + '-' + (param2) + '.png');
       } else {}
     },
+    updateHandle() {
+      // TODO
+    }
   }
 };
 </script>
