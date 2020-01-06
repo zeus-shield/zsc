@@ -15,6 +15,10 @@ const add = async(req, res) => {
   try {
     session = await mongoose.startSession();
     session.startTransaction();
+
+    const name = req.body.name;
+    const categories = JSON.parse(req.body.categories);
+    const createdAt = Date.now();
     await session.commitTransaction();
     session.endSession();
     res.sendOk('Add new company successfully!');
