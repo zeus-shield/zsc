@@ -8,6 +8,9 @@
 
     <div v-else>
       <el-container>
+        <el-main>
+          <user-header :activeIndex="activeIndex"></user-header>
+        </el-main>
       </el-container>
       <el-container>
       </el-container>
