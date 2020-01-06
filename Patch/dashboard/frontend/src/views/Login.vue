@@ -93,6 +93,10 @@ export default {
       buttonGoogleAuthDisabled: true,
       dialogVisible: false,
       dialogWidth: '0%',
+      form: {
+        account: '',
+        password: ''
+      },
       googleAuthForm: {
         code: ''
       },
