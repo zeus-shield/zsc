@@ -194,6 +194,9 @@ export default {
   computed: {
   },
   provide() {
+    return {
+      reloadApp: this.reloadApp
+    };
   },
   beforeCreate() {
   },
