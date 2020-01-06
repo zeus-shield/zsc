@@ -92,6 +92,9 @@ const en = {
       input: 'Submit My Policy'
     },
     dialog: {
+      title: 'My Policy',
+      product: {
+      },
     }
   },
   user: {
