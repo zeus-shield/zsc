@@ -110,6 +110,8 @@ const cn = {
       },
       policy: {
         title: '保单信息',
+        amount: '保额',
+        renewal: '是否续保',
         period: '保障期限',
         description: '详细描述'
       }
