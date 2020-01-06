@@ -42,6 +42,15 @@ function _onListening(type) {
   } else {
     addr = httpServer.address();
   }
+  // logger.info(addr);
+  if (addr !== null) {
+    const bind = typeof addr === 'string'
+      ? 'pipe ' + addr
+      : 'port ' + addr.port;
+    global.logger.info(' Listening on ' + bind + '[' + type + ']');
+  } else {
+    global.logger.info('Listening on null' + '[' + type + ']');
+  }
 }
 
 /**
