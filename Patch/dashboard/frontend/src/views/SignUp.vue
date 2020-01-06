@@ -79,10 +79,14 @@ export default {
     };
     let validatePassword = (rule, value, callback) => {
       if (value === '') {
+        callback(new Error(vm.langSet['message']['error']['SIGNUP_PWD_NONE']));
       } else {
       }
     };
     let validatePassword2 = (rule, value, callback) => {
+      if (value === '') {
+      } else {
+      }
     };
     return {
     };
