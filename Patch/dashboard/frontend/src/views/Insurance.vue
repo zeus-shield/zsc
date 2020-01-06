@@ -41,6 +41,9 @@
 .tab-icon.crash {
   background-position: 0px -36px;
 }
+.tab:hover .tab-icon.crash {
+  background-position: -20px -36px;
+}
 </style>
 
 <script>
