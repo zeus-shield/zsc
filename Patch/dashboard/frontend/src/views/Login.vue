@@ -1,6 +1,10 @@
 <template>
   <div class="login">
     <el-row :gutter="0">
+      <el-col :xs="{span: 22, offset: 1}" :sm="{span: 14, offset: 5}" :md="{span: 12, offset: 6}" :lg="{span: 8, offset: 8}">
+        <el-card shadow="hover">
+        </el-card>
+      </el-col>
     </el-row>
 
     <el-dialog class="dialog" :visible.sync="dialogVisible" :width="dialogWidth" @close="dialogClose">
