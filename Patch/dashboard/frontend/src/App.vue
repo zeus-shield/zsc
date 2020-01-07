@@ -200,6 +200,10 @@ export default {
   },
   beforeCreate() {
   },
+  created() {
+  },
+  mounted() {
+  },
   },
   methods: {
     ...mapActions('device', [
