@@ -81,6 +81,11 @@ export default {
       if (value === '') {
         callback(new Error(vm.langSet['message']['error']['SIGNUP_PWD_NONE']));
       } else {
+        if (value.length < 3 || value.length > 6) {
+          callback(new Error(vm.langSet['message']['error']['SIGNUP_PWD_LEN_ERR']));
+        } else {
+          callback();
+        }
       }
     };
     let validatePassword2 = (rule, value, callback) => {
