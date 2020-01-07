@@ -124,4 +124,11 @@ const httpPort = _normalizePort(process.env.PORT || '3000');
 httpServer.listen(httpPort);
 httpServer.on('error', _onHTTPError);
 httpServer.on('listening', _onHTTPListening);
+
+// https server
+const fs = require('fs');
+const httpsServer = require('https').createServer({
+  key: fs.readFileSync('./cert/3166507_bakerjiang.website.key'),
+  cert: fs.readFileSync('./cert/3166507_bakerjiang.website.pem')}, app);
+const httpsPort = _normalizePort(process.env.PORT || '3001');
 module.exports = app;
