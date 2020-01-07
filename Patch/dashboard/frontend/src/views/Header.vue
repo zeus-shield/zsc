@@ -99,5 +99,8 @@ export default {
   },
   computed: {
   },
+  created() {
+    console.log('%c[Header]created()', `color:${this.logColor}`);
+  },
 };
 </script>
