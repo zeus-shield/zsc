@@ -78,6 +78,11 @@
 }
 .card-slot,
 .text-slot {
+  padding: 0.5rem;
+}
+.card-slot .header {
+}
+.card-slot .card {
 }
 </style>
 
