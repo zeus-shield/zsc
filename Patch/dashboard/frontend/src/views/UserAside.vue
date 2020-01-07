@@ -73,6 +73,9 @@ export default {
   // components: {
   // },
   data() {
+    return {
+      routes: [
+      ]
     };
   },
   props: {
