@@ -19,6 +19,17 @@ const add = async(req, res) => {
     const name = req.body.name;
     const categories = JSON.parse(req.body.categories);
     const createdAt = Date.now();
+
+    // object/array deep copy
+    // const newCategories = JSON.parse(JSON.stringify(categories));
+    const newCategories = [];
+
+    for (let i = 0; i < categories.length; i++) {
+      const result = await services.companies.findByNamesAndCategory(name, categories[i].name, session);
+      if (!result) {
+        newCategories.push(categories[i]);
+      }
+    }
     await session.commitTransaction();
     session.endSession();
     res.sendOk('Add new company successfully!');
