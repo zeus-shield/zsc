@@ -101,6 +101,12 @@ export default {
         account: '',
         password: ''
       },
+      rules: {
+        account: [
+        ],
+        password: [
+        ]
+      },
       googleAuthForm: {
         code: ''
       },
