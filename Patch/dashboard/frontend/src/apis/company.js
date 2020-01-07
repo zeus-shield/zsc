@@ -20,6 +20,10 @@ const company = {
   },
 
   async update(token, name, newName, newCategoryNames) {
+    let data = new URLSearchParams();
+    data.append('name', name);
+    data.append('newName', newName);
+    data.append('newCategoryNames', JSON.stringify(newCategoryNames));
   },
 
   async list(token) {
