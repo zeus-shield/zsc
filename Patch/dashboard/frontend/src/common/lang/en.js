@@ -94,6 +94,10 @@ const en = {
     dialog: {
       title: 'My Policy',
       product: {
+        title: 'Product Information',
+        company: 'Company',
+        category: 'Category',
+        name: 'Name'
       },
     }
   },
