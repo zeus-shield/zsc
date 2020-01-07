@@ -112,6 +112,10 @@ const cn = {
         title: '保单信息',
         amount: '保额',
         renewal: '是否续保',
+        startTime: {
+          title: '生效日期',
+          placeholder: '选择日期'
+        },
         period: '保障期限',
         description: '详细描述'
       }
