@@ -13,6 +13,9 @@
         </el-main>
       </el-container>
       <el-container>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </div>
 
