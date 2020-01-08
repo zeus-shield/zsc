@@ -98,6 +98,13 @@ export default {
     activeIndex: String
   },
   computed: {
+    // ...mapState({
+    //   logColor: state => state.logColor.header,
+    //   lang: state => state.lang.lang
+    // }),
+    ...mapState('logColor', {
+      logColor: state => state.header
+    }),
   },
   created() {
     console.log('%c[Header]created()', `color:${this.logColor}`);
