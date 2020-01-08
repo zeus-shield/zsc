@@ -75,6 +75,10 @@ export default {
   data() {
     return {
       routes: [
+        {id: '1', name: 'userDetail'},
+        {id: '2', name: 'userPolicy'},
+        {id: '3', name: 'userSupport'},
+        {id: '4', name: 'userQuestions'}
       ]
     };
   },
