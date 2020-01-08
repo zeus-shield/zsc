@@ -105,6 +105,8 @@ export default {
         account: [
         ],
         password: [
+          // { validator: validatePassword, trigger: ['blur', 'change'] },
+          { validator: validatePassword, trigger: 'blur' }
         ]
       },
       googleAuthForm: {
