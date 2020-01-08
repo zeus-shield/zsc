@@ -81,6 +81,11 @@
   padding: 0.5rem;
 }
 .card-slot .header {
+  font-size: 2.25rem; // 36px;
+  font-weight: 500;
+  color: #232F3E; // #122739;
+  text-align: center;
+  margin-bottom: 0.625rem; // 10px
 }
 .card-slot .card {
 }
