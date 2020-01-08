@@ -219,6 +219,12 @@ export default {
         this.barDataShadow.push(20);
       }
       let option = {
+        title: {
+        },
+        xAxis: {
+        ],
+        series: [
+        ]
       };
       this.chartBar.setOption(option);
     }
