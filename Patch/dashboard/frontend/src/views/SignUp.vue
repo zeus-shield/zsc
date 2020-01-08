@@ -90,7 +90,13 @@ export default {
     };
     let validatePassword2 = (rule, value, callback) => {
       if (value === '') {
+        callback(new Error(vm.langSet['message']['error']['SIGNUP_PWD_NONE']));
       } else {
+        if (value !== vm.form.password) {
+          callback(new Error(vm.langSet['message']['error']['SIGNUP_PWD2_ERR']));
+        } else {
+          callback();
+        }
       }
     };
     return {
