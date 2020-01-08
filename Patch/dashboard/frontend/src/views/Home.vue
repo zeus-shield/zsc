@@ -88,6 +88,9 @@
   margin-bottom: 0.625rem; // 10px
 }
 .card-slot .card {
+  margin-bottom: 1.25rem; // 20px
+}
+.card-slot .img {
 }
 </style>
 
