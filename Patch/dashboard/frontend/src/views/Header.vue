@@ -105,6 +105,8 @@ export default {
     ...mapState('logColor', {
       logColor: state => state.header
     }),
+    ...mapState('lang', ['lang']),
+    ...mapGetters('lang', ['langSet', 'langSetByKey'])
   },
   created() {
     console.log('%c[Header]created()', `color:${this.logColor}`);
