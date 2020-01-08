@@ -47,6 +47,9 @@
 .tab-icon.home {
   background-position: 0px -54px;
 }
+.tab:hover .tab-icon.home {
+  background-position: -20px -54px;
+}
 </style>
 
 <script>
