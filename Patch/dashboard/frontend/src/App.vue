@@ -192,6 +192,10 @@ export default {
   // props: {
   // },
   computed: {
+    ...mapState({
+      logColor: state => state.logColor.app,
+      device: state => state.device.device
+    })
   },
   provide() {
     return {
