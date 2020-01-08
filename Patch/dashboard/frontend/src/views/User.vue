@@ -72,6 +72,8 @@ export default {
   created() {
     console.log('%c[User]created()', `color:${this.logColor}`);
   },
+  mounted() {
+  },
   destroyed() {
     console.log('%c[User]destroyed()', `color:${this.logColor}`);
   },
