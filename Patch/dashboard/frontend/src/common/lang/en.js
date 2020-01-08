@@ -99,6 +99,10 @@ const en = {
         category: 'Category',
         name: 'Name'
       },
+      user: {
+      },
+      policy: {
+      }
     }
   },
   user: {
