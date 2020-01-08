@@ -218,6 +218,9 @@ export default {
       for (var i = 0; i < this.barData.length; i++) {
         this.barDataShadow.push(20);
       }
+      let option = {
+      };
+      this.chartBar.setOption(option);
     }
   }
 };
