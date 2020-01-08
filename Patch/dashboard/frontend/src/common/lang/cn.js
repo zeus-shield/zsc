@@ -107,6 +107,10 @@ const cn = {
         name: '产品名称'
       },
       user: {
+        title: '个人信息',
+        holder: '投保人',
+        insurant: '承保人',
+        credentials: '有效证件',
       },
       policy: {
         title: '保单信息',
