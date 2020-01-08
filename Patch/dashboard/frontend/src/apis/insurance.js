@@ -121,6 +121,11 @@ const insurance = {
   },
 
   async list(token) {
+    let config = {
+      headers: {
+        'token': token
+      }
+    };
   },
 
   async detail(token, method, company, category, title, id) {
