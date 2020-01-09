@@ -198,7 +198,9 @@ export default {
     })
     ...mapState('logColor', {
       logColor: state => state.app
-    })
+    }),
+    // ...mapState('device', ['device'])
+    ...mapGetters('device', ['device'])
   },
   provide() {
     return {
