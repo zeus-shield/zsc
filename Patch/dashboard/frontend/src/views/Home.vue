@@ -91,6 +91,9 @@
   margin-bottom: 1.25rem; // 20px
 }
 .card-slot .img {
+  width: 100%;
+}
+.card-slot .card .title {
 }
 </style>
 
