@@ -27,7 +27,7 @@ class Wallet {
     //     // Currently only ever one:
     //     // ['0xFDEa65C8e26263F6d9A1B5de9555D2931A33b825']
     //     // alert(accounts);
-    //     // const message = '就快完成了！作为最后一步，MetaMask会要求您以数字方式登录您的钱包，并将其与谜恋猫链接。单击按钮以继续';
+    //     // const message = '?????!??????,MetaMask???????????????,?????????????????';
     //     // utils.notice.confirm(vm, 'warning', vm.langSet.component.alert.warningTitle, message, vm.langSet.component.button.confirm, vm.langSet.component.button.cancel, true, true, () => {
     //     //   alert('confirm');
     //     // }, () => {
