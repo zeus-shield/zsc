@@ -196,6 +196,9 @@ export default {
       logColor: state => state.logColor.app,
       device: state => state.device.device
     })
+    ...mapState('logColor', {
+      logColor: state => state.app
+    })
   },
   provide() {
     return {
