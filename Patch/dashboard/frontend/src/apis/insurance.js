@@ -126,6 +126,9 @@ const insurance = {
         'token': token
       }
     };
+    try {
+    } catch (err) {
+    }
   },
 
   async detail(token, method, company, category, title, id) {
