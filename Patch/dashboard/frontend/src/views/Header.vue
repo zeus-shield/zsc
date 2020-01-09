@@ -111,5 +111,10 @@ export default {
   created() {
     console.log('%c[Header]created()', `color:${this.logColor}`);
   },
+  mounted() {
+    console.log('%c[Header]mounted()', `color:${this.logColor}`);
+    // TODO
+    this.checkAdmin();
+  },
 };
 </script>
