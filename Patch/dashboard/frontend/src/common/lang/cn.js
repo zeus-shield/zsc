@@ -84,7 +84,7 @@ const cn = {
     submit: '注册'
   },
   market: {
-    m: {
+    operation: {
       title: ['选择保险公司', '搜索保险产品']
     },
     pingan: {
@@ -111,6 +111,9 @@ const cn = {
         holder: '投保人',
         insurant: '承保人',
         credentials: '有效证件',
+        age: '年龄',
+        sex: {
+        },
       },
       policy: {
         title: '保单信息',
