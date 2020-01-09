@@ -65,6 +65,10 @@ export default {
       }
     };
     let validateEmailAccount = (rule, value, callback) => {
+      // skip validate phone
+      if (vm.tabIndex === '1') {
+      } else {
+      }
     };
     let validateCode = (rule, value, callback) => {
       if (value === '') {
