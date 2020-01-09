@@ -77,7 +77,7 @@ const en = {
     submit: 'Sign Up'
   },
   market: {
-    m: {
+    operation: {
       title: ['Select Company', 'Search for products']
     },
     pingan: {
@@ -100,6 +100,9 @@ const en = {
         name: 'Name'
       },
       user: {
+        title: 'Personal Information',
+        holder: 'Holder',
+        insurant: 'Insurant',
       },
       policy: {
       }
