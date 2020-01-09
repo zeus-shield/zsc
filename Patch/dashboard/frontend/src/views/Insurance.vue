@@ -14,6 +14,8 @@
 <style lang="scss" scoped>
 .insurance {
   padding: 1.25rem; // 20px
+  font-size: 0.875rem;
+  color: red; // #444;
 }
 // .tab {
 //   display: flex;
