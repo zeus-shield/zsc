@@ -220,6 +220,11 @@ export default {
       }
       let option = {
         title: {
+          textStyle: {
+            color: '#444',
+            fontSize: 18,
+            fontWeight: 700
+          }
         },
         xAxis: {
         ],
