@@ -30,6 +30,10 @@ const add = async(req, res) => {
         newCategories.push(categories[i]);
       }
     }
+
+    if (newCategories.length === 0) {
+      throw createError('COMPANY_CATEGORIES_HAS_EXIST');
+    }
     await session.commitTransaction();
     session.endSession();
     res.sendOk('Add new company successfully!');
