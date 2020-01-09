@@ -91,5 +91,8 @@ export default {
     }),
     ...mapGetters('lang', ['langSet'])
   },
+  created() {
+    console.log('%c[UserAside]created()', `color:${this.logColor}`);
+  },
 };
 </script>
