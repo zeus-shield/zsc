@@ -3,6 +3,12 @@
 
     <div v-if="device === 'pc'">
       <el-container >
+        <el-aside width="12.375rem">
+          <user-aside :activeIndex="activeIndex"></user-aside>
+        </el-aside>
+        <el-main class="el-main-pc">
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </div>
 
