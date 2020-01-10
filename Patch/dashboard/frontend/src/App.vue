@@ -145,6 +145,9 @@
 //   border-right-width:0;
 //   border-left-color:#FFF
 // }
+.el-tabs__item {
+  color: #444;
+}
 .utils-alert { 
   width: 280px;
 }
