@@ -116,5 +116,8 @@ export default {
     // TODO
     this.checkAdmin();
   },
+  destroyed() {
+    console.log('%c[Header]destroyed()', `color:${this.logColor}`);
+  },
 };
 </script>
