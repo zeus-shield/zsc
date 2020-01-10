@@ -34,6 +34,13 @@ const add = async(req, res) => {
     if (newCategories.length === 0) {
       throw createError('COMPANY_CATEGORIES_HAS_EXIST');
     }
+
+    const update = {$push: {categories: newCategories}};
+    const result = await services.companies.update(name, update, session);
+    if (!result) {
+      await services.companies.insert(name, newCategories, createdAt, session);
+    }
+
     await session.commitTransaction();
     session.endSession();
     res.sendOk('Add new company successfully!');
