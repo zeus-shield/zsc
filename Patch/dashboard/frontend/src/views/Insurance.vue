@@ -52,6 +52,9 @@
 .tab:hover .tab-icon.home {
   background-position: -20px -54px;
 }
+.tab-icon.baggage {
+  background-position: 0px -72px;
+}
 </style>
 
 <script>
