@@ -103,6 +103,8 @@ const en = {
         title: 'Personal Information',
         holder: 'Holder',
         insurant: 'Insurant',
+        credentials: 'Credentials',
+        age: 'Age',
       },
       policy: {
       }
