@@ -127,6 +127,8 @@ const insurance = {
       }
     };
     try {
+      let res = await instance.get('insurance', config);
+      return res.data;
     } catch (err) {
     }
   },

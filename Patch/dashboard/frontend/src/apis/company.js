@@ -43,6 +43,8 @@ const company = {
     };
 
     try {
+      let res = await instance.post('company/update', data, config);
+      return res.data;
     } catch (err) {
     }
   },
