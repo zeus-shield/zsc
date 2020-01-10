@@ -94,5 +94,8 @@ export default {
   created() {
     console.log('%c[UserAside]created()', `color:${this.logColor}`);
   },
+  mounted() {
+    console.log('%c[UserAside]mounted()', `color:${this.logColor}`);
+  },
 };
 </script>
