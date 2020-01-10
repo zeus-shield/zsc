@@ -94,6 +94,11 @@
   width: 100%;
 }
 .card-slot .card .title {
+  font-size: 1.125rem; // 18px
+  color: #007EB9;
+  font-weight: 500;
+}
+.card-slot .card .content {
 }
 </style>
 
