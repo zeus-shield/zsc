@@ -220,6 +220,9 @@ export default {
       }
       let option = {
         title: {
+          text: utils.storage.cookie.get('lang') === 'en' ? 'Company Ranking' : '公司热度排行榜',
+          subtext: utils.storage.cookie.get('lang') === 'en' ? '(TOP10)' : '（排列前十名的公司）',
+          x: 'center',
           textStyle: {
             color: '#444',
             fontSize: 18,
