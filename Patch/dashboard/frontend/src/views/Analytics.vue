@@ -230,6 +230,9 @@ export default {
           }
         },
         xAxis: {
+          axisTick: {
+            show: false
+          },
         ],
         series: [
         ]
