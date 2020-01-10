@@ -83,6 +83,10 @@ export default {
   destroyed() {
     console.log('%c[User]destroyed()', `color:${this.logColor}`);
   },
+  beforeRouteLeave(to, from, next) {
+    console.log('%c[User]beforeRouteLeave(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
+    next();
+  },
   methods: {
   }
 };
