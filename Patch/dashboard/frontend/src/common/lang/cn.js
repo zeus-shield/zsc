@@ -113,6 +113,8 @@ const cn = {
         credentials: '有效证件',
         age: '年龄',
         sex: {
+          title: '性别',
+          content: ['男', '女']
         },
       },
       policy: {
