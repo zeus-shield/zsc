@@ -148,6 +148,10 @@
 .el-tabs__item {
   color: #444;
 }
+.el-tabs__item.is-active {
+  color: #f91;
+  // font-weight: 700;
+}
 .utils-alert { 
   width: 280px;
 }
