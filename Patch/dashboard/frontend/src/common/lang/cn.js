@@ -116,6 +116,8 @@ const cn = {
           title: '性别',
           content: ['男', '女']
         },
+        address: '通讯地址',
+        contact: '联系方式'
       },
       policy: {
         title: '保单信息',
