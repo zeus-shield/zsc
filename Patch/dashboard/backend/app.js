@@ -63,6 +63,12 @@ function _onError(type, error) {
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
+    case 'EACCES':
+      break;
+    case 'EADDRINUSE':
+      break;
+    default:
+      throw error;
   }
 }
 
