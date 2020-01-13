@@ -100,6 +100,11 @@
 }
 .card-slot .card .content {
 }
+.text-slot .card {
+  background: #F2F4f4;
+}
+.text-slot .content {
+}
 </style>
 
 <script>
