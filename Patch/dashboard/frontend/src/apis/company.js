@@ -46,6 +46,11 @@ const company = {
       let res = await instance.post('company/update', data, config);
       return res.data;
     } catch (err) {
+      if (err.response !== undefined) {
+        throw err.response.data;
+      } else {
+        throw err.message;
+      }
     }
   },
 
