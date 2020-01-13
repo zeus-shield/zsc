@@ -105,6 +105,10 @@ const en = {
         insurant: 'Insurant',
         credentials: 'Credentials',
         age: 'Age',
+        sex: {
+          title: 'Sex',
+          content: ['Male', 'Female']
+        },
       },
       policy: {
       }
