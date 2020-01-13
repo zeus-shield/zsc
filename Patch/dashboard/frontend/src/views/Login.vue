@@ -3,6 +3,8 @@
     <el-row :gutter="0">
       <el-col :xs="{span: 22, offset: 1}" :sm="{span: 14, offset: 5}" :md="{span: 12, offset: 6}" :lg="{span: 8, offset: 8}">
         <el-card shadow="hover">
+          <el-form v-loading.fullscreen.lock="loading" :element-loading-text="langSet.component.loading.login" element-loading-spinner="el-icon-loading" ref="form" :model="form" :rules="rules" label-width="0">
+          </el-form>
         </el-card>
       </el-col>
     </el-row>
@@ -103,8 +105,8 @@ export default {
       },
       rules: {
         account: [
-          // { required: true, message: '??????/????', trigger: 'blur' },
-          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
+          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
+          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
           // { validator: validateAccount, trigger: ['blur', 'change'] },
           { validator: validateAccount, trigger: 'blur' }
         ],
