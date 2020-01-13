@@ -7,7 +7,7 @@ const instance = axios.create({
   // withCredentials: true // bypass cookie from and to server
 });
 
-import Wallet from './ethereum/wallet';
+import Wallet from './wallet';
 import User from './userClass';
 import Insurance from './insuranceClass';
 import Company from './companyClass';
