@@ -15,7 +15,10 @@
 .insurance {
   padding: 1.25rem; // 20px
   font-size: 0.875rem;
-  color: red; // #444;
+  color: #444;
+}
+.tab-company:hover {
+  color: #f91;
 }
 // .tab {
 //   display: flex;
