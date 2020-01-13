@@ -97,5 +97,8 @@ export default {
   mounted() {
     console.log('%c[UserAside]mounted()', `color:${this.logColor}`);
   },
+  destroyed() {
+    console.log('%c[UserAside]destroyed()', `color:${this.logColor}`);
+  },
 };
 </script>
