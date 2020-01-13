@@ -70,6 +70,8 @@ export default {
         callback();
       } else {
         if (value === '') {
+          vm.buttonCodeDisabled = true;
+          callback(new Error(vm.langSet['message']['error']['SIGNUP_ACCOUNT_NONE']));
         } else {
         }
       }
