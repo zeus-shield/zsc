@@ -109,6 +109,10 @@ const en = {
           title: 'Sex',
           content: ['Male', 'Female']
         },
+        status: {
+          title: 'Status',
+          content: ['Unmarried', 'Married']
+        },
       },
       policy: {
       }
