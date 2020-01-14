@@ -20,6 +20,9 @@
 .tab-company:hover {
   color: #f91;
 }
+.tab-company:hover {
+  color: #f91;
+}
 // .tab {
 //   display: flex;
 //   justify-content: center;
