@@ -219,6 +219,10 @@ export default {
   created() {
   },
   mounted() {
+    console.log('%c[App]mounted()', `color:${this.logColor}`);
+  },
+  destroyed() {
+    console.log('%c[App]destroyed()', `color:${this.logColor}`);
   },
   },
   methods: {
