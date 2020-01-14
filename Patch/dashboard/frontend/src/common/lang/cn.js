@@ -116,6 +116,10 @@ const cn = {
           title: '性别',
           content: ['男', '女']
         },
+        status: {
+          title: '婚姻状况',
+          content: ['未婚', '已婚']
+        },
         address: '通讯地址',
         contact: '联系方式'
       },
