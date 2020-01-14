@@ -107,6 +107,10 @@
   background: #F2F4f4;
 }
 .text-slot .content {
+  font-size: 1.25rem; // 20px
+  font-weight: 500;
+  color: #333;
+  text-align: left;
 }
 </style>
 
