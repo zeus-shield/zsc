@@ -99,6 +99,9 @@
   font-weight: 500;
 }
 .card-slot .card .content {
+  font-size: 0.8125rem; // 13px
+  font-weight: 500;
+  color: #333;
 }
 .text-slot .card {
   background: #F2F4f4;
