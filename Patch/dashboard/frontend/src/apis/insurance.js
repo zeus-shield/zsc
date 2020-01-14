@@ -142,6 +142,10 @@ const insurance = {
   },
 
   async count(token, company, category, title) {
+    let data = new URLSearchParams();
+    data.append('company', company);
+    data.append('category', category);
+    data.append('title', title);
     try {
       let res = await instance.get('insurance/count', config);
       return res.data;
