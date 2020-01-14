@@ -122,5 +122,8 @@ export default {
     handleLogin() {
       this.$router.push({name: 'login'});
     },
+    handleSignUp() {
+      this.$router.push({name: 'signUp'});
+    },
 };
 </script>
