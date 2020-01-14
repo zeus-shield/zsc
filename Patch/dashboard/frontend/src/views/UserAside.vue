@@ -100,5 +100,8 @@ export default {
   destroyed() {
     console.log('%c[UserAside]destroyed()', `color:${this.logColor}`);
   },
+  updated() {
+    console.log('%c[UserAside]updated()', `color:${this.logColor}`);
+  },
 };
 </script>
