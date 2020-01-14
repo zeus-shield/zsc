@@ -4,6 +4,11 @@
       <el-col :xs="{span: 22, offset: 1}" :sm="{span: 14, offset: 5}" :md="{span: 12, offset: 6}" :lg="{span: 8, offset: 8}">
         <el-card shadow="hover">
           <el-form v-loading.fullscreen.lock="loading" :element-loading-text="langSet.component.loading.login" element-loading-spinner="el-icon-loading" ref="form" :model="form" :rules="rules" label-width="0">
+            <el-form-item>
+              <div class="login-form-title">
+                <span>{{langSet.login.title}}</span>
+              </div>
+            </el-form-item> 
           </el-form>
         </el-card>
       </el-col>
