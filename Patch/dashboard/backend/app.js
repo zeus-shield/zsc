@@ -64,6 +64,8 @@ function _onError(type, error) {
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
+      global.logger.error(bind + ' requires elevated privileges' + '[' + type + ']');
+      process.exit(1);
       break;
     case 'EADDRINUSE':
       break;
