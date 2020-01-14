@@ -171,6 +171,11 @@ export default {
       this.$refs['form'].resetFields();
     },
     getCode() {
+      let vm = this;
+
+      vm.errorMessage = '';
+      vm.buttonCodeDisabled = true;
+      vm.codeStatus = 'getting';
     },
     submitForm(formName) {
     }
