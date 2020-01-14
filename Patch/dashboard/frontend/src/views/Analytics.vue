@@ -231,6 +231,12 @@ export default {
         },
         xAxis: {
           data: this.barDataAxis,
+          axisLabel: {
+            inside: true,
+            textStyle: {
+              color: '#fff'
+            }
+          },
           axisTick: {
             show: false
           },
