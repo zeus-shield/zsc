@@ -119,6 +119,10 @@ export default {
   destroyed() {
     console.log('%c[Header]destroyed()', `color:${this.logColor}`);
   },
+  updated() {
+  },
+  methods: {
+    },
     handleLogin() {
       this.$router.push({name: 'login'});
     },
