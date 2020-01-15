@@ -11,6 +11,11 @@ const instance = axios.create({
 
 const company = {
   async add(token, name, categories) {
+
+    let data = new URLSearchParams();
+    data.append('name', name);
+    // categories is array
+    data.append('categories', JSON.stringify(categories));
   },
 
   async remove(token, name) {
