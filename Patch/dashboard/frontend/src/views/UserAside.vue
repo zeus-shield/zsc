@@ -103,5 +103,9 @@ export default {
   updated() {
     console.log('%c[UserAside]updated()', `color:${this.logColor}`);
   },
+  beforeRouteUpdate(to, from, next) {
+    console.log('%c[UserAside]beforeRouteUpdate(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
+    next();
+  },
 };
 </script>
