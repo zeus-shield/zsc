@@ -113,6 +113,8 @@ const en = {
           title: 'Status',
           content: ['Unmarried', 'Married']
         },
+        address: 'Address',
+        contact: 'Contact'
       },
       policy: {
       }
