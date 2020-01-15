@@ -68,6 +68,8 @@ function _onError(type, error) {
       process.exit(1);
       break;
     case 'EADDRINUSE':
+      global.logger.error(bind + ' is already in use' + '[' + type + ']');
+      process.exit(1);
       break;
     default:
       throw error;
