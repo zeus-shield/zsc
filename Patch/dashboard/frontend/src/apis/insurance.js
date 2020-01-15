@@ -139,6 +139,12 @@ const insurance = {
   },
 
   async detail(token, method, company, category, title, id) {
+    let data = new URLSearchParams();
+    data.append('method', method);
+    data.append('company', company);
+    data.append('category', category);
+    data.append('title', title);
+    data.append('id', id);
   },
 
   async count(token, company, category, title) {
