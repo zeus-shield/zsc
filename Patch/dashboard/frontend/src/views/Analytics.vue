@@ -248,6 +248,9 @@ export default {
         yAxis: {
         },
         dataZoom: [
+          {
+            type: 'inside'
+          }
         ],
         series: [
         ]
