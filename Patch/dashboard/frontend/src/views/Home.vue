@@ -106,6 +106,12 @@
 .text-slot .card {
   background: #F2F4f4;
 }
+.text-slot .title {
+  font-size: 2.25rem; // 36px;
+  font-weight: 500;
+  color: #232F3E; // #232F3E;
+  text-align: center;
+}
 .text-slot .content {
   font-size: 1.25rem; // 20px
   font-weight: 500;
