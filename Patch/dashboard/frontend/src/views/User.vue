@@ -79,11 +79,13 @@ export default {
     console.log('%c[User]created()', `color:${this.logColor}`);
   },
   mounted() {
+    console.log('%c[User]mounted()', `color:${this.logColor}`);
   },
   destroyed() {
     console.log('%c[User]destroyed()', `color:${this.logColor}`);
   },
   updated() {
+    console.log('%c[User]updated()', `color:${this.logColor}`);
   },
   beforeRouteUpdate(to, from, next) {
     console.log('%c[User]beforeRouteUpdate(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
