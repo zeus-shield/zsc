@@ -214,7 +214,8 @@ const cn = {
   message: {
     info: {},
     warning: {
-      reLogin: '用未登录或证书过期，请重新登录!',
+      reLogin: '用户未登录，请重先登录!',
+      jwtExpires: 'JWT已过期，请重新登录!',
     },
     error: {
       USER_HAS_EXIST: '用户已存在！',
