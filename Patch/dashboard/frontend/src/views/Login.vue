@@ -9,6 +9,9 @@
                 <span>{{langSet.login.title}}</span>
               </div>
             </el-form-item> 
+            <el-form-item>
+              <el-button class="login-form-button" type="primary" :disabled="buttonSubmitDisabled" @click="submitForm('form')">{{langSet.login.submit}}</el-button>
+            </el-form-item>
           </el-form>
         </el-card>
       </el-col>
@@ -110,8 +113,8 @@ export default {
       },
       rules: {
         account: [
-          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
-          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          // { required: true, message: '??????/????', trigger: 'blur' },
+          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
           // { validator: validateAccount, trigger: ['blur', 'change'] },
           { validator: validateAccount, trigger: 'blur' }
         ],
