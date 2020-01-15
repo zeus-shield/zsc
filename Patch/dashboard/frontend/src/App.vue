@@ -152,6 +152,9 @@
   color: #f91;
   // font-weight: 700;
 }
+.el-tabs__item:hover {
+  color: #f91;
+}
 .utils-alert { 
   width: 280px;
 }
