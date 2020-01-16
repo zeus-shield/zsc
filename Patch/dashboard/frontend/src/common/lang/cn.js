@@ -216,6 +216,8 @@ const cn = {
     warning: {
       reLogin: '用户未登录，请重先登录!',
       jwtExpires: 'JWT已过期，请重新登录!',
+      jwtMalformed: 'JWT格式错误，请重新登录!',
+      invalidToken: 'JWT无效，请重新登录!',
     },
     error: {
       USER_HAS_EXIST: '用户已存在！',
