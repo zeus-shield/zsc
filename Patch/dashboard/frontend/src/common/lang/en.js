@@ -117,6 +117,10 @@ const en = {
         contact: 'Contact'
       },
       policy: {
+        startTime: {
+          title: 'Start Time',
+          placeholder: 'Please select the date'
+        },
       }
     }
   },
