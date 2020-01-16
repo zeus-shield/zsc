@@ -9,6 +9,9 @@
                 <span>{{langSet.login.title}}</span>
               </div>
             </el-form-item> 
+            <el-form-item prop="password">
+              <el-input v-model="form.password" prefix-icon="iconfont if-password" :placeholder="langSet.login.password" show-password @input="inputChange"></el-input>
+            </el-form-item>
             <el-form-item>
               <el-button class="login-form-button" type="primary" :disabled="buttonSubmitDisabled" @click="submitForm('form')">{{langSet.login.submit}}</el-button>
             </el-form-item>
@@ -113,8 +116,8 @@ export default {
       },
       rules: {
         account: [
-          // { required: true, message: '??????/????', trigger: 'blur' },
-          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
+          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
+          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
           // { validator: validateAccount, trigger: ['blur', 'change'] },
           { validator: validateAccount, trigger: 'blur' }
         ],
