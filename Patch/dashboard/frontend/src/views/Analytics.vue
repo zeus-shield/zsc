@@ -176,8 +176,8 @@ export default {
       this.chartPie = echarts.init(document.getElementById('chartPie'));
       let option = {
         title: {
-          text: utils.storage.cookie.get('lang') === 'en' ? 'Insurance ranking' : '险种热度排行榜',
-          subtext: utils.storage.cookie.get('lang') === 'en' ? '(TOP10)' : '（排列前十名的险种）',
+          text: utils.storage.cookie.get('lang') === 'en' ? 'Insurance ranking' : '???????',
+          subtext: utils.storage.cookie.get('lang') === 'en' ? '(TOP10)' : '(????????)',
           x: 'center',
           textStyle: {
             color: '#444',
@@ -196,7 +196,7 @@ export default {
         },
         series: [
           {
-            name: utils.storage.cookie.get('lang') === 'en' ? 'Policy: ' : '险种 :',
+            name: utils.storage.cookie.get('lang') === 'en' ? 'Policy: ' : '?? :',
             type: 'pie',
             radius: '55%',
             center: ['50%', '60%'],
@@ -220,8 +220,8 @@ export default {
       }
       let option = {
         title: {
-          text: utils.storage.cookie.get('lang') === 'en' ? 'Company Ranking' : '公司热度排行榜',
-          subtext: utils.storage.cookie.get('lang') === 'en' ? '(TOP10)' : '（排列前十名的公司）',
+          text: utils.storage.cookie.get('lang') === 'en' ? 'Company Ranking' : '???????',
+          subtext: utils.storage.cookie.get('lang') === 'en' ? '(TOP10)' : '(????????)',
           x: 'center',
           textStyle: {
             color: '#444',
@@ -246,6 +246,9 @@ export default {
           z: 10
         },
         yAxis: {
+          axisLine: {
+            show: false
+          },
         },
         dataZoom: [
           {
