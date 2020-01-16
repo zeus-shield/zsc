@@ -37,9 +37,9 @@
 // .tab:hover .tab-icon.car {
 //   background-position: -20px 0px;
 // }
-.tab-icon.travel {
-  background-position: 0px -18px;
-}
+// .tab-icon.travel {
+//   background-position: 0px -18px;
+// }
 .tab:hover .tab-icon.travel {
   background-position: -20px -18px;
 }
