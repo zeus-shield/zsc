@@ -155,6 +155,9 @@
 .el-tabs__item:hover {
   color: #f91;
 }
+.el-tabs--border-card > .el-tabs__header .el-tabs__item {
+  color: #444;
+}
 .utils-alert { 
   width: 280px;
 }
