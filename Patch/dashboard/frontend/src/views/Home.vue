@@ -138,6 +138,8 @@ export default {
   // },
   data() {
     return {
+      lang: '',
+      resizeFlag: null,
     };
   },
   // props: {
