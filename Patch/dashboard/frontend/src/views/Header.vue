@@ -131,5 +131,9 @@ export default {
     handleSignUp() {
       this.$router.push({name: 'signUp'});
     },
+    switchLanguage(lang) {
+      this.switchLang({lang: lang, vm: this});
+    }
+  }
 };
 </script>
