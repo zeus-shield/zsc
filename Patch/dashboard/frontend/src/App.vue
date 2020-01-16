@@ -158,6 +158,9 @@
 .el-tabs--border-card > .el-tabs__header .el-tabs__item {
   color: #444;
 }
+.el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active {
+  color: #f91;
+}
 .utils-alert { 
   width: 280px;
 }
