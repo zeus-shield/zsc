@@ -117,6 +117,9 @@ const en = {
         contact: 'Contact'
       },
       policy: {
+        title: 'Policy Information',
+        amount: 'Amount',
+        renewal: 'Eenewal',
         startTime: {
           title: 'Start Time',
           placeholder: 'Please select the date'
