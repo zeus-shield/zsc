@@ -17,8 +17,12 @@
   font-size: 0.875rem;
   color: #444;
 }
-.tab-company:hover {
-  color: #f91;
+.button {
+  font-size: 0.875rem;
+  color: #fff;
+  // border-color: #e76d0c #e15500 #e15500;
+  // background-color: #ec7211;
+  // background-image: linear-gradient(180deg,#f67c1b 0,#e15500);
 }
 // .tab {
 //   display: flex;
