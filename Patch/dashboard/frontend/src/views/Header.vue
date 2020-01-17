@@ -95,6 +95,9 @@ export default {
     return {
       user: utils.storage.cookie.get('login_account'),
       login: utils.storage.cookie.get('login_token') !== null && utils.storage.cookie.get('login_account') !== null,
+
+      routes: [
+      ],
     };
   },
   // props: ['activeIndex'],
