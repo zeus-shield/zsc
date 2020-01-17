@@ -61,6 +61,11 @@ function _onError(type, error) {
     throw error;
   }
 
+  let bind;
+  if (type === 'HTTPS') {
+  } else {
+  }
+
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
