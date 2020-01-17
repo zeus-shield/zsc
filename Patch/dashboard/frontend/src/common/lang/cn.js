@@ -218,6 +218,9 @@ const cn = {
       jwtExpires: 'JWT已过期，请重新登录!',
       jwtMalformed: 'JWT格式错误，请重新登录!',
       invalidToken: 'JWT无效，请重新登录!',
+      googleAuthNone: '请先设置谷歌认证!',
+      googleAuthSetted: '已设置过谷歌认证!',
+      googleAuthErr: '谷歌认证码错误!',
     },
     error: {
       USER_HAS_EXIST: '用户已存在！',
