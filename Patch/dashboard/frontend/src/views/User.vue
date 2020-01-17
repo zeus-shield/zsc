@@ -80,12 +80,14 @@ export default {
   },
   mounted() {
     console.log('%c[User]mounted()', `color:${this.logColor}`);
+    let activeIndex = '1';
   },
   destroyed() {
     console.log('%c[User]destroyed()', `color:${this.logColor}`);
   },
   updated() {
     console.log('%c[User]updated()', `color:${this.logColor}`);
+    let activeIndex = '1';
   beforeRouteEnter(to, from, next) {
     console.log('%c[User]beforeRouteEnter(\"%s\" => \"%s\")', 'color:black', from.fullPath, to.fullPath);
     next(vm => {
