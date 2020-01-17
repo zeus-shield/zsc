@@ -103,6 +103,12 @@ export default {
   updated() {
     console.log('%c[UserAside]updated()', `color:${this.logColor}`);
   },
+  beforeRouteEnter(to, from, next) {
+    console.log('%c[UserAside]beforeRouteEnter(\"%s\" => \"%s\")', 'color:black', from.fullPath, to.fullPath);
+    next(vm => {
+      console.log('%c[UserAside]beforeRouteEnter(\"%s\" => \"%s\") next', `color:${vm.logColor}`, from.fullPath, to.fullPath);
+    });
+  },
   beforeRouteUpdate(to, from, next) {
     console.log('%c[UserAside]beforeRouteUpdate(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
     next();
