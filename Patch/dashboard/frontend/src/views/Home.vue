@@ -174,6 +174,9 @@ export default {
     this.updateHandle();
 
     this.$nextTick(() => {
+      if (this.originalSwiper === true) {
+      } else {
+      }
     });
   },
   destroyed() {
