@@ -63,6 +63,9 @@ function _onError(type, error) {
 
   let bind;
   if (type === 'HTTPS') {
+    bind = typeof httpsPort === 'string'
+      ? 'Pipe ' + httpsPort
+      : 'Port ' + httpsPort;
   } else {
   }
 
