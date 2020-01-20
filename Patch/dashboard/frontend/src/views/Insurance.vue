@@ -24,6 +24,10 @@
   // background-color: #ec7211;
   // background-image: linear-gradient(180deg,#f67c1b 0,#e15500);
 }
+.search {
+  font-size: 0.875rem;
+  width: 100%;
+}
 // .tab {
 //   display: flex;
 //   justify-content: center;
