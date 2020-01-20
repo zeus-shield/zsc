@@ -167,6 +167,9 @@
 .el-tabs__active-bar {
   background-color: #f91;
 }
+.el-tabs--left .el-tabs__active-bar.is-left, .el-tabs--left .el-tabs__active-bar.is-right, .el-tabs--right .el-tabs__active-bar.is-left, .el-tabs--right .el-tabs__active-bar.is-right {
+  width: 2px;
+}
 .utils-alert { 
   width: 280px;
 }
