@@ -124,6 +124,8 @@ const en = {
           title: 'Start Time',
           placeholder: 'Please select the date'
         },
+        period: 'Period',
+        description: 'Description'
       }
     }
   },
