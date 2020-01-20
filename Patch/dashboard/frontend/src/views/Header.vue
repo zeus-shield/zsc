@@ -97,6 +97,9 @@ export default {
       login: utils.storage.cookie.get('login_token') !== null && utils.storage.cookie.get('login_account') !== null,
 
       routes: [
+        {id: '1', name: 'home'},
+        {id: '21', name: 'insurance'},
+        {id: '22', name: 'analytics'},
       ],
 
       // TODO
