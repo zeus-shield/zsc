@@ -81,6 +81,10 @@ export default {
   mounted() {
     console.log('%c[User]mounted()', `color:${this.logColor}`);
     let activeIndex = '1';
+    if (window.location.href.indexOf('/policy') !== -1) {
+    } else if (window.location.href.indexOf('/support') !== -1) {
+    } else if (window.location.href.indexOf('/questions') !== -1) {
+    } else {}
   },
   destroyed() {
     console.log('%c[User]destroyed()', `color:${this.logColor}`);
