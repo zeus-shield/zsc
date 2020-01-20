@@ -37,6 +37,8 @@ const company = {
     };
 
     try {
+      let res = await instance.post('company/add', null, config);
+      return res.data;
     } catch (err) {
     }
   },
