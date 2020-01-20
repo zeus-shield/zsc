@@ -221,6 +221,12 @@ const cn = {
       googleAuthNone: '请先设置谷歌认证!',
       googleAuthSetted: '已设置过谷歌认证!',
       googleAuthErr: '谷歌认证码错误!',
+
+      companyRemove: '该保险公司记录将永久被删除, 是否继续?',
+      companyCategoryExist: '公司险种记录存在, 是否继续?',
+      companyCategoryRemove: '公司险种记录将永久被删除, 是否继续?',
+
+      insuranceRemove: '该保险产品记录将永久被删除, 是否继续?'
     },
     error: {
       USER_HAS_EXIST: '用户已存在！',
