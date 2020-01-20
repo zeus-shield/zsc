@@ -176,6 +176,11 @@ export default {
     this.$nextTick(() => {
       if (this.originalSwiper === true) {
       } else {
+        // for vue-awesome-swiper thumbs
+        // const swiperTop = this.$refs.swiperTop.swiper;
+        // const swiperThumbs = this.$refs.swiperThumbs.swiper;
+        // swiperTop.controller.control = swiperThumbs;
+        // swiperThumbs.controller.control = swiperTop;
       }
     });
   },
