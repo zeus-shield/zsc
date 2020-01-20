@@ -119,6 +119,10 @@ export default {
       }
     };
     return {
+      form: {
+      },
+      rules: {
+      }
     };
   },
   // props: {
