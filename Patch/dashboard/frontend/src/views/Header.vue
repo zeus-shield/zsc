@@ -98,6 +98,9 @@ export default {
 
       routes: [
       ],
+
+      // TODO
+      admin: false
     };
   },
   // props: ['activeIndex'],
