@@ -231,6 +231,8 @@ const cn = {
     error: {
       USER_HAS_EXIST: '用户已存在！',
       USER_NOT_EXIST: '用户不存在!',
+      USER_IS_ACTIVE: '用户已激活!',
+      USER_PASSWORD_WRONG: '登录密码不正确!',
     },
 
   },
