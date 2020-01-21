@@ -270,6 +270,8 @@ export default {
             itemStyle: {
               normal: {color: 'rgba(0,0,0,0.05)'}
             },
+            barGap: '-100%',
+            barCategoryGap: '40%',
           },
           {
             type: 'bar',
