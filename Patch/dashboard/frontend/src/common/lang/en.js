@@ -206,7 +206,8 @@ const en = {
   message: {
     info: {},
     warning: {
-      reLogin: 'User not logged in or token expires, please re-login!',
+      reLogin: 'User do not login, please login at first!',
+      jwtExpires: 'JWT expires, please re-login!',
     },
     error: {},
   },
