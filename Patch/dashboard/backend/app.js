@@ -67,6 +67,9 @@ function _onError(type, error) {
       ? 'Pipe ' + httpsPort
       : 'Port ' + httpsPort;
   } else {
+    bind = typeof httpPort === 'string'
+      ? 'Pipe ' + httpPort
+      : 'Port ' + httpPort;
   }
 
   // handle specific listen errors with friendly messages
