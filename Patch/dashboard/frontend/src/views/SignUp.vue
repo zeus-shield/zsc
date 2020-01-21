@@ -120,6 +120,11 @@ export default {
     };
     return {
       form: {
+        phoneAccount: '',
+        emailAccount: '',
+        code: '',
+        password: '',
+        password2: ''
       },
       rules: {
       }
