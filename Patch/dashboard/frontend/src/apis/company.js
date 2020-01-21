@@ -40,6 +40,11 @@ const company = {
       let res = await instance.post('company/add', null, config);
       return res.data;
     } catch (err) {
+      if (err.response !== undefined) {
+        throw err.response.data;
+      } else {
+        throw err.message;
+      }
     }
   },
 
