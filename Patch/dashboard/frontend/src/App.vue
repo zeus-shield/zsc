@@ -242,6 +242,10 @@ export default {
   destroyed() {
     console.log('%c[App]destroyed()', `color:${this.logColor}`);
   },
+  updated() {
+    if (this.activeIndex !== activeIndex) {
+      this.activeIndex = activeIndex;
+    }
   },
   methods: {
     ...mapActions('device', [
