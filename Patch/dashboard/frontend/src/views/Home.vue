@@ -1,6 +1,18 @@
 <template>
   <div class="home">
+    <div class="row">
     Home
+    </div>
+
+    <div class="row">
+    </div>
+
+    <div class="row">
+    </div>
+
+    <div class="row">
+    </div>
+
   </div>
 </template>
 
