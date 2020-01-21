@@ -267,6 +267,9 @@ export default {
           {
             // For shadow
             type: 'bar',
+            itemStyle: {
+              normal: {color: 'rgba(0,0,0,0.05)'}
+            },
           },
           {
             type: 'bar',
