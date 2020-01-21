@@ -100,6 +100,8 @@ export default {
         {id: '1', name: 'home'},
         {id: '21', name: 'insurance'},
         {id: '22', name: 'analytics'},
+        {id: '4', name: 'faq'},
+        {id: '5', name: 'login'},
       ],
 
       // TODO
