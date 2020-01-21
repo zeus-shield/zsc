@@ -82,9 +82,13 @@ export default {
     console.log('%c[User]mounted()', `color:${this.logColor}`);
     let activeIndex = '1';
     if (window.location.href.indexOf('/policy') !== -1) {
+      activeIndex = '2';
     } else if (window.location.href.indexOf('/support') !== -1) {
+      activeIndex = '3';
     } else if (window.location.href.indexOf('/questions') !== -1) {
+      activeIndex = '4';
     } else {}
+    this.activeIndex = activeIndex;
   },
   destroyed() {
     console.log('%c[User]destroyed()', `color:${this.logColor}`);
