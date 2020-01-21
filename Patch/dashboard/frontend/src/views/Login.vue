@@ -10,6 +10,12 @@
               </div>
             </el-form-item> 
             <el-form-item v-if="errorMessage !== ''">
+              <el-alert class = "login-alert"
+                :title="langSet.message.error[errorMessage]"
+                type="error"
+                :closable="false"
+                show-icon>
+              </el-alert>
             </el-form-item>
             <el-form-item prop="account">
               <el-input v-model="form.account" prefix-icon="iconfont if-account" :placeholder="langSet.login.account" @input="inputChange"></el-input>
