@@ -120,6 +120,10 @@ export default {
   methods: {
     // onSelect(key, keyPath) {
     onSelect(key) {
+      // console.log(key, keyPath);
+      let route = this.routes.find(route => route.id === key);
+      let name = (undefined === route) ? '*' : route.name;
+      this.$router.push({name: name});
     }
   }
 };
