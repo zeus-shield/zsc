@@ -233,6 +233,8 @@ const cn = {
       USER_NOT_EXIST: '用户不存在!',
       USER_IS_ACTIVE: '用户已激活!',
       USER_PASSWORD_WRONG: '登录密码不正确!',
+      USER_CODE_WRONG: '验证码不正确！',
+      USER_CODE_TIMEOUT: '验证码超时！',
     },
 
   },
