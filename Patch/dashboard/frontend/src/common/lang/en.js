@@ -208,6 +208,8 @@ const en = {
     warning: {
       reLogin: 'User do not login, please login at first!',
       jwtExpires: 'JWT expires, please re-login!',
+      jwtMalformed: 'JWT malformed, please re-login!',
+      invalidToken: 'JWT invalid, please re-login!',
     },
     error: {},
   },
