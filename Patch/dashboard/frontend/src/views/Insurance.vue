@@ -69,6 +69,9 @@
 .tab-icon.baggage {
   background-position: 0px -72px;
 }
+.tab:hover .tab-icon.baggage {
+  background-position: -20px -72px;
+}
 </style>
 
 <script>
