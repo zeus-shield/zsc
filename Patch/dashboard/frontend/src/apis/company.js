@@ -52,6 +52,9 @@ const company = {
   },
 
   async removeCategory(token, name, category) {
+    let data = new URLSearchParams();
+    data.append('name', name);
+    data.append('category', category);
   },
 
   async update(token, name, newName, newCategoryNames) {
