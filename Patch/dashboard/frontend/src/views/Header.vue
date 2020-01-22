@@ -102,6 +102,10 @@ export default {
         {id: '22', name: 'analytics'},
         {id: '4', name: 'faq'},
         {id: '5', name: 'login'},
+        {id: '6', name: 'signUp'},
+        {id: '71', name: 'userDetail'},
+
+        {id: '99', name: 'adminUser'}
       ],
 
       // TODO
