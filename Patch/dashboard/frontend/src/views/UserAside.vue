@@ -1,4 +1,8 @@
 <template>
+  <div class="user-aside">
+    <div class="menu-container">
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
