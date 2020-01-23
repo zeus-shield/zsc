@@ -15,6 +15,10 @@
     </div>
 
     <div class="row">
+      <div class="card-slot">
+        <el-row :gutter="10">
+        </el-row>
+      </div>
     </div>
 
   </div>
