@@ -235,6 +235,8 @@ const cn = {
       USER_PASSWORD_WRONG: '登录密码不正确!',
       USER_CODE_WRONG: '验证码不正确！',
       USER_CODE_TIMEOUT: '验证码超时！',
+      USER_GOOGLE_CODE_NONE: '请输入谷歌验证码',
+      USER_GOOGLE_CODE_LEN_ERR: '请输入6位数字',
     },
 
   },
