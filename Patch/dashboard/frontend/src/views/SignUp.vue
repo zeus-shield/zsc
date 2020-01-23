@@ -119,6 +119,9 @@ export default {
       }
     };
     return {
+      errorMessage: '',
+      loading: false,
+      tabIndex: '0',
       form: {
         phoneAccount: '',
         emailAccount: '',
