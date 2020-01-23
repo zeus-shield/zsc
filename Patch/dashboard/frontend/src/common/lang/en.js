@@ -210,6 +210,8 @@ const en = {
       jwtExpires: 'JWT expires, please re-login!',
       jwtMalformed: 'JWT malformed, please re-login!',
       invalidToken: 'JWT invalid, please re-login!',
+      googleAuthNone: 'Please set Google authenticator at first!',
+      googleAuthSetted: 'Google authenticator has been setted!',
     },
     error: {},
   },
