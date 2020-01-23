@@ -3,7 +3,13 @@
 
     <el-tabs v-loading.fullscreen.lock="loading" :element-loading-text="langSet.component.loading.insurance" tab-position="left" v-model="companyActiveName" @tab-click="handleCompanyClick">
 
-      <el-tab-pane :key="company.name" v-for="(company, index) in cacheData.companies" :label="company.name" :name="company.name">
+      <el-tab-pane :key="company.name" v-for="(company, index) in cacheData.companies" :name="company.name">
+        <div class="tab-company" slot="label">
+          <span>{{ company.name }}</span>
+        </div>
+      </el-tab-pane>
+
+      <el-tab-pane>
       </el-tab-pane>
 
     </el-tabs>
