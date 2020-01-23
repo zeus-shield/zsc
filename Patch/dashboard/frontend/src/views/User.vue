@@ -96,6 +96,10 @@ export default {
   updated() {
     console.log('%c[User]updated()', `color:${this.logColor}`);
     let activeIndex = '1';
+    if (window.location.href.indexOf('/policy') !== -1) {
+    } else if (window.location.href.indexOf('/support') !== -1) {
+    } else if (window.location.href.indexOf('/questions') !== -1) {
+    } else {}
   beforeRouteEnter(to, from, next) {
     console.log('%c[User]beforeRouteEnter(\"%s\" => \"%s\")', 'color:black', from.fullPath, to.fullPath);
     next(vm => {
