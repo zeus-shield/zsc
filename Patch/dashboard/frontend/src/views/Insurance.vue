@@ -60,9 +60,9 @@
 // .tab:hover .tab-icon.travel {
 //   background-position: -20px -18px;
 // }
-.tab-icon.crash {
-  background-position: 0px -36px;
-}
+// .tab-icon.crash {
+//   background-position: 0px -36px;
+// }
 .tab:hover .tab-icon.crash {
   background-position: -20px -36px;
 }
