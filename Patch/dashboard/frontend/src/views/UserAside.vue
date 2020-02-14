@@ -1,6 +1,16 @@
 <template>
   <div class="user-aside">
     <div class="menu-container">
+      <el-menu
+        class="menu"
+        :default-active="activeIndex"
+        background-color=""
+        text-color="#777"
+        active-text-color="#f91"
+        @select="onSelect"
+        @open=""
+        @close="">
+      </el-menu>
     </div>
   </div>
 </template>
