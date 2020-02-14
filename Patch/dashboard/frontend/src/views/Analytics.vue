@@ -279,6 +279,8 @@ export default {
             type: 'bar',
             itemStyle: {
               normal: {
+                color: new echarts.graphic.LinearGradient(
+                )
               },
               emphasis: {
               }
