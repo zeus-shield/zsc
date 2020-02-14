@@ -143,6 +143,10 @@ export default {
     console.log('%c[Header]destroyed()', `color:${this.logColor}`);
   },
   updated() {
+    console.log('%c[Header]updated()', `color:${this.logColor}`);
+
+    // TODO
+    this.checkAdmin();
   },
   methods: {
     },
