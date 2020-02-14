@@ -243,6 +243,8 @@ export default {
     console.log('%c[App]destroyed()', `color:${this.logColor}`);
   },
   updated() {
+    console.log('%c[App]updated()', `color:${this.logColor}`);
+    let activeIndex = '0';
     if (this.activeIndex !== activeIndex) {
       this.activeIndex = activeIndex;
     }
