@@ -12,6 +12,10 @@
     </div>
 
     <div class="row">
+      <div class="text-slot">
+        <el-row :gutter="0">
+        </el-row>
+      </div>
     </div>
 
     <div class="row">
