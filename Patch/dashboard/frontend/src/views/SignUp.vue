@@ -122,6 +122,8 @@ export default {
       errorMessage: '',
       loading: false,
       tabIndex: '0',
+      buttonCodeName: '',
+      buttonCodeDisabled: true,
       form: {
         phoneAccount: '',
         emailAccount: '',
