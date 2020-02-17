@@ -124,6 +124,8 @@ export default {
       tabIndex: '0',
       buttonCodeName: '',
       buttonCodeDisabled: true,
+      codeStatus: 'none', // none/getting/timeout
+      buttonSubmitDisabled: true,
       form: {
         phoneAccount: '',
         emailAccount: '',
