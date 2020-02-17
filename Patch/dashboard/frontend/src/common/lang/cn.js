@@ -237,6 +237,8 @@ const cn = {
       USER_CODE_TIMEOUT: '验证码超时！',
       USER_GOOGLE_CODE_NONE: '请输入谷歌验证码',
       USER_GOOGLE_CODE_LEN_ERR: '请输入6位数字',
+      USER_GOOGLE_AUTH_ERR: '谷歌认证码错误',
+      USER_GOOGLE_AUTH_NOT_SET: '谷歌认证未开启',
     },
 
   },
