@@ -7,6 +7,9 @@
     <div class="row">
       <div class="card-slot">
         <el-row :gutter="10">
+          <div class="header">{{ langSet.home.slot2.header }}</div>
+          <el-col v-for="(item, index) in 4" :key="item" :xs="{span: 24, offset: 0}" :sm="{span: 24, offset: 0}" :md="{span: 24, offset: 0}" :lg="{span: 6, offset: 0}">
+          </el-col>
         </el-row>
       </div>
     </div>
