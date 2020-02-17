@@ -10,6 +10,11 @@
       </el-tab-pane>
 
       <el-tab-pane>
+        <el-button class="button" slot="label" type="primary" size="medium" icon="el-icon-search" @click="handleSearchClick()">ËÑË÷</el-button>
+        
+        <el-input class="search" :autofocus="false" :placeholder="langSet.market.operation.title[1]" v-model="search">
+          <i slot="prefix" class="el-icon-search el-input__icon"></i>
+        </el-input>
       </el-tab-pane>
 
     </el-tabs>
