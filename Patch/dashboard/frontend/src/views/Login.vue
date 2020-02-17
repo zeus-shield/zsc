@@ -248,6 +248,11 @@ export default {
           vm.errorMessage = '';
           user.login(vm.form.account, vm.form.password, vm.googleAuthForm.code).then(data => {
           }).catch(errorData => {
+            // console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, errorData);
+            if (errorData.errorMessage === 'USER_TOTP_VERIFY_ERR') {
+            } else if (errorData.errorMessage === 'USER_TOTP_NOT_SET') {
+            } else {
+            }
           });
         } else {
           // console.log('error submit!!');
