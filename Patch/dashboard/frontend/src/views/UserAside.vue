@@ -10,6 +10,10 @@
         @select="onSelect"
         @open=""
         @close="">
+        <div class="group">
+          <i class="el-icon-user icon"></i>
+          <span>{{ langSet.user.aside.slot[0].title }}</span>
+        </div>
       </el-menu>
     </div>
   </div>
