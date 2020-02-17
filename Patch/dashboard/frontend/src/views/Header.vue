@@ -149,6 +149,9 @@ export default {
     this.checkAdmin();
   },
   methods: {
+    ...mapActions('lang', [
+      'switchLang'
+    ]),
     },
     handleLogin() {
       this.$router.push({name: 'login'});
