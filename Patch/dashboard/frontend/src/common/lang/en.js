@@ -212,6 +212,9 @@ const en = {
       invalidToken: 'JWT invalid, please re-login!',
       googleAuthNone: 'Please set Google authenticator at first!',
       googleAuthSetted: 'Google authenticator has been setted!',
+      googleAuthErr: 'Google authenticator code error!',
+
+      companyRemove: 'Remove the company records permanently, continue?',
     },
     error: {},
   },
