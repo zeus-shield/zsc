@@ -147,6 +147,10 @@ export default {
 
     // TODO
     this.checkAdmin();
+
+    // login
+    if (!this.login) {
+    }
   },
   methods: {
     ...mapActions('lang', [
