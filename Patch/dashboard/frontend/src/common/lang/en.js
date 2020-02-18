@@ -215,6 +215,10 @@ const en = {
       googleAuthErr: 'Google authenticator code error!',
 
       companyRemove: 'Remove the company records permanently, continue?',
+      companyCategoryExist: 'Company category exist, continue?',
+      companyCategoryRemove: 'Remove the company category records permanently, continue?',
+
+      insuranceRemove: 'Remove the insurance records permanently, continue?'
     },
     error: {},
   },
