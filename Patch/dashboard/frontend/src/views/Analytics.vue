@@ -289,6 +289,8 @@ export default {
                 )
               },
               emphasis: {
+                color: new echarts.graphic.LinearGradient(
+                )
               }
             },
             data: this.barData
