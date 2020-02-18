@@ -245,6 +245,11 @@ export default {
   updated() {
     console.log('%c[App]updated()', `color:${this.logColor}`);
     let activeIndex = '0';
+    if (window.location.href.indexOf('/home') !== -1) {
+    } else if (window.location.href.indexOf('/insurance') !== -1) {
+    } else {
+    }
+
     if (this.activeIndex !== activeIndex) {
       this.activeIndex = activeIndex;
     }
