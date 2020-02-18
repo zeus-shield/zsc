@@ -14,6 +14,9 @@
           <i class="el-icon-user icon"></i>
           <span>{{ langSet.user.aside.slot[0].title }}</span>
         </div>
+        <el-menu-item class="item" index="1">
+          <span slot="title">{{ langSet.user.aside.slot[0].item[0] }}</span>
+        </el-menu-item>
       </el-menu>
     </div>
   </div>
