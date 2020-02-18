@@ -75,6 +75,23 @@ const company = {
     let data = new URLSearchParams();
     data.append('name', name);
     data.append('category', category);
+
+    let config = {
+      // req.headers
+      headers: {
+        'token': token
+      }
+
+      // req.query
+      // `params` are the URL parameters to be sent with the request
+      // Must be a plain object or a URLSearchParams object
+      // params: data
+
+      // req.body
+      // Only applicable for request methods 'PUT', 'POST', and 'PATCH'
+      // - Node only: JSON Object
+      // data: querystring.parse(data.toString())
+    };
   },
 
   async update(token, name, newName, newCategoryNames) {
