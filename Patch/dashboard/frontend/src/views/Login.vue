@@ -250,8 +250,11 @@ export default {
           }).catch(errorData => {
             // console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, errorData);
             if (errorData.errorMessage === 'USER_TOTP_VERIFY_ERR') {
+              vm.errorMessage = 'USER_GOOGLE_AUTH_ERR';
             } else if (errorData.errorMessage === 'USER_TOTP_NOT_SET') {
+              vm.errorMessage = 'USER_GOOGLE_AUTH_NOT_SET';
             } else {
+              vm.errorMessage = errorData.errorMessage;
             }
           });
         } else {
