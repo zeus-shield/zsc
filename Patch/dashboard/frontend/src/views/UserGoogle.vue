@@ -5,6 +5,8 @@
 .user-google-mobile {
   padding: 1.25rem; // 20px
 }
+.user-google {
+}
 </style>
 
 <script>
