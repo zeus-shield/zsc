@@ -11,6 +11,10 @@
           <el-col v-for="(item, index) in 4" :key="item" :xs="{span: 24, offset: 0}" :sm="{span: 24, offset: 0}" :md="{span: 24, offset: 0}" :lg="{span: 6, offset: 0}">
             <el-card class="card" shadow="never" :body-style="{ padding: '1.25rem' }">
               <img class="img" :src="getImgUrl('card', 1, item)">
+              <span class="title">{{ langSet.home.slot2.title[item-1] }}</span>
+              <div>
+                <span class="content">{{ langSet.home.slot2.content[item-1] }}</span>
+              </div>
             </el-card>
           </el-col>
         </el-row>
