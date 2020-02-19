@@ -9,6 +9,8 @@
   font-size: 0.875rem; // 14px;
   color: #444;
 }
+.interval-md {
+}
 </style>
 
 <script>
