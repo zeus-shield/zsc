@@ -290,6 +290,9 @@ export default {
               },
               emphasis: {
                 color: new echarts.graphic.LinearGradient(
+                  0, 0, 0, 1,
+                  [
+                  ]
                 )
               }
             },
