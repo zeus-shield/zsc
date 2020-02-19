@@ -90,10 +90,10 @@
 import InsurancePingAnBrief from '@/views/templates/insurances/pingan/brief';
 import InsurancePICCBrief from '@/views/templates/insurances/picc/brief';
 
-import { mapState, mapGetters } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 
 import utils from '@/common/utils';
-import APIs from '@/apis';
+// import APIs from '@/apis';
 
 export default {
   name: 'Insurance',
