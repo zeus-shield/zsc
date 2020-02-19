@@ -151,6 +151,9 @@ export default {
     // login
     if (!this.login) {
     }
+
+    this.user = utils.storage.cookie.get('login_account');
+    this.login = utils.storage.cookie.get('login_token') !== null && utils.storage.cookie.get('login_account') !== null;
   },
   methods: {
     ...mapActions('lang', [
