@@ -135,9 +135,13 @@ export default {
       },
       rules: {
         phoneAccount: [
-          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
-          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          // { required: true, message: '??????/????', trigger: 'blur' },
+          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
           { validator: validatePhoneAccount, trigger: 'blur' }
+        ],
+        emailAccount: [
+        ],
+        code: [
         ],
       }
     };
