@@ -10,5 +10,9 @@ export default {
   name: 'UserQuestions',
   // components: {
   // },
+  data() {
+    return {
+    };
+  },
 };
 </script>
