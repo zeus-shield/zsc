@@ -6,6 +6,11 @@
 }
 .insurance .hot {
 }
+.insurance .col {
+}
+
+.insurance .thumb .col {
+}
 </style>
 
 <script>
