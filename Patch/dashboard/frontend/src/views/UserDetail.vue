@@ -11,6 +11,11 @@
 }
 .interval-md {
 }
+.interval-lg {
+}
+.account .header,
+.security .header {
+}
 </style>
 
 <script>
