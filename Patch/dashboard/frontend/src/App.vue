@@ -251,6 +251,7 @@ export default {
     if (window.location.href.indexOf('/home') !== -1) {
       activeIndex = '1';
     } else if (window.location.href.indexOf('/insurance') !== -1) {
+    } else if (window.location.href.indexOf('/analytics') !== -1) {
     } else {
     }
 
