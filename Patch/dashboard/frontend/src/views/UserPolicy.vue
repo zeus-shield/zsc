@@ -9,4 +9,8 @@
   font-size: 0.875rem; // 14px;
   color: #444;
 }
+.header {
+}
+.header .sprite {
+}
 </style>
