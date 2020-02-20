@@ -24,6 +24,10 @@
     <div class="row">
       <div class="text-slot">
         <el-row :gutter="0">
+          <el-card class="card" shadow="never">
+            <el-row>
+            </el-row>
+          </el-card>
         </el-row>
       </div>
     </div>
