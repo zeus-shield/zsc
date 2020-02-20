@@ -235,6 +235,9 @@ export default {
   beforeCreate() {
   },
   created() {
+    if (process.env.NODE_ENV !== 'production') {
+      this.updateDevice();
+    }
   },
   mounted() {
     console.log('%c[App]mounted()', `color:${this.logColor}`);
