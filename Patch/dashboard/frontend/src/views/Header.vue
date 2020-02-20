@@ -150,6 +150,9 @@ export default {
 
     // login
     if (!this.login) {
+      if (this.activeIndex === '5') {
+      } else {
+      }
     }
 
     this.user = utils.storage.cookie.get('login_account');
