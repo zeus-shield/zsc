@@ -143,6 +143,8 @@ export default {
         ],
         code: [
         ],
+        password: [
+        ],
       }
     };
   },
