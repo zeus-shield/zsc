@@ -20,6 +20,7 @@
         <el-menu-item class="item" index="2">
           <span slot="title">{{ langSet.user.aside.slot[0].item[1] }}</span>
         </el-menu-item>
+        <div class="bottom-padding"></div>
       </el-menu>
     </div>
   </div>
