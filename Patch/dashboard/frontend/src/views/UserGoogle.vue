@@ -7,6 +7,10 @@
 }
 .user-google {
 }
+.interval-md {
+}
+.interval-lg {
+}
 </style>
 
 <script>
