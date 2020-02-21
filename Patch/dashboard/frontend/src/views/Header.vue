@@ -151,7 +151,9 @@ export default {
     // login
     if (!this.login) {
       if (this.activeIndex === '5') {
+        document.getElementsByClassName('header-login')[0].style = 'color: rgb(255, 208, 75); border-bottom-color: rgb(255, 208, 75)';
       } else {
+        document.getElementsByClassName('header-login')[0].style = '';
       }
     }
 
