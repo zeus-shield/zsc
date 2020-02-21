@@ -6,6 +6,8 @@
   padding: 1.25rem; // 20px
 }
 .user-google {
+  font-size: 0.875rem; // 14px;
+  color: #444;
 }
 .interval-md {
 }
