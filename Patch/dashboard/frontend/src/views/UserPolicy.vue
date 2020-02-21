@@ -13,4 +13,6 @@
 }
 .header .sprite {
 }
+.collapse {
+}
 </style>
