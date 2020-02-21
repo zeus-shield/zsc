@@ -220,7 +220,10 @@ const en = {
 
       insuranceRemove: 'Remove the insurance records permanently, continue?'
     },
-    error: {},
+    error: {
+      USER_HAS_EXIST: 'User has already existed!',
+      USER_NOT_EXIST: 'User does not exist!',
+    }
   },
   component: {
     button: {
