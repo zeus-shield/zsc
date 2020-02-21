@@ -11,6 +11,8 @@
 
 .insurance .img .col {
 }
+.insurance .img .col .content {
+}
 </style>
 
 <script>
