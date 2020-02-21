@@ -26,6 +26,10 @@
         <el-row :gutter="0">
           <el-card class="card" shadow="never">
             <el-row>
+              <div class="title">{{ langSet.home.slot3.title }}</div>
+              <el-col :offset="1" :span="22">
+                <p class="content">{{ langSet.home.slot3.content }}</p>
+              </el-col>
             </el-row>
           </el-card>
         </el-row>
