@@ -44,6 +44,7 @@ const AdminCompanyEdit = resolve => require.ensure([], () => resolve(require('@/
 const AdminInsurance = resolve => require.ensure([], () => resolve(require('@/views/AdminInsurance')), 'lazy');
 const AdminInsuranceAdd = resolve => require.ensure([], () => resolve(require('@/views/AdminInsuranceAdd')), 'lazy');
 const AdminInsuranceEdit = resolve => require.ensure([], () => resolve(require('@/views/AdminInsuranceEdit')), 'lazy');
+const AdminSetting = resolve => require.ensure([], () => resolve(require('@/views/AdminSetting')), 'lazy');
 
 // const Test = resolve => require.ensure([], () => resolve(require('@/views/Test')), 'lazy');
 
@@ -244,6 +245,11 @@ let router = new Router({
             title: route.query.title,
             id: route.query.id
           })
+        },
+        {
+          path: '/admin/setting',
+          name: 'adminSetting',
+          component: AdminSetting
         }
       ]
     }
