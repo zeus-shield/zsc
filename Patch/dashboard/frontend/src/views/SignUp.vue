@@ -145,6 +145,8 @@ export default {
         ],
         password: [
         ],
+        password2: [
+        ]
       }
     };
   },
