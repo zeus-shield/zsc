@@ -52,7 +52,8 @@ const state = () => {
         list: 'black',
         add: 'black',
         edit: 'black'
-      }
+      },
+      setting: 'red'
     },
     notFound: 'black'
   };
