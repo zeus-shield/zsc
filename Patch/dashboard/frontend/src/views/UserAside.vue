@@ -21,6 +21,10 @@
           <span slot="title">{{ langSet.user.aside.slot[0].item[1] }}</span>
         </el-menu-item>
         <div class="bottom-padding"></div>
+        <div class="group">
+          <i class="el-icon-phone-outline icon"></i>
+          <span>{{ langSet.user.aside.slot[1].title }}</span>
+        </div>
       </el-menu>
     </div>
   </div>
