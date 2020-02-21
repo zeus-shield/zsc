@@ -237,7 +237,10 @@ export default {
           vm.loading = true;
           // 1. common callback case
           user.loginCommon(vm.form.account, vm.form.password, (err, data) => {
-          // });
+            if (err === 0 && data.status === 200 && data.errorCode === 0) {
+            } else {
+            }
+          });
         } else {
           // console.log('error submit!!');
           return false;
