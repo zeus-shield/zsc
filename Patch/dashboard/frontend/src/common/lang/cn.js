@@ -244,6 +244,8 @@ const cn = {
       COMPANY_CATEGORIES_NOT_EXIST: '该保险公司下险种不存在！',
       COMPANY_NOT_EXIST: '该保险公司不存在!',
 
+      INSURANCE_HAS_EXIST: '该保险产品已存在！',
+      INSURANCE_NOT_EXIST: '该保险产品不存在！',
   },
   component: {
     button: {
