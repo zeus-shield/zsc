@@ -74,6 +74,9 @@ const company = {
       let res = await instance.post('company/remove', data, config);
       return res.data;
     } catch (err) {
+      if (err.response !== undefined) {
+      } else {
+      }
     }
   },
 
