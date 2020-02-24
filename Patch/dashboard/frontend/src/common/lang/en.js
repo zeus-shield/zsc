@@ -223,6 +223,8 @@ const en = {
     error: {
       USER_HAS_EXIST: 'User has already existed!',
       USER_NOT_EXIST: 'User does not exist!',
+      USER_IS_ACTIVE: 'User is active!',
+      USER_IS_NOT_ACTIVE: 'User is not active!',
     }
   },
   component: {
