@@ -238,6 +238,10 @@ export default {
     if (process.env.NODE_ENV !== 'production') {
       this.updateDevice();
     }
+    window.addEventListener('hashchange', () => {
+      console.log('[app]hashchange');
+      // this.$router.go(0);
+    }, false);
   },
   mounted() {
     console.log('%c[App]mounted()', `color:${this.logColor}`);
