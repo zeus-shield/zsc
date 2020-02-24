@@ -18,6 +18,11 @@
 .account .header,
 .security .header {
 }
+.account .header .sprite,
+.security .header .sprite {
+}
+.account .tip {
+}
 </style>
 
 <script>
