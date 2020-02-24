@@ -71,9 +71,9 @@ const saveTOTP = async(req, res) => {
 };
 
 const updateTOTP = async(req, res) => {
-  debug('updateTOTP(%s, %s)', req.headers._id, req.headers.code);
+  debug('updateTOTP(%s, %s, %s)', req.headers._id, req.headers.code, req.body.on);
   try {
-    const result = await services.users.updateTOTP(req.headers._id, req.headers.code, req.body);
+    const result = await services.users.updateTOTP(req.headers._id, req.headers.code, req.body.on);
     res.sendOk(result);
   } catch (err) {
     res.sendErr(err);
@@ -87,7 +87,7 @@ const addPolicy = async(req, res) => {
     let policy = JSON.parse(req.body.policy);
     policy.insurance.id = mongoose.Types.ObjectId(policy.insurance.id);
 
-    const update = {$push: {policies: policy}, $set: {updatedAt: Date.now()}};
+    const update = {$push: {policies: policy}, $set: {updated_at: Date.now()}};
     const result = await services.users.update(req.body.id, update, null);
     if (!result) {
       throw createError('USER_NOT_EXIST');
@@ -120,6 +120,7 @@ const list = async(req, res) => {
   debug('list()');
   res.send('/users/list');
 };
+
 // const create = async (req, res) => {
 //   debug("create()");
 //   try {
