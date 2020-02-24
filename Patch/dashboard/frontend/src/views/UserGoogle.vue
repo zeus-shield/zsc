@@ -13,6 +13,10 @@
 }
 .interval-lg {
 }
+.header {
+}
+.header .sprite {
+}
 </style>
 
 <script>
