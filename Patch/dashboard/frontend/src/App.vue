@@ -252,10 +252,13 @@ export default {
   updated() {
     console.log('%c[App]updated()', `color:${this.logColor}`);
     let activeIndex = '0';
-    if (window.location.href.indexOf('/home') !== -1) {
+    if (window.location.href.indexOf('/admin') !== -1) {
+      activeIndex = '99';
+    } else if (window.location.href.indexOf('/home') !== -1) {
       activeIndex = '1';
     } else if (window.location.href.indexOf('/insurance') !== -1) {
     } else if (window.location.href.indexOf('/analytics') !== -1) {
+    } else if (window.location.href.indexOf('/whitePaper') !== -1) {
     } else {
     }
 
