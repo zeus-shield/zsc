@@ -10,7 +10,7 @@ const debug = require('debug')('backend:app:controllers:company');
 // 1. Add new company and new categories.
 // 2. Add new categories when company exist.
 const add = async(req, res) => {
-  debug('add(%s, %s)', req.body.name, JSON.parse(req.body.categories));
+  debug('add(%s, %s)', req.body.name, req.body.categories);
   let session = null;
   try {
     session = await mongoose.startSession();
@@ -159,7 +159,7 @@ const update = async(req, res) => {
   const newName = req.body.newName;
   const newCategoryNames = JSON.parse(req.body.newCategoryNames);
 
-  debug('update(%s, %s, %s)', name, newName, newCategoryNames);
+  debug('update(%s, %s, %s)', name, newName, req.body.newCategoryNames);
 
   let session = null;
   try {
