@@ -14,5 +14,9 @@ export default {
     return {
     };
   },
+  props: {
+  },
+  computed: {
+  },
 };
 </script>
