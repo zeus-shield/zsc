@@ -185,7 +185,7 @@ const user = {
 
   async setTOTPOn(token, code, id, on) {
     let data = new URLSearchParams();
-    data.append('TOTPOn', on);
+    data.append('on', on);
 
     let config = {
       // req.headers
@@ -193,6 +193,7 @@ const user = {
         'token': token,
         'code': code,
         '_id': id
+        // 'on': on
       }
 
       // req.query
