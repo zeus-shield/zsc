@@ -15,4 +15,8 @@
 }
 .collapse {
 }
+.collapse .title {
+}
+.collapse .title:before {
+}
 </style>
