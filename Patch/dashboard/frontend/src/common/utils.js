@@ -1,5 +1,7 @@
 'use strict';
 
+import moment from 'moment';
+
 const utils = {
   storage: {
     cookie: {
@@ -107,6 +109,9 @@ const utils = {
       this.notice.alert(vm, 'error', vm.langSet.component.alert.errorTitle, vm.langSet.message.error.ROUTE_NOT_EXIST, vm.langSet.component.button.confirm, false, true, null);
     } else {}
     return result;
+  },
+  checkLogin() {
+    return (this.storage.cookie.get('login_token') !== null && this.storage.cookie.get('login_account') !== null && this.storage.cookie.get('login_id') !== null && this.storage.cookie.get('login_token') !== 'undefined' && this.storage.cookie.get('login_account') !== 'undefined' && this.storage.cookie.get('login_id') !== 'undefined');
   }
 };
 
