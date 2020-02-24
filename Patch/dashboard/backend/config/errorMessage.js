@@ -1,13 +1,13 @@
 'use strict';
 
 /*
-?????status??200;
-errorCode??:?errorCode?0??????????????;????,errorCode????,
-?????????,1??????????,2??????????????,??,????
-????????,?????????????
+所有接口的status均为200；
+errorCode规则：当errorCode为0时表示接口访问成功并且无抛错；不为零时，errorCode共计五位，
+第一位表示错误级别，1开头的为系统级别错误，2开头为系统功能模块对应的错误，其中，第二三位
+表示功能模块编号，第四五位表示具体错误编号。
 */
 module.exports = {
-  // ??????
+  // 10000
   SERVER_ERROR: {
     status: 500,
     errorCode: 10000,
@@ -33,12 +33,8 @@ module.exports = {
     errorCode: 10004,
     errorMessage: 'No recipients defined'
   },
-  // LIST_QUERY_FAILDE: {
-  //   status: 500,
-  //   errorCode: 10002,
-  //   errorMsg: '??????'
-  // },
-  // // token??????
+
+  // 20000 + 000
   TOKEN_IS_MISSING: {
     status: 500,
     errorCode: 20000,
@@ -52,8 +48,10 @@ module.exports = {
   // TOKEN_HAS_EXPIRED: {
   //   status: 500,
   //   errorCode: 20002,
-  //   errorMsg: 'token????'
+  //   errorMsg: 'token expired'
   // },
+
+  // 20000 + 100
   USER_HAS_EXIST: {
     status: 500,
     errorCode: 20100,
@@ -124,6 +122,8 @@ module.exports = {
     errorCode: 20113,
     errorMessage: 'USER_TOTP_VERIFY_ERR'
   },
+
+  // 20000 + 200
   COMPANY_CATEGORIES_HAS_EXIST: {
     status: 500,
     errorCode: 20200,
@@ -139,6 +139,8 @@ module.exports = {
     errorCode: 20202,
     errorMessage: 'COMPANY_NOT_EXIST'
   },
+
+  // 20000 + 300
   INSURANCE_HAS_EXIST: {
     status: 500,
     errorCode: 20300,
@@ -149,57 +151,22 @@ module.exports = {
     errorCode: 20301,
     errorMessage: 'INSURANCE_NOT_EXIST'
   },
-  // // ????????
-  // ROUTER_HAS_EXITS: {
-  //   status: 500,
-  //   errorCode: 20200,
-  //   errorMsg: '???????'
-  // },
+
+  // 20000 + 900
   ROUTE_NOT_EXIST: {
     status: 500,
-    errorCode: 20901,
+    errorCode: 20900,
     errorMessage: 'ROUTE_NOT_EXIST'
   },
-  // CATEGORY_HAS_EXITS: {
-  //   status: 500,
-  //   errorCode: 20301,
-  //   errorMsg: '???????'
-  // },
-  // CATEGORY_NOT_EXITS: {
-  //   status: 500,
-  //   errorCode: 20302,
-  //   errorMsg: '??????'
-  // },
-  // CATEGORYNAME_IS_EMPTY: {
-  //   status: 500,
-  //   errorCode: 20303,
-  //   errorMsg: '???????????'
-  // },
-  // ARTICLE_HAS_EXITS: {
-  //   status: 500,
-  //   errorCode: 20401,
-  //   errorMsg: '???????'
-  // },
-  // ARTICLE_NOT_EXITS: {
-  //   status: 500,
-  //   errorCode: 20402,
-  //   errorMsg: '??????'
-  // },
-  // TITLE_IS_EMPTY: {
-  //   status: 500,
-  //   errorCode: 20403,
-  //   errorMsg: '????????'
-  // },
-  // CONTENT_IS_EMPTY: {
-  //   status: 500,
-  //   errorCode: 20404,
-  //   errorMsg: '????????'
-  // }
+
+  // 80000
   COMMON_PARAM_ERROR: {
     status: 500,
     errorCode: 80000,
     errorMessage: 'COMMON_PARAM_ERROR'
   },
+
+  // 80000
   UNKNOWN: {
     status: 500,
     errorCode: 90000,
