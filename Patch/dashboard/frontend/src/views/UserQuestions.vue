@@ -17,6 +17,11 @@ export default {
   props: {
   },
   computed: {
+    ...mapState({
+      logColor: state => state.logColor.user.pc.questions
+    })
+  },
+  computed: {
   },
 };
 </script>
