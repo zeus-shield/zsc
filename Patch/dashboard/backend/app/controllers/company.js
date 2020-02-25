@@ -165,7 +165,6 @@ const update = async(req, res) => {
   try {
     let categories = [];
     let result;
-    let ret;
 
     session = await mongoose.startSession();
     session.startTransaction();
@@ -184,8 +183,8 @@ const update = async(req, res) => {
           company: newName,
           category: newCategoryName
         };
-        ret = await services.insurances.updateByCompanyAndCategory(name, categoryName, update, true, session);
-        debug(ret);
+        await services.insurances.updateByCompanyAndCategory(name, categoryName, update, true, session);
+        // debug(ret);
 
         let category = result.categories[i];
         category.name = newCategoryName;
@@ -198,7 +197,7 @@ const update = async(req, res) => {
       name: newName,
       categories: categories
     };
-    ret = await services.companies.update(name, update, session);
+    await services.companies.update(name, update, session);
     // debug(ret);
 
     await session.commitTransaction();
