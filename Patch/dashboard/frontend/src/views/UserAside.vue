@@ -27,6 +27,9 @@
           <i class="el-icon-phone-outline icon"></i>
           <span>{{ langSet.user.aside.slot[1].title }}</span>
         </div>
+        <el-menu-item class="item" index="3">
+          <span slot="title">{{ langSet.user.aside.slot[1].item[0] }}</span>
+        </el-menu-item>
       </el-menu>
     </div>
   </div>
