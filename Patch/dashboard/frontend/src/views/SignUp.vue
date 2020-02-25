@@ -31,11 +31,11 @@
 </style>
 
 <script>
-import utils from '../common/utils';
-import user from '../apis/user';
+import { mapState, mapGetters } from 'vuex';
 import moment from 'moment';
 
-import { mapState, mapGetters } from 'vuex';
+import utils from '@/common/utils';
+import APIs from '@/apis';
 
 export default {
   name: 'SignUp',
