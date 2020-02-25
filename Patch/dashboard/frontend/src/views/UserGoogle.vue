@@ -17,6 +17,9 @@
 }
 .header .sprite {
 }
+.content {
+  counter-reset: num;
+}
 </style>
 
 <script>
