@@ -7,5 +7,8 @@
 import { mapState } from 'vuex';
 
 export default {
+  name: 'UserSupport',
+  // components: {
+  // },
 };
 </script>
