@@ -257,7 +257,9 @@ export default {
     } else if (window.location.href.indexOf('/home') !== -1) {
       activeIndex = '1';
     } else if (window.location.href.indexOf('/insurance') !== -1) {
+      activeIndex = '21';
     } else if (window.location.href.indexOf('/analytics') !== -1) {
+      activeIndex = '22';
     } else if (window.location.href.indexOf('/whitePaper') !== -1) {
     } else {
     }
