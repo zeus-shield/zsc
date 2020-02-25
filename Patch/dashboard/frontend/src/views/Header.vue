@@ -87,7 +87,7 @@
 </style>
 
 <script>
-import utils from '../common/utils';
+import utils from '@/common/utils';
 
 import { mapState, mapGetters, mapActions } from 'vuex';
 
@@ -164,6 +164,9 @@ export default {
     ...mapActions('lang', [
       'switchLang'
     ]),
+    // TODO
+    checkAdmin() {
+    },
     },
     handleLogin() {
       this.$router.push({name: 'login'});
