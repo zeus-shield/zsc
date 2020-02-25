@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
     const rst = {
       status: 200,
       errorCode: 0,
-      content: data
+      content: data // This attribute determines success or failure
     };
     global.logger.debug(`traceId: ${req.headers.traceId}`);
     global.logger.info(`method: [${req.method}] req-url: ${req.url}`);
@@ -28,7 +28,7 @@ module.exports = (req, res, next) => {
     global.logger.error(`req-query: ${JSON.stringify(req.query)}`);
     global.logger.error(`req-params: ${JSON.stringify(req.params)}`);
     global.logger.error(`req-body: ${JSON.stringify(req.body)}`);
-    global.logger.error(`sendErr: ${JSON.stringify(errRes)}`);
+    global.logger.error(`sendErr: ${JSON.stringify(errRes)}`); // no 'content' attribute
     res.status(errRes.status || 500).send(errRes);
   };
   next();
