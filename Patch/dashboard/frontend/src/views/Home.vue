@@ -39,6 +39,7 @@
     <div class="row">
       <div class="card-slot">
         <el-row :gutter="10">
+          <div class="header">{{ langSet.home.slot4.header }}</div>
         </el-row>
       </div>
     </div>
