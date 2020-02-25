@@ -14,6 +14,7 @@
 .header .sprite {
 }
 .collapse {
+  counter-reset: num;
 }
 .collapse .title {
 }
