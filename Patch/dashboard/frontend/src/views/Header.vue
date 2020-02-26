@@ -167,6 +167,8 @@ export default {
     // TODO
     checkAdmin() {
     },
+    // handleSelect(key, keyPath) {
+    handleSelect(key) {
     },
     handleLogin() {
       this.$router.push({name: 'login'});
