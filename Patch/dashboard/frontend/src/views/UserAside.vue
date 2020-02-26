@@ -30,6 +30,9 @@
         <el-menu-item class="item" index="3">
           <span slot="title">{{ langSet.user.aside.slot[1].item[0] }}</span>
         </el-menu-item>
+        <el-menu-item class="item" index="4">
+          <span slot="title">{{ langSet.user.aside.slot[1].item[1] }}</span>
+        </el-menu-item>
       </el-menu>
     </div>
   </div>
