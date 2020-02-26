@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <p>Copyright? 2018-2019 Dashboard</p>
+    <p>Copyright? 2018-2020 Dashboard</p>
   </div>
 </template>
 
