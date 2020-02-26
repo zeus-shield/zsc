@@ -13,6 +13,10 @@
 }
 .insurance .img .col .content {
 }
+.insurance .info .col {
+}
+.insurance .info .col .title {
+}
 </style>
 
 <script>
