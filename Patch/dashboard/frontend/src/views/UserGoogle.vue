@@ -20,6 +20,10 @@
 .content {
   counter-reset: num;
 }
+.content .step:first-child {
+}
+.content .step .text:before {
+}
 </style>
 
 <script>
