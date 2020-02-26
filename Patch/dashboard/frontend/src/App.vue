@@ -261,6 +261,10 @@ export default {
     } else if (window.location.href.indexOf('/analytics') !== -1) {
       activeIndex = '22';
     } else if (window.location.href.indexOf('/whitePaper') !== -1) {
+      activeIndex = '3';
+    } else if (window.location.href.indexOf('/faq') !== -1) {
+      activeIndex = '4';
+    } else if (window.location.href.indexOf('/login') !== -1) {
     } else {
     }
 
