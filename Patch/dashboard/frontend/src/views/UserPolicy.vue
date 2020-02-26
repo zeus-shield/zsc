@@ -20,4 +20,8 @@
 }
 .collapse .title:before {
 }
+.collapse .divider {
+}
+.collapse .label {
+}
 </style>
