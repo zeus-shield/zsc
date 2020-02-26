@@ -144,8 +144,10 @@ export default {
         code: [
         ],
         password: [
+          { validator: validatePassword, trigger: 'blur' }
         ],
         password2: [
+          { validator: validatePassword2, trigger: 'blur' }
         ]
       }
     };
