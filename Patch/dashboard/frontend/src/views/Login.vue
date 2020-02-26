@@ -127,8 +127,8 @@ export default {
       },
       rules: {
         account: [
-          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
-          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          // { required: true, message: '??????/????', trigger: 'blur' },
+          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
           // { validator: validateAccount, trigger: ['blur', 'change'] },
           { validator: validateAccount, trigger: 'blur' }
         ],
@@ -252,7 +252,7 @@ export default {
       vm.$refs[formName].validate((valid) => {
         if (valid) {
           vm.errorMessage = '';
-          user.login(vm.form.account, vm.form.password, vm.googleAuthForm.code).then(data => {
+          APIs.user.login(vm.form.account, vm.form.password, vm.googleAuthForm.code).then(data => {
           }).catch(errorData => {
             // console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, errorData);
             if (errorData.errorMessage === 'USER_TOTP_VERIFY_ERR') {
