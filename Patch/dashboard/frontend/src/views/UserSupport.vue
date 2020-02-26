@@ -10,5 +10,9 @@ export default {
   name: 'UserSupport',
   // components: {
   // },
+  data() {
+    return {
+    };
+  },
 };
 </script>
