@@ -41,6 +41,8 @@
         <el-row :gutter="10">
           <div class="header">{{ langSet.home.slot4.header }}</div>
           <el-col v-for="(item, index) in 4" :key="item" :xs="{span: 24, offset: 0}" :sm="{span: 24, offset: 0}" :md="{span: 24, offset: 0}" :lg="{span: 6, offset: 0}">
+            <el-card class="card" shadow="never" :body-style="{ padding: '1.25rem' }">
+            </el-card>
           </el-col>
         </el-row>
       </div>
