@@ -21,7 +21,10 @@ export default {
       logColor: state => state.logColor.user.pc.questions
     })
   },
-  computed: {
+  created() {
+    console.log('%c[UserQuestions]created()', `color:${this.logColor}`);
+  },
+  mounted() {
   },
 };
 </script>
