@@ -24,4 +24,6 @@
 }
 .collapse .label {
 }
+.collapse .content {
+}
 </style>
