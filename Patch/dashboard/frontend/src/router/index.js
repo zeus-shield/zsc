@@ -256,7 +256,7 @@ let router = new Router({
   ]
 });
 
-import utils from '../common/utils';
+import utils from '@/common/utils';
 
 const auth = {
   checkLogin: () => {
