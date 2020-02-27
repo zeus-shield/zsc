@@ -24,6 +24,8 @@
 }
 .content .step .text:before {
 }
+.content .step .tip .alert {
+}
 </style>
 
 <script>
