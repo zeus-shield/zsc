@@ -17,9 +17,10 @@
 .insurance .thumb .col .brief {
 }
 .insurance .thumb .col .brief strong {
-}
 .insurance .info .col {
- }
+}
+.insurance .info .col .title {
+}
 </style>
 
 <script>
