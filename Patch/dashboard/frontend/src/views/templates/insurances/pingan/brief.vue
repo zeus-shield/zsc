@@ -5,6 +5,7 @@
 .insurance {
 }
 .insurance .hot {
+  background: url(../../../../assets/images/remai.png) no-repeat center center;
 }
 .insurance .col {
 }
