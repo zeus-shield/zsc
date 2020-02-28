@@ -25,6 +25,9 @@ export default {
     console.log('%c[UserQuestions]created()', `color:${this.logColor}`);
   },
   mounted() {
+    console.log('%c[UserQuestions]mounted()', `color:${this.logColor}`);
+  },
+  destroyed() {
   },
 };
 </script>
