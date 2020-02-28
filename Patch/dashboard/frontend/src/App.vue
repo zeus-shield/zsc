@@ -265,8 +265,11 @@ export default {
     } else if (window.location.href.indexOf('/faq') !== -1) {
       activeIndex = '4';
     } else if (window.location.href.indexOf('/login') !== -1) {
+      activeIndex = '5';
     } else if (window.location.href.indexOf('/signUp') !== -1) {
+      activeIndex = '6';
     } else if (window.location.href.indexOf('/account/user') !== -1) {
+      activeIndex = '71';
     } else {
     }
 
