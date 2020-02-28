@@ -26,6 +26,8 @@
 }
 .content .step .tip .alert {
 }
+.content .step .tip .alert .title {
+}
 </style>
 
 <script>
