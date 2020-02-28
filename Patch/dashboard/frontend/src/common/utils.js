@@ -66,6 +66,10 @@ const utils = {
       });
     }
   },
+  string: {
+  },
+  formatDate(value, type = 's') {
+  },
   errCommonHandle(msg, vm) {
     let result = false;
 
