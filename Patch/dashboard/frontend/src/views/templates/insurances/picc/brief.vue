@@ -18,8 +18,11 @@
 }
 .insurance .thumb .col .brief strong {
 .insurance .info .col {
+  margin: 40px 20px 0px 20px;
 }
 .insurance .info .col .title {
+}
+.insurance .info .col .corner {
 }
 </style>
 
