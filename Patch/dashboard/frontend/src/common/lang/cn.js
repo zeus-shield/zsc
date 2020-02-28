@@ -247,6 +247,9 @@ const cn = {
 
       INSURANCE_HAS_EXIST: '该保险产品已存在！',
       INSURANCE_NOT_EXIST: '该保险产品不存在！',
+
+      POLICY_COMPANY_NONE: '请输入公司名称',
+      POLICY_COMPANY_LEN_ERR: '长度大于3个字符',
   },
   component: {
     button: {
