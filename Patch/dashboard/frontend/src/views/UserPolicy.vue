@@ -26,4 +26,6 @@
 }
 .collapse .content {
 }
+.collapse .el-form-item {
+}
 </style>
