@@ -83,9 +83,9 @@
 // .tab:hover .tab-icon.baggage {
 //   background-position: -20px -72px;
 // }
-.tab-icon.enterprise {
-  background-position: 0px -90px;
-}
+// .tab-icon.enterprise {
+//   background-position: 0px -90px;
+// }
 </style>
 
 <script>
