@@ -20,6 +20,8 @@
 }
 .insurance .info .col .corner {
 }
+.insurance .info .col .content {
+}
 </style>
 
 <script>
