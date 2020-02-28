@@ -225,6 +225,8 @@ const en = {
       USER_NOT_EXIST: 'User does not exist!',
       USER_IS_ACTIVE: 'User is active!',
       USER_IS_NOT_ACTIVE: 'User is not active!',
+      USER_PASSWORD_WRONG: 'Incorrect login password!',
+      USER_CODE_WRONG: 'User code incorrect !',
     }
   },
   component: {
