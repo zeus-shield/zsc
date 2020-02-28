@@ -29,6 +29,8 @@
 }
 .account .tip .description {
 }
+.account .info {
+}
 </style>
 
 <script>
