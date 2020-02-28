@@ -168,7 +168,9 @@ export default {
     checkAdmin() {
       let account = utils.storage.cookie.get('login_account');
       if (account === 'deduotech' || account === '28781835@qq.com') {
+        this.admin = true;
       } else {
+        this.admin = false;
       }
     },
     // handleSelect(key, keyPath) {
