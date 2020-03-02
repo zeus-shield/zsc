@@ -235,9 +235,9 @@ export default {
   beforeCreate() {
   },
   created() {
-    if (process.env.NODE_ENV !== 'production') {
-      this.updateDevice();
-    }
+    // if (process.env.NODE_ENV !== 'production') {
+    this.updateDevice();
+    // }
     window.addEventListener('hashchange', () => {
       console.log('[app]hashchange');
       // this.$router.go(0);
