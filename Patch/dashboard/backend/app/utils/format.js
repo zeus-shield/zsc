@@ -2,6 +2,8 @@
 
 // const enums = require('../../config/enum');
 const moment = require('moment');
+const crypto = require('./crypto');
+const { settings } = require('../../config');
 
 module.exports = {
   formatDate(date) {
