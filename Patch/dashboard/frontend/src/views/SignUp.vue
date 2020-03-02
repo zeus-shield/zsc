@@ -222,6 +222,11 @@ export default {
       vm.errorMessage = '';
       vm.buttonCodeDisabled = true;
       vm.codeStatus = 'getting';
+
+      let account = '';
+      if (vm.tabIndex === '1') {
+      } else if (vm.tabIndex === '0') {
+      }
     },
     submitForm(formName) {
     }
