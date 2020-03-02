@@ -10,6 +10,8 @@
   color: #444;
 }
 .interval-md {
+  margin: 0.5rem; // 8px;
+  min-height: 0.25rem; // 4px;
 }
 .interval-lg {
 }
