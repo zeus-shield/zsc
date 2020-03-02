@@ -31,7 +31,7 @@ const add = async(req, res) => {
       }
     }
 
-    if (newCategories.length === 0) {
+    if (categories.length !== 0 && newCategories.length === 0) {
       throw createError('COMPANY_CATEGORIES_HAS_EXIST');
     }
 
