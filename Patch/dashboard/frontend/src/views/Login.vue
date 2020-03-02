@@ -8,7 +8,7 @@
               <div class="login-form-title">
                 <span>{{langSet.login.title}}</span>
               </div>
-            </el-form-item> 
+            </el-form-item>
             <el-form-item v-if="errorMessage !== ''">
               <el-alert class = "login-alert"
                 :title="langSet.message.error[errorMessage]"
@@ -127,8 +127,8 @@ export default {
       },
       rules: {
         account: [
-          // { required: true, message: '??????/????', trigger: 'blur' },
-          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
+          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
+          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
           // { validator: validateAccount, trigger: ['blur', 'change'] },
           { validator: validateAccount, trigger: 'blur' }
         ],
