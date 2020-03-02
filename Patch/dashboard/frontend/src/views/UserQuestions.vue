@@ -28,6 +28,10 @@ export default {
     console.log('%c[UserQuestions]mounted()', `color:${this.logColor}`);
   },
   destroyed() {
+    console.log('%c[UserQuestions]destroyed()', `color:${this.logColor}`);
+  },
+  updated() {
+    console.log('%c[UserQuestions]updated()', `color:${this.logColor}`);
   },
 };
 </script>
