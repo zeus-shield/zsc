@@ -11,6 +11,8 @@ module.exports = (app) => {
     .get(wrap(controllers.user.detail));
   // .put(controllers.user.update)
   // .delete(controllers.user.destroy)
+  app.route('/user/remove').post(wrap(controllers.user.remove));
+  app.route('/user/update').post(wrap(controllers.user.update));
   app.route('/user/setTOTP').post(wrap(controllers.user.setTOTP));
   app.route('/user/saveTOTP').post(wrap(controllers.user.saveTOTP));
   app.route('/user/updateTOTP').post(wrap(controllers.user.updateTOTP));
