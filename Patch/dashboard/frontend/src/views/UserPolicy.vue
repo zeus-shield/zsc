@@ -17,6 +17,8 @@
   counter-reset: num;
 }
 .collapse .title {
+  font-size: 0.875rem; // 14px;
+  font-weight: 400;
 }
 .collapse .title:before {
 }
