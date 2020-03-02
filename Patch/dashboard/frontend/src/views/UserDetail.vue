@@ -31,6 +31,10 @@
 }
 .account .info {
 }
+.account .info .gap {
+}
+.account .info .gap .line {
+}
 </style>
 
 <script>
