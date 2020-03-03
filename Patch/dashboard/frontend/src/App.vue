@@ -233,6 +233,10 @@ export default {
     };
   },
   beforeCreate() {
+    let vm = this;
+    if (process.env.NODE_ENV === 'production') {
+    } else {
+    }
   },
   created() {
     // if (process.env.NODE_ENV !== 'production') {
