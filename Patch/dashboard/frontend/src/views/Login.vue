@@ -255,6 +255,7 @@ export default {
           APIs.user.login(vm.form.account, vm.form.password, vm.googleAuthForm.code).then(data => {
             vm.loading = false;
             vm.dialogVisible = false;
+            vm.$router.push({name: 'userDetail'});
           }).catch(errorData => {
             // console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, errorData);
             if (errorData.errorMessage === 'USER_TOTP_VERIFY_ERR') {
