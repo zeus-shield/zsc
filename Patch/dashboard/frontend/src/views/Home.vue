@@ -227,6 +227,9 @@ export default {
 
     this.$nextTick(() => {
       if (this.originalSwiper === true) {
+        // for original swiper
+        let swiper = new Swiper('.gallery-top', {
+        console.log(swiper);
       } else {
         // for vue-awesome-swiper thumbs
         // const swiperTop = this.$refs.swiperTop.swiper;
