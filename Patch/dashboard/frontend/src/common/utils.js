@@ -67,6 +67,8 @@ const utils = {
     }
   },
   string: {
+    omit(str, len) {
+    }
   },
   formatDate(value, type = 's') {
   },
