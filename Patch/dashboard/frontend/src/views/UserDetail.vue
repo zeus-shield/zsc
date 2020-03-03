@@ -35,6 +35,10 @@
 }
 .account .info .gap .line {
 }
+.account .info .title {
+}
+.account .info .content {
+}
 </style>
 
 <script>
