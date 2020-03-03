@@ -21,5 +21,7 @@ export default {
       logColor: state => state.logColor.user.pc.support
     })
   },
+  methods: {
+  }
 };
 </script>
