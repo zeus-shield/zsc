@@ -179,6 +179,10 @@ export default {
     },
     // handleSelect(key, keyPath) {
     handleSelect(key) {
+      // console.log(key, keyPath);
+      if (key === '72') { // logout
+      } else {
+      }
     },
     handleLogin() {
       this.$router.push({name: 'login'});
