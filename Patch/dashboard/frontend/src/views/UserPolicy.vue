@@ -30,4 +30,6 @@
 }
 .collapse .el-form-item {
 }
+.collapse .el-form-item-mobile {
+}
 </style>
