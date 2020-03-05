@@ -23,6 +23,8 @@
 .collapse .title:before {
 }
 .collapse .divider {
+  font-size: 0.75rem; // 14px;
+  color: #999;
 }
 .collapse .label {
 }
