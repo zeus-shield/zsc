@@ -29,6 +29,10 @@
 }
 .insurance .info .col .insured-table {
 }
+.insurance .info .col .insured-table .item {
+}
+.insurance .info .col .insured-table .amount {
+}
 </style>
 
 <script>
