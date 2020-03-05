@@ -1,7 +1,9 @@
 <template>
   <div class="home">
     <div class="row">
+      <el-row class="swiper-slot" :gutter="0">
     Home
+      </el-row>
     </div>
 
     <div class="row">
