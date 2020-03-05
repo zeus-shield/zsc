@@ -182,6 +182,9 @@ export default {
       // console.log(key, keyPath);
       if (key === '72') { // logout
       } else {
+        let route = this.routes.find(route => route.id === key);
+        let name = (undefined === route) ? '*' : route.name;
+        this.$router.push({name: name});
       }
     },
     handleLogin() {
