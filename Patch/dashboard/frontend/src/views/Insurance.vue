@@ -86,9 +86,9 @@
 // .tab-icon.enterprise {
 //   background-position: 0px -90px;
 // }
-.tab:hover .tab-icon.enterprise {
-  background-position: -20px -90px;
-}
+// .tab:hover .tab-icon.enterprise {
+//   background-position: -20px -90px;
+// }
 .tab-icon.person {
   background-position: 0px -108px;
 }
