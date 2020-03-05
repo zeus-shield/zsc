@@ -127,8 +127,8 @@ export default {
       },
       rules: {
         account: [
-          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
-          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          // { required: true, message: '??????/????', trigger: 'blur' },
+          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
           // { validator: validateAccount, trigger: ['blur', 'change'] },
           { validator: validateAccount, trigger: 'blur' }
         ],
@@ -253,6 +253,11 @@ export default {
         if (valid) {
           vm.errorMessage = '';
           APIs.user.login(vm.form.account, vm.form.password, vm.googleAuthForm.code).then(data => {
+            // console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, data);
+            // utils.storage.cookie.set('login_account', vm.form.account, 'N/A');
+            utils.storage.cookie.set('login_account', data.content.account, 'N/A');
+            utils.storage.cookie.set('login_token', data.content.token, 'N/A');
+            utils.storage.cookie.set('login_id', data.content._id, 'N/A');
             vm.loading = false;
             vm.dialogVisible = false;
             vm.$router.push({name: 'userDetail'});
