@@ -135,18 +135,18 @@ export default {
       },
       rules: {
         phoneAccount: [
-          // { required: true, message: '??????/????', trigger: 'blur' },
-          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
+          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
+          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
           { validator: validatePhoneAccount, trigger: 'blur' }
         ],
         emailAccount: [
-          // { required: true, message: '??????/????', trigger: 'blur' },
-          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
+          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
+          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
           { validator: validateEmailAccount, trigger: 'blur' }
         ],
         code: [
-          // { required: true, message: '??????/????', trigger: 'blur' },
-          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
+          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
+          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
           { validator: validateCode, trigger: 'blur' }
         ],
         password: [
@@ -229,6 +229,10 @@ export default {
       } else if (vm.tabIndex === '0') {
         account = vm.form.emailAccount;
       }
+
+      APIs.user.buildEmailCode(account).then(data => {
+      }).catch(errorData => {
+      });
     },
     submitForm(formName) {
     }
