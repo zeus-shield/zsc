@@ -21,6 +21,9 @@ export default {
       logColor: state => state.logColor.user.pc.support
     })
   },
+  created() {
+    console.log('%c[UserSupport]created()', `color:${this.logColor}`);
+  },
   methods: {
   }
 };
