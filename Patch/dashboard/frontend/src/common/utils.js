@@ -71,6 +71,11 @@ const utils = {
     }
   },
   formatDate(value, type = 's') {
+    let result = '';
+    if (value) {
+      } else {
+      }
+    }
   },
   errCommonHandle(msg, vm) {
     let result = false;
