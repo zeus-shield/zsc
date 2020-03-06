@@ -33,6 +33,8 @@
 }
 .insurance .operation .col .click .button {
 }
+.dialog .form .space {
+}
 </style>
 
 <script>
