@@ -254,6 +254,8 @@ const cn = {
       POLICY_CATEGORY_LEN_ERR: '长度大于3个字符',
       POLICY_TITLE_NONE: '请输入产品名称',
       POLICY_TITLE_LEN_ERR: '长度大于3个字符',
+      POLICY_HOLDER_NONE: '请输入投保人',
+      POLICY_HOLDER_LEN_ERR: '长度大于1个字符',
   },
   component: {
     button: {
