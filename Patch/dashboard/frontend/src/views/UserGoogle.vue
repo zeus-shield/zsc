@@ -24,9 +24,9 @@
 .content {
   counter-reset: num;
 }
-.content .step:first-child {
-  margin-top: 1.25rem; // 20px;
-}
+// .content .step:first-child {
+//   margin-top: 1.25rem; // 20px;
+// }
 .content .step .text:before {
 }
 .content .step .tip .alert {
