@@ -33,5 +33,6 @@
 .collapse .el-form-item {
 }
 .collapse .el-form-item-mobile {
+  width: 100%;
 }
 </style>
