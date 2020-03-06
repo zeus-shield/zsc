@@ -33,6 +33,8 @@
 }
 .insurance .info .col .insured-table .amount {
 }
+.insurance .operation {
+}
 </style>
 
 <script>
