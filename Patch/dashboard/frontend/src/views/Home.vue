@@ -231,6 +231,8 @@ export default {
       if (this.originalSwiper === true) {
         // for original swiper
         let swiper = new Swiper('.gallery-top', {
+          spaceBetween: 5,
+          loop: true,
         console.log(swiper);
       } else {
         // for vue-awesome-swiper thumbs
