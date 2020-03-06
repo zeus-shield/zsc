@@ -240,6 +240,8 @@ export default {
         // window.location.href = 'http://localhost/m/';
       }
     } else {
+      window.addEventListener('resize', () => {
+      });
     }
   },
   created() {
