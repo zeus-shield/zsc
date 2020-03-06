@@ -229,6 +229,8 @@ const en = {
       USER_CODE_WRONG: 'User code incorrect !',
       USER_CODE_TIMEOUT: 'User code timeout!',
       USER_GOOGLE_CODE_NONE: 'Please input Google code',
+      USER_GOOGLE_CODE_LEN_ERR: 'Length of 6-bit number',
+      USER_GOOGLE_AUTH_ERR: 'Google authenticator code error',
     }
   },
   component: {
