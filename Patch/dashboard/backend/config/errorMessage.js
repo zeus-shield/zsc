@@ -67,6 +67,8 @@ module.exports = {
     errorCode: 20102,
     errorMessage: 'USER_IS_ACTIVE'
   },
+  USER_IS_NOT_ACTIVE: {
+  },
   USER_PASSWORD_WRONG: {
     status: 500,
     errorCode: 20103,
