@@ -24,6 +24,9 @@ export default {
   created() {
     console.log('%c[UserSupport]created()', `color:${this.logColor}`);
   },
+  mounted() {
+    console.log('%c[UserSupport]mounted()', `color:${this.logColor}`);
+  },
   methods: {
   }
 };
