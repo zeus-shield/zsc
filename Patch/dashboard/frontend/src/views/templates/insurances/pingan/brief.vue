@@ -31,6 +31,8 @@
 }
 .insurance .operation .col .click {
 }
+.insurance .operation .col .click .button {
+}
 </style>
 
 <script>
