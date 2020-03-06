@@ -38,8 +38,10 @@
 .account .info .gap .line {
 }
 .account .info .title {
+  color: #999;
 }
 .account .info .content {
+  font-weight: 700;
 }
 </style>
 
