@@ -233,6 +233,8 @@ export default {
         let swiper = new Swiper('.gallery-top', {
           spaceBetween: 5,
           loop: true,
+          loopedSlides: 3, // looped slides should be the same
+          freeMode: true,
         console.log(swiper);
       } else {
         // for vue-awesome-swiper thumbs
