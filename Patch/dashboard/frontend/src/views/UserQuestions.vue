@@ -35,6 +35,8 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
   },
+  beforeRouteUpdate(to, from, next) {
+  },
   beforeRouteLeave(to, from, next) {
     console.log('%c[UserQuestions]beforeRouteLeave(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
     next();
