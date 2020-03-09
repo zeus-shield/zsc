@@ -29,6 +29,7 @@
 .collapse .label {
 }
 .collapse .content {
+  font-size: 0.875rem; // 14px;
 }
 .collapse .el-form-item {
 }
