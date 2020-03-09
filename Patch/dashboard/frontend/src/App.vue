@@ -241,6 +241,9 @@ export default {
       }
     } else {
       window.addEventListener('resize', () => {
+        if (vm.resizeFlag) {
+          clearTimeout(vm.resizeFlag);
+        }
       });
     }
   },
