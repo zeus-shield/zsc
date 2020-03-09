@@ -43,6 +43,8 @@
 .account .info .content {
   font-weight: 700;
 }
+.security .row {
+}
 </style>
 
 <script>
