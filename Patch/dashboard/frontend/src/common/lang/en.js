@@ -231,6 +231,7 @@ const en = {
       USER_GOOGLE_CODE_NONE: 'Please input Google code',
       USER_GOOGLE_CODE_LEN_ERR: 'Length of 6-bit number',
       USER_GOOGLE_AUTH_ERR: 'Google authenticator code error',
+      USER_GOOGLE_AUTH_NOT_SET: 'Google authenticator not set',
     }
   },
   component: {
