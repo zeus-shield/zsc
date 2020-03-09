@@ -33,6 +33,8 @@
 }
 .content .step .tip .alert .title {
 }
+.content .step .tip .alert .description {
+}
 </style>
 
 <script>
