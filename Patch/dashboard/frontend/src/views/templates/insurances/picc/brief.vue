@@ -35,6 +35,8 @@
 }
 .insurance .operation {
 }
+.insurance .operation .col {
+}
 </style>
 
 <script>
