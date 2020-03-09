@@ -35,6 +35,10 @@
 }
 .dialog .form .space {
 }
+.dialog .form .divider-content {
+}
+.dialog .form .date {
+}
 </style>
 
 <script>
