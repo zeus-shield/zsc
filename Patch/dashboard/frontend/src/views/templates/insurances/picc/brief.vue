@@ -37,6 +37,10 @@
 }
 .insurance .operation .col {
 }
+.insurance .operation .col .desc {
+}
+.insurance .operation .col .desc .icon {
+}
 </style>
 
 <script>
