@@ -137,18 +137,18 @@ export default {
       },
       rules: {
         phoneAccount: [
-          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
-          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          // { required: true, message: '??????/????', trigger: 'blur' },
+          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
           { validator: validatePhoneAccount, trigger: 'blur' }
         ],
         emailAccount: [
-          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
-          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          // { required: true, message: '??????/????', trigger: 'blur' },
+          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
           { validator: validateEmailAccount, trigger: 'blur' }
         ],
         code: [
-          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
-          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          // { required: true, message: '??????/????', trigger: 'blur' },
+          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
           { validator: validateCode, trigger: 'blur' }
         ],
         password: [
@@ -235,6 +235,8 @@ export default {
       APIs.user.buildEmailCode(account).then(data => {
         let now = Date.now();
         let expires = moment(data.content.active_expires_at).valueOf();
+        let timeout = Math.ceil((expires - now) / 1000);
+        console.log('%c[SignUp]timeout(%s)', `color:${vm.logColor}`, timeout);
       }).catch(errorData => {
       });
     },
