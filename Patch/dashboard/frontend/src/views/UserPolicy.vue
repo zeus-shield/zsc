@@ -27,6 +27,8 @@
   color: #999;
 }
 .collapse .label {
+  font-size: 0.875rem; // 14px;
+  color: #3075ee; // #16b; // #99a9bf;
 }
 .collapse .content {
   font-size: 0.875rem; // 14px;
