@@ -45,6 +45,10 @@
 }
 .security .row {
 }
+.security .row .col {
+}
+.security .row .icon {
+}
 </style>
 
 <script>
