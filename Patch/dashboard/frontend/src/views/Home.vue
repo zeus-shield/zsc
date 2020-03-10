@@ -235,6 +235,8 @@ export default {
           loop: true,
           loopedSlides: 3, // looped slides should be the same
           freeMode: true,
+          navigation: {
+          },
         console.log(swiper);
       } else {
         // for vue-awesome-swiper thumbs
