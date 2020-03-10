@@ -74,8 +74,10 @@ const utils = {
     let result = '';
     if (value) {
       } else {
+        result = moment(value).format('YYYY-MM-DD HH:mm:ss');
       }
     }
+    return result;
   },
   errCommonHandle(msg, vm) {
     let result = false;
