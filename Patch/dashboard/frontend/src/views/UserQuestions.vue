@@ -34,6 +34,10 @@ export default {
     console.log('%c[UserQuestions]updated()', `color:${this.logColor}`);
   },
   beforeRouteEnter(to, from, next) {
+    console.log('%c[UserQuestions]beforeRouteEnter(\"%s\" => \"%s\")', 'color:black', from.fullPath, to.fullPath);
+    next(vm => {
+      console.log('%c[UserQuestions]beforeRouteEnter(\"%s\" => \"%s\") next', `color:${vm.logColor}`, from.fullPath, to.fullPath);
+    });
   },
   beforeRouteUpdate(to, from, next) {
   },
