@@ -34,8 +34,10 @@
 .insurance .operation .col .click .button {
 }
 .dialog .form .space {
+  margin-top: 22px;
 }
 .dialog .form .divider-content {
+  font-size: 12px;
 }
 .dialog .form .date {
 }
