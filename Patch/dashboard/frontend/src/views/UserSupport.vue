@@ -30,6 +30,9 @@ export default {
   destroyed() {
     console.log('%c[UserSupport]destroyed()', `color:${this.logColor}`);
   },
+  updated() {
+    console.log('%c[UserSupport]updated()', `color:${this.logColor}`);
+  },
   methods: {
   }
 };
