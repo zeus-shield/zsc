@@ -257,6 +257,8 @@ export default {
       console.log('[app]hashchange');
       // this.$router.go(0);
     }, false);
+    window.addEventListener('popstate', () => {
+    }, false);
   },
   mounted() {
     console.log('%c[App]mounted()', `color:${this.logColor}`);
