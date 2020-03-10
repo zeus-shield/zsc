@@ -258,6 +258,8 @@ const cn = {
       POLICY_HOLDER_LEN_ERR: '长度大于1个字符',
       POLICY_INSURANT_NONE: '请输入承保人',
       POLICY_INSURANT_LEN_ERR: '长度大于1个字符',
+      POLICY_AMOUNT_NONE: '请输入保额',
+      POLICY_AMOUNT_LEN_ERR: '长度大于1个字符',
   },
   component: {
     button: {
