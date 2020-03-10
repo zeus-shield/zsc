@@ -189,6 +189,9 @@ export default {
     handleSelect(key) {
       // console.log(key, keyPath);
       if (key === '72') { // logout
+      } else if (key === '3') { // white paper
+        } else {
+        }
       } else {
         let route = this.routes.find(route => route.id === key);
         let name = (undefined === route) ? '*' : route.name;
