@@ -35,6 +35,8 @@
 }
 .content .step .tip .alert .description {
 }
+.content .step .qr-box.bind {
+}
 </style>
 
 <script>
