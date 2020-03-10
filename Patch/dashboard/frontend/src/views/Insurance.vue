@@ -92,9 +92,9 @@
 // .tab-icon.person {
 //   background-position: 0px -108px;
 // }
-.tab:hover .tab-icon.person {
-  background-position: -20px -108px;
-}
+// .tab:hover .tab-icon.person {
+//   background-position: -20px -108px;
+// }
 </style>
 
 <script>
