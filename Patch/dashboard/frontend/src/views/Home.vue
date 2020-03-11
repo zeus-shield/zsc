@@ -236,6 +236,8 @@ export default {
           loopedSlides: 3, // looped slides should be the same
           freeMode: true,
           navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev'
           },
         console.log(swiper);
       } else {
