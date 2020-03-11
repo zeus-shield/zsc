@@ -259,6 +259,8 @@ export default {
     }, false);
     window.addEventListener('popstate', () => {
     }, false);
+    APIs.ethereum.wallet.addListener(this);
+    APIs.ethereum.wallet.enable();
   },
   mounted() {
     console.log('%c[App]mounted()', `color:${this.logColor}`);
