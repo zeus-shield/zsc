@@ -40,6 +40,7 @@
   font-size: 12px;
 }
 .dialog .form .date {
+  width: 100%;
 }
 </style>
 
