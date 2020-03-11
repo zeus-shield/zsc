@@ -36,6 +36,7 @@
 .content .step .tip .alert .description {
 }
 .content .step .qr-box.bind {
+  margin: auto 1.25rem;
 }
 </style>
 
