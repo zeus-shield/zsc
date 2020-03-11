@@ -10,7 +10,7 @@
       </el-tab-pane>
 
       <el-tab-pane>
-        <el-button class="button" slot="label" type="primary" size="medium" icon="el-icon-search" @click="handleSearchClick()">??</el-button>
+        <el-button class="button" slot="label" type="primary" size="medium" icon="el-icon-search">ËÑË÷</el-button>
         
         <el-input class="search" :autofocus="false" :placeholder="langSet.market.operation.title[1]" v-model="search">
           <i slot="prefix" class="el-icon-search el-input__icon"></i>
@@ -121,7 +121,8 @@ export default {
     ...mapState({
       logColor: state => state.logColor.insurance.base
     }),
-    ...mapGetters('lang', ['langSet'])
+    ...mapGetters('lang', ['langSet']),
+    ...mapGetters('market', ['cacheData']),
   },
   created() {
     console.log('%c[Insurance]created()', `color:${this.logColor}`);
