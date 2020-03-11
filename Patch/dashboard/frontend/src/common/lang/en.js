@@ -236,6 +236,9 @@ const en = {
       COMPANY_CATEGORIES_HAS_EXIST: 'Company and category have already existed!',
       COMPANY_CATEGORIES_NOT_EXIST: 'Company and category does not exist!',
       COMPANY_NOT_EXIST: 'Company does not exist!',
+
+      INSURANCE_HAS_EXIST: 'Insurance has already existed!',
+      INSURANCE_NOT_EXIST: 'Insurance does not exist!',
     }
   },
   component: {
