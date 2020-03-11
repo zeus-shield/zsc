@@ -33,6 +33,8 @@ export default {
   updated() {
     console.log('%c[UserSupport]updated()', `color:${this.logColor}`);
   },
+  beforeRouteEnter(to, from, next) {
+  },
   methods: {
   }
 };
