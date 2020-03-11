@@ -260,6 +260,9 @@ const cn = {
       POLICY_INSURANT_LEN_ERR: '长度大于1个字符',
       POLICY_AMOUNT_NONE: '请输入保额',
       POLICY_AMOUNT_LEN_ERR: '长度大于1个字符',
+      POLICY_STARTTIME_NONE: '请选择生效日期',
+      POLICY_PERIOD_NONE: '请输入保障期限',
+      POLICY_PERIOD_LEN_ERR: '长度大于1个字符',
   },
   component: {
     button: {
