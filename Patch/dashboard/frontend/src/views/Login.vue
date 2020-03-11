@@ -127,8 +127,8 @@ export default {
       },
       rules: {
         account: [
-          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
-          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          // { required: true, message: '??????/????', trigger: 'blur' },
+          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
           // { validator: validateAccount, trigger: ['blur', 'change'] },
           { validator: validateAccount, trigger: 'blur' }
         ],
@@ -238,8 +238,13 @@ export default {
           // 1. common callback case
           user.loginCommon(vm.form.account, vm.form.password, (err, data) => {
             if (err === 0 && data.status === 200 && data.errorCode === 0) {
+          });
+          // 3. async case
+          APIs.user.login(vm.form.account, vm.form.password, null).then(data => {
+            if (data.content.totp_on) {
             } else {
             }
+          }).catch(errorData => {
           });
         } else {
           // console.log('error submit!!');
