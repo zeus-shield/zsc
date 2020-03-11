@@ -34,6 +34,9 @@
   font-size: 0.875rem; // 14px;
 }
 .collapse .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 50%;
 }
 .collapse .el-form-item-mobile {
   width: 100%;
