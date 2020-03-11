@@ -73,6 +73,8 @@ const utils = {
   formatDate(value, type = 's') {
     let result = '';
     if (value) {
+      if (type === 'd') {
+        result = moment(value).format('YYYY-MM-DD');
       } else {
         result = moment(value).format('YYYY-MM-DD HH:mm:ss');
       }
