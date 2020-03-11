@@ -41,6 +41,8 @@
 }
 .insurance .operation .col .desc .icon {
 }
+.insurance .operation .col .click {
+}
 </style>
 
 <script>
