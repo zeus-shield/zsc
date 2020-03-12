@@ -12,6 +12,18 @@
       </el-col>
 
       <el-col :xs="{span: 12}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 12}">
+        <el-menu
+          mode="horizontal"
+          :default-active="activeIndex"
+          @select="handleSelect"
+          background-color="#232f3e"
+          text-color="#fff"
+          active-text-color="#ffd04b">
+        </el-menu>
+      </el-col>
+
+      <el-col :xs="{span: 8}" :sm="{span: 8}" :md="{span: 8}" :lg="{span: 8}">
+        <div class="header-memu-slot">
       </el-col>
     </el-row>
   </div>
@@ -190,6 +202,7 @@ export default {
       // console.log(key, keyPath);
       if (key === '72') { // logout
       } else if (key === '3') { // white paper
+        if (utils.storage.cookie.get('lang') === 'cn') {
         } else {
           // window.location.href = 'static/Myinsura_whitepaper_en_v0.00.02.pdf';
           window.open('static/Myinsura_whitepaper_en_v0.00.02.pdf');
