@@ -51,6 +51,10 @@
 }
 .security .row .icon {
 }
+.security .row .description {
+}
+.dialog .form .space {
+}
 </style>
 
 <script>
