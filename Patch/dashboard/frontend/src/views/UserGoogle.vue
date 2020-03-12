@@ -38,6 +38,11 @@
 .content .step .qr-box.bind {
   margin: auto 1.25rem;
 }
+.step .qr-box .url,
+.step .qr-box .qr {
+}
+.content .step .input-box {
+}
 </style>
 
 <script>
