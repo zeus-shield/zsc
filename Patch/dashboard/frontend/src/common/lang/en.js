@@ -239,6 +239,9 @@ const en = {
 
       INSURANCE_HAS_EXIST: 'Insurance has already existed!',
       INSURANCE_NOT_EXIST: 'Insurance does not exist!',
+
+      POLICY_COMPANY_NONE: 'Please input company name',
+      POLICY_COMPANY_LEN_ERR: 'Length must be more than 3',
     }
   },
   component: {
