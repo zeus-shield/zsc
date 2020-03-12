@@ -10,6 +10,8 @@
   color: #444;
 }
 .header {
+  font-size: 1.5rem; // 24px;
+  font-weight: 400;
 }
 .header .sprite {
 }
