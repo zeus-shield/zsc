@@ -239,6 +239,11 @@ export default {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev'
           },
+          pagination: {
+          },
+          thumbs: {
+          }
+        });
         console.log(swiper);
       } else {
         // for vue-awesome-swiper thumbs
