@@ -263,6 +263,9 @@ const cn = {
       POLICY_STARTTIME_NONE: '请选择生效日期',
       POLICY_PERIOD_NONE: '请输入保障期限',
       POLICY_PERIOD_LEN_ERR: '长度大于1个字符',
+
+      LOGIN_ACCOUNT_NONE: '请输入手机号/邮箱地址',
+      LOGIN_ACCOUNT_LEN_ERR: '长度在 6 到 18 个字符',
   },
   component: {
     button: {
