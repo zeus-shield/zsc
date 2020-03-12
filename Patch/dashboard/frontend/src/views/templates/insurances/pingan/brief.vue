@@ -21,6 +21,8 @@
 .insurance .info .col .corner {
 }
 .insurance .info .col .content {
+  margin-top: 20px;
+  font-size: 14px;
 }
 .insurance .operation {
 }
