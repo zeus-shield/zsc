@@ -240,6 +240,8 @@ export default {
             prevEl: '.swiper-button-prev'
           },
           pagination: {
+            el: '.swiper-pagination',
+            clickable: true
           },
           thumbs: {
           }
