@@ -38,6 +38,8 @@ export default {
   beforeRouteUpdate(to, from, next) {
   },
   beforeRouteLeave(to, from, next) {
+    console.log('%c[UserSupport]beforeRouteLeave(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
+    next();
   },
   methods: {
   }
