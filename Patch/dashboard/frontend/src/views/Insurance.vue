@@ -114,6 +114,8 @@ export default {
     'insurance-picc-brief': InsurancePICCBrief
   },
   data() {
+    return {
+    };
   },
   // props: {
   // },
