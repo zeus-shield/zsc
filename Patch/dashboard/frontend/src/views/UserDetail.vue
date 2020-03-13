@@ -44,8 +44,8 @@
   font-weight: 700;
 }
 .security .row {
-  padding: 0.75rem 1.5rem;
-  border-bottom: 1px solid #e9e9e9;
+  // padding: 0.75rem 1.5rem;
+  // border-bottom: 1px solid #e9e9e9;
 }
 .security .row .col {
 }
