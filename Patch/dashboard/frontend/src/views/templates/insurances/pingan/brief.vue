@@ -15,6 +15,7 @@
 .insurance .img .col .content {
 }
 .insurance .info .col {
+  margin: 40px 20px 0px 20px;
 }
 .insurance .info .col .title {
 }
