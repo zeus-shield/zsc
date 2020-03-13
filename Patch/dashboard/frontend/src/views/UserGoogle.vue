@@ -43,6 +43,12 @@
 }
 .content .step .input-box {
 }
+.content .step .input-box .input,
+.step .input-box .button {
+}
+.content .step .input-box .input-mobile,
+.step .input-box .button-mobile {
+}
 </style>
 
 <script>
