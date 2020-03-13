@@ -203,6 +203,9 @@ export default {
       if (key === '72') { // logout
       } else if (key === '3') { // white paper
         if (utils.storage.cookie.get('lang') === 'cn') {
+          // window.location.href = 'static/Myinsura_whitepaper_cn_v0.00.02.pdf';
+          window.open('static/Myinsura_whitepaper_cn_v0.00.02.pdf');
+          this.$router.go(0);
         } else {
           // window.location.href = 'static/Myinsura_whitepaper_en_v0.00.02.pdf';
           window.open('static/Myinsura_whitepaper_en_v0.00.02.pdf');
