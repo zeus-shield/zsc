@@ -253,10 +253,10 @@ export default {
     // if (process.env.NODE_ENV !== 'production') {
     this.updateDevice();
     // }
-    window.addEventListener('hashchange', () => {
-      console.log('[app]hashchange');
-      // this.$router.go(0);
-    }, false);
+    // window.addEventListener('hashchange', () => {
+    //   console.log('[app]hashchange');
+    //   // this.$router.go(0);
+    // }, false);
     window.addEventListener('popstate', () => {
       console.log('[app]popstate');
       this.$router.go(0);
