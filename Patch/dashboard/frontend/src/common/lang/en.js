@@ -242,6 +242,8 @@ const en = {
 
       POLICY_COMPANY_NONE: 'Please input company name',
       POLICY_COMPANY_LEN_ERR: 'Length must be more than 3',
+      POLICY_CATEGORY_NONE: 'Please input category',
+      POLICY_CATEGORY_LEN_ERR: 'Length must be more than 3',
     }
   },
   component: {
