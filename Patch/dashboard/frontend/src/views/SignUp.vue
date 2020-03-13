@@ -137,18 +137,18 @@ export default {
       },
       rules: {
         phoneAccount: [
-          // { required: true, message: '??????/????', trigger: 'blur' },
-          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
+          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
+          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
           { validator: validatePhoneAccount, trigger: 'blur' }
         ],
         emailAccount: [
-          // { required: true, message: '??????/????', trigger: 'blur' },
-          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
+          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
+          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
           { validator: validateEmailAccount, trigger: 'blur' }
         ],
         code: [
-          // { required: true, message: '??????/????', trigger: 'blur' },
-          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
+          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
+          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
           { validator: validateCode, trigger: 'blur' }
         ],
         password: [
@@ -241,6 +241,11 @@ export default {
         let interval = window.setInterval(() => {
         }, 1000);
       }).catch(errorData => {
+        // vm.errorMessage = errorData.errorMessage;
+        let errorMessage = '';
+        if (errorData.errorMessage !== undefined) {
+        } else {
+        }
 
         vm.buttonCodeDisabled = false;
         vm.codeStatus = 'none';
