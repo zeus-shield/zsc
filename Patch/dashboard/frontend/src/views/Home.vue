@@ -2,7 +2,12 @@
   <div class="home">
     <div class="row">
       <el-row class="swiper-slot" :gutter="0">
+        <el-col>
+          <!-- for original swiper -->
+          <div v-if="originalSwiper === true">
     Home
+          </div>
+        </el-col>
       </el-row>
     </div>
 
