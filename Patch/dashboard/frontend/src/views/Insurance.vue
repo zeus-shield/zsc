@@ -7,10 +7,12 @@
         <div class="tab-company" slot="label">
           <span>{{ company.name }}</span>
         </div>
+        <el-tabs v-if="companyActiveIndex !== -1" type="border-card" v-model="categoryActiveName" @tab-click="handleCategoryClick">
+        </el-tabs>
       </el-tab-pane>
 
       <el-tab-pane>
-        <el-button class="button" slot="label" type="primary" size="medium" icon="el-icon-search">ËÑË÷</el-button>
+        <el-button class="button" slot="label" type="primary" size="medium" icon="el-icon-search">??</el-button>
         
         <el-input class="search" :autofocus="false" :placeholder="langSet.market.operation.title[1]" v-model="search">
           <i slot="prefix" class="el-icon-search el-input__icon"></i>
