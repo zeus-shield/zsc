@@ -6,7 +6,7 @@ const crypto = require('./crypto');
 const { settings } = require('../../config');
 
 module.exports = {
-  formatDate(date) {
+  _formatDate(date) {
     let result;
     if (!date) {
       result = '';
@@ -30,6 +30,8 @@ module.exports = {
       data.active_expires_at = this.formatDate(data.active_expires_at);
     }
     return data;
+  },
+  userList(data, auth = 'user') {
   },
   company(data) {
     return data;
