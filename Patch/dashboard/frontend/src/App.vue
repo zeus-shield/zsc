@@ -257,10 +257,10 @@ export default {
     //   console.log('[app]hashchange');
     //   // this.$router.go(0);
     // }, false);
-    window.addEventListener('popstate', () => {
-      console.log('[app]popstate');
-      this.$router.go(0);
-    }, false);
+    // window.addEventListener('popstate', () => {
+    //   console.log('[app]popstate');
+    //   // this.$router.go(0);
+    // }, false);
     APIs.ethereum.wallet.addListener(this);
     APIs.ethereum.wallet.enable();
   },
