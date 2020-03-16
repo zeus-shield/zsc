@@ -4,11 +4,8 @@ const mongoose = require('mongoose');
 const createError = require('http-errors');
 const services = require('../services');
 
-const debug = require('debug')('backend:app:controllers:company');
+// const debug = require('debug')('backend:app:controllers:company');
 
-// support:
-// 1. Add new company and new categories.
-// 2. Add new categories when company exist.
 const add = async(req, res) => {
   debug('add(%s, %s)', req.body.name, req.body.categories);
   let session = null;
