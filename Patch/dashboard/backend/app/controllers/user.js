@@ -4,12 +4,10 @@ const mongoose = require('mongoose');
 const createError = require('http-errors');
 const moment = require('moment');
 const services = require('../services');
-const { auth } = require('../utils');
+const { crypto, format, auth, nodemailer, tool, TOTP } = require('../utils');
+const { settings } = require('../../config');
 
-// for new interface
-const createError = require('http-errors');
-
-const debug = require('debug')('backend:app:controllers:user');
+// const debug = require('debug')('backend:app:controllers:user');
 
 const emailCode = async(req, res) => {
   debug('emailCode(%s)', req.body.account);
