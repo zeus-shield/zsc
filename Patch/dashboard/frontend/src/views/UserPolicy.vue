@@ -1,4 +1,6 @@
 <template>
+  <div class="user-policy" :class="{'user-policy-mobile': device !== 'pc'}">
+  </div>
 </template>
 
 <style lang="scss" scoped>
