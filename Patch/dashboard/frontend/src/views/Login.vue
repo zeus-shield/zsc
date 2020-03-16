@@ -250,7 +250,9 @@ export default {
           }).catch(errorData => {
             // console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, errorData);
             if (errorData.errorMessage !== undefined) {
+              errorMessage = errorData.errorMessage;
             } else {
+              errorMessage = errorData;
             }
           });
         } else {
