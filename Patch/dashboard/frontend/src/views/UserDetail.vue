@@ -1,4 +1,6 @@
 <template>
+  <div class="user-datail" :class="{'user-datail-mobile': device !== 'pc'}">
+  </div>
 </template>
 
 <style lang="scss" scoped>
