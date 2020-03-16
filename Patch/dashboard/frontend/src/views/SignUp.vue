@@ -244,7 +244,9 @@ export default {
         // vm.errorMessage = errorData.errorMessage;
         let errorMessage = '';
         if (errorData.errorMessage !== undefined) {
+          errorMessage = errorData.errorMessage;
         } else {
+          errorMessage = errorData;
         }
 
         vm.buttonCodeDisabled = false;
