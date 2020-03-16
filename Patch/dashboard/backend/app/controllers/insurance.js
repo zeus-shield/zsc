@@ -7,8 +7,7 @@ const services = require('../services');
 // const debug = require('debug')('backend:app:controllers:insurance');
 
 const add = async(req, res) => {
-  // debug("add(%s, %s, %s, %s)", req.body.company, req.body.category,
-  //   JSON.parse(req.body.brief), JSON.parse(req.body.detail));
+  // debug('add(%s, %s, %s, %s)', req.body.company, req.body.category, req.body.brief, req.body.detail);
   let session = null;
   try {
     session = await mongoose.startSession();
@@ -20,8 +19,13 @@ const add = async(req, res) => {
     const detail = JSON.parse(req.body.detail);
 
     let result = null;
+    let conditions = {};
 
     // 1. if company and category exist ?
+    conditions = {
+      name: company,
+      'categories.name': category
+    };
     result = await services.companies.findByNamesAndCategory(company, category, session);
     if (!result) {
       throw createError('COMPANY_CATEGORIES_NOT_EXIST');
@@ -47,7 +51,6 @@ const add = async(req, res) => {
     session.endSession();
     res.sendOk('Add new insurance successfully!');
   } catch (err) {
-    // debug(err);
     if (session !== null) {
       await session.abortTransaction();
       session.endSession();
