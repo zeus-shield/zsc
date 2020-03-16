@@ -1,4 +1,6 @@
 <template>
+  <div class="user-google" :class="{'user-google-mobile': device !== 'pc'}" v-loading="loading" >
+  </div>
 </template>
 
 <style lang="scss" scoped>
