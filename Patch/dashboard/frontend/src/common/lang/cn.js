@@ -229,7 +229,7 @@ const cn = {
       insuranceRemove: '该保险产品记录将永久被删除, 是否继续?'
     },
     error: {
-      USER_HAS_EXIST: '用户已存在！',
+      USER_HAS_EXISTED: '用户已存在！',
       USER_NOT_EXIST: '用户不存在!',
       USER_IS_ACTIVE: '用户已激活!',
       USER_IS_NOT_ACTIVE: '用户未激活!',
@@ -243,9 +243,10 @@ const cn = {
 
       COMPANY_CATEGORIES_HAS_EXIST: '该保险公司下险种已存在！',
       COMPANY_CATEGORIES_NOT_EXIST: '该保险公司下险种不存在！',
+      COMPANY_HAS_EXISTED: '该保险公司已存在！',
       COMPANY_NOT_EXIST: '该保险公司不存在!',
 
-      INSURANCE_HAS_EXIST: '该保险产品已存在！',
+      INSURANCE_HAS_EXISTED: '该保险产品已存在！',
       INSURANCE_NOT_EXIST: '该保险产品不存在！',
 
       POLICY_COMPANY_NONE: '请输入公司名称',
