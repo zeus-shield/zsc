@@ -53,7 +53,8 @@ const state = () => {
         add: 'black',
         edit: 'black'
       },
-      setting: 'red'
+      setting: 'black',
+      contract: 'red'
     },
     notFound: 'black'
   };
