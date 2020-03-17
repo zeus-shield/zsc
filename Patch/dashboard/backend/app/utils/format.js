@@ -32,6 +32,10 @@ module.exports = {
     return data;
   },
   userList(data, auth = 'user') {
+    data.list.forEach((item, index) => {
+      data.list[index] = this.user(item, auth);
+    });
+    return data;
   },
   company(data) {
     return data;
