@@ -221,7 +221,7 @@ const en = {
       insuranceRemove: 'Remove the insurance records permanently, continue?'
     },
     error: {
-      USER_HAS_EXIST: 'User has already existed!',
+      USER_HAS_EXISTED: 'User has already existed!',
       USER_NOT_EXIST: 'User does not exist!',
       USER_IS_ACTIVE: 'User is active!',
       USER_IS_NOT_ACTIVE: 'User is not active!',
@@ -235,9 +235,10 @@ const en = {
 
       COMPANY_CATEGORIES_HAS_EXIST: 'Company and category have already existed!',
       COMPANY_CATEGORIES_NOT_EXIST: 'Company and category does not exist!',
+      COMPANY_HAS_EXISTED: 'Company has already existed!',
       COMPANY_NOT_EXIST: 'Company does not exist!',
 
-      INSURANCE_HAS_EXIST: 'Insurance has already existed!',
+      INSURANCE_HAS_EXISTED: 'Insurance has already existed!',
       INSURANCE_NOT_EXIST: 'Insurance does not exist!',
 
       POLICY_COMPANY_NONE: 'Please input company name',
