@@ -8,9 +8,9 @@ const instance = axios.create({
 });
 
 import Wallet from './wallet';
-import User from './userClass';
-import Insurance from './insuranceClass';
-import Company from './companyClass';
+import User from './user';
+import Insurance from './insurance';
+import Company from './company';
 
 class APIs {
   constructor() {
