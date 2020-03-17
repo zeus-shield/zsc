@@ -213,11 +213,11 @@ let router = new Router({
           name: 'adminCompany',
           component: AdminCompany
         },
-        {
-          path: '/admin/company/add',
-          name: 'adminCompanyAdd',
-          component: AdminCompanyAdd
-        },
+        // {
+        //   path: '/admin/company/add',
+        //   name: 'adminCompanyAdd',
+        //   component: AdminCompanyAdd
+        // },
         {
           path: '/admin/company/edit',
           name: 'adminCompanyEdit',
