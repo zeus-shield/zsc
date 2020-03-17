@@ -26,12 +26,17 @@ const add = async(req, res) => {
       name: company,
       'categories.name': category
     };
-    result = await services.companies.findByNamesAndCategory(company, category, session);
+    result = await services.companies.find(conditions, null, session);
     if (!result) {
       throw createError('COMPANY_CATEGORIES_NOT_EXIST');
     }
 
     // 2. check insurance exist ?
+    conditions = {
+      company: company,
+      category: category,
+      'brief.title': brief.title
+    };
     result = await services.insurances.find(company, category, brief.title, session);
     if (result) {
       throw createError('INSURANCE_HAS_EXIST');
