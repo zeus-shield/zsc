@@ -237,9 +237,9 @@ const detail = async(req, res) => {
 };
 
 const groupCategoriesByName = async(req, res) => {
-  debug('groupCategoriesByName()');
+  // debug('groupCategoriesByName()');
   try {
-    const result = await services.companies.groupCategoriesByName(null);
+    const result = await services.companies.groupCategoriesByName();
     res.sendOk(result);
   } catch (err) {
     res.sendErr(err);
