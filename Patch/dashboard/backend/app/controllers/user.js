@@ -116,22 +116,7 @@ const statistics = async(req, res) => {
   }
 };
 
-const list = async(req, res) => {
-  debug('list()');
-  res.send('/users/list');
-};
-
-// const create = async (req, res) => {
-//   debug("create()");
-//   try {
-//     const result = await services.users.addUser(req.body);
-//     res.sendOk(result);
-//   } catch (err) {
-//     res.sendErr(err);
-//   }
-// };
-
-module.exports = { emailCode, signUp, login, detail, setTOTP, saveTOTP, updateTOTP, addPolicy, statistics, list };
+module.exports = { emailCode, signUp, login, remove, update, setTOTP, saveTOTP, updateTOTP, addPolicy, list, detail, statistics };
 
 // // import user from './user'
 // export default {
