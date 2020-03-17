@@ -55,7 +55,7 @@ module.exports = {
   USER_HAS_EXIST: {
     status: 500,
     errorCode: 20100,
-    errorMessage: 'USER_HAS_EXIST'
+    errorMessage: 'USER_HAS_EXISTED'
   },
   USER_NOT_EXIST: {
     status: 500,
@@ -68,6 +68,9 @@ module.exports = {
     errorMessage: 'USER_IS_ACTIVE'
   },
   USER_IS_NOT_ACTIVE: {
+    status: 500,
+    errorCode: 20103,
+    errorMessage: 'USER_IS_NOT_ACTIVE'
   },
   USER_PASSWORD_WRONG: {
     status: 500,
