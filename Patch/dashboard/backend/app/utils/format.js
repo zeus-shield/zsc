@@ -24,10 +24,10 @@ module.exports = {
     data.created_at = this.formatDate(data.created_at);
     data.updated_at = this.formatDate(data.updated_at);
     if (data.last_login_at) {
-      data.last_login_at = this.formatDate(data.last_login_at);
+      data.last_login_at = this._formatDate(data.last_login_at);
     }
     if (data.active_expires_at) {
-      data.active_expires_at = this.formatDate(data.active_expires_at);
+      data.active_expires_at = this._formatDate(data.active_expires_at);
     }
     return data;
   },
