@@ -74,57 +74,57 @@ module.exports = {
   },
   USER_PASSWORD_WRONG: {
     status: 500,
-    errorCode: 20103,
+    errorCode: 20104,
     errorMessage: 'USER_PASSWORD_WRONG'
   },
   USER_CODE_WRONG: {
     status: 500,
-    errorCode: 20104,
+    errorCode: 20105,
     errorMessage: 'USER_CODE_WRONG'
   },
   USER_LOGIN_FAILED: {
     status: 500,
-    errorCode: 20105,
+    errorCode: 20106,
     errorMessage: 'USER_LOGIN_FAILED'
   },
   USER_ADD_FAILED: {
     status: 500,
-    errorCode: 20106,
+    errorCode: 20107,
     errorMessage: 'USER_ADD_FAILED'
   },
   USER_DELETE_FAILED: {
     status: 500,
-    errorCode: 20107,
+    errorCode: 20108,
     errorMessage: 'USER_DELETE_FAILED'
   },
   USER_UPDATE_FAILED: {
     status: 500,
-    errorCode: 20108,
+    errorCode: 20109,
     errorMessage: 'USER_UPDATE_FAILED'
   },
   USER_QUERY_FAILED: {
     status: 500,
-    errorCode: 20109,
+    errorCode: 20110,
     errorMessage: 'USER_QUERY_FAILED'
   },
   USER_FIND_FAILED: {
     status: 500,
-    errorCode: 20110,
+    errorCode: 20111,
     errorMessage: 'USER_FIND_FAILED'
   },
   USER_TOTP_NOT_SET: {
     status: 500,
-    errorCode: 20111,
+    errorCode: 20112,
     errorMessage: 'USER_TOTP_NOT_SET'
   },
   USER_TOTP_SETTED: {
     status: 500,
-    errorCode: 20112,
+    errorCode: 20113,
     errorMessage: 'USER_TOTP_SETTED'
   },
   USER_TOTP_VERIFY_ERR: {
     status: 500,
-    errorCode: 20113,
+    errorCode: 20114,
     errorMessage: 'USER_TOTP_VERIFY_ERR'
   },
 
