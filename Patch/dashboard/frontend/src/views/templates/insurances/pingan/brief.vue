@@ -26,7 +26,9 @@
   font-size: 14px;
 }
 .insurance .operation {
+  background: #fff9f2;
 }
+.insurance .operation .col {
 }
 .insurance .operation .col .desc {
 }
