@@ -37,9 +37,9 @@ const add = async(req, res) => {
       category: category,
       'brief.title': brief.title
     };
-    result = await services.insurances.find(company, category, brief.title, session);
+    result = await services.insurances.find(conditions, null, session);
     if (result) {
-      throw createError('INSURANCE_HAS_EXIST');
+      throw createError('INSURANCE_HAS_EXISTED');
     }
 
     // 3. insert insurance
