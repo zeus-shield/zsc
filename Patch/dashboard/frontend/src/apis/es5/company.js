@@ -103,6 +103,10 @@ const company = {
       // - Node only: JSON Object
       // data: querystring.parse(data.toString())
     };
+
+    try {
+    } catch (err) {
+    }
   },
 
   async update(token, name, newName, newCategoryNames) {
