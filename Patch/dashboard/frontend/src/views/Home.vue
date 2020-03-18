@@ -249,6 +249,8 @@ export default {
             clickable: true
           },
           thumbs: {
+            swiper: {
+            }
           }
         });
         console.log(swiper);
