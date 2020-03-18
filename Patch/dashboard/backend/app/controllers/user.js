@@ -40,15 +40,7 @@ const login = async(req, res) => {
   }
 };
 
-const detail = async(req, res) => {
-  debug('detail(%s, %s)', req.headers._id);
-  try {
-    const result = await services.users.detail(req.headers._id);
-    res.sendOk(result);
-  } catch (err) {
-    res.sendErr(err);
-  }
-};
+
 
 const setTOTP = async(req, res) => {
   debug('setTOTP(%s, %s)', req.headers._id, req.headers.cmd);
@@ -99,9 +91,19 @@ const addPolicy = async(req, res) => {
   }
 };
 
+const detail = async(req, res) => {
+  debug('detail(%s, %s)', req.headers._id);
+  try {
+    const result = await services.users.detail(req.headers._id);
+    res.sendOk(result);
+  } catch (err) {
+    res.sendErr(err);
+  }
+};
+
 const statistics = async(req, res) => {
-  debug('statistics(%s, %s, %s, %s, %s)', req.query.company,
-    req.query.category, req.query.title, req.query.sort, req.query.limit);
+  // debug('statistics(%s, %s, %s, %s, %s)', req.query.company,
+  //   req.query.category, req.query.title, req.query.sort, req.query.limit);
   try {
     const company = req.query.company;
     const category = req.query.category;
