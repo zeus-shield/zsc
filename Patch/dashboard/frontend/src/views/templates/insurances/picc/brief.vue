@@ -41,6 +41,9 @@
 .insurance .operation .col .desc {
 }
 .insurance .operation .col .desc .icon {
+  font-size: 20px;
+  color: #67C23A;
+  margin-right: 5px;
 }
 .insurance .operation .col .click {
 }
