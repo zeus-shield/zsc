@@ -7,8 +7,7 @@ const services = require('../services');
 // const debug = require('debug')('backend:app:controllers:company');
 
 const add = async(req, res) => {
-  debug('add(%s, %s)', req.body.name, req.body.categories);
-  let session = null;
+  // debug('add(%s, %s)', req.body.name, req.body.categories);
   try {
     session = await mongoose.startSession();
     session.startTransaction();
@@ -43,11 +42,6 @@ const add = async(req, res) => {
     res.sendOk('Add new company successfully!');
 
   } catch (err) {
-    // debug(err);
-    if (session !== null) {
-      await session.abortTransaction();
-      session.endSession();
-    }
     res.sendErr(err);
   }
 };
@@ -246,4 +240,4 @@ const groupCategoriesByName = async(req, res) => {
   }
 };
 
-module.exports = { add, remove, removeCategory, update, list, detail, groupCategoriesByName };
+module.exports = { add, remove, update, list, groupCategoriesByName };
