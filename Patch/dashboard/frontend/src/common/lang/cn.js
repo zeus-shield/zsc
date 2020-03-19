@@ -272,6 +272,8 @@ const cn = {
 
       SIGNUP_ACCOUNT_NONE: '请输入手机号/邮箱地址',
       SIGNUP_ACCOUNT_LEN_ERR: '长度在 6 到 18 个字符',
+      SIGNUP_CODE_NONE: '请输入6位验证码',
+      SIGNUP_CODE_LEN_ERR: '长度必须等于6',
   },
   component: {
     button: {
