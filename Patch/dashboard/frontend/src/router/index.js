@@ -239,11 +239,13 @@ let router = new Router({
           name: 'adminInsuranceEdit',
           component: AdminInsuranceEdit,
           props: (route) => ({
-            method: route.query.method,
-            company: route.query.company,
-            category: route.query.category,
-            title: route.query.title,
-            id: route.query.id
+            // param: route.query.param
+            param: {
+              id: route.query.id,
+              company: route.query.company,
+              category: route.query.category,
+              title: route.query.title
+            }
           })
         },
         {
