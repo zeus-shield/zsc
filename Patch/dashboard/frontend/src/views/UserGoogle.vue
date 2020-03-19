@@ -1,5 +1,11 @@
 <template>
   <div class="user-google" :class="{'user-google-mobile': device !== 'pc'}" v-loading="loading" >
+
+    <div class="header">
+      <span class="sprite"></span>
+      <span v-if="cmd === 'set'">{{ langSet.user.google.title[0] }}</span>
+      <span v-else>{{ langSet.user.google.title[1] }}</span>
+    </div>
   </div>
 </template>
 
