@@ -141,15 +141,15 @@ module.exports = {
   },
   COMPANY_NOT_EXIST: {
     status: 500,
-    errorCode: 20202,
+    errorCode: 20203,
     errorMessage: 'COMPANY_NOT_EXIST'
   },
 
   // 20000 + 300
-  INSURANCE_HAS_EXIST: {
+  INSURANCE_HAS_EXISTED: {
     status: 500,
     errorCode: 20300,
-    errorMessage: 'INSURANCE_HAS_EXIST'
+    errorMessage: 'INSURANCE_HAS_EXISTED'
   },
   INSURANCE_NOT_EXIST: {
     status: 500,
