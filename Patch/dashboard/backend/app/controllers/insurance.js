@@ -42,9 +42,15 @@ const add = async(req, res) => {
       throw createError('INSURANCE_HAS_EXISTED');
     }
 
-    // 3. insert insurance
-    result = await services.insurances.insert(company, category, brief, detail, session);
-    const insuranceId = result[0]._id;
+    // 3. add insurance
+    brief.created_at = Date.now();
+    const docs = [{
+      company: company,
+      category: category,
+      brief: brief,
+      detail: detail
+    }];
+    result = await services.insurances.insert(docs, session);
 
     // 4. push insurace id to company
     result = await services.companies.pushInsuranceId(company, category, insuranceId, session);
