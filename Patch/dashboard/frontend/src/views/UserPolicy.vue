@@ -1,5 +1,9 @@
 <template>
   <div class="user-policy" :class="{'user-policy-mobile': device !== 'pc'}">
+    <div class="header">
+      <span class="sprite"></span>
+      <span>{{ langSet.user.aside.slot[0].item[1] }}</span>
+    </div>
   </div>
 </template>
 
