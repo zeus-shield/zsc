@@ -15,7 +15,7 @@ module.exports = {
     }
     return result;
   },
-  user(data) {
+  user(data, auth = 'user') {
     // if (data.sex) {
     //   data.reSex = enums.user[data.sex];
     // }
