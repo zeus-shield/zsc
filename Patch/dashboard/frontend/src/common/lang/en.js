@@ -247,6 +247,8 @@ const en = {
       POLICY_CATEGORY_LEN_ERR: 'Length must be more than 3',
       POLICY_TITLE_NONE: 'Please input title',
       POLICY_TITLE_LEN_ERR: 'Length must be more than 3',
+      POLICY_HOLDER_NONE: 'Please input holder',
+      POLICY_HOLDER_LEN_ERR: 'Length must be more than 1',
     }
   },
   component: {
