@@ -91,6 +91,9 @@ const addPolicy = async(req, res) => {
   }
 };
 
+const list = async(req, res) => {
+};
+
 const detail = async(req, res) => {
   debug('detail(%s, %s)', req.headers._id);
   try {
