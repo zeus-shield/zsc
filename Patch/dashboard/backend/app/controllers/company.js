@@ -100,50 +100,6 @@ const remove = async(req, res) => {
   }
 };
 
-const removeCategory = async(req, res) => {
-  debug('removeCategory(%s, %s)', req.body.name, req.body.category);
-
-  let session = null;
-  try {
-    session = await mongoose.startSession();
-    session.startTransaction();
-
-    let result = await services.companies.findByNamesAndCategory(req.body.name, req.body.category, session);
-    if (!result) {
-      throw createError('COMPANY_CATEGORIES_NOT_EXIST');
-    }
-
-    // 1. remove insurances from insurance
-    const category = result.categories.find(category => {
-      return category.name === req.body.category;
-    });
-    if (category !== undefined) {
-      if (category.insurance_ids.length > 0) {
-        // remove
-        for (let i = 0; i < category.insurance_ids.length; i++) {
-          await services.insurances.deleteById(category.insurance_ids[i], session);
-          // debug(result);
-        }
-      }
-    }
-
-    // 2. pull category from company
-    const update = {$pull: {'categories': {name: req.body.category}}};
-    result = await services.companies.update(req.body.name, update, session);
-
-    await session.commitTransaction();
-    session.endSession();
-
-    res.sendOk('Remove companie category successfully!');
-  } catch (err) {
-    // debug(err);
-    if (session !== null) {
-      await session.abortTransaction();
-      session.endSession();
-    }
-    res.sendErr(err);
-  }
-};
 
 const update = async(req, res) => {
   const name = req.body.name;
