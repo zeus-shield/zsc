@@ -261,8 +261,8 @@ export default {
     //   console.log('[app]popstate');
     //   // this.$router.go(0);
     // }, false);
-    APIs.ethereum.wallet.addListener(this);
-    APIs.ethereum.wallet.enable();
+    // APIs.ethereum.wallet.addListener(this);
+    // APIs.ethereum.wallet.enable();
   },
   mounted() {
     console.log('%c[App]mounted()', `color:${this.logColor}`);
