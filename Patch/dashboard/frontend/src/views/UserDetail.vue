@@ -57,6 +57,9 @@
 }
 .dialog .form .space {
 }
+.dialog .button {
+  width: 50%;
+}
 </style>
 
 <script>
