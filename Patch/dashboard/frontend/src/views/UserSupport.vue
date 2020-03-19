@@ -34,6 +34,10 @@ export default {
     console.log('%c[UserSupport]updated()', `color:${this.logColor}`);
   },
   beforeRouteEnter(to, from, next) {
+    console.log('%c[UserSupport]beforeRouteEnter(\"%s\" => \"%s\")', 'color:black', from.fullPath, to.fullPath);
+    next(vm => {
+      console.log('%c[UserSupport]beforeRouteEnter(\"%s\" => \"%s\") next', `color:${vm.logColor}`, from.fullPath, to.fullPath);
+    });
   },
   beforeRouteUpdate(to, from, next) {
     console.log('%c[UserSupport]beforeRouteUpdate(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
