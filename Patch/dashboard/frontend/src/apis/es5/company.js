@@ -105,6 +105,8 @@ const company = {
     };
 
     try {
+      let res = await instance.post('company/removeCategory', data, config);
+      return res.data;
     } catch (err) {
     }
   },
