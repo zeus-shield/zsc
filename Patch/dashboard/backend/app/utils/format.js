@@ -21,8 +21,8 @@ module.exports = {
     // }
     delete data.password;
     delete data.email_code;
-    data.created_at = this.formatDate(data.created_at);
-    data.updated_at = this.formatDate(data.updated_at);
+    data.created_at = this._formatDate(data.created_at);
+    data.updated_at = this._formatDate(data.updated_at);
     if (data.last_login_at) {
       data.last_login_at = this._formatDate(data.last_login_at);
     }
