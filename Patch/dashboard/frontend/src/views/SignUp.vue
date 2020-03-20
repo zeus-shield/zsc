@@ -137,18 +137,18 @@ export default {
       },
       rules: {
         phoneAccount: [
-          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
-          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          // { required: true, message: '??????/????', trigger: 'blur' },
+          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
           { validator: validatePhoneAccount, trigger: 'blur' }
         ],
         emailAccount: [
-          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
-          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          // { required: true, message: '??????/????', trigger: 'blur' },
+          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
           { validator: validateEmailAccount, trigger: 'blur' }
         ],
         code: [
-          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
-          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          // { required: true, message: '??????/????', trigger: 'blur' },
+          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
           { validator: validateCode, trigger: 'blur' }
         ],
         password: [
@@ -247,6 +247,12 @@ export default {
           errorMessage = errorData.errorMessage;
         } else {
           errorMessage = errorData;
+        }
+
+        if (errorMessage.indexOf('timeout') !== -1) { // timeout of 2000ms exceeded
+          vm.errorMessage = 'TIMEOUT'; // vm.langSet.message.error.timeout;
+        } else {
+          vm.errorMessage = errorMessage;
         }
 
         vm.buttonCodeDisabled = false;
