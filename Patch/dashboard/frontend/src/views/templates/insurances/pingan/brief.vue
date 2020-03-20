@@ -18,6 +18,8 @@
   margin: 40px 20px 0px 20px;
 }
 .insurance .info .col .title {
+  font-size: 16px;
+  font-weight: 700;
 }
 .insurance .info .col .corner {
 }
