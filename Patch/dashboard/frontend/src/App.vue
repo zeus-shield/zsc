@@ -245,6 +245,8 @@ export default {
           clearTimeout(vm.resizeFlag);
         }
         vm.resizeFlag = setTimeout(() => {
+          vm.resizeFlag = null;
+          vm.updateDevice();
         }, 100);
       });
     }
