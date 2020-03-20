@@ -22,6 +22,8 @@
   border-bottom: 0.0625rem solid #e4e4e4;
 }
 .header .sprite {
+  display: inline-block;
+  background: transparent url(../assets/images/icon-sprite.png) no-repeat 100% 100%;
 }
 .collapse {
   counter-reset: num;
