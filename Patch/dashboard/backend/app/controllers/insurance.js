@@ -53,7 +53,7 @@ const add = async(req, res) => {
     result = await services.insurances.insert(docs, session);
 
     // 4. push insurace id to company
-    result = await services.companies.pushInsuranceId(company, category, insuranceId, session);
+    result = await services.companies.pushInsuranceId(company, category, result[0]._id, session);
     if (!result) {
       throw createError('COMPANY_NOT_EXIST');
     }
@@ -121,10 +121,8 @@ const update = async(req, res) => {
     if (!result) {
       throw createError('INSURANCE_NOT_EXIST');
     }
-
     res.sendOk('Update insurance successfully!');
   } catch (err) {
-    // debug(err);
     throw err;
   }
 };
@@ -132,7 +130,7 @@ const update = async(req, res) => {
 const list = async(req, res) => {
   // debug("list()");
   try {
-    const result = await services.insurances.findAll(null);
+    const result = await services.insurances.list({session: null});
     res.sendOk(result);
   } catch (err) {
     res.sendErr(err);
