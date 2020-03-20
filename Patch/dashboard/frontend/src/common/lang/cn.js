@@ -274,6 +274,9 @@ const cn = {
       SIGNUP_ACCOUNT_LEN_ERR: '长度在 6 到 18 个字符',
       SIGNUP_CODE_NONE: '请输入6位验证码',
       SIGNUP_CODE_LEN_ERR: '长度必须等于6',
+      SIGNUP_PWD_NONE: '请输入密码',
+      SIGNUP_PWD_LEN_ERR: '长度在 3 到 6 个字符',
+      SIGNUP_PWD2_ERR: '两次输入的密码不一致',
   },
   component: {
     button: {
