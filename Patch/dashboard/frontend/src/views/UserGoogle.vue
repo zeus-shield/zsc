@@ -42,6 +42,8 @@
 .content .step .tip .alert .title {
 }
 .content .step .tip .alert .description {
+  font-size: 0.875rem; // 14px;
+  color: #444;
 }
 .content .step .qr-box.bind {
   margin: auto 1.25rem;
