@@ -127,8 +127,8 @@ export default {
       },
       rules: {
         account: [
-          // { required: true, message: '??????/????', trigger: 'blur' },
-          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
+          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
+          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
           // { validator: validateAccount, trigger: ['blur', 'change'] },
           { validator: validateAccount, trigger: 'blur' }
         ],
@@ -246,6 +246,8 @@ export default {
             if (data.content.totp_on) {
               vm.dialogVisible = true;
             } else {
+              vm.loading = false;
+              vm.$router.push({name: 'userDetail'});
             }
           }).catch(errorData => {
             // console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, errorData);
