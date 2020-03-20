@@ -5,6 +5,12 @@
         <el-col>
           <!-- for original swiper -->
           <div v-if="originalSwiper === true">
+            <div class="swiper-container gallery-top">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide" v-for="(item, index) in 3" :key="index">
+                </div>
+               </div>
+            </div>
     Home
           </div>
         </el-col>
