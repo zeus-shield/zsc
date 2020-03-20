@@ -172,19 +172,6 @@ const list = async(req, res) => {
   }
 };
 
-const detail = async(req, res) => {
-  debug('detail(%s)', req.query.name);
-  try {
-    const result = await services.companies.findByName(req.query.name, null);
-    if (!result) {
-      throw createError('COMPANY_NOT_EXIST');
-    }
-
-    res.sendOk(result);
-  } catch (err) {
-    res.sendErr(err);
-  }
-};
 
 const groupCategoriesByName = async(req, res) => {
   // debug('groupCategoriesByName()');
