@@ -207,6 +207,10 @@ export default {
     handleSelect(key) {
       // console.log(key, keyPath);
       if (key === '72') { // logout
+        utils.storage.cookie.remove('login_account');
+        utils.storage.cookie.remove('login_token');
+        utils.storage.cookie.remove('login_id');
+        this.$router.push({name: 'home'});
       } else if (key === '3') { // white paper
         if (utils.storage.cookie.get('lang') === 'cn') {
           // window.location.href = 'static/Myinsura_whitepaper_cn_v0.00.02.pdf';
