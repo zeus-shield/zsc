@@ -92,6 +92,11 @@ const addPolicy = async(req, res) => {
 };
 
 const list = async(req, res) => {
+  // debug('list()');
+  try {
+  } catch (err) {
+    res.sendErr(err);
+  }
 };
 
 const detail = async(req, res) => {
