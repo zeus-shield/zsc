@@ -36,6 +36,9 @@
 .account .info {
 }
 .account .info .gap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .account .info .gap .line {
 }
