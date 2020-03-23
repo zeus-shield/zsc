@@ -139,6 +139,11 @@ module.exports = {
     errorCode: 20201,
     errorMessage: 'COMPANY_CATEGORIES_NOT_EXIST'
   },
+  COMPANY_HAS_EXISTED: {
+    status: 500,
+    errorCode: 20202,
+    errorMessage: 'COMPANY_HAS_EXISTED'
+  },
   COMPANY_NOT_EXIST: {
     status: 500,
     errorCode: 20203,
