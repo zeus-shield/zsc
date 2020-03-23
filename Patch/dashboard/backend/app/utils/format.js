@@ -19,8 +19,12 @@ module.exports = {
     // if (data.sex) {
     //   data.reSex = enums.user[data.sex];
     // }
-    delete data.password;
-    delete data.email_code;
+    if (auth === 'admin') {
+    } else if (auth === 'user') {
+      delete data.password;
+      delete data.email_code;
+    } else {
+    }
     data.created_at = this._formatDate(data.created_at);
     data.updated_at = this._formatDate(data.updated_at);
     if (data.last_login_at) {
