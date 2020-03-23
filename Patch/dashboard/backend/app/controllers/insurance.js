@@ -166,13 +166,14 @@ const detail = async(req, res) => {
 };
 
 const count = async(req, res) => {
-  // debug("count(%s, %s, %s)", req.query.company, req.query.category, req.query.title);
+  // debug('count(%s)', JSON.stringify(req.query));
   try {
-    const company = req.query.company;
-    const category = req.query.category;
-    const title = req.query.title;
-
-    const result = await services.insurances.count(company, category, title);
+    const key = JSON.parse(req.query.key);
+    const company = key.company;
+    const category = key.category;
+    const title = key.title;
+    let filter = {};
+    const result = await services.insurances.countDocuments(filter);
     res.sendOk(result);
   } catch (err) {
     res.sendErr(err);
