@@ -11,6 +11,9 @@ class Company extends Transaction {
   };
 
   async groupCategoriesByName(token) {
+    try {
+    } catch (err) {
+    }
   };
 }
 
