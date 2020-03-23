@@ -9,6 +9,10 @@ class Insurance extends Transaction {
 
   async add(token, company, category, brief, detail) {
   };
+
+  async detail(token, id, key) {
+  };
+
   // key is { company: company, category: category } or
   //        { company: company, category: category, title: title }
   async count(token, key) {
