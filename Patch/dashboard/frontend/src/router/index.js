@@ -45,6 +45,8 @@ const AdminInsurance = resolve => require.ensure([], () => resolve(require('@/vi
 const AdminInsuranceAdd = resolve => require.ensure([], () => resolve(require('@/views/AdminInsuranceAdd')), 'lazy');
 const AdminInsuranceEdit = resolve => require.ensure([], () => resolve(require('@/views/AdminInsuranceEdit')), 'lazy');
 const AdminSetting = resolve => require.ensure([], () => resolve(require('@/views/AdminSetting')), 'lazy');
+const AdminContract = resolve => require.ensure([], () => resolve(require('@/views/AdminContract')), 'lazy');
+const CoreWallet = resolve => require.ensure([], () => resolve(require('@/views/admin/core/Wallet')), 'lazy');
 
 // const Test = resolve => require.ensure([], () => resolve(require('@/views/Test')), 'lazy');
 
