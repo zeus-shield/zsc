@@ -277,6 +277,7 @@ const cn = {
       SIGNUP_PWD_NONE: '请输入密码',
       SIGNUP_PWD_LEN_ERR: '长度在 3 到 6 个字符',
       SIGNUP_PWD2_ERR: '两次输入的密码不一致',
+      'No recipients defined': '邮箱格式错误！',
   },
   component: {
     button: {
