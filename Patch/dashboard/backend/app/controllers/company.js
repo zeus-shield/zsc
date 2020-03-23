@@ -163,9 +163,17 @@ const update = async(req, res) => {
 };
 
 const list = async(req, res) => {
-  debug('list()');
+  // debug('list()');
   try {
-    const result = await services.companies.findAll(null);
+    const params = {
+      session: null,
+      populate: {
+        path: 'categories.insurance_ids',
+        select: '_id brief.title',
+        model: 'Insurance'
+      }
+    };
+    const result = await services.companies.list(params);
     res.sendOk(result);
   } catch (err) {
     res.sendErr(err);
