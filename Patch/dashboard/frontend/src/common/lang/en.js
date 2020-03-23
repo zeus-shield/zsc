@@ -249,6 +249,10 @@ const en = {
       POLICY_TITLE_LEN_ERR: 'Length must be more than 3',
       POLICY_HOLDER_NONE: 'Please input holder',
       POLICY_HOLDER_LEN_ERR: 'Length must be more than 1',
+      POLICY_INSURANT_NONE: 'Please input insurant',
+      POLICY_INSURANT_LEN_ERR: 'Length must be more than 1',
+      POLICY_AMOUNT_NONE: 'Please input amount',
+      POLICY_AMOUNT_LEN_ERR: 'Length must be more than 1',
     }
   },
   component: {
