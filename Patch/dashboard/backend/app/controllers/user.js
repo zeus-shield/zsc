@@ -100,10 +100,14 @@ const list = async(req, res) => {
 };
 
 const detail = async(req, res) => {
-  debug('detail(%s, %s)', req.headers._id);
+  // debug('detail(%s)', JSON.stringify(req.query));
   try {
-    const result = await services.users.detail(req.headers._id);
-    res.sendOk(result);
+    let conditions = {};
+    const result = await services.users.find(conditions, null, null);
+    if (!result) {
+      throw createError('USER_NOT_EXIST');
+    }
+    res.sendOk(format.user(result));
   } catch (err) {
     res.sendErr(err);
   }
