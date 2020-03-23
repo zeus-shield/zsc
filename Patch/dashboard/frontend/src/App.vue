@@ -245,6 +245,16 @@ export default {
           clearTimeout(vm.resizeFlag);
         }
         vm.resizeFlag = setTimeout(() => {
+          console.log('%c[App]resize()', `color:${vm.logColor}`);
+          console.log('%c[App]documentElement: (w=%d, h=%d)', `color:${vm.logColor}`,
+            document.documentElement.clientWidth,
+            document.documentElement.clientHeight);
+          console.log('%c[App]body: (w=%d, h=%d)', `color:${vm.logColor}`,
+            document.body.clientWidth,
+            document.body.clientHeight);
+          console.log('%c[App]screen: (w=%d, h=%d)', `color:${vm.logColor}`,
+            window.screen.width,
+            window.screen.height);
           vm.resizeFlag = null;
           vm.updateDevice();
         }, 100);
