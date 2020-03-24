@@ -103,6 +103,11 @@ const detail = async(req, res) => {
   // debug('detail(%s)', JSON.stringify(req.query));
   try {
     let conditions = {};
+    if (req.query.id) {
+    } else if (req.query.account) {
+    } else {
+    }
+
     const result = await services.users.find(conditions, null, null);
     if (!result) {
       throw createError('USER_NOT_EXIST');
