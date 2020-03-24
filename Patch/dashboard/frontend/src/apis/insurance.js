@@ -10,6 +10,16 @@ class Insurance extends Transaction {
   async add(token, company, category, brief, detail) {
   };
 
+  async remove(token, id, key) {
+  };
+
+  // only by id
+  async update(token, id, update) {
+  };
+
+  async list(token) {
+  };
+
   async detail(token, id, key) {
   };
 
