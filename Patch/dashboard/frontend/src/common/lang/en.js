@@ -253,6 +253,8 @@ const en = {
       POLICY_INSURANT_LEN_ERR: 'Length must be more than 1',
       POLICY_AMOUNT_NONE: 'Please input amount',
       POLICY_AMOUNT_LEN_ERR: 'Length must be more than 1',
+      POLICY_STARTTIME_NONE: 'Please input start time',
+      POLICY_PERIOD_NONE: 'Please input period',
     }
   },
   component: {
