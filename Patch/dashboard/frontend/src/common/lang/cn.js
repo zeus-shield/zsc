@@ -278,6 +278,10 @@ const cn = {
       SIGNUP_PWD_LEN_ERR: '长度在 3 到 6 个字符',
       SIGNUP_PWD2_ERR: '两次输入的密码不一致',
       'No recipients defined': '邮箱格式错误！',
+
+      TOKEN_IS_MISSING: '令牌遗失！',
+      ROUTE_NOT_EXIST: '页面不存在!',
+      TIMEOUT: '连接超时，请再试一次!',
   },
   component: {
     button: {
