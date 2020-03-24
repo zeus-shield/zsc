@@ -13,6 +13,9 @@
 .insurance .img .col {
 }
 .insurance .img .col .content {
+  width: 100%;
+  // height: 100%;
+  height: auto;
 }
 .insurance .info .col {
   margin: 40px 20px 0px 20px;
@@ -31,6 +34,7 @@
   background: #fff9f2;
 }
 .insurance .operation .col {
+  margin: 40px auto;
 }
 .insurance .operation .col .desc {
 }
