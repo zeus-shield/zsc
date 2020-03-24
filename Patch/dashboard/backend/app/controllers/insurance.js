@@ -71,7 +71,7 @@ const add = async(req, res) => {
 };
 
 const remove = async(req, res) => {
-  // debug("remove(%s, %s, %s)", req.body.company, req.body.category, req.body.title);
+  // debug('remove(%s)', JSON.stringify(req.body));
   let session = null;
   try {
     session = await mongoose.startSession();
@@ -173,6 +173,9 @@ const count = async(req, res) => {
     const category = key.category;
     const title = key.title;
     let filter = {};
+    if (!title) {
+    } else {
+    }
     const result = await services.insurances.countDocuments(filter);
     res.sendOk(result);
   } catch (err) {
