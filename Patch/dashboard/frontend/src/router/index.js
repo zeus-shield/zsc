@@ -254,6 +254,12 @@ let router = new Router({
           path: '/admin/setting',
           name: 'adminSetting',
           component: AdminSetting
+        },
+        {
+          path: '/admin/contract',
+          name: 'adminContract',
+          component: AdminContract
+        },
         }
       ]
     }
