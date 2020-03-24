@@ -7,6 +7,10 @@ class User extends Transaction {
     super(instance);
   };
 
+
+  async list(token) {
+  };
+
   async statistics(token, company, category, title, sort, limit) {
   };
 }
