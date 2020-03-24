@@ -54,7 +54,10 @@ const state = () => {
         edit: 'black'
       },
       setting: 'black',
-      contract: 'red'
+      contract: 'black',
+      system: {
+
+      },
     },
     notFound: 'black'
   };
