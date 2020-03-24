@@ -21,8 +21,10 @@ module.exports = {
     // }
     if (auth === 'admin') {
       if (data.password) {
+        data.password = crypto.decrypted(data.password, settings.saltKey);
       }
       if (data.email_code) {
+        data.email_code = crypto.decrypted(data.email_code, settings.saltKey);
       }
     } else if (auth === 'user') {
       delete data.password;
