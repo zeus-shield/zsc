@@ -12,7 +12,9 @@ class Company extends Transaction {
 
   async groupCategoriesByName(token) {
     try {
+      return await this.transaction('get', 'company/groupCategoriesByName', {token});
     } catch (err) {
+      throw err;
     }
   };
 }
