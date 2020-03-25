@@ -255,6 +255,9 @@ const en = {
       POLICY_AMOUNT_LEN_ERR: 'Length must be more than 1',
       POLICY_STARTTIME_NONE: 'Please input start time',
       POLICY_PERIOD_NONE: 'Please input period',
+      POLICY_PERIOD_LEN_ERR: 'Length must be more than 1',
+
+      LOGIN_ACCOUNT_NONE: 'Please input phone number or email',
     }
   },
   component: {
