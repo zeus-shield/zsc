@@ -282,6 +282,8 @@ const cn = {
       TOKEN_IS_MISSING: '令牌遗失！',
       ROUTE_NOT_EXIST: '页面不存在!',
       TIMEOUT: '连接超时，请再试一次!',
+      UNKNOWN: '未知错误！'
+    }
   },
   component: {
     button: {
