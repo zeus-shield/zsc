@@ -260,6 +260,10 @@ let router = new Router({
           name: 'adminContract',
           component: AdminContract
         },
+        {
+          path: '/admin/core/wallet',
+          name: 'coreWallet',
+          component: CoreWallet
         }
       ]
     }
