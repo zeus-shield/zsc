@@ -174,6 +174,10 @@ const count = async(req, res) => {
     const title = key.title;
     let filter = {};
     if (!title) {
+      filter = {
+        company: company,
+        category: category
+      };
     } else {
     }
     const result = await services.insurances.countDocuments(filter);
