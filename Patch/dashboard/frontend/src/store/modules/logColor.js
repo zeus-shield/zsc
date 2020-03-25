@@ -58,6 +58,9 @@ const state = () => {
       system: {
 
       },
+      core: {
+        wallet: 'red'
+      }
     },
     notFound: 'black'
   };
