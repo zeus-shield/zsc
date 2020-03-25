@@ -28,6 +28,9 @@
 
           <!-- insurance -->
           <el-submenu index="2">
+            <template slot="title">
+              {{ langSet.header.insurance }}
+            </template>
           </el-submenu>
 
           <!-- white paper -->
