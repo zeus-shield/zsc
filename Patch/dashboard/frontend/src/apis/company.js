@@ -8,6 +8,8 @@ class Company extends Transaction {
   };
 
   async add(token, name, categories) {
+
+  async list(token) {
   };
 
   async groupCategoriesByName(token) {
