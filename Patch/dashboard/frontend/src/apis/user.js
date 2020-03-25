@@ -8,6 +8,10 @@ class User extends Transaction {
   };
 
 
+
+  async info(token, id, account) {
+  };
+
   async list(token) {
   };
 
