@@ -10,6 +10,9 @@
                 <div class="swiper-slide" v-for="(item, index) in 3" :key="index">
                 </div>
                </div>
+              <div class="swiper-button-next swiper-button-white"></div>
+              <div class="swiper-button-prev swiper-button-white"></div>
+              <div class="swiper-pagination"></div>
             </div>
     Home
           </div>
