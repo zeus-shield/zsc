@@ -104,8 +104,11 @@ const detail = async(req, res) => {
   try {
     let conditions = {};
     if (req.query.id) {
+      conditions = {_id: req.query.id};
     } else if (req.query.account) {
+      conditions = {account: req.query.account};
     } else {
+      throw createError('COMMON_PARAM_ERROR');
     }
 
     const result = await services.users.find(conditions, null, null);
