@@ -16,6 +16,12 @@ class User extends Transaction {
   };
 
   async statistics(token, company, category, title, sort, limit) {
+    const query = new URLSearchParams();
+    query.append('company', company);
+    query.append('category', category);
+    query.append('title', title);
+    query.append('sort', sort);
+    query.append('limit', limit);
   };
 }
 
