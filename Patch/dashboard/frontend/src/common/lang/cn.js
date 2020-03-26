@@ -282,6 +282,11 @@ const cn = {
       TOKEN_IS_MISSING: '令牌遗失！',
       ROUTE_NOT_EXIST: '页面不存在!',
       TIMEOUT: '连接超时，请再试一次!',
+
+      COMMON_PARAM_ERROR: '参数错误！',
+
+      'Network Error': '系统跨域连接错误！',
+
       UNKNOWN: '未知错误！'
     }
   },
