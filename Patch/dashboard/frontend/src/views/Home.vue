@@ -14,7 +14,8 @@
               <div class="swiper-button-prev swiper-button-white"></div>
               <div class="swiper-pagination"></div>
             </div>
-    Home
+          </div>
+          </div>
           </div>
         </el-col>
       </el-row>
