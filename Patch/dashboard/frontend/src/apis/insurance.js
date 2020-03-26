@@ -29,6 +29,8 @@ class Insurance extends Transaction {
   // key is { company: company, category: category } or
   //        { company: company, category: category, title: title }
   async count(token, key) {
+    const query = new URLSearchParams();
+    query.append('key', JSON.stringify(key));
   };
 }
 
