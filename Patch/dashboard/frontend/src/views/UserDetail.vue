@@ -28,6 +28,9 @@
 .account .tip {
 }
 .account .tip .title {
+  font-size: 0.875rem; // 14px;
+  font-weight: 700;
+  color: #444;
 }
 .account .tip .description {
   font-size: 0.875rem; // 14px;
