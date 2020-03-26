@@ -258,6 +258,8 @@ const en = {
       POLICY_PERIOD_LEN_ERR: 'Length must be more than 1',
 
       LOGIN_ACCOUNT_NONE: 'Please input phone number or email',
+      LOGIN_ACCOUNT_LEN_ERR: 'Length of 6 to 18 characters',
+      LOGIN_PWD_NONE: 'Please input password',
     }
   },
   component: {
