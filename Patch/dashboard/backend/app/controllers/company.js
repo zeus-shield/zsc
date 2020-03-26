@@ -25,6 +25,9 @@ const update = async(req, res) => {
     session = await mongoose.startSession();
     session.startTransaction();
 
+    let result = {};
+    const update = JSON.parse(req.body.update);
+
     await session.commitTransaction();
     session.endSession();
 
