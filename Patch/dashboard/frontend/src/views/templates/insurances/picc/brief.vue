@@ -16,10 +16,10 @@
 }
 .insurance .thumb .col .brief {
 }
-.insurance .thumb .col .brief strong {
-  color: #666;
-  font-weight: normal;
-}
+// .insurance .thumb .col .brief strong {
+//   color: #666;
+//   font-weight: normal;
+// }
 .insurance .info .col {
   margin: 40px 20px 0px 20px;
 }
