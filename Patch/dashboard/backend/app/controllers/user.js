@@ -94,6 +94,9 @@ const addPolicy = async(req, res) => {
 const list = async(req, res) => {
   // debug('list()');
   try {
+    const result = await services.users.list({session: null});
+    res.sendOk(format.userList(result, 'admin'));
+    // res.sendOk(result);
   } catch (err) {
     res.sendErr(err);
   }
