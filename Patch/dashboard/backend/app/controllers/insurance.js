@@ -179,6 +179,11 @@ const count = async(req, res) => {
         category: category
       };
     } else {
+      filter = {
+        company: company,
+        category: category,
+        'brief.title': title
+      };
     }
     const result = await services.insurances.countDocuments(filter);
     res.sendOk(result);
