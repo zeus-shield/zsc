@@ -138,24 +138,19 @@ const list = async(req, res) => {
 };
 
 const detail = async(req, res) => {
-  // debug("detail(%s)", req.query.company, req.query.category, req.query.title);
+  // debug('detail(%s)', JSON.stringify(req.query));
   try {
-    const method = req.query.method;
-    const company = req.query.company;
-    const category = req.query.category;
-    const title = req.query.title;
-    const id = req.query.id;
+    let conditions = {};
 
-    let result;
-
-    if (method === 'key') {
-      result = await services.insurances.find(company, category, title, null);
-    } else if (method === 'id') {
-      result = await services.insurances.findById(id, null);
+    if (req.query.id) {
+ 
+    } else if (req.query.key) {
+      };
     } else {
       throw createError('COMMON_PARAM_ERROR');
     }
 
+    const result = await services.insurances.find(conditions, null, null);
     if (!result) {
       throw createError('INSURANCE_NOT_EXIST');
     }
