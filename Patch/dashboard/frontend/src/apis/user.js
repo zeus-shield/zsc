@@ -22,6 +22,12 @@ class User extends Transaction {
     query.append('title', title);
     query.append('sort', sort);
     query.append('limit', limit);
+
+    try {
+      return await this.transaction('get', 'statistics', {token}, query);
+    } catch (err) {
+      throw err;
+    }
   };
 }
 
