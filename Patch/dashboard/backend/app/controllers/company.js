@@ -28,6 +28,15 @@ const update = async(req, res) => {
     let result = {};
     const update = JSON.parse(req.body.update);
 
+    // check duplicate
+    for (let i = 0; i < update.categories.length - 1; i++) {
+      for (let j = i + 1; j < update.categories.length; j++) {
+        if (update.categories[i].name === update.categories[j].name) {
+          throw createError('INSURANCE_DUPLICATE');
+        }
+      }
+    }
+
     await session.commitTransaction();
     session.endSession();
 
