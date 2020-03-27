@@ -140,6 +140,9 @@ export default {
     ...mapGetters('lang', ['langSet']),
     ...mapGetters('market', ['cacheData']),
     insuranceCache: {
+      // getter
+      get: function() {
+      }
     }
   },
   created() {
