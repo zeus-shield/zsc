@@ -14,7 +14,13 @@
               <div class="swiper-button-prev swiper-button-white"></div>
               <div class="swiper-pagination"></div>
             </div>
-          </div>
+            <!-- <div class="swiper-container gallery-thumbs">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide" v-for="(item, index) in 3" :key="index">
+                  <img class="bg" :src="getImgUrl('banner-bg', item)" alt=""></img>
+                </div>
+              </div>
+            </div> -->
           </div>
           </div>
         </el-col>
