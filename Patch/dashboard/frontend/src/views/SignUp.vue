@@ -242,6 +242,12 @@ export default {
           vm.buttonCodeName = timeout + 's';
           --timeout;
           vm.buttonCodeDisabled = true;
+          if (timeout < 0) {
+            vm.buttonCodeName = vm.langSet.signUp.retrieveCode;
+            window.clearInterval(interval);
+            vm.buttonCodeDisabled = false;
+            vm.codeStatus = 'timeout';
+          }
         }, 1000);
       }).catch(errorData => {
         // vm.errorMessage = errorData.errorMessage;
