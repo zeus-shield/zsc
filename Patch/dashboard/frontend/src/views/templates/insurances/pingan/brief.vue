@@ -1,4 +1,8 @@
 <template>
+  <div class="insurance-pingan-brief">
+    <el-row class="insurance" :gutter="0" type="flex" justify="start">
+    </el-row>
+  </div>
 </template>
 
 <style lang="scss" scoped>
