@@ -218,7 +218,10 @@ const en = {
       companyCategoryExist: 'Company category exist, continue?',
       companyCategoryRemove: 'Remove the company category records permanently, continue?',
 
-      insuranceRemove: 'Remove the insurance records permanently, continue?'
+      insuranceRemove: 'Remove the insurance records permanently, continue?',
+
+      addAccount: 'External account detected!',
+      removeAccount: 'External account login out',
     },
     error: {
       USER_HAS_EXISTED: 'User has already existed!',
