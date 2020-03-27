@@ -60,8 +60,10 @@
 .security .row .icon {
 }
 .security .row .description {
+  color: #999;
 }
 .dialog .form .space {
+  margin-top: 1.375rem; // 22px;
 }
 .dialog .button {
   width: 50%;
