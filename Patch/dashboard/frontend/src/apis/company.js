@@ -9,6 +9,10 @@ class Company extends Transaction {
 
   async add(token, name, categories) {
 
+  // only by id
+  async update(token, id, update) {
+  };
+
   async list(token) {
     try {
       return await this.transaction('get', 'company', {token});
