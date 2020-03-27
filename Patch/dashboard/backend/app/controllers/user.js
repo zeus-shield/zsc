@@ -74,13 +74,17 @@ const updateTOTP = async(req, res) => {
 
 // new interface
 const addPolicy = async(req, res) => {
-  debug('addPolicy(%s, %s)', req.body.id, req.body.policy);
+  // debug('addPolicy(%s)', JSON.stringify(req.body));
   try {
+    // There is only one database write operation, and session can not be used.
+    let conditions = {};
+    if (req.body.id) {
+    } else if (req.body.account) {
+    } else {
+    }
     let policy = JSON.parse(req.body.policy);
     policy.insurance.id = mongoose.Types.ObjectId(policy.insurance.id);
 
-    const update = {$push: {policies: policy}, $set: {updated_at: Date.now()}};
-    const result = await services.users.update(req.body.id, update, null);
     if (!result) {
       throw createError('USER_NOT_EXIST');
     }
