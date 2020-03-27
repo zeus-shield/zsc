@@ -226,7 +226,10 @@ const cn = {
       companyCategoryExist: '公司险种记录存在, 是否继续?',
       companyCategoryRemove: '公司险种记录将永久被删除, 是否继续?',
 
-      insuranceRemove: '该保险产品记录将永久被删除, 是否继续?'
+      insuranceRemove: '该保险产品记录将永久被删除, 是否继续?',
+
+      addAccount: '检测到外部账户',
+      removeAccount: '外部账户退出',
     },
     error: {
       USER_HAS_EXISTED: '用户已存在！',
