@@ -31,6 +31,12 @@ class Insurance extends Transaction {
   async count(token, key) {
     const query = new URLSearchParams();
     query.append('key', JSON.stringify(key));
+
+    try {
+      return await this.transaction('get', 'insurance/count', {token}, query);
+    } catch (err) {
+      throw err;
+    }
   };
 }
 
