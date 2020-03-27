@@ -259,6 +259,11 @@ export default {
             } else {
               errorMessage = errorData;
             }
+
+            if (errorMessage === 'USER_TOTP_VERIFY_ERR') {
+            else {
+              vm.errorMessage = errorMessage;
+            }
             vm.loading = false;
           });
         } else {
