@@ -55,9 +55,11 @@
 }
 .content .step .input-box .input,
 .step .input-box .button {
+  width: 40%;
 }
 .content .step .input-box .input-mobile,
 .step .input-box .button-mobile {
+  width: 100%;
 }
 </style>
 
