@@ -9,6 +9,12 @@ const services = require('../services');
 const add = async(req, res) => {
   // debug('add(%s, %s)', req.body.name, req.body.categories);
   try {
+    // There is only one database write operation, and session can not be used.
+    // 1. check company if exist ?
+    const result = await services.companies.find({name: req.body.name}, null, null);
+    if (result) {
+      throw createError('COMPANY_HAS_EXISTED');
+    }
     
   } catch (err) {
     res.sendErr(err);
