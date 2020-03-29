@@ -143,7 +143,7 @@ const detail = async(req, res) => {
     let conditions = {};
 
     if (req.query.id) {
- 
+      conditions = {_id: req.query.id};
     } else if (req.query.key) {
       };
     } else {
