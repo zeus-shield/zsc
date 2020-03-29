@@ -9,6 +9,11 @@ class Company extends Transaction {
 
   async add(token, name, categories) {
 
+  };
+
+  async remove(token, id, name) {
+  };
+
   // only by id
   async update(token, id, update) {
   };
