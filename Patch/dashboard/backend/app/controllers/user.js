@@ -72,15 +72,17 @@ const updateTOTP = async(req, res) => {
   }
 };
 
-// new interface
 const addPolicy = async(req, res) => {
   // debug('addPolicy(%s)', JSON.stringify(req.body));
   try {
     // There is only one database write operation, and session can not be used.
     let conditions = {};
     if (req.body.id) {
+      conditions = {_id: req.body.id};
     } else if (req.body.account) {
+      conditions = {account: req.body.account};
     } else {
+      throw createError('COMMON_PARAM_ERROR');
     }
     let policy = JSON.parse(req.body.policy);
     policy.insurance.id = mongoose.Types.ObjectId(policy.insurance.id);
