@@ -19,7 +19,9 @@ class Insurance extends Transaction {
 
   async list(token) {
     try {
+      return await this.transaction('get', 'insurance', {token});
     } catch (err) {
+      throw err;
     }
   };
 
