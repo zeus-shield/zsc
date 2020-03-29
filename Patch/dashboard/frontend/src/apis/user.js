@@ -9,6 +9,10 @@ class User extends Transaction {
 
 
 
+
+  async addPolicy(token, id, account, policy) {
+  };
+
   async info(token, id, account) {
   };
 
