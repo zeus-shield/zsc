@@ -230,6 +230,9 @@ const cn = {
 
       addAccount: '检测到外部账户',
       removeAccount: '外部账户退出',
+      changeAccount: '切换外部账户',
+      refreshAccount: '刷新外部账户',
+      changeNetwork: '切换外部账户中的网络'
     },
     error: {
       USER_HAS_EXISTED: '用户已存在！',
