@@ -222,6 +222,9 @@ const en = {
 
       addAccount: 'External account detected!',
       removeAccount: 'External account login out',
+      changeAccount: 'Switch external account',
+      refreshAccount: 'Refresh external account',
+      changeNetwork: 'Switch network in external account'
     },
     error: {
       USER_HAS_EXISTED: 'User has already existed!',
