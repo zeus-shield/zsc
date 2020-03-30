@@ -8,6 +8,11 @@ class Insurance extends Transaction {
   };
 
   async add(token, company, category, brief, detail) {
+    let data = new URLSearchParams();
+    data.append('company', company);
+    data.append('category', category);
+    data.append('brief', JSON.stringify(brief));
+    data.append('detail', JSON.stringify(detail));
   };
 
   async remove(token, id, key) {
