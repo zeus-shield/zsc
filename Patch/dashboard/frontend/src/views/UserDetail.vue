@@ -58,6 +58,8 @@
 .security .row .col {
 }
 .security .row .icon {
+  font-size: 1rem; // 16px;
+  color: #67C23A;
 }
 .security .row .description {
   color: #999;
