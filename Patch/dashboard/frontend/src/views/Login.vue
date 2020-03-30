@@ -261,7 +261,9 @@ export default {
             }
 
             if (errorMessage === 'USER_TOTP_VERIFY_ERR') {
-            else {
+            } else if (errorMessage === 'USER_TOTP_NOT_SET') {
+            } else if (errorMessage.indexOf('timeout') !== -1) { // timeout of 2000ms exceeded
+            } else {
               vm.errorMessage = errorMessage;
             }
             vm.loading = false;
