@@ -50,8 +50,12 @@
 }
 .step .qr-box .url,
 .step .qr-box .qr {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .content .step .input-box {
+  margin: auto 1.25rem;
 }
 .content .step .input-box .input,
 .step .input-box .button {
