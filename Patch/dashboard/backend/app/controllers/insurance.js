@@ -145,6 +145,11 @@ const detail = async(req, res) => {
     if (req.query.id) {
       conditions = {_id: req.query.id};
     } else if (req.query.key) {
+      const key = JSON.parse(req.query.key);
+      conditions = {
+        company: key.company,
+        category: key.category,
+        'brief.title': key.title
       };
     } else {
       throw createError('COMMON_PARAM_ERROR');
