@@ -14,8 +14,8 @@
             :name="category.name">
 
             <div class="tab-category" slot="label">
-              <i v-if="company.name === '中国平安' || company.name === 'PING AN'" :class="category.iconClass"></i>
-              <div v-else-if="company.name === '中国人保' || company.name === 'PICC'" :class="category.iconClass"></div>
+              <i v-if="company.name === '????' || company.name === 'PING AN'" :class="category.iconClass"></i>
+              <div v-else-if="company.name === '????' || company.name === 'PICC'" :class="category.iconClass"></div>
               <i v-else :class="category.icon"></i>
               <span>{{ category.name }} ({{ category.count }})</span>
             </div>
@@ -24,7 +24,7 @@
       </el-tab-pane>
 
       <el-tab-pane>
-        <el-button class="button" slot="label" type="primary" size="medium" icon="el-icon-search">搜索</el-button>
+        <el-button class="button" slot="label" type="primary" size="medium" icon="el-icon-search">??</el-button>
         
         <el-input class="search" :autofocus="false" :placeholder="langSet.market.operation.title[1]" v-model="search">
           <i slot="prefix" class="el-icon-search el-input__icon"></i>
@@ -129,6 +129,8 @@ export default {
   },
   data() {
     return {
+      // cacheData: {},
+      search: '',
     };
   },
   // props: {
