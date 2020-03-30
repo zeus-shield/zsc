@@ -10,6 +10,10 @@ class User extends Transaction {
 
 
 
+
+  async setTOTPOn(token, id, account, code, on) {
+  };
+
   async addPolicy(token, id, account, policy) {
   };
 
