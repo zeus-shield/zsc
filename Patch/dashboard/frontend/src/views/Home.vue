@@ -8,6 +8,9 @@
             <div class="swiper-container gallery-top">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(item, index) in 3" :key="index">
+                  <img :class="{'bg': device === 'pc'}" :src="getImgUrl('banner-bg', item)" alt=""></img>
+                  <div class="cover">
+                  </div>
                 </div>
                </div>
               <div class="swiper-button-next swiper-button-white"></div>
