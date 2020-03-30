@@ -8,6 +8,10 @@ class Company extends Transaction {
   };
 
   async add(token, name, categories) {
+    const data = new URLSearchParams();
+    data.append('name', name);
+    // categories is array
+    data.append('categories', JSON.stringify(categories));
 
   };
 
