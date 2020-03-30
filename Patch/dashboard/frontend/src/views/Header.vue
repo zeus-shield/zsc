@@ -35,6 +35,10 @@
               <!-- <router-link tag="span" to="/insurance">{{langSet[lang].header.insurance}}</router-link> -->
               {{ langSet.header.market }}
             </el-menu-item>
+            <el-menu-item index="22">
+              <!-- <router-link tag="span" to="/analytics">{{langSet[lang].header.analytics}}</router-link> -->
+              {{ langSet.header.analytics }}
+            </el-menu-item>
           </el-submenu>
 
           <!-- white paper -->
