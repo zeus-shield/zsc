@@ -33,6 +33,8 @@
   font-weight: 400;
 }
 .collapse .title:before {
+  display: inline-block;
+  margin-right: 0.5rem; // 8px;
 }
 .collapse .divider {
   font-size: 0.75rem; // 14px;
