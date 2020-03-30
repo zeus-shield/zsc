@@ -15,7 +15,13 @@ const add = async(req, res) => {
     if (result) {
       throw createError('COMPANY_HAS_EXISTED');
     }
-    
+
+    // 2. insert new company
+    const doc = {
+      name: req.body.name,
+      categories: JSON.parse(req.body.categories),
+      created_at: Date.now()
+    };
   } catch (err) {
     res.sendErr(err);
   }
