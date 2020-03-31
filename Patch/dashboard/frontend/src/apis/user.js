@@ -21,6 +21,9 @@ class User extends Transaction {
   };
 
   async list(token) {
+    try {
+    } catch (err) {
+    }
   };
 
   async statistics(token, company, category, title, sort, limit) {
