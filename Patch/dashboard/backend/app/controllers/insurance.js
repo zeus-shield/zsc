@@ -110,14 +110,13 @@ const remove = async(req, res) => {
 };
 
 const update = async(req, res) => {
-  // debug("update(%s, %s, %s, %s)", req.body.company, req.body.category, req.body.title, req.body.update);
+  // debug('update(%s, %s)', req.body.id, req.body.update);
   try {
-    const company = req.body.company;
-    const category = req.body.category;
-    const title = req.body.title;
+    // There is only one database write operation, and session can not be used.
+    const conditions = {_id: req.body.id};
     const update = JSON.parse(req.body.update);
-
-    const result = await services.insurances.update(company, category, title, update, null);
+    update.brief.updated_at = Date.now();
+    const result = await services.insurances.update(conditions, update, false, null);
     if (!result) {
       throw createError('INSURANCE_NOT_EXIST');
     }
