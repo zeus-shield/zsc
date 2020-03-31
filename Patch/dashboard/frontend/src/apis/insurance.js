@@ -31,6 +31,12 @@ class Insurance extends Transaction {
   };
 
   async detail(token, id, key) {
+    const query = new URLSearchParams();
+    if (id) {
+      query.append('id', id);
+    } else if (key) {
+      query.append('key', JSON.stringify(key));
+    } else {}
   };
 
   // key is { company: company, category: category } or
