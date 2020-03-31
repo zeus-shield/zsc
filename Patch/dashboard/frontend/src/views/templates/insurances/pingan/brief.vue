@@ -46,6 +46,10 @@
 .insurance .operation .col .desc {
   font-size: 14px;
   margin: 0px 0px 5px 20px;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 .insurance .operation .col .desc .icon {
   font-size: 20px;
