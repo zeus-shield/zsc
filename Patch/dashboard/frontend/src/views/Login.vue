@@ -261,8 +261,11 @@ export default {
             }
 
             if (errorMessage === 'USER_TOTP_VERIFY_ERR') {
+              vm.errorMessage = 'USER_GOOGLE_AUTH_ERR';
             } else if (errorMessage === 'USER_TOTP_NOT_SET') {
+              vm.errorMessage = 'USER_GOOGLE_AUTH_NOT_SET';
             } else if (errorMessage.indexOf('timeout') !== -1) { // timeout of 2000ms exceeded
+              vm.errorMessage = 'TIMEOUT'; // vm.langSet.message.error.timeout;
             } else {
               vm.errorMessage = errorMessage;
             }
