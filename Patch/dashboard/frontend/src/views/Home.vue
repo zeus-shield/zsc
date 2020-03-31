@@ -10,6 +10,10 @@
                 <div class="swiper-slide" v-for="(item, index) in 3" :key="index">
                   <img :class="{'bg': device === 'pc'}" :src="getImgUrl('banner-bg', item)" alt=""></img>
                   <div class="cover">
+                    <div class="inner">
+                      <el-row :gutter="0" :class="{ 'row-pc': device === 'pc' }">
+                      </el-row>
+                    </div>
                   </div>
                 </div>
                </div>
