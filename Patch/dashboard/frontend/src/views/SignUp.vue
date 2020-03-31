@@ -10,6 +10,8 @@
                   <span>{{langSet.signUp.title}}</span>
                 </div>
               </el-form-item> -->
+              <el-form-item v-if="errorMessage !== ''">
+              </el-form-item>
             </el-form>
           </el-card>
         </el-col>
