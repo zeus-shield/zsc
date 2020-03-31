@@ -19,6 +19,12 @@
               <i v-else :class="category.icon"></i>
               <span>{{ category.name }} ({{ category.count }})</span>
             </div>
+            
+            <div v-for="(item, index) in insuranceCache('page')" :key="index">
+              <insurance-pingan-brief v-if="company.name === '中国平安' || company.name === 'PING AN'" :item="item"></insurance-pingan-brief>
+              <insurance-picc-brief v-else-if="company.name === '中国人保' || company.name === 'PICC'" :item="item"></insurance-picc-brief>
+              <insurance-picc-brief v-else :item="item"></insurance-picc-brief>
+            </div>
           </el-tab-pane>
         </el-tabs>
       </el-tab-pane>
