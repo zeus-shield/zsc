@@ -40,6 +40,9 @@
 .content .step .tip .alert {
 }
 .content .step .tip .alert .title {
+  font-size: 0.875rem; // 14px;
+  font-weight: 700;
+  color: #444;
 }
 .content .step .tip .alert .description {
   font-size: 0.875rem; // 14px;
