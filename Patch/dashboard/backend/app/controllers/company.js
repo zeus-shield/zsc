@@ -22,6 +22,9 @@ const add = async(req, res) => {
       categories: JSON.parse(req.body.categories),
       created_at: Date.now()
     };
+    await services.companies.insert([doc], null);
+
+    res.sendOk('Add new company successfully!');
   } catch (err) {
     res.sendErr(err);
   }
