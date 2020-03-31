@@ -24,6 +24,11 @@
 .header .sprite {
   display: inline-block;
   background: transparent url(../assets/images/icon-sprite.png) no-repeat 100% 100%;
+  background-position: -2.4375rem -2.375rem; // -39px -38px;
+  width: 1.125rem; // 18px;
+  height: 1.125rem; // 18px;
+  min-height: 1.125rem; // 18px;
+  max-height: 1.125rem; // 18px;
 }
 .collapse {
   counter-reset: num;
