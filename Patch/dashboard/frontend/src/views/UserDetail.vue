@@ -44,6 +44,10 @@
   align-items: center;
 }
 .account .info .gap .line {
+  content: "";
+  height: 70%;
+  width: 0.0625rem;
+  background-color: #e4e4e4;
 }
 .account .info .title {
   color: #999;
