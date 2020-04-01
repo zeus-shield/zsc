@@ -63,10 +63,9 @@ const saveTOTP = async(req, res) => {
 };
 
 const updateTOTP = async(req, res) => {
-  debug('updateTOTP(%s, %s, %s)', req.headers._id, req.headers.code, req.body.on);
+  // debug('updateTOTP(%s)', JSON.stringify(req.body));
   try {
-    const result = await services.users.updateTOTP(req.headers._id, req.headers.code, req.body.on);
-    res.sendOk(result);
+
   } catch (err) {
     res.sendErr(err);
   }
