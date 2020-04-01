@@ -13,6 +13,9 @@ class Company extends Transaction {
     // categories is array
     data.append('categories', JSON.stringify(categories));
 
+    try {
+    } catch (err) {
+    }
   };
 
   async remove(token, id, name) {
