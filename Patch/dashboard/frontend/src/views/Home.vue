@@ -12,6 +12,10 @@
                   <div class="cover">
                     <div class="inner">
                       <el-row :gutter="0" :class="{ 'row-pc': device === 'pc' }">
+                        <el-col :xs="{span: 16, offset: 4}" :sm="{span: 11, offset: 1}" :md="{span: 11, offset: 1}" :lg="{span: 11, offset: 1}">
+                          <div class="title">{{ langSet.home.slot1.title[item-1] }}</div>
+                          <div class="content">{{ langSet.home.slot1.content[item-1] }}</div>
+                        </el-col>
                       </el-row>
                     </div>
                   </div>
