@@ -26,6 +26,10 @@
   min-height: 0.5rem; // 8px;
 }
 .header {
+  font-size: 1.5rem; // 24px;
+  font-weight: 400;
+  padding: 0.5rem 0;
+  border-bottom: 0.0625rem solid #e4e4e4;
 }
 .header .sprite {
 }
