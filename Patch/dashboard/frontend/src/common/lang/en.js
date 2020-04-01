@@ -269,6 +269,8 @@ const en = {
       LOGIN_PWD_LEN_ERR: 'Length of 3 to 6 characters',
 
       SIGNUP_ACCOUNT_NONE: 'Please input phone number or email',
+      SIGNUP_ACCOUNT_LEN_ERR: 'Length of 6 to 18 characters',
+      SIGNUP_CODE_NONE: 'Please input 6-digit Verification code',
     }
   },
   component: {
