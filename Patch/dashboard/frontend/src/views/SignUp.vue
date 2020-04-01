@@ -11,6 +11,12 @@
                 </div>
               </el-form-item> -->
               <el-form-item v-if="errorMessage !== ''">
+                <el-alert class = "signup-alert"
+                  :title="langSet.message.error[errorMessage]"
+                  type="error"
+                  :closable="false"
+                  show-icon>
+                </el-alert>
               </el-form-item>
             </el-form>
           </el-card>
