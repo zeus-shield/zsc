@@ -20,6 +20,9 @@
 .insurance .thumb .col {
 }
 .insurance .thumb .col .img {
+  width: 100%;
+  height: 100%;
+  // height: auto;
 }
 .insurance .thumb .col .brief {
 }
