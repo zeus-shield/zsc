@@ -77,30 +77,12 @@ const remove = async(req, res) => {
     session = await mongoose.startSession();
     session.startTransaction();
 
-    const company = req.body.company;
-    const category = req.body.category;
-    const title = req.body.title;
 
-    let result = null;
-
-    // 1. delete and find insurance_id
-    result = await services.insurances.delete(company, category, title, session);
-    if (!result) {
-      throw createError('INSURANCE_NOT_EXIST');
-    }
-
-    // 2. pop insurance id from company
-    const insuranceId = result._id;
-    result = await services.companies.pullInsuranceId(company, category, insuranceId, session);
-    if (!result) {
-      throw createError('COMPANY_NOT_EXIST');
-    }
 
     await session.commitTransaction();
     session.endSession();
     res.sendOk('Remove insurance successfully!');
   } catch (err) {
-    // debug(err);
     if (session !== null) {
       await session.abortTransaction();
       session.endSession();
