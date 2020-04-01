@@ -31,6 +31,11 @@ const add = async(req, res) => {
 };
 
 const remove = async(req, res) => {
+  // debug('remove(%s)', JSON.stringify(req.body));
+  let session = null;
+  try {
+  } catch (err) {
+  }
 };
 
 const update = async(req, res) => {
