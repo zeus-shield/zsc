@@ -53,10 +53,11 @@ const setTOTP = async(req, res) => {
 };
 
 const saveTOTP = async(req, res) => {
-  debug('saveTOTP(%s, %s, %s)', req.headers._id, req.headers.code, req.headers.key);
+  // debug('saveTOTP(%s)', JSON.stringify(req.body));
   try {
-    const result = await services.users.saveTOTP(req.headers._id, req.headers.code, req.headers.key);
-    res.sendOk(result);
+    // There is only one database write operation, and session can not be used.
+    let conditions = {};
+
   } catch (err) {
     res.sendErr(err);
   }
@@ -65,6 +66,8 @@ const saveTOTP = async(req, res) => {
 const updateTOTP = async(req, res) => {
   // debug('updateTOTP(%s)', JSON.stringify(req.body));
   try {
+    // There is only one database write operation, and session can not be used.
+    let conditions = {};
 
   } catch (err) {
     res.sendErr(err);
