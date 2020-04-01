@@ -60,6 +60,9 @@
   // border-bottom: 1px solid #e9e9e9;
 }
 .security .row .col {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 .security .row .icon {
   font-size: 1rem; // 16px;
