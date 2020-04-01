@@ -45,6 +45,11 @@
           <el-menu-item index="3">
             {{ langSet.header.whitePaper }}
           </el-menu-item>
+
+          <!-- faq -->
+          <!-- <el-menu-item index="4">
+            {{ langSet.header.faq }}
+          </el-menu-item> -->
         </el-menu>
       </el-col>
 
