@@ -137,6 +137,9 @@ export default {
     return {
       // cacheData: {},
       search: '',
+
+      companyActiveName: '',
+      companyActiveIndex: 0,
     };
   },
   // props: {
