@@ -12,9 +12,9 @@
   background: url(../../../../assets/images/remai.png) no-repeat center center;
 }
 .insurance .col {
-  border-radius: 4px;
-  background: #d3dce6;
-  min-height: 36px;
+  // border-radius: 4px;
+  // background: #d3dce6;
+  // min-height: 36px;
 }
 
 .insurance .img .col {
