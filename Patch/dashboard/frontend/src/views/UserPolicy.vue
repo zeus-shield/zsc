@@ -43,6 +43,8 @@
   background-color: #3075ee;
   color: #fff;
   width: 1rem; // 16px;
+  height: 1rem; // 16px;
+  line-height: 1rem; // 16px;
 }
 .collapse .divider {
   font-size: 0.75rem; // 14px;
