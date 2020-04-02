@@ -10,10 +10,12 @@ const { settings } = require('../../config');
 // const debug = require('debug')('backend:app:controllers:user');
 
 const emailCode = async(req, res) => {
-  debug('emailCode(%s)', req.body.account);
+  // debug('emailCode(%s)', req.body.account);
+  let session = null;
   try {
-    const result = await services.users.buildEmailCode(req.body.account);
-    res.sendOk(result);
+    session = await mongoose.startSession();
+    session.startTransaction();
+
   } catch (err) {
     res.sendErr(err);
   }
