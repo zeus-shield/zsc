@@ -14,7 +14,9 @@ class Company extends Transaction {
     data.append('categories', JSON.stringify(categories));
 
     try {
+      return await this.transaction('post', 'company/add', {token}, null, data);
     } catch (err) {
+      throw err;
     }
   };
 
