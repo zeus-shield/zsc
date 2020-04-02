@@ -79,6 +79,10 @@ const remove = async(req, res) => {
 
     let conditions = {};
     let result = {};
+    if (req.body.id) {
+    } else if (req.body.key) {
+    } else {
+    }
 
 
     await session.commitTransaction();
