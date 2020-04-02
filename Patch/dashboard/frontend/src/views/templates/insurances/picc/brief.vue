@@ -39,6 +39,8 @@
   margin-bottom: 20px;
 }
 .insurance .info .col .corner {
+  position: absolute;
+  width: 61px;
 }
 .insurance .info .col .content {
   margin-top: 20px;
