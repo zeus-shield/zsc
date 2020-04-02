@@ -21,6 +21,8 @@
 }
 .account .header,
 .security .header {
+  font-size: 1.5rem; // 24px;
+  font-weight: 400;
 }
 .account .header .sprite,
 .security .header .sprite {
