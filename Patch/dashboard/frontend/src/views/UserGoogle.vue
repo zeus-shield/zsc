@@ -6,6 +6,12 @@
       <span v-if="cmd === 'set'">{{ langSet.user.google.title[0] }}</span>
       <span v-else>{{ langSet.user.google.title[1] }}</span>
     </div>
+
+    <div class="interval-md"></div>
+
+    <div class="content">
+    </div>
+
   </div>
 </template>
 
