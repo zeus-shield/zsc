@@ -13,6 +13,10 @@ class Insurance extends Transaction {
     data.append('category', category);
     data.append('brief', JSON.stringify(brief));
     data.append('detail', JSON.stringify(detail));
+
+    try {
+    } catch (err) {
+    }
   };
 
   async remove(token, id, key) {
