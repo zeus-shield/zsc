@@ -22,7 +22,9 @@ class User extends Transaction {
 
   async list(token) {
     try {
+      return await this.transaction('get', 'user', {token});
     } catch (err) {
+      throw err;
     }
   };
 
