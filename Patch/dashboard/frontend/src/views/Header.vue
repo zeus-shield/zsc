@@ -50,6 +50,13 @@
           <!-- <el-menu-item index="4">
             {{ langSet.header.faq }}
           </el-menu-item> -->
+
+          <!-- admin TODO -->
+          <el-menu-item v-if="admin === true" index="99">
+            <!-- <router-link tag="span" to="/faq">{{langSet[lang].header.faq}}</router-link> -->
+            {{ langSet.header.admin }}
+          </el-menu-item>
+
         </el-menu>
       </el-col>
 
