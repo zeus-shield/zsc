@@ -1,6 +1,11 @@
 <template>
   <div class="insurance-pingan-brief">
     <el-row class="insurance" :gutter="0" type="flex" justify="start">
+      <el-col class="img" :span="4">
+        <div class="col">
+          <img v-if="item.brief.img_url && item.brief.img_url !== '' && item.brief.img_url !== 'null'" class="content" :src="require('@/assets/' + item.brief.img_url)">
+        </div>
+      </el-col>
     </el-row>
   </div>
 </template>
