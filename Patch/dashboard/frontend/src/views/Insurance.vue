@@ -140,6 +140,9 @@ export default {
 
       companyActiveName: '',
       companyActiveIndex: 0,
+
+      categoryActiveName: '',
+      categoryActiveIndex: -1,
     };
   },
   // props: {
