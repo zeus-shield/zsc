@@ -18,6 +18,8 @@
                   show-icon>
                 </el-alert>
               </el-form-item>
+              <el-tabs class="signup-tabs" type="card" value="signup-tab-email" @tab-click="tabClick">
+              </el-tabs>
             </el-form>
           </el-card>
         </el-col>
