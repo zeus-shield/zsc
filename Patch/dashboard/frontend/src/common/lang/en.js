@@ -271,6 +271,8 @@ const en = {
       SIGNUP_ACCOUNT_NONE: 'Please input phone number or email',
       SIGNUP_ACCOUNT_LEN_ERR: 'Length of 6 to 18 characters',
       SIGNUP_CODE_NONE: 'Please input 6-digit Verification code',
+      SIGNUP_CODE_LEN_ERR: 'Length must be 6',
+      SIGNUP_PWD_NONE: 'Please input password',
     }
   },
   component: {
