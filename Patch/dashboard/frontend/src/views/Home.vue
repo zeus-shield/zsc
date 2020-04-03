@@ -37,6 +37,9 @@
               </div>
             </div> -->
           </div>
+
+          <!-- for vue-awesome-swiper -->
+          <div v-else>
           </div>
         </el-col>
       </el-row>
