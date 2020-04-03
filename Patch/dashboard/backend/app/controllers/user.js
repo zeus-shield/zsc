@@ -16,13 +16,18 @@ const emailCode = async(req, res) => {
     session = await mongoose.startSession();
     session.startTransaction();
 
+    const account = req.body.account;
   } catch (err) {
+    if (session !== null) {
+      await session.abortTransaction();
+      session.endSession();
+    }
     res.sendErr(err);
   }
 };
 
 const signUp = async(req, res) => {
-  debug('signUp(%s, %s, %s)', req.body.account, req.body.password, req.body.code);
+  // debug('signUp(%s, %s, %s)', req.body.account, req.body.password, req.body.code);
   try {
     const result = await services.users.signUp(req.body.account, req.body.password, req.body.code);
     res.sendOk(result);
