@@ -20,6 +20,9 @@
               </el-form-item>
               <el-tabs class="signup-tabs" type="card" value="signup-tab-email" @tab-click="tabClick">
               </el-tabs>
+              <el-form-item>
+                <el-button class="signup-form-button-submit" type="primary" :disabled="buttonSubmitDisabled" @click="submitForm('form')">{{langSet.signUp.submit}}</el-button>
+              </el-form-item>
             </el-form>
           </el-card>
         </el-col>
