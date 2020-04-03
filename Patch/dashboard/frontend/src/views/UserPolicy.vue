@@ -45,6 +45,10 @@
   width: 1rem; // 16px;
   height: 1rem; // 16px;
   line-height: 1rem; // 16px;
+  text-align: center;
+  border-radius: 50%;
+  counter-increment: num; 
+  content: counter(num);
 }
 .collapse .divider {
   font-size: 0.75rem; // 14px;
