@@ -23,6 +23,11 @@
 }
 
 .insurance .img .col {
+  margin: 20px auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .insurance .img .col .content {
   width: 100%;
