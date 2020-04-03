@@ -15,7 +15,9 @@ class Insurance extends Transaction {
     data.append('detail', JSON.stringify(detail));
 
     try {
+      return await this.transaction('post', 'insurance/add', {token}, null, data);
     } catch (err) {
+      throw err;
     }
   };
 
