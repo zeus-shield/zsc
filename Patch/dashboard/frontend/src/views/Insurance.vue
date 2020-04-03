@@ -143,6 +143,10 @@ export default {
 
       categoryActiveName: '',
       categoryActiveIndex: -1,
+
+      // for pagination
+      pageSize: -1,
+      currentPage: -1,
     };
   },
   // props: {
