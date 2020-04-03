@@ -62,6 +62,11 @@
 
       <el-col :xs="{span: 8}" :sm="{span: 8}" :md="{span: 8}" :lg="{span: 8}">
         <div class="header-memu-slot">
+
+          <!-- login -->
+          <div v-if="!login" class="header-login" @click="handleLogin">
+            {{ langSet.header.login }}
+          </div>
       </el-col>
     </el-row>
   </div>
