@@ -273,6 +273,8 @@ const en = {
       SIGNUP_CODE_NONE: 'Please input 6-digit Verification code',
       SIGNUP_CODE_LEN_ERR: 'Length must be 6',
       SIGNUP_PWD_NONE: 'Please input password',
+      SIGNUP_PWD_LEN_ERR: 'Length of 3 to 6 characters',
+      SIGNUP_PWD2_ERR: 'Passwords do not match',
     }
   },
   component: {
