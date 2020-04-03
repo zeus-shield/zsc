@@ -36,6 +36,9 @@ const remove = async(req, res) => {
   try {
     session = await mongoose.startSession();
     session.startTransaction();
+
+    await session.commitTransaction();
+    session.endSession();
   } catch (err) {
   }
 };
