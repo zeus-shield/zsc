@@ -48,6 +48,8 @@
 .content .step .text:before {
 }
 .content .step .tip .alert {
+  border-radius: 0.25rem;
+  border: thin solid #dc6b04;
 }
 .content .step .tip .alert .title {
   font-size: 0.875rem; // 14px;
