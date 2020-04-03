@@ -80,8 +80,10 @@ const remove = async(req, res) => {
     let conditions = {};
     let result = {};
     if (req.body.id) {
+      conditions = {_id: req.body.id};
     } else if (req.body.key) {
     } else {
+      throw createError('COMMON_PARAM_ERROR');
     }
 
 
