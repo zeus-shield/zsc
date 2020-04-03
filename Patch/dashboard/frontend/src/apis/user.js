@@ -7,9 +7,13 @@ class User extends Transaction {
     super(instance);
   };
 
+  async buildEmailCode(account) {
 
+  };
 
+  async signUp(account, code, password) {
 
+  };
 
   async setTOTPOn(token, id, account, code, on) {
   };
