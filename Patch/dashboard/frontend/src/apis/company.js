@@ -28,6 +28,12 @@ class Company extends Transaction {
     const data = new URLSearchParams();
     data.append('id', id);
     data.append('update', JSON.stringify(update));
+
+    try {
+      return await this.transaction('post', 'company/update', {token}, null, data);
+    } catch (err) {
+      throw err;
+    }
   };
 
   async list(token) {
