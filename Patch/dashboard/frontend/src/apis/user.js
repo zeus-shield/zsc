@@ -8,7 +8,12 @@ class User extends Transaction {
   };
 
   async buildEmailCode(account) {
+    const data = new URLSearchParams();
+    data.append('account', account);
 
+    try {
+    } catch (err) {
+    }
   };
 
   async signUp(account, code, password) {
