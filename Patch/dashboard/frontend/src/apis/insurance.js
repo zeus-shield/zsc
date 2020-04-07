@@ -43,6 +43,12 @@ class Insurance extends Transaction {
     } else if (key) {
       query.append('key', JSON.stringify(key));
     } else {}
+
+    try {
+      return await this.transaction('get', 'insurance/detail', {token}, query);
+    } catch (err) {
+      throw err;
+    }
   };
 
   // key is { company: company, category: category } or
