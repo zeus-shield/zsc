@@ -34,6 +34,8 @@
   overflow: hidden;
 }
 .el-button {
+  background-color: #409EFF;
+  border-color: #409EFF;
   border-radius: 0px;
 }
 .el-button--small {
