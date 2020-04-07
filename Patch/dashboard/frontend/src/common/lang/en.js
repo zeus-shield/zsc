@@ -275,6 +275,8 @@ const en = {
       SIGNUP_PWD_NONE: 'Please input password',
       SIGNUP_PWD_LEN_ERR: 'Length of 3 to 6 characters',
       SIGNUP_PWD2_ERR: 'Passwords do not match',
+      'No recipients defined': 'No recipients defined!',
+      UNKNOWN: 'Unknown Error!'
     }
   },
   component: {
