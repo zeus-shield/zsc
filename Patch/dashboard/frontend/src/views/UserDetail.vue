@@ -41,6 +41,9 @@
   color: #444;
 }
 .account .info {
+  // margin: 1.25rem auto;
+  box-shadow: 0 0.125rem 1.25rem 0 rgba(0,0,0,.05);
+  border-radius: 0.25rem;
 }
 .account .info .gap {
   display: flex;
