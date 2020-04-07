@@ -25,6 +25,10 @@
   // height: auto;
 }
 .insurance .thumb .col .brief {
+  font-size: 12px;
+  padding: 10px;
+  color: #999;
+  background: #f5f2f2;
 }
 // .insurance .thumb .col .brief strong {
 //   color: #666;
