@@ -17,6 +17,11 @@ const emailCode = async(req, res) => {
     session.startTransaction();
 
     const account = req.body.account;
+
+    // check user exist ?
+    let result = await services.users.find({account: account}, null, session);
+    if (result) {
+    }
   } catch (err) {
     if (session !== null) {
       await session.abortTransaction();
