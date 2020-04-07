@@ -40,6 +40,8 @@
 
           <!-- for vue-awesome-swiper -->
           <div v-else>
+            <swiper :options="swiperOptionTop" class="gallery-top" ref="swiperTop">
+            </swiper>
           </div>
         </el-col>
       </el-row>
