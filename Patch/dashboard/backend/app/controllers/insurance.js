@@ -82,6 +82,12 @@ const remove = async(req, res) => {
     if (req.body.id) {
       conditions = {_id: req.body.id};
     } else if (req.body.key) {
+      const key = JSON.parse(req.body.key);
+      conditions = {
+        company: key.company,
+        category: key.category,
+        'brief.title': key.title
+      };
     } else {
       throw createError('COMMON_PARAM_ERROR');
     }
