@@ -21,6 +21,11 @@ class Company extends Transaction {
   };
 
   async remove(token, id, name) {
+    const data = new URLSearchParams();
+
+    try {
+    } catch (err) {
+    }
   };
 
   // only by id
