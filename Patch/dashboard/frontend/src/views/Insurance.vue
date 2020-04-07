@@ -147,6 +147,11 @@ export default {
       // for pagination
       pageSize: -1,
       currentPage: -1,
+      totalForPage: -1,
+
+      itemsForPage: [],
+
+      loading: false
     };
   },
   // props: {
