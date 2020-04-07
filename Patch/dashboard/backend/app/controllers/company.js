@@ -40,6 +40,10 @@ const remove = async(req, res) => {
     await session.commitTransaction();
     session.endSession();
   } catch (err) {
+    if (session !== null) {
+      await session.abortTransaction();
+      session.endSession();
+    }
   }
 };
 
