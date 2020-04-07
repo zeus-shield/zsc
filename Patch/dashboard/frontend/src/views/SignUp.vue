@@ -19,6 +19,8 @@
                 </el-alert>
               </el-form-item>
               <el-tabs class="signup-tabs" type="card" value="signup-tab-email" @tab-click="tabClick">
+                <el-tab-pane :label="langSet.signUp.emailTitle" name="signup-tab-email">
+                </el-tab-pane>
               </el-tabs>
               <el-form-item>
                 <el-button class="signup-form-button-submit" type="primary" :disabled="buttonSubmitDisabled" @click="submitForm('form')">{{langSet.signUp.submit}}</el-button>
