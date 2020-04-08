@@ -39,11 +39,13 @@ const remove = async(req, res) => {
 
     await session.commitTransaction();
     session.endSession();
+    res.sendOk('Remove company successfully!');
   } catch (err) {
     if (session !== null) {
       await session.abortTransaction();
       session.endSession();
     }
+    res.sendErr(err);
   }
 };
 
