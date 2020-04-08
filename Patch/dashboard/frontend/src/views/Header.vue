@@ -72,6 +72,9 @@
           <div v-if="!login" class="header-signup" @click="handleSignUp">
             {{ langSet.header.signUp }}
           </div>
+
+          <el-menu v-if="login"
+          </el-menu>
       </el-col>
     </el-row>
   </div>
