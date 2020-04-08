@@ -41,6 +41,8 @@
           <!-- for vue-awesome-swiper -->
           <div v-else>
             <swiper :options="swiperOptionTop" class="gallery-top" ref="swiperTop">
+              <swiper-slide v-for="(item, index) in 3" :key="index">
+              </swiper-slide>
             </swiper>
           </div>
         </el-col>
