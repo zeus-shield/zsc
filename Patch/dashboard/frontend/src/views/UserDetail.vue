@@ -1,5 +1,10 @@
 <template>
   <div class="user-datail" :class="{'user-datail-mobile': device !== 'pc'}">
+
+    <div class="account">
+    </div>
+
+    <div class="interval-lg"></div>
   </div>
 </template>
 
