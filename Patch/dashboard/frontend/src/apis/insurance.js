@@ -26,6 +26,10 @@ class Insurance extends Transaction {
 
   // only by id
   async update(token, id, update) {
+
+    try {
+    } catch (err) {
+    }
   };
 
   async list(token) {
