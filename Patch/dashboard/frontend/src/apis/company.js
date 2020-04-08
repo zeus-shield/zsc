@@ -24,7 +24,9 @@ class Company extends Transaction {
     const data = new URLSearchParams();
 
     try {
+      return await this.transaction('post', 'company/remove', {token}, null, data);
     } catch (err) {
+      throw err;
     }
   };
 
