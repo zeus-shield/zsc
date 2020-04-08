@@ -26,6 +26,9 @@
               <insurance-picc-brief v-else :item="item"></insurance-picc-brief>
             </div>
           </el-tab-pane>
+
+          <div class="block">
+          </div>
         </el-tabs>
       </el-tab-pane>
 
