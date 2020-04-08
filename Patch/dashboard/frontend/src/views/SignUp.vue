@@ -20,6 +20,9 @@
               </el-form-item>
               <el-tabs class="signup-tabs" type="card" value="signup-tab-email" @tab-click="tabClick">
                 <el-tab-pane :label="langSet.signUp.emailTitle" name="signup-tab-email">
+                  <el-form-item prop="emailAccount">
+                    <el-input v-model="form.emailAccount" prefix-icon="iconfont if-account" :placeholder="langSet.signUp.emailPlaceholder" @input="inputChange"></el-input>
+                  </el-form-item>
                 </el-tab-pane>
               </el-tabs>
               <el-form-item>
