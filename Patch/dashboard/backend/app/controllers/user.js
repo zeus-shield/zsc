@@ -80,6 +80,13 @@ const updateTOTP = async(req, res) => {
   try {
     // There is only one database write operation, and session can not be used.
     let conditions = {};
+    if (req.body.id) {
+      conditions = {_id: req.body.id};
+    } else if (req.body.account) {
+      conditions = {account: req.body.account};
+    } else {
+      throw createError('COMMON_PARAM_ERROR');
+    }
 
   } catch (err) {
     res.sendErr(err);
