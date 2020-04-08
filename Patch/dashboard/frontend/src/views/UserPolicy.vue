@@ -4,6 +4,9 @@
       <span class="sprite"></span>
       <span>{{ langSet.user.aside.slot[0].item[1] }}</span>
     </div>
+
+    <el-collapse class="collapse" accordion>
+    </el-collapse>
   </div>
 </template>
 
