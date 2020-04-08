@@ -72,6 +72,9 @@
   margin-right: 5px;
 }
 .insurance .operation .col .click {
+  margin-top: 100px;
+
+  display: flex;
 }
 .insurance .operation .col .click .button {
 }
