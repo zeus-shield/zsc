@@ -12,7 +12,9 @@ class User extends Transaction {
     data.append('account', account);
 
     try {
+      return await this.transaction('post', 'user/emailCode', null, null, data);
     } catch (err) {
+      throw err;
     }
   };
 
