@@ -10,6 +10,10 @@
     <div class="interval-md"></div>
 
     <div class="content">
+      <div class="step">
+        </div>
+
+        <div class="interval-md"></div>
     </div>
 
   </div>
