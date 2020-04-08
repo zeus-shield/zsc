@@ -92,6 +92,11 @@ const remove = async(req, res) => {
       throw createError('COMMON_PARAM_ERROR');
     }
 
+    // 1. remove and find insurance_id
+    result = await services.insurances.remove(conditions, false, session);
+    if (!result) {
+      throw createError('INSURANCE_NOT_EXIST');
+    }
 
     await session.commitTransaction();
     session.endSession();
