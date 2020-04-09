@@ -10,6 +10,9 @@
   margin: 20px auto;
   // background: #fff;
   box-shadow: 0 2px 20px 0 rgba(0,0,0,.05);
+  border-radius: 8px;
+  padding: 0px 0px 0px 20px;
+  // box-sizing: border-box;
 }
 .insurance .hot {
   background: url('../../../../assets/images/remai.png') no-repeat center center;
