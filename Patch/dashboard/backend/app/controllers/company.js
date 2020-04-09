@@ -68,6 +68,11 @@ const update = async(req, res) => {
       }
     }
 
+    result = await services.companies.find({_id: req.body.id}, null, session);
+    if (!result) {
+      throw createError('COMPANY_NOT_EXIST');
+    }
+
     await session.commitTransaction();
     session.endSession();
 
