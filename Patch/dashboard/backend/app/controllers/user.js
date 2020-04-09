@@ -21,6 +21,10 @@ const emailCode = async(req, res) => {
     // check user exist ?
     let result = await services.users.find({account: account}, null, session);
     if (result) {
+      if (result.is_active) {
+        throw createError('USER_IS_ACTIVE');
+      }
+    }
     }
   } catch (err) {
     if (session !== null) {
