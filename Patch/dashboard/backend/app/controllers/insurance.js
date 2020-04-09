@@ -98,6 +98,9 @@ const remove = async(req, res) => {
       throw createError('INSURANCE_NOT_EXIST');
     }
 
+    // 2. pop insurance id from company
+    }
+
     await session.commitTransaction();
     session.endSession();
     res.sendOk('Remove insurance successfully!');
