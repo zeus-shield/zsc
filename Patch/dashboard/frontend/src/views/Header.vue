@@ -74,6 +74,12 @@
           </div>
 
           <el-menu v-if="login"
+            mode="horizontal"
+            :default-active="activeIndex"
+            @select="handleSelect"
+            background-color="#232f3e"
+            text-color="#fff"
+            active-text-color="#ffd04b">
           </el-menu>
       </el-col>
     </el-row>
