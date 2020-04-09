@@ -42,6 +42,10 @@
           <div v-else>
             <swiper :options="swiperOptionTop" class="gallery-top" ref="swiperTop">
               <swiper-slide v-for="(item, index) in 3" :key="index">
+            </swiper>
+            <swiper :options="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
+              <swiper-slide v-for="(item, index) in 3" :key="index">
+                <img class="bg" :src="getImgUrl('banner-bg', item)" alt=""></img>
               </swiper-slide>
             </swiper>
           </div>
