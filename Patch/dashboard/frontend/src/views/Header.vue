@@ -80,6 +80,9 @@
             background-color="#232f3e"
             text-color="#fff"
             active-text-color="#ffd04b">
+            <!-- user -->
+            <el-submenu index="7">
+            </el-submenu>
           </el-menu>
       </el-col>
     </el-row>
