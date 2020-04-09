@@ -11,6 +11,8 @@
 
     <div class="content">
       <div class="step">
+        <div class="text">
+          <span>{{ langSet.user.google.step[0].text }}</span>
         </div>
 
         <div class="interval-md"></div>
