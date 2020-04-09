@@ -279,6 +279,12 @@ const en = {
 
       TOKEN_IS_MISSING: 'Token is missing!',
       ROUTE_NOT_EXIST: 'Route does not exist!',
+      TIMEOUT: 'The connection timed out. Please try again!',
+
+      COMMON_PARAM_ERROR: 'Parameter error!',
+
+      'Network Error': 'System cross domain connection error!',
+
       UNKNOWN: 'Unknown Error!'
     }
   },
