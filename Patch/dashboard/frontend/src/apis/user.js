@@ -19,6 +19,10 @@ class User extends Transaction {
   };
 
   async signUp(account, code, password) {
+    const data = new URLSearchParams();
+    data.append('account', account);
+    data.append('password', password);
+    data.append('code', code);
 
   };
 
