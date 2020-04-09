@@ -38,6 +38,12 @@
         <el-input class="search" :autofocus="false" :placeholder="langSet.market.operation.title[1]" v-model="search">
           <i slot="prefix" class="el-icon-search el-input__icon"></i>
         </el-input>
+
+        <div v-for="(item, index) in insuranceCache('search')" :key="index">
+          <insurance-pingan-brief v-if="item.company === '????' || item.company === 'PING AN'" :item="item"></insurance-pingan-brief>
+          <insurance-picc-brief v-else-if="item.company === '????' || company.company === 'PICC'" :item="item"></insurance-picc-brief>
+          <insurance-pingan-brief v-else :item="item"></insurance-pingan-brief>
+        </div>
       </el-tab-pane>
 
     </el-tabs>
