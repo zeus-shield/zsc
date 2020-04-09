@@ -28,7 +28,9 @@ class Insurance extends Transaction {
   async update(token, id, update) {
 
     try {
+      return await this.transaction('post', 'insurance/update', {token}, null, data);
     } catch (err) {
+      throw err;
     }
   };
 
