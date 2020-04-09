@@ -24,6 +24,11 @@
                     <el-input v-model="form.emailAccount" prefix-icon="iconfont if-account" :placeholder="langSet.signUp.emailPlaceholder" @input="inputChange"></el-input>
                   </el-form-item>
                 </el-tab-pane>
+                <!-- <el-tab-pane :label="langSet.signUp.phoneTitle" name="signup-tab-phone">
+                  <el-form-item prop="phoneAccount">
+                    <el-input v-model="form.phoneAccount" prefix-icon="iconfont if-account" :placeholder="langSet.signUp.phonePlaceholder" @input="inputChange"></el-input>
+                  </el-form-item>
+                </el-tab-pane> -->
               </el-tabs>
               <el-form-item>
                 <el-button class="signup-form-button-submit" type="primary" :disabled="buttonSubmitDisabled" @click="submitForm('form')">{{langSet.signUp.submit}}</el-button>
