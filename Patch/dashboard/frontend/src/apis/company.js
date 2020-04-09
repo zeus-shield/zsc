@@ -22,6 +22,9 @@ class Company extends Transaction {
 
   async remove(token, id, name) {
     const data = new URLSearchParams();
+    if (id) {
+    } else if (name) {
+    } else {}
 
     try {
       return await this.transaction('post', 'company/remove', {token}, null, data);
