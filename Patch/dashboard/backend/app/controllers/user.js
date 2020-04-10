@@ -91,6 +91,8 @@ const updateTOTP = async(req, res) => {
     } else {
       throw createError('COMMON_PARAM_ERROR');
     }
+    const code = req.body.code;
+    const on = req.body.on;
 
   } catch (err) {
     res.sendErr(err);
