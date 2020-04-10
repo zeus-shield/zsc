@@ -82,6 +82,10 @@
             active-text-color="#ffd04b">
             <!-- user -->
             <el-submenu index="7">
+              <template slot="title">
+                <i class="el-icon-user-solid"></i>
+                {{ user }}
+              </template>
             </el-submenu>
           </el-menu>
       </el-col>
