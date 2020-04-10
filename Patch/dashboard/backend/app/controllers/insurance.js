@@ -99,6 +99,9 @@ const remove = async(req, res) => {
     }
 
     // 2. pop insurance id from company
+    for (let i = 0; i < result.length; i++) {
+      if (!resultInner) {
+      }
     }
 
     await session.commitTransaction();
