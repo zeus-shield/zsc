@@ -6,6 +6,9 @@
         <span class="sprite"></span>
         <span>{{ langSet.user.detail.account.title }}</span>
       </div>
+
+      <div class="interval-md"></div>
+      <div class="interval-md"></div>
     </div>
 
     <div class="interval-lg"></div>
