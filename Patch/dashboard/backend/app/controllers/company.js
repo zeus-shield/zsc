@@ -37,6 +37,8 @@ const remove = async(req, res) => {
     session = await mongoose.startSession();
     session.startTransaction();
 
+    let result = {};
+    let conditions = {};
     await session.commitTransaction();
     session.endSession();
     res.sendOk('Remove company successfully!');
