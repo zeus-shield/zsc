@@ -26,6 +26,9 @@ class Insurance extends Transaction {
 
   // only by id
   async update(token, id, update) {
+    const data = new URLSearchParams();
+    data.append('id', id);
+    data.append('update', JSON.stringify(update));
 
     try {
       return await this.transaction('post', 'insurance/update', {token}, null, data);
