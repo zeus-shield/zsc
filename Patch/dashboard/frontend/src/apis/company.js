@@ -23,7 +23,9 @@ class Company extends Transaction {
   async remove(token, id, name) {
     const data = new URLSearchParams();
     if (id) {
+      data.append('id', id);
     } else if (name) {
+      data.append('name', name);
     } else {}
 
     try {
