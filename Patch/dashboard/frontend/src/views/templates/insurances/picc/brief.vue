@@ -24,6 +24,11 @@
 }
 
 .insurance .thumb .col {
+  margin: 20px auto;
+
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
 }
 .insurance .thumb .col .img {
   width: 100%;
