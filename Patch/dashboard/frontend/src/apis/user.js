@@ -24,6 +24,9 @@ class User extends Transaction {
     data.append('password', password);
     data.append('code', code);
 
+    try {
+    } catch (err) {
+    }
   };
 
   async setTOTPOn(token, id, account, code, on) {
