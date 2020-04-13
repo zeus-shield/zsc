@@ -63,6 +63,9 @@
 .content .step .tip .alert {
   border-radius: 0.25rem;
   border: thin solid #dc6b04;
+  box-shadow: 0 0.125rem 1.25rem 0 rgba(0,0,0,.05);
+  background-color: #fffbe9;
+  // padding: 0.75rem 1.5rem;
 }
 .content .step .tip .alert .title {
   font-size: 0.875rem; // 14px;
