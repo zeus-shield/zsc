@@ -22,6 +22,9 @@ class Insurance extends Transaction {
   };
 
   async remove(token, id, key) {
+    const data = new URLSearchParams();
+    if (id) {
+    } else {}
   };
 
   // only by id
