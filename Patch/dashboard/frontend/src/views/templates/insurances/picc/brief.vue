@@ -67,6 +67,10 @@
 .insurance .info .col .insured-table {
 }
 .insurance .info .col .insured-table .item {
+  padding-left: 15px;
+  // display: inline;
+  // width: 70%;
+  background: url('../../../../assets/images/insurances/picc/li_dot_red.gif') 0 6px no-repeat;
 }
 .insurance .info .col .insured-table .amount {
 }
