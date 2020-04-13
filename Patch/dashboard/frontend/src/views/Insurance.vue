@@ -44,6 +44,8 @@
           <insurance-picc-brief v-else-if="item.company === '????' || company.company === 'PICC'" :item="item"></insurance-picc-brief>
           <insurance-pingan-brief v-else :item="item"></insurance-pingan-brief>
         </div>
+        <div class="block">
+        </div>
       </el-tab-pane>
 
     </el-tabs>
@@ -202,5 +204,9 @@ export default {
     console.log('%c[Insurance]beforeRouteLeave(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
     next();
   },
+  methods: {
+    handleCurrentChange(val) {
+    }
+  }
 };
 </script>
