@@ -86,6 +86,9 @@
                 <i class="el-icon-user-solid"></i>
                 {{ user }}
               </template>
+              <el-menu-item index="71">
+                {{ langSet.header.user }}
+              </el-menu-item>
             </el-submenu>
           </el-menu>
       </el-col>
