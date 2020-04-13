@@ -82,6 +82,12 @@
   align-items: center;
 }
 .insurance .operation .col .click .button {
+  font-size: 0.875rem;
+  color: #fff;
+  width: 60%;
+  // border-color: #e76d0c #e15500 #e15500;
+  // background-color: #ec7211;
+  // background-image: linear-gradient(180deg,#f67c1b 0,#e15500);
 }
 .dialog .form .space {
   margin-top: 22px;
