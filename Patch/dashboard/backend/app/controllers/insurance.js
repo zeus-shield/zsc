@@ -100,7 +100,9 @@ const remove = async(req, res) => {
 
     // 2. pop insurance id from company
     for (let i = 0; i < result.length; i++) {
+      const resultInner = await services.companies.pullInsuranceId(result[i].company, result[i].category, result[i]._id, session);
       if (!resultInner) {
+        throw createError('COMPANY_NOT_EXIST');
       }
     }
 
