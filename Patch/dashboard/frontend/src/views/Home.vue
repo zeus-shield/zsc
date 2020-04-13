@@ -46,6 +46,9 @@
                 <div class="cover">
                 </div>
               </swiper-slide>
+              <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
+              <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
+              <div class="swiper-pagination" slot="pagination"></div>
             </swiper>
             <swiper :options="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
               <swiper-slide v-for="(item, index) in 3" :key="index">
