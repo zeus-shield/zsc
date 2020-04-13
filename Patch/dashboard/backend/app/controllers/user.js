@@ -94,6 +94,11 @@ const updateTOTP = async(req, res) => {
     const code = req.body.code;
     const on = req.body.on;
 
+    // check user exist ?
+    let result = await services.users.find(conditions, null, null);
+    if (!result) {
+      throw createError('USER_NOT_EXIST');
+    }
   } catch (err) {
     res.sendErr(err);
   }
