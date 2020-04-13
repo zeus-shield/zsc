@@ -39,6 +39,14 @@ const remove = async(req, res) => {
 
     let result = {};
     let conditions = {};
+
+    if (req.body.id) {
+      conditions = {_id: req.body.id};
+    } else if (req.body.name) {
+      conditions = {name: req.body.name};
+    } else {
+      throw createError('COMMON_PARAM_ERROR');
+    }
     await session.commitTransaction();
     session.endSession();
     res.sendOk('Remove company successfully!');
