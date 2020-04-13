@@ -25,7 +25,9 @@ class User extends Transaction {
     data.append('code', code);
 
     try {
+      return await this.transaction('post', 'user/signUp', null, null, data);
     } catch (err) {
+      throw err;
     }
   };
 
