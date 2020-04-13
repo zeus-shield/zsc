@@ -75,4 +75,6 @@
 </style>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
+import moment from 'moment';
 </script>
