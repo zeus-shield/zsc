@@ -44,6 +44,8 @@
               <swiper-slide v-for="(item, index) in 3" :key="index">
                 <img :class="{'bg': device === 'pc'}" :src="getImgUrl('banner-bg', item)" alt=""></img>
                 <div class="cover">
+                  <div class="inner">
+                  </div>
                 </div>
               </swiper-slide>
               <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
@@ -248,6 +250,7 @@ export default {
     return {
       lang: '',
       resizeFlag: null,
+      originalSwiper: true
     };
   },
   // props: {
