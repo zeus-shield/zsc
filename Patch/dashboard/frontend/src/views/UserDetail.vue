@@ -56,6 +56,9 @@
   // margin: 1.25rem auto;
   box-shadow: 0 0.125rem 1.25rem 0 rgba(0,0,0,.05);
   border-radius: 0.25rem;
+  // padding: 1.5rem;
+  // padding: 0.75rem 1.5rem;
+  padding: 0.75rem 0.5rem;
 }
 .account .info .gap {
   display: flex;
