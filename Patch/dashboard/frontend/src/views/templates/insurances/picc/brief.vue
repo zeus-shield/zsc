@@ -65,6 +65,8 @@
   font-size: 14px;
 }
 .insurance .info .col .insured-table {
+  font-size: 12px;
+  margin: 0px 20px 10px 20px;
 }
 .insurance .info .col .insured-table .item {
   padding-left: 15px;
