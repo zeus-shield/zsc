@@ -38,6 +38,10 @@ class User extends Transaction {
   };
 
   async info(token, id, account) {
+    const query = new URLSearchParams();
+    if (id) {
+    } else if (account) {
+    } else {}
   };
 
   async list(token) {
