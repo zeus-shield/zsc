@@ -37,8 +37,8 @@
   // background-color: #409EFF;
   // border-color: #409EFF;
   border-radius: 0px;
-  background-color: #f91;
-  border-color: #f91;
+  // background-color: #f91;
+  // border-color: #f91;
 }
 .el-button--small {
   border-radius: 0px;
