@@ -10,6 +10,9 @@
       <div class="interval-md"></div>
 
       <el-alert class="tip" type="warning" :closable="false" show-icon>
+        <template slot="title">
+          <span class="title">{{ langSet.user.detail.account.tip.title }}</span>
+        </template>
       </el-alert>
       <div class="interval-md"></div>
     </div>
