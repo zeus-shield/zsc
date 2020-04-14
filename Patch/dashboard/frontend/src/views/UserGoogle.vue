@@ -18,6 +18,8 @@
         <div class="interval-md"></div>
 
         <div class="tip">
+          <el-alert class="alert" type="warning" :closable="false" show-icon>
+          </el-alert>
         </div>
 
         <div class="interval-md"></div>
