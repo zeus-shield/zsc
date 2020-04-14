@@ -16,6 +16,14 @@
         </div>
 
         <div class="interval-md"></div>
+
+        <div class="tip">
+        </div>
+
+        <div class="interval-md"></div>
+
+        <div class="qr-box bind">
+      </div>
     </div>
 
   </div>
