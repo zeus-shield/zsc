@@ -6,6 +6,8 @@
     </div>
 
     <el-collapse class="collapse" accordion>
+      <el-collapse-item v-for="(item, index) in policies" :key="index">
+      </el-collapse-item>
     </el-collapse>
   </div>
 </template>
