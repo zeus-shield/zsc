@@ -94,6 +94,11 @@
               </el-menu-item>
             </el-submenu>
           </el-menu>
+
+          <!-- lang -->
+          <el-dropdown class="header-lang" v-if="lang === 'cn'" @command="switchLanguage">
+          </el-dropdown>
+        </div>
       </el-col>
     </el-row>
   </div>
