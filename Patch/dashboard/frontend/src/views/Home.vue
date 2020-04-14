@@ -45,6 +45,10 @@
                 <img :class="{'bg': device === 'pc'}" :src="getImgUrl('banner-bg', item)" alt=""></img>
                 <div class="cover">
                   <div class="inner">
+                    <el-row :gutter="0" :class="{ 'row-pc': device === 'pc' }">
+                      <el-col :xs="{span: 16, offset: 4}" :sm="{span: 11, offset: 1}" :md="{span: 11, offset: 1}" :lg="{span: 11, offset: 1}">
+                      </el-col>
+                    </el-row>
                   </div>
                 </div>
               </swiper-slide>
