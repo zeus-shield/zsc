@@ -47,6 +47,11 @@ const remove = async(req, res) => {
     } else {
       throw createError('COMMON_PARAM_ERROR');
     }
+
+    result = await services.companies.find(conditions, null, session);
+    if (!result) {
+      throw createError('COMPANY_NOT_EXIST');
+    }
     await session.commitTransaction();
     session.endSession();
     res.sendOk('Remove company successfully!');
