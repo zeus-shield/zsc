@@ -99,6 +99,11 @@ const updateTOTP = async(req, res) => {
     if (!result) {
       throw createError('USER_NOT_EXIST');
     }
+
+    // check google auth has setted ?
+    if (result.totp_key === undefined || result.totp_on === undefined) {
+      throw createError('USER_TOTP_NOT_SET');
+    }
   } catch (err) {
     res.sendErr(err);
   }
