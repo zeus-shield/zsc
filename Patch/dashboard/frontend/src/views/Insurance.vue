@@ -28,6 +28,16 @@
           </el-tab-pane>
 
           <div class="block">
+            <el-pagination
+              background
+              layout="total, sizes, prev, pager, next, jumper"
+              :current-page="currentPage"
+              :page-sizes="cacheData.setting.pageSizes"
+              :page-size="pageSize"
+              :total="totalForPage"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange">
+            </el-pagination>
           </div>
         </el-tabs>
       </el-tab-pane>
