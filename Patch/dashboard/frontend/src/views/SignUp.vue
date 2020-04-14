@@ -30,6 +30,9 @@
                   </el-form-item>
                 </el-tab-pane> -->
               </el-tabs>
+              <el-form-item prop="password">
+                <el-input v-model="form.password" prefix-icon="iconfont if-password" :placeholder="langSet.signUp.password" show-password @input="inputChange"></el-input>
+              </el-form-item>
               <el-form-item prop="password2">
                 <el-input v-model="form.password2" prefix-icon="iconfont if-password" :placeholder="langSet.signUp.password2" show-password @input="inputChange"></el-input>
               </el-form-item>
