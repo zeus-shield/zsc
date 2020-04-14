@@ -24,6 +24,9 @@ class Insurance extends Transaction {
   async remove(token, id, key) {
     const data = new URLSearchParams();
     if (id) {
+      data.append('id', id);
+    } else if (key) {
+      data.append('key', JSON.stringify(key));
     } else {}
   };
 
