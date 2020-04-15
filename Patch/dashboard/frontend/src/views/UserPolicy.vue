@@ -7,6 +7,11 @@
 
     <el-collapse class="collapse" accordion>
       <el-collapse-item v-for="(item, index) in policies" :key="index">
+        <template slot="title"> 
+          <span class="title">
+            {{ device === 'pc' ? item.insurance.company + ' - ' + item.insurance.category + ' - ' + item.insurance.title : item.insurance.title }}
+          </span>
+        </template>
       </el-collapse-item>
     </el-collapse>
   </div>
