@@ -104,6 +104,14 @@ const updateTOTP = async(req, res) => {
     if (result.totp_key === undefined || result.totp_on === undefined) {
       throw createError('USER_TOTP_NOT_SET');
     }
+
+    const handle = new TOTP(result.totp_key);
+
+    // verify google code
+    const verify = await handle.verify(code);
+    if (!verify) {
+      throw createError('USER_TOTP_VERIFY_ERR');
+    }
   } catch (err) {
     res.sendErr(err);
   }
