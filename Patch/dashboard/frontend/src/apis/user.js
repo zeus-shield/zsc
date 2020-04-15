@@ -40,7 +40,9 @@ class User extends Transaction {
   async info(token, id, account) {
     const query = new URLSearchParams();
     if (id) {
+      query.append('id', id);
     } else if (account) {
+      query.append('account', account);
     } else {}
   };
 
