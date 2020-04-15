@@ -13,6 +13,9 @@
         <template slot="title">
           <span class="title">{{ langSet.user.detail.account.tip.title }}</span>
         </template>
+        <template>
+          <span class="description">{{ langSet.user.detail.account.tip.description }}</span>
+        </template>
       </el-alert>
       <div class="interval-md"></div>
     </div>
