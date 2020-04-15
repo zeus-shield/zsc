@@ -67,6 +67,10 @@
 .insurance .info .col .insured-table {
   font-size: 12px;
   margin: 0px 20px 10px 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .insurance .info .col .insured-table .item {
   padding-left: 15px;
