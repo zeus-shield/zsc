@@ -52,6 +52,11 @@ const remove = async(req, res) => {
     if (!result) {
       throw createError('COMPANY_NOT_EXIST');
     }
+
+    // 1. remove insurance by insurance_id
+    // can't remove in 'forEach'
+    if (result.categories) {
+    }
     await session.commitTransaction();
     session.endSession();
     res.sendOk('Remove company successfully!');
