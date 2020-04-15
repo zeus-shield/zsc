@@ -75,6 +75,10 @@
   background: url('../../../../assets/images/insurances/picc/li_dot_red.gif') 0 6px no-repeat;
 }
 .insurance .info .col .insured-table .amount {
+  // float: right;
+  // width: 25%;
+  text-align: right;
+  color: #ff4e33;
 }
 .insurance .operation {
   background: #fff9f2;
