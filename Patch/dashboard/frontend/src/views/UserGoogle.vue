@@ -19,6 +19,9 @@
 
         <div class="tip">
           <el-alert class="alert" type="warning" :closable="false" show-icon>
+            <template slot="title">
+              <span class="title">{{ langSet.user.google.step[0].tip.title }}</span>
+            </template>
           </el-alert>
         </div>
 
