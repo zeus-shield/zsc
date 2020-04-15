@@ -28,6 +28,12 @@ class Insurance extends Transaction {
     } else if (key) {
       data.append('key', JSON.stringify(key));
     } else {}
+
+    try {
+      return await this.transaction('post', 'insurance/remove', {token}, null, data);
+    } catch (err) {
+      throw err;
+    }
   };
 
   // only by id
