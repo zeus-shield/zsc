@@ -97,6 +97,8 @@
 
           <!-- lang -->
           <el-dropdown class="header-lang" v-if="lang === 'cn'" @command="switchLanguage">
+            <div class="header-lang-item">
+            </div>
           </el-dropdown>
         </div>
       </el-col>
