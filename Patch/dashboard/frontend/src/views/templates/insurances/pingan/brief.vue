@@ -111,5 +111,8 @@ import APIs from '@/apis';
 // import APIs from '@/apis';
 
 export default {
+  name: 'InsurancePingAnBrief',
+  components: {
+  },
 };
 </script>
