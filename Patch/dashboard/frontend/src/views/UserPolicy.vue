@@ -87,4 +87,7 @@ import moment from 'moment';
 
 import utils from '@/common/utils';
 import APIs from '@/apis';
+
+export default {
+};
 </script>
