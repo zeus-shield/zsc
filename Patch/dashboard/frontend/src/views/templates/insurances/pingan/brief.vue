@@ -112,7 +112,10 @@ import APIs from '@/apis';
 
 export default {
   name: 'InsurancePingAnBrief',
-  components: {
+  // components: {
+  // },
+  data() {
+    };
   },
 };
 </script>
