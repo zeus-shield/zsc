@@ -43,10 +43,12 @@
 .el-button--small {
   border-radius: 0px;
 }
-.el-button--primary.is-disabled, .el-button--primary.is-disabled:active, .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover {
-  background-color: #ffce68;
-  border-color: #ffce68;
-}
+// .el-button--primary.is-disabled, .el-button--primary.is-disabled:active, .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover {
+//   // background-color: #a0cfff;
+//   // border-color: #a0cfff;
+//   background-color: #ffce68;
+//   border-color: #ffce68;
+// }
 .el-dialog__header {
   font-size: 1.125rem; // 18px;
   font-weight: 400;
