@@ -22,6 +22,9 @@
             <template slot="title">
               <span class="title">{{ langSet.user.google.step[0].tip.title }}</span>
             </template>
+            <template>
+              <span class="description">{{ langSet.user.google.step[0].tip.description }}</span>
+            </template>
           </el-alert>
         </div>
 
