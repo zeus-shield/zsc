@@ -112,6 +112,11 @@ const updateTOTP = async(req, res) => {
     if (!verify) {
       throw createError('USER_TOTP_VERIFY_ERR');
     }
+
+    const update = {
+      totp_on: on,
+      updated_at: Date.now()
+    };
   } catch (err) {
     res.sendErr(err);
   }
