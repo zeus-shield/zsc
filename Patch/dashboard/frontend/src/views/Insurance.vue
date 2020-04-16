@@ -196,7 +196,10 @@ export default {
     insuranceCache: {
       // getter
       get: function() {
+        return function(cmd) {
       }
+      // setter
+      // set: function() {}
     }
   },
   created() {
