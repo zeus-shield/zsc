@@ -84,4 +84,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import moment from 'moment';
+
+import utils from '@/common/utils';
+import APIs from '@/apis';
 </script>
