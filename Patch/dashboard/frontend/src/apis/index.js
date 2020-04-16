@@ -10,6 +10,7 @@ const instance = axios.create({
 import Wallet from './wallet';
 import EWallet from './core/ewallet';
 
+import Demo from './dapp/demo';
 import DUser from './dapp/user';
 
 import User from './user';
@@ -26,7 +27,8 @@ class APIs {
     this.core.ewallet = new EWallet();
 
     this.dapp = {};
-    this.dapp.user = new DUser(this.core.ewallet, null, null);
+    this.dapp.demo = new Demo(this.core.ewallet, contracts.demo.addr, contracts.demo.abi);
+    this.dapp.user = new DUser(this.core.ewallet, contracts.user.addr, contracts.user.abi);
 
     this.user = new User(instance);
     this.company = new Company(instance);
