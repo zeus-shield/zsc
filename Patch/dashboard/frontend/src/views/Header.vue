@@ -98,6 +98,9 @@
           <!-- lang -->
           <el-dropdown class="header-lang" v-if="lang === 'cn'" @command="switchLanguage">
             <div class="header-lang-item">
+              <svg class="iconfont-symbol" aria-hidden="true">
+                <use xlink:href="#if-flag-cn-rect"></use>
+              </svg>
             </div>
           </el-dropdown>
         </div>
