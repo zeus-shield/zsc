@@ -56,6 +56,10 @@ const remove = async(req, res) => {
     // 1. remove insurance by insurance_id
     // can't remove in 'forEach'
     if (result.categories) {
+      for (let i = 0; i < result.categories.length; i++) {
+        for (let j = 0; j < result.categories[i].insurance_ids.length; j++) {
+        }
+      }
     }
     await session.commitTransaction();
     session.endSession();
