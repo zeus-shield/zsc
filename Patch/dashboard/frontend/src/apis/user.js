@@ -44,6 +44,12 @@ class User extends Transaction {
     } else if (account) {
       query.append('account', account);
     } else {}
+
+    try {
+      return await this.transaction('get', 'user/detail', {token}, query);
+    } catch (err) {
+      throw err;
+    }
   };
 
   async list(token) {
