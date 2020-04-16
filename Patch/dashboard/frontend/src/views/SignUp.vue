@@ -31,6 +31,8 @@
                 </el-tab-pane> -->
               </el-tabs>
               <el-form-item prop="code">
+                <el-row :gutter="20">
+                </el-row>
               </el-form-item>
               <el-form-item prop="password">
                 <el-input v-model="form.password" prefix-icon="iconfont if-password" :placeholder="langSet.signUp.password" show-password @input="inputChange"></el-input>
@@ -308,6 +310,8 @@ export default {
       let vm = this;
       vm.$refs[formName].validate((valid) => {
         if (valid) {
+          vm.errorMessage = '';
+          vm.loading = true;
       });
     }
   }
