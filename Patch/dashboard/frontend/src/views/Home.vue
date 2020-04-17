@@ -51,6 +51,8 @@
                         <div class="content">{{ langSet.home.slot1.content[item-1] }}</div>
                       </el-col>
                       <el-col class="space" :xs="{span: 16, offset: 4}" :sm="{span: 0, offset: 0}" :md="{span: 0, offset: 0}" :lg="{span: 0, offset: 0}"></el-col>
+                      <el-col :xs="{span: 16, offset: 4}" :sm="{span: 10, offset: 0}" :md="{span: 10, offset: 0}" :lg="{span: 10, offset: 0}">
+                        <img class="img" :src="getImgUrl('banner', item)" alt=""></img>
                       </el-col>
                     </el-row>
                   </div>
