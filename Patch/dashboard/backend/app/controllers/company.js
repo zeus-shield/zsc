@@ -61,6 +61,13 @@ const remove = async(req, res) => {
         }
       }
     }
+
+    // 2. remove company
+    result = await services.companies.remove(conditions, false, session);
+    if (!result) {
+      throw createError('COMPANY_NOT_EXIST');
+    }
+
     await session.commitTransaction();
     session.endSession();
     res.sendOk('Remove company successfully!');
