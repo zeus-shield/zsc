@@ -91,6 +91,8 @@
   margin: 40px auto;
 }
 .insurance .operation .col .desc {
+  font-size: 14px;
+  margin: 0px 0px 5px 20px;
 }
 .insurance .operation .col .desc .icon {
   font-size: 20px;
