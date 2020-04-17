@@ -117,6 +117,11 @@ const updateTOTP = async(req, res) => {
       totp_on: on,
       updated_at: Date.now()
     };
+    // Finds a matching document, updates it and return the modified document.
+    result = await services.users.update(conditions, update, false, null);
+
+    // res.sendOk(format.user(result));
+    res.sendOk('Update TOTP successfully!');
   } catch (err) {
     res.sendErr(err);
   }
