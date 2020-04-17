@@ -49,6 +49,10 @@
 //   background-color: #ffce68;
 //   border-color: #ffce68;
 // }
+.el-button--primary:focus, .el-button--primary:hover {
+  background-color: #ffb148;
+  border-color: #ffb148;
+}
 .el-dialog__header {
   font-size: 1.125rem; // 18px;
   font-weight: 400;
