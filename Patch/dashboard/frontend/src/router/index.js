@@ -50,7 +50,6 @@ const CoreUser = resolve => require.ensure([], () => resolve(require('@/views/ad
 const CoreUserAssets = resolve => require.ensure([], () => resolve(require('@/views/admin/core/UserAssets')), 'lazy');
 const CoreWallet = resolve => require.ensure([], () => resolve(require('@/views/admin/core/Wallet')), 'lazy');
 
-
 // const Test = resolve => require.ensure([], () => resolve(require('@/views/Test')), 'lazy');
 
 Vue.use(Router);
@@ -262,6 +261,11 @@ let router = new Router({
           path: '/admin/contract',
           name: 'adminContract',
           component: AdminContract
+        },
+        {
+          path: '/admin/core/user',
+          name: 'coreUser',
+          component: CoreUser
         },
         {
           path: '/admin/core/wallet',
