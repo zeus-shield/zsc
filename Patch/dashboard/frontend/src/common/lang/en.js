@@ -238,6 +238,7 @@ const en = {
       USER_GOOGLE_CODE_LEN_ERR: 'Length of 6-bit number',
       USER_GOOGLE_AUTH_ERR: 'Google authenticator code error',
       USER_GOOGLE_AUTH_NOT_SET: 'Google authenticator not set',
+      USER_ADD_POLICY_FAIL: 'User failed to add policy',
 
       COMPANY_CATEGORIES_HAS_EXIST: 'Company and category have already existed!',
       COMPANY_CATEGORIES_NOT_EXIST: 'Company and category does not exist!',
@@ -302,9 +303,10 @@ const en = {
       login: 'User is logging in...',
       signUp: 'User is signing up...',
       insurance: 'Getting insurance products...',
-      analytics: 'Analyzing data........',
+      analytics: 'Analyzing data...',
 
-      myInsuranceSaving: 'Saving my insurance......'
+      myInsuranceSaving: 'Saving my insurance...',
+      myInsuranceLoading: 'Loading my insurance...'
     }
   }
 };
