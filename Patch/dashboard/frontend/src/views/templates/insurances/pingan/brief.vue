@@ -6,6 +6,9 @@
           <img v-if="item.brief.img_url && item.brief.img_url !== '' && item.brief.img_url !== 'null'" class="content" :src="require('@/assets/' + item.brief.img_url)">
         </div>
       </el-col>
+
+      <el-col class="info" :span="15">
+      </el-col>
     </el-row>
   </div>
 </template>
