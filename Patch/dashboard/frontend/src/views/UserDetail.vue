@@ -52,6 +52,9 @@
 .security .header .sprite {
 }
 .account .tip {
+  // margin: 1.25rem auto;
+  border-radius: 0.25rem;
+  border: thin solid #dc6b04;
 }
 .account .tip .title {
   font-size: 0.875rem; // 14px;
