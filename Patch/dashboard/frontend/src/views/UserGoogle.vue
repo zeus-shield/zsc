@@ -75,6 +75,9 @@
 //   margin-top: 1.25rem; // 20px;
 // }
 .content .step .text:before {
+  display: inline-block;
+  margin-right: 0.5rem; // 8px;
+  background-color: #3075ee;
 }
 .content .step .tip .alert {
   border-radius: 0.25rem;
