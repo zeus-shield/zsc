@@ -35,6 +35,10 @@ class User extends Transaction {
   };
 
   async addPolicy(token, id, account, policy) {
+    const data = new URLSearchParams();
+    if (id) {
+    } else if (account) {
+    } else {}
   };
 
   async info(token, id, account) {
