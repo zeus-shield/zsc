@@ -17,6 +17,9 @@ import User from './user';
 import Insurance from './insurance';
 import Company from './company';
 
+const contracts = {
+};
+
 class APIs {
   constructor() {
     this.ethereum = {};
