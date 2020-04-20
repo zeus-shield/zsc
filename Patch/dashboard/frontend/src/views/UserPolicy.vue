@@ -1,5 +1,5 @@
 <template>
-  <div class="user-policy" :class="{'user-policy-mobile': device !== 'pc'}">
+  <div class="user-policy" :class="{'user-policy-mobile': device !== 'pc'}" v-loading.fullscreen.lock="load.doing" :element-loading-text="load.text" element-loading-spinner="el-icon-loading" >
     <div class="header">
       <span class="sprite"></span>
       <span>{{ langSet.user.aside.slot[0].item[1] }}</span>
@@ -91,6 +91,9 @@ import APIs from '@/apis';
 export default {
   name: 'UserPolicy',
   components: {
+  data() {
+  },
+  props: {
   },
 };
 </script>
