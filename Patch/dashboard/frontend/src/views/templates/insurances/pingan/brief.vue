@@ -8,6 +8,11 @@
       </el-col>
 
       <el-col class="info" :span="15">
+        <div class="col">
+          <div class="title">
+            <span>{{ item.brief.title }}</span>
+          </div>
+        </div>
       </el-col>
     </el-row>
   </div>
