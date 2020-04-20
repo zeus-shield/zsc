@@ -125,7 +125,8 @@ const en = {
           placeholder: 'Please select the date'
         },
         period: 'Period',
-        description: 'Description'
+        description: 'Description',
+        hash: 'Hash'
       }
     }
   },
