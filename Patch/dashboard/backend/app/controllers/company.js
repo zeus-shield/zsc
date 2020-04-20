@@ -58,6 +58,11 @@ const remove = async(req, res) => {
     if (result.categories) {
       for (let i = 0; i < result.categories.length; i++) {
         for (let j = 0; j < result.categories[i].insurance_ids.length; j++) {
+          // debug('[remove](%s)', result.categories[i].insurance_ids[j]);
+          if (result.categories[i].insurance_ids[j] !== undefined &&
+              result.categories[i].insurance_ids[j] !== null) {
+            const resultInner = await services.insurances.remove({_id: result.categories[i].insurance_ids[j]}, false, session);
+          }
         }
       }
     }
