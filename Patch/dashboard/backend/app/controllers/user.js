@@ -142,7 +142,9 @@ const addPolicy = async(req, res) => {
 
     // There is only one database write operation, and session can not be used.
     let policy = JSON.parse(req.body.policy);
-    policy.insurance.id = mongoose.Types.ObjectId(policy.insurance.id);
+    if (policy && policy.insurance && policy.insurance.id) {
+      policy.insurance.id = mongoose.Types.ObjectId(policy.insurance.id);
+    }
 
     const update = {
       $push: {policies: policy},
