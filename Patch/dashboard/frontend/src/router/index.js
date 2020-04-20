@@ -268,6 +268,16 @@ let router = new Router({
           component: CoreUser
         },
         {
+          path: '/admin/core/userAssets',
+          name: 'coreUserAssets',
+          component: CoreUserAssets,
+          props: (route) => ({
+            param: {
+              id: route.query.id
+            }
+          })
+        },
+        {
           path: '/admin/core/wallet',
           name: 'coreWallet',
           component: CoreWallet
