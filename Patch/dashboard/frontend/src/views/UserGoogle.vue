@@ -78,6 +78,9 @@
   display: inline-block;
   margin-right: 0.5rem; // 8px;
   background-color: #3075ee;
+  color: #fff;
+  width: 1rem; // 16px;
+  height: 1rem; // 16px;
 }
 .content .step .tip .alert {
   border-radius: 0.25rem;
