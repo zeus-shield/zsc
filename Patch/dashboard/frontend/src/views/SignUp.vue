@@ -35,6 +35,9 @@
                   <el-col :span="12">
                     <el-input v-model="form.code" prefix-icon="iconfont if-password" :placeholder="langSet.signUp.code" @input="inputChange"></el-input>
                   </el-col>
+                  <el-col :span="12">
+                    <el-button class="signup-form-button-code" :disabled="buttonCodeDisabled" @click="getCode">{{ buttonCodeName }}</el-button>
+                  </el-col>
                 </el-row>
               </el-form-item>
               <el-form-item prop="password">
