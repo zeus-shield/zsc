@@ -198,6 +198,8 @@ export default {
       get: function() {
         return function(cmd) {
           if (cmd === 'page') {
+            // get insurances by company and category
+            let insurances = this.cacheData.insurances.filter(insurance => insurance.company === this.companyActiveName && insurance.category === this.categoryActiveName);
           } else if (cmd === 'total') {
             let insurances = this.cacheData.insurances.filter(insurance => insurance.company === this.companyActiveName && insurance.category === this.categoryActiveName);
             return insurances;
