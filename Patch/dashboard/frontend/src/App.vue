@@ -50,8 +50,8 @@
 //   border-color: #ffce68;
 // }
 .el-button--primary:focus, .el-button--primary:hover {
-  background: #66b1ff;
-  border-color: #66b1ff;
+  // background: #66b1ff;
+  // border-color: #66b1ff;
   background-color: #ffb148;
   border-color: #ffb148;
 }
