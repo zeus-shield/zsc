@@ -318,6 +318,11 @@ export default {
         if (valid) {
           vm.errorMessage = '';
           vm.loading = true;
+          // 3. async case
+          let account = '';
+          if (vm.tabIndex === '1') {
+          } else if (vm.tabIndex === '0') {
+          }
       });
     }
   }
