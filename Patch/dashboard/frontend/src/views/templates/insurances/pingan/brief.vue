@@ -128,6 +128,8 @@ export default {
   // },
   data() {
     };
+    let validateCompany = (rule, value, callback) => {
+    };
   },
 };
 </script>
