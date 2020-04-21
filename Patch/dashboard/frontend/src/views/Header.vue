@@ -106,6 +106,9 @@
             <el-dropdown-menu slot="dropdown" :visible-arrow="true">
               <el-dropdown-item command="en">
                 <div class="header-lang-item">
+                  <svg class="iconfont-symbol" aria-hidden="true">
+                    <use xlink:href="#if-flag-en-rect"></use>
+                  </svg>
                 </div>
               </el-dropdown-item>
             </el-dropdown-menu>
