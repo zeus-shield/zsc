@@ -199,6 +199,8 @@ export default {
         return function(cmd) {
           if (cmd === 'page') {
           } else if (cmd === 'total') {
+            let insurances = this.cacheData.insurances.filter(insurance => insurance.company === this.companyActiveName && insurance.category === this.categoryActiveName);
+            return insurances;
           } else if ('search') {
         };
       }
