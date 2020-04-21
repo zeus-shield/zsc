@@ -12,6 +12,10 @@
           <div class="title">
             <span>{{ item.brief.title }}</span>
           </div>
+          <div v-if="item.brief.hot === true" class="corner hot"></div>
+          <div class="content">
+            <span>{{ item.brief.text }}</span>
+          </div>
         </div>
       </el-col>
     </el-row>
