@@ -42,6 +42,12 @@ class User extends Transaction {
       data.append('account', account);
     } else {}
     data.append('policy', JSON.stringify(policy));
+
+    try {
+      return await this.transaction('post', 'user/addPolicy', {token}, null, data);
+    } catch (err) {
+      throw err;
+    }
   };
 
   async info(token, id, account) {
