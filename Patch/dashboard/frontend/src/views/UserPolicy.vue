@@ -90,10 +90,13 @@ import APIs from '@/apis';
 
 export default {
   name: 'UserPolicy',
-  components: {
+  // components: {
+  // },
   data() {
   },
-  props: {
+  // props: {
+  // },
+  computed: {
   },
 };
 </script>
