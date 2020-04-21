@@ -62,6 +62,9 @@ const remove = async(req, res) => {
           if (result.categories[i].insurance_ids[j] !== undefined &&
               result.categories[i].insurance_ids[j] !== null) {
             const resultInner = await services.insurances.remove({_id: result.categories[i].insurance_ids[j]}, false, session);
+            if (!resultInner) {
+              throw createError('INSURANCE_NOT_EXIST');
+            }
           }
         }
       }
