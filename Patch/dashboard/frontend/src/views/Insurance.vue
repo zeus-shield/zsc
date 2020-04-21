@@ -202,6 +202,9 @@ export default {
             let insurances = this.cacheData.insurances.filter(insurance => insurance.company === this.companyActiveName && insurance.category === this.categoryActiveName);
             return insurances;
           } else if ('search') {
+            if (this.companyActiveIndex !== -1) {
+              return [];
+            }
         };
       }
       // setter
