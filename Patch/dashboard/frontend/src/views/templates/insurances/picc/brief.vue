@@ -111,6 +111,9 @@
   align-items: center;
 }
 .insurance .operation .col .click .button {
+  font-size: 0.875rem;
+  color: #fff;
+  width: 60%;
 }
 </style>
 
