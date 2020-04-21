@@ -105,6 +105,8 @@
             </div>
             <el-dropdown-menu slot="dropdown" :visible-arrow="true">
               <el-dropdown-item command="en">
+                <div class="header-lang-item">
+                </div>
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
