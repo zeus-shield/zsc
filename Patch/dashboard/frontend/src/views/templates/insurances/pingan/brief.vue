@@ -129,6 +129,11 @@ export default {
   data() {
     };
     let validateCompany = (rule, value, callback) => {
+      validate('COMPANY', rule, value, callback);
+    };
+    let validateCategory = (rule, value, callback) => {
+    };
+    let validateTitle = (rule, value, callback) => {
     };
   },
 };
