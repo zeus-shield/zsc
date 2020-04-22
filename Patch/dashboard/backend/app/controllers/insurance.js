@@ -15,6 +15,7 @@ const add = async(req, res) => {
 
     const company = req.body.company;
     const category = req.body.category;
+    const code = JSON.parse(req.body.code);
     const brief = JSON.parse(req.body.brief);
     const detail = JSON.parse(req.body.detail);
 
@@ -47,6 +48,7 @@ const add = async(req, res) => {
     const docs = [{
       company: company,
       category: category,
+      code: code,
       brief: brief,
       detail: detail
     }];
