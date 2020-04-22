@@ -294,14 +294,7 @@ export default {
           }
         }, 1000);
       }).catch(errorData => {
-        // vm.errorMessage = errorData.errorMessage;
-        let errorMessage = '';
-        if (errorData.errorMessage !== undefined) {
-          errorMessage = errorData.errorMessage;
-        } else {
-          errorMessage = errorData;
-        }
-
+        const errorMessage = errorData.errorMessage ? errorData.errorMessage : errorData;
         if (errorMessage.indexOf('timeout') !== -1) { // timeout of 2000ms exceeded
           vm.errorMessage = 'TIMEOUT'; // vm.langSet.message.error.timeout;
         } else {
