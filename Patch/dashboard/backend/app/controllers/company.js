@@ -19,6 +19,7 @@ const add = async(req, res) => {
     // 2. insert new company
     const doc = {
       name: req.body.name,
+      code: req.body.code,
       categories: JSON.parse(req.body.categories),
       created_at: Date.now()
     };
@@ -112,6 +113,9 @@ const update = async(req, res) => {
       throw createError('COMPANY_NOT_EXIST');
     }
 
+    // 1. update and remove insurances according to updated data
+    if (result.categories) {
+    }
     await session.commitTransaction();
     session.endSession();
 
