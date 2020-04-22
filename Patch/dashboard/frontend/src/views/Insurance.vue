@@ -200,6 +200,11 @@ export default {
           if (cmd === 'page') {
             // get insurances by company and category
             let insurances = this.cacheData.insurances.filter(insurance => insurance.company === this.companyActiveName && insurance.category === this.categoryActiveName);
+
+            let offset = this.pageSize * (this.currentPage - 1);
+            offset = (offset < this.totalForPage) ? offset : 0;
+
+            return insurances.slice(offset, offset + this.pageSize);
           } else if (cmd === 'total') {
             let insurances = this.cacheData.insurances.filter(insurance => insurance.company === this.companyActiveName && insurance.category === this.categoryActiveName);
             return insurances;
