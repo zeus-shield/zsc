@@ -93,6 +93,10 @@ export default {
   // components: {
   // },
   data() {
+    return {
+      policies: [],
+      labelWidth: '20%'
+    };
   },
   // props: {
   // },
