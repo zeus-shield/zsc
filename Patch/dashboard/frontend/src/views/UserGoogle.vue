@@ -84,6 +84,8 @@
   line-height: 1rem; // 16px;
   text-align: center;
   border-radius: 50%;
+  counter-increment: num; 
+  content: counter(num);
 }
 .content .step .tip .alert {
   border-radius: 0.25rem;
