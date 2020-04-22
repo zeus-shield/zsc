@@ -109,10 +109,14 @@
                   <svg class="iconfont-symbol" aria-hidden="true">
                     <use xlink:href="#if-flag-en-rect"></use>
                   </svg>
+                  {{ langSetByKey('en').header.lang }}
                 </div>
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
+          <el-dropdown class="header-lang" v-if="lang === 'en'" @command="switchLanguage">
+            <div class="header-lang-item">
+            </div>
           </el-dropdown>
         </div>
       </el-col>
