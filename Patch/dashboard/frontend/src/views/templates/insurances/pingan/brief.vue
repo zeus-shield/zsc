@@ -132,8 +132,10 @@ export default {
       validate('COMPANY', rule, value, callback);
     };
     let validateCategory = (rule, value, callback) => {
+      validate('CATEGORY', rule, value, callback);
     };
     let validateTitle = (rule, value, callback) => {
+      validate('TITLE', rule, value, callback);
     };
   },
 };
