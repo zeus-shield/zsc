@@ -80,6 +80,8 @@ const saveTOTP = async(req, res) => {
     } else {
       throw createError('COMMON_PARAM_ERROR');
     }
+    const code = req.body.code;
+    const key = req.body.key;
 
   } catch (err) {
     res.sendErr(err);
