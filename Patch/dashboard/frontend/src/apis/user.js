@@ -34,8 +34,12 @@ class User extends Transaction {
   async setTOTPOn(token, id, account, code, on) {
     const data = new URLSearchParams();
     if (id) {
+      data.append('id', id);
     } else if (account) {
+      data.append('account', account);
     } else {}
+    data.append('code', code);
+    data.append('on', on);
   };
 
   async addPolicy(token, id, account, policy) {
