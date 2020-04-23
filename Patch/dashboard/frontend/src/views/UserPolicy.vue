@@ -94,6 +94,10 @@ export default {
   // },
   data() {
     return {
+      load: {
+        doing: false,
+        text: ''
+      },
       policies: [],
       labelWidth: '20%'
     };
