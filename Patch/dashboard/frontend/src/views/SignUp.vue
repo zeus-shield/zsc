@@ -314,7 +314,9 @@ export default {
           // 3. async case
           let account = '';
           if (vm.tabIndex === '1') {
+            account = vm.form.phoneAccount;
           } else if (vm.tabIndex === '0') {
+            account = vm.form.emailAccount;
           }
       });
     }
