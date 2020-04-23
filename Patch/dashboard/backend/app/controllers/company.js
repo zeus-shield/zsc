@@ -116,6 +116,11 @@ const update = async(req, res) => {
     // 1. update and remove insurances according to updated data
     if (result.categories) {
     }
+
+    // 2. update company including removing
+    update.updated_at = Date.now();
+    await services.companies.update({_id: req.body.id}, update, false, session);
+
     await session.commitTransaction();
     session.endSession();
 
