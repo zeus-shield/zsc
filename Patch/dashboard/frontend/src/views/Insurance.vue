@@ -216,6 +216,9 @@ export default {
             // for total products
             let insurances = this.cacheData.insurances.filter(insurance => insurance.brief.title.includes(this.search));
             // let insurances = this.cacheData.insurances.filter(insurance => this.search && insurance.brief.title.includes(this.search));
+          } else {
+
+          }
         };
       }
       // setter
