@@ -1,6 +1,10 @@
 <template>
   <div class="insurance-picc-brief">
     <el-row class="insurance" :gutter="0" type="flex" justify="start">
+      <el-col class="thumb" :span="4">
+        <div class="col">
+        </div>
+      </el-col>
     </el-row>
   </div>
 </template>
