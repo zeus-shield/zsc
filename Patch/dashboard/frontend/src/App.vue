@@ -294,6 +294,10 @@ export default {
   },
   mounted() {
     console.log('%c[App]mounted()', `color:${this.logColor}`);
+    let policies = {
+      POLICY_PINGAN_0: '{"period": "11", "description": ""}',
+      POLICY_PINGAN_1: '{"period": "22", "description": ""}'
+    };
   },
   destroyed() {
     console.log('%c[App]destroyed()', `color:${this.logColor}`);
