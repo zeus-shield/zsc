@@ -18,6 +18,11 @@
           </div>
         </div>
       </el-col>
+
+      <el-col class="operation" :span="5">
+        <div class="col">
+        </div>
+      </el-col>
     </el-row>
   </div>
 </template>
