@@ -18,6 +18,8 @@ import Insurance from './insurance';
 import Company from './company';
 
 const contracts = {
+  user: {
+  }
 };
 
 class APIs {
