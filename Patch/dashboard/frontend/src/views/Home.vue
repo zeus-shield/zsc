@@ -260,6 +260,10 @@ export default {
     return {
       lang: '',
       resizeFlag: null,
+
+      // for vue-awesome-swiper
+      swiperOptionTop: {
+      },
       originalSwiper: true
     };
   },
