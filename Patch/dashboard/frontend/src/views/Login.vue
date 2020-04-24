@@ -238,8 +238,8 @@ export default {
           // 1. common callback case
           user.loginCommon(vm.form.account, vm.form.password, (err, data) => {
             if (err === 0 && data.status === 200 && data.errorCode === 0) {
-               console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, data);
-               utils.storage.cookie.set('login_account', vm.form.account, 'N/A');
+               // console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, data);
+               // utils.storage.cookie.set('login_account', vm.form.account, 'N/A');
                utils.storage.cookie.set('login_account', data.content.account, 'N/A');
                utils.storage.cookie.set('login_token', data.content.token, 'N/A');
                utils.storage.cookie.set('login_id', data.content._id, 'N/A');
