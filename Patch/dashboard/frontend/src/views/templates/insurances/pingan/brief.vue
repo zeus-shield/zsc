@@ -136,6 +136,8 @@ export default {
   // components: {
   // },
   data() {
+    let validate = (cmd, rule, value, callback) => {
+      }
     };
     let validateCompany = (rule, value, callback) => {
       validate('COMPANY', rule, value, callback);
