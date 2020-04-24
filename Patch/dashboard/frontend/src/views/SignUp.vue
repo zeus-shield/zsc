@@ -311,6 +311,9 @@ export default {
         if (valid) {
           vm.errorMessage = '';
           vm.loading = true;
+          // 1. common callback case
+          user.signUpCommon(vm.form.account, vm.form.password, (err, data) => {
+          });
           // 3. async case
           let account = '';
           if (vm.tabIndex === '1') {
