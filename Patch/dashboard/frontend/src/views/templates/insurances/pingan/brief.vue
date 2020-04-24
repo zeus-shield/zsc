@@ -21,6 +21,10 @@
 
       <el-col class="operation" :span="5">
         <div class="col">
+          <el-row class="desc" :gutter="0">
+            <i class="el-icon-success icon"></i>
+            <span><b>{{ langSet.market.pingan.category }}</b>{{ item.category }}</span>
+          </el-row>
         </div>
       </el-col>
     </el-row>
