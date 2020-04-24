@@ -119,7 +119,10 @@
               <svg class="iconfont-symbol" aria-hidden="true">
                 <use xlink:href="#if-flag-en-rect"></use>
               </svg>
+              <i class="el-icon-arrow-down el-icon--right"></i>
             </div>
+            <el-dropdown-menu slot="dropdown" :visible-arrow="true">
+            </el-dropdown-menu>
           </el-dropdown>
         </div>
       </el-col>
