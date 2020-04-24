@@ -83,6 +83,11 @@ const saveTOTP = async(req, res) => {
     const code = req.body.code;
     const key = req.body.key;
 
+    // check user exist ?
+    let result = await services.users.find(conditions, null, null);
+    if (!result) {
+      throw createError('USER_NOT_EXIST');
+    }
   } catch (err) {
     res.sendErr(err);
   }
