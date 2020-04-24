@@ -105,6 +105,8 @@ export default {
   // props: {
   // },
   computed: {
+    ...mapState({
+    }),
   },
 };
 </script>
