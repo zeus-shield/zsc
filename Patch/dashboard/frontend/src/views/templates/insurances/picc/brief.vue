@@ -132,5 +132,9 @@ import APIs from '@/apis';
 
 export default {
   name: 'InsurancePICCBrief',
+  components: {
+  },
+  data() {
+  }
 };
 </script>
