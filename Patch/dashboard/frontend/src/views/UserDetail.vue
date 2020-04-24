@@ -19,9 +19,15 @@
       </el-alert>
 
       <div class="interval-md"></div>
+
+      <el-row class="info" :gutter="0" type="flex" justify="start">
+      </el-row>
     </div>
 
     <div class="interval-lg"></div>
+
+    <div class="security">
+    </div>
   </div>
 </template>
 
