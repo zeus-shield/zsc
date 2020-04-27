@@ -321,6 +321,13 @@ export default {
           } else if (vm.tabIndex === '0') {
             account = vm.form.emailAccount;
           }
+
+          APIs.user.signUp(account, vm.form.code, vm.form.password).then(() => {
+          }).then(data => {
+          }).catch(errorData => {
+          });
+        } else {
+        }
       });
     }
   }
