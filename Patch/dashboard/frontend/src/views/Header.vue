@@ -122,6 +122,10 @@
               <i class="el-icon-arrow-down el-icon--right"></i>
             </div>
             <el-dropdown-menu slot="dropdown" :visible-arrow="true">
+              <el-dropdown-item command="cn">
+                <div class="header-lang-item">
+                </div>
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
