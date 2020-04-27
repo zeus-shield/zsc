@@ -25,6 +25,10 @@
             <i class="el-icon-success icon"></i>
             <span><b>{{ langSet.market.pingan.category }}</b>{{ item.category }}</span>
           </el-row>
+          <el-row class="desc" :gutter="0">
+            <i class="el-icon-success icon"></i>
+            <span><b>{{ langSet.market.pingan.period }}</b>{{ item.brief.period }}</span>
+          </el-row>
         </div>
       </el-col>
     </el-row>
