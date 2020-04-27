@@ -19,6 +19,10 @@ import Company from './company';
 
 const contracts = {
   user: {
+    addr: '',
+    abi: [
+    ]
+  },
   }
 };
 
