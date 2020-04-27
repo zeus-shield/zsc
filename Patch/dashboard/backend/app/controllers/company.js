@@ -10,10 +10,15 @@ const add = async(req, res) => {
   // debug('add(%s, %s)', req.body.name, req.body.categories);
   try {
     // There is only one database write operation, and session can not be used.
-    // 1. check company if exist ?
-    const result = await services.companies.find({name: req.body.name}, null, null);
+    // 1. check company name and code if exist ?
+    let result = await services.companies.find({name: req.body.name}, null, null);
     if (result) {
       throw createError('COMPANY_HAS_EXISTED');
+    }
+
+    result = await services.companies.find({code: req.body.code}, null, null);
+    if (result) {
+      throw createError('COMPANY_CODE_HAS_EXISTED');
     }
 
     // 2. insert new company
