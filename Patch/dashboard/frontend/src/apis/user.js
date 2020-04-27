@@ -40,6 +40,12 @@ class User extends Transaction {
     } else {}
     data.append('code', code);
     data.append('on', on);
+
+    try {
+      return await this.transaction('post', 'user/updateTOTP', {token}, null, data);
+    } catch (err) {
+      throw err;
+    }
   };
 
   async addPolicy(token, id, account, policy) {
