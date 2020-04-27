@@ -252,9 +252,11 @@ const cn = {
       COMPANY_CATEGORIES_HAS_EXIST: '该保险公司下险种已存在！',
       COMPANY_CATEGORIES_NOT_EXIST: '该保险公司下险种不存在！',
       COMPANY_HAS_EXISTED: '该保险公司已存在！',
+      COMPANY_CODE_HAS_EXISTED: '公司编码已存在！',
       COMPANY_NOT_EXIST: '该保险公司不存在!',
 
       INSURANCE_HAS_EXISTED: '该保险产品已存在！',
+      INSURANCE_CODE_HAS_EXISTED: '产品编码已存在！',
       INSURANCE_NOT_EXIST: '该保险产品不存在！',
 
       POLICY_COMPANY_NONE: '请输入公司名称',
