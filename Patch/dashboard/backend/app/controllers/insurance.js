@@ -32,7 +32,7 @@ const add = async(req, res) => {
       throw createError('COMPANY_CATEGORIES_NOT_EXIST');
     }
 
-    // 2. check insurance exist ?
+    // 2. check insurance name and code exist ?
     conditions = {
       company: company,
       category: category,
@@ -43,6 +43,11 @@ const add = async(req, res) => {
       throw createError('INSURANCE_HAS_EXISTED');
     }
 
+    conditions = {
+      company: company,
+      category: category,
+      'code.title': code.title
+    };
     // 3. add insurance
     brief.created_at = Date.now();
     const docs = [{
