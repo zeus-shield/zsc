@@ -27,6 +27,10 @@
     <div class="interval-lg"></div>
 
     <div class="security">
+      <div class="header">
+        <span class="sprite"></span>
+        <span>{{ langSet.user.detail.security.title }}</span>
+      </div>
     </div>
   </div>
 </template>
