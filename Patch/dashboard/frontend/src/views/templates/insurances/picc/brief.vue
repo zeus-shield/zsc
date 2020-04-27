@@ -3,6 +3,9 @@
     <el-row class="insurance" :gutter="0" type="flex" justify="start">
       <el-col class="thumb" :span="4">
         <div class="col">
+          <el-row :gutter="0" type="flex" justify="start">
+            <img v-if="item.brief.img_url && item.brief.img_url !== '' && item.brief.img_url !== 'null'" class="img" :src="require('@/assets/' + item.brief.img_url)"></img>
+          </el-row>
         </div>
       </el-col>
     </el-row>
