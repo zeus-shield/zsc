@@ -323,10 +323,13 @@ export default {
           }
 
           APIs.user.signUp(account, vm.form.code, vm.form.password).then(() => {
+            return APIs.user.login(account, vm.form.password, null);
           }).then(data => {
           }).catch(errorData => {
           });
         } else {
+          console.log('error submit!!');
+          return false;
         }
       });
     }
