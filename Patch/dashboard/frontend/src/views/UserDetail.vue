@@ -142,5 +142,7 @@ import APIs from '@/apis';
 
 export default {
   name: 'UserDetail',
+  components: {
+  },
 };
 </script>
