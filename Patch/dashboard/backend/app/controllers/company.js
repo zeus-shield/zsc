@@ -108,7 +108,11 @@ const update = async(req, res) => {
     for (let i = 0; i < update.categories.length - 1; i++) {
       for (let j = i + 1; j < update.categories.length; j++) {
         if (update.categories[i].name === update.categories[j].name) {
-          throw createError('INSURANCE_DUPLICATE');
+          throw createError('INSURANCE_CATEGORY_NAME_DUPLICATE');
+        }
+
+        if (update.categories[i].code === update.categories[j].code) {
+          throw createError('INSURANCE_CATEGORY_CODE_DUPLICATE');
         }
       }
     }
