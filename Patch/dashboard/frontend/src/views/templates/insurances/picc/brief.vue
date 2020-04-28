@@ -6,6 +6,11 @@
           <el-row :gutter="0" type="flex" justify="start">
             <img v-if="item.brief.img_url && item.brief.img_url !== '' && item.brief.img_url !== 'null'" class="img" :src="require('@/assets/' + item.brief.img_url)"></img>
           </el-row>
+          <el-row :gutter="0" type="flex" justify="start">
+            <span class="brief">
+              {{ item.brief.text }}
+            </span>
+          </el-row>
         </div>
       </el-col>
     </el-row>
