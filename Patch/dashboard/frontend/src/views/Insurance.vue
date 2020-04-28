@@ -220,6 +220,9 @@ export default {
             this.totalForPage = insurances.length;
 
             let offset = this.pageSize * (this.currentPage - 1);
+            offset = (offset < this.totalForPage) ? offset : 0;
+
+            return insurances.slice(offset, offset + this.pageSize);
           } else {
 
           }
