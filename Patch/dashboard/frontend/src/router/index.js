@@ -274,7 +274,7 @@ let router = new Router({
           component: CoreUserAssets,
           props: (route) => ({
             param: {
-              id: route.query.id
+              userId: route.query.userId
             }
           })
         },
