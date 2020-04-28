@@ -124,6 +124,10 @@
             <el-dropdown-menu slot="dropdown" :visible-arrow="true">
               <el-dropdown-item command="cn">
                 <div class="header-lang-item">
+                  <svg class="iconfont-symbol" aria-hidden="true">
+                    <use xlink:href="#if-flag-cn-rect"></use>
+                  </svg>
+                  {{ langSetByKey('cn').header.lang }}
                 </div>
               </el-dropdown-item>
             </el-dropdown-menu>
