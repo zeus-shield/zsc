@@ -25,6 +25,11 @@ const emailCode = async(req, res) => {
         throw createError('USER_IS_ACTIVE');
       }
     }
+
+    // send email
+    const code = tool.random(6);
+    const config = {
+    };
     }
   } catch (err) {
     if (session !== null) {
