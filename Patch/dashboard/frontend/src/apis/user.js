@@ -31,6 +31,8 @@ class User extends Transaction {
     }
   };
 
+  async login(account, password, code) {
+  };
   async setTOTPOn(token, id, account, code, on) {
     const data = new URLSearchParams();
     if (id) {
