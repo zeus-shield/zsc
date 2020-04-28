@@ -29,6 +29,9 @@
             <i class="el-icon-success icon"></i>
             <span><b>{{ langSet.market.pingan.period }}</b>{{ item.brief.period }}</span>
           </el-row>
+          <el-row class="click" :gutter="0">
+            <el-button class="button" type="primary" @click="dialogVisible = true">{{ langSet.market.pingan.input }}</el-button>
+          </el-row>
         </div>
       </el-col>
     </el-row>
