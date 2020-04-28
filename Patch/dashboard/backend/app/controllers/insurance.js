@@ -48,6 +48,11 @@ const add = async(req, res) => {
       category: category,
       'code.title': code.title
     };
+    result = await services.insurances.find(conditions, null, session);
+    if (result) {
+      throw createError('INSURANCE_CODE_HAS_EXISTED');
+    }
+
     // 3. add insurance
     brief.created_at = Date.now();
     const docs = [{
