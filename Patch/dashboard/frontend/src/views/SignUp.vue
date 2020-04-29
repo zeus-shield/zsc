@@ -326,6 +326,8 @@ export default {
             return APIs.user.login(account, vm.form.password, null);
           }).then(data => {
           }).catch(errorData => {
+            vm.errorMessage = errorData.errorMessage;
+            vm.loading = false;
           });
         } else {
           console.log('error submit!!');
