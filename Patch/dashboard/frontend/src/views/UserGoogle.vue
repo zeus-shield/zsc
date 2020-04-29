@@ -32,6 +32,10 @@
 
         <div class="qr-box bind">
           <div :class="{ 'url': device !== 'pc' }">
+          </div>
+          <div :class="{ 'qr': device !== 'pc' }">
+          </div>
+        </div>
       </div>
 
       <div class="interval-md"></div>
