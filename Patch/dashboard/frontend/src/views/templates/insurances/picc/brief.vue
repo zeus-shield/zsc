@@ -11,6 +11,9 @@
               {{ item.brief.text }}
             </span>
           </el-row>
+          <!-- <img class="img" :src="item.brief.imgUrl"></img>
+          <div class="brief">
+          </div> -->
         </div>
       </el-col>
     </el-row>
