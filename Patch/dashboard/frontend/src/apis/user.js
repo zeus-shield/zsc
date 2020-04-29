@@ -33,6 +33,13 @@ class User extends Transaction {
 
   async login(account, password, code) {
   };
+
+  // only by id
+  async update(token, id, update) {
+  };
+
+  async remove(token, id, account) {
+  };
   async setTOTPOn(token, id, account, code, on) {
     const data = new URLSearchParams();
     if (id) {
