@@ -106,7 +106,10 @@ export default {
   // },
   computed: {
     ...mapState({
+      logColor: state => state.logColor.user.pc.policy
     }),
+    ...mapGetters('lang', ['langSet']),
+    ...mapGetters('device', ['device'])
   },
 };
 </script>
