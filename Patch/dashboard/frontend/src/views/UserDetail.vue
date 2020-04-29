@@ -21,6 +21,9 @@
       <div class="interval-md"></div>
 
       <el-row class="info" :gutter="0" type="flex" justify="start">
+        <el-col class="gap" :span="2">
+          <div class="line"></div>
+        </el-col>
       </el-row>
     </div>
 
