@@ -258,6 +258,10 @@ export default {
     next();
   },
   methods: {
+    buildCompanyCategoryCount() {
+    },
+    updateTotalOfItemsForPage() {
+    },
     handleCurrentChange(val) {
       this.currentPage = val;
       // this.updateItemsForPage();
