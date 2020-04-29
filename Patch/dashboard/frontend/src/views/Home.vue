@@ -263,11 +263,15 @@ export default {
 
       // for vue-awesome-swiper
       swiperOptionTop: {
+
+        pagination: {
+          el: '.swiper-pagination',
+            clickable: true
+        }
       },
-      pagination: {
-        el: '.swiper-pagination',
-          clickable: true
-      }
+      swiperOptionThumbs: {
+      },
+
       originalSwiper: true
     };
   },
