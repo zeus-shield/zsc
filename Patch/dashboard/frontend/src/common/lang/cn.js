@@ -319,6 +319,10 @@ const cn = {
       myInsuranceSaving: '录入我的保单中......',
       myInsuranceLoading: '获取我的保单中......'
     }
+  },
+  config: {
+    company: {
+    },
   }
 };
 export default cn;
