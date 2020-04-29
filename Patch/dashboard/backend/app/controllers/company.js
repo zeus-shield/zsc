@@ -122,9 +122,11 @@ const update = async(req, res) => {
       throw createError('COMPANY_NOT_EXIST');
     }
 
-    for (let i=0; i<update.categories.length; i++) {
-      debug(update.categories[i].name, update.categories[i]._id);
-    }
+    // debug(update.name);
+    // for (let i=0; i<update.categories.length; i++) {
+    //   debug(update.categories[i].name, update.categories[i]._id);
+    // }
+
     // 1. update and remove insurances according to updated data
     if (result.categories) {
     }
