@@ -95,9 +95,10 @@ const saveTOTP = async(req, res) => {
     }
 
     // check google auth has setted ?
-    if (result.totp_key === undefined) {
-      throw createError('USER_TOTP_NOT_SET');
-    }
+    // if (result.totp_key === undefined) {
+    //   throw createError('USER_TOTP_NOT_SET');
+    // }
+
   } catch (err) {
     res.sendErr(err);
   }
