@@ -144,6 +144,8 @@ export default {
   // },
   data() {
     let validate = (cmd, rule, value, callback) => {
+      if (value === '') {
+      } else {
       }
     };
     let validateCompany = (rule, value, callback) => {
