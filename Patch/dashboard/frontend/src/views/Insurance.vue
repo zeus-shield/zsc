@@ -236,6 +236,10 @@ export default {
     console.log('%c[Insurance]created()', `color:${this.logColor}`);
   },
   mounted() {
+    console.log('%c[Insurance]mounted()', `color:${this.logColor}`);
+    let vm = this;
+
+    vm.loading = true;
   },
   destroyed() {
     console.log('%c[Insurance]destroyed()', `color:${this.logColor}`);
