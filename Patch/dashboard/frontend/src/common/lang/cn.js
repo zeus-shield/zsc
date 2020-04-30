@@ -322,6 +322,8 @@ const cn = {
   },
   config: {
     company: {
+      PINGAN: '中国平安',
+      PICC: '中国人保'
     },
   }
 };
