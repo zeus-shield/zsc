@@ -240,7 +240,7 @@ const statistics = async(req, res) => {
   }
 };
 
-module.exports = { emailCode, signUp, login, remove, update, setTOTP, saveTOTP, updateTOTP, addPolicy, list, detail, statistics };
+module.exports = { emailCode, signUp, login, remove, update, setTOTP, saveTOTP, updateTOTP, addPolicy, removeAllPolicies, list, detail, statistics };
 
 // // import user from './user'
 // export default {
