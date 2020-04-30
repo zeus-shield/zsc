@@ -59,7 +59,10 @@ const state = () => {
 
       },
       core: {
-        wallet: 'red'
+        user: 'red',
+        userAssets: 'black',
+        stat: 'black',
+        wallet: 'black'
       }
     },
     notFound: 'black'
