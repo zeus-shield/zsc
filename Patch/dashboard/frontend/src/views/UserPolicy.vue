@@ -12,6 +12,9 @@
             {{ device === 'pc' ? item.insurance.company + ' - ' + item.insurance.category + ' - ' + item.insurance.title : item.insurance.title }}
           </span>
         </template>
+
+        <el-form :inline="device === 'pc'" size="mini" label-position="left" :label-width="labelWidth">
+        </el-form>
       </el-collapse-item>
     </el-collapse>
   </div>
