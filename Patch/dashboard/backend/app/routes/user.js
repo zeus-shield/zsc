@@ -17,4 +17,5 @@ module.exports = (app) => {
   app.route('/user/saveTOTP').post(wrap(controllers.user.saveTOTP));
   app.route('/user/updateTOTP').post(wrap(controllers.user.updateTOTP));
   app.route('/user/addPolicy').post(wrap(controllers.user.addPolicy));
+  app.route('/user/removeAllPolicies').post(wrap(controllers.user.removeAllPolicies));
 };
