@@ -9,4 +9,8 @@ function jsonToEthObject(data) {
 }
 
 function jsonToEth(data) {
+  return Object.values(jsonToEthObject(data));
+}
+
+function ethToObject(data) {
 }
