@@ -263,7 +263,10 @@ export default {
 
       // for vue-awesome-swiper
       swiperOptionTop: {
-
+        spaceBetween: 5,
+        loop: true,
+        loopedSlides: 3, // looped slides should be the same
+        freeMode: true,
         pagination: {
           el: '.swiper-pagination',
             clickable: true
