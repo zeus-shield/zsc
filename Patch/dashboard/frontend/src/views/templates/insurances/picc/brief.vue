@@ -13,7 +13,11 @@
           </el-row>
           <!-- <img class="img" :src="item.brief.imgUrl"></img>
           <div class="brief">
+            <strong>产品特色：</strong>
+            全家人共享百万保障的医疗保险，看病不再愁，一般费用都报销，医疗费用都报销，预约挂号服务，国内医院导师陪诊，国内专家二次诊断
           </div> -->
+        </div>
+      </el-col>
         </div>
       </el-col>
     </el-row>
