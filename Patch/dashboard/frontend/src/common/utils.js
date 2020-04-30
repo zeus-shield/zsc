@@ -75,6 +75,8 @@ const utils = {
       return str.substr(0, realen) + (realen < str.length ? '...' : '');
     }
   },
+  statRepeatNum(arr) {
+  },
   formatDate(value, type = 's') {
     let result = '';
     if (value) {
