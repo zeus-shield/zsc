@@ -32,6 +32,10 @@ class User extends Transaction {
   };
 
   async login(account, password, code) {
+    const data = new URLSearchParams();
+    data.append('account', account);
+    data.append('password', password);
+    data.append('code', code);
   };
 
   // only by id
