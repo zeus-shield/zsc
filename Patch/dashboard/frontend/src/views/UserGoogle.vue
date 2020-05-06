@@ -34,6 +34,7 @@
           <div :class="{ 'url': device !== 'pc' }">
           </div>
           <div :class="{ 'qr': device !== 'pc' }">
+            <span>{{ langSet.user.google.step[0].qr }}: {{ key }}</span>
           </div>
         </div>
       </div>
