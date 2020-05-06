@@ -267,6 +267,10 @@ export default {
         loop: true,
         loopedSlides: 3, // looped slides should be the same
         freeMode: true,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        },
         pagination: {
           el: '.swiper-pagination',
             clickable: true
