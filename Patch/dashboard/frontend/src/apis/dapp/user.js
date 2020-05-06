@@ -7,6 +7,8 @@ import config from '@/apis/dapp/config';
 
 class User {
 
+  constructor(ewallet, addr, abi) {
+  };
   async statistics(statId) {
   }
 }
