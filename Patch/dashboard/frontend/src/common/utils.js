@@ -76,6 +76,10 @@ const utils = {
     }
   },
   statRepeatNum(arr) {
+    return arr.reduce((data, item) => {
+      data[item] = (data[item] + 1) || 1;
+      return data;
+    }, {});
   },
   formatDate(value, type = 's') {
     let result = '';
