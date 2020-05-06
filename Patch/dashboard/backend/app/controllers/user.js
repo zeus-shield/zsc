@@ -190,6 +190,9 @@ const addPolicy = async(req, res) => {
   }
 };
 
+const removeAllPolicies = async(req, res) => {
+};
+
 const list = async(req, res) => {
   // debug('list()');
   try {
