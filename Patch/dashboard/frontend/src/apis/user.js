@@ -36,6 +36,12 @@ class User extends Transaction {
     data.append('account', account);
     data.append('password', password);
     data.append('code', code);
+
+    try {
+      return await this.transaction('post', 'user/login', null, null, data);
+    } catch (err) {
+      throw err;
+    }
   };
 
   // only by id
