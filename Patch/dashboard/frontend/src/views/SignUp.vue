@@ -325,6 +325,8 @@ export default {
           APIs.user.signUp(account, vm.form.code, vm.form.password).then(() => {
             return APIs.user.login(account, vm.form.password, null);
           }).then(data => {
+            vm.loading = false;
+            vm.$router.push({name: 'userDetail'});
           }).catch(errorData => {
             vm.errorMessage = errorData.errorMessage;
             vm.loading = false;
