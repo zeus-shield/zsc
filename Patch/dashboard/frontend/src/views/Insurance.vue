@@ -265,6 +265,9 @@ export default {
     buildCompanyCategoryCount() {
     },
     updateTotalOfItemsForPage() {
+      if (this.companyActiveIndex !== -1) {
+    },
+    handleSizeChange(val) {
     },
     handleCurrentChange(val) {
       this.currentPage = val;
