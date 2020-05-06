@@ -14,3 +14,7 @@ function jsonToEth(data) {
 
 function ethToObject(data) {
 }
+
+function ethToJson(data) {
+}
+
