@@ -325,6 +325,8 @@ const cn = {
       PINGAN: '中国平安',
       PICC: '中国人保'
     },
+    product: {
+    },
   }
 };
 export default cn;
