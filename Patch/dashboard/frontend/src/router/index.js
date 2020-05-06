@@ -265,8 +265,8 @@ let router = new Router({
         },
         {
           path: '/admin/core/user',
-          name: 'coreUser',
-          component: CoreUser
+          name: 'adminCoreUser',
+          component: AdminCoreUser
         },
         {
           path: '/admin/core/userAssets',
