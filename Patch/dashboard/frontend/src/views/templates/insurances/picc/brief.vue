@@ -150,6 +150,8 @@ export default {
   // components: {
   // },
   data() {
+    let validate = (cmd, rule, value, callback) => {
+    };
   },
 };
 </script>
