@@ -50,6 +50,9 @@ class User extends Transaction {
 
   async remove(token, id, account) {
   };
+
+  async setTOTP(token, id, account, cmd) {
+  };
   async setTOTPOn(token, id, account, code, on) {
     const data = new URLSearchParams();
     if (id) {
