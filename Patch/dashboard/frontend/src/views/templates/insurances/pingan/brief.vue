@@ -149,6 +149,7 @@ export default {
         callback(new Error(this.langSet['message']['error'][none]));
       } else {
         if (cmd === 'STARTTIME') {
+          callback();
         } else {
         }
       }
@@ -161,6 +162,8 @@ export default {
     };
     let validateTitle = (rule, value, callback) => {
       validate('TITLE', rule, value, callback);
+    };
+    let validateHolder = (rule, value, callback) => {
     };
   },
 };
