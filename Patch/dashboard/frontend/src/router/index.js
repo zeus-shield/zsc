@@ -279,6 +279,11 @@ let router = new Router({
           })
         },
         {
+          path: '/admin/core/stat',
+          name: 'adminCoreStat',
+          component: AdminCoreStat
+        },
+        {
           path: '/admin/core/wallet',
           name: 'coreWallet',
           component: CoreWallet

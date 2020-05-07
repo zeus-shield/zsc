@@ -94,7 +94,6 @@ const utils = {
   },
   errCommonHandle(msg, vm) {
     let result = false;
-
     if (msg === 'jwt expired') {
       result = true;
       this.storage.cookie.remove('login_id');
