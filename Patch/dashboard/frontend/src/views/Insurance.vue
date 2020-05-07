@@ -240,6 +240,10 @@ export default {
     let vm = this;
 
     vm.loading = true;
+
+    vm.recieve().then(() => {
+    }).catch(errorData => {
+    });
   },
   destroyed() {
     console.log('%c[Insurance]destroyed()', `color:${this.logColor}`);
