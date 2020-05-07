@@ -22,6 +22,9 @@
 
       <el-row class="info" :gutter="0" type="flex" justify="start">
         <el-col :xs="{span: 10, offset: 0}" :sm="{span: 10, offset: 0}" :md="{span: 10, offset: 0}" :lg="{span: 5, offset: 0}">
+          <span class="title">{{ langSet.user.detail.account.info.title[0] }}</span>
+          <br>
+          <span class="content">{{ account }}</span>
         </el-col>
         <el-col class="gap" :span="2">
           <div class="line"></div>
