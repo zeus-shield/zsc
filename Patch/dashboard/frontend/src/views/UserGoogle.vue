@@ -32,6 +32,9 @@
 
         <div class="qr-box bind">
           <div :class="{ 'url': device !== 'pc' }">
+            <!-- <canvas height="168" width="168" style="height: 112px; width: 112px;"> -->
+            <qriously :value="QRUrl" :size="112"></qriously>
+            <!-- </canvas> -->
           </div>
           <div :class="{ 'qr': device !== 'pc' }">
             <span>{{ langSet.user.google.step[0].qr }}: {{ key }}</span>
