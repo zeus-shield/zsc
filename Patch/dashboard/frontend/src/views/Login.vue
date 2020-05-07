@@ -239,17 +239,20 @@ export default {
           user.loginCommon(vm.form.account, vm.form.password, (err, data) => {
             if (err === 0 && data.status === 200 && data.errorCode === 0) {
                // console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, data);
-               // utils.storage.cookie.set('login_account', vm.form.account, 'N/A');
-               utils.storage.cookie.set('login_account', data.content.account, 'N/A');
-               utils.storage.cookie.set('login_token', data.content.token, 'N/A');
-               utils.storage.cookie.set('login_id', data.content._id, 'N/A');
-               vm.loading = false;
-               vm.$router.push({name: 'user'});
-             } else {
-               console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, data);
-               vm.errorMessage = data.errorMessage;
-               vm.loading = false;
-             }
+          // 2. promise case
+          user.loginPromise(vm.form.account, vm.form.password).then(data => {
+            // console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, data);
+            // utils.storage.cookie.set('login_account', vm.form.account, 'N/A');
+            utils.storage.cookie.set('login_account', data.content.account, 'N/A');
+            utils.storage.cookie.set('login_token', data.content.token, 'N/A');
+            utils.storage.cookie.set('login_id', data.content._id, 'N/A');
+            vm.loading = false;
+            vm.$router.push({name: 'user'});
+          })
+          .catch(errorData => {
+            console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, data);
+            vm.errorMessage = data.errorMessage;
+            vm.loading = false;
           });
           // 3. async case
           APIs.user.login(vm.form.account, vm.form.password, null).then(data => {
