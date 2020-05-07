@@ -8,6 +8,10 @@ import config from '@/apis/dapp/config';
 class User {
 
   constructor(ewallet, addr, abi) {
+    this.ewallet = ewallet;
+    this.addr = addr;
+    this.abi = abi;
+    // this.instance = ewallet.contract(addr, abi);
   };
   async statistics(statId) {
   }
