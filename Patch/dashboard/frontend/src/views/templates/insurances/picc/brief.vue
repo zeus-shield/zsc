@@ -152,6 +152,8 @@ export default {
   data() {
     let validate = (cmd, rule, value, callback) => {
     };
+    let validateCompany = (rule, value, callback) => {
+    };
   },
 };
 </script>
