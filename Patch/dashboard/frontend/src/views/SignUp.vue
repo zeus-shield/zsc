@@ -325,6 +325,11 @@ export default {
           APIs.user.signUp(account, vm.form.code, vm.form.password).then(() => {
             return APIs.user.login(account, vm.form.password, null);
           }).then(data => {
+            // console.log('%c[SignUp]submitForm(%s)', `color:${vm.logColor}`, data);
+            // utils.storage.cookie.set('login_account', vm.form.account, 'N/A');
+            utils.storage.cookie.set('login_account', data.content.account, 'N/A');
+            utils.storage.cookie.set('login_token', data.content.token, 'N/A');
+            utils.storage.cookie.set('login_id', data.content._id, 'N/A');
             vm.loading = false;
             vm.$router.push({name: 'userDetail'});
           }).catch(errorData => {
