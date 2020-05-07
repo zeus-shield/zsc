@@ -327,6 +327,8 @@ const cn = {
     },
     product: {
     },
+    stat: {
+    }
   }
 };
 export default cn;
