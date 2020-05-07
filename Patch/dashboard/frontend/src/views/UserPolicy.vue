@@ -14,6 +14,9 @@
         </template>
 
         <el-form :inline="device === 'pc'" size="mini" label-position="left" :label-width="labelWidth">
+
+          <div v-if="device !== 'pc'">
+          </div>
         </el-form>
       </el-collapse-item>
     </el-collapse>
