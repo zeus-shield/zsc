@@ -29,6 +29,10 @@ const emailCode = async(req, res) => {
     // send email
     const code = tool.random(6);
     const config = {
+      from: settings.stmpConfig.user, // from
+      to: account, // to
+      subject: settings.stmpConfig.subject, // subject
+      text: settings.stmpConfig.text + code// text
     };
     }
   } catch (err) {
