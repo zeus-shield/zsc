@@ -16,5 +16,6 @@ function ethToObject(data) {
 }
 
 function ethToJson(data) {
+  return JSON.stringify(ethToObject(data));
 }
 
