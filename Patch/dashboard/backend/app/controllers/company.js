@@ -126,7 +126,13 @@ const update = async(req, res) => {
     // for (let i=0; i<update.categories.length; i++) {
     //   debug(update.categories[i].name, update.categories[i]._id);
     // }
+    // debug('--------------------------------------->')
     // debug(result.name);
+    if (result.categories) {
+      for (let i=0; i<result.categories.length; i++) {
+        debug(result.categories[i].name, result.categories[i]._id);
+      }
+    }
     if (result.categories) {
       for (let i=0; i<result.categories.length; i++) {
         debug(result.categories[i].name, result.categories[i]._id);
