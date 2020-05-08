@@ -328,6 +328,8 @@ const cn = {
     product: {
     },
     stat: {
+      STAT_COMPANY: '公司热度分析',
+      STAT_PRODUCT: '产品热度分析'
     }
   }
 };
