@@ -53,6 +53,10 @@ class User extends Transaction {
 
   async setTOTP(token, id, account, cmd) {
   };
+
+  async saveTOTP(token, id, account, code, key) {
+  };
+
   async setTOTPOn(token, id, account, code, on) {
     const data = new URLSearchParams();
     if (id) {
