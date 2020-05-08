@@ -154,6 +154,10 @@ export default {
     };
     let validateCompany = (rule, value, callback) => {
     };
+    let validateCategory = (rule, value, callback) => {
+    };
+    let validateTitle = (rule, value, callback) => {
+    };
   },
 };
 </script>
