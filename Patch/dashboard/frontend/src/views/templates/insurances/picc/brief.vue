@@ -153,8 +153,10 @@ export default {
     let validate = (cmd, rule, value, callback) => {
     };
     let validateCompany = (rule, value, callback) => {
+      validate('COMPANY', rule, value, callback);
     };
     let validateCategory = (rule, value, callback) => {
+      validate('CATEGORY', rule, value, callback);
     };
     let validateTitle = (rule, value, callback) => {
     };
