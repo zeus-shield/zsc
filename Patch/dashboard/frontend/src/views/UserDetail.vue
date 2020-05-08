@@ -30,6 +30,9 @@
           <div class="line"></div>
         </el-col>
         <el-col :xs="{span: 12, offset: 0}" :sm="{span: 12, offset: 0}" :md="{span: 12, offset: 0}" :lg="{span: 5, offset: 0}">
+          <span class="title">{{ langSet.user.detail.account.info.title[1] }}</span>
+          <br>
+          <span class="content">{{ lastLoginAt }}</span>
         </el-col>
       </el-row>
     </div>
