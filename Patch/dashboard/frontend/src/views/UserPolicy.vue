@@ -16,6 +16,9 @@
         <el-form :inline="device === 'pc'" size="mini" label-position="left" :label-width="labelWidth">
 
           <div v-if="device !== 'pc'">
+            <el-divider content-position="left">
+              <span class="divider">{{ langSet.market.dialog.product.title }}</span>
+            </el-divider>
           </div>
         </el-form>
       </el-collapse-item>
