@@ -164,8 +164,10 @@ export default {
       validate('TITLE', rule, value, callback);
     };
     let validateHolder = (rule, value, callback) => {
+      validate('HOLDER', rule, value, callback);
     };
     let validateInsurant = (rule, value, callback) => {
+      validate('INSURANT', rule, value, callback);
     };
   },
 };
