@@ -13,6 +13,9 @@ class User {
     this.abi = abi;
     // this.instance = ewallet.contract(addr, abi);
   };
+
+  init(addr, abi) {
+  };
   async statistics(statId) {
   }
 }
