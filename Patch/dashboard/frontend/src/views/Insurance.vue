@@ -242,6 +242,9 @@ export default {
     vm.loading = true;
 
     vm.recieve().then(() => {
+      vm.loading = false;
+      if (vm.cacheData.companies !== undefined && this.cacheData.companies.length !== 0) {
+      }
     }).catch(errorData => {
     });
   },
