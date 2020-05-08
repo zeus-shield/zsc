@@ -19,3 +19,5 @@ function ethToJson(data) {
   return JSON.stringify(ethToObject(data));
 }
 
+function parseJson(data) {
+}
