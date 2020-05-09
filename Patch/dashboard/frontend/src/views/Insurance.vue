@@ -244,6 +244,8 @@ export default {
     vm.recieve().then(() => {
       vm.loading = false;
       if (vm.cacheData.companies !== undefined && this.cacheData.companies.length !== 0) {
+        vm.companyActiveIndex = 0;
+        vm.companyActiveName = vm.cacheData.companies[vm.companyActiveIndex].name;
       }
     }).catch(errorData => {
     });
