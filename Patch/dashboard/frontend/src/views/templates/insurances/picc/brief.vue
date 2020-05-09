@@ -159,8 +159,10 @@ export default {
       validate('CATEGORY', rule, value, callback);
     };
     let validateTitle = (rule, value, callback) => {
+      validate('TITLE', rule, value, callback);
     };
     let validateHolder = (rule, value, callback) => {
+      validate('HOLDER', rule, value, callback);
     };
     let validateInsurant = (rule, value, callback) => {
     };
