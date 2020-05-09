@@ -151,6 +151,8 @@ export default {
         if (cmd === 'STARTTIME') {
           callback();
         } else {
+          let lenErr = 'POLICY_' + cmd + '_LEN_ERR';
+          let lenMin = 0;
         }
       }
     };
