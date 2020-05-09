@@ -120,5 +120,8 @@ export default {
     ...mapGetters('lang', ['langSet']),
     ...mapGetters('device', ['device'])
   },
+  created() {
+    console.log('%c[UserPolicy]created()', `color:${this.logColor}`);
+  },
 };
 </script>
