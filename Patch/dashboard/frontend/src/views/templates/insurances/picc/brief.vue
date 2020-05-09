@@ -160,6 +160,10 @@ export default {
     };
     let validateTitle = (rule, value, callback) => {
     };
+    let validateHolder = (rule, value, callback) => {
+    };
+    let validateInsurant = (rule, value, callback) => {
+    };
   },
 };
 </script>
