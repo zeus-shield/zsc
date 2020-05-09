@@ -157,5 +157,7 @@ export default {
   name: 'UserDetail',
   components: {
   },
+  data() {
+  },
 };
 </script>
