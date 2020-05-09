@@ -16,6 +16,10 @@ class User {
 
   init(addr, abi) {
   };
+
+  // DONE
+  _buildPolicyKey(keys, keyPrefix) {
+  };
   async statistics(statId) {
   }
 }
