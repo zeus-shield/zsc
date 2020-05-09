@@ -48,7 +48,9 @@
         <div class="text">
           <span>{{ langSet.user.google.step[1].text }}</span>
         </div>
-          </div>
+
+        <div class="interval-md"></div>
+        </div>
       </div>
     </div>
 
