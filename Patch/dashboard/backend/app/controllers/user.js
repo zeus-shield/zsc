@@ -69,6 +69,10 @@ const remove = async(req, res) => {
 
 
 };
+
+const update = async(req, res) => {
+};
+
 const setTOTP = async(req, res) => {
   debug('setTOTP(%s, %s)', req.headers._id, req.headers.cmd);
   try {
