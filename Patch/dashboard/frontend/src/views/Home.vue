@@ -262,7 +262,7 @@ export default {
       resizeFlag: null,
 
       // for vue-awesome-swiper
-      swiperOptionTop: {
+      // swiperOptionTop: {
       //   spaceBetween: 5,
       //   loop: true,
       //   loopedSlides: 3, // looped slides should be the same
@@ -271,11 +271,11 @@ export default {
       //     nextEl: '.swiper-button-next',
       //     prevEl: '.swiper-button-prev'
       //   },
-        pagination: {
-          el: '.swiper-pagination',
-            clickable: true
-        }
-      },
+      //   pagination: {
+      //     el: '.swiper-pagination',
+      //     clickable: true
+      //   }
+      // },
       swiperOptionThumbs: {
         spaceBetween: 5,
         slidesPerView: 3,
