@@ -21,3 +21,6 @@ function ethToJson(data) {
 
 function parseJson(data) {
 }
+
+function parseEth(data) {
+}
