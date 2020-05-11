@@ -276,17 +276,17 @@ export default {
       //     clickable: true
       //   }
       // },
-      swiperOptionThumbs: {
-        spaceBetween: 5,
-        slidesPerView: 3,
-        touchRatio: 0.2,
-        loop: true,
-        loopedSlides: 3, // looped slides should be the same
-        freeMode: true,
-        centeredSlides: true,
-        // centeredSlidesBounds: true, // invalid for vue-awesome-swiper(swiper4)
-        slideToClickedSlide: true
-      },
+      // swiperOptionThumbs: {
+      //   spaceBetween: 5,
+      //   slidesPerView: 3,
+      //   touchRatio: 0.2,
+      //   loop: true,
+      //   loopedSlides: 3, // looped slides should be the same
+      //   freeMode: true,
+      //   centeredSlides: true,
+      //   // centeredSlidesBounds: true, // invalid for vue-awesome-swiper(swiper4)
+      //   slideToClickedSlide: true
+      // },
 
       originalSwiper: true
     };
