@@ -14,8 +14,9 @@ import Demo from './dapp/demo';
 import DUser from './dapp/user';
 
 import User from './user';
-import Insurance from './insurance';
 import Company from './company';
+import Insurance from './insurance';
+import QA from './qa';
 
 const contracts = {
   user: {
