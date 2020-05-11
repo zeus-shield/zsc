@@ -24,3 +24,6 @@ function parseJson(data) {
 
 function parseEth(data) {
 }
+
+function logs(logs) {
+}
