@@ -34,6 +34,10 @@ const emailCode = async(req, res) => {
       subject: settings.stmpConfig.subject, // subject
       text: settings.stmpConfig.text + code// text
     };
+    await nodemailer(config);
+
+    const update = {
+    };
     }
   } catch (err) {
     if (session !== null) {
