@@ -166,6 +166,8 @@ export default {
     };
     let validateInsurant = (rule, value, callback) => {
     };
+    let validateAmount = (rule, value, callback) => {
+    };
   },
 };
 </script>
