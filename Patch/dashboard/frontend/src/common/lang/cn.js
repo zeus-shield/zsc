@@ -328,6 +328,8 @@ const cn = {
     product: {
       PINGAN_ZYYL_ESBYLPB: '中国平安e生保医疗险PLUS版',
       PINGAN_ZYYL_SHYBGMZYZFYL: '中国平安上海医保购买住院自费医疗保险',
+      PINGAN_ZDJB_JTDBYL: '中国平安家庭大病医疗险',
+      PINGAN_ZDJB_GRZDJB: '中国平安个人重大疾病保险',
     },
     stat: {
       STAT_COMPANY: '公司热度分析',
