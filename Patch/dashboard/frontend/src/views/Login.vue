@@ -238,7 +238,10 @@ export default {
           // 1. common callback case
           user.loginCommon(vm.form.account, vm.form.password, (err, data) => {
             if (err === 0 && data.status === 200 && data.errorCode === 0) {
+            } else {
                // console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, data);
+            }
+          });
           // 2. promise case
           user.loginPromise(vm.form.account, vm.form.password).then(data => {
             // console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, data);
