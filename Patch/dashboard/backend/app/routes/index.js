@@ -23,6 +23,7 @@ module.exports = (app) => {
 
   require('./company')(app);
   require('./insurance')(app);
+  require('./qa')(app);
   // require('./category')(app);
   // require('./article')(app);
   // app.route('/upload').post(Controllers.article.upload);
