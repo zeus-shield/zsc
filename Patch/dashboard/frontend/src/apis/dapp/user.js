@@ -15,6 +15,8 @@ class User {
   };
 
   init(addr, abi) {
+    this.addr = addr;
+    this.abi = abi;
   };
 
   // DONE
