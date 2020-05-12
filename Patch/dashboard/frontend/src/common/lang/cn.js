@@ -330,6 +330,8 @@ const cn = {
       PINGAN_ZYYL_SHYBGMZYZFYL: '中国平安上海医保购买住院自费医疗保险',
       PINGAN_ZDJB_JTDBYL: '中国平安家庭大病医疗险',
       PINGAN_ZDJB_GRZDJB: '中国平安个人重大疾病保险',
+      PINGAN_ZDJB_CRZDJB: '中国平安成人重大疾病险',
+      PINGAN_YW_YNQZHYW: '中国平安一年期综合意外险',
     },
     stat: {
       STAT_COMPANY: '公司热度分析',
