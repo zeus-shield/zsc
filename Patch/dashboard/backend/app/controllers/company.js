@@ -158,6 +158,11 @@ const update = async(req, res) => {
         debug(result.categories[i].name, result.categories[i]._id);
       }
     }
+    if (result.categories) {
+      for (let i=0; i<result.categories.length; i++) {
+        debug(result.categories[i].name, result.categories[i]._id);
+      }
+    }
 
     // 1. update and remove insurances according to updated data
     if (result.categories) {
