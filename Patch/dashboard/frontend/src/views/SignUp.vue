@@ -315,6 +315,9 @@ export default {
           user.signUpCommon(vm.form.account, vm.form.password, (err, data) => {
             if (err === 0 && data.status === 200 && data.errorCode === 0) {
             } else {
+              console.log('%c[SignUp]submitForm(%s)', `color:${vm.logColor}`, data);
+              vm.errorMessage = data.errorMessage;
+              vm.loading = false;
             }
           });
 
