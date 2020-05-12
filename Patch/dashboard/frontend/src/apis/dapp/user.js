@@ -22,6 +22,10 @@ class User {
   // DONE
   _buildPolicyKey(keys, keyPrefix) {
   };
+
+  // DONE
+  _preRemove(data) {
+  };
   async statistics(statId) {
   }
 }
