@@ -249,6 +249,8 @@ export default {
 
         vm.categoryActiveIndex = 0;
         if (vm.cacheData.companies[vm.companyActiveIndex].categories &&
+            vm.cacheData.companies[vm.companyActiveIndex].categories.length > 0) {
+          vm.categoryActiveName = vm.cacheData.companies[vm.companyActiveIndex].categories[vm.categoryActiveIndex].name;
         }
       }
     }).catch(errorData => {
