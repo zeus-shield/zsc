@@ -85,6 +85,9 @@ class User extends Transaction {
 
     try {
       return await this.transaction('post', 'user/addPolicy', {token}, null, data);
+    } catch (err) {
+      throw err;
+    }
   };
 
   async removeAllPolicies(token, id, account) {
