@@ -239,7 +239,9 @@ export default {
           user.loginCommon(vm.form.account, vm.form.password, (err, data) => {
             if (err === 0 && data.status === 200 && data.errorCode === 0) {
             } else {
-               // console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, data);
+              console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, data);
+              vm.errorMessage = data.errorMessage;
+              vm.loading = false;
             }
           });
           // 2. promise case
