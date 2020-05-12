@@ -37,6 +37,9 @@ const emailCode = async(req, res) => {
     await nodemailer(config);
 
     const update = {
+      email_code: crypto.encrypted(code, settings.saltKey),
+      updated_at: Date.now(),
+      active_expires_at: Date.now() + settings.stmpConfig.timeout
     };
     }
   } catch (err) {
