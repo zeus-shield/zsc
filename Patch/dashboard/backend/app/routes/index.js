@@ -18,6 +18,8 @@ module.exports = (app) => {
   app.route('/company').get(wrap(controllers.company.list));
   app.route('/insurance').get(wrap(controllers.insurance.list));
   app.route('/qa/getAll').get(wrap(controllers.qa.getAll));
+  app.route('/qa/get').get(wrap(controllers.qa.get));
+  app.route('/qa/getByIndex').get(wrap(controllers.qa.getByIndex));
 
   app.use(middlewaresArr);
   require('./user')(app);
