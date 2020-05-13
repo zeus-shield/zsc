@@ -58,7 +58,9 @@ class User extends Transaction {
     const data = new URLSearchParams();
 
     try {
+      return await this.transaction('post', 'user/saveTOTP', {token}, null, data);
     } catch (err) {
+      throw err;
     }
   };
 
