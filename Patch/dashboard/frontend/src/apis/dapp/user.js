@@ -26,6 +26,9 @@ class User {
   // DONE
   _preRemove(data) {
   };
+
+  async install(func = null) {
+  };
   async statistics(statId) {
   }
 }
