@@ -43,6 +43,7 @@ class APIs {
     this.user = new User(instance);
     this.company = new Company(instance);
     this.insurance = new Insurance(instance);
+    this.qa = new QA(instance);
   }
 }
 
