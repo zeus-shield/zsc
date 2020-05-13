@@ -30,3 +30,9 @@ function logs(logs) {
 
 function strToBytes32(str) {
 }
+
+function strToHex(str) {
+}
+
+function hexToStr(hex) {
+}
