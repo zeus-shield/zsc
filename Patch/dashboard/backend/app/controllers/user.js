@@ -41,6 +41,10 @@ const emailCode = async(req, res) => {
       updated_at: Date.now(),
       active_expires_at: Date.now() + settings.stmpConfig.timeout
     };
+    // Finds a matching document, updates it and return the modified document.
+    result = await services.users.update({account: account}, update, false, session);
+    if (!result) {
+    } else {
     }
   } catch (err) {
     if (session !== null) {
