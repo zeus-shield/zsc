@@ -55,6 +55,11 @@ class User extends Transaction {
   };
 
   async saveTOTP(token, id, account, code, key) {
+    const data = new URLSearchParams();
+
+    try {
+    } catch (err) {
+    }
   };
 
   async setTOTPOn(token, id, account, code, on) {
@@ -93,6 +98,7 @@ class User extends Transaction {
   async removeAllPolicies(token, id, account) {
 
     try {
+      return await this.transaction('post', 'user/removeAllPolicies', {token}, null, data);
     } catch (err) {
       throw err;
     }
