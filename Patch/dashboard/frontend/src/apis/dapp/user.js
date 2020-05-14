@@ -28,6 +28,10 @@ class User {
   };
 
   async install(func = null) {
+    try {
+    } catch (error) {
+      throw error;
+    }
   };
   async statistics(statId) {
   }
