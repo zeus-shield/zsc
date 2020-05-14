@@ -45,6 +45,10 @@ const emailCode = async(req, res) => {
     result = await services.users.update({account: account}, update, false, session);
     if (!result) {
     } else {
+      await session.commitTransaction();
+      session.endSession();
+
+      res.sendOk(format.user(result));
     }
   } catch (err) {
     if (session !== null) {
