@@ -254,6 +254,11 @@ export default {
         }
       }
     }).catch(errorData => {
+      let errorMessage = '';
+      vm.loading = false;
+      if (errorData.errorMessage !== undefined) {
+      } else {
+      }
     });
   },
   destroyed() {
