@@ -182,6 +182,10 @@ export default {
       validate('INSURANT', rule, value, callback);
     };
     let validateAmount = (rule, value, callback) => {
+      validate('AMOUNT', rule, value, callback);
+    };
+    let validateStartTime = (rule, value, callback) => {
+      validate('STARTTIME', rule, value, callback);
     };
   },
 };
