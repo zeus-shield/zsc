@@ -159,6 +159,8 @@ export default {
   },
   data() {
   },
+  props: {
+  },
   data() {
   },
   data() {
