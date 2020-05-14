@@ -152,6 +152,8 @@ export default {
   data() {
     let validate = (cmd, rule, value, callback) => {
       if (value === '') {
+        let none = 'POLICY_' + cmd + '_NONE';
+        callback(new Error(this.langSet['message']['error'][none]));
       } else {
       }
     };
