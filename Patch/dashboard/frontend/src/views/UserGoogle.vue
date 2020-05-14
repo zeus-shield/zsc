@@ -50,6 +50,10 @@
         </div>
 
         <div class="interval-md"></div>
+
+        <div class="input-box">
+          <el-form ref="form" :model="form" label-width="0%" label-position="left" :rules="rules">
+          </el-form>
         </div>
       </div>
     </div>
