@@ -251,7 +251,7 @@ const cn = {
 
       COMPANY_CATEGORIES_HAS_EXIST: '该保险公司下险种已存在！',
       COMPANY_CATEGORIES_NOT_EXIST: '该保险公司下险种不存在！',
-      COMPANY_HAS_EXISTED: '该保险公司已存在！',
+      COMPANY_HAS_EXISTED: '该保险公司信息已存在！',
       COMPANY_CODE_HAS_EXISTED: '公司编码已存在！',
       COMPANY_NOT_EXIST: '该保险公司不存在!',
 
