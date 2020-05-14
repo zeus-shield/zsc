@@ -123,5 +123,7 @@ export default {
   created() {
     console.log('%c[UserPolicy]created()', `color:${this.logColor}`);
   },
+  mounted() {
+  },
 };
 </script>
