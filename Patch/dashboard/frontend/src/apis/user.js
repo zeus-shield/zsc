@@ -98,6 +98,10 @@ class User extends Transaction {
   };
 
   async removeAllPolicies(token, id, account) {
+    const data = new URLSearchParams();
+    if (id) {
+    } else if (account) {
+    } else {}
 
     try {
       return await this.transaction('post', 'user/removeAllPolicies', {token}, null, data);
