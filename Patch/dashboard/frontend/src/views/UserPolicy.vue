@@ -20,6 +20,10 @@
               <span class="divider">{{ langSet.market.dialog.product.title }}</span>
             </el-divider>
           </div>
+
+          <el-divider content-position="left">
+            <span class="divider">{{ langSet.market.dialog.user.title }}</span>
+          </el-divider>
         </el-form>
       </el-collapse-item>
     </el-collapse>
