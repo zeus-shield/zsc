@@ -155,8 +155,8 @@ import APIs from '@/apis';
 
 export default {
   name: 'UserDetail',
-  components: {
-  },
+  // components: {
+  // },
   data() {
   },
   props: {
