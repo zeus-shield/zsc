@@ -257,7 +257,9 @@ export default {
       let errorMessage = '';
       vm.loading = false;
       if (errorData.errorMessage !== undefined) {
+        errorMessage = errorData.errorMessage;
       } else {
+        errorMessage = errorData;
       }
     });
   },
