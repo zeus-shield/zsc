@@ -332,6 +332,8 @@ const cn = {
       PINGAN_ZDJB_GRZDJB: '中国平安个人重大疾病保险',
       PINGAN_ZDJB_CRZDJB: '中国平安成人重大疾病险',
       PINGAN_YW_YNQZHYW: '中国平安一年期综合意外险',
+      PINGAN_YW_JTBZHYW: '中国平安家庭保综合意外保险',
+      PINGAN_YW_JTCXZHYCJ: '中国平安家庭出行综合保险（原驾乘险）',
     },
     stat: {
       STAT_COMPANY: '公司热度分析',
