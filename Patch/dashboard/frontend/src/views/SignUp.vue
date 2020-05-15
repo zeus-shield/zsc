@@ -316,11 +316,8 @@ export default {
             if (err === 0 && data.status === 200 && data.errorCode === 0) {
               user.loginCommon(vm.form.account, vm.form.password, (err, data) => {
               if (err === 0 && data.status === 200 && data.errorCode === 0) {
-                // console.log('%c[SignUp]submitForm(%s)', `color:${vm.logColor}`, data);
-                utils.storage.cookie.set('login_token', data.content.token, 'N/A');
-                utils.storage.cookie.set('login_account', vm.form.account, 'N/A');
-                vm.loading = false;
-                vm.$router.push({name: 'user'});
+
+              });
             } else {
               console.log('%c[SignUp]submitForm(%s)', `color:${vm.logColor}`, data);
               vm.errorMessage = data.errorMessage;
