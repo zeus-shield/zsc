@@ -128,6 +128,11 @@ const update = async(req, res) => {
     // }
     // debug('--------------------------------------->')
     // debug(result.name);
+    if (result.categories) {
+      for (let i=0; i<result.categories.length; i++) {
+        debug(result.categories[i].name, result.categories[i]._id);
+      }
+    }
 
 
     // 2. update company including removing
