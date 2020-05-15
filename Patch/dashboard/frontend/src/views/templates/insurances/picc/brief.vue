@@ -155,6 +155,9 @@ export default {
         let none = 'POLICY_' + cmd + '_NONE';
         callback(new Error(this.langSet['message']['error'][none]));
       } else {
+        if (cmd === 'STARTTIME') {
+        } else {
+        }
       }
     };
     let validateCompany = (rule, value, callback) => {
