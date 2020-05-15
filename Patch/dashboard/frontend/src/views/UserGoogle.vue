@@ -53,6 +53,9 @@
 
         <div class="input-box">
           <el-form ref="form" :model="form" label-width="0%" label-position="left" :rules="rules">
+            <el-form-item prop="code">
+              <el-input class="input" :class="{'input-mobile': device !== 'pc'}" v-model="form.code" prefix-icon="iconfont if-password" :placeholder="langSet.user.google.step[1].form.placeholder" @input="onInput"></el-input>
+            </el-form-item>
           </el-form>
         </div>
       </div>
