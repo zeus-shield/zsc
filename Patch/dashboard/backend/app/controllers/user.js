@@ -44,6 +44,8 @@ const emailCode = async(req, res) => {
     // Finds a matching document, updates it and return the modified document.
     result = await services.users.update({account: account}, update, false, session);
     if (!result) {
+      const doc = {
+      };
     } else {
       await session.commitTransaction();
       session.endSession();
