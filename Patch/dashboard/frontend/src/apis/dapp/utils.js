@@ -6,6 +6,10 @@ const Web3 = require('web3');
 const HEX_PREFIX = '0x';
 
 function jsonToEthObject(data) {
+  let parsedData;
+  try {
+  } catch (e) {
+  }
 }
 
 function jsonToEth(data) {
