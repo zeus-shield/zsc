@@ -21,6 +21,9 @@ class User {
 
   // DONE
   _buildPolicyKey(keys, keyPrefix) {
+    let maxIndex = -1;
+    keys.forEach((key) => {
+    });
   };
 
   // DONE
