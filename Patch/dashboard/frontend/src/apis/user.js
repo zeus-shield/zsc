@@ -100,7 +100,9 @@ class User extends Transaction {
   async removeAllPolicies(token, id, account) {
     const data = new URLSearchParams();
     if (id) {
+      data.append('id', id);
     } else if (account) {
+      data.append('account', account);
     } else {}
 
     try {
