@@ -15,7 +15,7 @@ class Company extends Transaction {
     data.append('categories', JSON.stringify(categories));
 
     try {
-      return await this.transaction('post', 'company/add', {token}, null, data);
+      return await this.transaction('post', 'company/add', { token }, null, data);
     } catch (err) {
       throw err;
     }
@@ -30,7 +30,7 @@ class Company extends Transaction {
     } else {}
 
     try {
-      return await this.transaction('post', 'company/remove', {token}, null, data);
+      return await this.transaction('post', 'company/remove', { token }, null, data);
     } catch (err) {
       throw err;
     }
@@ -43,7 +43,7 @@ class Company extends Transaction {
     data.append('update', JSON.stringify(update));
 
     try {
-      return await this.transaction('post', 'company/update', {token}, null, data);
+      return await this.transaction('post', 'company/update', { token }, null, data);
     } catch (err) {
       throw err;
     }
@@ -51,7 +51,7 @@ class Company extends Transaction {
 
   async list(token) {
     try {
-      return await this.transaction('get', 'company', {token});
+      return await this.transaction('get', 'company', { token });
     } catch (err) {
       throw err;
     }
@@ -59,7 +59,7 @@ class Company extends Transaction {
 
   async groupCategoriesByName(token) {
     try {
-      return await this.transaction('get', 'company/groupCategoriesByName', {token});
+      return await this.transaction('get', 'company/groupCategoriesByName', { token });
     } catch (err) {
       throw err;
     }
