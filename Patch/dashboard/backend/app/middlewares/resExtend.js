@@ -2,6 +2,8 @@
 
 const { resHandler } = require('../utils');
 
+// const debug = require('debug')('backend:app:middleware:resExtend');
+
 module.exports = (req, res, next) => {
   res.sendOk = (data) => {
     const rst = {
@@ -11,7 +13,7 @@ module.exports = (req, res, next) => {
     };
     global.logger.debug(`traceId: ${req.headers.traceId}`);
     global.logger.info(`method: [${req.method}] req-url: ${req.url}`);
-    // logger.debug(`req-headers: ${JSON.stringify(req.headers)}`);
+    // global.logger.info(`req-headers: ${JSON.stringify(req.headers)}`);
     global.logger.debug(`req-query: ${JSON.stringify(req.query)}`);
     global.logger.debug(`req-params: ${JSON.stringify(req.params)}`);
     // if (req.url !== '/user/login') {
