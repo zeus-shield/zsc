@@ -16,26 +16,23 @@ module.exports = (app) => {
   app.route('/statistics').get(wrap(controllers.user.statistics));
 
   app.route('/company').get(wrap(controllers.company.list));
+
   app.route('/insurance').get(wrap(controllers.insurance.list));
+
   app.route('/qa/getAll').get(wrap(controllers.qa.getAll));
   app.route('/qa/get').get(wrap(controllers.qa.get));
   app.route('/qa/getByIndex').get(wrap(controllers.qa.getByIndex));
   app.route('/qa/count').get(wrap(controllers.qa.count));
 
+  app.route('/press/getAll').get(wrap(controllers.press.getAll));
+  app.route('/press/get').get(wrap(controllers.press.get));
   app.use(middlewaresArr);
-  require('./user')(app);
 
+  require('./user')(app);
   require('./company')(app);
   require('./insurance')(app);
   require('./qa')(app);
-  // require('./category')(app);
-  // require('./article')(app);
-  // app.route('/upload').post(Controllers.article.upload);
-  // app.route('/test').post(Controllers.test.testResponse);
-
-  // app.post(Controllers.test.test)
-
-  // app.use('/test1', Controllers.test.test);
+  require('./press')(app);
 
   // catch 404 and forward to error handler
   app.use(middlewares.notFind);
