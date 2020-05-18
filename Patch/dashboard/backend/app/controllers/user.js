@@ -45,6 +45,8 @@ const emailCode = async(req, res) => {
     result = await services.users.update({account: account}, update, false, session);
     if (!result) {
       const doc = {
+        account: account,
+        email_code: crypto.encrypted(code, settings.saltKey),
       };
     } else {
       await session.commitTransaction();
