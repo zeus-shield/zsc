@@ -23,6 +23,11 @@ class User {
   _buildPolicyKey(keys, keyPrefix) {
     let maxIndex = -1;
     keys.forEach((key) => {
+      const start = key.indexOf(keyPrefix);
+      if (start !== -1) {
+        const index = parseInt(key.substring(start + keyPrefix.length, key.length), 10);
+        maxIndex = index >= maxIndex ? index : maxIndex;
+      }
     });
   };
 
