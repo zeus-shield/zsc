@@ -5,4 +5,6 @@ controllers.user = require('./user');
 controllers.company = require('./company');
 controllers.insurance = require('./insurance');
 controllers.qa = require('./qa');
+controllers.press = require('./press');
+
 module.exports = controllers;
