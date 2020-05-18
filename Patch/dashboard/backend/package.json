@@ -10,7 +10,10 @@
     "pm2": "cross-env NODE_ENV=development DEBUG=backend:* pm2 start ./server.js --name dashboard --watch",
     "pm2-build": "cross-env NODE_ENV=production DEBUG=backend:* pm2 start ./server.js --name dashboard --watch",
     "pm2-all": "cross-env NODE_ENV=development DEBUG=backend:* pm2 start ./server.js --name dashboard --watch -i max",
-    "pm2-all-build": "cross-env NODE_ENV=production DEBUG=backend:* pm2 start ./server.js --name dashboard --watch -i max"
+    "pm2-all-build": "cross-env NODE_ENV=production DEBUG=backend:* pm2 start ./server.js --name dashboard --watch -i max",
+    "pm2-debug": "pm2 start ./pm2-debug.json",
+    "pm2-release-cluster": "pm2 start ./pm2-release-cluster.json",
+    "pm2-release-fork": "pm2 start ./pm2-release-fork.json"
   },
   "dependencies": {
     "cookie-parser": "^1.4.4",
