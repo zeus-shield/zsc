@@ -8,7 +8,9 @@ const HEX_PREFIX = '0x';
 function jsonToEthObject(data) {
   let parsedData;
   try {
+    parsedData = parseJson(data);
   } catch (e) {
+    throw new Error('JS data is not valid: ' + e.message);
   }
 }
 
