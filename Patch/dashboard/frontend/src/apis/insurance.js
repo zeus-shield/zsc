@@ -16,7 +16,7 @@ class Insurance extends Transaction {
     data.append('detail', JSON.stringify(detail));
 
     try {
-      return await this.transaction('post', 'insurance/add', {token}, null, data);
+      return await this.transaction('post', 'insurance/add', { token }, null, data);
     } catch (err) {
       throw err;
     }
@@ -31,7 +31,7 @@ class Insurance extends Transaction {
     } else {}
 
     try {
-      return await this.transaction('post', 'insurance/remove', {token}, null, data);
+      return await this.transaction('post', 'insurance/remove', { token }, null, data);
     } catch (err) {
       throw err;
     }
@@ -44,7 +44,7 @@ class Insurance extends Transaction {
     data.append('update', JSON.stringify(update));
 
     try {
-      return await this.transaction('post', 'insurance/update', {token}, null, data);
+      return await this.transaction('post', 'insurance/update', { token }, null, data);
     } catch (err) {
       throw err;
     }
@@ -52,7 +52,7 @@ class Insurance extends Transaction {
 
   async list(token) {
     try {
-      return await this.transaction('get', 'insurance', {token});
+      return await this.transaction('get', 'insurance', { token });
     } catch (err) {
       throw err;
     }
@@ -67,7 +67,7 @@ class Insurance extends Transaction {
     } else {}
 
     try {
-      return await this.transaction('get', 'insurance/detail', {token}, query);
+      return await this.transaction('get', 'insurance/detail', { token }, query);
     } catch (err) {
       throw err;
     }
@@ -80,7 +80,7 @@ class Insurance extends Transaction {
     query.append('key', JSON.stringify(key));
 
     try {
-      return await this.transaction('get', 'insurance/count', {token}, query);
+      return await this.transaction('get', 'insurance/count', { token }, query);
     } catch (err) {
       throw err;
     }
