@@ -252,6 +252,11 @@ export default {
             vm.cacheData.companies[vm.companyActiveIndex].categories.length > 0) {
           vm.categoryActiveName = vm.cacheData.companies[vm.companyActiveIndex].categories[vm.categoryActiveIndex].name;
         }
+
+        vm.pageSize = vm.cacheData.setting.pageSizes[0];
+        vm.currentPage = 1;
+        vm.totalForPage = 0;
+        vm.updateTotalOfItemsForPage();
       }
     }).catch(errorData => {
       let errorMessage = '';
