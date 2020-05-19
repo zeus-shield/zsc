@@ -47,6 +47,9 @@ const emailCode = async(req, res) => {
       const doc = {
         account: account,
         email_code: crypto.encrypted(code, settings.saltKey),
+        created_at: Date.now(),
+        updated_at: Date.now(),
+        active_expires_at: Date.now() + settings.stmpConfig.timeout
       };
     } else {
       await session.commitTransaction();
