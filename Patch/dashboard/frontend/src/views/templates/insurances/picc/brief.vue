@@ -156,7 +156,10 @@ export default {
         callback(new Error(this.langSet['message']['error'][none]));
       } else {
         if (cmd === 'STARTTIME') {
+          callback();
         } else {
+          let lenErr = 'POLICY_' + cmd + '_LEN_ERR';
+          let lenMin = 0;
         }
       }
     };
