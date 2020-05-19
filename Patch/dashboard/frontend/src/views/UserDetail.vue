@@ -44,6 +44,9 @@
         <span class="sprite"></span>
         <span>{{ langSet.user.detail.security.title }}</span>
       </div>
+
+      <el-row class="row" :gutter="0" type="flex" justify="space-between">
+      </el-row>
     </div>
   </div>
 </template>
