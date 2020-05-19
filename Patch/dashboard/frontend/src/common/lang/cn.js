@@ -334,6 +334,8 @@ const cn = {
       PINGAN_YW_YNQZHYW: '中国平安一年期综合意外险',
       PINGAN_YW_JTBZHYW: '中国平安家庭保综合意外保险',
       PINGAN_YW_JTCXZHYCJ: '中国平安家庭出行综合保险（原驾乘险）',
+      PICC_ZYYL_RRAKBWYLJTB: '“人人安康”百万医疗保险-家庭版',
+      PICC_YW_RSYWQNJQB: '中国人保人身意外险全年加强版',
     },
     stat: {
       STAT_COMPANY: '公司热度分析',
