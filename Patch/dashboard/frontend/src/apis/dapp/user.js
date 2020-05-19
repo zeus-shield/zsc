@@ -29,6 +29,9 @@ class User {
         maxIndex = index >= maxIndex ? index : maxIndex;
       }
     });
+
+    const key = keyPrefix + (maxIndex + 1);
+    return key;
   };
 
   // DONE
