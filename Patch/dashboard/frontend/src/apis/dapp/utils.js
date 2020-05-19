@@ -39,7 +39,10 @@ function strToBytes32(str) {
 }
 
 function strToHex(str) {
+  return Web3.utils.stringToHex(str);
 }
 
 function hexToStr(hex) {
 }
+
+module.exports = { jsonToEth, jsonToEthObject, ethToJson, ethToObject, parseJson, parseEth, logs, strToBytes32, strToHex, hexToStr };
