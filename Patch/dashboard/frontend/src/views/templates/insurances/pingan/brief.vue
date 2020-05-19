@@ -35,6 +35,9 @@
         </div>
       </el-col>
     </el-row>
+
+    <el-dialog class="dialog" :visible.sync="dialogVisible" :title="langSet.market.dialog.title" width="75%" @close="dialogClose()" @open="dialogOpen()">
+    </el-dialog>
   </div>
 </template>
 
