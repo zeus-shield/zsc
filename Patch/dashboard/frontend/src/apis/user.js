@@ -58,7 +58,7 @@ class User extends Transaction {
     const data = new URLSearchParams();
 
     try {
-      return await this.transaction('post', 'user/saveTOTP', {token}, null, data);
+      return await this.transaction('post', 'user/saveTOTP', { token }, null, data);
     } catch (err) {
       throw err;
     }
@@ -75,7 +75,7 @@ class User extends Transaction {
     data.append('on', on);
 
     try {
-      return await this.transaction('post', 'user/updateTOTP', {token}, null, data);
+      return await this.transaction('post', 'user/updateTOTP', { token }, null, data);
     } catch (err) {
       throw err;
     }
@@ -91,7 +91,7 @@ class User extends Transaction {
     data.append('policy', JSON.stringify(policy));
 
     try {
-      return await this.transaction('post', 'user/addPolicy', {token}, null, data);
+      return await this.transaction('post', 'user/addPolicy', { token }, null, data);
     } catch (err) {
       throw err;
     }
@@ -106,7 +106,7 @@ class User extends Transaction {
     } else {}
 
     try {
-      return await this.transaction('post', 'user/removeAllPolicies', {token}, null, data);
+      return await this.transaction('post', 'user/removeAllPolicies', { token }, null, data);
     } catch (err) {
       throw err;
     }
@@ -121,7 +121,7 @@ class User extends Transaction {
     } else {}
 
     try {
-      return await this.transaction('get', 'user/detail', {token}, query);
+      return await this.transaction('get', 'user/detail', { token }, query);
     } catch (err) {
       throw err;
     }
@@ -129,7 +129,7 @@ class User extends Transaction {
 
   async list(token) {
     try {
-      return await this.transaction('get', 'user', {token});
+      return await this.transaction('get', 'user', { token });
     } catch (err) {
       throw err;
     }
@@ -144,7 +144,7 @@ class User extends Transaction {
     query.append('limit', limit);
 
     try {
-      return await this.transaction('get', 'statistics', {token}, query);
+      return await this.transaction('get', 'statistics', { token }, query);
     } catch (err) {
       throw err;
     }
