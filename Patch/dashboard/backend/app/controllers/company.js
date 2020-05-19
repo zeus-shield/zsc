@@ -128,12 +128,21 @@ const update = async(req, res) => {
     // }
     // debug('--------------------------------------->')
     // debug(result.name);
+    // if (result.categories) {
+    //   for (let i=0; i<result.categories.length; i++) {
+    //     debug(result.categories[i].name, result.categories[i]._id);
+    //   }
+    // }
+
+    // 1. update and remove insurances according to updated data
     if (result.categories) {
-      for (let i=0; i<result.categories.length; i++) {
-        debug(result.categories[i].name, result.categories[i]._id);
+      for (let i = 0; i < result.categories.length; i++) {
+        if (update.categories.length > 0) {
+        } else {
+
+
       }
     }
-
 
     // 2. update company including removing
     update.updated_at = Date.now();
