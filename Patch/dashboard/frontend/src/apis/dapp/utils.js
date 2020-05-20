@@ -43,6 +43,7 @@ function strToHex(str) {
 }
 
 function hexToStr(hex) {
+  return Web3.utils.hexToString(hex);
 }
 
 module.exports = { jsonToEth, jsonToEthObject, ethToJson, ethToObject, parseJson, parseEth, logs, strToBytes32, strToHex, hexToStr };
