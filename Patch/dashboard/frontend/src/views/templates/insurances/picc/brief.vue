@@ -160,6 +160,9 @@ export default {
         } else {
           let lenErr = 'POLICY_' + cmd + '_LEN_ERR';
           let lenMin = 0;
+          if (cmd === 'HOLDER' || cmd === 'INSURANT' || cmd === 'AMOUNT' || cmd === 'PERIOD') {
+          } else {
+          }
         }
       }
     };
