@@ -21,3 +21,6 @@ const remove = async(req, res) => {
     throw err;
   }
 };
+
+const removeAll = async(req, res) => {
+};
