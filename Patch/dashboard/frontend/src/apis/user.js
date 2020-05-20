@@ -52,6 +52,10 @@ class User extends Transaction {
   };
 
   async setTOTP(token, id, account, cmd) {
+    try {
+    } catch (err) {
+      throw err;
+    }
   };
 
   async saveTOTP(token, id, account, code, key) {
