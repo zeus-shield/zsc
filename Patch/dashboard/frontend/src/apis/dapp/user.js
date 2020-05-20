@@ -44,6 +44,10 @@ class User {
       throw error;
     }
   };
+
+  async set(id, keys, values, offsets, func = null) {
+  };
+
   async statistics(statId) {
   }
 }
