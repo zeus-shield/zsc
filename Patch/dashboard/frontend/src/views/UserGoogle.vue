@@ -56,6 +56,9 @@
             <el-form-item prop="code">
               <el-input class="input" :class="{'input-mobile': device !== 'pc'}" v-model="form.code" prefix-icon="iconfont if-password" :placeholder="langSet.user.google.step[1].form.placeholder" @input="onInput"></el-input>
             </el-form-item>
+            <el-form-item>
+              <el-button class="button" :class="{'button-mobile': device !== 'pc'}" type="primary" :disabled="buttonDisabled" @click="onSubmit('form')">{{ langSet.user.google.step[1].form.buttonText }}</el-button>
+            </el-form-item>
           </el-form>
         </div>
       </div>
