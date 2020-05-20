@@ -138,9 +138,15 @@ const update = async(req, res) => {
     if (result.categories) {
       for (let i = 0; i < result.categories.length; i++) {
         if (update.categories.length > 0) {
+          for (let j = 0; j < update.categories.length; j++) {
+          }
         } else {
 
 
+          // method[2] according to _id for insurances TODO
+          for (let k = 0; k < result.categories[i].insurance_ids.length; k++) {
+          }
+        }
       }
     }
 
