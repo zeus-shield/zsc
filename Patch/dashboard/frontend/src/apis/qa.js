@@ -12,6 +12,9 @@ class QA extends Transaction {
 
   async removeAll(token, id, language) {
   };
+
+  async remove(token, language, id) {
+  };
 }
 
 export default QA;
