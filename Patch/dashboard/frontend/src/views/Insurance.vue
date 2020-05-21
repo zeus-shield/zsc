@@ -266,6 +266,9 @@ export default {
       } else {
         errorMessage = errorData;
       }
+      if (utils.errCommonHandle(errorMessage, vm) !== true) {
+        utils.notice.alert(vm, 'error', vm.langSet.component.alert.errorTitle, errorMessage, vm.langSet.component.button.confirm, false, true, null);
+      }
     });
   },
   destroyed() {
