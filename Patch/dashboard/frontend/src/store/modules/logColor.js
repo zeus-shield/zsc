@@ -55,11 +55,11 @@ const state = () => {
       },
       setting: 'black',
       contract: 'black',
-      system: {
-
+      sys: {
+        qa: 'blue'
       },
       core: {
-        user: 'red',
+        user: 'black',
         userAssets: 'black',
         stat: 'black',
         wallet: 'black'
