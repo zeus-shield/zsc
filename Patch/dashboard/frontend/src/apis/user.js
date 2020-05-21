@@ -49,10 +49,15 @@ class User extends Transaction {
   };
 
   async remove(token, id, account) {
+
+    try {
+    } catch (err) {
+    }
   };
 
   async setTOTP(token, id, account, cmd) {
     try {
+      return await this.transaction('post', 'user/setTOTP', { token }, null, data);
     } catch (err) {
       throw err;
     }
