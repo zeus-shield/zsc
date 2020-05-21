@@ -297,6 +297,8 @@ export default {
     updateTotalOfItemsForPage() {
       if (this.companyActiveIndex !== -1) {
     },
+    handleCompanyClick(vm) {
+    },
     handleSizeChange(val) {
     },
     handleCurrentChange(val) {
