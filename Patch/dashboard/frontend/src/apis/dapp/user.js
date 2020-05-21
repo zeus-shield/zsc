@@ -48,6 +48,8 @@ class User {
   async set(id, keys, values, offsets, func = null) {
   };
 
+  async setByDataKey(id, key, value, func = null) {
+  };
   async statistics(statId) {
   }
 }
