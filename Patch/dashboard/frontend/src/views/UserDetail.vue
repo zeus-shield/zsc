@@ -46,6 +46,9 @@
       </div>
 
       <el-row class="row" :gutter="0" type="flex" justify="space-between">
+        <el-col v-if="device === 'pc'" class="col" :span="1">
+          <i class="el-icon-success icon"></i>
+        </el-col>
       </el-row>
     </div>
   </div>
