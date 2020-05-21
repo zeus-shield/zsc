@@ -51,8 +51,12 @@ const emailCode = async(req, res) => {
         updated_at: Date.now(),
         active_expires_at: Date.now() + settings.stmpConfig.timeout
       };
+      result = await services.users.insert([doc], session);
+
       await session.commitTransaction();
       session.endSession();
+
+      res.sendOk(format.user(result[0]));
     } else {
       await session.commitTransaction();
       session.endSession();
