@@ -23,4 +23,9 @@ const remove = async(req, res) => {
 };
 
 const removeAll = async(req, res) => {
+  // debug('remove(%s)', JSON.stringify(req.body));
+  try {
+  } catch (err) {
+    throw err;
+  }
 };
