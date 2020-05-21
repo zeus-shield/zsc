@@ -32,6 +32,9 @@ function parseEth(data) {
 }
 
 function logs(logs) {
+  if (!logs) {
+    return;
+  }
 }
 
 function strToBytes32(str) {
