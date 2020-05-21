@@ -44,6 +44,8 @@ const AdminCompany = resolve => require.ensure([], () => resolve(require('@/view
 const AdminInsurance = resolve => require.ensure([], () => resolve(require('@/views/AdminInsurance')), 'lazy');
 const AdminInsuranceAdd = resolve => require.ensure([], () => resolve(require('@/views/AdminInsuranceAdd')), 'lazy');
 const AdminInsuranceEdit = resolve => require.ensure([], () => resolve(require('@/views/AdminInsuranceEdit')), 'lazy');
+const AdminSysQA = resolve => require.ensure([], () => resolve(require('@/views/admin/sys/QA')), 'lazy');
+
 const AdminSetting = resolve => require.ensure([], () => resolve(require('@/views/AdminSetting')), 'lazy');
 const AdminContract = resolve => require.ensure([], () => resolve(require('@/views/AdminContract')), 'lazy');
 const AdminCoreUser = resolve => require.ensure([], () => resolve(require('@/views/admin/core/User')), 'lazy');
