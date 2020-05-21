@@ -162,5 +162,8 @@ import utils from '@/common/utils';
 import APIs from '@/apis';
 
 export default {
+  name: 'UserGoogle',
+  data() {
+  },
 };
 </script>
