@@ -39,6 +39,10 @@
     <el-dialog class="dialog" :visible.sync="dialogVisible" :title="langSet.market.dialog.title" width="75%" @close="dialogClose()" @open="dialogOpen()">
       <el-form class="form" v-loading.fullscreen.lock="loading" :element-loading-text="loadingText" element-loading-spinner="el-icon-loading" ref="form" size="mini" :model="form" :rules="rules" label-position="right" label-width="25%">
         <div class="space"></div>
+
+        <el-divider content-position="left">
+          <span class="divider-content">{{ langSet.market.dialog.product.title }}</span>
+        </el-divider>
       </el-form>
       <div slot="footer">
         <el-button @click="dialogVisible = false">{{ langSet.component.button.cancel }}</el-button>
