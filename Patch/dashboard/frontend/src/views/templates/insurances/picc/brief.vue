@@ -165,6 +165,11 @@ export default {
           } else {
             lenMin = 2;
           }
+          if (value.length < lenMin + 1) {
+            callback(new Error(this.langSet['message']['error'][lenErr]));
+          } else {
+            callback();
+          }
         }
       }
     };
