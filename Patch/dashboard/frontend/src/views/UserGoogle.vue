@@ -165,5 +165,8 @@ export default {
   name: 'UserGoogle',
   data() {
   },
+  props: {
+    cmd: ''
+  },
 };
 </script>
