@@ -6,4 +6,6 @@ const controllers = require('../controllers');
 const wrap = fn => (...args) => fn(...args).catch(err => {args[1].sendErr(err);});
 
 module.exports = (app) => {
+  app.route('/press/add').post(wrap(controllers.press.add));
+  app.route('/press/remove').post(wrap(controllers.press.remove));
 };
