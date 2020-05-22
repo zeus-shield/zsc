@@ -13,3 +13,6 @@ const add = async(req, res) => {
     throw err;
   }
 };
+
+const remove = async(req, res) => {
+};
