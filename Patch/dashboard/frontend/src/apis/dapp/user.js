@@ -50,6 +50,10 @@ class User {
 
   async setByDataKey(id, key, value, func = null) {
   };
+
+  // DONE
+  async get(id) {
+  };
   async statistics(statId) {
   }
 }
