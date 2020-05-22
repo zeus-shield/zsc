@@ -18,6 +18,9 @@ class QA extends Transaction {
 
   async update(token, language, id, content) {
   };
+
+  async getAll() {
+  };
 }
 
 export default QA;
