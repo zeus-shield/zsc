@@ -134,6 +134,7 @@ export default {
   mounted() {
   },
   destroyed() {
+    console.log('%c[UserPolicy]destroyed()', `color:${this.logColor}`);
   },
 };
 </script>
