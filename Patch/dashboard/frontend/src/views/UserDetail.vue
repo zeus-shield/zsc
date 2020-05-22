@@ -49,6 +49,7 @@
         <el-col v-if="device === 'pc'" class="col" :span="1">
           <i class="el-icon-success icon"></i>
         </el-col>
+        <el-col v-else class="col" :span="0"></el-col>
       </el-row>
     </div>
   </div>
