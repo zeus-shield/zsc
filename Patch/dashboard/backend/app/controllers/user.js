@@ -83,8 +83,12 @@ const signUp = async(req, res) => {
 };
 
 const login = async(req, res) => {
-  debug('login(%s, %s, %s)', req.body.account, req.body.password, req.body.code);
+  // debug('login(%s, %s, %s)', req.body.account, req.body.password, req.body.code);
   try {
+    // There is only one database write operation, and session can not be used.
+    const account = req.body.account;
+    const password = req.body.password;
+    const code = req.body.code;
     const result = await services.users.login(req.body.account, req.body.password, req.body.code);
     result.token = auth.createToken(result._id);
     res.sendOk(result);
