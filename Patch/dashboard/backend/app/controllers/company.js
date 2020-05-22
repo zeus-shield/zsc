@@ -140,6 +140,11 @@ const update = async(req, res) => {
         if (update.categories.length > 0) {
           for (let j = 0; j < update.categories.length; j++) {
             if ((result.categories[i]._id).toString() === update.categories[j]._id) {
+              if (result.name !== update.name ||
+                result.code !== update.code ||
+                result.categories[i].name !== update.categories[j].name ||
+                result.categories[i].code !== update.categories[j].code) {
+            }
           }
         } else {
 
