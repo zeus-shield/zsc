@@ -139,6 +139,7 @@ const update = async(req, res) => {
       for (let i = 0; i < result.categories.length; i++) {
         if (update.categories.length > 0) {
           for (let j = 0; j < update.categories.length; j++) {
+            if ((result.categories[i]._id).toString() === update.categories[j]._id) {
           }
         } else {
 
