@@ -51,7 +51,9 @@ class User extends Transaction {
   async remove(token, id, account) {
 
     try {
+      return await this.transaction('post', 'user/remove', { token }, null, data);
     } catch (err) {
+      throw err;
     }
   };
 
