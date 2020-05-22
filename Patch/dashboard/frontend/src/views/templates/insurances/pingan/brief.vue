@@ -205,5 +205,8 @@ export default {
       validate('PERIOD', rule, value, callback);
     };
   },
+  props: {
+    item: {}
+  },
 };
 </script>
