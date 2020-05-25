@@ -50,6 +50,10 @@
           <i class="el-icon-success icon"></i>
         </el-col>
         <el-col v-else class="col" :span="0"></el-col>
+
+        <el-col v-if="device === 'pc'" class="col" :span="15">
+          <span class="description">{{ langSet.user.detail.security.google.description }}</span>
+        </el-col>
       </el-row>
     </div>
   </div>
