@@ -37,3 +37,6 @@ const update = async(req, res) => {
     throw err;
   }
 };
+
+const getAll = async(req, res) => {
+};
