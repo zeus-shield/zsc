@@ -163,10 +163,14 @@ import APIs from '@/apis';
 
 export default {
   name: 'UserGoogle',
+  // components: {
+  // },
   data() {
   },
   props: {
     cmd: ''
+  },
+  computed: {
   },
 };
 </script>
