@@ -14,7 +14,7 @@ class User {
     // this.instance = ewallet.contract(addr, abi);
   };
 
-  init(addr, abi) {
+  install(addr, abi) {
     this.addr = addr;
     this.abi = abi;
   };

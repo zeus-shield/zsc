@@ -49,4 +49,8 @@ function hexToStr(hex) {
   return Web3.utils.hexToString(hex);
 }
 
-module.exports = { jsonToEth, jsonToEthObject, ethToJson, ethToObject, parseJson, parseEth, logs, strToBytes32, strToHex, hexToStr };
+function bigNumberToNumber(value) {
+  return Web3.utils.isBigNumber(value) ? value.toNumber() : value;
+}
+
+module.exports = { jsonToEth, jsonToEthObject, ethToJson, ethToObject, parseJson, parseEth, logs, strToBytes32, strToHex, hexToStr, bigNumberToNumber };
