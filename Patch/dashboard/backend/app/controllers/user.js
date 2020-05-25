@@ -233,6 +233,11 @@ const addPolicy = async(req, res) => {
 };
 
 const removeAllPolicies = async(req, res) => {
+  // debug('removeAllPolicies(%s)', JSON.stringify(req.body));
+  try {
+  } catch (err) {
+    throw err;
+  }
 };
 
 const list = async(req, res) => {
