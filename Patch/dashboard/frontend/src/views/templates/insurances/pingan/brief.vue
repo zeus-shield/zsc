@@ -204,6 +204,9 @@ export default {
     let validatePeriod = (rule, value, callback) => {
       validate('PERIOD', rule, value, callback);
     };
+    return {
+      loading: false,
+      loadingText: '',
   },
   props: {
     item: {}
