@@ -67,6 +67,11 @@ class User extends Transaction {
 
   async saveTOTP(token, id, account, code, key) {
     const data = new URLSearchParams();
+    if (id) {
+      data.append('id', id);
+    } else if (account) {
+      data.append('account', account);
+    } else {}
 
     try {
       return await this.transaction('post', 'user/saveTOTP', { token }, null, data);
