@@ -191,6 +191,9 @@ export default {
     let validateAmount = (rule, value, callback) => {
       validate('AMOUNT', rule, value, callback);
     };
+    let validateStartTime = (rule, value, callback) => {
+      validate('STARTTIME', rule, value, callback);
+    };
   },
 };
 </script>
