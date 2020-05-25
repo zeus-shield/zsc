@@ -248,6 +248,7 @@ const cn = {
       USER_GOOGLE_AUTH_ERR: '谷歌认证码错误',
       USER_GOOGLE_AUTH_NOT_SET: '谷歌认证未开启',
       USER_ADD_POLICY_FAIL: '用户录入保单失败',
+      USER_MINT_FAIL: '用户申请积分失败',
 
       COMPANY_CATEGORIES_HAS_EXIST: '该保险公司下险种已存在！',
       COMPANY_CATEGORIES_NOT_EXIST: '该保险公司下险种不存在！',
