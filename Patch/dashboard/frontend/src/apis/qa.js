@@ -21,6 +21,9 @@ class QA extends Transaction {
 
   async getAll() {
   };
+
+  async get(id, language) {
+  };
 }
 
 export default QA;
