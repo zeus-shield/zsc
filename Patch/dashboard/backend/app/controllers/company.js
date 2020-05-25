@@ -144,6 +144,12 @@ const update = async(req, res) => {
                 result.code !== update.code ||
                 result.categories[i].name !== update.categories[j].name ||
                 result.categories[i].code !== update.categories[j].code) {
+                // update insurances
+                // debug('[modify](%s, %s) -> (%s, %s)',
+                //   result.name, result.categories[i].name, update.name, update.categories[j].name);
+
+                const doc = {
+                };
             }
           }
         } else {
