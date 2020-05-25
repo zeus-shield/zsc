@@ -220,17 +220,6 @@ let router = new Router({
           name: 'adminCompany',
           component: AdminCompany
         },
-        // {
-        //   path: '/admin/company/add',
-        //   name: 'adminCompanyAdd',
-        //   component: AdminCompanyAdd
-        // },
-        // {
-        //   path: '/admin/company/edit',
-        //   name: 'adminCompanyEdit',
-        //   component: AdminCompanyEdit,
-        //   props: (route) => ({ name: route.query.name })
-        // },
         {
           path: '/admin/insurance',
           name: 'adminInsurance',
@@ -254,6 +243,12 @@ let router = new Router({
               title: route.query.title
             }
           })
+        },
+        {
+          path: '/admin/sys/qa',
+          name: 'adminSysQA',
+          component: AdminSysQA
+        },
         },
         {
           path: '/admin/setting',
