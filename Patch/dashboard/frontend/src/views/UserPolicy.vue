@@ -136,5 +136,8 @@ export default {
   destroyed() {
     console.log('%c[UserPolicy]destroyed()', `color:${this.logColor}`);
   },
+  updated() {
+    console.log('%c[UserPolicy]updated()', `color:${this.logColor}`);
+  },
 };
 </script>
