@@ -207,6 +207,9 @@ export default {
     return {
       loading: false,
       loadingText: '',
+      dialogVisible: false,
+      buttonDisabled: true,
+      addPolicyToDatabaseDoing: false,
   },
   props: {
     item: {}
