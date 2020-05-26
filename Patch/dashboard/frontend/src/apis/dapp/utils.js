@@ -37,6 +37,10 @@ function logs(logs) {
   }
 }
 
+function toBytes32(value) {
+  return Web3.utils.rightPad(value, 64);
+}
+
 function strToBytes32(str) {
   return Web3.utils.rightPad(Web3.utils.stringToHex(str), 64);
 }
