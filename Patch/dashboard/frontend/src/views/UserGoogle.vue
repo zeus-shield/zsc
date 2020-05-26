@@ -166,6 +166,8 @@ export default {
   // components: {
   // },
   data() {
+    let validateCode = (rule, value, callback) => {
+    };
   },
   props: {
     cmd: ''
