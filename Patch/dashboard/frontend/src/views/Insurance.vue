@@ -296,6 +296,12 @@ export default {
     },
     updateTotalOfItemsForPage() {
       if (this.companyActiveIndex !== -1) {
+        let categories = this.cacheData.companies[this.companyActiveIndex].categories;
+
+        if (categories === undefined || categories.length === 0) {
+        }
+      } else {
+      }
     },
     handleCompanyClick(vm) {
     },
