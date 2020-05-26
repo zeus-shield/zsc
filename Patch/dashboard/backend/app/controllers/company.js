@@ -149,6 +149,10 @@ const update = async(req, res) => {
                 //   result.name, result.categories[i].name, update.name, update.categories[j].name);
 
                 const doc = {
+                  company: update.name,
+                  category: update.categories[j].name,
+                  'code.company': update.code,
+                  'code.category': update.categories[j].code
                 };
             }
           }
