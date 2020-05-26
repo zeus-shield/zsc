@@ -46,6 +46,8 @@
       </div>
 
       <el-row class="row" :gutter="0" type="flex" justify="space-between">
+        <el-col class="col" :xs="{span: 6, offset: 0}" :sm="{span: 6, offset: 0}" :md="{span: 6, offset: 0}" :lg="{span: 4, offset: 0}">
+        </el-col>
         <el-col v-if="device === 'pc'" class="col" :span="1">
           <i class="el-icon-success icon"></i>
         </el-col>
@@ -54,6 +56,7 @@
         <el-col v-if="device === 'pc'" class="col" :span="15">
           <span class="description">{{ langSet.user.detail.security.google.description }}</span>
         </el-col>
+        <el-col v-else class="col" :span="0"></el-col>
       </el-row>
     </div>
   </div>
