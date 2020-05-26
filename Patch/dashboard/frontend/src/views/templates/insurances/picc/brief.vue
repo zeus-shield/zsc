@@ -194,6 +194,9 @@ export default {
     let validateStartTime = (rule, value, callback) => {
       validate('STARTTIME', rule, value, callback);
     };
+    let validatePeriod = (rule, value, callback) => {
+      validate('PERIOD', rule, value, callback);
+    };
   },
 };
 </script>
