@@ -1,5 +1,7 @@
 'use strict';
 
+import CryptoJS from 'crypto-js';
+import { toBytes32 } from '@/apis/dapp/utils';
 import Transaction from './transaction.js';
 
 class User extends Transaction {
