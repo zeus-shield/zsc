@@ -39,4 +39,9 @@ const update = async(req, res) => {
 };
 
 const getAll = async(req, res) => {
+  // debug("list()");
+  try {
+  } catch (err) {
+    res.sendErr(err);
+  }
 };
