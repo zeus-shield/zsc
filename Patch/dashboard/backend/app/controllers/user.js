@@ -98,8 +98,13 @@ const login = async(req, res) => {
 };
 
 const remove = async(req, res) => {
+  // debug('remove(%s)', JSON.stringify(req.body));
+  try {
 
 
+  } catch (err) {
+    throw err;
+  }
 };
 
 const update = async(req, res) => {
