@@ -23,6 +23,7 @@ class User extends Transaction {
   async signUp(account, code, password) {
     const data = new URLSearchParams();
     data.append('account', account);
+    data.append('accountCrypto', '0x' + CryptoJS.MD5(account).toString());
     data.append('password', password);
     data.append('code', code);
 
@@ -135,7 +136,7 @@ class User extends Transaction {
     if (id) {
       query.append('id', id);
     } else if (account) {
-      query.append('account', account);
+      query.append('account', JSON.stringify(account));
     } else {}
 
     try {
