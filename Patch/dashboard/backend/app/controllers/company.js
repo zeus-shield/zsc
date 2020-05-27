@@ -155,6 +155,8 @@ const update = async(req, res) => {
                   'code.category': update.categories[j].code
                 };
             }
+            if (j === update.categories.length - 1) {
+            }
           }
         } else {
 
