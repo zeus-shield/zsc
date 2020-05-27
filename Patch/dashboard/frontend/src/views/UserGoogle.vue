@@ -173,6 +173,9 @@ export default {
     cmd: ''
   },
   computed: {
+    ...mapState({
+      logColor: state => state.logColor.user.google
+    }),
   },
 };
 </script>
