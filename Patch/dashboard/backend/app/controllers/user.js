@@ -116,7 +116,7 @@ const update = async(req, res) => {
 };
 
 const setTOTP = async(req, res) => {
-  debug('setTOTP(%s, %s)', req.headers._id, req.headers.cmd);
+  // debug('setTOTP(%s)', JSON.stringify(req.body));
   try {
     const result = await services.users.setTOTP(req.headers._id, req.headers.cmd);
     res.sendOk(result);
@@ -268,7 +268,14 @@ const detail = async(req, res) => {
     if (req.query.id) {
       conditions = {_id: req.query.id};
     } else if (req.query.account) {
-      conditions = {account: req.query.account};
+      const account = JSON.parse(req.query.account);
+      if (account.raw) {
+
+      } else if (account.crypto) {
+
+      } else {
+
+      }
     } else {
       throw createError('COMMON_PARAM_ERROR');
     }
