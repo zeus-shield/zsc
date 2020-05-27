@@ -22,6 +22,9 @@ class User {
   };
 
   // DONE
+  _formatAccount(account) {
+  }
+
   _buildPolicyKey(keys, keyPrefix) {
     let maxIndex = -1;
     keys.forEach((key) => {
@@ -56,6 +59,7 @@ class User {
   // DONE
   async get(id) {
   };
+
   async statistics(statId) {
   }
 }
