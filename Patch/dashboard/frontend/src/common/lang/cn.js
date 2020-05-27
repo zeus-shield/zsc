@@ -132,8 +132,13 @@ const cn = {
           placeholder: '选择日期'
         },
         period: '保障期限',
-        description: '详细描述',
-        hash: '哈希值'
+        description: '详细描述'
+      },
+      blockchain: {
+        title: '区块信息',
+        key: '关键字',
+        hash: '哈希值',
+        view: '查看'
       }
     }
   },
