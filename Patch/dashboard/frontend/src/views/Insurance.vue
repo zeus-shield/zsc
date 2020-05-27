@@ -299,8 +299,12 @@ export default {
         let categories = this.cacheData.companies[this.companyActiveIndex].categories;
 
         if (categories === undefined || categories.length === 0) {
+          this.totalForPage = 0;
+        } else {
+          this.totalForPage = this.cacheData.companies[this.companyActiveIndex].categories[this.categoryActiveIndex].count;
         }
       } else {
+        this.totalForPage = this.cacheData.insurances.length;
       }
     },
     handleCompanyClick(vm) {
