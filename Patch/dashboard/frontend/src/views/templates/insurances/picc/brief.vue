@@ -197,6 +197,8 @@ export default {
     let validatePeriod = (rule, value, callback) => {
       validate('PERIOD', rule, value, callback);
     };
+    return {
+    };
   },
 };
 </script>
