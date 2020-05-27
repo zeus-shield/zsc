@@ -108,6 +108,11 @@ const remove = async(req, res) => {
 };
 
 const update = async(req, res) => {
+  // debug('update(%s, %s)', req.body.id, req.body.update);
+  try {
+  } catch (err) {
+    throw err;
+  }
 };
 
 const setTOTP = async(req, res) => {
