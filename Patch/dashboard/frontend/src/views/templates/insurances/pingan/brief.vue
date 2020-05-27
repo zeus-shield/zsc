@@ -210,6 +210,11 @@ export default {
       dialogVisible: false,
       buttonDisabled: true,
       addPolicyToDatabaseDoing: false,
+      form: {
+      },
+      rules: {
+      }
+    };
   },
   props: {
     item: {}
