@@ -250,6 +250,10 @@ let router = new Router({
           name: 'adminSysQA',
           component: AdminSysQA
         },
+        {
+          path: '/admin/sys/press',
+          name: 'adminSysPress',
+          component: AdminSysPress
         },
         {
           path: '/admin/setting',
@@ -272,7 +276,7 @@ let router = new Router({
           component: CoreUserAssets,
           props: (route) => ({
             param: {
-              userId: route.query.userId
+              accountCrypto: route.query.accountCrypto
             }
           })
         },
