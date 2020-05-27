@@ -35,6 +35,10 @@ function logs(logs) {
   if (!logs) {
     return;
   }
+
+  for (let i = 0; i < logs.length; i++) {
+  }
+  return;
 }
 
 function toBytes32(value) {
@@ -57,4 +61,4 @@ function bigNumberToNumber(value) {
   return Web3.utils.isBigNumber(value) ? value.toNumber() : value;
 }
 
-module.exports = { jsonToEth, jsonToEthObject, ethToJson, ethToObject, parseJson, parseEth, logs, strToBytes32, strToHex, hexToStr, bigNumberToNumber };
+module.exports = { jsonToEth, jsonToEthObject, ethToJson, ethToObject, parseJson, parseEth, logs, toBytes32, strToBytes32, strToHex, hexToStr, bigNumberToNumber };
