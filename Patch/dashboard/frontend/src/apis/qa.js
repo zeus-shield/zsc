@@ -27,6 +27,9 @@ class QA extends Transaction {
 
   async getByIndex(id, language, index) {
   };
+
+  async count(id, language) {
+  };
 }
 
 export default QA;
