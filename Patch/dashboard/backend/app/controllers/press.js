@@ -29,3 +29,6 @@ const removeAll = async(req, res) => {
     throw err;
   }
 };
+
+const update = async(req, res) => {
+};
