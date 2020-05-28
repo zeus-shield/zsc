@@ -47,3 +47,6 @@ const getAll = async(req, res) => {
     res.sendErr(err);
   }
 };
+
+const get = async(req, res) => {
+};
