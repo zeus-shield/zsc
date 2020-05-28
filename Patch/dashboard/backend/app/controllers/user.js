@@ -270,11 +270,11 @@ const detail = async(req, res) => {
     } else if (req.query.account) {
       const account = JSON.parse(req.query.account);
       if (account.raw) {
-
+        conditions = {account: account.raw};
       } else if (account.crypto) {
-
+        conditions = {account_crypto: account.crypto};
       } else {
-
+        throw createError('COMMON_PARAM_ERROR');
       }
     } else {
       throw createError('COMMON_PARAM_ERROR');
