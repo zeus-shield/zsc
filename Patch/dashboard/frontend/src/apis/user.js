@@ -1,7 +1,6 @@
 'use strict';
 
 import CryptoJS from 'crypto-js';
-import { toBytes32 } from '@/apis/dapp/utils';
 import Transaction from './transaction.js';
 
 class User extends Transaction {
@@ -75,6 +74,8 @@ class User extends Transaction {
     } else if (account) {
       data.append('account', account);
     } else {}
+    data.append('code', code);
+    data.append('key', key);
 
     try {
       return await this.transaction('post', 'user/saveTOTP', { token }, null, data);
