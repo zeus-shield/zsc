@@ -168,6 +168,8 @@ export default {
   data() {
     let validateCode = (rule, value, callback) => {
     };
+    return {
+    };
   },
   props: {
     cmd: ''
