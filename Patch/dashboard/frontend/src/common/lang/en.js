@@ -125,8 +125,13 @@ const en = {
           placeholder: 'Please select the date'
         },
         period: 'Period',
-        description: 'Description',
-        hash: 'Hash'
+        description: 'Description'
+      },
+      blockchain: {
+        title: 'Block Chain Information',
+        key: 'Key',
+        hash: 'Hash',
+        view: 'View'
       }
     }
   },
