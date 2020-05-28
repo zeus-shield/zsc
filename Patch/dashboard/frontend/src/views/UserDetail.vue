@@ -47,6 +47,12 @@
 
       <el-row class="row" :gutter="0" type="flex" justify="space-between">
         <el-col class="col" :xs="{span: 6, offset: 0}" :sm="{span: 6, offset: 0}" :md="{span: 6, offset: 0}" :lg="{span: 4, offset: 0}">
+          <span>{{ langSet.user.detail.security.google.title }}</span>
+          <el-tooltip v-if="device !== 'pc'" placement="right" effect="dark">
+            <div slot="content">{{ langSet.user.detail.security.google.description }}</div>
+            <i class="el-icon-info"></i>
+          </el-tooltip>
+          <div v-else></div>
         </el-col>
         
         <el-col v-if="device === 'pc'" class="col" :span="1">
