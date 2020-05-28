@@ -13,7 +13,6 @@ class User {
     this.ewallet = ewallet;
     this.addr = addr;
     this.abi = abi;
-    // this.instance = ewallet.contract(addr, abi);
   };
 
   install(addr, abi) {
@@ -43,25 +42,15 @@ class User {
   _preRemove(data) {
   };
 
-  async install(func = null) {
+  async info(account) {
     try {
     } catch (error) {
       throw error;
     }
   };
 
-  async set(id, keys, values, offsets, func = null) {
+  async policyKeys(account) {
   };
-
-  async setByDataKey(id, key, value, func = null) {
-  };
-
-  // DONE
-  async get(id) {
-  };
-
-  async statistics(statId) {
   }
-}
 
 export default User;
