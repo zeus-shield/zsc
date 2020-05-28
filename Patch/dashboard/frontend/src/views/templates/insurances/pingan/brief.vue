@@ -211,6 +211,12 @@ export default {
       buttonDisabled: true,
       addPolicyToDatabaseDoing: false,
       form: {
+        insurance: {
+        },
+        user: {
+        },
+        policy: {
+        }
       },
       rules: {
       }
