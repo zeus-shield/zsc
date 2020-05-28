@@ -8,6 +8,9 @@ class QA extends Transaction {
   };
 
   async add(token, language, content) {
+    const data = new URLSearchParams();
+    data.append('language', language);
+    data.append('content', JSON.stringify(content));
   };
 
   async removeAll(token, id, language) {
