@@ -19,6 +19,10 @@ function jsonToEth(data) {
 }
 
 function ethToObject(data) {
+  let keys, values, offsets;
+  try {
+  } catch (e) {
+  }
 }
 
 function ethToJson(data) {
