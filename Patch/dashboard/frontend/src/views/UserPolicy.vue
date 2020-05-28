@@ -143,5 +143,9 @@ export default {
   updated() {
     console.log('%c[UserPolicy]updated()', `color:${this.logColor}`);
   },
+  beforeRouteEnter(to, from, next) {
+  },
+  beforeRouteUpdate(to, from, next) {
+  },
 };
 </script>
