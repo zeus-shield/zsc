@@ -198,6 +198,9 @@ export default {
       validate('PERIOD', rule, value, callback);
     };
     return {
+      loading: false,
+      loadingText: '',
+      dialogVisible: false,
     };
   },
 };
