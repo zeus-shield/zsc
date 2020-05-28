@@ -293,6 +293,8 @@ export default {
   },
   methods: {
     buildCompanyCategoryCount() {
+      this.cacheData.companies.forEach(company => {
+      });
     },
     updateTotalOfItemsForPage() {
       if (this.companyActiveIndex !== -1) {
