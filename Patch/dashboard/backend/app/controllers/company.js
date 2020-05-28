@@ -154,6 +154,8 @@ const update = async(req, res) => {
                   'code.company': update.code,
                   'code.category': update.categories[j].code
                 };
+              }
+              break;
             }
             if (j === update.categories.length - 1) {
             }
