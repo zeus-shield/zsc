@@ -13,6 +13,7 @@ import EWallet from './core/ewallet';
 import Demo from './dapp/demo';
 import DUser from './dapp/user';
 import DReward from './dapp/reward';
+import DStat from './dapp/statistics';
 
 import User from './user';
 import Company from './company';
@@ -42,6 +43,7 @@ class APIs {
     this.dapp.demo = new Demo(this.core.ewallet, contracts.demo.addr, contracts.demo.abi);
     this.dapp.user = new DUser(this.core.ewallet, contracts.user.addr, contracts.user.abi);
     this.dapp.reward = new DReward(this.core.ewallet, contracts.reward.addr, contracts.reward.abi);
+    this.dapp.stat = new DStat(this.core.ewallet, contracts.stat.addr, contracts.stat.abi);
 
     this.user = new User(instance);
     this.company = new Company(instance);
