@@ -212,6 +212,10 @@ export default {
       addPolicyToDatabaseDoing: false,
       form: {
         insurance: {
+          id: '',
+          company: '',
+          category: '',
+          title: '',
         },
         user: {
         },
