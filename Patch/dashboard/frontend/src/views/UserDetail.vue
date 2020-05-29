@@ -68,6 +68,9 @@
     </div>
 
     <el-dialog class="dialog" :visible.sync="dialogVisible" :width="dialogWidth" @close="onDialogClose">
+      <div slot="title">
+        <span>{{ langSet.user.detail.dialog.title }}</span>
+      </div>
     </el-dialog>
 
   </div>
