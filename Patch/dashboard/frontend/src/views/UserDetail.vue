@@ -71,6 +71,9 @@
       <div slot="title">
         <span>{{ langSet.user.detail.dialog.title }}</span>
       </div>
+      <div slot="footer">
+        <el-button class="button" type="primary" :disabled="buttonDisabled" @click="onSubmit('form')">{{ langSet.user.detail.dialog.buttonText }}</el-button>
+      </div>
     </el-dialog>
 
   </div>
