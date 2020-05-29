@@ -11,6 +11,12 @@ class QA extends Transaction {
     const data = new URLSearchParams();
     data.append('language', language);
     data.append('content', JSON.stringify(content));
+
+    try {
+      return await this.transaction('post', 'qa/add', { token }, null, data);
+    } catch (err) {
+      throw err;
+    }
   };
 
   async removeAll(token, id, language) {
