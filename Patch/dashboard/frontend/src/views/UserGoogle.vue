@@ -172,6 +172,8 @@ export default {
       loading: false,
       QRUrl: '',
       key: '',
+      buttonDisabled: true,
+      active: false
     };
   },
   props: {
