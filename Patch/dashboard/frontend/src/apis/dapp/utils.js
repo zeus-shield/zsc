@@ -21,7 +21,9 @@ function jsonToEth(data) {
 function ethToObject(data) {
   let keys, values, offsets;
   try {
+    ({keys, values, offsets} = parseEth(data));
   } catch (e) {
+    throw new Error('Ethereum data is not valid: ' + e.message);
   }
 }
 
