@@ -148,6 +148,8 @@ export default {
   beforeRouteUpdate(to, from, next) {
   },
   beforeRouteLeave(to, from, next) {
+    console.log('%c[UserPolicy]beforeRouteLeave(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
+    next();
   },
 };
 </script>
