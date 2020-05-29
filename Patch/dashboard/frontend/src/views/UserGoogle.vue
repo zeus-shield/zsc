@@ -169,6 +169,9 @@ export default {
     let validateCode = (rule, value, callback) => {
     };
     return {
+      loading: false,
+      QRUrl: '',
+      key: '',
     };
   },
   props: {
