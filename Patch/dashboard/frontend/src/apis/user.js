@@ -48,6 +48,9 @@ class User extends Transaction {
 
   // only by id
   async update(token, id, update) {
+    const data = new URLSearchParams();
+    data.append('id', id);
+    data.append('update', JSON.stringify(update));
   };
 
   async remove(token, id, account) {
