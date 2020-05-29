@@ -201,6 +201,8 @@ export default {
       loading: false,
       loadingText: '',
       dialogVisible: false,
+      buttonDisabled: true,
+      addPolicyToDatabaseDoing: false,
     };
   },
 };
