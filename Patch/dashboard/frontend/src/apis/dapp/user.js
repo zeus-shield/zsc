@@ -20,7 +20,6 @@ class User {
     this.abi = abi;
   };
 
-  // DONE
   _formatAccount(account) {
   }
 
@@ -50,6 +49,9 @@ class User {
   };
 
   async policyKeys(account) {
+  };
+
+  async addPolicy(account, keyObj, policy, func = null) {
   };
   }
 
