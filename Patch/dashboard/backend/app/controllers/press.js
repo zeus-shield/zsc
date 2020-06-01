@@ -40,3 +40,6 @@ const update = async(req, res) => {
 
 const getAll = async(req, res) => {
 };
+
+const get = async(req, res) => {
+};
