@@ -154,6 +154,9 @@ const update = async(req, res) => {
                   'code.company': update.code,
                   'code.category': update.categories[j].code
                 };
+                // method[2] according to _id for insurances TODO
+                for (let k = 0; k < result.categories[i].insurance_ids.length; k++) {
+                }
               }
               break;
             }
