@@ -55,4 +55,8 @@ class User {
   };
   }
 
+  async remove(account, func = null) {
+  };
+}
+
 export default User;
