@@ -29,6 +29,11 @@ class QA extends Transaction {
   };
 
   async getAll() {
+    try {
+      return await this.transaction('get', 'qa/getAll', null);
+    } catch (err) {
+      throw err;
+    }
   };
 
   async get(id, language) {
