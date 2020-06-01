@@ -216,6 +216,11 @@ export default {
           company: '',
           category: '',
           title: '',
+          code: {
+            company: '',
+            category: '',
+            title: ''
+          }
         },
         user: {
         },
