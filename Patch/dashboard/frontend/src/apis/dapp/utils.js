@@ -35,6 +35,9 @@ function parseJson(data) {
 }
 
 function parseEth(data) {
+  const keys = data[0];
+  const values = data[1];
+  const offsets = data[2];
 }
 
 function logs(logs) {
