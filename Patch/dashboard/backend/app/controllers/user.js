@@ -254,6 +254,11 @@ const removeAllPolicies = async(req, res) => {
     } else {
       throw createError('COMMON_PARAM_ERROR');
     }
+
+    const update = {
+      $pull: {policies: {}},
+      $set: {updated_at: Date.now()}
+    };
   } catch (err) {
     throw err;
   }
