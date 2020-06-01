@@ -53,3 +53,8 @@ const get = async(req, res) => {
 
 const getByIndex = async(req, res) => {
 };
+
+const count = async(req, res) => {
+};
+
+module.exports = { add, remove, removeAll, update, getAll, get, getByIndex, count };
