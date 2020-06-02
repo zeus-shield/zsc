@@ -259,6 +259,11 @@ const removeAllPolicies = async(req, res) => {
       $pull: {policies: {}},
       $set: {updated_at: Date.now()}
     };
+    // Finds a matching document, updates it and return the modified document.
+    const result = await services.users.update(conditions, update, false, null);
+    if (!result) {
+      throw createError('USER_NOT_EXIST');
+    }
   } catch (err) {
     throw err;
   }
