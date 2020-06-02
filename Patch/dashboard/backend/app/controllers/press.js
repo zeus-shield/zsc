@@ -43,3 +43,6 @@ const getAll = async(req, res) => {
 
 const get = async(req, res) => {
 };
+
+const getByIndex = async(req, res) => {
+};
