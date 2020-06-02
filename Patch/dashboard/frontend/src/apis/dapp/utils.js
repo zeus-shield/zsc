@@ -25,6 +25,14 @@ function ethToObject(data) {
   } catch (e) {
     throw new Error('Ethereum data is not valid: ' + e.message);
   }
+
+  return keys.reduce((resultJS, key, index) => {
+    const startValue = offsets[index] * 2;
+    const endValue = index !== offsets.length - 1 ? offsets[index + 1] * 2 : values.length;
+    const value = values.slice(startValue, endValue);
+    resultJS[key] = Web3.utils.hexToString(HEX_PREFIX + value);
+    return resultJS;
+  }, {});
 }
 
 function ethToJson(data) {
