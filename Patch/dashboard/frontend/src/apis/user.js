@@ -51,6 +51,12 @@ class User extends Transaction {
     const data = new URLSearchParams();
     data.append('id', id);
     data.append('update', JSON.stringify(update));
+
+    try {
+      return await this.transaction('post', 'user/update', { token }, null, data);
+    } catch (err) {
+      throw err;
+    }
   };
 
   async remove(token, id, account) {
