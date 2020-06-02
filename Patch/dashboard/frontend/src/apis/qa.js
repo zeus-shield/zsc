@@ -20,6 +20,11 @@ class QA extends Transaction {
   };
 
   async removeAll(token, id, language) {
+    try {
+      return await this.transaction('post', 'qa/removeAll', { token }, null, data);
+    } catch (err) {
+      throw err;
+    }
   };
 
   async remove(token, language, id) {
