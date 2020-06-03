@@ -59,6 +59,10 @@ class User {
   }
 
   async remove(account, func = null) {
+    try {
+    } catch (error) {
+      throw error;
+    }
   };
 }
 
