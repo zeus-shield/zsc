@@ -294,10 +294,6 @@ export default {
   },
   mounted() {
     console.log('%c[App]mounted()', `color:${this.logColor}`);
-    // const data = {
-    //   'PINGAN_ZYYL_ESBYLPB': 2,
-    //   'PICC_ZYYL_RRAKBWYLJTB': 1
-    // };
   },
   destroyed() {
     console.log('%c[App]destroyed()', `color:${this.logColor}`);
