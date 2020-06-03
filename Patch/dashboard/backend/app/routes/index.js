@@ -1,6 +1,8 @@
 'use strict';
 
 const controllers = require('../controllers');
+const apis = require('../apis');
+
 const middlewares = require('../middlewares');
 const middlewaresArr = [middlewares.verifyToken, middlewares.log];
 
