@@ -45,6 +45,11 @@ class QA extends Transaction {
   };
 
   async getByIndex(id, language, index) {
+    try {
+      return await this.transaction('get', 'qa/getByIndex', null, query);
+    } catch (err) {
+      throw err;
+    }
   };
 
   async count(id, language) {
