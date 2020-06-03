@@ -168,6 +168,15 @@ const update = async(req, res) => {
               break;
             }
             if (j === update.categories.length - 1) {
+              for (let k = 0; k < result.categories[i].insurance_ids.length; k++) {
+                const conditions = {
+                  _id: result.categories[i].insurance_ids[k]
+                };
+                await services.insurances.remove(conditions, false, session);
+                // if (!resultInner) {
+                //   throw createError('INSURANCE_NOT_EXIST');
+                // }
+              }
             }
           }
         } else {
