@@ -54,6 +54,12 @@ function logs(logs) {
   }
 
   for (let i = 0; i < logs.length; i++) {
+    let message = '';
+    console.log('==================================== logs%d ====================================', i);
+    // console.log("data(hex):  %s", logs[i].data);
+    // console.log("data(uint): %s", parseInt(logs[i].data));
+    // console.log("data(str):  %s", Web3.utils.hexToString(logs[i].data));
+    message += Web3.utils.hexToString(logs[i].data);
   }
   return;
 }
