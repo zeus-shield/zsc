@@ -39,6 +39,13 @@ const update = async(req, res) => {
 };
 
 const getAll = async(req, res) => {
+  // debug("list()");
+  try {
+    const result = await services.presses.list({session: null});
+    res.sendOk(result);
+  } catch (err) {
+    res.sendErr(err);
+  }
 };
 
 const get = async(req, res) => {
