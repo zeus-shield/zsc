@@ -264,6 +264,8 @@ const removeAllPolicies = async(req, res) => {
     if (!result) {
       throw createError('USER_NOT_EXIST');
     }
+
+    res.sendOk('Remove all policies successfully!');
   } catch (err) {
     throw err;
   }
