@@ -15,6 +15,9 @@ class Press extends Transaction {
 
   async remove(token, language, id) {
   };
+
+  async update(token, language, id, content) {
+  };
 }
 
 export default Press;
