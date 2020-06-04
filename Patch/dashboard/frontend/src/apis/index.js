@@ -20,6 +20,7 @@ import Company from './company';
 import Insurance from './insurance';
 import QA from './qa';
 import Press from './press';
+import Token from './token';
 
 const contracts = {
   user: {
@@ -50,6 +51,7 @@ class APIs {
     this.insurance = new Insurance(instance);
     this.qa = new QA(instance);
     this.press = new Press(instance);
+    this.token = new Token(instance);
   }
 }
 
