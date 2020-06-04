@@ -154,6 +154,18 @@ const update = async(req, res) => {
                   'code.company': update.code,
                   'code.category': update.categories[j].code
                 };
+
+                // // method[1] according to company/category/code.company for insurances
+                // const conditions = {
+                //   company: result.name,
+                //   category: result.categories[i].name,
+                //   'code.company': result.code
+                // };
+                // await services.insurances.update(conditions, doc, true, session);
+                // // if (!resultInner) {
+                // //   throw createError('INSURANCE_NOT_EXIST');
+                // // }
+
                 // method[2] according to _id for insurances TODO
                 for (let k = 0; k < result.categories[i].insurance_ids.length; k++) {
                   const conditions = {
