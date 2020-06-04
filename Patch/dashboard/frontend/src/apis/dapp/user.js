@@ -51,6 +51,9 @@ class User {
     }
   };
 
+  async exists(account) {
+  };
+
   async policyKeys(account) {
   };
 
