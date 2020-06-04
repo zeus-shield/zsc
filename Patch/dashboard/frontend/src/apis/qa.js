@@ -27,10 +27,10 @@ class QA extends Transaction {
     }
   };
 
-  async remove(token, language, id) {
+  async remove(token, id, language) {
   };
 
-  async update(token, language, id, content) {
+  async update(token, id, language, content) {
   };
 
   async getAll() {
