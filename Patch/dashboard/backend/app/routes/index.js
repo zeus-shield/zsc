@@ -38,6 +38,7 @@ module.exports = (app) => {
   require('./insurance')(app);
   require('./qa')(app);
   require('./press')(app);
+  require('./token')(app);
 
   // catch 404 and forward to error handler
   app.use(middlewares.notFind);
