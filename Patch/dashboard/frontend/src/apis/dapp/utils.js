@@ -60,6 +60,9 @@ function logs(logs) {
     // console.log("data(uint): %s", parseInt(logs[i].data));
     // console.log("data(str):  %s", Web3.utils.hexToString(logs[i].data));
     message += Web3.utils.hexToString(logs[i].data);
+    for (let j = 0; j < logs[i].topics.length; j++) {
+    }
+    console.log(message);
   }
   return;
 }
