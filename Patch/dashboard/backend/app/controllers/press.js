@@ -23,7 +23,7 @@ const remove = async(req, res) => {
 };
 
 const removeAll = async(req, res) => {
-  // debug('remove(%s)', JSON.stringify(req.body));
+  // debug('removeAll(%s)', JSON.stringify(req.body));
   try {
   } catch (err) {
     throw err;
@@ -39,7 +39,7 @@ const update = async(req, res) => {
 };
 
 const getAll = async(req, res) => {
-  // debug("list()");
+  // debug("getAll()");
   try {
     const result = await services.presses.list({session: null});
     res.sendOk(result);
@@ -53,3 +53,8 @@ const get = async(req, res) => {
 
 const getByIndex = async(req, res) => {
 };
+
+const count = async(req, res) => {
+};
+
+module.exports = { add, remove, removeAll, update, getAll, get, getByIndex, count };
