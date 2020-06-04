@@ -13,10 +13,10 @@ class Press extends Transaction {
   async removeAll(token, id, language) {
   };
 
-  async remove(token, language, id) {
+  async remove(token, id, language) {
   };
 
-  async update(token, language, id, content) {
+  async update(token, id, language, content) {
   };
 }
 
