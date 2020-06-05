@@ -31,6 +31,9 @@ module.exports = (app) => {
   app.route('/press/getByIndex').get(wrap(controllers.press.getByIndex));
   app.route('/press/count').get(wrap(controllers.press.count));
 
+  app.route('/token/list').get(wrap(controllers.token.list));
+  app.route('/token/detail').get(wrap(controllers.token.detail));
+  app.route('/token/count').get(wrap(controllers.token.count));
   app.use(middlewaresArr);
 
   require('./user')(app);
