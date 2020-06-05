@@ -18,6 +18,9 @@ class Press extends Transaction {
 
   async update(token, id, language, content) {
   };
+
+  async getAll() {
+  };
 }
 
 export default Press;
