@@ -192,6 +192,8 @@ const update = async(req, res) => {
             }
           }
         } else {
+          // remove insurances
+          // debug('[remove](%s, %s)', result.name, result.categories[i].name);
 
 
           // method[2] according to _id for insurances TODO
