@@ -52,6 +52,10 @@ class User {
   };
 
   async exists(account) {
+    try {
+    } catch (error) {
+      throw error;
+    }
   };
 
   async policyKeys(account) {
