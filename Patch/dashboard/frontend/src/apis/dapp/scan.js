@@ -8,6 +8,9 @@ class Scan {
 
   constructor() {
   };
+
+  addToken(eip, token) {
+  };
 }
 
 export default Scan;
