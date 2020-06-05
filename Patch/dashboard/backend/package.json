@@ -16,6 +16,7 @@
     "pm2-release-fork": "pm2 start ./pm2-release-fork.json"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "debug": "^4.1.1",
