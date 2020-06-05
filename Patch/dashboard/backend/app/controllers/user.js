@@ -158,6 +158,14 @@ const saveTOTP = async(req, res) => {
     if (!verify) {
       throw createError('USER_TOTP_VERIFY_ERR');
     }
+
+    // keep original 'totp_on'
+    let on = false;
+    if (result.totp_on !== undefined) {
+      on = result.totp_on;
+    } else {
+      on = true;
+    }
   } catch (err) {
     res.sendErr(err);
   }
