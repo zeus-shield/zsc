@@ -61,6 +61,12 @@ function logs(logs) {
     // console.log("data(str):  %s", Web3.utils.hexToString(logs[i].data));
     message += Web3.utils.hexToString(logs[i].data);
     for (let j = 0; j < logs[i].topics.length; j++) {
+      // console.log("topics[%d](hex):  %s", j, logs[i].topics[j]);
+      // console.log("topics[%d](uint): %s", j, parseInt(logs[i].topics[j]));
+      // console.log("topics[%d](str):  %s", j, Web3.utils.hexToString(logs[i].topics[j]));
+      if (j > 0) {
+        message += ', ';
+      }
     }
     console.log(message);
   }
