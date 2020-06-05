@@ -49,6 +49,11 @@ const getAll = async(req, res) => {
 };
 
 const get = async(req, res) => {
+  // debug('get(%s)', JSON.stringify(req.query));
+  try {
+  } catch (err) {
+    res.sendErr(err);
+  }
 };
 
 const getByIndex = async(req, res) => {
