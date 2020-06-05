@@ -60,6 +60,12 @@ const get = async(req, res) => {
     } else {
       throw createError('COMMON_PARAM_ERROR');
     }
+
+    const result = await services.qas.find(conditions, null, null);
+    if (!result) {
+      throw createError('QA_DOC_NOT_EXIST');
+    }
+    res.sendOk(result);
   } catch (err) {
     res.sendErr(err);
   }
