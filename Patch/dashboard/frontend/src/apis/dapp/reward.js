@@ -9,6 +9,9 @@ class Reward {
 
   constructor(ewallet, addr, abi) {
   };
+
+  install(addr, abi) {
+  };
 }
 
 export default Reward;
