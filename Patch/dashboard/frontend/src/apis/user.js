@@ -75,6 +75,14 @@ class User extends Transaction {
   };
 
   async setTOTP(token, id, account, cmd) {
+    const data = new URLSearchParams();
+    if (id) {
+      data.append('id', id);
+    } else if (account) {
+      data.append('account', account);
+    } else {}
+    data.append('cmd', cmd);
+
     try {
       return await this.transaction('post', 'user/setTOTP', { token }, null, data);
     } catch (err) {
