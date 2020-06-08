@@ -8,6 +8,9 @@ import { ethToObject, toBytes32, strToBytes32, strToHex, hexToStr } from '@/apis
 class Reward {
 
   constructor(ewallet, addr, abi) {
+    this.ewallet = ewallet;
+    this.addr = addr;
+    this.abi = abi;
   };
 
   install(addr, abi) {
