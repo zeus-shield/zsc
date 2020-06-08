@@ -166,6 +166,14 @@ const saveTOTP = async(req, res) => {
     } else {
       on = true;
     }
+
+    // update totp_key/totp_on/updated_at
+    const now = Date.now();
+    const update = {
+      totp_key: key,
+      totp_on: on,
+      updated_at: now
+    };
   } catch (err) {
     res.sendErr(err);
   }
