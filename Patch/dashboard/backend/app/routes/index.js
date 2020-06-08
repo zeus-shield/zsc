@@ -34,6 +34,10 @@ module.exports = (app) => {
   app.route('/token/list').get(wrap(controllers.token.list));
   app.route('/token/detail').get(wrap(controllers.token.detail));
   app.route('/token/count').get(wrap(controllers.token.count));
+
+  // api
+  app.route('/scan/balance').get(wrap(apis.scan.balance));
+  app.route('/scan/token').get(wrap(apis.scan.token));
   app.use(middlewaresArr);
 
   require('./user')(app);
