@@ -67,6 +67,10 @@ function logs(logs) {
       if (j > 0) {
         message += ', ';
       }
+
+      if (logs[i].topics[j].slice(0, 34) === '0x00000000000000000000000000000000') {
+      } else {
+      }
     }
     console.log(message);
   }
