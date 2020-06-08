@@ -63,6 +63,8 @@ class User {
 
   async addPolicy(account, keyObj, policy, func = null) {
   };
+
+  async removePolicy(account, key, func = null) {
   }
 
   async remove(account, func = null) {
