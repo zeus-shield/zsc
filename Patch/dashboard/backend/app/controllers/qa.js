@@ -72,6 +72,11 @@ const get = async(req, res) => {
 };
 
 const getByIndex = async(req, res) => {
+  // debug('getByIndex(%s)', JSON.stringify(req.query));
+  try {
+  } catch (err) {
+    res.sendErr(err);
+  }
 };
 
 const count = async(req, res) => {
