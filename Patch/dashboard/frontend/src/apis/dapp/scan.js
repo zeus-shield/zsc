@@ -11,6 +11,9 @@ class Scan {
 
   addToken(eip, token) {
   };
+
+  async balance(eip, network, account) {
+  };
 }
 
 export default Scan;
