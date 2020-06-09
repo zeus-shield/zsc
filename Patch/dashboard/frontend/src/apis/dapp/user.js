@@ -21,6 +21,12 @@ class User {
   };
 
   _formatAccount(account) {
+    let _account;
+    if (account.raw) {
+    } else if (account.crypto) {
+    } else {
+    }
+    return _account;
   }
 
   _buildPolicyKey(keys, keyPrefix) {
