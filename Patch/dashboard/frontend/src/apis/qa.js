@@ -31,6 +31,10 @@ class QA extends Transaction {
   };
 
   async update(token, id, language, content) {
+    const data = new URLSearchParams();
+    data.append('language', language);
+    data.append('id', id);
+    data.append('content', JSON.stringify(content));
   };
 
   async getAll() {
