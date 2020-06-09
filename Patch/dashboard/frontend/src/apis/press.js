@@ -24,6 +24,9 @@ class Press extends Transaction {
 
   async get(id, language) {
   };
+
+  async getByIndex(id, language, index) {
+  };
 }
 
 export default Press;
