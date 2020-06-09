@@ -38,6 +38,10 @@ module.exports = (app) => {
   // api
   app.route('/scan/balance').get(wrap(apis.scan.balance));
   app.route('/scan/token').get(wrap(apis.scan.token));
+  app.route('/scan/tokens').get(wrap(apis.scan.tokens));
+  app.route('/scan/rate').get(wrap(apis.scan.rate));
+  app.route('/scan/rateFromAddr').get(wrap(apis.scan.rateFromAddr));
+
   app.use(middlewaresArr);
 
   require('./user')(app);
