@@ -174,6 +174,11 @@ const saveTOTP = async(req, res) => {
       totp_on: on,
       updated_at: now
     };
+    // Finds a matching document, updates it and return the modified document.
+    result = await services.users.update(conditions, update, false, null);
+    if (!result) {
+      throw createError('USER_NOT_EXIST');
+    }
   } catch (err) {
     res.sendErr(err);
   }
