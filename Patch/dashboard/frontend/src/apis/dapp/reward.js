@@ -17,6 +17,9 @@ class Reward {
     this.addr = addr;
     this.abi = abi;
   };
+
+  _formatAccount(account) {
+  }
 }
 
 export default Reward;
