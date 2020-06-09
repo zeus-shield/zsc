@@ -14,6 +14,8 @@ class Reward {
   };
 
   install(addr, abi) {
+    this.addr = addr;
+    this.abi = abi;
   };
 }
 
