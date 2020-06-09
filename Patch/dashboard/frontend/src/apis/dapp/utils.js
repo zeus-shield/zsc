@@ -69,7 +69,9 @@ function logs(logs) {
       }
 
       if (logs[i].topics[j].slice(0, 34) === '0x00000000000000000000000000000000') {
+        message += '(int)' + Web3.utils.hexToNumberString(logs[i].topics[j]);
       } else {
+        message += '(str)' + Web3.utils.hexToString(logs[i].topics[j]);
       }
     }
     console.log(message);
