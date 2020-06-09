@@ -201,6 +201,10 @@ const update = async(req, res) => {
           //   category: result.categories[i].name,
           //   'code.company': result.code
           // };
+          // await services.insurances.remove(conditions, false, session);
+          // // if (!resultInner) {
+          // //   throw createError('INSURANCE_NOT_EXIST');
+          // // }
 
           // method[2] according to _id for insurances TODO
           for (let k = 0; k < result.categories[i].insurance_ids.length; k++) {
