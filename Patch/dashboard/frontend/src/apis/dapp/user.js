@@ -47,7 +47,7 @@ class User {
   _preRemove(data) {
   };
 
-  async list(cmd) {
+  async list() {
   };
 
   async info(account) {
