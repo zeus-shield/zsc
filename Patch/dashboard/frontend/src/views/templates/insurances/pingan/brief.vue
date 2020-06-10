@@ -223,6 +223,8 @@ export default {
           }
         },
         user: {
+          holder: '',
+          insurant: '',
         },
         policy: {
         }
