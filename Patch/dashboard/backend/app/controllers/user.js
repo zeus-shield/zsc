@@ -179,6 +179,10 @@ const saveTOTP = async(req, res) => {
     if (!result) {
       throw createError('USER_NOT_EXIST');
     }
+    // result.QRUrl = handle.gaURL(result.account, settings.totpConfig.issuer);
+    // res.sendOk(format.user(result));
+
+    res.sendOk('Save TOTP successfully!');
   } catch (err) {
     res.sendErr(err);
   }
