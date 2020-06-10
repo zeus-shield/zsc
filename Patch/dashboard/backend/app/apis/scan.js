@@ -16,3 +16,8 @@ const tokens = async(req, res) => {
 
 const rate = async(req, res) => {
 };
+
+const rateFromAddr = async(req, res) => {
+};
+
+module.exports = { balance, token, tokens, rate, rateFromAddr };
