@@ -180,6 +180,15 @@ const update = async(req, res) => {
               break;
             }
             if (j === update.categories.length - 1) {
+              // remove insurances
+              // debug('[remove](%s, %s)', result.name, result.categories[i].name);
+
+              // // method[1] according to company/category/code.company for insurances
+              // const conditions = {
+              //   company: result.name,
+              //   category: result.categories[i].name,
+              //   'code.company': result.code
+              // };
               for (let k = 0; k < result.categories[i].insurance_ids.length; k++) {
                 const conditions = {
                   _id: result.categories[i].insurance_ids[k]
