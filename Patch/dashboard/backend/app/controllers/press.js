@@ -67,6 +67,15 @@ const getByIndex = async(req, res) => {
 const count = async(req, res) => {
   // debug('count(%s)', JSON.stringify(req.query));
   try {
+    let conditions = {};
+
+    if (req.query.id) {
+      conditions = {_id: req.query.id};
+    } else if (req.query.language) {
+      conditions = {language: req.query.language};
+    } else {
+      throw createError('COMMON_PARAM_ERROR');
+    }
   } catch (err) {
     res.sendErr(err);
   }
