@@ -42,9 +42,11 @@ function ethToJson(data) {
 function parseJson(data) {
   let parsedData;
   try {
+    parsedData = JSON.parse(data);
   } catch (e) {
     throw new Error(`JSON data parse error: ${e.message}`);
   }
+  return parsedData;
 }
 
 function parseEth(data) {
