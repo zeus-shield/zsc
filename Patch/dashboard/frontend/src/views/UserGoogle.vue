@@ -173,6 +173,9 @@ export default {
       QRUrl: '',
       key: '',
       buttonDisabled: true,
+      form: {
+        code: ''
+      },
       active: false
     };
   },
