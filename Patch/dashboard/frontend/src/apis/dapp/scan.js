@@ -13,6 +13,10 @@ class Scan {
   };
 
   async balance(eip, network, account) {
+    try {
+    } catch (error) {
+      throw error;
+    }
   };
 
   async token(eip, network, tokenAddr, account) {
