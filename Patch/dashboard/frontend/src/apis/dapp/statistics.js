@@ -15,6 +15,9 @@ class Stat {
     this.addr = addr;
     this.abi = abi;
   };
+
+  async info(statId, key) {
+  };
 }
 
 export default Stat;
