@@ -208,6 +208,8 @@ export default {
         },
         user: {
         },
+        policy: {
+        }
       },
       rules: {
       }
