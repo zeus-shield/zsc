@@ -20,6 +20,11 @@ class Press extends Transaction {
   };
 
   async getAll() {
+    try {
+      return await this.transaction('get', 'press/getAll', null);
+    } catch (err) {
+      throw err;
+    }
   };
 
   async get(id, language) {
