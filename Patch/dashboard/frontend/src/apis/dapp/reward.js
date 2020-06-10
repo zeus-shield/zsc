@@ -20,6 +20,9 @@ class Reward {
 
   _formatAccount(account) {
   }
+
+  async cap() {
+  };
 }
 
 export default Reward;
