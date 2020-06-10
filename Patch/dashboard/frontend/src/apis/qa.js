@@ -54,7 +54,9 @@ class QA extends Transaction {
   async get(id, language) {
 
     try {
+      return await this.transaction('get', 'qa/get', null, query);
     } catch (err) {
+      throw err;
     }
   };
 
