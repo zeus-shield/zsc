@@ -311,6 +311,9 @@ export default {
     },
     handleCompanyClick(vm) {
     },
+    // handleCategoryClick(tab, event) {
+    handleCategoryClick() {
+    },
     handleSizeChange(val) {
     },
     handleCurrentChange(val) {
