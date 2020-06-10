@@ -40,6 +40,11 @@ function ethToJson(data) {
 }
 
 function parseJson(data) {
+  let parsedData;
+  try {
+  } catch (e) {
+    throw new Error(`JSON data parse error: ${e.message}`);
+  }
 }
 
 function parseEth(data) {
