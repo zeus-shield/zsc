@@ -23,6 +23,9 @@ class Reward {
 
   async cap() {
   };
+
+  async totalSupply() {
+  };
 }
 
 export default Reward;
