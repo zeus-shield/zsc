@@ -46,6 +46,10 @@ function parseJson(data) {
   } catch (e) {
     throw new Error(`JSON data parse error: ${e.message}`);
   }
+  if (!Object.keys(parsedData).every(key => typeof parsedData[key] === 'string' &&
+    parsedData[key].trim() !== '' && key.length)) {
+    throw new Error('JS data key values are not strings or at least one of key values has zero length after trim');
+  }
   return parsedData;
 }
 
