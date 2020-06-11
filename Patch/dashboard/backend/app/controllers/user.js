@@ -75,6 +75,11 @@ const emailCode = async(req, res) => {
 const signUp = async(req, res) => {
   // debug('signUp(%s, %s, %s)', req.body.account, req.body.password, req.body.code);
   try {
+    // There is only one database write operation, and session can not be used.
+    const account = req.body.account;
+    const accountCrypto = req.body.accountCrypto;
+    const password = req.body.password;
+    const code = req.body.code;
     const result = await services.users.signUp(req.body.account, req.body.password, req.body.code);
     res.sendOk(result);
   } catch (err) {
