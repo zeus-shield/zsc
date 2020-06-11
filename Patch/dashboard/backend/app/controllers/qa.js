@@ -74,6 +74,15 @@ const get = async(req, res) => {
 const getByIndex = async(req, res) => {
   // debug('getByIndex(%s)', JSON.stringify(req.query));
   try {
+    let conditions = {};
+
+    if (req.query.id) {
+      conditions = {_id: req.query.id};
+    } else if (req.query.language) {
+      conditions = {language: req.query.language};
+    } else {
+      throw createError('COMMON_PARAM_ERROR');
+    }
   } catch (err) {
     res.sendErr(err);
   }
