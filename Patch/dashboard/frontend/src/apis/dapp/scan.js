@@ -10,6 +10,9 @@ class Scan {
   };
 
   addToken(eip, token) {
+    if (eip === 'erc20') {
+    } else if (eip === 'erc721') {
+    } else {}
   };
 
   async balance(eip, network, account) {
