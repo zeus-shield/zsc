@@ -23,7 +23,9 @@ class User {
   _formatAccount(account) {
     let _account;
     if (account.raw) {
+      _account = toBytes32('0x' + CryptoJS.MD5(account.raw).toString());
     } else if (account.crypto) {
+      _account = toBytes32(account.crypto);
     } else {
     }
     return _account;
