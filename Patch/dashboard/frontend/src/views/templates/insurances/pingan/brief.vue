@@ -225,6 +225,12 @@ export default {
         user: {
           holder: '',
           insurant: '',
+          credentials: '',
+          age: '',
+          sex: '',
+          status: '',
+          address: '',
+          contact: ''
         },
         policy: {
         }
