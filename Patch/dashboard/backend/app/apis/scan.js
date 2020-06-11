@@ -6,6 +6,11 @@ const { axios } = require('../utils');
 // const debug = require('debug')('backend:app:apis:scan');
 
 const balance = async(req, res) => {
+  // debug('balance(%s)', JSON.stringify(req.query));
+  try {
+  } catch (err) {
+    throw err;
+  }
 };
 
 const token = async(req, res) => {
