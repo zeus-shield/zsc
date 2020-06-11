@@ -76,6 +76,9 @@ const count = async(req, res) => {
     } else {
       throw createError('COMMON_PARAM_ERROR');
     }
+
+    const result = await services.presses.count(conditions);
+    res.sendOk(result);
   } catch (err) {
     res.sendErr(err);
   }
