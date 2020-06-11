@@ -17,6 +17,10 @@ class Stat {
   };
 
   async info(statId, key) {
+    try {
+    } catch (error) {
+      throw error;
+    }
   };
 }
 
