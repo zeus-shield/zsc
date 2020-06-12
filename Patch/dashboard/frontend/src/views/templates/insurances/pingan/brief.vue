@@ -233,6 +233,11 @@ export default {
           contact: ''
         },
         policy: {
+          amount: '',
+          renewal: false,
+          start_time: '',
+          period: '',
+          description: ''
         }
       },
       rules: {
