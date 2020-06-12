@@ -16,6 +16,12 @@
             <strong>产品特色：</strong>
             全家人共享百万保障的医疗保险，看病不再愁，一般费用都报销，医疗费用都报销，预约挂号服务，国内医院导师陪诊，国内专家二次诊断
           </div> -->
+
+          <el-row class="insured-table" v-for="(scheme, index) in item.detail.schemes" :key="index" :gutter="0" type="" justify="">
+            <el-col class="item" :span="14">{{ scheme.name }}</el-col>
+            <el-col class="amount" :span="4">{{ scheme.amount }}</el-col>
+          </el-row>
+
         </div>
       </el-col>
         </div>
