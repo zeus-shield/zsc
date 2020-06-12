@@ -22,6 +22,9 @@ class Stat {
       throw error;
     }
   };
+
+  async allInfo(statId) {
+  };
 }
 
 export default Stat;
