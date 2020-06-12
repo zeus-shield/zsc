@@ -80,6 +80,12 @@ const signUp = async(req, res) => {
     const accountCrypto = req.body.accountCrypto;
     const password = req.body.password;
     const code = req.body.code;
+
+    // check user exist ?
+    let result = await services.users.find({account: account}, null, null);
+    if (!result) {
+      throw createError('USER_NOT_EXIST');
+    }
     const result = await services.users.signUp(req.body.account, req.body.password, req.body.code);
     res.sendOk(result);
   } catch (err) {
