@@ -8,6 +8,8 @@ const { axios } = require('../utils');
 const balance = async(req, res) => {
   // debug('balance(%s)', JSON.stringify(req.query));
   try {
+    const result = await services.scan.balance(req.query.eip, req.query.network, req.query.account);
+    res.sendOk(result);
   } catch (err) {
     throw err;
   }
