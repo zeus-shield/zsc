@@ -83,6 +83,13 @@ const getByIndex = async(req, res) => {
     } else {
       throw createError('COMMON_PARAM_ERROR');
     }
+
+    // method[1]
+    const projection = {contents: {$slice: [parseInt(req.query.index, 10), 1]}};
+    const result = await services.qas.find(conditions, projection, null);
+    if (!result) {
+      throw createError('QA_DOC_NOT_EXIST');
+    }
   } catch (err) {
     res.sendErr(err);
   }
