@@ -315,6 +315,8 @@ export default {
     handleCategoryClick() {
     },
     handleSizeChange(val) {
+      this.pageSize = val;
+      // this.updateItemsForPage();
     },
     handleCurrentChange(val) {
       this.currentPage = val;
