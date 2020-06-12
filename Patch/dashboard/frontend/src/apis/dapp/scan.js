@@ -11,7 +11,9 @@ class Scan {
 
   addToken(eip, token) {
     if (eip === 'erc20') {
+      this.erc20Tokens.push(token);
     } else if (eip === 'erc721') {
+      this.erc721Tokens.push(token);
     } else {}
   };
 
