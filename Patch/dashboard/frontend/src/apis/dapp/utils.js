@@ -12,6 +12,17 @@ function jsonToEthObject(data) {
   } catch (e) {
     throw new Error('JS data is not valid: ' + e.message);
   }
+
+  return Object.keys(parsedData).reduce((ethData, key) => {
+    ethData.keys.push(Web3.utils.rightPad(Web3.utils.stringToHex(key), 64));
+    ethData.offsets.push((ethData.values.length - HEX_PREFIX.length) / 2);
+    ethData.values += Web3.utils.stringToHex(parsedData[key]).slice(2);
+    return ethData;
+  }, {
+    keys: [],
+    values: HEX_PREFIX,
+    offsets: []
+  });
 }
 
 function jsonToEth(data) {
