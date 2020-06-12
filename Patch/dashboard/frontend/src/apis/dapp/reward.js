@@ -26,6 +26,9 @@ class Reward {
 
   async totalSupply() {
   };
+
+  async threshold(index) {
+  };
 }
 
 export default Reward;
