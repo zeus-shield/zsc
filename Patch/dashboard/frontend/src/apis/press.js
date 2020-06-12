@@ -34,6 +34,12 @@ class Press extends Transaction {
   };
 
   async count(id, language) {
+    const query = new URLSearchParams();
+    if (id) {
+      query.append('id', id);
+    } else if (language) {
+      query.append('language', language);
+    } else {}
   };
 }
 
