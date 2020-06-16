@@ -68,6 +68,8 @@ function parseEth(data) {
   const keys = data[0];
   const values = data[1];
   const offsets = data[2];
+  if (!(keys instanceof Array)) throw new Error('keys is not instanceof Array');
+  if (values !== null && typeof values !== 'string') throw new Error('values is not null and is not topeof string');
 }
 
 function logs(logs) {
