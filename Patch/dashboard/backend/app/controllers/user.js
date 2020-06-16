@@ -121,6 +121,9 @@ const remove = async(req, res) => {
 const update = async(req, res) => {
   // debug('update(%s, %s)', req.body.id, req.body.update);
   try {
+    // There is only one database write operation, and session can not be used.
+    let result = {};
+    let update = JSON.parse(req.body.update);
   } catch (err) {
     throw err;
   }
