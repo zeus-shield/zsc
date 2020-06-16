@@ -247,5 +247,7 @@ export default {
   props: {
     item: {}
   },
+  computed: {
+  },
 };
 </script>
