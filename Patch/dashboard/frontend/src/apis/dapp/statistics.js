@@ -16,6 +16,8 @@ class Stat {
     this.abi = abi;
   };
 
+  async list() {
+  };
   async info(statId, key) {
     try {
     } catch (error) {
