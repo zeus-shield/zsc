@@ -90,6 +90,9 @@ const getByIndex = async(req, res) => {
     if (!result) {
       throw createError('QA_DOC_NOT_EXIST');
     }
+    if (result.contents.length === 1) {
+      result.contents[0].index = parseInt(req.query.index, 10);
+    }
   } catch (err) {
     res.sendErr(err);
   }
