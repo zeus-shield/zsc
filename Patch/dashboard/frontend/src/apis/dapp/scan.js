@@ -19,6 +19,10 @@ class Scan {
 
   async balance(eip, network, account) {
     try {
+      let balance = 0;
+      if (eip === 'erc20') {
+      } else if (eip === 'erc721') {} else {}
+      return balance;
     } catch (error) {
       throw error;
     }
