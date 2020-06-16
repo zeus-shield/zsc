@@ -40,6 +40,12 @@ class Press extends Transaction {
     } else if (language) {
       query.append('language', language);
     } else {}
+
+    try {
+      return await this.transaction('get', 'press/count', null, query);
+    } catch (err) {
+      throw err;
+    }
   };
 }
 
