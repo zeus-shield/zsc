@@ -29,6 +29,9 @@ class Reward {
 
   async threshold(index) {
   };
+
+  async balanceOf(owner) {
+  };
 }
 
 export default Reward;
