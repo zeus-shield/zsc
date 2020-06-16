@@ -16,6 +16,11 @@ const balance = async(req, res) => {
 };
 
 const token = async(req, res) => {
+  // debug('token(%s)', JSON.stringify(req.query));
+  try {
+  } catch (err) {
+    throw err;
+  }
 };
 
 const tokens = async(req, res) => {
