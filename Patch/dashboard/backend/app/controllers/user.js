@@ -132,9 +132,17 @@ const update = async(req, res) => {
 const setTOTP = async(req, res) => {
   // debug('setTOTP(%s)', JSON.stringify(req.body));
   try {
-    const result = await services.users.setTOTP(req.headers._id, req.headers.cmd);
-    res.sendOk(result);
-  } catch (err) {
+    // There is only one database write operation, and session can not be used.
+    let conditions = {};
+    if (req.body.id) {
+      conditions = {_id: req.body.id};
+    } else if (req.body.account) {
+      conditions = {account: req.body.account};
+    } else {
+      throw createError('COMMON_PARAM_ERROR');
+    }
+    const cmd = req.body.cmd;
+   } catch (err) {
     res.sendErr(err);
   }
 };
