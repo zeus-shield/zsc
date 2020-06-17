@@ -70,6 +70,9 @@ function parseEth(data) {
   const offsets = data[2];
   if (!(keys instanceof Array)) throw new Error('keys is not instanceof Array');
   if (values !== null && typeof values !== 'string') throw new Error('values is not null and is not topeof string');
+  if (typeof values === 'string' && values.indexOf(HEX_PREFIX) === -1) throw new Error('Values is not hex prefixed');
+  if (!(offsets instanceof Array)) throw new Error('offsets is not instanceof Array');
+  if (offsets.length !== keys.length) throw new Error('keys and offsets lengths are not equal');
 }
 
 function logs(logs) {
