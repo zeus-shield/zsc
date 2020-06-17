@@ -249,5 +249,7 @@ export default {
   },
   computed: {
   },
+  created() {
+  },
 };
 </script>
