@@ -18,13 +18,16 @@ class Stat {
 
   async list() {
   };
-  async info(statId, key) {
+
+  async info(statId) {
     try {
     } catch (error) {
       throw error;
     }
   };
 
+  async infoByKey(statId, key) {
+  };
   async allInfo(statId) {
   };
 }
