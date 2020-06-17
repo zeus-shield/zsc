@@ -23,4 +23,9 @@ const remove = async(req, res) => {
 };
 
 const update = async(req, res) => {
+  // debug('update(%s)', JSON.stringify(req.body));
+  try {
+  } catch (err) {
+    throw err;
+  }
 };
