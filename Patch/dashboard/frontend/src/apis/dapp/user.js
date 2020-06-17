@@ -48,6 +48,10 @@ class User {
   };
 
   async count() {
+    try {
+    } catch (error) {
+      throw error;
+    }
   };
   // DONE
   _preRemove(data) {
