@@ -24,6 +24,11 @@ const token = async(req, res) => {
 };
 
 const tokens = async(req, res) => {
+  // debug('tokens(%s)', JSON.stringify(req.query));
+  try {
+  } catch (err) {
+    throw err;
+  }
 };
 
 const rate = async(req, res) => {
