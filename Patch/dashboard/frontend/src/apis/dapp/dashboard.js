@@ -8,6 +8,9 @@ import utils from '@/common/utils';
 import config from '@/apis/dapp/config';
 
 class Dashboard {
+
+  constructor(ewallet, addr, abi) {
+  };
 }
 
 export default Dashboard;
