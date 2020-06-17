@@ -77,6 +77,10 @@ const getByIndex = async(req, res) => {
     } else {
       throw createError('COMMON_PARAM_ERROR');
     }
+
+    // method[1]
+    const projection = {contents: {$slice: [parseInt(req.query.index, 10), 1]}};
+    const result = await services.presses.find(conditions, projection, null);
   } catch (err) {
     res.sendErr(err);
   }
