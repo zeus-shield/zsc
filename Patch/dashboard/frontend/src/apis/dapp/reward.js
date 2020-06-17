@@ -32,6 +32,9 @@ class Reward {
 
   async balanceOf(owner) {
   };
+
+  async traces(account) {
+  };
 }
 
 export default Reward;
