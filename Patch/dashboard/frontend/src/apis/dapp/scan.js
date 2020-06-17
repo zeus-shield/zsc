@@ -29,6 +29,10 @@ class Scan {
   };
 
   async token(eip, network, tokenAddr, account) {
+    try {
+    } catch (error) {
+      throw error;
+    }
   };
 }
 
