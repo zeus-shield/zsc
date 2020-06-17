@@ -24,12 +24,12 @@ import Token from './token';
 
 const contracts = {
   user: {
-    addr: '',
-    abi: [
-    ]
+
   },
   stat: {
   },
+  dashboard: {
+  }
   }
 };
 
@@ -47,6 +47,7 @@ class APIs {
     this.dapp.user = new DUser(this.core.ewallet, contracts.user.addr, contracts.user.abi);
     this.dapp.reward = new DReward(this.core.ewallet, contracts.reward.addr, contracts.reward.abi);
     this.dapp.stat = new DStat(this.core.ewallet, contracts.stat.addr, contracts.stat.abi);
+    this.dapp.dashboard = new DDashboard(this.core.ewallet, contracts.dashboard.addr, contracts.dashboard.abi);
 
     this.user = new User(instance);
     this.company = new Company(instance);
