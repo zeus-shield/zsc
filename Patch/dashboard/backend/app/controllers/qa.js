@@ -93,6 +93,16 @@ const getByIndex = async(req, res) => {
     if (result.contents.length === 1) {
       result.contents[0].index = parseInt(req.query.index, 10);
     }
+
+    // // method[2]
+    // const result = await services.qas.getByIndex(conditions, req.query.index);
+    // if (result.length === 0) {
+    //   throw createError('QA_DOC_NOT_EXIST');
+    // }
+    // if (result.length === 1 && result[0].contents.length === 1) {
+    //   result[0].contents[0].index = parseInt(req.query.index, 10);
+    // }
+    res.sendOk(result);
   } catch (err) {
     res.sendErr(err);
   }
