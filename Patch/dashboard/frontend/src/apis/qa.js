@@ -20,6 +20,13 @@ class QA extends Transaction {
   };
 
   async removeAll(token, id, language) {
+    const data = new URLSearchParams();
+    if (id) {
+      data.append('id', id);
+    } else if (language) {
+      data.append('language', language);
+    } else {}
+
     try {
       return await this.transaction('post', 'qa/removeAll', { token }, null, data);
     } catch (err) {
