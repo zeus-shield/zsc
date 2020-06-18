@@ -31,6 +31,7 @@ const SignUp = resolve => require.ensure([], () => resolve(require('@/views/Sign
 const User = resolve => require.ensure([], () => resolve(require('@/views/User')), 'lazy');
 const UserDetail = resolve => require.ensure([], () => resolve(require('@/views/UserDetail')), 'lazy');
 const UserPolicy = resolve => require.ensure([], () => resolve(require('@/views/UserPolicy')), 'lazy');
+const UserPoint = resolve => require.ensure([], () => resolve(require('@/views/UserPoint')), 'lazy');
 const UserSupport = resolve => require.ensure([], () => resolve(require('@/views/UserSupport')), 'lazy');
 const UserQuestions = resolve => require.ensure([], () => resolve(require('@/views/UserQuestions')), 'lazy');
 const UserGoogle = resolve => require.ensure([], () => resolve(require('@/views/UserGoogle')), 'lazy');
