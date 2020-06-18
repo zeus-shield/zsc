@@ -53,7 +53,8 @@ class User {
       throw error;
     }
   };
-  // DONE
+
+  async account(index) {
   _preRemove(data) {
   };
 
@@ -65,6 +66,9 @@ class User {
     } catch (error) {
       throw error;
     }
+  };
+
+  async infoByKey(account, key) {
   };
 
   async exists(account) {
