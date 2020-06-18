@@ -28,7 +28,11 @@ class Stat {
 
   async infoByKey(statId, key) {
   };
-  async allInfo(statId) {
+
+  async keyCount(statId) {
+  };
+
+  async increase(statId, key, value, func = null) {
   };
 }
 
