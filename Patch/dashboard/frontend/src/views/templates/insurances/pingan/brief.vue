@@ -250,6 +250,9 @@ export default {
   computed: {
   },
   created() {
+    console.log('%c[InsurancePingAnBrief]created()', `color:${this.logColor}`);
+  },
+  mounted() {
   },
 };
 </script>
