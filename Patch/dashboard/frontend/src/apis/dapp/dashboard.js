@@ -10,6 +10,9 @@ import config from '@/apis/dapp/config';
 class Dashboard {
 
   constructor(ewallet, addr, abi) {
+    this.ewallet = ewallet;
+    this.addr = addr;
+    this.abi = abi;
   };
 }
 
