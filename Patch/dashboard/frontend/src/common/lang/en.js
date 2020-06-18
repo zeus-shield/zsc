@@ -140,7 +140,7 @@ const en = {
       slot: [
         {
           title: 'Profile',
-          item: ['Account Safety', 'My Policies']
+          item: ['Account Safety', 'My Policies', 'My Points']
         },
         {
           title: 'Support',
