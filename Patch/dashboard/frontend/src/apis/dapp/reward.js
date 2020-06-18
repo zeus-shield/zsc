@@ -35,6 +35,9 @@ class Reward {
 
   async traces(account) {
   };
+
+  async traceCount(account) {
+  };
 }
 
 export default Reward;
