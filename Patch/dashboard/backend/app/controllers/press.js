@@ -81,6 +81,9 @@ const getByIndex = async(req, res) => {
     // method[1]
     const projection = {contents: {$slice: [parseInt(req.query.index, 10), 1]}};
     const result = await services.presses.find(conditions, projection, null);
+    if (!result) {
+      throw createError('PRESS_DOC_NOT_EXIST');
+    }
   } catch (err) {
     res.sendErr(err);
   }
