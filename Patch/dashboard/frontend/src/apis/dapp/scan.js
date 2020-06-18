@@ -21,6 +21,10 @@ class Scan {
     try {
       let balance = 0;
       if (eip === 'erc20') {
+        const setting = {
+          network: network,
+          param: 'default'
+        };
       } else if (eip === 'erc721') {} else {}
       return balance;
     } catch (error) {
