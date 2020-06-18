@@ -142,6 +142,12 @@ const setTOTP = async(req, res) => {
       throw createError('COMMON_PARAM_ERROR');
     }
     const cmd = req.body.cmd;
+
+    // check user exist ?
+    const result = await services.users.find(conditions, null, null);
+    if (!result) {
+      throw createError('USER_NOT_EXIST');
+    }
    } catch (err) {
     res.sendErr(err);
   }
