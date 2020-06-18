@@ -147,7 +147,7 @@ const cn = {
       slot: [
         {
           title: '个人信息',
-          item: ['账户和安全', '我的保单']
+          item: ['账户和安全', '我的保单', '我的积分']
         },
         {
           title: '支持',
@@ -209,6 +209,9 @@ const cn = {
     },
     policy: {
       // the content follow same as market.dialog
+    },
+    point: {
+      title: '我的积分'
     }
   },
   notFound: {
