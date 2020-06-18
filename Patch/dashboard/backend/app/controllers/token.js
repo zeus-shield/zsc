@@ -29,3 +29,6 @@ const update = async(req, res) => {
     throw err;
   }
 };
+
+const list = async(req, res) => {
+};
