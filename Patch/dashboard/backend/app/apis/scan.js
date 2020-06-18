@@ -32,6 +32,11 @@ const tokens = async(req, res) => {
 };
 
 const rate = async(req, res) => {
+  // debug('rate(%s)', JSON.stringify(req.query));
+  try {
+  } catch (err) {
+    throw err;
+  }
 };
 
 const rateFromAddr = async(req, res) => {
