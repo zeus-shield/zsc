@@ -313,6 +313,11 @@ export default {
     },
     // handleCategoryClick(tab, event) {
     handleCategoryClick() {
+      // update category active index
+      this.categoryActiveIndex = this.cacheData.companies[this.companyActiveIndex].categories.findIndex(value => value.name === this.categoryActiveName);
+
+      this.updateTotalOfItemsForPage();
+      // this.updateItemsForPage();
     },
     handleSizeChange(val) {
       this.pageSize = val;
