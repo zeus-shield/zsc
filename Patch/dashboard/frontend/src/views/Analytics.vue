@@ -68,6 +68,7 @@ import { mapState, mapGetters } from 'vuex';
 import echarts from 'echarts';
 
 import utils from '@/common/utils';
+import config from '@/apis/dapp/config';
 import APIs from '@/apis';
 
 export default {
@@ -81,12 +82,9 @@ export default {
       chartPie: null,
       chartBar: null,
 
-      pieLegendData: [],
-      pieSeriesData: [],
-
-      barDataAxis: [],
-      barDataShadow: [],
-      barData: []
+      // attr
+      pie: {},
+      bar: {}
     };
   },
   // props: {
@@ -298,7 +296,7 @@ export default {
                 )
               }
             },
-            data: this.barData
+            data: this.bar.seriesData
           }
         ]
       };
