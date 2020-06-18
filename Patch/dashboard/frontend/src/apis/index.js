@@ -26,6 +26,8 @@ const contracts = {
   user: {
 
   },
+  reward: {
+  },
   stat: {
   },
   dashboard: {
