@@ -73,6 +73,10 @@ function parseEth(data) {
   if (typeof values === 'string' && values.indexOf(HEX_PREFIX) === -1) throw new Error('Values is not hex prefixed');
   if (!(offsets instanceof Array)) throw new Error('offsets is not instanceof Array');
   if (offsets.length !== keys.length) throw new Error('keys and offsets lengths are not equal');
+
+  return {
+    keys: keys.map(key => Web3.utils.hexToString(key)),
+  };
 }
 
 function logs(logs) {
