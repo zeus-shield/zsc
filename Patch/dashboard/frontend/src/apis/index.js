@@ -14,6 +14,8 @@ import Demo from './dapp/demo';
 import DUser from './dapp/user';
 import DReward from './dapp/reward';
 import DStat from './dapp/statistics';
+import DDashboard from './dapp/dashboard';
+// import DScan from './dapp/scan';
 
 import User from './user';
 import Company from './company';
