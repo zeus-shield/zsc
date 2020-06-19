@@ -40,6 +40,13 @@ const update = async(req, res) => {
       language: req.body.language,
       'contents._id': req.body.id
     };
+
+    const update = {
+      'contents.$.question': content.question,
+      'contents.$.answer': content.answer,
+      'contents.$.updated_at': content.updated_at,
+      updated_at: Date.now()
+    };
   } catch (err) {
     throw err;
   }
