@@ -148,6 +148,11 @@ const setTOTP = async(req, res) => {
     if (!result) {
       throw createError('USER_NOT_EXIST');
     }
+
+    if (cmd === 'set') {
+    } else if (cmd === 'reset') {
+    } else {
+    }
    } catch (err) {
     res.sendErr(err);
   }
