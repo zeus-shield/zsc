@@ -25,6 +25,8 @@ class Scan {
           network: network,
           param: 'default'
         };
+        const _balance = await this.ecore.getBalance(account, setting);
+        balance = this.ecore.formatEther(_balance);
       } else if (eip === 'erc721') {} else {}
       return balance;
     } catch (error) {
