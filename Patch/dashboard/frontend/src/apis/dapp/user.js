@@ -78,7 +78,7 @@ class User {
     }
   };
 
-  async policyKeys(account) {
+  async keys(account) {
   };
 
   async addPolicy(account, keyObj, policy, func = null) {
