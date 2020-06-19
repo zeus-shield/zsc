@@ -76,6 +76,9 @@ function parseEth(data) {
 
   return {
     keys: keys.map(key => Web3.utils.hexToString(key)),
+    values: values === null ? '' : values.slice(HEX_PREFIX.length),
+    // offsets: offsets.map(offset => offset instanceof BigNumber ? offset.toNumber() : offset)
+    offsets: offsets.map(offset => true ? offset : offset)
   };
 }
 
