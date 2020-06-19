@@ -40,6 +40,12 @@ const rate = async(req, res) => {
 };
 
 const rateFromAddr = async(req, res) => {
+  // debug('rateFromAddr(%s)', JSON.stringify(req.query));
+  // https://api.kyber.network/sell_rate?id=0xdd974d5c2e2928dea5f71b9825b8b646686bd200&qty=1&id=0xdac17f958d2ee523a2206206994597c13d831ec7&qty=1
+  try {
+  } catch (err) {
+    throw err;
+  }
 };
 
 module.exports = { balance, token, tokens, rate, rateFromAddr };
