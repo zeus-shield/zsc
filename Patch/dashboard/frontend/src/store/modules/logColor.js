@@ -17,6 +17,7 @@ const state = () => {
       detail: 'black',
       google: 'black',
       policy: 'black',
+      point: 'black',
       pc: {
         aside: 'black',
         support: 'black',
