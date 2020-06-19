@@ -34,6 +34,9 @@ class Stat {
 
   async increase(statId, key, value, func = null) {
   };
+
+  async decrease(statId, key, value, func = null) {
+  };
 }
 
 export default Stat;
