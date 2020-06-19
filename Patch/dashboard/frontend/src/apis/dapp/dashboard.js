@@ -14,6 +14,9 @@ class Dashboard {
     this.addr = addr;
     this.abi = abi;
   };
+
+  install(addr, abi) {
+  };
 }
 
 export default Dashboard;
