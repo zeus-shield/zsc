@@ -31,6 +31,10 @@ const update = async(req, res) => {
 };
 
 const list = async(req, res) => {
+  // debug("list()");
+  try {
+  } catch (err) {
+  }
 };
 
 const detail = async(req, res) => {
