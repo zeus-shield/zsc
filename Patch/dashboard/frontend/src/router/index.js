@@ -288,8 +288,8 @@ let router = new Router({
         },
         {
           path: '/admin/core/wallet',
-          name: 'coreWallet',
-          component: CoreWallet
+          name: 'adminCoreWallet',
+          component: AdminCoreWallet
         }
       ]
     }
