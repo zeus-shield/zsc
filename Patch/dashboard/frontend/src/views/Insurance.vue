@@ -310,6 +310,15 @@ export default {
       }
     },
     handleCompanyClick(vm) {
+      // check index
+      if (parseInt(vm.index, 10) > this.cacheData.companies.length - 1) {
+      }
+
+      // update active index and name
+      this.companyActiveIndex = this.cacheData.companies.findIndex(value => value.name === this.companyActiveName);
+      if (this.companyActiveIndex === -1 ||
+      } else {
+      }
     },
     // handleCategoryClick(tab, event) {
     handleCategoryClick() {
