@@ -150,6 +150,9 @@ const setTOTP = async(req, res) => {
     }
 
     if (cmd === 'set') {
+      if (result.totp_key !== undefined) {
+        throw createError('USER_TOTP_SETTED');
+      }
     } else if (cmd === 'reset') {
     } else {
     }
