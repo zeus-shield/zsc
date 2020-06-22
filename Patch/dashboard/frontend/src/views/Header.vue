@@ -242,7 +242,7 @@ export default {
         {id: '6', name: 'signUp'},
         {id: '71', name: 'userDetail'},
 
-        {id: '99', name: 'adminUser'}
+        {id: '99', name: 'adminSysUser'}
       ],
 
       // TODO
