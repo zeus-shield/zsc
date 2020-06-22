@@ -246,6 +246,8 @@ const en = {
       USER_GOOGLE_AUTH_NOT_SET: 'Google authenticator not set',
       USER_ADD_POLICY_FAIL: 'User failed to add policy',
       USER_MINT_FAIL: 'User failed to mint',
+      USER_POINT_TRANSFER_TARGET_NONE: 'Please input target account!',
+      USER_POINT_TRANSFER_AMOUNT_NONE: 'Please input the amount!',
 
       COMPANY_CATEGORIES_HAS_EXIST: 'Company and category have already existed!',
       COMPANY_CATEGORIES_NOT_EXIST: 'Company and category does not exist!',
