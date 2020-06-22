@@ -211,7 +211,10 @@ const cn = {
       // the content follow same as market.dialog
     },
     point: {
-      title: '我的积分'
+      title: '我的积分',
+      profile: {
+      },
+      }
     }
   },
   notFound: {
