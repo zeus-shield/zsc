@@ -43,19 +43,6 @@ const state = () => {
     admin: {
       base: 'black',
       aside: 'black',
-      user: 'black',
-      company: {
-        list: 'black',
-        add: 'black',
-        edit: 'black'
-      },
-      insurance: {
-        list: 'black',
-        add: 'black',
-        edit: 'black'
-      },
-      setting: 'black',
-      contract: 'black',
       sys: {
         qa: 'black',
         press: 'blue'
