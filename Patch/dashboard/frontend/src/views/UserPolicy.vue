@@ -27,6 +27,10 @@
               <span class="label" slot="label">{{ langSet.market.dialog.product.category }}</span>
               <span class="content">{{ item.insurance.category }}</span>
             </el-form-item>
+            <el-form-item class="el-form-item-mobile">
+              <span class="label" slot="label">{{ langSet.market.dialog.product.title }}</span>
+              <span class="content">{{ item.insurance.title }}</span>
+            </el-form-item>
           </div>
 
           <el-divider content-position="left">
