@@ -176,6 +176,11 @@ export default {
       form: {
         code: ''
       },
+      rules: {
+        code: [
+          { validator: validateCode, trigger: 'blur' }
+        ]
+      },
       active: false
     };
   },
