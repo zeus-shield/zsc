@@ -212,9 +212,6 @@ export default {
     },
     drawBar() {
       this.chartBar = echarts.init(document.getElementById('chartBar'));
-      for (var i = 0; i < this.barData.length; i++) {
-        this.barDataShadow.push(20);
-      }
       let option = {
         title: {
           text: utils.storage.cookie.get('lang') === 'en' ? 'Company Ranking' : '???????',
@@ -269,7 +266,7 @@ export default {
             },
             barGap: '-100%',
             barCategoryGap: '40%',
-            data: this.barDataShadow,
+            data: this.bar.seriesShadowData,
             animation: false
           },
           {
