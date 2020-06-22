@@ -190,6 +190,10 @@ export default {
   // },
   data() {
     let validateCode = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error(this.langSet['message']['error']['USER_GOOGLE_CODE_NONE']));
+      } else {
+      }
     };
     return {
     };
