@@ -102,8 +102,6 @@ export default {
   mounted() {
     console.log('%c[Analytics]mounted()', `color:${this.logColor}`);
     let vm = this;
-    let errorMessage = '';
-
     vm.loading = true;
 
     vm.prePie().then(data => {
@@ -236,20 +234,15 @@ export default {
           },
           axisLine: {
             show: false
-          },
-          z: 10
+          }
         },
         yAxis: {
-          axisLine: {
-            show: false
-          },
+          ...this.bar.yAxis,
           axisTick: {
             show: false
           },
-          axisLabel: {
-            textStyle: {
-              color: '#999'
-            }
+          axisLine: {
+            show: false
           }
         },
         dataZoom: [
