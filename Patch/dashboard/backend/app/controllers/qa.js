@@ -53,6 +53,8 @@ const update = async(req, res) => {
     if (!result) {
       throw createError('QA_NOT_EXIST');
     }
+
+    res.sendOk('update qa successfully!');
   } catch (err) {
     throw err;
   }
