@@ -41,6 +41,9 @@ class Reward {
 
   async traceByIndex(account, index) {
   };
+
+  async traceTimeKeys(account) {
+  };
 }
 
 export default Reward;
