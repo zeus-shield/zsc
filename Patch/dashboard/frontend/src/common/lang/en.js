@@ -276,12 +276,12 @@ const en = {
       POLICY_PERIOD_LEN_ERR: 'Length must be more than 1',
 
       LOGIN_ACCOUNT_NONE: 'Please input phone number or email',
-      LOGIN_ACCOUNT_LEN_ERR: 'Length of 6 to 18 characters',
+      LOGIN_ACCOUNT_LEN_ERR: 'Length of 6 to 64 characters',
       LOGIN_PWD_NONE: 'Please input password',
       LOGIN_PWD_LEN_ERR: 'Length of 3 to 6 characters',
 
       SIGNUP_ACCOUNT_NONE: 'Please input phone number or email',
-      SIGNUP_ACCOUNT_LEN_ERR: 'Length of 6 to 18 characters',
+      SIGNUP_ACCOUNT_LEN_ERR: 'Length of 6 to 64 characters',
       SIGNUP_CODE_NONE: 'Please input 6-digit Verification code',
       SIGNUP_CODE_LEN_ERR: 'Length must be 6',
       SIGNUP_PWD_NONE: 'Please input password',
