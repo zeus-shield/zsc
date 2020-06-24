@@ -33,7 +33,10 @@ const update = async(req, res) => {
 const list = async(req, res) => {
   // debug("list()");
   try {
+    const result = await services.tokens.list({session: null});
+    res.sendOk(result);
   } catch (err) {
+    res.sendErr(err);
   }
 };
 
