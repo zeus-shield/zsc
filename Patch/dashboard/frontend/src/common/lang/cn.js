@@ -260,6 +260,8 @@ const cn = {
       USER_GOOGLE_AUTH_NOT_SET: '谷歌认证未开启',
       USER_ADD_POLICY_FAIL: '用户录入保单失败',
       USER_MINT_FAIL: '用户申请积分失败',
+      USER_POINT_TRANSFER_TARGET_NONE: '请输入目标账户！',
+      USER_POINT_TRANSFER_AMOUNT_NONE: '请输入积分数量！',
 
       COMPANY_CATEGORIES_HAS_EXIST: '该保险公司下险种已存在！',
       COMPANY_CATEGORIES_NOT_EXIST: '该保险公司下险种不存在！',
