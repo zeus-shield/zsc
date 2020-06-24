@@ -37,6 +37,12 @@ class Press extends Transaction {
   };
 
   async get(id, language) {
+    const query = new URLSearchParams();
+    if (id) {
+      query.append('id', id);
+    } else if (language) {
+      query.append('language', language);
+    } else {}
   };
 
   async getByIndex(id, language, index) {
