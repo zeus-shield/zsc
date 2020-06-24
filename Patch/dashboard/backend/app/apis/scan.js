@@ -18,6 +18,11 @@ const balance = async(req, res) => {
 const token = async(req, res) => {
   // debug('token(%s)', JSON.stringify(req.query));
   try {
+    let result;
+    const conditions = {
+      address: req.query.address,
+      network: req.query.network
+    };
   } catch (err) {
     throw err;
   }
