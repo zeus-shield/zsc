@@ -154,7 +154,11 @@ const setTOTP = async(req, res) => {
         throw createError('USER_TOTP_SETTED');
       }
     } else if (cmd === 'reset') {
+      if (result.totp_key === undefined) {
+        throw createError('USER_TOTP_NOT_SET');
+      }
     } else {
+      throw createError('UNKNOWN');
     }
    } catch (err) {
     res.sendErr(err);
