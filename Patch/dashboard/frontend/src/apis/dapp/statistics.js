@@ -30,6 +30,10 @@ class Stat {
   };
 
   async keyCount(statId) {
+    try {
+    } catch (error) {
+      throw error;
+    }
   };
 
   async increase(statId, key, value, func = null) {
