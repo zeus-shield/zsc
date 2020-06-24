@@ -16,6 +16,8 @@ class Dashboard {
   };
 
   install(addr, abi) {
+    this.addr = addr;
+    this.abi = abi;
   };
 }
 
