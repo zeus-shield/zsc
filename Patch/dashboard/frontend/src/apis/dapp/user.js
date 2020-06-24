@@ -79,6 +79,10 @@ class User {
   };
 
   async keys(account) {
+    try {
+    } catch (error) {
+      throw error;
+    }
   };
 
   async addPolicy(account, keyObj, policy, func = null) {
