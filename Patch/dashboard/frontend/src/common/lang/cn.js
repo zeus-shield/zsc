@@ -290,12 +290,12 @@ const cn = {
       POLICY_PERIOD_LEN_ERR: '长度大于1个字符',
 
       LOGIN_ACCOUNT_NONE: '请输入手机号/邮箱地址',
-      LOGIN_ACCOUNT_LEN_ERR: '长度在 6 到 18 个字符',
+      LOGIN_ACCOUNT_LEN_ERR: '长度在 6 到 64 个字符',
       LOGIN_PWD_NONE: '请输入登录密码',
       LOGIN_PWD_LEN_ERR: '长度在 3 到 6 个字符',
 
       SIGNUP_ACCOUNT_NONE: '请输入手机号/邮箱地址',
-      SIGNUP_ACCOUNT_LEN_ERR: '长度在 6 到 18 个字符',
+      SIGNUP_ACCOUNT_LEN_ERR: '长度在 6 到 64 个字符',
       SIGNUP_CODE_NONE: '请输入6位验证码',
       SIGNUP_CODE_LEN_ERR: '长度必须等于6',
       SIGNUP_PWD_NONE: '请输入密码',
