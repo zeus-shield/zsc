@@ -41,4 +41,9 @@ const list = async(req, res) => {
 };
 
 const detail = async(req, res) => {
+  // debug('detail(%s)', JSON.stringify(req.query));
+  try {
+  } catch (err) {
+    res.sendErr(err);
+  }
 };
