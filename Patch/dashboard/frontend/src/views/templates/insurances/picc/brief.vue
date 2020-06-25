@@ -225,6 +225,9 @@ export default {
           holder: '',
           insurant: '',
           credentials: '',
+          age: '',
+          sex: '',
+          status: '',
         },
         policy: {
           amount: '',
