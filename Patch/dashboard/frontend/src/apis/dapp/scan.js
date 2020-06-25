@@ -7,6 +7,9 @@ import ECore from '../core/ecore';
 class Scan {
 
   constructor() {
+    this.erc20Tokens = [];
+    this.erc20TokenAbi = [
+    ];
   };
 
   addToken(eip, token) {
