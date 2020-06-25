@@ -317,7 +317,10 @@ const en = {
       analytics: 'Analyzing data...',
 
       myInsuranceSaving: 'Saving my insurance...',
-      myInsuranceLoading: 'Loading my insurance...'
+      myInsuranceLoading: 'Loading my insurance...',
+
+      user: {
+      }
     }
   }
 };
