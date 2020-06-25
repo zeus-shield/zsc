@@ -55,7 +55,10 @@ class User {
   };
 
   async account(index) {
-  _preRemove(data) {
+    try {
+    } catch (error) {
+      throw error;
+    }
   };
 
   async list() {
