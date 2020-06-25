@@ -19,6 +19,9 @@ class Dashboard {
     this.addr = addr;
     this.abi = abi;
   };
+
+  _formatAccount(account) {
+  }
 }
 
 export default Dashboard;
