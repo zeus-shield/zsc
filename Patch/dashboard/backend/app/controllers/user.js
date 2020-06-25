@@ -160,7 +160,10 @@ const setTOTP = async(req, res) => {
     } else {
       throw createError('UNKNOWN');
     }
-   } catch (err) {
+
+    const key = TOTP.randomKey();
+    const handle = new TOTP(key);
+  } catch (err) {
     res.sendErr(err);
   }
 };
