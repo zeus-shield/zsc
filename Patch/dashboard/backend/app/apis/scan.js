@@ -23,6 +23,11 @@ const token = async(req, res) => {
       address: req.query.address,
       network: req.query.network
     };
+    const token = await services.tokens.find(conditions, null, null);
+    if (!token) {
+    } else {
+    }
+    res.sendOk(result);
   } catch (err) {
     throw err;
   }
