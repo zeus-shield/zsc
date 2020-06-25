@@ -43,6 +43,12 @@ class Press extends Transaction {
     } else if (language) {
       query.append('language', language);
     } else {}
+
+    try {
+      return await this.transaction('get', 'press/get', null, query);
+    } catch (err) {
+      throw err;
+    }
   };
 
   async getByIndex(id, language, index) {
