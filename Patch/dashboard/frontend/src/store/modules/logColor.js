@@ -45,9 +45,11 @@ const state = () => {
       aside: 'black',
       sys: {
         qa: 'black',
-        press: 'blue'
+        press: 'black',
+        setting: 'black'
       },
       core: {
+        contract: 'black',
         user: 'black',
         userAssets: 'black',
         stat: 'black',
