@@ -44,6 +44,9 @@ class Reward {
 
   async traceTimeKeys(account) {
   };
+
+  async updateCap(newCap, func = null) {
+  };
 }
 
 export default Reward;
