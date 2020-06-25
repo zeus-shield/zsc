@@ -37,11 +37,9 @@ const UserQuestions = resolve => require.ensure([], () => resolve(require('@/vie
 const UserGoogle = resolve => require.ensure([], () => resolve(require('@/views/UserGoogle')), 'lazy');
 const NotFound = resolve => require.ensure([], () => resolve(require('@/views/404')), 'lazy');
 
-const Admin = resolve => require.ensure([], () => resolve(require('@/views/Admin')), 'lazy');
-const AdminUser = resolve => require.ensure([], () => resolve(require('@/views/AdminUser')), 'lazy');
-const AdminCompany = resolve => require.ensure([], () => resolve(require('@/views/AdminCompany')), 'lazy');
-// const AdminCompanyAdd = resolve => require.ensure([], () => resolve(require('@/views/AdminCompanyAdd')), 'lazy');
-// const AdminCompanyEdit = resolve => require.ensure([], () => resolve(require('@/views/AdminCompanyEdit')), 'lazy');
+const Admin = resolve => require.ensure([], () => resolve(require('@/views/admin/Main')), 'lazy');
+const AdminSysUser = resolve => require.ensure([], () => resolve(require('@/views/admin/sys/User')), 'lazy');
+const AdminSysCompany = resolve => require.ensure([], () => resolve(require('@/views/admin/sys/Company')), 'lazy');
 const AdminInsurance = resolve => require.ensure([], () => resolve(require('@/views/AdminInsurance')), 'lazy');
 const AdminInsuranceAdd = resolve => require.ensure([], () => resolve(require('@/views/AdminInsuranceAdd')), 'lazy');
 const AdminInsuranceEdit = resolve => require.ensure([], () => resolve(require('@/views/AdminInsuranceEdit')), 'lazy');
