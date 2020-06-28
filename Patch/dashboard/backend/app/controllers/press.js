@@ -35,6 +35,8 @@ const removeAll = async(req, res) => {
 const update = async(req, res) => {
   // debug('update(%s)', JSON.stringify(req.body));
   try {
+    let content = JSON.parse(req.body.content);
+    content.updated_at = Date.now();
   } catch (err) {
     throw err;
   }
