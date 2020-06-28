@@ -23,6 +23,9 @@ class Press extends Transaction {
   };
 
   async remove(token, id, language) {
+    const data = new URLSearchParams();
+    data.append('id', id);
+    data.append('language', language);
   };
 
   async update(token, id, language, content) {
