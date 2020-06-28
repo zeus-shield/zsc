@@ -217,8 +217,11 @@ const cn = {
       }
     }
   },
+  admin: {
+    content: '该模块，请在电脑上操作！'
+  },
   notFound: {
-    content: '您访问的页面不存在!',
+    content: '您访问的页面不存在！',
     back: '返回首页'
   },
   company: {
