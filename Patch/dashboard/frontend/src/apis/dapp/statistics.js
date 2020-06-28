@@ -31,6 +31,10 @@ class Stat {
   };
 
   async infoByKey(statId, key) {
+    try {
+    } catch (error) {
+      throw error;
+    }
   };
 
   async keyCount(statId) {
