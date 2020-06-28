@@ -47,3 +47,6 @@ const detail = async(req, res) => {
     res.sendErr(err);
   }
 };
+
+const count = async(req, res) => {
+};
