@@ -10,6 +10,11 @@ class Scan {
     this.erc20Tokens = [];
     this.erc20TokenAbi = [
     ];
+
+    this.erc721Tokens = [];
+    this.erc721TokenAbi = [];
+
+    this.ecore = new ECore();
   };
 
   addToken(eip, token) {
