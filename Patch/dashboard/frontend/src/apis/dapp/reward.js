@@ -47,6 +47,9 @@ class Reward {
 
   async updateCap(newCap, func = null) {
   };
+
+  async updateThreshold(index, threshold, func = null) {
+  };
 }
 
 export default Reward;
