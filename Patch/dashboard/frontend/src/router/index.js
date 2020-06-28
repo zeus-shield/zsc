@@ -7,19 +7,16 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 // import Home from '@/views/Home';
-// import User from '@/views/User';
-// import NotFound from '@/components/404';
+// import NotFound from '@/views/404';
 
 // Lazy load mode: load the corresponding components when the route is accessed
 // Method 1
 // const Home = () => import(/* webpackChunkName: "lazy" */ '@/views/Home');
-// const User = () => import(/* webpackChunkName: "lazy" */ '@/views/User');
-// const NotFound = () => import(/* webpackChunkName: "lazy" */ '@/components/404');
+// const NotFound = () => import(/* webpackChunkName: "lazy" */ '@/views/404');
 
 // Method 2
 // const Home = resolve => require(['@/views/Home'], resolve);
-// const User = resolve => require(['@/views/User'], resolve);
-// const NotFound = resolve => require(['@/components/404'], resolve);
+// const NotFound = resolve => require(['@/views/404'], resolve);
 
 // Method 3
 const Home = resolve => require.ensure([], () => resolve(require('@/views/Home')), 'lazy');
