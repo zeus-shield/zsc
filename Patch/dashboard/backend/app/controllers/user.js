@@ -163,6 +163,10 @@ const setTOTP = async(req, res) => {
 
     const key = TOTP.randomKey();
     const handle = new TOTP(key);
+    result.QRUrl = handle.gaURL(result.account, settings.totpConfig.issuer);
+    result.totp_key = key;
+
+    res.sendOk(format.user(result));
   } catch (err) {
     res.sendErr(err);
   }
