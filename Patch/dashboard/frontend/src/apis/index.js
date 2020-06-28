@@ -7,7 +7,7 @@ const instance = axios.create({
   // withCredentials: true // bypass cookie from and to server
 });
 
-import Wallet from './wallet';
+// import Wallet from './wallet';
 import EWallet from './core/ewallet';
 
 import Demo from './dapp/demo';
@@ -15,7 +15,6 @@ import DUser from './dapp/user';
 import DReward from './dapp/reward';
 import DStat from './dapp/statistics';
 import DDashboard from './dapp/dashboard';
-// import DScan from './dapp/scan';
 
 import User from './user';
 import Company from './company';
@@ -24,7 +23,7 @@ import QA from './qa';
 import Press from './press';
 import Token from './token';
 
-const contracts = {
+let contracts = {
   user: {
 
   },
@@ -40,7 +39,7 @@ const contracts = {
 class APIs {
   constructor() {
     this.ethereum = {};
-    this.ethereum.wallet = new Wallet();
+    // this.ethereum.wallet = new Wallet();
 
     this.core = {};
     // this.core.web3 = Web3;
