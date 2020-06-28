@@ -11,6 +11,9 @@ const add = async(req, res) => {
   try {
     // There is only one database write operation, and session can not be used.
     const conditions = {language: req.body.language};
+
+    let content = JSON.parse(req.body.content);
+    content.created_at = Date.now();
   } catch (err) {
     throw err;
   }
