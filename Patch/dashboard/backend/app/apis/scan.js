@@ -25,6 +25,10 @@ const token = async(req, res) => {
     };
     const token = await services.tokens.find(conditions, null, null);
     if (!token) {
+      const info = await services.scan.token(req.query.eip, req.query.network, req.query.address, req.query.account);
+      result = {
+        balanceOf: info.balanceOf
+      };
     } else {
     }
     res.sendOk(result);
