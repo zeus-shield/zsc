@@ -44,6 +44,8 @@ const state = () => {
       base: 'black',
       aside: 'black',
       sys: {
+        user: 'black',
+        company: 'black',
         qa: 'black',
         press: 'black',
         setting: 'black'
