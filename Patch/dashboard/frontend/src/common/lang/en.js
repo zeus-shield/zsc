@@ -320,6 +320,10 @@ const en = {
       myInsuranceLoading: 'Loading my insurance...',
 
       user: {
+        point: {
+          amount: 'Getting user points...',
+          trace: 'Getting user points details...'
+        }
       }
     }
   }
