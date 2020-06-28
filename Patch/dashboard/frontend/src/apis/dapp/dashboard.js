@@ -22,6 +22,9 @@ class Dashboard {
 
   _formatAccount(account) {
   }
+
+  _buildPolicyKey(keys, keyPrefix) {
+  };
 }
 
 export default Dashboard;
