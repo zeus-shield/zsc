@@ -30,6 +30,13 @@ const token = async(req, res) => {
         balanceOf: info.balanceOf
       };
     } else {
+      const info = await services.scan.token(req.query.eip, req.query.network, req.query.address, req.query.account);
+      result = {
+        name: token.name,
+        symbol: token.symbol,
+        decimals: token.decimals,
+        balanceOf: info.balanceOf
+      };
     }
     res.sendOk(result);
   } catch (err) {
