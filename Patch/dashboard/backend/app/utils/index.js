@@ -12,7 +12,6 @@ utils.auth = require('./authentication');
 utils.nodemailer = require('./nodemailer');
 utils.tool = require('./tool');
 utils.TOTP = require('./totp');
-utils.ecore = require('./ecore');
 utils.axios = require('./axios');
 
 module.exports = utils;
