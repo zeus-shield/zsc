@@ -9,6 +9,11 @@ const services = require('../services');
 const add = async(req, res) => {
   // debug('add(%s)', JSON.stringify(req.body));
   try {
+    // There is only one database write operation, and session can not be used.
+    const conditions = {
+      address: req.body.address,
+      network: req.body.network
+    };
   } catch (err) {
     throw err;
   }
