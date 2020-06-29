@@ -14,6 +14,10 @@ const add = async(req, res) => {
 
     let content = JSON.parse(req.body.content);
     content.created_at = Date.now();
+    const update = {
+      $push: {contents: content},
+      $set: {updated_at: Date.now()}
+    };
   } catch (err) {
     throw err;
   }
