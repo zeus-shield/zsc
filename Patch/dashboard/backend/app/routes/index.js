@@ -47,6 +47,7 @@ module.exports = (app) => {
   require('./user')(app);
   require('./company')(app);
   require('./insurance')(app);
+  require('./ether')(app);
   require('./qa')(app);
   require('./press')(app);
   require('./token')(app);
