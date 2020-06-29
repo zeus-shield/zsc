@@ -87,28 +87,11 @@ let router = new Router({
       //   next();
       // }
     },
-    // {
-    //   path: '/insurance',
-    //   name: 'insurance',
-    //   component: Insurance,
-    //   children: [
-    //     {
-    //       path: '/insurance/picc',
-    //       name: 'insurancePICC',
-    //       component: InsurancePICC
-    //     },
-    //     {
-    //       path: '/insurance/pingan',
-    //       name: 'insurancePingAn',
-    //       component: InsurancePingAn
-    //     }
-    //   ]
-    //   // meta: { auth: true },
-    //   // beforeEnter: (to, from, next) => {
-    //   //   console.log('[R2]beforeEnter: (%s) => (%s)', from.fullPath, to.fullPath);
-    //   //   next();
-    //   // }
-    // },
+    {
+      path: '/account',
+      name: 'account',
+      redirect: '/account/user'
+    },
     {
       path: '/insurance',
       name: 'insurance',
