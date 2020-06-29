@@ -8,8 +8,8 @@ import config from '@/apis/dapp/config';
 
 class User {
 
-  constructor(ewallet, addr, abi) {
-    this.ewallet = ewallet;
+  constructor(einstance, addr, abi) {
+    this.einstance = einstance;
     this.addr = addr;
     this.abi = abi;
   };
