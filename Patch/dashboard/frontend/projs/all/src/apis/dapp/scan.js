@@ -44,6 +44,12 @@ class Scan {
 
   async token(eip, network, tokenAddr, account) {
     try {
+      const accountObj = {
+        setting: {
+          network: network,
+          param: 'default'
+        }
+      };
     } catch (error) {
       throw error;
     }
