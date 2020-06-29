@@ -37,7 +37,7 @@ const en = {
     },
     slot3: {
       title: 'Product introduction',
-      content: 'Dashboard is an innovative insurance platform based on blockchain technology. Upload logistics record of the users and insurance certificate information onto the Ethereum blockchain system. User information is protected without the authorization of the provider. The platform combines with artificial intelligence to conduct customized analysis of big data on the blockchain.'
+      content: 'Dashboard is an innovative insurance platform based on blockchain technology. Upload insurance record of the users and insurance certificate information onto the Ethereum blockchain system. User information is protected without the authorization of the provider. The platform combines with artificial intelligence to conduct customized analysis of big data on the blockchain.'
     },
     slot4: {
       header: 'Product Feature',
@@ -140,7 +140,7 @@ const en = {
       slot: [
         {
           title: 'Profile',
-          item: ['Account Safety', 'My Policies', 'My Points']
+          item: ['My Policies', 'My Points', 'Account Safety']
         },
         {
           title: 'Support',
