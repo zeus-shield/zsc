@@ -26,6 +26,12 @@ class Press extends Transaction {
     const data = new URLSearchParams();
     data.append('id', id);
     data.append('language', language);
+
+    try {
+      return await this.transaction('post', 'press/remove', { token }, null, data);
+    } catch (err) {
+      throw err;
+    }
   };
 
   async update(token, id, language, content) {
