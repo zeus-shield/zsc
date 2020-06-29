@@ -86,7 +86,10 @@ const signUp = async(req, res) => {
     if (!result) {
       throw createError('USER_NOT_EXIST');
     }
-    const result = await services.users.signUp(req.body.account, req.body.password, req.body.code);
+
+    // check code ?
+    const inputCode = crypto.encrypted(code, settings.saltKey);
+    const equal = await crypto.check(inputCode, result.email_code);
     res.sendOk(result);
   } catch (err) {
     res.sendErr(err);
