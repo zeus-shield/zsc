@@ -2,19 +2,15 @@
 
 import createError from 'http-errors';
 
-import ECore from '../core/ecore';
-
 class Scan {
 
-  constructor() {
+  constructor(einstance) {
+    this.einstance = einstance;
     this.erc20Tokens = [];
     this.erc20TokenAbi = [
     ];
-
     this.erc721Tokens = [];
     this.erc721TokenAbi = [];
-
-    this.ecore = new ECore();
   };
 
   addToken(eip, token) {
