@@ -19,6 +19,7 @@
     "axios": "^0.19.2",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
+    "crypto-js": "^4.0.0",
     "debug": "^4.1.1",
     "ethers": "^4.0.46",
     "express": "^4.17.1",
