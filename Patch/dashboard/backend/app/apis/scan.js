@@ -8,7 +8,7 @@ const { axios } = require('../utils');
 const balance = async(req, res) => {
   // debug('balance(%s)', JSON.stringify(req.query));
   try {
-    const result = await services.scan.balance(req.query.eip, req.query.network, req.query.account);
+    const result = await services.dapp.scan.balance(req.query.eip, req.query.network, req.query.account);
     res.sendOk(result);
   } catch (err) {
     throw err;
@@ -25,12 +25,12 @@ const token = async(req, res) => {
     };
     const token = await services.tokens.find(conditions, null, null);
     if (!token) {
-      const info = await services.scan.token(req.query.eip, req.query.network, req.query.address, req.query.account);
+      const info = await services.dapp.scan.token(req.query.eip, req.query.network, req.query.address, req.query.account);
       result = {
         balanceOf: info.balanceOf
       };
     } else {
-      const info = await services.scan.token(req.query.eip, req.query.network, req.query.address, req.query.account);
+      const info = await services.dapp.scan.token(req.query.eip, req.query.network, req.query.address, req.query.account);
       result = {
         name: token.name,
         symbol: token.symbol,
