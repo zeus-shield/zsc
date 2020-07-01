@@ -123,7 +123,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 let options = {
-  origin: settings.dbConfig.ORIGIN,
+  // origin: settings.dbConfig.ORIGIN,
   credentials: true
 };
 app.use(cors(options));
