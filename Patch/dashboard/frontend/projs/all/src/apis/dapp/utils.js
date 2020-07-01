@@ -133,4 +133,6 @@ function bigNumberToNumber(value) {
   return Web3.utils.isBigNumber(value) ? value.toNumber() : value;
 }
 
+function repeatNum(arr) {
+}
 module.exports = { jsonToEth, jsonToEthObject, ethToJson, ethToObject, parseJson, parseEth, logs, toBytes32, strToBytes32, strToHex, hexToStr, bigNumberToNumber };
