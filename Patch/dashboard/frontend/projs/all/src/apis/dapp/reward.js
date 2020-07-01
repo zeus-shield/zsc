@@ -50,6 +50,9 @@ class Reward {
 
   async updateThreshold(index, threshold, func = null) {
   };
+
+  async transfer(from, to, value, func = null) {
+  };
 }
 
 export default Reward;
