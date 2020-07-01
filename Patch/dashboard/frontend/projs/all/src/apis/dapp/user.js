@@ -95,7 +95,11 @@ class User {
   async addPolicy(account, keyObj, policy, func = null) {
   };
 
-  async removePolicy(account, key, func = null) {
+  async removeInfo(account, key, func = null) {
+    try {
+    } catch (error) {
+      throw error;
+    }
   }
 
   async remove(account, func = null) {
