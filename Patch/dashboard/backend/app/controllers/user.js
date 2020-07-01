@@ -90,6 +90,9 @@ const signUp = async(req, res) => {
     // check code ?
     const inputCode = crypto.encrypted(code, settings.saltKey);
     const equal = await crypto.check(inputCode, result.email_code);
+    if (!equal) {
+      throw createError('USER_CODE_WRONG');
+    }
     res.sendOk(result);
   } catch (err) {
     res.sendErr(err);
