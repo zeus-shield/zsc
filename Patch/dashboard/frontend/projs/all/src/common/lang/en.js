@@ -201,7 +201,11 @@ const en = {
     },
     policy: {
       // the content follow same as market.dialog
+    },
+    point: {
     }
+  },
+  admin: {
   },
   notFound: {
     content: 'The page you visited does not exist!',
