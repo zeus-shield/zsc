@@ -213,6 +213,8 @@ const cn = {
     point: {
       title: '我的积分',
       profile: {
+        title: '积分总览',
+        amount: '可用积分',
       },
       }
     }
