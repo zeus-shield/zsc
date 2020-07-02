@@ -24,6 +24,16 @@ class Dashboard {
 
   _buildPolicyKey(keys, keyPrefix) {
   };
+
+  // statIds: ["STAT_COMPANY", "STAT_PRODUCT"]
+  // statKeys: [
+  //   "PINGAN", "PICC",
+  //   "PINGAN_ZYYL_ESBYLPB", "PINGAN_ZYYL_SHYBGMZYZFYL", "PICC_YW_RSYWQNJQB", "PICC_ZYYL_RRAKBWYLJTB"
+  // ]
+  // values: [3, 3, 2, 1, 2, 1]
+  // indexes: [0, 2, 6]
+  _statInfo(data) {
+  };
 }
 
 export default Dashboard;
