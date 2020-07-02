@@ -203,6 +203,9 @@ const en = {
       // the content follow same as market.dialog
     },
     point: {
+      title: 'My points',
+      profile: {
+      },
     }
   },
   admin: {
