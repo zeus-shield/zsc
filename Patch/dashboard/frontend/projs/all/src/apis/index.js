@@ -28,6 +28,9 @@ let contracts = {
 
   },
   reward: {
+    addr: '',
+    abi: [
+    ]
   },
   stat: {
   },
