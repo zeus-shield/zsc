@@ -52,6 +52,10 @@ class Stat {
   };
 
   async decrease(statId, key, value, func = null) {
+    try {
+    } catch (error) {
+      throw error;
+    }
   };
 }
 
