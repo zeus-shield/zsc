@@ -39,6 +39,12 @@ class Press extends Transaction {
     data.append('id', id);
     data.append('language', language);
     data.append('content', JSON.stringify(content));
+
+    try {
+      return await this.transaction('post', 'press/update', { token }, null, data);
+    } catch (err) {
+      throw err;
+    }
   };
 
   async getAll() {
