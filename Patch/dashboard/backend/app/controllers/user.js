@@ -93,6 +93,13 @@ const signUp = async(req, res) => {
     if (!equal) {
       throw createError('USER_CODE_WRONG');
     }
+
+    // check timeout
+    const now = Date.now();
+    const expires = moment(result.active_expires_at).valueOf();
+    if (now - expires >= 0) {
+      throw createError('USER_CODE_TIMEOUT');
+    }
     res.sendOk(result);
   } catch (err) {
     res.sendErr(err);
