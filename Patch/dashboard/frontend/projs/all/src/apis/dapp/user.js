@@ -76,6 +76,10 @@ class User {
   };
 
   async infoByKey(account, key) {
+    try {
+    } catch (error) {
+      throw error;
+    }
   };
 
   async exists(account) {
