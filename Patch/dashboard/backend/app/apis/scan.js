@@ -47,6 +47,12 @@ const token = async(req, res) => {
 const tokens = async(req, res) => {
   // debug('tokens(%s)', JSON.stringify(req.query));
   try {
+    const params = {
+      session: null,
+      condition: {
+        network: req.query.network
+      }
+    };
   } catch (err) {
     throw err;
   }
