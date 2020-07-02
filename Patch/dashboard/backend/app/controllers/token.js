@@ -14,6 +14,10 @@ const add = async(req, res) => {
       address: req.body.address,
       network: req.body.network
     };
+    const result = await services.tokens.find(conditions, null, null);
+    if (result) {
+      throw createError('TOKEN_HAS_EXISTED');
+    }
   } catch (err) {
     throw err;
   }
