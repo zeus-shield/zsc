@@ -215,6 +215,9 @@ const cn = {
       profile: {
         title: '积分总览',
         amount: '可用积分',
+        checkIn: '签到赚积分',
+        checkedIn: '当日已签到',
+        transfer: '送他人积分'
       },
       }
     }
@@ -336,7 +339,7 @@ const cn = {
       analytics: '大数据分析中........',
 
       myInsuranceSaving: '录入我的保单中......',
-      myInsuranceLoading: '获取我的保单中......'
+      myInsuranceLoading: '获取我的保单中......',
     }
   },
   config: {
