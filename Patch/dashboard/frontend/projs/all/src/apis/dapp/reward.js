@@ -53,6 +53,9 @@ class Reward {
 
   async transfer(from, to, value, func = null) {
   };
+
+  async mint(account, index, func = null) {
+  };
 }
 
 export default Reward;
