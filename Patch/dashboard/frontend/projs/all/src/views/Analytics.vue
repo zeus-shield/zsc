@@ -291,6 +291,9 @@ export default {
         ]
       };
       this.chartBar.setOption(option);
+    },
+    async prePie(cmd) {
+    },
     }
   }
 };
