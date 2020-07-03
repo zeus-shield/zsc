@@ -149,7 +149,7 @@
 </style>
 
 <script>
-// import dummyData from '../apis/insuranceDummyData';
+// import dummyData from '../apis/data/insuranceLiveData';
 import InsurancePingAnBrief from '@/views/templates/insurances/pingan/brief';
 import InsurancePICCBrief from '@/views/templates/insurances/picc/brief';
 
@@ -317,6 +317,8 @@ export default {
       // update active index and name
       this.companyActiveIndex = this.cacheData.companies.findIndex(value => value.name === this.companyActiveName);
       if (this.companyActiveIndex === -1 ||
+          this.cacheData.companies[this.companyActiveIndex].categories === undefined ||
+          this.cacheData.companies[this.companyActiveIndex].categories.length === 0) {
       } else {
       }
     },
