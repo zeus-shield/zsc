@@ -134,6 +134,10 @@ function bigNumberToNumber(value) {
 }
 
 function repeatNum(arr) {
+  return arr.reduce((data, item) => {
+    data[item] = (data[item] + 1) || 1;
+    return data;
+  }, {});
 }
 
 module.exports = { jsonToEth, jsonToEthObject, ethToJson, ethToObject, parseJson, parseEth, logs, toBytes32, strToBytes32, strToHex, hexToStr, bigNumberToNumber, repeatNum };
