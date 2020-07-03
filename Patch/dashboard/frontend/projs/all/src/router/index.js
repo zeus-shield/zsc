@@ -37,9 +37,9 @@ const NotFound = resolve => require.ensure([], () => resolve(require('@/views/40
 const Admin = resolve => require.ensure([], () => resolve(require('@/views/admin/Main')), 'lazy');
 const AdminSysUser = resolve => require.ensure([], () => resolve(require('@/views/admin/sys/User')), 'lazy');
 const AdminSysCompany = resolve => require.ensure([], () => resolve(require('@/views/admin/sys/Company')), 'lazy');
-const AdminInsurance = resolve => require.ensure([], () => resolve(require('@/views/AdminInsurance')), 'lazy');
-const AdminInsuranceAdd = resolve => require.ensure([], () => resolve(require('@/views/AdminInsuranceAdd')), 'lazy');
-const AdminInsuranceEdit = resolve => require.ensure([], () => resolve(require('@/views/AdminInsuranceEdit')), 'lazy');
+const AdminSysProduct = resolve => require.ensure([], () => resolve(require('@/views/admin/sys/Product')), 'lazy');
+const AdminSysProductAdd = resolve => require.ensure([], () => resolve(require('@/views/admin/sys/ProductAdd')), 'lazy');
+const AdminSysProductEdit = resolve => require.ensure([], () => resolve(require('@/views/admin/sys/ProductEdit')), 'lazy');
 const AdminSysQA = resolve => require.ensure([], () => resolve(require('@/views/admin/sys/QA')), 'lazy');
 const AdminSysPress = resolve => require.ensure([], () => resolve(require('@/views/admin/sys/Press')), 'lazy');
 const AdminSysSetting = resolve => require.ensure([], () => resolve(require('@/views/admin/sys/Setting')), 'lazy');
