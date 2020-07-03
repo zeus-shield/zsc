@@ -240,8 +240,7 @@ export default {
         {id: '4', name: 'faq'},
         {id: '5', name: 'login'},
         {id: '6', name: 'signUp'},
-        {id: '71', name: 'userDetail'},
-
+        {id: '71', name: 'userPolicy'},
         {id: '99', name: 'adminSysUser'}
       ],
 
@@ -300,7 +299,7 @@ export default {
     // TODO
     checkAdmin() {
       let account = utils.storage.cookie.get('login_account');
-      if (account === 'deduotech' || account === '28781835@qq.com') {
+      if (account === 'dashboardinfo@163.com' || account === '28781835@qq.com') {
         this.admin = true;
       } else {
         this.admin = false;
