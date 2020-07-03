@@ -40,14 +40,13 @@
   // box-sizing: border-box;
 }
 .insurance .hot {
-  background: url('../../../../assets/images/remai.png') no-repeat center center;
+  background: url(../../../../assets/images/remai.png) no-repeat center center;
 }
 .insurance .col {
   // border-radius: 4px;
   // background: #d3dce6;
   // min-height: 36px;
 }
-
 .insurance .thumb .col {
   margin: 20px auto;
 
@@ -142,6 +141,9 @@
   // border-color: #e76d0c #e15500 #e15500;
   // background-color: #ec7211;
   // background-image: linear-gradient(180deg,#f67c1b 0,#e15500);
+}
+.dialog .form .space {
+  margin-top: 22px;
 }
 </style>
 
