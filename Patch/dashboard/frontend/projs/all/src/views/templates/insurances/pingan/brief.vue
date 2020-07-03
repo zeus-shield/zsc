@@ -1,7 +1,7 @@
 <template>
   <div class="insurance-pingan-brief">
     <el-row class="insurance" :gutter="0" type="flex" justify="start">
-      <el-col class="img" :span="4">
+      <el-col class="thumb" :span="4">
         <div class="col">
           <img v-if="item.brief.img_url && item.brief.img_url !== '' && item.brief.img_url !== 'null'" class="content" :src="require('@/assets/' + item.brief.img_url)">
         </div>
@@ -70,14 +70,14 @@
   // min-height: 36px;
 }
 
-.insurance .img .col {
+.insurance .thumb .col {
   margin: 20px auto;
 
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.insurance .img .col .content {
+.insurance .thumb .col .content {
   width: 100%;
   // height: 100%;
   height: auto;
@@ -150,7 +150,6 @@ import { mapState, mapGetters } from 'vuex';
 
 import utils from '@/common/utils';
 import APIs from '@/apis';
-// import APIs from '@/apis';
 
 export default {
   name: 'InsurancePingAnBrief',
@@ -209,7 +208,7 @@ export default {
       loadingText: '',
       dialogVisible: false,
       buttonDisabled: true,
-      addPolicyToDatabaseDoing: false,
+      addPolicyToDatabaseDone: false,
       form: {
         insurance: {
           id: '',
