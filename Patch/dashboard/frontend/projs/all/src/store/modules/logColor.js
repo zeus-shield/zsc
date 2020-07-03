@@ -46,6 +46,11 @@ const state = () => {
       sys: {
         user: 'black',
         company: 'black',
+        product: {
+          list: 'black',
+          add: 'black',
+          edit: 'black'
+        },
         qa: 'black',
         press: 'black',
         setting: 'black'
