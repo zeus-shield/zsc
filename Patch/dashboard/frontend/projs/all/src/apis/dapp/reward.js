@@ -56,6 +56,9 @@ class Reward {
 
   async mint(account, index, func = null) {
   };
+
+  async burn(account, amount, func = null) {
+  };
 }
 
 export default Reward;
