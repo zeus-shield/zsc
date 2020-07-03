@@ -3,7 +3,6 @@
 import createError from 'http-errors';
 
 class Scan {
-
   constructor(einstance) {
     this.einstance = einstance;
     this.erc20Tokens = [];
@@ -46,6 +45,16 @@ class Scan {
           param: 'default'
         }
       };
+      let instance = null;
+      if (eip === 'erc20') {
+        instance = this.einstance.contract(tokenAddr, this.erc20TokenAbi, accountObj);
+      } else if (eip === 'erc721') {
+        instance = this.einstance.contract(tokenAddr, this.erc721TokenAbi, accountObj);
+      } else {
+        let error = createError('tokenDetail: token eip do not support!');
+        error.code = 'DAPPScan';
+        throw error;
+      }
     } catch (error) {
       throw error;
     }
