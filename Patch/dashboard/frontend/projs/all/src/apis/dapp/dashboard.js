@@ -34,6 +34,10 @@ class Dashboard {
   // indexes: [0, 2, 6]
   _statInfo(data) {
   };
+
+  // //////////////////// User ////////////////////
+  async addresses() {
+  };
 }
 
 export default Dashboard;
