@@ -25,7 +25,9 @@ import Token from './token';
 
 let contracts = {
   user: {
-
+    addr: '',
+    abi: [
+    ]
   },
   reward: {
     addr: '',
