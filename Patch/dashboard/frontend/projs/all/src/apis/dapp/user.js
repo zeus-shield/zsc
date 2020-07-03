@@ -96,7 +96,7 @@ class User {
     }
   };
 
-  async addPolicy(account, keyObj, policy, func = null) {
+  async updateInfoByKey(account, key, info, func = null) {
   };
 
   async removeInfo(account, key, func = null) {
