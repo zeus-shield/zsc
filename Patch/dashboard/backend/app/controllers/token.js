@@ -18,6 +18,15 @@ const add = async(req, res) => {
     if (result) {
       throw createError('TOKEN_HAS_EXISTED');
     }
+
+    const doc = {
+      address: req.body.address,
+      network: req.body.network,
+      name: req.body.name,
+      symbol: req.body.symbol,
+      decimals: req.body.decimals,
+      created_at: Date.now()
+    };
   } catch (err) {
     throw err;
   }
