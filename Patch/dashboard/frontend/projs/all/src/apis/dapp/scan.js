@@ -55,6 +55,12 @@ class Scan {
         error.code = 'DAPPScan';
         throw error;
       }
+
+      if (!instance || !instance.contract) {
+        let error = createError('tokenDetail: contract with signer is null!');
+        error.code = 'DAPPScan';
+        throw error;
+      }
     } catch (error) {
       throw error;
     }
