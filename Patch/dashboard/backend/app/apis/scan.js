@@ -53,6 +53,10 @@ const tokens = async(req, res) => {
         network: req.query.network
       }
     };
+    const tokens = await services.tokens.list(params);
+    if (tokens.dataCount === 0 || tokens.list.length === 0) {
+      throw createError('TOKEN_NOT_EXIST');
+    }
   } catch (err) {
     throw err;
   }
