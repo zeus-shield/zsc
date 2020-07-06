@@ -17,6 +17,7 @@ const emailCode = async(req, res) => {
     session.startTransaction();
 
     const account = req.body.account;
+    const accountCrypto = req.body.accountCrypto;
 
     // check user exist ?
     let result = await services.users.find({account: account}, null, session);
@@ -45,7 +46,9 @@ const emailCode = async(req, res) => {
     result = await services.users.update({account: account}, update, false, session);
     if (!result) {
       const doc = {
+        cmd: 'email',
         account: account,
+        account_crypto: accountCrypto,
         email_code: crypto.encrypted(code, settings.saltKey),
         created_at: Date.now(),
         updated_at: Date.now(),
