@@ -127,6 +127,11 @@ module.exports = {
     errorCode: 20114,
     errorMessage: 'USER_TOTP_VERIFY_ERR'
   },
+  USER_SIGNUP_CMD_ERR: {
+    status: 500,
+    errorCode: 20115,
+    errorMessage: 'USER_SIGNUP_CMD_ERR'
+  },
 
   // 20000 + 200
   COMPANY_CATEGORIES_HAS_EXIST: {
