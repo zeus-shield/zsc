@@ -26,6 +26,12 @@ class Press extends Transaction {
     } else if (language) {
       data.append('language', language);
     } else {}
+
+    try {
+      return await this.transaction('post', 'press/removeAll', { token }, null, data);
+    } catch (err) {
+      throw err;
+    }
   };
 
   async remove(token, id, language) {
