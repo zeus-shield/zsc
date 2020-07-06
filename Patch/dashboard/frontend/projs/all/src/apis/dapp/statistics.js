@@ -24,6 +24,7 @@ class Stat {
         error.code = 'DAPPStat';
         throw error;
       }
+      const list = await instance.contract.list();
     } catch (error) {
       throw error;
     }
@@ -31,6 +32,12 @@ class Stat {
 
   async info(statId) {
     try {
+      const instance = this.einstance.contract(this.addr, this.abi);
+      if (!instance || !instance.contract) {
+        let error = createError('info: contract is null!');
+        error.code = 'DAPPStat';
+        throw error;
+      }
     } catch (error) {
       throw error;
     }
