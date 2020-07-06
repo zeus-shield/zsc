@@ -38,6 +38,9 @@ class Dashboard {
   // //////////////////// User ////////////////////
   async addresses() {
   };
+
+  async userCount() {
+  };
 }
 
 export default Dashboard;
