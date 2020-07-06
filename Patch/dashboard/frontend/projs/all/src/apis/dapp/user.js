@@ -97,6 +97,10 @@ class User {
   };
 
   async updateInfoByKey(account, key, info, func = null) {
+    try {
+    } catch (error) {
+      throw error;
+    }
   };
 
   async removeInfo(account, key, func = null) {
