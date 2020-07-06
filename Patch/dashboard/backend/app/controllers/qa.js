@@ -18,6 +18,11 @@ const add = async(req, res) => {
       $push: {contents: content},
       $set: {updated_at: Date.now()}
     };
+    // Finds a matching document, updates it and return the modified document.
+    const result = await services.qas.update(conditions, update, false, null);
+    if (!result) {
+    }
+    res.sendOk('Add qa successfully!');
   } catch (err) {
     throw err;
   }
