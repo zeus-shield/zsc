@@ -59,6 +59,9 @@ class Reward {
 
   async burn(account, amount, func = null) {
   };
+
+  async addTrace(account, timeKey, trace, func = null) {
+  };
 }
 
 export default Reward;
