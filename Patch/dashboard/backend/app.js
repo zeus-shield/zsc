@@ -145,7 +145,7 @@ routes(app);
 
 // http server
 const httpServer = require('http').createServer(app);
-const httpPort = _normalizePort(process.env.PORT || '3000');
+const httpPort = _normalizePort(process.env.PORT || '3002');
 httpServer.listen(httpPort);
 httpServer.on('error', _onHTTPError);
 httpServer.on('listening', _onHTTPListening);
@@ -153,9 +153,12 @@ httpServer.on('listening', _onHTTPListening);
 // https server
 const fs = require('fs');
 const httpsServer = require('https').createServer({
-  key: fs.readFileSync('./cert/3166507_bakerjiang.website.key'),
-  cert: fs.readFileSync('./cert/3166507_bakerjiang.website.pem')}, app);
-const httpsPort = _normalizePort(process.env.PORT || '3001');
+  key: fs.readFileSync('./cert/4154046_dashboard.ink.key'),
+  cert: fs.readFileSync('./cert/4154046_dashboard.ink.pem')
+  // key: fs.readFileSync('/server/deploy/dashboard/cert/4154046_dashboard.ink.key'),
+  // cert: fs.readFileSync('/server/deploy/dashboard/cert/4154046_dashboard.ink.pem')
+}, app);
+const httpsPort = _normalizePort(process.env.PORT || '3003');
 httpsServer.listen(httpsPort);
 httpsServer.on('error', _onHTTPSError);
 httpsServer.on('listening', _onHTTPSListening);
