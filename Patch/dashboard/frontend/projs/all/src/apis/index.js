@@ -2,8 +2,10 @@
 
 import axios from 'axios';
 const instance = axios.create({
-  baseURL: 'http://localhost:3000/',
-  timeout: 5000
+  // baseURL: 'http://localhost:3000/',
+  // baseURL: 'https://dashboard.ink/backend/',
+  baseURL: process.env.BASE_URL,
+  timeout: 60000
   // withCredentials: true // bypass cookie from and to server
 });
 
