@@ -64,6 +64,13 @@
           <span class="description">{{ langSet.user.detail.security.google.description }}</span>
         </el-col>
         <el-col v-else class="col" :span="0"></el-col>
+
+        <el-col class="col" :xs="{span: 10, offset: 0}" :sm="{span: 10, offset: 0}" :md="{span: 10, offset: 0}" :lg="{span: 4, offset: 0}">
+          <el-button class="button" type="text" @click="$router.push({name: 'userGoogle', params: {cmd: cmd}});">{{ (cmd === 'set') ? langSet.user.detail.security.google.operation.set : langSet.user.detail.security.google.operation.reset }}</el-button>
+          <el-divider direction="vertical"></el-divider>
+          <el-switch v-if="cmd === 'reset'" v-model="GoogleAuthOn" :active-text="langSet.user.detail.security.google.operation.open" @change="dialogVisible = true">
+          </el-switch>
+        </el-col>
       </el-row>
     </div>
 
