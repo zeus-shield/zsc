@@ -37,8 +37,14 @@ let contracts = {
     ]
   },
   stat: {
+    addr: '',
+    abi: [
+    ]
   },
   dashboard: {
+    addr: '',
+    abi: [
+    ]
   }
   }
 };
