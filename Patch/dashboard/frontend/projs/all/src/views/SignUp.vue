@@ -10,8 +10,8 @@
                   <span>{{langSet.signUp.title}}</span>
                 </div>
               </el-form-item> -->
-              <el-form-item v-if="errorMessage !== ''">
-                <el-alert class = "signup-alert"
+              <el-form-item>
+                <el-alert v-if="errorMessage !== ''" class = "signup-alert"
                   :title="langSet.message.error[errorMessage]"
                   type="error"
                   :closable="false"
