@@ -156,7 +156,7 @@ import InsurancePICCBrief from '@/views/templates/insurances/picc/brief';
 import { mapState, mapGetters, mapActions } from 'vuex';
 
 import utils from '@/common/utils';
-// import APIs from '@/apis';
+import APIs from '@/apis';
 
 export default {
   name: 'Insurance',
@@ -241,7 +241,8 @@ export default {
 
     vm.loading = true;
 
-    vm.recieve().then(() => {
+    vm.recieve().then((data) => {
+      vm.buildCache(data);
       vm.loading = false;
       if (vm.cacheData.companies !== undefined && this.cacheData.companies.length !== 0) {
         vm.companyActiveIndex = 0;
