@@ -81,12 +81,14 @@ export default {
   mounted() {
     console.log('%c[User]mounted()', `color:${this.logColor}`);
     let activeIndex = '1';
-    if (window.location.href.indexOf('/policy') !== -1) {
+    if (window.location.href.indexOf('/point') !== -1) {
       activeIndex = '2';
-    } else if (window.location.href.indexOf('/support') !== -1) {
+    } else if (window.location.href.indexOf('/detail') !== -1) {
       activeIndex = '3';
-    } else if (window.location.href.indexOf('/questions') !== -1) {
+    } else if (window.location.href.indexOf('/support') !== -1) {
       activeIndex = '4';
+    } else if (window.location.href.indexOf('/questions') !== -1) {
+      activeIndex = '5';
     } else {}
     this.activeIndex = activeIndex;
   },
