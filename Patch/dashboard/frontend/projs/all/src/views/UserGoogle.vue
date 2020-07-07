@@ -167,6 +167,12 @@ export default {
   // },
   data() {
     let validateCode = (rule, value, callback) => {
+      if (value === '') {
+      } else {
+        if (value.length !== 6) {
+        } else {
+        }
+      }
     };
     return {
       loading: false,
