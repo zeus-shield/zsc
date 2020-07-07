@@ -124,6 +124,8 @@ export default {
         text: ''
       },
       policies: [],
+      policiesDatabase: [],
+      policiesBlockchain: [],
       labelWidth: '20%'
     };
   },
@@ -140,6 +142,15 @@ export default {
     console.log('%c[UserPolicy]created()', `color:${this.logColor}`);
   },
   mounted() {
+    console.log('%c[UserPolicy]mounted()', `color:${this.logColor}`);
+
+    this.setDeviceParam();
+    if (this.device === 'pc') {
+      window.onresize = () => {
+        this.setDeviceParam();
+      };
+    }
+    this.getUserPolicies();
   },
   destroyed() {
     console.log('%c[UserPolicy]destroyed()', `color:${this.logColor}`);
