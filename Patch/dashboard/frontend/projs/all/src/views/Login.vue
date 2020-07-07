@@ -85,7 +85,7 @@ export default {
       if (value === '') {
         callback(new Error(this.langSet['message']['error']['LOGIN_ACCOUNT_NONE']));
       } else {
-        if (value.length < 6 || value.length > 18) {
+        if (value.length < 6 || value.length > 64) {
           callback(new Error(this.langSet['message']['error']['LOGIN_ACCOUNT_LEN_ERR']));
         } else {
           callback();
@@ -127,8 +127,8 @@ export default {
       },
       rules: {
         account: [
-          // { required: true, message: '??????/????', trigger: 'blur' },
-          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
+          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
+          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
           // { validator: validateAccount, trigger: ['blur', 'change'] },
           { validator: validateAccount, trigger: 'blur' }
         ],
