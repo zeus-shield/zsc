@@ -116,10 +116,11 @@ export default {
   data() {
     return {
       routes: [
-        {id: '1', name: 'userDetail'},
-        {id: '2', name: 'userPolicy'},
-        {id: '3', name: 'userSupport'},
-        {id: '4', name: 'userQuestions'}
+        { id: '1', name: 'userPolicy' },
+        { id: '2', name: 'userPoint' },
+        { id: '3', name: 'userDetail' },
+        { id: '4', name: 'userSupport' },
+        { id: '5', name: 'userQuestions' }
       ]
     };
   },
