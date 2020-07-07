@@ -263,6 +263,7 @@ export default {
     ...mapState('lang', ['lang']),
     ...mapGetters('lang', ['langSet', 'langSetByKey'])
   },
+  inject: ['flushApp'],
   created() {
     console.log('%c[Header]created()', `color:${this.logColor}`);
   },
@@ -317,11 +318,13 @@ export default {
         if (utils.storage.cookie.get('lang') === 'cn') {
           // window.location.href = 'static/Myinsura_whitepaper_cn_v0.00.02.pdf';
           window.open('static/Myinsura_whitepaper_cn_v0.00.02.pdf');
-          this.$router.go(0);
+          // this.$router.go(0);
+          this.flushApp('header');
         } else {
           // window.location.href = 'static/Myinsura_whitepaper_en_v0.00.02.pdf';
           window.open('static/Myinsura_whitepaper_en_v0.00.02.pdf');
-          this.$router.go(0);
+          // this.$router.go(0);
+          this.flushApp('header');
         }
       } else {
         let route = this.routes.find(route => route.id === key);
