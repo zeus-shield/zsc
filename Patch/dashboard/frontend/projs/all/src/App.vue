@@ -227,7 +227,8 @@ export default {
       login: false,
       // device: 'pc',
       resizeFlag: null,
-      reload: false
+      reloadMain: false,
+      reloadHeader: false
     };
   },
   // props: {
@@ -245,7 +246,7 @@ export default {
   },
   provide() {
     return {
-      reloadApp: this.reloadApp
+      flushApp: this.flushApp
     };
   },
   beforeCreate() {
@@ -330,7 +331,7 @@ export default {
     ...mapActions('device', [
       'updateDevice'
     ]),
-    reloadApp() {
+    flushApp(cmd) {
       this.reload = true;
       this.$nextTick(() => {
         this.reload = false;
