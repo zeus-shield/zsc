@@ -67,8 +67,10 @@ const en = {
   signUp: {
     phoneTitle: 'Phone',
     emailTitle: 'Email',
+    quickTitle: 'Qucik',
     phonePlaceholder: 'Phone Number',
     emailPlaceholder: 'Email',
+    quickPlaceholder: 'Account',
     getCode: 'Get Code',
     retrieveCode: 'Retrieve Code',
     code: '6-bit Verification Code',
