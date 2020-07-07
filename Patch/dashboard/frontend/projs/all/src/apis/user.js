@@ -11,6 +11,7 @@ class User extends Transaction {
   async buildEmailCode(account) {
     const data = new URLSearchParams();
     data.append('account', account);
+    data.append('accountCrypto', '0x' + CryptoJS.MD5(account).toString());
 
     try {
       return await this.transaction('post', 'user/emailCode', null, null, data);
@@ -19,8 +20,9 @@ class User extends Transaction {
     }
   };
 
-  async signUp(account, code, password) {
+  async signUp(cmd, account, code, password) {
     const data = new URLSearchParams();
+    data.append('cmd', cmd);
     data.append('account', account);
     data.append('accountCrypto', '0x' + CryptoJS.MD5(account).toString());
     data.append('password', password);
@@ -145,7 +147,7 @@ class User extends Transaction {
     if (id) {
       data.append('id', id);
     } else if (account) {
-      data.append('account', account);
+      data.append('account', JSON.stringify(account));
     } else {}
 
     try {
