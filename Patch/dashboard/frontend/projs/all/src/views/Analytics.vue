@@ -209,7 +209,12 @@ export default {
       this.chartPie.setOption(option);
     },
     drawBar() {
-      this.chartBar = echarts.init(document.getElementById('chartBar'));
+      const handle = document.getElementById('chartBar');
+      if (!handle) {
+        return;
+      }
+
+      this.chartBar = echarts.init(handle);
       let option = {
         title: {
           text: utils.storage.cookie.get('lang') === 'en' ? 'Company Ranking' : '???????',
