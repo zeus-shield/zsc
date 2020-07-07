@@ -74,8 +74,10 @@ const cn = {
   signUp: {
     phoneTitle: '手机注册',
     emailTitle: '邮箱注册',
+    quickTitle: '快速注册',
     phonePlaceholder: '请输入手机号',
     emailPlaceholder: '请输入邮箱地址',
+    quickPlaceholder: '请输入账号',
     getCode: '获取验证码',
     retrieveCode: '重新获取',
     code: '请输入6位验证码',
