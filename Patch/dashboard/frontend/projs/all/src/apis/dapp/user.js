@@ -49,6 +49,13 @@ class User {
 
   async count() {
     try {
+      // check instance
+      const instance = this.einstance.contract(this.addr, this.abi);
+      if (!instance || !instance.contract) {
+        let error = createError('count: contract is null!');
+        error.code = 'DAPPUser';
+        throw error;
+      }
     } catch (error) {
       throw error;
     }
