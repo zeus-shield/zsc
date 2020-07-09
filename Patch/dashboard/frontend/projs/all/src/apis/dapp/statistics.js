@@ -25,6 +25,10 @@ class Stat {
         throw error;
       }
       const list = await instance.contract.list();
+
+      const data = Object.values(list).reduce((data, stat) => {
+      }, {
+      });
     } catch (error) {
       throw error;
     }
