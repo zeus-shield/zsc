@@ -240,9 +240,9 @@ let router = new Router({
           component: AdminSysPress
         },
         {
-          path: '/admin/setting',
-          name: 'adminSetting',
-          component: AdminSetting
+          path: '/admin/sys/setting',
+          name: 'adminSysSetting',
+          component: AdminSysSetting
         },
         {
           path: '/admin/contract',
