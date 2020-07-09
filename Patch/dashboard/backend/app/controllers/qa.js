@@ -21,6 +21,11 @@ const add = async(req, res) => {
     // Finds a matching document, updates it and return the modified document.
     const result = await services.qas.update(conditions, update, false, null);
     if (!result) {
+      const doc = {
+        language: req.body.language,
+        contents: [content],
+        created_at: Date.now()
+      };
     }
     res.sendOk('Add qa successfully!');
   } catch (err) {
