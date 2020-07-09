@@ -41,6 +41,9 @@ class Dashboard {
 
   async userCount() {
   };
+
+  async userAccount(index) {
+  };
 }
 
 export default Dashboard;
