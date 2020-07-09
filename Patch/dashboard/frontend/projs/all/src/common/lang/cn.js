@@ -274,6 +274,7 @@ const cn = {
       USER_POINT_TRANSFER_TARGET_NONE: '请输入目标账户！',
       USER_POINT_TRANSFER_AMOUNT_NONE: '请输入积分数量！',
       USER_CHECK_IN_FAIL: '用户签到失败！',
+      USER_SIGNUP_CMD_ERR: '用户注册类型错误！',
 
       COMPANY_CATEGORIES_HAS_EXIST: '该保险公司下险种已存在！',
       COMPANY_CATEGORIES_NOT_EXIST: '该保险公司下险种不存在！',
@@ -307,6 +308,7 @@ const cn = {
       LOGIN_PWD_LEN_ERR: '长度在 3 到 6 个字符',
 
       SIGNUP_ACCOUNT_NONE: '请输入手机号/邮箱地址',
+      SIGNUP_QUICK_ACCOUNT_NONE: '请输入账号',
       SIGNUP_ACCOUNT_LEN_ERR: '长度在 6 到 64 个字符',
       SIGNUP_CODE_NONE: '请输入6位验证码',
       SIGNUP_CODE_LEN_ERR: '长度必须等于6',
