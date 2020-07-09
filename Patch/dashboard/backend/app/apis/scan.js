@@ -57,6 +57,9 @@ const tokens = async(req, res) => {
     if (tokens.dataCount === 0 || tokens.list.length === 0) {
       throw createError('TOKEN_NOT_EXIST');
     }
+
+    let result = [];
+    res.sendOk(result);
   } catch (err) {
     throw err;
   }
