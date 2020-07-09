@@ -259,6 +259,7 @@ const en = {
       USER_POINT_TRANSFER_TARGET_NONE: 'Please input target account!',
       USER_POINT_TRANSFER_AMOUNT_NONE: 'Please input the amount!',
       USER_CHECK_IN_FAIL: 'User failed to check in!',
+      USER_SIGNUP_CMD_ERR: 'User sign up cmd error!',
 
       COMPANY_CATEGORIES_HAS_EXIST: 'Company and category have already existed!',
       COMPANY_CATEGORIES_NOT_EXIST: 'Company and category does not exist!',
@@ -292,6 +293,7 @@ const en = {
       LOGIN_PWD_LEN_ERR: 'Length of 3 to 6 characters',
 
       SIGNUP_ACCOUNT_NONE: 'Please input phone number or email',
+      SIGNUP_QUICK_ACCOUNT_NONE: 'Please input account',
       SIGNUP_ACCOUNT_LEN_ERR: 'Length of 6 to 64 characters',
       SIGNUP_CODE_NONE: 'Please input 6-digit Verification code',
       SIGNUP_CODE_LEN_ERR: 'Length must be 6',
