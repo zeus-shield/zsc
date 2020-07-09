@@ -29,6 +29,10 @@ module.exports = {
   // },
   // rinkeby config
   bcConfig: {
+    wallet: {
+    },
+    NETWORK: 'rinkeby',
+    PARAM: 'default'
   },
   mongooseDebug: true,
   stmpConfig: {
