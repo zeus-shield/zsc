@@ -61,6 +61,11 @@ class Scan {
         error.code = 'DAPPScan';
         throw error;
       }
+
+      let info;
+      if (eip === 'erc20') {
+      } else if (eip === 'erc721') {} else {}
+      return info;
     } catch (error) {
       throw error;
     }
