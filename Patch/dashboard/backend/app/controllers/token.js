@@ -27,6 +27,9 @@ const add = async(req, res) => {
       decimals: req.body.decimals,
       created_at: Date.now()
     };
+    await services.tokens.insert([doc], null);
+
+    res.sendOk('Add token successfully!');
   } catch (err) {
     throw err;
   }
