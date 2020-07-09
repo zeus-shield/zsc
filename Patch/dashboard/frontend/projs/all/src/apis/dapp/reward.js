@@ -62,6 +62,9 @@ class Reward {
 
   async addTrace(account, timeKey, trace, func = null) {
   };
+
+  async removeTrace(account, timeKey, func = null) {
+  };
 }
 
 export default Reward;
