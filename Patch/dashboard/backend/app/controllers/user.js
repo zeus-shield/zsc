@@ -345,7 +345,12 @@ const removeAllPolicies = async(req, res) => {
     if (req.body.id) {
       conditions = {_id: req.body.id};
     } else if (req.body.account) {
-      conditions = {account: req.body.account};
+      const account = JSON.parse(req.body.account);
+      if (account.raw) {
+        conditions = {account: account.raw};
+      } else if (account.crypto) {
+      } else {
+      }
     } else {
       throw createError('COMMON_PARAM_ERROR');
     }
