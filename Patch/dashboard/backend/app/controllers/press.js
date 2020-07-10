@@ -26,6 +26,7 @@ const add = async(req, res) => {
         contents: [content],
         created_at: Date.now()
       };
+      await services.presses.insert([doc], null);
     }
     res.sendOk('Add press successfully!');
   } catch (err) {
@@ -38,6 +39,11 @@ const remove = async(req, res) => {
   try {
     // There is only one database write operation, and session can not be used.
     const conditions = {language: req.body.language};
+
+    const update = {
+      $pull: {contents: {_id: req.body.id}},
+      $set: {updated_at: Date.now()}
+    };
   } catch (err) {
     throw err;
   }
