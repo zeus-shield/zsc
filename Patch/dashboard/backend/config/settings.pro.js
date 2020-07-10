@@ -32,6 +32,8 @@ module.exports = {
     PARAM: 'default'
   },
   mongooseDebug: true,
+  stmpConfig: {
+  },
   adminConfig: {
   },
   qiniuConfig: {
