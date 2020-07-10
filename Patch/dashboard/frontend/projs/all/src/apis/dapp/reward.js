@@ -65,6 +65,9 @@ class Reward {
 
   async removeTrace(account, timeKey, func = null) {
   };
+
+  async removeAllTraces(account, func = null) {
+  };
 }
 
 export default Reward;
