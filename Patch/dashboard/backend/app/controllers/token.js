@@ -73,3 +73,5 @@ const detail = async(req, res) => {
 
 const count = async(req, res) => {
 };
+
+module.exports = { add, remove, update, list, detail, count };
