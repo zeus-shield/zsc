@@ -26,6 +26,7 @@ const add = async(req, res) => {
         contents: [content],
         created_at: Date.now()
       };
+      await services.qas.insert([doc], null);
     }
     res.sendOk('Add qa successfully!');
   } catch (err) {
@@ -43,6 +44,7 @@ const remove = async(req, res) => {
       $pull: {contents: {_id: req.body.id}},
       $set: {updated_at: Date.now()}
     };
+    res.sendOk('Remove qa successfully!');
   } catch (err) {
     throw err;
   }
