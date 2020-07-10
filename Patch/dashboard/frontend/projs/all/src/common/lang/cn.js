@@ -211,6 +211,7 @@ const cn = {
     },
     policy: {
       // the content follow same as market.dialog
+      refresh: '链上刷新'
     },
     point: {
       title: '我的积分',
@@ -218,6 +219,7 @@ const cn = {
         title: '积分总览',
         amount: '可用积分',
         checkIn: '签到赚积分',
+        checkingIn: '签到中……',
         checkedIn: '当日已签到',
         transfer: '送他人积分'
       },
