@@ -59,6 +59,9 @@ const tokens = async(req, res) => {
     }
 
     let result = [];
+    for (let i = 0; i < tokens.list.length; i++) {
+    }
+
     res.sendOk(result);
   } catch (err) {
     throw err;
