@@ -27,6 +27,11 @@ class Stat {
       const list = await instance.contract.list();
 
       const data = Object.values(list).reduce((data, stat) => {
+        const item = {
+          stat: hexToStr(stat)
+        };
+        data.content.list.push(item);
+        return data;
       }, {
       });
     } catch (error) {
