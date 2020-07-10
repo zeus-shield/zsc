@@ -141,12 +141,6 @@ let router = new Router({
       meta: { auth: true },
       children: [
         {
-          path: '/account/user',
-          name: 'userDetail',
-          component: UserDetail,
-          meta: { auth: true }
-        },
-        {
           path: '/account/user/policy',
           name: 'userPolicy',
           component: UserPolicy,
