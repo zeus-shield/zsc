@@ -64,6 +64,9 @@ class Scan {
 
       let info;
       if (eip === 'erc20') {
+        const _balanceOf = await instance.contract.balanceOf(account);
+        const balanceOf = this.einstance.formatEther(_balanceOf);
+        info = { balanceOf };
       } else if (eip === 'erc721') {} else {}
       return info;
     } catch (error) {
