@@ -56,6 +56,8 @@ class User {
         error.code = 'DAPPUser';
         throw error;
       }
+      const result = await instance.contract.count();
+      return this.einstance.bigNumberToNumber(result);
     } catch (error) {
       throw error;
     }
