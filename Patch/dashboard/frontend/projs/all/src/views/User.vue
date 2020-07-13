@@ -98,9 +98,11 @@ export default {
   updated() {
     console.log('%c[User]updated()', `color:${this.logColor}`);
     let activeIndex = '1';
-    if (window.location.href.indexOf('/policy') !== -1) {
+    if (window.location.href.indexOf('/point') !== -1) {
       activeIndex = '2';
-    } else if (window.location.href.indexOf('/point') !== -1) {
+    } else if (window.location.href.indexOf('/detail') !== -1) {
+      activeIndex = '3';
+    } else if (window.location.href.indexOf('/google') !== -1) {
       activeIndex = '3';
     } else if (window.location.href.indexOf('/support') !== -1) {
       activeIndex = '4';
