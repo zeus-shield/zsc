@@ -277,7 +277,7 @@ export default {
               utils.storage.cookie.set('login_token', data.content.token, 'N/A');
               utils.storage.cookie.set('login_id', data.content._id, 'N/A');
               vm.loading = false;
-              vm.$router.push({name: 'userDetail'});
+              vm.$router.push({name: 'userPolicy'});
             }
           }).catch(errorData => {
             // console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, errorData);
@@ -317,7 +317,7 @@ export default {
             utils.storage.cookie.set('login_id', data.content._id, 'N/A');
             vm.loading = false;
             vm.dialogVisible = false;
-            vm.$router.push({name: 'userDetail'});
+            vm.$router.push({name: 'userPolicy'});
           }).catch(errorData => {
             // console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, errorData);
             if (errorData.errorMessage === 'USER_TOTP_VERIFY_ERR') {
