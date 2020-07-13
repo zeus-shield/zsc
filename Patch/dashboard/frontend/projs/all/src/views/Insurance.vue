@@ -293,6 +293,8 @@ export default {
     next();
   },
   methods: {
+    async recieve() {
+    },
     buildCompanyCategoryCount() {
       this.cacheData.companies.forEach(company => {
       });
