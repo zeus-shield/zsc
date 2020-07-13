@@ -30,7 +30,7 @@
                   </el-form-item>
                 </el-tab-pane> -->
               </el-tabs>
-              <el-form-item prop="code">
+              <el-form-item v-if="tabName !== 'signup-tab-quick'" prop="code">
                 <el-row :gutter="20">
                   <el-col :span="12">
                     <el-input v-model="form.code" prefix-icon="iconfont if-password" :placeholder="langSet.signUp.code" @input="inputChange"></el-input>
@@ -130,6 +130,8 @@ export default {
           }
         }
       }
+    };
+    let validateQuickAccount = (rule, value, callback) => {
     };
     let validateCode = (rule, value, callback) => {
       if (value === '') {
