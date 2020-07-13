@@ -172,5 +172,9 @@ export default {
     console.log('%c[UserPolicy]beforeRouteLeave(\"%s\" => \"%s\")', `color:${this.logColor}`, from.fullPath, to.fullPath);
     next();
   },
+  methods: {
+    setDeviceParam() {
+    },
+  }
 };
 </script>
