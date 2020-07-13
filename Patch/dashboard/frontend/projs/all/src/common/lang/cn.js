@@ -223,6 +223,9 @@ const cn = {
         checkedIn: '当日已签到',
         transfer: '送他人积分'
       },
+      trace: {
+      },
+      dialog: {
       }
     }
   },
