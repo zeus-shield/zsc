@@ -205,9 +205,12 @@ export default {
     return {
     };
   },
-  props: {
+  // props: {
+  // },
+  computed: {
   },
-  data() {
+  created() {
+    console.log('%c[UserDetail]created()', `color:${this.logColor}`);
   },
   data() {
   },
