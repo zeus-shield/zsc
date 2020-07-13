@@ -2,10 +2,10 @@
   <div id="app">
     <el-container>
       <el-header v-if="device === 'pc'">
-        <header-pc :activeIndex="activeIndex"></header-pc>
+        <header-pc v-if="!reloadHeader" :activeIndex="activeIndex"></header-pc>
       </el-header>
       <header-m v-else :activeIndex="activeIndex"></header-m>
-      <el-main v-if="!reload">
+      <el-main v-if="!reloadMain">
         <router-view></router-view>
       </el-main>
       <el-footer>
