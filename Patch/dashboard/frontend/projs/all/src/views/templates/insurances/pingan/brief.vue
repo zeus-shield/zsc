@@ -247,6 +247,10 @@ export default {
     item: {}
   },
   computed: {
+    ...mapState({
+      logColor: state => state.logColor.insurance.pingan.brief
+    }),
+    ...mapGetters('lang', ['langSet'])
   },
   created() {
     console.log('%c[InsurancePingAnBrief]created()', `color:${this.logColor}`);
