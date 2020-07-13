@@ -145,6 +145,12 @@
 .dialog .form .space {
   margin-top: 22px;
 }
+.dialog .form .divider-content {
+  font-size: 12px;
+}
+.dialog .form .date {
+  width: 100%;
+}
 </style>
 
 <script>
