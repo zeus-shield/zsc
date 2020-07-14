@@ -210,6 +210,8 @@ const en = {
       profile: {
       },
       trace: {
+        title: 'Detail',
+        time: 'Time',
       },
     }
   },
