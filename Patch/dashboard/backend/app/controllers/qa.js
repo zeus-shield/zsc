@@ -44,6 +44,13 @@ const remove = async(req, res) => {
       $pull: {contents: {_id: req.body.id}},
       $set: {updated_at: Date.now()}
     };
+
+    // Finds a matching document, updates it and return the modified document.
+    const result = await services.qas.update(conditions, update, false, null);
+    if (!result) {
+      throw createError('QA_DOC_NOT_EXIST');
+    }
+
     res.sendOk('Remove qa successfully!');
   } catch (err) {
     throw err;
