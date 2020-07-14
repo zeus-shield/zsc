@@ -256,6 +256,8 @@ export default {
     console.log('%c[InsurancePingAnBrief]created()', `color:${this.logColor}`);
   },
   mounted() {
+    console.log('%c[InsurancePingAnBrief]mounted()', `color:${this.logColor}`);
+    this.updateForm();
   },
 };
 </script>
