@@ -65,6 +65,13 @@ class User {
 
   async account(index) {
     try {
+      // check instance
+      const instance = this.einstance.contract(this.addr, this.abi);
+      if (!instance || !instance.contract) {
+        let error = createError('account: contract is null!');
+        error.code = 'DAPPUser';
+        throw error;
+      }
     } catch (error) {
       throw error;
     }
