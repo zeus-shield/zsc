@@ -84,6 +84,12 @@ const rateFromAddr = async(req, res) => {
     let dest;
     let rate;
     const instance = axios.create('https://api.kyber.network/', 5000);
+
+    if (req.query.src) {
+    } else {
+    }
+
+    res.sendOk({src, dest, rate});
   } catch (err) {
     throw err;
   }
