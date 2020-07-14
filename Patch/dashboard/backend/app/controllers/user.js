@@ -140,6 +140,14 @@ const update = async(req, res) => {
     // There is only one database write operation, and session can not be used.
     let result = {};
     let update = JSON.parse(req.body.update);
+
+    // check account is exist excluding self ?
+    if (update.account) {
+    }
+
+    if (update.password) {
+      update.password = crypto.encrypted(update.password, settings.saltKey);
+    }
   } catch (err) {
     throw err;
   }
