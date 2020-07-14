@@ -216,7 +216,7 @@ export default {
       loadingText: '',
       dialogVisible: false,
       buttonDisabled: true,
-      addPolicyToDatabaseDoing: false,
+      addPolicyToDatabaseDone: false,
       form: {
         insurance: {
           id: '',
@@ -236,6 +236,8 @@ export default {
           age: '',
           sex: '',
           status: '',
+          address: '',
+          contact: ''
         },
         policy: {
           amount: '',
