@@ -50,6 +50,9 @@ class Dashboard {
 
   async userInfo(account) {
   };
+
+  async userInfoByKey(account, key) {
+  };
 }
 
 export default Dashboard;
