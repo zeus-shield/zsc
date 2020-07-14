@@ -224,6 +224,8 @@ const cn = {
         transfer: '送他人积分'
       },
       trace: {
+        title: '积分明细',
+        time: '时间',
       },
       dialog: {
       }
