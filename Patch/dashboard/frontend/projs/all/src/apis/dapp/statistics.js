@@ -33,7 +33,11 @@ class Stat {
         data.content.list.push(item);
         return data;
       }, {
+        content: {
+          list: []
+        }
       });
+      return data;
     } catch (error) {
       throw error;
     }
