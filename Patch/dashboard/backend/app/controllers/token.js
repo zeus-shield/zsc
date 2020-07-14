@@ -72,6 +72,11 @@ const detail = async(req, res) => {
 };
 
 const count = async(req, res) => {
+  // debug('count(%s)', JSON.stringify(req.query));
+  try {
+  } catch (err) {
+    res.sendErr(err);
+  }
 };
 
 module.exports = { add, remove, update, list, detail, count };
