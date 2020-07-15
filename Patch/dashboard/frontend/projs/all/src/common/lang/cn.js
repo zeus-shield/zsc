@@ -226,6 +226,8 @@ const cn = {
       trace: {
         title: '积分明细',
         time: '时间',
+        amount: '收入/支出',
+        description: '详细说明'
       },
       dialog: {
       }
