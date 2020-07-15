@@ -76,9 +76,13 @@ const emailCode = async(req, res) => {
 };
 
 const signUp = async(req, res) => {
-  // debug('signUp(%s, %s, %s)', req.body.account, req.body.password, req.body.code);
+  // debug('signUp(%s, %s, %s, %s, %s)', req.body.cmd, req.body.account, req.body.accountCrypto, req.body.password, req.body.code);
+  let session = null;
   try {
-    // There is only one database write operation, and session can not be used.
+    session = await mongoose.startSession();
+    session.startTransaction();
+
+    const cmd = req.body.cmd;
     const account = req.body.account;
     const accountCrypto = req.body.accountCrypto;
     const password = req.body.password;
