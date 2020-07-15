@@ -174,11 +174,10 @@ let router = new Router({
       //   next();
       // }
     },
-
     {
-      path: '/admin',
+      path: '/admin/sys',
       name: '',
-      redirect: '/admin/user'
+      redirect: '/admin/sys/user'
     },
     {
       path: '/admin',
