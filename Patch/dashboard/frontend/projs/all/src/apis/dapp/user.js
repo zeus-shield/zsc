@@ -72,6 +72,8 @@ class User {
         error.code = 'DAPPUser';
         throw error;
       }
+      const account = await instance.contract.account(index);
+      return account.replace(/0+$/gi, '');
     } catch (error) {
       throw error;
     }
