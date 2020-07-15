@@ -60,6 +60,13 @@ const tokens = async(req, res) => {
 
     let result = [];
     for (let i = 0; i < tokens.list.length; i++) {
+      let token = {};
+      token.name = tokens.list[i].name;
+      token.symbol = tokens.list[i].symbol;
+      token.decimals = tokens.list[i].decimals;
+      const info = await services.dapp.scan.token(req.query.eip, req.query.network, tokens.list[i].address, req.query.account);
+      token.balanceOf = info.balanceOf;
+      result.push(token);
     }
 
     res.sendOk(result);
