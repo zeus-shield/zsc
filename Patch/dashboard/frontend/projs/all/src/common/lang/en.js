@@ -212,6 +212,8 @@ const en = {
       trace: {
         title: 'Detail',
         time: 'Time',
+        amount: 'Revenue/Expense',
+        description: 'Description'
       },
     }
   },
