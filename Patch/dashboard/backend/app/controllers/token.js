@@ -66,6 +66,15 @@ const list = async(req, res) => {
 const detail = async(req, res) => {
   // debug('detail(%s)', JSON.stringify(req.query));
   try {
+    let conditions = {};
+
+    if (req.query.id) {
+      conditions = {_id: req.query.id};
+    } else if (req.query.address) {
+      conditions = {address: req.query.address};
+    } else {
+      throw createError('COMMON_PARAM_ERROR');
+    }
   } catch (err) {
     res.sendErr(err);
   }
