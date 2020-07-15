@@ -34,6 +34,9 @@ module.exports = {
   mongooseDebug: true,
   stmpConfig: {
   },
+  totpConfig: {
+    issuer: 'Dashboard'
+  },
   adminConfig: {
   },
   qiniuConfig: {
