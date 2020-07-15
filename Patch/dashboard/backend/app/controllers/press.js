@@ -70,6 +70,11 @@ const update = async(req, res) => {
   try {
     let content = JSON.parse(req.body.content);
     content.updated_at = Date.now();
+    // There is only one database write operation, and session can not be used.
+    const conditions = {
+      language: req.body.language,
+      'contents._id': req.body.id
+    };
   } catch (err) {
     throw err;
   }
