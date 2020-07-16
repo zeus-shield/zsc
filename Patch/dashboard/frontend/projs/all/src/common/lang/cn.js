@@ -360,7 +360,9 @@ const cn = {
   config: {
     company: {
       PINGAN: '中国平安',
-      PICC: '中国人保'
+      PICC: '中国人保',
+      CHINALIFE: '中国人寿',
+      CPIC: '中国太平洋保险',
     },
     product: {
       PINGAN_ZYYL_ESBYLPB: '中国平安e生保医疗险PLUS版',
