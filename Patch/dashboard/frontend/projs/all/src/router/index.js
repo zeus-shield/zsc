@@ -180,7 +180,7 @@ let router = new Router({
       redirect: '/admin/sys/user'
     },
     {
-      path: '/admin',
+      path: '/admin/sys',
       name: 'admin',
       component: Admin,
       children: [
@@ -234,9 +234,9 @@ let router = new Router({
           component: AdminSysSetting
         },
         {
-          path: '/admin/contract',
-          name: 'adminContract',
-          component: AdminContract
+          path: '/admin/core/contract',
+          name: 'adminCoreContract',
+          component: AdminCoreContract
         },
         {
           path: '/admin/core/user',
