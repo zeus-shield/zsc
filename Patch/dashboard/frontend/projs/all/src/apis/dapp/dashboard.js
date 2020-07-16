@@ -56,6 +56,9 @@ class Dashboard {
 
   async userExists(account) {
   };
+
+  async userKeys(account) {
+  };
 }
 
 export default Dashboard;
