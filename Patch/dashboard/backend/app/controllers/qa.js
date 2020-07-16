@@ -69,6 +69,13 @@ const removeAll = async(req, res) => {
     } else {
       throw createError('COMMON_PARAM_ERROR');
     }
+
+    const result = await services.qas.remove(conditions, false, null);
+    if (!result) {
+      throw createError('QA_DOC_NOT_EXIST');
+    }
+
+    res.sendOk('Remove all qas successfully!');
   } catch (err) {
     throw err;
   }
