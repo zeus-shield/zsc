@@ -215,9 +215,11 @@ const en = {
         amount: 'Revenue/Expense',
         description: 'Description'
       },
+      dialog: {
     }
   },
   admin: {
+    content: 'Please operate the module on the computer!'
   },
   notFound: {
     content: 'The page you visited does not exist!',
