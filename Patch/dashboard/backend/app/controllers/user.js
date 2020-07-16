@@ -152,6 +152,10 @@ const update = async(req, res) => {
     if (update.password) {
       update.password = crypto.encrypted(update.password, settings.saltKey);
     }
+    update.updated_at = Date.now();
+
+    // Finds a matching document, updates it and return the modified document.
+    result = await services.users.update({_id: req.body.id}, update, false, null);
   } catch (err) {
     throw err;
   }
