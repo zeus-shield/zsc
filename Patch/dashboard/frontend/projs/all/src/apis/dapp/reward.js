@@ -25,6 +25,9 @@ class Reward {
     } else if (account.crypto) {
       _account = toBytes32(account.crypto);
     } else {
+      let error = createError('_formatAccount: account error!');
+      error.code = 'DAPPUser';
+      throw error;
     }
     return _account;
   }
