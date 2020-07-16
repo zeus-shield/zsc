@@ -11,6 +11,8 @@
               {{ item.brief.text }}
             </span>
           </el-row>
+        </div>
+      </el-col>
           <!-- <img class="img" :src="item.brief.imgUrl"></img>
           <div class="brief">
             <strong>产品特色：</strong>
