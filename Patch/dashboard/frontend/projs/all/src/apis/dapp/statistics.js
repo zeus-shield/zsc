@@ -71,6 +71,8 @@ class Stat {
         error.code = 'DAPPStat';
         throw error;
       }
+      const result = await instance.contract.keyCount(strToBytes32(statId));
+      return this.einstance.bigNumberToNumber(result);
     } catch (error) {
       throw error;
     }
