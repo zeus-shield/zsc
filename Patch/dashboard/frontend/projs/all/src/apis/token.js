@@ -9,6 +9,9 @@ class Token extends Transaction {
 
   async add(token, content) {
   };
+
+  async remove(token, id, address, network) {
+  };
 }
 
 export default Token;
