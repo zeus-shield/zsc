@@ -75,6 +75,16 @@ const update = async(req, res) => {
       language: req.body.language,
       'contents._id': req.body.id
     };
+
+    const update = {
+      'contents.$.title': content.title,
+      'contents.$.brief': content.brief,
+      'contents.$.detail': content.detail,
+      'contents.$.release_time': content.release_time,
+      'contents.$.release_location': content.release_location,
+      'contents.$.updated_at': content.updated_at,
+      updated_at: Date.now()
+    };
   } catch (err) {
     throw err;
   }
