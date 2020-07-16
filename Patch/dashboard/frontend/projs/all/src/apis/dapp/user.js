@@ -102,6 +102,7 @@ class User {
 
   async exists(account) {
     try {
+      const _account = this._formatAccount(account);
     } catch (error) {
       throw error;
     }
