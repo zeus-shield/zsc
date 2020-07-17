@@ -33,6 +33,10 @@ class Reward {
   }
 
   async cap() {
+    try {
+    } catch (error) {
+      throw error;
+    }
   };
 
   async totalSupply() {
