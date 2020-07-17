@@ -13,11 +13,13 @@
           </el-row>
         </div>
       </el-col>
-          <!-- <img class="img" :src="item.brief.imgUrl"></img>
-          <div class="brief">
-            <strong>产品特色：</strong>
-            全家人共享百万保障的医疗保险，看病不再愁，一般费用都报销，医疗费用都报销，预约挂号服务，国内医院导师陪诊，国内专家二次诊断
-          </div> -->
+
+      <el-col class="info" :span="15">
+        <div class="col">
+          <div class="title">
+            <span>{{ item.brief.title }}</span>
+          </div>
+          <div v-if="item.brief.hot === true" class="corner hot"></div>
 
           <el-row class="insured-table" v-for="(scheme, index) in item.detail.schemes" :key="index" :gutter="0" type="" justify="">
             <el-col class="item" :span="14">{{ scheme.name }}</el-col>
