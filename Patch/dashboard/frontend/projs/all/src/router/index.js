@@ -185,9 +185,9 @@ let router = new Router({
       component: Admin,
       children: [
         {
-          path: '/admin/user',
-          name: 'adminUser',
-          component: AdminUser
+          path: '/admin/sys/user',
+          name: 'adminSysUser',
+          component: AdminSysUser
         },
         {
           path: '/admin/company',
