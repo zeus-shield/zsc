@@ -59,6 +59,9 @@ class Dashboard {
 
   async userKeys(account) {
   };
+
+  async userCheckIn(account, func = null) {
+  };
 }
 
 export default Dashboard;
