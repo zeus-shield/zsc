@@ -208,6 +208,9 @@ const en = {
     point: {
       title: 'My points',
       profile: {
+        title: 'Profile',
+        amount: 'Available Points',
+        checkIn: 'Check In',
       },
       trace: {
         title: 'Detail',
