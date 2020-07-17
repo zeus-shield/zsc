@@ -85,6 +85,14 @@ const update = async(req, res) => {
       'contents.$.updated_at': content.updated_at,
       updated_at: Date.now()
     };
+
+    // Finds a matching document, updates it and return the modified document.
+    const result = await services.presses.update(conditions, update, false, null);
+    if (!result) {
+      throw createError('PRESS_NOT_EXIST');
+    }
+
+    res.sendOk('update press successfully!');
   } catch (err) {
     throw err;
   }
