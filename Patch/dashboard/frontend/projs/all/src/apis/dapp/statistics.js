@@ -51,6 +51,10 @@ class Stat {
         error.code = 'DAPPStat';
         throw error;
       }
+      const result = await instance.contract.info(strToBytes32(statId));
+      const data = Object.values(result[0]).reduce((data, key, index) => {
+      }, {});
+      return data;
     } catch (error) {
       throw error;
     }
