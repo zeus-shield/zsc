@@ -141,7 +141,12 @@ const remove = async(req, res) => {
       throw createError('COMMON_PARAM_ERROR');
     }
 
+    const result = await services.users.remove(conditions, false, null);
+    if (!result) {
+      throw createError('USER_NOT_EXIST');
+    }
 
+    res.sendOk('Remove user successfully!');
   } catch (err) {
     throw err;
   }
