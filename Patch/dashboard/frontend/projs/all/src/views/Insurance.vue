@@ -322,6 +322,10 @@ export default {
       if (this.companyActiveIndex === -1 ||
           this.cacheData.companies[this.companyActiveIndex].categories === undefined ||
           this.cacheData.companies[this.companyActiveIndex].categories.length === 0) {
+        this.categoryActiveName = '';
+        this.categoryActiveIndex = -1;
+        this.updateTotalOfItemsForPage();
+        this.currentPage = 1;
       } else {
       }
     },
