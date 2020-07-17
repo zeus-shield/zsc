@@ -355,6 +355,13 @@ const cn = {
 
       myInsuranceSaving: '录入我的保单中......',
       myInsuranceLoading: '获取我的保单中......',
+
+      user: {
+        point: {
+          amount: '用户积分获取中……',
+          trace: '用户积分明细获取中……'
+        }
+      }
     }
   },
   config: {
