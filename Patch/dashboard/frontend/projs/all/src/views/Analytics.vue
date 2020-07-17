@@ -103,22 +103,7 @@ export default {
     console.log('%c[Analytics]mounted()', `color:${this.logColor}`);
     let vm = this;
     vm.loading = true;
-
-    vm.prePie().then(data => {
-      data.content.forEach(element => {
-        if (vm.device === 'pc') {
-          vm.pieLegendData.push(element._id.title);
-        }
-        vm.pieSeriesData.push({value: element.count, name: element._id.title});
-      });
-      return vm.preBar();
-    }).then(data => {
-      data.content.forEach(element => {
-        vm.barDataAxis.push(element._id.company);
-        vm.barData.push(element.count);
-      });
-      vm.drawPie();
-      vm.drawBar();
+    vm.handleDatabase(vm).then(() => {
       vm.loading = false;
     }).catch(errorData => {
       vm.loading = false;
