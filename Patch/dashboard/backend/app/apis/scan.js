@@ -97,6 +97,9 @@ const rateFromAddr = async(req, res) => {
     const instance = axios.create('https://api.kyber.network/', 5000);
 
     if (req.query.src) {
+      const query = new URLSearchParams();
+      query.append('id', req.query.src);
+      query.append('qty', 1);
     } else {
     }
 
