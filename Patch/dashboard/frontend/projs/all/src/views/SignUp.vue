@@ -24,6 +24,11 @@
                     <el-input v-model="form.emailAccount" prefix-icon="iconfont if-account" :placeholder="langSet.signUp.emailPlaceholder" @input="inputChange"></el-input>
                   </el-form-item>
                 </el-tab-pane>
+                <el-tab-pane :label="langSet.signUp.quickTitle" name="signup-tab-quick">
+                  <el-form-item prop="quickAccount">
+                    <el-input v-model="form.quickAccount" prefix-icon="iconfont if-account" :placeholder="langSet.signUp.quickPlaceholder" @input="inputChange"></el-input>
+                  </el-form-item>
+                </el-tab-pane>
                 <!-- <el-tab-pane :label="langSet.signUp.phoneTitle" name="signup-tab-phone">
                   <el-form-item prop="phoneAccount">
                     <el-input v-model="form.phoneAccount" prefix-icon="iconfont if-account" :placeholder="langSet.signUp.phonePlaceholder" @input="inputChange"></el-input>
