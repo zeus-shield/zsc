@@ -103,6 +103,12 @@ class User {
   async exists(account) {
     try {
       const _account = this._formatAccount(account);
+
+      // check instance
+      const instance = this.einstance.contract(this.addr, this.abi);
+      if (!instance || !instance.contract) {
+      }
+      return await instance.contract.exists(_account);
     } catch (error) {
       throw error;
     }
