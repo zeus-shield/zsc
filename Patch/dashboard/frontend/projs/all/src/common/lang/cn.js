@@ -211,7 +211,6 @@ const cn = {
     },
     policy: {
       // the content follow same as market.dialog
-      refresh: '链上刷新'
     },
     point: {
       title: '我的积分',
@@ -370,6 +369,9 @@ const cn = {
       PICC: '中国人保',
       CHINALIFE: '中国人寿',
       CPIC: '中国太平洋保险',
+      TAIPING: '中国太平',
+      NCI: '新华保险',
+      TAIKANG: '泰康保险',
     },
     product: {
       PINGAN_ZYYL_ESBYLPB: '中国平安e生保医疗险PLUS版',
