@@ -95,15 +95,12 @@ export default {
   data() {
     let vm = this;
     let validatePhoneAccount = (rule, value, callback) => {
-      // skip validate email
-      if (vm.tabIndex === '0') {
-        callback();
-      } else {
+      if (vm.tabName === 'signup-tab-phone') {
         if (value === '') {
           vm.buttonCodeDisabled = true;
           callback(new Error(vm.langSet['message']['error']['SIGNUP_ACCOUNT_NONE']));
         } else {
-          if (value.length < 6 || value.length > 18) {
+          if (value.length < 6 || value.length > 64) {
             vm.buttonCodeDisabled = true;
             callback(new Error(vm.langSet['message']['error']['SIGNUP_ACCOUNT_LEN_ERR']));
           } else {
@@ -113,6 +110,8 @@ export default {
             callback();
           }
         }
+      } else {
+        callback();
       }
     };
     let validateEmailAccount = (rule, value, callback) => {
