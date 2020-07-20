@@ -43,5 +43,7 @@ module.exports = {
     originUrl: ''
   },
   upload: {
+    savePath: 'app/public/upload',
+    showPath: '/upload/'
   }
-}
+};
