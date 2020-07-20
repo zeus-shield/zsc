@@ -170,6 +170,10 @@ const update = async(req, res) => {
 
     // Finds a matching document, updates it and return the modified document.
     result = await services.users.update({_id: req.body.id}, update, false, null);
+    if (!result) {
+      throw createError('USER_NOT_EXIST');
+    }
+    res.sendOk('update user successfully!');
   } catch (err) {
     throw err;
   }
