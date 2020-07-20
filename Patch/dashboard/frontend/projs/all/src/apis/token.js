@@ -14,6 +14,12 @@ class Token extends Transaction {
     data.append('name', content.name);
     data.append('symbol', content.symbol);
     data.append('decimals', content.decimals);
+
+    try {
+      return await this.transaction('post', 'token/add', { token }, null, data);
+    } catch (err) {
+      throw err;
+    }
   };
 
   async remove(token, id, address, network) {
