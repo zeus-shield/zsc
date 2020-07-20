@@ -62,6 +62,12 @@ class Stat {
 
   async infoByKey(statId, key) {
     try {
+      const instance = this.einstance.contract(this.addr, this.abi);
+      if (!instance || !instance.contract) {
+        let error = createError('infoByKey: contract is null!');
+        error.code = 'DAPPStat';
+        throw error;
+      }
     } catch (error) {
       throw error;
     }
