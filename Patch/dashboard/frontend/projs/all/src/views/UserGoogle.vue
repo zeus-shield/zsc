@@ -200,6 +200,8 @@ export default {
     ...mapState({
       logColor: state => state.logColor.user.google
     }),
+    ...mapGetters('lang', ['langSet']),
+    ...mapGetters('device', ['device'])
   },
 };
 </script>
