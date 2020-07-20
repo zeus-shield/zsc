@@ -240,6 +240,8 @@ export default {
         }
       },
       rules: {
+        insurance: {
+        },
       }
     };
   },
