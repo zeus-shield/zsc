@@ -82,6 +82,10 @@ const rate = async(req, res) => {
     let srcAddr = null;
     let destAddr = null;
     let rate = 0;
+
+    if (req.query.src.toUpperCase() !== 'ETH') {
+    } else {
+    }
   } catch (err) {
     throw err;
   }
