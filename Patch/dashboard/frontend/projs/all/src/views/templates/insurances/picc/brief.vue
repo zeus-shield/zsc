@@ -252,6 +252,8 @@ export default {
         }
       },
       rules: {
+        insurance: {
+        },
       }
     };
   },
