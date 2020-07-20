@@ -315,6 +315,12 @@ export default {
     handleCompanyClick(vm) {
       // check index
       if (parseInt(vm.index, 10) > this.cacheData.companies.length - 1) {
+        this.companyActiveIndex = -1;
+        this.categoryActiveName = '';
+        this.categoryActiveIndex = -1;
+        this.totalForPage = this.cacheData.insurances.length;
+        this.currentPage = 1;
+        return;
       }
 
       // update active index and name
