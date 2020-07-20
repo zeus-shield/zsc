@@ -62,6 +62,9 @@ class Dashboard {
 
   async userCheckIn(account, func = null) {
   };
+
+  async userAddPolicy(account, keyObj, policy, func = null) {
+  };
 }
 
 export default Dashboard;
