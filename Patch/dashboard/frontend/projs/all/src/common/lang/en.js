@@ -203,7 +203,6 @@ const en = {
     },
     policy: {
       // the content follow same as market.dialog
-      refresh: 'Refresh'
     },
     point: {
       title: 'My points',
@@ -211,6 +210,9 @@ const en = {
         title: 'Profile',
         amount: 'Available Points',
         checkIn: 'Check In',
+        checkingIn: 'Checking',
+        checkedIn: 'Checked',
+        transfer: 'Send Points'
       },
       trace: {
         title: 'Detail',
