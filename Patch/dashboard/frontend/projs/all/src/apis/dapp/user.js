@@ -107,6 +107,9 @@ class User {
       // check instance
       const instance = this.einstance.contract(this.addr, this.abi);
       if (!instance || !instance.contract) {
+        let error = createError('exists: contract is null!');
+        error.code = 'DAPPUser';
+        throw error;
       }
       return await instance.contract.exists(_account);
     } catch (error) {
