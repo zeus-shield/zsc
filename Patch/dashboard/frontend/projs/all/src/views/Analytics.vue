@@ -105,13 +105,11 @@ export default {
     vm.loading = true;
     vm.handleDatabase(vm).then(() => {
       vm.loading = false;
+      return vm.handleBlockchain(vm);
+    }).then(() => {
     }).catch(errorData => {
       vm.loading = false;
-      if (errorData.errorMessage !== undefined) {
-        errorMessage = errorData.errorMessage;
-      } else {
-        errorMessage = errorData;
-      }
+      const errorMessage = errorData.errorMessage ? errorData.errorMessage : errorData;
       if (utils.errCommonHandle(errorMessage, vm) !== true) {
         utils.notice.alert(vm, 'error', vm.langSet.component.alert.errorTitle, errorMessage, vm.langSet.component.button.confirm, false, true, null);
       }
