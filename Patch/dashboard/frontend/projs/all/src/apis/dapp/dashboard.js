@@ -65,6 +65,9 @@ class Dashboard {
 
   async userAddPolicy(account, keyObj, policy, func = null) {
   };
+
+  async userRemovePolicy(account, key, func = null) {
+  }
 }
 
 export default Dashboard;
