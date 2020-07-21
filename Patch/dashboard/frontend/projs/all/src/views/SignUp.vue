@@ -115,15 +115,12 @@ export default {
       }
     };
     let validateEmailAccount = (rule, value, callback) => {
-      // skip validate phone
-      if (vm.tabIndex === '1') {
-        callback();
-      } else {
+      if (vm.tabName === 'signup-tab-email') {
         if (value === '') {
           vm.buttonCodeDisabled = true;
           callback(new Error(vm.langSet['message']['error']['SIGNUP_ACCOUNT_NONE']));
         } else {
-          if (value.length < 6 || value.length > 18) {
+          if (value.length < 6 || value.length > 64) {
             vm.buttonCodeDisabled = true;
             callback(new Error(vm.langSet['message']['error']['SIGNUP_ACCOUNT_LEN_ERR']));
           } else {
