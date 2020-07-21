@@ -332,10 +332,13 @@ export default {
       'updateDevice'
     ]),
     flushApp(cmd) {
-      this.reload = true;
-      this.$nextTick(() => {
-        this.reload = false;
-      });
+      if (cmd === 'main') {
+        this.reloadMain = true;
+        this.$nextTick(() => {
+          this.reloadMain = false;
+        });
+      } else if (cmd === 'header') {
+      } else {}
     }
   }
 };
