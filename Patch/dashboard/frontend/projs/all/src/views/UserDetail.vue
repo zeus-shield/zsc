@@ -78,6 +78,12 @@
       <div slot="title">
         <span>{{ langSet.user.detail.dialog.title }}</span>
       </div>
+      <el-form class="form" ref="form" :model="form" label-width="0rem" label-position="left" :rules="rules">
+        <div class="space"></div>
+        <el-form-item prop="code">
+          <el-input class="input" v-model="form.code" prefix-icon="iconfont if-password" :placeholder="langSet.user.detail.dialog.placeholder" @input="onInput"></el-input>
+        </el-form-item>
+      </el-form>
       <div slot="footer">
         <el-button class="button" type="primary" :disabled="buttonDisabled" @click="onSubmit('form')">{{ langSet.user.detail.dialog.buttonText }}</el-button>
       </div>
