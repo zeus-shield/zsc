@@ -276,6 +276,8 @@ export default {
     },
     async prePie(cmd) {
     },
+    async preBar(cmd) {
+    },
     }
   }
 };
