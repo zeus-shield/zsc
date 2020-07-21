@@ -253,6 +253,11 @@ export default {
       },
       rules: {
         insurance: {
+          company: [
+            // { required: true, message: '请输入公司名称', trigger: 'blur' },
+            // { min: 3, message: '长度大于3个字符', trigger: 'blur' }
+            { required: true, validator: validateCompany, trigger: 'blur' }
+          ],
         },
       }
     };
