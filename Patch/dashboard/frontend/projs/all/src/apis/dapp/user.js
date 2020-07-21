@@ -81,6 +81,12 @@ class User {
 
   async list() {
     try {
+      const instance = this.einstance.contract(this.addr, this.abi);
+      if (!instance || !instance.contract) {
+        let error = createError('list: contract is null!');
+        error.code = 'DAPPUser';
+        throw error;
+      }
     } catch (error) {
       throw error;
     }
