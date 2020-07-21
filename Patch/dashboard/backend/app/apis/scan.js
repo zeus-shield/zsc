@@ -86,6 +86,12 @@ const rate = async(req, res) => {
     if (req.query.src.toUpperCase() !== 'ETH') {
     } else {
     }
+
+    res.sendOk({
+      src: req.query.src.toUpperCase(),
+      dest: req.query.dest.toUpperCase(),
+      rate: rate
+    });
   } catch (err) {
     throw err;
   }
