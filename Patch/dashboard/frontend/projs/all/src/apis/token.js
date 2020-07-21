@@ -24,6 +24,9 @@ class Token extends Transaction {
 
   async remove(token, id, address, network) {
   };
+
+  async update(token, id, content) {
+  };
 }
 
 export default Token;
