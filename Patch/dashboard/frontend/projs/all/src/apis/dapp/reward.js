@@ -34,6 +34,12 @@ class Reward {
 
   async cap() {
     try {
+      const instance = this.einstance.contract(this.addr, this.abi);
+      if (!instance || !instance.contract) {
+        let error = createError('cap: contract is null!');
+        error.code = 'DAPPReward';
+        throw error;
+      }
     } catch (error) {
       throw error;
     }
