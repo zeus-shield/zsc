@@ -175,6 +175,9 @@ export default {
   methods: {
     setDeviceParam() {
     },
+    moment(value) {
+      return moment(value).format('YYYY-MM-DD');
+    },
   }
 };
 </script>
