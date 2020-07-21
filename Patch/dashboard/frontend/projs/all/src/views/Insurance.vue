@@ -333,6 +333,8 @@ export default {
         this.updateTotalOfItemsForPage();
         this.currentPage = 1;
       } else {
+        this.categoryActiveName = this.cacheData.companies[this.companyActiveIndex].categories[0].name;
+        this.categoryActiveIndex = 0;
       }
     },
     // handleCategoryClick(tab, event) {
