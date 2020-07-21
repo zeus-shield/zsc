@@ -221,6 +221,8 @@ const en = {
         description: 'Description'
       },
       dialog: {
+        checkIn: {
+      }
     }
   },
   admin: {
