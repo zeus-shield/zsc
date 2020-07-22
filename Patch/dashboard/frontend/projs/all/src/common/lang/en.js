@@ -222,6 +222,9 @@ const en = {
       },
       dialog: {
         checkIn: {
+          title: 'Check In',
+          alert: {
+          },
       }
     }
   },
