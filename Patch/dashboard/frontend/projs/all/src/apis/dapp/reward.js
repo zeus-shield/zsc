@@ -40,6 +40,8 @@ class Reward {
         error.code = 'DAPPReward';
         throw error;
       }
+      const result = await instance.contract.cap();
+      return this.einstance.bigNumberToNumber(result);
     } catch (error) {
       throw error;
     }
