@@ -110,6 +110,10 @@ const rateFromAddr = async(req, res) => {
       const query = new URLSearchParams();
       query.append('id', req.query.src);
       query.append('qty', 1);
+      if (req.query.dest) {
+        query.append('id', req.query.dest);
+        query.append('qty', 1);
+      }
     } else {
     }
 
