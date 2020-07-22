@@ -161,6 +161,9 @@ const update = async(req, res) => {
 
     // check account is exist excluding self ?
     if (update.account) {
+      result = await services.users.find({account: update.account}, null, null);
+      if (result) {
+      }
     }
 
     if (update.password) {
