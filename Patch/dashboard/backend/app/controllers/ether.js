@@ -12,7 +12,11 @@ const userAddPolicy = async(req, res) => {
 const userCheckIn = async(req, res) => {
   debug('userCheckIn(%s)', req.body.account);
   try {
+    // There is only one database write operation, and session can not be used.
+    const hash = await services.dapp.dashboard.userCheckIn(JSON.parse(req.body.account));
+    res.sendOk(hash);
   } catch (err) {
+    res.sendErr(err);
   }
 };
 
