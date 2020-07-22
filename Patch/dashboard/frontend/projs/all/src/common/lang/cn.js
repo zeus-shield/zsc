@@ -372,6 +372,9 @@ const cn = {
       TAIPING: '中国太平',
       NCI: '新华保险',
       TAIKANG: '泰康保险',
+      SINOSIG: '阳光保险',
+      HUA: '华夏保险',
+      GUOHUA: '国华保险'
     },
     product: {
       PINGAN_ZYYL_ESBYLPB: '中国平安e生保医疗险PLUS版',
