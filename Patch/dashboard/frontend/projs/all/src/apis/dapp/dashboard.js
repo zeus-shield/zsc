@@ -68,6 +68,9 @@ class Dashboard {
 
   async userRemovePolicy(account, key, func = null) {
   }
+
+  async userRemove(account, func = null) {
+  };
 }
 
 export default Dashboard;
