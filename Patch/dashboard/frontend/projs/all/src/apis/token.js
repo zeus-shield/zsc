@@ -23,6 +23,8 @@ class Token extends Transaction {
   };
 
   async remove(token, id, address, network) {
+    const data = new URLSearchParams();
+    data.append('id', id);
   };
 
   async update(token, id, content) {
