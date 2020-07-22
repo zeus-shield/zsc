@@ -146,6 +146,13 @@ class User {
 
   async remove(account, func = null) {
     try {
+      const _account = this._formatAccount(account);
+      const instance = this.einstance.contract(this.addr, this.abi);
+      if (!instance || !instance.contractWithSigner) {
+        let error = createError('remove: contract with signer is null!');
+        error.code = 'DAPPUser';
+        throw error;
+      }
     } catch (error) {
       throw error;
     }
