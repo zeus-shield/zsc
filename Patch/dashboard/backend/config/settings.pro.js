@@ -38,6 +38,9 @@ module.exports = {
     issuer: 'Dashboard'
   },
   adminConfig: {
+    name: 'admin',
+    password: '123456',
+    role: 'ordinary users'
   },
   qiniuConfig: {
     originUrl: ''
