@@ -69,6 +69,11 @@ const removeAll = async(req, res) => {
     } else {
       throw createError('COMMON_PARAM_ERROR');
     }
+
+    const result = await services.presses.remove(conditions, false, null);
+    if (!result) {
+      throw createError('PRESS_DOC_NOT_EXIST');
+    }
   } catch (err) {
     throw err;
   }
