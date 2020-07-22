@@ -53,6 +53,10 @@ class Stat {
       }
       const result = await instance.contract.info(strToBytes32(statId));
       const data = Object.values(result[0]).reduce((data, key, index) => {
+        const statKey = hexToStr(key);
+        const stat = {
+          [statKey]: result[1][index].toNumber()
+        };
       }, {});
       return data;
     } catch (error) {
