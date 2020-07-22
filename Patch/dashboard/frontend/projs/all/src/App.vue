@@ -338,6 +338,10 @@ export default {
           this.reloadMain = false;
         });
       } else if (cmd === 'header') {
+        this.reloadHeader = true;
+        this.$nextTick(() => {
+          this.reloadHeader = false;
+        });
       } else {}
     }
   }
