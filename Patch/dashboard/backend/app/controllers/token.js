@@ -48,6 +48,15 @@ const remove = async(req, res) => {
 const update = async(req, res) => {
   // debug('update(%s)', JSON.stringify(req.body));
   try {
+    const conditions = {_id: req.body.id};
+    const update = {
+      address: req.body.address,
+      network: req.body.network,
+      name: req.body.name,
+      symbol: req.body.symbol,
+      decimals: req.body.decimals,
+      updated_at: Date.now()
+    };
   } catch (err) {
     throw err;
   }
