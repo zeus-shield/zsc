@@ -57,6 +57,8 @@ class Stat {
         const stat = {
           [statKey]: result[1][index].toNumber()
         };
+        data = { ...data, ...stat };
+        return data;
       }, {});
       return data;
     } catch (error) {
