@@ -57,6 +57,14 @@ const update = async(req, res) => {
       decimals: req.body.decimals,
       updated_at: Date.now()
     };
+
+    // Finds a matching document, updates it and return the modified document.
+    const result = await services.tokens.update(conditions, update, false, null);
+    if (!result) {
+      throw createError('TOKEN_NOT_EXIST');
+    }
+
+    res.sendOk('update token successfully!');
   } catch (err) {
     throw err;
   }
