@@ -74,6 +74,8 @@ const removeAll = async(req, res) => {
     if (!result) {
       throw createError('PRESS_DOC_NOT_EXIST');
     }
+
+    res.sendOk('Remove all presses successfully!');
   } catch (err) {
     throw err;
   }
