@@ -1,11 +1,11 @@
 <template>
-  <div class="user-policy" :class="{'user-policy-mobile': device !== 'pc'}" v-loading.fullscreen.lock="load.doing" :element-loading-text="load.text" element-loading-spinner="el-icon-loading" >
+  <div class="user-policy" :class="{'user-policy-mobile': device !== 'pc'}">
     <div class="header">
       <span class="sprite"></span>
       <span>{{ langSet.user.aside.slot[0].item[1] }}</span>
     </div>
 
-    <el-collapse class="collapse" accordion>
+    <el-collapse class="collapse" accordion v-loading.lock="load.doing" :element-loading-text="load.text" element-loading-spinner="el-icon-loading">
       <el-collapse-item v-for="(item, index) in policies" :key="index">
         <template slot="title"> 
           <span class="title">
@@ -177,6 +177,8 @@ export default {
     },
     moment(value) {
       return moment(value).format('YYYY-MM-DD');
+    },
+    onError(vm, param, error) {
     },
   }
 };
