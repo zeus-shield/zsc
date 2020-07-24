@@ -71,6 +71,10 @@ class Dashboard {
 
   async userRemove(account, func = null) {
   };
+
+  // //////////////////// Reward ////////////////////
+  async rewardCap() {
+  };
 }
 
 export default Dashboard;
