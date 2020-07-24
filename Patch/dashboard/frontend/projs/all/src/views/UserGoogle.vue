@@ -203,5 +203,8 @@ export default {
     ...mapGetters('lang', ['langSet']),
     ...mapGetters('device', ['device'])
   },
+  inject: ['flushApp'],
+  created() {
+  },
 };
 </script>
