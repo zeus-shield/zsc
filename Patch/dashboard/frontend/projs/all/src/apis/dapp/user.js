@@ -87,6 +87,7 @@ class User {
         error.code = 'DAPPUser';
         throw error;
       }
+      const accounts = await instance.contract.accounts();
     } catch (error) {
       throw error;
     }
@@ -94,6 +95,8 @@ class User {
 
   async info(account) {
     try {
+      const _account = this._formatAccount(account);
+      const instance = this.einstance.contract(this.addr, this.abi);
     } catch (error) {
       throw error;
     }
