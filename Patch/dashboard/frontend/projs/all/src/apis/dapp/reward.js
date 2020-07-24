@@ -48,6 +48,10 @@ class Reward {
   };
 
   async totalSupply() {
+    try {
+    } catch (error) {
+      throw error;
+    }
   };
 
   async threshold(index) {
