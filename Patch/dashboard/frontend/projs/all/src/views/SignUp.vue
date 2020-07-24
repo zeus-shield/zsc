@@ -260,8 +260,11 @@ export default {
         vm.buttonSubmitDisabled = !valid;
       });
     },
-    tabClick(tab, event) {
-      console.log(tab, event);
+    clearForm() {
+    },
+    // tabClick(tab, event) {
+    tabClick(tab) {
+      // console.log(tab, event);
       this.tabIndex = tab.index;
       this.$refs['form'].resetFields();
     },
