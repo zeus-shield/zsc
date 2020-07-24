@@ -10,5 +10,8 @@ import APIs from '@/apis';
 import config from '@/apis/dapp/config';
 
 export default {
+  name: 'UserPoint',
+  // components: {
+  // },
 };
 </script>
