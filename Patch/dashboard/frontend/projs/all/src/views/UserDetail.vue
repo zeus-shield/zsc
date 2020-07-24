@@ -223,6 +223,8 @@ export default {
   created() {
     console.log('%c[UserDetail]created()', `color:${this.logColor}`);
   },
+  mounted() {
+  },
   data() {
   },
 };
