@@ -114,6 +114,10 @@ const rateFromAddr = async(req, res) => {
         query.append('id', req.query.dest);
         query.append('qty', 1);
       }
+      const info = await axios.transaction(instance, 'get', 'sell_rate', null, query);
+      if (info.error) {
+        throw createError('TOKEN_NOT_SUPPORTED');
+      }
     } else {
     }
 
