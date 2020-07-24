@@ -21,6 +21,11 @@ const userCheckIn = async(req, res) => {
 };
 
 const rewardTransfer = async(req, res) => {
+  // debug('rewardTransfer(%s, %s, %s)', req.body.from, req.body.to, req.body.value);
+  try {
+  } catch (err) {
+    res.sendErr(err);
+  }
 };
 
 module.exports = { userAddPolicy, userCheckIn, rewardTransfer };
