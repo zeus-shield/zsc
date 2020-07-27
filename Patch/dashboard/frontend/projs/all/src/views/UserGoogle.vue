@@ -205,6 +205,7 @@ export default {
   },
   inject: ['flushApp'],
   created() {
+    console.log('%c[UserGoogle]created()', `color:${this.logColor}`);
   },
 };
 </script>
