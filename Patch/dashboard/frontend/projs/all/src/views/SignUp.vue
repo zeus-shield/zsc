@@ -173,6 +173,7 @@ export default {
       errorMessage: '',
       loading: false,
       tabIndex: '0',
+      tabName: 'signup-tab-email',
       buttonCodeName: '',
       buttonCodeDisabled: true,
       codeStatus: 'none', // none/getting/timeout
@@ -180,31 +181,35 @@ export default {
       form: {
         phoneAccount: '',
         emailAccount: '',
+        quickAccount: '',
         code: '',
         password: '',
         password2: ''
       },
       rules: {
         phoneAccount: [
-          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
-          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
-          { validator: validatePhoneAccount, trigger: 'blur' }
+          // { required: true, message: '??????/????', trigger: 'blur' },
+          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
+          { validator: validatePhoneAccount, trigger: ['blur', 'change'] }
         ],
         emailAccount: [
-          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
-          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
-          { validator: validateEmailAccount, trigger: 'blur' }
+          // { required: true, message: '??????/????', trigger: 'blur' },
+          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
+          { validator: validateEmailAccount, trigger: ['blur', 'change'] }
+        ],
+        quickAccount: [
+          { validator: validateQuickAccount, trigger: ['blur', 'change'] }
         ],
         code: [
-          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
-          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
-          { validator: validateCode, trigger: 'blur' }
+          // { required: true, message: '??????/????', trigger: 'blur' },
+          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
+          { validator: validateCode, trigger: ['blur', 'change'] }
         ],
         password: [
-          { validator: validatePassword, trigger: 'blur' }
+          { validator: validatePassword, trigger: ['blur', 'change'] }
         ],
         password2: [
-          { validator: validatePassword2, trigger: 'blur' }
+          { validator: validatePassword2, trigger: ['blur', 'change'] }
         ]
       }
     };
