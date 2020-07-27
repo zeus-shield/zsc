@@ -222,6 +222,8 @@ export default {
     ...mapState({
       logColor: state => state.logColor.user.detail
     }),
+    ...mapGetters('lang', ['langSet']),
+    ...mapGetters('device', ['device'])
   },
   created() {
     console.log('%c[UserDetail]created()', `color:${this.logColor}`);
