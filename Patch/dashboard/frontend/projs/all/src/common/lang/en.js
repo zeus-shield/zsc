@@ -224,6 +224,8 @@ const en = {
         checkIn: {
           title: 'Check In',
           alert: {
+            title: 'Tip',
+            description: 'You can earn points when you check in, continue?'
           },
       }
     }
