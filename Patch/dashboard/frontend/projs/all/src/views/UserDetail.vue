@@ -219,6 +219,9 @@ export default {
   // props: {
   // },
   computed: {
+    ...mapState({
+      logColor: state => state.logColor.user.detail
+    }),
   },
   created() {
     console.log('%c[UserDetail]created()', `color:${this.logColor}`);
