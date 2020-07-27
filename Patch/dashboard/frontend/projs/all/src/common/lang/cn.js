@@ -229,6 +229,8 @@ const cn = {
         description: 'ÏêÏ¸ËµÃ÷'
       },
       dialog: {
+        checkIn: {
+        },
       }
     }
   },
