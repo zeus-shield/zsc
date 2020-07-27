@@ -294,6 +294,10 @@ export default {
   },
   methods: {
     async recieve() {
+      try {
+      } catch (errorData) {
+        throw errorData;
+      }
     },
     buildCompanyCategoryCount() {
       this.cacheData.companies.forEach(company => {
