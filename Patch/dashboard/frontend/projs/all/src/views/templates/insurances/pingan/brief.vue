@@ -257,6 +257,8 @@ export default {
             { required: true, validator: validateTitle, trigger: 'blur' }
           ]
         },
+        user: {
+        },
       }
     };
   },
