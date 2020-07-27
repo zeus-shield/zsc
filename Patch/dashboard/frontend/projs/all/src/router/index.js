@@ -205,9 +205,9 @@ let router = new Router({
           component: AdminSysProductAdd
         },
         {
-          path: '/admin/insurance/edit',
-          name: 'adminInsuranceEdit',
-          component: AdminInsuranceEdit,
+          path: '/admin/sys/product/edit',
+          name: 'adminProductEdit',
+          component: AdminSysProductEdit,
           props: (route) => ({
             // param: route.query.param
             param: {
