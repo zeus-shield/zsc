@@ -180,6 +180,8 @@ export default {
     },
     onError(vm, param, error) {
     },
+    onFresh() {
+    },
   }
 };
 </script>
