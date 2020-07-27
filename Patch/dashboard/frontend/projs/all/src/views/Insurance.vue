@@ -295,6 +295,8 @@ export default {
   methods: {
     async recieve() {
       try {
+        let data;
+        const token = utils.storage.cookie.get('login_token');
       } catch (errorData) {
         throw errorData;
       }
