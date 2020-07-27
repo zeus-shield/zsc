@@ -2,6 +2,10 @@
 </template>
 
 <style lang="scss" scoped>
+.user-point {
+  font-size: 0.875rem; // 14px;
+  color: #444;
+}
 <script>
 import { mapState, mapGetters } from 'vuex';
 
