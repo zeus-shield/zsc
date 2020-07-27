@@ -200,9 +200,9 @@ let router = new Router({
           component: AdminSysProduct
         },
         {
-          path: '/admin/insurance/add',
-          name: 'adminInsuranceAdd',
-          component: AdminInsuranceAdd
+          path: '/admin/sys/product/add',
+          name: 'adminProductAdd',
+          component: AdminSysProductAdd
         },
         {
           path: '/admin/insurance/edit',
