@@ -130,6 +130,8 @@ export default {
             callback();
           }
         }
+      } else {
+        callback();
       }
     };
     let validateQuickAccount = (rule, value, callback) => {
