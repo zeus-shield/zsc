@@ -200,8 +200,8 @@ export default {
       this.chartBar = echarts.init(handle);
       let option = {
         title: {
-          text: utils.storage.cookie.get('lang') === 'en' ? 'Company Ranking' : '???????',
-          subtext: utils.storage.cookie.get('lang') === 'en' ? '(TOP10)' : '(????????)',
+          text: utils.storage.cookie.get('lang') === 'en' ? 'Company Ranking' : '公司热度排行榜',
+          subtext: utils.storage.cookie.get('lang') === 'en' ? '(TOP10)' : '（排列前十名的公司）',
           x: 'center',
           textStyle: {
             color: '#444',
@@ -275,6 +275,10 @@ export default {
       this.chartBar.setOption(option);
     },
     async prePie(cmd) {
+      try {
+      } catch (err) {
+        throw err;
+      }
     },
     async preBar(cmd) {
     },
