@@ -40,6 +40,11 @@ const remove = async(req, res) => {
   try {
     // There is only one database write operation, and session can not be used.
     let conditions = {};
+    if (req.body.id) {
+    } else if (req.body.address) {
+    } else if (req.body.network) {
+    } else {
+    }
   } catch (err) {
     throw err;
   }
