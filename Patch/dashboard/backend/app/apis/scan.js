@@ -118,6 +118,11 @@ const rateFromAddr = async(req, res) => {
       if (info.error) {
         throw createError('TOKEN_NOT_SUPPORTED');
       }
+
+      let conditions = {
+        address: req.query.src,
+        network: 'homestead'
+      };
     } else {
     }
 
