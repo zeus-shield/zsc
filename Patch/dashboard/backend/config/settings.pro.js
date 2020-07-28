@@ -43,6 +43,9 @@ module.exports = {
     role: 'ordinary users'
   },
   qiniuConfig: {
+    accessKey: '',
+    secretKey: '',
+    bucket: 'express-blog',
     originUrl: ''
   },
   upload: {
