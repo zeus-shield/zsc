@@ -247,17 +247,22 @@ export default {
             { required: true, validator: validateCompany, trigger: 'blur' }
           ],
           category: [
-            // { required: true, message: '请输入产品类型', trigger: 'blur' },
-            // { min: 3, message: '长度大于3个字符', trigger: 'blur' }
+            // { required: true, message: '???????', trigger: 'blur' },
+            // { min: 3, message: '????3???', trigger: 'blur' }
             { required: true, validator: validateCategory, trigger: 'blur' }
           ],
           title: [
-            // { required: true, message: '请输入产品名称', trigger: 'blur' },
-            // { min: 3, message: '长度大于3个字符', trigger: 'blur' }
+            // { required: true, message: '???????', trigger: 'blur' },
+            // { min: 3, message: '????3???', trigger: 'blur' }
             { required: true, validator: validateTitle, trigger: 'blur' }
           ]
         },
         user: {
+          holder: [
+            // { required: true, message: '??????', trigger: 'blur' },
+            // { min: 3, message: '????3???', trigger: 'blur' }
+            { required: true, validator: validateHolder, trigger: 'blur' }
+          ],
         },
       }
     };
