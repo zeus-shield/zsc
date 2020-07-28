@@ -94,6 +94,10 @@ class Reward {
   };
 
   async removeAllTraces(account, func = null) {
+    try {
+    } catch (error) {
+      throw error;
+    }
   };
 }
 
