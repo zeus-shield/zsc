@@ -163,6 +163,11 @@ const update = async(req, res) => {
     if (update.account) {
       result = await services.users.find({account: update.account}, null, null);
       if (result) {
+        // check id is exist
+        const _result = await services.users.find({_id: req.body.id}, null, null);
+        if (_result) {
+        } else {
+        }
       }
     }
 
