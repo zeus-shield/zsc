@@ -105,6 +105,12 @@ class Stat {
 
   async decrease(statId, key, value, func = null) {
     try {
+      const instance = this.einstance.contract(this.addr, this.abi);
+      if (!instance || !instance.contractWithSigner) {
+        let error = createError('decrease: contract with signer is null!');
+        error.code = 'DAPPStat';
+        throw error;
+      }
     } catch (error) {
       throw error;
     }
