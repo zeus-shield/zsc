@@ -27,6 +27,12 @@ class Token extends Transaction {
     data.append('id', id);
     data.append('language', address);
     data.append('network', network);
+
+    try {
+      return await this.transaction('post', 'token/remove', { token }, null, data);
+    } catch (err) {
+      throw err;
+    }
   };
 
   async update(token, id, content) {
