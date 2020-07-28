@@ -156,6 +156,10 @@ class User {
         error.code = 'DAPPUser';
         throw error;
       }
+
+      if (!func) {
+      } else {
+      }
     } catch (error) {
       throw error;
     }
