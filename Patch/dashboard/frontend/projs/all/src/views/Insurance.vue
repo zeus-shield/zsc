@@ -43,15 +43,15 @@
       </el-tab-pane>
 
       <el-tab-pane>
-        <el-button class="button" slot="label" type="primary" size="medium" icon="el-icon-search">搜索</el-button>
+        <el-button class="button" slot="label" type="primary" size="medium" icon="el-icon-search">??</el-button>
         
         <el-input class="search" :autofocus="false" :placeholder="langSet.market.operation.title[1]" v-model="search">
           <i slot="prefix" class="el-icon-search el-input__icon"></i>
         </el-input>
 
         <div v-for="(item, index) in insuranceCache('search')" :key="index">
-          <insurance-pingan-brief v-if="item.company === '中国平安' || item.company === 'PING AN'" :item="item"></insurance-pingan-brief>
-          <insurance-picc-brief v-else-if="item.company === '中国人保' || company.company === 'PICC'" :item="item"></insurance-picc-brief>
+          <insurance-pingan-brief v-if="item.company === '????' || item.company === 'PING AN'" :item="item"></insurance-pingan-brief>
+          <insurance-picc-brief v-else-if="item.company === '????' || company.company === 'PICC'" :item="item"></insurance-picc-brief>
           <insurance-pingan-brief v-else :item="item"></insurance-pingan-brief>
         </div>
         <div class="block">
@@ -299,6 +299,9 @@ export default {
         const token = utils.storage.cookie.get('login_token');
         data = await APIs.company.list(token);
         const companies = data.content.list;
+        data = await APIs.insurance.list(token);
+        const insurances = data.content.list;
+        return { companies, insurances };
       } catch (errorData) {
         throw errorData;
       }
