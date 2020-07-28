@@ -231,6 +231,8 @@ const cn = {
       dialog: {
         checkIn: {
         },
+        transfer: {
+        }
       }
     }
   },
