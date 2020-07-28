@@ -23,6 +23,9 @@ const userCheckIn = async(req, res) => {
 const rewardTransfer = async(req, res) => {
   // debug('rewardTransfer(%s, %s, %s)', req.body.from, req.body.to, req.body.value);
   try {
+    // There is only one database write operation, and session can not be used.
+    const hash = await services.dapp.dashboard.rewardTransfer(req.body.from, req.body.to, req.body.value);
+    res.sendOk(hash);
   } catch (err) {
     res.sendErr(err);
   }
