@@ -166,7 +166,11 @@ const update = async(req, res) => {
         // check id is exist
         const _result = await services.users.find({_id: req.body.id}, null, null);
         if (_result) {
+          if (_result.account !== update.account) {
+            throw createError('USER_HAS_EXISTED');
+          }
         } else {
+          throw createError('USER_NOT_EXIST');
         }
       }
     }
