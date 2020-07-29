@@ -84,6 +84,10 @@ const rate = async(req, res) => {
     let rate = 0;
 
     if (req.query.src.toUpperCase() !== 'ETH') {
+      let conditions = {
+        symbol: req.query.src.toUpperCase(),
+        network: 'homestead'
+      };
     } else {
     }
 
