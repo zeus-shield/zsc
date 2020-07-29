@@ -78,6 +78,9 @@ class Dashboard {
 
   async rewardTotalSupply() {
   };
+
+  async rewardThreshold(index) {
+  };
 }
 
 export default Dashboard;
