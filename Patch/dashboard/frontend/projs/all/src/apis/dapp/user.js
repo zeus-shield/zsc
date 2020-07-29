@@ -158,6 +158,9 @@ class User {
       }
 
       if (!func) {
+        const tx = await instance.contractWithSigner.remove(_account);
+        await tx.wait();
+        return tx.hash;
       } else {
       }
     } catch (error) {
