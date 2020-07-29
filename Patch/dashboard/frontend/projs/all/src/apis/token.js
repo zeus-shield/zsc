@@ -37,6 +37,9 @@ class Token extends Transaction {
 
   async update(token, id, content) {
   };
+
+  async list() {
+  };
 }
 
 export default Token;
