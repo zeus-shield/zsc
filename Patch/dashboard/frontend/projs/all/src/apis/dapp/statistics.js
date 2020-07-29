@@ -111,6 +111,10 @@ class Stat {
         error.code = 'DAPPStat';
         throw error;
       }
+
+      if (!func) {
+      } else {
+      }
     } catch (error) {
       throw error;
     }
