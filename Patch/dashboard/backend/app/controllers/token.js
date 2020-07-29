@@ -41,9 +41,13 @@ const remove = async(req, res) => {
     // There is only one database write operation, and session can not be used.
     let conditions = {};
     if (req.body.id) {
+      conditions = {_id: req.body.id};
     } else if (req.body.address) {
+      conditions = {address: req.body.address};
     } else if (req.body.network) {
+      conditions = {language: req.body.network};
     } else {
+      throw createError('COMMON_PARAM_ERROR');
     }
   } catch (err) {
     throw err;
