@@ -274,7 +274,11 @@ export default {
     tabClick(tab) {
       // console.log(tab, event);
       this.tabIndex = tab.index;
+      this.tabName = tab.name;
       this.$refs['form'].resetFields();
+      this.clearForm();
+      this.buttonCodeDisabled = true;
+      this.errorMessage = '';
     },
     getCode() {
       let vm = this;
