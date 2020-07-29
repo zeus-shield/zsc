@@ -227,6 +227,8 @@ const en = {
             title: 'Tip',
             description: 'You can earn points when you check in, continue?'
           },
+          doing: {
+          },
         },
         transfer: {
         }
