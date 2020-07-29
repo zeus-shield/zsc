@@ -49,6 +49,12 @@ class Reward {
 
   async totalSupply() {
     try {
+      const instance = this.einstance.contract(this.addr, this.abi);
+      if (!instance || !instance.contract) {
+        let error = createError('totalSupply: contract is null!');
+        error.code = 'DAPPReward';
+        throw error;
+      }
     } catch (error) {
       throw error;
     }
