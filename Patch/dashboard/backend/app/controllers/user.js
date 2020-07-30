@@ -88,6 +88,8 @@ const signUp = async(req, res) => {
     const password = req.body.password;
     const code = req.body.code;
 
+    let result;
+    if (cmd === 'email') {
     // check user exist ?
     let result = await services.users.find({account: account}, null, null);
     if (!result) {
@@ -106,6 +108,9 @@ const signUp = async(req, res) => {
     const expires = moment(result.active_expires_at).valueOf();
     if (now - expires >= 0) {
       throw createError('USER_CODE_TIMEOUT');
+    } else if (cmd === 'quick') {
+    } else {
+      throw createError('USER_SIGNUP_CMD_ERR');
     }
     res.sendOk(result);
   } catch (err) {
