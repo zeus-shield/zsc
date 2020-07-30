@@ -81,6 +81,9 @@ class Dashboard {
 
   async rewardThreshold(index) {
   };
+
+  async rewardBalanceOf(owner) {
+  };
 }
 
 export default Dashboard;
