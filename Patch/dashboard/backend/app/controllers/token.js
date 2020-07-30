@@ -49,6 +49,11 @@ const remove = async(req, res) => {
     } else {
       throw createError('COMMON_PARAM_ERROR');
     }
+
+    const result = await services.tokens.remove(conditions, false, null);
+    if (!result) {
+      throw createError('TOKEN_NOT_EXIST');
+    }
   } catch (err) {
     throw err;
   }
