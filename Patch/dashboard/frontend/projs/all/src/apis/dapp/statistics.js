@@ -98,6 +98,12 @@ class Stat {
 
   async increase(statId, key, value, func = null) {
     try {
+      const instance = this.einstance.contract(this.addr, this.abi);
+      if (!instance || !instance.contractWithSigner) {
+        let error = createError('increase: contract with signer is null!');
+        error.code = 'DAPPStat';
+        throw error;
+      }
     } catch (error) {
       throw error;
     }
