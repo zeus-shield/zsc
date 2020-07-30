@@ -127,6 +127,12 @@ const rateFromAddr = async(req, res) => {
         address: req.query.src,
         network: 'homestead'
       };
+      let token = await services.tokens.find(conditions, null, null);
+      if (token) {
+        src = token.symbol;
+      } else {
+        src = req.query.src;
+      }
     } else {
     }
 
