@@ -162,6 +162,10 @@ class User {
         await tx.wait();
         return tx.hash;
       } else {
+        instance.contractWithSigner.remove(_account).then(tx => {
+          this.einstance.receipt(tx.hash, 0, 1000, func);
+        }).catch(error => {
+        });
       }
     } catch (error) {
       throw error;
