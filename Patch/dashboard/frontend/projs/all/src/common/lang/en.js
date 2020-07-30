@@ -228,6 +228,9 @@ const en = {
             description: 'You can earn points when you check in, continue?'
           },
           doing: {
+            title: 'Processing',
+            description: 'User check in processing...',
+            hash: 'Hash'
           },
         },
         transfer: {
