@@ -230,6 +230,8 @@ export default {
   },
   mounted() {
   },
+  destroyed() {
+  },
   data() {
   },
 };
