@@ -40,6 +40,9 @@ class Token extends Transaction {
 
   async list() {
   };
+
+  async detail(id, address) {
+  };
 }
 
 export default Token;
