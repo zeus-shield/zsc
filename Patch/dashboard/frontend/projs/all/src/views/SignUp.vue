@@ -288,11 +288,13 @@ export default {
       vm.codeStatus = 'getting';
 
       let account = '';
-      if (vm.tabIndex === '1') {
+      if (vm.tabName === 'signup-tab-phone') {
         account = vm.form.phoneAccount;
-      } else if (vm.tabIndex === '0') {
+      } else if (vm.tabName === 'signup-tab-email') {
         account = vm.form.emailAccount;
-      }
+      } else if (vm.tabName === 'signup-tab-quick') {
+        account = vm.form.quickAccount;
+      } else {}
 
       APIs.user.buildEmailCode(account).then(data => {
         let now = Date.now();
