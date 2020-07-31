@@ -207,5 +207,7 @@ export default {
   created() {
     console.log('%c[UserGoogle]created()', `color:${this.logColor}`);
   },
+  mounted() {
+  },
 };
 </script>
