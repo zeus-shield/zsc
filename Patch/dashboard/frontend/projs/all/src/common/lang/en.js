@@ -232,6 +232,8 @@ const en = {
             description: 'User check in processing...',
             hash: 'Hash'
           },
+          success: {
+          },
         },
         transfer: {
         }
