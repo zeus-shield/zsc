@@ -112,7 +112,10 @@ const signUp = async(req, res) => {
     } else {
       throw createError('USER_SIGNUP_CMD_ERR');
     }
-    res.sendOk(result);
+
+    await session.commitTransaction();
+    session.endSession();
+    res.sendOk('Sign up successfully!');
   } catch (err) {
     res.sendErr(err);
   }
