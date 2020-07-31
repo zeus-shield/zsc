@@ -54,6 +54,8 @@ const remove = async(req, res) => {
     if (!result) {
       throw createError('TOKEN_NOT_EXIST');
     }
+
+    res.sendOk('Remove token successfully!');
   } catch (err) {
     throw err;
   }
