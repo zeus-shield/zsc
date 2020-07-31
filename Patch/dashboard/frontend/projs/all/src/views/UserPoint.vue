@@ -6,6 +6,10 @@
   font-size: 0.875rem; // 14px;
   color: #444;
 }
+.user-point-mobile {
+}
+.interval-md {
+}
 <script>
 import { mapState, mapGetters } from 'vuex';
 
