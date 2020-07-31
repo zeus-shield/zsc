@@ -7,8 +7,11 @@
   color: #444;
 }
 .user-point-mobile {
+  padding: 1.25rem; // 20px
 }
 .interval-md {
+  margin: 0.5rem; // 8px;
+  min-height: 0.25rem; // 4px;
 }
 <script>
 import { mapState, mapGetters } from 'vuex';
