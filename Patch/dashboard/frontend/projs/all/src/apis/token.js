@@ -39,6 +39,9 @@ class Token extends Transaction {
   };
 
   async list() {
+    try {
+    } catch (err) {
+    }
   };
 
   async detail(id, address) {
