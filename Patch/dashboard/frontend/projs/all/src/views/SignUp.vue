@@ -188,21 +188,21 @@ export default {
       },
       rules: {
         phoneAccount: [
-          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
-          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          // { required: true, message: '??????/????', trigger: 'blur' },
+          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
           { validator: validatePhoneAccount, trigger: ['blur', 'change'] }
         ],
         emailAccount: [
-          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
-          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          // { required: true, message: '??????/????', trigger: 'blur' },
+          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
           { validator: validateEmailAccount, trigger: ['blur', 'change'] }
         ],
         quickAccount: [
           { validator: validateQuickAccount, trigger: ['blur', 'change'] }
         ],
         code: [
-          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
-          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          // { required: true, message: '??????/????', trigger: 'blur' },
+          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
           { validator: validateCode, trigger: ['blur', 'change'] }
         ],
         password: [
@@ -269,6 +269,8 @@ export default {
       });
     },
     clearForm() {
+      this.form.phoneAccount = '';
+      this.form.emailAccount = '';
     },
     // tabClick(tab, event) {
     tabClick(tab) {
