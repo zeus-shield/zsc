@@ -174,6 +174,9 @@ export default {
   },
   methods: {
     setDeviceParam() {
+      var width = document.body.clientWidth;
+      if (width >= 1920) {
+      }
     },
     moment(value) {
       return moment(value).format('YYYY-MM-DD');
