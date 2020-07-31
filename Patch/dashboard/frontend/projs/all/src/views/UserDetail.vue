@@ -236,5 +236,7 @@ export default {
   updated() {
     console.log('%c[UserDetail]updated()', `color:${this.logColor}`);
   },
+  beforeRouteEnter(to, from, next) {
+  },
 };
 </script>
