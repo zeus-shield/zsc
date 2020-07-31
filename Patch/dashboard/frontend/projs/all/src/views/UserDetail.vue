@@ -231,8 +231,10 @@ export default {
   mounted() {
   },
   destroyed() {
+    console.log('%c[UserDetail]destroyed()', `color:${this.logColor}`);
   },
-  data() {
+  updated() {
+    console.log('%c[UserDetail]updated()', `color:${this.logColor}`);
   },
 };
 </script>
