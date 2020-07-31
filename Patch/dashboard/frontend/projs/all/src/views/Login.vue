@@ -127,8 +127,8 @@ export default {
       },
       rules: {
         account: [
-          // { required: true, message: '??????/????', trigger: 'blur' },
-          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
+          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
+          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
           // { validator: validateAccount, trigger: ['blur', 'change'] },
           { validator: validateAccount, trigger: 'blur' }
         ],
@@ -236,21 +236,22 @@ export default {
           vm.errorMessage = '';
           vm.loading = true;
           // 1. common callback case
-          user.loginCommon(vm.form.account, vm.form.password, (err, data) => {
-            if (err === 0 && data.status === 200 && data.errorCode === 0) {
-              console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, data);
-              utils.storage.cookie.set('login_account', vm.form.account, 'N/A');
-              utils.storage.cookie.set('login_account', data.content.account, 'N/A');
-              utils.storage.cookie.set('login_token', data.content.token, 'N/A');
-              utils.storage.cookie.set('login_id', data.content._id, 'N/A');
-              vm.loading = false;
-              vm.$router.push({name: 'user'});
-            } else {
-              console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, data);
-              vm.errorMessage = data.errorMessage;
-              vm.loading = false;
-            }
-          });
+          // user.loginCommon(vm.form.account, vm.form.password, (err, data) => {
+          //   if (err === 0 && data.status === 200 && data.errorCode === 0) {
+          //     // console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, data);
+          //     // utils.storage.cookie.set('login_account', vm.form.account, 'N/A');
+          //     utils.storage.cookie.set('login_account', data.content.account, 'N/A');
+          //     utils.storage.cookie.set('login_token', data.content.token, 'N/A');
+          //     utils.storage.cookie.set('login_id', data.content._id, 'N/A');
+          //     vm.loading = false;
+          //     vm.$router.push({name: 'user'});
+          //   } else {
+          //     console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, data);
+          //     vm.errorMessage = data.errorMessage;
+          //     vm.loading = false;
+          //   }
+          // });
+
           // 2. promise case
           user.loginPromise(vm.form.account, vm.form.password).then(data => {
             // console.log('%c[Login]submitForm(%s)', `color:${vm.logColor}`, data);
