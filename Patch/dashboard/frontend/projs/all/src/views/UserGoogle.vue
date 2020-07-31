@@ -208,6 +208,8 @@ export default {
     console.log('%c[UserGoogle]created()', `color:${this.logColor}`);
   },
   mounted() {
+    console.log('%c[UserGoogle]mounted()', `color:${this.logColor}`);
+    this.googleAuth(this.cmd);
   },
 };
 </script>
