@@ -211,5 +211,8 @@ export default {
     console.log('%c[UserGoogle]mounted()', `color:${this.logColor}`);
     this.googleAuth(this.cmd);
   },
+  destroyed() {
+    console.log('%c[UserGoogle]destroyed()', `color:${this.logColor}`);
+  },
 };
 </script>
