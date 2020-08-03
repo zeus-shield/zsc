@@ -135,6 +135,10 @@ const rateFromAddr = async(req, res) => {
       }
 
       if (req.query.dest) {
+        conditions = {
+          address: req.query.dest,
+          network: 'homestead'
+        };
       } else {
       }
     } else {
