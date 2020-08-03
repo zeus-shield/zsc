@@ -233,6 +233,8 @@ const en = {
             hash: 'Hash'
           },
           success: {
+            title: 'Success',
+            description: 'Your daily check in successfully!'
           },
         },
         transfer: {
