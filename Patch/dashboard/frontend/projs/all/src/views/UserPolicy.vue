@@ -176,6 +176,8 @@ export default {
     setDeviceParam() {
       var width = document.body.clientWidth;
       if (width >= 1920) {
+      } else if (width >= 1200) {
+      } else {
       }
     },
     moment(value) {
