@@ -229,6 +229,8 @@ export default {
     console.log('%c[UserDetail]created()', `color:${this.logColor}`);
   },
   mounted() {
+    console.log('%c[UserDetail]mounted()', `color:${this.logColor}`);
+    this.setDialogWidth();
   },
   destroyed() {
     console.log('%c[UserDetail]destroyed()', `color:${this.logColor}`);
