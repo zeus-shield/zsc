@@ -230,6 +230,9 @@ const cn = {
       },
       dialog: {
         checkIn: {
+          title: 'Ç©µ½',
+          alert: {
+          },
         },
         transfer: {
         }
