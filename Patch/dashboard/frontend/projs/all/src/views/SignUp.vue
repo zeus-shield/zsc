@@ -271,6 +271,10 @@ export default {
     clearForm() {
       this.form.phoneAccount = '';
       this.form.emailAccount = '';
+      this.form.quickAccount = '';
+      this.form.code = '';
+      this.form.password = '';
+      this.form.password2 = '';
     },
     // tabClick(tab, event) {
     tabClick(tab) {
