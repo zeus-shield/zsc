@@ -84,6 +84,9 @@ class Dashboard {
 
   async rewardBalanceOf(owner) {
   };
+
+  async rewardTraces(account) {
+  };
 }
 
 export default Dashboard;
