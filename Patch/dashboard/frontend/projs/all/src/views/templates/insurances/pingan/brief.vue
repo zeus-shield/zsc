@@ -290,5 +290,8 @@ export default {
     console.log('%c[InsurancePingAnBrief]mounted()', `color:${this.logColor}`);
     this.updateForm();
   },
+  destroyed() {
+    console.log('%c[InsurancePingAnBrief]destroyed()', `color:${this.logColor}`);
+  },
 };
 </script>
