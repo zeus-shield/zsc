@@ -13,6 +13,10 @@
   margin: 0.5rem; // 8px;
   min-height: 0.25rem; // 4px;
 }
+.interval-lg {
+  margin: 1rem; // 16px;
+  min-height: 0.5rem; // 8px;
+}
 <script>
 import { mapState, mapGetters } from 'vuex';
 
