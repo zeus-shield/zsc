@@ -7,6 +7,11 @@ const services = require('../services');
 const debug = require('debug')('backend:app:controllers:ether');
 
 const userAddPolicy = async(req, res) => {
+  // debug('userAddPolicy(%s, %s)', req.body.account, req.body.policy);
+  try {
+  } catch (err) {
+    res.sendErr(err);
+  }
 };
 
 const userCheckIn = async(req, res) => {
