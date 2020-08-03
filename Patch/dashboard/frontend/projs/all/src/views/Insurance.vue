@@ -311,6 +311,8 @@ export default {
         // console.log(company.name);
         // get insurances for company
         if (company.categories !== undefined && company.categories.length !== 0) {
+          let insurances = this.cacheData.insurances.filter(insurance => insurance.company === company.name);
+          // console.log(insurances.length);
         }
       });
     },
