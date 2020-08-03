@@ -99,6 +99,10 @@ class Reward {
   };
 
   async removeTrace(account, timeKey, func = null) {
+    try {
+    } catch (error) {
+      throw error;
+    }
   };
 
   async removeAllTraces(account, func = null) {
