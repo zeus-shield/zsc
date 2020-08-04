@@ -17,6 +17,8 @@
   margin: 1rem; // 16px;
   min-height: 0.5rem; // 8px;
 }
+.header {
+}
 <script>
 import { mapState, mapGetters } from 'vuex';
 
