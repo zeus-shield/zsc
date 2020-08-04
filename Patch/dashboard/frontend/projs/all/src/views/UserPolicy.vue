@@ -176,6 +176,7 @@ export default {
     setDeviceParam() {
       var width = document.body.clientWidth;
       if (width >= 1920) {
+        this.labelWidth = '20%';
       } else if (width >= 1200) {
       } else {
       }
@@ -184,6 +185,9 @@ export default {
       return moment(value).format('YYYY-MM-DD');
     },
     onError(vm, param, error) {
+      if (param.cmd === 'blockchain') {
+      } else if (param.cmd === 'backend') {
+      } else {}
     },
     onFresh() {
     },
