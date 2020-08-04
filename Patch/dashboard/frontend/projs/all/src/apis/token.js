@@ -40,7 +40,9 @@ class Token extends Transaction {
 
   async list() {
     try {
+      return await this.transaction('get', 'token/list', null);
     } catch (err) {
+      throw err;
     }
   };
 
