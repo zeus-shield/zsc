@@ -117,6 +117,10 @@ const signUp = async(req, res) => {
     session.endSession();
     res.sendOk('Sign up successfully!');
   } catch (err) {
+    if (session !== null) {
+      await session.abortTransaction();
+      session.endSession();
+    }
     res.sendErr(err);
   }
 };
