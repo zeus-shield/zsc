@@ -143,14 +143,9 @@ export default {
         throw err;
       }
     },
-    async preBar() {
-      try {
-        return await APIs.user.statistics(null, true, false, false, -1, 10);
-      } catch (err) {
-        throw err;
-      }
+    buildBarAttr(vm, axisData, seriesShadowData, seriesData) {
 
-      vm.bar = { ...vm.bar, ...{ seriesShadowData }, ...{ seriesData } };
+
     },
     drawPie() {
       this.chartPie = echarts.init(document.getElementById('chartPie'));
@@ -177,7 +172,7 @@ export default {
         },
         series: [
           {
-            name: utils.storage.cookie.get('lang') === 'en' ? 'Policy: ' : 'ÏÕÖÖ :',
+            name: utils.storage.cookie.get('lang') === 'en' ? 'Policy: ' : '?? :',
             type: 'pie',
             // radius: '55%',
             // radius: ['50%', '70%'],
