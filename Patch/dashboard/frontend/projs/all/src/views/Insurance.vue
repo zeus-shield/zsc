@@ -313,6 +313,11 @@ export default {
         if (company.categories !== undefined && company.categories.length !== 0) {
           let insurances = this.cacheData.insurances.filter(insurance => insurance.company === company.name);
           // console.log(insurances.length);
+          company.categories.forEach(category => {
+            // console.log(category.name);
+            category.count = insurances.filter(insurance => insurance.category === category.name).length;
+            // console.log(category.count);
+          });
         }
       });
     },
