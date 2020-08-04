@@ -140,6 +140,8 @@ const rateFromAddr = async(req, res) => {
           network: 'homestead'
         };
       } else {
+        dest = 'ETH';
+        rate = info.data[0].dst_qty[0];
       }
     } else {
     }
