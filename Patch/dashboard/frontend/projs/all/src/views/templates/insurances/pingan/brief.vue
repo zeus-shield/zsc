@@ -293,5 +293,7 @@ export default {
   destroyed() {
     console.log('%c[InsurancePingAnBrief]destroyed()', `color:${this.logColor}`);
   },
+  updated() {
+  },
 };
 </script>
