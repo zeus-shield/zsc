@@ -214,5 +214,7 @@ export default {
   destroyed() {
     console.log('%c[UserGoogle]destroyed()', `color:${this.logColor}`);
   },
+  updated() {
+  },
 };
 </script>
