@@ -66,6 +66,10 @@ class Dashboard {
   async userAddPolicy(account, keyObj, policy, func = null) {
   };
 
+  // The 'insurance' field information can not be updated
+  async userUpdatePolicy(account, key, policy, func = null) {
+  };
+
   async userRemovePolicy(account, key, func = null) {
   }
 
