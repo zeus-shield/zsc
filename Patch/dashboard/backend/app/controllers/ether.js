@@ -9,6 +9,9 @@ const debug = require('debug')('backend:app:controllers:ether');
 const userAddPolicy = async(req, res) => {
   // debug('userAddPolicy(%s, %s)', req.body.account, req.body.policy);
   try {
+    // There is only one database write operation, and session can not be used.
+    const accountObj = JSON.parse(req.body.account);
+    let policy = JSON.parse(req.body.policy);
   } catch (err) {
     res.sendErr(err);
   }
