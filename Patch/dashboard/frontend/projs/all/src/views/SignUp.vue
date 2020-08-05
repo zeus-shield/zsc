@@ -137,14 +137,18 @@ export default {
     let validateQuickAccount = (rule, value, callback) => {
     };
     let validateCode = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error(vm.langSet['message']['error']['SIGNUP_CODE_NONE']));
-      } else {
-        if (value.length !== 6) {
-          callback(new Error(vm.langSet['message']['error']['SIGNUP_CODE_LEN_ERR']));
+      if (vm.tabName === 'signup-tab-phone' || vm.tabName === 'signup-tab-email') {
+        if (value === '') {
+          callback(new Error(vm.langSet['message']['error']['SIGNUP_CODE_NONE']));
         } else {
-          callback();
+          if (value.length !== 6) {
+            callback(new Error(vm.langSet['message']['error']['SIGNUP_CODE_LEN_ERR']));
+          } else {
+            callback();
+          }
         }
+      } else {
+        callback();
       }
     };
     let validatePassword = (rule, value, callback) => {
