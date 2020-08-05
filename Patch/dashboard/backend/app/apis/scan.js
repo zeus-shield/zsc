@@ -139,6 +139,7 @@ const rateFromAddr = async(req, res) => {
           address: req.query.dest,
           network: 'homestead'
         };
+        token = await services.tokens.find(conditions, null, null);
       } else {
         dest = 'ETH';
         rate = info.data[0].dst_qty[0];
