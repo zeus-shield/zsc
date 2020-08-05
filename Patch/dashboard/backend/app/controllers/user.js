@@ -90,24 +90,29 @@ const signUp = async(req, res) => {
 
     let result;
     if (cmd === 'email') {
-    // check user exist ?
-    let result = await services.users.find({account: account}, null, null);
-    if (!result) {
-      throw createError('USER_NOT_EXIST');
-    }
+      // check user exist ?
+      result = await services.users.find({account: account}, null, session);
+      if (!result) {
+        throw createError('USER_NOT_EXIST');
+      } else {
+        if (result.is_active) {
+          throw createError('USER_IS_ACTIVE');
+        }
+      }
 
-    // check code ?
-    const inputCode = crypto.encrypted(code, settings.saltKey);
-    const equal = await crypto.check(inputCode, result.email_code);
-    if (!equal) {
-      throw createError('USER_CODE_WRONG');
-    }
+      // check code ?
+      const inputCode = crypto.encrypted(code, settings.saltKey);
+      const equal = await crypto.check(inputCode, result.email_code);
+      if (!equal) {
+        throw createError('USER_CODE_WRONG');
+      }
 
-    // check timeout
-    const now = Date.now();
-    const expires = moment(result.active_expires_at).valueOf();
-    if (now - expires >= 0) {
-      throw createError('USER_CODE_TIMEOUT');
+      // check timeout
+      const now = Date.now();
+      const expires = moment(result.active_expires_at).valueOf();
+      if (now - expires >= 0) {
+        throw createError('USER_CODE_TIMEOUT');
+      }
     } else if (cmd === 'quick') {
     } else {
       throw createError('USER_SIGNUP_CMD_ERR');
