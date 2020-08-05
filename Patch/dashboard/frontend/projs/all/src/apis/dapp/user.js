@@ -135,6 +135,8 @@ class User {
     }
   };
 
+  async addInfo(account, key, info, func = null) {
+  };
   async updateInfoByKey(account, key, info, func = null) {
     try {
     } catch (error) {
