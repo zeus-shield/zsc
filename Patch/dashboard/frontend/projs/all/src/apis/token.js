@@ -48,6 +48,9 @@ class Token extends Transaction {
 
   async detail(id, address) {
   };
+
+  async count(id, address) {
+  };
 }
 
 export default Token;
