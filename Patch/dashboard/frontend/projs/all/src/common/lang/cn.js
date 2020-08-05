@@ -211,6 +211,7 @@ const cn = {
     },
     policy: {
       // the content follow same as market.dialog
+      refresh: '链上刷新'
     },
     point: {
       title: '我的积分',
