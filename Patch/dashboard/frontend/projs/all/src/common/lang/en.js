@@ -203,6 +203,7 @@ const en = {
     },
     policy: {
       // the content follow same as market.dialog
+      refresh: 'Refresh'
     },
     point: {
       title: 'My points',
