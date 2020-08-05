@@ -215,6 +215,9 @@ export default {
     console.log('%c[UserGoogle]destroyed()', `color:${this.logColor}`);
   },
   updated() {
+    console.log('%c[UserGoogle]updated()', `color:${this.logColor}`);
+  },
+  beforeRouteEnter(to, from, next) {
   },
 };
 </script>
