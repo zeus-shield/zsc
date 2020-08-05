@@ -12,6 +12,12 @@ const userAddPolicy = async(req, res) => {
     // There is only one database write operation, and session can not be used.
     const accountObj = JSON.parse(req.body.account);
     let policy = JSON.parse(req.body.policy);
+
+    // 1. add policy to blockchain
+    let keyObj = {key: ''};
+    const hash = await services.dapp.dashboard.userAddPolicy(accountObj, keyObj, policy);
+    const network = await services.core.ecore.network();
+    let url = '';
   } catch (err) {
     res.sendErr(err);
   }
