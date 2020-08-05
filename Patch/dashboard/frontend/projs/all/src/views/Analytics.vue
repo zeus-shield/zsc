@@ -277,7 +277,9 @@ export default {
     async prePie(cmd) {
       try {
         if (cmd === 'database') {
+          return await APIs.user.statistics(null, true, true, true, -1, 5);
         } else if (cmd === 'blockchain') {
+          return await APIs.dapp.dashboard.statInfo(config.statProductId);
         } else {}
       } catch (err) {
         throw err;
