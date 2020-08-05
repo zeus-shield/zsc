@@ -50,6 +50,12 @@ class Token extends Transaction {
   };
 
   async count(id, address) {
+    const query = new URLSearchParams();
+    if (id) {
+      query.append('id', id);
+    } else if (address) {
+      query.append('address', address);
+    } else {}
   };
 }
 
