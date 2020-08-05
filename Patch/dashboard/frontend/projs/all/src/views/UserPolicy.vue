@@ -178,7 +178,10 @@ export default {
       if (width >= 1920) {
         this.labelWidth = '20%';
       } else if (width >= 1200) {
+      } else if (width >= 992) {
+      } else if (width >= 768) {
       } else {
+        this.labelWidth = '50%';
       }
     },
     moment(value) {
