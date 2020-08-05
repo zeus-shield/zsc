@@ -91,6 +91,9 @@ class Dashboard {
 
   async rewardTraces(account) {
   };
+
+  async rewardTraceCount(account) {
+  };
 }
 
 export default Dashboard;
