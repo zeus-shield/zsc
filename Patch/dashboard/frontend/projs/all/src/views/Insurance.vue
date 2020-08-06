@@ -241,6 +241,12 @@ export default {
 
     vm.loading = true;
 
+    // vm.getCompanies().then(data => {
+    //   vm.cacheData.companies = data;
+    //   return vm.getInsurances();
+    // }).then(data => {
+    //   vm.loading = false;
+    //   vm.cacheData.insurances = data;
     vm.recieve().then((data) => {
       vm.buildCache(data);
       vm.loading = false;
