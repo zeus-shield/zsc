@@ -237,6 +237,9 @@ const en = {
             title: 'Success',
             description: 'Your daily check in successfully!'
           },
+          error: {
+            title: 'Fail'
+          }
         },
         transfer: {
         }
