@@ -56,6 +56,10 @@ class Token extends Transaction {
     } else if (address) {
       query.append('address', address);
     } else {}
+
+    try {
+    } catch (err) {
+    }
   };
 }
 
