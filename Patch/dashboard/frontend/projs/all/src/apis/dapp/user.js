@@ -137,7 +137,9 @@ class User {
 
   async addInfo(account, key, info, func = null) {
   };
-  async updateInfoByKey(account, key, info, func = null) {
+
+  // The 'insurance' field information can not be updated
+  async updateInfo(account, key, info, func = null) {
     try {
     } catch (error) {
       throw error;
