@@ -114,6 +114,10 @@ class Reward {
         error.code = 'DAPPReward';
         throw error;
       }
+
+      if (!func) {
+      } else {
+      }
     } catch (error) {
       throw error;
     }
