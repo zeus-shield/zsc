@@ -270,6 +270,11 @@ export default {
           ]
         },
         policy: {
+          amount: [
+            // { required: true, message: '?????', trigger: 'blur' },
+            // { min: 1, message: '????1???', trigger: 'blur' }
+            { required: true, validator: validateAmount, trigger: 'blur' }
+          ],
         }
       }
     };
