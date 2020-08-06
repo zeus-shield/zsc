@@ -106,6 +106,9 @@ class Stat {
       }
 
       if (!func) {
+        const tx = await instance.contractWithSigner.increase(strToBytes32(statId), strToBytes32(key), value);
+        await tx.wait();
+        return tx.hash;
       } else {
       }
     } catch (error) {
