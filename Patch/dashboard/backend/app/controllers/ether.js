@@ -18,6 +18,9 @@ const userAddPolicy = async(req, res) => {
     const hash = await services.dapp.dashboard.userAddPolicy(accountObj, keyObj, policy);
     const network = await services.core.ecore.network();
     let url = '';
+    if (network.name === 'homestead') {
+    } else {
+    }
   } catch (err) {
     res.sendErr(err);
   }
