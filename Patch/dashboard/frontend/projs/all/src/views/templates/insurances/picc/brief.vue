@@ -287,6 +287,10 @@ export default {
             // { min: 1, message: '????1???', trigger: 'blur' }
             { required: true, validator: validateAmount, trigger: 'blur' }
           ],
+          start_time: [
+            // { type: 'date', required: true, message: '???????', trigger: 'change' }
+            { required: true, validator: validateStartTime, trigger: 'blur' }
+          ],
         }
       }
     };
