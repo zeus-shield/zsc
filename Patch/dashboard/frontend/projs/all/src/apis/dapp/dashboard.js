@@ -94,6 +94,9 @@ class Dashboard {
 
   async rewardTraceCount(account) {
   };
+
+  async rewardTraceByIndex(account, index) {
+  };
 }
 
 export default Dashboard;
