@@ -242,30 +242,30 @@ export default {
       rules: {
         insurance: {
           company: [
-            // { required: true, message: '请输入公司名称', trigger: 'blur' },
-            // { min: 3, message: '长度大于3个字符', trigger: 'blur' }
+            // { required: true, message: '???????', trigger: 'blur' },
+            // { min: 3, message: '????3???', trigger: 'blur' }
             { required: true, validator: validateCompany, trigger: 'blur' }
           ],
           category: [
-            // { required: true, message: '请输入产品类型', trigger: 'blur' },
-            // { min: 3, message: '长度大于3个字符', trigger: 'blur' }
+            // { required: true, message: '???????', trigger: 'blur' },
+            // { min: 3, message: '????3???', trigger: 'blur' }
             { required: true, validator: validateCategory, trigger: 'blur' }
           ],
           title: [
-            // { required: true, message: '请输入产品名称', trigger: 'blur' },
-            // { min: 3, message: '长度大于3个字符', trigger: 'blur' }
+            // { required: true, message: '???????', trigger: 'blur' },
+            // { min: 3, message: '????3???', trigger: 'blur' }
             { required: true, validator: validateTitle, trigger: 'blur' }
           ]
         },
         user: {
           holder: [
-            // { required: true, message: '请输入投保人', trigger: 'blur' },
-            // { min: 3, message: '长度大于3个字符', trigger: 'blur' }
+            // { required: true, message: '??????', trigger: 'blur' },
+            // { min: 3, message: '????3???', trigger: 'blur' }
             { required: true, validator: validateHolder, trigger: 'blur' }
           ],
           insurant: [
-            // { required: true, message: '请输入承保人', trigger: 'blur' },
-            // { min: 3, message: '长度大于3个字符', trigger: 'blur' }
+            // { required: true, message: '??????', trigger: 'blur' },
+            // { min: 3, message: '????3???', trigger: 'blur' }
             { required: true, validator: validateInsurant, trigger: 'blur' }
           ]
         },
@@ -274,6 +274,10 @@ export default {
             // { required: true, message: '?????', trigger: 'blur' },
             // { min: 1, message: '????1???', trigger: 'blur' }
             { required: true, validator: validateAmount, trigger: 'blur' }
+          ],
+          start_time: [
+            // { type: 'date', required: true, message: '???????', trigger: 'change' }
+            { required: true, validator: validateStartTime, trigger: 'blur' }
           ],
         }
       }
