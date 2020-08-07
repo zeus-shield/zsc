@@ -192,21 +192,21 @@ export default {
       },
       rules: {
         phoneAccount: [
-          // { required: true, message: '??????/????', trigger: 'blur' },
-          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
+          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
+          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
           { validator: validatePhoneAccount, trigger: ['blur', 'change'] }
         ],
         emailAccount: [
-          // { required: true, message: '??????/????', trigger: 'blur' },
-          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
+          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
+          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
           { validator: validateEmailAccount, trigger: ['blur', 'change'] }
         ],
         quickAccount: [
           { validator: validateQuickAccount, trigger: ['blur', 'change'] }
         ],
         code: [
-          // { required: true, message: '??????/????', trigger: 'blur' },
-          // { min: 6, max: 18, message: '??? 6 ? 18 ???', trigger: 'blur' }
+          // { required: true, message: '请输入手机号/邮箱地址', trigger: 'blur' },
+          // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
           { validator: validateCode, trigger: ['blur', 'change'] }
         ],
         password: [
@@ -364,7 +364,7 @@ export default {
             account = vm.form.emailAccount;
           }
 
-          APIs.user.signUp(account, vm.form.code, vm.form.password).then(() => {
+          APIs.user.signUp(cmd, account, vm.form.code, vm.form.password).then(() => {
             return APIs.user.login(account, vm.form.password, null);
           }).then(data => {
             // console.log('%c[SignUp]submitForm(%s)', `color:${vm.logColor}`, data);
@@ -373,7 +373,7 @@ export default {
             utils.storage.cookie.set('login_token', data.content.token, 'N/A');
             utils.storage.cookie.set('login_id', data.content._id, 'N/A');
             vm.loading = false;
-            vm.$router.push({name: 'userDetail'});
+            vm.$router.push({name: 'userPolicy'});
           }).catch(errorData => {
             vm.errorMessage = errorData.errorMessage;
             vm.loading = false;
