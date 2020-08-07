@@ -214,6 +214,9 @@ export default {
       }
     };
     return {
+      account: '',
+      lastLoginAt: '',
+      GoogleAuthOn: false,
     };
   },
   // props: {
