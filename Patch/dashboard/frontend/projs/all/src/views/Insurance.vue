@@ -14,15 +14,15 @@
             :name="category.name">
 
             <div class="tab-category" slot="label">
-              <i v-if="company.name === '中国平安' || company.name === 'PING AN'" :class="category.iconClass"></i>
-              <div v-else-if="company.name === '中国人保' || company.name === 'PICC'" :class="category.iconClass"></div>
+              <i v-if="company.name === '????' || company.name === 'PING AN'" :class="category.iconClass"></i>
+              <div v-else-if="company.name === '????' || company.name === 'PICC'" :class="category.iconClass"></div>
               <i v-else :class="category.icon"></i>
               <span>{{ category.name }} ({{ category.count }})</span>
             </div>
             
             <div v-for="(item, index) in insuranceCache('page')" :key="index">
-              <insurance-pingan-brief v-if="company.name === '中国平安' || company.name === 'PING AN'" :item="item"></insurance-pingan-brief>
-              <insurance-picc-brief v-else-if="company.name === '中国人保' || company.name === 'PICC'" :item="item"></insurance-picc-brief>
+              <insurance-pingan-brief v-if="company.name === '????' || company.name === 'PING AN'" :item="item"></insurance-pingan-brief>
+              <insurance-picc-brief v-else-if="company.name === '????' || company.name === 'PICC'" :item="item"></insurance-picc-brief>
               <insurance-picc-brief v-else :item="item"></insurance-picc-brief>
             </div>
           </el-tab-pane>
@@ -43,15 +43,15 @@
       </el-tab-pane>
 
       <el-tab-pane>
-        <el-button class="button" slot="label" type="primary" size="medium" icon="el-icon-search">搜索</el-button>
+        <el-button class="button" slot="label" type="primary" size="medium" icon="el-icon-search">??</el-button>
         
         <el-input class="search" :autofocus="false" :placeholder="langSet.market.operation.title[1]" v-model="search">
           <i slot="prefix" class="el-icon-search el-input__icon"></i>
         </el-input>
 
         <div v-for="(item, index) in insuranceCache('search')" :key="index">
-          <insurance-pingan-brief v-if="item.company === '中国平安' || item.company === 'PING AN'" :item="item"></insurance-pingan-brief>
-          <insurance-picc-brief v-else-if="item.company === '中国人保' || company.company === 'PICC'" :item="item"></insurance-picc-brief>
+          <insurance-pingan-brief v-if="item.company === '????' || item.company === 'PING AN'" :item="item"></insurance-pingan-brief>
+          <insurance-picc-brief v-else-if="item.company === '????' || company.company === 'PICC'" :item="item"></insurance-picc-brief>
           <insurance-pingan-brief v-else :item="item"></insurance-pingan-brief>
         </div>
         <div class="block">
