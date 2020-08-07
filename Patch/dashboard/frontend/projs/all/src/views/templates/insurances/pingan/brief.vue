@@ -271,14 +271,19 @@ export default {
         },
         policy: {
           amount: [
-            // { required: true, message: '?????', trigger: 'blur' },
-            // { min: 1, message: '????1???', trigger: 'blur' }
+            // { required: true, message: '请输入保额', trigger: 'blur' },
+            // { min: 1, message: '长度大于1个字符', trigger: 'blur' }
             { required: true, validator: validateAmount, trigger: 'blur' }
           ],
           start_time: [
-            // { type: 'date', required: true, message: '???????', trigger: 'change' }
+            // { type: 'date', required: true, message: '请选择生效日期', trigger: 'change' }
             { required: true, validator: validateStartTime, trigger: 'blur' }
           ],
+          period: [
+            // { required: true, message: '请输入保障期限', trigger: 'blur' },
+            // { min: 1, message: '长度大于1个字符', trigger: 'blur' }
+            { required: true, validator: validatePeriod, trigger: 'blur' }
+          ]
         }
       }
     };
