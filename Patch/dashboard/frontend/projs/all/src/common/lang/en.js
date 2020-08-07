@@ -242,6 +242,9 @@ const en = {
           }
         },
         transfer: {
+          title: 'Send',
+          alert: {
+          },
         }
       }
     }
