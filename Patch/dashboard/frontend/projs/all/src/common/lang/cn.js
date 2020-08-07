@@ -233,6 +233,8 @@ const cn = {
         checkIn: {
           title: '签到',
           alert: {
+            title: '特别提示',
+            description: '签到可以赚取积分，是否要签到？'
           },
         },
         transfer: {
