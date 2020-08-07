@@ -304,6 +304,9 @@ export default {
     item: {}
   },
   computed: {
+    ...mapState({
+      logColor: state => state.logColor.insurance.picc.brief
+    }),
   },
 };
 </script>
