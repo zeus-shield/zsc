@@ -247,6 +247,10 @@ export default {
     // }).then(data => {
     //   vm.loading = false;
     //   vm.cacheData.insurances = data;
+
+      vm.cacheData.setting = {
+        pageSizes: [2, 5, 8, 10]
+      };
     vm.recieve().then((data) => {
       vm.buildCache(data);
       vm.loading = false;
