@@ -97,6 +97,9 @@ class Dashboard {
 
   async rewardTraceByIndex(account, index) {
   };
+
+  async rewardTraceTimeKeys(account) {
+  };
 }
 
 export default Dashboard;
