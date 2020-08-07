@@ -23,6 +23,8 @@
   padding: 0.5rem 0;
   border-bottom: 0.0625rem solid #e4e4e4;
 }
+.header .sprite {
+}
 <script>
 import { mapState, mapGetters } from 'vuex';
 
