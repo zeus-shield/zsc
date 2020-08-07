@@ -116,6 +116,9 @@ class Reward {
       }
 
       if (!func) {
+        const tx = await instance.contractWithSigner.removeAllTraces(_account);
+        await tx.wait();
+        return tx.hash;
       } else {
       }
     } catch (error) {
