@@ -145,6 +145,7 @@ const rateFromAddr = async(req, res) => {
         } else {
           dest = req.query.dest;
         }
+        rate = info.data[0].dst_qty[0] / info.data[1].dst_qty[0];
       } else {
         dest = 'ETH';
         rate = info.data[0].dst_qty[0];
