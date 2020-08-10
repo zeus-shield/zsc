@@ -244,6 +244,8 @@ const en = {
         transfer: {
           title: 'Send',
           alert: {
+            title: 'Tip',
+            description: 'Please input the correct target account and amount!'
           },
         }
       }
