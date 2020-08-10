@@ -7,6 +7,8 @@ class Scan {
     this.einstance = einstance;
     this.erc20Tokens = [];
     this.erc20TokenAbi = [
+      'function name() public view returns (string)',
+      'function symbol() public view returns (string)',
     ];
     this.erc721Tokens = [];
     this.erc721TokenAbi = [];
