@@ -217,6 +217,8 @@ export default {
       account: '',
       lastLoginAt: '',
       GoogleAuthOn: false,
+      cmd: 'set',
+      dialogVisible: false,
     };
   },
   // props: {
