@@ -9,4 +9,6 @@ controllers.qa = require('./qa');
 controllers.press = require('./press');
 controllers.token = require('./token');
 
+controllers.iot = require('./iot');
+
 module.exports = controllers;
