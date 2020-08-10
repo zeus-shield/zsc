@@ -71,6 +71,8 @@ class APIs {
     this.qa = new QA(instance);
     this.press = new Press(instance);
     this.token = new Token(instance);
+
+    this.iot = new IOT(instance);
   }
 }
 
