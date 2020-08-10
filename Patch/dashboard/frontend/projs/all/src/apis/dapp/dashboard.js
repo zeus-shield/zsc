@@ -100,6 +100,9 @@ class Dashboard {
 
   async rewardTraceTimeKeys(account) {
   };
+
+  async rewardUpdateCap(newCap, func = null) {
+  };
 }
 
 export default Dashboard;
