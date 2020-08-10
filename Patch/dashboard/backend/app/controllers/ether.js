@@ -19,6 +19,8 @@ const userAddPolicy = async(req, res) => {
     const network = await services.core.ecore.network();
     let url = '';
     if (network.name === 'homestead') {
+      // url = 'https://etherscan.io/';
+      url = 'https://cn.etherscan.com/';
     } else {
     }
   } catch (err) {
