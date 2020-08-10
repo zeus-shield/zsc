@@ -236,6 +236,9 @@ const cn = {
             title: '特别提示',
             description: '签到可以赚取积分，是否要签到？'
           },
+          error: {
+            title: '签到失败'
+          }
         },
         transfer: {
         }
