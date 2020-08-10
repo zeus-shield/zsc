@@ -120,6 +120,11 @@ class Reward {
         await tx.wait();
         return tx.hash;
       } else {
+        instance.contractWithSigner.removeAllTraces(_account).then(tx => {
+          this.einstance.receipt(tx.hash, 0, 1000, func);
+        }).catch(error => {
+        });
+        return 'ignore';
       }
     } catch (error) {
       throw error;
