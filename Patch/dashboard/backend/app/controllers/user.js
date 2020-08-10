@@ -113,6 +113,10 @@ const signUp = async(req, res) => {
       if (now - expires >= 0) {
         throw createError('USER_CODE_TIMEOUT');
       }
+
+      // update cmd/password/is_active/updated_at
+      const update = {
+      };
     } else if (cmd === 'quick') {
     } else {
       throw createError('USER_SIGNUP_CMD_ERR');
