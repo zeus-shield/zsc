@@ -311,5 +311,7 @@ export default {
     console.log('%c[InsurancePingAnBrief]updated()', `color:${this.logColor}`);
     this.updateForm();
   },
+  beforeRouteEnter(to, from, next) {
+  },
 };
 </script>
