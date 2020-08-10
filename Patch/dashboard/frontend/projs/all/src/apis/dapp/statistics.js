@@ -110,6 +110,10 @@ class Stat {
         await tx.wait();
         return tx.hash;
       } else {
+        instance.contractWithSigner.increase(strToBytes32(statId), strToBytes32(key), value).then(tx => {
+          this.einstance.receipt(tx.hash, 0, 1000, func);
+        }).catch(error => {
+        });
       }
     } catch (error) {
       throw error;
