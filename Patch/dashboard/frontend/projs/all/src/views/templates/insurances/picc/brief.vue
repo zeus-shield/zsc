@@ -307,6 +307,10 @@ export default {
     ...mapState({
       logColor: state => state.logColor.insurance.picc.brief
     }),
+    ...mapGetters('lang', ['langSet'])
+  },
+  created() {
+    console.log('%c[InsurancePICCBrief]created()', `color:${this.logColor}`);
   },
 };
 </script>
