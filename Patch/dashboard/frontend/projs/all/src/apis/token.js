@@ -47,6 +47,10 @@ class Token extends Transaction {
   };
 
   async detail(id, address) {
+    const query = new URLSearchParams();
+    if (id) {
+    } else if (address) {
+    } else {}
   };
 
   async count(id, address) {
