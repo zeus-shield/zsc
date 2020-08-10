@@ -25,6 +25,8 @@
 }
 .header .sprite {
 }
+.point-profile {
+}
 <script>
 import { mapState, mapGetters } from 'vuex';
 
