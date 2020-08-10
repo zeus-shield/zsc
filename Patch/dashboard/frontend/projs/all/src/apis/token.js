@@ -58,7 +58,9 @@ class Token extends Transaction {
     } else {}
 
     try {
+      return await this.transaction('get', 'token/count', null, query);
     } catch (err) {
+      throw err;
     }
   };
 }
