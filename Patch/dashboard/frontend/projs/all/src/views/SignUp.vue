@@ -361,9 +361,11 @@ export default {
           if (vm.tabName === 'signup-tab-phone') {
             cmd = 'phone';
             account = vm.form.phoneAccount;
-          } else if (vm.tabIndex === '0') {
+          } else if (vm.tabName === 'signup-tab-email') {
+            cmd = 'email';
             account = vm.form.emailAccount;
-          }
+          } else if (vm.tabName === 'signup-tab-quick') {
+          } else {}
 
           APIs.user.signUp(cmd, account, vm.form.code, vm.form.password).then(() => {
             return APIs.user.login(account, vm.form.password, null);
