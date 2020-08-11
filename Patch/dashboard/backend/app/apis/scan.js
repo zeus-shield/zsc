@@ -88,6 +88,10 @@ const rate = async(req, res) => {
         symbol: req.query.src.toUpperCase(),
         network: 'homestead'
       };
+      token = await services.tokens.find(conditions, null, null);
+      if (!token) {
+        throw createError('TOKEN_NOT_SUPPORTED');
+      }
     } else {
     }
 
