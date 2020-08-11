@@ -114,6 +114,7 @@ class Stat {
           this.einstance.receipt(tx.hash, 0, 1000, func);
         }).catch(error => {
         });
+        return 'ignore';
       }
     } catch (error) {
       throw error;
