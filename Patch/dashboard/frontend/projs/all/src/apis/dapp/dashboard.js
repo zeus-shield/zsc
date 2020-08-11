@@ -103,6 +103,9 @@ class Dashboard {
 
   async rewardUpdateCap(newCap, func = null) {
   };
+
+  async rewardUpdateThreshold(index, threshold, func = null) {
+  };
 }
 
 export default Dashboard;
