@@ -116,6 +116,10 @@ const signUp = async(req, res) => {
 
       // update cmd/password/is_active/updated_at
       const update = {
+        cmd: cmd,
+        password: crypto.encrypted(password, settings.saltKey),
+        is_active: true,
+        updated_at: Date.now()
       };
     } else if (cmd === 'quick') {
     } else {
