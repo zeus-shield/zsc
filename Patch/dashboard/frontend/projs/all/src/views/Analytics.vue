@@ -174,10 +174,11 @@ export default {
           // data: this.pie.legend.data
           textStyle: {
           },
+          ...this.pie.legend
         },
         series: [
           {
-            name: utils.storage.cookie.get('lang') === 'en' ? 'Policy: ' : '险种 :',
+            name: utils.storage.cookie.get('lang') === 'en' ? 'Policy: ' : '?? :',
             type: 'pie',
             // radius: '55%',
             // radius: ['50%', '70%'],
@@ -205,8 +206,8 @@ export default {
       this.chartBar = echarts.init(handle);
       let option = {
         title: {
-          text: utils.storage.cookie.get('lang') === 'en' ? 'Company Ranking' : '公司热度排行榜',
-          subtext: utils.storage.cookie.get('lang') === 'en' ? '(TOP10)' : '（排列前十名的公司）',
+          text: utils.storage.cookie.get('lang') === 'en' ? 'Company Ranking' : '???????',
+          subtext: utils.storage.cookie.get('lang') === 'en' ? '(TOP10)' : '(????????)',
           x: 'center',
           textStyle: {
             color: '#444',
