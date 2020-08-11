@@ -9,6 +9,8 @@ class Scan {
     this.erc20TokenAbi = [
       'function name() public view returns (string)',
       'function symbol() public view returns (string)',
+      'function decimals() public view returns (uint8)',
+      'function totalSupply() public view returns (uint256)',
     ];
     this.erc721Tokens = [];
     this.erc721TokenAbi = [];
