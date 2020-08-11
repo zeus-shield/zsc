@@ -398,8 +398,8 @@ const cn = {
       PINGAN_YW_YNQZHYW: '[中国平安]一年期综合意外险',
       PINGAN_YW_JTBZHYW: '[中国平安]家庭保综合意外保险',
       PINGAN_YW_JTCXZHYCJ: '[中国平安]家庭出行综合保险（原驾乘险）',
-      PICC_ZYYL_RRAKBWYLJTB: '“人人安康”百万医疗保险-家庭版',
-      PICC_YW_RSYWQNJQB: '中国人保人身意外险全年加强版',
+      PICC_ZYYL_RRAKBWYLJTB: '[中国人保]“人人安康”百万医疗保险-家庭版',
+      PICC_YW_RSYWQNJQB: '[中国人保]人身意外险全年加强版',
       PICC_YW_AXCXJTGJYW: '中国人保安心畅行交通工具意外险',
       PICC_YW_HKWYQWQQHY: '中国人保“航空无忧”千万全球航意险',
       PICC_YW_BWCYB: '中国人保百万出游保'
