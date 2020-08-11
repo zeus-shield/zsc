@@ -312,5 +312,7 @@ export default {
   created() {
     console.log('%c[InsurancePICCBrief]created()', `color:${this.logColor}`);
   },
+  mounted() {
+  },
 };
 </script>
