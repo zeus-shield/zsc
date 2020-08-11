@@ -22,6 +22,9 @@ const userAddPolicy = async(req, res) => {
       // url = 'https://etherscan.io/';
       url = 'https://cn.etherscan.com/';
     } else {
+      if (network.chainId === 0) {
+      } else {
+      }
     }
   } catch (err) {
     res.sendErr(err);
