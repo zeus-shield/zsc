@@ -247,6 +247,8 @@ const en = {
             title: 'Tip',
             description: 'Please input the correct target account and amount!'
           },
+          account: 'Account',
+          amount: 'Amount',
         }
       }
     }
