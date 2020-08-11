@@ -37,6 +37,8 @@ module.exports = (app) => {
 
   app.route('/iot/tableCount').get(wrap(controllers.iot.tableCount));
   app.route('/iot/tableName').get(wrap(controllers.iot.tableName));
+  app.route('/iot/tableNames').get(wrap(controllers.iot.tableNames));
+  app.route('/iot/tableInfo').get(wrap(controllers.iot.tableInfo));
   // api
   app.route('/scan/balance').get(wrap(apis.scan.balance));
   app.route('/scan/token').get(wrap(apis.scan.token));
