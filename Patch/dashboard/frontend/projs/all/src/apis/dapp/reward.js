@@ -123,6 +123,11 @@ class Reward {
         instance.contractWithSigner.removeAllTraces(_account).then(tx => {
           this.einstance.receipt(tx.hash, 0, 1000, func);
         }).catch(error => {
+          if (func) {
+            error.code = 'DAPPReward';
+            func(error, null);
+          }
+          // throw error; // can't catch error
         });
         return 'ignore';
       }
